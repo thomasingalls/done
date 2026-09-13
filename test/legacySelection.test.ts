@@ -302,5 +302,5 @@ describe('verified imported Local selection', () => {
       ),
       { seed: 8941, numRuns: 30 },
     );
-  }, 30000);
+  }, 60_000);
 });

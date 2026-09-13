@@ -2446,3 +2446,19 @@ keeps that residual executable. General membership needs a malicious-member reco
 F-09 and membership/revocation work; already accepted invalid positions cannot be silently overwritten.
 A future compatible reader or authenticated baseline/lineage recovery is separate work. See
 `docs/review/implementation/service-receiver-bounds.md` for boundaries and retained validation.
+
+
+## 2026-09-13 — General validation begins with the five property-deadline suites
+
+The first general adapter takes the concrete R-03/N-06 Vitest obligations before broadening general
+Node/Vitest families. Only an explicit reviewed file allowlist resolves. Literal registration ASTs
+provide an independent denominator; runtime collection, exit zero or a wrapper's prior green result
+cannot define the expected population. The ordinary test config/setup stays in the frozen identity.
+Whole package/wrapper selections remain separate obligations.
+
+Use explicit 60-second limits for the five existing generated properties, preserving all 515 histories,
+seeds and assertions. Sequential one-fork stages receive 180 seconds plus bounded drain. Current
+1.1–6.2-second property measurements and historical loaded-host failures justify finite margin, not a
+universal load guarantee. Keep partial progress, error message and stack, seed/path/counterexample and
+explicit process-drain evidence. No automatic retry or deadline increase may turn a failure into credit.
+R-04 live/archive style scope and the full immutable aggregate remain subsequent work.

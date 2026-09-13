@@ -100,4 +100,4 @@ match their preservation hashes. The root `done ` item remains untouched.
 R-01's conforming-client mismatch, service-visible size gate, pending-state diagnostics and explicit
 trust/recovery disposition are complete within this scope. General validation-runner integration
 (R-03/N-06 and R-04), then P-06 and the selected immutable aggregate, is next. General malicious-member
-recovery and large-paste/workload capacity remain open. This phase is not yet committed.
+recovery and large-paste/workload capacity remain open. This phase is committed and signature-verified as `5872dc5`.

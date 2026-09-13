@@ -161,7 +161,7 @@ it('120 generated source/actor/burn histories batch exact originals in order and
     ),
     { seed: 1209032, numRuns: 120 },
   );
-});
+}, 60_000);
 it('batch count, bytes, actor boundary, duplicate, order and late-source controls refuse unsafe allocations', async () => {
   const { rows } = await sources(Array.from({ length: 40 }, () => ({ system: false, length: 1 })));
   const state = inspectSpool(rows, route),

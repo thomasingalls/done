@@ -303,5 +303,5 @@ describe('pre-active Local import', () => {
       ),
       { seed: 8941, numRuns: 25 },
     );
-  }, 30000);
+  }, 60_000);
 });

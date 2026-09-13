@@ -16,6 +16,7 @@ import { writeSessionStage } from './write-session-adapter.mjs';
 import { custodyStage } from './custody-adapter.mjs';
 import { contentTrimStage } from './content-trim-adapter.mjs';
 import { localClearStage } from './local-clear-adapter.mjs';
+import { propertyFiles, vitestStage } from './vitest-adapter.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -102,6 +103,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/custody.test.mjs',
     'test/release-validation/content-trim.test.mjs',
     'test/release-validation/local-clear.test.mjs',
+    'test/release-validation/vitest.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -127,6 +129,8 @@ export function compileManifest(root, inventory) {
           { kind: 'cases', cases },
         ),
       });
+    } else if (propertyFiles.includes(t.path)) {
+      add({ id, kind: 'test', path: t.path, stage: vitestStage(root, t.path) });
     } else
       add({
         id,
@@ -306,6 +310,12 @@ export function compileManifest(root, inventory) {
       stage: contentStage(root, ['--case', 'C09.unreadable-load'], 'variant:content-unreadable'),
     });
   const byId = new Map(rows.map((r) => [r.id, r]));
+  const propertyIds = propertyFiles.map((file) => 'test:' + file);
+  if (propertyIds.some((id) => byId.has(id)))
+    assert(
+      propertyIds.every((id) => byId.has(id)),
+      'Reviewed property selection lost a test file',
+    );
   for (const row of rows) {
     for (const id of [...(row.requires ?? []), ...(row.orderedAfter ?? [])])
       assert(byId.has(id), 'Missing manifest dependency: ' + id);
@@ -331,6 +341,7 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'vitest-properties': rows.filter((r) => propertyFiles.includes(r.path)).map((r) => r.id),
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),
       ...(byId.has(contentId)
         ? { content: [contentId], 'content-control': ['variant:content-unreadable'] }

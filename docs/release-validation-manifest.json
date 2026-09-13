@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "1ee0e547a2581eb37429442975f270b69c899c7b0873bcfac39371c840143136",
+  "inventoryDigest": "fe5ea40732f1c29c1139fd70999fbbd119b4b9f9b513ef7aba84a17e8c83ba4c",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -1711,10 +1711,136 @@
       "id": "test:test/accountInboundPrep.test.ts",
       "kind": "test",
       "path": "test/accountInboundPrep.test.ts",
-      "invocation": {
-        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/accountInboundPrep.test.ts"]
-      },
-      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      "stage": {
+        "id": "test:test/accountInboundPrep.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/accountInboundPrep.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": ["test/accountInboundPrep.test.ts"],
+          "cases": [
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"keeps reader authority distinct from publisher authority and begins from held zero links\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"retains cross-stream pending structs/deletions across commit and restart before their dependency arrives\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"rejects a gap, deduplicates exact entries and retains advertised high-water marks across restart\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"binds fresh input to the actual pending request; committed evidence remains usable after expiry\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses foreign input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses retired input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses reader-retired input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses epoch input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses generation input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses actor input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses agent input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"refuses final input without changing content or progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"retains a proved conflicting digest without applying it or advancing the receive cursor\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"retains the exact verified request/page when caller buffers change during crypto\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"leaves malformed or unproved evidence unconsumed and refuses local size/count overflow\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"commits content and progress together across abort, lost acknowledgement and close before commit\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"rechecks membership at commit and fails cold open on omitted evidence or a wrong reader fence\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"inbound candidate contract — synthetic authority and atomic model only\",\"300 generated delivery/crash/compaction histories preserve the external receipt and source ledger\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"equal state vectors can hide different deletion coverage in a proposed baseline\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"a valid head cannot choose its own prefix, and a complete accepted suffix cannot replace genesis\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"a cursor-first split commit is detected after the content half is lost\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"dropping pending data from a snapshot loses a received deletion when its target arrives later\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"promoting a remote dependency before commit can acknowledge a local edit that disappears on cold replay\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"one global receive cursor skips a different publisher at the same position\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/accountInboundPrep.test.ts::[\"effective counterexamples to tempting receive shortcuts\",\"the raw capture primitive can relabel received bytes, so it cannot serve as authenticated ingress\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "test:test/accountLiveness.test.ts",
@@ -2130,10 +2256,80 @@
       "id": "test:test/legacyCleanup.test.ts",
       "kind": "test",
       "path": "test/legacyCleanup.test.ts",
-      "invocation": {
-        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/legacyCleanup.test.ts"]
-      },
-      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      "stage": {
+        "id": "test:test/legacyCleanup.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/legacyCleanup.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": ["test/legacyCleanup.test.ts"],
+          "cases": [
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"removes only bound DB/WAL/ancillary carriers; preserves later journal-only edits and permits imported clear\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses unselected input, wrong factor, changed binding/source, and damaged destination without deleting source\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses incomplete destination dependencies in a valid encrypted journal\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses changed material on partial cleanup\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses unknown material on partial cleanup\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses early-missing material on partial cleanup\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses reappeared material on partial cleanup\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"refuses an overlong manifest key before persisting an unreadable Local claim\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"checks source absence after the terminal progress observer runs\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"authenticates cleanup presence, cursor and each manifest field; malformed keys cannot widen deletion\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyCleanup.test.ts::[\"authenticated journal-inclusive legacy cleanup\",\"generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "test:test/legacyCleanupBounds.test.ts",
@@ -2171,10 +2367,88 @@
       "id": "test:test/legacyImport.test.ts",
       "kind": "test",
       "path": "test/legacyImport.test.ts",
-      "invocation": {
-        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/legacyImport.test.ts"]
-      },
-      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      "stage": {
+        "id": "test:test/legacyImport.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/legacyImport.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": ["test/legacyImport.test.ts"],
+          "cases": [
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"confirms a generated factor before writes and leaves source intact\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"imports every old day and uncapped multiline/empty card with fresh system attribution, then replays idempotently\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"blocks ordinary startup, low-level custody, index mutation and fresh genesis while pre-active\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"refuses wrong factor, altered source/plan/policy and competing enrollment without replacing the winner\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"authenticates stage without using tampered progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"authenticates binding without using tampered progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"authenticates createdAt without using tampered progress\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"refuses missing counter instead of reminting or trusting completion\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"refuses missing custody instead of reminting or trusting completion\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"refuses missing slice instead of reminting or trusting completion\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"retains the file presence of an empty archived day without inventing a card\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"copies the packet before caller mutation or the confirmation await\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacyImport.test.ts::[\"pre-active Local import\",\"generated text and resumptions retain the external logical ledger\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "test:test/legacyImportReceipts.test.ts",
@@ -2194,10 +2468,76 @@
       "id": "test:test/legacySelection.test.ts",
       "kind": "test",
       "path": "test/legacySelection.test.ts",
-      "invocation": {
-        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/legacySelection.test.ts"]
-      },
-      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      "stage": {
+        "id": "test:test/legacySelection.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/legacySelection.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": ["test/legacySelection.test.ts"],
+          "cases": [
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"cold-verifies, selects, opens through the normal owner, and preserves post-selection work on retry\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"resumes intent with index=false; ordinary opening stays blocked beforehand\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"resumes intent with index=true; ordinary opening stays blocked beforehand\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"rechecks cold destination despite signed intent, index=false\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"rechecks cold destination despite signed intent, index=true\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"rejects incomplete import, wrong factor, source mutation and changed packet binding\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"never rebuilds a lost selected index, and refuses a conflicting pre-active index\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"requires the reread index route before committing the active decision\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"authenticates every provenance field, including its presence\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/legacySelection.test.ts::[\"verified imported Local selection\",\"generated interruption states either refuse damage or converge to the same external master text\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "test:test/legacySource.test.ts",
@@ -3067,6 +3407,72 @@
       "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
     },
     {
+      "id": "test:test/release-validation/vitest-process.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/vitest-process.test.mjs",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/vitest-process.test.mjs"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/release-validation/vitest.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/vitest.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/vitest.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/vitest.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/vitest.test.mjs::Vitest census expands literal nested suites and scalar tables without importing test code",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/vitest.test.mjs::Vitest census refuses conditional, aliased, modified, nested and unknown generated registration",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/vitest.test.mjs::the five reviewed property suites have 62 exact cases; other test-file and wrapper credit stays separate",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/vitest.test.mjs::Vitest stage cannot bypass its exact reporter, one-file selection or environment contract",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/vitest.test.mjs::manifest selects all five properties and refuses a lost file without crediting their wrappers",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/vitest.test.mjs::160 generated Vitest populations reject omissions, skips, stale reports and false completion",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/workspace-admission.test.mjs",
       "kind": "test",
       "path": "test/release-validation/workspace-admission.test.mjs",
@@ -3230,10 +3636,48 @@
       "id": "test:test/spoolBatch.test.ts",
       "kind": "test",
       "path": "test/spoolBatch.test.ts",
-      "invocation": {
-        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/spoolBatch.test.ts"]
-      },
-      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      "stage": {
+        "id": "test:test/spoolBatch.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/spoolBatch.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": ["test/spoolBatch.test.ts"],
+          "cases": [
+            {
+              "id": "test/spoolBatch.test.ts::[\"120 generated source/actor/burn histories batch exact originals in order and keep detached warm verification\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/spoolBatch.test.ts::[\"batch count, bytes, actor boundary, duplicate, order and late-source controls refuse unsafe allocations\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/spoolBatch.test.ts::[\"R-01 oversized sources cannot allocate a position or burn another attempt after restart\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "test:test/spoolRecord.test.ts",
@@ -10424,7 +10868,6 @@
     "test:test/accountDriver.test.ts",
     "test:test/accountInboundCodec.test.ts",
     "test:test/accountInboundControls.test.ts",
-    "test:test/accountInboundPrep.test.ts",
     "test:test/accountLiveness.test.ts",
     "test:test/accountReceiveDriver.test.ts",
     "test:test/accountReceiveLedger.test.ts",
@@ -10471,13 +10914,10 @@
     "test:test/legacy-cleanup/harness.node.mjs",
     "test:test/legacy-host-cold/harness.node.mjs",
     "test:test/legacy-host/harness.node.mjs",
-    "test:test/legacyCleanup.test.ts",
     "test:test/legacyCleanupBounds.test.ts",
     "test:test/legacyCoordinator.test.ts",
     "test:test/legacyExport.test.ts",
-    "test:test/legacyImport.test.ts",
     "test:test/legacyImportReceipts.test.ts",
-    "test:test/legacySelection.test.ts",
     "test:test/legacySource.test.ts",
     "test:test/livePreview.test.ts",
     "test:test/local-app/editor.spec.ts",
@@ -10508,6 +10948,7 @@
     "test:test/release-validation/content-native.test.mjs",
     "test:test/release-validation/custody-native.test.mjs",
     "test:test/release-validation/stage.test.mjs",
+    "test:test/release-validation/vitest-process.test.mjs",
     "test:test/reorder.test.ts",
     "test:test/roundTrip.test.ts",
     "test:test/seam.test.ts",
@@ -10516,7 +10957,6 @@
     "test:test/slotIndex.test.ts",
     "test:test/slotUnlock.test.ts",
     "test:test/sourceCapture.test.ts",
-    "test:test/spoolBatch.test.ts",
     "test:test/spoolRecord.test.ts",
     "test:test/staticRender.test.ts",
     "test:test/storage-capacity/maintenance.test.mjs",
@@ -10718,10 +11158,18 @@
       "test:test/release-validation/local-genesis.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
+      "test:test/release-validation/vitest.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
       "test:test/release-validation/write-session.test.mjs",
       "command:check:35",
       "command:validation:inventory:0"
+    ],
+    "vitest-properties": [
+      "test:test/accountInboundPrep.test.ts",
+      "test:test/legacyCleanup.test.ts",
+      "test:test/legacyImport.test.ts",
+      "test:test/legacySelection.test.ts",
+      "test:test/spoolBatch.test.ts"
     ],
     "vectors": [
       "vector:test/vectors/account-checkpoint.json",
@@ -11000,6 +11448,8 @@
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/stage.test.mjs",
+      "test:test/release-validation/vitest-process.test.mjs",
+      "test:test/release-validation/vitest.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
       "test:test/release-validation/write-session.test.mjs",
       "test:test/reorder.test.ts",

@@ -43,55 +43,53 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — ready (`L-1`)
+## Active slice: General validation-runner integration — remaining test adapters (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation is the general test/wrapper integration set
+blocks_on: none; next bounded implementation extends the reviewed general test adapters
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** [R-01's bounded repair](./review/implementation/service-receiver-bounds.md),
-starting at signed `4bb0904`, aligns new sender/sealer/service admission with the receiver while keeping
-historical readback and exact decision retries. Known oversize stops before new allocation; old pending
-sealed/submitted states receive terminal diagnostics without losing writing. The content-blind service
-still cannot validate encrypted semantics. The private creating-member trust assumption and absence of
-an already-accepted bad-position recovery mechanism are explicit. This round is uncommitted.
+**Just completed.** R-01's [bounded repair](./review/implementation/service-receiver-bounds.md) is
+signed and verified as `5872dc5`. The [first general Vitest adapter](./release-validation-execution.md#vitest-property-adapter--phase-2m)
+resolves five R-03/N-06 suites: 62 exact cases, unchanged 515 seeded histories, finite AST census,
+complete runtime reconciliation and owned process execution. Its implementation is uncommitted.
+The five properties now have explicit 60-second limits inside separate 180-second file stages.
 
-**Evidence.** 124 unit, 38 service/transport, 16 planning and twelve selected native cases pass, including
-generated boundaries, 255/256-update controls, actual preflight omission, native transaction abort/retry
-and historical pending/restart. Typecheck, scoped style, affected vectors and the current construction
-registry pass. The [archive](./account-conformance-runs/2026-09-13-r01-bounds/README.md) retains failed
-fixture attempts and timing limits. Large-paste responsiveness remains unvalidated. The expanded sync
-native stage has a finite 600-second budget; its full wrapper was not run in this phase. This is staged
-bounded evidence, not a release aggregate.
+**Evidence.** The final disposable selection passes all 62 cases in 56.2 seconds including preparation;
+the prior post-deadline run took 67.9 seconds. Generated properties take 1.0–6.2 seconds across these runs. Assertions, seeds and history counts are unchanged by AST
+comparison. All 91 non-native runner controls/regressions pass with 2,560 generated control histories.
+Actual omission, skip, zero-case, counterexample, inner/outer timeout, cancellation and detached-child
+controls retain nine receipts and proved drain. The [archive](./account-conformance-runs/2026-09-13-vitest-properties/README.md)
+retains the first reporter/fixture failures. These are host observations, not a loaded-host guarantee.
+Existing eleven native browser ownership controls retain prior evidence; no browser campaign reran.
 
-**Next bounded phase.** Integrate the general test-file and wrapper obligations. Include R-03/N-06's
-measured property deadline/outer ownership and R-04's explicit live-file versus immutable-archive style
-scope. Preserve counterexamples, distinguish skipped/missing/time-limited work and avoid fake coverage.
-All eleven catalogue adapters remain complete: 163 cases/54 mutations, 81 non-native controls including
-2,400 histories, and eleven native ownership controls. The manifest still has 607 obligations and 416
-unresolved (257 test-file, 96 command, 63 campaign); none are catalogue rows. P-06 current crypto prose
-and the selected immutable aggregate follow integration.
+**Next bounded phase.** Extend the remaining Vitest case shapes and reviewed Node test families;
+then integrate Playwright, deliberate nested owners and exact wrapper variants/postconditions.
+R-04 still requires explicit live-file versus immutable-archive style scope, live repairs and full
+style commands. Preserve counterexamples, ordered prerequisites and missing/skipped/timeout refusals.
+All eleven catalogue adapters remain resolved (163 cases/54 mutations). The manifest now has 609
+obligations and 412 unresolved (253 test-file, 96 command, 63 campaign). A file receipt does not
+credit its whole package/wrapper. P-06 current crypto prose and the selected immutable aggregate
+follow integration, before private Account walkthrough preparation and human recovery/adoption work.
 
-**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account is still
+**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
-no real Account admission receipt exists. Human promotion/recovery rehearsal and enrollment/adoption
-follow acceptable private validation. The author's old second device must adopt the first workspace
+no real Account admission receipt exists. The author's old second device must adopt the first workspace
 with fresh custody, store, counters and credentials, without importing/merging its old writing.
 Membership/revocation/rotation, signout/remove/reset, continuity, operations/deployment and public
 assurance remain later work. Wider F-21.4 privacy, F-09 Account/key-loss/malicious-member recovery,
 F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain visible.
 
-**Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 are byte-identical.
+**Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 remain byte-identical.
 Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
-Historical review/intake/evidence bytes and formal debts are unchanged. The thirty-commit signing sweep
-is complete, its crosswalk and both original-history backups remain, and no new unsigned commit was made.
-The eventual aggregate must bind its own signed revision.
+Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The thirty-
+commit signing sweep is complete; R-01 was signed normally. The aggregate needs its own signed revision.
 
 ---
 

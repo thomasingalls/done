@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 277,
-    "requiredTestFiles": 271,
+    "testFiles": 279,
+    "requiredTestFiles": 273,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -8882,6 +8882,41 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/vitest-process.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/vitest-process.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/vitest.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/vitest.test.mjs"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [
+        {
+          "line": 148,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/workspace-admission.test.mjs",
       "status": "required",
       "invocation": {
@@ -11722,7 +11757,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "f9e85a5d17dbc2235c0541e78ce39f75bd8e67149a1f5990624bd8bfbe48574c"
+      "sha256": "cd6079017753d9966d1d8107f3494401d6d4f047cd3ab1f592c8cc0a32f295a8"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11746,7 +11781,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "5221821ef451003d75e21b60d434b1908a3b285eb3afca6eaa4171096d52df71"
+      "sha256": "aafcfb4c3ca0b29c1ca8cb62c4d25d539aeb5d8b68404db843e2c0d23f524e32"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11778,7 +11813,19 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "5118fa33a5e62e7f2c4eb4e30ed1b715ff0d3102cb7f63781b559b68650c2c2a"
+      "sha256": "e38036036e5c7468080efce1fb4c7d05f4c4685284325cb8f161eeba5decc6c3"
+    },
+    {
+      "path": "scripts/release-validation/vitest-adapter.mjs",
+      "sha256": "9884ad070971c9ec855d879cbff712da8eb16337b382b78d21938407ad27ffaf"
+    },
+    {
+      "path": "scripts/release-validation/vitest-census.mjs",
+      "sha256": "e0da4c9f4fa1dca992347de6e8160aab0e2525133789e1e0383dd03c0ce91651"
+    },
+    {
+      "path": "scripts/release-validation/vitest-reporter.mjs",
+      "sha256": "3a5e1d47cc08e78c88dc5d611c095ca83943a9341dbba154680147b7ae73e7b0"
     },
     {
       "path": "scripts/release-validation/workspace-admission-adapter.mjs",
@@ -12986,7 +13033,7 @@
     },
     {
       "path": "test/accountInboundPrep.test.ts",
-      "sha256": "af4bf61b20d70664906120a20c3e07628b8b8a21af12d0354591477f315816bf"
+      "sha256": "2c710532cd14aba5eafaefec03c76357ec28f8004fd86d47e3fb3c4e27e0a18b"
     },
     {
       "path": "test/accountLiveness.test.ts",
@@ -13370,7 +13417,7 @@
     },
     {
       "path": "test/legacyCleanup.test.ts",
-      "sha256": "f96a60d420fda7f142b368d50ed26f22232d0ccf122b2d24a96c89a679f91e03"
+      "sha256": "a133ff2caeec5a4284df6ad57bf127420f58009d010f5dd5e0f8b3d2d4f1f19f"
     },
     {
       "path": "test/legacyCleanupBounds.test.ts",
@@ -13390,7 +13437,7 @@
     },
     {
       "path": "test/legacyImport.test.ts",
-      "sha256": "21bb1bfd91086dba5a532b6266b91de6b3e3f039a146298c61eb4e87d0c645d8"
+      "sha256": "2959781db8a5677c2dd82ffa9a42c45e04e3a1457c016aca5a4739e0410b61c2"
     },
     {
       "path": "test/legacyImportReceipts.test.ts",
@@ -13398,7 +13445,7 @@
     },
     {
       "path": "test/legacySelection.test.ts",
-      "sha256": "d4fe3937b7aea3997b8739be5a296a74f593ce32a7c6af95fff763e1ea1e0c09"
+      "sha256": "04797d10b8f6f7b63c4ee0be4b99658d646ce1210a161caff065daa73d3e0bcd"
     },
     {
       "path": "test/legacySource.test.ts",
@@ -13597,6 +13644,14 @@
       "sha256": "4aa21f9b91c70edd98f61e76ef538076c20110f4e9f51cb56bcb46c479a156f7"
     },
     {
+      "path": "test/release-validation/vitest-process.test.mjs",
+      "sha256": "92def7a145bc01b8f57f76a315bab1cb2b73f8a6431c3bf20d3aab85f4352c86"
+    },
+    {
+      "path": "test/release-validation/vitest.test.mjs",
+      "sha256": "b639690458126f7a4174515f3c911d5d76652c18c008aacd60d010f4d06d67a4"
+    },
+    {
       "path": "test/release-validation/workspace-admission.test.mjs",
       "sha256": "4fa260e56eb8abf5c8fdf46f232c289130cc01af2e1679005d3d0426b65b8a5a"
     },
@@ -13650,7 +13705,7 @@
     },
     {
       "path": "test/spoolBatch.test.ts",
-      "sha256": "a67fd3069491fd79216ead6524304e41ceede46c8aca5ab24d92a5f70046bbf2"
+      "sha256": "8d01f7ece3dded8cfd4d7235f9062cd5d45716476015940b5e7d43ad1a6a9498"
     },
     {
       "path": "test/spoolRecord.test.ts",

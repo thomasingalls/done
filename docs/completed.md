@@ -3999,3 +3999,43 @@ All personal/package/vector preservation hashes and L-2 are unchanged; historica
 formal debts, root `done ` and signing backups remain untouched. The manifest stays at 607 obligations,
 416 unresolved. General test/wrapper integration with R-03/N-06 and R-04 is next; P-06 and the immutable
 aggregate follow. Multi-member recovery and large-paste/capacity validation remain open.
+
+
+## 2026-09-13 — First general validation integration: Vitest property suites (L-1)
+
+R-01 is committed as `5872dc5`; its SSH signature verifies. The first general adapter now resolves
+five R-03/N-06 test-file obligations with 62 exact cases and unchanged 515 seeded histories. A finite
+AST census handles literal nested suites and scalar tables without importing them. Runtime reports
+reconcile exact identities, completion, non-passing outcomes and module errors under the existing
+owned process boundary. Missing/zero/skipped/pending cases cannot pass. Whole commands and native
+wrappers remain independently blocked.
+
+All five generated properties receive explicit 60-second deadlines inside 180-second single-file
+stages, with one fork, bounded output, partial progress, heartbeat and TERM/KILL cleanup. Comparison
+of normalized TypeScript ASTs against the signed base proves assertions/seeds/run counts unchanged
+apart from those five timeout arguments. The prior deadlines also pass on this host; historical
+loaded-host failures are not re-reproduced or dismissed. The final generated cases take 1.1–6.2 seconds;
+the complete disposable selection passes in 67.9 seconds including preparation and fingerprints.
+
+All 91 non-native runner/control tests pass, including 2,560 generated control histories. Four actual
+Vitest process tests retain nine receipts: success plus required omission, skip, zero-case,
+counterexample, inner timeout, outer timeout/child drain, cancellation and detached-child refusals.
+The first controls caught lost timeout messages when a placeholder stack hid the actual message;
+both now survive. A faulty table-context skip fixture is corrected, with failed evidence retained.
+Existing catalogue adapter regressions pass; the eleven browser ownership controls were not rerun.
+
+The manifest now has 609 obligations, 412 unresolved (253 test-file, 96 command, 63 campaign).
+Five old rows resolved; two new runner-control files were discovered, one still requiring deliberate
+nested-owner aggregate integration. The phase's new work remains uncommitted. Evidence lives at
+`docs/account-conformance-runs/2026-09-13-vitest-properties/`; current scope is in
+`docs/release-validation-execution.md`. Remaining Vitest/Node/Playwright and exact wrapper integration,
+R-04 style gates, P-06 prose and the immutable selected aggregate precede private Account rehearsal.
+Personal/package/vector bytes, historical review/evidence, signing backups, formal debts and L-2
+remain unchanged. No personal app/server/profile, Account cutover or release qualification occurred.
+
+Final verification for this phase also checks the file argument itself cannot substitute a Vitest
+flag. All 62 cases pass again in 56.2 seconds, with the exact final selected runner/test bytes. The
+earlier 67.9-second result remains in the packet. Twenty-six affected runner tests pass after this
+last check; the prior fifteen process-owner and fifty adapter regressions remain applicable. Final
+typecheck, scoped lint/format, authority/registry, inventory and manifest checks pass; full release
+selection still correctly refuses unresolved obligations. The evidence packet remains below 120 kB.

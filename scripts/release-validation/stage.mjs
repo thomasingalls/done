@@ -15,6 +15,7 @@ import { canonical, digest, hash, identityKey } from './identity.mjs';
 import { groupState, signalGroup as kill } from './process-group.mjs';
 import { startOwnedChromium } from './browser.mjs';
 import { reconcileCarrier } from './carrier-adapter.mjs';
+import { reconcileVitest, vitestArgv } from './vitest-adapter.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -57,6 +58,7 @@ export function validateStage(stage) {
     [
       'exit',
       'cases',
+      'vitest',
       'content',
       'journal',
       'admission',
@@ -77,7 +79,7 @@ export function validateStage(stage) {
       [0],
       'Nonzero exit alone cannot prove a mutation was detected',
     );
-  else if (stage.expect.kind === 'cases') {
+  else if (['cases', 'vitest'].includes(stage.expect.kind)) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
       new Set(stage.expect.cases.map((c) => c.id)).size,
@@ -96,6 +98,18 @@ export function validateStage(stage) {
         );
     }
   }
+  if (stage.expect.kind === 'vitest') {
+    assert.equal(stage.expect.files?.length, 1, 'Only single-file Vitest stages are certified');
+    assert.deepEqual(stage.argv, vitestArgv(stage.expect.files[0]), 'Unreviewed Vitest invocation');
+    assert.deepEqual(stage.env, {}, 'Unreviewed Vitest environment');
+    assert(
+      stage.expect.cases.every((c) => c.outcome === 'pass'),
+      'Vitest mutations need a separate adapter',
+    );
+    assert(!stage.fixture, 'Native Vitest fixtures are not certified');
+  }
+  if (stage.argv[1] === 'node_modules/vitest/vitest.mjs')
+    assert.equal(stage.expect.kind, 'vitest', 'Vitest requires its exact case adapter');
   if (
     [
       'content',
@@ -477,6 +491,8 @@ export function createStageRunner({
             custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
           actual = { cases };
+        } else if (stage.expect.kind === 'vitest') {
+          actual = reconcileVitest(stage.expect, reported, nonce);
         } else {
           reconcileCases(stage.expect.cases, reported, nonce);
           actual = reported;

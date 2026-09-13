@@ -48,7 +48,9 @@ These IDs belong to the implementation review and must not be inserted into the 
 **R intake and signing update.** The [verified signing sweep](./signing-prep-2026-09-13.md) is complete
 for all thirty outstanding commits, with identical trees and reconciled current baseline references.
 R-01's [bounded admission/diagnostic repair](./service-receiver-bounds.md) passes; its malicious-member
-recovery disposition remains explicit under F-09. General validation integration is next.
+recovery disposition remains explicit under F-09. General validation integration has begun with the
+five R-03/N-06 Vitest suites: 62 exact cases and explicit deadlines, with counterexample and process
+controls. Remaining test/wrapper integration and R-04 are still ahead.
 R-03 is another N-06/F-20 property-deadline instance. R-04 adds explicit whole-tree style-gate scope
 and cleanup to F-20, with Q-08 evidence preservation. R-02 corrects current records and extends
 Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime change.
@@ -78,12 +80,15 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    [Current execution scope](../../release-validation-execution.md) covers all 163 catalogue cases and
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
-   write-session repairs a BFCache load-event wait while retaining closed-capability checks. All
-   81 non-native controls pass with 2,400 generated validation histories; eleven native ownership
-   controls retain their bounded passing evidence. The manifest has 416 unresolved rows: 257 test-file,
+   write-session repairs a BFCache load-event wait while retaining closed-capability checks. The first general
+   Vitest adapter adds the five R-03/N-06 suites (62 cases / unchanged 515 seeded histories), measured
+   deadlines and owned execution. All 91 non-native controls pass with 2,560 generated validation
+   histories; eleven native ownership controls retain earlier bounded evidence. The manifest has
+   412 unresolved rows: 253 test-file,
    96 command and 63 campaign obligations, with no unresolved catalogue rows. General Node, Vitest,
    Playwright, nested owners and exact wrappers precede P-06 and the immutable aggregate.
-   R-03/R-04 add explicit generated-property deadlines and correctly scoped whole-tree style gates. Earlier
+   R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
+   load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
    credited by these staged catalogue runs.
 
@@ -151,7 +156,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 416 general-test/command/campaign obligations, deadlines and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; first five Vitest files/deadlines integrated; 412 general-test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
@@ -176,7 +181,7 @@ Related items have distinct behavior or completion criteria and stay separately 
 | <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | repaired for supported v9 read and submission waits; close/drain/current checks retained | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
 | <a id="n-04"></a>**N-04** v8 driven reopen capsule | product disposition: v8 retired; merged into F-08 | [F-08](#f-08) | low; [assessment](./96a2040-1ceb88d.md#assessment-n-04) |
 | <a id="n-05"></a>**N-05** Unspecified receipt baseline hash | closed by byte-contract specification | distinct | low compatibility; [assessment](./96a2040-1ceb88d.md#assessment-n-05) |
-| <a id="n-06"></a>**N-06** Loaded-host generated-property timeouts | open; merged into F-20 | [F-20](#f-20) | low validation reliability; [assessment](./96a2040-1ceb88d.md#assessment-n-06) |
+| <a id="n-06"></a>**N-06** Loaded-host generated-property timeouts | five-suite deadline/ownership repair passes; aggregate load validation remains; merged into F-20 | [F-20](#f-20) | low validation reliability; [assessment](./96a2040-1ceb88d.md#assessment-n-06) |
 | <a id="n-07"></a>**N-07** Unnamed transport constructions | closed; covered by F-05 | [F-05](#f-05) | medium-high protocol assurance; [assessment](./96a2040-1ceb88d.md#assessment-n-07) |
 | <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | closed with F-10; bounded unsigned hints | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
 | <a id="n-09"></a>**N-09** v8 offline event hides halt reason | product disposition: v8 driver retired | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
@@ -211,7 +216,7 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 | --- | --- | --- | --- |
 | <a id="r-01"></a>**R-01** Service/receiver envelope limits and lost inbound cause | bounded repair complete; [result and residual trust/recovery limits](./service-receiver-bounds.md); [response](./9ff48b5-d03e473.md#assessment-r-01) | distinct availability repair; diagnostics related to [F-10](#f-10). Shared wire policy, sender/count/decoded bounds, effective edge controls, no accepted-prefix advance on refusal, bounded visible terminal cause, and an explicit already-accepted bad-position recovery/trust policy. Service cannot validate ciphertext semantics. | high before durable Account cutover; medium present exposure |
 | <a id="r-02"></a>**R-02** Stale commit state and signing inventory | addressed for this chain: current records corrected, all thirty replacements verified and workflow reconciled; [response](./9ff48b5-d03e473.md#assessment-r-02) | Q-06/Q-07 and P-04; all thirty signatures/tree pairs, retained old objects, current reference migration, source-equivalent executable baselines and a committed crosswalk. Historical intake snapshots remain unchanged. | low records; aggregate provenance prerequisite |
-| <a id="r-03"></a>**R-03** Batch generated-property default deadline | confirmed absent explicit timeout; current focused property passes; [response](./9ff48b5-d03e473.md#assessment-r-03) | N-06/F-20; finite measured property deadline and owned outer stage, unchanged 120 histories/seed, duration and failure/counterexample retention. A passing idle run does not close it. | low test robustness; aggregate prerequisite |
+| <a id="r-03"></a>**R-03** Batch generated-property default deadline | bounded repair complete: explicit 60-second property / 180-second owned file stage; unchanged 120 histories; [result](../../release-validation-execution.md#vitest-property-adapter--phase-2m); original [response](./9ff48b5-d03e473.md#assessment-r-03) | N-06/F-20; finite measured property deadline and owned outer stage, unchanged 120 histories/seed, duration and failure/counterexample retention. A passing idle run does not close it. | low test robustness; aggregate prerequisite |
 | <a id="r-04"></a>**R-04** Whole-tree style commands fail | reproduced: 83 lint errors and 1,170 format files; [response](./9ff48b5-d03e473.md#assessment-r-04) | F-20 integration, related Q-08; explicit immutable-archive scope, repair live files, retain active documentation gates, execute/report full commands independently of scoped checks. Never reformat hash-pinned evidence to make a style check pass. | low housekeeping; medium validation credibility |
 
 ## Existing closure records

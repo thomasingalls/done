@@ -268,5 +268,5 @@ describe('authenticated journal-inclusive legacy cleanup', () => {
       ),
       { seed: 8941, numRuns: 40 },
     );
-  }, 30000);
+  }, 60_000);
 });

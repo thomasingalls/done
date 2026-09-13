@@ -1,4 +1,4 @@
-# Release-validation execution — foundation and all eleven catalogue adapters
+# Release-validation execution — catalogue and first Vitest adapters
 
 The signed inventory is `a38bb6b`, foundation `568c2a5`, content `a44f09d`,
 journal `b60a5c7`, admission `4eb1071`, editor-admission `ad475bc`,
@@ -13,14 +13,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 607 obligations, including all 271 current
+The [manifest](./release-validation-manifest.json) now contains 609 obligations, including all 273 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**416 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**412 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -33,6 +33,7 @@ node scripts/release-validation/check.mjs
 node scripts/release-validation/plan.mjs
 node --test --test-concurrency=1 test/release-validation/*.test.mjs
 node scripts/release-validation/execute.mjs --selection infrastructure
+node scripts/release-validation/execute.mjs --selection vitest-properties
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -53,12 +54,12 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs sixteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter, custody-adapter and write-session-adapter
-test files (66 exact cases),
+`infrastructure` runs seventeen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter, custody-adapter, write-session-adapter and Vitest-adapter
+test files (72 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
-The process-control and native content-ownership test files run separately because they deliberately
+The process-control (including Vitest) and native ownership test files run separately because they deliberately
 create additional runner owners to test their failure handling; they are not certified as nested
 stages under the inherited-group adapter. The wildcard test command above includes native Chromium
 controls and therefore needs the installed browser and permission to launch disposable test profiles.
@@ -516,15 +517,77 @@ remain; custom browsers/existing outputs refuse. Default catalogue, package leaf
 resolve. Synthetic cache/write probes do not establish full product transitions, key retirement,
 Account authority, hostile-code containment or platform capacity. Wrapper postconditions remain separate.
 
+## Vitest property adapter — phase 2m
+
+The first general test-file adapter resolves the five known R-03/N-06 deadline suites before
+expanding the remaining Node/Vitest families. `vitest-properties` executes **62 cases and 515 seeded
+histories** across `spoolBatch`, `accountInboundPrep`, `legacyImport`, `legacySelection` and
+`legacyCleanup`. Only those reviewed files receive new execution credit. The full package test
+command and their native/Account/migration wrappers remain distinct, unresolved obligations.
+
+The finite AST census supports direct literal tests, nested literal suites and scalar literal
+`it.each` tables with one `%s`. Unknown aliases, loops, conditional registration, modifiers, dynamic
+tables/titles and duplicate identities refuse without importing test code. Suite/title arrays avoid
+ambiguous concatenation. The parent compares the exact independently enumerated case set and module
+identity with the installed Vitest public reporting API. Empty, omitted, duplicate, skipped, pending,
+retried, repeated, inverted or filtered outcomes, module/suite errors and missing terminal completion
+refuse. An exit code alone cannot discharge these files.
+
+The normal `vite.config.ts` and `test/setup.ts` remain, including the existing Node/jsdom environment
+annotations and synthetic IndexedDB. Each file runs in a separate stage with one inherited Vitest fork,
+no file parallelism, zero retries and the owned reporter. The same owner freezes/copies source and
+installed dependency bytes, emits 15-second heartbeats and enforces **180 seconds per file**, bounded
+logs/reports, and separate five-second TERM/KILL drain grace periods. Partial case reports and progress
+logs survive timeout/cancellation; a partial report cannot pass. Real controls require the worker group
+and its additional child to disappear. These are cooperative POSIX process controls, not containment
+of hostile test code.
+
+All five generated properties now have explicit **60-second** test deadlines. Their assertions,
+seeds and history counts are unchanged; normalized TypeScript AST comparison against signed `5872dc5`
+checks that only these timeout arguments differ. R-03 retains seed 1209032 / 120 histories. The four
+N-06 properties retain 300 / 25 / 30 / 40 histories and their original seeds. Ordinary case and hook
+deadlines remain. This is a finite host-margin choice informed by the following measurements and
+previous loaded-host failures, not a promise that an arbitrarily loaded machine will finish in time.
+
+| Generated property | Previous limit | Before, this host | Current limit | First after, this host |
+| --- | ---: | ---: | ---: | ---: |
+| Spool source/actor/burn | 5 s default | 2.58 s | 60 s | 2.59 s |
+| Inbound delivery/crash/compaction | 30 s | 6.16 s | 60 s | 6.17 s |
+| Import text/resumptions | 30 s | 2.98 s | 60 s | 3.03 s |
+| Selection interruption | 30 s | 1.08 s | 60 s | 1.08 s |
+| Cleanup Unicode/interruption | 30 s | 2.47 s | 60 s | 2.32 s |
+
+The first post-deadline selection passes all 62 cases, with no skips/cancellations and all five groups
+drained, in **67.9 seconds including preparation** (5.9–11.9 seconds per stage). A final run after
+checking that a file argument cannot be a Vitest flag also passes all 62 cases in **56.2 seconds**,
+with 5.3–10.6 seconds per stage and 1.0–5.0 seconds per generated property. The before run also passed
+on this host; these measurements do not reproduce the historical load failures.
+Six new census/manifest tests include 160 generated population faults. Four actual Vitest process
+controls cover success, real registration removal, runtime skip, zero cases, a shrinking counterexample,
+inner test timeout, outer timeout with a child, cancellation and a caught detached-child refusal.
+Together with existing regressions, **91 non-native runner tests / 2,560 generated control histories**
+pass. The eleven existing browser ownership controls retain their earlier evidence; no browser campaign
+was rerun here.
+
+The controls exposed a real reporter defect: Vitest timeout errors can put their useful message outside
+a placeholder stack trace. The reporter now retains both, plus case durations and fast-check seed/path/
+counterexample text. A first skip fixture used a nonexistent table callback context; the corrected
+control skips a real case through its actual runtime context. Failed attempts and nine exact process
+receipts (one expected pass, eight required refusals) accompany the
+[bounded evidence](./account-conformance-runs/2026-09-13-vitest-properties/README.md).
+
 ## Next bounded integration
 
-All eleven current catalogue adapters are resolved: 163 cases and 54 mutations. The remaining 416
-blocked rows comprise 257 test-file, 96 command and 63 campaign obligations. Begin general test-file
-integration with reviewed direct Node registrations and fixture ownership; then finish Vitest,
-Playwright, deliberate nested owners and exact wrapper variants/postconditions. A file mention or
-historical green result is not execution credit. Preserve ordered vector/traceability prerequisites.
+All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest now
+has 609 obligations / **412 blocked rows**: 253 test-file, 96 command and 63 campaign obligations.
+Five existing test rows resolved; two new runner-control files were discovered, with the deliberate
+nested Vitest owner still requiring its eventual aggregate adapter. Continue through the remaining
+Vitest case shapes and reviewed Node families, then Playwright, nested owners and exact wrapper
+variants/postconditions. R-04 still requires explicit immutable-archive exclusions, live-source repairs
+and full style gate execution. Preserve ordered vector/traceability prerequisites and don't credit a
+whole command from a file receipt.
 
 Only after every required obligation resolves should P-06's current cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before
 private Account app/service walkthrough prep and human passkey/recovery/adoption work. No personal
-app/server/profile or Account cutover occurred in this catalogue sequence.
+app/server/profile or Account cutover occurred in this validation sequence.

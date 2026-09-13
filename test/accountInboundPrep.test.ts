@@ -386,7 +386,7 @@ describe('inbound candidate contract — synthetic authority and atomic model on
       { seed: 9142026, numRuns: 300 },
     );
     save('generated', { seed: 9142026, runs: histories.length, histories });
-  }, 30000);
+  }, 60_000);
 });
 
 describe('effective counterexamples to tempting receive shortcuts', () => {

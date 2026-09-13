@@ -42,11 +42,14 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 records current package wiring, proposed required families, explicit exclusions and concrete execution
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
-supply owned execution for 163 catalogue cases and 54 mutations. The manifest retains 416 unresolved
-obligations: 257 test-file, 96 command and 63 campaign rows. General test and exact wrapper integration
-is next, including R-03's generated-property deadline and R-04's full style gates. P-06 and the immutable
-run follow that completed graph. The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
-requires R-01's service/receiver size contract repair before a durable Account cutover. The completed
+supply owned execution for 163 catalogue cases and 54 mutations. The first general Vitest adapter
+adds 62 cases across the five R-03/N-06 suites, with unchanged 515 seeded histories, explicit measured
+deadlines and actual timeout/cancellation/omission controls. The manifest retains 412 unresolved
+obligations: 253 test-file, 96 command and 63 campaign rows. Remaining test and exact wrapper integration
+and R-04's full style gates precede P-06 and the immutable run. Bounded property receipts do not qualify
+the whole test command or a loaded-host aggregate. The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
+requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
+repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed
 [signing sweep](./review/implementation/signing-prep-2026-09-13.md) now records thirty verified signed
 replacements and current baseline/navigation reconciliation. Historical intake and phase evidence
 remain unchanged; no new aggregate result follows from signing.
