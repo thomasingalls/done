@@ -2521,3 +2521,21 @@ after explicit import/fixture review. Preserve independent wrapper artifacts and
 passing an in-file mutation assertion does not grant its optional exported counterexample artifact.
 Shared reader changes warrant actual Node/Vitest controls and the existing generated registrations
 as regressions, while preserving every older stage contract and case identity.
+
+
+## 2026-09-13 — Reviewed historical Git inputs must enter receipt identity
+
+A current checkout hash does not bind bytes read by a test through historical `git show` expressions.
+For explicitly reviewed Node fixtures, record the original reference, resolved full commit, source
+path and SHA-256 in the stage contract. Read the exact expression used by the fixture, preserving
+Git replacement semantics; bound each read's time and output. Validate metadata, check before
+launch/reuse and after execution, and include it in the receipt key. Do not grant historical variant
+credit based on a current checkout or an abbreviated revision alone. Other result adapters reject
+this metadata until separately reviewed.
+
+Synthetic replacement controls must demonstrate changed history with unchanged checkout identity,
+refusal before launch/reuse, and a failed drained receipt when the case passes but its historical
+input changes. Explicit replanning may adopt different bytes only under a different receipt key.
+These cooperative pre/post checks have the same transient/hostile-change limits as source checks.
+Service fixture admission preserves binary IPC ownership, exact cases and independent wrapper/native
+obligations; old source used for compatibility or size fixtures does not revive retired v8 support.

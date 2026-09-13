@@ -5,6 +5,26 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
+import { historicalInput } from './historical-inputs.mjs';
+
+export const deliveryFixtureFiles = [
+  'test/account-service-delivery/controls.test.mjs',
+  'test/account-service-delivery/core.test.mjs',
+  'test/account-service-delivery/generated.test.mjs',
+  'test/account-service-delivery/restart.test.mjs',
+  'test/account-service-inbound/controls.test.mjs',
+  'test/account-service-inbound/core.test.mjs',
+  'test/account-service-inbound/generated.test.mjs',
+  'test/account-service-inbound/restart.test.mjs',
+];
+
+const history = {
+  'test/account-service-delivery/controls.test.mjs': ['2cb42a2', 'account-service/core.ts'],
+  'test/account-service-inbound/core.test.mjs': [
+    '4bb09042f37f68ec31f0d82587af608f599eb096',
+    'account-service/delivery.ts',
+  ],
+};
 
 export const serviceFixtureFiles = [
   'test/account-recovery/controls.test.mjs',
@@ -34,6 +54,7 @@ export const accountFixtureFiles = {
     'test/account-admission/controls.test.mjs',
     'test/account-admission/restart.test.mjs',
     ...serviceFixtureFiles,
+    ...deliveryFixtureFiles,
   ],
 };
 
@@ -53,6 +74,7 @@ export function accountFixtureNodeStage(root, file) {
     expect: {
       kind: 'cases',
       cases: generatedNodeCensus(file, readFileSync(join(root, file), 'utf8')),
+      ...(history[file] ? { historyInputs: [historicalInput(root, ...history[file])] } : {}),
     },
     deadlineMs: 180000,
     graceMs: 5000,

@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**289 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**281 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -40,6 +40,7 @@ node scripts/release-validation/execute.mjs --selection general-tests
 node scripts/release-validation/execute.mjs --selection generated-tests
 node scripts/release-validation/execute.mjs --selection account-fixtures
 node scripts/release-validation/execute.mjs --selection service-fixtures
+node scripts/release-validation/execute.mjs --selection delivery-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -709,12 +710,42 @@ previous 117 general stage contracts and 1,150 identities remain unchanged. Gene
 contain 128 files / 1,206 cases: 96 Vitest and 32 Node files. Other 92 general files retain earlier
 evidence, not a new combined run. This phase remains uncommitted and does not qualify an aggregate.
 
+## Service delivery and inbound-read fixtures — phase 2r
+
+Signed `95fa715` closes the preceding service phase. The `delivery-fixtures` subset adds eight Node
+files / 52 cases: delivery core/generated/controls/restart contribute 32, inbound read contributes 20.
+The disposable selection passes in 119.579 seconds, including snapshot/fingerprints, with every group
+drained and all 140 generated product histories retained. Product source/tests, names, assertions,
+seeds, populations and deadlines remain unchanged. Temporary SQLite, copied mutants, binary IPC
+crash/race workers, a competing SQLite subprocess and an in-memory receiver build are reviewed.
+No browser, HTTP listener or root build is used. The retired v8 delivery native fixture stays excluded;
+inbound native and optional wrapper artifact obligations remain separate.
+
+Two historical `git show` dependencies now have explicit stage pins: original reference, full
+revision, path and SHA-256. The same source expression is read with bounded time/output and checked
+before launch/reuse and after execution. Pins enter receipt identity; unsupported adapter metadata
+refuses. Synthetic replacement controls expose changed historical bytes despite unchanged checkout
+identity, reject stale reuse and reject an otherwise passing case after source drift. This remains
+a cooperative input check, not protection against transient or hostile repository changes.
+
+All 114 non-native runner/control tests pass with 3,360 generated histories. Binary Uint8Array IPC
+is exercised and leaked workers still fail despite passing cases. An initial fresh-receipt field
+assertion and generic formatter scope error are corrected with both logs retained. The intentionally
+compact manifest retains its exact writer layout. The stalled pnpm typecheck was terminated; direct
+local TypeScript passes. No product selection needed repair, retry or a larger deadline.
+
+The [packet](./account-conformance-runs/2026-09-13-delivery-fixture-adapters/README.md) retains complete
+receipts, historical/source pins, controls and exact patch. All 128 prior general contracts / 1,206
+identities remain unchanged and retain earlier evidence. General selections now contain 136 files /
+1,258 cases: 96 Vitest and 40 Node files; Account fixtures contain thirty files / 164 cases. Eleven
+native owner controls retain earlier evidence. This new phase is uncommitted, not an aggregate.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **289 blocked rows**: 130 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 114 Node and sixteen Playwright files remain. Next review the service
-delivery and inbound-read core, generated, restart and control families. Other Node fixtures, native
+612 obligations / **281 blocked rows**: 122 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 106 Node and sixteen Playwright files remain. Next review Account
+isolation core/control/generated/recovery/restart service fixtures. Other Node fixtures, native
 browsers, Playwright, deliberate nested owners and exact wrapper variants/postconditions follow.
 Parsable registrations alone do not grant execution credit. R-04 needs explicit archive/generated
 style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.

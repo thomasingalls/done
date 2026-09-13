@@ -16,6 +16,7 @@ import { groupState, signalGroup as kill } from './process-group.mjs';
 import { startOwnedChromium } from './browser.mjs';
 import { reconcileCarrier } from './carrier-adapter.mjs';
 import { reconcileVitest, vitestArgv } from './vitest-adapter.mjs';
+import { assertHistoricalInputs, validateHistoricalInputs } from './historical-inputs.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -102,6 +103,11 @@ export function validateStage(stage) {
     !Object.hasOwn(stage.expect, 'dataInputs') || stage.expect.kind === 'vitest',
     'Registration data metadata is only defined for Vitest',
   );
+  if (Object.hasOwn(stage.expect, 'historyInputs')) {
+    assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
+    assert(stage.argv.includes('--test'), 'Historical source metadata requires the Node reporter');
+    validateHistoricalInputs(stage.expect.historyInputs);
+  }
   if (stage.expect.kind === 'vitest') {
     assert.equal(stage.expect.files?.length, 1, 'Only single-file Vitest stages are certified');
     assert.deepEqual(stage.argv, vitestArgv(stage.expect.files[0]), 'Unreviewed Vitest invocation');
@@ -252,6 +258,7 @@ export function createStageRunner({
         );
     }
     const before = await fingerprint();
+    assertHistoricalInputs(root, stage.expect.historyInputs);
     for (const i of stage.expect.dataInputs ?? [])
       assert.equal(
         hash(readFileSync(join(root, i.path))),
@@ -535,6 +542,7 @@ export function createStageRunner({
         identityKey(before),
         'Inputs changed during execution',
       );
+      assertHistoricalInputs(root, stage.expect.historyInputs);
     } catch (e) {
       reason ??= String(e);
     }

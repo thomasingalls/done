@@ -4185,3 +4185,42 @@ reports, controls, exact source patch and preservation pins within a prospective
 Personal/package/vector bytes, frozen L-2, prior evidence, formal debts and signing backups remain
 unchanged. Next review service delivery and inbound-read fixtures; other Node/native/Playwright
 ownership, exact wrappers, R-04 and P-06 still precede the immutable aggregate and human Account prep.
+
+
+## 2026-09-13 — Service delivery and inbound-read fixture adapters (L-1)
+
+The preceding recovery/promotion/activation/handoff phase is signed and verified as `95fa715`.
+Eight more Node files add 52 cases: delivery 32 and inbound read 20. Explicit fixture review covers
+synthetic SQLite/custody, copied-source mutants, binary IPC crash/race workers, a competing SQLite
+subprocess and an in-memory receiver build. Product source/tests, titles, assertions, seeds,
+populations and deadlines are unchanged. Native and optional wrapper evidence remain separate;
+the retired v8 delivery native fixture stays excluded.
+
+Two files use historical Git source that checkout fingerprints alone omit. Their stage contracts
+now pin the exact reference, full revision, source path and SHA-256. Bounded reads and prelaunch,
+pre-reuse and postexecution checks bind those bytes into result identity. Synthetic Git replacement
+controls change history without changing the checkout fingerprint; launch/reuse refuse and an
+otherwise passing case receives a failed, drained receipt. Replanning changed bytes changes its key.
+Binary Uint8Array IPC works; a passing case with a leaked fork still fails and drains.
+
+The disposable delivery selection passes all eight files / 52 cases in 119.579 seconds, including
+snapshot work, with every group drained. It retains 140 passing generated product histories. All
+114 non-native runner/control tests pass with 3,360 generated histories. The first reuse control
+expected an explicit false field where fresh receipts omit it; corrected assertion and both logs
+remain. Generic formatting initially included the intentionally compact manifest; scoped style and
+exact writer-layout checks pass without reformatting it. The silent pnpm typecheck was terminated;
+direct local TypeScript passed. No product test needed a change, retry or deadline increase.
+
+Planning, authority, signature, whitespace, scoped lint/format and expected release refusal pass.
+All 128 previous general contracts and 1,206 identities remain unchanged and retain earlier evidence.
+General selections now contain 136 files / 1,258 cases: 96 Vitest and 40 Node files. There are 612
+manifest obligations / 281 unresolved: 122 test-file (106 Node, sixteen Playwright), 96 command,
+63 campaign. The manifest is 588,519 bytes under the unchanged 700 kB ceiling; all eleven catalogue
+adapters remain resolved. Infrastructure remains twenty stages / 88 pure cases plus two checks.
+
+This phase is uncommitted. The packet at
+`docs/account-conformance-runs/2026-09-13-delivery-fixture-adapters/` retains complete receipts,
+controls, historical inputs, exact source patch and preservation pins within its 150 kB ceiling.
+Personal/package/vector files, L-2, prior evidence, formal debts and signing backups are unchanged.
+Next is the Account isolation service fixture family; remaining Node/native/Playwright ownership,
+exact wrappers, R-04 and P-06 precede the immutable aggregate and human Account preparation.

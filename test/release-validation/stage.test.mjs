@@ -19,6 +19,10 @@ import {
   reconcileCases,
   validateStage,
 } from '../../scripts/release-validation/stage.mjs';
+import {
+  historicalInput,
+  validateHistoricalInputs,
+} from '../../scripts/release-validation/historical-inputs.mjs';
 import { startOwnedChromium } from '../../scripts/release-validation/browser.mjs';
 import { boundedStage } from '../../scripts/release-validation/manifest.mjs';
 import { digest, filePins } from '../../scripts/release-validation/identity.mjs';
@@ -65,6 +69,149 @@ function fixture(t, script) {
 }
 const reportScript = (cases, extra = '') => `import {writeFileSync} from 'node:fs'; ${extra}
 writeFileSync(process.env.RELEASE_CASE_REPORT, JSON.stringify({schema:1, nonce: process.env.RELEASE_RUN_NONCE, cases:${JSON.stringify(cases)}, errors:[]}));`;
+
+function historicalFixture(t, during = false) {
+  const f = fixture(t, '');
+  const git = (...args) =>
+    execFileSync('git', args, {
+      cwd: f.root,
+      encoding: 'utf8',
+      timeout: 5000,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  git('init', '--quiet');
+  f.write('account-service/core.ts', 'export const fixture = 1;');
+  git('add', 'account-service/core.ts');
+  const commit = () =>
+    git(
+      '-c',
+      'user.name=Fixture',
+      '-c',
+      'user.email=fixture@example.invalid',
+      '-c',
+      'core.hooksPath=/dev/null',
+      'commit',
+      '--no-gpg-sign',
+      '--quiet',
+      '-m',
+      'synthetic input',
+    );
+  commit();
+  const reference = git('rev-parse', 'HEAD').slice(0, 12);
+  const pin = historicalInput(f.root, reference, 'account-service/core.ts');
+  const oldBlob = git('rev-parse', reference + ':account-service/core.ts');
+  f.write('account-service/core.ts', 'export const fixture = 2;');
+  git('add', 'account-service/core.ts');
+  commit();
+  const newBlob = git('rev-parse', 'HEAD:account-service/core.ts');
+  f.write(
+    'subject.test.mjs',
+    `import test from 'node:test';import assert from 'node:assert/strict';
+    import {execFileSync} from 'node:child_process';
+    test('historical input',()=>{
+      const text=execFileSync('git',['show','${reference}:account-service/core.ts'],{encoding:'utf8',timeout:3000});
+      assert.match(text,/export const fixture = [12];/);
+      ${during ? `execFileSync('git',['replace','${oldBlob}','${newBlob}'],{timeout:3000});` : ''}
+    });`,
+  );
+  const stage = {
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'subject.test.mjs',
+    ],
+    expect: {
+      kind: 'cases',
+      cases: [{ id: 'subject.test.mjs::historical input', outcome: 'pass' }],
+      historyInputs: [pin],
+    },
+    deadlineMs: 5000,
+  };
+  return {
+    ...f,
+    git,
+    stage,
+    replace: () => git('replace', oldBlob, newBlob),
+    reset: () => git('replace', '-d', oldBlob),
+  };
+}
+
+test('historical Git bytes are checked before launch and reuse and enter the receipt contract', async (t) => {
+  const f = historicalFixture(t),
+    before = f.fingerprint();
+  f.replace();
+  assert.deepEqual(f.fingerprint(), before, 'Checkout identity alone misses historical drift');
+  await assert.rejects(() => f.run(f.stage), /Historical source changed/);
+  assert.deepEqual(readdirSync(f.output), [], 'Refusal precedes launch');
+  f.reset();
+  const first = await f.run(f.stage);
+  assert.equal(first.status, 'passed', first.result.reason);
+  assert.equal((await f.run(f.stage)).reused, true);
+  f.replace();
+  await assert.rejects(() => f.run(f.stage), /Historical source changed/);
+  const i = f.stage.expect.historyInputs[0];
+  const replanned = structuredClone(f.stage);
+  replanned.expect.historyInputs = [historicalInput(f.root, i.reference, i.path)];
+  const second = await f.run(replanned);
+  assert.equal(second.status, 'passed', second.result.reason);
+  assert.notEqual(second.key, first.key);
+  assert.notEqual(second.reused, true);
+  console.log('Historical input reuse control: ' + JSON.stringify({ first, second }));
+});
+
+test('a passing historical fixture still fails and drains when Git bytes change during execution', async (t) => {
+  const f = historicalFixture(t, true),
+    before = f.fingerprint();
+  const receipt = await f.run(f.stage);
+  assert.equal(receipt.status, 'failed');
+  assert.match(receipt.result.reason, /Historical source changed/);
+  assert.equal(receipt.result.groupDrained, true);
+  assert.deepEqual(f.fingerprint(), before);
+  const report = JSON.parse(readFileSync(join(f.output, receipt.key, 'cases.json')));
+  assert.deepEqual(report.cases, f.stage.expect.cases);
+  console.log('Historical input drift control: ' + JSON.stringify(receipt));
+});
+
+test('historical metadata rejects malformed pins, unsupported adapters and 160 generated locator corruptions', () => {
+  const pin = {
+    reference: 'a'.repeat(7),
+    revision: 'a'.repeat(40),
+    path: 'account-service/core.ts',
+    sha256: 'b'.repeat(64),
+  };
+  validateHistoricalInputs([pin]);
+  for (const bad of [
+    null,
+    [],
+    Array(9).fill(pin),
+    [pin, pin],
+    [null],
+    [{ ...pin, revision: 'c'.repeat(40) }],
+    [{ ...pin, sha256: 'b'.repeat(63) }],
+    [{ ...pin, extra: true }],
+  ])
+    assert.throws(() => validateHistoricalInputs(bad));
+  const stage = boundedStage('a', ['node', 'subject.mjs'], {
+    kind: 'exit',
+    exitCodes: [0],
+    historyInputs: [pin],
+  });
+  assert.throws(() => validateStage(stage), /requires Node cases/);
+  stage.expect = { kind: 'cases', cases: [{ id: 'a', outcome: 'pass' }], historyInputs: [pin] };
+  assert.throws(() => validateStage(stage), /requires the Node reporter/);
+  fc.assert(
+    fc.property(fc.string({ maxLength: 100 }), (text) => {
+      assert.throws(() => validateHistoricalInputs([{ ...pin, reference: '-' + text }]));
+      assert.throws(() =>
+        validateHistoricalInputs([{ ...pin, path: 'account-service/../' + text + '.ts' }]),
+      );
+    }),
+    { seed: 130924, numRuns: 160 },
+  );
+});
 
 test('real passing stage reuses only complete identical results and preserves dependency ordering', async (t) => {
   const f = fixture(t, "console.log('one execution');");
@@ -242,16 +389,18 @@ test('owned Node reporter rejects a real skipped case instead of crediting exit 
   assert.equal(passed.status, 'passed', passed.result.reason);
 });
 
-test('IPC crash workers drain on success and a passing case cannot hide a leaked fork', async (t) => {
+test('Binary IPC crash workers drain on success and a passing case cannot hide a leaked fork', async (t) => {
   const f = fixture(t, '');
   f.write(
     'worker.mjs',
-    `process.on('SIGTERM',()=>{}); process.on('message',()=>process.kill(process.pid,'SIGKILL'));process.send('ready');setInterval(()=>{},1000);`,
+    `process.on('SIGTERM',()=>{}); process.on('message',m=>m==='crash'?process.kill(process.pid,'SIGKILL'):process.send(m));process.send('ready');setInterval(()=>{},1000);`,
   );
   const text = `import test from 'node:test';import assert from 'node:assert/strict';import {fork} from 'node:child_process';import {once} from 'node:events';
     test('crash worker',async()=>{
-      const child=fork('./worker.mjs',[],{stdio:['ignore','ignore','ignore','ipc']});
+      const child=fork('./worker.mjs',[],{stdio:['ignore','ignore','ignore','ipc'],serialization:'advanced'});
       await once(child,'message');
+      const echo=once(child,'message');child.send(new Uint8Array([0,128,255]));
+      const [bytes]=await echo;assert(bytes instanceof Uint8Array);assert.deepEqual([...bytes],[0,128,255]);
       if(process.env.LEAK==='yes'){child.disconnect();child.unref();return;}
       const death=once(child,'exit');child.send('crash');
       assert.deepEqual(await death,[null,'SIGKILL']);
