@@ -3,11 +3,12 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { validateReport, mutationStatus } from '../storage-conformance/report.mjs';
 import { catalogueCensus } from './census.mjs';
-import { evidenceEncoding, validateEvidence } from './assertion-evidence.mjs';
+import { evidenceEncoding, validateEvidence, encodeEvidence } from './assertion-evidence.mjs';
 import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  custody: { scope: 'custody-component-browser', candidate: 'custody', patchPrefix: 'src/crdt/' },
   'content-trim': { scope: 'content-trim-browser', candidate: 'trim', patchPrefix: 'src/crdt/' },
   'local-clear': {
     scope: 'local-clear-browser',
@@ -124,7 +125,12 @@ export function carrierStage(family, root, args = [], id = family + ':full') {
   };
 }
 
-export function reconcileCarrier(family, selection, actual, { nonce, sources, root }) {
+export function reconcileCarrier(
+  family,
+  selection,
+  actual,
+  { nonce, sources, root, workerPid, browserExecutable, custodyOutput },
+) {
   requireFamily(family);
   const { scope, candidate, patchPrefix, boundaryByCase } = bindings[family];
   assert.equal(actual.schema, 1);
@@ -157,6 +163,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
       'local-genesis',
       'local-clear',
       'content-trim',
+      'custody',
     ].includes(family)
   )
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
@@ -169,6 +176,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
         'local-genesis',
         'local-clear',
         'content-trim',
+        'custody',
       ].includes(family)
     )
       for (const row of report.cases)
@@ -249,5 +257,80 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
       server.closed === true && /^http:\/\/127\.0\.0\.1:\d+$/.test(server.origin),
       'Unclosed or unowned carrier server',
     );
+  if (family === 'custody') {
+    if (caseIds.includes('C13.profile-copy')) {
+      const assertions = baseline.cases.find((c) => c.id === 'C13.profile-copy').assertions;
+      for (const [id, value] of [
+        ['copied-profile-has-no-content-opener', false],
+        ['copied-profile-has-no-future-opener', false],
+        ['positive-control-opens-content', true],
+        ['positive-control-opens-future', true],
+        ['no-factor-refuses-false', 'confirmation-required'],
+        ['no-factor-refuses-true', 'confirmation-required'],
+        [
+          'external-factor-opens-copied-content-false',
+          'custody content probe: survives cold unlock',
+        ],
+        [
+          'external-factor-opens-copied-content-true',
+          'custody content probe: survives cold unlock',
+        ],
+      ]) {
+        const a = assertions.find((a) => a.id === id);
+        assert(a?.passed === true, 'Missing profile attack/positive control: ' + id);
+        assert.deepEqual(a.expected, encodeEvidence(value));
+        assert.deepEqual(a.actual, encodeEvidence(value));
+      }
+    }
+    const names = caseIds.includes('C13.profile-copy')
+      ? ['source-false', 'copy-false', 'source-true', 'copy-true']
+      : [];
+    assert.deepEqual(
+      actual.profiles?.map((p) => p.name),
+      names,
+      'Missing or extra persistent profile',
+    );
+    assert.equal(
+      new Set(actual.profiles.map((p) => p.pid)).size,
+      names.length,
+      'Repeated persistent browser',
+    );
+    for (const p of actual.profiles) {
+      assert.equal(p.workerPid, workerPid, 'Profile belongs to another worker');
+      assert.equal(p.executable, browserExecutable, 'Unpinned persistent browser');
+      assert.equal(
+        p.profile,
+        join(custodyOutput, 'custody', 'profiles', p.name),
+        'Profile escaped owned fixture',
+      );
+      assert(Number.isInteger(p.pid) && p.pid > 0 && p.pid !== workerPid);
+      assert.equal(p.ownership, 'inherited-worker-group');
+      assert.equal(p.closed, true, 'Profile not cleanly closed');
+      assert.equal(p.exit, 0);
+      assert.equal(p.signal, null);
+      assert(!p.failure, 'Persistent browser failure');
+      for (const flag of [
+        '--use-mock-keychain',
+        '--password-store=basic',
+        '--remote-debugging-port=0',
+        '--user-data-dir=' + p.profile,
+      ])
+        assert(p.argv.includes(flag), 'Profile invocation changed');
+      assert(
+        /^ws:\/\/127\.0\.0\.1:\d+\/devtools\/browser\/[a-f0-9-]+$/i.test(p.endpoint),
+        'Unowned persistent endpoint',
+      );
+      if (p.name.startsWith('copy-')) {
+        assert.equal(p.copy?.source, p.name.replace('copy-', 'source-'));
+        assert.equal(p.copy.sourceClosed, true, 'Live profile copied');
+        assert(/^[a-f0-9]{64}$/.test(p.copy.sourceDigest));
+        assert.equal(
+          p.copy.destinationDigest,
+          p.copy.sourceDigest,
+          'Incomplete whole-profile copy',
+        );
+      } else assert.equal(p.copy, undefined, 'Source was substituted with a copy');
+    }
+  }
   return outcomes;
 }

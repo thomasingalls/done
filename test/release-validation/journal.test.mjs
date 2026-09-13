@@ -79,7 +79,10 @@ test('journal binds all 17 cases and six mutations while selected and baseline-o
     () => validateStage({ ...full, argv: ['node', 'scripts/content/worker.mjs'] }),
     /Unreviewed carrier worker/,
   );
-  assert.throws(() => carrierSelection('custody', process.cwd()), /Unreviewed carrier family/);
+  assert.throws(
+    () => carrierSelection('unreviewed-family', process.cwd()),
+    /Unreviewed carrier family/,
+  );
   for (const args of [
     ['--case', 'C09.unreadable,C09.unreadable'],
     ['--case', 'unknown'],

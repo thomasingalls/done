@@ -67,7 +67,7 @@ test('admission binds 15 cases and six distinct mutations including both refusal
     () => validateStage({ ...full, argv: ['node', 'scripts/journal/worker.mjs'] }),
     /Unreviewed carrier worker/,
   );
-  for (const family of ['custody', 'constructor', '__proto__'])
+  for (const family of ['unreviewed-family', 'constructor', '__proto__'])
     assert.throws(() => carrierSelection(family, process.cwd()), /Unreviewed carrier family/);
   assert.throws(() =>
     admissionSelection(process.cwd(), ['--case', 'C03.ordered-refusal,C03.ordered-refusal']),

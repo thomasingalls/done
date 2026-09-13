@@ -1,236 +1,39 @@
-/** Immutable-source real-browser custody component schedules, not whole-store certification. */
-import { execFileSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+/** Standalone custody retains full/default and explicit case/no-mutant variants, with the
+ * same disposable owner and complete result adapter used by the release manifest. */
+import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createServer } from 'vite';
-import { chromium } from '@playwright/test';
-import {
-  validateReport,
-  mutationStatus,
-  exitCode,
-  render,
-} from '../storage-conformance/report.mjs';
-import { cases, mutants } from './catalog.mjs';
-import { runCase } from './scenarios.mjs';
+import { custodySelection, custodyStage } from '../release-validation/custody-adapter.mjs';
+import { executeStages } from '../release-validation/execute.mjs';
+import { render } from '../storage-conformance/report.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
-const hash = (b) => createHash('sha256').update(b).digest('hex');
-const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim();
-const argv = process.argv.slice(2);
-const option = (name) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : null);
-for (let i = 0; i < argv.length; i++) {
-  if (['--case', '--output'].includes(argv[i])) {
-    if (!argv[++i] || argv[i].startsWith('--')) throw Error('Missing option value');
-  } else if (argv[i] !== '--no-mutants') throw Error('Unknown option: ' + argv[i]);
-}
-const selected = option('--case')
-  ? cases.filter((c) => option('--case').split(',').includes(c.id))
-  : cases;
-if (
-  !selected.length ||
-  (option('--case') && selected.length !== new Set(option('--case').split(',')).size)
-)
-  throw Error('Unknown case');
+if (process.env.CHROMIUM_PATH)
+  throw Error(
+    'The owned custody adapter uses the pinned installed Playwright Chromium; CHROMIUM_PATH overrides are not supported',
+  );
+const args = process.argv.slice(2),
+  { output: requested } = custodySelection(root, args);
 const output = resolve(
   root,
-  option('--output') ?? `test-results/custody/${new Date().toISOString().replaceAll(':', '-')}`,
+  requested ?? `test-results/custody/${new Date().toISOString().replaceAll(':', '-')}`,
 );
-if (existsSync(output)) throw Error('Refusing existing output: ' + output);
-mkdirSync(output, { recursive: true });
-const tree = (dir) =>
-  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
-    e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
-  );
-const sourcePaths = [...tree('src'), ...tree('account-protocol')];
-const sources = Object.fromEntries(
-  sourcePaths.map((name) => [name, readFileSync(join(root, name), 'utf8')]),
-);
-sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
-  join(root, 'wasm/journal-seal/seal.generated.ts'),
-  'utf8',
-);
-const recordedFiles = [
-  'wasm/journal-seal/seal.generated.ts',
-  'wasm/journal-seal/src/lib.rs',
-  'wasm/journal-seal/Cargo.toml',
-  'wasm/journal-seal/Cargo.lock',
-  'scripts/build-wasm-seal.mjs',
-  ...sourcePaths,
-  'docs/storage-contract.md',
-  'pnpm-lock.yaml',
-  'package.json',
-  'test/custodyCrypto.test.ts',
-  'test/custodyRecord.test.ts',
-  'scripts/storage-conformance/report.mjs',
-  ...['scripts/custody', 'test/custody'].flatMap((dir) =>
-    readdirSync(join(root, dir)).map((name) => `${dir}/${name}`),
-  ),
-];
-const files = () =>
-  Object.fromEntries(recordedFiles.map((path) => [path, hash(readFileSync(join(root, path)))]));
-const result = {
-  schema: 1,
-  scope: 'custody-component-browser',
-  started: new Date().toISOString(),
-  requestedCandidates: ['custody'],
-  requestedCases: selected.map((c) => c.id),
-  harness: {
-    commit: git('rev-parse', 'HEAD'),
-    dirty: Boolean(git('status', '--porcelain')),
-    files: files(),
-    node: process.version,
-    vite: JSON.parse(readFileSync(join(root, 'node_modules/vite/package.json'), 'utf8')).version,
-  },
-  browser: {},
-  candidates: [],
-  mutations: [],
-  limits: [
-    'Component scope: genesis custody, generated code unlock and lifecycle. App startup/admission, legacy migration, PRF ceremonies and full storage composition remain separate.',
-    'Identity and other-carrier validation are required caller boundaries, supplied by synthetic fixture checks in this run. The Account service verifier is not exercised.',
-    'Chromium on this macOS host only. Entire closed profiles are copied; test-only content and future ECDH probes are not production content writes or a reader-wrap verifier.',
-    'Profile attacker attempts persisted 32-byte values and CryptoKey handles as root openers for known content and future-receiver probes; this is not an exhaustive attack proof.',
-    'Source and copies use --use-mock-keychain and --password-store=basic. Results do not certify native keychain or other supported-platform behavior.',
-    'Copies only read/decrypt; raw profile cloning is not a supported writable store history. No release debt is paid.',
-  ],
-};
-const executablePath = process.env.CHROMIUM_PATH ?? chromium.executablePath();
-let browser;
-const save = () => {
-  writeFileSync(join(output, 'report.json'), JSON.stringify(result, null, 2) + '\n');
-  writeFileSync(join(output, 'report.md'), render(result));
-};
-async function run(mutation = null) {
-  const label = mutation?.id ?? 'custody',
-    folder = join(output, label);
-  mkdirSync(folder);
-  const tested = { ...sources };
-  if (mutation) {
-    const file = 'src/crdt/' + mutation.file;
-    if (tested[file].split(mutation.from).length !== 2)
-      throw Error('Mutation anchor is not unique: ' + label);
-    tested[file] = tested[file].replace(mutation.from, mutation.to);
-  }
-  for (const [name, source] of Object.entries(tested)) {
-    mkdirSync(dirname(join(folder, name)), { recursive: true });
-    writeFileSync(join(folder, name), source);
-  }
-  const server = await createServer({
-    configFile: false,
-    root,
-    logLevel: 'error',
-    cacheDir: join(folder, 'vite-cache'),
-    resolve: {
-      alias: {
-        '../../wasm/journal-seal/seal.generated': join(
-          folder,
-          'wasm/journal-seal/seal.generated.ts',
-        ),
-        '@custody': join(folder, 'src/crdt/custody.ts'),
-        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
-        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
-        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
-      },
-    },
-    optimizeDeps: { noDiscovery: true },
-    server: { host: '127.0.0.1', port: 5176, strictPort: true, fs: { allow: [root] } },
-  });
-  let origin;
-  const profile = async (name) => {
-    const context = await chromium.launchPersistentContext(join(folder, 'profiles', name), {
-      headless: true,
-      executablePath,
-      args: ['--use-mock-keychain', '--password-store=basic'],
-    });
-    await context.route('**/*', (route) =>
-      new URL(route.request().url()).origin === origin
-        ? route.continue()
-        : route.abort('blockedbyclient'),
-    );
-    return context;
-  };
-  const report = {
-    id: label,
-    source: {
-      files: Object.fromEntries(Object.entries(tested).map(([name, s]) => [name, hash(s)])),
-    },
-    mutation: mutation ? { file: mutation.file, from: mutation.from, to: mutation.to } : null,
-    cases: [],
-  };
+const summary = await executeStages({
+  root,
+  output,
+  stages: [custodyStage(root, args)],
+  selection: 'standalone-custody',
+});
+const stage = summary.stages[0];
+if (stage) {
   try {
-    await server.listen();
-    origin = `http://127.0.0.1:${server.httpServer.address().port}`;
-    const inventory = mutation ? cases.filter((c) => c.id === mutation.case) : selected;
-    for (const definition of inventory) {
-      const row = await runCase(definition, {
-        browser,
-        origin,
-        url: origin + '/test/custody/index.html',
-        profile,
-        copyProfile: async (source, destination) => {
-          cpSync(join(folder, 'profiles', source), join(folder, 'profiles', destination), {
-            recursive: true,
-          });
-          return profile(destination);
-        },
-      });
-      report.cases.push(row);
-      console.log(
-        `${label} ${row.id}: ${row.status}${row.error ? ' — ' + row.error.message.split('\n')[0] : ''}`,
-      );
-    }
-    validateReport(
-      report,
-      inventory.map((c) => c.id),
-    );
-    for (const [name, s] of Object.entries(tested))
-      if (hash(readFileSync(join(folder, name))) !== hash(s)) throw Error('Tested source changed');
-    return report;
-  } finally {
-    await server.close();
+    const report = join(output, 'stages', stage.key, 'cases.json');
+    copyFileSync(report, join(output, 'report.json'));
+    writeFileSync(join(output, 'report.md'), render(JSON.parse(readFileSync(report))));
+  } catch (e) {
+    console.error('No complete custody report: ' + e.message);
+    process.exitCode = 1;
   }
 }
-try {
-  browser = await chromium.launch({ headless: true, executablePath });
-  result.browser = {
-    version: browser.version(),
-    executablePath,
-    platform: process.platform,
-    arch: process.arch,
-    playwright: JSON.parse(
-      readFileSync(join(root, 'node_modules/@playwright/test/package.json'), 'utf8'),
-    ).version,
-  };
-  result.candidates.push(await run());
-  save();
-  if (!argv.includes('--no-mutants'))
-    for (const spec of mutants.filter((m) => selected.some((c) => c.id === m.case))) {
-      const runResult = await run(spec),
-        baseline = result.candidates[0].cases.find((c) => c.id === spec.case);
-      result.mutations.push({
-        id: spec.id,
-        assertion: spec.assertion,
-        status: mutationStatus(baseline, runResult.cases[0], spec.assertion),
-        result: runResult,
-      });
-      save();
-    }
-  if (JSON.stringify(files()) !== JSON.stringify(result.harness.files))
-    throw Error('Source/harness inputs changed during execution');
-  result.exitCode = exitCode(result.candidates, result.mutations);
-  result.finished = new Date().toISOString();
-  save();
-  console.log(
-    `Report: ${join(output, 'report.md')}\nExit ${result.exitCode} (bounded custody component)`,
-  );
-  process.exitCode = result.exitCode;
-} catch (error) {
-  result.fatal = { message: error.message, stack: error.stack };
-  result.exitCode = 2;
-  save();
-  console.error(error);
-  process.exitCode = 2;
-} finally {
-  await browser?.close();
-}
+console.log('Custody report: ' + join(output, 'report.md'));
+if (summary.status !== 'passed') process.exitCode = 1;

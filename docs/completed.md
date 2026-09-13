@@ -3825,3 +3825,44 @@ outside this component evidence. Enclosing wrapper postconditions remain separat
 
 The manifest has 604 obligations, 421 unresolved and 268 required test files. Custody and write-session
 remain (26 cases/ten mutations). Appended before replacing L-1; ready for an unsigned phase commit.
+
+
+## 2026-09-13 — Custody catalogue adapter, phase 2k (`L-1`)
+
+Committed compaction unsigned as `d65bda0`.
+
+The custody catalogue passes **13 baseline cases, 73 assertions and five mutations** through the
+shared owner. Candidate `custody`, scope `custody-component-browser` and short `src/crdt/` patch paths
+are explicit. Original confirmation, creator race, native abort, interrupted creation, metadata,
+partial/missing/legacy custody, authority, ceiling, lifetime and cancellation assertions remain unchanged.
+
+The copied-profile case requires four distinct persistent browsers: ordinary source/copy and planted
+opener source/copy. Each additional browser inherits the worker process group; the existing detached-
+child guard stays enabled. Context close now sends `Browser.close`, waits for clean process exit and
+checks singleton-lock removal before a source can be copied. Whole-directory digests must match before
+launching the copy. Only the stale DevTools endpoint file is removed after that comparison. The parent
+checks names, worker identity, pinned executable, owned paths, closure, copy bindings and all eight
+attack/factor/positive-control assertions. Copies retain the original read/decrypt-only scenario.
+
+Four native ownership controls verify cold-copy persistence, live-copy refusal, timeout, cancellation
+and worker death, with absent profile processes and refused CDP listeners after drain. Their first run
+found browser discovery under the isolated HOME; the parent now supplies its already pinned executable
+explicitly. Initial failed controls and passing rerun are retained. The seven existing Chromium controls
+also pass. No guard was disabled and no deadline or product oracle was weakened.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-custody-adapter/README.md) retains full and
+selected runs, standalone profile-only baseline, compaction completion/drain regression and final
+gates. The full stage took **43.4 seconds** inside 120 seconds. Five new adapter tests include 160
+generated selections/evidence faults (seed 130914), bringing non-native controls to 77 and generated
+histories to 2,240. Fifteen infrastructure stages pass 62 exact cases and two static checks. Eleven
+native controls run separately; the native test files remain unresolved as nested aggregate stages.
+
+Default catalogue, exact package leaf and campaign alias resolve. Standalone options and reports remain;
+custom browsers/existing outputs refuse. These are synthetic profiles on one macOS/Chromium host with
+mock keychain/basic password store. No personal profile, writable cloned store history, native-keychain
+qualification, complete attacker proof, PRF ceremony or Account authority is claimed. Production code,
+fixture probes and scenario assertions are unchanged.
+
+The manifest has 606 obligations, 419 unresolved and 270 required test files. Write-session is the
+last catalogue adapter (13 cases/five mutations). Appended before replacing L-1; ready for an
+unsigned commit. Prior hashes, historical reviews/debts, personal files, vectors and L-2 are preserved.

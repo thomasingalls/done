@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation Custody catalogue adapter (`L-1`)
+## Active slice: Release-validation Write-session catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,23 +61,26 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Local clear is unsigned `f1926f9`. The
-[content-trim adapter](./release-validation-execution.md#content-trim-catalogue-adapter--phase-2j)
-passes 21 baselines/128 assertions and eight mutations. Four new tests bring runner controls to
-72 non-native tests and 2,080 generated histories. Fourteen infrastructure stages pass 57 cases
-and two static checks. Production code, fixture hooks and scenario assertions are unchanged.
-[Bounded evidence](./account-conformance-runs/2026-09-13-content-trim-adapter/README.md) is retained.
+**Just completed.** Compaction is unsigned `d65bda0`. The
+[custody adapter](./release-validation-execution.md#custody-catalogue-adapter--phase-2k) passes
+13 baselines/73 assertions and five mutations, including the complete closed synthetic-profile
+attack and positive controls. Four new native process controls and seven shared controls pass.
+Five adapter tests bring non-native controls to 77 and generated histories to 2,240. Fifteen
+infrastructure stages pass 62 cases and two static checks. The parent now explicitly supplies its
+pinned browser executable after isolated-HOME discovery failed in the first controls.
+[Bounded evidence](./account-conformance-runs/2026-09-13-custody-adapter/README.md) retains both attempts.
 
-**The full phase-2 contract is not closed.** The manifest covers 268 required test files, all 163
-catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. Its 421 unresolved rows
-still refuse whole-release execution. Custody and write-session remain (26 cases/ten mutations).
-General test adapters, wrapper selections/postconditions and measured deadlines follow. P-06,
-the complete vector chain and immutable aggregate have not run.
+**The full phase-2 contract is not closed.** The manifest covers 270 required test files, all 163
+catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. Its 419 unresolved rows
+still refuse whole-release execution. Write-session is the last catalogue adapter (13 cases/five
+mutations). General test adapters, wrapper selections/postconditions and measured deadlines follow.
+Native owner-control tests need their own nested-stage disposition. P-06, the complete vector chain
+and immutable aggregate have not run.
 
-**Current authorization.** Complete remaining catalogue adapters and commit each unsigned, with
-end-of-phase chat summaries. Custody is next: its 13 cases/five mutations include entire closed
-synthetic profile copies. Preserve that attack/positive-control oracle while reviewing ownership
-of the additional persistent browsers. No personal profile is involved. Write-session follows.
+**Current authorization.** Finish write-session and commit unsigned with an end-of-phase summary.
+Its patches implicitly target one source file; bind that target explicitly and preserve real freeze,
+renderer death, worker termination, cleanup failure and navigation scenarios. Then report the next
+bounded general-test adapter phase; private human Account onboarding comes after validation/prep.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/

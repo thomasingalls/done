@@ -1,4 +1,4 @@
-# Release-validation execution — foundation and nine catalogue adapters
+# Release-validation execution — foundation and ten catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
 content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
@@ -8,14 +8,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 604 obligations, including all 268 current
+The [manifest](./release-validation-manifest.json) now contains 606 obligations, including all 270 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**421 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**419 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -38,6 +38,7 @@ node scripts/release-validation/execute.mjs --selection owned-startup
 node scripts/release-validation/execute.mjs --selection local-genesis
 node scripts/release-validation/execute.mjs --selection local-clear
 node scripts/release-validation/execute.mjs --selection content-trim
+node scripts/release-validation/execute.mjs --selection custody
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -46,9 +47,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs fourteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter and content-trim-adapter
-test files (57 exact cases),
+`infrastructure` runs fifteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter and custody-adapter
+test files (62 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -444,10 +445,43 @@ Default catalogue, exact package leaf and campaign alias resolve. Generation ret
 admission, day archival, default maintenance scheduling, power loss and platform capacity remain
 outside this component evidence. Enclosing wrapper postconditions remain separate obligations.
 
+## Custody catalogue adapter — phase 2k
+
+The custody catalogue passes **13 baseline cases, 73 assertions and five mutations** through the
+shared owner. Candidate `custody`, scope `custody-component-browser` and short `src/crdt/` patch paths
+are explicit. Original confirmation, creator race, native abort, interrupted creation, metadata,
+partial/missing/legacy custody, authority, ceiling, lifetime and cancellation assertions remain unchanged.
+
+The copied-profile case requires four distinct persistent browsers: ordinary source/copy and planted
+opener source/copy. Each additional browser inherits the worker process group; the existing detached-
+child guard stays enabled. Context close now sends `Browser.close`, waits for clean process exit and
+checks singleton-lock removal before a source can be copied. Whole-directory digests must match before
+launching the copy. Only the stale DevTools endpoint file is removed after that comparison. The parent
+checks names, worker identity, pinned executable, owned paths, closure, copy bindings and all eight
+attack/factor/positive-control assertions. Copies retain the original read/decrypt-only scenario.
+
+Four native ownership controls verify cold-copy persistence, live-copy refusal, timeout, cancellation
+and worker death, with absent profile processes and refused CDP listeners after drain. Their first run
+found browser discovery under the isolated HOME; the parent now supplies its already pinned executable
+explicitly. Initial failed controls and passing rerun are retained. The seven existing Chromium controls
+also pass. No guard was disabled and no deadline or product oracle was weakened.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-custody-adapter/README.md) retains full and
+selected runs, standalone profile-only baseline, compaction completion/drain regression and final
+gates. The full stage took **43.4 seconds** inside 120 seconds. Five new adapter tests include 160
+generated selections/evidence faults (seed 130914), bringing non-native controls to 77 and generated
+histories to 2,240. Fifteen infrastructure stages pass 62 exact cases and two static checks. Eleven
+native controls run separately; the native test files remain unresolved as nested aggregate stages.
+
+Default catalogue, exact package leaf and campaign alias resolve. Standalone options and reports remain;
+custom browsers/existing outputs refuse. These are synthetic profiles on one macOS/Chromium host with
+mock keychain/basic password store. No personal profile, writable cloned store history, native-keychain
+qualification, complete attacker proof, PRF ceremony or Account authority is claimed. Production code,
+fixture probes and scenario assertions are unchanged.
+
 ## Next bounded integration
 
-Complete custody (13 cases/five mutations) and write-session (13/five), committing each unsigned.
-Custody requires explicit ownership of persistent synthetic-profile browsers. Then review general
-Node, Vitest, Playwright and wrapper adapters with their exact selections and postconditions. Only
-after every required obligation resolves should P-06 and the complete immutable selected run proceed.
-No personal app/server/profile or Account cutover is part of these catalogue adapters.
+Complete write-session (13 cases/five mutations) and commit unsigned. Then review general Node,
+Vitest, Playwright and wrapper adapters with exact selections and postconditions, including deliberate
+nested ownership controls. Only after every required obligation resolves should P-06 and the complete
+immutable selected run proceed. No personal app/server/profile or Account cutover is part of these adapters.

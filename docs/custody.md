@@ -132,8 +132,9 @@ remain subsequent work. No ordinary disable-lock or remember-unlocked persistenc
 ## Running and interpreting evidence
 
 Run `pnpm storage:custody` or `node scripts/custody/run.mjs`; it is included in `pnpm check`. Chromium and
-project dependencies must already be installed. The runner uses loopback port 5176, rejects an existing
-listener and external browser requests, freezes source copies, and writes a fresh ignored
+project dependencies must already be installed. The shared owner pins installed Chromium, binds
+OS-assigned loopback ports and freezes source copies. Fixture routing refuses external page requests.
+Additional synthetic-profile browsers inherit the worker group. The runner writes a fresh ignored
 `test-results/custody/` directory. `--output`, `--case` and `--no-mutants` mirror the lifecycle runner.
 
 The suite executes 13 browser cases and five isolated mutations. It includes real renderer death,

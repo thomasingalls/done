@@ -1,0 +1,310 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-custody",
+    "source": "test-results/custody-adapter-full",
+    "status": "passed",
+    "input": "bdf36068646080616e941eb1e1f11c7781cc8222560e6c901e0fbc14d1f709da",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      43352
+    ],
+    "totalMs": 59045,
+    "native": [
+      {
+        "scope": "custody-component-browser",
+        "baselineAssertions": 73,
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "skip-nested-crypto-guard",
+            "assertion": "cancel-prevents-private-export",
+            "status": "detected"
+          },
+          {
+            "id": "accept-unconfirmed-code",
+            "assertion": "wrong-confirmation-refused",
+            "status": "detected"
+          },
+          {
+            "id": "skip-reservation-commit",
+            "assertion": "durable-reservation-before-encrypt",
+            "status": "detected"
+          },
+          {
+            "id": "trust-unverified-metadata",
+            "assertion": "modified-count-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "request-success-as-commit",
+            "assertion": "no-encryption-before-reservation-completes",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "custody",
+            "origin": "http://127.0.0.1:49367",
+            "closed": true
+          },
+          {
+            "variant": "skip-nested-crypto-guard",
+            "origin": "http://127.0.0.1:49540",
+            "closed": true
+          },
+          {
+            "variant": "accept-unconfirmed-code",
+            "origin": "http://127.0.0.1:49550",
+            "closed": true
+          },
+          {
+            "variant": "skip-reservation-commit",
+            "origin": "http://127.0.0.1:49560",
+            "closed": true
+          },
+          {
+            "variant": "trust-unverified-metadata",
+            "origin": "http://127.0.0.1:49570",
+            "closed": true
+          },
+          {
+            "variant": "request-success-as-commit",
+            "origin": "http://127.0.0.1:49580",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-controls",
+    "selection": "standalone-custody",
+    "source": "test-results/custody-adapter-selected-controls",
+    "status": "passed",
+    "input": "bdf36068646080616e941eb1e1f11c7781cc8222560e6c901e0fbc14d1f709da",
+    "stageCases": [
+      10
+    ],
+    "stageElapsedMs": [
+      29391
+    ],
+    "totalMs": 46703,
+    "native": [
+      {
+        "scope": "custody-component-browser",
+        "baselineAssertions": 29,
+        "baselines": 5,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "skip-nested-crypto-guard",
+            "assertion": "cancel-prevents-private-export",
+            "status": "detected"
+          },
+          {
+            "id": "accept-unconfirmed-code",
+            "assertion": "wrong-confirmation-refused",
+            "status": "detected"
+          },
+          {
+            "id": "skip-reservation-commit",
+            "assertion": "durable-reservation-before-encrypt",
+            "status": "detected"
+          },
+          {
+            "id": "trust-unverified-metadata",
+            "assertion": "modified-count-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "request-success-as-commit",
+            "assertion": "no-encryption-before-reservation-completes",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "custody",
+            "origin": "http://127.0.0.1:49640",
+            "closed": true
+          },
+          {
+            "variant": "skip-nested-crypto-guard",
+            "origin": "http://127.0.0.1:49781",
+            "closed": true
+          },
+          {
+            "variant": "accept-unconfirmed-code",
+            "origin": "http://127.0.0.1:49822",
+            "closed": true
+          },
+          {
+            "variant": "skip-reservation-commit",
+            "origin": "http://127.0.0.1:49862",
+            "closed": true
+          },
+          {
+            "variant": "trust-unverified-metadata",
+            "origin": "http://127.0.0.1:49895",
+            "closed": true
+          },
+          {
+            "variant": "request-success-as-commit",
+            "origin": "http://127.0.0.1:49912",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-custody",
+    "source": "test-results/custody-adapter-baseline-profile",
+    "status": "passed",
+    "input": "bdf36068646080616e941eb1e1f11c7781cc8222560e6c901e0fbc14d1f709da",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      18034
+    ],
+    "totalMs": 40172,
+    "native": [
+      {
+        "scope": "custody-component-browser",
+        "baselineAssertions": 8,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "custody",
+            "origin": "http://127.0.0.1:49731",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "trim-regression",
+    "selection": "standalone-content-trim",
+    "source": "test-results/custody-adapter-trim-regression",
+    "status": "passed",
+    "input": "bdf36068646080616e941eb1e1f11c7781cc8222560e6c901e0fbc14d1f709da",
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      11816
+    ],
+    "totalMs": 34445,
+    "native": [
+      {
+        "scope": "content-trim-browser",
+        "baselineAssertions": 14,
+        "baselines": 2,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "early-delete-receipt",
+            "assertion": "delete-abort-has-no-success-receipt",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "trim",
+            "origin": "http://127.0.0.1:49805",
+            "closed": true
+          },
+          {
+            "variant": "early-delete-receipt",
+            "origin": "http://127.0.0.1:49880",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/custody-adapter-trim-regression/stages/a77339ce3f245c1664b2d7d76fcc525354056027b93613024b015bd1df4c95ea/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T13-46-46.401Z",
+    "status": "passed",
+    "input": "2cba41f6d42d1cf75dc2100366e266f57e76b6f07490f01d6858529c73170ff8",
+    "stageCases": [
+      4,
+      4,
+      3,
+      5,
+      5,
+      4,
+      10,
+      4,
+      4,
+      5,
+      6,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2102,
+      1821,
+      1776,
+      1833,
+      1800,
+      1825,
+      1626,
+      1779,
+      1816,
+      1819,
+      1760,
+      1811,
+      1823,
+      3110,
+      1850
+    ],
+    "totalMs": 59289,
+    "native": []
+  }
+]

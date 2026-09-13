@@ -64,6 +64,7 @@ export function validateStage(stage) {
       'workspace-admission',
       'owned-startup',
       'local-genesis',
+      'custody',
       'content-trim',
       'local-clear',
     ].includes(stage.expect?.kind),
@@ -103,6 +104,7 @@ export function validateStage(stage) {
       'workspace-admission',
       'owned-startup',
       'local-genesis',
+      'custody',
       'content-trim',
       'local-clear',
     ].includes(stage.expect.kind)
@@ -268,6 +270,7 @@ export function createStageRunner({
       RELEASE_GUARD_VIOLATIONS: violations,
       RELEASE_CASE_REPORT: report,
       RELEASE_RUN_NONCE: nonce,
+      ...(browserRuntime ? { RELEASE_BROWSER_EXECUTABLE: browserRuntime.executable } : {}),
       RELEASE_CONTENT_OUTPUT: join(workerOutput, 'content'),
       RELEASE_JOURNAL_OUTPUT: join(workerOutput, 'journal'),
       RELEASE_ADMISSION_OUTPUT: join(workerOutput, 'admission'),
@@ -275,6 +278,7 @@ export function createStageRunner({
       RELEASE_WORKSPACE_ADMISSION_OUTPUT: join(workerOutput, 'workspace-admission'),
       RELEASE_OWNED_STARTUP_OUTPUT: join(workerOutput, 'owned-startup'),
       RELEASE_LOCAL_GENESIS_OUTPUT: join(workerOutput, 'local-genesis'),
+      RELEASE_CUSTODY_OUTPUT: join(workerOutput, 'custody'),
       RELEASE_CONTENT_TRIM_OUTPUT: join(workerOutput, 'content-trim'),
       RELEASE_LOCAL_CLEAR_OUTPUT: join(workerOutput, 'local-clear'),
     };
@@ -455,6 +459,7 @@ export function createStageRunner({
             'workspace-admission',
             'owned-startup',
             'local-genesis',
+            'custody',
             'content-trim',
             'local-clear',
           ].includes(stage.expect.kind)
@@ -463,6 +468,9 @@ export function createStageRunner({
             nonce,
             sources: before.sources,
             root,
+            workerPid: child.pid,
+            browserExecutable: browserRuntime?.executable,
+            custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
           actual = { cases };
         } else {

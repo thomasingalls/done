@@ -19,7 +19,9 @@ passes ten cases/four mutations with exact history evidence. The [owned-startup 
 passes 15 cases/three mutations, preserving read-only classification and non-exposure evidence. The [Local-genesis adapter](../../release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
 passes 17 cases/four mutations with exact generated boundaries and byte-array report evidence. The [Local-clear adapter](../../release-validation-execution.md#local-clear-catalogue-adapter--phase-2i)
 passes 17 cases/five mutations with seven explicit deletion boundaries. The [content-trim adapter](../../release-validation-execution.md#content-trim-catalogue-adapter--phase-2j)
-passes 21 cases/eight mutations. Custody is next; the manifest retains 421 unresolved obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
+passes 21 cases/eight mutations. The [custody adapter](../../release-validation-execution.md#custody-catalogue-adapter--phase-2k)
+passes 13 cases/five mutations, including owned whole-profile controls. Write-session is next; the
+manifest retains 419 unresolved obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
 and [validation prerequisites Q-01/Q-04](./validation-controls.md) pass within their bounded campaigns.
 F-07's retained-history/workload limits and complete aggregate qualification remain open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.

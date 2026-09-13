@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "dffd68d97102ba2a37b9092197af0f9c7750846093af180b9566a798208e4ffa",
+  "inventoryDigest": "fde85fc0e0e365345fb0e5c3eb12f096127c927137d773764d28a6604832e2aa",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2604,6 +2604,68 @@
       }
     },
     {
+      "id": "test:test/release-validation/custody-native.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/custody-native.test.mjs",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/custody-native.test.mjs"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/release-validation/custody.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/custody.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/custody.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/custody.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/custody.test.mjs::Custody independently resolves the full catalogue, selected mutation subset and baseline-only variants",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/custody.test.mjs::Custody requires every exact source mutation and its own discriminating assertion",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/custody.test.mjs::Custody binds report identity, all runtime sources and unavailable receipt values",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/custody.test.mjs::160 generated Custody selections reject omitted cases and substituted mutation evidence",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/custody.test.mjs::custody refuses missing, live, substituted or incomplete copied-profile evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/editor-admission.test.mjs",
       "kind": "test",
       "path": "test/release-validation/editor-admission.test.mjs",
@@ -3983,7 +4045,101 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/custody/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/custody/worker.mjs",
+          "--case",
+          "C12.genesis,C10.concurrent-creation,C12.reservation-abort,C12.interrupted-creation,C12.completion-abort,C12.metadata-authentication,C10.partial-and-legacy,C12.scope-and-authority,C12.seal-ceiling,C12.session-lifetime,C12.cancel-crypto,C12.cancel-initialize,C13.profile-copy"
+        ],
+        "env": {},
+        "variant": "custody-c52aac9522cadb6166940027264f58536731c135df100bff08b79298e3e392fe",
+        "expect": {
+          "kind": "custody",
+          "selection": {
+            "cases": [
+              { "id": "C12.genesis", "outcome": "pass" },
+              { "id": "C10.concurrent-creation", "outcome": "pass" },
+              { "id": "C12.reservation-abort", "outcome": "pass" },
+              { "id": "C12.interrupted-creation", "outcome": "pass" },
+              { "id": "C12.completion-abort", "outcome": "pass" },
+              { "id": "C12.metadata-authentication", "outcome": "pass" },
+              { "id": "C10.partial-and-legacy", "outcome": "pass" },
+              { "id": "C12.scope-and-authority", "outcome": "pass" },
+              { "id": "C12.seal-ceiling", "outcome": "pass" },
+              { "id": "C12.session-lifetime", "outcome": "pass" },
+              { "id": "C12.cancel-crypto", "outcome": "pass" },
+              { "id": "C12.cancel-initialize", "outcome": "pass" },
+              { "id": "C13.profile-copy", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "skip-nested-crypto-guard",
+                "case": "C12.cancel-crypto",
+                "assertion": "cancel-prevents-private-export",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custodyCrypto.ts",
+                  "from": "        guard();",
+                  "to": "        void guard;"
+                }
+              },
+              {
+                "id": "accept-unconfirmed-code",
+                "case": "C12.genesis",
+                "assertion": "wrong-confirmation-refused",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custody.ts",
+                  "from": "if (!typed.every((b, i) => b === expected![i])) {",
+                  "to": "if (false) {"
+                }
+              },
+              {
+                "id": "skip-reservation-commit",
+                "case": "C12.interrupted-creation",
+                "assertion": "durable-reservation-before-encrypt",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custody.ts",
+                  "from": "await task.wait(() => transact(db, task, scope, initial, reserved));",
+                  "to": "// Removed durable reservation boundary."
+                }
+              },
+              {
+                "id": "trust-unverified-metadata",
+                "case": "C12.metadata-authentication",
+                "assertion": "modified-count-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custody.ts",
+                  "from": "          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),",
+                  "to": "          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),"
+                }
+              },
+              {
+                "id": "request-success-as-commit",
+                "case": "C12.reservation-abort",
+                "assertion": "no-encryption-before-reservation-completes",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custodyRecord.ts",
+                  "from": "store.put(next, recordKey(scope));",
+                  "to": "const write = store.put(next, recordKey(scope)); write.onsuccess = () => resolve(next);"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/editor-admission/catalog.mjs",
@@ -5837,7 +5993,7 @@
       "argv": ["node", "scripts/custody/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:43"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/custody/catalog.mjs"]
     },
     {
       "id": "command:check:45",
@@ -8035,11 +8191,8 @@
       "id": "campaign:scripts/custody/run.mjs",
       "kind": "campaign",
       "path": "scripts/custody/run.mjs",
-      "callSites": [
-        { "line": 205, "form": "run", "arguments": [] },
-        { "line": 209, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/custody/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/editor-admission/run.mjs",
@@ -10218,6 +10371,7 @@
     "test:test/projectionEquality.test.ts",
     "test:test/relayAuth.test.ts",
     "test:test/release-validation/content-native.test.mjs",
+    "test:test/release-validation/custody-native.test.mjs",
     "test:test/release-validation/stage.test.mjs",
     "test:test/reorder.test.ts",
     "test:test/roundTrip.test.ts",
@@ -10255,7 +10409,6 @@
     "test:test/yjsDelivery.test.ts",
     "test:vite/appUpgradeProperties.test.ts",
     "test:vite/precacheBuild.test.ts",
-    "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
@@ -10276,7 +10429,6 @@
     "command:check:41",
     "command:check:42",
     "command:check:43",
-    "command:check:44",
     "command:check:47",
     "command:check:51",
     "command:check:52",
@@ -10401,7 +10553,6 @@
     "campaign:scripts/account-sync/run.mjs",
     "campaign:scripts/account-transport-contract/run.mjs",
     "campaign:scripts/app-upgrades/run.mjs",
-    "campaign:scripts/custody/run.mjs",
     "campaign:scripts/journal-contention/run.mjs",
     "campaign:scripts/legacy-cleanup/campaign.mjs",
     "campaign:scripts/legacy-cleanup/run.mjs",
@@ -10426,6 +10577,7 @@
       "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content-trim.test.mjs",
       "test:test/release-validation/content.test.mjs",
+      "test:test/release-validation/custody.test.mjs",
       "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
@@ -10479,6 +10631,7 @@
     "local-genesis": ["catalogue:scripts/local-genesis/catalog.mjs"],
     "local-clear": ["catalogue:scripts/local-clear/catalog.mjs"],
     "content-trim": ["catalogue:scripts/content-trim/catalog.mjs"],
+    "custody": ["catalogue:scripts/custody/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10702,6 +10855,8 @@
       "test:test/release-validation/content-native.test.mjs",
       "test:test/release-validation/content-trim.test.mjs",
       "test:test/release-validation/content.test.mjs",
+      "test:test/release-validation/custody-native.test.mjs",
+      "test:test/release-validation/custody.test.mjs",
       "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
