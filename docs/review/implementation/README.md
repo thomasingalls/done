@@ -14,7 +14,9 @@ are complete, as is the [journal adapter](../../release-validation-execution.md#
 The [admission adapter](../../release-validation-execution.md#admission-catalogue-adapter--phase-2d)
 also passes its 15 baselines and six mutations. The [editor-admission adapter](../../release-validation-execution.md#editor-admission-catalogue-adapter--phase-2e)
 passes 12 cases/three mutations and repairs shared runner defects found by its native campaign.
-Workspace-admission is next; the full manifest remains blocked on 436 adapter obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
+The [workspace-admission adapter](../../release-validation-execution.md#workspace-admission-catalogue-adapter--phase-2f)
+passes ten cases/four mutations with exact history evidence. Owned-startup is next; the full manifest
+remains blocked on 433 adapter obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
 and [validation prerequisites Q-01/Q-04](./validation-controls.md) pass within their bounded campaigns.
 F-07's retained-history/workload limits and complete aggregate qualification remain open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.

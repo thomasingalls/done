@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation workspace-admission catalogue adapter (`L-1`)
+## Active slice: Release-validation owned-startup catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,29 +61,29 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Admission is now unsigned `4fc3af0`, following journal `1a86453`, content
-`b9f0984`, foundation `f14c68f` and inventory `f13bdd1`. The [editor-admission catalogue adapter](./release-validation-execution.md#editor-admission-catalogue-adapter--phase-2e)
-passes 12 baseline cases/61 assertions and three discriminating mutations. It retains the real
-CodeMirror scenarios and separately verifies both pressure-case mutations. Native validation exposed
-and repaired duplicate dependency resolution, lossy undefined assertion serialization, incomplete
-failure receipts and premature refusal of browser endpoint publication. The [evidence packet](./account-conformance-runs/2026-09-13-editor-admission-adapter/README.md)
-retains the failures and passing controls. All seven native ownership controls, selected prior-family
-regressions and 51 non-native tests pass, including 1,120 generated histories. No production code or
-scenario assertion changed. The editor-admission phase remains uncommitted.
+**Just completed.** Editor-admission is now unsigned `3f1afc5`, following admission `4fc3af0`, journal
+`1a86453`, content `b9f0984`, foundation `f14c68f` and inventory `f13bdd1`. The [workspace-admission
+catalogue adapter](./release-validation-execution.md#workspace-admission-catalogue-adapter--phase-2f)
+passes ten baseline cases/62 assertions and four discriminating mutations. It preserves shared human
+history, private pending commands, cross-tab dependencies and nested Yjs history assertions, including
+nested undefined values. The [evidence packet](./account-conformance-runs/2026-09-13-workspace-admission-adapter/README.md)
+retains full and selected native runs, the editor regression, seven native ownership controls and
+55 non-native tests with 1,280 generated validation histories. Ten infrastructure stages pass 40 cases
+and two static checks. No production code or scenario assertion changed. Workspace-admission remains
+uncommitted.
 
-**The full phase-2 contract is not closed.** The manifest covers 263 required test files, all 163
-catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 436 unresolved rows
-and refuses whole-release execution. Seven catalogue adapters (106 cases/34 mutations), general test
+**The full phase-2 contract is not closed.** The manifest covers 264 required test files, all 163
+catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 433 unresolved rows
+and refuses whole-release execution. Six catalogue adapters (96 cases/30 mutations), general test
 adapters, wrappers, selected postconditions and measured deadlines remain. A nested catalogue result
 does not discharge its enclosing wrapper. P-06 remains unswept; the complete vector chain and immutable
 aggregate have not run. The earlier silent package-manager attempt remains undiagnosed; exact Node
 commands work.
 
-**Next single phase.** Adapt workspace-admission's ten cases and four mutations, independently
-reviewing shared human history, structural commands, cross-tab dependencies, full source paths and
-assertion values before extending the owned boundary. Then resolve remaining catalogue, Node, Vitest,
-Playwright and wrapper selections/postconditions, with vector and traceability prerequisites as
-ordered receipts.
+**Next single phase.** Adapt owned-startup's 15 cases and three mutations, independently reviewing
+classification, existing-store opening, refusal/repair and startup ownership assertions before extending
+the owned boundary. Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper selections/
+postconditions, with vector and traceability prerequisites as ordered receipts.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/

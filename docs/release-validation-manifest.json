@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "490cb8a0b02aa976f955c40312fbaa8d4da80033bcd27c4380dd8600b6cf509c",
+  "inventoryDigest": "665d3084e7a8d6dfcc2eac6c2079e3ccc733a2382790e2135007341ed963c88e",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2825,6 +2825,50 @@
       "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
     },
     {
+      "id": "test:test/release-validation/workspace-admission.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/workspace-admission.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/workspace-admission.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/workspace-admission.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/workspace-admission.test.mjs::workspace binds ten cases and four full-path mutations with distinct history and initialization selections",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/workspace-admission.test.mjs::workspace history mutations require their own source bytes and discriminating assertions",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/workspace-admission.test.mjs::workspace report identity and nested unavailable values remain distinct from business refusals",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/workspace-admission.test.mjs::160 generated workspace selections reject omitted work and substituted history evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/reorder.test.ts",
       "kind": "test",
       "path": "test/reorder.test.ts",
@@ -4102,7 +4146,87 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/workspace-admission/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/workspace-admission/worker.mjs",
+          "--case",
+          "W10.repair,W01.surfaces,W02.pressure,W03.undo-death,W04.cross-tab,W05.system,W06.remote,W07.history,W08.rules,W09.initialize"
+        ],
+        "env": {},
+        "variant": "workspace-admission-7a55bf6e4082a937232f84718c3658115ac51e90d780ef9f4f8139610e8d952a",
+        "expect": {
+          "kind": "workspace-admission",
+          "selection": {
+            "cases": [
+              { "id": "W10.repair", "outcome": "pass" },
+              { "id": "W01.surfaces", "outcome": "pass" },
+              { "id": "W02.pressure", "outcome": "pass" },
+              { "id": "W03.undo-death", "outcome": "pass" },
+              { "id": "W04.cross-tab", "outcome": "pass" },
+              { "id": "W05.system", "outcome": "pass" },
+              { "id": "W06.remote", "outcome": "pass" },
+              { "id": "W07.history", "outcome": "pass" },
+              { "id": "W08.rules", "outcome": "pass" },
+              { "id": "W09.initialize", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "pending-history-visible",
+                "case": "W02.pressure",
+                "assertion": "pending-history-private",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/admittedWorkspace.ts",
+                  "from": "undo: history.undoStack.length,",
+                  "to": "undo: (pending ?? accepted).history.undoStack.length,"
+                }
+              },
+              {
+                "id": "system-bulk-in-human-history",
+                "case": "W05.system",
+                "assertion": "bulk-outside-human-history",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/workspaceCommands.ts",
+                  "from": "const system = { ...workspace, origin: context.system };",
+                  "to": "const system = { ...workspace, origin: context.human };"
+                }
+              },
+              {
+                "id": "received-work-in-human-history",
+                "case": "W06.remote",
+                "assertion": "undo-preserves-remote",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/admittedWorkspace.ts",
+                  "from": "else applyUpdate(accepted!.history.doc, event.update, 'received');",
+                  "to": "else applyUpdate(accepted!.history.doc, event.update, human);"
+                }
+              },
+              {
+                "id": "lost-redone-links",
+                "case": "W07.history",
+                "assertion": "undo-edit-in-restored-card",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/yjs.ts",
+                  "from": "copied.redone = Y.createID(item.redone.client, item.redone.clock);",
+                  "to": "copied.redone = null;"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/write-session/catalog.mjs",
@@ -5193,7 +5317,7 @@
       "argv": ["node", "scripts/workspace-admission/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:49"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/workspace-admission/catalog.mjs"]
     },
     {
       "id": "command:check:51",
@@ -8011,11 +8135,8 @@
       "id": "campaign:scripts/workspace-admission/run.mjs",
       "kind": "campaign",
       "path": "scripts/workspace-admission/run.mjs",
-      "callSites": [
-        { "line": 189, "form": "run", "arguments": [] },
-        { "line": 193, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/workspace-admission/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/write-session/run.mjs",
@@ -9577,7 +9698,6 @@
     "catalogue:scripts/local-clear/catalog.mjs",
     "catalogue:scripts/local-genesis/catalog.mjs",
     "catalogue:scripts/owned-startup/catalog.mjs",
-    "catalogue:scripts/workspace-admission/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
@@ -9600,7 +9720,6 @@
     "command:check:43",
     "command:check:44",
     "command:check:47",
-    "command:check:50",
     "command:check:51",
     "command:check:52",
     "command:check:53",
@@ -9748,7 +9867,6 @@
     "campaign:scripts/private-release/run.mjs",
     "campaign:scripts/storage-properties/run.mjs",
     "campaign:scripts/validation-controls/run.mjs",
-    "campaign:scripts/workspace-admission/run.mjs",
     "campaign:scripts/write-session/run.mjs",
     "campaign:scripts/yjs-delivery/campaign.mjs",
     "campaign:scripts/yjs-delivery/run.mjs"
@@ -9762,6 +9880,7 @@
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
+      "test:test/release-validation/workspace-admission.test.mjs",
       "command:check:35",
       "command:validation:inventory:0"
     ],
@@ -9801,6 +9920,7 @@
     "journal": ["catalogue:scripts/journal/catalog.mjs"],
     "admission": ["catalogue:scripts/admission/catalog.mjs"],
     "editor-admission": ["catalogue:scripts/editor-admission/catalog.mjs"],
+    "workspace-admission": ["catalogue:scripts/workspace-admission/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10029,6 +10149,7 @@
       "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/stage.test.mjs",
+      "test:test/release-validation/workspace-admission.test.mjs",
       "test:test/reorder.test.ts",
       "test:test/roundTrip.test.ts",
       "test:test/seam.test.ts",

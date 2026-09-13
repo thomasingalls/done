@@ -1,21 +1,21 @@
-# Release-validation execution — foundation and four catalogue adapters
+# Release-validation execution — foundation and five catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
-content as `b9f0984`, journal as `1a86453` and admission as `4fc3af0`.
+content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0` and editor-admission as `3f1afc5`.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 599 obligations, including all 263 current
+The [manifest](./release-validation-manifest.json) now contains 600 obligations, including all 264 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**436 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**433 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -33,6 +33,7 @@ node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
 node scripts/release-validation/execute.mjs --selection admission
 node scripts/release-validation/execute.mjs --selection editor-admission
+node scripts/release-validation/execute.mjs --selection workspace-admission
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -41,8 +42,8 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs nine stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter and editor-admission-adapter test files (36 exact cases),
+`infrastructure` runs ten stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter and workspace-admission-adapter test files (40 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -278,13 +279,44 @@ workspace commands and Account authority remain outside this catalogue. Standalo
 output options and JSON/Markdown report files remain supported; custom browser overrides and existing
 outputs refuse. Default catalogue, package leaf and campaign alias resolve, not enclosing wrappers.
 
+## Workspace-admission catalogue adapter — phase 2f
+
+The shared workspace catalogue passes **ten baseline cases, 62 assertions and four mutations**
+through the same disposable owner. Candidate `workspace`, scope `workspace-admission-browser` and
+full patch paths are explicit bindings. The worker copies the same complete runtime source population,
+keeps overlays inside its checkout and binds each Vite server to an OS-assigned loopback port. The
+original Goals/card history, structural command, pending/refusal, system work, cross-tab, received
+update, nested Yjs undo/redo, business-rule and actor-initialization scenarios remain unchanged.
+
+The four mutations separately expose pending history, admit system bulk work into human history,
+admit received work into human history and lose Yjs redone links. Each must change the exact pinned
+source and fail its own previously passing assertion. Workspace reports also require `tagged-json-v1`:
+nested undefined initialization values cannot become null, and false/null business results remain
+distinct from zero or missing evidence. Existing scenario comparisons are unchanged. Four new adapter
+tests check exact selection, identity, mutation evidence and 160 generated subsets/faults (seed 130908).
+All 55 non-native runner controls pass, including 1,280 generated validation histories.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-workspace-admission-adapter/README.md)
+retains the full run, selected system/remote/nested history cases with their three mutations,
+baseline-only initialization and selected editor multicaret/pressure regression. All seven native
+ownership controls pass separately. Ten infrastructure stages pass 40 exact cases and two static
+checks. The full worker took **43.1 seconds** inside its 120-second deadline; the command took 64.7
+seconds including preparation/final checks. These are observations on this host, not supported-device
+performance qualification. Startup/drain/log/report bounds remain unchanged.
+
+Standalone `--case`, `--no-mutants`, `--output` and JSON/Markdown reports remain supported. Custom
+browser overrides and existing output directories refuse. The default catalogue, exact package leaf
+and campaign alias resolve; passing a catalogue does not discharge the enclosing package check chain.
+Full application startup/classification, migration, compaction, Account authority and native IME/device
+coverage remain outside the original workspace fixture. No production behavior was changed here.
+
 ## Next bounded integration
 
-Integrate workspace-admission's **ten baseline cases and four mutations**, reviewing shared human
-history, structural commands, cross-tab dependencies, full patch paths and assertion values first.
-Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions
-and measured deadlines. Seven catalogues (106 cases/34 mutations) still need adapters. Vector reuse
-becomes meaningful when consumers depend on the same successful identity.
+Integrate owned-startup's **15 baseline cases and three mutations**, reviewing classification,
+existing-store opening, refusal/repair and startup ownership assertions first. Then resolve remaining
+catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and measured deadlines.
+Six catalogues (96 cases/30 mutations) still need adapters. Vector reuse becomes meaningful when consumers
+depend on the same successful identity.
 
 Only after every required obligation resolves should P-06's prose sweep and the complete selected
 immutable run proceed. No personal app/server/profile, release deployment or Account cutover is

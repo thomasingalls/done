@@ -16,6 +16,11 @@ const bindings = Object.freeze({
     patchPrefix: 'src/crdt/',
   },
   'editor-admission': { scope: 'editor-admission-browser', candidate: 'editor', patchPrefix: '' },
+  'workspace-admission': {
+    scope: 'workspace-admission-browser',
+    candidate: 'workspace',
+    patchPrefix: '',
+  },
 });
 const requireFamily = (family) =>
   assert(Object.hasOwn(bindings, family), 'Unreviewed carrier family');
@@ -112,10 +117,10 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     )
     .sort();
   assert(sourcePaths.length, 'Missing independent carrier source pins');
-  if (family === 'editor-admission')
+  if (['editor-admission', 'workspace-admission'].includes(family))
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
   const check = (report, ids, mutation = null) => {
-    if (family === 'editor-admission')
+    if (['editor-admission', 'workspace-admission'].includes(family))
       for (const row of report.cases)
         for (const a of row.assertions) {
           validateEvidence(a.actual);

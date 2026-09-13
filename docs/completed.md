@@ -3666,3 +3666,30 @@ workspace-admission's ten cases/four mutations, followed by remaining families/w
 and deadlines before P-06 and immutable aggregate validation. No personal operation occurred; prior
 vectors, historical reviews/debts and L-2 are unchanged. This editor-admission phase remains uncommitted.
 Appended before replacing L-1.
+
+
+## 2026-09-13 — Workspace-admission catalogue execution adapter, phase 2f (`L-1`)
+
+Committed editor-admission unsigned as `3f1afc5`, preserving review-tracked hashes. Connected the
+workspace catalogue to the shared disposable owner: ten baselines/62 assertions and four mutations
+pass. The explicit binding retains candidate `workspace`, scope `workspace-admission-browser` and
+full `src/crdt/` patch paths. Each history mutation must change its own pinned source and fail its
+specific previously passing assertion. Tagged reports preserve nested undefined initialization
+values, null command results, false refusals and zero distinctly. Original scenarios, catalogue
+patches and production code are unchanged.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-workspace-admission-adapter/README.md)
+retains the full native run, selected system/remote/nested history run (three cases/three mutations),
+baseline-only initialization, selected editor multicaret/pressure regression and seven native ownership
+controls. The full worker took 43.1 seconds inside its 120-second deadline; the command took 64.7
+seconds including preparation/final checks. Four new adapter tests include 160 generated selections,
+bringing non-native runner controls to 55 tests and 1,280 generated validation histories. Ten disposable
+infrastructure stages pass 40 cases and two static checks. These are adapter controls and one-host
+measurements, not additional product histories or whole-workspace performance qualification.
+
+The manifest has 600 obligations with 433 unresolved, covering 264 required test files and the same
+163 catalogue cases/54 mutations. Six catalogue adapters remain (96 cases/30 mutations); owned-startup's
+15 cases/three mutations is next. Remaining test families, wrapper postconditions and deadlines precede
+P-06 and immutable aggregate validation. No personal operation occurred; prior vectors, historical
+reviews/debts and L-2 are unchanged. This workspace-admission phase remains uncommitted.
+Appended before replacing L-1.

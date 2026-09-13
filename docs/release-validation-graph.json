@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 269,
-    "requiredTestFiles": 263,
+    "testFiles": 270,
+    "requiredTestFiles": 264,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -5336,25 +5336,8 @@
       "packageCommands": [[["node", "scripts/workspace-admission/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 189,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 193,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/write-session/run.mjs",
@@ -8878,6 +8861,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/workspace-admission.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/workspace-admission.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 207,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/reorder.test.ts",
       "status": "required",
       "invocation": {
@@ -11626,7 +11629,7 @@
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "c02935da32b1e3ad5597db6d4470dd66ecc938ce64d34499d63949e110be6be5"
+      "sha256": "5617e58e25b0de157cade3250421fc634775b3b63bbc5fc71b362355f6b1c013"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11646,7 +11649,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "ea13ea6e846e96feb2f328a4a10d0b6e88b0608005310835f93e20b5e8b544e9"
+      "sha256": "0d296483654c3f93384e950c6fc8c60635bdf83e6b404cc8b4de7786b1159302"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11662,7 +11665,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "4022da16604a73bbe548d006c14234521d81d1ebdd10c86638d7e49f6a086a74"
+      "sha256": "da1bbad0290cc02f8da02d3f308584b178a88b9b5afdacfda3489b67b9eac796"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11690,7 +11693,11 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "86bc6ec1f11ce5a5f59a85b6767ea74f5dfe4a5dbc7f9269998406f106a35e52"
+      "sha256": "d65ac05cb96af02d0eae52fab2163c6be360d40b80bd7e5044767001c4d56aad"
+    },
+    {
+      "path": "scripts/release-validation/workspace-admission-adapter.mjs",
+      "sha256": "11ac0b3cafc3ee24ca809577867aaaaefc94a1dcfc3f1bbecc9b791bc5fc337f"
     },
     {
       "path": "scripts/remediation-status.mjs",
@@ -11758,11 +11765,15 @@
     },
     {
       "path": "scripts/workspace-admission/run.mjs",
-      "sha256": "21c65fda7d2c37ed7f381e4dfd3a2d25f45719353294feae7210ea625a3ffefd"
+      "sha256": "e4f851e5f7b25f704de4bb9ec36645280f9f39cb4d1ca69aa07f21d2ce5af1d3"
     },
     {
       "path": "scripts/workspace-admission/scenarios.mjs",
       "sha256": "cf1c6d1d5b8511f4befb7db7743a4d5bfe4a8f3aaafe8f429e738206ee3bb5a9"
+    },
+    {
+      "path": "scripts/workspace-admission/worker.mjs",
+      "sha256": "9979a0da06040bc5e9bc91aeaf59d3c015c4c9c95afb11c16fe0947d41b9f360"
     },
     {
       "path": "scripts/write-session/catalog.mjs",
@@ -13467,6 +13478,10 @@
     {
       "path": "test/release-validation/stage.test.mjs",
       "sha256": "4aa21f9b91c70edd98f61e76ef538076c20110f4e9f51cb56bcb46c479a156f7"
+    },
+    {
+      "path": "test/release-validation/workspace-admission.test.mjs",
+      "sha256": "4fa260e56eb8abf5c8fdf46f232c289130cc01af2e1679005d3d0426b65b8a5a"
     },
     {
       "path": "test/reorder.test.ts",

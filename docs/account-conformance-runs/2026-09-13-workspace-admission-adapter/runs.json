@@ -1,0 +1,276 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-workspace-admission",
+    "source": "test-results/workspace-admission/2026-09-13T11-34-01.211Z",
+    "status": "passed",
+    "input": "93ce2d744e33f5939583c73cad7003df5a115be0bc36c90d32a5d62facd250d7",
+    "stageCases": [
+      14
+    ],
+    "stageElapsedMs": [
+      43142
+    ],
+    "totalMs": 64681,
+    "native": [
+      {
+        "scope": "workspace-admission-browser",
+        "baselineAssertions": 62,
+        "baselines": 10,
+        "mutants": 4,
+        "mutations": [
+          {
+            "id": "pending-history-visible",
+            "assertion": "pending-history-private",
+            "status": "detected"
+          },
+          {
+            "id": "system-bulk-in-human-history",
+            "assertion": "bulk-outside-human-history",
+            "status": "detected"
+          },
+          {
+            "id": "received-work-in-human-history",
+            "assertion": "undo-preserves-remote",
+            "status": "detected"
+          },
+          {
+            "id": "lost-redone-links",
+            "assertion": "undo-edit-in-restored-card",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "workspace",
+            "origin": "http://127.0.0.1:61968",
+            "closed": true
+          },
+          {
+            "variant": "pending-history-visible",
+            "origin": "http://127.0.0.1:62062",
+            "closed": true
+          },
+          {
+            "variant": "system-bulk-in-human-history",
+            "origin": "http://127.0.0.1:62073",
+            "closed": true
+          },
+          {
+            "variant": "received-work-in-human-history",
+            "origin": "http://127.0.0.1:62082",
+            "closed": true
+          },
+          {
+            "variant": "lost-redone-links",
+            "origin": "http://127.0.0.1:62092",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-history",
+    "selection": "standalone-workspace-admission",
+    "source": "test-results/workspace-admission-adapter-selected-history",
+    "status": "passed",
+    "input": "93ce2d744e33f5939583c73cad7003df5a115be0bc36c90d32a5d62facd250d7",
+    "stageCases": [
+      6
+    ],
+    "stageElapsedMs": [
+      27281
+    ],
+    "totalMs": 49372,
+    "native": [
+      {
+        "scope": "workspace-admission-browser",
+        "baselineAssertions": 19,
+        "baselines": 3,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "system-bulk-in-human-history",
+            "assertion": "bulk-outside-human-history",
+            "status": "detected"
+          },
+          {
+            "id": "received-work-in-human-history",
+            "assertion": "undo-preserves-remote",
+            "status": "detected"
+          },
+          {
+            "id": "lost-redone-links",
+            "assertion": "undo-edit-in-restored-card",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "workspace",
+            "origin": "http://127.0.0.1:62153",
+            "closed": true
+          },
+          {
+            "variant": "system-bulk-in-human-history",
+            "origin": "http://127.0.0.1:62182",
+            "closed": true
+          },
+          {
+            "variant": "received-work-in-human-history",
+            "origin": "http://127.0.0.1:62192",
+            "closed": true
+          },
+          {
+            "variant": "lost-redone-links",
+            "origin": "http://127.0.0.1:62226",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-workspace-admission",
+    "source": "test-results/workspace-admission-adapter-baseline-initialize",
+    "status": "passed",
+    "input": "93ce2d744e33f5939583c73cad7003df5a115be0bc36c90d32a5d62facd250d7",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      15727
+    ],
+    "totalMs": 40941,
+    "native": [
+      {
+        "scope": "workspace-admission-browser",
+        "baselineAssertions": 6,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "workspace",
+            "origin": "http://127.0.0.1:62237",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "editor-regression",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/workspace-admission-adapter-editor-regression",
+    "status": "passed",
+    "input": "93ce2d744e33f5939583c73cad7003df5a115be0bc36c90d32a5d62facd250d7",
+    "stageCases": [
+      4
+    ],
+    "stageElapsedMs": [
+      22204
+    ],
+    "totalMs": 45103,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "baselineAssertions": 12,
+        "baselines": 2,
+        "mutants": 2,
+        "mutations": [
+          {
+            "id": "history-before-receipt",
+            "assertion": "pending-not-in-history",
+            "status": "detected"
+          },
+          {
+            "id": "ordinary-view-before-receipt",
+            "assertion": "pending-not-in-editor",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:62305",
+            "closed": true
+          },
+          {
+            "variant": "history-before-receipt",
+            "origin": "http://127.0.0.1:62359",
+            "closed": true
+          },
+          {
+            "variant": "ordinary-view-before-receipt",
+            "origin": "http://127.0.0.1:62372",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T11-40-18.903Z",
+    "status": "passed",
+    "input": "5b12ae469c93c890efa31599e28cb7f1e6e935117da60f4ca58dd6c26f7f3b27",
+    "stageCases": [
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      6,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2129,
+      1885,
+      1940,
+      4685,
+      1754,
+      1925,
+      1900,
+      1921,
+      5013,
+      2029
+    ],
+    "totalMs": 50853,
+    "native": []
+  }
+]
