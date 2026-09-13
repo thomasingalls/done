@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "parent": "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+  "started": "2026-09-13T08:12:10.193058+00:00",
+  "node": "v26.8.2",
+  "sourcePins": 724,
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "node",
+        "scripts/release-validation/check.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    },
+    {
+      "name": "checker-tests",
+      "command": [
+        "node",
+        "--test",
+        "test/release-validation/inventory.test.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    },
+    {
+      "name": "types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/oxlint/bin/oxlint",
+        "scripts/release-validation",
+        "test/release-validation"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "scripts/release-validation",
+        "test/release-validation",
+        "package.json"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    },
+    {
+      "name": "authority",
+      "command": [
+        "node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0
+    }
+  ],
+  "limits": [
+    "Planning inventory and checker tests only; no runtime/native/aggregate campaign."
+  ],
+  "pinsUnchanged": true,
+  "finished": "2026-09-13T08:12:13.121748+00:00"
+}

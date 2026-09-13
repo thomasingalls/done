@@ -38,6 +38,11 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 
 ## Aggregate work package — F-20 / N-06 / P-05, with P-06
 
+**Phase 1 inventory is complete:** the [checked graph and coverage map](./release-validation-graph.md)
+records current package wiring, proposed required families, explicit exclusions and concrete execution
+gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. Next is the finite
+execution manifest and shared bounded stage runner, followed by P-06's prose sweep and the immutable run.
+
 1. Inventory the executable validation graph: current `package.json` checks, later standalone Account
    contract/audit/isolation/oracle campaigns, and the new private-release phase campaigns. Map every
    required case/control/property/vector family to an invocation. Repeated prerequisite vector work

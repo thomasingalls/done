@@ -3507,3 +3507,27 @@ coverage/deadline work and P-06 prose before an immutable release aggregate. No 
 cutover or public qualification is claimed. Personal files, prior vectors, historical packets/debts
 and L-2 remain unchanged. All intermediate commits are authorized unsigned and the existing reminder
 tracks their chain. Appended before replacing L-1.
+
+
+## 2026-09-13 — Release-validation family inventory, phase 1 (`L-1`)
+
+Added the [checked validation inventory](./release-validation-graph.md) at `d03e473` plus this phase's
+changes: 122 package scripts, 78 campaign entrypoints, 261 test files (255 required and six retired
+standalone v8 product exclusions), 12 catalogues, 29 current vector corpora and 83 registered
+constructions. Direct proposed test coverage is distinguished from current wrapper selection; dynamic
+case counts and variants remain execution obligations. Unknown families, package cycles, stale
+exclusions, missing generator/test/vector mappings and changed helper inputs refuse the snapshot.
+
+The [bounded six-check evidence](./account-conformance-runs/2026-09-13-validation-inventory/README.md)
+passes: inventory, ten checker tests including 160 independent generated DAGs, types, lint, format and
+authority. Real file/policy omissions exercise the checker. A separate silent package-manager attempt
+was stopped and retained; the exact Node commands pass. No package-manager repair or aggregate is
+claimed. Runtime code, personal package files, prior vectors, historical review records/debts and L-2
+are unchanged; no personal service, profile, factor or key was used. This phase is left uncommitted.
+
+The concrete next package is the finite execution manifest and shared bounded stage runner. The
+inventory exposes later campaigns missing from `check`, 18 full-vector-chain references, new native
+batch tests absent from old wrappers, incomplete case-census checks, historical deadline failures,
+inherited crypto-audit source-pin omissions and unsafe in-place build defaults. P-06 prose and the
+immutable aggregate follow. The obsolete Lima/deployed-old-writer rehearsal is explicitly optional;
+private migration remains the product scope. Appended before replacing the L-1 checkpoint.

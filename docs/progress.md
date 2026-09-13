@@ -43,55 +43,55 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation graph and qualification (`L-1`)
+## Active slice: Release-validation execution manifest and bounded runner (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; bounded Q-01 through Q-05 repairs complete
+blocks_on: none; reviewed phase-1 inventory complete
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
 **Roadmap position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
-the private creating-member ciphertext round trip, Stage 4 §3.5 item 5. It is not mounted in the
-personal app and there is no real Account admission receipt. The author's old second device must
-adopt the first workspace with fresh custody, store, counters and credentials, without importing or
-merging its old writing. First ciphertext and two-device convergence are not public ship boundaries.
+the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app.
+There is no real Account admission receipt. The author's old second device must adopt the first
+workspace with fresh custody, store, counters and credentials, without importing or merging its old
+writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** [Validation controls Q-01/Q-04](./review/implementation/validation-controls.md)
-are unsigned `dceec5c`; [Q-03](./review/implementation/liveness-followups.md#q-03-result) is `2dcd897`.
-Q-02 carrier reduction is `77a2753` and bounded original-source batching is `7cbb063`. The thirty-edit
-burst after eighty settled edits improves from 112.7 seconds / thirty positions to 9.7 seconds /
-three. Exact source/attribution coverage, current publication checks, renderer-death cases and byte
-retry pass. Individual round trips near eighty positions remain 2.7–2.9 seconds and local admission
-6.1 seconds in that campaign; these are explicit workload limits, not release-capacity qualification.
+**Just completed.** Q-01/Q-04 through Q-05 are committed unsigned through `d03e473`; the bounded
+carrier/burst gains and capacity limits remain in [the Q record](./review/implementation/liveness-followups.md).
+The [phase-1 validation inventory](./release-validation-graph.md) now maps package wiring, all discovered
+test/campaign/catalogue/vector families and registered construction requirements. It separates proposed
+coverage from current wrapper selection, records six retired v8 product-test exclusions and retains
+shared service/codecs/helper coverage. The obsolete cold-host Lima rehearsal is optional.
 
-Q-05 adds `request-expired` status and bounded diagnostics while retaining automatic fresh retry.
-The [final combined evidence](./account-conformance-runs/2026-09-12-q05/README.md) passes all 1,022 units
-and 18 liveness stages. Three consecutive native commit expiries preserve the prefix; the scheduler
-recovers automatically after the clock condition clears, and exact writing survives cold reopen.
-Generated backoff/gate/recovery and diagnostic-bound properties pass. The completion record was
-appended before replacing this slice. These phase results are not a full release aggregate.
+All six [inventory checks](./account-conformance-runs/2026-09-13-validation-inventory/README.md) pass
+under Node, including ten checker tests and 160 generated command DAGs. A silent package-manager
+wrapper was stopped and recorded separately. This phase is uncommitted. No runtime/native/full
+aggregate ran, no deadlines or prerequisite deduplication changed, and P-06 prose remains unswept.
 
-**Next bounded work.** Inventory and reconcile the complete executable validation graph and required
-case/control/property/vector coverage (F-20/N-06/P-05). Specify finite per-suite waits, cancellation,
-case census and source-identity reuse. Sweep current P-06 prose against the construction registry.
-Then run an immutable selected aggregate and state supported workload/platform/claim dispositions.
-See [release-validation prep](./private-release-validation-prep.md).
+**Next single phase.** Compile a finite execution manifest and implement a shared bounded stage
+runner with actual omission, timeout, child-cleanup, stale-result and complete-case controls. Resolve
+the inventory's dynamic selections; preserve all required case/mutation variants and prerequisites.
+Replace inherited historical input lists with fresh source/dependency closure. Share vector results
+only for identical frozen inputs, command, environment and variants. Retain standalone dependencies.
+Use disposable checkout/build/profile/server/report ownership; existing in-place defaults are not safe
+for this personal worktree. See [the phase-2 contract](./release-validation-graph.md#selection-and-deduplication-contract-for-phase-2).
 
-**After validation.** Private Account cutover/recovery rehearsal, then enrollment's two gates and
-second-device adoption. Membership/revocation/rotation, signout/remove/reset, continuity, service
-operations/deployment and public assurance remain later obligations. F-21.4 wider privacy evidence,
-F-09 Account/key-loss recovery, F-07/F-17/F-19 capacity and Q-08 evidence/history-publication remain open.
+**After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
+state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/
+recovery rehearsal and enrollment/adoption. Membership/revocation/rotation, signout/remove/reset,
+continuity, service operations/deployment and public assurance remain later obligations. F-21.4 wider
+privacy, F-09 Account/key-loss recovery, F-07/F-17/F-19 capacity and Q-08 publication/evidence policy stay open.
 
-**Preservation and commits.** Intermediate v8 remains retired. Personal package files (21), prior
-vectors (31), historical F/N/P/Q packets/manifests, formal debts and L-2 are unchanged. No personal
-browser/profile, recovery files, Account, factor, key, service, origin or routing changed. The root
-`done ` file is untouched. All intermediate commits are explicitly authorized unsigned; the active
-signing reminder follows descendants of `1372c39`. No Git history rewrite was performed.
+**Preservation.** Personal package files (21), prior vectors (31), historical F/N/P/Q packets and
+manifests, formal debts and L-2 are unchanged. No personal browser/profile, recovery files, Account,
+factor, key, service, origin or routing changed. Root `done ` is untouched. The existing signing
+reminder follows unsigned descendants of `1372c39`; no history rewrite was performed. Completion was
+appended before replacing this slice.
 
 ---
 
