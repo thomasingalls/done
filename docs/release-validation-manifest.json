@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "5cd47e38ed8d1ee54ff3261b613a8e21120facdc637aef43cec6fe7db42e1ea0",
+  "inventoryDigest": "d623aaab8e8e501fcad7c3142d028eba2597e3051335f4e73e84553f8297aab7",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2628,6 +2628,50 @@
       }
     },
     {
+      "id": "test:test/release-validation/journal.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/journal.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/journal.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/journal.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/journal.test.mjs::journal binds all 17 cases and six mutations while selected and baseline-only variants remain distinct",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/journal.test.mjs::journal reconciliation refuses unrelated failure, cross-family reports and incomplete handoff evidence",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/journal.test.mjs::claimed journal mutations require a pinned source target and a real byte change",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/journal.test.mjs::160 generated journal selections preserve their exact denominator and reject omitted or falsely detected work",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/manifest.test.mjs",
       "kind": "test",
       "path": "test/release-validation/manifest.test.mjs",
@@ -3484,7 +3528,116 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/journal/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/journal/worker.mjs",
+          "--case",
+          "C01.synchronous-crash,C01.remote-basis,C03.refusals,C03.watermark,C03.actual-quota,C09.unreadable,C09.enumeration-change,C11.abort-flush,C11.crash-before-cleanup,C11.changed-entry,C11.cleanup-refused,C01.handoff-race,C04.close-and-keys,C04.frozen-writer,C04.concurrent-writers,C11.chunked-flush,C03.host-smoke"
+        ],
+        "env": {},
+        "variant": "journal-30bd8f77bb02d5c1bcbcc4c4d14323b5c9500162f314e6b85f4902607f29c634",
+        "expect": {
+          "kind": "journal",
+          "selection": {
+            "cases": [
+              { "id": "C01.synchronous-crash", "outcome": "pass" },
+              { "id": "C01.remote-basis", "outcome": "pass" },
+              { "id": "C03.refusals", "outcome": "pass" },
+              { "id": "C03.watermark", "outcome": "pass" },
+              { "id": "C03.actual-quota", "outcome": "pass" },
+              { "id": "C09.unreadable", "outcome": "pass" },
+              { "id": "C09.enumeration-change", "outcome": "pass" },
+              { "id": "C11.abort-flush", "outcome": "pass" },
+              { "id": "C11.crash-before-cleanup", "outcome": "pass" },
+              { "id": "C11.changed-entry", "outcome": "pass" },
+              { "id": "C11.cleanup-refused", "outcome": "pass" },
+              { "id": "C01.handoff-race", "outcome": "pass" },
+              { "id": "C04.close-and-keys", "outcome": "pass" },
+              { "id": "C04.frozen-writer", "outcome": "pass" },
+              { "id": "C04.concurrent-writers", "outcome": "pass" },
+              { "id": "C11.chunked-flush", "outcome": "pass" },
+              { "id": "C03.host-smoke", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "skip-storage-append",
+                "case": "C01.synchronous-crash",
+                "assertion": "receipt-already-has-carrier",
+                "outcome": "detected",
+                "patch": {
+                  "file": "journalStore.ts",
+                  "from": "s.setItem(storageKey, value);",
+                  "to": "void value;"
+                }
+              },
+              {
+                "id": "acknowledge-refusal",
+                "case": "C03.refusals",
+                "assertion": "unavailable-does-not-acknowledge",
+                "outcome": "detected",
+                "patch": {
+                  "file": "journalStore.ts",
+                  "from": "        return {\n          status: 'refused',\n          reason:\n            cause instanceof DOMException && cause.name === 'QuotaExceededError'\n              ? 'quota'\n              : 'unavailable',\n        };",
+                  "to": "        return Object.freeze({status:'journalled',key:storageKey,generation});"
+                }
+              },
+              {
+                "id": "remove-changed-entry",
+                "case": "C11.changed-entry",
+                "assertion": "changed-entry-retained",
+                "outcome": "detected",
+                "patch": {
+                  "file": "journalStore.ts",
+                  "from": "if (current !== entry.value) {",
+                  "to": "if (false) {"
+                }
+              },
+              {
+                "id": "cleanup-before-commit",
+                "case": "C11.abort-flush",
+                "assertion": "aborted-flush-retains-journal",
+                "outcome": "detected",
+                "patch": {
+                  "file": "journalStore.ts",
+                  "from": "const batch = entries.slice(offset, offset + 256);",
+                  "to": "const batch = entries.slice(offset, offset + 256); for (const entry of batch) storage().removeItem(entry.key);"
+                }
+              },
+              {
+                "id": "reread-journal-after-content",
+                "case": "C01.handoff-race",
+                "assertion": "handoff-cannot-fall-between-reads",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custody.ts",
+                  "from": "records = await owner.carrier.load(task);\n          return task.step(() => ({",
+                  "to": "records = await owner.carrier.load(task); eraseJournalSnapshot(snapshot); snapshot = owner.journal.snapshot();\n          return task.step(() => ({"
+                }
+              },
+              {
+                "id": "skip-wasm-disposal",
+                "case": "C04.close-and-keys",
+                "assertion": "close-erases-wasm-instance",
+                "outcome": "detected",
+                "patch": {
+                  "file": "journalCodec.ts",
+                  "from": "wasm.dispose();",
+                  "to": "void wasm;"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/local-clear/catalog.mjs",
@@ -4734,7 +4887,7 @@
       "argv": ["node", "scripts/journal/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:45"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/journal/catalog.mjs"]
     },
     {
       "id": "command:check:47",
@@ -6947,11 +7100,8 @@
       "id": "campaign:scripts/journal/run.mjs",
       "kind": "campaign",
       "path": "scripts/journal/run.mjs",
-      "callSites": [
-        { "line": 189, "form": "run", "arguments": [] },
-        { "line": 193, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/journal/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/legacy-cleanup/campaign.mjs",
@@ -9162,7 +9312,6 @@
     "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/editor-admission/catalog.mjs",
-    "catalogue:scripts/journal/catalog.mjs",
     "catalogue:scripts/local-clear/catalog.mjs",
     "catalogue:scripts/local-genesis/catalog.mjs",
     "catalogue:scripts/owned-startup/catalog.mjs",
@@ -9188,7 +9337,6 @@
     "command:check:42",
     "command:check:43",
     "command:check:44",
-    "command:check:46",
     "command:check:47",
     "command:check:48",
     "command:check:49",
@@ -9325,7 +9473,6 @@
     "campaign:scripts/custody/run.mjs",
     "campaign:scripts/editor-admission/run.mjs",
     "campaign:scripts/journal-contention/run.mjs",
-    "campaign:scripts/journal/run.mjs",
     "campaign:scripts/legacy-cleanup/campaign.mjs",
     "campaign:scripts/legacy-cleanup/run.mjs",
     "campaign:scripts/legacy-coordinator/campaign.mjs",
@@ -9353,6 +9500,7 @@
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
+      "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "command:check:35",
       "command:validation:inventory:0"
@@ -9390,6 +9538,7 @@
     ],
     "content": ["catalogue:scripts/content/catalog.mjs"],
     "content-control": ["variant:content-unreadable"],
+    "journal": ["catalogue:scripts/journal/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -9613,6 +9762,7 @@
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
+      "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/stage.test.mjs",
       "test:test/reorder.test.ts",

@@ -14,7 +14,7 @@ import { dirname, join, resolve } from 'node:path';
 import { canonical, digest, hash, identityKey } from './identity.mjs';
 import { groupState, signalGroup as kill } from './process-group.mjs';
 import { startOwnedChromium } from './browser.mjs';
-import { reconcileContent } from './content-adapter.mjs';
+import { reconcileCarrier } from './carrier-adapter.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -53,7 +53,10 @@ export function validateStage(stage) {
     Array.isArray(stage.dependsOn) && new Set(stage.dependsOn).size === stage.dependsOn.length,
     'Invalid prerequisites',
   );
-  assert(['exit', 'cases', 'content'].includes(stage.expect?.kind), 'Unresolved result adapter');
+  assert(
+    ['exit', 'cases', 'content', 'journal'].includes(stage.expect?.kind),
+    'Unresolved result adapter',
+  );
   if (stage.expect.kind === 'exit')
     assert.deepEqual(
       stage.expect.exitCodes,
@@ -79,12 +82,16 @@ export function validateStage(stage) {
         );
     }
   }
-  if (stage.expect.kind === 'content') {
-    assert.equal(stage.argv[1], 'scripts/content/worker.mjs', 'Unreviewed content worker');
-    assert.equal(stage.fixture?.kind, 'chromium-cdp', 'Content requires owned Chromium');
+  if (['content', 'journal'].includes(stage.expect.kind)) {
+    assert.equal(
+      stage.argv[1],
+      `scripts/${stage.expect.kind}/worker.mjs`,
+      'Unreviewed carrier worker',
+    );
+    assert.equal(stage.fixture?.kind, 'chromium-cdp', 'Carrier requires owned Chromium');
     assert(
       stage.expect.selection?.cases.length && Array.isArray(stage.expect.selection.mutants),
-      'Missing content denominator',
+      'Missing carrier denominator',
     );
   }
   if (stage.fixture) {
@@ -235,6 +242,7 @@ export function createStageRunner({
       RELEASE_CASE_REPORT: report,
       RELEASE_RUN_NONCE: nonce,
       RELEASE_CONTENT_OUTPUT: join(dir, 'content'),
+      RELEASE_JOURNAL_OUTPUT: join(dir, 'journal'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
@@ -404,8 +412,8 @@ export function createStageRunner({
           'Case report exceeded artifact bound',
         );
         actual = JSON.parse(readFileSync(report, 'utf8'));
-        if (stage.expect.kind === 'content') {
-          const cases = reconcileContent(stage.expect.selection, actual, {
+        if (['content', 'journal'].includes(stage.expect.kind)) {
+          const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, actual, {
             nonce,
             sources: before.sources,
             root,

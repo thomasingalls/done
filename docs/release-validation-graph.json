@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 266,
-    "requiredTestFiles": 260,
+    "testFiles": 267,
+    "requiredTestFiles": 261,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4353,25 +4353,8 @@
       "packageCommands": [[["node", "scripts/journal/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 189,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 193,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/legacy-cleanup/campaign.mjs",
@@ -8792,7 +8775,7 @@
       "declarations": 3,
       "propertyFamilies": [
         {
-          "line": 173,
+          "line": 98,
           "form": "fc.property"
         }
       ],
@@ -8828,6 +8811,26 @@
       "propertyFamilies": [
         {
           "line": 84,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/journal.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/journal.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 166,
           "form": "fc.property"
         }
       ],
@@ -11377,11 +11380,15 @@
     },
     {
       "path": "scripts/journal/run.mjs",
-      "sha256": "84773fcc44b403be2e4c746417dda7240dc97287fa0d131c890cc92d9559073f"
+      "sha256": "d800525f215945fffa35d7115dcf8feffbd2a9622fec49af744751e6a29717b8"
     },
     {
       "path": "scripts/journal/scenarios.mjs",
       "sha256": "315efe0c61067f903afef57ab8b98788046cd2bfecf61f69e471f2f05e366251"
+    },
+    {
+      "path": "scripts/journal/worker.mjs",
+      "sha256": "e644987fc7cb8051006f6c445dfc64222c22a398a5ee2526990c1c79ea228af2"
     },
     {
       "path": "scripts/legacy-cleanup/campaign.mjs",
@@ -11596,6 +11603,10 @@
       "sha256": "5e56e2d318553e13f60db06bee1747b6e4481a6fda3c62d1f4913ea865a35573"
     },
     {
+      "path": "scripts/release-validation/carrier-adapter.mjs",
+      "sha256": "dd00f6dddacdfe597e29eccd4607fb1b99f4490b6ebe2522f80c76f4e89f7136"
+    },
+    {
       "path": "scripts/release-validation/census.mjs",
       "sha256": "850fd9b74d92f8f0f7d83b2c293efb4ea4e25ea81f56f8a6c24c33c8b452ad8e"
     },
@@ -11605,11 +11616,11 @@
     },
     {
       "path": "scripts/release-validation/content-adapter.mjs",
-      "sha256": "dac05e85a555a2c1ca1b80b1dc1e6d57c60bf337b2d5175e91ae8f9f7e645ec0"
+      "sha256": "0ede090cdc08174b8090b402ce30c4868f0c57acb6abacfdd23c824b209a566e"
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "6c69c8f6f89c624c0e717d71c6e62e1af50ff3c0b730ffa097e93ca2dce6c06d"
+      "sha256": "a75ddc495de12cd4e32839baff9542c16c80934b0a05e857d52c7a7f3d099032"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11620,8 +11631,12 @@
       "sha256": "dc598433de2f15e27bf385fbcde5874e60a0c97628917505835682297ac25487"
     },
     {
+      "path": "scripts/release-validation/journal-adapter.mjs",
+      "sha256": "f85fe214843976fa46150730755d2287cb2386733e43bd9159b8a843066d7d6e"
+    },
+    {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "78f043e55f7c7eab25eb20535964b5fca3e5d22e1e4fd77defbd8c9df56f785f"
+      "sha256": "00e00b31fd4b316eaf32aaa3ab3f3ff9fcddf8a3e3b75f875ba6d6b302440fd3"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11649,7 +11664,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "3a9619f91bb145456b166e9ecc5359cd833e8fd56de73d47d9c4f31f2c69a47b"
+      "sha256": "5cfc621a02cd77b6eeb366bda3bd005159245fb5d0a9331613a4d14c98812700"
     },
     {
       "path": "scripts/remediation-status.mjs",
@@ -13388,12 +13403,16 @@
       "sha256": "d01eac729f0ed5a9e298b4f315aaf8c7458e6831fcd23bc9f7e612f4ac745fe3"
     },
     {
+      "path": "test/release-validation/carrier-fixture.mjs",
+      "sha256": "dec931b3e1ec0afd8e0399e58a65902cea45f6743c410628278c9dc6bb307300"
+    },
+    {
       "path": "test/release-validation/content-native.test.mjs",
       "sha256": "af225f73b1f5df96929f9b93822a5fbf3a9ac76a0d55792ab26a17932064d62e"
     },
     {
       "path": "test/release-validation/content.test.mjs",
-      "sha256": "c0af60afb3507fbedaff83fe4db2fe9afd22f28d0d304175947a990948517128"
+      "sha256": "b11efcc50cd4f3c1752305f364f6034b251a7003079998100dc716bf44fb93fa"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13402,6 +13421,10 @@
     {
       "path": "test/release-validation/inventory.test.mjs",
       "sha256": "89471cd382ec9f4a971db7be6d60e1420a2ed3caa7ee78ab6ab75cd76ac550a2"
+    },
+    {
+      "path": "test/release-validation/journal.test.mjs",
+      "sha256": "5da1af551723b85c7eb42dbe414f958fc6f9b5b1b37cee17ac621bd93c29beab"
     },
     {
       "path": "test/release-validation/manifest.test.mjs",

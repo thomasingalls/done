@@ -3582,3 +3582,28 @@ next single adapter is journal (17 cases/six mutations), then remaining families
 postconditions before P-06 and immutable aggregate qualification. No personal browser, profile,
 service, build, Account, factor or key was used; earlier vectors, packets/debts and L-2 are preserved.
 The content phase remains uncommitted. Appended before replacing L-1.
+
+
+## 2026-09-13 — Journal catalogue execution adapter, phase 2c (`L-1`)
+
+Committed content unsigned as `b9f0984`, preserving the in-flight review's earlier hashes. Added the
+journal catalogue to the owned native runner: 17 baselines with 93 assertions and six mutations pass.
+Content and journal share an explicitly limited report reconciler while retaining distinct source,
+case, worker, scope and variant identities. Mutation targets require pinned source bytes and an actual
+change. The journal command retains default/selected/no-mutant options and report files; unsupported
+custom browser overrides explicitly refuse. Existing journal scenarios and production code are unchanged.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-journal-adapter/README.md) preserves the full
+journal campaign, its six-case/four-mutation store-contract selection, baseline-only selection, full
+content regression and six native cleanup controls. The full journal worker completes in 74.7 seconds
+inside the 120-second deadline (98.2 seconds including preparation/final checks). Four new tests include
+160 generated subset/omission histories, bringing non-native runner/control coverage to 39 tests and
+800 generated histories. This is adapter assurance, not a larger population of product histories or
+whole-platform latency qualification. Account wrapper prerequisites/postconditions remain separate.
+
+The manifest has 597 obligations with 442 unresolved, covering 261 required test files and the same
+163 catalogue cases/54 mutants. Nine catalogue adapters remain (133 cases/43 mutants); admission's
+15 cases/six mutants are next. Remaining test families, wrapper selections and measured deadlines
+precede P-06 and the immutable aggregate. Personal package files, prior vectors, historical review
+records/debts and L-2 are preserved; no personal app/profile/service/build, recovery material, Account,
+factor or key was used. This journal phase remains uncommitted. Appended before replacing L-1.

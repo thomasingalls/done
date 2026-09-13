@@ -60,12 +60,12 @@ These IDs belong to the implementation review and must not be inserted into the 
    campaigns and three native consecutive expiries followed by automatic recovery/cold replay pass.
    See [result](./liveness-followups.md#q-05-result). No count-only terminal halt was added.
    F-10/N-08/P-07's completed refusal handling stands.
-4. **F-20/N-06/P-05 inventory, runner foundation and content adapter are complete; integration remains.**
+4. **F-20/N-06/P-05 inventory, runner foundation, content and journal adapters are complete; integration remains.**
    The [checked graph](../../release-validation-graph.md) maps required families and exposes missing
    wiring, inherited pin omissions and reporting/deadline gaps. The [bounded runner foundation](../../release-validation-execution.md)
    now records exact obligations and reusable stage identities, with fresh source/dependency pins.
-   The content catalogue passes 13 baselines/five mutations through the owned native adapter.
-   Whole-release execution still refuses 445 unresolved adapter obligations; the journal catalogue is next.
+   Content passes 13 baselines/five mutations and journal passes 17 baselines/six mutations through
+   the owned native adapters. Whole-release execution still refuses 442 unresolved adapter obligations; admission is next.
    Remove repeated work only when identities agree. Keep finite deadlines and complete failure/case reporting. After repairs,
    run the selected complete graph at one immutable revision and state workload/platform limits.
    The reviewer's locally refreshed metadata runs do not constitute this receipt.
@@ -132,7 +132,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and content adapter complete; 445 adapter obligations, deadlines and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner, content and journal adapters complete; 442 adapter obligations, deadlines and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |

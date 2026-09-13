@@ -1,0 +1,330 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-journal",
+    "source": "test-results/journal/2026-09-13T09-59-55.411Z",
+    "status": "passed",
+    "input": "94daca814b9d84a0630684ac3ddca3f93f19b9e328f5f29d1fcc4e32570b4f37",
+    "stageCases": [
+      23
+    ],
+    "stageElapsedMs": [
+      74670
+    ],
+    "totalMs": 98232,
+    "native": [
+      {
+        "scope": "journal-carrier-browser",
+        "baselineAssertions": 93,
+        "baselines": 17,
+        "mutants": 6,
+        "mutations": [
+          {
+            "id": "skip-storage-append",
+            "assertion": "receipt-already-has-carrier",
+            "status": "detected"
+          },
+          {
+            "id": "acknowledge-refusal",
+            "assertion": "unavailable-does-not-acknowledge",
+            "status": "detected"
+          },
+          {
+            "id": "remove-changed-entry",
+            "assertion": "changed-entry-retained",
+            "status": "detected"
+          },
+          {
+            "id": "cleanup-before-commit",
+            "assertion": "aborted-flush-retains-journal",
+            "status": "detected"
+          },
+          {
+            "id": "reread-journal-after-content",
+            "assertion": "handoff-cannot-fall-between-reads",
+            "status": "detected"
+          },
+          {
+            "id": "skip-wasm-disposal",
+            "assertion": "close-erases-wasm-instance",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "journal",
+            "origin": "http://127.0.0.1:50485",
+            "closed": true
+          },
+          {
+            "variant": "skip-storage-append",
+            "origin": "http://127.0.0.1:50669",
+            "closed": true
+          },
+          {
+            "variant": "acknowledge-refusal",
+            "origin": "http://127.0.0.1:50677",
+            "closed": true
+          },
+          {
+            "variant": "remove-changed-entry",
+            "origin": "http://127.0.0.1:50687",
+            "closed": true
+          },
+          {
+            "variant": "cleanup-before-commit",
+            "origin": "http://127.0.0.1:50697",
+            "closed": true
+          },
+          {
+            "variant": "reread-journal-after-content",
+            "origin": "http://127.0.0.1:50706",
+            "closed": true
+          },
+          {
+            "variant": "skip-wasm-disposal",
+            "origin": "http://127.0.0.1:50719",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "content-regression",
+    "selection": "content",
+    "source": "test-results/release-validation/2026-09-13T10-02-07.392Z",
+    "status": "passed",
+    "input": "94daca814b9d84a0630684ac3ddca3f93f19b9e328f5f29d1fcc4e32570b4f37",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      54617
+    ],
+    "totalMs": 82239,
+    "native": [
+      {
+        "scope": "content-carrier-browser",
+        "baselineAssertions": 58,
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "early-transaction-success",
+            "assertion": "no-encryption-after-aborted-reservation",
+            "status": "detected"
+          },
+          {
+            "id": "skip-reservation",
+            "assertion": "abandoned-encryption-remains-counted",
+            "status": "detected"
+          },
+          {
+            "id": "omit-generation-fence",
+            "assertion": "changed-generation-refuses-commit",
+            "status": "detected"
+          },
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          },
+          {
+            "id": "allow-ceiling-equality",
+            "assertion": "ceiling-refuses-before-encryption",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:50931",
+            "closed": true
+          },
+          {
+            "variant": "early-transaction-success",
+            "origin": "http://127.0.0.1:51086",
+            "closed": true
+          },
+          {
+            "variant": "skip-reservation",
+            "origin": "http://127.0.0.1:51095",
+            "closed": true
+          },
+          {
+            "variant": "omit-generation-fence",
+            "origin": "http://127.0.0.1:51102",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:51113",
+            "closed": true
+          },
+          {
+            "variant": "allow-ceiling-equality",
+            "origin": "http://127.0.0.1:51127",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-contract",
+    "selection": "standalone-journal",
+    "source": "test-results/journal-adapter-selected-contract",
+    "status": "passed",
+    "input": "94daca814b9d84a0630684ac3ddca3f93f19b9e328f5f29d1fcc4e32570b4f37",
+    "stageCases": [
+      10
+    ],
+    "stageElapsedMs": [
+      42130
+    ],
+    "totalMs": 60645,
+    "native": [
+      {
+        "scope": "journal-carrier-browser",
+        "baselineAssertions": 48,
+        "baselines": 6,
+        "mutants": 4,
+        "mutations": [
+          {
+            "id": "skip-storage-append",
+            "assertion": "receipt-already-has-carrier",
+            "status": "detected"
+          },
+          {
+            "id": "cleanup-before-commit",
+            "assertion": "aborted-flush-retains-journal",
+            "status": "detected"
+          },
+          {
+            "id": "reread-journal-after-content",
+            "assertion": "handoff-cannot-fall-between-reads",
+            "status": "detected"
+          },
+          {
+            "id": "skip-wasm-disposal",
+            "assertion": "close-erases-wasm-instance",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "journal",
+            "origin": "http://127.0.0.1:51169",
+            "closed": true
+          },
+          {
+            "variant": "skip-storage-append",
+            "origin": "http://127.0.0.1:51291",
+            "closed": true
+          },
+          {
+            "variant": "cleanup-before-commit",
+            "origin": "http://127.0.0.1:51302",
+            "closed": true
+          },
+          {
+            "variant": "reread-journal-after-content",
+            "origin": "http://127.0.0.1:51311",
+            "closed": true
+          },
+          {
+            "variant": "skip-wasm-disposal",
+            "origin": "http://127.0.0.1:51321",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-journal",
+    "source": "test-results/journal-adapter-selected-baseline",
+    "status": "passed",
+    "input": "94daca814b9d84a0630684ac3ddca3f93f19b9e328f5f29d1fcc4e32570b4f37",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      7047
+    ],
+    "totalMs": 23109,
+    "native": [
+      {
+        "scope": "journal-carrier-browser",
+        "baselineAssertions": 2,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "journal",
+            "origin": "http://127.0.0.1:51365",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T10-07-51.559Z",
+    "status": "passed",
+    "input": "7ce86f35ded06c0b8890afd46ec653c8f6078c060d6412bc3a597bbb123773d4",
+    "stageCases": [
+      3,
+      4,
+      10,
+      4,
+      6,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2051,
+      3783,
+      1696,
+      1855,
+      1841,
+      4675,
+      1963
+    ],
+    "totalMs": 42385,
+    "native": []
+  }
+]

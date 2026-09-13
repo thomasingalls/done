@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation journal catalogue adapter (`L-1`)
+## Active slice: Release-validation admission catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,29 +61,28 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** The inventory is unsigned `f13bdd1`; the runner foundation is now unsigned
-`f14c68f`. The [content catalogue adapter](./release-validation-execution.md#content-catalogue-adapter--phase-2b)
-executes 13 baselines and five discriminating mutations, including Q-04 unreadable-load, through the
-shared disposable owner. Exact report/source/patch evidence and independently pinned Chromium bytes
-join the stage contract. Full/default, selected control and no-mutant variants remain distinct; the
-standalone command keeps its options and reports. Six native controls verify Vite/browser cleanup
-through completion, timeout, cancellation and process death. Native URLs exposed Vite's port-zero
-fallback; the repaired run uses OS-assigned ports. The [evidence packet](./account-conformance-runs/2026-09-13-content-adapter/README.md)
-retains both attempts and the effective census/process controls. Production content code and the
-catalogue's assertions are unchanged. This adapter phase is left uncommitted.
+**Just completed.** Content is now unsigned `b9f0984`, following foundation `f14c68f` and inventory
+`f13bdd1`. The [journal catalogue adapter](./release-validation-execution.md#journal-catalogue-adapter--phase-2c)
+passes 17 baseline cases/93 assertions and six discriminating mutations. It shares exact report/source
+reconciliation with content, with explicit family identities and pinned, actually changed mutation
+sources. The real renderer-crash, quota, flush, handoff, concurrent/frozen writer and key-disposal cases
+remain intact. Default, selected and no-mutant standalone options/report files are exercised. The
+full content regression and six native ownership controls pass. The [evidence packet](./account-conformance-runs/2026-09-13-journal-adapter/README.md)
+retains the results and controls. No production storage code or existing scenario assertion changed.
+The journal adapter phase remains uncommitted.
 
-**The full phase-2 contract is not closed.** The manifest covers 260 required test files, all 163
-catalogue cases/54 mutants, 29 vector corpora and 83 registry entries. It keeps 445 unresolved rows
-visible and refuses whole-release execution. Ten catalogues (150 cases/49 mutations), general test
-adapters, wrappers, selected postconditions and measured deadlines remain. Existing wrappers do not
-receive shared-cache credit merely for naming a now-supported content case. P-06 remains unswept;
-the complete vector chain and immutable aggregate have not run. The earlier silent package-manager
-attempt remains undiagnosed; exact Node commands work.
+**The full phase-2 contract is not closed.** The manifest covers 261 required test files, all 163
+catalogue cases/54 mutants, 29 vector corpora and 83 registry entries. It retains 442 unresolved rows
+and refuses whole-release execution. Nine catalogue adapters (133 cases/43 mutations), general test
+adapters, wrappers, selected postconditions and measured deadlines remain. Running the store-contract
+wrapper's nested journal selection does not discharge that wrapper. P-06 remains unswept; the complete
+vector chain and immutable aggregate have not run. The earlier silent package-manager attempt remains
+undiagnosed; exact Node commands work.
 
-**Next single phase.** Adapt the journal catalogue's 17 normal cases and six mutations to the owned
-browser/server boundary, independently checking its report and source-patch assumptions. Preserve
-full/default and selected variants. Then resolve remaining catalogue, Node, Vitest, Playwright and
-wrapper selections/postconditions, with vector and traceability prerequisites as ordered receipts.
+**Next single phase.** Adapt admission's 15 normal cases and six mutations, independently checking
+its report, source targets and admission-order assertions before extending the shared owned boundary.
+Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper selections/postconditions, with
+vector and traceability prerequisites as ordered receipts.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/
