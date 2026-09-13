@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "fa9a55f4c85813ab491b71930735995771dc480358a94cb2ac66f43100a85c02",
+  "inventoryDigest": "1ee0e547a2581eb37429442975f270b69c899c7b0873bcfac39371c840143136",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -8222,7 +8222,7 @@
       "id": "campaign:scripts/account-sync/run.mjs",
       "kind": "campaign",
       "path": "scripts/account-sync/run.mjs",
-      "callSites": [{ "line": 144, "form": "run", "arguments": ["name", "args", "timeout"] }],
+      "callSites": [{ "line": 145, "form": "run", "arguments": ["name", "args", "timeout"] }],
       "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
     },
     {

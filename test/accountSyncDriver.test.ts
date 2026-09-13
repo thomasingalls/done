@@ -2,7 +2,11 @@
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
 import { fixture, flush } from './account-sync/scheduler-fixture';
-import { driveOutboundStep, type SyncLane } from '../src/crdt/accountSyncDriver';
+import {
+  createSyncScheduler,
+  driveOutboundStep,
+  type SyncLane,
+} from '../src/crdt/accountSyncDriver';
 import type { DriverGate, DriverOperations } from '../src/crdt/accountDriver';
 
 it('alternates ready lanes, keeps independent idle deadlines and wakes an idle sender', async () => {
@@ -430,4 +434,34 @@ it('generated receive expiry streaks stay retryable across gates and local wakes
     ),
     { seed: 1209052, numRuns: 80 },
   );
+});
+
+it('outbound size errors remain terminal observations across automatic wakes', async () => {
+  const { EnvelopeSizeError } = await import('../account-protocol/envelope');
+  let calls = 0;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      receive: async () => ({ kind: 'idle', receivedThrough: 0 }),
+      send: async () => {
+        calls++;
+        throw new EnvelopeSizeError();
+      },
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  expect(f.scheduler.runtime.status.send.reason).toBe('envelope-size');
+  await flush();
+  f.setGate('offline');
+  f.scheduler.wake('gate');
+  f.setGate('ready');
+  f.scheduler.wake('online');
+  f.scheduler.wake('local');
+  await f.tick(0);
+  expect(calls).toBe(1);
+  f.scheduler.runtime.retry('send');
+  await f.tick(0);
+  expect(calls).toBe(2);
+  await f.scheduler.dispose();
 });

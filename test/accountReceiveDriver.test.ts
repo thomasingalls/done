@@ -168,14 +168,14 @@ it('caps unknown backoff, preserves its floor through Local pauses, and allows o
 });
 it('offline and pressure pause timers without deleting a permanent halt, including failures while paused', async () => {
   for (const paused of ['offline', 'local-storage'] as const)
-    for (const failure of ['error', 'conflict'] as const) {
+    for (const failure of ['error', 'conflict', 'inbound-size', 'response-too-large'] as const) {
       const f = fixture();
       f.scheduler.wake('start');
       await f.tick(0);
       f.setGate(paused);
       f.scheduler.wake();
       if (failure === 'error') f.calls[0]!.reject();
-      else f.calls[0]!.resolve({ kind: 'blocked', receivedThrough: 0, reason: 'conflict' });
+      else f.calls[0]!.resolve({ kind: 'blocked', receivedThrough: 0, reason: failure });
       await flush();
       expect(f.timers.size).toBe(0);
       f.setGate('ready');
@@ -183,9 +183,7 @@ it('offline and pressure pause timers without deleting a permanent halt, includi
       f.scheduler.wake();
       await f.tick(60000);
       expect(f.calls).toHaveLength(1);
-      expect(f.scheduler.status().reason).toBe(
-        failure === 'error' ? 'operation-failed' : 'conflict',
-      );
+      expect(f.scheduler.status().reason).toBe(failure === 'error' ? 'operation-failed' : failure);
       f.scheduler.wake('retry');
       await f.tick(0);
       expect(f.calls).toHaveLength(2);
@@ -560,5 +558,24 @@ it('classifies explicit expiry without giving it authority over durable progress
     );
     expect(step.kind).toBe(mode === 'conflict' ? 'blocked' : mode);
     expect(step.receivedThrough).toBe(mode === 'progress' ? 1 : 0);
+  }
+});
+
+it('terminal size observations retain only a closed reason and the authenticated durable cursor', async () => {
+  for (const reason of ['inbound-size', 'response-too-large', 'arbitrary writing from network']) {
+    const step = await driveReceiveStep(
+      {
+        receiveStatus: async () => ({ state: 'ready', receivedThrough: 7 }),
+        receiveNext: async () => ({ kind: 'rejected', reason, receivedThrough: 999 }),
+      },
+      'token',
+      () => 'ready',
+    );
+    expect(step).toEqual({
+      kind: 'blocked',
+      receivedThrough: 7,
+      reason:
+        reason === 'inbound-size' || reason === 'response-too-large' ? reason : 'operation-failed',
+    });
   }
 });

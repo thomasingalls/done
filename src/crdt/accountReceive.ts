@@ -22,7 +22,11 @@ import {
   decodeInboundRequest,
   decodeInboundPage,
 } from '../../account-protocol/inboundTransport';
-import { privateDeliveryPost, recordPrivateReceiveExpiry } from '../account/privateDeliveryHttp';
+import {
+  privateDeliveryPost,
+  recordPrivateReceiveExpiry,
+  recordPrivateTransportDiagnostic,
+} from '../account/privateDeliveryHttp';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   hex,
@@ -251,6 +255,7 @@ async function openAccountReceiveOwner(
   const fetchPage = async (operatorToken: string) => {
     let request: Bytes | undefined,
       page: Bytes | null = null;
+    let oversized = false;
     try {
       return await runNetworkTask(async (network) => {
         const query = (request = await runCaptureTask((task, owner, route) =>
@@ -265,10 +270,14 @@ async function openAccountReceiveOwner(
                 query,
                 MAX_PENDING_BYTES,
                 network.signal,
+                (event) => {
+                  recordPrivateTransportDiagnostic(event);
+                  if (event.code === 'response-too-large') oversized = true;
+                },
               )
             : null;
         });
-        return network.step(() => ({ request: query, page }));
+        return network.step(() => ({ request: query, page, oversized }));
       });
     } catch (cause) {
       request?.fill(0);
@@ -557,10 +566,16 @@ async function openReceivingWorkspace(
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
       const work = (async () => {
-        const { request, page } = await fetchPage(operatorToken);
+        const { request, page, oversized } = await fetchPage(operatorToken);
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
+          if (oversized)
+            return {
+              kind: 'rejected' as const,
+              reason: 'response-too-large' as const,
+              recorded: false,
+            };
           if (!page) return { kind: 'unknown' as const, recorded: false };
           // Only the ordered owner may verify, persist and publish this exact request's page.
           try {
@@ -578,6 +593,22 @@ async function openReceivingWorkspace(
                 cause instanceof ReceiveRequestExpired ? 'commit' : 'verify',
               );
               return { kind: 'expired' as const, recorded: false };
+            }
+            if (
+              cause instanceof AdmissionError &&
+              cause.cause instanceof InboundError &&
+              cause.cause.reason === 'size'
+            ) {
+              recordPrivateTransportDiagnostic({
+                operation: 'read-v2',
+                phase: 'verify',
+                code: 'inbound-size',
+              });
+              return {
+                kind: 'rejected' as const,
+                reason: 'inbound-size' as const,
+                recorded: false,
+              };
             }
             throw cause;
           }

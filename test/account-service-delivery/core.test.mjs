@@ -205,3 +205,38 @@ test('closing authority during verification prevents any decision or witness fro
   assert.equal((await x.call(x.make())).kind, 'unknown');
   assert.equal(x.f.rows('delivery_decisions').length, 0);
 });
+
+test('R-01 independent sender cannot allocate an oversized decision, including refusal successors', async (t) => {
+  const { decodeSubmission } = await import('../../account-protocol/submission.ts');
+  const x = await ready(t);
+  const wireAt = (size, options = {}) => {
+    const overhead =
+      decodeSubmission(x.make(1, 'size', { ct: Buffer.alloc(16), ...options }).bytes).envelope
+        .length - 16;
+    const w = x.make(1, 'size', { ...options, ct: Buffer.alloc(size - overhead, 91) });
+    assert.equal(decodeSubmission(w.bytes).envelope.length, size);
+    return w;
+  };
+  for (const gen of [1, 2]) {
+    const before = inventory(x);
+    assert.deepEqual(await x.call(wireAt(524289, { gen })), {
+      kind: 'unknown',
+      reason: 'envelope-size',
+    });
+    assert.equal(inventory(x), before, 'no accepted/refused decision or witness mutation');
+  }
+  const stale = x.make(1, 'old generation', { gen: 2 });
+  const refusal = checked(x, await x.call(stale), stale).refusal;
+  const before = inventory(x);
+  assert.deepEqual(await x.call(wireAt(524289, { parent: refusal })), {
+    kind: 'unknown',
+    reason: 'envelope-size',
+  });
+  assert.equal(inventory(x), before);
+  const exact = wireAt(524288, { parent: refusal });
+  const accepted = await x.call(exact);
+  assert.equal(checked(x, accepted, exact).kind, 'accepted');
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual(await x.call(exact), accepted);
+});

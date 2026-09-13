@@ -29,11 +29,11 @@
     },
     {
       "path": "account-protocol/diagnostics.ts",
-      "sha256": "bf36934c2e733002a9392984a844a6d8cb18f314e516f6666800d5e9faa9762f"
+      "sha256": "cf979d491e84d7f878b91f23e9b9712f854ae6f807db1f884ca191dc40cbbb76"
     },
     {
       "path": "account-protocol/envelope.ts",
-      "sha256": "7e827a50acf931feda796693d1de2721c0bdef0cdff06d7bc9593d1f162e1cb1"
+      "sha256": "d03639083738d1841c1202f328900fc07e0807a499b8de2322e7b59eed1a14da"
     },
     {
       "path": "account-protocol/genesis.ts",
@@ -77,7 +77,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "0756660148627462a89f6498096661ebebc8bdf43db67585685403bf817fff73"
+      "sha256": "0ff77afe6d3923b4f204000564f8fdd80cd9b0456730c8eb6704b161c29f4791"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -121,7 +121,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "a5dcde2c42ea8ef89c7afb51a8c69cc073f2914336b4f71e8c799e7363c4629c"
+      "sha256": "8329ef781adef7759b9d625fae67d03fec736649884aab0cc3eb745b4e4a055b"
     },
     {
       "path": "src/account/recovery.ts",
@@ -149,7 +149,7 @@
     },
     {
       "path": "src/crdt/accountDelivery.ts",
-      "sha256": "0bfada4f07b28350351aea5361981101603b9c76b1b886f9ca8c6a84a3b1c4af"
+      "sha256": "6f2f35454cfd0d1ad9c0617c452d161022304dd589d488bedb743a5286145add"
     },
     {
       "path": "src/crdt/accountDriver.ts",
@@ -157,7 +157,7 @@
     },
     {
       "path": "src/crdt/accountEnvelopePreparation.ts",
-      "sha256": "15026708bb8961bca7df9045f8109aa8f0cdb3b726a285f389f20b0aefd82ee6"
+      "sha256": "47522695a2557e48a92b0d12ec7ca331f75318a1069757f1d55191f41e491882"
     },
     {
       "path": "src/crdt/accountInbound.ts",
@@ -169,11 +169,11 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "abc0182eb6c138b27a2b96517e4d17becf883a0e55195c4cf183089738892b97"
+      "sha256": "f34823fd7aeda773e9d117218391c81b4653b48fc65c31368269d6433b9f970a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
-      "sha256": "971a6970223160cf3bd90f2efad87d0741a85f200a9e6dfdc6002f6fdb598ddf"
+      "sha256": "7d5b0bd243aa23994d6dc3579a7ad76f60d6133ae069a30c84beb953839ee06f"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -185,7 +185,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "34648555c7e3949cc87603151e7cef146b88538c661ba214dff2ffc900e884cb"
+      "sha256": "658d0a72df039b55ef05cb32d10d12a84d32745911aa3597ebbc047f0ad9410f"
     },
     {
       "path": "src/crdt/accountSyncState.ts",
@@ -281,7 +281,7 @@
     },
     {
       "path": "src/crdt/inboundRecord.ts",
-      "sha256": "47d2e7a82b4dc87190f52d1201388e091c36e97d8f4ce3f0c9e36a7d42238a80"
+      "sha256": "13f91ffee20415a9212fea4894c69fd206e0a6e8085343e3eae58482c555ddd2"
     },
     {
       "path": "src/crdt/index.ts",
@@ -765,11 +765,11 @@
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 69
+          "line": 74
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 91
+          "line": 96
         }
       ]
     },
@@ -1009,11 +1009,11 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 83
+          "line": 99
         },
         {
           "path": "account-protocol/envelope.ts",
-          "line": 130
+          "line": 168
         }
       ]
     },
@@ -1023,7 +1023,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 73
+          "line": 89
         }
       ]
     },
@@ -1033,7 +1033,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 71
+          "line": 87
         }
       ]
     },
@@ -1067,7 +1067,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 156
+          "line": 80
         }
       ]
     },
@@ -1077,7 +1077,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 169
+          "line": 207
         }
       ]
     },
@@ -1087,7 +1087,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 68
+          "line": 84
         }
       ]
     },
@@ -1097,7 +1097,7 @@
       "sites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 69
+          "line": 85
         }
       ]
     },
@@ -1573,7 +1573,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 303
+          "line": 307
         }
       ]
     },

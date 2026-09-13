@@ -226,3 +226,58 @@ it('batch count, bytes, actor boundary, duplicate, order and late-source control
   );
   expect(() => inspectSpool(mixed.rows, route)).toThrow(/actor/);
 });
+
+it('R-01 oversized sources cannot allocate a position or burn another attempt after restart', async () => {
+  const { createEnvelopePreparation } = await import('../src/crdt/accountEnvelopePreparation');
+  type Context = Parameters<typeof createEnvelopePreparation>[0];
+  for (const resumed of [false, true]) {
+    const { rows } = await sources([{ system: false, length: 600 * 1024 }]);
+    if (resumed) {
+      const refs = await selectEnvelopeSources(
+        inspectSpool(rows, route),
+        route,
+        true,
+        crypto.subtle,
+      );
+      append(rows, allocation(refs, 1));
+      append(rows, { type: 'attempt', position: 1, attempt: 1 });
+    }
+    const before = rows.map((r) => hex(r.bytes));
+    let writes = 0,
+      keyReads = 0;
+    const owner = {
+      carrier: {
+        load: async () => rows.map((r) => ({ ...r, bytes: r.bytes.slice() })),
+        spoolWitness: async () => {
+          writes++;
+          throw Error('Allocation began');
+        },
+        appendSpool: async () => {
+          writes++;
+          throw Error('Allocation began');
+        },
+      },
+    };
+    const task = { step: <T>(f: () => T) => f(), wait: <T>(f: () => Promise<T>) => f() };
+    const context: Context = {
+      batchSources: true,
+      whenDurable: async () => {},
+      checkPublication: async () => {},
+      inspect: inspectSpool,
+      key: () => {
+        keyReads++;
+        return kg;
+      },
+      signer: () => pair.privateKey,
+      run: (fn) =>
+        fn(task as Parameters<typeof fn>[0], owner as unknown as Parameters<typeof fn>[1], route),
+    };
+    for (let retry = 0; retry < 2; retry++)
+      await expect(createEnvelopePreparation(context).prepareNextEnvelope()).rejects.toMatchObject({
+        reason: 'envelope-size',
+      });
+    expect(writes).toBe(0);
+    expect(keyReads).toBe(0);
+    expect(rows.map((r) => hex(r.bytes))).toEqual(before);
+  }
+}, 20000);

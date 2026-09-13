@@ -1221,13 +1221,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 68,
+          "line": 84,
           "label": "done/envelope/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/envelope.ts",
-          "line": 69,
+          "line": 85,
           "label": "done/envelope/v2",
           "kind": "literal"
         }
@@ -1269,7 +1269,7 @@
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 71,
+          "line": 87,
           "label": "done/env/v${h.v}",
           "kind": "template"
         }
@@ -1319,7 +1319,7 @@
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 73,
+          "line": 89,
           "label": "done/env-sig/v${h.v}",
           "kind": "template"
         }
@@ -1370,13 +1370,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 83,
+          "line": 99,
           "label": "done/env-body/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/envelope.ts",
-          "line": 130,
+          "line": 168,
           "label": "done/env-body/v1",
           "kind": "literal"
         }
@@ -1427,13 +1427,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
-          "line": 156,
+          "line": 80,
           "label": "done/envelope-wire/v${e.v}",
           "kind": "template"
         },
         {
           "path": "account-protocol/envelope.ts",
-          "line": 169,
+          "line": 207,
           "label": "done/envelope-wire/v${version}",
           "kind": "template"
         }
@@ -2323,7 +2323,7 @@
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 303,
+          "line": 307,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -2691,13 +2691,13 @@
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 69,
+          "line": 74,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 91,
+          "line": 96,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         }

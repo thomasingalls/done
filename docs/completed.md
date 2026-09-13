@@ -3968,3 +3968,34 @@ No immutable release aggregate or production repair is claimed. Personal package
 vectors, historical reviews/evidence, formal debt files and L-2 are preserved. R-02/Q-06's selected
 signing chain is closed; R-01 precedes durable Account cutover. General test/wrapper integration still
 includes R-03/N-06 deadlines and R-04 style scope, followed by P-06 and immutable release validation.
+
+
+## 2026-09-13 — R-01 current service/receiver bounds and size diagnostics (L-1)
+
+Starting at signed `4bb0904`, current v2 seals and the owned sender share the receiver's 512 KiB
+complete-wire, 255-update and 512 KiB decoded-update bounds. Preflight precedes new positions and
+invocations, including resumed unsealed positions. The service rejects new oversized decisions
+without issuing an acceptance/refusal or changing its witness, while broad historical codecs,
+service census, pagination and exact decision retries remain available.
+
+A fresh candidate review found the historical pending-wire bypass. An unsubmitted old wire now stops
+before submission persistence; an existing submission retains exact retry and receives a bounded
+terminal size hint. Receive wire/count and HTTP declared/streamed oversize preserve Local and its
+cursor and halt automatic polling. Explicit retry supplies no authority to skip or replace writing.
+A service-to-real-receiver 256-update counterexample records the remaining malicious-member boundary:
+content-blind acceptance cannot prove encrypted semantics. Its trust/recovery disposition is explicit;
+Account supersession/restore is not added here.
+
+124 focused unit tests, 38 service/transport tests, 16 planning tests and twelve selected native cases
+pass, including actual forbidden-allocation control and historical pending/restart cases. Typecheck,
+scoped style, current construction registry and affected vector checks pass. Initial fixture failures,
+timeouts and the large-paste responsiveness limitation are retained. Native historical setup needs
+measured deadlines; the existing sync native stage now allows 600 seconds. This staged evidence is not
+a full wrapper campaign or immutable release aggregate. No runtime implementation commit is made in
+this turn. See `docs/review/implementation/service-receiver-bounds.md` and the normalized evidence at
+`docs/account-conformance-runs/2026-09-13-r01-bounds/`.
+
+All personal/package/vector preservation hashes and L-2 are unchanged; historical reviews/intakes,
+formal debts, root `done ` and signing backups remain untouched. The manifest stays at 607 obligations,
+416 unresolved. General test/wrapper integration with R-03/N-06 and R-04 is next; P-06 and the immutable
+aggregate follow. Multi-member recovery and large-paste/capacity validation remain open.

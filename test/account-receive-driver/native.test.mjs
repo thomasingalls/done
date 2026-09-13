@@ -253,3 +253,93 @@ test(
     assert.equal((await driverStatus(f.page)).phase, 'closed');
   },
 );
+
+for (const mode of ['wire', 'count', 'declared', 'streamed'])
+  test(
+    `R-01 ${mode} size failure is terminal, preserves Local, and retries only explicitly`,
+    { timeout: 45000 },
+    async (t) => {
+      const { f, item, wires, initial } = await remote(t, 'r01-' + mode);
+      const oversized =
+        mode === 'wire' || mode === 'count'
+          ? await f.page.evaluate(
+              async ({ item, mode }) => {
+                const doc = new Harness.Y.Doc({ gc: false });
+                try {
+                  doc.getText('master').insert(0, 'x'.repeat(600 * 1024));
+                  const updates =
+                    mode === 'count'
+                      ? Array.from({ length: 256 }, () => [0, 0])
+                      : [[...Harness.Y.encodeStateAsUpdate(doc)]];
+                  return Harness.fixtureInboundEnvelope(item.slotId, item.code, 1, updates);
+                } finally {
+                  doc.destroy();
+                }
+              },
+              { item: args(item), mode },
+            )
+          : null;
+      let calls = 0,
+        bad = true;
+      await f.context.route(path(f), (route) => {
+        calls++;
+        const q = Buffer.from(route.request().postData());
+        return route.fulfill({
+          status: 200,
+          contentType: 'application/octet-stream',
+          body: answer(
+            f,
+            item,
+            q,
+            bad ? oversized : JSON.parse(q.toString())[10] === 0 ? wires[0] : null,
+          ).bytes,
+        });
+      });
+      if (!oversized)
+        await f.page.evaluate((mode) => {
+          window.sizeFault = true;
+          const fetch = window.fetch;
+          window.fetch = (...args) =>
+            window.sizeFault && String(args[0]).includes('/delivery/read-v2')
+              ? Promise.resolve(
+                  new Response(new Uint8Array(mode === 'streamed' ? 4 * 1024 * 1024 + 1 : 1), {
+                    headers: {
+                      'content-type': 'application/octet-stream',
+                      ...(mode === 'declared'
+                        ? { 'content-length': String(4 * 1024 * 1024 + 1) }
+                        : {}),
+                    },
+                  }),
+                )
+              : fetch(...args);
+        }, mode);
+      await polling(f.page, item);
+      await waitPredicate(f.page, () => opened.receiver.status.phase === 'blocked');
+      assert.equal(
+        (await driverStatus(f.page)).reason,
+        oversized ? 'inbound-size' : 'response-too-large',
+      );
+      assert.equal((await driverStatus(f.page)).receivedThrough, 0);
+      assert.equal(await view(f.page), initial);
+      const before = calls;
+      await online(f.page, false);
+      await online(f.page, true);
+      assert.equal(calls, before);
+      assert.equal((await driverStatus(f.page)).nextAttemptAt, null);
+      bad = false;
+      await f.page.evaluate(() => {
+        window.sizeFault = false;
+      });
+      await retry(f.page);
+      await waitPredicate(f.page, () => opened.receiver.status.receivedThrough === 1);
+      await idle(f.page);
+      assert.equal(await view(f.page), 'REMOTE0 ' + initial);
+      await close(f.page);
+      await cold(f);
+      await polling(f.page, item);
+      await idle(f.page);
+      assert.equal((await driverStatus(f.page)).receivedThrough, 1);
+      assert.equal(await view(f.page), 'REMOTE0 ' + initial);
+      await close(f.page);
+    },
+  );

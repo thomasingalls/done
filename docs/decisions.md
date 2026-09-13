@@ -2427,3 +2427,22 @@ Focused affected controls pass, and the review/documentation/baseline reconcilia
 signed checkpoint. Signing proves commit authorship and tree identity, not a new aggregate result.
 The temporary signing-progress ref can be removed after the verified reconciliation commit; original
 history backup refs remain. No remote push or personal-instance operation is part of this decision.
+
+
+## Separate current envelope admission from historical readback — 2026-09-13
+
+R-01 narrows new sender/sealer admission to the current receiver's exact complete-wire/count/decoded
+bounds and applies the visible wire cap before any new service decision. Historical structural codecs
+must remain broad because the service uses them to authenticate its existing ledger. Known local
+oversize consumes no new position or invocation; an old sealed wire without a submission consumes no
+new submission. Existing submissions retain exact retry because a lost acknowledgement may conceal
+an earlier acceptance. An unsigned `envelope-size` service hint only stops automatic retry.
+
+Current receive `inbound-size` and HTTP `response-too-large` retain durable state and need an explicit
+retry. These observations never authorize replacement, skipping, re-sealing or deletion. The private
+creating-member workflow trusts its member to produce conforming decryptable updates; the service
+cannot prove encrypted counts, actors or Yjs semantics. A small 256-update service-to-receiver case
+keeps that residual executable. General membership needs a malicious-member recovery policy under
+F-09 and membership/revocation work; already accepted invalid positions cannot be silently overwritten.
+A future compatible reader or authenticated baseline/lineage recovery is separate work. See
+`docs/review/implementation/service-receiver-bounds.md` for boundaries and retained validation.

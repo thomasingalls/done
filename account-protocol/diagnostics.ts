@@ -1,6 +1,7 @@
 /** Unsigned diagnostic vocabulary. None of these observations grants protocol authority. */
 export const SERVICE_HINTS = [
   'invalid-request',
+  'envelope-size',
   'unavailable',
   'unsupported-epoch',
   'out-of-order',
@@ -87,6 +88,7 @@ export const DIAGNOSTIC_CODES = [
   'network-unavailable',
   'response-invalid',
   'response-too-large',
+  'inbound-size',
   'aborted',
   'timeout',
   'http-denied',

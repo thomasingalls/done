@@ -47,8 +47,8 @@ These IDs belong to the implementation review and must not be inserted into the 
 
 **R intake and signing update.** The [verified signing sweep](./signing-prep-2026-09-13.md) is complete
 for all thirty outstanding commits, with identical trees and reconciled current baseline references.
-R-01 is a confirmed availability gap to repair before any durable Account cutover; its
-specific inbound diagnostic is related to F-10, not proof that the earlier refusal work failed.
+R-01's [bounded admission/diagnostic repair](./service-receiver-bounds.md) passes; its malicious-member
+recovery disposition remains explicit under F-09. General validation integration is next.
 R-03 is another N-06/F-20 property-deadline instance. R-04 adds explicit whole-tree style-gate scope
 and cleanup to F-20, with Q-08 evidence preservation. R-02 corrects current records and extends
 Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime change.
@@ -209,7 +209,7 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 
 | ID | Current disposition | Shared queue and separate completion criteria | Importance |
 | --- | --- | --- | --- |
-| <a id="r-01"></a>**R-01** Service/receiver envelope limits and lost inbound cause | confirmed and reproduced; [response](./9ff48b5-d03e473.md#assessment-r-01) | distinct availability repair; diagnostics related to [F-10](#f-10). Shared wire policy, sender/count/decoded bounds, effective edge controls, no accepted-prefix advance on refusal, bounded visible terminal cause, and an explicit already-accepted bad-position recovery/trust policy. Service cannot validate ciphertext semantics. | high before durable Account cutover; medium present exposure |
+| <a id="r-01"></a>**R-01** Service/receiver envelope limits and lost inbound cause | bounded repair complete; [result and residual trust/recovery limits](./service-receiver-bounds.md); [response](./9ff48b5-d03e473.md#assessment-r-01) | distinct availability repair; diagnostics related to [F-10](#f-10). Shared wire policy, sender/count/decoded bounds, effective edge controls, no accepted-prefix advance on refusal, bounded visible terminal cause, and an explicit already-accepted bad-position recovery/trust policy. Service cannot validate ciphertext semantics. | high before durable Account cutover; medium present exposure |
 | <a id="r-02"></a>**R-02** Stale commit state and signing inventory | addressed for this chain: current records corrected, all thirty replacements verified and workflow reconciled; [response](./9ff48b5-d03e473.md#assessment-r-02) | Q-06/Q-07 and P-04; all thirty signatures/tree pairs, retained old objects, current reference migration, source-equivalent executable baselines and a committed crosswalk. Historical intake snapshots remain unchanged. | low records; aggregate provenance prerequisite |
 | <a id="r-03"></a>**R-03** Batch generated-property default deadline | confirmed absent explicit timeout; current focused property passes; [response](./9ff48b5-d03e473.md#assessment-r-03) | N-06/F-20; finite measured property deadline and owned outer stage, unchanged 120 histories/seed, duration and failure/counterexample retention. A passing idle run does not close it. | low test robustness; aggregate prerequisite |
 | <a id="r-04"></a>**R-04** Whole-tree style commands fail | reproduced: 83 lint errors and 1,170 format files; [response](./9ff48b5-d03e473.md#assessment-r-04) | F-20 integration, related Q-08; explicit immutable-archive scope, repair live files, retain active documentation gates, execute/report full commands independently of scoped checks. Never reformat hash-pinned evidence to make a style check pass. | low housekeeping; medium validation credibility |

@@ -57,10 +57,14 @@ ciphertext digest are signed, while ciphertext digest cannot be an input to its 
 
 LP is u16 byte length followed by printable ASCII. Identifiers use 1–128 ASCII letters, digits, `_` or `-`.
 Integers are positive safe integers with canonical decimal encoding. Parsing rejects unknown versions,
-domain/version mismatch, leading-zero numbers, malformed lengths and trailing bytes. Initial local limits
-are 256 nonempty updates and 4 MiB sealed plaintext, with a bounded wire overhead. These are defensive
-codec limits, not a measured batching policy. Input is captured before async crypto; returned bytes are
-detached. Plaintext/key copies are erased when operations settle.
+domain/version mismatch, leading-zero numbers, malformed lengths and trailing bytes. Historical readers
+retain the structural limit of 256 nonempty updates and 4 MiB plaintext. New v2 seals use the current
+admission profile: at most 255 updates, at most 512 KiB decoded update bytes, and at most **512 KiB for
+the complete encrypted wire**, including framing and the GCM tag. The wire cap usually binds first.
+The owned sender checks this before position/invocation allocation, including resumed unsealed positions.
+The separate 32-source/64 KiB batch target still permits a fitting larger singleton. Input is captured
+before async crypto; returned bytes are detached. Plaintext/key copies are erased when operations settle.
+See [R-01's compatibility and recovery policy](./review/implementation/service-receiver-bounds.md).
 
 The content-blind verifier requires an explicit route and externally resolved device public key, checks
 route, ciphertext digest and signature, and returns opaque validated fields. The opener then authenticates

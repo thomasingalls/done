@@ -17,6 +17,9 @@ import {
   openNetworkEnvelope,
   ENVELOPE_BODY_LIMIT,
   ENVELOPE_UPDATE_LIMIT,
+  assertAdmittedEnvelope,
+  ADMITTED_ENVELOPE_WIRE_LIMIT,
+  EnvelopeSizeError,
   type EnvelopeHeader,
   type NetworkEnvelope,
 } from '../account-protocol/envelope';
@@ -56,6 +59,80 @@ const body = {
   actor_kind: 'human' as const,
   updates: [bytes(first.inputs.updates[0])],
 };
+
+it('current admission uses exact wire bytes across 32 generated headers and preserves large singletons', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.integer({ min: 1, max: 128 }),
+      fc.integer({ min: 1, max: 128 }),
+      fc.constantFrom(1, 999, Number.MAX_SAFE_INTEGER),
+      async (width, actorWidth, seq) => {
+        const header = {
+          ...h,
+          workspace_id: 'w'.repeat(width),
+          credential_id: 'c'.repeat(width),
+          seq,
+        };
+        const actor_id = 'a'.repeat(actorWidth);
+        // Independent byte framing oracle, deliberately not the production sizing helper.
+        const overhead =
+          fields('done/envelope-wire/v2', ...aadFields(header)).length +
+          12 +
+          32 +
+          4 +
+          16 +
+          64 +
+          fields('done/env-body/v1', actor_id, 'human').length +
+          4 +
+          4;
+        const length = ADMITTED_ENVELOPE_WIRE_LIMIT - overhead;
+        expect(length).toBeGreaterThan(64 * 1024);
+        for (const delta of [-1, 0, 1]) {
+          const candidate = {
+            actor_id,
+            actor_kind: 'human' as const,
+            updates: [new Uint8Array(length + delta).fill(97)],
+          };
+          if (delta > 0) {
+            expect(() => assertAdmittedEnvelope(header, candidate)).toThrow(EnvelopeSizeError);
+            // Must reject before it asks any cryptographic primitive to run.
+            await expect(
+              sealNetworkEnvelope(
+                header,
+                candidate,
+                key,
+                signer,
+                baseline.nonce,
+                new Proxy(crypto.subtle, {
+                  get() {
+                    throw Error('Crypto invoked before bounds');
+                  },
+                }),
+              ),
+            ).rejects.toBeInstanceOf(EnvelopeSizeError);
+          } else {
+            assertAdmittedEnvelope(header, candidate);
+            const wire = await sealNetworkEnvelope(header, candidate, key, signer, baseline.nonce);
+            expect(wire.length).toBe(ADMITTED_ENVELOPE_WIRE_LIMIT + delta);
+            const opened = await openNetworkEnvelope(wire, header, verifier, key);
+            expect(Buffer.compare(opened.updates[0]!, candidate.updates[0]!)).toBe(0);
+          }
+        }
+      },
+    ),
+    { seed: 901013, numRuns: 32 },
+  );
+});
+it('new seals admit 255 updates while historical codecs still read 256-update bodies', async () => {
+  const current = { ...body, updates: Array.from({ length: 255 }, () => new Uint8Array([0, 0])) };
+  const wire = await sealNetworkEnvelope(h, current, key, signer, baseline.nonce);
+  expect((await openNetworkEnvelope(wire, h, verifier, key)).updates).toHaveLength(255);
+  const historical = { ...current, updates: [...current.updates, new Uint8Array([0, 0])] };
+  expect(decodeEnvelopeBody(encodeEnvelopeBody(historical)).updates).toHaveLength(256);
+  await expect(
+    sealNetworkEnvelope(h, historical, key, signer, baseline.nonce),
+  ).rejects.toBeInstanceOf(EnvelopeSizeError);
+});
 
 // An independent framing/crypto oracle (Node OpenSSL), not the codec under test.
 const fields = (...items: string[]) =>

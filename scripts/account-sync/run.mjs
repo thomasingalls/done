@@ -122,7 +122,8 @@ try {
       60000,
     ],
     ...[
-      ['native', 180000],
+      // R-01 adds real historical 600 KiB spool/restart cases; retain a finite measured stage budget.
+      ['native', 600000],
       ['controls', 90000],
       ['native-controls', 150000],
       ['generated', 450000],

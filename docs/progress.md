@@ -43,58 +43,55 @@ that is no longer active.
 ---
 
 
-## Active slice: R-01 service/receiver bounds — ready for the next bounded phase (`L-1`)
+## Active slice: General validation-runner integration — ready (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; R-01 repair is next, before durable Account cutover
+blocks_on: none; next bounded implementation is the general test/wrapper integration set
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** The [R intake](./review/implementation/9ff48b5-d03e473.md) assessed all 23 prior
-status IDs and R-01–R-04 with byte-preserving provenance. After keyboard confirmation, the
-[signing sweep](./review/implementation/signing-prep-2026-09-13.md) verified thirty signed replacements
-ending at `3e53b4a`, with identical trees/messages/author/committer fields. The original history is
-retained. Current phase navigation and three executable historical-source lookups are reconciled;
-old review/evidence/receipt IDs remain unchanged under the permanent crosswalk. This signed
-checkpoint includes the intake and reconciliation. No signing debt remains for the selected chain.
+**Just completed.** [R-01's bounded repair](./review/implementation/service-receiver-bounds.md),
+starting at signed `4bb0904`, aligns new sender/sealer/service admission with the receiver while keeping
+historical readback and exact decision retries. Known oversize stops before new allocation; old pending
+sealed/submitted states receive terminal diagnostics without losing writing. The content-blind service
+still cannot validate encrypted semantics. The private creating-member trust assumption and absence of
+an already-accepted bad-position recovery mechanism are explicit. This round is uncommitted.
 
-**Validation of this change.** All 31 affected inventory/manifest/stage tests and two real old-reader/
-batch-control tests pass. Regenerated graph/manifest counts and all 416 unresolved IDs are unchanged.
-The current schema/writing code is unchanged; this is signature/provenance and source-equivalent
-validation wiring, not R-01 implementation or an immutable release aggregate.
+**Evidence.** 124 unit, 38 service/transport, 16 planning and twelve selected native cases pass, including
+generated boundaries, 255/256-update controls, actual preflight omission, native transaction abort/retry
+and historical pending/restart. Typecheck, scoped style, affected vectors and the current construction
+registry pass. The [archive](./account-conformance-runs/2026-09-13-r01-bounds/README.md) retains failed
+fixture attempts and timing limits. Large-paste responsiveness remains unvalidated. The expanded sync
+native stage has a finite 600-second budget; its full wrapper was not run in this phase. This is staged
+bounded evidence, not a release aggregate.
 
-**Next bounded phase.** R-01 reproduces service acceptance of a 614,698-byte envelope followed by
-receiver refusal with `size`. Align service-visible wire limits and sender/receiver count/decoded
-limits, retain useful bounded terminal diagnostics, and test exact boundaries and unchanged accepted
-prefixes on refusal. The service cannot inspect encrypted update counts or Yjs semantics. Define the
-nonconforming-member and already-accepted bad-position recovery limits; a size cap alone is not a
-universal progress guarantee. Preserve stored writing and fail-closed verification. This repair has
-not started in the signing phase.
+**Next bounded phase.** Integrate the general test-file and wrapper obligations. Include R-03/N-06's
+measured property deadline/outer ownership and R-04's explicit live-file versus immutable-archive style
+scope. Preserve counterexamples, distinguish skipped/missing/time-limited work and avoid fake coverage.
+All eleven catalogue adapters remain complete: 163 cases/54 mutations, 81 non-native controls including
+2,400 histories, and eleven native ownership controls. The manifest still has 607 obligations and 416
+unresolved (257 test-file, 96 command, 63 campaign); none are catalogue rows. P-06 current crypto prose
+and the selected immutable aggregate follow integration.
 
-**Validation integration afterwards.** General test/wrapper adapters include R-03/N-06 deadlines and
-R-04 whole-tree style scope. All eleven catalogue adapters are complete: 163 cases/54 mutations,
-81 non-native controls including 2,400 generated histories, and eleven native ownership controls
-retain staged evidence. The manifest still has 416 unresolved obligations (257 test-file, 96 command,
-63 campaign); none are catalogue rows. P-06 and the selected immutable aggregate follow integration.
-
-**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
+**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account is still
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
-there is no real Account admission receipt. Human promotion/recovery rehearsal and enrollment/adoption
+no real Account admission receipt exists. Human promotion/recovery rehearsal and enrollment/adoption
 follow acceptable private validation. The author's old second device must adopt the first workspace
 with fresh custody, store, counters and credentials, without importing/merging its old writing.
 Membership/revocation/rotation, signout/remove/reset, continuity, operations/deployment and public
-assurance remain later obligations. Wider F-21.4 privacy, F-09 Account/key-loss recovery,
+assurance remain later work. Wider F-21.4 privacy, F-09 Account/key-loss/malicious-member recovery,
 F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain visible.
 
-**Preservation.** Personal browser/profile/recovery/factor/key/service/origin/routing and package output
-stay untouched. Root `done ` is untouched. Historical reviews/intake manifests, evidence, formal debts,
-prior vectors and L-2 remain unchanged. Backup refs preserve both signing sweeps; original historical
-identities remain resolvable locally. The final aggregate must bind its own signed revision.
+**Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 are byte-identical.
+Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
+Historical review/intake/evidence bytes and formal debts are unchanged. The thirty-commit signing sweep
+is complete, its crosswalk and both original-history backups remain, and no new unsigned commit was made.
+The eventual aggregate must bind its own signed revision.
 
 ---
 

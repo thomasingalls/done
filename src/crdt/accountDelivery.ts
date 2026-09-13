@@ -8,9 +8,16 @@ import {
   READ_PAGE_LIMIT,
   type ReadRequest,
 } from '../../account-protocol/deliveryTransport';
-import { verifyNetworkEnvelope } from '../../account-protocol/envelope';
+import {
+  verifyNetworkEnvelope,
+  assertAdmittedEnvelopeWireSize,
+  EnvelopeSizeError,
+} from '../../account-protocol/envelope';
 import type { AuthorityPin } from '../../account-protocol/authority';
-import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+import {
+  privateDeliveryPost,
+  recordPrivateTransportDiagnostic,
+} from '../account/privateDeliveryHttp';
 import { networkRoute } from './spoolRecord';
 /** Internal persistence operations attached to the spool's existing exclusive task queue. */
 import { signSubmission } from '../../account-protocol/submission';
@@ -53,6 +60,24 @@ export interface DeliveryContext {
   ): Promise<T>;
 }
 const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
+async function postSubmission(pin: AuthorityPin, token: string, body: Bytes, signal: AbortSignal) {
+  let oversized = false;
+  const response = await privateDeliveryPost(
+    pin,
+    token,
+    'submit',
+    body,
+    RESPONSE_LIMIT,
+    signal,
+    (event) => {
+      recordPrivateTransportDiagnostic(event);
+      if (event.code === 'envelope-size') oversized = true;
+    },
+  );
+  // Unsigned observation halts automatic retry only; it cannot close, replace or skip a position.
+  if (oversized) throw new EnvelopeSizeError();
+  return response;
+}
 export function describeDelivery(s: DeliveryState) {
   return {
     state: publicationState(s),
@@ -200,14 +225,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
         await network.wait(async () => {
           answer = submissionPaused()
             ? null
-            : await privateDeliveryPost(
-                context.pin(),
-                operatorToken,
-                'submit',
-                payload,
-                RESPONSE_LIMIT,
-                network.signal,
-              );
+            : await postSubmission(context.pin(), operatorToken, payload, network.signal);
         });
         if (!answer) return { kind: 'unknown' as const, recorded: false };
         const response = answer;
@@ -253,6 +271,9 @@ export function createDeliveryOperations(context: DeliveryContext) {
         if (found) return { kind: 'ready' as const, position, bytes: found.slice() };
         const envelope = c.spool.positions.find((p) => p.position === position)?.wire;
         if (!envelope) throw Error('Submission requires a persisted envelope');
+        // A wire without a persisted submission has never been exposed by this owner.
+        // Existing submissions above retain exact retry/readback under historical policy.
+        assertAdmittedEnvelopeWireSize(envelope.length);
         await context.assertCurrent(task);
         const wire = await task.wait(() =>
           signSubmission(
@@ -291,12 +312,10 @@ export function createDeliveryOperations(context: DeliveryContext) {
             const answer = await task.wait(() =>
               submissionPaused()
                 ? null
-                : privateDeliveryPost(
+                : postSubmission(
                     context.pin(),
                     operatorToken,
-                    'submit',
                     encodeSubmit(context.authority().workspace, bytes),
-                    RESPONSE_LIMIT,
                     task.signal,
                   ),
             );

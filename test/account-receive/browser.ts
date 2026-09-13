@@ -11,7 +11,7 @@ import {
   fields,
   hex,
 } from '../../src/crdt/custodyCrypto';
-import { sealNetworkEnvelope } from '../../account-protocol/envelope';
+import type { EnvelopeHeader, EnvelopeBody } from '../../account-protocol/envelope';
 import { prepareAccountCustody } from '../../src/crdt/custody';
 import { deriveStoreName } from '../../src/crdt/storeName';
 import { recordAAD, counterPayload, emptySpoolWitness } from '../../src/crdt/contentRecord';
@@ -34,7 +34,7 @@ export async function fixtureInboundEnvelope(
       try {
         const signer = await openCredential(scope, root, v.marker!.credentials![1], subtle);
         return [
-          ...(await sealNetworkEnvelope(
+          ...(await fixtureSealEnvelope(
             {
               v: 2,
               workspace_id: scope.workspaceId,
@@ -282,5 +282,77 @@ export async function changeReceiveFence(slot: string, restore = false) {
     });
   } finally {
     db.close();
+  }
+}
+
+// Independent browser framing for adversarial/historical members. The production sealer must
+// refuse oversized new writes; tests still need to exercise the receiver with already signed ones.
+async function fixtureSealEnvelope(
+  h: EnvelopeHeader,
+  body: EnvelopeBody,
+  kg: Uint8Array<ArrayBuffer>,
+  signer: CryptoKey,
+  nonce: Uint8Array<ArrayBuffer>,
+  subtle: SubtleCrypto,
+) {
+  const join = (...parts: Uint8Array<ArrayBuffer>[]) => {
+    const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+    let at = 0;
+    for (const part of parts) {
+      out.set(part, at);
+      at += part.length;
+    }
+    return out;
+  };
+  const u32 = (n: number) => {
+    const b = new Uint8Array(4);
+    new DataView(b.buffer).setUint32(0, n);
+    return b;
+  };
+  const header = [
+    String(h.v),
+    h.workspace_id,
+    h.credential_id,
+    String(h.epoch),
+    String(h.gen),
+    String(h.seq),
+  ];
+  const plaintext = join(
+    fields('done/env-body/v1', body.actor_id, body.actor_kind),
+    u32(body.updates.length),
+    ...body.updates.flatMap((u) => [u32(u.length), u]),
+  );
+  const key = await hkdf(
+    kg,
+    new Uint8Array(),
+    fields('done/envelope/v2', h.workspace_id, h.credential_id, String(h.gen)),
+    { name: 'AES-GCM', length: 256 },
+    ['encrypt'],
+    subtle,
+  );
+  try {
+    const ct = new Uint8Array(
+      await subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv: nonce,
+          additionalData: fields('done/env/v2', ...header),
+          tagLength: 128,
+        },
+        key,
+        plaintext,
+      ),
+    );
+    const digest = new Uint8Array(await subtle.digest('SHA-256', ct));
+    const sig = new Uint8Array(
+      await subtle.sign(
+        'Ed25519',
+        signer,
+        fields('done/env-sig/v2', ...header, hex(nonce), hex(digest)),
+      ),
+    );
+    return join(fields('done/envelope-wire/v2', ...header), nonce, digest, u32(ct.length), ct, sig);
+  } finally {
+    plaintext.fill(0);
   }
 }

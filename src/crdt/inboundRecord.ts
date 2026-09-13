@@ -1,6 +1,11 @@
 /** Plaintext schema for a FUTURE encrypted v9 heads row. No store writes or activation. */
 import { hex } from '../../account-protocol/recovery';
-import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
+import {
+  decodeNetworkEnvelope,
+  ADMITTED_ENVELOPE_WIRE_LIMIT,
+  ADMITTED_ENVELOPE_UPDATE_LIMIT,
+  ADMITTED_ENVELOPE_UPDATE_BYTES,
+} from '../../account-protocol/envelope';
 import { decodePositionResponse, type Bytes } from '../../account-protocol/positionDecision';
 import { READ_PAGE_LIMIT, READ_REQUEST_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
@@ -14,9 +19,9 @@ import {
 } from '../../account-protocol/inboundTransport';
 import { MAX_BATCH_BYTES } from './contentRecord';
 export const INBOUND_RECORD_LIMIT = MAX_BATCH_BYTES;
-export const INBOUND_ENVELOPE_LIMIT = 512 * 1024;
-export const INBOUND_UPDATE_LIMIT = 255;
-export const INBOUND_UPDATE_BYTES = 512 * 1024;
+export const INBOUND_ENVELOPE_LIMIT = ADMITTED_ENVELOPE_WIRE_LIMIT;
+export const INBOUND_UPDATE_LIMIT = ADMITTED_ENVELOPE_UPDATE_LIMIT;
+export const INBOUND_UPDATE_BYTES = ADMITTED_ENVELOPE_UPDATE_BYTES;
 export interface InboundRecord {
   baseline: string;
   lineage: string;

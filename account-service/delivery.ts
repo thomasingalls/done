@@ -34,7 +34,10 @@ import {
 } from '../account-protocol/admission.ts';
 import { parsePendingState, closed } from '../account-protocol/preparation.ts';
 import { hex, lp, unhex } from '../account-protocol/recovery.ts';
-import { decodeNetworkEnvelope } from '../account-protocol/envelope.ts';
+import {
+  decodeNetworkEnvelope,
+  ADMITTED_ENVELOPE_WIRE_LIMIT,
+} from '../account-protocol/envelope.ts';
 import {
   decodeSubmission,
   verifySubmission,
@@ -74,6 +77,7 @@ export type ServiceDeliveryResult =
       kind: 'unknown';
       reason:
         | 'invalid-request'
+        | 'envelope-size'
         | 'unavailable'
         | 'unsupported-epoch'
         | 'out-of-order'
@@ -481,7 +485,15 @@ export async function decideSubmission(
     else if (e.seq !== ledger.through + 1) result = unknown('out-of-order');
     else if (submission.parentId === ZERO_REFUSAL && ledger.closedPositions.has(e.seq))
       result = unknown('parent-required');
-    else {
+    // Admission only: census and exact historical decision retries must remain readable.
+    else if (submission.envelope.length > ADMITTED_ENVELOPE_WIRE_LIMIT) {
+      reportDiagnostic(diagnostics, {
+        operation: 'submit',
+        phase: 'verify',
+        code: 'envelope-size',
+      });
+      result = unknown('envelope-size');
+    } else {
       proposed =
         e.gen !== auth.generation
           ? {

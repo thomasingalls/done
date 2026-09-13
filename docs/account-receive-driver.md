@@ -60,3 +60,14 @@ review gates and real two-gate second-device adoption; no real Account rollout i
 `account:receive-driver` combines an independent clock/event oracle, effective scheduler and final-dispatch
 omissions, and disposable native HTTP/restart histories. The manual transport and v8 sending driver remain
 regression gates. This targeted evidence is not a claim of complete protocol correctness.
+
+## Size failures (R-01)
+
+The held receiver reports `inbound-size` for an authenticated page whose envelope/update bounds fail,
+and `response-too-large` when the HTTP body exceeds its declared or streamed budget. Both stop
+automatic polling with the authenticated durable cursor unchanged. Offline/online and local edits do
+not clear the halt; an explicit retry rechecks current state. These are bounded observations, with no
+writing, identifiers or exception text in the diagnostic ring. Request expiry remains transient.
+The composed sender similarly reports `envelope-size` for local preflight or the service's unsigned
+size hint, retaining source/spool/submission bytes. A retry cannot repair an immutable bad accepted
+position. See the [compatibility and recovery policy](./review/implementation/service-receiver-bounds.md).

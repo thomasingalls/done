@@ -4074,7 +4074,7 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 144,
+          "line": 145,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
@@ -6660,7 +6660,7 @@
           "test/account-receive-driver/native.test.mjs"
         ]
       },
-      "declarations": 5,
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -7104,7 +7104,7 @@
           "test/account-service-delivery/core.test.mjs"
         ]
       },
-      "declarations": 10,
+      "declarations": 11,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -7185,7 +7185,7 @@
           "test/account-service-inbound/core.test.mjs"
         ]
       },
-      "declarations": 8,
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -7345,7 +7345,7 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/account-sync/native.test.mjs"]
       },
-      "declarations": 6,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -7571,18 +7571,18 @@
           "test/accountReceiveDriver.test.ts"
         ]
       },
-      "declarations": 12,
+      "declarations": 13,
       "propertyFamilies": [
         {
-          "line": 257,
+          "line": 255,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 437,
+          "line": 435,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 497,
+          "line": 495,
           "form": "fc.asyncProperty"
         }
       ],
@@ -7614,14 +7614,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/accountSyncDriver.test.ts"]
       },
-      "declarations": 9,
+      "declarations": 10,
       "propertyFamilies": [
         {
-          "line": 156,
+          "line": 160,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 376,
+          "line": 380,
           "form": "fc.asyncProperty"
         }
       ],
@@ -8436,10 +8436,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/networkEnvelope.test.ts"]
       },
-      "declarations": 9,
+      "declarations": 11,
       "propertyFamilies": [
         {
-          "line": 379,
+          "line": 65,
+          "form": "fc.asyncProperty"
+        },
+        {
+          "line": 456,
           "form": "fc.asyncProperty"
         }
       ],
@@ -9012,7 +9016,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/spoolBatch.test.ts"]
       },
-      "declarations": 2,
+      "declarations": 3,
       "propertyFamilies": [
         {
           "line": 88,
@@ -10894,7 +10898,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "7405b874c55692b975d3b14b35f9b2a5bb5c035648fd9356181392747521a825"
+      "sha256": "e871d7f334016d3d773caa19786815626f7a460018780a3a06a3e9cc382c4b10"
     },
     {
       "path": "package.json",
@@ -11170,7 +11174,7 @@
     },
     {
       "path": "scripts/account-sync/run.mjs",
-      "sha256": "97efea56ccf0dd61ebe193339e99ec981d66449e26fc76f4b3949d2f9b8e550d"
+      "sha256": "f0dd0ba3573a6208b4a2c1f095069ac432b3200e60eb17f649cbc06e846d0005"
     },
     {
       "path": "scripts/account-transport-contract/run.mjs",
@@ -12586,7 +12590,7 @@
     },
     {
       "path": "test/account-receive-driver/native.test.mjs",
-      "sha256": "992d5d0fb3fda2aad14ca7f47e07841a33f45802df0c86ab4addb1670aff4211"
+      "sha256": "929752be287f2b54361f9b3da28b44c72bd95a7ba88f217dc4f4552bfafb2114"
     },
     {
       "path": "test/account-receive-editor/browser.ts",
@@ -12618,7 +12622,7 @@
     },
     {
       "path": "test/account-receive/browser.ts",
-      "sha256": "564ce80970136065413402420183e7229afa98f92775c240a933f36084a81dd4"
+      "sha256": "0d9dafc1a9bc50ac1e4f43446e03ba0dc5df624a857c6f085c6ec04e9067bd2a"
     },
     {
       "path": "test/account-receive/fixtures.mjs",
@@ -12806,11 +12810,11 @@
     },
     {
       "path": "test/account-service-delivery/core.test.mjs",
-      "sha256": "2ae50ec845904d54cd61a04e280e978400e1525b8fa3481c283d2224a481e633"
+      "sha256": "fb2a3d5e1f3234aa2c75a67ff1bf21eec19a52de414cf86c62c8e0db3ca2ced6"
     },
     {
       "path": "test/account-service-delivery/fixtures.mjs",
-      "sha256": "8d5d0192b2362484c010877cd48165c078793a88169a0e96969b0d79afcd7e25"
+      "sha256": "e56bd0be0dfc85ac239bb26cb4b573c71909e95549194a7d41100ce6294d8192"
     },
     {
       "path": "test/account-service-delivery/generated.test.mjs",
@@ -12834,7 +12838,7 @@
     },
     {
       "path": "test/account-service-inbound/core.test.mjs",
-      "sha256": "5fe6a261976bf21e525b0e14bed821e7ea9249eba336f681b19eca95fe533bbd"
+      "sha256": "9758fa6d031c9ebe63281d4e0c77249f6704c3c076982c4a22ad563541b33ed4"
     },
     {
       "path": "test/account-service-inbound/generated.test.mjs",
@@ -12906,7 +12910,7 @@
     },
     {
       "path": "test/account-sync/fixtures.mjs",
-      "sha256": "7ae9926373049397e1176ec01ad608820ee95547f0d6949af8f2ee9848dee5b7"
+      "sha256": "b412262dd21a349f3095b31ed14c120b466d0d9a0931aa58afedfd2046997fd2"
     },
     {
       "path": "test/account-sync/generated.test.mjs",
@@ -12918,7 +12922,7 @@
     },
     {
       "path": "test/account-sync/native.test.mjs",
-      "sha256": "331b2088375afd049c93fc71e9a8a981fbeae81a688e4185efeac16cbee82211"
+      "sha256": "f79493eac440c3a85450441db8805b4edcd98ebae06d8e743cc1ca68516134b2"
     },
     {
       "path": "test/account-sync/scheduler-fixture.ts",
@@ -12990,7 +12994,7 @@
     },
     {
       "path": "test/accountReceiveDriver.test.ts",
-      "sha256": "b029821b5082f2a0b7065a9917f754538687744fa5d783b006fbe1eec2c2b429"
+      "sha256": "aedd4b4b8e742a8295dc1ae0f70c5b00462b82315c62c2564ef51763200c9938"
     },
     {
       "path": "test/accountReceiveLedger.test.ts",
@@ -12998,7 +13002,7 @@
     },
     {
       "path": "test/accountSyncDriver.test.ts",
-      "sha256": "de878b29aa4733fbf03c1642bd4ecac058a14a059b607b2d0ea7c0c3abc2a417"
+      "sha256": "b054479fe98d318813ba89954d0bfca7b031ebc3ea9f67dfbb2852fed04c11c9"
     },
     {
       "path": "test/accountTransportContract.test.ts",
@@ -13470,7 +13474,7 @@
     },
     {
       "path": "test/networkEnvelope.test.ts",
-      "sha256": "d3909cca31e6955723259b56a7d1071abac9d4d41c00a2bd048c4b127cd8b3a0"
+      "sha256": "0acc65c2f4ded755d806c05085ee2bf6413ed92f2dc75f4f0a69405cc2277f9a"
     },
     {
       "path": "test/operations.ts",
@@ -13646,7 +13650,7 @@
     },
     {
       "path": "test/spoolBatch.test.ts",
-      "sha256": "0752df87ee7c0c429f39912f89180501f69204ec969c05ac464ae36cf6acd7a6"
+      "sha256": "a67fd3069491fd79216ead6524304e41ceede46c8aca5ab24d92a5f70046bbf2"
     },
     {
       "path": "test/spoolRecord.test.ts",

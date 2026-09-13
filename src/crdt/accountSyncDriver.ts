@@ -1,8 +1,14 @@
 /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
 import type { ReceiveStep } from './accountReceiveDriver';
+import { EnvelopeSizeError } from '../../account-protocol/envelope';
 export type SyncLane = 'send' | 'receive';
-export type SyncHalt = 'closed' | 'conflict' | 'finalized' | 'operation-failed';
+export type SyncHalt =
+  | 'closed'
+  | 'conflict'
+  | 'finalized'
+  | 'envelope-size'
+  | import('./accountReceiveDriver').ReceiveHalt;
 export type OutboundStep =
   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
   | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt };
@@ -203,9 +209,9 @@ export function createSyncScheduler(options: {
         }
         ready();
       })
-      .catch(() => {
+      .catch((cause) => {
         if (!stopped) {
-          lane.halt = 'operation-failed';
+          lane.halt = cause instanceof EnvelopeSizeError ? 'envelope-size' : 'operation-failed';
           lane.due = undefined;
           lane.expedite = lane.dirty = false;
           ready();

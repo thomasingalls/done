@@ -23,6 +23,14 @@ This is not a general lineage/rotation verifier. Submission signatures bind the 
 and refusal parent; envelope signatures and ciphertext digest are verified under that certified member.
 The service does not possess a content key and does not attest to plaintext validity or truthful actor tags.
 
+New decisions require an envelope wire of at most 512 KiB, exactly matching the current receiver.
+This check runs after authentication and resolution of existing decisions, before any new acceptance
+or refusal is issued. Oversize returns unsigned `unknown: envelope-size` without changing the ledger
+or witness. It is a terminal retry diagnostic, not a signed refusal or permission to re-mint.
+Historical decoders, witnessed census, bounded read pages and exact decision retries keep their
+original limits. A historical oversized accepted position remains readable by the service but cannot
+be consumed by today's receiver; see [R-01's recovery limits](./review/implementation/service-receiver-bounds.md).
+
 Unsigned `unknown` results grant no re-mint authority:
 
 - Malformed framing, invalid signatures, foreign route/credential/lineage and unsupported versions fail

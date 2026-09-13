@@ -18,7 +18,7 @@ import {
   MAX_POSITION_SOURCES,
   MAX_POSITION_BYTES,
 } from './spoolRecord';
-import { sealNetworkEnvelope } from '../../account-protocol/envelope';
+import { assertAdmittedEnvelope, sealNetworkEnvelope } from '../../account-protocol/envelope';
 import { ContentError } from './contentRecord';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
@@ -126,15 +126,36 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
         // Sources are now durable. New journal appends during this operation belong to a later grant.
         let { records, state } = await verified(task, owner, route);
         let wire: Bytes | undefined;
+        const originals: import('./sourceCapture').SourceUpdate[] = [];
         try {
           // Same just-loaded complete view; every append still obtains a fresh publication census.
           await context.checkPublication(task, owner, route, records);
           let position = state.positions.at(-1);
-          if (!position || position.wire) {
-            const selected = await task.wait(() =>
-              selectEnvelopeSources(state, route, context.batchSources === true, subtleFor(task)),
-            );
-            if (!selected.length) return null;
+          const allocate = !position || !!position.wire;
+          const selected = allocate
+            ? await task.wait(() =>
+                selectEnvelopeSources(state, route, context.batchSources === true, subtleFor(task)),
+              )
+            : positionSources(position!);
+          if (!selected.length) return null;
+          const number = allocate ? state.positions.length + 1 : position!.position;
+          for (const ref of selected) {
+            const capsule = decodeSourceCapsule(state.sources.get(ref.id)!, route);
+            try {
+              const source = capsule.sources[ref.index]!;
+              originals.push({ ...source, bytes: source.bytes.slice() });
+            } finally {
+              eraseCapsule(capsule);
+            }
+          }
+          const body = {
+            actor_id: originals[0]!.actor,
+            actor_kind: originals[0]!.kind,
+            updates: originals.map((s) => s.bytes),
+          };
+          // Includes singleton and resumed positions. A known size failure consumes no allocation.
+          assertAdmittedEnvelope({ ...networkRoute(route), seq: number }, body);
+          if (allocate) {
             await append(
               task,
               owner,
@@ -160,42 +181,23 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
           const attempt = state.attempts + 1;
           await append(task, owner, route, {
             type: 'attempt',
-            position: position.position,
+            position: position!.position,
             attempt,
           });
           // This acknowledged continuation owns exactly one invocation. No persisted grant is reusable.
-          const originals: import('./sourceCapture').SourceUpdate[] = [];
-          try {
-            for (const ref of positionSources(position)) {
-              const capsule = decodeSourceCapsule(state.sources.get(ref.id)!, route);
-              try {
-                const source = capsule.sources[ref.index]!;
-                originals.push({ ...source, bytes: source.bytes.slice() });
-              } finally {
-                eraseCapsule(capsule);
-              }
-            }
-            const first = originals[0]!;
-            wire = await task.wait(() =>
-              sealNetworkEnvelope(
-                { ...networkRoute(route), seq: position.position },
-                {
-                  actor_id: first.actor,
-                  actor_kind: first.kind,
-                  updates: originals.map((s) => s.bytes),
-                },
-                context.key(),
-                context.signer(),
-                task.step(() => random(12)),
-                subtleFor(task),
-              ),
-            );
-          } finally {
-            for (const source of originals) source.bytes.fill(0);
-          }
+          wire = await task.wait(() =>
+            sealNetworkEnvelope(
+              { ...networkRoute(route), seq: number },
+              body,
+              context.key(),
+              context.signer(),
+              task.step(() => random(12)),
+              subtleFor(task),
+            ),
+          );
           await append(task, owner, route, {
             type: 'envelope',
-            position: position.position,
+            position: position!.position,
             attempt,
             wire,
           });
@@ -205,6 +207,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
           if (!saved) captureError('Persisted envelope missing after commit');
           return task.step(() => ({ position: position!.position, bytes: saved!.slice() }));
         } finally {
+          for (const source of originals) source.bytes.fill(0);
           wire?.fill(0);
           for (const r of records) r.bytes.fill(0);
         }

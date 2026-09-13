@@ -8,6 +8,20 @@ type Bytes = Uint8Array<ArrayBuffer>;
 export const ENVELOPE_BODY_LIMIT = 4 * 1024 * 1024;
 export const ENVELOPE_UPDATE_LIMIT = 256;
 export const ENVELOPE_WIRE_LIMIT = ENVELOPE_BODY_LIMIT + 2048;
+// Current admission profile. The broader codec bounds above also read historical ledgers.
+export const ADMITTED_ENVELOPE_WIRE_LIMIT = 512 * 1024;
+export const ADMITTED_ENVELOPE_UPDATE_LIMIT = 255;
+export const ADMITTED_ENVELOPE_UPDATE_BYTES = 512 * 1024;
+export class EnvelopeSizeError extends Error {
+  readonly reason = 'envelope-size';
+  constructor() {
+    super('Envelope exceeds the current receive limits; source writing is retained');
+  }
+}
+export function assertAdmittedEnvelopeWireSize(length: number): void {
+  if (!Number.isSafeInteger(length) || length < 0 || length > ADMITTED_ENVELOPE_WIRE_LIMIT)
+    throw new EnvelopeSizeError();
+}
 export interface EnvelopeHeader {
   v: 1 | 2;
   workspace_id: string;
@@ -62,6 +76,8 @@ const headerFields = (h: EnvelopeHeader): string[] => {
     positive(h.seq),
   ];
 };
+const wirePrefix = (e: EnvelopeHeader): Bytes =>
+  lp(`done/envelope-wire/v${e.v}`, ...headerFields(e));
 export const envelopeKeyInfo = (h: EnvelopeHeader): Bytes => {
   headerFields(h);
   return h.v === 1
@@ -92,6 +108,28 @@ export function encodeEnvelopeBody(body: EnvelopeBody): Bytes {
     u32(body.updates.length),
     ...body.updates.flatMap((u) => [u32(u.length), u]),
   );
+}
+function admittedBody(header: EnvelopeHeader, body: EnvelopeBody): Bytes {
+  if (
+    body.updates.length > ADMITTED_ENVELOPE_UPDATE_LIMIT ||
+    body.updates.reduce((n, u) => n + u.length, 0) > ADMITTED_ENVELOPE_UPDATE_BYTES
+  )
+    throw new EnvelopeSizeError();
+  const plaintext = encodeEnvelopeBody(body);
+  try {
+    // Exact framing, including the AES-GCM tag; the plaintext limit alone is insufficient.
+    assertAdmittedEnvelopeWireSize(
+      wirePrefix(header).length + 12 + 32 + 4 + plaintext.length + 16 + 64,
+    );
+    return plaintext;
+  } catch (cause) {
+    plaintext.fill(0);
+    throw cause;
+  }
+}
+/** Synchronous preflight before position or invocation allocation. Does not authorize sending. */
+export function assertAdmittedEnvelope(header: EnvelopeHeader, body: EnvelopeBody): void {
+  admittedBody(header, body).fill(0);
 }
 class Reader {
   at = 0;
@@ -153,7 +191,7 @@ export function encodeNetworkEnvelope(e: NetworkEnvelope): Bytes {
   if (!(e.ct instanceof Uint8Array) || e.ct.length < 16 || e.ct.length > ENVELOPE_BODY_LIMIT + 16)
     return bad();
   return concat(
-    lp(`done/envelope-wire/v${e.v}`, ...headerFields(e)),
+    wirePrefix(e),
     fixed(e.nonce, 12),
     fixed(e.digest, 32),
     u32(e.ct.length),
@@ -219,7 +257,7 @@ export async function sealNetworkEnvelope(
     generationKey = fixed(kg, 32);
   let plaintext: Bytes | undefined;
   try {
-    plaintext = encodeEnvelopeBody(body);
+    plaintext = admittedBody(h, body);
     const key = await netKey(generationKey, h, 'encrypt', subtle);
     const ct = new Uint8Array(
       await subtle.encrypt(

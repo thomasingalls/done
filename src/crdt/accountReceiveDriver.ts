@@ -2,7 +2,7 @@
 import type { DriverClock, DriverGate } from './accountDriver';
 export const RECEIVE_POLL_MS = 5000;
 export const RECEIVE_YIELD_MS = 50;
-export type ReceiveHalt = 'conflict' | 'operation-failed';
+export type ReceiveHalt = 'conflict' | 'operation-failed' | 'inbound-size' | 'response-too-large';
 export interface ReceiveDriverStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly receivedThrough: number;
@@ -188,7 +188,7 @@ export function createReceiveScheduler(options: {
 }
 export interface ReceiveDriverOperations {
   receiveStatus(): Promise<{ state: 'ready' | 'conflict'; receivedThrough: number }>;
-  receiveNext(token: string): Promise<{ kind: string }>;
+  receiveNext(token: string): Promise<{ kind: string; reason?: unknown }>;
 }
 /** A transport return cannot advance progress. Only the current authenticated durable census can. */
 export async function driveReceiveStep(
@@ -206,6 +206,15 @@ export async function driveReceiveStep(
     throw Error('Durable receive prefix regressed');
   if (after.state === 'conflict')
     return { kind: 'blocked', receivedThrough: after.receivedThrough, reason: 'conflict' };
+  if (result.kind === 'rejected')
+    return {
+      kind: 'blocked',
+      receivedThrough: after.receivedThrough,
+      reason:
+        result.reason === 'inbound-size' || result.reason === 'response-too-large'
+          ? result.reason
+          : 'operation-failed',
+    };
   return {
     kind:
       after.receivedThrough > before.receivedThrough

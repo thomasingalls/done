@@ -6,7 +6,8 @@ namespaces; they are unrelated to the older `docs/review/work-items.tsv` IDs.
 
 **Start with the [current findings and remediation index](./findings.md).** It reconciles all 59 leaf
 IDs, routes duplicates/extensions to shared work and retains separate completion criteria. Current
-priority after the [R intake](./9ff48b5-d03e473.md) is R-01 before a durable Account cutover.
+priority after the [bounded R-01 repair](./service-receiver-bounds.md) is general test/wrapper
+integration. The repair retains explicit malicious-member recovery and capacity limits.
 The [signing sweep](./signing-prep-2026-09-13.md) now records thirty verified replacements,
 identical trees, original-history preservation and current workflow reconciliation. R-03/R-04 join the general test/wrapper integration in the
 [release-validation work package](../../private-release-validation-prep.md): graph,

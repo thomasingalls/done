@@ -78,15 +78,18 @@ test('each role, pin field, signature, expiry and extent is checked with no serv
 });
 
 test(
-  'maximum wire sizes still produce byte-bounded pages without losing a position',
-  { timeout: 40000 },
+  'historical maximum wire sizes retain bounded pagination, cold replay and exact retries',
+  { timeout: 90000 },
   async (t) => {
     const x = await ready(t),
       retained = [];
     for (let i = 1; i <= 2; i++) {
       const w = x.make(i, 'large', { ct: Buffer.alloc(4 * 1024 * 1024 + 16, i) });
-      retained.push({ w, r: await x.call(w) });
+      retained.push({ w, r: await legacyDecision(t, x, w) });
     }
+    x.f.restart();
+    x.authority.restart();
+    for (const { w, r } of retained) assert.deepEqual(await x.call(w), r);
     for (const after of [0, 1]) {
       const q = query(x, after, 8),
         r = await read(x, q);
@@ -266,3 +269,118 @@ test(
     assert.equal((await read(x, q)).kind, 'unknown');
   },
 );
+
+// Seed with the actual signed pre-R-01 decision implementation, never a relaxed production flag.
+// The synthetic authority supplies its issuer to a test-only facade. Current code owns all reads/retries.
+async function legacyDecision(t, x, w) {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { resolve, join } = await import('node:path');
+  const { pathToFileURL } = await import('node:url');
+  const { tmpdir } = await import('node:os');
+  const { DatabaseSync } = await import('node:sqlite');
+  const dir = mkdtempSync(join(tmpdir(), 'done-r01-historical-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const source = execFileSync(
+    'git',
+    ['show', '4bb09042f37f68ec31f0d82587af608f599eb096:account-service/delivery.ts'],
+    { encoding: 'utf8' },
+  );
+  const filename = join(dir, 'delivery.ts');
+  writeFileSync(
+    filename,
+    source.replace(/from '([^']+)'/g, (match, specifier) =>
+      specifier.startsWith('.')
+        ? `from '${pathToFileURL(resolve('account-service', specifier)).href}'`
+        : match,
+    ),
+  );
+  const legacy = await import(pathToFileURL(filename).href);
+  return x.authority.owner.decideSubmission(
+    {
+      async decideSubmission(input, issuer) {
+        const db = new DatabaseSync(x.f.path);
+        try {
+          return await legacy.decideSubmission(db, input, issuer, () => {});
+        } finally {
+          db.close();
+        }
+      },
+    },
+    { workspaceId: x.workspace, bytes: w.bytes },
+  );
+}
+
+test('R-01 content-blind admission still accepts a small nonconforming member: receiver refuses 256 and receives 255', async (t) => {
+  const { build } = await import('vite');
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { resolve, join } = await import('node:path');
+  const { pathToFileURL } = await import('node:url');
+  const temp = mkdtempSync(join(tmpdir(), 'done-r01-receiver-'));
+  t.after(() => rmSync(temp, { recursive: true, force: true }));
+  const built = await build({
+    configFile: false,
+    logLevel: 'silent',
+    build: {
+      write: false,
+      minify: false,
+      lib: { entry: resolve('src/crdt/accountInbound.ts'), formats: ['es'] },
+    },
+  });
+  const file = join(temp, 'inbound.mjs');
+  writeFileSync(
+    file,
+    (Array.isArray(built) ? built[0] : built).output.find((c) => c.type === 'chunk').code,
+  );
+  const { verifyInboundPage, InboundError } = await import(pathToFileURL(file).href);
+  for (const count of [255, 256]) {
+    const x = await ready(t);
+    const w = x.make(1, '', { updates: Array.from({ length: count }, () => Buffer.from([0, 0])) });
+    assert.equal((await x.call(w)).kind, 'decision');
+    const q = query(x),
+      page = await read(x, q);
+    assert.equal(page.kind, 'decision');
+    assert.ok(decodeInboundPage(page.bytes).entries[0].envelope.length < 2048);
+    const publicKey = x.s.publicKey
+      .export({ format: 'der', type: 'spki' })
+      .subarray(-32)
+      .toString('hex');
+    const context = {
+      baseline: { kind: 'promotion-genesis', id: '00'.repeat(32) },
+      service: { id: x.authority.pin.serviceId, origin: x.authority.pin.origin },
+      authority: {
+        workspace: x.workspace,
+        lineage: x.offer.epoch.lineageId,
+        head: x.offer.head,
+        tip: 1,
+        acceptanceKey: x.offer.epoch.acceptancePublicKey,
+      },
+      creatingCredential: x.credential,
+      reader: { id: x.credential, publicKey, active: true },
+      publisher: {
+        id: x.credential,
+        publicKey,
+        active: true,
+        principal: x.request.candidate.principalId,
+        system: true,
+      },
+      generation: 1,
+      generationKey: x.generationKey,
+      prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+    };
+    const before = inventory(x);
+    if (count === 256)
+      await assert.rejects(
+        verifyInboundPage(context, q, page.bytes, { assertCurrent() {} }),
+        (e) => e instanceof InboundError && e.reason === 'size',
+      );
+    else {
+      const result = await verifyInboundPage(context, q, page.bytes, { assertCurrent() {} });
+      assert.equal(result.kind, 'received');
+      assert.equal(result.updates.length, 255);
+    }
+    assert.equal(inventory(x), before);
+    assert.equal(context.prefix.position, 0);
+  }
+});

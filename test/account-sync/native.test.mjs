@@ -309,3 +309,154 @@ test(
     await close(f.page);
   },
 );
+
+// Seed a single actual Yjs original: the text surface intentionally slices large paste intents.
+import { selected as captureSelected } from '../account-spool/fixtures.mjs';
+import { syncBundle, configure } from './fixtures.mjs';
+async function singleSource(f, id, length, bundle, historical) {
+  if (bundle) await f.page.evaluate(bundle);
+  const item = await captureSelected(f, id);
+  await f.page.evaluate(
+    async ({ item, length, historical }) => {
+      const { carrier } = await Harness.openAccountCaptureSession(
+        optionsFor(item),
+        item.scope.principalId,
+      );
+      const doc = new Harness.Y.Doc({ gc: false });
+      try {
+        doc.getText('r01-source').insert(0, 'x'.repeat(length));
+        const update = Harness.Y.encodeStateAsUpdate(doc);
+        const capsule = carrier.captureLocal(update, [
+          { actor: item.scope.principalId, kind: 'human', bytes: update },
+        ]);
+        await carrier.appendBatch([{ kind: 'update', bytes: capsule }]);
+      } finally {
+        doc.destroy();
+        await carrier.close();
+      }
+      const spool = await Harness.openOwnedAccountSpoolWorkspace(optionsFor(item));
+      await spool.workspace.close();
+      if (!historical) {
+        const delivery = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+        await delivery.workspace.close();
+      }
+    },
+    { item: args(item), length, historical },
+  );
+  return item;
+}
+const originalLength = (page) =>
+  page.evaluate(() => {
+    const doc = new Harness.Y.Doc({ gc: false });
+    try {
+      Harness.Y.applyUpdate(doc, editor.snapshot());
+      return doc.getText('r01-source').length;
+    } finally {
+      doc.destroy();
+    }
+  });
+for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted'])
+  test(
+    `R-01 v9 singleton ${mode} preserves originals and diagnoses bounds without burning retries`,
+    { timeout: mode === 'sealed' || mode === 'submitted' ? 240000 : 90000 },
+    async (t) => {
+      const f = await native(t),
+        historical = mode === 'sealed' || mode === 'submitted';
+      const length = mode === 'fitting' ? 80 * 1024 : 600 * 1024;
+      const bundle = historical
+        ? await syncBundle('r01-old-writer')
+        : mode === 'no-preflight'
+          ? await syncBundle('r01-no-preflight')
+          : null;
+      console.log('R01', mode, 'seed original');
+      const item = await singleSource(f, 'r01-' + mode, length, bundle, historical);
+      console.log('R01', mode, 'seeded');
+      if (historical) {
+        await f.page.evaluate(async (item) => {
+          window.opened = await Harness.openOwnedAccountSpoolWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+          let count = 0;
+          while (await opened.prepareNextEnvelope()) {
+            if (++count > 4) throw Error('Historical fixture allocation loop');
+          }
+          await editor.close();
+          window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+        }, args(item));
+        console.log('R01', mode, 'old envelopes sealed');
+        const target = await f.page.evaluate(async () => {
+          const envelopes = await opened.listEnvelopes();
+          try {
+            const large = envelopes.filter((e) => e.bytes.length > 512 * 1024);
+            if (large.length !== 1)
+              throw Error('Expected exactly one historical oversized envelope');
+            return large[0].position;
+          } finally {
+            for (const e of envelopes) e.bytes.fill(0);
+          }
+        });
+        // Bootstrap may contain several originals. Resolve every earlier position in order.
+        await f.page.evaluate(
+          async ({ token, target }) => {
+            for (let p = 1; p < target; p++) {
+              await opened.prepareSubmission(p);
+              const result = await opened.submitPending(token);
+              if (result.kind !== 'accepted')
+                throw Error('Historical prefix submission failed: ' + result.kind);
+            }
+          },
+          { token: f.testOperatorToken, target },
+        );
+        if (mode === 'submitted')
+          await f.page.evaluate(async (position) => {
+            await opened.prepareSubmission(position);
+          }, target);
+        const status = await f.page.evaluate(() => opened.deliveryStatus());
+        assert.equal(status.acceptedThrough, target - 1);
+        assert.equal(status.submissions.includes(target), mode === 'submitted');
+        await close(f.page);
+        await cold(f); // restore the current bundle
+      }
+      console.log('R01', mode, 'open current sender');
+      await configure(f.page, f.testOperatorToken);
+      await syncing(f.page, item);
+      if (mode === 'fitting') await settled(f.page);
+      else
+        await waitPredicate(
+          f.page,
+          () => opened.sync.status.send.reason === 'envelope-size',
+          30000,
+        );
+      console.log('R01', mode, 'current state reached');
+      assert.equal(await originalLength(f.page), length);
+      const before = await f.page.evaluate(() => opened.spoolStatus());
+      if (historical) {
+        const status = await f.page.evaluate(() => opened.deliveryStatus());
+        assert.equal(status.submissions.includes(status.acceptedThrough + 1), mode === 'submitted');
+      }
+      // The omission control must expose the forbidden allocation, not merely throw another error.
+      assert.equal(
+        before.positions.some((p) => !p.persisted),
+        mode === 'no-preflight',
+      );
+      const calls = f.invocations.length;
+      await close(f.page);
+      await cold(f);
+      await syncing(f.page, item);
+      if (mode === 'fitting') await settled(f.page);
+      else
+        await waitPredicate(
+          f.page,
+          () => opened.sync.status.send.reason === 'envelope-size',
+          30000,
+        );
+      console.log('R01', mode, 'current state reached');
+      assert.equal(await originalLength(f.page), length);
+      assert.deepEqual(
+        (await f.page.evaluate(() => opened.spoolStatus())).positions,
+        before.positions,
+      );
+      assert.equal(f.invocations.length, calls);
+      await close(f.page);
+    },
+  );

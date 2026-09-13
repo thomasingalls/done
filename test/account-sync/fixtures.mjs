@@ -1,5 +1,6 @@
 import { build } from 'vite';
 import { resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
 export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control) {
@@ -36,6 +37,39 @@ export async function syncBundle(control) {
             name: 'sync-control',
             enforce: 'pre',
             transform(code, id) {
+              if (
+                control === 'r01-old-writer' &&
+                [
+                  'account-protocol/envelope.ts',
+                  'src/crdt/accountEnvelopePreparation.ts',
+                  'src/crdt/accountDelivery.ts',
+                ].some((p) => id.endsWith('/' + p))
+              ) {
+                hits++;
+                if (id.endsWith('/account-protocol/envelope.ts')) {
+                  const anchor = 'plaintext = admittedBody(h, body);';
+                  if (code.split(anchor).length !== 2)
+                    throw Error('Missing historical sealer anchor');
+                  return code.replace(anchor, 'plaintext = encodeEnvelopeBody(body);');
+                }
+                const path = id.slice(resolve('.').length + 1);
+                return execFileSync(
+                  'git',
+                  ['show', '4bb09042f37f68ec31f0d82587af608f599eb096:' + path],
+                  { encoding: 'utf8' },
+                );
+              }
+              if (
+                control === 'r01-no-preflight' &&
+                id.endsWith('/src/crdt/accountEnvelopePreparation.ts')
+              ) {
+                const anchor =
+                  'assertAdmittedEnvelope({ ...networkRoute(route), seq: number }, body);';
+                if (code.split(anchor).length !== 2) throw Error('Missing R-01 preflight anchor');
+                hits++;
+                return code.replace(anchor, 'void body;');
+              }
+
               if (control === 'witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {
                 const pattern =
                   /(export async function verifySpoolWitness\([\s\S]*?\): Promise<void> \{)/g;
@@ -58,7 +92,8 @@ export async function syncBundle(control) {
       lib: { entry: resolve('test/account-sync/browser.ts'), name: 'Harness', formats: ['iife'] },
     },
   });
-  if (control && hits !== 1) throw Error('Mutation did not apply');
+  if (control && hits !== (control === 'r01-old-writer' ? 3 : 1))
+    throw Error('Mutation did not apply');
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await syncBundle();

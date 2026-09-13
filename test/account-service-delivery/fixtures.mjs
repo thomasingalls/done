@@ -24,14 +24,14 @@ export async function ready(t, options = {}) {
       gen = options.gen ?? 1,
       id = options.credential ?? credential,
       ws = options.workspace ?? workspace;
+    const updates = options.updates ?? [Buffer.from(tag)];
     const fields = ['2', ws, id, String(epoch), String(gen), String(position)],
       nonce = randomBytes(12),
       aad = lp('done/env/v2', ...fields),
       body = Buffer.concat([
         lp('done/env-body/v1', x.request.candidate.principalId, 'human'),
-        u32(1),
-        u32(Buffer.byteLength(tag)),
-        Buffer.from(tag),
+        u32(updates.length),
+        ...updates.flatMap((u) => [u32(u.length), u]),
       ]),
       k = Buffer.from(
         hkdfSync('sha256', kg, Buffer.alloc(0), lp('done/envelope/v2', ws, id, String(gen)), 32),
@@ -99,7 +99,7 @@ export async function ready(t, options = {}) {
   };
   const call = (w) =>
     x.authority.owner.decideSubmission(x.f.core, { workspaceId: workspace, bytes: w.bytes });
-  return { ...x, offer, receipt, workspace, credential, make, call };
+  return { ...x, offer, receipt, workspace, credential, make, call, generationKey: kg };
 }
 export function proof(result, pub, subject, previous = ZERO, parent = ZERO) {
   if (result.kind !== 'decision') throw Error(JSON.stringify(result));

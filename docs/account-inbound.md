@@ -116,10 +116,12 @@ The first implementation retains all such evidence; pruning is not part of conte
 Require envelope wire at most **512 KiB**, at most 255 original updates and at most 512 KiB total decoded
 update bytes. Check the canonical local event plus content byte count against the actual 4 MiB/256-record
 batch limits before reserving any local seals. Each original update is one unchanged raw `update` content
-record, followed by one inbound event. The 256-update network bound does not permit 257 local records;
-this first receiver explicitly refuses such an envelope. Unsupported size leaves the cursor intact
+record, followed by one inbound event. The historical codec can read 256-update bodies, but current senders admit at most 255;
+an independently produced 256-update envelope is still refused by this receiver. Unsupported size leaves the cursor intact
 and reports a bounded reason; never skip, truncate, split an authenticated envelope into accepted positions,
-or request a new seal to work around a local limit. Current private publisher slices are much smaller.
+or request a new seal to work around a local limit. The service enforces the same current wire cap for new decisions, while preserving historical
+readback and retries. It cannot inspect encrypted counts or semantics. See the
+[R-01 recovery limits](./review/implementation/service-receiver-bounds.md).
 
 The owned receive commit strictly writes **original content carriers + inbound event + witness update**
 in one IndexedDB transaction after fresh local seal grants. Recheck the permit, factor/custody, promotion
