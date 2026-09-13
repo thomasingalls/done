@@ -7,6 +7,14 @@ import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const contractFixtureFiles = [
+  'test/account-recovery-contract/controls.test.mjs',
+  'test/account-recovery-contract/exports.test.mjs',
+  'test/account-transport-contract/controls.test.mjs',
+  'test/account-service-custody/controls.test.mjs',
+  'test/account-service-custody/exports.test.mjs',
+];
+
 export const ledgerFixtureFiles = [
   'test/account-ledger-contract/batch.test.mjs',
   'test/account-ledger-contract/controls.test.mjs',
@@ -75,6 +83,7 @@ export const accountFixtureFiles = {
     ...deliveryFixtureFiles,
     ...isolationFixtureFiles,
     ...ledgerFixtureFiles,
+    ...contractFixtureFiles,
   ],
 };
 

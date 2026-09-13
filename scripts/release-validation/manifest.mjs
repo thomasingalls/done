@@ -25,6 +25,7 @@ import {
   deliveryFixtureFiles,
   isolationFixtureFiles,
   ledgerFixtureFiles,
+  contractFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -422,6 +423,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'ledger-fixtures': rows
         .filter((r) => account.node.includes(r.path) && ledgerFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'contract-fixtures': rows
+        .filter((r) => account.node.includes(r.path) && contractFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'general-tests': rows
         .filter(

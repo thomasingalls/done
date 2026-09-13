@@ -4303,3 +4303,38 @@ It is 597,511 bytes under its unchanged 700 kB ceiling; all eleven catalogues re
 This phase is uncommitted. Personal/package/vector bytes, L-2, prior archives and formal debts are
 unchanged. Next review recovery/transport/service-custody contract controls and export fixtures;
 other Node/native/Playwright ownership, wrappers, R-04 and P-06 precede the immutable aggregate.
+
+
+## 2026-09-13 — Recovery, transport and service-custody contract fixture adapters (L-1)
+
+The preceding ledger fixture phase is signed and verified as `54722df`. Five Node files add nineteen
+cases: recovery controls 2 and exports 1, transport controls 4, service-custody controls 8 and exports
+4. The existing finite census handles their generated names without evaluation. The stage owner,
+reporters, historical-input rules, product code/tests, assertions, vectors and deadlines are unchanged.
+
+Recovery source mutants retain authentic context/root/key-pair counterexamples and malformed-export
+checks. Transport controls alter messages passed to actual signature verification, with independently
+signed omitted-field messages. Custody mutants use exact source anchors, temporary SQLite files and
+actual owner methods; crypto mocks restore and handles close. Export checks cover captured owned
+buffers and refusal boundaries, without claiming forensic erasure. No browser, listener or build ran.
+
+The disposable selection passes all five files / nineteen cases in 33.004 seconds, including snapshot
+work, with every selected group drained. All 88 pure adapter checks, direct TypeScript, scoped style,
+planning, authority, signature, exact manifest layout and expected release refusal pass. No product
+selection failed or required a retry, repair or larger bound. The existing 160-history policy-change
+control includes the new files; these product fixtures use fixed matrices rather than new histories.
+The packet at `docs/account-conformance-runs/2026-09-13-contract-fixture-adapters/` retains full stage
+receipts, exact patch, 51 source/helper/wrapper pins and preservation within the 150 kB ceiling.
+
+All 144 prior general contracts / 1,295 identities retain earlier evidence unchanged. The 21 Node
+owner, five Vitest process and eleven native controls were not rerun. The ledger phase's initial
+orphaned-child classification remains unresolved despite later passing controls; preserve it for
+owner/loaded-host reliability work. This phase does not establish its cause or a fix.
+
+General selections contain 149 files / 1,314 cases: 96 Vitest and 53 Node. The Account subset has
+43 files / 220 cases. The manifest retains 612 obligations / 268 unresolved: 109 test-file (93 Node,
+sixteen Playwright), 96 command, 63 campaign. Its 602,471 bytes remain below 700 kB; all eleven
+catalogues remain resolved. Whole wrappers and optional evidence exports retain separate obligations.
+This phase is uncommitted. All personal/package/vector pins, L-2, prior archives and formal debts are
+unchanged. Next review the remaining protocol-preparation and registry fixtures, then other Node/
+native/Playwright owners and exact wrappers; R-04 and P-06 precede the immutable aggregate.

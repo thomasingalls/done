@@ -2570,3 +2570,18 @@ the historical control helper without relaxing process rules or deadlines. An un
 classification has an unresolved cause, not an established fix; carry it into owner/aggregate
 reliability work. Evidence packing must distinguish text from binary auxiliary output and retain
 binary bytes with their encoding/hash, rather than silently dropping non-UTF-8 files.
+
+
+## 2026-09-13 — Contract control/export file credit stays distinct from campaign exports
+
+Admit the reviewed recovery, transport and service-custody control/export files under the existing
+Node fixture owner. Keep generated names statically enumerable, test bodies unchanged and source
+mutation anchors exact. Transport omission controls establish bindings at the actual verification
+boundary; they do not establish all enclosing owner predicates. Private-export clearing assertions
+cover captured owned buffers and must not be promoted to a forensic memory-erasure claim.
+
+Keep two meanings of export explicit: these exports.test.mjs files test cryptographic provider
+output; optional ACCOUNT_REPORT_DIR JSON and wrapper evidence inventories need their own saved-output
+postconditions and ordered prerequisites. Passing ordinary cases does not discharge those wrappers.
+Retain prior process-control evidence when the owner is unchanged, including the ledger phase's
+unresolved initial orphan classification; later passing file selections do not establish its repair.

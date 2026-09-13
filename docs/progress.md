@@ -43,47 +43,48 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — contract controls and export fixtures (`L-1`)
+## Active slice: General validation-runner integration — protocol preparation and registry fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews recovery, transport and service-custody controls/exports
+blocks_on: none; next bounded implementation reviews the remaining protocol-preparation and registry fixtures
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** Isolation fixtures are signed and verified as `01c4447`; delivery/inbound
-`dbf5eb5`, earlier service `95fa715`, Account `5334a7c`, generated registrations `f9111ea`, general
-adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`. [Ledger runtime fixtures](./release-validation-execution.md#ledger-contract-runtime-fixtures--phase-2t)
-add three files / fourteen cases, with in-memory builds and an exact historical spoolRecord pin.
-Product code/tests, names, assertions, seeds, vectors and deadlines are unchanged. This phase is
-uncommitted. The existing finite census and process-owner rules are unchanged.
+**Just completed.** Ledger fixtures are signed and verified as `54722df`; isolation `01c4447`,
+delivery/inbound `dbf5eb5`, earlier service `95fa715`, Account `5334a7c`, generated registrations
+`f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
+[Contract controls and export fixtures](./release-validation-execution.md#contract-controls-and-export-fixtures--phase-2u)
+add five files / nineteen cases. Product code/tests, names, assertions, vectors and deadlines are
+unchanged, as are the finite census, process owner and reporters. This phase remains uncommitted.
 
-**Evidence.** The disposable selection passes all three files / fourteen cases in 29.743 seconds,
-including 200 generated histories; every selected group drained. All 88 pure adapter checks,
-direct TypeScript, scoped style, planning and authority pass. The final 21-test ownership run and
-a focused two-test run pass. The [packet](./account-conformance-runs/2026-09-13-ledger-fixture-adapters/README.md)
-retains full receipts, controls, exact patch, historical/vector/source pins and preservation. All
-141 prior general contracts / 1,281 identities are unchanged and retain earlier execution evidence.
-Five Vitest process and eleven native owner controls retain earlier evidence.
+**Evidence.** The disposable selection passes all five files / nineteen cases in 33.004 seconds,
+with every selected group drained. All 88 pure adapter checks, direct TypeScript, scoped style,
+planning and authority pass. The [packet](./account-conformance-runs/2026-09-13-contract-fixture-adapters/README.md)
+retains full receipts, exact patch, 51 source/helper/wrapper pins and preservation. All 144 prior
+general contracts / 1,295 identities retain earlier evidence unchanged. The 21 Node owner, five
+Vitest process and eleven native controls retain prior evidence and were not rerun. The existing
+160-history policy control includes these files; their product controls are fixed matrices.
 
-**Open validation observation.** The first ownership run reported orphaned-child on an expected-pass
-historical control using the existing service path. Its log remains; the first receipt was removed
-by teardown. Cause remains unresolved. Optional pre-cleanup receipt capture now retains both later
-runs; no owner rules/bounds changed. Investigate at the owner/loaded-host aggregate reliability gate;
-later passes do not establish a fix. The packer now preserves binary xcrun_db output as hashed base64.
+**Open validation observation.** The ledger phase's first owner run reported orphaned-child on an
+expected-pass historical control using the existing service path. Its log remains; the first receipt
+was removed by teardown. Cause remains unresolved despite later focused/full passes. Optional
+pre-cleanup receipt capture retains later runs; no owner rules/bounds changed. Investigate at the
+owner/loaded-host aggregate reliability gate; this phase does not establish a fix.
 
-**Next bounded phase.** Review recovery-contract controls/exports, transport-contract controls,
-and service-custody controls/exports. General selections contain 144 files / 1,295 cases: all 96
-Vitest and 48 Node files. There are 612 obligations / 273 blocked rows: 114 test-file (98 Node,
-sixteen Playwright), 96 command and 63 campaign. The 597,511-byte manifest stays below 700 kB; all
-eleven catalogues remain resolved (163 cases / 54 mutations). Other Node/native/Playwright ownership,
-nested owners and exact wrappers follow. Resolve isolation's retired delivery-v8 invocation before
-wrapper certification without reviving v8 support. R-04's explicit style scopes/full checks and
-P-06's remaining prose precede the immutable aggregate, private Account prep and human adoption.
+**Next bounded phase.** Review admission-bounds protocol; admission-evidence receipt/size; crypto-prep
+census/contracts; first-authority registry; genesis crypto; and outbound preparation fixtures.
+General selections contain 149 files / 1,314 cases: all 96 Vitest and 53 Node files. There are 612
+obligations / 268 blocked rows: 109 test-file (93 Node, sixteen Playwright), 96 command and 63 campaign.
+The 602,471-byte manifest stays below 700 kB; all eleven catalogues remain resolved (163 cases /
+54 mutations). Other Node/native/Playwright ownership, nested owners and exact wrappers follow.
+Crypto-provider export tests do not discharge wrapper JSON export postconditions. Resolve retired-v8
+wrapper invocations without reviving v8 support. R-04's explicit style scopes/full checks and P-06's
+remaining prose precede the immutable aggregate, private Account prep and human adoption.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

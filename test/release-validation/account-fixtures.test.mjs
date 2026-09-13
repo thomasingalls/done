@@ -9,6 +9,7 @@ import {
   deliveryFixtureFiles,
   isolationFixtureFiles,
   ledgerFixtureFiles,
+  contractFixtureFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
 import { buildInventory } from '../../scripts/release-validation/inventory.mjs';
@@ -20,13 +21,13 @@ import { validateStage } from '../../scripts/release-validation/stage.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 189 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 208 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
-      8, 3, 2, 7, 2, 5, 7,
+      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4,
     ],
   );
   for (const s of stages) {
@@ -37,10 +38,10 @@ test('Account fixture selection admits exactly 189 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 38);
+  assert.equal(selected.length, 43);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    201,
+    220,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -80,6 +81,13 @@ test('Account fixture selection admits exactly 189 Node cases and 12 delivery ca
     ledger.reduce((n, s) => n + s.expect.cases.length, 0),
     14,
   );
+  const contracts = selectStages(m, 'contract-fixtures');
+  assert.deepEqual(contracts.map((s) => s.argv.at(-1)).sort(), [...contractFixtureFiles].sort());
+  assert.equal(contracts.length, 5);
+  assert.equal(
+    contracts.reduce((n, s) => n + s.expect.cases.length, 0),
+    19,
+  );
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -118,6 +126,9 @@ test('Account fixture selection admits exactly 189 Node cases and 12 delivery ca
     'account-service-inbound',
     'account-isolation',
     'account-ledger-contract',
+    'account-recovery-contract',
+    'account-transport-contract',
+    'account-service-custody',
   ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);

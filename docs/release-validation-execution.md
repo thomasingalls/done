@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**273 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**268 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -43,6 +43,7 @@ node scripts/release-validation/execute.mjs --selection service-fixtures
 node scripts/release-validation/execute.mjs --selection delivery-fixtures
 node scripts/release-validation/execute.mjs --selection isolation-fixtures
 node scripts/release-validation/execute.mjs --selection ledger-fixtures
+node scripts/release-validation/execute.mjs --selection contract-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -801,15 +802,51 @@ retains full selection receipts, twelve later historical-control receipts and bo
 logs. Its packer was corrected to preserve binary xcrun_db files as hashed base64; no tests reran
 for packaging. This new phase remains uncommitted, not an immutable aggregate.
 
+## Contract controls and export fixtures — phase 2u
+
+Signed `54722df` closes the preceding ledger phase. The `contract-fixtures` selection adds five Node
+files / nineteen cases: recovery controls 2 and exports 1, transport controls 4, service-custody
+controls 8 and exports 4. Exact case names are statically enumerated by the unchanged finite census.
+The stage owner, reporters, product code/tests, vectors, assertions and deadlines are unchanged.
+
+Recovery mutants use authentic malformed payloads and actual context/root/key-pair/export guards.
+Transport controls omit fields from messages supplied to real signature verification, using
+independent signatures; successful checks do not cover all owner/finalization/entry predicates.
+Service-custody controls use copied source, exact guard anchors, temporary SQLite files and actual
+owner methods. Mocks restore and handles close. Captured private-export buffer clearing is a bounded
+buffer assertion, not forensic erasure. No browser, listener or build runs in this selection.
+
+The disposable run passes all five files / nineteen cases in 33.004 seconds, with every group drained.
+All 88 pure adapter checks, direct TypeScript, scoped style, planning, authority and expected release
+refusal pass. No product selection failed or needed repair, retry or a larger deadline. The existing
+160-history policy-change control includes the new files; these product fixtures use fixed matrices.
+Prior 144 general contracts / 1,295 identities remain unchanged and retain earlier execution evidence.
+General selections now contain 149 files / 1,314 cases (96 Vitest, 53 Node); Account has 43 files /
+220 cases. The [packet](./account-conformance-runs/2026-09-13-contract-fixture-adapters/README.md) retains
+complete stage receipts, exact patch, 51 source/helper/wrapper pins and preservation within 150 kB.
+This phase remains uncommitted, not an immutable aggregate.
+
+The unchanged 21 Node owner, five Vitest process and eleven native controls retain previous evidence;
+they were not rerun. The ledger phase's initial orphaned-child classification on an expected-positive
+historical service-path control remains unresolved despite later focused/full passes. Keep it for
+owner/loaded-host aggregate reliability investigation. This phase establishes no repair.
+
+Crypto-provider exports.test.mjs cases do not discharge optional ACCOUNT_REPORT_DIR JSON exports.
+The three wrappers and their saved-output, ordered vector and native prerequisite obligations remain
+blocked. The v2 page-extent sibling is referenced by source inventory, with prior Vitest execution
+evidence; it is not an additional runtime case in this selection.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **273 blocked rows**: 114 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 98 Node and sixteen Playwright files remain. Next review recovery/
-transport/service-custody contract controls and export fixtures. Other Node fixtures, native
-browsers, Playwright, deliberate nested owners and exact wrapper variants/postconditions follow.
-Parsable registrations alone do not grant execution credit. R-04 needs explicit archive/generated
-style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.
+612 obligations / **268 blocked rows**: 109 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 93 Node and sixteen Playwright files remain. Next review eight
+protocol-preparation/registry fixtures: admission-bounds protocol, admission-evidence receipt/size,
+crypto-prep census/contracts, first-authority registry, genesis crypto and outbound preparation.
+Other Node fixtures, native browsers, Playwright, deliberate nested owners and exact wrapper
+variants/postconditions follow. Parsable registrations alone do not grant execution credit. Resolve
+retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/generated style
+scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.
 
 Only after every required obligation resolves should P-06's remaining cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before
