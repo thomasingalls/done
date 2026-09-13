@@ -2554,3 +2554,19 @@ exported histories/metrics/counterexamples to wrapper verification. Describe an 
 on observed initial rows instead of claiming independent derivation of every field. A wrapper that
 still calls a retired v8 fixture needs an explicit disposition before certification; direct current
 file execution does not re-admit retired support.
+
+
+## 2026-09-13 — Ledger runtime inputs and failed ownership evidence stay explicit
+
+Admit reviewed in-memory ledger builds under the existing Node owner, keeping Vite configuration
+loading and output disabled and every original test assertion/population intact. Pin the exact
+historical spoolRecord source path used by the batch reader; do not broaden this to arbitrary src
+paths. Vector-file reads enter ordinary source identity, while generator checks and optional
+wrapper exports retain separate obligations. Preserve the witness's coordinated-rollback limitation.
+
+Exercise historical drift controls on both old and newly admitted paths. Preserve an initial owner
+failure even if later focused and unfiltered runs pass. Add optional pre-cleanup receipt capture to
+the historical control helper without relaxing process rules or deadlines. An unreproduced orphan
+classification has an unresolved cause, not an established fix; carry it into owner/aggregate
+reliability work. Evidence packing must distinguish text from binary auxiliary output and retain
+binary bytes with their encoding/hash, rather than silently dropping non-UTF-8 files.

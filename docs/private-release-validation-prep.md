@@ -43,18 +43,20 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-141 files / 1,281 cases: all 96 Vitest files and 45 Node files. The latest isolation service phase
-adds five files / 23 cases, all passing in a disposable selection with 160 generated histories,
-a separate shrinking mutation control and every process group drained. Product source/tests,
-finite census and process owner remain unchanged. All 136 prior general contracts / 1,258 identities
-retain earlier execution evidence; no combined current-revision run is claimed. All 88 pure adapter
-checks pass; unchanged process/native ownership controls retain previous evidence.
-The manifest retains 276 unresolved obligations: 117 test-file (101 Node, sixteen Playwright),
-96 command and 63 campaign. Ledger-contract runtime fixtures and their historical batch reader are
-next. Remaining Node/native/Playwright ownership and exact wrappers precede P-06 and the immutable
-run. The isolation wrapper's retired delivery-v8 invocation needs disposition before certification.
-The manifest remains within its 700 kB ceiling; R-04's live/archive/generated scopes and full style
-checks remain. Bounded file receipts do not qualify a whole command or loaded-host aggregate.
+144 files / 1,295 cases: all 96 Vitest files and 48 Node files. Ledger runtime adds three files /
+fourteen cases, all passing with 200 generated histories and drained groups. Builds remain in memory;
+the historical batch reader has an exact source pin. Product code/tests/vectors are unchanged.
+All 141 prior general contracts / 1,281 identities retain earlier evidence. All 88 pure adapter
+checks and the final 21-test ownership run pass; five Vitest process and eleven native controls
+retain prior evidence. The first owner run reported orphaned-child on the old service-path control;
+its cause remains unresolved despite passing focused/full reruns. Keep that observation for owner/
+loaded-host qualification. Optional receipt capture now preserves later historical-control outputs.
+The manifest retains 273 unresolved obligations: 114 test-file (98 Node, sixteen Playwright),
+96 command and 63 campaign. Recovery/transport/service-custody controls and export fixtures are next;
+other Node/native/Playwright ownership and exact wrappers precede P-06 and the immutable run.
+Isolation's wrapper still needs a disposition for its retired delivery-v8 invocation. The manifest
+stays within 700 kB; R-04's live/archive/generated scopes and full style checks remain. Bounded file
+receipts do not qualify whole commands or a loaded-host aggregate.
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

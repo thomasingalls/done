@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**276 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**273 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -42,6 +42,7 @@ node scripts/release-validation/execute.mjs --selection account-fixtures
 node scripts/release-validation/execute.mjs --selection service-fixtures
 node scripts/release-validation/execute.mjs --selection delivery-fixtures
 node scripts/release-validation/execute.mjs --selection isolation-fixtures
+node scripts/release-validation/execute.mjs --selection ledger-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -769,12 +770,43 @@ The isolation wrapper remains blocked with its ordered prerequisites and optiona
 existing call to retired delivery-v8 native tests needs disposition before wrapper certification;
 this file selection does not revive that fixture.
 
+## Ledger-contract runtime fixtures — phase 2t
+
+Signed `01c4447` closes the preceding isolation phase. The `ledger-fixtures` selection adds three
+Node files / fourteen cases: batch 2, controls 5, formats 7. Actual ledger modules and mutants build
+in memory with Vite configuration loading/output disabled and explicit Yjs injection. Product
+code/tests, names, assertions, seeds, vectors and deadlines are unchanged. The corpus has twenty
+entries, ten carriers; its bytes enter ordinary source identity. Wrapper exports, standalone vector
+checks and native prerequisites remain independent obligations.
+
+The exact historical path `src/crdt/spoolRecord.ts` is newly supported for the batch reader at
+`284a97a27dc3344fcb7c55a8757a2a41c74fe0b9`. Reference/revision/path/hash enter its stage contract and
+prelaunch/reuse/postexecution checks under unchanged bounds. Actual historical drift controls run
+against both this path and the previous Account-service path; other src paths remain unsupported.
+
+The disposable selection passes in 29.743 seconds, including 200 generated histories and all groups
+drained. The property preserves its coordinated-rollback limitation. All 88 pure adapter tests and
+the final 21-test owner suite pass, as do direct TypeScript, scoped style, planning and authority.
+No product selection failed or needed repair, retry or a larger deadline. Prior 141 general
+contracts / 1,281 identities remain unchanged; general selections now contain 144 files / 1,295
+cases (96 Vitest, 48 Node), with 38 Account files / 201 cases. Five Vitest process and eleven native
+owner controls retain previous evidence.
+
+The initial owner run reported orphaned-child on an expected-positive historical service-path
+control. Its log remains but teardown removed that first receipt. Cause remains unresolved; no
+owner implementation or bound changed. Optional receipt capture was added, then the focused and
+unfiltered reruns passed. Keep this observation for owner/loaded-host aggregate reliability, without
+claiming later passes establish a fix. The [packet](./account-conformance-runs/2026-09-13-ledger-fixture-adapters/README.md)
+retains full selection receipts, twelve later historical-control receipts and both failing/passing
+logs. Its packer was corrected to preserve binary xcrun_db files as hashed base64; no tests reran
+for packaging. This new phase remains uncommitted, not an immutable aggregate.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **276 blocked rows**: 117 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 101 Node and sixteen Playwright files remain. Next review ledger-contract
-formats/batch/control runtime fixtures, their in-memory builds and historical batch-reader input. Other Node fixtures, native
+612 obligations / **273 blocked rows**: 114 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 98 Node and sixteen Playwright files remain. Next review recovery/
+transport/service-custody contract controls and export fixtures. Other Node fixtures, native
 browsers, Playwright, deliberate nested owners and exact wrapper variants/postconditions follow.
 Parsable registrations alone do not grant execution credit. R-04 needs explicit archive/generated
 style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.

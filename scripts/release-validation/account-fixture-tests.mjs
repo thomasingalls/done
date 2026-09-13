@@ -1,4 +1,4 @@
-/** Reviewed synthetic SQLite fixtures, in-process mutants and inherited crash workers.
+/** Reviewed synthetic fixtures, in-memory builds, mutants and inherited crash workers.
  * No native browser fixture or wrapper evidence obligation is admitted by this list.
  */
 import assert from 'node:assert/strict';
@@ -6,6 +6,12 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
+
+export const ledgerFixtureFiles = [
+  'test/account-ledger-contract/batch.test.mjs',
+  'test/account-ledger-contract/controls.test.mjs',
+  'test/account-ledger-contract/formats.test.mjs',
+];
 
 export const isolationFixtureFiles = [
   'test/account-isolation/controls.test.mjs',
@@ -27,6 +33,10 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-ledger-contract/batch.test.mjs': [
+    '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9',
+    'src/crdt/spoolRecord.ts',
+  ],
   'test/account-service-delivery/controls.test.mjs': ['2cb42a2', 'account-service/core.ts'],
   'test/account-service-inbound/core.test.mjs': [
     '4bb09042f37f68ec31f0d82587af608f599eb096',
@@ -64,6 +74,7 @@ export const accountFixtureFiles = {
     ...serviceFixtureFiles,
     ...deliveryFixtureFiles,
     ...isolationFixtureFiles,
+    ...ledgerFixtureFiles,
   ],
 };
 

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   copyFileSync,
+  cpSync,
   chmodSync,
   mkdtempSync,
   mkdirSync,
@@ -12,7 +13,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import * as fc from 'fast-check';
 import {
   createStageRunner,
@@ -70,8 +71,21 @@ function fixture(t, script) {
 const reportScript = (cases, extra = '') => `import {writeFileSync} from 'node:fs'; ${extra}
 writeFileSync(process.env.RELEASE_CASE_REPORT, JSON.stringify({schema:1, nonce: process.env.RELEASE_RUN_NONCE, cases:${JSON.stringify(cases)}, errors:[]}));`;
 
-function historicalFixture(t, during = false) {
-  const f = fixture(t, '');
+function historicalFixture(t, path = 'account-service/core.ts', during = false) {
+  const cleanup = [];
+  const f = fixture({ after: (fn) => cleanup.push(fn) }, '');
+  t.after(() => {
+    try {
+      if (process.env.HISTORICAL_CONTROL_OUTPUT) {
+        mkdirSync(process.env.HISTORICAL_CONTROL_OUTPUT, { recursive: true });
+        cpSync(f.output, join(process.env.HISTORICAL_CONTROL_OUTPUT, basename(f.base)), {
+          recursive: true,
+        });
+      }
+    } finally {
+      for (const fn of cleanup.reverse()) fn();
+    }
+  });
   const git = (...args) =>
     execFileSync('git', args, {
       cwd: f.root,
@@ -80,8 +94,8 @@ function historicalFixture(t, during = false) {
       stdio: ['ignore', 'pipe', 'pipe'],
     }).trim();
   git('init', '--quiet');
-  f.write('account-service/core.ts', 'export const fixture = 1;');
-  git('add', 'account-service/core.ts');
+  f.write(path, 'export const fixture = 1;');
+  git('add', path);
   const commit = () =>
     git(
       '-c',
@@ -98,18 +112,18 @@ function historicalFixture(t, during = false) {
     );
   commit();
   const reference = git('rev-parse', 'HEAD').slice(0, 12);
-  const pin = historicalInput(f.root, reference, 'account-service/core.ts');
-  const oldBlob = git('rev-parse', reference + ':account-service/core.ts');
-  f.write('account-service/core.ts', 'export const fixture = 2;');
-  git('add', 'account-service/core.ts');
+  const pin = historicalInput(f.root, reference, path);
+  const oldBlob = git('rev-parse', reference + ':' + path);
+  f.write(path, 'export const fixture = 2;');
+  git('add', path);
   commit();
-  const newBlob = git('rev-parse', 'HEAD:account-service/core.ts');
+  const newBlob = git('rev-parse', 'HEAD:' + path);
   f.write(
     'subject.test.mjs',
     `import test from 'node:test';import assert from 'node:assert/strict';
     import {execFileSync} from 'node:child_process';
     test('historical input',()=>{
-      const text=execFileSync('git',['show','${reference}:account-service/core.ts'],{encoding:'utf8',timeout:3000});
+      const text=execFileSync('git',['show','${reference}:${path}'],{encoding:'utf8',timeout:3000});
       assert.match(text,/export const fixture = [12];/);
       ${during ? `execFileSync('git',['replace','${oldBlob}','${newBlob}'],{timeout:3000});` : ''}
     });`,
@@ -140,39 +154,43 @@ function historicalFixture(t, during = false) {
 }
 
 test('historical Git bytes are checked before launch and reuse and enter the receipt contract', async (t) => {
-  const f = historicalFixture(t),
-    before = f.fingerprint();
-  f.replace();
-  assert.deepEqual(f.fingerprint(), before, 'Checkout identity alone misses historical drift');
-  await assert.rejects(() => f.run(f.stage), /Historical source changed/);
-  assert.deepEqual(readdirSync(f.output), [], 'Refusal precedes launch');
-  f.reset();
-  const first = await f.run(f.stage);
-  assert.equal(first.status, 'passed', first.result.reason);
-  assert.equal((await f.run(f.stage)).reused, true);
-  f.replace();
-  await assert.rejects(() => f.run(f.stage), /Historical source changed/);
-  const i = f.stage.expect.historyInputs[0];
-  const replanned = structuredClone(f.stage);
-  replanned.expect.historyInputs = [historicalInput(f.root, i.reference, i.path)];
-  const second = await f.run(replanned);
-  assert.equal(second.status, 'passed', second.result.reason);
-  assert.notEqual(second.key, first.key);
-  assert.notEqual(second.reused, true);
-  console.log('Historical input reuse control: ' + JSON.stringify({ first, second }));
+  for (const path of ['account-service/core.ts', 'src/crdt/spoolRecord.ts']) {
+    const f = historicalFixture(t, path),
+      before = f.fingerprint();
+    f.replace();
+    assert.deepEqual(f.fingerprint(), before, 'Checkout identity alone misses historical drift');
+    await assert.rejects(() => f.run(f.stage), /Historical source changed/);
+    assert.deepEqual(readdirSync(f.output), [], 'Refusal precedes launch');
+    f.reset();
+    const first = await f.run(f.stage);
+    assert.equal(first.status, 'passed', first.result.reason);
+    assert.equal((await f.run(f.stage)).reused, true);
+    f.replace();
+    await assert.rejects(() => f.run(f.stage), /Historical source changed/);
+    const i = f.stage.expect.historyInputs[0];
+    const replanned = structuredClone(f.stage);
+    replanned.expect.historyInputs = [historicalInput(f.root, i.reference, i.path)];
+    const second = await f.run(replanned);
+    assert.equal(second.status, 'passed', second.result.reason);
+    assert.notEqual(second.key, first.key);
+    assert.notEqual(second.reused, true);
+    console.log('Historical input reuse control: ' + JSON.stringify({ first, second }));
+  }
 });
 
 test('a passing historical fixture still fails and drains when Git bytes change during execution', async (t) => {
-  const f = historicalFixture(t, true),
-    before = f.fingerprint();
-  const receipt = await f.run(f.stage);
-  assert.equal(receipt.status, 'failed');
-  assert.match(receipt.result.reason, /Historical source changed/);
-  assert.equal(receipt.result.groupDrained, true);
-  assert.deepEqual(f.fingerprint(), before);
-  const report = JSON.parse(readFileSync(join(f.output, receipt.key, 'cases.json')));
-  assert.deepEqual(report.cases, f.stage.expect.cases);
-  console.log('Historical input drift control: ' + JSON.stringify(receipt));
+  for (const path of ['account-service/core.ts', 'src/crdt/spoolRecord.ts']) {
+    const f = historicalFixture(t, path, true),
+      before = f.fingerprint();
+    const receipt = await f.run(f.stage);
+    assert.equal(receipt.status, 'failed');
+    assert.match(receipt.result.reason, /Historical source changed/);
+    assert.equal(receipt.result.groupDrained, true);
+    assert.deepEqual(f.fingerprint(), before);
+    const report = JSON.parse(readFileSync(join(f.output, receipt.key, 'cases.json')));
+    assert.deepEqual(report.cases, f.stage.expect.cases);
+    console.log('Historical input drift control: ' + JSON.stringify(receipt));
+  }
 });
 
 test('historical metadata rejects malformed pins, unsupported adapters and 160 generated locator corruptions', () => {
@@ -183,6 +201,17 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
     sha256: 'b'.repeat(64),
   };
   validateHistoricalInputs([pin]);
+  validateHistoricalInputs([{ ...pin, path: 'src/crdt/spoolRecord.ts' }]);
+  for (const path of [
+    'src/crdt/other.ts',
+    'src/crdt/../spoolRecord.ts',
+    'src/other/spoolRecord.ts',
+    '/src/crdt/spoolRecord.ts',
+  ])
+    assert.throws(
+      () => validateHistoricalInputs([{ ...pin, path }]),
+      /Invalid historical source locator/,
+    );
   for (const bad of [
     null,
     [],

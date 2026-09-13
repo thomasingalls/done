@@ -4262,3 +4262,44 @@ Personal/package/vector bytes, L-2, prior evidence, formal debts and signing bac
 Next review ledger-contract runtime fixtures, including in-memory builds and the historical batch
 reader. Remaining Node/native/Playwright ownership, wrappers, R-04 and P-06 precede the immutable
 aggregate and human Account preparation. No personal Account, browser, service or root build ran.
+
+
+## 2026-09-13 — Ledger-contract runtime fixture adapters (L-1)
+
+The preceding isolation fixture phase is signed and verified as `01c4447`. Three ledger files add
+fourteen cases: batch 2, controls 5 and formats 7. Their Vite builds disable configuration loading
+and disk output and evaluate the actual ledger modules with explicit Yjs injection. Product code,
+tests, case names, assertions, seeds, populations, vectors and deadlines remain unchanged.
+
+The historical input validator adds only `src/crdt/spoolRecord.ts`, pinning the batch reader from
+`284a97a27dc3344fcb7c55a8757a2a41c74fe0b9`. Its reference/revision/path/hash enter the stage contract
+and prelaunch/reuse/postexecution checks. Existing limits and owner rules are unchanged. Synthetic
+Git replacement controls now exercise both the service path and this exact CRDT path, including
+changed history with unchanged checkout identity and rejection after an otherwise passing test.
+
+The disposable selection passes three files / fourteen cases in 29.743 seconds, including snapshot
+work, with every selected process group drained. All 200 generated histories at seed 5110917 remain,
+as does the explicit coordinated-rollback limitation. All 88 pure adapter tests, direct TypeScript,
+scoped style, exact manifest layout, planning, authority and expected release refusal pass.
+
+The first unfiltered owner run passed twenty tests and reported orphaned-child on an expected-pass
+historical control using the existing service path. The failure log is retained; its first receipt
+was removed by teardown. Cause remains unresolved. Optional historical receipt capture was added;
+the focused two-test and full 21-test owner reruns pass without changing owner rules or bounds.
+Twelve complete historical receipts from those reruns are retained (eight passes, four required
+drift failures, all drained). Keep the initial failure open for owner/loaded-host aggregate
+reliability investigation. The five unchanged Vitest process and eleven native owner controls retain
+prior evidence. No product selection failed or needed a change, retry or increased deadline.
+
+The first packer encountered binary macOS xcrun_db files in captured output. The corrected archive
+preserves them as hashed base64; no tests reran for packaging. The packet at
+`docs/account-conformance-runs/2026-09-13-ledger-fixture-adapters/` retains full selection reports,
+owner logs/receipts, historical/source/vector pins, exact patch and preservation within 150 kB.
+
+All 141 prior general contracts / 1,281 identities are unchanged and retain earlier evidence.
+General selections now contain 144 files / 1,295 cases: 96 Vitest and 48 Node. The manifest retains
+612 obligations / 273 unresolved: 114 test-file (98 Node, sixteen Playwright), 96 command, 63 campaign.
+It is 597,511 bytes under its unchanged 700 kB ceiling; all eleven catalogues remain resolved.
+This phase is uncommitted. Personal/package/vector bytes, L-2, prior archives and formal debts are
+unchanged. Next review recovery/transport/service-custody contract controls and export fixtures;
+other Node/native/Playwright ownership, wrappers, R-04 and P-06 precede the immutable aggregate.
