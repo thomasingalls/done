@@ -40,8 +40,11 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 
 **Phase 1 inventory is complete:** the [checked graph and coverage map](./release-validation-graph.md)
 records current package wiring, proposed required families, explicit exclusions and concrete execution
-gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. Next is the finite
-execution manifest and shared bounded stage runner, followed by P-06's prose sweep and the immutable run.
+gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
+[phase-2a execution foundation](./release-validation-execution.md) now supplies the obligation manifest,
+shared bounded runner and disposable infrastructure selection. Its 447 unresolved adapter obligations
+remain explicit. Next is native content census/process ownership integration, then the remaining
+family/wrapper adapters and deadlines. P-06 and the immutable run follow that completed graph.
 
 1. Inventory the executable validation graph: current `package.json` checks, later standalone Account
    contract/audit/isolation/oracle campaigns, and the new private-release phase campaigns. Map every

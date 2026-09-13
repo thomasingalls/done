@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 261,
-    "requiredTestFiles": 255,
+    "testFiles": 264,
+    "requiredTestFiles": 258,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -2486,17 +2486,17 @@
       "referencesVectorChain": true,
       "runCallSites": [
         {
-          "line": 178,
+          "line": 169,
           "form": "run",
           "arguments": ["'inventory'", "['scripts/account-crypto-prep/run.mjs']"]
         },
         {
-          "line": 179,
+          "line": 170,
           "form": "run",
           "arguments": ["'authority'", "['scripts/check-authority-map.mjs']"]
         },
         {
-          "line": 185,
+          "line": 176,
           "form": "run",
           "arguments": [
             "name",
@@ -2506,7 +2506,7 @@
           ]
         },
         {
-          "line": 200,
+          "line": 191,
           "form": "run",
           "arguments": [
             "'unit-bridges'",
@@ -2514,12 +2514,12 @@
           ]
         },
         {
-          "line": 214,
+          "line": 205,
           "form": "run",
           "arguments": ["'vectors-' + String(i + 1).padStart(2, '0')", "args"]
         },
         {
-          "line": 216,
+          "line": 207,
           "form": "run",
           "arguments": [
             "'lint'",
@@ -2527,7 +2527,7 @@
           ]
         },
         {
-          "line": 222,
+          "line": 213,
           "form": "run",
           "arguments": [
             "'format'",
@@ -2537,12 +2537,12 @@
       ],
       "processCallSites": [
         {
-          "line": 99,
+          "line": 90,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         },
         {
-          "line": 117,
+          "line": 108,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -8781,6 +8781,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/identity.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/identity.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/inventory.test.mjs",
       "status": "required",
       "invocation": {
@@ -8795,6 +8810,41 @@
       "propertyFamilies": [
         {
           "line": 84,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/manifest.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/manifest.test.mjs"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [
+        {
+          "line": 150,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/stage.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/release-validation/stage.test.mjs"]
+      },
+      "declarations": 12,
+      "propertyFamilies": [
+        {
+          "line": 243,
           "form": "fc.property"
         }
       ],
@@ -10873,7 +10923,7 @@
     },
     {
       "path": "scripts/account-crypto-audit/run.mjs",
-      "sha256": "5525e8b845ec1840e2a7eba53039eee29ab8c0f5cf19a6248710728cd3e9e471"
+      "sha256": "a2f0bb1a4a00565fd64131e6dc1a652328c6492c5ebfdd0949838defcd4e50af"
     },
     {
       "path": "scripts/account-crypto-prep/census.mjs",
@@ -11520,16 +11570,48 @@
       "sha256": "9decb34cebd5f0ab75ef60c58ad991549c684882469d3ba6a076a201723e5f11"
     },
     {
+      "path": "scripts/release-validation/census.mjs",
+      "sha256": "6384e93b728d8d3b74c5ec7bcf6e29ca41ec8ebf7b795d5c97ca74cc058a0997"
+    },
+    {
       "path": "scripts/release-validation/check.mjs",
       "sha256": "880653a86fde57681df0385fe1562e152b1a4a6bf0fb4211f42d3287117d3f43"
+    },
+    {
+      "path": "scripts/release-validation/execute.mjs",
+      "sha256": "9b0c7e92c47646f9ddca38def986fb9348a26d2af8ebd56ade8aadf34c355c50"
+    },
+    {
+      "path": "scripts/release-validation/identity.mjs",
+      "sha256": "83ef250c6aad05ab2da4a9e6cf59c621dea18609422236bfeb3a4ff218272461"
     },
     {
       "path": "scripts/release-validation/inventory.mjs",
       "sha256": "dc598433de2f15e27bf385fbcde5874e60a0c97628917505835682297ac25487"
     },
     {
+      "path": "scripts/release-validation/manifest.mjs",
+      "sha256": "af822c63a66f8a0bc668406183b845a9ea422a29bf9b9538ce82ff06e014ec9c"
+    },
+    {
+      "path": "scripts/release-validation/node-reporter.mjs",
+      "sha256": "44d9688f07ac5b1698a9569cf68448cd87550cdc0ebb35c358f07a314d56adbd"
+    },
+    {
+      "path": "scripts/release-validation/plan.mjs",
+      "sha256": "f79383cff7ee66c0f2e61abdcd0f52c0f43dbf7bf1144e42180eea30cf5310a4"
+    },
+    {
       "path": "scripts/release-validation/policy.json",
       "sha256": "969aa8b1f32b97ccb79faaeb3765b96877abaf76b280a03c4f9f050ca340b58c"
+    },
+    {
+      "path": "scripts/release-validation/process-guard.mjs",
+      "sha256": "c334ccf7024007e3909fa1d226f913644c8a2eb5c087e902a571823b4899944b"
+    },
+    {
+      "path": "scripts/release-validation/stage.mjs",
+      "sha256": "c8035e288a48c8e77c424f4fab0f5d5934c5a646ad29e50f9b3a842846e6c26c"
     },
     {
       "path": "scripts/remediation-status.mjs",
@@ -13268,8 +13350,20 @@
       "sha256": "d01eac729f0ed5a9e298b4f315aaf8c7458e6831fcd23bc9f7e612f4ac745fe3"
     },
     {
+      "path": "test/release-validation/identity.test.mjs",
+      "sha256": "b62d1024fdd27d27de7157f783edc743db3beb2891db438b80c86f411e9a22c8"
+    },
+    {
       "path": "test/release-validation/inventory.test.mjs",
       "sha256": "89471cd382ec9f4a971db7be6d60e1420a2ed3caa7ee78ab6ab75cd76ac550a2"
+    },
+    {
+      "path": "test/release-validation/manifest.test.mjs",
+      "sha256": "f0fcfe4e75052c2cb1c9fc9dafba27ef48bc44f17c0df099afe182ad89e49b99"
+    },
+    {
+      "path": "test/release-validation/stage.test.mjs",
+      "sha256": "8897af035a1c57343e04af1a6665c73366cfce0c78b2b345bd05363b007f954e"
     },
     {
       "path": "test/reorder.test.ts",

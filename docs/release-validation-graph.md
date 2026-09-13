@@ -1,5 +1,8 @@
 # Release-validation inventory — phase 1
 
+The current [execution foundation](./release-validation-execution.md) builds on this inventory. Its
+manifest remains blocked for whole-release execution; the phase-1 counts below are historical.
+
 This phase maps the validation surface at `d03e473` plus the inventory changes. It does not execute
 an aggregate, change runtime behavior, repair deadlines, sweep P-06's cryptographic prose, or qualify
 a release. The next phase implements bounded execution from this reviewed coverage inventory.

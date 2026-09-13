@@ -1,10 +1,11 @@
 /** Aggregate execution evidence. Finding disposition remains a reviewed document, never a count. */
 import { spawn, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { checkConstructionRegistry } from '../account-first-authority/registry.mjs';
+import { sourcePaths, dependencyPins, digest } from '../release-validation/identity.mjs';
 
 const output = resolve(
   'test-results/account-crypto-audit',
@@ -78,20 +79,10 @@ write('crosswalk', {
   interpretation:
     'Vector membership and test references are registered obligations. The runner executes every named test file; a reviewed source/field assessment is still required. Counts do not prove protocol completeness.',
 });
-const walk = (dir) =>
-  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
-    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
-  );
-const paths = [
-  ...new Set([
-    // Keep the previous full campaign scope, plus this runner and every registered historical home.
-    ...json('docs/account-conformance-runs/2026-09-11-account-local-provenance/sources.json').map(
-      (p) => p.path,
-    ),
-    ...walk('scripts/account-crypto-audit'),
-    ...registry.constructions.flatMap((c) => (c.evidencePins ?? []).map((p) => p.path)),
-  ]),
-].sort();
+// Current complete repository inputs replace the inherited historical campaign list.
+const paths = sourcePaths(process.cwd());
+const installedDependencies = dependencyPins(process.cwd());
+write('dependencies', installedDependencies);
 const pins = paths.map((path) => ({ path, sha256: hash(path) }));
 write('sources', pins);
 const summary = {
@@ -234,6 +225,13 @@ try {
   for (const p of registeredTests) assert(executed.has(p), 'Unexecuted registered test file: ' + p);
   for (const p of pins)
     assert.equal(hash(p.path), p.sha256, 'Source changed during campaign: ' + p.path);
+  assert.deepEqual(sourcePaths(process.cwd()), paths, 'Source input population changed');
+  assert.equal(
+    digest(dependencyPins(process.cwd())),
+    digest(installedDependencies),
+    'Installed dependencies changed',
+  );
+  summary.dependencyPinsVerified = installedDependencies.length;
   summary.sourcePinsVerified = pins.length;
   summary.registeredTestFilesExecuted = registeredTests.length;
   summary.nodeTestFilesExecuted = executed.size;

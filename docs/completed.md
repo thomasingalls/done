@@ -3531,3 +3531,28 @@ batch tests absent from old wrappers, incomplete case-census checks, historical 
 inherited crypto-audit source-pin omissions and unsafe in-place build defaults. P-06 prose and the
 immutable aggregate follow. The obsolete Lima/deployed-old-writer rehearsal is explicitly optional;
 private migration remains the product scope. Appended before replacing the L-1 checkpoint.
+
+
+## 2026-09-13 — Release-validation execution foundation, phase 2a (`L-1`)
+
+Committed the inventory unsigned as `f13bdd1`, preserving review-tracked hashes. Added the
+[finite obligation manifest and bounded runner](./release-validation-execution.md): 258 required test
+files, 11 catalogues with 163 cases/54 discriminating mutants, 29 vector corpora and 83 registry entries.
+Catalogue expansion refuses unsupported syntax without importing campaigns. Exact Node case outcomes,
+source/dependency/runtime identity, ordered receipts, artifact verification and process drain govern
+reuse. Current crypto-audit inputs replace its incomplete inherited source list.
+
+Real controls exercise missing/skipped cases, stale reports, changed helper/dependency bytes, survived
+mutations, timeout/cancellation, TERM-resistant children, zero-exit orphaning, detached attempts and
+output floods. A flood exposed a repeated-signal error; stopping is now idempotent and signal/log
+failures remain failures. The first five-stage disposable run passed 19 exact cases and two static
+checks. The [evidence packet](./account-conformance-runs/2026-09-13-validation-runner/README.md) separates
+that intermediate run from the passing eight final gates (32 tests, 480 generated histories) and
+the final five-stage, 20-case disposable selection. Thirty repaired flood probes explicitly prove
+drain; the injected persistent-uncertainty control still refuses.
+
+This closes the runner foundation, not the complete phase-2 graph: 447 adapter obligations remain
+blocked. Next is native content catalogue census/process ownership, then remaining family/wrapper
+integration and deadlines before P-06 and an immutable aggregate. No native campaigns, complete vector
+chain, release qualification or personal operation are claimed. Existing unsigned hashes remain;
+the delivered signing reminder is paused. This work is left uncommitted. Appended before replacing L-1.

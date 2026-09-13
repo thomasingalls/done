@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation execution manifest and bounded runner (`L-1`)
+## Active slice: Release-validation native content adapter (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-blocks_on: none; reviewed phase-1 inventory complete
+status: ready for next bounded integration
+blocks_on: none; whole-release execution remains blocked on adapter coverage
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
@@ -61,25 +61,28 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Q-01/Q-04 through Q-05 are committed unsigned through `d03e473`; the bounded
-carrier/burst gains and capacity limits remain in [the Q record](./review/implementation/liveness-followups.md).
-The [phase-1 validation inventory](./release-validation-graph.md) now maps package wiring, all discovered
-test/campaign/catalogue/vector families and registered construction requirements. It separates proposed
-coverage from current wrapper selection, records six retired v8 product-test exclusions and retains
-shared service/codecs/helper coverage. The obsolete cold-host Lima rehearsal is optional.
+**Just completed.** The phase-1 inventory is committed unsigned as `f13bdd1`; earlier Q work remains
+unsigned through `d03e473`. The [phase-2a foundation](./release-validation-execution.md) adds the
+[execution manifest](./release-validation-manifest.json), exact-case adapter, shared bounded runner,
+fresh source/installed-dependency identity and disposable checkout execution. Crypto-audit source pins
+no longer inherit a stale historical list. All 258 required test files, 163 catalogue cases/54 mutants,
+29 vector corpora and 83 registry entries remain represented. The initial five-stage disposable
+infrastructure run passed 19 exact cases and two static checks; the final five-stage selection passes 20 cases with every group drained. All eight final
+gates pass, including 32 tests and 480 generated histories. Checks and failed attempts are recorded in the
+[evidence packet](./account-conformance-runs/2026-09-13-validation-runner/README.md).
 
-All six [inventory checks](./account-conformance-runs/2026-09-13-validation-inventory/README.md) pass
-under Node, including ten checker tests and 160 generated command DAGs. A silent package-manager
-wrapper was stopped and recorded separately. This phase is uncommitted. No runtime/native/full
-aggregate ran, no deadlines or prerequisite deduplication changed, and P-06 prose remains unswept.
+**The full phase-2 contract is not closed.** The original proposal combined runner infrastructure
+and every native/wrapper adapter. This foundation keeps 447 unresolved rows visible and refuses release
+execution before checkout creation. It does not run native campaigns, the complete vector chain or
+aggregate, change generated-property deadlines, or give old wrappers cross-campaign cache credit.
+P-06 remains unswept. The silent package-manager attempt remains undiagnosed; exact Node commands work.
 
-**Next single phase.** Compile a finite execution manifest and implement a shared bounded stage
-runner with actual omission, timeout, child-cleanup, stale-result and complete-case controls. Resolve
-the inventory's dynamic selections; preserve all required case/mutation variants and prerequisites.
-Replace inherited historical input lists with fresh source/dependency closure. Share vector results
-only for identical frozen inputs, command, environment and variants. Retain standalone dependencies.
-Use disposable checkout/build/profile/server/report ownership; existing in-place defaults are not safe
-for this personal worktree. See [the phase-2 contract](./release-validation-graph.md#selection-and-deduplication-contract-for-phase-2).
+**Next single phase.** Integrate the content catalogue's 13 normal cases and five discriminating
+mutations, including Q-04 unreadable-load, with exact report census and owned browser/server
+cancellation/drain. Preserve full/default and selected-control variants. Then resolve the remaining
+catalogue, Node, Vitest, Playwright and wrapper selections/postconditions and measured deadlines. Keep
+vector and traceability prerequisites as ordered result dependencies. Native wrappers that detach
+processes need their own reviewed ownership adapter; the first inherited-group adapter refuses them.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/
@@ -87,11 +90,11 @@ recovery rehearsal and enrollment/adoption. Membership/revocation/rotation, sign
 continuity, service operations/deployment and public assurance remain later obligations. F-21.4 wider
 privacy, F-09 Account/key-loss recovery, F-07/F-17/F-19 capacity and Q-08 publication/evidence policy stay open.
 
-**Preservation.** Personal package files (21), prior vectors (31), historical F/N/P/Q packets and
-manifests, formal debts and L-2 are unchanged. No personal browser/profile, recovery files, Account,
-factor, key, service, origin or routing changed. Root `done ` is untouched. The existing signing
-reminder follows unsigned descendants of `1372c39`; no history rewrite was performed. Completion was
-appended before replacing this slice.
+**Preservation.** Personal package files, prior vectors, historical review packets/manifests, formal
+debts and L-2 remain outside this phase. No personal browser/profile, recovery files, Account, factor,
+key, service, origin or routing is used. Root `done ` is untouched. The signing reminder delivered its
+list and is paused. The user explicitly requested preserving unsigned hashes for an in-flight review;
+no signing, amendment or history rewrite occurred. This foundation is left uncommitted.
 
 ---
 
