@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { vitestCensus } from './vitest-census.mjs';
+import { vitestDeclarations } from './vitest-census.mjs';
 
 // These five synthetic suites use the normal config/setup, in-memory IndexedDB and
 // inherited Vitest forks. Native wrappers and whole `pnpm test` remain separate obligations.
@@ -31,6 +31,7 @@ export const vitestArgv = (file) => {
   ];
 };
 export function vitestStage(root, file) {
+  const declarations = vitestDeclarations(file, readFileSync(join(root, file), 'utf8'), { root });
   return {
     id: 'test:' + file,
     argv: vitestArgv(file),
@@ -39,7 +40,8 @@ export function vitestStage(root, file) {
     expect: {
       kind: 'vitest',
       files: [file],
-      cases: vitestCensus(file, readFileSync(join(root, file), 'utf8')),
+      cases: declarations.cases,
+      ...(declarations.dataInputs.length ? { dataInputs: declarations.dataInputs } : {}),
     },
     deadlineMs: 180000,
     graceMs: 5000,

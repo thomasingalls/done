@@ -43,14 +43,14 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. The general adapters now execute
-92 files / 872 cases:
-82 Vitest files (including the five R-03/N-06 suites with unchanged 515 seeded histories) and ten Node
-protocol files. Exact censuses, measured deadlines, counterexample retention and owned process controls
-remain; all 98 non-native runner regressions pass. The manifest retains 325 unresolved obligations:
-166 test-file (14 Vitest, 136 Node, 16 Playwright), 96 command and 63 campaign rows. Generated test
-registrations, remaining ownership/variant integration and R-04 full style gates precede P-06 and the
-immutable run. Keep the manifest within its 700 kB ceiling without dropping obligations as integration
-expands. Bounded file receipts do not qualify the whole test command or a loaded-host aggregate.
+106 files / 1,094 cases: 95 Vitest files and eleven Node files, preserving all previously integrated
+case identities. The generated-registration set adds finite tables/loops, pinned JSON inputs and
+actual drift/omission/skip controls; 106 non-native runner/control tests pass. The manifest retains
+311 unresolved obligations: 152 test-file (one Vitest, 135 Node, sixteen Playwright), 96 command and
+63 campaign. The remaining delivery helper-table identities, fixture/process ownership and exact
+wrappers precede P-06 and the immutable run. Lossless generated formatting keeps the manifest within
+its unchanged 700 kB ceiling; R-04's live/archive/generated scope and full style checks remain.
+Bounded file receipts do not qualify the whole test command or a loaded-host aggregate.
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

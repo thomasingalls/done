@@ -13,14 +13,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 610 obligations, including all 274 current
+The [manifest](./release-validation-manifest.json) now contains 611 obligations, including all 275 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**325 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**311 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -37,6 +37,7 @@ node scripts/release-validation/execute.mjs --selection vitest-properties
 node scripts/release-validation/execute.mjs --selection vitest-reviewed
 node scripts/release-validation/execute.mjs --selection node-protocol
 node scripts/release-validation/execute.mjs --selection general-tests
+node scripts/release-validation/execute.mjs --selection generated-tests
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -57,8 +58,8 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs eighteen stages: sixteen identity, policy, census and adapter test files
-(77 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
+`infrastructure` runs nineteen stages: seventeen identity, policy, census and adapter test files
+(84 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control (including Vitest) and native ownership test files run separately because they deliberately
 create additional runner owners to test their failure handling; they are not certified as nested
@@ -584,7 +585,7 @@ files / 66 cases**. Including the previous property selection, `vitest-reviewed`
 cases, `node-protocol` has ten files / 66 cases and `general-tests` has **92 files / 872 cases**.
 All 92 files pass in 581.6 seconds including snapshot preparation and repeated fingerprints, with
 confirmed group drain. No product/test body, assertion, seed, history count or deadline changes.
-The first property adapter is signed and verified as `8acdee4`; this phase is uncommitted.
+The first property adapter is signed and verified as `8acdee4`; phase 2n is committed as `38e4995`.
 
 Policy validation checks the reviewed files against the fresh inventory, rejecting removed/excluded
 files and changed runners. Parsable new files stay blocked until their fixtures/processes are reviewed.
@@ -614,21 +615,55 @@ prior evidence. The [bounded packet](./account-conformance-runs/2026-09-13-gener
 contains all exact reports, logs, ownership events, timings, source pins and the exact implementation
 patch within 250 kB. Current host timing does not establish loaded-host or cross-platform capacity.
 
+## Generated registrations — phase 2o
+
+The reviewed set adds **thirteen Vitest files / 209 cases** and **one Node file / thirteen cases**.
+`generated-tests` selects those fourteen files / 222 cases. The combined `general-tests` selection
+passes **106 files / 1,094 cases** in 723.7 seconds including preparation/fingerprints, with
+confirmed drain for every stage. The previous 872 identities are unchanged. All selected product test
+bodies, titles, assertions, seeds, history counts and deadlines remain byte-identical to `38e4995`.
+
+The finite reader handles constant lexical data, for-of loops, tuple bindings, nested suite tables,
+reviewed `%s`/`%i`/`%j` titles, JSON vector imports and explicit UTF-8 reads. Function metadata stays
+opaque. Helper calls, unknown control flow/predicates, inherited-property keys and duplicate titles
+refuse. JSON input paths are scoped below `test/vectors/`, reject symlinks and have a size bound;
+their hashes enter the stage contract and are checked before launch even when names are unchanged.
+Planning does not import test modules. Runtime reports still reconcile against independent exact names.
+
+The new Vitest files use fake storage, in-memory builds, Yjs simulations and partial model schedules.
+The Account-core Node suite uses synthetic temporary SQLite fixtures and an inherited competing Node
+process; no real Account or personal service is involved. Older model evidence retains its existing
+scope limitations. Wrapper optional reports, prerequisites and mutation campaigns remain separate.
+
+The manifest now writes one complete obligation per line. Parsing preserves the entire schema, rows,
+contracts, identities, selections, ordering and blocked obligations. Its 552,986 bytes fit the existing
+700 kB ceiling; no obligation or case was removed for size. The snapshot writer owns this generated
+layout, which R-04 must distinguish from general source formatting.
+
+All **106 non-native runner/control tests / 2,880 generated histories** pass. Actual generated Vitest
+controls test names, vectors, nested suites, nullable/object/tuple rows, drift, omission and skip.
+Thirteen final process-control receipts retain three expected passes and ten required failures.
+An initial arithmetic control expectation was corrected after exact baseline comparison; no old case
+was lost. A separate negative control reproduced acceptance of vector metadata on non-Vitest stages.
+That metadata now refuses before any path read. The first product selection was deliberately cancelled
+for this guard repair after fifty passes, with confirmed drain; it supplies no whole-selection credit.
+The final run restarts from the tightened source. No deadline or product test population was reduced.
+
+Typecheck, scoped style, planning and authority checks pass. The [packet](./account-conformance-runs/2026-09-13-generated-registration-adapters/README.md)
+retains final and partial receipts, before-controls, exact source patch and preservation pins within a
+300 kB ceiling. Eleven native ownership controls retain earlier evidence; no browser campaign reran.
+This phase remains uncommitted and does not qualify a loaded-host or immutable aggregate.
+
 ## Next bounded integration
 
-All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest now
-has 610 obligations / **325 blocked rows**: 166 test-file, 96 command and 63 campaign obligations.
-The remaining test files are 14 Vitest, 136 Node and 16 Playwright. Continue with finite independent
-censuses for generated registrations (vector-driven loops, literal table/title formats and nested
-parameterized suites), reviewing fixture/process ownership for each new family. Do not derive the
-expected case population from a passing runtime report or import test modules while planning.
-
-The manifest is 688,333 bytes under its existing 700 kB ceiling. Before further expansion exceeds
-that limit, compact repeated representation while retaining every obligation, exact case identity,
-variant and prerequisite. Then integrate Playwright, deliberate nested owners and exact wrapper
-variants/postconditions. R-04 requires explicit immutable-archive exclusions, live-source repairs
-and full style gate execution. Preserve ordered vector/traceability prerequisites and don't credit a
-whole command from a file receipt.
+All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
+611 obligations / **311 blocked rows**: 152 test-file, 96 command and 63 campaign obligations.
+One Vitest file (`accountDelivery.test.ts`), 135 Node files and sixteen Playwright files remain.
+Resolve the delivery file's helper-built tables and duplicate-title identity issue explicitly, then
+continue the reviewed Node fixture/process families. Parsable registrations alone do not grant
+execution credit. Playwright, deliberate nested owners and exact wrapper variants/postconditions
+follow. R-04 needs explicit immutable-archive and generated-layout scopes, live-source repairs and
+full style gate execution. Preserve ordered vector/traceability prerequisites and whole-wrapper checks.
 
 Only after every required obligation resolves should P-06's current cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before

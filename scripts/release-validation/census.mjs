@@ -1,6 +1,7 @@
 /** Deliberately finite data/declaration readers. Never import a test or campaign to plan it. */
 import assert from 'node:assert/strict';
 import { parseSync } from '@babel/core';
+import { registrationData } from './registration-data.mjs';
 
 const parse = (text) =>
   parseSync(text, { configFile: false, babelrc: false, parserOpts: { sourceType: 'module' } })
@@ -105,7 +106,9 @@ export function catalogueCensus(text, { patches = false, patchFile } = {}) {
  * Loops, nested tests, aliases used elsewhere and conditional registrations refuse. Other
  * families need a reviewed adapter, not a count learned from a supposedly passing run.
  */
-export function directNodeCensus(path, text) {
+export const directNodeCensus = (path, text) => nodeCensus(path, text, false);
+export const generatedNodeCensus = (path, text) => nodeCensus(path, text, true);
+function nodeCensus(path, text, generated) {
   const ast = parse(text),
     aliases = new Set(),
     declarations = new Set(),
@@ -116,14 +119,46 @@ export function directNodeCensus(path, text) {
         if (s.type === 'ImportDefaultSpecifier' || s.imported?.name === 'test')
           aliases.add(s.local.name);
   assert(aliases.size, 'No supported node:test import: ' + path);
-  for (const n of ast.body) {
-    const call = n.type === 'ExpressionStatement' ? n.expression : null;
-    if (call?.type === 'CallExpression' && aliases.has(call.callee.name)) {
-      assert(call.arguments[0]?.type === 'StringLiteral', 'Dynamic test title: ' + path);
-      declarations.add(call.callee);
-      cases.push({ id: path + '::' + call.arguments[0].value, outcome: 'pass' });
+  const data = registrationData({ path, ast });
+  const scan = (body, env, depth = 0) => {
+    assert(depth < 32, 'Node registration nesting limit');
+    for (const n of body) {
+      if (generated && n.type === 'ForOfStatement') {
+        assert(
+          !n.await &&
+            n.left.type === 'VariableDeclaration' &&
+            n.left.kind === 'const' &&
+            n.left.declarations.length === 1,
+          'Unresolved Node loop',
+        );
+        const items = data.value(n.right, env);
+        assert(
+          Array.isArray(items) && items.length && items.length <= 10000,
+          'Unresolved Node loop population',
+        );
+        for (const item of items) {
+          const inner = data.scope(env),
+            body = n.body.type === 'BlockStatement' ? n.body.body : [n.body];
+          data.bind(n.left.declarations[0].id, item, inner);
+          data.declarations(body, inner);
+          scan(body, inner, depth + 1);
+        }
+        continue;
+      }
+      const call = n.type === 'ExpressionStatement' ? n.expression : null;
+      if (call?.type === 'CallExpression' && aliases.has(call.callee.name)) {
+        const title = generated ? data.value(call.arguments[0], env) : call.arguments[0]?.value;
+        assert(
+          typeof title === 'string' && (generated || call.arguments[0]?.type === 'StringLiteral'),
+          'Dynamic test title: ' + path,
+        );
+        assert(cases.length < 10000, 'Node registration case limit');
+        declarations.add(call.callee);
+        cases.push({ id: path + '::' + title, outcome: 'pass' });
+      }
     }
-  }
+  };
+  scan(ast.body, data.global);
   const visit = (n, parent) => {
     if (!n || typeof n !== 'object') return;
     if (n.type === 'Identifier' && aliases.has(n.name))

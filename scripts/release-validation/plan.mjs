@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { buildInventory, assertSnapshot } from './inventory.mjs';
 import { digest } from './identity.mjs';
 import { compileManifest, selectStages } from './manifest.mjs';
+import { manifestSnapshot } from './manifest-snapshot.mjs';
 const args = process.argv.slice(2);
 assert(
   args.length === 0 || (args.length === 1 && ['--record', '--require-complete'].includes(args[0])),
@@ -20,17 +21,8 @@ assertSnapshot(
 );
 const plan = compileManifest(root, inventory),
   path = new URL('../../docs/release-validation-manifest.json', import.meta.url);
-if (args[0] === '--record') {
-  const { format } = await import('oxfmt');
-  const result = await format('docs/release-validation-manifest.json', JSON.stringify(plan), {
-    printWidth: 100,
-  });
-  assert(
-    !result.errors.length && Buffer.byteLength(result.code) <= 700000,
-    'Manifest formatting or size budget failed',
-  );
-  writeFileSync(path, result.code);
-} else
+if (args[0] === '--record') writeFileSync(path, manifestSnapshot(plan));
+else
   assert.equal(
     digest(plan),
     digest(JSON.parse(readFileSync(path))),

@@ -19,7 +19,7 @@ import { digest, filePins } from '../../scripts/release-validation/identity.mjs'
 
 const ordinary = `import {it, describe, expect} from 'vitest';
 describe('suite', () => { it.each(['one', 'two'])('case %s', () => {expect(1).toBe(1);}); });`;
-function fixture(t, text = ordinary) {
+function fixture(t, text = ordinary, data = {}) {
   const root = mkdtempSync(join(tmpdir(), 'done-vitest-owner-'));
   mkdirSync(join(root, 'scripts/release-validation'), { recursive: true });
   mkdirSync(join(root, 'test'));
@@ -41,6 +41,11 @@ function fixture(t, text = ordinary) {
     join(root, 'vite.config.ts'),
     `export default {test:{environment:'node',include:['test/**/*.test.ts']}};`,
   );
+  for (const [path, value] of Object.entries(data)) {
+    mkdirSync(join(root, path, '..'), { recursive: true });
+    writeFileSync(join(root, path), value);
+    files.push(path);
+  }
   const write = (value) => writeFileSync(join(root, files[0]), value);
   write(text);
   t.after(() => {
@@ -158,4 +163,56 @@ test('cancellation and a caught detached-child refusal cannot become successful 
   const violation = await f.run(f.stage);
   failed(violation);
   assert.match(violation.result.reason, /ownership violation/);
+});
+
+test('actual generated Vitest registrations reconcile JSON data, nested suites, tuples and object titles; data drift and omissions refuse', async (t) => {
+  const path = 'test/vectors/cases.json';
+  const data = JSON.stringify({
+    vectors: [
+      { name: 'one', expected: { stored: 1 } },
+      { name: 'two', expected: { stored: 2 } },
+    ],
+  });
+  const text = `import {it,describe,expect} from 'vitest';import v from './vectors/cases.json';
+    describe.each(Object.entries({left:[-8,-7],right:[0]}))('suite %s',(name,ids)=>{
+      for(const id of ids) it(name+':'+id,()=>expect(id).toBeTypeOf('number'));
+    });
+    describe.each([2,3])('size %i',size=>{it('leaf',()=>expect(size).toBeGreaterThan(1));});
+    for(const c of v.vectors.filter(c=>'stored' in c.expected)) it('vector '+c.name,()=>expect(c.expected.stored).toBeGreaterThan(0));
+    it.each([undefined,null,false,'unicode 😀'])('nullable %s',()=>{});
+    it.each([['one',1],['two',2]])('tuple %s',(label,n)=>expect(n).toBeGreaterThan(0));
+    it.each([{a:1,b:'x'},{a:2,b:'y'}])('object %j',()=>{});
+  `;
+  const f = fixture(t, text, { [path]: data });
+  const first = await f.run(f.stage);
+  passed(first);
+  const changed = data.replace('"stored":1', '"stored":3');
+  writeFileSync(join(f.root, path), changed);
+  await assert.rejects(f.run(f.stage), /Registration data changed after planning/);
+  const current = {
+    ...vitestStage(f.root, 'test/subject.test.ts'),
+    deadlineMs: 15000,
+    graceMs: 1000,
+  };
+  const updated = await f.run(current);
+  passed(updated);
+  assert.notEqual(updated.key, first.key);
+  writeFileSync(
+    join(f.root, path),
+    JSON.stringify({ vectors: [{ name: 'one', expected: { stored: 3 } }] }),
+  );
+  const fresh = vitestStage(f.root, 'test/subject.test.ts');
+  const omitted = await f.run({
+    ...current,
+    expect: { ...current.expect, dataInputs: fresh.expect.dataInputs },
+  });
+  failed(omitted);
+  assert.match(omitted.result.reason, /census/);
+  writeFileSync(join(f.root, path), changed);
+  f.write(
+    text.replace("it('leaf',()=>expect(size).toBeGreaterThan(1))", "it('leaf',ctx=>ctx.skip())"),
+  );
+  const skipped = await f.run(current);
+  failed(skipped);
+  assert.match(f.artifact(skipped, 'cases.json'), /skipped/);
 });

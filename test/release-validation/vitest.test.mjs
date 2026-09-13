@@ -61,15 +61,13 @@ test('Vitest census expands literal nested suites and scalar tables without impo
 test('Vitest census refuses conditional, aliased, modified, nested and unknown generated registration', () => {
   for (const body of [
     "if (true) it('a', () => {});",
-    "for (const x of ['a']) it(x, () => {});",
+    'for (const x of getTable()) it(x, () => {});',
     "it.skip('a', () => {});",
     "it.only('a', () => {});",
     "it.fails('a', () => {});",
     "const register = it; register('a', () => {});",
     "it('a', () => { it('b', () => {}); });",
     "it.each(getTable())('case %s', () => {});",
-    "it.each([['a']])('case %s', () => {});",
-    "it.each(['a'])('case %j', () => {});",
     "it.each(['a','a'])('case %s', () => {});",
     "describe('a', async () => { it('x', () => {}); });",
     "it('a', {retry: 1}, () => {});",

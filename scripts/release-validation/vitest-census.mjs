@@ -1,10 +1,13 @@
 /** Finite registrations, not an import or a count learned from a green run. */
 import assert from 'node:assert/strict';
 import { parseSync } from '@babel/core';
+import { registrationData, tableTitle } from './registration-data.mjs';
 
 export const vitestCaseId = (path, names) => path + '::' + JSON.stringify(names);
-
-export function vitestCensus(path, text) {
+export function vitestCensus(path, text, options = {}) {
+  return vitestDeclarations(path, text, options).cases;
+}
+export function vitestDeclarations(path, text, { root } = {}) {
   const ast = parseSync(text, {
     configFile: false,
     babelrc: false,
@@ -28,9 +31,41 @@ export function vitestCensus(path, text) {
     }
   }
   assert(aliases.size, 'No supported Vitest registrations: ' + path);
-  const untyped = (n) => (n?.type === 'TSAsExpression' ? untyped(n.expression) : n);
-  const statements = (body, names) => {
+  const data = registrationData({ root, path, ast });
+  const hasRegistration = (n) => {
+    if (!n || typeof n !== 'object') return false;
+    if (n.type === 'Identifier' && aliases.has(n.name)) return true;
+    return Object.entries(n).some(
+      ([k, v]) =>
+        !['loc', 'comments'].includes(k) &&
+        (Array.isArray(v) ? v.some(hasRegistration) : hasRegistration(v)),
+    );
+  };
+  const statements = (body, names, env, depth = 0) => {
+    assert(depth < 32, 'Registration nesting limit');
     for (const n of body) {
+      if (n.type === 'ForOfStatement' && hasRegistration(n.body)) {
+        assert(
+          !n.await &&
+            n.left.type === 'VariableDeclaration' &&
+            n.left.kind === 'const' &&
+            n.left.declarations.length === 1,
+          'Unresolved registration loop',
+        );
+        const values = data.value(n.right, env);
+        assert(
+          Array.isArray(values) && values.length && values.length <= 10000,
+          'Unresolved or empty registration loop',
+        );
+        for (const item of values) {
+          const inner = data.scope(env),
+            statementsBody = n.body.type === 'BlockStatement' ? n.body.body : [n.body];
+          data.bind(n.left.declarations[0].id, item, inner);
+          data.declarations(statementsBody, inner);
+          statements(statementsBody, names, inner, depth + 1);
+        }
+        continue;
+      }
       const call = n.type === 'ExpressionStatement' ? n.expression : null;
       if (call?.type !== 'CallExpression') continue;
       let callee = call.callee,
@@ -40,29 +75,29 @@ export function vitestCensus(path, text) {
         callee.callee.type === 'MemberExpression' &&
         !callee.callee.computed &&
         callee.callee.property.name === 'each' &&
-        aliases.get(callee.callee.object.name) === 'test'
+        aliases.has(callee.callee.object.name)
       ) {
         assert.equal(callee.arguments.length, 1, 'Unresolved Vitest table');
-        const table = untyped(callee.arguments[0]);
+        values = data.value(callee.arguments[0], env);
         assert(
-          table?.type === 'ArrayExpression' && table.elements.length,
-          'Unresolved Vitest table',
+          Array.isArray(values) && values.length && values.length <= 10000,
+          'Unresolved or empty Vitest table',
         );
-        values = table.elements.map((e) => {
-          assert(
-            e && ['StringLiteral', 'BooleanLiteral', 'NumericLiteral'].includes(e.type),
-            'Only literal scalar Vitest tables are certified',
-          );
-          return e.value;
-        });
+        assert(
+          values.every(
+            (v) => Array.isArray(v) === Array.isArray(values[0]) && (!Array.isArray(v) || v.length),
+          ),
+          'Unresolved mixed or empty table rows',
+        );
         callee = callee.callee.object;
       }
       const kind = aliases.get(callee.name);
       if (!kind) continue;
       used.add(callee);
-      const [title, fn, timeout] = call.arguments;
+      const [title, fn, timeout] = call.arguments,
+        name = data.value(title, env);
       assert(
-        title?.type === 'StringLiteral' &&
+        typeof name === 'string' &&
           ['ArrowFunctionExpression', 'FunctionExpression'].includes(fn?.type) &&
           !fn.generator,
         'Unresolved Vitest title/callback: ' + path,
@@ -76,25 +111,26 @@ export function vitestCensus(path, text) {
             timeout.value > 0),
         'Unresolved Vitest options: ' + path,
       );
-      if (kind === 'suite') {
-        assert(
-          !fn.async && !fn.generator && fn.body.type === 'BlockStatement',
-          'Unresolved Vitest suite',
-        );
-        statements(fn.body.body, [...names, title.value]);
-      } else {
-        let titles = [title.value];
-        if (values) {
-          assert.equal((title.value.match(/%/g) ?? []).length, 1, 'Unresolved Vitest table title');
-          assert(title.value.includes('%s'), 'Only scalar %s Vitest titles are certified');
-          titles = values.map((value) => title.value.replace('%s', () => String(value)));
+      for (const item of values ?? [null]) {
+        const full = [...names, values ? tableTitle(name, item) : name];
+        if (kind === 'suite') {
+          assert(!fn.async && fn.body.type === 'BlockStatement', 'Unresolved Vitest suite');
+          const inner = data.scope(env);
+          if (values)
+            fn.params.forEach((p, i) =>
+              data.bind(p, (Array.isArray(item) ? item : [item])[i], inner),
+            );
+          else assert.equal(fn.params.length, 0, 'Unresolved suite parameters');
+          data.declarations(fn.body.body, inner);
+          statements(fn.body.body, full, inner, depth + 1);
+        } else {
+          assert(cases.length < 10000, 'Registration case limit');
+          cases.push({ id: vitestCaseId(path, full), outcome: 'pass' });
         }
-        for (const name of titles)
-          cases.push({ id: vitestCaseId(path, [...names, name]), outcome: 'pass' });
       }
     }
   };
-  statements(ast.body, []);
+  statements(ast.body, [], data.global);
   const visit = (n, parent) => {
     if (!n || typeof n !== 'object') return;
     if (n.type === 'Identifier' && aliases.has(n.name))
@@ -114,5 +150,8 @@ export function vitestCensus(path, text) {
     cases.length && new Set(cases.map((c) => c.id)).size === cases.length,
     'Empty or duplicate Vitest census: ' + path,
   );
-  return cases;
+  return {
+    cases,
+    dataInputs: [...data.inputs.values()].sort((a, b) => a.path.localeCompare(b.path)),
+  };
 }

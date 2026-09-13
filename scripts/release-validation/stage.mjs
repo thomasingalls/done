@@ -98,6 +98,10 @@ export function validateStage(stage) {
         );
     }
   }
+  assert(
+    !Object.hasOwn(stage.expect, 'dataInputs') || stage.expect.kind === 'vitest',
+    'Registration data metadata is only defined for Vitest',
+  );
   if (stage.expect.kind === 'vitest') {
     assert.equal(stage.expect.files?.length, 1, 'Only single-file Vitest stages are certified');
     assert.deepEqual(stage.argv, vitestArgv(stage.expect.files[0]), 'Unreviewed Vitest invocation');
@@ -106,6 +110,24 @@ export function validateStage(stage) {
       stage.expect.cases.every((c) => c.outcome === 'pass'),
       'Vitest mutations need a separate adapter',
     );
+    if (stage.expect.dataInputs) {
+      assert(
+        Array.isArray(stage.expect.dataInputs) && stage.expect.dataInputs.length,
+        'Invalid registration data inputs',
+      );
+      assert.equal(
+        new Set(stage.expect.dataInputs.map((i) => i.path)).size,
+        stage.expect.dataInputs.length,
+        'Duplicate registration input',
+      );
+      for (const i of stage.expect.dataInputs)
+        assert(
+          /^test\/vectors\/[A-Za-z0-9_./-]+\.json$/.test(i.path) &&
+            !i.path.split('/').includes('..') &&
+            /^[a-f0-9]{64}$/.test(i.sha256),
+          'Invalid registration data input',
+        );
+    }
     assert(!stage.fixture, 'Native Vitest fixtures are not certified');
   }
   if (stage.argv[1] === 'node_modules/vitest/vitest.mjs')
@@ -230,6 +252,12 @@ export function createStageRunner({
         );
     }
     const before = await fingerprint();
+    for (const i of stage.expect.dataInputs ?? [])
+      assert.equal(
+        hash(readFileSync(join(root, i.path))),
+        i.sha256,
+        'Registration data changed after planning: ' + i.path,
+      );
     if (stage.fixture)
       assert(
         browserRuntime && before.tools?.chromium === digest(browserRuntime.snapshot),

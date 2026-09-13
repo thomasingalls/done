@@ -4070,3 +4070,43 @@ patch and test-preservation pins live at
 No personal app/server/profile, Account cutover or release qualification occurred. Personal/package
 and prior vector bytes, historical reviews/evidence, formal debts, signing backups, root `done ` and
 L-2 remain unchanged.
+
+
+## 2026-09-13 — Generated-registration adapters and compact manifest (L-1)
+
+The preceding general adapter set is signed and verified as `38e4995`. A finite declaration reader
+now expands thirteen additional Vitest files (209 cases) and the Account-core Node loop suite
+(13 cases). It handles constant data, for-of/tuple bindings, nested suite tables, the reviewed scalar/
+object title formats and pinned JSON vector inputs. Planning does not import tests or execute helper
+functions. The final disposable general selection passes all 106 files / 1,094 cases in 723.7
+seconds, including preparation/fingerprints, with confirmed drain throughout. The previous 872 exact
+case identities and all selected product test bodies, titles, assertions, seeds and deadlines remain
+unchanged. Whole package/wrapper obligations stay separate.
+
+Actual controls cover generated runtime names, vector-payload drift without title changes, missing
+and skipped cases. The runner now refuses registration-data metadata on non-Vitest stages, closing
+a reproduced preflight validation gap; unsupported inherited-property predicates also refuse.
+All 106 non-native runner/control tests pass, including 2,880 generated control histories. Typecheck,
+scoped style, planning, signature and authority checks pass. The eleven existing native ownership
+controls retain prior evidence; no browser campaign reran.
+
+The first control run had an arithmetic expectation error, not lost product coverage; exact comparison
+with the prior manifest proved preservation of all 872 old identities. The first general run was
+intentionally cancelled after fifty passes for the guard repair; its cancellation/drain receipts and
+the failing before-control are retained alongside the final run. No deadline increase or reduced test
+population turned a failing product case into credit.
+
+The manifest writes one complete obligation per line without changing its parsed schema or values.
+It is 552,986 bytes within the existing 700 kB ceiling. There are 611 obligations, 311 unresolved:
+152 test-file (one Vitest, 135 Node, sixteen Playwright), 96 command and 63 campaign. Infrastructure
+now has nineteen stages: seventeen test files / 84 cases and two static checks. All eleven catalogue
+adapters remain resolved (163 cases/54 mutations). `accountDelivery.test.ts` still needs a dedicated
+helper-table/duplicate-title identity disposition. Remaining Node fixture/process ownership review,
+Playwright, deliberate nested owners, exact wrappers and R-04 precede P-06 and the immutable aggregate.
+
+This new phase remains uncommitted. The evidence packet at
+`docs/account-conformance-runs/2026-09-13-generated-registration-adapters/` retains complete final and
+partial receipts, controls, exact source patch and preservation evidence within a prospective 300 kB
+ceiling. Personal/package/vector bytes, historical reviews/evidence, formal debts, signing backups,
+root `done ` and L-2 remain untouched. No personal service, Account cutover or release qualification
+occurred.

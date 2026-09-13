@@ -2477,3 +2477,19 @@ progress while running. Require terminal reporter completion for success; timeou
 failed evidence after drain. Preserve the actual signed old reporter as the diagnostic-loss control.
 The manifest's existing 700 kB limit stays in force; compact its representation before future adapter
 expansion would exceed it, without dropping case identities or unresolved obligations.
+
+
+## 2026-09-13 — Generated case identities come from finite declarations and pinned data
+
+Generated registration is not permission to execute arbitrary test code while planning. Expand only
+reviewed literal data, lexical bindings, for-of loops, tuple/suite tables and explicit JSON inputs.
+Carry function metadata opaquely; helper invocations still need a separate disposition. Reject
+ambiguous duplicate names and unsupported registration syntax rather than learning the denominator
+from a green report. Bind vector bytes as well as names, check them before launch and reconcile every
+runtime case. Registration-data metadata is defined only for Vitest; other stage types must reject it.
+The own-field filter subset excludes inherited-property keys to avoid different JavaScript semantics.
+
+Use one complete manifest obligation per line, retaining the schema and every parsed value. The
+700 kB ceiling is unchanged; schema/coverage reduction is not a substitute for compact formatting.
+The generated layout belongs to the manifest writer; R-04 must retain that explicit formatting scope.
+Whole wrapper postconditions and historical partial-model limits remain separate from file receipts.
