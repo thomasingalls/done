@@ -8,6 +8,7 @@ import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  'content-trim': { scope: 'content-trim-browser', candidate: 'trim', patchPrefix: 'src/crdt/' },
   'local-clear': {
     scope: 'local-clear-browser',
     candidate: 'clear',
@@ -155,6 +156,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
       'owned-startup',
       'local-genesis',
       'local-clear',
+      'content-trim',
     ].includes(family)
   )
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
@@ -166,6 +168,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
         'owned-startup',
         'local-genesis',
         'local-clear',
+        'content-trim',
       ].includes(family)
     )
       for (const row of report.cases)

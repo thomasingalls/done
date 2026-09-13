@@ -1,4 +1,4 @@
-# Release-validation execution — foundation and eight catalogue adapters
+# Release-validation execution — foundation and nine catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
 content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
@@ -8,14 +8,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 603 obligations, including all 267 current
+The [manifest](./release-validation-manifest.json) now contains 604 obligations, including all 268 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**424 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**421 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -37,6 +37,7 @@ node scripts/release-validation/execute.mjs --selection workspace-admission
 node scripts/release-validation/execute.mjs --selection owned-startup
 node scripts/release-validation/execute.mjs --selection local-genesis
 node scripts/release-validation/execute.mjs --selection local-clear
+node scripts/release-validation/execute.mjs --selection content-trim
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -45,9 +46,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs thirteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter and Local-clear-adapter
-test files (53 exact cases),
+`infrastructure` runs fourteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter and content-trim-adapter
+test files (57 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -413,10 +414,40 @@ options and JSON/Markdown reports remain; custom browser overrides and existing 
 refuse. Account removal, service revocation, multi-workspace custody, partial genesis cleanup, default
 application cutover, physical power loss and forensic erasure remain outside this catalogue.
 
+## Content-trim catalogue adapter — phase 2j
+
+The content-trim catalogue passes **21 baseline cases, 128 assertions and eight mutations** through
+the shared disposable owner. Scope `content-trim-browser`, candidate `trim` and `src/crdt/` patch paths
+are explicit. Original production code, fixture hooks, scenario assertions and mutations are unchanged.
+Exact source coverage, tagged assertion evidence, case selection, source faults and server closure are
+checked independently of the campaign success labels.
+
+The cases retain disk-union semantics, late reserved sequence commits, concurrent compactors,
+unresolved Yjs structs/deletions, changed or unreadable records, replacement damage, native aborts,
+renderer crashes after reservation/publication/deletion, crypto drain, generation changes and journal
+checks before publication, after publication and inside the deleting transaction. The range-delete
+mutation must lose the late record; the incomplete-merge mutation must violate struct retention.
+The two journal mutations have different source sites and case identities despite sharing an assertion
+name; neither can satisfy the other. Every mutation needs its own changed bytes and specific failure.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-content-trim-adapter/README.md) retains the full
+run, four selected late/dependency/journal cases with four mutations, baseline-only publication crash,
+Local-clear journal/cancellation regression and final gates. The full stage took **60.3 seconds**
+inside 120 seconds. Startup, drain, log and report bounds remain unchanged. Four new tests include 160
+generated selection/evidence faults (seed 130913). All 72 non-native runner tests pass, totaling 2,080
+generated validation histories. Fourteen infrastructure stages pass 57 exact cases and two static
+checks. Existing native ownership controls are unchanged; their seven passing results remain in the
+preceding Local-clear packet. Timings are one-host observations, not workload qualification.
+
+Standalone options and JSON/Markdown reports remain; custom Chromium and existing outputs refuse.
+Default catalogue, exact package leaf and campaign alias resolve. Generation retirement, Account
+admission, day archival, default maintenance scheduling, power loss and platform capacity remain
+outside this component evidence. Enclosing wrapper postconditions remain separate obligations.
+
 ## Next bounded integration
 
-Complete content trim (21 cases/eight mutations), custody (13/five) and write-session (13/five),
-committing each unsigned. Then review general Node, Vitest, Playwright and wrapper adapters with their
-exact selections and postconditions. Only after every required obligation resolves should P-06 and
-the complete immutable selected run proceed. No personal app/server/profile or Account cutover is
-part of these catalogue adapters.
+Complete custody (13 cases/five mutations) and write-session (13/five), committing each unsigned.
+Custody requires explicit ownership of persistent synthetic-profile browsers. Then review general
+Node, Vitest, Playwright and wrapper adapters with their exact selections and postconditions. Only
+after every required obligation resolves should P-06 and the complete immutable selected run proceed.
+No personal app/server/profile or Account cutover is part of these catalogue adapters.

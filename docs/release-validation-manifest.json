@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "55d0a83a3fe9892e66b46c9ce32c9313e35c2dcc21bfc901dfea22ff95dfe7af",
+  "inventoryDigest": "dffd68d97102ba2a37b9092197af0f9c7750846093af180b9566a798208e4ffa",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2520,6 +2520,50 @@
       "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
     },
     {
+      "id": "test:test/release-validation/content-trim.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/content-trim.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/content-trim.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/content-trim.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/content-trim.test.mjs::Content trim independently resolves the full catalogue, selected mutation subset and baseline-only variants",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/content-trim.test.mjs::Content trim requires every exact source mutation and its own discriminating assertion",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/content-trim.test.mjs::Content trim binds report identity, all runtime sources and unavailable receipt values",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/content-trim.test.mjs::160 generated Content trim selections reject omitted cases and substituted mutation evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/content.test.mjs",
       "kind": "test",
       "path": "test/release-validation/content.test.mjs",
@@ -3604,7 +3648,142 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/content-trim/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/content-trim/worker.mjs",
+          "--case",
+          "T01.union,T02.late,T03.concurrent,T04.dependencies,T05.unreadable,T06.changed,T07.recheck,T08.new-damage,T09.journal,T10.publish-abort,T11.delete-abort,T12.kill-reservation,T13.kill-publication,T14.kill-deletion,T15.close,T16.generation,T17.single-state,T18.replacement,T19.missing,T20.journal-tag,T21.journal-recheck"
+        ],
+        "env": {},
+        "variant": "content-trim-fdb8a411cf360a9a1b88c6b81583bbb990cc09a7335790b7bf1dc29f38ebfa47",
+        "expect": {
+          "kind": "content-trim",
+          "selection": {
+            "cases": [
+              { "id": "T01.union", "outcome": "pass" },
+              { "id": "T02.late", "outcome": "pass" },
+              { "id": "T03.concurrent", "outcome": "pass" },
+              { "id": "T04.dependencies", "outcome": "pass" },
+              { "id": "T05.unreadable", "outcome": "pass" },
+              { "id": "T06.changed", "outcome": "pass" },
+              { "id": "T07.recheck", "outcome": "pass" },
+              { "id": "T08.new-damage", "outcome": "pass" },
+              { "id": "T09.journal", "outcome": "pass" },
+              { "id": "T10.publish-abort", "outcome": "pass" },
+              { "id": "T11.delete-abort", "outcome": "pass" },
+              { "id": "T12.kill-reservation", "outcome": "pass" },
+              { "id": "T13.kill-publication", "outcome": "pass" },
+              { "id": "T14.kill-deletion", "outcome": "pass" },
+              { "id": "T15.close", "outcome": "pass" },
+              { "id": "T16.generation", "outcome": "pass" },
+              { "id": "T17.single-state", "outcome": "pass" },
+              { "id": "T18.replacement", "outcome": "pass" },
+              { "id": "T19.missing", "outcome": "pass" },
+              { "id": "T20.journal-tag", "outcome": "pass" },
+              { "id": "T21.journal-recheck", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "range-delete",
+                "case": "T02.late",
+                "assertion": "late-record-survives",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "for (const record of covered) tx.objectStore('content').delete(record.seq);",
+                  "to": "tx.objectStore('content').delete(IDBKeyRange.upperBound(covered.reduce((n,r)=>Math.max(n,r.seq),0)));"
+                }
+              },
+              {
+                "id": "partial-disk-union",
+                "case": "T01.union",
+                "assertion": "cold-replay-keeps-disk-union",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "Y.mergeUpdates(updates)",
+                  "to": "Y.mergeUpdates(updates.slice(0, 1))"
+                }
+              },
+              {
+                "id": "ignore-record-bytes",
+                "case": "T06.changed",
+                "assertion": "changed-record-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "equalBytes(a.nonce, b.nonce) &&\n  equalBytes(a.ct, b.ct)",
+                  "to": "true"
+                }
+              },
+              {
+                "id": "skip-delete-census",
+                "case": "T07.recheck",
+                "assertion": "changed-after-audit-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "for (const row of rows) {",
+                  "to": "for (const row of []) {"
+                }
+              },
+              {
+                "id": "skip-journal-check",
+                "case": "T09.journal",
+                "assertion": "post-publication-journal-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "custody.ts",
+                  "from": "validateContentUpdates(snapshot.map((e) => e.bytes));",
+                  "to": ";"
+                }
+              },
+              {
+                "id": "merge-incomplete-content",
+                "case": "T04.dependencies",
+                "assertion": "struct-retained",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "if (!complete) return receipt('retained', null);",
+                  "to": ";"
+                }
+              },
+              {
+                "id": "early-delete-receipt",
+                "case": "T11.delete-abort",
+                "assertion": "delete-abort-has-no-success-receipt",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentDatabase.ts",
+                  "from": "          value = result;",
+                  "to": "          value = result; if (mode === 'readwrite' && result === true) resolve(value);"
+                }
+              },
+              {
+                "id": "skip-final-journal-census",
+                "case": "T21.journal-recheck",
+                "assertion": "post-publication-journal-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentCompaction.ts",
+                  "from": "          owner.checkJournal();",
+                  "to": "          ;"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/content/catalog.mjs",
@@ -5775,7 +5954,7 @@
       "argv": ["node", "scripts/content-trim/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:56"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/content-trim/catalog.mjs"]
     },
     {
       "id": "command:check:58",
@@ -7842,11 +8021,8 @@
       "id": "campaign:scripts/content-trim/run.mjs",
       "kind": "campaign",
       "path": "scripts/content-trim/run.mjs",
-      "callSites": [
-        { "line": 188, "form": "run", "arguments": [] },
-        { "line": 192, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/content-trim/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/content/run.mjs",
@@ -10079,7 +10255,6 @@
     "test:test/yjsDelivery.test.ts",
     "test:vite/appUpgradeProperties.test.ts",
     "test:vite/precacheBuild.test.ts",
-    "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
@@ -10106,7 +10281,6 @@
     "command:check:51",
     "command:check:52",
     "command:check:53",
-    "command:check:57",
     "command:check:58",
     "command:check:59",
     "command:check:60",
@@ -10227,7 +10401,6 @@
     "campaign:scripts/account-sync/run.mjs",
     "campaign:scripts/account-transport-contract/run.mjs",
     "campaign:scripts/app-upgrades/run.mjs",
-    "campaign:scripts/content-trim/run.mjs",
     "campaign:scripts/custody/run.mjs",
     "campaign:scripts/journal-contention/run.mjs",
     "campaign:scripts/legacy-cleanup/campaign.mjs",
@@ -10251,6 +10424,7 @@
   "selections": {
     "infrastructure": [
       "test:test/release-validation/admission.test.mjs",
+      "test:test/release-validation/content-trim.test.mjs",
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",
@@ -10304,6 +10478,7 @@
     "owned-startup": ["catalogue:scripts/owned-startup/catalog.mjs"],
     "local-genesis": ["catalogue:scripts/local-genesis/catalog.mjs"],
     "local-clear": ["catalogue:scripts/local-clear/catalog.mjs"],
+    "content-trim": ["catalogue:scripts/content-trim/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10525,6 +10700,7 @@
       "test:test/relayAuth.test.ts",
       "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content-native.test.mjs",
+      "test:test/release-validation/content-trim.test.mjs",
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",

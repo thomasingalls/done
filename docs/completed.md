@@ -3789,3 +3789,39 @@ The manifest has 603 obligations, 424 unresolved and 267 required test files. Th
 adapters remain (47 cases/18 mutations): content trim, custody and write-session. No personal
 operation occurred; historical reviews, formal debts, prior vectors and L-2 are preserved. Appended
 before replacing L-1; this adapter is ready for its unsigned commit.
+
+
+## 2026-09-13 — Content-trim catalogue adapter, phase 2j (`L-1`)
+
+Committed Local clear unsigned as `f1926f9`.
+
+The content-trim catalogue passes **21 baseline cases, 128 assertions and eight mutations** through
+the shared disposable owner. Scope `content-trim-browser`, candidate `trim` and `src/crdt/` patch paths
+are explicit. Original production code, fixture hooks, scenario assertions and mutations are unchanged.
+Exact source coverage, tagged assertion evidence, case selection, source faults and server closure are
+checked independently of the campaign success labels.
+
+The cases retain disk-union semantics, late reserved sequence commits, concurrent compactors,
+unresolved Yjs structs/deletions, changed or unreadable records, replacement damage, native aborts,
+renderer crashes after reservation/publication/deletion, crypto drain, generation changes and journal
+checks before publication, after publication and inside the deleting transaction. The range-delete
+mutation must lose the late record; the incomplete-merge mutation must violate struct retention.
+The two journal mutations have different source sites and case identities despite sharing an assertion
+name; neither can satisfy the other. Every mutation needs its own changed bytes and specific failure.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-content-trim-adapter/README.md) retains the full
+run, four selected late/dependency/journal cases with four mutations, baseline-only publication crash,
+Local-clear journal/cancellation regression and final gates. The full stage took **60.3 seconds**
+inside 120 seconds. Startup, drain, log and report bounds remain unchanged. Four new tests include 160
+generated selection/evidence faults (seed 130913). All 72 non-native runner tests pass, totaling 2,080
+generated validation histories. Fourteen infrastructure stages pass 57 exact cases and two static
+checks. Existing native ownership controls are unchanged; their seven passing results remain in the
+preceding Local-clear packet. Timings are one-host observations, not workload qualification.
+
+Standalone options and JSON/Markdown reports remain; custom Chromium and existing outputs refuse.
+Default catalogue, exact package leaf and campaign alias resolve. Generation retirement, Account
+admission, day archival, default maintenance scheduling, power loss and platform capacity remain
+outside this component evidence. Enclosing wrapper postconditions remain separate obligations.
+
+The manifest has 604 obligations, 421 unresolved and 268 required test files. Custody and write-session
+remain (26 cases/ten mutations). Appended before replacing L-1; ready for an unsigned phase commit.

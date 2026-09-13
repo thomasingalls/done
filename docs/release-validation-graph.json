@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 273,
-    "requiredTestFiles": 267,
+    "testFiles": 274,
+    "requiredTestFiles": 268,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4234,25 +4234,8 @@
       "packageCommands": [[["node", "scripts/content-trim/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 188,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 192,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/content/run.mjs",
@@ -8680,6 +8663,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/content-trim.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/content-trim.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 205,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/content.test.mjs",
       "status": "required",
       "invocation": {
@@ -11254,11 +11257,15 @@
     },
     {
       "path": "scripts/content-trim/run.mjs",
-      "sha256": "11838579f7750457592dc4202666cba14842dc1c77956d0af310da94b400893b"
+      "sha256": "60e79548ec6f530296b922e624ed8a03c97f33aaf2ef62e1eb03bea0ef238f16"
     },
     {
       "path": "scripts/content-trim/scenarios.mjs",
       "sha256": "1cef19c3c9e52c96c9c79dc53d15426b66e3d7be083c46fba29671ac48a90d3f"
+    },
+    {
+      "path": "scripts/content-trim/worker.mjs",
+      "sha256": "359e9d9c9a6b8e48a5fd0a11ff4f72164dd86c63af51c826ffdb2dec2b9b925f"
     },
     {
       "path": "scripts/content/catalog.mjs",
@@ -11654,7 +11661,7 @@
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "3b19c8ab596b460d4ebaa8e48074f56ada7931d9cb988f715dccbe376465120d"
+      "sha256": "031e029451259393881ac77812d66e31a0af130924b71621f34f052ead0ddcf0"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11669,12 +11676,16 @@
       "sha256": "0ede090cdc08174b8090b402ce30c4868f0c57acb6abacfdd23c824b209a566e"
     },
     {
+      "path": "scripts/release-validation/content-trim-adapter.mjs",
+      "sha256": "b4f549c73531ee052a2567c1d4fa86c6cf33b7aeeab7a247b1babb085a5fb1e8"
+    },
+    {
       "path": "scripts/release-validation/editor-admission-adapter.mjs",
       "sha256": "768491d336e6ae3380e74ab43c5956592eb37623077bf13dd27a3dbed515f745"
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "7c8c5c4b0cefefbd9b2f8b787fec1b800348b88cfe3d8f5b7b27380df8769bb1"
+      "sha256": "158f565092048bf46a9c0d567cbe03d86e0a9e4329944ae8685eb49fa91fa007"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11698,7 +11709,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "e1a4e750d429e368cd584c6a99ae0917e152cd850d0c5d595f9ebe2e6369fc38"
+      "sha256": "37e5f4d2fcce96602614fa1e0c03726ec8f8979ed609cd1fc7540a510b211938"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11730,7 +11741,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "4a6a85f6a1a2b7cc9dd372539018d7ef1a9b2cfd16d9a4ac825af32dbc156625"
+      "sha256": "0244539f41dd3e66af7e3ed02522ca7e220f009b8da3299655111c2b66c54106"
     },
     {
       "path": "scripts/release-validation/workspace-admission-adapter.mjs",
@@ -13487,6 +13498,10 @@
     {
       "path": "test/release-validation/content-native.test.mjs",
       "sha256": "81c30494e5ec268feae555eafb19514d5ab9dfc95805803561d6bdec496c9283"
+    },
+    {
+      "path": "test/release-validation/content-trim.test.mjs",
+      "sha256": "9076de08c47e1249dc328d6ac759a1047a1b46414f216cacd39bbd70bdf6dbe3"
     },
     {
       "path": "test/release-validation/content.test.mjs",
