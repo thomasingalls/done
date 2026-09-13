@@ -129,4 +129,5 @@ export const identityKey = (identity) =>
     sources: identity.sourceDigest,
     dependencies: identity.dependencyDigest,
     runtime: identity.runtime,
+    tools: identity.tools ?? {},
   });

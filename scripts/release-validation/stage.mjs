@@ -12,25 +12,11 @@ import {
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { canonical, digest, hash, identityKey } from './identity.mjs';
+import { groupState, signalGroup as kill } from './process-group.mjs';
+import { startOwnedChromium } from './browser.mjs';
+import { reconcileContent } from './content-adapter.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-const groupState = (pid) => {
-  try {
-    process.kill(-pid, 0);
-    return 'alive';
-  } catch (e) {
-    if (e.code === 'ESRCH') return 'gone';
-    if (e.code === 'EPERM') return 'unknown';
-    throw e;
-  }
-};
-const kill = (pid, signal) => {
-  try {
-    process.kill(-pid, signal);
-  } catch (e) {
-    if (e.code !== 'ESRCH') throw e;
-  }
-};
 
 export function validateStage(stage) {
   assert(stage && typeof stage.id === 'string' && stage.id.length, 'Stage identity required');
@@ -67,14 +53,14 @@ export function validateStage(stage) {
     Array.isArray(stage.dependsOn) && new Set(stage.dependsOn).size === stage.dependsOn.length,
     'Invalid prerequisites',
   );
-  assert(['exit', 'cases'].includes(stage.expect?.kind), 'Unresolved result adapter');
+  assert(['exit', 'cases', 'content'].includes(stage.expect?.kind), 'Unresolved result adapter');
   if (stage.expect.kind === 'exit')
     assert.deepEqual(
       stage.expect.exitCodes,
       [0],
       'Nonzero exit alone cannot prove a mutation was detected',
     );
-  else {
+  else if (stage.expect.kind === 'cases') {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
       new Set(stage.expect.cases.map((c) => c.id)).size,
@@ -92,6 +78,23 @@ export function validateStage(stage) {
           'Mutation needs its discriminating assertion',
         );
     }
+  }
+  if (stage.expect.kind === 'content') {
+    assert.equal(stage.argv[1], 'scripts/content/worker.mjs', 'Unreviewed content worker');
+    assert.equal(stage.fixture?.kind, 'chromium-cdp', 'Content requires owned Chromium');
+    assert(
+      stage.expect.selection?.cases.length && Array.isArray(stage.expect.selection.mutants),
+      'Missing content denominator',
+    );
+  }
+  if (stage.fixture) {
+    assert.equal(stage.fixture.kind, 'chromium-cdp');
+    assert(
+      Number.isSafeInteger(stage.fixture.startupMs) &&
+        stage.fixture.startupMs > 0 &&
+        stage.fixture.startupMs <= 30000,
+      'Invalid browser startup bound',
+    );
   }
   if (stage.argv.includes('--test')) {
     assert.equal(stage.expect.kind, 'cases', 'A test process needs an exact census');
@@ -130,7 +133,13 @@ export function reconcileCases(expected, actual, nonce) {
   }
 }
 
-export function createStageRunner({ root, output, fingerprint, heartbeat = () => {} }) {
+export function createStageRunner({
+  root,
+  output,
+  fingerprint,
+  browserRuntime,
+  heartbeat = () => {},
+}) {
   assert(['darwin', 'linux'].includes(process.platform), 'POSIX process groups are required');
   root = resolve(root);
   output = resolve(output);
@@ -172,6 +181,11 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
         );
     }
     const before = await fingerprint();
+    if (stage.fixture)
+      assert(
+        browserRuntime && before.tools?.chromium === digest(browserRuntime.snapshot),
+        'Missing or stale browser identity',
+      );
     const contract = { ...stage };
     delete contract.id;
     // Dependency identity includes the complete result, not just its name.
@@ -220,12 +234,14 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
       RELEASE_GUARD_VIOLATIONS: violations,
       RELEASE_CASE_REPORT: report,
       RELEASE_RUN_NONCE: nonce,
+      RELEASE_CONTENT_OUTPUT: join(dir, 'content'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
       child,
       code = null,
-      childSignal = null;
+      childSignal = null,
+      browserOwner;
     let bytes = 0,
       groupDrained = true,
       drainStarted = false,
@@ -255,6 +271,17 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
     const abort = () => stop('cancelled');
     let timer, pulse;
     try {
+      if (!reason && stage.fixture) {
+        browserOwner = startOwnedChromium({
+          runtime: browserRuntime,
+          directory: dir,
+          env,
+          startupMs: stage.fixture.startupMs,
+          graceMs: stage.graceMs,
+          maxLogBytes: stage.maxLogBytes,
+        });
+        env.RELEASE_BROWSER_ENDPOINT = await browserOwner.ready(signal);
+      }
       if (!reason) {
         child = spawn(process.execPath, stage.argv.slice(1), {
           cwd: root,
@@ -309,7 +336,10 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
         void exited.then(() => {
           ended = true;
         });
-        while (!ended && !reason) await delay(10);
+        while (!ended && !reason) {
+          if (browserOwner?.failed) stop(browserOwner.failed);
+          await delay(10);
+        }
         if (child.pid) {
           // On this host a just-terminated group can transiently answer EPERM to kill(0).
           // Uncertainty is neither a living orphan nor proof of drain: require ESRCH.
@@ -357,18 +387,31 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
       clearTimeout(timer);
       clearInterval(pulse);
       signal?.removeEventListener('abort', abort);
+      if (browserOwner) {
+        const browserResult = await browserOwner.close();
+        groupDrained = groupDrained && browserResult.groupDrained;
+        if (!browserResult.groupDrained) reason ??= 'undrained-browser-group';
+        if (browserResult.failure) reason ??= browserResult.failure;
+      }
     }
     let actual;
     try {
       assert.equal(code, 0, 'Nonzero or missing exit');
       assert.equal(readFileSync(violations, 'utf8'), '', 'Process ownership violation');
-      if (stage.expect.kind === 'cases') {
+      if (stage.expect.kind !== 'exit') {
         assert(
           statSync(report).size <= stage.maxReportBytes,
           'Case report exceeded artifact bound',
         );
         actual = JSON.parse(readFileSync(report, 'utf8'));
-        reconcileCases(stage.expect.cases, actual, nonce);
+        if (stage.expect.kind === 'content') {
+          const cases = reconcileContent(stage.expect.selection, actual, {
+            nonce,
+            sources: before.sources,
+            root,
+          });
+          actual = { cases };
+        } else reconcileCases(stage.expect.cases, actual, nonce);
       }
       assert.equal(
         identityKey(await fingerprint()),
@@ -382,6 +425,7 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
       'output.log',
       'ownership.jsonl',
       ...(existsSync(report) ? ['cases.json'] : []),
+      ...(browserOwner ? ['browser.json', 'browser.log'] : []),
     ].map((path) => {
       const size = statSync(join(dir, path)).size;
       return size <= Math.max(stage.maxLogBytes, stage.maxReportBytes)
@@ -395,6 +439,7 @@ export function createStageRunner({ root, output, fingerprint, heartbeat = () =>
       groupDrained,
       drainStarted,
       uncertainProbes,
+      ...(browserOwner ? { browser: structuredClone(browserOwner.result) } : {}),
       elapsedMs: Date.now() - started,
       artifacts,
       ...(actual ? { cases: actual.cases } : {}),

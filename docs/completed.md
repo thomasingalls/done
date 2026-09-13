@@ -3556,3 +3556,29 @@ blocked. Next is native content catalogue census/process ownership, then remaini
 integration and deadlines before P-06 and an immutable aggregate. No native campaigns, complete vector
 chain, release qualification or personal operation are claimed. Existing unsigned hashes remain;
 the delivered signing reminder is paused. This work is left uncommitted. Appended before replacing L-1.
+
+
+## 2026-09-13 — Content catalogue execution adapter, phase 2b (`L-1`)
+
+Committed the runner foundation unsigned as `f14c68f`, preserving the in-flight review's hashes.
+Connected the full content catalogue and selected unreadable-load control to the shared disposable
+owner. All 13 baselines and five mutations pass their intended oracles. The parent checks exact case
+and mutation populations, actual assertion evidence, discriminating baseline/mutant assertions,
+source patches/hashes, a fresh nonce and completion. Installed Chromium bundle bytes join identity.
+The standalone command retains its options and report files, and a missing report cannot pass.
+
+The owner launches Chromium and separately drains its group and the Vite worker group. Six native
+controls cover completion, timeout, cancellation, worker/browser death and startup deadline, with
+listener closure and no matching test-profile processes. The first full run exposed Vite's port-zero
+fallback to 5173 in its recorded URLs. Direct binding through Vite's initialized HTTP server repairs
+it; controls now occupy the configured port and use real Vite, and the repaired full campaign records
+OS-assigned ports. No content assertion or production storage code changed.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-content-adapter/README.md) retains initial
+and repaired runs, source/dependency/browser identities and scope limits. The non-native controls
+include 160 new generated census/false-detection histories (640 total with prior controls). The
+manifest has 596 obligations, 445 blocked; ten other catalogues retain 150 cases/49 mutations. The
+next single adapter is journal (17 cases/six mutations), then remaining families and wrapper
+postconditions before P-06 and immutable aggregate qualification. No personal browser, profile,
+service, build, Account, factor or key was used; earlier vectors, packets/debts and L-2 are preserved.
+The content phase remains uncommitted. Appended before replacing L-1.

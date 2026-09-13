@@ -9,8 +9,9 @@ IDs, routes duplicates/extensions to shared work and retains separate completion
 priority is the [release-validation work package](../../private-release-validation-prep.md): graph,
 coverage/deadline work, current prose and an immutable aggregate. The
 [phase-1 inventory](../../release-validation-graph.md) and [bounded runner foundation](../../release-validation-execution.md)
-are complete. Native content census/process ownership integration is next; the full manifest remains
-blocked on 447 adapter obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
+and [content catalogue adapter](../../release-validation-execution.md#content-catalogue-adapter--phase-2b)
+are complete. Journal catalogue integration is next; the full manifest remains blocked on 445 adapter
+obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
 and [validation prerequisites Q-01/Q-04](./validation-controls.md) pass within their bounded campaigns.
 F-07's retained-history/workload limits and complete aggregate qualification remain open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.

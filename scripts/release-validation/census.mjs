@@ -6,7 +6,7 @@ const parse = (text) =>
   parseSync(text, { configFile: false, babelrc: false, parserOpts: { sourceType: 'module' } })
     .program;
 
-export function catalogueCensus(text) {
+export function catalogueCensus(text, { patches = false } = {}) {
   const scope = Object.create(null);
   const bind = (pattern, value, env) => {
     if (pattern.type === 'Identifier') env[pattern.name] = value;
@@ -70,6 +70,7 @@ export function catalogueCensus(text) {
     case: m.case,
     assertion: m.assertion,
     outcome: 'detected',
+    ...(patches ? { patch: { file: m.file, from: m.from, to: m.to } } : {}),
   }));
   assert(cases?.length && mutants?.length, 'Empty catalogue census');
   for (const rows of [cases, mutants]) {
@@ -84,6 +85,12 @@ export function catalogueCensus(text) {
       cases.some((c) => c.id === m.case) && typeof m.assertion === 'string' && m.assertion.length,
       'Unbound catalogue mutation',
     );
+  if (patches)
+    for (const m of mutants)
+      assert(
+        Object.values(m.patch).every((v) => typeof v === 'string' && v.length),
+        'Missing catalogue patch',
+      );
   return { cases, mutants };
 }
 

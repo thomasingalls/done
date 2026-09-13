@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "f082bbd7181b08de764e2dcf433297fabb43dbca89ed83a62abc634d7c16fd87",
+  "inventoryDigest": "5cd47e38ed8d1ee54ff3261b613a8e21120facdc637aef43cec6fe7db42e1ea0",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2462,6 +2462,60 @@
       "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
     },
     {
+      "id": "test:test/release-validation/content-native.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/content-native.test.mjs",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/content-native.test.mjs"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/release-validation/content.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/content.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/content.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/content.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/content.test.mjs::full and selected content stages preserve exact case/mutation denominators and separate variants",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/content.test.mjs::content adapter recomputes specific mutation detection and served-source hashes",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/content.test.mjs::160 generated catalogue omissions and claimed detections fail against the independent expected set",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/identity.test.mjs",
       "kind": "test",
       "path": "test/release-validation/identity.test.mjs",
@@ -3180,7 +3234,101 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/content/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/content/worker.mjs",
+          "--case",
+          "C15.concurrent-allocation,C15.reservation-abort,C15.abandoned-seals,C15.content-abort,C15.ceiling,C14.generation-fence,C09.unreadable-load,C09.metadata,C09.immutable-record,C10.content-initialization,C04.content-close,C01.byte-replay,C07.full-snapshot"
+        ],
+        "env": {},
+        "variant": "content-efc974433553c34b568d75e2ea6e969b68c596bf4d2274f89579a2f99379b6ad",
+        "expect": {
+          "kind": "content",
+          "selection": {
+            "cases": [
+              { "id": "C15.concurrent-allocation", "outcome": "pass" },
+              { "id": "C15.reservation-abort", "outcome": "pass" },
+              { "id": "C15.abandoned-seals", "outcome": "pass" },
+              { "id": "C15.content-abort", "outcome": "pass" },
+              { "id": "C15.ceiling", "outcome": "pass" },
+              { "id": "C14.generation-fence", "outcome": "pass" },
+              { "id": "C09.unreadable-load", "outcome": "pass" },
+              { "id": "C09.metadata", "outcome": "pass" },
+              { "id": "C09.immutable-record", "outcome": "pass" },
+              { "id": "C10.content-initialization", "outcome": "pass" },
+              { "id": "C04.content-close", "outcome": "pass" },
+              { "id": "C01.byte-replay", "outcome": "pass" },
+              { "id": "C07.full-snapshot", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "early-transaction-success",
+                "case": "C15.reservation-abort",
+                "assertion": "no-encryption-after-aborted-reservation",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentDatabase.ts",
+                  "from": "          value = result;",
+                  "to": "          value = result; if (mode === 'readwrite' && result === true) resolve(value);"
+                }
+              },
+              {
+                "id": "skip-reservation",
+                "case": "C15.abandoned-seals",
+                "assertion": "abandoned-encryption-remains-counted",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentStore.ts",
+                  "from": "if (await compareAndWrite(task, before, next)) break;",
+                  "to": "if (next) break;"
+                }
+              },
+              {
+                "id": "omit-generation-fence",
+                "case": "C14.generation-fence",
+                "assertion": "changed-generation-refuses-commit",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentStore.ts",
+                  "from": "if (current.active_gen !== generation)",
+                  "to": "if (false)"
+                }
+              },
+              {
+                "id": "swallow-unreadable-record",
+                "case": "C09.unreadable-load",
+                "assertion": "tag-refuses-whole-load",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentStore.ts",
+                  "from": ": await crypt.open(task, r),",
+                  "to": ": await crypt.open(task, r).catch(() => new Uint8Array()),"
+                }
+              },
+              {
+                "id": "allow-ceiling-equality",
+                "case": "C15.ceiling",
+                "assertion": "ceiling-refuses-before-encryption",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentRecord.ts",
+                  "from": "c.reserved[String(generation)]! + count >= CONTENT_LIMIT",
+                  "to": "c.reserved[String(generation)]! + count > CONTENT_LIMIT"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/custody/catalog.mjs",
@@ -4577,7 +4725,7 @@
       "argv": ["node", "scripts/content/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:44"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/content/catalog.mjs"]
     },
     {
       "id": "command:check:46",
@@ -6765,11 +6913,8 @@
       "id": "campaign:scripts/content/run.mjs",
       "kind": "campaign",
       "path": "scripts/content/run.mjs",
-      "callSites": [
-        { "line": 188, "form": "run", "arguments": [] },
-        { "line": 192, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/content/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/custody/run.mjs",
@@ -8678,6 +8823,42 @@
         "checkpoint-seal-inherited",
         "checkpoint-seal-decimal-helper"
       ]
+    },
+    {
+      "id": "variant:content-unreadable",
+      "kind": "variant",
+      "stage": {
+        "id": "variant:content-unreadable",
+        "argv": ["node", "scripts/content/worker.mjs", "--case", "C09.unreadable-load"],
+        "env": {},
+        "variant": "content-ea8ec67132094fb56686b070cf456518674d813be2449b3962a8aae3453dcbea",
+        "expect": {
+          "kind": "content",
+          "selection": {
+            "cases": [{ "id": "C09.unreadable-load", "outcome": "pass" }],
+            "mutants": [
+              {
+                "id": "swallow-unreadable-record",
+                "case": "C09.unreadable-load",
+                "assertion": "tag-refuses-whole-load",
+                "outcome": "detected",
+                "patch": {
+                  "file": "contentStore.ts",
+                  "from": ": await crypt.open(task, r),",
+                  "to": ": await crypt.open(task, r).catch(() => new Uint8Array()),"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 90000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     }
   ],
   "exclusions": [
@@ -8939,6 +9120,7 @@
     "test:test/privateMigration.test.ts",
     "test:test/projectionEquality.test.ts",
     "test:test/relayAuth.test.ts",
+    "test:test/release-validation/content-native.test.mjs",
     "test:test/release-validation/stage.test.mjs",
     "test:test/reorder.test.ts",
     "test:test/roundTrip.test.ts",
@@ -8978,7 +9160,6 @@
     "test:vite/precacheBuild.test.ts",
     "catalogue:scripts/admission/catalog.mjs",
     "catalogue:scripts/content-trim/catalog.mjs",
-    "catalogue:scripts/content/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/editor-admission/catalog.mjs",
     "catalogue:scripts/journal/catalog.mjs",
@@ -9007,7 +9188,6 @@
     "command:check:42",
     "command:check:43",
     "command:check:44",
-    "command:check:45",
     "command:check:46",
     "command:check:47",
     "command:check:48",
@@ -9142,7 +9322,6 @@
     "campaign:scripts/admission/run.mjs",
     "campaign:scripts/app-upgrades/run.mjs",
     "campaign:scripts/content-trim/run.mjs",
-    "campaign:scripts/content/run.mjs",
     "campaign:scripts/custody/run.mjs",
     "campaign:scripts/editor-admission/run.mjs",
     "campaign:scripts/journal-contention/run.mjs",
@@ -9171,6 +9350,7 @@
   ],
   "selections": {
     "infrastructure": [
+      "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
@@ -9208,6 +9388,8 @@
       "vector:test/vectors/transition.json",
       "vector:test/vectors/web-security-baseline.json"
     ],
+    "content": ["catalogue:scripts/content/catalog.mjs"],
+    "content-control": ["variant:content-unreadable"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -9427,6 +9609,8 @@
       "test:test/privateMigration.test.ts",
       "test:test/projectionEquality.test.ts",
       "test:test/relayAuth.test.ts",
+      "test:test/release-validation/content-native.test.mjs",
+      "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
@@ -9801,7 +9985,8 @@
       "construction:account-initial-challenges",
       "construction:recovery-generation-bridge",
       "construction:genesis-checkpoint-key",
-      "construction:genesis-checkpoint-seal"
+      "construction:genesis-checkpoint-seal",
+      "variant:content-unreadable"
     ]
   }
 }

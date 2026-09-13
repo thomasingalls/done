@@ -5,6 +5,7 @@ import { flattenPackages } from './inventory.mjs';
 import { catalogueCensus, directNodeCensus } from './census.mjs';
 import { digest } from './identity.mjs';
 import { validateStage } from './stage.mjs';
+import { contentStage } from './content-adapter.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -80,6 +81,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/inventory.test.mjs',
     'test/release-validation/manifest.test.mjs',
     'test/release-validation/identity.test.mjs',
+    'test/release-validation/content.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -128,8 +130,12 @@ export function compileManifest(root, inventory) {
       kind: 'catalogue',
       runner: catalogue.runner,
       ...census,
-      blocked:
-        'Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain.',
+      ...(catalogue.runner === 'scripts/content/run.mjs'
+        ? { stage: contentStage(root, [], 'catalogue:' + catalogue.path) }
+        : {
+            blocked:
+              'Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain.',
+          }),
     });
   }
   for (const v of inventory.vectors) {
@@ -175,6 +181,8 @@ export function compileManifest(root, inventory) {
       orderedAfter: prerequisite ? [prerequisite] : [],
     };
     if (vector) row.requires = ['vector:' + vector.path];
+    else if (command.argv.join(' ') === 'node scripts/content/run.mjs')
+      row.requires = ['catalogue:scripts/content/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/release-validation/check.mjs')
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
     else if (command.argv.join(' ') === 'node scripts/check-authority-map.mjs')
@@ -193,8 +201,12 @@ export function compileManifest(root, inventory) {
       path: c.path,
       ...(c.parent ? { parent: 'campaign:' + c.parent } : {}),
       callSites: c.runCallSites,
-      blocked:
-        'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+      ...(c.path === 'scripts/content/run.mjs'
+        ? { requires: ['catalogue:scripts/content/catalog.mjs'] }
+        : {
+            blocked:
+              'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+          }),
     });
   }
   for (const c of inventory.constructions) {
@@ -221,6 +233,13 @@ export function compileManifest(root, inventory) {
       vectorCases: c.vectorCases,
     });
   }
+  const contentId = 'catalogue:scripts/content/catalog.mjs';
+  if (rows.some((r) => r.id === contentId))
+    add({
+      id: 'variant:content-unreadable',
+      kind: 'variant',
+      stage: contentStage(root, ['--case', 'C09.unreadable-load'], 'variant:content-unreadable'),
+    });
   const byId = new Map(rows.map((r) => [r.id, r]));
   for (const row of rows) {
     for (const id of [...(row.requires ?? []), ...(row.orderedAfter ?? [])])
@@ -248,6 +267,9 @@ export function compileManifest(root, inventory) {
     selections: {
       infrastructure,
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),
+      ...(byId.has(contentId)
+        ? { content: [contentId], 'content-control': ['variant:content-unreadable'] }
+        : {}),
       release: rows.map((r) => r.id),
     },
   };

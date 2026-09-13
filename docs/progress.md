@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation native content adapter (`L-1`)
+## Active slice: Release-validation journal catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,28 +61,29 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** The phase-1 inventory is committed unsigned as `f13bdd1`; earlier Q work remains
-unsigned through `d03e473`. The [phase-2a foundation](./release-validation-execution.md) adds the
-[execution manifest](./release-validation-manifest.json), exact-case adapter, shared bounded runner,
-fresh source/installed-dependency identity and disposable checkout execution. Crypto-audit source pins
-no longer inherit a stale historical list. All 258 required test files, 163 catalogue cases/54 mutants,
-29 vector corpora and 83 registry entries remain represented. The initial five-stage disposable
-infrastructure run passed 19 exact cases and two static checks; the final five-stage selection passes 20 cases with every group drained. All eight final
-gates pass, including 32 tests and 480 generated histories. Checks and failed attempts are recorded in the
-[evidence packet](./account-conformance-runs/2026-09-13-validation-runner/README.md).
+**Just completed.** The inventory is unsigned `f13bdd1`; the runner foundation is now unsigned
+`f14c68f`. The [content catalogue adapter](./release-validation-execution.md#content-catalogue-adapter--phase-2b)
+executes 13 baselines and five discriminating mutations, including Q-04 unreadable-load, through the
+shared disposable owner. Exact report/source/patch evidence and independently pinned Chromium bytes
+join the stage contract. Full/default, selected control and no-mutant variants remain distinct; the
+standalone command keeps its options and reports. Six native controls verify Vite/browser cleanup
+through completion, timeout, cancellation and process death. Native URLs exposed Vite's port-zero
+fallback; the repaired run uses OS-assigned ports. The [evidence packet](./account-conformance-runs/2026-09-13-content-adapter/README.md)
+retains both attempts and the effective census/process controls. Production content code and the
+catalogue's assertions are unchanged. This adapter phase is left uncommitted.
 
-**The full phase-2 contract is not closed.** The original proposal combined runner infrastructure
-and every native/wrapper adapter. This foundation keeps 447 unresolved rows visible and refuses release
-execution before checkout creation. It does not run native campaigns, the complete vector chain or
-aggregate, change generated-property deadlines, or give old wrappers cross-campaign cache credit.
-P-06 remains unswept. The silent package-manager attempt remains undiagnosed; exact Node commands work.
+**The full phase-2 contract is not closed.** The manifest covers 260 required test files, all 163
+catalogue cases/54 mutants, 29 vector corpora and 83 registry entries. It keeps 445 unresolved rows
+visible and refuses whole-release execution. Ten catalogues (150 cases/49 mutations), general test
+adapters, wrappers, selected postconditions and measured deadlines remain. Existing wrappers do not
+receive shared-cache credit merely for naming a now-supported content case. P-06 remains unswept;
+the complete vector chain and immutable aggregate have not run. The earlier silent package-manager
+attempt remains undiagnosed; exact Node commands work.
 
-**Next single phase.** Integrate the content catalogue's 13 normal cases and five discriminating
-mutations, including Q-04 unreadable-load, with exact report census and owned browser/server
-cancellation/drain. Preserve full/default and selected-control variants. Then resolve the remaining
-catalogue, Node, Vitest, Playwright and wrapper selections/postconditions and measured deadlines. Keep
-vector and traceability prerequisites as ordered result dependencies. Native wrappers that detach
-processes need their own reviewed ownership adapter; the first inherited-group adapter refuses them.
+**Next single phase.** Adapt the journal catalogue's 17 normal cases and six mutations to the owned
+browser/server boundary, independently checking its report and source-patch assumptions. Preserve
+full/default and selected variants. Then resolve remaining catalogue, Node, Vitest, Playwright and
+wrapper selections/postconditions, with vector and traceability prerequisites as ordered receipts.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/
@@ -93,8 +94,8 @@ privacy, F-09 Account/key-loss recovery, F-07/F-17/F-19 capacity and Q-08 public
 **Preservation.** Personal package files, prior vectors, historical review packets/manifests, formal
 debts and L-2 remain outside this phase. No personal browser/profile, recovery files, Account, factor,
 key, service, origin or routing is used. Root `done ` is untouched. The signing reminder delivered its
-list and is paused. The user explicitly requested preserving unsigned hashes for an in-flight review;
-no signing, amendment or history rewrite occurred. This foundation is left uncommitted.
+list and is paused. Existing unsigned hashes remain unchanged for the in-flight review; no signing,
+amendment or history rewrite occurred.
 
 ---
 
