@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**281 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**276 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -41,6 +41,7 @@ node scripts/release-validation/execute.mjs --selection generated-tests
 node scripts/release-validation/execute.mjs --selection account-fixtures
 node scripts/release-validation/execute.mjs --selection service-fixtures
 node scripts/release-validation/execute.mjs --selection delivery-fixtures
+node scripts/release-validation/execute.mjs --selection isolation-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -740,12 +741,40 @@ identities remain unchanged and retain earlier evidence. General selections now 
 1,258 cases: 96 Vitest and 40 Node files; Account fixtures contain thirty files / 164 cases. Eleven
 native owner controls retain earlier evidence. This new phase is uncommitted, not an aggregate.
 
+## Account isolation service fixtures — phase 2s
+
+Signed `dbf5eb5` closes the preceding delivery/inbound phase. `isolation-fixtures` adds five Node
+files / 23 cases for shared-service core, recovery, generated histories, controls and restart. The
+existing census and owner suffice unchanged. Synthetic accounts share temporary core/authority
+databases; per-history teardown releases handles and directories, and inherited admission workers
+cover six SIGKILL boundaries and concurrent service processes. No browser, HTTP listener or root
+build is used. All product source/tests, identities, assertions, seeds and deadlines are unchanged.
+
+The disposable selection passes in 56.245 seconds, including snapshot work, with every group
+drained. The 160 histories at seed 112103 and two directed loss histories remain. Seed 112104 must
+fail and shrink the abandonment-scope mutant; its eighty-run budget is not credited as positive
+histories. The row oracle models per-account durable transitions and validates binding fields but
+seeds some initial offer fields from the implementation. Optional exported histories, metrics and
+counterexamples retain independent wrapper obligations.
+
+All 88 pure runner/census/adapter tests, direct typecheck, scoped style, exact manifest layout,
+planning and authority checks pass. There were no product test changes, retries or increased
+bounds. The unchanged owner/reporters retain prior evidence for 26 non-native process and eleven
+native controls. All 136 previous general contracts / 1,258 identities remain unchanged. General
+selections now contain 141 files / 1,281 cases (96 Vitest, 45 Node); Account has 35 files / 187 cases.
+The [packet](./account-conformance-runs/2026-09-13-isolation-fixture-adapters/README.md) retains exact
+receipts, patch, source/helper pins and preservation. This phase remains uncommitted, not an aggregate.
+
+The isolation wrapper remains blocked with its ordered prerequisites and optional exports. Its
+existing call to retired delivery-v8 native tests needs disposition before wrapper certification;
+this file selection does not revive that fixture.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **281 blocked rows**: 122 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 106 Node and sixteen Playwright files remain. Next review Account
-isolation core/control/generated/recovery/restart service fixtures. Other Node fixtures, native
+612 obligations / **276 blocked rows**: 117 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 101 Node and sixteen Playwright files remain. Next review ledger-contract
+formats/batch/control runtime fixtures, their in-memory builds and historical batch-reader input. Other Node fixtures, native
 browsers, Playwright, deliberate nested owners and exact wrapper variants/postconditions follow.
 Parsable registrations alone do not grant execution credit. R-04 needs explicit archive/generated
 style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.

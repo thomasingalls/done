@@ -7,6 +7,14 @@ import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const isolationFixtureFiles = [
+  'test/account-isolation/controls.test.mjs',
+  'test/account-isolation/core.test.mjs',
+  'test/account-isolation/generated.test.mjs',
+  'test/account-isolation/recovery.test.mjs',
+  'test/account-isolation/restart.test.mjs',
+];
+
 export const deliveryFixtureFiles = [
   'test/account-service-delivery/controls.test.mjs',
   'test/account-service-delivery/core.test.mjs',
@@ -55,6 +63,7 @@ export const accountFixtureFiles = {
     'test/account-admission/restart.test.mjs',
     ...serviceFixtureFiles,
     ...deliveryFixtureFiles,
+    ...isolationFixtureFiles,
   ],
 };
 

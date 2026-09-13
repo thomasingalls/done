@@ -4224,3 +4224,41 @@ controls, historical inputs, exact source patch and preservation pins within its
 Personal/package/vector files, L-2, prior evidence, formal debts and signing backups are unchanged.
 Next is the Account isolation service fixture family; remaining Node/native/Playwright ownership,
 exact wrappers, R-04 and P-06 precede the immutable aggregate and human Account preparation.
+
+
+## 2026-09-13 — Account isolation service fixture adapters (L-1)
+
+The preceding delivery/inbound fixture phase is signed and verified as `dbf5eb5`. Five isolation
+files add 23 cases: core 8, recovery 2, generated 3, controls 3 and restart 7. Explicit review covers
+two synthetic accounts sharing temporary service/authority databases, per-history cleanup, real
+crossed credentials, copied-source mutants and the inherited admission IPC worker. The existing
+census and process owner suffice unchanged; product source/tests, names, assertions, seeds,
+populations and deadlines remain byte-identical to the signed base.
+
+The disposable isolation selection passes all five files / 23 cases in 56.245 seconds, including
+snapshot work, with every process group drained. It retains 160 passing histories at seed 112103
+and two directed reply-loss histories. The abandonment-scope control at seed 112104 must fail and
+shrink; its requested budget of eighty is not eighty passing histories. The transition oracle
+checks full durable rows but seeds some initial offer fields from the implementation; this scope
+is explicit. Optional wrapper history/counterexample exports remain separate obligations.
+
+All 88 pure runner/census/adapter tests pass. Direct local TypeScript, scoped lint/format, exact
+manifest layout, planning, signature, authority, whitespace and expected release refusal pass.
+No product test needed a change, retry, population reduction or deadline increase. The unchanged
+owner/reporters retain previous evidence for 26 non-native process and eleven native ownership
+controls. All 136 prior general contracts / 1,258 identities remain unchanged and retain earlier
+execution evidence. General selections now contain 141 files / 1,281 cases: 96 Vitest and 45 Node.
+
+The manifest retains 612 obligations / 276 unresolved: 117 test-file (101 Node, sixteen Playwright),
+96 command and 63 campaign. Its 593,705 bytes stay under the unchanged 700 kB ceiling. All eleven
+catalogue adapters remain resolved. The whole isolation wrapper stays blocked; its existing call
+to retired delivery-v8 native tests needs disposition before certification, alongside exact exports
+and ordered prerequisites. Ordinary isolation file success does not revive that path.
+
+This phase is uncommitted. The packet at
+`docs/account-conformance-runs/2026-09-13-isolation-fixture-adapters/` retains complete selection
+receipts, exact source patch, 45 source/helper pins, prior contracts and preservation within 150 kB.
+Personal/package/vector bytes, L-2, prior evidence, formal debts and signing backups are unchanged.
+Next review ledger-contract runtime fixtures, including in-memory builds and the historical batch
+reader. Remaining Node/native/Playwright ownership, wrappers, R-04 and P-06 precede the immutable
+aggregate and human Account preparation. No personal Account, browser, service or root build ran.

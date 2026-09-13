@@ -2539,3 +2539,18 @@ input changes. Explicit replanning may adopt different bytes only under a differ
 These cooperative pre/post checks have the same transient/hostile-change limits as source checks.
 Service fixture admission preserves binary IPC ownership, exact cases and independent wrapper/native
 obligations; old source used for compatibility or size fixtures does not revive retired v8 support.
+
+
+## 2026-09-13 — Shared-account fixtures retain their mutation and wrapper boundaries
+
+Admit the reviewed isolation service files under the existing Node owner without changing their
+case bodies, generated populations or deadlines. Two accounts may share synthetic databases while
+per-history cleanup closes handles and removes directories; crash/concurrent workers remain in the
+inherited process group. Reconcile all five file denominators and keep wrapper obligations separate.
+
+A test requiring a generated mutant history to fail and shrink is a passing detection case, not
+its requested run budget of positive histories. Credit its actual assertions while leaving optional
+exported histories/metrics/counterexamples to wrapper verification. Describe an oracle's dependence
+on observed initial rows instead of claiming independent derivation of every field. A wrapper that
+still calls a retired v8 fixture needs an explicit disposition before certification; direct current
+file execution does not re-admit retired support.

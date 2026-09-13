@@ -23,6 +23,7 @@ import {
   accountFixtureNodeStage,
   serviceFixtureFiles,
   deliveryFixtureFiles,
+  isolationFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -414,6 +415,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'delivery-fixtures': rows
         .filter((r) => account.node.includes(r.path) && deliveryFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'isolation-fixtures': rows
+        .filter((r) => account.node.includes(r.path) && isolationFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'general-tests': rows
         .filter(
