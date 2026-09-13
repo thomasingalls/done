@@ -3,15 +3,22 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { validateReport, mutationStatus } from '../storage-conformance/report.mjs';
 import { catalogueCensus } from './census.mjs';
+import { evidenceEncoding, validateEvidence } from './assertion-evidence.mjs';
 import { hash, digest } from './identity.mjs';
 
-const scopes = Object.freeze({
-  content: 'content-carrier-browser',
-  journal: 'journal-carrier-browser',
-  admission: 'ordered-admission-browser',
+// Candidate names and patch paths are protocol-specific, not derived from report labels.
+const bindings = Object.freeze({
+  content: { scope: 'content-carrier-browser', candidate: 'content', patchPrefix: 'src/crdt/' },
+  journal: { scope: 'journal-carrier-browser', candidate: 'journal', patchPrefix: 'src/crdt/' },
+  admission: {
+    scope: 'ordered-admission-browser',
+    candidate: 'admission',
+    patchPrefix: 'src/crdt/',
+  },
+  'editor-admission': { scope: 'editor-admission-browser', candidate: 'editor', patchPrefix: '' },
 });
 const requireFamily = (family) =>
-  assert(Object.hasOwn(scopes, family), 'Unreviewed carrier family');
+  assert(Object.hasOwn(bindings, family), 'Unreviewed carrier family');
 
 export function carrierSelection(family, root, args = []) {
   requireFamily(family);
@@ -82,18 +89,19 @@ export function carrierStage(family, root, args = [], id = family + ':full') {
 
 export function reconcileCarrier(family, selection, actual, { nonce, sources, root }) {
   requireFamily(family);
+  const { scope, candidate, patchPrefix } = bindings[family];
   assert.equal(actual.schema, 1);
   assert.equal(actual.releaseNonce, nonce, 'Stale carrier report');
-  assert.equal(actual.scope, scopes[family]);
+  assert.equal(actual.scope, scope);
   assert(!actual.fatal, 'Carrier campaign reported a fatal failure');
   assert.equal(actual.exitCode, 0, 'Carrier campaign did not finish successfully');
   assert(typeof actual.finished === 'string', 'Carrier campaign did not finish');
-  assert.deepEqual(actual.requestedCandidates, [family]);
+  assert.deepEqual(actual.requestedCandidates, [candidate]);
   const caseIds = selection.cases.map((c) => c.id);
   assert.deepEqual(actual.requestedCases, caseIds, 'Carrier selection changed');
   assert.equal(actual.candidates.length, 1, 'Missing or extra carrier baseline');
   const baseline = actual.candidates[0];
-  assert.equal(baseline.id, family);
+  assert.equal(baseline.id, candidate);
   const pins = new Map(sources.filter((p) => p.sha256).map((p) => [p.path, p.sha256]));
   const sourcePaths = [...pins.keys()]
     .filter(
@@ -104,7 +112,15 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     )
     .sort();
   assert(sourcePaths.length, 'Missing independent carrier source pins');
+  if (family === 'editor-admission')
+    assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
   const check = (report, ids, mutation = null) => {
+    if (family === 'editor-admission')
+      for (const row of report.cases)
+        for (const a of row.assertions) {
+          validateEvidence(a.actual);
+          validateEvidence(a.expected);
+        }
     validateReport(report, ids);
     for (const row of report.cases)
       assert.equal(
@@ -119,7 +135,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     );
     for (const path of sourcePaths) {
       let expected = pins.get(path);
-      if (mutation && path === 'src/crdt/' + mutation.patch.file) {
+      if (mutation && path === patchPrefix + mutation.patch.file) {
         const text = readFileSync(join(root, path), 'utf8');
         assert.equal(text.split(mutation.patch.from).length, 2, 'Mutation anchor is not unique');
         expected = hash(text.replace(mutation.patch.from, mutation.patch.to));
@@ -141,7 +157,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
   const outcomes = caseIds.map((id) => ({ id, outcome: 'pass' }));
   for (const [i, spec] of selection.mutants.entries()) {
     assert(
-      pins.has('src/crdt/' + spec.patch.file),
+      pins.has(patchPrefix + spec.patch.file),
       'Mutation source missing from independent pins',
     );
     assert.notEqual(spec.patch.from, spec.patch.to, 'Mutation must change source bytes');
@@ -167,7 +183,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
   assert.equal(actual.servers?.length, 1 + selection.mutants.length, 'Incomplete server lifecycle');
   assert.deepEqual(
     actual.servers.map((s) => s.variant),
-    [family, ...selection.mutants.map((m) => m.id)],
+    [candidate, ...selection.mutants.map((m) => m.id)],
     'Server variants differ from the executed selection',
   );
   for (const server of actual.servers)

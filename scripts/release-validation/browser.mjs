@@ -117,18 +117,25 @@ export function startOwnedChromium({ runtime, directory, env, startupMs, graceMs
         assert(!signal?.aborted, 'Browser startup cancelled');
         assert(!owner.failed, owner.failed);
         if (existsSync(activePort)) {
-          const [port, path] = readFileSync(activePort, 'utf8').trim().split('\n');
-          assert(
+          // Chromium creates this file before publication is necessarily complete. A
+          // partial read is not readiness; retry within the existing startup deadline.
+          const parts = readFileSync(activePort, 'utf8').trim().split('\n');
+          const [port, path] = parts;
+          if (
+            parts.length === 2 &&
             /^\d+$/.test(port) &&
-              Number(port) > 0 &&
-              Number(port) < 65536 &&
-              /^\/devtools\/browser\/[a-z0-9-]+$/i.test(path),
-            'Invalid owned browser endpoint',
-          );
-          endpoint = `ws://127.0.0.1:${port}${path}`;
-          result.endpoint = endpoint;
-          result.readyMs = Date.now() - started;
-          return endpoint;
+            Number(port) > 0 &&
+            Number(port) < 65536 &&
+            /^\/devtools\/browser\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(
+              path,
+            )
+          ) {
+            endpoint = `ws://127.0.0.1:${port}${path}`;
+            result.endpoint = endpoint;
+            result.readyMs = Date.now() - started;
+            return endpoint;
+          }
+          result.portFileRetries = (result.portFileRetries ?? 0) + 1;
         }
         await delay(20);
       }

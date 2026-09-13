@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 268,
-    "requiredTestFiles": 262,
+    "testFiles": 269,
+    "requiredTestFiles": 263,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4295,25 +4295,8 @@
       "packageCommands": [[["node", "scripts/editor-admission/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 189,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 193,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/journal-contention/run.mjs",
@@ -8760,7 +8743,7 @@
           "test/release-validation/content-native.test.mjs"
         ]
       },
-      "declarations": 6,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8779,6 +8762,26 @@
       "propertyFamilies": [
         {
           "line": 98,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/editor-admission.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/editor-admission.test.mjs"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [
+        {
+          "line": 172,
           "form": "fc.property"
         }
       ],
@@ -8865,10 +8868,10 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/release-validation/stage.test.mjs"]
       },
-      "declarations": 12,
+      "declarations": 15,
       "propertyFamilies": [
         {
-          "line": 243,
+          "line": 245,
           "form": "fc.property"
         }
       ],
@@ -11295,11 +11298,15 @@
     },
     {
       "path": "scripts/editor-admission/run.mjs",
-      "sha256": "b9009c616877f45c0cbedff025eff7f5d1e2adabc04c78e65919ad9dde612dc1"
+      "sha256": "0e812927da0d8a740c8ae06f91d57430e18965a2c58ec8065442d52486c17bef"
     },
     {
       "path": "scripts/editor-admission/scenarios.mjs",
       "sha256": "9903d41eec8a3f84d5b25a0755d4b00dd8af6a4183fa6bc1d9b1463c46d62fb5"
+    },
+    {
+      "path": "scripts/editor-admission/worker.mjs",
+      "sha256": "4e0670e30fbf0e3bc261348739d6581a4823a2380796a8642e7e28eb4ba8b0d1"
     },
     {
       "path": "scripts/fetch-asvs-index.mjs",
@@ -11610,12 +11617,16 @@
       "sha256": "c39a5fb785d5bbd9084cc1e116ef612b9417543ccd0f0e5a02e2cfb370a9530f"
     },
     {
+      "path": "scripts/release-validation/assertion-evidence.mjs",
+      "sha256": "d79afa796b9c49621c7150ca2a1c2d29a4b6a150a762113edf7b40c8a06c250c"
+    },
+    {
       "path": "scripts/release-validation/browser.mjs",
-      "sha256": "5e56e2d318553e13f60db06bee1747b6e4481a6fda3c62d1f4913ea865a35573"
+      "sha256": "6a590cb9ba4d9d2fa2e0f45999a2e82e3ec531a6a35f093bd4a3d72f3d48e33b"
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "e98139ec0e87da9491892914f9b71872e9788b16bd5094906ff865bc446a10d6"
+      "sha256": "c02935da32b1e3ad5597db6d4470dd66ecc938ce64d34499d63949e110be6be5"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11630,8 +11641,12 @@
       "sha256": "0ede090cdc08174b8090b402ce30c4868f0c57acb6abacfdd23c824b209a566e"
     },
     {
+      "path": "scripts/release-validation/editor-admission-adapter.mjs",
+      "sha256": "768491d336e6ae3380e74ab43c5956592eb37623077bf13dd27a3dbed515f745"
+    },
+    {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "1a05d0c4c3aae890f5071b53077d24d8c312023ce04d903c349a6e7ce73d00ca"
+      "sha256": "ea13ea6e846e96feb2f328a4a10d0b6e88b0608005310835f93e20b5e8b544e9"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11647,7 +11662,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "e5d2ffd30efbb79089aaec4d0dad7d0dc1c5061d7b386eb28a0d9b38c9841955"
+      "sha256": "4022da16604a73bbe548d006c14234521d81d1ebdd10c86638d7e49f6a086a74"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11675,7 +11690,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "2857a3b19bd8c97a273973d356a7db499abd587c57d09d61ccf9b7675b60547f"
+      "sha256": "86bc6ec1f11ce5a5f59a85b6767ea74f5dfe4a5dbc7f9269998406f106a35e52"
     },
     {
       "path": "scripts/remediation-status.mjs",
@@ -13419,15 +13434,19 @@
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
-      "sha256": "3996f50a8994c476640dbb03f33809a7446cd0323c097c52a2b961b729e62a26"
+      "sha256": "6aa22aa6954fc3428f15d658d63bbe52605552ebe5f231229f639cc7e235b67b"
     },
     {
       "path": "test/release-validation/content-native.test.mjs",
-      "sha256": "af225f73b1f5df96929f9b93822a5fbf3a9ac76a0d55792ab26a17932064d62e"
+      "sha256": "81c30494e5ec268feae555eafb19514d5ab9dfc95805803561d6bdec496c9283"
     },
     {
       "path": "test/release-validation/content.test.mjs",
       "sha256": "b11efcc50cd4f3c1752305f364f6034b251a7003079998100dc716bf44fb93fa"
+    },
+    {
+      "path": "test/release-validation/editor-admission.test.mjs",
+      "sha256": "3427c7f8d41a5101266e406cd84be1034283379fc88082771479a8f9be92337d"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13447,7 +13466,7 @@
     },
     {
       "path": "test/release-validation/stage.test.mjs",
-      "sha256": "8897af035a1c57343e04af1a6665c73366cfce0c78b2b345bd05363b007f954e"
+      "sha256": "4aa21f9b91c70edd98f61e76ef538076c20110f4e9f51cb56bcb46c479a156f7"
     },
     {
       "path": "test/reorder.test.ts",

@@ -1,21 +1,21 @@
-# Release-validation execution — foundation and three catalogue adapters
+# Release-validation execution — foundation and four catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
-content as `b9f0984` and journal as `1a86453`.
+content as `b9f0984`, journal as `1a86453` and admission as `4fc3af0`.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 598 obligations, including all 262 current
+The [manifest](./release-validation-manifest.json) now contains 599 obligations, including all 263 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**439 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**436 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -32,6 +32,7 @@ node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
 node scripts/release-validation/execute.mjs --selection admission
+node scripts/release-validation/execute.mjs --selection editor-admission
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -40,8 +41,8 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs eight stages: the identity, inventory, manifest, content-adapter, journal-adapter
-and admission-adapter test files (31 exact cases),
+`infrastructure` runs nine stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter and editor-admission-adapter test files (36 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -233,13 +234,57 @@ including preparation/final checks. Single-case workers retain a 90-second deadl
 not supported-population latency evidence. Default catalogue, package leaf and campaign alias are
 resolved; enclosing wrapper postconditions are not credited automatically.
 
+## Editor-admission catalogue adapter — phase 2e
+
+The Goals CodeMirror catalogue passes **12 baseline cases, 61 assertions and three mutations**
+through the shared owner. Its existing candidate is `editor`, its scope `editor-admission-browser`,
+and its patch paths already start at `src/editor/`. These are explicit family bindings. The worker
+also copies/hashes Account protocol sources, completing the shared source population. Original typing,
+multicaret, checkbox, pressure/retry, history, export, remote, BroadcastChannel, paste, composition,
+close/repair and preparation-profile assertions are unchanged.
+
+The first native run caught a runner defect: overlays beside reports sat outside the checkout and
+resolved another copy of CodeMirror. The fixture's selection then failed in the editor's copy.
+All four owned workers now write overlays beneath the disposable checkout, keeping bare dependency
+resolution there. Reports, logs and receipts remain in the requested evidence directory. A native
+control with equal package bytes in two installations fails before this move and passes afterward.
+It uses the catalogue's `noDiscovery` setting; an initial generic probe allowed Vite prebundling and
+therefore failed to discriminate this condition. That probe is not credited as a passing repair control.
+
+A second run passed the product assertions but could not publish a valid receipt: plain JSON dropped
+undefined export-refusal values. Editor reports now declare `tagged-json-v1`, an injective encoding of
+supported plain assertion values, with explicit undefined/null, negative zero and object/array tags.
+The parent validates tag structure and recomputes equality without treating missing fields as evidence.
+Unsupported values refuse. Existing scenario comparisons remain intact. Report parsing/reconciliation
+failure now leaves a failed receipt without an undefined `cases` property; it cannot break receipt
+serialization. Other families keep their existing untagged reports until individually reviewed.
+
+A native startup control also encountered an invalid endpoint read, while its retained file was valid
+later. Focused fragmented-file controls establish that the old reader refused incomplete publication.
+The owner now retries within the same startup deadline, accepts only a complete port/UUID path and
+records retry counts. An incomplete file still times out and its process group drains. This is a
+browser-launch repair, not a change to application connectivity.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-editor-admission-adapter/README.md) retains
+both failed full runs, the native failure/control evidence, the final full run, selected pressure
+variants and selected content/journal/admission regressions. The final worker took **67.3 seconds**
+within its 120-second deadline. Nine infrastructure stages pass 36 cases/two static checks; 51
+non-native tests include 160 new generated editor selections (1,120 validation histories total).
+Seven native controls separately exercise actual browser/Vite ownership and module identity.
+
+Worker/startup/drain/output bounds remain unchanged. Profiling is diagnostic on this host; the Blink
+composition probe does not qualify native IMEs or device populations. Application startup, complete
+workspace commands and Account authority remain outside this catalogue. Standalone case/no-mutant/
+output options and JSON/Markdown report files remain supported; custom browser overrides and existing
+outputs refuse. Default catalogue, package leaf and campaign alias resolve, not enclosing wrappers.
+
 ## Next bounded integration
 
-Integrate the editor-admission catalogue's **12 baseline cases and three mutations**, reviewing its
-actual CodeMirror assertions, full source-path patch targets and report before extending the shared
-adapter. Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their
-postconditions and measured per-suite deadlines. Eight catalogues (118 cases/37 mutations) still need
-adapters. Vector reuse becomes meaningful when consumers depend on the same successful identity.
+Integrate workspace-admission's **ten baseline cases and four mutations**, reviewing shared human
+history, structural commands, cross-tab dependencies, full patch paths and assertion values first.
+Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions
+and measured deadlines. Seven catalogues (106 cases/34 mutations) still need adapters. Vector reuse
+becomes meaningful when consumers depend on the same successful identity.
 
 Only after every required obligation resolves should P-06's prose sweep and the complete selected
 immutable run proceed. No personal app/server/profile, release deployment or Account cutover is

@@ -54,7 +54,9 @@ export function validateStage(stage) {
     'Invalid prerequisites',
   );
   assert(
-    ['exit', 'cases', 'content', 'journal', 'admission'].includes(stage.expect?.kind),
+    ['exit', 'cases', 'content', 'journal', 'admission', 'editor-admission'].includes(
+      stage.expect?.kind,
+    ),
     'Unresolved result adapter',
   );
   if (stage.expect.kind === 'exit')
@@ -82,7 +84,7 @@ export function validateStage(stage) {
         );
     }
   }
-  if (['content', 'journal', 'admission'].includes(stage.expect.kind)) {
+  if (['content', 'journal', 'admission', 'editor-admission'].includes(stage.expect.kind)) {
     assert.equal(
       stage.argv[1],
       `scripts/${stage.expect.kind}/worker.mjs`,
@@ -228,6 +230,9 @@ export function createStageRunner({
     writeFileSync(violations, '');
     const logPath = join(dir, 'output.log');
     writeFileSync(logPath, '');
+    // Keep generated source beside the copied dependencies. Report directories may be
+    // outside the checkout, where Vite would resolve a second package instance.
+    const workerOutput = join(root, 'test-results', 'release-worker', key);
     const env = {
       PATH: dirname(process.execPath) + ':/usr/bin:/bin',
       HOME: join(dir, 'home'),
@@ -241,9 +246,10 @@ export function createStageRunner({
       RELEASE_GUARD_VIOLATIONS: violations,
       RELEASE_CASE_REPORT: report,
       RELEASE_RUN_NONCE: nonce,
-      RELEASE_CONTENT_OUTPUT: join(dir, 'content'),
-      RELEASE_JOURNAL_OUTPUT: join(dir, 'journal'),
-      RELEASE_ADMISSION_OUTPUT: join(dir, 'admission'),
+      RELEASE_CONTENT_OUTPUT: join(workerOutput, 'content'),
+      RELEASE_JOURNAL_OUTPUT: join(workerOutput, 'journal'),
+      RELEASE_ADMISSION_OUTPUT: join(workerOutput, 'admission'),
+      RELEASE_EDITOR_ADMISSION_OUTPUT: join(workerOutput, 'editor-admission'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
@@ -412,15 +418,18 @@ export function createStageRunner({
           statSync(report).size <= stage.maxReportBytes,
           'Case report exceeded artifact bound',
         );
-        actual = JSON.parse(readFileSync(report, 'utf8'));
-        if (['content', 'journal', 'admission'].includes(stage.expect.kind)) {
-          const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, actual, {
+        const reported = JSON.parse(readFileSync(report, 'utf8'));
+        if (['content', 'journal', 'admission', 'editor-admission'].includes(stage.expect.kind)) {
+          const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, reported, {
             nonce,
             sources: before.sources,
             root,
           });
           actual = { cases };
-        } else reconcileCases(stage.expect.cases, actual, nonce);
+        } else {
+          reconcileCases(stage.expect.cases, reported, nonce);
+          actual = reported;
+        }
       }
       assert.equal(
         identityKey(await fingerprint()),

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "132bef5f5fb774a27fccb8ea230c7eee0f65cc2c0b1b131042882af1b79c3ffb",
+  "inventoryDigest": "490cb8a0b02aa976f955c40312fbaa8d4da80033bcd27c4380dd8600b6cf509c",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2560,6 +2560,54 @@
       }
     },
     {
+      "id": "test:test/release-validation/editor-admission.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/editor-admission.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/editor-admission.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/editor-admission.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/editor-admission.test.mjs::editor-admission binds all 12 cases, three full-path patches and distinct selected variants",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/editor-admission.test.mjs::editor mutation evidence needs each exact full-path target and both independent pressure assertions",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/editor-admission.test.mjs::editor report identity and complete source population cannot be inferred from the family name",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/editor-admission.test.mjs::160 generated editor selections require exact source-target and assertion evidence or explicit baseline-only coverage",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/editor-admission.test.mjs::tagged evidence retains undefined and null distinctly through JSON without accepting malformed or missing evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/identity.test.mjs",
       "kind": "test",
       "path": "test/release-validation/identity.test.mjs",
@@ -3616,7 +3664,78 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/editor-admission/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/editor-admission/worker.mjs",
+          "--case",
+          "E11.repair,E12.multicaret,E09.pending-death,E10.checkbox,E01.typing,E02.pressure,E03.remote,E04.cross-tab,E05.paste,E06.composition,E07.close,E08.profile"
+        ],
+        "env": {},
+        "variant": "editor-admission-82c51451d4c2fc338b83f4a278d6f6b75925e2aafc9d8dbd59855be01af72d8c",
+        "expect": {
+          "kind": "editor-admission",
+          "selection": {
+            "cases": [
+              { "id": "E11.repair", "outcome": "pass" },
+              { "id": "E12.multicaret", "outcome": "pass" },
+              { "id": "E09.pending-death", "outcome": "pass" },
+              { "id": "E10.checkbox", "outcome": "pass" },
+              { "id": "E01.typing", "outcome": "pass" },
+              { "id": "E02.pressure", "outcome": "pass" },
+              { "id": "E03.remote", "outcome": "pass" },
+              { "id": "E04.cross-tab", "outcome": "pass" },
+              { "id": "E05.paste", "outcome": "pass" },
+              { "id": "E06.composition", "outcome": "pass" },
+              { "id": "E07.close", "outcome": "pass" },
+              { "id": "E08.profile", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "history-before-receipt",
+                "case": "E02.pressure",
+                "assertion": "pending-not-in-history",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/editor/admittedText.ts",
+                  "from": "candidate = transaction?.state ?? state;",
+                  "to": "candidate = transaction?.state ?? state; accepted = candidate;"
+                }
+              },
+              {
+                "id": "ordinary-view-before-receipt",
+                "case": "E02.pressure",
+                "assertion": "pending-not-in-editor",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/editor/admittedEditor.ts",
+                  "from": "return input({ name: 'insert', text: inserted }, at);",
+                  "to": "view.update([view.state.update({changes: {from, to, insert: inserted}})]); return input({ name: 'insert', text: inserted }, at);"
+                }
+              },
+              {
+                "id": "remote-in-undo",
+                "case": "E03.remote",
+                "assertion": "undo-preserves-remote",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/editor/admittedText.ts",
+                  "from": "Transaction.addToHistory.of(false)",
+                  "to": "Transaction.addToHistory.of(true)"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/journal/catalog.mjs",
@@ -5065,7 +5184,7 @@
       "argv": ["node", "scripts/editor-admission/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:48"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/editor-admission/catalog.mjs"]
     },
     {
       "id": "command:check:50",
@@ -7231,11 +7350,8 @@
       "id": "campaign:scripts/editor-admission/run.mjs",
       "kind": "campaign",
       "path": "scripts/editor-admission/run.mjs",
-      "callSites": [
-        { "line": 189, "form": "run", "arguments": [] },
-        { "line": 193, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/editor-admission/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/journal-contention/run.mjs",
@@ -9458,7 +9574,6 @@
     "test:vite/precacheBuild.test.ts",
     "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
-    "catalogue:scripts/editor-admission/catalog.mjs",
     "catalogue:scripts/local-clear/catalog.mjs",
     "catalogue:scripts/local-genesis/catalog.mjs",
     "catalogue:scripts/owned-startup/catalog.mjs",
@@ -9485,7 +9600,6 @@
     "command:check:43",
     "command:check:44",
     "command:check:47",
-    "command:check:49",
     "command:check:50",
     "command:check:51",
     "command:check:52",
@@ -9616,7 +9730,6 @@
     "campaign:scripts/app-upgrades/run.mjs",
     "campaign:scripts/content-trim/run.mjs",
     "campaign:scripts/custody/run.mjs",
-    "campaign:scripts/editor-admission/run.mjs",
     "campaign:scripts/journal-contention/run.mjs",
     "campaign:scripts/legacy-cleanup/campaign.mjs",
     "campaign:scripts/legacy-cleanup/run.mjs",
@@ -9644,6 +9757,7 @@
     "infrastructure": [
       "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content.test.mjs",
+      "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
@@ -9686,6 +9800,7 @@
     "content-control": ["variant:content-unreadable"],
     "journal": ["catalogue:scripts/journal/catalog.mjs"],
     "admission": ["catalogue:scripts/admission/catalog.mjs"],
+    "editor-admission": ["catalogue:scripts/editor-admission/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -9908,6 +10023,7 @@
       "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content-native.test.mjs",
       "test:test/release-validation/content.test.mjs",
+      "test:test/release-validation/editor-admission.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",

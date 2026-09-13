@@ -3634,3 +3634,35 @@ postconditions and deadlines precede P-06 and immutable aggregate validation. Pe
 prior vectors, historical reviews/debts and L-2 remain unchanged; no personal app/profile/service/build,
 recovery material, Account, factor or key was used. This admission phase remains uncommitted.
 Appended before replacing L-1.
+
+
+## 2026-09-13 — Editor-admission catalogue execution adapter, phase 2e (`L-1`)
+
+Committed admission unsigned as `4fc3af0`, preserving review-tracked hashes. Connected the Goals
+CodeMirror catalogue to the shared owner: 12 baselines/61 assertions and three discriminating
+mutations pass. Candidate `editor`, report scope and full editor patch paths are bound explicitly.
+Two pressure-case mutations require separate editor/history assertion evidence. The source overlay
+now includes the shared Account protocol files. Existing scenarios and production code are unchanged.
+
+Native execution exposed runner defects. Report-directory overlays resolved a second CodeMirror copy;
+multicaret failed until overlays moved inside the disposable checkout. A native equal-byte module
+identity control fails before this repair and passes afterward. JSON also erased the undefined values
+in export-refusal assertions. A tagged assertion encoding preserves them distinctly from null, while
+retaining the original comparisons. Report rejection exposed an undefined field that prevented failure
+receipt serialization; malformed reports now leave complete failed receipts. A browser startup control
+observed an invalid endpoint read followed by a valid file. Fragmented-publication controls reproduce
+premature refusal; bounded retries now require a complete endpoint and still enforce startup expiry.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-editor-admission-adapter/README.md) retains
+initial failures, passing native and selected runs, and all seven native ownership controls. The full
+worker took 67.3 seconds within its 120-second deadline. Selected content/journal/admission
+regressions pass. Static gates include 51 non-native tests and 1,120 generated validation histories;
+these are adapter controls, not extra product histories. Nine disposable infrastructure stages pass
+36 exact cases and two static checks. Composition and preparation profiling retain their one-host limits.
+
+The manifest has 599 obligations with 436 unresolved, covering 263 required test files and the same
+163 catalogue cases/54 mutations. Seven catalogue adapters remain (106 cases/34 mutations). Next is
+workspace-admission's ten cases/four mutations, followed by remaining families/wrapper postconditions
+and deadlines before P-06 and immutable aggregate validation. No personal operation occurred; prior
+vectors, historical reviews/debts and L-2 are unchanged. This editor-admission phase remains uncommitted.
+Appended before replacing L-1.

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   copyFileSync,
+  chmodSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -17,6 +18,7 @@ import {
   reconcileCases,
   validateStage,
 } from '../../scripts/release-validation/stage.mjs';
+import { startOwnedChromium } from '../../scripts/release-validation/browser.mjs';
 import { boundedStage } from '../../scripts/release-validation/manifest.mjs';
 import { digest, filePins } from '../../scripts/release-validation/identity.mjs';
 
@@ -302,4 +304,71 @@ test('uncertain group probes may recover within grace but persistent uncertainty
       process.kill = original;
     }
   }
+});
+
+test('a malformed case report still produces a complete failed receipt and drained group', async (t) => {
+  const f = fixture(
+    t,
+    "import {writeFileSync} from 'node:fs'; writeFileSync(process.env.RELEASE_CASE_REPORT, JSON.stringify({schema:1,nonce:process.env.RELEASE_RUN_NONCE,errors:[]}));",
+  );
+  const receipt = await f.run({
+    ...f.stage,
+    expect: { kind: 'cases', cases: [{ id: 'required', outcome: 'pass' }] },
+  });
+  assert.equal(receipt.status, 'failed');
+  assert.match(receipt.result.reason, /Missing actual case census/);
+  assert.equal(receipt.result.groupDrained, true);
+  assert.equal(Object.hasOwn(receipt.result, 'cases'), false);
+  assert.equal(
+    JSON.parse(readFileSync(join(f.output, receipt.key, 'receipt.json'))).status,
+    'failed',
+  );
+});
+
+function portFileBrowser(t, completes) {
+  const dir = mkdtempSync(join(tmpdir(), 'done-port-file-control-'));
+  const executable = join(dir, 'browser');
+  writeFileSync(
+    executable,
+    `#!${process.execPath}
+import {writeFileSync} from 'node:fs';
+const profile=process.argv.find(x=>x.startsWith('--user-data-dir=')).slice('--user-data-dir='.length);
+const file=profile+'/DevToolsActivePort';
+writeFileSync(file,'');
+setTimeout(()=>writeFileSync(file,'12345'),80);
+setTimeout(()=>writeFileSync(file,'12345\\n/devtools/browser/a'),160);
+${completes ? "setTimeout(()=>writeFileSync(file,'12345\\n/devtools/browser/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'),240);" : ''}
+setInterval(()=>{},100);
+`,
+  );
+  chmodSync(executable, 0o755);
+  const owner = startOwnedChromium({
+    runtime: { executable, snapshot: { fixture: 'fragmented-port-file' } },
+    directory: dir,
+    env: {},
+    startupMs: completes ? 1500 : 500,
+    graceMs: 300,
+    maxLogBytes: 4096,
+  });
+  t.after(async () => {
+    assert.equal((await owner.close()).groupDrained, true);
+    rmSync(dir, { recursive: true, force: true });
+  });
+  return owner;
+}
+
+test('browser startup waits through empty and partial endpoint publication for a complete owned endpoint', async (t) => {
+  const owner = portFileBrowser(t, true);
+  assert.equal(
+    await owner.ready(),
+    'ws://127.0.0.1:12345/devtools/browser/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+  );
+  assert(owner.result.portFileRetries > 0);
+});
+
+test('an endpoint file that remains incomplete never becomes ready and still drains at the startup deadline', async (t) => {
+  const owner = portFileBrowser(t, false);
+  await assert.rejects(owner.ready(), /Browser startup deadline exceeded/);
+  assert.equal(owner.result.endpoint, undefined);
+  assert.equal((await owner.close()).groupDrained, true);
 });

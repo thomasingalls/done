@@ -35,6 +35,17 @@ function fixture(t, mode, extra = {}) {
   );
   copyFileSync('scripts/release-validation/server.mjs', join(root, 'listen.mjs'));
   writeFileSync(join(root, 'index.html'), '<title>Owned fixture</title>');
+  // Equal package bytes in two installations still create different browser class identities.
+  for (const ancestor of [root, base]) {
+    const packageRoot = join(ancestor, 'node_modules/owner-selection');
+    mkdirSync(packageRoot, { recursive: true });
+    writeFileSync(
+      join(packageRoot, 'package.json'),
+      JSON.stringify({ name: 'owner-selection', type: 'module', exports: './index.js' }),
+    );
+    writeFileSync(join(packageRoot, 'index.js'), 'export class Selection {}');
+  }
+  writeFileSync(join(root, 'fixture.js'), 'export { Selection } from "owner-selection";');
   writeFileSync(
     join(root, 'subject.mjs'),
     `
@@ -42,20 +53,32 @@ function fixture(t, mode, extra = {}) {
     import { createServer } from ${JSON.stringify(vite)};
     import { createServer as createHttpServer } from 'node:http';
     import { listenEphemeralVite } from './listen.mjs';
-    import { writeFileSync } from 'node:fs';
+    import { mkdirSync, writeFileSync } from 'node:fs';
     const blocker = createHttpServer();
     await new Promise(r => blocker.listen(0, '127.0.0.1', r));
-    const server = await createServer({ configFile: false, root: process.cwd(), cacheDir: process.env.TMPDIR + '/vite', logLevel: 'error',
+    const server = await createServer({ configFile: false, root: process.cwd(), cacheDir: process.env.TMPDIR + '/vite', logLevel: 'error', optimizeDeps: { noDiscovery: true },
       server: { host: '127.0.0.1', port: blocker.address().port, strictPort: true, hmr: false } });
     const origin = await listenEphemeralVite(server);
     if (server.httpServer.address().port === blocker.address().port) throw Error('Configured port reused');
+    if (process.env.MODE === 'module-identity') {
+      const overlay = process.env.RELEASE_EDITOR_ADMISSION_OUTPUT;
+      mkdirSync(overlay, { recursive: true });
+      writeFileSync(overlay + '/selection.js', 'export { Selection } from "owner-selection";');
+      writeFileSync('identity.html', '<title>Owned fixture</title><script type="module">import {Selection as A} from "/fixture.js"; import {Selection as B} from "/@fs/' + overlay + '/selection.js"; window.sameSelection = A === B;</script>');
+    }
     const browser = await chromium.connectOverCDP(process.env.RELEASE_BROWSER_ENDPOINT);
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto(origin);
+    await page.goto(origin + (process.env.MODE === 'module-identity' ? '/identity.html' : '/'));
     if (await page.title() !== 'Owned fixture') throw Error('Fixture not reached');
     writeFileSync(process.env.OWNER_MARKER, JSON.stringify({worker: process.pid, port: server.httpServer.address().port, blocker: blocker.address().port, endpoint: process.env.RELEASE_BROWSER_ENDPOINT}));
-    if (process.env.MODE === 'normal') {
+    if (process.env.MODE === 'module-identity') {
+      await page.waitForFunction(() => typeof window.sameSelection === 'boolean');
+      const sameSelection = await page.evaluate(() => window.sameSelection);
+      console.log(JSON.stringify({moduleIdentity: sameSelection}));
+      if (!sameSelection) throw Error('Overlay and fixture loaded separate dependency instances');
+    }
+    if (['normal', 'module-identity'].includes(process.env.MODE)) {
       await context.close(); await browser.close(); await server.close(); await new Promise(r => blocker.close(r));
     } else if (process.env.MODE === 'death') process.exit(9);
     else { process.on('SIGTERM', () => {}); setInterval(() => {}, 100); }
@@ -231,4 +254,16 @@ test('browser startup deadline still drains its group before returning failure',
   assert.equal(receipt.result.code, null);
   assert(!existsSync(f.marker));
   await drained(f, receipt);
+});
+
+test('source overlays and fixture imports share one dependency instance inside the checkout', async (t) => {
+  const f = fixture(t, 'module-identity');
+  const receipt = await f.run(f.stage);
+  t.diagnostic(readFileSync(join(f.output, receipt.key, 'output.log'), 'utf8'));
+  const compared = readFileSync(join(f.output, receipt.key, 'output.log'), 'utf8').includes(
+    'moduleIdentity',
+  );
+  await drained(f, receipt, await ready(f));
+  assert(compared, 'Module comparison must actually execute');
+  assert.equal(receipt.status, 'passed', receipt.result.reason);
 });

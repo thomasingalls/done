@@ -4,7 +4,12 @@ import { tmpdir } from 'node:os';
 import { catalogueCensus } from '../../scripts/release-validation/census.mjs';
 import { hash } from '../../scripts/release-validation/identity.mjs';
 
-export function carrierEvidence(t, family, scope = family + '-carrier-browser') {
+export function carrierEvidence(
+  t,
+  family,
+  scope = family + '-carrier-browser',
+  { candidate = family, patchPrefix = 'src/crdt/' } = {},
+) {
   const root = mkdtempSync(join(tmpdir(), 'done-carrier-census-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const catalogue = readFileSync(`scripts/${family}/catalog.mjs`, 'utf8');
@@ -14,7 +19,7 @@ export function carrierEvidence(t, family, scope = family + '-carrier-browser') 
     ['wasm/journal-seal/seal.generated.ts', 'seal'],
   ]);
   for (const m of selection.mutants) {
-    const path = 'src/crdt/' + m.patch.file;
+    const path = patchPrefix + m.patch.file;
     contents.set(path, (contents.get(path) ?? '') + m.patch.from + '\n');
   }
   const sources = [];
@@ -39,11 +44,11 @@ export function carrierEvidence(t, family, scope = family + '-carrier-browser') 
     scope,
     finished: 'now',
     exitCode: 0,
-    requestedCandidates: [family],
+    requestedCandidates: [candidate],
     requestedCases: selection.cases.map((c) => c.id),
     candidates: [
       {
-        id: family,
+        id: candidate,
         mutation: null,
         source: { files: pins },
         cases: selection.cases.map((c) => row(c.id)),
@@ -59,15 +64,15 @@ export function carrierEvidence(t, family, scope = family + '-carrier-browser') 
         source: {
           files: {
             ...pins,
-            ['src/crdt/' + m.patch.file]: hash(
-              contents.get('src/crdt/' + m.patch.file).replace(m.patch.from, m.patch.to),
+            [patchPrefix + m.patch.file]: hash(
+              contents.get(patchPrefix + m.patch.file).replace(m.patch.from, m.patch.to),
             ),
           },
         },
         cases: [{ id: m.case, status: 'fail', assertions: [assertion(m.assertion, false)] }],
       },
     })),
-    servers: [family, ...selection.mutants.map((m) => m.id)].map((variant) => ({
+    servers: [candidate, ...selection.mutants.map((m) => m.id)].map((variant) => ({
       variant,
       origin: 'http://127.0.0.1:12345',
       closed: true,
