@@ -43,58 +43,58 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation general test and wrapper adapters (`L-1`)
+## Active slice: R-01 service/receiver bounds — ready for the next bounded phase (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: ready for next bounded integration
-blocks_on: none; whole-release execution remains blocked on adapter coverage
+status: not started
+blocks_on: none; R-01 repair is next, before durable Account cutover
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Roadmap position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
-the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app.
-There is no real Account admission receipt. The author's old second device must adopt the first
-workspace with fresh custody, store, counters and credentials, without importing or merging its old
-writing. First ciphertext and two-device convergence are not public ship boundaries.
+**Just completed.** The [R intake](./review/implementation/9ff48b5-d03e473.md) assessed all 23 prior
+status IDs and R-01–R-04 with byte-preserving provenance. After keyboard confirmation, the
+[signing sweep](./review/implementation/signing-prep-2026-09-13.md) verified thirty signed replacements
+ending at `3e53b4a`, with identical trees/messages/author/committer fields. The original history is
+retained. Current phase navigation and three executable historical-source lookups are reconciled;
+old review/evidence/receipt IDs remain unchanged under the permanent crosswalk. This signed
+checkpoint includes the intake and reconciliation. No signing debt remains for the selected chain.
 
-**Just completed.** All eleven current catalogue adapters are implemented, covering 163 cases and
-54 discriminating mutations. This sequence committed Local genesis `be5d6a0`, Local clear `f1926f9`,
-compaction `d65bda0` and custody `2c5f4b9` unsigned. Write-session completes the sequence in this checkpoint.
-The [final adapter](./release-validation-execution.md#write-session-catalogue-adapter--phase-2l)
-passes 13 cases/56 assertions/five mutations. Its native run exposed a BFCache load-event wait;
-waiting for navigation commit preserves the original closed-session/stale-callback assertions.
-[Evidence](./account-conformance-runs/2026-09-13-write-session-adapter/README.md) retains before/after.
-All 81 non-native controls pass, including 2,400 generated histories. Sixteen infrastructure stages
-pass 66 exact cases/two static checks. Eleven native ownership controls retain their passing custody
-phase evidence. Production code, historical reviews, debts, personal files, vectors and L-2 are unchanged.
+**Validation of this change.** All 31 affected inventory/manifest/stage tests and two real old-reader/
+batch-control tests pass. Regenerated graph/manifest counts and all 416 unresolved IDs are unchanged.
+The current schema/writing code is unchanged; this is signature/provenance and source-equivalent
+validation wiring, not R-01 implementation or an immutable release aggregate.
 
-**The full phase-2 contract is not closed.** The manifest covers 271 required test files, all current
-catalogues, 29 vector corpora and 83 registry entries. There are no unresolved catalogue rows. The
-remaining 416 rows are 257 test-file, 96 command and 63 campaign obligations, not product defects.
-Whole-release execution still refuses. This is staged catalogue evidence across distinct inputs,
-not one immutable aggregate. P-06 and the complete vector chain have not run.
+**Next bounded phase.** R-01 reproduces service acceptance of a 614,698-byte envelope followed by
+receiver refusal with `size`. Align service-visible wire limits and sender/receiver count/decoded
+limits, retain useful bounded terminal diagnostics, and test exact boundaries and unchanged accepted
+prefixes on refusal. The service cannot inspect encrypted update counts or Yjs semantics. Define the
+nonconforming-member and already-accepted bad-position recovery limits; a size cap alone is not a
+universal progress guarantee. Preserve stored writing and fail-closed verification. This repair has
+not started in the signing phase.
 
-**Next bounded phase.** Review and integrate the remaining general test-file adapters, beginning
-with direct Node test registrations and their actual fixture/lifetime needs. Keep Vitest/Playwright,
-deliberately nested owner-control tests, exact wrapper variants and report postconditions as explicit
-obligations until independently resolved. Use measured deadlines and shared prerequisite receipts.
-The requested catalogue sequence is complete; no general-test or wrapper phase was started here.
+**Validation integration afterwards.** General test/wrapper adapters include R-03/N-06 deadlines and
+R-04 whole-tree style scope. All eleven catalogue adapters are complete: 163 cases/54 mutations,
+81 non-native controls including 2,400 generated histories, and eleven native ownership controls
+retain staged evidence. The manifest still has 416 unresolved obligations (257 test-file, 96 command,
+63 campaign); none are catalogue rows. P-06 and the selected immutable aggregate follow integration.
 
-**After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
-state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/
-recovery rehearsal and enrollment/adoption. Membership/revocation/rotation, signout/remove/reset,
-continuity, service operations/deployment and public assurance remain later obligations. F-21.4 wider
-privacy, F-09 Account/key-loss recovery, F-07/F-17/F-19 capacity and Q-08 publication/evidence policy stay open.
+**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
+the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
+there is no real Account admission receipt. Human promotion/recovery rehearsal and enrollment/adoption
+follow acceptable private validation. The author's old second device must adopt the first workspace
+with fresh custody, store, counters and credentials, without importing/merging its old writing.
+Membership/revocation/rotation, signout/remove/reset, continuity, operations/deployment and public
+assurance remain later obligations. Wider F-21.4 privacy, F-09 Account/key-loss recovery,
+F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain visible.
 
-**Preservation.** Personal package files, prior vectors, historical review packets/manifests, formal
-debts and L-2 remain outside this phase. No personal browser/profile, recovery files, Account, factor,
-key, service, origin or routing is used. Root `done ` is untouched. The signing reminder delivered its
-list and is paused. Existing unsigned hashes remain unchanged for the in-flight review; no signing,
-amendment or history rewrite occurred.
+**Preservation.** Personal browser/profile/recovery/factor/key/service/origin/routing and package output
+stay untouched. Root `done ` is untouched. Historical reviews/intake manifests, evidence, formal debts,
+prior vectors and L-2 remain unchanged. Backup refs preserve both signing sweeps; original historical
+identities remain resolvable locally. The final aggregate must bind its own signed revision.
 
 ---
 

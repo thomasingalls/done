@@ -2391,3 +2391,39 @@ action. Signing remains outstanding. A later signing operation must preserve his
 source hashes and receipts, then add an original/replacement/tree crosswalk like P-04. Rewriting commit
 metadata alone does not invalidate unchanged tested bytes; altered source trees need applicable fresh
 validation. No history rewrite or additional runtime work is performed by this review intake.
+
+
+## Preserve review identities through the next signing sweep — 2026-09-13
+
+The user requests signing the outstanding unsigned commits after the R review intake, with an
+explicit pause until keyboard confirmation. At `6ba7c22` the linear chain contains thirty unsigned
+commits after signed `1372c39`. Prior eleven/seventeen-commit records describe their own historical
+boundaries and remain intact. Signing has not started.
+
+Use the prepared per-commit tree/parent/message/metadata inventory, preserve old objects under a local
+backup ref, verify every signature and identical tree, and move the live branch only after the whole
+replacement chain is verified. Keep historical evidence and review hashes unchanged with a permanent
+old/new crosswalk. Migrate the three executable before-source lookups to equivalent signed IDs so a
+future checkout does not depend on the unpublished backup ref; arbitrary unit-test labels can stay.
+Reconcile current navigation and generated plans in a separate signed follow-up commit, with its own
+applicable validation. Revision-bound receipts keep their original identity; signing does not turn
+staged historical campaigns into an immutable aggregate. See
+`docs/review/implementation/signing-prep-2026-09-13.md` for the execution and recovery checks.
+
+
+## Complete the authorized signing sweep without relabelling evidence — 2026-09-13
+
+The user confirmed keyboard availability, then all thirty reviewed unsigned descendants of `1372c39`
+were replaced with verified signed commits ending at `3e53b4a`. Original trees, message bytes and
+author/committer metadata are preserved; a local backup retains the original `6ba7c22` lineage.
+The permanent crosswalk and current phase navigation distinguish original measurement identities
+from signed branch locations. Historical review/evidence and intake snapshots remain unchanged.
+
+Three executable before-source references now use identical signed counterparts so future checkouts
+can run them without fetching the unpublished backup branch. Generated inventory/manifest data were
+regenerated with unchanged coverage obligations. This is the narrow exception to preserving old IDs:
+current executable dependencies and navigation move; historical source-bound evidence does not.
+Focused affected controls pass, and the review/documentation/baseline reconciliation is a separate
+signed checkpoint. Signing proves commit authorship and tree identity, not a new aggregate result.
+The temporary signing-progress ref can be removed after the verified reconciliation commit; original
+history backup refs remain. No remote push or personal-instance operation is part of this decision.

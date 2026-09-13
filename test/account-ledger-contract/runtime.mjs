@@ -53,9 +53,13 @@ export async function load(control) {
               if (control === 'oldBatchReader') {
                 if (!id.endsWith('/src/crdt/spoolRecord.ts')) return;
                 hits++;
-                return execFileSync('git', ['show', '77a2753:src/crdt/spoolRecord.ts'], {
-                  encoding: 'utf8',
-                });
+                return execFileSync(
+                  'git',
+                  ['show', '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9:src/crdt/spoolRecord.ts'],
+                  {
+                    encoding: 'utf8',
+                  },
+                );
               }
               const [file, from, to] = controls[control];
               if (!id.endsWith('/src/crdt/' + file)) return;

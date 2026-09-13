@@ -4788,7 +4788,7 @@
           "form": "run",
           "arguments": [
             "'profile-before'",
-            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '063cd72',\n    ]"
+            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',\n    ]"
           ]
         },
         {
@@ -4824,7 +4824,7 @@
           "form": "run",
           "arguments": [
             "'profile-before'",
-            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '70e6d5b',\n    ]"
+            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '0d7d4caae6de85f8c6208435611c25c43081814a',\n    ]"
           ]
         },
         {
@@ -11670,7 +11670,7 @@
     },
     {
       "path": "scripts/private-release/run.mjs",
-      "sha256": "0e7b1a58c428996cf7458e46bdbe29d68a38a7316b340caff9865c8d3812b3b7"
+      "sha256": "03f2669ca1a2d2429dea077f03aaa3f586b67e9bd3da2e0cc73b7b31288f915b"
     },
     {
       "path": "scripts/record-latency.mjs",
@@ -12390,7 +12390,7 @@
     },
     {
       "path": "test/account-ledger-contract/runtime.mjs",
-      "sha256": "5b9c44b7f1ed686c3e103569d35e4e05346fe5d23ecf17754d701431b0de044c"
+      "sha256": "36c79d05f304e6cd2e4cf540f767109b8a6482cb75d88ac7b3999cf904ee7885"
     },
     {
       "path": "test/account-liveness/browser.ts",

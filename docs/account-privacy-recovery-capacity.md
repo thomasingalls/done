@@ -1,9 +1,11 @@
 # Remaining private release work after sync liveness
 
-Starting at `f42b4a7`, the author authorizes successive unsigned commits through F-21.4,
+Starting at original `f42b4a7`, the author authorized successive unsigned commits through F-21.4,
 F-09/F-10/N-08/P-07, then F-16/F-17/F-19. Each verified boundary gets a chat report.
 Existing signed vectors, archived assessments, the personal packaged app and L-2 are preserved.
-The signing reminder enumerates unsigned descendants of signed `1372c39`.
+The [signed-history crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json) now
+records their verified replacements; `1bb711b` is the signed starting counterpart.
+Original IDs below identify historical phase evidence.
 
 ## Privacy trial, specified before execution
 
@@ -222,7 +224,7 @@ The [next bounded phase is release validation](./private-release-validation-prep
 F-20/N-06/P-05 scheduling/deadlines, P-06 prose, and explicit platform/workload/claim qualification.
 There is no fresh whole-repository aggregate receipt yet. Personal packages, all 31 prior vectors,
 archived reviews and L-2 are unchanged; no personal services/browser/Account deployment was changed.
-The signing reminder is active for all unsigned descendants of signed `1372c39`.
+The formerly unsigned phase chain is now signed, with identical trees recorded in the crosswalk above.
 
 After acceptable private validation, rehearse author Account cutover and recovery, then enrollment and
 second-device adoption of the first workspace with fresh custody/store/counters/credentials. Broader

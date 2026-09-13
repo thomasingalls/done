@@ -1,11 +1,14 @@
 # Encrypted-store and Account implementation findings
 
 Original intake: **2026-09-12, signed `27e5b6f`**, committed in `1372c39`.
-Latest intake: **2026-09-12, `9ff48b5`**, matching the Q review tip; committed unsigned in `409fbd0`.
-This shared index covers the same source's original packet and three addenda. The Q intake adds
-source/evidence readback, a read-only registry check, a synthetic in-memory cache probe and Git/file
-inventory; it does not rerun browser
-timings, native campaigns or an aggregate. Importance describes engineering priority in the current
+Latest intake: **2026-09-13, `6ba7c22`**, thirteen commits beyond the R review tip `d03e473`.
+This shared index covers the same source's original packet and four addenda. The R intake adds a
+synthetic service/read/receiver size reproduction, focused generated-property execution, direct
+whole-tree style checks, read-only registry and Git/reference inventory. It reruns no native browser
+campaign, reviewer slope probe or full aggregate. The Q intake at `9ff48b5` was committed in `409fbd0`
+and remains a historical snapshot. The signed counterpart of the R assessment tree is `3e53b4a`;
+[the crosswalk](../../account-conformance-runs/2026-09-13-signed-review-history.json) preserves its original ID.
+Importance describes engineering priority in the current
 private development scope, not a demonstrated exploit severity.
 
 **Follow-up after signed `1372c39`:** the user retired v8 as a product target. The
@@ -30,14 +33,25 @@ phase evidence and intake responses remain unchanged.
   source pins, reproducible cache probe and unsigned commit/tree inventory. The previous manifest is
   retained as a historical snapshot, not rewritten into the latest disposition.
 
-There are **105 response blocks across the three annotated addenda and 55 distinct leaf IDs** in this
+- [R addendum: 9ff48b5..d03e473](./9ff48b5-d03e473.md): 23 prior status responses and four R findings.
+- [R intake provenance](./addendum-9ff48b5-d03e473.json) and [signing preparation](./signing-prep-2026-09-13.md).
+
+There are **132 response blocks across the four annotated addenda and 59 distinct leaf IDs** in this
 review set (the F packet's older historical responses are counted separately). F-21 is an umbrella for
-F-21.1–F-21.7, not an eighth test-gap finding. Preserve F/N/P/Q numbering as supplied. The existing nine
-aliases and the Q routing below share action queues without dropping separate completion criteria.
+F-21.1–F-21.7, not an eighth test-gap finding. Preserve F/N/P/Q/R numbering as supplied. The existing nine
+aliases and the Q/R routing below share action queues without dropping separate completion criteria.
 These IDs belong to the implementation review and must not be inserted into the older Stage 0
 `work-items.tsv` or `debts.json` namespace. Existing formal gate debts remain unchanged.
 
 ## Priority and scope
+
+**R intake and signing update.** The [verified signing sweep](./signing-prep-2026-09-13.md) is complete
+for all thirty outstanding commits, with identical trees and reconciled current baseline references.
+R-01 is a confirmed availability gap to repair before any durable Account cutover; its
+specific inbound diagnostic is related to F-10, not proof that the earlier refusal work failed.
+R-03 is another N-06/F-20 property-deadline instance. R-04 adds explicit whole-tree style-gate scope
+and cleanup to F-20, with Q-08 evidence preservation. R-02 corrects current records and extends
+Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime change.
 
 1. **Q-01/Q-04: bounded validation prerequisites restored.** The
    [repair record](./validation-controls.md) and [13-stage evidence](../../account-conformance-runs/2026-09-12-validation-controls/README.md)
@@ -68,7 +82,8 @@ These IDs belong to the implementation review and must not be inserted into the 
    81 non-native controls pass with 2,400 generated validation histories; eleven native ownership
    controls retain their bounded passing evidence. The manifest has 416 unresolved rows: 257 test-file,
    96 command and 63 campaign obligations, with no unresolved catalogue rows. General Node, Vitest,
-   Playwright, nested owners and exact wrappers precede P-06 and the immutable aggregate. Earlier
+   Playwright, nested owners and exact wrappers precede P-06 and the immutable aggregate.
+   R-03/R-04 add explicit generated-property deadlines and correctly scoped whole-tree style gates. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
    credited by these staged catalogue runs.
 
@@ -77,10 +92,11 @@ These IDs belong to the implementation review and must not be inserted into the 
    F-09 Local salvage is partial and needs intact custody; Account/key-loss scope remains. F-16's
    scheduler is complete within scope; F-17/F-19 reductions still need workload/device/admission
    qualification. F-18/F-25 are separate measured work; F-22 is a dependency-upgrade obligation.
-   Q-06 records intentional unsigned history, Q-07's current documentation is corrected in this intake,
+   Q-06/R-02 now record the verified signing crosswalk; Q-07 corrects current documentation,
    and Q-08 needs prospective evidence retention/path normalization before public sharing. F-08/N-04/
-   N-09 remain disposed by v8 non-shipment. No runtime repair, signing, deletion of evidence, external
-   artifact store, deployment or personal-instance change is performed by this intake.
+   N-09 remain disposed by v8 non-shipment. The subsequent authorized signing sweep preserves original
+   evidence and moves current executable baselines to identical signed trees. No runtime repair,
+   evidence deletion, external artifact store, deployment or personal-instance change occurred.
 
 The strongest caveat to the proposed performance fix is structural: `inspectSpool` excludes ordinary
 content and source capsules from its event witness; `inspectInbound` extends that witness with ledger
@@ -185,9 +201,18 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 | <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | repaired; 64 KiB/1 MiB checkpoint warm/cold and authority-change controls pass; [result](./liveness-followups.md#q-03-result); [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
 | <a id="q-04"></a>**Q-04** Three stale mutation controls | bounded repair complete; both coverage paths exercised; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
 | <a id="q-05"></a>**Q-05** Receive expiry loses its reason | repaired: explicit retry reason, bounded diagnostics, generated backoff and native consecutive-expiry recovery pass; [result](./liveness-followups.md#q-05-result); [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |
-| <a id="q-06"></a>**Q-06** Current unsigned-chain discoverability | documented in this intake; intentional signing debt remains; [response](./393ef43-9ff48b5.md#assessment-q-06) | distinct, related P-04: retained IDs/trees and authorization; future signing adds a crosswalk without rewriting receipts | low provenance |
+| <a id="q-06"></a>**Q-06** Current unsigned-chain discoverability | addressed for the thirty-commit chain; verified crosswalk and retained originals; [response](./393ef43-9ff48b5.md#assessment-q-06) | distinct, related P-04: retained original IDs/trees, verified signatures, crosswalk and current executable baseline migration; receipts unchanged | low provenance |
 | <a id="q-07"></a>**Q-07** Committed work described as uncommitted | corrected in current navigation/measurement docs; [response](./393ef43-9ff48b5.md#assessment-q-07) | distinct from P-06; prior historical packets and completed entries preserved | low accuracy |
 | <a id="q-08"></a>**Q-08** Archive growth and absolute personal paths | confirmed; prospective policy work open; [response](./393ef43-9ff48b5.md#assessment-q-08) | distinct, related F-20: bounded/deduplicated retention and normalized publishable copies, durable hash-verified raw evidence before relocation, Git-history disclosure decision before public sharing | low cost; medium publication privacy |
+
+## R addendum routing
+
+| ID | Current disposition | Shared queue and separate completion criteria | Importance |
+| --- | --- | --- | --- |
+| <a id="r-01"></a>**R-01** Service/receiver envelope limits and lost inbound cause | confirmed and reproduced; [response](./9ff48b5-d03e473.md#assessment-r-01) | distinct availability repair; diagnostics related to [F-10](#f-10). Shared wire policy, sender/count/decoded bounds, effective edge controls, no accepted-prefix advance on refusal, bounded visible terminal cause, and an explicit already-accepted bad-position recovery/trust policy. Service cannot validate ciphertext semantics. | high before durable Account cutover; medium present exposure |
+| <a id="r-02"></a>**R-02** Stale commit state and signing inventory | addressed for this chain: current records corrected, all thirty replacements verified and workflow reconciled; [response](./9ff48b5-d03e473.md#assessment-r-02) | Q-06/Q-07 and P-04; all thirty signatures/tree pairs, retained old objects, current reference migration, source-equivalent executable baselines and a committed crosswalk. Historical intake snapshots remain unchanged. | low records; aggregate provenance prerequisite |
+| <a id="r-03"></a>**R-03** Batch generated-property default deadline | confirmed absent explicit timeout; current focused property passes; [response](./9ff48b5-d03e473.md#assessment-r-03) | N-06/F-20; finite measured property deadline and owned outer stage, unchanged 120 histories/seed, duration and failure/counterexample retention. A passing idle run does not close it. | low test robustness; aggregate prerequisite |
+| <a id="r-04"></a>**R-04** Whole-tree style commands fail | reproduced: 83 lint errors and 1,170 format files; [response](./9ff48b5-d03e473.md#assessment-r-04) | F-20 integration, related Q-08; explicit immutable-archive scope, repair live files, retain active documentation gates, execute/report full commands independently of scoped checks. Never reformat hash-pinned evidence to make a style check pass. | low housekeeping; medium validation credibility |
 
 ## Existing closure records
 
@@ -224,13 +249,21 @@ discoverability without rewriting those receipts or publishing the backup branch
 | D5 | `add6fd7` | `ed1a930` |
 | D6 | `3585a1b` | `862a9d7` |
 
-## Q-06: intentionally unsigned current chain
+<a id="q-06-intentionally-unsigned-current-chain"></a>
 
-The user explicitly authorized intermediate unsigned commits after signed `1372c39`. The two phase
-records already state that policy; the [decision entry](../../decisions.md#record-the-authorized-unsigned-phase-boundary)
+## Q-06: historical snapshot and current signing boundary
+
+The user explicitly authorized intermediate unsigned commits after signed `1372c39`. **The following
+eleven-row table is the Q intake snapshot at `9ff48b5`, not the current chain.** At R intake `6ba7c22`
+there were thirty unsigned descendants. After explicit keyboard confirmation, all thirty were signed
+and verified; their signed tip is `3e53b4a` with the same tree. The [crosswalk and completed sweep](./signing-prep-2026-09-13.md)
+preserve old IDs, every identical tree and current reference dependencies. There is no remaining
+signing debt for that selected chain.
+The two phase records already state that policy; the [decision entry](../../decisions.md#record-the-authorized-unsigned-phase-boundary)
 and [Q provenance](./addendum-393ef43-9ff48b5.json) make its boundary and full commit/tree IDs local to
 the repository. The external signing reminder was observed ACTIVE during intake; it is a convenience,
-not a gate. No signing or history rewrite was performed; the user subsequently requested the unsigned intake commit.
+not a gate. That historical intake performed no signing; the user subsequently requested its unsigned commit.
+The later signing result is recorded above, while the original intake JSON remains intact.
 
 | Phase | Unsigned commit |
 | --- | --- |
@@ -247,12 +280,13 @@ not a gate. No signing or history rewrite was performed; the user subsequently r
 | Retained marker | `9ff48b5` |
 
 At Q intake, all eleven listed commit objects lacked a signature header. The review intake itself
-was subsequently committed unsigned as `409fbd0`, making twelve outstanding descendants at this
+was subsequently committed unsigned as `409fbd0`, making twelve descendants at that historical
 checkpoint. The original Q manifest remains an unchanged snapshot of its eleven-commit boundary.
-Later signing must retain original evidence IDs and hashes and add old/new commit and identical-tree
-mapping, as for P-04. It does not automatically require rerunning or rewriting every source-bound
-receipt; a changed source tree does require fresh
-applicable validation. This record does not waive signing permanently or authorize signing new work.
+The completed signing sweep retains original evidence IDs/hashes and adds old/new commit and
+identical-tree mapping, as for P-04. Source-equivalent executable baseline substitutions and generated
+plans were checked separately. Historical receipts were not rewritten; a new revision-bound aggregate
+must execute for its selected inputs. This closes the recorded chain, not signing obligations for
+future work.
 
 ## Original intake limits
 

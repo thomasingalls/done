@@ -1,8 +1,11 @@
 # Remaining Account liveness and expiry work — Q-03 / Q-02 / Q-05
 
-Starts after unsigned validation-control repair `dceec5c`. Work proceeds in three separately
+Starts after validation-control repair signed `024664d` (original `dceec5c`). Work proceeds in three separately
 validated and committed phases. Historical review annotations and prior evidence remain unchanged.
 All workloads are synthetic; the personal Local package, profile and service stay untouched.
+
+The [signed-history crosswalk](../../account-conformance-runs/2026-09-13-signed-review-history.json)
+retains all original phase/evidence IDs used below; each replacement has an identical tree.
 
 ## Q-03: compact authenticated service context
 

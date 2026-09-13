@@ -3,7 +3,9 @@
 The current [execution foundation](./release-validation-execution.md) builds on this inventory. Its
 manifest remains blocked for whole-release execution; the phase-1 counts below are historical.
 
-This phase maps the validation surface at `d03e473` plus the inventory changes. It does not execute
+This phase maps the historical validation surface at `d03e473` (signed counterpart `4e692be`)
+plus the inventory changes; the [crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json)
+retains the original IDs. It does not execute
 an aggregate, change runtime behavior, repair deadlines, sweep P-06's cryptographic prose, or qualify
 a release. The next phase implements bounded execution from this reviewed coverage inventory.
 

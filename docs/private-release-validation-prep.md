@@ -11,7 +11,7 @@ and remaining limits live in
 
 The [Q packet and responses](./review/implementation/393ef43-9ff48b5.md) and
 [current routing](./review/implementation/findings.md#q-addendum-routing-and-independent-exit-criteria)
-preserve each finding. The intake was committed unsigned in `409fbd0`; the subsequent
+preserve each finding. The intake is signed `95bbed7` (original `409fbd0`); the subsequent
 [validation-control repair](./review/implementation/validation-controls.md) completes item 1 below.
 The [Q follow-up sequence](./review/implementation/liveness-followups.md) completes the bounded repairs
 in items 2–4. Full-history capacity and the aggregate qualification work remain ahead.
@@ -41,10 +41,15 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 **Phase 1 inventory is complete:** the [checked graph and coverage map](./release-validation-graph.md)
 records current package wiring, proposed required families, explicit exclusions and concrete execution
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
-[phase-2a execution foundation](./release-validation-execution.md) now supplies the obligation manifest,
-shared bounded runner and disposable infrastructure selection. Its 447 unresolved adapter obligations
-remain explicit. Next is native content census/process ownership integration, then the remaining
-family/wrapper adapters and deadlines. P-06 and the immutable run follow that completed graph.
+[execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
+supply owned execution for 163 catalogue cases and 54 mutations. The manifest retains 416 unresolved
+obligations: 257 test-file, 96 command and 63 campaign rows. General test and exact wrapper integration
+is next, including R-03's generated-property deadline and R-04's full style gates. P-06 and the immutable
+run follow that completed graph. The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
+requires R-01's service/receiver size contract repair before a durable Account cutover. The completed
+[signing sweep](./review/implementation/signing-prep-2026-09-13.md) now records thirty verified signed
+replacements and current baseline/navigation reconciliation. Historical intake and phase evidence
+remain unchanged; no new aggregate result follows from signing.
 
 1. Inventory the executable validation graph: current `package.json` checks, later standalone Account
    contract/audit/isolation/oracle campaigns, and the new private-release phase campaigns. Map every
@@ -53,6 +58,8 @@ family/wrapper adapters and deadlines. P-06 and the immutable run follow that co
    a phase claims an earlier prerequisite passed.
 2. Give native suites separate measured deadlines, finite waits, heartbeat output, child-process
    cancellation and a complete case census. Address the known load-sensitive generated unit deadlines.
+   Include R-03 without reducing its 120 generated histories. Give full lint/format explicit archive
+   exclusions and live-source obligations under R-04; scoped phase checks are not the whole gates.
    Preserve failed attempts and counterexamples. The maintenance campaign's grouped-deadline failure
    is a concrete example, not evidence that a timeout always means insufficient time.
 3. Sweep P-06's remaining phase prose against the canonical construction registry. Retain historical
@@ -77,8 +84,9 @@ No full `pnpm check`, broad platform qualification or public release is claimed 
 | Responsiveness, F-17 | Profile browser input-to-paint on supported devices and dense/deletion/undo histories. Full fallback and forks still scale with history; the improved 100k-item Node sample still has noticeable latency. |
 | Retained markers, F-19 | Confirm native storage/resource costs and end-to-end admission/open capacity at the declared workload. Full MAC/parse work, completion duplication and the 72 MiB private promotion body ceiling remain; the microprofile is not maximum-body/concurrency qualification. |
 
-Q-06's intentional unsigned chain is recorded in the repository; eventual signing must preserve tested
-IDs/hashes and add a tree-checked crosswalk. Q-07's current documentation was corrected in the intake.
+Q-06/R-02's signing sweep now has a [verified crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json).
+Tested IDs/hashes remain historical, current executable baseline lookups use identical signed trees,
+and Q-07/R-02's current documentation is corrected. Signing is not an aggregate execution receipt.
 Q-08 needs prospective artifact budgets/deduplication and normalized publishable paths. Preserve raw
 failed histories and reproducible evidence with durable hash-checked retrieval before relocating any
 archive; no external store or historical deletion has been selected. Public sharing also needs a

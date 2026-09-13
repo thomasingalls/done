@@ -212,7 +212,7 @@ try {
     await run('profile-before', [
       'scripts/private-release/profile-marker.mjs',
       join(output, 'profile-before/result.json'),
-      '063cd72',
+      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',
     ]);
     await run('profile-after', [
       'scripts/private-release/profile-marker.mjs',
@@ -232,7 +232,7 @@ try {
     await run('profile-before', [
       'scripts/private-release/profile-editor.mjs',
       join(output, 'profile-before/result.json'),
-      '70e6d5b',
+      '0d7d4caae6de85f8c6208435611c25c43081814a',
     ]);
     await run('profile-after', [
       'scripts/private-release/profile-editor.mjs',

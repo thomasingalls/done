@@ -1,7 +1,12 @@
 # Release-validation execution — foundation and all eleven catalogue adapters
 
-The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
-content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
+The signed inventory is `a38bb6b`, foundation `568c2a5`, content `a44f09d`,
+journal `b60a5c7`, admission `4eb1071`, editor-admission `ad475bc`,
+workspace-admission `de6c65d`, owned-startup `4a908b0`, Local genesis `ebefde0`,
+Local clear `d0e982c`, compaction `893def3`, custody `b32f7c2` and write-session
+`3e53b4a`. The [crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json)
+retains original unsigned IDs and proves each tree unchanged. Historical receipts retain the original
+revision identity; the final aggregate must run at its own selected immutable revision.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the

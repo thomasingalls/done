@@ -3907,3 +3907,64 @@ manifest has 607 obligations, 416 unresolved: 257 test-file, 96 command and 63 c
 are execution-integration obligations, not 416 product defects. General test and wrapper adapters
 precede P-06, the vector prerequisite chain and immutable aggregate. Appended before replacing L-1;
 ready for the requested unsigned commit. No personal operation or history rewrite occurred.
+
+
+## 2026-09-13 — R review intake and unsigned-history preparation (L-1)
+
+Assessed the root `9ff48b5..d03e473` packet at `6ba7c22`, thirteen commits later. Archived it at
+`docs/review/implementation/9ff48b5-d03e473.md` with 27 `resposnse` blocks (23 prior status IDs and
+R-01–R-04), preserving original-byte reconstruction. The shared review set now has 59 leaf IDs and
+132 response blocks across four addenda; the original F packet's historical responses remain separate.
+
+R-01 reproduced with synthetic service fixtures and the actual receiver verifier: 614,400-byte input
+accepted/served as 614,698 bytes, then refused with `size`; smaller wire fits and 4 MiB service refusal
+provide bounds controls. This checks size/framing, not writing import or a full scheduler/reopen flow.
+Persistent progress blockage is confirmed in mechanism, not permanent loss of writing. The repair
+must align visible wire bounds and sender/receiver semantics, retain terminal causes and specify the
+limits of content-blind validation. It precedes a durable Account cutover. No runtime fix was made.
+
+R-02 corrects the current “uncommitted” sentence and labels historical snapshots. R-03 remains open
+under N-06/F-20: both focused tests pass, with the unchanged 120-history property taking 2.636 seconds;
+this does not refute the loaded-host timeout. R-04 reproduces 83 archive lint errors and 1,170 format
+files across Account/storage archives and live sources. It joins general-runner integration with
+explicit immutable-evidence exclusions, not evidence reformatting/deletion. Read-only construction
+registry passes (78 specified, four inherited, one excluded, zero open); no aggregate was rerun.
+
+Prepared all thirty unsigned descendants after signed `1372c39`, including original trees/metadata,
+plus a 126-file tracked-text reference census. The proposed signing sweep retains original objects,
+verifies identical-tree replacements and signatures before moving the branch, preserves historical
+receipts, migrates three real executable baseline lookups, regenerates affected plans and adds one
+signed reconciliation commit. No signer, new commit, backup ref or history mutation was invoked.
+The user must explicitly confirm being at the keyboard before signing starts. Intake/preparation
+remain uncommitted for that signed reconciliation. Personal files, runtime/tests, historical packets,
+formal debts, prior vectors, package output and L-2 remain unchanged.
+
+
+## 2026-09-13 — Sign the thirty reviewed phase commits and reconcile current references (L-1)
+
+After explicit keyboard confirmation, signed all thirty original commits `0e07fe4..6ba7c22` after
+signed base `1372c39`. The verified signed replacement tip is `3e53b4a`; every tree, message byte,
+author and committer field is identical to its original, with only signatures and parent IDs changed.
+Each replacement has a good configured SSH signature. The original tip remains under
+`codex/pre-sign-review-history-2026-09-13`; the earlier C–D6 backup is retained. The branch moved once
+with an expected-old-value update, preserving all eleven intake files and the other 103 original refs.
+
+The permanent crosswalk is `docs/account-conformance-runs/2026-09-13-signed-review-history.json`.
+Current phase navigation now points to signed counterparts. Original review packet text, intake
+manifests, phase scope/source pins, archived outputs, commit messages and append-only prior outcomes
+keep their exact original IDs/bytes. Three real executable before-source lookups in the private-release
+runner and old-reader ledger fixture use full signed counterpart IDs, with identical source trees.
+Arbitrary hash-shaped unit-test labels remain unchanged. The generated graph/manifest were refreshed
+by their owning tools; all 607 obligations, 416 unresolved IDs and coverage counts remain unchanged.
+
+Focused validation passes 31 inventory/manifest/stage tests and two actual old-reader/batch-control
+tests, with no failure, skip or cancellation. The latter still proves the old format reader refuses
+the new allocation and that omitted guards admit forbidden outcomes. Normalized compressed logs,
+the exact four-file validation-input patch and bounded control evidence accompany the crosswalk.
+This checkpoint includes the R review intake and current workflow reconciliation as a separate signed
+commit. Its signature is verified after commit; its own hash is not embedded in its tree.
+
+No immutable release aggregate or production repair is claimed. Personal package hashes, all 31 prior
+vectors, historical reviews/evidence, formal debt files and L-2 are preserved. R-02/Q-06's selected
+signing chain is closed; R-01 precedes durable Account cutover. General test/wrapper integration still
+includes R-03/N-06 deadlines and R-04 style scope, followed by P-06 and immutable release validation.

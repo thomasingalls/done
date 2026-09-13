@@ -1,0 +1,113 @@
+diff --git a/docs/release-validation-graph.json b/docs/release-validation-graph.json
+index 66d70c4..a4c80f5 100644
+--- a/docs/release-validation-graph.json
++++ b/docs/release-validation-graph.json
+@@ -4788,7 +4788,7 @@
+           "form": "run",
+           "arguments": [
+             "'profile-before'",
+-            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '063cd72',\n    ]"
++            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',\n    ]"
+           ]
+         },
+         {
+@@ -4824,7 +4824,7 @@
+           "form": "run",
+           "arguments": [
+             "'profile-before'",
+-            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '70e6d5b',\n    ]"
++            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '0d7d4caae6de85f8c6208435611c25c43081814a',\n    ]"
+           ]
+         },
+         {
+@@ -11670,7 +11670,7 @@
+     },
+     {
+       "path": "scripts/private-release/run.mjs",
+-      "sha256": "0e7b1a58c428996cf7458e46bdbe29d68a38a7316b340caff9865c8d3812b3b7"
++      "sha256": "03f2669ca1a2d2429dea077f03aaa3f586b67e9bd3da2e0cc73b7b31288f915b"
+     },
+     {
+       "path": "scripts/record-latency.mjs",
+@@ -12390,7 +12390,7 @@
+     },
+     {
+       "path": "test/account-ledger-contract/runtime.mjs",
+-      "sha256": "5b9c44b7f1ed686c3e103569d35e4e05346fe5d23ecf17754d701431b0de044c"
++      "sha256": "36c79d05f304e6cd2e4cf540f767109b8a6482cb75d88ac7b3999cf904ee7885"
+     },
+     {
+       "path": "test/account-liveness/browser.ts",
+diff --git a/docs/release-validation-manifest.json b/docs/release-validation-manifest.json
+index 5ea1b09..3d2ec18 100644
+--- a/docs/release-validation-manifest.json
++++ b/docs/release-validation-manifest.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": 1,
+-  "inventoryDigest": "4db89591acfd5c51f1c6ed01ef5e12f6b2e3e1bd69d4894c79a51bfcf5e2cf8b",
++  "inventoryDigest": "fa9a55f4c85813ab491b71930735995771dc480358a94cb2ac66f43100a85c02",
+   "status": "blocked",
+   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
+   "rows": [
+@@ -8620,7 +8620,7 @@
+           "form": "run",
+           "arguments": [
+             "'profile-before'",
+-            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '063cd72',\n    ]"
++            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',\n    ]"
+           ]
+         },
+         {
+@@ -8656,7 +8656,7 @@
+           "form": "run",
+           "arguments": [
+             "'profile-before'",
+-            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '70e6d5b',\n    ]"
++            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '0d7d4caae6de85f8c6208435611c25c43081814a',\n    ]"
+           ]
+         },
+         {
+diff --git a/scripts/private-release/run.mjs b/scripts/private-release/run.mjs
+index c35ae42..ab761d5 100644
+--- a/scripts/private-release/run.mjs
++++ b/scripts/private-release/run.mjs
+@@ -212,7 +212,7 @@ try {
+     await run('profile-before', [
+       'scripts/private-release/profile-marker.mjs',
+       join(output, 'profile-before/result.json'),
+-      '063cd72',
++      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',
+     ]);
+     await run('profile-after', [
+       'scripts/private-release/profile-marker.mjs',
+@@ -232,7 +232,7 @@ try {
+     await run('profile-before', [
+       'scripts/private-release/profile-editor.mjs',
+       join(output, 'profile-before/result.json'),
+-      '70e6d5b',
++      '0d7d4caae6de85f8c6208435611c25c43081814a',
+     ]);
+     await run('profile-after', [
+       'scripts/private-release/profile-editor.mjs',
+diff --git a/test/account-ledger-contract/runtime.mjs b/test/account-ledger-contract/runtime.mjs
+index 2cf4d2f..3025f57 100644
+--- a/test/account-ledger-contract/runtime.mjs
++++ b/test/account-ledger-contract/runtime.mjs
+@@ -53,9 +53,13 @@ export async function load(control) {
+               if (control === 'oldBatchReader') {
+                 if (!id.endsWith('/src/crdt/spoolRecord.ts')) return;
+                 hits++;
+-                return execFileSync('git', ['show', '77a2753:src/crdt/spoolRecord.ts'], {
+-                  encoding: 'utf8',
+-                });
++                return execFileSync(
++                  'git',
++                  ['show', '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9:src/crdt/spoolRecord.ts'],
++                  {
++                    encoding: 'utf8',
++                  },
++                );
+               }
+               const [file, from, to] = controls[control];
+               if (!id.endsWith('/src/crdt/' + file)) return;

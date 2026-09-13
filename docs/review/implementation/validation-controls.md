@@ -1,6 +1,6 @@
 # Restore current validation controls — Q-01 / Q-04
 
-Starts after unsigned review intake `409fbd0`. This phase repairs the current source inventory,
+Starts after review intake signed `95bbed7` (original `409fbd0`). This phase repairs the current source inventory,
 three live omission controls and their inclusion in the liveness/residue/private-release runners.
 It does not repair Q-02/Q-03 performance or Q-05 expiry diagnostics, change protocol bytes, or qualify
 the full release aggregate. Implementation/evidence below is scoped to the final recorded inputs.
@@ -100,7 +100,9 @@ final control proves each guard independently refuses and their joint omission e
 result. The failed first repair and the origin-fixture assertion failure remain in the archive.
 
 Q-01/Q-04 are closed within this bounded validation repair. This does not stand in for rerunning every
-dependent contract/crypto aggregate or establish release readiness. Next is Q-03's authenticated
-compact service-cache context, then Q-02's repeated-load/batching work and Q-05 observability, followed
-by the complete release-validation graph. Implementation work from this phase remains uncommitted;
-the prior review intake is unsigned `409fbd0`.
+dependent contract/crypto aggregate or establish release readiness. This implementation was committed
+as signed `024664d` (original `dceec5c`), after review intake `95bbed7` (original `409fbd0`).
+The subsequent [liveness follow-ups](./liveness-followups.md)
+complete Q-03's compact service context, Q-02's bounded load/batch repair and Q-05 observability within
+scope. Current work is tracked in the [findings index](./findings.md). The
+[signing sweep](./signing-prep-2026-09-13.md) preserves these original phase identities.

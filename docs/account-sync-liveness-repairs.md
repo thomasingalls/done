@@ -1,8 +1,9 @@
 # Sync-liveness repair sequence
 
-The user authorized unsigned commits at each verified boundary and continuing through all sync-liveness
-tasks. The signing reminder is active and tracks unsigned descendants of signed `1372c39`; it only
-reminds, and does not rewrite history. Measurement/preparation is committed as unsigned `0e07fe4`.
+The user authorized unsigned commits at each verified boundary. Those commits are now signed with
+identical trees; the [history crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json)
+preserves original evidence IDs. Measurement/preparation is signed `82cb5d5` (original
+`0e07fe4`). No signing debt remains for this sequence.
 
 ## 1. Unchanged complete view — complete
 
@@ -29,7 +30,7 @@ speedup estimate, and growing-history work remains.
 
 ## 2. Incremental events and content coverage — complete
 
-Phase 1 is unsigned `280221e`. Private v9 now reopens only changed ciphertext rows after authenticating
+Phase 1 is signed `2623b83` (original `280221e`). Private v9 now reopens only changed ciphertext rows after authenticating
 all counter/placement/allocation fields. Owner-local memo entries bind exact input bytes to the full
 verification context/predecessor; keys are fixed for that owner. Every new view still parses its complete
 census, checks the completeness witness, and replays semantic ordering/conflict reducers. Successful
@@ -45,7 +46,7 @@ parsing/replay and storage scans remain. Unchanged source-census reads also reus
 
 ## 3. Owned network wait and classified expiry — complete
 
-Incremental verification is unsigned `879ce38`. V9 read/submission preparation runs in the serialized
+Incremental verification is signed `f5f166b` (original `879ce38`). V9 read/submission preparation runs in the serialized
 carrier task; HTTP waiting runs in a separate task registered with the **same** writer lifetime.
 Current authority, retained request/submission and prefix are checked again on ordered reentry. Closing
 invalidates, aborts and drains network work before permit release. The retired v8 adapter remains
@@ -63,7 +64,7 @@ Cold replay, exact retry, conflicting evidence, cancellation/stream drain and ta
 
 ## 4. Scheduler wakes and bounded service verification — complete
 
-Network/expiry is unsigned `902d352`. Durable send-prefix progress expedites an idle receiver, retaining
+Network/expiry is signed `3a6b6a8` (original `902d352`). Durable send-prefix progress expedites an idle receiver, retaining
 its backoff and evidence halt. Send wakes subscribe to successful, nonempty local outgoing admissions;
 remote-only promotion no longer wakes send. Lifecycle teardown removes both subscriptions.
 
@@ -95,8 +96,9 @@ parsing, semantic replay, byte comparisons, cold verification or editor projecti
 bounds can reduce reuse on longer/larger histories. Long-history capacity, proof pruning, maintenance
 scheduling, whole-profile/privacy and supported-platform evidence, onboarding and release qualification
 remain separate. V8-only product paths stay retired. Personal Local and its packaged server are unchanged
-and stopped. Resume the unfinished F-21.4 privacy-evidence extension after this completed sequence.
+and stopped. The subsequent F-21.4/failure/storage sequence is recorded in
+[the current release work package](./private-release-validation-prep.md).
 
-The signing reminder remains active and dynamically lists unsigned descendants of signed `1372c39`.
-The older C–D6 history is already signed; it is not outstanding work. No commits are signed or rewritten
-automatically by that reminder.
+The signing sweep is complete for this sequence; the crosswalk above retains the original phase IDs.
+The older C–D6 history is also signed. Signing was explicitly authorized and performed while the user
+was at the keyboard; a reminder does not rewrite history.

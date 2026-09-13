@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "4db89591acfd5c51f1c6ed01ef5e12f6b2e3e1bd69d4894c79a51bfcf5e2cf8b",
+  "inventoryDigest": "fa9a55f4c85813ab491b71930735995771dc480358a94cb2ac66f43100a85c02",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -8620,7 +8620,7 @@
           "form": "run",
           "arguments": [
             "'profile-before'",
-            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '063cd72',\n    ]"
+            "[\n      'scripts/private-release/profile-marker.mjs',\n      join(output, 'profile-before/result.json'),\n      '1fca26e4b3fa2d9edf0e441dd10a140fd2190d50',\n    ]"
           ]
         },
         {
@@ -8656,7 +8656,7 @@
           "form": "run",
           "arguments": [
             "'profile-before'",
-            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '70e6d5b',\n    ]"
+            "[\n      'scripts/private-release/profile-editor.mjs',\n      join(output, 'profile-before/result.json'),\n      '0d7d4caae6de85f8c6208435611c25c43081814a',\n    ]"
           ]
         },
         {
