@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation Write-session catalogue adapter (`L-1`)
+## Active slice: Release-validation general test and wrapper adapters (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,26 +61,28 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Compaction is unsigned `d65bda0`. The
-[custody adapter](./release-validation-execution.md#custody-catalogue-adapter--phase-2k) passes
-13 baselines/73 assertions and five mutations, including the complete closed synthetic-profile
-attack and positive controls. Four new native process controls and seven shared controls pass.
-Five adapter tests bring non-native controls to 77 and generated histories to 2,240. Fifteen
-infrastructure stages pass 62 cases and two static checks. The parent now explicitly supplies its
-pinned browser executable after isolated-HOME discovery failed in the first controls.
-[Bounded evidence](./account-conformance-runs/2026-09-13-custody-adapter/README.md) retains both attempts.
+**Just completed.** All eleven current catalogue adapters are implemented, covering 163 cases and
+54 discriminating mutations. This sequence committed Local genesis `be5d6a0`, Local clear `f1926f9`,
+compaction `d65bda0` and custody `2c5f4b9` unsigned. Write-session completes the sequence in this checkpoint.
+The [final adapter](./release-validation-execution.md#write-session-catalogue-adapter--phase-2l)
+passes 13 cases/56 assertions/five mutations. Its native run exposed a BFCache load-event wait;
+waiting for navigation commit preserves the original closed-session/stale-callback assertions.
+[Evidence](./account-conformance-runs/2026-09-13-write-session-adapter/README.md) retains before/after.
+All 81 non-native controls pass, including 2,400 generated histories. Sixteen infrastructure stages
+pass 66 exact cases/two static checks. Eleven native ownership controls retain their passing custody
+phase evidence. Production code, historical reviews, debts, personal files, vectors and L-2 are unchanged.
 
-**The full phase-2 contract is not closed.** The manifest covers 270 required test files, all 163
-catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. Its 419 unresolved rows
-still refuse whole-release execution. Write-session is the last catalogue adapter (13 cases/five
-mutations). General test adapters, wrapper selections/postconditions and measured deadlines follow.
-Native owner-control tests need their own nested-stage disposition. P-06, the complete vector chain
-and immutable aggregate have not run.
+**The full phase-2 contract is not closed.** The manifest covers 271 required test files, all current
+catalogues, 29 vector corpora and 83 registry entries. There are no unresolved catalogue rows. The
+remaining 416 rows are 257 test-file, 96 command and 63 campaign obligations, not product defects.
+Whole-release execution still refuses. This is staged catalogue evidence across distinct inputs,
+not one immutable aggregate. P-06 and the complete vector chain have not run.
 
-**Current authorization.** Finish write-session and commit unsigned with an end-of-phase summary.
-Its patches implicitly target one source file; bind that target explicitly and preserve real freeze,
-renderer death, worker termination, cleanup failure and navigation scenarios. Then report the next
-bounded general-test adapter phase; private human Account onboarding comes after validation/prep.
+**Next bounded phase.** Review and integrate the remaining general test-file adapters, beginning
+with direct Node test registrations and their actual fixture/lifetime needs. Keep Vitest/Playwright,
+deliberately nested owner-control tests, exact wrapper variants and report postconditions as explicit
+obligations until independently resolved. Use measured deadlines and shared prerequisite receipts.
+The requested catalogue sequence is complete; no general-test or wrapper phase was started here.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/

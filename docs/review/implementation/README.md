@@ -8,20 +8,14 @@ namespaces; they are unrelated to the older `docs/review/work-items.tsv` IDs.
 IDs, routes duplicates/extensions to shared work and retains separate completion criteria. Current
 priority is the [release-validation work package](../../private-release-validation-prep.md): graph,
 coverage/deadline work, current prose and an immutable aggregate. The
-[phase-1 inventory](../../release-validation-graph.md) and [bounded runner foundation](../../release-validation-execution.md)
-and [content catalogue adapter](../../release-validation-execution.md#content-catalogue-adapter--phase-2b)
-are complete, as is the [journal adapter](../../release-validation-execution.md#journal-catalogue-adapter--phase-2c).
-The [admission adapter](../../release-validation-execution.md#admission-catalogue-adapter--phase-2d)
-also passes its 15 baselines and six mutations. The [editor-admission adapter](../../release-validation-execution.md#editor-admission-catalogue-adapter--phase-2e)
-passes 12 cases/three mutations and repairs shared runner defects found by its native campaign.
-The [workspace-admission adapter](../../release-validation-execution.md#workspace-admission-catalogue-adapter--phase-2f)
-passes ten cases/four mutations with exact history evidence. The [owned-startup adapter](../../release-validation-execution.md#owned-startup-catalogue-adapter--phase-2g)
-passes 15 cases/three mutations, preserving read-only classification and non-exposure evidence. The [Local-genesis adapter](../../release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
-passes 17 cases/four mutations with exact generated boundaries and byte-array report evidence. The [Local-clear adapter](../../release-validation-execution.md#local-clear-catalogue-adapter--phase-2i)
-passes 17 cases/five mutations with seven explicit deletion boundaries. The [content-trim adapter](../../release-validation-execution.md#content-trim-catalogue-adapter--phase-2j)
-passes 21 cases/eight mutations. The [custody adapter](../../release-validation-execution.md#custody-catalogue-adapter--phase-2k)
-passes 13 cases/five mutations, including owned whole-profile controls. Write-session is next; the
-manifest retains 419 unresolved obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
+[phase-1 inventory](../../release-validation-graph.md), [bounded runner and all eleven catalogue adapters](../../release-validation-execution.md)
+are complete. The catalogues cover 163 baseline cases and 54 discriminating mutations. The final
+write-session phase preserves restored-document capability checks and repairs the BFCache load-event
+wait exposed by its native run. All 81 non-native runner tests pass, including 2,400 generated
+validation histories; eleven native ownership controls retain their bounded passing evidence.
+General test-file and wrapper integration is next. The manifest retains 416 unresolved obligations
+(257 test-file, 96 command and 63 campaign rows); none are catalogue rows. Whole-release execution
+still refuses. These staged results are not one immutable aggregate. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
 and [validation prerequisites Q-01/Q-04](./validation-controls.md) pass within their bounded campaigns.
 F-07's retained-history/workload limits and complete aggregate qualification remain open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.

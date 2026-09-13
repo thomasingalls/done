@@ -12,6 +12,7 @@ import { editorAdmissionStage } from './editor-admission-adapter.mjs';
 import { workspaceAdmissionStage } from './workspace-admission-adapter.mjs';
 import { ownedStartupStage } from './owned-startup-adapter.mjs';
 import { localGenesisStage } from './local-genesis-adapter.mjs';
+import { writeSessionStage } from './write-session-adapter.mjs';
 import { custodyStage } from './custody-adapter.mjs';
 import { contentTrimStage } from './content-trim-adapter.mjs';
 import { localClearStage } from './local-clear-adapter.mjs';
@@ -97,6 +98,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/workspace-admission.test.mjs',
     'test/release-validation/owned-startup.test.mjs',
     'test/release-validation/local-genesis.test.mjs',
+    'test/release-validation/write-session.test.mjs',
     'test/release-validation/custody.test.mjs',
     'test/release-validation/content-trim.test.mjs',
     'test/release-validation/local-clear.test.mjs',
@@ -151,6 +153,7 @@ export function compileManifest(root, inventory) {
       ['scripts/workspace-admission/run.mjs', workspaceAdmissionStage],
       ['scripts/owned-startup/run.mjs', ownedStartupStage],
       ['scripts/local-genesis/run.mjs', localGenesisStage],
+      ['scripts/write-session/run.mjs', writeSessionStage],
       ['scripts/custody/run.mjs', custodyStage],
       ['scripts/content-trim/run.mjs', contentTrimStage],
       ['scripts/local-clear/run.mjs', localClearStage],
@@ -231,6 +234,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['catalogue:scripts/content-trim/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/custody/run.mjs')
       row.requires = ['catalogue:scripts/custody/catalog.mjs'];
+    else if (command.argv.join(' ') === 'node scripts/write-session/run.mjs')
+      row.requires = ['catalogue:scripts/write-session/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/release-validation/check.mjs')
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
     else if (command.argv.join(' ') === 'node scripts/check-authority-map.mjs')
@@ -257,6 +262,7 @@ export function compileManifest(root, inventory) {
         'scripts/workspace-admission/run.mjs',
         'scripts/owned-startup/run.mjs',
         'scripts/local-genesis/run.mjs',
+        'scripts/write-session/run.mjs',
         'scripts/custody/run.mjs',
         'scripts/content-trim/run.mjs',
         'scripts/local-clear/run.mjs',
@@ -355,6 +361,9 @@ export function compileManifest(root, inventory) {
         : {}),
       ...(byId.has('catalogue:scripts/custody/catalog.mjs')
         ? { custody: ['catalogue:scripts/custody/catalog.mjs'] }
+        : {}),
+      ...(byId.has('catalogue:scripts/write-session/catalog.mjs')
+        ? { 'write-session': ['catalogue:scripts/write-session/catalog.mjs'] }
         : {}),
       release: rows.map((r) => r.id),
     },

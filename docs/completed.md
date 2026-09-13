@@ -3866,3 +3866,44 @@ fixture probes and scenario assertions are unchanged.
 The manifest has 606 obligations, 419 unresolved and 270 required test files. Write-session is the
 last catalogue adapter (13 cases/five mutations). Appended before replacing L-1; ready for an
 unsigned commit. Prior hashes, historical reviews/debts, personal files, vectors and L-2 are preserved.
+
+
+## 2026-09-13 — Write-session catalogue adapter, phase 2l (`L-1`)
+
+Committed custody unsigned as `2c5f4b9`.
+
+The final catalogue adapter passes **13 baseline cases, 56 assertions and five mutations** through
+the shared owner. Scope `C04-component-browser` and candidate `write-session` are explicit. The old
+catalogue omits patch filenames because every fault targets `src/crdt/writeSession.ts`; only this
+reviewed binding supplies that default. A conflicting path refuses, while other catalogues still
+require their own file. The original path/hash fields remain and the worker now overlays/pins the
+complete runtime source population. Every reported case also needs its empty unexpected-page-error
+postcondition; a success label cannot hide browser errors.
+
+The first full run passed twelve cases and detected all five mutations but timed out in navigation.
+The old document had already been restored with a closed session; the test awaited a fresh load event
+that a BFCache restore need not emit. `goBack` now waits for navigation commit, followed by the original
+page-readiness and capability assertions. The eight-second timeout and all safety assertions remain.
+The focused repair and full rerun observed the restored document, refused its saved callback and
+released its old permit. This is one-host restoration evidence, not universal BFCache qualification.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-write-session-adapter/README.md) retains both
+full attempts, focused navigation, selected freeze/drain/detached/stale cases with all five mutations,
+baseline-only dedicated-worker lifetime, custody lifetime/cancellation regression and final gates.
+The passing full stage took **33.3 seconds** within 120 seconds. Four new tests include 160 generated
+selections/evidence faults (seed 130915), bringing non-native runner tests to 81 and generated histories
+to 2,400. Sixteen infrastructure stages pass 66 exact cases and two static checks. The unchanged eleven
+native ownership controls retain their passing evidence in the preceding custody packet.
+
+No production lifecycle behavior changed. Real freeze, renderer death, failed-cleanup exclusion,
+dedicated-worker termination, cancellation and native work drain remain. Standalone options and reports
+remain; custom browsers/existing outputs refuse. Default catalogue, package leaf and campaign alias
+resolve. Synthetic cache/write probes do not establish full product transitions, key retirement,
+Account authority, hostile-code containment or platform capacity. Wrapper postconditions remain separate.
+
+All eleven current catalogue families now have adapters: 163 cases/54 mutations. This turn also
+committed Local genesis `be5d6a0`, Local clear `f1926f9` and compaction `d65bda0` unsigned. The final
+manifest has 607 obligations, 416 unresolved: 257 test-file, 96 command and 63 campaign rows. These
+are execution-integration obligations, not 416 product defects. General test and wrapper adapters
+precede P-06, the vector prerequisite chain and immutable aggregate. Appended before replacing L-1;
+ready for the requested unsigned commit. No personal operation or history rewrite occurred.

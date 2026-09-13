@@ -89,8 +89,10 @@ Run `pnpm storage:session`, or `node scripts/write-session/run.mjs`. This comman
 `pnpm check`. It runs 13 real-browser component schedules and five isolated source mutants. Output goes
 to a fresh ignored `test-results/write-session/` directory; `--output` selects another fresh directory,
 `--case C04.stale-task` selects a subcase, and `--no-mutants` is available for investigation. Chromium
-and project dependencies must already be installed. The fixture uses loopback port 5175, refuses a
-conflicting listener, blocks external browser requests, and never opens the user's browser profile.
+and project dependencies must already be installed. The shared owner pins installed Playwright
+Chromium and binds OS-assigned loopback ports. Fixture routing blocks external page requests; only
+disposable profiles are used. See the [catalogue adapter evidence](./account-conformance-runs/2026-09-13-write-session-adapter/README.md)
+for current process ownership and the navigation wait repair.
 
 The runner freezes an immutable copy of the current component, records source/harness/dependency hashes,
 retains assertions and browser observations, and applies mutants only to disposable copies. It reuses

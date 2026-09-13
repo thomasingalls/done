@@ -405,7 +405,9 @@ export async function runCase(definition, env) {
         await call(a, 'save', 'old');
         await a.goto(env.url + '?away');
         await a.waitForFunction(() => Boolean(window.lifecycle));
-        await a.goBack();
+        // A BFCache restore commits navigation without a new load event. Wait for
+        // that boundary, then verify the restored/new document and its capability below.
+        await a.goBack({ waitUntil: 'commit' });
         await a.waitForFunction(() => Boolean(window.lifecycle));
         const restored = (await call(a, 'snapshot')).entries.old;
         check(

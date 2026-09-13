@@ -8,12 +8,12 @@ export function carrierEvidence(
   t,
   family,
   scope = family + '-carrier-browser',
-  { candidate = family, patchPrefix = 'src/crdt/' } = {},
+  { candidate = family, patchPrefix = 'src/crdt/', patchFile } = {},
 ) {
   const root = mkdtempSync(join(tmpdir(), 'done-carrier-census-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const catalogue = readFileSync(`scripts/${family}/catalog.mjs`, 'utf8');
-  const selection = catalogueCensus(catalogue, { patches: true });
+  const selection = catalogueCensus(catalogue, { patches: true, patchFile });
   const contents = new Map([
     ['account-protocol/fixture.ts', 'protocol'],
     ['wasm/journal-seal/seal.generated.ts', 'seal'],

@@ -8,6 +8,12 @@ import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  'write-session': {
+    scope: 'C04-component-browser',
+    candidate: 'write-session',
+    patchPrefix: '',
+    patchFile: 'src/crdt/writeSession.ts',
+  },
   custody: { scope: 'custody-component-browser', candidate: 'custody', patchPrefix: 'src/crdt/' },
   'content-trim': { scope: 'content-trim-browser', candidate: 'trim', patchPrefix: 'src/crdt/' },
   'local-clear': {
@@ -81,6 +87,7 @@ export function carrierSelection(family, root, args = []) {
     readFileSync(join(root, `scripts/${family}/catalog.mjs`), 'utf8'),
     {
       patches: true,
+      patchFile: bindings[family].patchFile,
     },
   );
   if (caseIds)
@@ -164,6 +171,7 @@ export function reconcileCarrier(
       'local-clear',
       'content-trim',
       'custody',
+      'write-session',
     ].includes(family)
   )
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
@@ -177,6 +185,7 @@ export function reconcileCarrier(
         'local-clear',
         'content-trim',
         'custody',
+        'write-session',
       ].includes(family)
     )
       for (const row of report.cases)
@@ -185,6 +194,16 @@ export function reconcileCarrier(
           validateEvidence(a.expected);
         }
     validateReport(report, ids);
+    if (family === 'write-session') {
+      assert.equal(report.source.path, 'src/crdt/writeSession.ts');
+      assert.equal(report.source.original, pins.get('src/crdt/writeSession.ts'));
+      assert.equal(report.source.sha256, report.source.files['src/crdt/writeSession.ts']);
+      for (const row of report.cases) {
+        const errors = row.artifacts?.filter((a) => a.point === 'unexpected-page-errors');
+        assert.equal(errors?.length, 1, 'Missing lifecycle page-error postcondition');
+        assert.deepEqual(errors[0].errors, [], 'Lifecycle page errors');
+      }
+    }
     if (boundaryByCase)
       for (const row of report.cases)
         assert.equal(row.boundary, boundaryByCase[row.id], 'Catalogue crash boundary changed');

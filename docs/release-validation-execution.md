@@ -1,4 +1,4 @@
-# Release-validation execution — foundation and ten catalogue adapters
+# Release-validation execution — foundation and all eleven catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
 content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
@@ -8,14 +8,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 606 obligations, including all 270 current
+The [manifest](./release-validation-manifest.json) now contains 607 obligations, including all 271 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**419 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**416 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -39,6 +39,7 @@ node scripts/release-validation/execute.mjs --selection local-genesis
 node scripts/release-validation/execute.mjs --selection local-clear
 node scripts/release-validation/execute.mjs --selection content-trim
 node scripts/release-validation/execute.mjs --selection custody
+node scripts/release-validation/execute.mjs --selection write-session
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -47,9 +48,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs fifteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter and custody-adapter
-test files (62 exact cases),
+`infrastructure` runs sixteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter, custody-adapter and write-session-adapter
+test files (66 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -479,9 +480,46 @@ mock keychain/basic password store. No personal profile, writable cloned store h
 qualification, complete attacker proof, PRF ceremony or Account authority is claimed. Production code,
 fixture probes and scenario assertions are unchanged.
 
+## Write-session catalogue adapter — phase 2l
+
+The final catalogue adapter passes **13 baseline cases, 56 assertions and five mutations** through
+the shared owner. Scope `C04-component-browser` and candidate `write-session` are explicit. The old
+catalogue omits patch filenames because every fault targets `src/crdt/writeSession.ts`; only this
+reviewed binding supplies that default. A conflicting path refuses, while other catalogues still
+require their own file. The original path/hash fields remain and the worker now overlays/pins the
+complete runtime source population. Every reported case also needs its empty unexpected-page-error
+postcondition; a success label cannot hide browser errors.
+
+The first full run passed twelve cases and detected all five mutations but timed out in navigation.
+The old document had already been restored with a closed session; the test awaited a fresh load event
+that a BFCache restore need not emit. `goBack` now waits for navigation commit, followed by the original
+page-readiness and capability assertions. The eight-second timeout and all safety assertions remain.
+The focused repair and full rerun observed the restored document, refused its saved callback and
+released its old permit. This is one-host restoration evidence, not universal BFCache qualification.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-write-session-adapter/README.md) retains both
+full attempts, focused navigation, selected freeze/drain/detached/stale cases with all five mutations,
+baseline-only dedicated-worker lifetime, custody lifetime/cancellation regression and final gates.
+The passing full stage took **33.3 seconds** within 120 seconds. Four new tests include 160 generated
+selections/evidence faults (seed 130915), bringing non-native runner tests to 81 and generated histories
+to 2,400. Sixteen infrastructure stages pass 66 exact cases and two static checks. The unchanged eleven
+native ownership controls retain their passing evidence in the preceding custody packet.
+
+No production lifecycle behavior changed. Real freeze, renderer death, failed-cleanup exclusion,
+dedicated-worker termination, cancellation and native work drain remain. Standalone options and reports
+remain; custom browsers/existing outputs refuse. Default catalogue, package leaf and campaign alias
+resolve. Synthetic cache/write probes do not establish full product transitions, key retirement,
+Account authority, hostile-code containment or platform capacity. Wrapper postconditions remain separate.
+
 ## Next bounded integration
 
-Complete write-session (13 cases/five mutations) and commit unsigned. Then review general Node,
-Vitest, Playwright and wrapper adapters with exact selections and postconditions, including deliberate
-nested ownership controls. Only after every required obligation resolves should P-06 and the complete
-immutable selected run proceed. No personal app/server/profile or Account cutover is part of these adapters.
+All eleven current catalogue adapters are resolved: 163 cases and 54 mutations. The remaining 416
+blocked rows comprise 257 test-file, 96 command and 63 campaign obligations. Begin general test-file
+integration with reviewed direct Node registrations and fixture ownership; then finish Vitest,
+Playwright, deliberate nested owners and exact wrapper variants/postconditions. A file mention or
+historical green result is not execution credit. Preserve ordered vector/traceability prerequisites.
+
+Only after every required obligation resolves should P-06's current cryptographic prose sweep and
+the complete immutable selected run proceed. State workload/platform/claim dispositions before
+private Account app/service walkthrough prep and human passkey/recovery/adoption work. No personal
+app/server/profile or Account cutover occurred in this catalogue sequence.

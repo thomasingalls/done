@@ -6,7 +6,7 @@ const parse = (text) =>
   parseSync(text, { configFile: false, babelrc: false, parserOpts: { sourceType: 'module' } })
     .program;
 
-export function catalogueCensus(text, { patches = false } = {}) {
+export function catalogueCensus(text, { patches = false, patchFile } = {}) {
   const scope = Object.create(null);
   const bind = (pattern, value, env) => {
     if (pattern.type === 'Identifier') env[pattern.name] = value;
@@ -70,7 +70,7 @@ export function catalogueCensus(text, { patches = false } = {}) {
     case: m.case,
     assertion: m.assertion,
     outcome: 'detected',
-    ...(patches ? { patch: { file: m.file, from: m.from, to: m.to } } : {}),
+    ...(patches ? { patch: { file: m.file ?? patchFile, from: m.from, to: m.to } } : {}),
   }));
   assert(cases?.length && mutants?.length, 'Empty catalogue census');
   for (const rows of [cases, mutants]) {
@@ -84,6 +84,13 @@ export function catalogueCensus(text, { patches = false } = {}) {
     assert(
       cases.some((c) => c.id === m.case) && typeof m.assertion === 'string' && m.assertion.length,
       'Unbound catalogue mutation',
+    );
+  if (patchFile !== undefined)
+    assert(
+      typeof patchFile === 'string' &&
+        patchFile.length &&
+        scope.mutants.every((m) => m.file === undefined || m.file === patchFile),
+      'Catalogue conflicts with fixed mutation source',
     );
   if (patches)
     for (const m of mutants)

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "fde85fc0e0e365345fb0e5c3eb12f096127c927137d773764d28a6604832e2aa",
+  "inventoryDigest": "4db89591acfd5c51f1c6ed01ef5e12f6b2e3e1bd69d4894c79a51bfcf5e2cf8b",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -3111,6 +3111,50 @@
       }
     },
     {
+      "id": "test:test/release-validation/write-session.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/write-session.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/write-session.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/write-session.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/write-session.test.mjs::Write-session independently resolves the full catalogue, selected mutation subset and baseline-only variants",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/write-session.test.mjs::Write-session requires every exact source mutation and its own discriminating assertion",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/write-session.test.mjs::Write-session binds report identity, all runtime sources and unavailable receipt values",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/write-session.test.mjs::160 generated Write-session selections reject omitted cases and substituted mutation evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/reorder.test.ts",
       "kind": "test",
       "path": "test/reorder.test.ts",
@@ -5009,7 +5053,101 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/write-session/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/write-session/worker.mjs",
+          "--case",
+          "C04.shared-scope,C04.freeze-barrier,C04.drain-cleanup,C04.detached-work,C04.stale-task,C04.cancel-queued,C04.cancel-initialize,C04.initialize-error,C04.cleanup-error,C04.renderer-death,C04.worker-lifetime,C04.exclusive-error,C04.navigation"
+        ],
+        "env": {},
+        "variant": "write-session-54e47cccefabfebff30a47f4ffe32d2719d48306aa339b1997aa00ba6ab73e17",
+        "expect": {
+          "kind": "write-session",
+          "selection": {
+            "cases": [
+              { "id": "C04.shared-scope", "outcome": "pass" },
+              { "id": "C04.freeze-barrier", "outcome": "pass" },
+              { "id": "C04.drain-cleanup", "outcome": "pass" },
+              { "id": "C04.detached-work", "outcome": "pass" },
+              { "id": "C04.stale-task", "outcome": "pass" },
+              { "id": "C04.cancel-queued", "outcome": "pass" },
+              { "id": "C04.cancel-initialize", "outcome": "pass" },
+              { "id": "C04.initialize-error", "outcome": "pass" },
+              { "id": "C04.cleanup-error", "outcome": "pass" },
+              { "id": "C04.renderer-death", "outcome": "pass" },
+              { "id": "C04.worker-lifetime", "outcome": "pass" },
+              { "id": "C04.exclusive-error", "outcome": "pass" },
+              { "id": "C04.navigation", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "split-coordination-domain",
+                "case": "C04.freeze-barrier",
+                "assertion": "frozen-writer-blocks-exclusive",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/writeSession.ts",
+                  "from": "const name = slotPermitName(slotId);",
+                  "to": "const name = slotPermitName(slotId) + (mode === 'exclusive' ? '/split' : '');"
+                }
+              },
+              {
+                "id": "ignore-session-invalidation",
+                "case": "C04.drain-cleanup",
+                "assertion": "closing-callback-cannot-write",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/writeSession.ts",
+                  "from": "if (state !== 'active' && !(initializing && state === 'opening')) throw inactive();",
+                  "to": "void initializing; // removed session validity check"
+                }
+              },
+              {
+                "id": "release-before-drain",
+                "case": "C04.detached-work",
+                "assertion": "detached-work-precedes-disposal",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/writeSession.ts",
+                  "from": "await drain();",
+                  "to": "void drain; // removed drain boundary"
+                }
+              },
+              {
+                "id": "skip-cache-cleanup",
+                "case": "C04.drain-cleanup",
+                "assertion": "cache-cleared-before-exclusive",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/writeSession.ts",
+                  "from": "if (granted) await dispose?.();",
+                  "to": "void granted; // removed cache cleanup"
+                }
+              },
+              {
+                "id": "reuse-finished-task",
+                "case": "C04.stale-task",
+                "assertion": "finished-task-cannot-write",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/writeSession.ts",
+                  "from": "if (!live) throw inactive();",
+                  "to": "void live; // removed task validity check"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "vector:test/vectors/account-checkpoint.json",
@@ -5984,7 +6122,7 @@
       "argv": ["node", "scripts/write-session/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:42"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/write-session/catalog.mjs"]
     },
     {
       "id": "command:check:44",
@@ -8857,11 +8995,8 @@
       "id": "campaign:scripts/write-session/run.mjs",
       "kind": "campaign",
       "path": "scripts/write-session/run.mjs",
-      "callSites": [
-        { "line": 170, "form": "run", "arguments": [] },
-        { "line": 174, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/write-session/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/yjs-delivery/campaign.mjs",
@@ -10409,7 +10544,6 @@
     "test:test/yjsDelivery.test.ts",
     "test:vite/appUpgradeProperties.test.ts",
     "test:vite/precacheBuild.test.ts",
-    "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
     "command:build:2",
@@ -10428,7 +10562,6 @@
     "command:check:40",
     "command:check:41",
     "command:check:42",
-    "command:check:43",
     "command:check:47",
     "command:check:51",
     "command:check:52",
@@ -10568,7 +10701,6 @@
     "campaign:scripts/private-release/run.mjs",
     "campaign:scripts/storage-properties/run.mjs",
     "campaign:scripts/validation-controls/run.mjs",
-    "campaign:scripts/write-session/run.mjs",
     "campaign:scripts/yjs-delivery/campaign.mjs",
     "campaign:scripts/yjs-delivery/run.mjs"
   ],
@@ -10587,6 +10719,7 @@
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
+      "test:test/release-validation/write-session.test.mjs",
       "command:check:35",
       "command:validation:inventory:0"
     ],
@@ -10632,6 +10765,7 @@
     "local-clear": ["catalogue:scripts/local-clear/catalog.mjs"],
     "content-trim": ["catalogue:scripts/content-trim/catalog.mjs"],
     "custody": ["catalogue:scripts/custody/catalog.mjs"],
+    "write-session": ["catalogue:scripts/write-session/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10867,6 +11001,7 @@
       "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/stage.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
+      "test:test/release-validation/write-session.test.mjs",
       "test:test/reorder.test.ts",
       "test:test/roundTrip.test.ts",
       "test:test/seam.test.ts",

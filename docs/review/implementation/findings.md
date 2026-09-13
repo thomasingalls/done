@@ -60,23 +60,18 @@ These IDs belong to the implementation review and must not be inserted into the 
    campaigns and three native consecutive expiries followed by automatic recovery/cold replay pass.
    See [result](./liveness-followups.md#q-05-result). No count-only terminal halt was added.
    F-10/N-08/P-07's completed refusal handling stands.
-4. **F-20/N-06/P-05 inventory, runner foundation, content, journal, admission, editor-admission, workspace-admission, owned-startup Local-genesis Local-clear content-trim and custody adapters are complete; integration remains.**
-   The [checked graph](../../release-validation-graph.md) maps required families and exposes missing
-   wiring, inherited pin omissions and reporting/deadline gaps. The [bounded runner foundation](../../release-validation-execution.md)
-   now records exact obligations and reusable stage identities, with fresh source/dependency pins.
-   Content passes 13 baselines/five mutations, journal 17 baselines/six mutations and admission
-   15 baselines/six mutations through the owned native adapters. Editor-admission passes 12 baselines/three
-   mutations; its native campaign also exposed shared dependency-resolution and report/startup defects,
-   now repaired with controls. Workspace-admission passes ten baselines/four mutations with distinct
-   history assertions and nested-value evidence. Owned-startup passes 15 baselines/three mutations with
-   read-only classification and refused-open non-exposure evidence. Local genesis passes 17 baselines/four
-   mutations with exact crash boundaries and repaired byte-array evidence encoding. Whole-release execution
-   still refuses 419 unresolved adapter obligations; write-session is next. Custody passes 13 cases/five mutations
-   including owned whole-profile controls. Content trim passes 21 cases/eight mutations. Local clear passes 17 cases/five mutations
-   with seven explicitly bound deletion boundaries.
-   Remove repeated work only when identities agree. Keep finite deadlines and complete failure/case reporting. After repairs,
-   run the selected complete graph at one immutable revision and state workload/platform limits.
-   The reviewer's locally refreshed metadata runs do not constitute this receipt.
+4. **F-20/N-06/P-05 inventory, bounded runner and all eleven catalogue adapters are complete; general integration remains.**
+   [Current execution scope](../../release-validation-execution.md) covers all 163 catalogue cases and
+   54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
+   include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
+   write-session repairs a BFCache load-event wait while retaining closed-capability checks. All
+   81 non-native controls pass with 2,400 generated validation histories; eleven native ownership
+   controls retain their bounded passing evidence. The manifest has 416 unresolved rows: 257 test-file,
+   96 command and 63 campaign obligations, with no unresolved catalogue rows. General Node, Vitest,
+   Playwright, nested owners and exact wrappers precede P-06 and the immutable aggregate. Earlier
+   timing observations remain host-specific; complete package/traceability/vector chains are not
+   credited by these staged catalogue runs.
+
 5. **Remaining qualification and record work stays explicit.** F-21.4's bounded packaged/migration/
    file evidence passes while physical legacy plaintext remains; wider opener/platform scope is open.
    F-09 Local salvage is partial and needs intact custody; Account/key-loss scope remains. F-16's
@@ -140,7 +135,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner, content, journal, admission, editor-admission, workspace-admission, owned-startup Local-genesis Local-clear content-trim and custody adapters complete; 419 adapter obligations, deadlines and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 416 general-test/command/campaign obligations, deadlines and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
