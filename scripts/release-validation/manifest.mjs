@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { flattenPackages } from './inventory.mjs';
 import { catalogueCensus, directNodeCensus } from './census.mjs';
@@ -17,6 +17,11 @@ import { custodyStage } from './custody-adapter.mjs';
 import { contentTrimStage } from './content-trim-adapter.mjs';
 import { localClearStage } from './local-clear-adapter.mjs';
 import { propertyFiles, vitestStage } from './vitest-adapter.mjs';
+import {
+  generalTestPolicy,
+  assertGeneralTestPopulation,
+  nodeProtocolStage,
+} from './general-tests.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -88,6 +93,17 @@ export function compileManifest(root, inventory) {
     rows.push(row);
   };
   const read = (path) => readFileSync(join(root, path), 'utf8');
+  // Synthetic manifest fixtures need not implement these families. A real repository
+  // with required Vitest files must carry its reviewed policy; removing it cannot hide credit.
+  const general = existsSync(join(root, 'scripts/release-validation/general-tests.json'))
+    ? generalTestPolicy(root)
+    : { vitest: [], node: [] };
+  assert(
+    general.vitest.length ||
+      !inventory.tests.some((t) => t.invocation?.argv?.includes('node_modules/vitest/vitest.mjs')),
+    'Missing reviewed general test policy',
+  );
+  assertGeneralTestPopulation(general, inventory);
   const supportedTests = new Set([
     'test/release-validation/inventory.test.mjs',
     'test/release-validation/manifest.test.mjs',
@@ -104,6 +120,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/content-trim.test.mjs',
     'test/release-validation/local-clear.test.mjs',
     'test/release-validation/vitest.test.mjs',
+    'test/release-validation/general-tests.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -129,8 +146,10 @@ export function compileManifest(root, inventory) {
           { kind: 'cases', cases },
         ),
       });
-    } else if (propertyFiles.includes(t.path)) {
+    } else if (propertyFiles.includes(t.path) || general.vitest.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: vitestStage(root, t.path) });
+    } else if (general.node.includes(t.path)) {
+      add({ id, kind: 'test', path: t.path, stage: nodeProtocolStage(root, t.path) });
     } else
       add({
         id,
@@ -342,6 +361,13 @@ export function compileManifest(root, inventory) {
     selections: {
       infrastructure,
       'vitest-properties': rows.filter((r) => propertyFiles.includes(r.path)).map((r) => r.id),
+      'vitest-reviewed': rows
+        .filter((r) => propertyFiles.includes(r.path) || general.vitest.includes(r.path))
+        .map((r) => r.id),
+      'node-protocol': rows.filter((r) => general.node.includes(r.path)).map((r) => r.id),
+      'general-tests': rows
+        .filter((r) => r.stage?.expect.kind === 'vitest' || general.node.includes(r.path))
+        .map((r) => r.id),
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),
       ...(byId.has(contentId)
         ? { content: [contentId], 'content-control': ['variant:content-unreadable'] }

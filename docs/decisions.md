@@ -2462,3 +2462,18 @@ seeds and assertions. Sequential one-fork stages receive 180 seconds plus bounde
 universal load guarantee. Keep partial progress, error message and stack, seed/path/counterexample and
 explicit process-drain evidence. No automatic retry or deadline increase may turn a failure into credit.
 R-04 live/archive style scope and the full immutable aggregate remain subsequent work.
+
+
+## 2026-09-13 — General test credit requires an explicit fixture and process disposition
+
+Supported registration syntax does not automatically qualify a discovered test file. Keep an explicit
+reviewed policy for ordinary Vitest and Node protocol files, verify it against fresh inventory and
+compute exact case identities from source before execution. Generated registrations, native browser
+ownership and deliberate nested owners require separate reviewed adapters. A direct Node format-file
+receipt does not discharge its wrapper's optional artifacts, mutation variants or prerequisites.
+
+Node reports retain wrapped assertion errors, seed/path/counterexample diagnostics and completed-case
+progress while running. Require terminal reporter completion for success; timeout progress remains
+failed evidence after drain. Preserve the actual signed old reporter as the diagnostic-loss control.
+The manifest's existing 700 kB limit stays in force; compact its representation before future adapter
+expansion would exceed it, without dropping case identities or unresolved obligations.

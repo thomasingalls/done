@@ -42,12 +42,16 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 records current package wiring, proposed required families, explicit exclusions and concrete execution
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
-supply owned execution for 163 catalogue cases and 54 mutations. The first general Vitest adapter
-adds 62 cases across the five R-03/N-06 suites, with unchanged 515 seeded histories, explicit measured
-deadlines and actual timeout/cancellation/omission controls. The manifest retains 412 unresolved
-obligations: 253 test-file, 96 command and 63 campaign rows. Remaining test and exact wrapper integration
-and R-04's full style gates precede P-06 and the immutable run. Bounded property receipts do not qualify
-the whole test command or a loaded-host aggregate. The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
+supply owned execution for 163 catalogue cases and 54 mutations. The general adapters now execute
+92 files / 872 cases:
+82 Vitest files (including the five R-03/N-06 suites with unchanged 515 seeded histories) and ten Node
+protocol files. Exact censuses, measured deadlines, counterexample retention and owned process controls
+remain; all 98 non-native runner regressions pass. The manifest retains 325 unresolved obligations:
+166 test-file (14 Vitest, 136 Node, 16 Playwright), 96 command and 63 campaign rows. Generated test
+registrations, remaining ownership/variant integration and R-04 full style gates precede P-06 and the
+immutable run. Keep the manifest within its 700 kB ceiling without dropping obligations as integration
+expands. Bounded file receipts do not qualify the whole test command or a loaded-host aggregate.
+The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed
 [signing sweep](./review/implementation/signing-prep-2026-09-13.md) now records thirty verified signed

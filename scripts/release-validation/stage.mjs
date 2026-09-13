@@ -494,6 +494,10 @@ export function createStageRunner({
         } else if (stage.expect.kind === 'vitest') {
           actual = reconcileVitest(stage.expect, reported, nonce);
         } else {
+          if (stage.argv.includes('--test')) {
+            assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
+            assert(reported.summary, 'Missing terminal Node summary');
+          }
           reconcileCases(stage.expect.cases, reported, nonce);
           actual = reported;
         }

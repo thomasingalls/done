@@ -1,4 +1,4 @@
-# Release-validation execution — catalogue and first Vitest adapters
+# Release-validation execution — catalogue and reviewed general test adapters
 
 The signed inventory is `a38bb6b`, foundation `568c2a5`, content `a44f09d`,
 journal `b60a5c7`, admission `4eb1071`, editor-admission `ad475bc`,
@@ -13,14 +13,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 609 obligations, including all 273 current
+The [manifest](./release-validation-manifest.json) now contains 610 obligations, including all 274 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**412 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**325 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,6 +34,9 @@ node scripts/release-validation/plan.mjs
 node --test --test-concurrency=1 test/release-validation/*.test.mjs
 node scripts/release-validation/execute.mjs --selection infrastructure
 node scripts/release-validation/execute.mjs --selection vitest-properties
+node scripts/release-validation/execute.mjs --selection vitest-reviewed
+node scripts/release-validation/execute.mjs --selection node-protocol
+node scripts/release-validation/execute.mjs --selection general-tests
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -54,10 +57,8 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs seventeen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter, Local-clear-adapter, content-trim-adapter, custody-adapter, write-session-adapter and Vitest-adapter
-test files (72 exact cases),
-the live authority/registry check and the inventory freshness check. It does not run the package
+`infrastructure` runs eighteen stages: sixteen identity, policy, census and adapter test files
+(77 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control (including Vitest) and native ownership test files run separately because they deliberately
 create additional runner owners to test their failure handling; they are not certified as nested
@@ -576,14 +577,56 @@ control skips a real case through its actual runtime context. Failed attempts an
 receipts (one expected pass, eight required refusals) accompany the
 [bounded evidence](./account-conformance-runs/2026-09-13-vitest-properties/README.md).
 
+## Reviewed Vitest and Node files — phase 2n
+
+The explicit `general-tests.json` policy adds **77 Vitest files / 744 cases** and **ten Node protocol
+files / 66 cases**. Including the previous property selection, `vitest-reviewed` has 82 files / 806
+cases, `node-protocol` has ten files / 66 cases and `general-tests` has **92 files / 872 cases**.
+All 92 files pass in 581.6 seconds including snapshot preparation and repeated fingerprints, with
+confirmed group drain. No product/test body, assertion, seed, history count or deadline changes.
+The first property adapter is signed and verified as `8acdee4`; this phase is uncommitted.
+
+Policy validation checks the reviewed files against the fresh inventory, rejecting removed/excluded
+files and changed runners. Parsable new files stay blocked until their fixtures/processes are reviewed.
+The Vitest path contract now accepts reviewed dotted filenames, TSX and `vite/` tests while refusing
+flags and traversal. Existing pinned config/setup, one fork, reporter/census reconciliation, 180-second
+stage deadlines, five-second grace and output/report limits stay unchanged. The ordinary suites use
+fake storage, injected transport, jsdom, Yjs simulations and disposable service-worker/build fixtures.
+
+The Node protocol set covers checkpoint, counter, first-authority, Local custody, Local provenance,
+promotion, recovery, service custody, store and transport format contracts. Helpers bundle in memory
+or use synthetic temporary SQLite state. Each literal top-level case gets its independent exact Node
+census and the inherited process-group owner. Optional wrapper report outputs, mutation variants,
+ordered prerequisites and native campaigns remain separate obligations; file success cannot credit them.
+
+A real Node reporter defect is repaired: wrapped assertion errors previously lost their useful
+fast-check seed/path/counterexample text. The reporter now retains structured diagnostics and bounded
+log output, saves completed-case progress while running and requires terminal completion for success.
+The control runs the actual reporter from signed `8acdee4`, proves its diagnostic loss, then checks
+current error preservation. A stuck second test leaves the completed first case after owned timeout
+and confirmed drain. Three required failed control receipts retain that evidence.
+
+All **98 non-native runner/control tests / 2,720 generated control histories** pass, including 160
+new generated removed/excluded/changed-invocation controls. The full file selection and regression
+checks needed no retry or larger deadline. Typecheck, scoped style, inventory/manifest and authority
+checks pass; full release planning still refuses. The eleven existing native ownership controls retain
+prior evidence. The [bounded packet](./account-conformance-runs/2026-09-13-general-test-adapters/README.md)
+contains all exact reports, logs, ownership events, timings, source pins and the exact implementation
+patch within 250 kB. Current host timing does not establish loaded-host or cross-platform capacity.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest now
-has 609 obligations / **412 blocked rows**: 253 test-file, 96 command and 63 campaign obligations.
-Five existing test rows resolved; two new runner-control files were discovered, with the deliberate
-nested Vitest owner still requiring its eventual aggregate adapter. Continue through the remaining
-Vitest case shapes and reviewed Node families, then Playwright, nested owners and exact wrapper
-variants/postconditions. R-04 still requires explicit immutable-archive exclusions, live-source repairs
+has 610 obligations / **325 blocked rows**: 166 test-file, 96 command and 63 campaign obligations.
+The remaining test files are 14 Vitest, 136 Node and 16 Playwright. Continue with finite independent
+censuses for generated registrations (vector-driven loops, literal table/title formats and nested
+parameterized suites), reviewing fixture/process ownership for each new family. Do not derive the
+expected case population from a passing runtime report or import test modules while planning.
+
+The manifest is 688,333 bytes under its existing 700 kB ceiling. Before further expansion exceeds
+that limit, compact repeated representation while retaining every obligation, exact case identity,
+variant and prerequisite. Then integrate Playwright, deliberate nested owners and exact wrapper
+variants/postconditions. R-04 requires explicit immutable-archive exclusions, live-source repairs
 and full style gate execution. Preserve ordered vector/traceability prerequisites and don't credit a
 whole command from a file receipt.
 

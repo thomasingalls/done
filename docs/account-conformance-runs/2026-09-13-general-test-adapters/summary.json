@@ -1,0 +1,1015 @@
+{
+  "base": "8acdee4060189bcbf80f4744b457b00ac76fb7f1",
+  "claim": "Reviewed ordinary Vitest and Node protocol file selection; no whole-wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-13T18-13-02.347Z",
+  "summary": {
+    "schema": 1,
+    "selection": "general-tests",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-checkpoint-contract/formats.test.mjs",
+        "key": "bc58e8be03950e4aa82cfbb1d73f7f30b950d381f808ba6f689b3e1f11dc0c34",
+        "status": "passed",
+        "elapsedMs": 2816,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-counter-contract/formats.test.mjs",
+        "key": "51cc8195df37a2c96ef35b90e13dea6444e17edc3278023113486f6e31c78c89",
+        "status": "passed",
+        "elapsedMs": 1950,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-first-authority/formats.test.mjs",
+        "key": "333377ad3fa38d26e10ed7e5a6e221535efe85770226a2a09d1c9d4f221064a6",
+        "status": "passed",
+        "elapsedMs": 1976,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-local-custody/formats.test.mjs",
+        "key": "c8dc01f9b481f1f433b2944e6a08ebfe543efe9580d31514cb23516cea7fbe3e",
+        "status": "passed",
+        "elapsedMs": 3037,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-local-provenance/formats.test.mjs",
+        "key": "3894c84d52b5a18cea45d448ea594531e0ffa90b51b1765209dd0dbc89aca674",
+        "status": "passed",
+        "elapsedMs": 2331,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-promotion-contract/formats.test.mjs",
+        "key": "758d90761ac47defa57aae4c04ca4b4d8f4e147c0b368bafabf2e526ba3979aa",
+        "status": "passed",
+        "elapsedMs": 5914,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-recovery-contract/formats.test.mjs",
+        "key": "f79175c063b3e44f942fd17d37e342dc064dd9161db0ccfc323dc9291b0eb6a6",
+        "status": "passed",
+        "elapsedMs": 1940,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-custody/formats.test.mjs",
+        "key": "3555e5ba1fbd07b4240fa34c8e76576a171010e0c5d2a15d4b2d7847ba21f92b",
+        "status": "passed",
+        "elapsedMs": 2322,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-store-contract/formats.test.mjs",
+        "key": "9b6ba3c511d3d7d2d0797fa14253bcf5a2941a945a0305af4ce29c895c91b0b0",
+        "status": "passed",
+        "elapsedMs": 4024,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-transport-contract/formats.test.mjs",
+        "key": "7c815eaad282ab2c22f23f6a87978f467eadf2d9a77c28a35423806e234de309",
+        "status": "passed",
+        "elapsedMs": 2838,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountDriver.test.ts",
+        "key": "cecd03d4faaa94c5b198ef0ba22c9a2371e9c15e069d75e20a28377bf08baf34",
+        "status": "passed",
+        "elapsedMs": 5021,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountInboundCodec.test.ts",
+        "key": "b8a394d6e4689591ee0c8ef50457bd554394a80a6afdc3f42231937ccb82f5a7",
+        "status": "passed",
+        "elapsedMs": 13092,
+        "cases": 34,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountInboundPrep.test.ts",
+        "key": "9baef34e6fda13badac4fdf5a5660562242363fb33badc9a5b3c34fe638353b6",
+        "status": "passed",
+        "elapsedMs": 9763,
+        "cases": 25,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountLiveness.test.ts",
+        "key": "c9c7c33b0ef745e057ffbc07abab23c70002290375a7ba05d8af732e61617937",
+        "status": "passed",
+        "elapsedMs": 5765,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountReceiveDriver.test.ts",
+        "key": "9730a710b4ab983b7427f526f960df55042366aaebecb269430560112a1d3cb8",
+        "status": "passed",
+        "elapsedMs": 3754,
+        "cases": 13,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountReceiveLedger.test.ts",
+        "key": "707afdbc232c53673b14ba53e0ec15f3b6a2c85b1c3148060972bf80a4a1b09d",
+        "status": "passed",
+        "elapsedMs": 3926,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountSyncDriver.test.ts",
+        "key": "909865fdd7ee5352c32eeb65c4c78db3e7341049314b18c0f410c7a33fd5f610",
+        "status": "passed",
+        "elapsedMs": 4058,
+        "cases": 11,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/accountTransportContract.test.ts",
+        "key": "b6fea7212c00f6ded0b3c91462620ed895c1cfee4f108d971c311ceff9abca93",
+        "status": "passed",
+        "elapsedMs": 3697,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/admissionQueue.test.ts",
+        "key": "926d401ee242c34af0c2cdb48197bd886a1249f59aa8379650054760668ea0dc",
+        "status": "passed",
+        "elapsedMs": 3964,
+        "cases": 24,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/admittedText.test.ts",
+        "key": "78be1926e857049b81d6a06b5dd9da921562a86670da40ae0a215d9cea1dafe5",
+        "status": "passed",
+        "elapsedMs": 3832,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/archiveProjection.test.ts",
+        "key": "1e6c681c757f425509c2912e4da15f2f3923c9ad56746899c5328df9bfb00c03",
+        "status": "passed",
+        "elapsedMs": 3686,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/attribution.test.ts",
+        "key": "5793d65ef0309e67bcf5bc50c95347ba76444369c9ab40ba300dc5c3a849de38",
+        "status": "passed",
+        "elapsedMs": 4811,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/breadcrumbs.test.ts",
+        "key": "c035922dfdcb71124cec023ab1cbf6cda86a456e56d578938247108335fcd999",
+        "status": "passed",
+        "elapsedMs": 4384,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/cap.test.ts",
+        "key": "ba98fa062790dd4af5ef0f1dbf245a553a146da9b7622f043afef748062fdfb7",
+        "status": "passed",
+        "elapsedMs": 4766,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/cardCommands.test.ts",
+        "key": "b59de12dc4919f961f85db37628ee96b79294a2007ca687abcf49b04637d1d2c",
+        "status": "passed",
+        "elapsedMs": 4177,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/commands.test.ts",
+        "key": "dde1be6132b68aeb6697d2f018af0ab8dd91c8cad9a7c93ef8a8bfe91388735f",
+        "status": "passed",
+        "elapsedMs": 4167,
+        "cases": 16,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/contentCompaction.test.ts",
+        "key": "610a71ef247409b9f247a8a785791d0e735a8c5c075e74760a6c93b0e0a0213a",
+        "status": "passed",
+        "elapsedMs": 3979,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/convergence.test.ts",
+        "key": "3d814f1cf9cf7da8917c78da0611308eee0fc852e0033c99574198b789734bc0",
+        "status": "passed",
+        "elapsedMs": 4550,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/custodyRecord.test.ts",
+        "key": "a7c5365881cebc716cf3500cb765794925ad2b78e0f6a52d4db0e39d1d33e514",
+        "status": "passed",
+        "elapsedMs": 3808,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/dates.test.ts",
+        "key": "57d1d11bae5d64517df4598659de5958f39197b7453a7ea485804e2d5f4f6fec",
+        "status": "passed",
+        "elapsedMs": 4082,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/debtManifest.test.ts",
+        "key": "397572754079698d351b7ac49dcdfafaa6c03fb42a670285538436ff6d463b38",
+        "status": "passed",
+        "elapsedMs": 4301,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/diagnostics.test.ts",
+        "key": "286cc4f0e4abc0e9e2c16193681f740fd61071db7a6a30f8a5d6735ff03ae4a1",
+        "status": "passed",
+        "elapsedMs": 3828,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/enrollmentStates.test.ts",
+        "key": "654bd0d590bc23bd665fa42818ac0b8893b34c2a99c2a770cf4ab94e1d3f1883",
+        "status": "passed",
+        "elapsedMs": 4224,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/export.test.ts",
+        "key": "b6c4db3408f5cc6196935dde6f554c672fcf4fdb422f962c6f9e5723fd99e809",
+        "status": "passed",
+        "elapsedMs": 4499,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/freeze.test.ts",
+        "key": "f2c482251f0df454f49ccb899e03ebaa8005bda50291735905a8fffbfb175410",
+        "status": "passed",
+        "elapsedMs": 4477,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/generationApply.test.ts",
+        "key": "cc46ad10c1341d443fac43330b937f7102d6c0cacfaadcac3f4a4bd16fc56301",
+        "status": "passed",
+        "elapsedMs": 4056,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/gestureTargets.test.ts",
+        "key": "da19289ae884060ade079da95164232cdee63a3d560c0a24248214c75b395f37",
+        "status": "passed",
+        "elapsedMs": 4066,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/gestures.test.ts",
+        "key": "95d41283f5381082d0243d9874b23e35038e12fdbbd57dd6f2cd3d994aab967d",
+        "status": "passed",
+        "elapsedMs": 4084,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/goals.test.ts",
+        "key": "850edf10b7d7255ee618f326a423bd26bb585d82671289c333834d26b8ffa6ad",
+        "status": "passed",
+        "elapsedMs": 4399,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/hostedRetention.test.ts",
+        "key": "0877cda2583b40c0feaaedc284348f95c2696743832c516dbc6de954a59b387f",
+        "status": "passed",
+        "elapsedMs": 4128,
+        "cases": 29,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/id.test.ts",
+        "key": "fcba49c76acf8bb804d216fef04805cd7ec1378211e6ad418b8a4fd06d194144",
+        "status": "passed",
+        "elapsedMs": 4257,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/journalSnapshot.test.ts",
+        "key": "132d3601ff305f427dc844e8bd25141f75be651d1af46d35bf5a7c63a2c73b47",
+        "status": "passed",
+        "elapsedMs": 4786,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacyCleanup.test.ts",
+        "key": "8a75f4f9cc762b24ca2f1125a3f0b65a39aaed17fcb9fb36aeb25ce982cafaa1",
+        "status": "passed",
+        "elapsedMs": 6841,
+        "cases": 11,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacyCleanupBounds.test.ts",
+        "key": "7a9ec584e8379a5377b63048c9083c731123e6f730f06a0ba6e886c624ff656c",
+        "status": "passed",
+        "elapsedMs": 4844,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacyCoordinator.test.ts",
+        "key": "53a0707d4626e95492cc2c7b5513ae65e3146b62438ab40160f3a4cb9ea4fb43",
+        "status": "passed",
+        "elapsedMs": 7248,
+        "cases": 10,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacyImport.test.ts",
+        "key": "b7be6442f210b28f1428f75153bb1c2eace97bac3e3f99fb4d5c143520fe6f92",
+        "status": "passed",
+        "elapsedMs": 7543,
+        "cases": 13,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacyImportReceipts.test.ts",
+        "key": "be33d96fba8b3153df131ce3dcecfab0ffabe16a65caf59155e1a4c83fb8dea2",
+        "status": "passed",
+        "elapsedMs": 12705,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacySelection.test.ts",
+        "key": "d4902f939eb4cb42ffd243820f530075fe6d3216ff6c0ee3319ed3954b8a498f",
+        "status": "passed",
+        "elapsedMs": 5412,
+        "cases": 10,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/livePreview.test.ts",
+        "key": "09af9d407beaabb06613c968a97ea95bf1636b148930d66dd93084955d2b12a6",
+        "status": "passed",
+        "elapsedMs": 4263,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/localAppStartup.test.ts",
+        "key": "1c4f3b1f3ec0d92c9fa600561176480e6018e5e27edd5dadf730f8e7681d3608",
+        "status": "passed",
+        "elapsedMs": 3912,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/localClear.test.ts",
+        "key": "b4dcc72fd2cc43c83c32d1767339cd1212419db9634e6e46edee22f45cb35894",
+        "status": "passed",
+        "elapsedMs": 4289,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/localProperties.test.ts",
+        "key": "c47065f095952a6f3a5a964bb932a4db35399c11131d514964fdc66a5f22ba00",
+        "status": "passed",
+        "elapsedMs": 10983,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/localRecovery.test.ts",
+        "key": "58bccb2a642c7ee26356d2d96b1838a845d3b14b2443bd2d9c5dc3c7def98cbd",
+        "status": "passed",
+        "elapsedMs": 4689,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/masterLineSelection.test.ts",
+        "key": "95dc39c20bb20144d39643379ae8ccb30296094eeac72fc2df8b76c7a181dddc",
+        "status": "passed",
+        "elapsedMs": 4278,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/membership.property.test.ts",
+        "key": "b247f85fa30eb3df62ce873eb89ef99051e1df0a8df1d36dafd3aa6ea40baa27",
+        "status": "passed",
+        "elapsedMs": 4681,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/membership.test.ts",
+        "key": "2f1ad158e86b2ce692dc69a467a8b9f57b25eb5230890ce358e7936d4596c5d6",
+        "status": "passed",
+        "elapsedMs": 4564,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/moves.test.ts",
+        "key": "2e816fa3f9ddfd7c9981693382570a09a4a75bfdf57bdfa2df5e18f808abc8cf",
+        "status": "passed",
+        "elapsedMs": 4533,
+        "cases": 22,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/multiDevice.test.ts",
+        "key": "1fd7b61c372b0a382cbe95de27bb0daeed9b195a52c87269472c84e1d696489a",
+        "status": "passed",
+        "elapsedMs": 4685,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/outboundSpool.test.ts",
+        "key": "01b41e6819af1e28337c34916ac4592d01de7ece1c42664477329a088d03f19b",
+        "status": "passed",
+        "elapsedMs": 4219,
+        "cases": 24,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/ownedReceiveQueue.test.ts",
+        "key": "7954320633d62738756d76ba449350ff6a9fb7b926ebfef8de20b86cec350305",
+        "status": "passed",
+        "elapsedMs": 4064,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "7fc1f37bc3f89da2012f1204db8b7443063bec78b8477a0dce16449909325aa2",
+        "status": "passed",
+        "elapsedMs": 4620,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/positionDecision.test.ts",
+        "key": "bc646e8b6cc0d3ce05f3fb36528dfffd3eeb08ab5371f3b9c35e010828eaa32f",
+        "status": "passed",
+        "elapsedMs": 4962,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/privateDeliveryHttp.test.ts",
+        "key": "49327ec8cd5ec20ad0d2b8944f3445a053ea94ed4a4a7c2efd0e09e52cdc36ab",
+        "status": "passed",
+        "elapsedMs": 3757,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/privateMigration.test.ts",
+        "key": "8311aa3ab5fb1b7234b80499ac0f4ba4f257e81158f4d416ce6f9d0eec460c37",
+        "status": "passed",
+        "elapsedMs": 4072,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/projectionEquality.test.ts",
+        "key": "de9993433ac879251d6e38d7f17efce5c72f38c9f6291635da74bf0869a882fb",
+        "status": "passed",
+        "elapsedMs": 4168,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/relayAuth.test.ts",
+        "key": "971f5f25ea659e3dc2f46682c89c6b11638c2d5c717c2516daf5065f5fd2da9a",
+        "status": "passed",
+        "elapsedMs": 4766,
+        "cases": 13,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/reorder.test.ts",
+        "key": "8d2c30fc2d88541878dbce1f1a695ca9d9c96fec8e0c772292863129218a784f",
+        "status": "passed",
+        "elapsedMs": 4391,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/roundTrip.test.ts",
+        "key": "abc6f2abf5ea52bacea13307a0fa5a6fce1df100b04ec1b9416f9eab66a0604c",
+        "status": "passed",
+        "elapsedMs": 4873,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sections.test.ts",
+        "key": "b5210c9ea1ec51cf151dafe5fa74e11c35ca47db14ec9b4355e5ad2779d09aa4",
+        "status": "passed",
+        "elapsedMs": 4531,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/serialize.test.ts",
+        "key": "1ab0ad37b2c1b7840339671d3753af0588dea11b6e032cb8e51debde5b6865c0",
+        "status": "passed",
+        "elapsedMs": 4226,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/slotIndex.test.ts",
+        "key": "98cb8571419d3f59f0cde44a13ea41798baa11bb53d41c23d81deac27284900b",
+        "status": "passed",
+        "elapsedMs": 4654,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/slotUnlock.test.ts",
+        "key": "dc2b25d848efcfcbcaa60ecd29661885054a30c6a5e9c62496a295af7b6a8f25",
+        "status": "passed",
+        "elapsedMs": 4246,
+        "cases": 28,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sourceCapture.test.ts",
+        "key": "9ad9ec6f14e546c00e9d76cee90dbd7d95fbdc3b700d339047ee57c45a5917e4",
+        "status": "passed",
+        "elapsedMs": 4864,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/spoolBatch.test.ts",
+        "key": "392019ba9bb13476f855729c943c34bc673122a78295bcacd6e1d1c8d9345be1",
+        "status": "passed",
+        "elapsedMs": 11509,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/spoolRecord.test.ts",
+        "key": "9cc2ed8e183ec4d1e2e184dbecec28225c165602892d723f4ab7340f75d00823",
+        "status": "passed",
+        "elapsedMs": 5560,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/staticRender.test.ts",
+        "key": "6e84c332b8b6658827edbb38d209fcb4c6fb28425617611cf7724d418e528c3c",
+        "status": "passed",
+        "elapsedMs": 4182,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storageCompatibility.test.ts",
+        "key": "317520d594072636c4a9344b52b103877ee05e324b823f4999fceddfe4b85075",
+        "status": "passed",
+        "elapsedMs": 4264,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storageContract.test.ts",
+        "key": "7cb1740aabb036d36d2e41c9a975e01ea7d06ae1efdaa4cc919e309278875f5a",
+        "status": "passed",
+        "elapsedMs": 4072,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storageHarness.test.ts",
+        "key": "b63da89e0913e08cdb14c78eedaf59f5d5be486f90783311e3b89cfbc0a06204",
+        "status": "passed",
+        "elapsedMs": 3605,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/store.test.ts",
+        "key": "754b907e93c1f23167edaf9d7192d743e40f8b7061d8ff9fb511eea11debb36a",
+        "status": "passed",
+        "elapsedMs": 5375,
+        "cases": 23,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sync.test.ts",
+        "key": "7ddf9f052d1eeee7f2332057441034237c6488d61638ec8b5b655f936e8c5c26",
+        "status": "passed",
+        "elapsedMs": 4704,
+        "cases": 31,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/syncDefects.test.ts",
+        "key": "a9074c944baeae84624ad38dd68ba79758ffca1f1835592dd7670eef6e91fd00",
+        "status": "passed",
+        "elapsedMs": 4523,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/unfiledPanel.test.tsx",
+        "key": "d8390dfd785c434a10d0e461a556de00cc00ef73e046ab91466aa62ea007c567",
+        "status": "passed",
+        "elapsedMs": 4768,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/useYjs.test.tsx",
+        "key": "f126cf49df95ffcde0c84c6e4844a486ec648c5ae3f652b00c32c5af9eb59f76",
+        "status": "passed",
+        "elapsedMs": 4703,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/verificationMemo.test.ts",
+        "key": "89791114b704dfb3bcc6cf3dfa0423f84e264e2655b7940aae86918c6af3d8fa",
+        "status": "passed",
+        "elapsedMs": 3783,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/verifiedRecords.test.ts",
+        "key": "50890fd2f69e0e30870458af77a6c295fda4e82675bdef4b463c6e60a1ec3e3b",
+        "status": "passed",
+        "elapsedMs": 3780,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "d00b700909675cad2949ceb8fa3b0342821caa535c0a6d584e8194179c195278",
+        "status": "passed",
+        "elapsedMs": 4074,
+        "cases": 22,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/writeAdmission.test.ts",
+        "key": "bfc2c06249ef8799936f6b11a047ff6e69309e6a72cf8e8c9324e0bf7dcb57e2",
+        "status": "passed",
+        "elapsedMs": 4215,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/writeSession.test.ts",
+        "key": "491bbc931dafc17e58fbf19f0e263a3e4754365b4896c358375e4d88a3cb653b",
+        "status": "passed",
+        "elapsedMs": 3688,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/yjsDelivery.test.ts",
+        "key": "61d11e7074668f1ee5cda61b9eb6d91fd1b2f7ae2844e5646876dcea3f17df69",
+        "status": "passed",
+        "elapsedMs": 7689,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:vite/appUpgradeProperties.test.ts",
+        "key": "28d39383d96f007b6c5d2d2a1f5cb4756bdcbb371e8f15a875fc1d97c8ed7747",
+        "status": "passed",
+        "elapsedMs": 4124,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:vite/precacheBuild.test.ts",
+        "key": "e54406421007f211160fbe97cd3b09af333a47c411424deaa446983874308b74",
+        "status": "passed",
+        "elapsedMs": 3743,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-13T18:13:02.349Z",
+    "input": "878780c268388a0f0a333f45605ef8e7b0d7a26a72d6debd1d9bb132a0665f56",
+    "completedAt": "2026-09-13T18:22:43.979Z"
+  },
+  "elapsedMs": 581630,
+  "input": {
+    "revision": "8acdee4060189bcbf80f4744b457b00ac76fb7f1",
+    "sourceDigest": "b03923ef0133f6cd1cffd352147e61e2865edf9b26103a829985aa7ac28340de",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "sourceCount": 15094,
+    "dependencyCount": 8761,
+    "rawArchiveSha256": "7fa36e7163e5c81c6872761e65c3f238d597eee8f65aa7d3617eceb093d94682"
+  },
+  "counts": {
+    "selectedFiles": 92,
+    "selectedCases": 872,
+    "newVitestFiles": 77,
+    "newVitestCases": 744,
+    "newNodeFiles": 10,
+    "newNodeCases": 66,
+    "priorPropertyFiles": 5,
+    "priorPropertyCases": 62,
+    "runnerControls": 98,
+    "generatedControlHistories": 2720,
+    "requiredNodeFailureReceipts": 3,
+    "manifestObligations": 610,
+    "unresolved": 325,
+    "unresolvedTestFiles": 166,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63
+  },
+  "artifacts": [
+    {
+      "path": "selection-receipts.json.gz",
+      "rawSha256": "0e748830c3c08d9d0460b56e085cd73755b71770c50eef051049b2f23a9447a0",
+      "normalizedSha256": "273c115880af4cf3c89f2dd7f064549af8657a7cbb20c0d24cfe8d0ab15b7767",
+      "compressedSha256": "222df2a000124b0d8068e2e3fd1ec6b75f651f0dda7f4f5ffe51f4d29026c8d6",
+      "normalizedBytes": 1436160,
+      "compressedBytes": 113197
+    },
+    {
+      "path": "node-process-controls.json.gz",
+      "rawSha256": "8ec8d3cd5603a0ce5426e82407dac10ce8c6d385163af5740ca23576bc5d081c",
+      "normalizedSha256": "847d09732fae8dfe8e82a89017c13462f9039eeddc317a5b722e47e84cdd91ab",
+      "compressedSha256": "4ddda405624b66627e4b357c1c7c5a90ff7d7654f618592b79499e48a1819e78",
+      "normalizedBytes": 19583,
+      "compressedBytes": 3170
+    },
+    {
+      "path": "selection.log.gz",
+      "rawSha256": "ae8be8d1b7134171e53afff3034c2af0c4524d3878bac9490cdefb17ddee3ea0",
+      "normalizedSha256": "9032d878e5765e61d12e7680c4522ffba0d65c991e9c7811667f80f4fbc3148e",
+      "compressedSha256": "ad4ab8fc4def05e895a31e8fa03765dbf6fde2f53c42a9f6298e3e23037325ca",
+      "normalizedBytes": 4193,
+      "compressedBytes": 889
+    },
+    {
+      "path": "controls.log.gz",
+      "rawSha256": "64efa0e5460731cab2831a06d57d496eb2c3bc0836ba7646896df93f12945ef0",
+      "normalizedSha256": "64efa0e5460731cab2831a06d57d496eb2c3bc0836ba7646896df93f12945ef0",
+      "compressedSha256": "e91c80bf18594f4680db4143933839845a4ae311591dca1bb1c0e42c87c445df",
+      "normalizedBytes": 3856,
+      "compressedBytes": 1758
+    },
+    {
+      "path": "regressions.log.gz",
+      "rawSha256": "e28eb6e8a679ece2939f6ea8f03b954a9361c20e33b3da591a4dfb5accba951e",
+      "normalizedSha256": "e28eb6e8a679ece2939f6ea8f03b954a9361c20e33b3da591a4dfb5accba951e",
+      "compressedSha256": "5b5fd6c0d0e84d652960e6e024ea97dadd4a4e39b0dd35c543cfdbbea77df740",
+      "normalizedBytes": 7167,
+      "compressedBytes": 2559
+    },
+    {
+      "path": "gate-signature.log.gz",
+      "rawSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "normalizedSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "compressedSha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "normalizedBytes": 115,
+      "compressedBytes": 134
+    },
+    {
+      "path": "gate-typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-format.log.gz",
+      "rawSha256": "be253a847bd4be8194d63b232fdd996b1f147cfdd65e659b886754d989b874a4",
+      "normalizedSha256": "be253a847bd4be8194d63b232fdd996b1f147cfdd65e659b886754d989b874a4",
+      "compressedSha256": "dad731d027753b8c1c6e556ee4d3ba432a4c23ecbe7ab7d651a3e45b81c51240",
+      "normalizedBytes": 112,
+      "compressedBytes": 109
+    },
+    {
+      "path": "gate-inventory.log.gz",
+      "rawSha256": "5557e0b639b5ffe1d60a5f46f0ad99e6cf64dd8e262f108c076f3477c31e614f",
+      "normalizedSha256": "5557e0b639b5ffe1d60a5f46f0ad99e6cf64dd8e262f108c076f3477c31e614f",
+      "compressedSha256": "39dba1a8b342f92e30d3e72793ed4f31d63297f7d555c1d119b6990a986b694b",
+      "normalizedBytes": 323,
+      "compressedBytes": 240
+    },
+    {
+      "path": "gate-manifest.log.gz",
+      "rawSha256": "5c8c0b6f4aac70d1987ae1e35703499339075e55998f4d86a7c5308f9107cf61",
+      "normalizedSha256": "5c8c0b6f4aac70d1987ae1e35703499339075e55998f4d86a7c5308f9107cf61",
+      "compressedSha256": "2edaeb397740873078eaef0673bd1c08d74c8a6c84b4f7bec4180bff22b42d5c",
+      "normalizedBytes": 100,
+      "compressedBytes": 107
+    },
+    {
+      "path": "gate-authority.log.gz",
+      "rawSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "normalizedSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "compressedSha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "normalizedBytes": 750,
+      "compressedBytes": 447
+    },
+    {
+      "path": "gate-release-blocked.log.gz",
+      "rawSha256": "25613a1bbcd6cdcb5a6b3d20aa674395715046cc852c96d4889f14d0de96a936",
+      "normalizedSha256": "66b73436e93fa1cf0e002c3bf80d21bf04d38053dc5c1d9cd3c7fddd2ec1a935",
+      "compressedSha256": "6a273afbe2ef794f38e9e7549519b868d8220622f986e69b04ce99b3c1de8b65",
+      "normalizedBytes": 1017,
+      "compressedBytes": 561
+    },
+    {
+      "path": "selected-source-pins.json.gz",
+      "rawSha256": "cf7c4d5d422f417b8d3655cabfa460b442d6543091c01dbb7b815de0e8c247ea",
+      "normalizedSha256": "cf7c4d5d422f417b8d3655cabfa460b442d6543091c01dbb7b815de0e8c247ea",
+      "compressedSha256": "bce1de85324c414bf9b96b72760cd5b0ab83a83798939213f60596e398f51635",
+      "normalizedBytes": 16196,
+      "compressedBytes": 5182
+    },
+    {
+      "path": "test-preservation.json.gz",
+      "rawSha256": "c9682389460e11baa677c452e8fe46a12a6d6c7bb064553cac8db887b9e855d7",
+      "normalizedSha256": "c9682389460e11baa677c452e8fe46a12a6d6c7bb064553cac8db887b9e855d7",
+      "compressedSha256": "bc45bf6d371a37df7cf0b4c01ad34cb7c19d7c05153220ada60713f63faff1a1",
+      "normalizedBytes": 12342,
+      "compressedBytes": 4663
+    }
+  ],
+  "sourcePatch": {
+    "path": "source-patch.diff.gz",
+    "sha256": "b4c97fcb27fbcd3a7dc9691e3dbad493ba676323b9ea00ecc6578b83dea24aad",
+    "compressedSha256": "9a85abd9c3eebbc74c2dd9ddcb1f746989c137137cb958944efb585d991783dd"
+  },
+  "finalGatesSha256": "6a7be47f6fc9cb60b60372c4e15697ab1ffa281d04cf66beb5d80b49f367dd1f",
+  "limits": [
+    "Explicit allowlist: 14 Vitest, 136 Node and 16 Playwright test files still need adapters.",
+    "Node file receipts do not credit optional wrapper artifact postconditions or native campaigns.",
+    "Selected runner, policy, test and helper bytes match execution; subsequent docs/evidence updates are not an immutable aggregate.",
+    "Full raw input archive remains at the recorded local output path; compact evidence preserves its digest and actual dependency/runtime digests.",
+    "Eleven existing native ownership controls retain prior evidence; no browser rerun in this phase.",
+    "Current host timings do not establish a supported-load or platform guarantee."
+  ],
+  "prospectivePacketCeilingBytes": 250000,
+  "preservationSha256": "3806720ee94abd57663e8689b26492b508d37dd63adb7126cd429c6e6ead8d01"
+}

@@ -4039,3 +4039,34 @@ earlier 67.9-second result remains in the packet. Twenty-six affected runner tes
 last check; the prior fifteen process-owner and fifty adapter regressions remain applicable. Final
 typecheck, scoped lint/format, authority/registry, inventory and manifest checks pass; full release
 selection still correctly refuses unresolved obligations. The evidence packet remains below 120 kB.
+
+
+## 2026-09-13 — Reviewed ordinary Vitest and Node protocol adapters (L-1)
+
+The preceding property adapter phase is signed and verified as `8acdee4`. This phase adds explicit
+reviewed ownership dispositions for 77 Vitest and ten Node protocol files: 810 new cases. Together
+with the prior five property files, the disposable `general-tests` selection passes all 92 files /
+872 cases in 581.6 seconds including preparation and fingerprints, with confirmed group drain for
+every stage. Exact independent case lists, unchanged finite bounds and controlled environments remain.
+No product/test body, assertion, seed or test deadline changes. Whole commands retain separate credit.
+
+The Node reporter now preserves wrapped error/counterexample diagnostics and partial completed-case
+progress. Actual before/after controls use the signed old reporter and a seeded failing property;
+a second control times out a stuck test and verifies both preserved progress and process drain.
+All 98 non-native runner/control tests pass, with 2,720 generated control histories. Typecheck,
+scoped style, inventory/manifest readback, signature and authority checks pass. No selection or
+regression retry was needed. Existing eleven browser ownership controls retain prior evidence.
+
+The manifest now has 610 obligations and 325 unresolved: 166 test-file, 96 command and 63 campaign
+rows. The remaining test rows are 14 Vitest, 136 Node and 16 Playwright files. All eleven catalogue
+adapters remain resolved (163 cases/54 mutations). At 688,333 bytes the manifest still meets its
+700 kB ceiling; further expansion needs a compact representation preserving every obligation and
+case identity. Generated registrations, remaining fixture/process review, deliberate nested owners,
+exact wrapper postconditions and R-04 full style gates precede P-06 and the immutable aggregate.
+
+The new implementation remains uncommitted. Bounded receipts, Node failure controls, exact source
+patch and test-preservation pins live at
+`docs/account-conformance-runs/2026-09-13-general-test-adapters/`, within a prospective 250 kB ceiling.
+No personal app/server/profile, Account cutover or release qualification occurred. Personal/package
+and prior vector bytes, historical reviews/evidence, formal debts, signing backups, root `done ` and
+L-2 remain unchanged.

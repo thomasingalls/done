@@ -12,8 +12,10 @@ export const propertyFiles = [
   'test/legacySelection.test.ts',
   'test/legacyCleanup.test.ts',
 ];
+export const vitestFilePattern =
+  /^(?:test|vite)\/(?:[A-Za-z0-9-]+\/)*[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.test\.tsx?$/;
 export const vitestArgv = (file) => {
-  assert(/^test\/[A-Za-z0-9/-]+\.test\.tsx?$/.test(file), 'Unsupported Vitest path');
+  assert(vitestFilePattern.test(file), 'Unsupported Vitest path');
   return [
     'node',
     'node_modules/vitest/vitest.mjs',

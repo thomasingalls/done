@@ -11,6 +11,7 @@ import {
   readdirSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import * as fc from 'fast-check';
 import {
@@ -41,12 +42,13 @@ function fixture(t, script) {
   const fingerprint = () => ({
     revision: 'fixture',
     sourceDigest: digest(
-      filePins(
-        root,
-        readdirSync(root)
+      filePins(root, [
+        ...readdirSync(root)
           .filter((p) => p.endsWith('.mjs'))
           .sort(),
-      ),
+        'scripts/release-validation/node-reporter.mjs',
+        'scripts/release-validation/process-guard.mjs',
+      ]),
     ),
     dependencyDigest: 'fixture-dependency-v1',
     runtime: { node: process.version },
@@ -323,6 +325,102 @@ test('a malformed case report still produces a complete failed receipt and drain
     JSON.parse(readFileSync(join(f.output, receipt.key, 'receipt.json'))).status,
     'failed',
   );
+});
+
+test('Node property failure retains its counterexample and seed that the old reporter lost', async (t) => {
+  const f = fixture(t, '');
+  f.write(
+    'actual.test.mjs',
+    `import test from 'node:test';import fc from ${JSON.stringify(import.meta.resolve('fast-check'))};
+    test('property',()=>fc.assert(fc.property(fc.nat(10),n=>n<0),{seed:130919,numRuns:120}));`,
+  );
+  const stage = {
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'actual.test.mjs',
+    ],
+    expect: { kind: 'cases', cases: [{ id: 'actual.test.mjs::property', outcome: 'pass' }] },
+    deadlineMs: 5000,
+    maxLogBytes: 1024 * 1024,
+  };
+  f.write(
+    'scripts/release-validation/node-reporter.mjs',
+    execFileSync('git', ['show', '8acdee4:scripts/release-validation/node-reporter.mjs'], {
+      encoding: 'utf8',
+    }),
+  );
+  const before = await f.run(stage);
+  assert.equal(before.status, 'failed');
+  assert.doesNotMatch(
+    readFileSync(join(f.output, before.key, 'output.log'), 'utf8'),
+    /Counterexample|seed: 130919/,
+  );
+  f.write(
+    'scripts/release-validation/node-reporter.mjs',
+    readFileSync('scripts/release-validation/node-reporter.mjs', 'utf8'),
+  );
+  const after = await f.run(stage);
+  assert.equal(after.status, 'failed');
+  assert(after.result.groupDrained);
+  for (const file of ['output.log', 'cases.json']) {
+    const text = readFileSync(join(f.output, after.key, file), 'utf8');
+    assert.match(text, /Counterexample/);
+    assert.match(text, /seed: 130919/);
+  }
+  if (process.env.NODE_CONTROL_OUTPUT) {
+    mkdirSync(process.env.NODE_CONTROL_OUTPUT, { recursive: true });
+    for (const [name, r] of [
+      ['before', before],
+      ['after', after],
+    ])
+      for (const file of ['receipt.json', 'output.log', 'cases.json'])
+        copyFileSync(
+          join(f.output, r.key, file),
+          join(process.env.NODE_CONTROL_OUTPUT, name + '-' + file),
+        );
+  }
+});
+
+test('a stuck Node test cannot pass and leaves completed-case progress after owned deadline drain', async (t) => {
+  const f = fixture(t, '');
+  f.write(
+    'actual.test.mjs',
+    `import test from 'node:test';test('completed',()=>{});test('stuck',async()=>{setInterval(()=>{},1000);await new Promise(()=>{});});`,
+  );
+  const r = await f.run({
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'actual.test.mjs',
+    ],
+    expect: {
+      kind: 'cases',
+      cases: ['completed', 'stuck'].map((name) => ({
+        id: 'actual.test.mjs::' + name,
+        outcome: 'pass',
+      })),
+    },
+    deadlineMs: 1200,
+  });
+  assert.equal(r.status, 'failed');
+  assert.equal(r.result.reason, 'timeout');
+  assert(r.result.groupDrained);
+  const partial = JSON.parse(readFileSync(join(f.output, r.key, 'cases.json')));
+  assert.equal(partial.phase, 'running');
+  assert.deepEqual(partial.cases, [{ id: 'actual.test.mjs::completed', outcome: 'pass' }]);
+  if (process.env.NODE_CONTROL_OUTPUT)
+    for (const file of ['receipt.json', 'output.log', 'cases.json'])
+      copyFileSync(
+        join(f.output, r.key, file),
+        join(process.env.NODE_CONTROL_OUTPUT, 'timeout-' + file),
+      );
 });
 
 function portFileBrowser(t, completes) {

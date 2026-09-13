@@ -43,40 +43,43 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — remaining test adapters (`L-1`)
+## Active slice: General validation-runner integration — generated test adapters (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation extends the reviewed general test adapters
+blocks_on: none; next bounded implementation covers generated registrations and remaining ownership review
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** R-01's [bounded repair](./review/implementation/service-receiver-bounds.md) is
-signed and verified as `5872dc5`. The [first general Vitest adapter](./release-validation-execution.md#vitest-property-adapter--phase-2m)
-resolves five R-03/N-06 suites: 62 exact cases, unchanged 515 seeded histories, finite AST census,
-complete runtime reconciliation and owned process execution. Its implementation is uncommitted.
-The five properties now have explicit 60-second limits inside separate 180-second file stages.
+**Just completed.** The first property adapter is signed and verified as `8acdee4`; R-01's
+[bounded repair](./review/implementation/service-receiver-bounds.md) is signed as `5872dc5`.
+The [reviewed general file set](./release-validation-execution.md#reviewed-vitest-and-node-files--phase-2n)
+adds 77 Vitest and ten Node protocol files with 810 cases. Together with the prior five property files,
+`general-tests` passes all 92 files / 872 cases under exact independent case counts and owned execution.
+This new implementation is uncommitted. Product/test assertions, seeds and deadlines are unchanged.
 
-**Evidence.** The final disposable selection passes all 62 cases in 56.2 seconds including preparation;
-the prior post-deadline run took 67.9 seconds. Generated properties take 1.0–6.2 seconds across these runs. Assertions, seeds and history counts are unchanged by AST
-comparison. All 91 non-native runner controls/regressions pass with 2,560 generated control histories.
-Actual omission, skip, zero-case, counterexample, inner/outer timeout, cancellation and detached-child
-controls retain nine receipts and proved drain. The [archive](./account-conformance-runs/2026-09-13-vitest-properties/README.md)
-retains the first reporter/fixture failures. These are host observations, not a loaded-host guarantee.
-Existing eleven native browser ownership controls retain prior evidence; no browser campaign reran.
+**Evidence.** The disposable selection passes in 581.6 seconds including copying/fingerprints;
+every group drains. All 98 non-native runner/control tests pass with 2,720 generated control histories.
+The Node reporter now retains wrapped errors, counterexamples and completed-case progress. Actual
+signed-before/current-after and stuck-test controls retain three failed receipts with proved drain.
+No selection/regression retry or larger timeout was needed. The [compact archive](./account-conformance-runs/2026-09-13-general-test-adapters/README.md)
+retains complete stage reports, exact source patch and test-preservation pins. Typecheck, scoped style,
+planning and authority checks pass. Eleven native ownership controls retain earlier evidence; no
+browser campaign reran. These are host observations, not loaded-host or full release qualification.
 
-**Next bounded phase.** Extend the remaining Vitest case shapes and reviewed Node test families;
-then integrate Playwright, deliberate nested owners and exact wrapper variants/postconditions.
-R-04 still requires explicit live-file versus immutable-archive style scope, live repairs and full
-style commands. Preserve counterexamples, ordered prerequisites and missing/skipped/timeout refusals.
-All eleven catalogue adapters remain resolved (163 cases/54 mutations). The manifest now has 609
-obligations and 412 unresolved (253 test-file, 96 command, 63 campaign). A file receipt does not
-credit its whole package/wrapper. P-06 current crypto prose and the selected immutable aggregate
-follow integration, before private Account walkthrough preparation and human recovery/adoption work.
+**Next bounded phase.** Extend the remaining generated-registration case shapes and reviewed Node
+families. Fourteen Vitest, 136 Node and 16 Playwright test files remain unresolved. The manifest has
+610 obligations / 325 blocked rows: 166 test-file, 96 command and 63 campaign. Its 688,333 bytes fit the
+700 kB ceiling; compact representation must preserve every case and obligation as integration expands.
+All eleven catalogue adapters remain resolved (163 cases/54 mutations). Playwright, deliberate nested
+owners and exact wrapper variants/postconditions follow; a file receipt does not credit its whole
+command. R-04 requires explicit live/archive style scope and full style checks. P-06 current crypto
+prose and the complete immutable aggregate precede private Account walkthrough preparation and human
+recovery/adoption work.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
@@ -89,7 +92,8 @@ F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain vis
 **Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 remain byte-identical.
 Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
 Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The thirty-
-commit signing sweep is complete; R-01 was signed normally. The aggregate needs its own signed revision.
+commit signing sweep is complete; both subsequent commits were signed normally. The aggregate needs
+its own signed revision.
 
 ---
 
