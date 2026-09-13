@@ -16,8 +16,9 @@ also passes its 15 baselines and six mutations. The [editor-admission adapter](.
 passes 12 cases/three mutations and repairs shared runner defects found by its native campaign.
 The [workspace-admission adapter](../../release-validation-execution.md#workspace-admission-catalogue-adapter--phase-2f)
 passes ten cases/four mutations with exact history evidence. The [owned-startup adapter](../../release-validation-execution.md#owned-startup-catalogue-adapter--phase-2g)
-passes 15 cases/three mutations, preserving read-only classification and non-exposure evidence. Local
-genesis is next; the full manifest remains blocked on 430 adapter obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
+passes 15 cases/three mutations, preserving read-only classification and non-exposure evidence. The [Local-genesis adapter](../../release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
+passes 17 cases/four mutations with exact generated boundaries and byte-array report evidence. Local
+clear is next; the full manifest remains blocked on 427 adapter obligations. The [Q-02/Q-03/Q-05 sequence](./liveness-followups.md)
 and [validation prerequisites Q-01/Q-04](./validation-controls.md) pass within their bounded campaigns.
 F-07's retained-history/workload limits and complete aggregate qualification remain open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.

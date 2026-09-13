@@ -1,21 +1,21 @@
-# Release-validation execution — foundation and six catalogue adapters
+# Release-validation execution — foundation and seven catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
-content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5` and workspace-admission as `ddd77a3`.
+content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 601 obligations, including all 265 current
+The [manifest](./release-validation-manifest.json) now contains 602 obligations, including all 266 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**430 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**427 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -35,6 +35,7 @@ node scripts/release-validation/execute.mjs --selection admission
 node scripts/release-validation/execute.mjs --selection editor-admission
 node scripts/release-validation/execute.mjs --selection workspace-admission
 node scripts/release-validation/execute.mjs --selection owned-startup
+node scripts/release-validation/execute.mjs --selection local-genesis
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -43,9 +44,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs eleven stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter and owned-startup-adapter test files
-(44 exact cases),
+`infrastructure` runs twelve stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter and Local-genesis-adapter
+test files (49 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -345,13 +346,51 @@ receive authority remain fixture boundaries. Creation/migration resumption, clea
 cutover, Account authority, OS/power-loss and native IME/device qualification remain outside this
 catalogue. No production behavior was changed here.
 
+## Local-genesis catalogue adapter — phase 2h
+
+The Local-genesis catalogue passes **17 baseline cases, 160 assertions and four mutations** through
+the shared owner. Candidate `genesis`, scope `local-genesis-browser` and full patch paths are explicit
+bindings. Nine cases are generated from durable boundaries: claim, reservation, custody, content
+progress, witness, counter, ready witness, ready progress and index. The parent separately binds each
+case ID to its boundary field, rejecting omitted or substituted crash points. Removing a boundary from
+the generator also changes the independently expected census. The original races, native aborts,
+cancellation/drain, authenticated resumption, missing/damaged state and index/scope scenarios remain.
+
+The first run failed during report encoding after publishing G01: the creator-race identity assertion
+contains Uint8Array values, which the plain-value encoder refused. The reviewed `uint8array` tag now
+preserves these values as canonical byte arrays, distinctly from ordinary arrays and numeric-key
+objects. Subarray offsets do not alter value equality; altered bytes do. Other typed views, Buffer and
+extra enumerable byte-array properties refuse. No product comparison or record encoding changed.
+A focused before/after probe and 160 generated nested-claim comparisons against native Node equality
+exercise this extension to `tagged-json-v1`; plain-value tags remain unchanged. Failed report encoding
+still leaves the parent's failed receipt, drain evidence and bounded log, rather than success.
+
+Five new tests cover exact generated selections, crash-boundary evidence, the four specific mutation
+assertions, nested report values, 160 subset/fault histories (seed 130910) and 160 byte-array histories
+(seed 130911). All 64 non-native controls pass, with 1,760 generated validation histories across the
+runner. Twelve infrastructure stages pass 49 exact cases and two static checks.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-local-genesis-adapter/README.md) preserves
+both full attempts, the exact seven-case/two-mutation selection used by Account local provenance,
+baseline-only counter crash, selected startup reclassification/replay and seven native ownership
+controls. The passing full stage took **73.8 seconds** inside its 120-second deadline; the command
+took 95.2 seconds including preparation/final checks. These are host observations, not supported-device
+performance qualification. Startup/drain/log/report bounds remain unchanged.
+
+Standalone case/no-mutant/output options and JSON/Markdown reports remain; custom browsers and existing
+outputs refuse. The genesis guide's reproduction instructions now match this pinned-browser contract.
+Default catalogue, exact package leaf and campaign alias resolve. Account local provenance's enclosing
+wrapper retains its other prerequisites and postconditions; this selected regression is not its whole
+campaign receipt. No personal genesis, Account onboarding, default-app cutover, physical power loss or
+raw profile-clone recovery was performed or qualified.
+
 ## Next bounded integration
 
-Integrate Local genesis's **17 baseline cases and four mutations**, reviewing factor confirmation,
-creator races, generated crash boundaries, authenticated resumption and index exclusion first. Then
-resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and
-measured deadlines. Five catalogues (81 cases/27 mutations) still need adapters. Vector reuse becomes
-meaningful when consumers depend on the same successful identity.
+Integrate Local clear's **17 baseline cases and five mutations**, reviewing journal-inclusive inventory,
+authenticated deletion/resumption, lifecycle exclusion and generated crash boundaries first. Then resolve
+remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and measured
+deadlines. Four catalogues (64 cases/23 mutations) still need adapters. Vector reuse becomes meaningful
+when consumers depend on the same successful identity.
 
 Only after every required obligation resolves should P-06's prose sweep and the complete selected
 immutable run proceed. No personal app/server/profile, release deployment or Account cutover is

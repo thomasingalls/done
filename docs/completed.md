@@ -3720,3 +3720,36 @@ with 17 cases/four mutations is next. Remaining test families, wrapper postcondi
 precede P-06 and immutable aggregate validation. No personal operation occurred; prior vectors,
 historical reviews/debts and L-2 are unchanged. This owned-startup phase remains uncommitted.
 Appended before replacing L-1.
+
+
+## 2026-09-13 — Local-genesis catalogue execution adapter, phase 2h (`L-1`)
+
+Committed owned-startup unsigned as `6348b6c`, preserving review-tracked hashes. Connected Local genesis
+to the shared disposable owner: 17 baselines/160 assertions and four mutations pass. Candidate `genesis`,
+scope `local-genesis-browser` and full source paths are explicit bindings. The nine generated crash
+cases retain a separately reviewed case-to-commit-boundary map; omitted, substituted or relabeled
+boundaries refuse. Confirmation, missing completed state, progress authentication and legacy index
+mutation controls each require their own changed bytes and specific failing assertion.
+
+The first native run exposed an evidence-encoder gap: the retained initial custody record contains
+Uint8Array values. The plain-value encoder refused during the creator race after reporting only the
+first case. The new byte-array tag preserves type and contents through JSON. A focused probe fails
+before and passes after the repair; 160 generated nested claims compare encoded equality against native
+equality, including byte changes, subarray offsets and array/object substitutions. Unsupported typed
+views and decorated byte arrays still refuse. No product record, scenario assertion or catalogue patch
+changed. The old custom-browser advice in the genesis guide now matches the pinned runner.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-local-genesis-adapter/README.md) preserves the
+failed run and passing full run, the seven-case/two-mutation Account provenance selection, baseline-only
+counter crash, selected startup reclassification/replay and seven native ownership controls. The full
+stage took 73.8 seconds inside its 120-second deadline; the command took 95.2 seconds including
+preparation/final checks. Five new tests bring non-native runner controls to 64 tests and 1,760 generated
+validation histories. Twelve infrastructure stages pass 49 cases and two static checks. These are
+adapter controls and one-host observations, not additional product histories or platform qualification.
+
+The manifest has 602 obligations with 427 unresolved, covering 266 required test files and the same
+163 catalogue cases/54 mutations. Four catalogue adapters remain (64 cases/23 mutations); Local clear's
+17 cases/five mutations is next. The Account provenance wrapper retains its other prerequisites and
+postconditions. Remaining test families, wrappers and deadlines precede P-06 and immutable aggregate
+validation. No personal operation occurred; prior vectors, historical reviews/debts and L-2 are unchanged.
+This Local-genesis phase remains uncommitted. Appended before replacing L-1.

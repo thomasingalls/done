@@ -8,6 +8,22 @@ import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  'local-genesis': {
+    scope: 'local-genesis-browser',
+    candidate: 'genesis',
+    patchPrefix: '',
+    boundaryByCase: {
+      'G03.kill-claim': 'claim',
+      'G04.kill-reservation': 'reservation',
+      'G05.kill-custody': 'custody',
+      'G06.kill-progress-content': 'progress-content',
+      'G07.kill-witness': 'witness',
+      'G08.kill-counter': 'counter',
+      'G09.kill-witness-ready': 'witness-ready',
+      'G10.kill-progress-ready': 'progress-ready',
+      'G11.kill-index': 'index',
+    },
+  },
   'owned-startup': { scope: 'owned-startup-browser', candidate: 'startup', patchPrefix: '' },
   content: { scope: 'content-carrier-browser', candidate: 'content', patchPrefix: 'src/crdt/' },
   journal: { scope: 'journal-carrier-browser', candidate: 'journal', patchPrefix: 'src/crdt/' },
@@ -95,7 +111,7 @@ export function carrierStage(family, root, args = [], id = family + ':full') {
 
 export function reconcileCarrier(family, selection, actual, { nonce, sources, root }) {
   requireFamily(family);
-  const { scope, candidate, patchPrefix } = bindings[family];
+  const { scope, candidate, patchPrefix, boundaryByCase } = bindings[family];
   assert.equal(actual.schema, 1);
   assert.equal(actual.releaseNonce, nonce, 'Stale carrier report');
   assert.equal(actual.scope, scope);
@@ -118,16 +134,23 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     )
     .sort();
   assert(sourcePaths.length, 'Missing independent carrier source pins');
-  if (['editor-admission', 'workspace-admission', 'owned-startup'].includes(family))
+  if (
+    ['editor-admission', 'workspace-admission', 'owned-startup', 'local-genesis'].includes(family)
+  )
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
   const check = (report, ids, mutation = null) => {
-    if (['editor-admission', 'workspace-admission', 'owned-startup'].includes(family))
+    if (
+      ['editor-admission', 'workspace-admission', 'owned-startup', 'local-genesis'].includes(family)
+    )
       for (const row of report.cases)
         for (const a of row.assertions) {
           validateEvidence(a.actual);
           validateEvidence(a.expected);
         }
     validateReport(report, ids);
+    if (boundaryByCase)
+      for (const row of report.cases)
+        assert.equal(row.boundary, boundaryByCase[row.id], 'Genesis crash boundary changed');
     for (const row of report.cases)
       assert.equal(
         new Set(row.assertions.map((a) => a.id)).size,

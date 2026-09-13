@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation Local-genesis catalogue adapter (`L-1`)
+## Active slice: Release-validation Local-clear catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,28 +61,27 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Workspace-admission is now unsigned `ddd77a3`, following editor-admission
-`3f1afc5`, admission `4fc3af0`, journal `1a86453`, content `b9f0984`, foundation `f14c68f` and inventory
-`f13bdd1`. The [owned-startup catalogue adapter](./release-validation-execution.md#owned-startup-catalogue-adapter--phase-2g)
-passes 15 baseline cases/96 assertions and three discriminating mutations. It preserves read-only
-classification, refused-open non-exposure, factor unlock, post-grant reclassification, replay cancellation
-and interrupted initialization. The [evidence packet](./account-conformance-runs/2026-09-13-owned-startup-adapter/README.md)
-retains full and selected native runs, the workspace-history regression, seven native ownership controls
-and 59 non-native tests with 1,440 generated validation histories. Eleven infrastructure stages pass 44
-cases and two static checks. No production code or scenario assertion changed. Owned-startup remains
-uncommitted.
+**Just completed.** Owned-startup is now unsigned `6348b6c`, following workspace-admission `ddd77a3`,
+editor-admission `3f1afc5`, admission `4fc3af0`, journal `1a86453`, content `b9f0984`, foundation `f14c68f`
+and inventory `f13bdd1`. The [Local-genesis catalogue adapter](./release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
+passes 17 baseline cases/160 assertions and four discriminating mutations, with explicit identities for
+all nine generated crash boundaries. Native execution exposed a byte-array report-encoding gap, repaired
+with before/after and generated equality controls. The [evidence packet](./account-conformance-runs/2026-09-13-local-genesis-adapter/README.md)
+retains the failed/full/selected native runs, startup regression, seven native ownership controls and
+64 non-native tests with 1,760 generated validation histories. Twelve infrastructure stages pass 49 cases
+and two static checks. No production code or scenario assertion changed. Local genesis remains uncommitted.
 
-**The full phase-2 contract is not closed.** The manifest covers 265 required test files, all 163
-catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 430 unresolved rows
-and refuses whole-release execution. Five catalogue adapters (81 cases/27 mutations), general test
-adapters, wrappers, selected postconditions and measured deadlines remain. A nested catalogue result
-does not discharge its enclosing wrapper. P-06 remains unswept; the complete vector chain and immutable
-aggregate have not run. The earlier silent package-manager attempt remains undiagnosed; exact Node
-commands work.
+**The full phase-2 contract is not closed.** The manifest covers 266 required test files, all 163
+catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 427 unresolved rows
+and refuses whole-release execution. Four catalogue adapters (64 cases/23 mutations), general test
+adapters, wrappers, selected postconditions and measured deadlines remain. The Account provenance's
+seven-case genesis selection passes independently; its enclosing wrapper is not thereby discharged.
+P-06 remains unswept; the complete vector chain and immutable aggregate have not run. The earlier silent
+package-manager attempt remains undiagnosed; exact Node commands work.
 
-**Next single phase.** Adapt Local genesis's 17 cases and four mutations, independently reviewing
-factor confirmation, creator races, generated crash boundaries, authenticated resumption and index
-exclusion before extending the owned boundary. Then resolve remaining catalogue, Node, Vitest,
+**Next single phase.** Adapt Local clear's 17 cases and five mutations, independently reviewing its
+journal-inclusive inventory, authenticated deletion/resumption, lifecycle exclusion and generated crash
+boundaries before extending the owned boundary. Then resolve remaining catalogue, Node, Vitest,
 Playwright and wrapper selections/postconditions, with vector and traceability prerequisites as ordered
 receipts.
 

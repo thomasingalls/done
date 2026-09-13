@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 export const evidenceEncoding = 'tagged-json-v1';
-// An injective representation of the plain values used by these assertions. JSON alone
+// An injective representation of plain values and reviewed Uint8Array evidence. JSON alone
 // erases undefined object fields and conflates undefined array entries with null.
 export function encodeEvidence(value) {
   if (value === undefined) return ['undefined'];
@@ -13,6 +13,14 @@ export function encodeEvidence(value) {
   }
   assert(typeof value === 'object', 'Unsupported assertion evidence');
   assert(!Object.getOwnPropertySymbols(value).length, 'Symbol assertion evidence');
+  if (Object.getPrototypeOf(value) === Uint8Array.prototype) {
+    assert(
+      Object.keys(value).length === value.length &&
+        Object.keys(value).every((key, i) => key === String(i)),
+      'Extra byte-array assertion properties',
+    );
+    return ['uint8array', Array.from(value)];
+  }
   if (Array.isArray(value)) {
     assert(
       Object.keys(value).length === value.length &&
@@ -44,7 +52,16 @@ export function validateEvidence(value) {
           (data === '-0' || String(Number(data)) === data),
         'Invalid number evidence',
       );
-    else if (kind === 'array') {
+    else if (kind === 'uint8array') {
+      assert(
+        Array.isArray(data) &&
+          Object.keys(data).length === data.length &&
+          data.every(
+            (byte) => Number.isInteger(byte) && byte >= 0 && byte <= 255 && !Object.is(byte, -0),
+          ),
+        'Invalid byte-array evidence',
+      );
+    } else if (kind === 'array') {
       assert(Array.isArray(data));
       data.forEach(validateEvidence);
     } else {

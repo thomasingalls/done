@@ -67,9 +67,10 @@ supported-browser population, PRF, Account receive-authority or interaction-perf
 
 ## Reproduction
 
-`node scripts/local-genesis/run.mjs` freezes production sources and records input hashes. Set
-`CHROMIUM_PATH` when using a non-default Chromium installation. Cases include two creators with different
-factors, native abort after request success, cancellation during crypto, renderer death after each of
+`node scripts/local-genesis/run.mjs` now uses the [owned catalogue adapter](./release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
+and records source/dependency/browser input hashes in a disposable checkout. It supports `--case`,
+`--no-mutants` and `--output`; `CHROMIUM_PATH` overrides refuse because the owner pins installed Chromium. Cases include two creators with
+different factors, native abort after request success, cancellation during crypto, renderer death after each of
 nine durable boundaries, offline acknowledged-edit recovery, damaged progress, missing completed state,
 closed/independent slots and legacy index interference. Four deliberate regressions must be detected.
 `test/localGenesis.test.ts` adds real-crypto/fake-IDB binding and refusal checks; its mock locks establish

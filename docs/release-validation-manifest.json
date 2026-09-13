@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "c25e459daf4d456a1c0a0c41b68234a8017b82cca97531ea1180e97a0953704a",
+  "inventoryDigest": "8f9e4be7126a1134e851bd7a62164ae4df774079d33263186437eae158b3a60b",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2764,6 +2764,54 @@
       }
     },
     {
+      "id": "test:test/release-validation/local-genesis.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/local-genesis.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/local-genesis.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/local-genesis.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/local-genesis.test.mjs::Local genesis independently resolves nine generated crash boundaries and the provenance selection",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-genesis.test.mjs::genesis refuses substituted crash boundaries and requires exact factor, progress and index mutation evidence",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-genesis.test.mjs::genesis report identity preserves nested inventories and unavailable error values",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-genesis.test.mjs::160 generated genesis selections reject omitted work, substituted mutations and mislabeled crash points",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-genesis.test.mjs::byte-array evidence matches native equality across 160 generated nested claims and rejects type loss",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/manifest.test.mjs",
       "kind": "test",
       "path": "test/release-validation/manifest.test.mjs",
@@ -4103,7 +4151,94 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/local-genesis/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/local-genesis/worker.mjs",
+          "--case",
+          "G01.confirm,G02.race,G03.kill-claim,G04.kill-reservation,G05.kill-custody,G06.kill-progress-content,G07.kill-witness,G08.kill-counter,G09.kill-witness-ready,G10.kill-progress-ready,G11.kill-index,G12.abort,G13.cancel,G14.missing,G15.auth,G16.index,G17.scope"
+        ],
+        "env": {},
+        "variant": "local-genesis-1a6be99d577b1afadf4356c92b3e732c4c18d099e6b62d223dcbd07467f84bdf",
+        "expect": {
+          "kind": "local-genesis",
+          "selection": {
+            "cases": [
+              { "id": "G01.confirm", "outcome": "pass" },
+              { "id": "G02.race", "outcome": "pass" },
+              { "id": "G03.kill-claim", "outcome": "pass" },
+              { "id": "G04.kill-reservation", "outcome": "pass" },
+              { "id": "G05.kill-custody", "outcome": "pass" },
+              { "id": "G06.kill-progress-content", "outcome": "pass" },
+              { "id": "G07.kill-witness", "outcome": "pass" },
+              { "id": "G08.kill-counter", "outcome": "pass" },
+              { "id": "G09.kill-witness-ready", "outcome": "pass" },
+              { "id": "G10.kill-progress-ready", "outcome": "pass" },
+              { "id": "G11.kill-index", "outcome": "pass" },
+              { "id": "G12.abort", "outcome": "pass" },
+              { "id": "G13.cancel", "outcome": "pass" },
+              { "id": "G14.missing", "outcome": "pass" },
+              { "id": "G15.auth", "outcome": "pass" },
+              { "id": "G16.index", "outcome": "pass" },
+              { "id": "G17.scope", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "skip-factor-confirmation",
+                "case": "G01.confirm",
+                "assertion": "mismatched-confirmation-refused",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localGenesis.ts",
+                  "from": "if (typed !== expected)",
+                  "to": "if (false)"
+                }
+              },
+              {
+                "id": "forget-completed-stage",
+                "case": "G14.missing",
+                "assertion": "missing-complete-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localGenesisStorage.ts",
+                  "from": "if (claim.stage === 'ready' && content?.state !== 'ready')",
+                  "to": "if (false)"
+                }
+              },
+              {
+                "id": "skip-progress-authentication",
+                "case": "G15.auth",
+                "assertion": "damaged-progress-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localGenesisRecord.ts",
+                  "from": "await claimAuthentication(task, claim, code, false);",
+                  "to": "return;"
+                }
+              },
+              {
+                "id": "legacy-overwrites-local",
+                "case": "G16.index",
+                "assertion": "legacy-cannot-close-local",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/slotIndex.ts",
+                  "from": "if (slot?.local || (await readLocalClaim(task, id)))",
+                  "to": "if (false)"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/owned-startup/catalog.mjs",
@@ -5480,7 +5615,7 @@
       "argv": ["node", "scripts/local-genesis/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:54"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/local-genesis/catalog.mjs"]
     },
     {
       "id": "command:check:56",
@@ -7702,11 +7837,8 @@
       "id": "campaign:scripts/local-genesis/run.mjs",
       "kind": "campaign",
       "path": "scripts/local-genesis/run.mjs",
-      "callSites": [
-        { "line": 191, "form": "run", "arguments": [] },
-        { "line": 195, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/local-genesis/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/owned-startup/run.mjs",
@@ -9811,7 +9943,6 @@
     "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/local-clear/catalog.mjs",
-    "catalogue:scripts/local-genesis/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
@@ -9837,7 +9968,6 @@
     "command:check:51",
     "command:check:52",
     "command:check:53",
-    "command:check:55",
     "command:check:56",
     "command:check:57",
     "command:check:58",
@@ -9974,7 +10104,6 @@
     "campaign:scripts/legacy-selection/run.mjs",
     "campaign:scripts/legacy-source/run.mjs",
     "campaign:scripts/local-clear/run.mjs",
-    "campaign:scripts/local-genesis/run.mjs",
     "campaign:scripts/pending-projection/run.mjs",
     "campaign:scripts/private-release/run.mjs",
     "campaign:scripts/storage-properties/run.mjs",
@@ -9991,6 +10120,7 @@
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
+      "test:test/release-validation/local-genesis.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
@@ -10035,6 +10165,7 @@
     "editor-admission": ["catalogue:scripts/editor-admission/catalog.mjs"],
     "workspace-admission": ["catalogue:scripts/workspace-admission/catalog.mjs"],
     "owned-startup": ["catalogue:scripts/owned-startup/catalog.mjs"],
+    "local-genesis": ["catalogue:scripts/local-genesis/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10261,6 +10392,7 @@
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
+      "test:test/release-validation/local-genesis.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/stage.test.mjs",
