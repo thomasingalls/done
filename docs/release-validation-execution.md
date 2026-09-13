@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**253 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**250 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -46,6 +46,7 @@ node scripts/release-validation/execute.mjs --selection ledger-fixtures
 node scripts/release-validation/execute.mjs --selection contract-fixtures
 node scripts/release-validation/execute.mjs --selection preparation-fixtures
 node scripts/release-validation/execute.mjs --selection oracle-parser-fixtures
+node scripts/release-validation/execute.mjs --selection transport-service-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -908,22 +909,54 @@ passes; these results establish no fix. All 157 prior general contracts / 1,357 
 unchanged. General selections now contain 164 files / 1,403 cases (96 Vitest, 68 Node), including
 58 Account files / 309 cases. The [packet](./account-conformance-runs/2026-09-13-oracle-parser-fixture-adapters/README.md)
 retains full receipts, exact patch, source/helper pins, historical/registration controls and preservation
-within 150 kB. This phase is uncommitted; no immutable aggregate or whole-wrapper credit is claimed.
+within 150 kB. Signed `a20e678` closes this phase; no immutable aggregate or whole-wrapper credit is claimed.
+
+## Shared transport service fixtures — phase 2x
+
+Signed `a20e678` closes the oracle/parser phase. `transport-service-fixtures` adds three files /
+ten cases: controls 2, generated 1, service 7. Real authority/core/SQLite calls use synthetic
+WebAuthn/recovery/admission state. No HTTP server or browser runs. Existing Node ownership suffices;
+no finite-reader or owner implementation changes. The two retired v8 browser files and old transport
+wrapper command remain excluded. Shared v1 service readback stays required; v2 receive is separate.
+
+The initial owned run exposed a stale test: fresh 4 MiB+16 ciphertext submissions correctly failed
+R-01's 512 KiB envelope admission bound, leaving an empty stream. The repaired test first checks
+that refusal, seeds historical decisions using signed pre-R-01 `account-service/delivery.ts` at
+`4bb09042f37f68ec31f0d82587af608f599eb096`, and uses current code for cold readback/exact retries.
+The source enters its receipt contract through the existing historical checks. A new case proves
+512 KiB admission and one-byte-larger refusal without consuming the position, then count-bounded
+pages after restart. Inventory assertions compare promotions and delivery_decisions, not every
+SQLite byte or table. Large payloads are signed synthetic ciphertext, not browser decryption evidence.
+
+Expanded historical work hit the old 40-second test timeout. Its final 90-second allowance matches
+the existing equivalent inbound fixture; the three-minute stage bound and five-second drain grace
+remain. The sixty generated 4–16-command histories retain seed 9112026, endOnFailure:true and their
+45-second test timeout. Two exact source mutations remove signature verification or final snapshot
+comparison; independently checked signed pages demonstrate the unauthorized result. Current controls
+require refusal. Restart means connection reopen, not process death or power loss.
+
+The final selection passes ten cases in 89.377 seconds including fingerprint work; all groups drain.
+All 92 pure adapter checks, direct TypeScript, scoped style, inventory/manifest, authority and signature
+checks pass. The unchanged 23 Node owner, five Vitest process and twelve native controls retain prior
+evidence. The earlier expected-positive orphan classification remains unresolved; no fix is claimed.
+The [packet](./account-conformance-runs/2026-09-13-transport-service-fixtures/README.md) preserves the
+initial failed selection, expanded-fixture timeout, final receipts, exact patch, historical/source pins
+and preservation. An earlier new planning assertion misclassified the already-retired wrapper; its
+corrected exclusion check and original failure log are also retained. Product source is unchanged.
+All 164 prior contracts / 1,403 identities remain unchanged. General selections now cover 167 files /
+1,413 cases (96 Vitest, 71 Node), with 61 Account files / 319 cases. This phase is uncommitted.
 
 ## Next bounded integration
 
-All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **253 blocked rows**: 94 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 78 Node and sixteen Playwright files remain. Next review the three
-transport service fixtures (controls, generated histories and service cases), then browser-backed
-receive fixtures. Review actual effects and historical sources; filenames alone do not grant
-ownership credit. Other Node fixtures, native browsers, Playwright, nested owners and exact wrapper
+All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
+**250 blocked rows**: 91 test-file, 96 command, 63 campaign. All Vitest files have adapters; 75 Node
+and sixteen Playwright files remain. Next review browser receive-transport controls, generated histories
+and native cases, including shared service/browser ownership. Other owners and exact wrapper/output
 postconditions follow. Optional ACCOUNT_REPORT_DIR exports remain disabled in these file selections.
-Resolve retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/generated
-style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites
-and the open owner/loaded-host reliability observation.
+Keep retired-v8 exclusions and resolve remaining old wrapper calls without reviving support. Preserve
+ordered vector/traceability prerequisites and the open owner/loaded-host reliability observation.
 
-Only after every required obligation resolves should P-06's remaining cryptographic prose sweep and
-the complete immutable selected run proceed. State workload/platform/claim dispositions before
-private Account app/service walkthrough prep and human passkey/recovery/adoption work. No personal
-app/server/profile or Account cutover occurred in this validation sequence.
+R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
+prose sweep precede the complete immutable run. State workload/platform/claim dispositions before
+private Account app/service prep and human passkey/recovery/adoption work. No personal Account cutover
+occurred in this validation sequence.

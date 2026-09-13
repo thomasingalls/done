@@ -12,6 +12,7 @@ import {
   contractFixtureFiles,
   preparationFixtureFiles,
   oracleParserFixtureFiles,
+  transportServiceFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -26,13 +27,13 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 297 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 307 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
-      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8,
+      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
     ],
   );
   for (const s of stages) {
@@ -49,10 +50,10 @@ test('Account fixture selection admits exactly 297 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 58);
+  assert.equal(selected.length, 61);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    309,
+    319,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -194,6 +195,38 @@ test('Account fixture selection admits exactly 297 Node cases and 12 delivery ca
   }
   assert.equal(parser.filter((s) => s.expect.historyInputs).length, 2);
   assert.equal(parser.filter((s) => s.expect.dataInputs).length, 1);
+  const transport = selectStages(m, 'transport-service-fixtures');
+  assert.deepEqual(
+    transport.map((s) => s.argv.at(-1)).sort(),
+    [...transportServiceFixtureFiles].sort(),
+  );
+  assert.deepEqual(
+    transport.map((s) => s.expect.cases.length),
+    [2, 1, 7],
+  );
+  assert(transport.every((s) => !s.fixture && !s.expect.dataInputs));
+  const transportHistory = transport.filter((s) => s.expect.historyInputs);
+  assert.equal(transportHistory.length, 1);
+  assert.equal(transportHistory[0].argv.at(-1), 'test/account-transport/service.test.mjs');
+  const [transportPin] = transportHistory[0].expect.historyInputs;
+  assert.equal(transportPin.reference, '4bb09042f37f68ec31f0d82587af608f599eb096');
+  assert.equal(transportPin.path, 'account-service/delivery.ts');
+  assert(
+    readFileSync('test/account-transport/historical.mjs', 'utf8').includes(
+      transportPin.reference + ':' + transportPin.path,
+    ),
+  );
+  // Shared service readback remains required; retired v8 browser callers remain excluded.
+  for (const file of [
+    'test/account-transport/native.test.mjs',
+    'test/account-transport/native-controls.test.mjs',
+  ]) {
+    assert.throws(() => accountFixtureNodeStage(process.cwd(), file), /Unreviewed/);
+    assert(m.exclusions.some((r) => r.id === 'test:' + file));
+    assert(!m.rows.some((r) => r.path === file));
+  }
+  assert(!m.rows.some((r) => r.id === 'campaign:scripts/account-transport/run.mjs'));
+  assert(m.exclusions.some((r) => r.argv?.[1] === 'scripts/account-transport/run.mjs'));
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),

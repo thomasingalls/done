@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateKeyPairSync } from 'node:crypto';
 import { ready, mutate, inventory } from '../account-service-delivery/fixtures.mjs';
-import { query, pageProof } from './oracle.mjs';
+import { query, pageProof, envelope } from './oracle.mjs';
+import { legacyDecision } from './historical.mjs';
 import {
   decodeSubmit,
   decodeReadRequest,
@@ -33,24 +34,63 @@ test('authenticated empty, count-bounded pages, exact ciphertext/proof, and curs
   assert.equal(inventory(x), before);
 });
 test(
-  'byte-bounded page makes progress with maximum-size envelopes',
-  { timeout: 40000 },
+  'historical maximum-size envelopes retain byte-bounded readback and exact retries',
+  // Match the existing historical inbound fixture: seeding and exact retry add full ledger checks.
+  { timeout: 90000 },
   async (t) => {
     const x = await ready(t),
       retained = [];
     for (let i = 1; i <= 2; i++) {
-      const w = x.make(i, 'large', { ct: Buffer.alloc(4 * 1024 * 1024 + 16, i) }),
-        r = await x.call(w);
+      const w = x.make(i, 'large', { ct: Buffer.alloc(4 * 1024 * 1024 + 16, i) });
+      const before = inventory(x);
+      assert.deepEqual(await x.call(w), { kind: 'unknown', reason: 'envelope-size' });
+      assert.equal(inventory(x), before, 'Fresh oversized admission adds no decision or witness');
+      const r = await legacyDecision(t, x, w);
+      assert.equal(r.kind, 'decision', 'Historical producer must actually admit the envelope');
       retained.push({ w, r });
     }
+    x.f.restart();
+    x.authority.restart();
+    for (const { w, r } of retained) assert.deepEqual(await x.call(w), r);
+    const before = inventory(x);
     for (const after of [0, 1]) {
       const q = query(x, after),
         r = await read(x, q);
       assert.ok(r.bytes.length <= READ_PAGE_LIMIT);
       assert.equal(pageProof(r, q, x, retained).count, 1);
     }
+    assert.equal(inventory(x), before);
   },
 );
+test('current 512 KiB admission edge paginates while a one-byte-larger envelope refuses without consuming the position', async (t) => {
+  const x = await ready(t),
+    retained = [];
+  const limit = 512 * 1024;
+  for (let i = 1; i <= 3; i++) {
+    const overhead = envelope(x.make(i, 'edge', { ct: Buffer.alloc(16) })).length - 16;
+    const oversized = x.make(i, 'edge', { ct: Buffer.alloc(limit - overhead + 1, i) });
+    assert.equal(envelope(oversized).length, limit + 1);
+    const before = inventory(x);
+    assert.deepEqual(await x.call(oversized), { kind: 'unknown', reason: 'envelope-size' });
+    assert.equal(inventory(x), before);
+    const w = x.make(i, 'edge', { ct: Buffer.alloc(limit - overhead, i) });
+    assert.equal(envelope(w).length, limit);
+    const r = await x.call(w);
+    assert.equal(r.kind, 'decision');
+    retained.push({ w, r });
+  }
+  x.f.restart();
+  x.authority.restart();
+  const before = inventory(x);
+  for (const after of [0, 2, 3]) {
+    const q = query(x, after, 2),
+      r = await read(x, q);
+    assert.equal(r.kind, 'decision');
+    assert(r.bytes.length <= READ_PAGE_LIMIT);
+    assert.equal(pageProof(r, q, x, retained).count, Math.min(2, 3 - after));
+  }
+  assert.equal(inventory(x), before);
+});
 test('foreign signer, all foreign scope fields, expired/future requests, malformed framing and past-end cursors refuse without mutations', async (t) => {
   const x = await ready(t),
     before = inventory(x),

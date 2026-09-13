@@ -2615,3 +2615,17 @@ runtime behavior. Pin the old delivery oracle test and every source in the parse
 Retain exact reference/revision/path/hash tuples through normal historical drift checks. Distinguish
 expected-failure/shrinking controls, finite exhaustive model domains, structural parser acceptance
 and cryptographic authorization when reporting the resulting evidence.
+
+
+## 2026-09-13 — Keep admission limits distinct from historical readback in transport evidence
+
+R-01's 512 KiB fresh-envelope admission rule does not narrow the historical decode/read/retry
+contract. Repair the stale v1 size fixture by requiring fresh oversize refusal, seeding historical
+accepted decisions with the actual signed pre-R-01 implementation, and using current code for all
+readback and retries. Pin that historical source through the existing receipt metadata. Add a
+separate exact current admission-edge case; do not reduce the old large-payload pagination assertion.
+
+The historical fixture's added seeding and retry work needs the same finite 90-second test allowance
+already used by the equivalent inbound historical fixture. Retain its earlier 40-second timeout as
+failed evidence and keep the outer owner bound unchanged. Preserve the old wrapper/browser exclusions;
+shared service evidence does not revive support for the retired v8 product lifecycle.

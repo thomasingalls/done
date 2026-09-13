@@ -7,6 +7,12 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const transportServiceFixtureFiles = [
+  'test/account-transport/controls.test.mjs',
+  'test/account-transport/generated.test.mjs',
+  'test/account-transport/service.test.mjs',
+];
+
 export const oracleParserFixtureFiles = [
   'test/account-delivery-oracle/controls.test.mjs',
   'test/account-delivery-oracle/oracle.test.mjs',
@@ -68,6 +74,9 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-transport/service.test.mjs': [
+    ['4bb09042f37f68ec31f0d82587af608f599eb096', 'account-service/delivery.ts'],
+  ],
   'test/account-delivery-oracle/controls.test.mjs': [
     ['77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3', 'test/accountDelivery.test.ts'],
   ],
@@ -124,6 +133,7 @@ export const accountFixtureFiles = {
     ...contractFixtureFiles,
     ...preparationFixtureFiles,
     ...oracleParserFixtureFiles,
+    ...transportServiceFixtureFiles,
   ],
 };
 

@@ -4427,3 +4427,48 @@ This phase is uncommitted. Optional JSON reports, native siblings and whole wrap
 All personal/package/vector pins, L-2, historical archives and formal debts remain unchanged.
 Next review the three transport service fixtures, followed by browser-backed receive fixtures and
 remaining owners/wrappers. R-04 and P-06 precede the immutable aggregate and human Account walkthrough.
+
+
+## 2026-09-13 — Shared transport service fixture integration and stale size-test repair (L-1)
+
+Delivery-oracle/parser integration is signed and verified as `a20e678`. The new
+`transport-service-fixtures` selection covers three files / ten cases: controls 2, generated 1,
+service 7. The service fixtures invoke real authority/core/SQLite directly with synthetic admission,
+recovery and WebAuthn state. No HTTP listener or browser is involved. The retained v1 readback
+contract stays required; its two retired v8 browser files and old wrapper command remain excluded.
+
+The initial adapter assertion incorrectly expected that wrapper to remain pending; it was corrected
+to preserve the existing exclusion. The first owned run then exposed a stale product-test assumption:
+it submitted 4 MiB+16 ciphertext after R-01 narrowed fresh admission to a 512 KiB complete envelope.
+The service correctly refused, so page-through was zero rather than the fixture's expected two.
+
+The repaired case asserts fresh refusal, seeds exact historical decisions using the signed pre-R-01
+service implementation at `4bb09042f37f68ec31f0d82587af608f599eb096`, and uses current code for cold
+readback and exact retries. The historical source enters its receipt contract through the existing
+locator/checks. The expanded case hit its old 40-second inner timeout; its final 90-second allowance
+matches the existing equivalent inbound historical fixture. The outer three-minute stage bound is
+unchanged. A new case checks 512 KiB admission and 512 KiB+1 refusal without consuming the position,
+then exact count-bounded readback after restart. No production limit or owner behavior changed.
+
+The final owned selection passes all ten cases in 89.377 seconds including fingerprint work;
+every group drains. The unchanged generated campaign retains sixty 4–16-command histories, seed
+9112026, endOnFailure:true and its 45-second timeout. Two exact source mutations remove signature
+verification or the final snapshot comparison; independent page/proof signatures demonstrate the
+unauthorized result, while current-service controls refuse. Inventory comparisons cover promotions
+and delivery_decisions, not every database byte. Large payloads are synthetic signed ciphertext,
+not a browser decryption, Yjs replay or capacity claim. Restart reopens connections, not processes.
+
+All 92 pure adapter tests, direct TypeScript, scoped lint/format, inventory/manifest, authority,
+signature and whitespace checks pass. The unchanged 23 Node owner, five Vitest process and twelve
+native ownership controls retain prior evidence. Their files and owner implementation are pinned.
+The ledger phase's earlier expected-pass orphan classification remains unresolved; no fix is claimed.
+
+The packet at `docs/account-conformance-runs/2026-09-13-transport-service-fixtures/` preserves the
+initial failed owned run, expanded-fixture timeout, final passing receipts, exact patch, historical
+source pin, prior evidence and preservation within 150 kB. All 164 prior contracts / 1,403 identities
+remain unchanged. General selections contain 167 files / 1,413 cases (96 Vitest, 71 Node); Account
+has 61 files / 319 cases. The 627,361-byte manifest retains 612 obligations / 250 unresolved:
+91 test-file (75 Node, sixteen Playwright), 96 command, 63 campaign. All eleven catalogues remain
+resolved. This phase is uncommitted. Personal/package/vector pins, L-2, archives and debts are
+unchanged. Browser receive-transport fixtures are next; other owners, wrappers, R-04 and P-06 precede
+the immutable aggregate and human Account walkthrough.
