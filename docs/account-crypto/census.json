@@ -477,7 +477,7 @@
     },
     {
       "path": "src/crdt/yjs.ts",
-      "sha256": "08ffe1af47a28a951560685fa5cd2cdf05c225fcd8a36020063ebd17d35f4dc4"
+      "sha256": "2821ac2369705f8bd403c4a7331c2e44c7b8b6a74dfeb6b267e2783612ddb9d5"
     },
     {
       "path": "src/editor/admittedCommands.ts",

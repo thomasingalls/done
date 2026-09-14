@@ -84,6 +84,86 @@ const normalizedIntegratedState = (bytes: Uint8Array): Uint8Array => {
     doc.destroy();
   }
 };
+
+/**
+ * Run the same pinned V1 writer, retaining long strings at their exact positions instead of
+ * converting them to UTF-8. The remaining bytes plus ordered (byte offset, string) fields
+ * reconstruct the complete original encoding. Equality of all parts therefore proves full-byte
+ * equality; it is not a state-vector shortcut, hash, cache, or sampled content check.
+ */
+class ComparisonEncoder extends Y.UpdateEncoderV1 {
+  readonly strings: { at: number; value: string }[] = [];
+  override writeString(value: string): void {
+    // Small fragmented items keep the ordinary encoder path and avoid a field allocation.
+    if (value.length < 32) super.writeString(value);
+    else this.strings.push({ at: encoding.length(this.restEncoder), value });
+  }
+}
+const hasEarlyLongString = (doc: YDoc): boolean => {
+  // A bounded eligibility probe avoids adding per-string dispatch cost to dense short-fragment
+  // histories. Missing a later long string only forgoes an optimization; both paths encode all data.
+  let inspected = 0,
+    longStrings = false;
+  outer: for (const structs of doc.store.clients.values())
+    for (const item of structs) {
+      if (
+        item instanceof Y.Item &&
+        item.content instanceof Y.ContentString &&
+        item.content.str.length >= 32
+      ) {
+        longStrings = true;
+        break outer;
+      }
+      if (++inspected === 64) break outer;
+    }
+  return longStrings;
+};
+const comparisonEncoding = (doc: YDoc) => {
+  const encoder = new ComparisonEncoder();
+  const bytes = Y.encodeStateAsUpdateV2(
+    { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
+    undefined,
+    encoder,
+  );
+  return { bytes, strings: encoder.strings };
+};
+const completeEncoding = (parts: ReturnType<typeof comparisonEncoding>): Uint8Array => {
+  if (!parts.strings.length) return parts.bytes;
+  const encoder = encoding.createEncoder();
+  let at = 0;
+  for (const field of parts.strings) {
+    encoding.writeUint8Array(encoder, parts.bytes.subarray(at, field.at));
+    encoding.writeVarString(encoder, field.value);
+    at = field.at;
+  }
+  encoding.writeUint8Array(encoder, parts.bytes.subarray(at));
+  return encoding.toUint8Array(encoder);
+};
+/** Both paths keep the same exact-byte and full-normalization fallback. */
+const sameEncoding = (rawA: Uint8Array, rawB: Uint8Array): boolean => {
+  if (equalBytes(rawA, rawB)) return true;
+  const aa = normalizedIntegratedState(rawA);
+  let bb: Uint8Array | undefined;
+  try {
+    bb = normalizedIntegratedState(rawB);
+    return equalBytes(aa, bb);
+  } finally {
+    aa.fill(0);
+    bb?.fill(0);
+  }
+};
+const sameEncodedState = (a: YDoc, b: YDoc): boolean => {
+  const rawA = encodeIntegratedState(a);
+  let rawB: Uint8Array | undefined;
+  try {
+    rawB = encodeIntegratedState(b);
+    return sameEncoding(rawA, rawB);
+  } finally {
+    rawA.fill(0);
+    rawB?.fill(0);
+  }
+};
+
 /**
  * Compare integrated identity/deletions/content plus exact pending bytes and dependency bookkeeping.
  * Normalizing integrated data with gc:true ignores runtime undo retention and Item split boundaries.
@@ -103,20 +183,34 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   )
     return false;
   if (!equalBytes(a.store.pendingDs, b.store.pendingDs)) return false;
-  const rawA = encodeIntegratedState(a);
-  let rawB: Uint8Array | undefined, aa: Uint8Array | undefined, bb: Uint8Array | undefined;
+  if (!hasEarlyLongString(a)) return sameEncodedState(a, b);
+  const partsA = comparisonEncoding(a);
+  let partsB: ReturnType<typeof comparisonEncoding> | undefined,
+    rawA: Uint8Array | undefined,
+    rawB: Uint8Array | undefined;
   try {
-    rawB = encodeIntegratedState(b);
-    // Exact full bytes are stronger than normalized equality. Pending/SV/DS checks still ran.
-    if (equalBytes(rawA, rawB)) return true;
-    aa = normalizedIntegratedState(rawA);
-    bb = normalizedIntegratedState(rawB);
-    return equalBytes(aa, bb);
+    partsB = comparisonEncoding(b);
+    if (
+      partsA.strings.length === partsB.strings.length &&
+      partsA.strings.every(
+        (field, i) =>
+          field.at === partsB!.strings[i]!.at && field.value === partsB!.strings[i]!.value,
+      ) &&
+      equalBytes(partsA.bytes, partsB.bytes)
+    )
+      return true;
+    // Preserve full-byte and normalized equivalence for different item boundaries, GC retention,
+    // and distinct JS strings with the same UTF-8 encoding (for example lone surrogates).
+    rawA = completeEncoding(partsA);
+    rawB = completeEncoding(partsB);
+    return sameEncoding(rawA, rawB);
   } finally {
-    rawA.fill(0);
+    partsA.bytes.fill(0);
+    partsA.strings.length = 0;
+    partsB?.bytes.fill(0);
+    if (partsB) partsB.strings.length = 0;
+    rawA?.fill(0);
     rawB?.fill(0);
-    aa?.fill(0);
-    bb?.fill(0);
   }
 };
 

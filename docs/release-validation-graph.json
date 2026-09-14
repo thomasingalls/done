@@ -8589,10 +8589,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/projectionEquality.test.ts"]
       },
-      "declarations": 1,
+      "declarations": 4,
       "propertyFamilies": [
         {
           "line": 39,
+          "form": "fc.property"
+        },
+        {
+          "line": 88,
           "form": "fc.property"
         }
       ],
@@ -13783,7 +13787,7 @@
     },
     {
       "path": "test/projectionEquality.test.ts",
-      "sha256": "87f29c713d6ab46b28f8dbe3e31e60999655599fe9a01a1282288a2790d148c8"
+      "sha256": "7fdb19b824af8b268cbb9da0fad1d68313267908ff65c8a971d8fa3a444a6b28"
     },
     {
       "path": "test/random.ts",
@@ -13835,11 +13839,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "5d5e3449b9e2e1236ffd2f56e43f050e81b5928211d415f83767eb0769be91b6"
+      "sha256": "9bbca7332df7b7627f93629dc2d41acaeac0c40826eefa5b01410497920e8059"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "01d2067d2c997a2787a10f317b432529502460c6941993370aa64999b9188b5b"
+      "sha256": "1a2a2aa889f6b0ed2a67ec4ba2ad769a17e558c0d3d8f149648ee1cb40241359"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

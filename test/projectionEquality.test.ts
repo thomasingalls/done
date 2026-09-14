@@ -82,3 +82,105 @@ it('generated reordered/pending/deleted/split states agree with the full compari
     { seed: 120917, numRuns: 150 },
   );
 }, 15000);
+
+it('long strings and arbitrary scalar content agree with full normalization, including unequal values at equal clocks', () => {
+  fc.assert(
+    fc.property(
+      fc.string({ minLength: 31, maxLength: 150 }),
+      fc.jsonValue(),
+      fc.uint8Array({ maxLength: 80 }),
+      (value, json, binary) => {
+        const a = new Y.Doc({ gc: false }),
+          b = new Y.Doc({ gc: false });
+        a.clientID = b.clientID = 71;
+        for (const d of [a, b]) {
+          d.getText('master').insert(0, value);
+          d.getMap('meta').set('json', structuredClone(json));
+          d.getMap('meta').set('binary', binary.slice());
+          d.getArray('array').push([value]);
+          d.getMap('meta').set('scalars', [undefined, null, -0, NaN, Infinity, 10n]);
+          const text = new Y.Text();
+          d.getMap('nested').set('text', text);
+          text.insert(0, value);
+          text.format(0, value.length, { ['format'.repeat(8)]: value });
+          const xml = new Y.XmlElement('node'.repeat(9));
+          xml.setAttribute('attribute'.repeat(5), value);
+          d.getXmlFragment('xml').insert(0, [xml]);
+        }
+        try {
+          expect(sameDocState(a, b)).toBe(full(a, b));
+          // Mutate an encoded value without changing any clock/deletion bookkeeping.
+          const items = [...b.store.clients.values()].flat();
+          const item = items.find(
+            (i) => i instanceof Y.Item && i.content instanceof Y.ContentString,
+          )! as Y.Item;
+          const content = item.content as Y.ContentString;
+          content.str = (content.str[0] === 'x' ? 'y' : 'x') + content.str.slice(1);
+          expect(Y.encodeStateVector(a)).toEqual(Y.encodeStateVector(b));
+          expect(full(a, b)).toBe(false);
+          expect(sameDocState(a, b)).toBe(false);
+          content.str = value;
+          const jsonItem = items.find(
+            (i) => i instanceof Y.Item && i.parentSub === 'json',
+          ) as Y.Item;
+          const any = jsonItem.content as Y.ContentAny;
+          any.arr[0] = ['different', any.arr[0]];
+          expect(full(a, b)).toBe(false);
+          expect(sameDocState(a, b)).toBe(false);
+        } finally {
+          a.destroy();
+          b.destroy();
+        }
+      },
+    ),
+    { seed: 140917, numRuns: 200 },
+  );
+});
+
+it('keeps string positions, root identities, UTF-8 equivalence and the complete fallback', () => {
+  const pairs = [
+    ['left'.repeat(9), 'right'.repeat(9), 'x'.repeat(64), 'x'.repeat(64)],
+    ['master', 'master', 'x'.repeat(64), 'y'.repeat(64)],
+    ['master', 'master', 'x'.repeat(63) + '\uD800', 'x'.repeat(63) + '\uD801'],
+    ['master', 'master', 'x'.repeat(64), 'x'.repeat(64)],
+  ];
+  for (const [rootA, rootB, valueA, valueB] of pairs) {
+    const a = new Y.Doc({ gc: false }),
+      b = new Y.Doc({ gc: false });
+    a.clientID = b.clientID = 72;
+    try {
+      a.getText(rootA!).insert(0, valueA!);
+      b.getText(rootB!).insert(0, valueB!);
+      expect(sameDocState(a, b)).toBe(full(a, b));
+      a.getText(rootA!).delete(2, 20);
+      Y.applyUpdate(b, Y.encodeStateAsUpdate(a));
+      expect(sameDocState(a, b)).toBe(full(a, b));
+      const c = forkDoc(a, true);
+      try {
+        expect(sameDocState(a, c)).toBe(full(a, c));
+      } finally {
+        c.destroy();
+      }
+    } finally {
+      a.destroy();
+      b.destroy();
+    }
+  }
+});
+
+it('compares all content even when long strings occur after the bounded eligibility probe', () => {
+  const a = new Y.Doc({ gc: false }),
+    b = new Y.Doc({ gc: false });
+  a.clientID = b.clientID = 73;
+  try {
+    for (let i = 0; i < 80; i++) for (const d of [a, b]) d.getMap('meta').set('key' + i, i);
+    a.getText('master').insert(0, 'x'.repeat(200));
+    b.getText('master').insert(0, 'y'.repeat(200));
+    expect(Y.encodeStateVector(a)).toEqual(Y.encodeStateVector(b));
+    expect(full(a, b)).toBe(false);
+    expect(sameDocState(a, b)).toBe(false);
+  } finally {
+    a.destroy();
+    b.destroy();
+  }
+});

@@ -3187,3 +3187,8 @@ Finish application-latency adapter integration while keeping the measured budget
 ## 2026-09-14 — Calibrate Local input latency and isolate admission costs
 
 Keep the original application performance gate failed. The diagnostic makes private Yjs preparation, workspace-history forking and full projection comparison the priority for a bounded performance repair; preserve isolated preparation, journal-before-publication, undo, pending-dependency and projection checks. Do not disable safety checks or subtract control quantiles. Bare CodeMirror block variability also leaves recorder/scheduler calibration open; current frame-plus-task timings are proxies, not proof that a particular character was displayed. Investigate the typing path first and treat focus/mount cost separately. A repair needs semantic controls and the unchanged timing workload before a performance claim.
+
+
+## 2026-09-14 — Reduce complete projection comparison cost without skipping verification
+
+Retain complete per-transition equality and its normalization fallback. Avoid repeated long-string UTF-8 encoding only when exact ordered string fields plus every remaining byte establish the same full encoding. A 64-item eligibility probe may forgo the optimization, never content coverage. The initial dense-history regression led to the ordinary encoder path for short fragments; retain the negative and mixed profiles. Useful comparison-only improvement supports this bounded repair, but neither timing thresholds nor staging checks are relaxed. F-17 remains partial; full document/history preparation, dense-history/device capacity and focus remain separate. Preserve the failed packaged application gate and proceed to a bounded fork-cost repair before immutable qualification.

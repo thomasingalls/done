@@ -522,3 +522,75 @@ disposable context with service workers blocked, a dedicated asset prefix, and e
 assertions. The application context retains its normal service worker. The completed run has
 four passed cases, no skips/retries, and preserves all added writing through lock and cold reopen.
 The two native runner controls also pass. No personal browser, app package or deployment changed.
+
+
+## 2026-09-14 — F-17 complete comparison repair (application budget still failed)
+
+This bounded repair is based on signed `5ffce895`; its [construction](./f17-comparison.md) and
+[retained evidence](./account-conformance-runs/2026-09-14-f17-comparison/README.md) preserve the
+prospective protocol, final source patch/pins, every exploratory/intermediate/final profile,
+correctness controls, native receipts and failed packaged gate. All integrated content is still
+verified at every transition. Long values passed through the pinned V1 writer's `writeString`
+method can remain exact ordered string fields during comparison; any difference reconstructs
+ordinary bytes and uses the existing normalization fallback. No persistence or wire format changes.
+
+The unchanged Node item-count profile uses 100,000 visible characters, one warmup and five measured
+samples, baseline then candidate. Whole-command acceptance includes an in-memory durable carrier;
+it is not a browser input-to-paint or physical-storage measurement. Final medians in milliseconds:
+
+| Yjs items | Comparison before / after | Whole command before / after |
+| --- | ---: | ---: |
+| 1,000 | 1.700 / 0.492 | 16.233 / 13.735 |
+| 10,000 | 3.730 / 3.986 | 22.907 / 23.473 |
+| 100,000 | 24.705 / 25.501 | 141.388 / 127.044 |
+
+The first exploratory implementation slowed dense histories, so the final candidate retains the
+ordinary encoder for histories with no long text item among the first 64 structs. This probe only
+selects the implementation; it never omits content. Final sequential results remain mixed. A
+prospectively added comparison-only check uses ten warmups per variant and twenty alternating
+AB/BA pairs, with separate baseline/candidate bundles and no concurrent tests or profiling:
+
+| Yjs items | Comparison median before / after, ms |
+| --- | ---: |
+| 1,000 | 1.555 / 0.280 |
+| 10,000 | 3.295 / 3.296 |
+| 100,000 | 17.791 / 17.825 |
+
+This supports a useful gain with longer text items and no consistent measured dense-history
+regression in these checks. Samples share host/JIT/GC state and do not establish a population
+estimate or a universal speedup. Whole-document and undo-history forks are unchanged. The earlier
+control pilot remains the recorder calibration reference; no new recorder claim is made.
+
+The unchanged packaged application gate ran alone against the current Local UI, seeded and
+cold-verified with 300 cards and 400 Goals lines. All 12 project/cases execute without skips or
+retries and all 30 aggregate measurements survive. Two project teardowns report the collected
+card-typing overruns; the run is failed and its process group drained. Final values, rounded:
+
+| Measurement (ms) | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 187.2 | 648.4 | <2500 |
+| Warm application work, excluding factor entry | 225.9 | 690.0 | <1000 |
+| Encrypted load and replay | 4.8 | 18.3 | <500 |
+| Compose typing p95, 120 keys | 3.1 | 10.4 | <16 |
+| Card typing p95, 120 keys | **16.2** | **77.2** | **<16 — failed** |
+| Card focus to editable | 8.1 | 44.2 | <50 |
+| Peek navigation response / settled | 8.7 / 21.6 | 40.6 / 55.3 | <100 each |
+| Keyboard navigation response | 9.1 | 22.8 | <100 |
+
+Earlier card typing was 18.3/84.2 ms and focus 7.4/61.4 ms. Those cross-run differences are not
+controlled causal estimates. Both seeded editor workloads use 1280×900; CPU throttling remains
+host emulation, not handset evidence. The frame-plus-task recorder remains a paint proxy. No
+numeric budget or deadline changed. Passing focus in this run does not settle its previous tail.
+
+The final full unit suite passes 96 files / 1,030 cases. Comparison agrees with the frozen full
+normalization reference over 150 existing and 200 new histories, including unequal values at equal
+clocks; the existing 500 fork histories remain. Ignoring retained string values fails two tests.
+Native pending and original-order delivery each pass 100 generated histories plus their directed
+crash/pressure cases; the old content/publication mutants are detected. Owned workspace admission
+passes ten cases and four mutations. All 99 pure runner checks, type and scoped style gates pass.
+The corrected test-generator setup and initial out-of-allow-list native invocation remain recorded.
+
+F-17 remains partial. Next is a bounded document/history fork-cost repair preserving private
+staging, refused-edit isolation, undo and pending delivery, followed by this unchanged application
+gate. Dense-history and device capacity, focus, remaining command/campaign adapters and immutable
+release qualification remain open. Personal browser, package and deployment are untouched.
