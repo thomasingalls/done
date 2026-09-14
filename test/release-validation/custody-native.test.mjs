@@ -55,7 +55,27 @@ function fixture(t, mode) {
     await page.evaluate(() => localStorage.setItem('native-control','cold-copied-value'));
     await assert.rejects(owner.copyProfile('source-false','copy-false'),/live or failed source/);
     writeFileSync(process.env.OWNER_MARKER,JSON.stringify({worker:process.pid,port:server.address().port,profile:records[0].profile,endpoint:records[0].endpoint,pid:records[0].pid}));
-    if (process.env.MODE === 'normal') {
+    if (process.env.MODE === 'restart-death') {
+      await source.close();
+      const resumed = await owner.reopenProfile('source-false');
+      const next = await resumed.newPage(); await next.goto(origin);
+      process.exit(9);
+    } else if (process.env.MODE === 'restart') {
+      await assert.rejects(owner.reopenProfile('source-false'),/live or failed profile/);
+      assert.throws(()=>owner.reopenProfile('copy-false'),/unknown profile/);
+      await source.close();
+      for (let i=0;i<2;i++) {
+        const resumed=await owner.reopenProfile('source-false');
+        const next=await resumed.newPage(); await next.goto(origin);
+        assert.equal(await next.evaluate(()=>localStorage.getItem('native-control')),'cold-copied-value');
+        await resumed.close();
+      }
+      await assert.rejects(owner.reopenProfile('source-false'),/reopen limit/);
+      records.at(-1).failure='injected close failure';
+      await assert.rejects(owner.reopenProfile('source-false'),/live or failed profile/);
+      delete records.at(-1).failure;
+      await owner.close(); await new Promise(r=>server.close(r));
+    } else if (process.env.MODE === 'normal') {
       await source.close();
       const clone = await owner.copyProfile('source-false','copy-false');
       const next = await clone.newPage(); await next.goto(origin);
@@ -197,4 +217,30 @@ test('worker death leaves no persistent browser or CDP listener and cannot pass'
   assert.equal(receipt.status, 'failed');
   assert.equal(receipt.result.code, 9);
   await drained(f, receipt, await ready(f));
+});
+
+test('persistent profile reopens twice after clean exit and refuses live, unknown, failed or excess reopen', async (t) => {
+  const f = fixture(t, 'restart'),
+    receipt = await f.run(f.stage);
+  t.diagnostic(readFileSync(join(f.output, receipt.key, 'output.log'), 'utf8').slice(-2000));
+  const records = await drained(f, receipt, await ready(f));
+  assert.equal(receipt.status, 'passed', receipt.result.reason);
+  assert.equal(records.length, 3);
+  assert.equal(new Set(records.map((r) => r.pid)).size, 3);
+  assert.equal(new Set(records.map((r) => r.profile)).size, 1);
+  assert(records.every((r) => r.closed && r.exit === 0 && !r.failure));
+  assert.deepEqual(
+    records.slice(1).map((r) => r.reopen),
+    records.slice(0, 2).map((r, i) => ({ priorPid: r.pid, ordinal: i + 1 })),
+  );
+});
+
+test('worker death after persistent-profile reopen drains both browser generations and listeners', async (t) => {
+  const f = fixture(t, 'restart-death'),
+    receipt = await f.run(f.stage);
+  assert.equal(receipt.status, 'failed');
+  assert.equal(receipt.result.code, 9);
+  const records = await drained(f, receipt, await ready(f));
+  assert.equal(records.length, 2);
+  assert.equal(records[1].reopen.priorPid, records[0].pid);
 });

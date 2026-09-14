@@ -50,14 +50,21 @@ export function ownedProfiles({ directory, origin, records, save }) {
     'Profile directory escaped owned output',
   );
   const owners = new Map();
-  const launch = async (name, copy = null) => {
-    assert(names.includes(name) && !owners.has(name), 'Unknown or repeated profile');
+  const launch = async (name, copy = null, previous = null) => {
+    assert(names.includes(name), 'Unknown profile');
+    if (previous) {
+      assert(
+        owners.get(name)?.row === previous && previous.closed === true && !previous.failure,
+        'Cannot reopen a live or failed profile',
+      );
+      assert((previous.reopen?.ordinal ?? 0) < 2, 'Profile reopen limit');
+    } else assert(!owners.has(name), 'Repeated profile');
     const profile = join(directory, name);
-    if (!copy) {
+    if (!copy && !previous) {
       assert(!existsSync(profile), 'Existing source profile');
       mkdirSync(profile, { recursive: true });
     }
-    // The copied file names an already closed source browser, not this new process.
+    // A copied or reopened port file names the closed prior browser, not this process.
     rmSync(join(profile, 'DevToolsActivePort'), { force: true });
     const executable = process.env.RELEASE_BROWSER_EXECUTABLE;
     const argv = [
@@ -89,6 +96,9 @@ export function ownedProfiles({ directory, origin, records, save }) {
       argv,
       closed: false,
       ...(copy ? { copy } : {}),
+      ...(previous
+        ? { reopen: { priorPid: previous.pid, ordinal: (previous.reopen?.ordinal ?? 0) + 1 } }
+        : {}),
     };
     records.push(row);
     save();
@@ -201,6 +211,11 @@ export function ownedProfiles({ directory, origin, records, save }) {
     profile: (name) => {
       assert(name.startsWith('source-'), 'Source profile required');
       return launch(name);
+    },
+    reopenProfile: (name) => {
+      const previous = owners.get(name)?.row;
+      assert(previous, 'Cannot reopen an unknown profile');
+      return launch(name, null, previous);
     },
     copyProfile: async (source, destination) => {
       assert(

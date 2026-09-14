@@ -2866,3 +2866,20 @@ cancellation delays a wrapper before its HTTP request. Keep service-only cryptog
 full recovery/adoption evidence separate. The next recovery native fixture genuinely restarts a
 persistent browser profile and restores virtual credentials; its owner integration must preserve those
 semantics, rather than substitute a page reload.
+
+
+## 2026-09-14 — Preserve full browser restarts through bounded persistent-profile reopen
+
+Reuse the custody profile owner's inherited process-group launch for Account recovery. Add at most
+two reopens after clean prior exit, preserving its origin filter, pinned executable, startup/close
+bounds and fresh endpoint publication. Keep all three generations on the same profile and require
+three distinct PIDs, clean exits and predecessor links in the recovery scenario. Retain per-generation
+records with the selection evidence. The ordinary stage CDP browser remains auxiliary.
+
+Do not replace full restart with page reload or emulate IndexedDB persistence through storageState.
+Keep the existing explicit virtual WebAuthn credential export/restore, all original recovery operations,
+case identity and deadline, and standalone behavior. Run the changed profile owner's controls, including
+cold-copy compatibility, reopen refusal and actual worker death after reopening. Do not credit virtual
+credentials as hardware persistence, one row's literal-code check as forensic privacy, or pending-account
+recovery-code confirmation as full account recovery/adoption. Wrapper and broader recovery obligations
+remain separate.

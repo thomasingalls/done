@@ -8611,7 +8611,7 @@
       "declarations": 4,
       "propertyFamilies": [
         {
-          "line": 648,
+          "line": 660,
           "form": "fc.property"
         }
       ],
@@ -8703,7 +8703,7 @@
           "test/release-validation/custody-native.test.mjs"
         ]
       },
-      "declarations": 4,
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 164,
+          "line": 165,
           "form": "fc.property"
         }
       ],
@@ -11441,7 +11441,7 @@
     },
     {
       "path": "scripts/custody/profiles.mjs",
-      "sha256": "10b1421130e220670c8252180c876221098339faf5d8beffc258f87aafcc35c6"
+      "sha256": "c63912500497703c299a942b3f7cc25f4fa6d57d7742d26bf1fd2bee81fdbcdd"
     },
     {
       "path": "scripts/custody/run.mjs",
@@ -11793,7 +11793,7 @@
     },
     {
       "path": "scripts/release-validation/account-fixture-tests.mjs",
-      "sha256": "efab0909bc425d5ae74c22fb5f0a9676062c01c959079a218c3c9448787c63f3"
+      "sha256": "25c9675453811fcac8794b8a743e2d101821a663a089b0a8fbe890b9d22d4abc"
     },
     {
       "path": "scripts/release-validation/admission-adapter.mjs",
@@ -11837,7 +11837,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "b304e0796bc819802989e80f1999ee2c3a81dff3c9902c2d0db937bf87dbf09d"
+      "sha256": "1687f3ac5619dc35798fc6fde1a95d5229955d347f75ce1fc0528f38bd90e88a"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11881,7 +11881,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "541f8c04d3b13a5c573de49ad481fad97394d1419a8ba0dcdc2907770b1e253e"
+      "sha256": "e4fb7c6aef7dc60a0aa63d09555febde35c9f54a364c340534e5d465c49e6022"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -12825,7 +12825,7 @@
     },
     {
       "path": "test/account-recovery/native.test.mjs",
-      "sha256": "5fcd8220441dc942976e810900e1883e23ad35ec07fc6804ed615ef735f39a4e"
+      "sha256": "29e1eede0e497a60e7118cae0ab3a5a2a405129d96b0c230d4456fd09325280c"
     },
     {
       "path": "test/account-recovery/properties.test.mjs",
@@ -13697,7 +13697,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "10c5ef5b30c0cc32eaccb3f259317826765fd3ef295c72c8eae18ac0eacfe28d"
+      "sha256": "5bc7f718d2b4438ce7c148368cf55ddd27284deff5ac8eb515c896d83287f6ca"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -13721,7 +13721,7 @@
     },
     {
       "path": "test/release-validation/custody-native.test.mjs",
-      "sha256": "e7cc13d9c33084e1bffa9c195c6fc2f9d03dbcfbd09cc74957f7893ffe36823b"
+      "sha256": "4cf9753a1bf7eff74a2aa59d95d54af6c6793ce5ead09910d6fc0029726ff269"
     },
     {
       "path": "test/release-validation/custody.test.mjs",
@@ -13733,11 +13733,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "e40b40e3f72a94317c19c111e2a7fe8c0195d706fe395f5ee5c1c8dba82beb3b"
+      "sha256": "2034f9b3fa333196f4513a7051c31d77a1d27021c61b0c4093a94a37e4bc39dd"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "151d5fb6b3dc4ac69408713b7895093b3b5af348a95f64d36b45deede01f6c8b"
+      "sha256": "d04774c851045faf2605d719d1235c1dcc02d4ce2139135b0e3847d48b32bfe9"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

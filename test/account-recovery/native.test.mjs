@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
 import { build } from 'vite';
+import { ownedProfiles } from '../../scripts/custody/profiles.mjs';
 import { createPrivateAccountServer } from '../../account-service/private-server.ts';
 import { fresh, scope } from './fixtures.mjs';
 import { finishRequest } from '../account-core/fixtures.mjs';
@@ -32,18 +33,42 @@ test(
   async (t) => {
     const dir = mkdtempSync(join(tmpdir(), 'done-recovery-native-')),
       token = fresh();
-    const server = await createPrivateAccountServer({ path: join(dir, 'account.sqlite'), token });
-    let browser;
+    let server, browser, profiles;
+    const records = [];
     t.after(async () => {
-      await browser?.close();
-      await server.close();
-      rmSync(dir, { recursive: true, force: true });
+      try {
+        if (profiles) await profiles.close();
+        else await browser?.close();
+      } finally {
+        try {
+          await server?.close();
+        } finally {
+          rmSync(dir, { recursive: true, force: true });
+        }
+      }
     });
-    const launch = () =>
-      chromium.launchPersistentContext(join(dir, 'profile'), {
-        headless: true,
-        ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+    server = await createPrivateAccountServer({ path: join(dir, 'account.sqlite'), token });
+    if (process.env.RELEASE_PROCESS_GUARD) {
+      profiles = ownedProfiles({
+        directory: join(process.env.RELEASE_CUSTODY_OUTPUT, 'recovery', 'profiles'),
+        origin: server.origin,
+        records,
+        save: () =>
+          writeFileSync(
+            join(dirname(process.env.RELEASE_CASE_REPORT), 'recovery-profiles.json'),
+            JSON.stringify(records, null, 2) + '\n',
+          ),
       });
+    }
+    const launch = () =>
+      profiles
+        ? records.length
+          ? profiles.reopenProfile('source-false')
+          : profiles.profile('source-false')
+        : chromium.launchPersistentContext(join(dir, 'profile'), {
+            headless: true,
+            ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+          });
     browser = await launch();
     let page = await browser.newPage();
     await page.goto(server.origin);
@@ -294,5 +319,16 @@ test(
       ),
       /target changed/,
     );
+    if (profiles) {
+      await browser.close();
+      assert.equal(records.length, 3);
+      assert.equal(new Set(records.map((r) => r.pid)).size, 3);
+      assert.equal(new Set(records.map((r) => r.profile)).size, 1);
+      assert(records.every((r) => r.closed && r.exit === 0 && !r.failure));
+      assert.deepEqual(
+        records.slice(1).map((r) => r.reopen.priorPid),
+        records.slice(0, 2).map((r) => r.pid),
+      );
+    }
   },
 );

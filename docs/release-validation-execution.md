@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**226 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**225 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -61,6 +61,7 @@ node scripts/release-validation/execute.mjs --selection admission-native-fixture
 node scripts/release-validation/execute.mjs --selection genesis-native-fixture
 node scripts/release-validation/execute.mjs --selection promotion-native-fixture
 node scripts/release-validation/execute.mjs --selection authority-native-fixture
+node scripts/release-validation/execute.mjs --selection recovery-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1887,16 +1888,79 @@ establish prepared promotion, activation, Account index/editor/transport, full r
 personal/hardware ceremony. Next: Account recovery native fixture (one case), preserving its actual
 persistent-profile browser restarts and virtual WebAuthn semantics when integrating ownership.
 
+## Account recovery native fixture — phase 2am
+
+The preceding authority phase is signed and verified as `be8749f`. `recovery-native-fixture` adds
+one complete native file / one case. It passes in 33.310 seconds including fingerprint work;
+Node execution took 8.529 within the existing 120-second wrapper/file allowance and stage time 11.013.
+The scenario retains its original 40-second timeout. Worker and auxiliary browser groups drain.
+There are no generated histories in this file. New work is uncommitted, not an immutable aggregate.
+
+The recovery scenario must restart a complete persistent browser twice. Its owned path now uses the
+existing custody persistent-profile helper, with bounded reopen support: at most two reopens, only
+after the prior generation has closed cleanly. It removes stale port publication, preserves startup/
+close bounds and origin filtering, and records each generation's PID/endpoint/exit and prior-PID link.
+All scenario browsers inherit the worker group, so outer cleanup can drain them on worker death.
+The existing Chromium-CDP stage also owns its ordinary auxiliary browser; that is not the persistent
+profile used by this scenario. Standalone campaigns retain their original Playwright launch path.
+
+Cleanup registers before service setup and uses nested finalizers. The original recovery scenario
+body, case identity and timeout, production code, recovery fixtures and wrapper remain unchanged.
+New final ownership assertions require three distinct browser PIDs, one profile directory, clean exit
+for all generations and exact predecessor links. Complete recovery-profiles.json records are retained
+with the stage receipts as supplemental fixture evidence; this adds no general result adapter.
+
+The case uses actual navigator.credentials create/get with a CDP virtual resident-key, user-verifying
+ctap2 authenticator. Registration begin/finish calls the service directly from Node; recovery operations
+use loopback HTTP. Credentials are explicitly exported/restored after the first clean full browser
+restart. This is emulated passkey persistence, not operating-system or hardware ceremony evidence.
+Draft-generation IDB abort leaves empty state; confirmation abort leaves null finalization and a
+service recovery ceremony. These are request-time transaction aborts, not physical power loss.
+
+Cold reopen retains awaiting-code, refuses replacement generation and rejects a wrong saved code
+without prompting. One retained row's JSON excludes the literal code and has null finalization;
+this is a logical-row check, not a whole-profile privacy oracle. Another tab cannot acquire a held
+owner. Cancellation delays a begin wrapper before HTTP and keeps exclusion until settlement, then
+rejects as closed; it does not delay an already in-flight reply.
+
+A held finish wrapper is reached after finalization is durable. Page.crash kills the renderer; a new
+page sees finalization-pending. Resume commits service recovery and then loses its reply; local and
+service recovery IDs agree. A second full browser restart resumes the exact committed result without
+another assertion. The fixture restores no virtual credentials after this second restart. Unexpected
+finish stage and changed target context refuse. The context is synthetic and does not run promotion
+preflight. The service account stays pending; this is recovery-code preparation/confirmation, not
+admission, new-device account recovery or personal adoption. No service or browser process is forcibly
+killed in this scenario; the two full browser restarts are clean and the renderer crash is deliberate.
+
+All fourteen native-owner controls pass: eight existing CDP controls and six persistent-profile controls.
+The latter retain cold-copy, timeout, cancellation and worker-death coverage and add clean three-generation
+reopen plus worker death after reopening. Reopen refuses live/unknown/excess attempts and an injected
+failed-close record; that injection is not an OS close failure. Positive reopen checks localStorage
+survival; post-reopen worker death checks no matching profile process or CDP listener remains.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged 23 Node-owner and five Vitest-process controls retain earlier evidence. No historical-source
+or runtime registration-data input is needed. Independent-crypto/generated/mutation/service-death
+siblings and whole-wrapper output/scheduling/ownership remain separate obligations. Existing ledger
+orphan classification, core receive headroom, capture map-refresh/byte-length follow-ups and historical
+editing/handoff deadline evidence remain visible.
+
+All 191 prior general contracts / 1,642 identities and retired-v8 exclusions remain unchanged.
+General selections contain 192 files / 1,643 cases (96 Vitest, 96 Node); Account has 86 files / 549 cases.
+The 673,303-byte manifest has 612 obligations / 225 unresolved: 66 test-file (50 Node, sixteen Playwright),
+96 command, 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-recovery-native-fixture/README.md) retains complete receipts/profile records, native-owner controls, exact patch,
+frozen input/browser identities, source pins, base signature, prior contracts and preservation.
+All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups are unchanged.
+Next: Account core native fixtures (two cases), then remaining integration, R-04, P-06 and the immutable
+aggregate before private Account preparation and human work.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**226 blocked rows**: 67 test-file, 96 command, 63 campaign. All Vitest files have adapters; 51 Node
-and sixteen Playwright files remain. Next review Account recovery native fixtures (one case), preserving
-persistent-profile browser restarts and virtual WebAuthn semantics; then remaining owners/wrapper
-postconditions. Keep retired-v8 exclusions and ordered vector/traceability prerequisites. Existing ledger
-orphan classification, core receive headroom, capture oracle follow-ups and deadline evidence remain open.
-
-R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
-prose sweep precede the complete immutable run. State workload/platform/claim dispositions before
-private Account app/service prep and human passkey/recovery/adoption work. No personal Account cutover
-occurred in this validation sequence.
+**225 blocked rows**: 66 test-file, 96 command, 63 campaign. All Vitest files have adapters; 50 Node
+and sixteen Playwright files remain. Next review Account core native fixtures (two cases), then remaining
+owners/wrapper postconditions. Keep retired-v8 exclusions and ordered vector/traceability prerequisites.
+Existing ledger orphan classification, core receive headroom, capture oracle follow-ups and deadline
+evidence remain open. R-04 style scopes/full checks and P-06 prose precede the immutable run, then
+private Account app/service preparation and human passkey/recovery/adoption work.

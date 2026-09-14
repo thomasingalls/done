@@ -43,20 +43,18 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-191 files / 1,642 cases: all 96 Vitest files and 95 Node files. The Account authority native fixture
-adds four cases, passing in 63.453 seconds with worker/browser groups drained (Node 28.635 within
-120). Forty histories retain seed 9182026 and the 40-second bound. Native setup borrows owned CDP and
-registers cleanup early; all test bodies, identities, helpers, product, wrapper and limits are unchanged.
-Evidence covers read-only inventory/context stability, configured authority proofs, specific refusals,
-cancellation and caller mutation. Generated histories do not independently reconstruct writing or induce
-process death; input mutation does not force queued contention. All 190 prior contracts / 1,638 identities
-and exclusions remain unchanged. All 92 runner checks pass; unchanged owner controls retain prior evidence.
-Ledger orphan classification, receive headroom, capture oracle follow-ups and historical deadline evidence
-remain visible. There are 226 unresolved obligations: 67 test-file (51 Node, sixteen Playwright), 96 command
-and 63 campaign. Next is Account recovery native fixtures (one persistent-profile/virtual-WebAuthn case),
-then remaining integration, R-04, P-06 and the immutable run. Wrapper and service-only sibling credit remain
-separate; no prepared promotion, admission, index, editor/transport or personal Account result follows.
-Promotion `f59d5f2` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-authority-native-fixture/README.md).
+192 files / 1,643 cases: all 96 Vitest files and 96 Node files. The Account recovery native fixture
+adds one case, passing in 33.310 seconds (Node 8.529 within 120), with worker/browser groups drained.
+Its 40-second case retains both full browser restarts, virtual WebAuthn restoration and original recovery
+operations. The persistent owner adds two bounded reopens; all three PIDs differ and share one profile.
+Fourteen native-owner controls and 92 runner checks pass. Draft/confirmation aborts, saved-code reentry,
+exclusion, cancellation, renderer death and lost reply preserve the tested pending-account states.
+This is not full account recovery/adoption; virtual credentials and a literal-code row check have limited
+scope. All 191 prior contracts / 1,642 identities and exclusions remain unchanged. Existing owner/headroom/
+capture-oracle observations and deadline evidence remain visible. There are 225 unresolved obligations:
+66 test-file (50 Node, sixteen Playwright), 96 command and 63 campaign. Next is Account core native fixtures
+(two cases), then remaining integration, R-04, P-06 and the immutable run. Wrapper/sibling credit remains
+separate. Authority `be8749f` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-recovery-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed
