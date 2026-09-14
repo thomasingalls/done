@@ -49,6 +49,7 @@ import {
   decisionHistoryFixtureFiles,
   failureFixtureFiles,
   livenessNodeFixtureFiles,
+  livenessBrowserFixtureFiles,
   failureBrowserFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
@@ -64,7 +65,7 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 639 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 641 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
@@ -72,7 +73,7 @@ test('Account fixture selection admits exactly 639 Node cases and 12 delivery ca
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
       4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12, 24, 19, 6, 15, 16, 15, 15, 14, 12, 4, 1, 2, 5, 1,
-      6, 1, 3, 4, 5, 3, 4, 5, 6, 3, 15, 2, 2, 3, 9, 1, 3, 8, 1, 3, 1, 2, 4,
+      6, 1, 3, 4, 5, 3, 4, 5, 6, 3, 15, 2, 2, 3, 9, 1, 3, 8, 1, 3, 1, 2, 4, 1, 1,
     ],
   );
   for (const s of stages) {
@@ -112,7 +113,8 @@ test('Account fixture selection admits exactly 639 Node cases and 12 delivery ca
       outboundNativeFixtureFiles.includes(s.argv.at(-1)) ||
       decisionDirectedFixtureFiles.includes(s.argv.at(-1)) ||
       decisionHistoryFixtureFiles.includes(s.argv.at(-1)) ||
-      failureBrowserFixtureFiles.includes(s.argv.at(-1));
+      failureBrowserFixtureFiles.includes(s.argv.at(-1)) ||
+      livenessBrowserFixtureFiles.includes(s.argv.at(-1));
     assert.equal(
       s.deadlineMs,
       {
@@ -149,6 +151,8 @@ test('Account fixture selection admits exactly 639 Node cases and 12 delivery ca
         'test/account-failures/service.test.mjs': 120000,
         'test/account-liveness/instrument.test.mjs': 60000,
         'test/account-liveness/service-cache.test.mjs': 60000,
+        'test/account-liveness/controlled.test.mjs': 200000,
+        'test/account-liveness/view.test.mjs': 180000,
         'test/account-decision-composition/order.test.mjs': 300000,
         'test/account-decision-composition/generated.test.mjs': 300000,
         'test/account-reservation-durability/model.test.mjs': 300000,
@@ -177,10 +181,10 @@ test('Account fixture selection admits exactly 639 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 112);
+  assert.equal(selected.length, 114);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    651,
+    653,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -855,6 +859,24 @@ test('Account fixture selection admits exactly 639 Node cases and 12 delivery ca
   for (const s of liveness) {
     assert.equal(s.deadlineMs, 60000);
     assert.equal(s.fixture, undefined);
+    assert.equal(s.expect.historyInputs, undefined);
+    assert.equal(s.expect.dataInputs, undefined);
+  }
+  const browserLiveness = selectStages(m, 'liveness-browser-fixtures');
+  assert.deepEqual(
+    browserLiveness.map((s) => s.argv.at(-1)),
+    livenessBrowserFixtureFiles,
+  );
+  assert.deepEqual(
+    browserLiveness.map((s) => s.expect.cases.length),
+    [1, 1],
+  );
+  assert.deepEqual(
+    browserLiveness.map((s) => s.deadlineMs),
+    [200000, 180000],
+  );
+  for (const s of browserLiveness) {
+    assert.deepEqual(s.fixture, { kind: 'chromium-cdp', startupMs: 15000 });
     assert.equal(s.expect.historyInputs, undefined);
     assert.equal(s.expect.dataInputs, undefined);
   }

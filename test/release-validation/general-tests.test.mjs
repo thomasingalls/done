@@ -21,16 +21,16 @@ import { validateStage } from '../../scripts/release-validation/stage.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1745-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1747-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 218);
+  assert.equal(general.length, 220);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1745,
+    1747,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -78,6 +78,8 @@ test('reviewed Vitest and Node selections preserve the 1745-case file denominato
         'test/account-failures/service.test.mjs': 120000,
         'test/account-liveness/instrument.test.mjs': 60000,
         'test/account-liveness/service-cache.test.mjs': 60000,
+        'test/account-liveness/controlled.test.mjs': 200000,
+        'test/account-liveness/view.test.mjs': 180000,
         'test/account-decision-composition/order.test.mjs': 300000,
         'test/account-decision-composition/generated.test.mjs': 300000,
         'test/account-reservation-durability/model.test.mjs': 300000,

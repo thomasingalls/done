@@ -5,6 +5,7 @@ import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir, loadavg, release } from 'node:os';
 import { join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { build } from 'vite';
 import { authenticator, finishRequest } from '../account-core/fixtures.mjs';
 import { instrument, clockSeam, targets, verificationOracle } from './instrument.mjs';
@@ -76,6 +77,7 @@ export async function fixture(t) {
   });
   let serial = 0,
     browser,
+    context,
     page,
     closed = false;
   const pending = new Map(),
@@ -112,24 +114,28 @@ export async function fixture(t) {
   const dispose = async () => {
     if (closed) return;
     closed = true;
-    await browser?.close();
     try {
-      if (child.connected) await rpc('close');
+      await context?.close();
     } finally {
-      child.kill();
-      rmSync(dir, { recursive: true, force: true });
+      try {
+        await browser?.close();
+      } finally {
+        try {
+          if (child.connected) await rpc('close');
+        } finally {
+          child.kill();
+          rmSync(dir, { recursive: true, force: true });
+        }
+      }
     }
   };
   t.after(dispose);
   const { origin, pin, hits } = await rpc('start', { dir, token });
   for (const [name] of Object.values(targets['/account-service/delivery.ts']))
     assert.equal(hits[name], 1);
-  browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-  });
-  const context = await browser.newContext(),
-    keys = new Map();
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
+  const keys = new Map();
   await context.route(origin + '/', (route) =>
     route.fulfill({
       status: 200,

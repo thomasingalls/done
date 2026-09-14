@@ -3087,3 +3087,8 @@ Integrate five unchanged service/HTTP/admission failure cases, retaining null de
 ## 2026-09-14 — Keep liveness instrument and service-cache checks finite and independently observable
 
 Integrate six Node instrumentation/cache cases with the existing one-minute file limits. Replace only equivalent checkpoint-size registration expressions with literal bytes, leaving the finite reader and test bodies unchanged. Preserve exact warm/cold signature counts, cache ownership/invalidation checks and instrument controls. Raise the compact manifest ceiling to 750 kB in writer and regression assertion while preserving schema, layout and all earlier contracts. Performance workloads and browser liveness remain separate.
+
+
+## 2026-09-14 — Qualify local progress and cached-view refusal under controlled native boundaries
+
+Integrate the two unchanged controlled/view browser cases using the existing owned-CDP helper with explicit context and finally cleanup. Retain their existing file/case bounds. Credit progress while genuine HTTP is held, fresh automatic retry after three expired reads, and refusal/recovery for seven IDB tamper modes. Preserve instrument/source pins. Keep performance reports, growing workloads, full wrapper outputs and immutable release qualification separate.
