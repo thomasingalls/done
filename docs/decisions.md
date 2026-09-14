@@ -2747,3 +2747,20 @@ title into an after-reopen source/counter/text assertion. Distinguish the parent
 signing/verifying message change from replacing a signature made by unmutated code. Graceful close and
 page reopen do not establish renderer crash or durable successor behavior. These scope limits preserve
 the useful evidence without granting the primitive verifier broader authority.
+
+
+## 2026-09-14 — Integrate capture with bounded history and precise retention claims
+
+Admit the complete fifteen-case capture native file with its original three-minute bound, case limits
+and sixteen generated histories. Pin the existing historical promotion reader and bound its Git read
+at five seconds / 2 MiB. Keep the native test bodies, mutations and product code unchanged; existing
+historical drift and browser-owner contracts need no expansion. Whole-wrapper output/prerequisites
+remain separate obligations.
+
+The generated map refreshes saved capsules after each edit, so same-ID changes during that edit may
+be masked. Record boundary retention rather than universal first-observed immutability; keep a focused
+oracle-strengthening follow-up visible. The route mutation only exercises decoding, synthetic pagehide
+is not BFCache, and getText document instrumentation is not a full heap inventory. Capsule-overhead
+recovery establishes recovered text length but its source-byte predicate lacks a separate length
+assertion; atomic abort evidence comes from another case. These are evidence limits, not newly proven
+product failures, and do not erase the actual journal, attribution, pending-frame and crash checks.

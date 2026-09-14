@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**233 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**232 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -54,6 +54,7 @@ node scripts/release-validation/execute.mjs --selection receive-editor-fixtures
 node scripts/release-validation/execute.mjs --selection spool-fixture
 node scripts/release-validation/execute.mjs --selection delivery-native-fixture
 node scripts/release-validation/execute.mjs --selection decisions-native-fixture
+node scripts/release-validation/execute.mjs --selection capture-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1341,14 +1342,85 @@ personal profiles/services/builds/recovery/factors, historical archives, formal 
 and root `done ` remain untouched. Next: Account capture native fixtures, then remaining native/wrapper
 integration, R-04, P-06 and the immutable run before private Account preparation.
 
+## Account capture native fixture — phase 2af
+
+The preceding decisions phase is signed and verified as `fb81e00`. `capture-native-fixture` adds one
+complete native file / fifteen cases under existing owned Chromium/CDP. The original 180-second file
+bound remains, with fourteen directed cases at 30 seconds and generated histories at 90. Browser startup
+stays 15 seconds, drain grace five. Product code, native test bodies, populations, mutations, wrapper,
+owner and census are unchanged. Only the active historical-reader Git read gains 5-second/2-MiB bounds.
+
+All fifteen cases pass in 182.651 seconds including fingerprint work; worker/browser groups drain.
+Node execution took 153.177 seconds against 180; stage time was 157.293 seconds. A single
+passing run does not qualify loaded-host reliability. The old-reader control pins reference, revision,
+path and exact bytes for `18ceb40:src/crdt/promotionRecord.ts`. Existing historical drift controls cover
+that path; other imported historical branches remain dormant. Synthetic v4-to-v6 activation and v5/
+historical-reader refusal do not broaden the supported private v9 product route.
+
+Journal recovery preserves accepted text, human attribution, the Account credential and the exact new
+capsule through renderer crash, new-page reopen and compaction. Activation before commit aborts a real
+IDB transaction after request success; activation after commit holds completion before renderer death.
+Neither exposes an editor prematurely. Quota refusal plus an aborted outbound transaction leaves input
+pending, visible text and captures unchanged; retry admits once and survives reopen. Failed journal
+removal retains exact overlap through crash recovery. Two uniquely anchored mutations expose lost
+capsules despite visible writing and acceptance of a wrong-workspace capsule by the decoder. The latter
+never appends its altered capsule and gives no persisted cross-workspace result.
+
+Sixteen histories retain seed 9322026, numRuns:16, endOnFailure:true and 90 seconds. Each of two to six
+Unicode insert/delete steps chooses flush, compact, reopen or renderer crash, then compares visible
+master text and retained capsule IDs/bytes. The comparison map is refreshed after each edit and can
+mask a same-ID change during that edit; it establishes retention across the selected boundary, not
+universal equality to first-observed bytes. Histories close without an unconditional final cold reopen.
+No all-boundary coverage or shrinking claim is made. This oracle limit remains a follow-up, not a new
+product defect or reason to remove the useful boundary coverage.
+
+Exclusive lifetime checks queue another editor before passkey proof, cancellation and stale-surface
+refusal after synthetic pagehide. Held native flush completion keeps the slot until close drains;
+all documents observed through getText instrumentation are destroyed before release. The event is not
+real navigation/BFCache, and instrumentation is not an exhaustive heap inventory. Wrong pin/code/passkey/
+actor and public receive refuse without inventory mutation. Human edit/undo and system bulk attribution
+survive compaction and reopen. Low-level test capture ingress retains original pending child/delete
+frames until the parent arrives, with expected pending and Local text after recovery.
+
+Capsule overhead on 10,000 characters forces database admission after synchronous oversize refusal and
+recovers full-length text. Its byte comparison lacks a separate equal-length assertion; the atomic
+abort oracle is the separate pressured case. Wrong workspace/credential/principal/epoch and changed
+source under an existing ID refuse without inventory changes; this case does not vary generation.
+There are four explicit directed renderer crashes plus generated choices. CDP renderer death and
+same-context new-page reopen do not establish browser-process crash, power loss or second-device behavior.
+
+The existing base registers cleanup before setup, borrows the owned CDP endpoint and uses in-memory
+builds, synthetic factors and a disposable service/SQLite store. Actual preparation, registration,
+admission and handoff run there; no writing is sent to a peer or real Account. Generated histories share
+a context/service with distinct workspaces. Optional JSON exports and original wrapper saved-output,
+ordering and prerequisite contracts remain separate unresolved obligations.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain pinned earlier evidence. The
+initial ledger owner orphan classification remains unresolved despite later passes. Core receive
+previously used 297.025 of its 300-second Node bound; both observations stay at the owner/loaded-host
+gate, with no fix established here.
+
+All 184 prior general contracts / 1,551 identities remain unchanged. General selections now contain
+185 files / 1,566 cases (96 Vitest, 89 Node), including 79 Account files / 472 cases. The 658,511-byte
+manifest retains 612 obligations / 232 unresolved: 73 test-file (57 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-capture-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base/historical signatures, prior contracts and preservation. This new phase is
+uncommitted and is not an immutable aggregate. All 52 personal/vector pins and L-2 are byte-identical;
+personal profiles/services/builds/recovery/factors, historical archives, formal debts, signing backups
+and unrelated root files remain untouched. Next: Account editing native fixtures (sixteen static cases),
+then remaining native/wrapper integration, R-04, P-06 and the immutable run before private Account prep.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**233 blocked rows**: 74 test-file, 96 command, 63 campaign. All Vitest files have adapters; 58 Node
-and sixteen Playwright files remain. Next review the Account capture native fixture, then other
+**232 blocked rows**: 73 test-file, 96 command, 63 campaign. All Vitest files have adapters; 57 Node
+and sixteen Playwright files remain. Next review the Account editing native fixture, then other
 owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper calls
 without reviving support. Preserve ordered vector/traceability prerequisites and open owner/loaded-host
-observations, including the prior core receive deadline headroom.
+observations, including prior core receive deadline headroom. The capture generated map's per-edit
+refresh and overhead case's missing length equality remain focused oracle-strengthening follow-ups.
 
 R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
 prose sweep precede the complete immutable run. State workload/platform/claim dispositions before

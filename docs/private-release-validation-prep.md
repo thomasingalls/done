@@ -43,22 +43,22 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-184 files / 1,551 cases: all 96 Vitest files and 88 Node files. The Account decisions native fixture
-adds one file / six cases, passing in 94.874 seconds with worker/browser groups drained (Node
-execution 67.424 within 120). Eight histories retain their seed/population/bound. Native cases
-cover read-only inspection, exact wire/inventory preservation, response classification, predecessor
-links and verification close/drain. Five uniquely anchored primitive mutations expose omitted signature,
-epoch, chain-link, parent and position checks. Product code, test bodies, helpers, vectors and wrapper
-are unchanged; no historical reader runs. Both runtime vector files are pinned. All 183 prior contracts /
-1,545 identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
+185 files / 1,566 cases: all 96 Vitest files and 89 Node files. The Account capture native fixture
+adds one file / fifteen cases, passing in 182.651 seconds with worker/browser groups drained (Node
+execution 153.177 within 180). Sixteen generated histories retain their seed/population/bound;
+directed cases cover journal recovery, activation cuts, pressured atomic admission, ownership/drain,
+attribution, pending Yjs frames and route/ID reuse. Two mutations expose lost retention and wrong-route
+decoder acceptance. Product code, native test bodies, populations, wrapper and owner are unchanged;
+the pinned historical reader's Git read gains 5-second/2-MiB bounds. All 184 prior contracts / 1,551
+identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
 native-owner controls (23/5/12) retain earlier evidence. The initial ledger owner orphan classification
 and core receive's 297.025-of-300-second headroom remain at the reliability gate. The manifest retains
-233 unresolved obligations: 74 test-file (58 Node, sixteen Playwright), 96 command and 63 campaign.
-Next is Account capture native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
-run. Retired-v8 exclusions and optional JSON/vector/order/prerequisite obligations remain. Generated
-final reopen directly compares envelope bytes, not separate source/counter/text equality. The parent
-control mutates both signing and verifying message construction; no durable successor claim follows.
-Delivery `d85036e` is signed and verified; this new phase is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-decisions-native-fixture/README.md).
+232 unresolved obligations: 73 test-file (57 Node, sixteen Playwright), 96 command and 63 campaign.
+Next is Account editing native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
+run. Retired-v8 exclusions and optional JSON/order/prerequisite obligations remain. Capture's generated
+map refresh can mask same-ID changes during an edit; it checks boundary retention. Strengthening that
+oracle and the overhead case's byte-length equality remain follow-ups, not proven product defects.
+Decisions `fb81e00` is signed and verified; this new phase is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-capture-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

@@ -81,22 +81,22 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks. The general adapters
-   now cover 184 files / 1,551 cases: all 96 Vitest files and 88 Node files. The Account decisions native fixture
-   adds one file / six cases, passing in 94.874 seconds with worker/browser groups drained (Node
-   execution 67.424 within 120). Eight histories retain their seed/population/bound. Native cases
-   cover read-only inspection, exact wire/inventory preservation, response classification, predecessor
-   links and verification close/drain. Five uniquely anchored primitive mutations expose omitted signature,
-   epoch, chain-link, parent and position checks. Product code, test bodies, helpers, vectors and wrapper
-   are unchanged; no historical reader runs. Both runtime vector files are pinned. All 183 prior contracts /
-   1,545 identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
+   now cover 185 files / 1,566 cases: all 96 Vitest files and 89 Node files. The Account capture native fixture
+   adds one file / fifteen cases, passing in 182.651 seconds with worker/browser groups drained (Node
+   execution 153.177 within 180). Sixteen generated histories retain their seed/population/bound;
+   directed cases cover journal recovery, activation cuts, pressured atomic admission, ownership/drain,
+   attribution, pending Yjs frames and route/ID reuse. Two mutations expose lost retention and wrong-route
+   decoder acceptance. Product code, native test bodies, populations, wrapper and owner are unchanged;
+   the pinned historical reader's Git read gains 5-second/2-MiB bounds. All 184 prior contracts / 1,551
+   identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
    native-owner controls (23/5/12) retain earlier evidence. The initial ledger owner orphan classification
    and core receive's 297.025-of-300-second headroom remain at the reliability gate. The manifest retains
-   233 unresolved obligations: 74 test-file (58 Node, sixteen Playwright), 96 command and 63 campaign.
-   Next is Account capture native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
-   run. Retired-v8 exclusions and optional JSON/vector/order/prerequisite obligations remain. Generated
-   final reopen directly compares envelope bytes, not separate source/counter/text equality. The parent
-   control mutates both signing and verifying message construction; no durable successor claim follows.
-   Delivery `d85036e` is signed and verified; this new phase is uncommitted. [Evidence](../../account-conformance-runs/2026-09-14-decisions-native-fixture/README.md).
+   232 unresolved obligations: 73 test-file (57 Node, sixteen Playwright), 96 command and 63 campaign.
+   Next is Account editing native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
+   run. Retired-v8 exclusions and optional JSON/order/prerequisite obligations remain. Capture's generated
+   map refresh can mask same-ID changes during an edit; it checks boundary retention. Strengthening that
+   oracle and the overhead case's byte-length equality remain follow-ups, not proven product defects.
+   Decisions `fb81e00` is signed and verified; this new phase is uncommitted. [Evidence](../../account-conformance-runs/2026-09-14-capture-native-fixture/README.md).
    R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
    load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
@@ -166,7 +166,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 184 Vitest/Node files integrated, including six Account decisions native cases with pinned runtime vectors and read-only/primitive mutation controls; initial owner orphan classification and prior receive deadline headroom remain open; 233 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 185 Vitest/Node files integrated, including fifteen Account capture native cases with pinned historical reader and retention/route/crash controls; capture oracle limits, initial owner orphan classification and prior receive deadline headroom remain open; 232 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |

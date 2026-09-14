@@ -16,6 +16,8 @@ export async function captureBundle(control) {
               if (control === 'old-reader' && id.endsWith('/src/crdt/promotionRecord.ts'))
                 return execFileSync('git', ['show', '18ceb40:src/crdt/promotionRecord.ts'], {
                   encoding: 'utf8',
+                  timeout: 5000,
+                  maxBuffer: 2 * 1024 * 1024,
                 });
               const targets = {
                 retention: [

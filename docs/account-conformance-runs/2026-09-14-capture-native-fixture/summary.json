@@ -1,0 +1,97 @@
+{
+  "base": "fb81e009d5a64a0e92fdf2e945b27155fa5bb3a9",
+  "claim": "Account capture native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T07-37-36.568Z",
+  "summary": {
+    "schema": 1,
+    "selection": "capture-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-capture/native.test.mjs",
+        "key": "20eecd6793ed1e77dd5a830ec1cb0263e05eb91193c059a5b501aaf7ca6ce058",
+        "status": "passed",
+        "elapsedMs": 157293,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T07:37:36.571Z",
+    "input": "5f8071401492819cbe0ffdbf7956f172032a6115502833e26e4479bd668804b6",
+    "completedAt": "2026-09-14T07:40:39.222Z"
+  },
+  "elapsedMs": 182651,
+  "rawInputArchiveSha256": "7d18daa6548fc42204ac19e6617e68987ac0d7c0cc95ca1f495c426f027048c2",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "fb81e009d5a64a0e92fdf2e945b27155fa5bb3a9",
+    "sourceDigest": "7b1bcad3daa4ee5a9e410e7b09867643a8bf8485e492c44c589358bae5d2f507",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 15,
+    "browserFiles": 1,
+    "generatedHistories": 16,
+    "seed": 9322026,
+    "priorGeneralFiles": 184,
+    "priorGeneralCases": 1551,
+    "currentGeneralFiles": 185,
+    "currentGeneralCases": 1566,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 89,
+    "accountFiles": 79,
+    "accountCases": 472,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 232,
+    "unresolvedTestFiles": 73,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 658511
+  },
+  "finalGatesSha256": "790800a79b4523c3dc4830d267b4aa76c7fb5c197ce47287e44eb2e183e3b534",
+  "preservationSha256": "8a9cd06355ce3da4977807ae449624b9f0dde6c81a4ac1f4b266001664cd8c0c",
+  "limits": [
+    "One complete existing native file retains 15 cases: 14 directed and one sixteen-history generated campaign. The original 180-second wrapper deadline and existing case limits remain unchanged: directed cases use 30 seconds, generated histories 90. Browser startup remains 15 seconds and drain grace five. Product code, native test bodies, populations, mutation bodies, census and browser owner are unchanged. Only the active historical-reader Git read gains 5000-ms/2-MiB bounds.",
+    "The old-reader control uses promotionRecord.ts at 18ceb40; its reference, full revision, path and exact Git bytes enter the stage receipt. Existing prelaunch/reuse/midrun historical drift controls already cover this path and remain unchanged. Imported historical branches other than this explicit control are dormant under the sanitized environment. Synthetic v4-to-v6 capture activation and v5/historical reader refusal do not broaden the supported private v9 product route.",
+    "The base registers cleanup before setup, borrows the validated owned loopback CDP endpoint and creates synthetic credentials/recovery data, contexts and temporary Account service/SQLite stores. Preparation, registration, admission and handoff run against that synthetic service. Builds are in memory. The genesis page stays separate from editing pages that are crashed/replaced. Generated histories share a context/service with distinct workspaces; test cleanup closes contexts/connections/services and removes temporary files, then the owner drains Chromium. No writing is sent to a peer or real Account.",
+    "Directed journal recovery checks the accepted visible edit, captured human actor, distinct Account credential and exact newly added capsule after renderer crash, cold reopen and compaction. Activation before commit aborts an actual IDB transaction after request success and refuses without an editor at v4; activation after commit holds completion, observes v6 with no editor, then crashes the renderer. Both recover the original writing in a new page. The before case is an abort and page replacement, not a renderer crash.",
+    "Quota refusal plus abort of the actual outbound IDB transaction keeps pressured input pending, visible text unchanged and captures unchanged; retry admits once and cold reopen retains the edit. Injected localStorage removal failure retains exact journal/database overlap; renderer crash and new-page reopen preserve text and capsule identities. These are specified request/commit/cleanup boundaries, not exhaustive storage fault coverage.",
+    "Two uniquely anchored mutations have discriminating behavioral assertions: omitting the durable outbound capsule leaves visible writing with zero retained capsules; removing the route guard makes the decoder accept an otherwise valid wrong-workspace capsule. The second control invokes the decoder directly and never appends its altered capsule, so it does not demonstrate persisted cross-workspace capture.",
+    "Sixteen generated histories retain seed 9322026, numRuns:16, endOnFailure:true and 90 seconds. Two to six Unicode insert/delete steps choose flush, compact, new-page reopen or renderer crash. Every boundary compares visible master text and all saved capsule identities/bytes. The retained map is refreshed with current captures after each edit, before the boundary; overwriting existing IDs can mask changes during that edit. This checks retention across the chosen boundaries, not universal first-observed byte immutability. Each history closes at the end without an unconditional final cold reopen. No all-boundary coverage or shrinking claim is made.",
+    "Exclusive acquisition queues a second editor without requesting passkey proof, supports cancellation, and revokes stale read/input/snapshot/export after synthetic pagehide. The event is dispatched directly, not real navigation or BFCache. Held native flush completion keeps a competing Web Lock waiting until close drains. Documents observed through the getText instrumentation are destroyed before release; this is not an exhaustive heap/projection inventory. Cold reopen retains the journal edit.",
+    "Wrong pin, code, passkey and actor refuse activation without inventory mutation; the public receive surface refuses unauthenticated input. Human editing/undo and a system bulk move retain the expected actors and exact capsules through compaction and reopen. Low-level test capture ingress retains original pending child/delete frames until the parent arrives, with expected Yjs pending text and Local text after recovery. This is not an authorized remote receiver path.",
+    "Capsule overhead on a 10000-character source refuses synchronous admission as oversize, then database admission recovers the full-length Yjs text. The source comparison uses every saved byte without a separate equal-length assertion. Atomic abort/retry evidence comes from the separate pressured-admission case, not an injected abort here. Wrong workspace/credential/principal/epoch routes and changed source under an existing capsule ID refuse without inventory change; generation is not one of this case\u2019s varied fields.",
+    "There are four explicit directed renderer crashes (journal roundtrip, post-commit activation, cleanup overlap and pending frames after the low-level carrier closes), plus crashes selected by generated steps. New-page reopen shares a browser context; CDP Page.crash is renderer death, not browser-process crash, power loss or another device. Optional ACCOUNT_REPORT_DIR JSON exports are disabled; their saved-output postconditions, original wrapper ordering and prerequisites remain separate unresolved obligations.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned earlier evidence rather than new execution. The ledger phase\u2019s first expected-pass historical service-path orphan classification remains unresolved despite subsequent passes. Core receive previously used 297.025 seconds of its 300-second Node deadline. Those observations stay at the loaded-host/owner reliability gate; this phase establishes no fix.",
+    "All 184 prior general contracts / 1551 case identities and six retired-v8 exclusions remain unchanged. Full frozen source/dependency/browser archives are retained locally and hashed here; later documentation edits do not establish an immutable aggregate. The preceding decisions phase is signed and verified. Personal profiles/services/builds/recovery/factors, earlier vectors/evidence/debts/signing backups, unrelated root files and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 153177.466833,
+    "stageElapsedMs": 157293,
+    "selectionElapsedMs": 182651,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1684391f3472da962b6fd917e15d931f6841d82f950ad5b39a960c3f4d28c866",
+    "compressedSha256": "77c9e77ef294aee050c504f8e0f4f9ffe3af3932330b12c78910b70b543be750"
+  }
+}
