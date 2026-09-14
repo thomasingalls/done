@@ -3112,3 +3112,8 @@ Integrate fourteen neutral matcher/container cases under 60-second file bounds. 
 ## 2026-09-14 — Keep residue calibration credit tied to planted surfaces and fault controls
 
 Admit the unchanged two-case native calibration file with its canonical 150-second file and 120/90-second case bounds. Credit all 144 applicable representation/surface cells, ten missing-surface controls and four collector faults. Keep opaque-key contents, physical-carrier completeness, wrapper outputs and immutable qualification outside this result.
+
+
+## 2026-09-14 — Retain directed lifecycle and acquired service-file residue evidence without widening its claim
+
+Integrate the unchanged three lifecycle cases and one service-file case under their existing 240-second file bounds. Credit exact journal/flush/cold content assertions, explicit recovery retry-key exposure rules, actual storage failure and plaintext side-record controls, and stable acquired DB/WAL file scans. Keep directed synthetic evidence distinct from process crashes, human Account qualification and forensic erasure. The initial empty-checkpoint refusal traced to a Chromium extension worker. Align the direct launcher with Playwright extension-disabling defaults, retaining worker refusal and a positive app-worker observation control. Rerun the 24 Node-owner and 14 native-owner controls; preserve the failed receipt and probe. Bound browser signal-denial retries within existing grace intervals, with transient/persistent denial controls. Preserve the earlier failed crash-cleanup receipt and require actual group disappearance for success.

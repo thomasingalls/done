@@ -9,6 +9,11 @@ import { historicalInput } from './historical-inputs.mjs';
 
 export const residueCalibrationFixtureFiles = ['test/account-residue/calibration.test.mjs'];
 
+export const residueLifecycleFixtureFiles = [
+  'test/account-residue/lifecycle.test.mjs',
+  'test/account-residue/service-files.test.mjs',
+];
+
 export const residueNodeFixtureFiles = [
   'test/account-residue/extended.test.mjs',
   'test/account-residue/matcher.test.mjs',
@@ -347,12 +352,14 @@ export const accountFixtureFiles = {
     ...livenessGrowthFixtureFiles,
     ...residueNodeFixtureFiles,
     ...residueCalibrationFixtureFiles,
+    ...residueLifecycleFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser =
+    residueLifecycleFixtureFiles.includes(file) ||
     residueCalibrationFixtureFiles.includes(file) ||
     admissionEvidenceFiles.includes(file) ||
     receiveTransportFixtureFiles.includes(file) ||
@@ -414,6 +421,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (residueLifecycleFixtureFiles.includes(file) ? 240000 : undefined) ??
       (residueCalibrationFixtureFiles.includes(file) ? 150000 : undefined) ??
       (residueNodeFixtureFiles.includes(file) ? 60000 : undefined) ??
       (livenessGrowthFixtureFiles.includes(file) ? 930000 : undefined) ??

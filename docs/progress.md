@@ -50,39 +50,47 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: none; continue bounded signed Account groups; stop if signing blocks
+blocks_on: signing agent refused lifecycle commit; validated work staged; resume signing before continuing
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Residue matcher and container fixtures is signed `9e243ca` and verified. Growing-history liveness is signed `de8f421` and verified. Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** The lifecycle/service-file phase is validated and staged, but `git commit -S` failed with `agent refused operation`; HEAD remains the signed calibration commit `c5e21128`. No unsigned commit was created. Resume signing before the remaining two Account files.  Residue calibration fixtures is signed `c5e2112` and verified. Residue matcher and container fixtures is signed `9e243ca` and verified. Growing-history liveness is signed `de8f421` and verified. Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account residue calibration native fixtures.
+**Just completed.** Account residue lifecycle and service-file native fixtures.
 
-The preceding phase is signed and verified as `9e243ca`. **Account residue calibration native fixtures** adds 1 complete
-file / 2 cases. The selection passes in 36.080 seconds including
+The preceding phase is signed and verified as `c5e2112`. **Account residue lifecycle and service-file native fixtures** adds 2 complete
+files / 4 cases. The selection passes in 52.677 seconds including
 fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-calibration-fixture/README.md).
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-lifecycle-fixtures/README.md).
 
-Two complete unchanged native cases retain the canonical residue wrapper file bound of 150 seconds and 120/90-second case bounds. Six registration files and generated snapshots change. Existing product, neutral collectors, representations, matcher, browser/service fixture, test bodies and wrappers remain unchanged. Two isolated contexts run under one owned browser; no personal profile or origin is opened.
+Four complete unchanged cases retain their existing 240-second file bounds: three lifecycle cases (180/60/60 seconds) and one service-file case (180 seconds). Six registration files, the shared Chromium launcher, two existing owner-control files and generated snapshots change. Product code, the four residue test bodies, synthetic browser/service fixture, acquisition and matching helpers, and wrappers remain unchanged. Five fixture instances run in two owned disposable browsers.
 
-The matrix plants all fifteen declared representations across ten required acquisition surfaces, excluding six inapplicable cookie encodings: 144 cells. A clean scan must be complete with no prohibited match; the planted scan must detect every exact needle/surface pair with no issues. Each of the ten whole-surface omissions must both lose its planted match and report a missing collector.
+The lifecycle requires at least five synchronous admitted writes held solely in the encrypted journal while content-row counts remain unchanged. Flush must empty that journal; compaction and cold page replacement must preserve the exact projection. Recovery preparation checks the specific allowed retry-key exposures, then actual HTTP selection includes a lost final reply. Later Account edits, compaction and cold replay must retain the expected content. Software authenticators and generated factors exercise the private flow; this is not a human ceremony or a personal Account receipt.
 
-The second case plants twelve independent markers in structured clones, keys, blobs, exact typed-array views, maps, sets, files, numeric arrays, chunk boundaries, headers, cookies and diagnostics. Four intentional collector faults must lose the corresponding match. Missing collection, tiny budgets and unsupported clone values must produce issues. Non-extractable CryptoKey metadata is observed; its underlying contents are outside this scanner assertion.
+Wrong-factor and cancelled opens refuse access. A real Storage.setItem override throws QuotaExceededError for encrypted journal keys; the test requires that failure to occur and verifies fallback persistence through cold reopen. The paired write-path control deliberately plants a plaintext side record after an acknowledged edit and requires the neutral scanner to detect it. These are directed controls, not generated histories or physical process/power failures.
 
-These controls calibrate detection on declared synthetic surfaces and representations. They do not prove absence in every physical browser carrier or establish forensic erasure. Optional wrapper report files are not retained by this general case adapter; owned receipts establish the full two-case result. Formal host-Python binding from the neutral container phase, wrapper/output contracts and immutable aggregate qualification remain separate.
+The separate service-file case drives synthetic Local-to-Account HTTP delivery and observes the actual service directory twice after a barrier. Both observations must agree, the bounded acquired-file scan must be complete with no prohibited writing/factor sentinel, and it must include a real WAL. The intentional retry marker is excluded. This establishes the tested acquired-file result, not physical disk erasure or universal carrier coverage.
+
+Existing host-Python identity binding, default report/stdout retention, owner classification/headroom and capture-oracle follow-ups remain open. Owned case receipts establish these four results; original wrapper campaign and output contracts, immutable validation and personal Account preparation remain separate.
+
+The first native attempt refused all three lifecycle cases with uncaptured-worker, including the empty checkpoint. A separate diagnostic probe identified a chrome-extension worker; no product worker was inferred from that URL. The shared direct Chromium launcher now supplies the two extension-disabling flags already present in installed Playwright defaults. The uncaptured-worker refusal remains unchanged. The native owner control checks an empty worker census then observes a deliberately created real Blob worker; the existing startup control pins both flags. All 24 Node-owner and 14 native-owner cases are rerun, including timeout, cancellation, death and group/listener cleanup. The failed lifecycle receipt and diagnostic probe are retained alongside the passing final run. This changes the browser launch inputs; earlier native receipts retain their original input identities and are not recast as reruns under these flags.
+
+The first ownership recheck passed 13/14 native controls; browser-death cleanup recorded kill EPERM and refused group-drain credit. Its PID was subsequently absent, but that later observation does not repair the failed receipt. Browser signaling now retries EPERM within each existing TERM/KILL grace interval and still requires ESRCH for drain. A new Node-owner control injects transient and persistent signal denial, requiring recovery only in the former and a failed drain result in the latter. Both the failed ownership log/receipt and successful requalification are retained. No deadline was enlarged and persistent uncertainty is not treated as success.
+
+This packet alone uses a 175,000-byte ceiling, expanded from the usual 150,000 to preserve both failed attempts, the diagnostic probe and the full 24/14 owner requalification logs. The next ordinary integration packet returns to the usual ceiling.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 224 prior general contracts / 1,763 identities and exclusions remain unchanged.
-General selections now contain 225 files / 1,765 cases (96 Vitest,
-129 Node); Account has 119 files / 671 cases.
-The 707,310-byte manifest retains 612 obligations / 192 unresolved:
-33 test-file (17 Node, sixteen Playwright), 96 command,
+pass. All 225 prior general contracts / 1,765 identities and exclusions remain unchanged.
+General selections now contain 227 files / 1,769 cases (96 Vitest,
+131 Node); Account has 121 files / 675 cases.
+The 708,782-byte manifest retains 612 obligations / 190 unresolved:
+31 test-file (15 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
@@ -90,7 +98,7 @@ Exact receipts/patch, frozen source/browser identities, source-control pins, pri
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account residue lifecycle and service-file native fixtures. There are 4 Account files left; continue in signed
+qualification is separate. Next: Account residue generated native histories. There are 2 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
@@ -107,7 +115,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account residue lifecycle and service-file native fixtures. 4 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account residue generated native histories. 2 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 

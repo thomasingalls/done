@@ -70,7 +70,10 @@ function fixture(t, mode, extra = {}) {
     }
     const browser = process.env.MODE === 'account-fixture' ? await openFixtureBrowser(chromium) : await chromium.connectOverCDP(process.env.RELEASE_BROWSER_ENDPOINT);
     const context = await browser.newContext();
+    const workers = [];
+    context.on('serviceworker', worker => workers.push(worker.url()));
     const page = await context.newPage();
+    page.on('worker', worker => workers.push(worker.url()));
     await page.goto(origin + (process.env.MODE === 'module-identity' ? '/identity.html' : '/'));
     if (await page.title() !== 'Owned fixture') throw Error('Fixture not reached');
     writeFileSync(process.env.OWNER_MARKER, JSON.stringify({worker: process.pid, port: server.httpServer.address().port, blocker: blocker.address().port, endpoint: process.env.RELEASE_BROWSER_ENDPOINT}));
@@ -81,6 +84,17 @@ function fixture(t, mode, extra = {}) {
       if (!sameSelection) throw Error('Overlay and fixture loaded separate dependency instances');
     }
     if (['normal', 'module-identity', 'account-fixture'].includes(process.env.MODE)) {
+      if (process.env.MODE === 'account-fixture') {
+        if (workers.length) throw Error('Unexpected worker in the empty isolated fixture');
+        const appeared = page.waitForEvent('worker', { timeout: 5000 });
+        await page.evaluate(() => {
+          globalThis.probeWorker = new Worker(URL.createObjectURL(new Blob(['setInterval(() => {}, 1000)'], { type: 'text/javascript' })));
+        });
+        const worker = await appeared;
+        if (!worker.url().startsWith('blob:') || !workers.includes(worker.url())) throw Error('App worker census was disabled');
+        await page.evaluate(() => globalThis.probeWorker.terminate());
+        console.log(JSON.stringify({ emptyWorkerCensus: true, plantedAppWorkerObserved: true }));
+      }
       if (process.env.MODE === 'account-fixture') await page.evaluate(() => localStorage.setItem('fixture', 'previous'));
       await context.close(); await browser.close();
       if (process.env.MODE === 'account-fixture') {

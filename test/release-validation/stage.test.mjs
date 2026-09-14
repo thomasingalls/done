@@ -768,7 +768,7 @@ test('a stuck Node test cannot pass and leaves completed-case progress after own
       );
 });
 
-function portFileBrowser(t, completes) {
+function portFileBrowser(t, completes, expectedDrain = true) {
   const dir = mkdtempSync(join(tmpdir(), 'done-port-file-control-'));
   const executable = join(dir, 'browser');
   writeFileSync(
@@ -794,7 +794,7 @@ setInterval(()=>{},100);
     maxLogBytes: 4096,
   });
   t.after(async () => {
-    assert.equal((await owner.close()).groupDrained, true);
+    assert.equal((await owner.close()).groupDrained, expectedDrain);
     rmSync(dir, { recursive: true, force: true });
   });
   return owner;
@@ -802,6 +802,8 @@ setInterval(()=>{},100);
 
 test('browser startup waits through empty and partial endpoint publication for a complete owned endpoint', async (t) => {
   const owner = portFileBrowser(t, true);
+  assert(owner.result.argv.includes('--disable-extensions'));
+  assert(owner.result.argv.includes('--disable-component-extensions-with-background-pages'));
   assert.equal(
     await owner.ready(),
     'ws://127.0.0.1:12345/devtools/browser/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
@@ -814,4 +816,52 @@ test('an endpoint file that remains incomplete never becomes ready and still dra
   await assert.rejects(owner.ready(), /Browser startup deadline exceeded/);
   assert.equal(owner.result.endpoint, undefined);
   assert.equal((await owner.close()).groupDrained, true);
+});
+
+test('browser signal denial retries within grace but persistent denial cannot prove drain', async (t) => {
+  for (const persistent of [false, true]) {
+    const owner = portFileBrowser(t, true, !persistent);
+    await owner.ready();
+    const original = process.kill;
+    let denials = 0;
+    process.kill = function (pid, signal) {
+      if (pid === -owner.result.pid && (persistent || (signal !== 0 && denials < 2))) {
+        denials++;
+        throw Object.assign(Error('Injected browser signal denial'), { code: 'EPERM' });
+      }
+      return original.call(process, pid, signal);
+    };
+    const cleanup = async () => {
+      // End only this synthetic process after restoring real signals. The failed
+      // receipt remains failed; later cleanup must not turn uncertainty into credit.
+      try {
+        original.call(process, -owner.result.pid, 'SIGKILL');
+      } catch (e) {
+        if (e.code !== 'ESRCH') throw e;
+      }
+      const until = Date.now() + 2000;
+      let gone = false;
+      while (!gone && Date.now() < until) {
+        try {
+          original.call(process, -owner.result.pid, 0);
+        } catch (e) {
+          if (e.code === 'ESRCH') gone = true;
+          else if (e.code !== 'EPERM') throw e;
+        }
+        if (!gone) await new Promise((resolve) => setTimeout(resolve, 10));
+      }
+      assert(gone, 'Synthetic browser was not cleaned up after the refusal control');
+    };
+    try {
+      const start = Date.now();
+      const result = await owner.close();
+      assert.equal(result.groupDrained, !persistent);
+      assert(denials >= 2);
+      assert(Date.now() - start < 1500, 'Browser signal retry exceeded its grace bounds');
+      if (persistent) assert.match(result.cleanupError, /EPERM|signal denial/);
+    } finally {
+      process.kill = original;
+      await cleanup();
+    }
+  }
 });

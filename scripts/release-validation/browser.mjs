@@ -51,6 +51,10 @@ export function startOwnedChromium({ runtime, directory, env, startupMs, graceMs
     '--no-default-browser-check',
     '--disable-background-networking',
     '--disable-component-update',
+    // Match Playwright's isolated launch: component extensions can otherwise add
+    // unrelated workers to a context and invalidate its acquisition census.
+    '--disable-component-extensions-with-background-pages',
+    '--disable-extensions',
     '--disable-sync',
     '--disable-breakpad',
     '--disable-crash-reporter',
@@ -145,11 +149,24 @@ export function startOwnedChromium({ runtime, directory, env, startupMs, graceMs
       return (shutdown ??= (async () => {
         try {
           if (child.pid) {
-            if (groupState(child.pid) !== 'gone') signalGroup(child.pid, 'SIGTERM');
+            // A dying group can briefly return EPERM on macOS. Retry the signal
+            // within this same grace interval; only ESRCH establishes drain.
+            const signalWithin = async (signal, until) => {
+              while (groupState(child.pid) !== 'gone') {
+                try {
+                  signalGroup(child.pid, signal);
+                  return;
+                } catch (e) {
+                  if (e.code !== 'EPERM' || Date.now() >= until) throw e;
+                  await delay(10);
+                }
+              }
+            };
             const until = Date.now() + graceMs;
+            await signalWithin('SIGTERM', until);
             while (groupState(child.pid) !== 'gone' && Date.now() < until) await delay(10);
-            if (groupState(child.pid) !== 'gone') signalGroup(child.pid, 'SIGKILL');
             const final = Date.now() + graceMs;
+            await signalWithin('SIGKILL', final);
             while (groupState(child.pid) !== 'gone' && Date.now() < final) await delay(10);
             result.groupDrained = groupState(child.pid) === 'gone';
           } else result.groupDrained = true;
