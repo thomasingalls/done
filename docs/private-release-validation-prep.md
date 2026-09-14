@@ -43,23 +43,22 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-183 files / 1,545 cases: all 96 Vitest files and 87 Node files. The Account delivery native fixture
-adds one file / 19 cases, passing in 280.555 seconds with worker/browser groups drained (Node
-execution 252.008 seconds within 480). Eight generated histories retain seed/population/bounds.
-Native cases cover exact submission retries, proof-derived terminal states, source/envelope retention,
-commit crashes, missing rows and signing/authority boundaries. Independent Node/OpenSSL responses and
-state oracles exercise contradictory evidence; early-return, witness, leaf-only and authority mutations
-expose distinct incorrect results. The historical reader is pinned; only its Git read gains finite
-bounds. Product code, test bodies and wrapper are unchanged. All 182 prior contracts / 1,526 identities
-remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/native-owner
-controls (23/5/12) retain prior evidence. The initial ledger owner orphan classification and core
-receive's 297.025-of-300-second headroom remain at the reliability gate. The manifest retains 234
-unresolved obligations: 75 test-file (59 Node, sixteen Playwright), 96 command and 63 campaign.
-Next is the Account decisions native fixture, then other owners/wrappers before R-04, P-06 and the
-immutable run. Retired-v8 exclusions and optional JSON/order/prerequisite obligations remain. Same-context
-reopen/renderer death and independently signed responses do not establish power loss, another device
-or service HTTP decision issuance. Spool `9bf77c7` is signed and verified; this new phase is uncommitted.
-[Evidence](./account-conformance-runs/2026-09-14-delivery-native-fixture/README.md).
+184 files / 1,551 cases: all 96 Vitest files and 88 Node files. The Account decisions native fixture
+adds one file / six cases, passing in 94.874 seconds with worker/browser groups drained (Node
+execution 67.424 within 120). Eight histories retain their seed/population/bound. Native cases
+cover read-only inspection, exact wire/inventory preservation, response classification, predecessor
+links and verification close/drain. Five uniquely anchored primitive mutations expose omitted signature,
+epoch, chain-link, parent and position checks. Product code, test bodies, helpers, vectors and wrapper
+are unchanged; no historical reader runs. Both runtime vector files are pinned. All 183 prior contracts /
+1,545 identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
+native-owner controls (23/5/12) retain earlier evidence. The initial ledger owner orphan classification
+and core receive's 297.025-of-300-second headroom remain at the reliability gate. The manifest retains
+233 unresolved obligations: 74 test-file (58 Node, sixteen Playwright), 96 command and 63 campaign.
+Next is Account capture native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
+run. Retired-v8 exclusions and optional JSON/vector/order/prerequisite obligations remain. Generated
+final reopen directly compares envelope bytes, not separate source/counter/text equality. The parent
+control mutates both signing and verifying message construction; no durable successor claim follows.
+Delivery `d85036e` is signed and verified; this new phase is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-decisions-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

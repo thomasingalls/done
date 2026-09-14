@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const decisionsNativeFixtureFiles = ['test/account-decisions/native.test.mjs'];
+
 export const deliveryNativeFixtureFiles = ['test/account-delivery/native.test.mjs'];
 
 export const spoolFixtureFiles = ['test/account-spool/native.test.mjs'];
@@ -206,6 +208,7 @@ export const accountFixtureFiles = {
     ...receiveEditorFixtureFiles,
     ...spoolFixtureFiles,
     ...deliveryNativeFixtureFiles,
+    ...decisionsNativeFixtureFiles,
   ],
 };
 
@@ -218,7 +221,8 @@ export function accountFixtureNodeStage(root, file) {
     syncBrowserFiles.includes(file) ||
     receiveEditorFixtureFiles.includes(file) ||
     spoolFixtureFiles.includes(file) ||
-    deliveryNativeFixtureFiles.includes(file);
+    deliveryNativeFixtureFiles.includes(file) ||
+    decisionsNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -243,6 +247,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (decisionsNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
       (deliveryNativeFixtureFiles.includes(file) ? 480000 : undefined) ??
       (spoolFixtureFiles.includes(file) ? 240000 : undefined) ??
       receiveEditorDeadlines[file] ??

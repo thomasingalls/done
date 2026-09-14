@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**234 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**233 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -53,6 +53,7 @@ node scripts/release-validation/execute.mjs --selection sync-fixtures
 node scripts/release-validation/execute.mjs --selection receive-editor-fixtures
 node scripts/release-validation/execute.mjs --selection spool-fixture
 node scripts/release-validation/execute.mjs --selection delivery-native-fixture
+node scripts/release-validation/execute.mjs --selection decisions-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1277,14 +1278,77 @@ personal profiles/services/builds/recovery/factors, historical archives, formal 
 and root `done ` are untouched. Next: the Account decisions native fixture, then remaining native/wrapper
 integration, R-04, P-06 and the immutable run before private Account preparation.
 
+## Account decisions native fixture — phase 2ae
+
+The preceding delivery phase is signed and verified as `d85036e`. `decisions-native-fixture` adds one
+complete native file / six cases under existing owned Chromium/CDP. The original 120-second file bound
+remains, with four ordinary cases at 30 seconds, the mutation case at 45 and generated histories at 90.
+Browser startup stays 15 seconds, drain grace five. Product code, test bodies, helpers, mutations,
+vectors, wrapper, owner and census are unchanged. This phase adds runner registration and evidence only.
+
+All six cases pass in 94.874 seconds including fingerprint work; worker/browser groups drain. Node
+execution took 67.424 seconds against 120; stage time was 71.743 seconds. The complete
+selection includes preparation/fingerprint/drain overhead; one run does not qualify loaded-host
+reliability. No historical reader is invoked. Both antireplay and private-envelope runtime vectors
+are pinned in frozen source identity and the packet; they are not registration-data inputs.
+
+Owned inspection returns accepted/refused evidence without changing exact envelopes, source capsules,
+spool status or the native IDB/localStorage inventory. A directed new-page reopen compares envelope
+bytes and re-inspects accepted evidence. Foreign-key, wrong subject/epoch/parent, foreign-prefix and
+malformed proofs stay unknown; a proved different accepted digest is conflict. An unminted position
+is unknown. Later-position positives reconstruct predecessor links with the independent Node/OpenSSL
+oracle. These are read-only evidence checks, not persisted terminal delivery transitions.
+
+Close during paused refusal verification keeps the slot from a competing Web Lock until verification
+drains. Cancelled continuations withhold evidence, stale inspection refuses, and a fresh owner can
+inspect the same proof. This file contains graceful close and same-context new-page reopen; it invokes
+no renderer-crash or whole-browser/power-loss boundary.
+
+Eight generated histories retain seed 9622026, numRuns:8, endOnFailure:true and 90 seconds. Two to five
+answers draw accepted/refused/foreign-key/foreign-prefix/conflict/junk. Each answer is checked against
+its expected evidence kind and unchanged IDB/localStorage inventory. Spool status is compared before
+closing; final unconditional new-page reopen compares exact envelope bytes. Source capsules, counters
+and visible text are not separately compared after final reopen. The title's broader wording must not
+be used as evidence of those final assertions. No all-kind coverage or shrinking claim is made.
+
+Five uniquely anchored mutations expose wrong-key, wrong-epoch and unanchored-head admission, and
+altered-parent or mismatched-position submission acceptance. The parent mutation changes the shared
+message builder for signing and verifying in the mutant bundle, signs there, then substitutes another
+valid refusal; it does not demonstrate replacement of an existing unmutated signature. These are
+primitive controls with synthetic vector keys, not durable successor minting or remint authorization.
+
+The independent Node/OpenSSL oracle reads only the disposable acceptance seal, closes its read-only
+DB and clears intermediate buffers. Subjects use the current envelope decoder. Synthetic service setup
+performs actual registration/preparation/admission/handoff; prepared writing is not dispatched and
+responses are not service HTTP decisions. Base cleanup precedes setup; builds are in memory. Generated
+histories share a context/service with distinct workspaces. Optional JSON output, vector regeneration,
+wrapper saved-output/ordering/prerequisite contracts and wider lineage/closure enforcement remain separate.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain earlier pinned evidence rather
+than new execution. The initial ledger owner orphan classification remains unresolved despite later
+passes. Core receive previously used 297.025 of its 300-second Node bound; both observations remain at
+the owner/loaded-host gate, with no fix established by this phase.
+
+All 183 prior general contracts / 1,545 identities remain unchanged. General selections now contain
+184 files / 1,551 cases (96 Vitest, 88 Node), including 78 Account files / 457 cases. The 655,629-byte
+manifest retains 612 obligations / 233 unresolved: 74 test-file (58 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-decisions-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper/vector pins, base signature, prior contracts and preservation. This new phase is
+uncommitted and is not an immutable aggregate. All 52 personal/vector pins and L-2 are byte-identical;
+personal profiles/services/builds/recovery/factors, historical archives, formal debts, signing backups
+and root `done ` remain untouched. Next: Account capture native fixtures, then remaining native/wrapper
+integration, R-04, P-06 and the immutable run before private Account preparation.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**234 blocked rows**: 75 test-file, 96 command, 63 campaign. All Vitest files have adapters; 59 Node
-and sixteen Playwright files remain. Next review the Account decisions native fixture, then other
+**233 blocked rows**: 74 test-file, 96 command, 63 campaign. All Vitest files have adapters; 58 Node
+and sixteen Playwright files remain. Next review the Account capture native fixture, then other
 owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper calls
-without reviving support. Preserve ordered vector/traceability prerequisites and the open owner /
-loaded-host observations, including the prior core receive deadline headroom.
+without reviving support. Preserve ordered vector/traceability prerequisites and open owner/loaded-host
+observations, including the prior core receive deadline headroom.
 
 R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
 prose sweep precede the complete immutable run. State workload/platform/claim dispositions before

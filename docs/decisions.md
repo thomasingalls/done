@@ -2732,3 +2732,18 @@ commit-cut cases additionally establish entry counts and duplicate/retry behavio
 reopen compares status, envelope bytes and source capsules, not visible text. Authority-change controls
 establish the checked boundary without promising atomicity against arbitrary out-of-protocol writers.
 Wrapper outputs, ordering, prerequisites and complete immutable qualification remain separate obligations.
+
+
+## 2026-09-14 — Preserve read-only decision evidence and mutation scope
+
+Admit the complete decisions native file with its existing two-minute bound, case limits and eight
+histories. Existing helpers and test bodies need no repair. Pin both runtime vector inputs in the
+frozen source identity; do not infer historical execution from dormant helper branches or vector
+regeneration from runtime reads. Retain whole-wrapper output and prerequisite obligations separately.
+
+Describe the assertions actually made: inventory is unchanged after every generated inspection,
+spool status is checked before close, and final reopen compares envelope bytes. Do not turn the case
+title into an after-reopen source/counter/text assertion. Distinguish the parent mutation's shared
+signing/verifying message change from replacing a signature made by unmutated code. Graceful close and
+page reopen do not establish renderer crash or durable successor behavior. These scope limits preserve
+the useful evidence without granting the primitive verifier broader authority.
