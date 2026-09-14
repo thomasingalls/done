@@ -3097,3 +3097,8 @@ Integrate the two unchanged controlled/view browser cases using the existing own
 ## 2026-09-14 — Qualify the ordinary-scheduling workload without manufacturing a latency guarantee
 
 Integrate the unchanged 80-edit, 30-edit burst and post-growth recovery workload under its existing 750/720-second file/case bounds. Credit natural scheduler progress, bounded burst positions and cold text equality. Preserve ordinary versus measured bundle distinctions and exact case identities. Do not infer per-edit latency thresholds, loaded-host reliability or full performance-report/wrapper qualification from this case.
+
+
+## 2026-09-14 — Keep growing-history liveness evidence tied to exact causal and source assertions
+
+Integrate the unchanged 24-job growth case under its existing 930/900-second file/case bounds. Credit ordered source/spool correspondence, exact prefixes, one ordinary-read census per observed poll, local-admission/send-wake equality and cold text preservation. Keep collected performance/control samples distinct from asserted thresholds or full object equivalence. Wrapper outputs and immutable release qualification remain separate.

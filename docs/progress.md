@@ -55,40 +55,40 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account ordinary-scheduling workload fixture.
+**Just completed.** Account growing-history liveness fixture.
 
-The preceding phase is signed and verified as `c85e548`. **Account ordinary-scheduling workload fixture** adds 1 complete
-file / 1 cases. The selection passes in 208.542 seconds including
+The preceding phase is signed and verified as `379b115`. **Account growing-history liveness fixture** adds 1 complete
+file / 1 cases. The selection passes in 54.628 seconds including
 fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-liveness-workload-fixture/README.md).
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-liveness-growth-fixture/README.md).
 
-One complete unchanged workload case retains its 750-second wrapper/file and 720-second case limits. Only six runner/registration-test files and generated snapshots change. Product, shared fixture, test body, instrumentation, probe, oracle, census, reporters and wrapper remain unchanged. The already-qualified owned-CDP fixture supplies one disposable browser/context and synthetic service.
+One complete unchanged growing-history case retains its 930-second wrapper/file and 900-second case limits. Only six runner/registration-test files and generated snapshots change. Product, native body, owned fixture, instrument, probe, oracles, census, reporters and wrapper remain unchanged. One disposable browser/context and synthetic service execute a fixed directed sequence; no generated property histories run.
 
-After synthetic Local promotion and sync setup, a fresh page loads the ordinary product bundle with measurement transforms disabled and crypto wrappers restored. Eighty sequential edits each await actual send and receive progress without expedited receive retries. The source logs milestones at 10, 40 and 80 positions and checks expected writing after each edit. These are a fixed directed workload, not generated histories.
+At 0, 8, 16 and 24 editing jobs, the test compares every captured source reference in order against spool positions including additional sources, and requires send/receive prefixes equal the spool length. It samples delivery/receive/spool status three times per size. Two ordinary receive-poll samples, before and after growth, each require exactly one service census; a working-to-idle setup transition is excluded from the observation.
 
-Thirty further edits are spaced by 40-millisecond host timers. The subsequent prefix advances by at least one and at most thirty positions, permitting real batching. An instrumented cold reopen preserves writing, then one measured edit reaches the next prefix. A final uninstrumented offline reopen preserves the complete expected text.
+Three batches of eight edits include a 7000-byte paste and three tail deletions. Every edit must produce the expected text. Each batch waits for genuine send/receive progress without expedited receive retries, and the measured send-wake size must equal an independently counted outgoing local-admission callback count. This detects the tested remote-promotion wake regression; it is not an exhaustive proof over every possible causal schedule.
 
-The case asserts functional progress, prefix/batching bounds and cold content equality; it does not assert per-edit or round-trip latency ceilings. The only total duration bounds are the existing case/file deadlines. A single passing host run is not a loaded-host reliability or broad responsiveness guarantee. Instrumentation is disabled for the 80-edit/burst sequence but the synthetic service retains its measurement support.
+Cold pages reopen with instrumentation disabled and enabled in turn, preserving exact expected text; each takes three status samples. The case records those samples but does not assert a latency threshold or compare the full measured/unmeasured status objects against each other. The separate Node instrument fixtures provide their focused result/await/throw controls. The total case/file deadline is the only end-to-end duration bound here.
 
-Cold means a replacement page in the same live isolated browser context. No browser/renderer/service process is killed, no physical power loss is attempted, and no second device connects. Generated authority/service secrets, software authentication and retained factor options support this synthetic path. No personal profile/origin/build, human PRF/passkey ceremony, real Account receipt or forensic-erasure claim is involved.
+Cold is replacement of the page within the live isolated browser context; no process crash or physical power loss occurs. The path uses generated secrets, software authenticators, synthetic Local-to-Account promotion and retained factor options. No personal profile/origin/build, human PRF/passkey ceremony, real Account receipt, second-device adoption or forensic-erasure claim is involved.
 
-Detailed workload/timing reports are written inside the disposable execution checkout and removed with it. A read-only inspection during execution observed status running with all 80 sequential edits recorded. Cleanup finished before a stable raw report copy could be captured. The general Node reporter also suppresses per-test stdout, so milestone console output is not archived. The exact passing case receipt, file timing and frozen source/browser identities are retained; no latency table or whole wrapper-output credit is claimed. The distinct growing-history fixture remains blocked until its own stage.
+The optional final growth report was copied read-only while the selection ran, using two matching reads and a SHA-256 record. Its path is checked against the owned receipt checkout and its capture time against the selection interval. It records passed, 24 jobs, 17 growth/polling samples, six controls and cold reopen. This auxiliary observation is archived separately from the authoritative owned case receipt; it is not a new performance threshold, wrapper/output or immutable aggregate qualification. Per-test stdout remains suppressed by the existing Node reporter.
 
-All prior general contracts and exclusions, personal/vector pins, L-2 and historical evidence remain unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture-oracle follow-ups and deadline evidence remain open. Full wrapper/campaign outputs and immutable release qualification are separate.
+All prior general contracts and exclusions, personal/vector pins, L-2 and historical evidence remain unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture-oracle follow-ups and previous deadline observations stay open. Single-host functional/timing evidence does not establish broad responsiveness or loaded-host reliability.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 220 prior general contracts / 1,747 identities and exclusions remain unchanged.
-General selections now contain 221 files / 1,748 cases (96 Vitest,
-125 Node); Account has 115 files / 654 cases.
-The 703,271-byte manifest retains 612 obligations / 196 unresolved:
-37 test-file (21 Node, sixteen Playwright), 96 command,
+pass. All 221 prior general contracts / 1,748 identities and exclusions remain unchanged.
+General selections now contain 222 files / 1,749 cases (96 Vitest,
+126 Node); Account has 116 files / 655 cases.
+The 703,831-byte manifest retains 612 obligations / 195 unresolved:
+36 test-file (20 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
@@ -96,7 +96,7 @@ Exact receipts/patch, frozen source/browser identities, source-control pins, pri
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account growing-history liveness fixture. There are 8 Account files left; continue in signed
+qualification is separate. Next: Account residue matcher and container fixtures. There are 7 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
@@ -113,7 +113,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account growing-history liveness fixture. 8 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account residue matcher and container fixtures. 7 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 
