@@ -43,15 +43,15 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-220 files / 1,747 cases: all 96 Vitest files and 124 Node files.
-Account controlled liveness and verified-view browser fixtures adds 2 cases, passing in 72.783 seconds with worker/browser groups
-drained. Two unchanged cases cover local flush during held HTTP, fresh automatic expiry recovery, and seven carrier tamper modes with cold recovery. The shared browser fixture gains owned CDP and explicit cleanup; product and assertion bodies are unchanged.
-All 93 runner checks and scoped gates pass; 218 prior contracts / 1,745 identities
-and exclusions remain unchanged. There are 197 unresolved obligations: 38 test-file (22
+221 files / 1,748 cases: all 96 Vitest files and 125 Node files.
+Account ordinary-scheduling workload fixture adds 1 cases, passing in 208.542 seconds with worker/browser groups
+drained. One unchanged case runs 80 ordinary-scheduled edits, a 30-edit burst and a measured post-growth edit, then cold offline recovery. It checks functional progress and batching bounds, without per-edit latency assertions.
+All 93 runner checks and scoped gates pass; 220 prior contracts / 1,747 identities
+and exclusions remain unchanged. There are 196 unresolved obligations: 37 test-file (21
 Node, sixteen Playwright), 96 command, 63 campaign. Continue
-9 remaining Account files in signed bounded groups, starting with Account ordinary-scheduling workload fixture. Existing owner/
+8 remaining Account files in signed bounded groups, starting with Account growing-history liveness fixture. Existing owner/
 headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-Account preparation. The preceding phase `16d1612` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-liveness-browser-fixtures/README.md).
+Account preparation. The preceding phase `c85e548` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-liveness-workload-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

@@ -3092,3 +3092,8 @@ Integrate six Node instrumentation/cache cases with the existing one-minute file
 ## 2026-09-14 — Qualify local progress and cached-view refusal under controlled native boundaries
 
 Integrate the two unchanged controlled/view browser cases using the existing owned-CDP helper with explicit context and finally cleanup. Retain their existing file/case bounds. Credit progress while genuine HTTP is held, fresh automatic retry after three expired reads, and refusal/recovery for seven IDB tamper modes. Preserve instrument/source pins. Keep performance reports, growing workloads, full wrapper outputs and immutable release qualification separate.
+
+
+## 2026-09-14 — Qualify the ordinary-scheduling workload without manufacturing a latency guarantee
+
+Integrate the unchanged 80-edit, 30-edit burst and post-growth recovery workload under its existing 750/720-second file/case bounds. Credit natural scheduler progress, bounded burst positions and cold text equality. Preserve ordinary versus measured bundle distinctions and exact case identities. Do not infer per-edit latency thresholds, loaded-host reliability or full performance-report/wrapper qualification from this case.

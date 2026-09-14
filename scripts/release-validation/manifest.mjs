@@ -63,6 +63,7 @@ import {
   failureFixtureFiles,
   livenessNodeFixtureFiles,
   livenessBrowserFixtureFiles,
+  livenessWorkloadFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -469,6 +470,11 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'liveness-workload-fixture': rows
+        .filter(
+          (r) => account.node.includes(r.path) && livenessWorkloadFixtureFiles.includes(r.path),
+        )
         .map((r) => r.id),
       'liveness-browser-fixtures': rows
         .filter(

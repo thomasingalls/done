@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const livenessWorkloadFixtureFiles = ['test/account-liveness/workload.test.mjs'];
+
 export const livenessBrowserFixtureFiles = [
   'test/account-liveness/controlled.test.mjs',
   'test/account-liveness/view.test.mjs',
@@ -332,6 +334,7 @@ export const accountFixtureFiles = {
     ...failureFixtureFiles,
     ...livenessNodeFixtureFiles,
     ...livenessBrowserFixtureFiles,
+    ...livenessWorkloadFixtureFiles,
   ],
 };
 
@@ -371,7 +374,8 @@ export function accountFixtureNodeStage(root, file) {
     decisionDirectedFixtureFiles.includes(file) ||
     decisionHistoryFixtureFiles.includes(file) ||
     failureBrowserFixtureFiles.includes(file) ||
-    livenessBrowserFixtureFiles.includes(file);
+    livenessBrowserFixtureFiles.includes(file) ||
+    livenessWorkloadFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -396,6 +400,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (livenessWorkloadFixtureFiles.includes(file) ? 750000 : undefined) ??
       {
         'test/account-liveness/controlled.test.mjs': 200000,
         'test/account-liveness/view.test.mjs': 180000,
