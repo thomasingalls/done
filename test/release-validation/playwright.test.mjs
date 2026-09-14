@@ -9,6 +9,11 @@ import {
   reconcilePlaywright,
   namedBrowserDispositions,
 } from '../../scripts/release-validation/playwright-adapter.mjs';
+import {
+  measurementContract,
+  measurementArtifact,
+  reconcileMeasurements,
+} from '../../scripts/release-validation/playwright-measurements.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
 const file = 'test/local-app/startup.spec.ts';
@@ -76,10 +81,10 @@ test('Playwright census refuses hidden, aliased, modified, skipped registrations
 });
 
 test('reviewed browser files preserve Local and storage cases and cannot bypass owned browser, driver or result contracts', () => {
-  assert.equal(browserFiles.length, 14);
+  assert.equal(browserFiles.length, 15);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [8, 2, 12, 22, 6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
+    [4, 8, 2, 12, 22, 6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);
@@ -88,6 +93,7 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
       stage.deadlineMs,
       {
         'test/app-upgrades/upgrades.spec.ts': 240000,
+        'test/latency/journal.spec.ts': 720000,
         'test/geometry/reorder.spec.ts': 180000,
         'test/geometry/sync.spec.ts': 180000,
         'test/geometry/wheel.spec.ts': 180000,
@@ -191,5 +197,45 @@ test('160 generated browser populations need every independent project and case 
       },
     ),
     { seed: 140921, numRuns: 160 },
+  );
+});
+
+test('browser measurements require fresh bounded exact project/metric populations and retained bytes', () => {
+  const contract = measurementContract('test/latency/journal.spec.ts');
+  assert.equal(contract.metrics.length, 22);
+  const rows = contract.projects.flatMap((project) =>
+    contract.metrics.map((metric) => ({
+      project,
+      metric,
+      value: 0.1,
+      samples: 10,
+      note: 'controlled',
+    })),
+  );
+  const artifact = (r) =>
+    measurementArtifact(Buffer.from(r.map((v) => JSON.stringify(v)).join('\n') + '\n'));
+  reconcileMeasurements(contract, artifact(rows));
+  for (const change of [
+    (r) => r.pop(),
+    (r) => r.push(r[0]),
+    (r) => (r[0].project = 'unknown'),
+    (r) => (r[0].metric = 'unknown'),
+    (r) => (r[0].value = null),
+    (r) => (r[0].samples = 0),
+    (r) => delete r[0].note,
+    (r) => (r[0].value = -1),
+  ]) {
+    const changed = structuredClone(rows);
+    change(changed);
+    assert.throws(() => reconcileMeasurements(contract, artifact(changed)));
+  }
+  const changed = artifact(rows);
+  changed.sha256 = '0'.repeat(64);
+  assert.throws(() => reconcileMeasurements(contract, changed));
+  assert.throws(() => reconcileMeasurements(contract, undefined));
+  assert.throws(() => reconcileMeasurements(undefined, artifact(rows)));
+  assert.throws(() => measurementArtifact(Buffer.alloc(65537)));
+  assert.throws(() =>
+    reconcileMeasurements(contract, measurementArtifact(Buffer.from('truncated'))),
   );
 });

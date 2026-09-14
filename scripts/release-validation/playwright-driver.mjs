@@ -1,11 +1,16 @@
 /** Own the server inside the guarded worker group; Playwright cannot launch/reuse a webServer. */
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { createServer, build } from 'vite';
 import { once } from 'node:events';
 import { upgradeFixtureServer } from '../app-upgrades/server.mjs';
+import {
+  measurementArtifact,
+  measurementPath,
+  MEASUREMENT_LIMIT,
+} from './playwright-measurements.mjs';
 import { staticFixtureServer } from './static-fixture.mjs';
 import { browserPolicy } from './playwright-adapter.mjs';
 import { listenEphemeralVite } from './server.mjs';
@@ -18,7 +23,10 @@ assert(
 );
 const output = join(process.env.TMPDIR, 'playwright');
 mkdirSync(output, { recursive: true });
-const fixtureEnv = {};
+const fixtureEnv =
+  policy.mode === 'latency'
+    ? { LATENCY_RESULTS_FILE: measurementPath(process.env.RELEASE_CASE_REPORT) }
+    : {};
 let server, closeServer;
 if (policy.mode === 'upgrades') {
   const releases = join(output, 'releases');
@@ -34,7 +42,7 @@ if (policy.mode === 'upgrades') {
   server = upgradeFixtureServer(releases);
   closeServer = () =>
     new Promise((done, reject) => server.close((error) => (error ? reject(error) : done())));
-} else if (policy.mode === 'packaged') {
+} else if (policy.mode === 'packaged' || policy.mode === 'latency') {
   const release = join(output, 'app');
   await build({
     configFile: resolve('vite.config.ts'),
@@ -73,7 +81,7 @@ try {
   writeFileSync(
     config,
     `import original from ${JSON.stringify(resolve(policy.config))};
-export default {...original, testDir:${JSON.stringify(resolve(dirname(file)))}, testMatch:[${JSON.stringify(file.split('/').at(-1))}], webServer:undefined, globalSetup:undefined, globalTeardown:undefined,
+export default {...original, testDir:${JSON.stringify(resolve(dirname(file)))}, testMatch:[${JSON.stringify(file.split('/').at(-1))}], webServer:undefined, globalSetup:${policy.mode === 'latency' ? JSON.stringify(resolve('test/latency/global-setup.ts')) : 'undefined'}, globalTeardown:undefined,
   fullyParallel:false, workers:1, retries:0, repeatEach:1, maxFailures:0, forbidOnly:true, grep:/.*/, grepInvert:undefined, shard:null,
   outputDir:${JSON.stringify(join(output, 'artifacts'))}, reporter:[[${JSON.stringify(resolve('scripts/release-validation/playwright-reporter.mjs'))}]],
   use:{...original.use,baseURL:${JSON.stringify(origin)}},
@@ -101,6 +109,15 @@ export default {...original, testDir:${JSON.stringify(resolve(dirname(file)))}, 
   if (existsSync(process.env.RELEASE_CASE_REPORT)) {
     const report = JSON.parse(readFileSync(process.env.RELEASE_CASE_REPORT, 'utf8'));
     report.server = { origin, closed: !server.listening };
+    if (policy.mode === 'latency' && existsSync(fixtureEnv.LATENCY_RESULTS_FILE)) {
+      assert(
+        statSync(fixtureEnv.LATENCY_RESULTS_FILE).size <= MEASUREMENT_LIMIT,
+        'Measurement byte bound',
+      );
+      report.measurementArtifact = measurementArtifact(
+        readFileSync(fixtureEnv.LATENCY_RESULTS_FILE),
+      );
+    }
     writeFileSync(process.env.RELEASE_CASE_REPORT, JSON.stringify(report) + '\n');
   }
 }

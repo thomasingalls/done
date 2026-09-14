@@ -497,6 +497,14 @@ export function compileManifest(root, inventory) {
           .filter((r) => browserGroups['browser-geometry-interaction'].includes(r.path))
           .map((r) => r.id),
       ],
+      'browser-journal-latency-qualification': [
+        ...rows
+          .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')
+          .map((r) => r.id),
+        ...rows
+          .filter((r) => browserGroups['browser-journal-latency'].includes(r.path))
+          .map((r) => r.id),
+      ],
       'browser-upgrade-qualification': [
         ...rows
           .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')

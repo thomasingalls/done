@@ -36,6 +36,7 @@ function fixture(t, text = ordinary) {
       'playwright-adapter',
       'playwright-census',
       'playwright-reporter',
+      'playwright-measurements',
       'vitest-census',
       'registration-data',
       'registration-modules',
@@ -130,7 +131,7 @@ test('real Playwright cases pass while omitted, skipped, failed and hook-error r
 
 test('owned Playwright deadline and cancellation retain partial progress and drain browser, worker and server', async (t) => {
   for (const cancel of [false, true]) {
-    const text = `import {test} from '../release-validation/browser-fixture';import {writeFileSync} from 'node:fs';test('ready',async({page})=>{await page.goto('/');writeFileSync('ready','yes');await new Promise(()=>{})});`;
+    const text = `import {test} from '../release-validation/browser-fixture';import {writeFileSync} from 'node:fs';import {measurementPath} from '../../scripts/release-validation/playwright-measurements.mjs';test('ready',async({page})=>{await page.goto('/');writeFileSync(measurementPath(process.env.RELEASE_CASE_REPORT),JSON.stringify({project:'controlled',metric:'partial',value:1})+'\\n');writeFileSync('ready','yes');await new Promise(()=>{})});`;
     const f = fixture(t, text),
       controller = new AbortController();
     const pending = f.run({ ...f.stage, deadlineMs: 5000 }, { signal: controller.signal });
@@ -147,5 +148,10 @@ test('owned Playwright deadline and cancellation retain partial progress and dra
     assert.equal(partial.phase, 'running');
     assert.equal(partial.collected.length, 1);
     assert.equal(partial.cases.length, 0);
+    assert.deepEqual(f.read(r, 'measurements.jsonl'), {
+      project: 'controlled',
+      metric: 'partial',
+      value: 1,
+    });
   }
 });

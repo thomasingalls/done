@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { measurementContract, reconcileMeasurements } from './playwright-measurements.mjs';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,6 +7,7 @@ import { playwrightDeclarations, playwrightCaseId } from './playwright-census.mj
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-journal-latency': ['test/latency/journal.spec.ts'],
   'browser-geometry-interaction': [
     'test/geometry/reorder.spec.ts',
     'test/geometry/sync.spec.ts',
@@ -29,6 +31,13 @@ export const browserGroups = {
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (file === 'test/latency/journal.spec.ts')
+    return {
+      config: 'playwright.latency.config.ts',
+      projects: ['desktop', 'android'],
+      mode: 'latency',
+      deadlineMs: 720000,
+    };
   if (browserGroups['browser-geometry-interaction'].includes(file))
     return {
       config: 'playwright.config.ts',
@@ -166,6 +175,7 @@ export function playwrightStage(root, file) {
       files: [file],
       projects: p.projects,
       cases,
+      ...(measurementContract(file) ? { measurements: measurementContract(file) } : {}),
     },
     deadlineMs: p.deadlineMs,
     graceMs: 5000,
@@ -185,6 +195,7 @@ export function validatePlaywrightStage(stage) {
   assert.equal(stage.processPolicy, 'inherited-group-v1');
   assert.deepEqual(stage.fixture, { kind: 'chromium-cdp', startupMs: 15000 });
   assert.deepEqual(stage.expect.projects, p.projects);
+  assert.deepEqual(stage.expect.measurements, measurementContract(file));
   assert.deepEqual(
     stage.expect.cases,
     stage.expect.cases.map((c) => disposition(c.id)),
@@ -196,6 +207,7 @@ export function reconcilePlaywright(expected, actual, nonce) {
   assert.equal(actual.adapter, 'playwright-v1');
   assert.equal(actual.nonce, nonce, 'Stale Playwright report');
   assert.equal(actual.phase, 'complete', 'Missing terminal Playwright report');
+  reconcileMeasurements(expected.measurements, actual.measurementArtifact);
   assert.equal(actual.status, 'passed', 'Non-passing Playwright run');
   assert.deepEqual(actual.errors, [], 'Playwright framework errors');
   assert.equal(actual.configuration.workers, 1);

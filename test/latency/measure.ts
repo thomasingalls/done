@@ -76,7 +76,7 @@ export interface Sample {
   note?: string;
 }
 
-const RESULTS = join('test-results', 'latency.jsonl');
+const RESULTS = process.env['LATENCY_RESULTS_FILE'] ?? join('test-results', 'latency.jsonl');
 
 export const record = (sample: Sample): void => {
   mkdirSync(dirname(RESULTS), { recursive: true });

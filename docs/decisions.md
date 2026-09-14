@@ -3172,3 +3172,8 @@ Admit the four geometry layout/editor files through the owned packaged browser a
 ## 2026-09-14 — Integration of geometry interaction fixtures
 
 Keep the existing interaction semantics and platform applicability. Admit all four files through disposable packaged browser ownership and encode the ten device-specific non-applicable identities/reasons explicitly, retaining strict unknown-skip rejection and exact case/project reconciliation. Split the final latency work into journal microbenchmarks and application latency so obsolete plaintext startup/measurement setup can be repaired and validated separately.
+
+
+## 2026-09-14 — Integration of journal latency fixtures and measurement retention
+
+Require independent, exact project/metric reconciliation in addition to passing latency tests. Retain bounded measurement bytes beside the owned report and exercise partial-output survival under native timeout and cancellation. Pass the configured origin/device options to manual browser contexts, preserve the existing microbenchmark construction and budgets, and keep full production editing latency and real-device evidence separate.

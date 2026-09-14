@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 299,
+          "line": 300,
           "form": "fc.property"
         }
       ],
@@ -8968,10 +8968,10 @@
           "test/release-validation/playwright.test.mjs"
         ]
       },
-      "declarations": 5,
+      "declarations": 6,
       "propertyFamilies": [
         {
-          "line": 179,
+          "line": 185,
           "form": "fc.property"
         }
       ],
@@ -11876,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "fd732089bbdf47d87296b7bdd00ad9c9178c00789b267e00f3be8cfdbf075488"
+      "sha256": "dfd4244c8949694095114ef7e0b77fd2b06533a4f784fea91e68d962962de576"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11920,7 +11920,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "579c1ed616f8a136784227bf5ebcb7e6ec17ef8dfb43dcfdd188631bc856f903"
+      "sha256": "57446567c56beb754753c4b19ecdaaeb0cc80b9f988af3d0bdbb8b14f8fe3d2f"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -11948,7 +11948,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "18b4f8ced84e72599b9821abb89762632b6048da4030516bbaa6b243a0e186f4"
+      "sha256": "1c4eff0f00c3700926346b643cfa3346eef8de5f5e1de57e154848dd7809c6aa"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -11956,7 +11956,11 @@
     },
     {
       "path": "scripts/release-validation/playwright-driver.mjs",
-      "sha256": "578f0685f60d727ebaf4fbe311395fc869686d0157aa007e712d6ad458a9da65"
+      "sha256": "cf24c7256325a2a864329da7be89f5c0250695dadde9528e8362bedbda5d0c2f"
+    },
+    {
+      "path": "scripts/release-validation/playwright-measurements.mjs",
+      "sha256": "5229c7bc96b9f3aa4f808cd729d8c8cd230dee8ed462a9b1d36a71230b1fce50"
     },
     {
       "path": "scripts/release-validation/playwright-reporter.mjs",
@@ -13440,7 +13444,7 @@
     },
     {
       "path": "test/latency/global-setup.ts",
-      "sha256": "24f684184cd584f7cdfb2c15dfba3fcaa4faa6052937ac2afcdff839103a65dd"
+      "sha256": "34ff7e695a4e09dbd80238feef3025a8b264c5a3034d0f7ad0dcb9ce97895653"
     },
     {
       "path": "test/latency/journal-bench.device.ts",
@@ -13456,7 +13460,7 @@
     },
     {
       "path": "test/latency/journal.spec.ts",
-      "sha256": "d566e2e51d8671087bccee4a288caf1e9f388740391ce1eba04d0bc4759f93e5"
+      "sha256": "b030bc1a979f2ceddfd4a8ebeb823ebdfe640c90be4ee57b519028880b6a0063"
     },
     {
       "path": "test/latency/latency.spec.ts",
@@ -13464,7 +13468,7 @@
     },
     {
       "path": "test/latency/measure.ts",
-      "sha256": "08d3f654e23835c2ad5611a617d9395de17b5df2fd88f88e56854b4a9750aa9a"
+      "sha256": "6cc0f571a89cdaf728ca90c7f87681be6d3d2c5abf5afd2c9784b23d706d6eb8"
     },
     {
       "path": "test/latency/recorder.ts",
@@ -13808,11 +13812,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "c82fbec2323c2692827870462d3e80ababd897a1f4a968b65e9cb1cd28baee35"
+      "sha256": "f72945046d3c81858ad5e0421962957128156b8dd678c8c402d1c40952b8ba69"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "5bac05e70ad284cb940076eb0dc23f501e7e61425b9544d3b9d6488f777be4bd"
+      "sha256": "a7b61c4e34e0a029e2e4417e9209bff39fe68b7e9e3eeba82e09b7157a5729b1"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13844,11 +13848,11 @@
     },
     {
       "path": "test/release-validation/playwright-native.test.mjs",
-      "sha256": "1649aaf2f9327ec61cf6572a08137716ebb61f90e9f471c6188ab6c21db4b298"
+      "sha256": "daa8326634bce206f330c13f677185ecdad18c221b59c1f264c5b89cb77ed5dd"
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "efb9e559d5e8a635eeb8716d9ca0f00839e8591112f2309b9a8cedd4c805fb45"
+      "sha256": "0b6a74250af92780202ab50e3585833d32084c9e47de656f9a9c1f4bbeb26a6d"
     },
     {
       "path": "test/release-validation/stage.test.mjs",
