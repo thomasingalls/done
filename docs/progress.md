@@ -43,44 +43,42 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account parser-conformance native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account promotion-contract native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews Account parser-conformance native fixture
+blocks_on: none; next bounded phase reviews Account promotion-contract native fixture
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account delivery-oracle native fixture](./release-validation-execution.md#account-delivery-oracle-native-fixture--phase-2aq)
-adds one file / six cases. All pass in 143.695 seconds with worker/browser groups drained.
-Node execution took 113.095 of 120 seconds and stage time 117.760; each case retains sixty seconds.
-Product, native file/helpers, owner, wrapper and limits remain unchanged. Only 6.905 seconds of Node headroom remains.
+**Just completed.** [Account parser-conformance native fixture](./release-validation-execution.md#account-parser-conformance-native-fixture--phase-2ar)
+adds one file / one case. It passes in 28.975 seconds with worker/browser groups drained.
+Node execution took 2.598 of 120 seconds and stage time 5.119; the case retains thirty seconds.
+Product, native file/helpers, registration interpreter, owner, wrapper and limits remain unchanged.
 New work is uncommitted.
 
-**Evidence.** Finite registration now supports string/boolean concatenation in either order;
-160 generated Node/Vitest populations pass after a retained pre-repair counterexample. All six exact
-native identities are pinned. Four baseline cases compare full retained state with the independent
-constraint reference; two single-hit mutations expose wrong first-refusal/final-cutoff retention while
-publication remains conflict. Exact response wires, logical ledger/witness checks, text/envelopes,
-original captures and network encryption invocation counts survive orderly reopen/compaction.
-Contradictory proofs use a synthetic acceptance signer, not live service issuance. No native generated
-histories, crashes or historical readers run here; physical ciphertext equality is not asserted.
+**Evidence.** Eight internal samples cover one structural v9 positive and seven malformed shapes.
+Three sparse-array holes survive real IndexedDB storage. The current promotion parser accepts the
+positive and refuses those holes plus four array-wrapped string fields after connection reopen.
+The positive's MAC/credential bytes are synthetic: this verifies structural parsing, not authentication
+or owned startup. The same page stays live. No crashes, generated histories, omission controls or
+historical readers run in this native case.
 
-All 93 runner checks, five current Vitest-process controls, TypeScript, scoped style, planning,
-authority and signatures pass. Unchanged Node/native owner controls (23/14) retain prior evidence.
-The [packet](./account-conformance-runs/2026-09-14-delivery-oracle-native-fixture/README.md) preserves complete receipts, control anchors, patch, source/browser identities
-and precise scope. Whole-wrapper/oracle-history obligations and human Account work remain separate.
+All 93 runner checks, TypeScript, scoped style, planning, authority and signatures pass. Unchanged
+Node/Vitest/native owner controls (23/5/14) retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-parser-conformance-native-fixture/README.md) preserves
+complete receipts, patch, source/browser identities and scope limits. The six-parser wrapper matrices,
+old-source comparison, controls and reporting remain separate obligations.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -96,14 +94,14 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Review `test/account-parser-conformance/native.test.mjs` (one case), then
-remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections
-contain 196 files / 1,657 cases: all 96 Vitest and 100 Node files. All 195 prior contracts / 1,651 identities
-remain unchanged. The 677,364-byte manifest retains 612 obligations / 221 blocked rows: 62 test-file
-(46 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
-counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions
-and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose
-precede the immutable aggregate and private Account preparation.
+**Next bounded phase.** Review `test/account-promotion-contract/native.test.mjs` (three cases),
+then remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General
+selections contain 197 files / 1,658 cases: all 96 Vitest and 101 Node files. All 196 prior contracts /
+1,657 identities remain unchanged. The 677,982-byte manifest retains 612 obligations / 220 blocked rows:
+61 test-file (45 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations,
+not defect counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8
+exclusions and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and
+P-06 prose precede the immutable aggregate and private Account preparation.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

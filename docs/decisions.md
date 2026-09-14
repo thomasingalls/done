@@ -2939,3 +2939,16 @@ hook used equally by baseline and mutants. Signed contradictory proofs come from
 custody, not live service issuance. Credit logical proof retention, text/envelope preservation and orderly
 page reopen/compaction within the existing two-minute wrapper bound. Do not credit physical-disk
 immutability, crash recovery, all cryptographic activity or separate wrapper/oracle campaigns.
+
+
+## 2026-09-14 — Credit native parser shape refusal separately from authenticated startup
+
+Integrate the unchanged parser-conformance native case under its existing two-minute wrapper bound,
+with thirty seconds per case. Its eight samples stay one exact reporter identity. No interpreter
+extension or historical/data input is needed for its single literal declaration.
+
+Credit real IndexedDB preservation of sparse-array holes, structural acceptance of the synthetic v9
+positive and refusal of seven malformed records after reopening the connection. The zero-MAC fixture
+is structurally valid only. The same page remains alive and parsePromotion is called directly; this is
+not authenticated workspace startup or crash recovery. Keep the wrapper's broader parser matrices,
+omission controls, old-source comparison and report postconditions separate.

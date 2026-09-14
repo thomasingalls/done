@@ -5706,3 +5706,53 @@ unchanged. Ledger orphan classification, core receive and delivery-oracle headro
 follow-ups and historical editing/handoff deadline evidence remain open. Next: Account parser-conformance
 native fixture, one case; then remaining integration, R-04, P-06 and the immutable aggregate before
 private Account preparation.
+
+
+## 2026-09-14 — Account parser-conformance native fixture integration (`L-1`)
+
+The preceding delivery-oracle phase is signed and verified as `ed48158`.
+`parser-conformance-native-fixture` adds one complete native file / one case. It passes in 28.975
+seconds including fingerprint work; Node execution took 2.598 within the existing 120-second native
+wrapper/file allowance and stage time 5.119. Worker/browser groups drain. The case retains thirty
+seconds, startup fifteen and drain grace five. Product, native tests/helpers, registration interpreter,
+owner, wrapper and limits are unchanged. Only selection/registration, expected populations and docs
+change. New integration work is uncommitted, not an immutable aggregate.
+
+The native case writes eight internal samples to real IndexedDB: one structurally valid v9
+account-receiving record and seven malformed variants. They remain one reporter case. The fixture
+comes from the independent promotion-contract builder; typed byte arrays are reconstructed in the
+browser before storage. After closing and reopening the database connection, the case checks that
+index-1 holes remain absent in credentials, genesis.actors and genesis.wraps. It requires the positive
+to parse and all seven variants to throw. Array-wrapped stage, promotionId, requestDigest and epochHead
+are the other four malformed variants.
+
+The entrypoint is current parsePromotion, including nested genesis/handoff parsers. This is structural
+refusal after storage, not promotion authentication, MAC/signature verification, selected workspace
+startup or writing recovery. The positive has synthetic placeholder credentials and a zero MAC;
+acceptance means structural validity only. No exact parser error or parsed-output equality is asserted.
+The test title's cold readback is a database connection reopen in the same page/JavaScript realm.
+It does not restart the page, browser or service, inject a crash, or copy a profile.
+
+The existing promotion fixture supplies owned CDP, a disposable context, temporary loopback service
+databases and early nested cleanup. Its Local creation, account registration, recovery preparation
+and promotion methods are not called. Vite bundles stay in memory. No generated histories, omission
+controls or historical transforms execute. The complete wrapper's six-parser matrices, old-parser
+comparison, controls, vectors, reporting and reproduction remain separate obligations. Shared helpers'
+optional git-show branches do not create historical inputs for this baseline browser bundle.
+
+All 93 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged 23 Node-owner, fourteen native-owner and five Vitest-process controls retain earlier evidence;
+the Vitest evidence comes from the preceding signed phase with the current registration interpreter.
+All 196 prior general contracts / 1,657 identities and exclusions remain unchanged. General selections
+now contain 197 files / 1,658 cases (96 Vitest, 101 Node); Account has 91 files / 564 cases.
+The 677,982-byte manifest retains 612 obligations / 220 unresolved: 61 test-file (45 Node, sixteen
+Playwright), 96 command and 63 campaign. All eleven catalogues remain resolved (163 cases /
+54 mutations). These are integration obligations, not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-parser-conformance-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base signature, prior contracts and preservation. All 52 personal/vector pins,
+L-2 and historical evidence/debts/signing backups remain unchanged. Ledger orphan classification,
+core receive and delivery-oracle headroom, capture map-refresh/byte-length follow-ups and prior
+editing/handoff deadline evidence remain open. Next: Account promotion-contract native fixture,
+three cases; then remaining integration, R-04, P-06 and the immutable aggregate before private
+Account preparation.

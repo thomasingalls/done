@@ -43,21 +43,20 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-196 files / 1,657 cases: all 96 Vitest files and 100 Node files. Account delivery-oracle native adds
-six cases, passing in 143.695 seconds (Node 113.095 within 120), with worker/browser groups drained.
-Finite string/boolean title concatenation is covered by 160 generated Node/Vitest populations and
-six exact native identities. Four baseline cases preserve full state; two mutations expose wrong
-first-evidence retention despite unchanged conflict status. Proofs use a synthetic acceptance signer;
-page reopen/compaction is orderly, with no crash cuts or generated native histories. The 6.905-second
-Node headroom remains an open loaded-host observation. Product, native
-files/helpers, owner, wrapper and sixty-second case limits stay unchanged. All 93 runner checks and
-five current Vitest-process controls pass; unchanged Node/native owner controls retain prior evidence.
-All 195 prior contracts / 1,651 identities and exclusions remain unchanged. Existing owner/headroom/
-capture-oracle observations and deadline evidence remain visible. There are 221 unresolved obligations:
-62 test-file (46 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account parser-conformance
-native fixture (one case), then remaining integration, R-04, P-06 and the immutable run. Complete
-wrapper/oracle-history credit remains separate. Service inbound `a946620` is signed and verified;
-new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-delivery-oracle-native-fixture/README.md).
+197 files / 1,658 cases: all 96 Vitest files and 101 Node files. Account parser-conformance native
+adds one case, passing in 28.975 seconds (Node 2.598 within 120), with worker/browser groups drained.
+Eight internal samples cover a structural v9 positive and seven malformed shapes. Three sparse-array
+holes survive IndexedDB; the parser refuses them and four array-wrapped string fields after connection
+reopen. This is structural readback in the same page, not authentication, owned startup or crash recovery.
+Product, native files/helpers, registration interpreter, owner, wrapper and thirty-second case limit
+remain unchanged. No generated histories, omission controls or historical readers run here. All 93
+runner checks pass; unchanged Node/Vitest/native owner controls retain earlier evidence. All 196 prior
+contracts / 1,657 identities and exclusions remain unchanged. Existing owner/headroom/capture-oracle
+observations and deadline evidence remain visible. There are 220 unresolved obligations: 61 test-file
+(45 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account promotion-contract native fixture
+(three cases), then remaining integration, R-04, P-06 and the immutable run. Complete wrapper/parser-matrix
+credit remains separate. Delivery-oracle `ed48158` is signed and verified; new work is uncommitted.
+[Evidence](./account-conformance-runs/2026-09-14-parser-conformance-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

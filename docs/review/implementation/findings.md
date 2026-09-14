@@ -81,21 +81,20 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks. The general adapters
-   now cover 196 files / 1,657 cases: all 96 Vitest files and 100 Node files. Account delivery-oracle native adds
-   six cases, passing in 143.695 seconds (Node 113.095 within 120), with worker/browser groups drained.
-   Finite string/boolean title concatenation is covered by 160 generated Node/Vitest populations and
-   six exact native identities. Four baseline cases preserve full state; two mutations expose wrong
-   first-evidence retention despite unchanged conflict status. Proofs use a synthetic acceptance signer;
-   page reopen/compaction is orderly, with no crash cuts or generated native histories. The 6.905-second
-   Node headroom remains an open loaded-host observation. Product, native
-   files/helpers, owner, wrapper and sixty-second case limits stay unchanged. All 93 runner checks and
-   five current Vitest-process controls pass; unchanged Node/native owner controls retain prior evidence.
-   All 195 prior contracts / 1,651 identities and exclusions remain unchanged. Existing owner/headroom/
-   capture-oracle observations and deadline evidence remain visible. There are 221 unresolved obligations:
-   62 test-file (46 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account parser-conformance
-   native fixture (one case), then remaining integration, R-04, P-06 and the immutable run. Complete
-   wrapper/oracle-history credit remains separate. Service inbound `a946620` is signed and verified;
-   new work is uncommitted. [Evidence](../../account-conformance-runs/2026-09-14-delivery-oracle-native-fixture/README.md).
+   now cover 197 files / 1,658 cases: all 96 Vitest files and 101 Node files. Account parser-conformance native
+   adds one case, passing in 28.975 seconds (Node 2.598 within 120), with worker/browser groups drained.
+   Eight internal samples cover a structural v9 positive and seven malformed shapes. Three sparse-array
+   holes survive IndexedDB; the parser refuses them and four array-wrapped string fields after connection
+   reopen. This is structural readback in the same page, not authentication, owned startup or crash recovery.
+   Product, native files/helpers, registration interpreter, owner, wrapper and thirty-second case limit
+   remain unchanged. No generated histories, omission controls or historical readers run here. All 93
+   runner checks pass; unchanged Node/Vitest/native owner controls retain earlier evidence. All 196 prior
+   contracts / 1,657 identities and exclusions remain unchanged. Existing owner/headroom/capture-oracle
+   observations and deadline evidence remain visible. There are 220 unresolved obligations: 61 test-file
+   (45 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account promotion-contract native fixture
+   (three cases), then remaining integration, R-04, P-06 and the immutable run. Complete wrapper/parser-matrix
+   credit remains separate. Delivery-oracle `ed48158` is signed and verified; new work is uncommitted.
+   [Evidence](../../account-conformance-runs/2026-09-14-parser-conformance-native-fixture/README.md).
    R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
    load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
@@ -165,7 +164,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 196 Vitest/Node files integrated, including six Account delivery-oracle native cases for full retained state and effective first-evidence mutation controls; capture oracle limits, initial owner orphan classification and prior receive deadline headroom remain open; 221 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 197 Vitest/Node files integrated, including one Account parser-conformance native case for stored sparse/coercible shape refusal; capture oracle limits, initial owner orphan classification and receive/delivery-oracle deadline headroom remain open; 220 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
