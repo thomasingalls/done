@@ -17,6 +17,8 @@ export async function admissionBundle(control) {
               if (control === 'old-reader' && id.endsWith('/src/crdt/promotionRecord.ts'))
                 return execFileSync('git', ['show', '280f616:src/crdt/promotionRecord.ts'], {
                   encoding: 'utf8',
+                  timeout: 5000,
+                  maxBuffer: 2 * 1024 * 1024,
                 });
               if (control === 'receipt' && id.endsWith('/src/crdt/promotionAdmission.ts')) {
                 const needle = 'verifyReceipt(answer, request, options.pin, parts)';

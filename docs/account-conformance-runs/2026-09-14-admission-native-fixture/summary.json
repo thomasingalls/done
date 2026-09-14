@@ -1,0 +1,105 @@
+{
+  "base": "bd484a6e9376e72e66718ca4313ca11866a9d8e0",
+  "claim": "Account admission native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T08-25-36.449Z",
+  "summary": {
+    "schema": 1,
+    "selection": "admission-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-admission/native.test.mjs",
+        "key": "980832ca8b5807b596dc4ee88c40ffcaf1d5140cdf65ed52c2c555808271edd8",
+        "status": "passed",
+        "elapsedMs": 118284,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T08:25:36.453Z",
+    "input": "14101808e1f7581fb452ba71d03f5ab1e9429e4bcdca4d53355f588b145e9ddf",
+    "completedAt": "2026-09-14T08:27:59.880Z"
+  },
+  "elapsedMs": 143427,
+  "rawInputArchiveSha256": "ea6e1565d49822e13429c38ce51b81d3b1eaadfbf25ce942dd1d8a4ae34236b5",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "bd484a6e9376e72e66718ca4313ca11866a9d8e0",
+    "sourceDigest": "115e8dcd3e94bee9c4d59bc1f98efdb3c5bf046287a4ab711194d29d639e9b86",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 15,
+    "browserFiles": 1,
+    "generatedHistories": 30,
+    "seed": 9242026,
+    "priorGeneralFiles": 187,
+    "priorGeneralCases": 1597,
+    "currentGeneralFiles": 188,
+    "currentGeneralCases": 1612,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 92,
+    "accountFiles": 82,
+    "accountCases": 518,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 229,
+    "unresolvedTestFiles": 70,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 666953
+  },
+  "finalGatesSha256": "1707d70453fcb6f31a1f09891986992f87d686abfbcbb3b3648c0541bff87e10",
+  "preservationSha256": "9ced96d380a7c324de23e12676301a886ccf88950587a6c94805fe2ec9112895",
+  "limits": [
+    "One complete admission native file retains fifteen cases: fourteen directed cases with 30-second limits and one 30-history generated campaign with a 90-second limit, seed 9242026, endOnFailure:true. Test bodies, oracles, populations, registration census and owner are unchanged. Before this phase's first native run, the new adapter and existing wrapper receive a 180-second whole-file/wrapper allowance instead of the wrapper's 120 seconds. This is a prospective budget based on the preceding handoff's measured 121.212-second execution and admission's larger generated population, not an observed admission timeout or a loaded-host reliability result.",
+    "The active previous-format reader uses 280f616:src/crdt/promotionRecord.ts, with reference, full revision, exact path and bytes pinned. Its Git subprocess now has 5000-ms/2-MiB bounds. Inherited genesis old-reader and semantic mutations and the base promotion MAC mutation are dormant; only the admission receipt and historical-reader controls run. Existing historical-input drift controls already cover this path. No runtime vector is read by this file.",
+    "The base fixture registers cleanup before setup, builds browser scripts in memory, borrows the owned loopback CDP browser and uses temporary service/SQLite stores, synthetic registration credentials, operator factor/token, Local code and confirmed recovery code. Activation uses a Node fixture assertion exposed through a browser binding, not navigator.credentials.get or a personal/hardware authenticator. Closing context/disconnecting and service teardown run before the owner drains worker/browser groups. No personal service, profile, package output or origin is touched.",
+    "The basic case receives a promotion-receipt, retains admission-receipted, sees no pending preparation, reloads the same page and obtains an identical receipt with exactly unchanged post-admission inventory. Abandonment then refuses. Across admission, stable() excludes every application-upgrade row in done.custody, not just the active slot's promotion marker; all remaining serialized database and localStorage inventory is compared. This is logical inventory equality, not a byte-for-byte filesystem or forensic custody comparison. Cross-slot mutation of excluded promotion rows is not detected by that oracle.",
+    "Six cases cover admission-requested, admission-offered and admission-receipted before/after commit. Before cuts abort actual IDB transactions after request success; after cuts withhold actual completion callbacks then kill the renderer. All reopen a new page in the same browser context and finish admission, compare filtered inventory and retain any already-written exact offer/receipt. There are three directed renderer deaths, not six; no browser-process/power-loss or service-process crash is induced here.",
+    "Lost begin and finish replies run the actual service call before throwing. Reload retries recover the exact offer or receipt. Abandonment after a lost offered reply removes the promotion marker while filtered Local inventory remains. After a lost committed finish reply, abandonment refuses and the complete remaining inventory stays equal. These are simulated network reply loss and real service transactions; separate service restart/core/control files are not rerun by this selection.",
+    "The receipt control corrupts the service finish signature and current code refuses with admission-offered retained. It then forces begin readback through the original offer and corrupts the already committed receipt returned by challenge; replacing the unique final verifyReceipt(answer, request, options.pin, parts) call actually retains an all-zero-signature receipt at admission-receipted. Other verifier sites remain active. This is a specific bad-acceptance control, not a claim of opening the retained forged receipt again. The helper checks anchor presence; current-source uniqueness was separately checked.",
+    "With receipt commit acknowledgement held, cancelling the first owner leaves another page queued on the slot. The test releases acknowledgement, waits for both operations and checks the competitor returns a receipt. It does not assert the cancelled operation's returned value or count callbacks. A separate queued-input case mutates slotId and draft.authRoot after calling admission, then releases the held slot and checks the original account's offer is returned; it does not exhaustively test every mutable option.",
+    "Thirty generated histories use one to ten insert/delete operations, optional reversed update delivery and mixed disk/journal persistence. An independent string model derives master text. inspectReceipt independently reconstructs LP/hash/signature messages using Node/OpenSSL for epoch, offer, receipt, bootstrap origin, certified-set approval, checkpoint manifest and semantic admission, then independently opens the recovery envelope, HPKE generation wrap and encrypted checkpoint. Node Yjs replay checks text, no pending structs/deletes, exact SV/DS and admission-derived coverage; the shared browser Yjs decoder compares full fixture state, cards/order and coverage. The crypto/message code is separate from production but Yjs semantics remain shared; intermediate synthetic key/plaintext buffers are not all zeroed.",
+    "Generated faults choose none, lost begin/finish, aborted requested/offered/receipted commits or a changed offer signature. Faulted calls reject and preserve filtered inventory. Same-page reload/retry retains any old offer/lost service result and produces a receipt inspected by the independent oracle. One to three reload retries return that exact receipt. Read-only SQLite inspection finds active account, one promotion row in admitted state and stored JSON equal to the receipt. The service stays live within each history; there is no generated renderer or service crash, no shrinking and no assertion that every fault choice occurred.",
+    "The final case verifies ordinary Local read and earlier genesis/preparation refusal, then loads the historical version-2 reader and checks preparation/abandonment fail without new network calls or inventory changes. This selection exercises private first admission and retained receipt only. It does not select an Account index, attach editor or transport authority, exercise offline Account startup, adopt a peer, or produce a real Account admission receipt.",
+    "Optional ACCOUNT_REPORT_DIR exports are disabled under the sanitized stage environment. The wrapper additionally runs core/restart/controls, has separate output/scheduling/process-ownership obligations and is not qualified by the native file. Existing sibling evidence remains separate. The first pure-runner run exposed a duplicate stale assertion that still classified this now-integrated file as unreviewed; the assertion was removed and the complete 92-check runner suite rerun. Its original failure log is retained.",
+    "All 187 prior general contracts / 1597 identities and retired-v8 exclusions remain unchanged. Unchanged 23 Node-owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence. The initial ledger orphan classification, core receive deadline headroom, capture map-refresh/byte-length follow-ups and prior editing/handoff timeout evidence remain open or preserved as recorded. Full source/dependency/browser archives are retained locally and hash-bound here; this is not an immutable aggregate. All 52 personal/vector pins and L-2, historical evidence/debts/signing backups and unrelated root files remain untouched. Handoff is signed and verified as the preceding base."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 113829.119167,
+    "stageElapsedMs": 118284,
+    "selectionElapsedMs": 143427,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedAdmissionMs": 59692.074583
+  },
+  "deadlineDecision": {
+    "previousWrapperMs": 120000,
+    "selectedFileAndWrapperMs": 180000,
+    "unchangedDirectedMs": 30000,
+    "unchangedGeneratedMs": 90000,
+    "basis": "Prospective allowance based on the preceding handoff execution of 121.212 seconds and admission with 30 rather than 24 histories; no admission timeout is claimed. Native test bodies and limits unchanged."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "9c3613da68bf565b13ccd9eb41e908963dd1680630be52761b58d9b14462894f",
+    "compressedSha256": "ac168438fc3847baacc911f888030134ca84ba26473934d86ea53f38f154adba"
+  }
+}

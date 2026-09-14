@@ -5094,3 +5094,88 @@ preservation. This new phase is uncommitted and is not an immutable aggregate. A
 pins and L-2 remain unchanged; personal profiles/services/builds/recovery/factors, historical archives,
 formal debts, signing backups and unrelated root files remain untouched. Next: Account admission native
 fixtures (fifteen static cases), then remaining integration, R-04, P-06 and immutable validation.
+
+
+## 2026-09-14 — Account admission native fixture integration (`L-1`)
+
+The preceding handoff phase is signed and verified as `bd484a6`. `admission-native-fixture` adds one
+complete native file / fifteen cases under the existing owned Chromium/CDP adapter. All fifteen pass
+in 143.427 seconds including fingerprint work; Node execution took 113.829 seconds within 180,
+stage time 118.284, and all 30 generated histories 59.692 within their unchanged 90-second bound.
+Worker and browser groups drain. This new phase remains uncommitted; it is not an immutable aggregate.
+
+Before the first native run, the adapter and direct wrapper received a three-minute outer allowance,
+based on the preceding handoff's measured 121.212-second execution and admission's larger generated
+population. No admission timeout is claimed. Fourteen directed cases retain 30 seconds, generated
+histories 90, browser startup 15 and drain grace five. Product code, native test bodies, oracles,
+populations, census and owner are unchanged. The wrapper changes only its allowance from 120 to 180
+seconds. The active historical reader `280f616:src/crdt/promotionRecord.ts` gains exact source pins and
+5-second/2-MiB Git bounds. Inherited genesis/base-promotion mutations remain dormant.
+
+The basic admission retains admission-receipted, no longer reports pending preparation and returns the identical
+receipt after reloading the same page, with unchanged post-admission inventory. Abandonment refuses.
+Six requested/offered/receipted before/after commit cuts abort actual IDB transactions before completion
+or hold completed acknowledgements and kill the renderer. All reopen new pages in the same context,
+preserve any retained offer/receipt and finish admission. Three directed cuts kill renderers; none
+kills a browser or service process. The filtered cross-admission inventory excludes every application-
+upgrade row in done.custody, not only the current slot's marker. All other serialized database rows
+and localStorage compare equal, including the Local index. Cross-slot writes to excluded promotion
+rows and forensic profile equality are outside that oracle.
+
+Lost begin/finish replies execute the service call before throwing; reload retries recover the exact
+service offer/receipt. Abandonment after an offered result removes preparation while preserving the
+filtered Local carriers. A lost committed reply cannot authorize abandonment or mutate retained
+inventory. With final receipt acknowledgement held, cancellation keeps a competing page queued until
+release, after which the competitor receives a receipt. The cancelled call's returned value is not
+asserted. A queued-input case changes slotId and draft.authRoot after calling admission and still
+obtains the original account's offer; it does not exhaust every option.
+
+The receipt mutation first observes current-code rejection of a corrupted finish signature, leaving
+admission-offered. It then forces retry through the retained offer and an altered committed receipt
+returned by challenge; removing the unique final verifyReceipt(answer, request, options.pin, parts)
+call actually retains an invalid-signature receipt at admission-receipted. Other verifier sites remain.
+This is a specific acceptance oracle, not evidence of successfully reopening that forged receipt.
+The helper checks anchor presence; current-source uniqueness was independently checked. The historical
+version-2 reader and earlier Local/preparation/genesis operations refuse retained admission without
+new network calls or inventory changes.
+
+Thirty histories retain seed 9242026, numRuns:30 and endOnFailure:true. One to ten insert/delete edits
+mix database and journal persistence with optional reversed delivery. Faults include no fault, lost
+begin/finish replies, aborted requested/offered/receipted commits and changed offer signatures. Reload
+and retry preserve retained/lost service results and filtered source inventory; one to three further
+reloads return the exact receipt. Read-only SQLite checks require an active account, exactly one
+admitted promotion row and stored receipt JSON equal to the returned receipt. The service remains
+live within each history. No generated renderer death, shrinking or all-fault-coverage assertion is
+claimed.
+
+An independent string model derives expected master text. The Node/OpenSSL oracle reconstructs LP
+and hash messages and verifies epoch, offer, receipt, origin, certified set, checkpoint manifest and
+semantic admission signatures. It independently opens the recovery envelope, HPKE wrap and checkpoint.
+Node Yjs replay derives exact SV/DS, checks admitted coverage and no pending structs/deletes; the shared
+browser decoder compares full fixture state and cards/order. Yjs semantics remain shared, and not all
+intermediate synthetic secret/plaintext buffers are zeroed. This does not prove arbitrary semantic
+truth to a content-blind service or qualify malicious-member recovery.
+
+The base registers cleanup before setup, borrows owned loopback CDP, builds in memory and uses temporary
+service/SQLite stores and synthetic credentials/factors. Activation uses a Node fixture assertion via
+a browser binding, not navigator.credentials.get or a personal authenticator. Optional JSON exports
+are disabled. Core/restart/control siblings and wrapper output/scheduling/ownership remain separate
+obligations. No vector is read by this selected file. No Account index handoff, editor, transport,
+offline Account startup, peer adoption or real Account admission is established here.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signature checks
+pass. The first runner attempt found a duplicate stale assertion still treating admission as unreviewed;
+its log is retained and the complete suite passed after removing that assertion. Unchanged Node owner,
+Vitest-process and native-owner controls (23/5/12) retain prior evidence. Initial ledger orphan
+classification, prior core receive headroom, capture map-refresh/byte-length follow-ups and historical
+editing/handoff deadline evidence remain visible. All 187 prior contracts / 1,597 case identities and
+retired-v8 exclusions are unchanged. General selections now contain 188 files / 1,612 cases (96 Vitest,
+92 Node); Account has 82 files / 518 cases. The 666,953-byte manifest has 612 obligations / 229 unresolved:
+70 test-file (54 Node, sixteen Playwright), 96 command and 63 campaign. All eleven catalogues remain
+resolved (163 cases / 54 mutations).
+
+The [packet](./account-conformance-runs/2026-09-14-admission-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base/historical signatures, prior contracts and preservation. All 52 personal/vector
+pins, L-2, historical evidence/debts/signing backups and unrelated root files remain untouched. Next:
+Account genesis native fixtures (fourteen static cases), then remaining integration, R-04, P-06 and
+the immutable aggregate before private Account preparation and human adoption.

@@ -2799,3 +2799,20 @@ not a human/hardware ceremony. Directed post-commit cuts kill renderers; generat
 pages after aborted commits or simulated response failures. Stable inventory excludes two authorized
 rows, and independent crypto opening precedes handoff while Yjs decoding remains shared. Report those
 actual assertions and their limits without broadening classification into editor/transport authority.
+
+
+## 2026-09-14 — Preserve first-admission oracles and give the complete native file a finite budget
+
+Integrate all fifteen Account admission native cases and all 30 histories, without modifying their
+bodies, oracles, populations, seeds or case limits. Use a 180-second adapter/wrapper allowance based
+on the preceding handoff's measured 121.212-second execution and admission's larger campaign, before
+running this selection; do not represent this prospective choice as an admission timeout repair.
+Pin and bound the active historical promotion reader, leaving inherited dormant controls uncredited.
+
+Keep independent Node/OpenSSL message/signature/decryption evidence separate from shared Yjs semantics.
+Report that filtered inventory excludes all application-upgrade rows, that generated retries reload
+pages while three directed cuts kill renderers, and that activation uses synthetic assertions rather
+than a browser authenticator ceremony. The receipt mutant must actually retain an invalid signature;
+a generic failure does not establish detection. Wrapper siblings/outputs and Account handoff/editor/
+transport authority remain separate obligations. Preserve the stale runner-assertion failure and rerun
+the complete pure suite after correcting its obsolete blocked-file expectation.
