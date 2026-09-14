@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const outboundNativeFixtureFiles = ['test/account-outbound/native.test.mjs'];
+
 export const reservationDurabilityBrowserFiles = [
   'test/account-reservation-durability/native.test.mjs',
   'test/account-reservation-durability/network.test.mjs',
@@ -294,6 +296,7 @@ export const accountFixtureFiles = {
     ...localCustodyNativeFixtureFiles,
     ...admissionBoundsNativeFixtureFiles,
     ...reservationDurabilityFixtureFiles,
+    ...outboundNativeFixtureFiles,
   ],
 };
 
@@ -328,7 +331,8 @@ export function accountFixtureNodeStage(root, file) {
     localProvenanceNativeFixtureFiles.includes(file) ||
     localCustodyNativeFixtureFiles.includes(file) ||
     admissionBoundsNativeFixtureFiles.includes(file) ||
-    reservationDurabilityBrowserFiles.includes(file);
+    reservationDurabilityBrowserFiles.includes(file) ||
+    outboundNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -353,6 +357,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (outboundNativeFixtureFiles.includes(file) ? 60000 : undefined) ??
       (reservationDurabilityFixtureFiles.includes(file) ? 300000 : undefined) ??
       (admissionBoundsNativeFixtureFiles.includes(file) ? 180000 : undefined) ??
       (localCustodyNativeFixtureFiles.includes(file) ? 300000 : undefined) ??

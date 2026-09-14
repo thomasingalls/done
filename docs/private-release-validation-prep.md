@@ -43,17 +43,17 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-207 files / 1,708 cases: all 96 Vitest files and 111 Node files.
-Account reservation durability fixtures adds 20 cases, passing in 69.247 seconds with worker/browser groups
-drained. Twenty cases include 4,000 model histories, two retained policy counterexamples, native strict-
-durability refusal/ordering and network-attempt accounting. Only native fixture ownership changes;
-product and all test bodies remain unchanged. Physical power-loss behavior is not established.
-All 93 runner checks and scoped gates pass; 204 prior contracts / 1,688 identities
-and exclusions remain unchanged. There are 210 unresolved obligations: 51 test-file (35
+208 files / 1,710 cases: all 96 Vitest files and 112 Node files.
+Account outbound native fixture adds 2 cases, passing in 33.351 seconds with worker/browser groups
+drained. Two unchanged cases retain three envelope-verifier omissions and one actual renderer crash. Journal
+recovery works despite observer failure; this lower-level fixture does not exercise the completed
+sync outbox. Product, fixtures and test bodies remain unchanged.
+All 93 runner checks and scoped gates pass; 207 prior contracts / 1,708 identities
+and exclusions remain unchanged. There are 209 unresolved obligations: 50 test-file (34
 Node, sixteen Playwright), 96 command, 63 campaign. Continue
-22 remaining Account files in signed bounded groups, starting with Account outbound. Existing owner/
+21 remaining Account files in signed bounded groups, starting with Account decision composition. Existing owner/
 headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-Account preparation. The preceding phase `fa9f782` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-reservation-durability-fixtures/README.md).
+Account preparation. The preceding phase `19dfffe` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-outbound-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

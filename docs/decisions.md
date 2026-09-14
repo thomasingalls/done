@@ -3057,3 +3057,13 @@ reporting enabled. That repeated seed adds evidence artifacts, not a new populat
 Distinguish the model's strict-persistence assumption and explicit counter rollback from observed native
 transaction/AES ordering and API-reported durability. Keep physical power cuts, profile restore/clone
 safety and second-device delivery outside these claims.
+
+
+## 2026-09-14 — Qualify outbound observer recovery at the editing boundary
+
+Integrate the two unchanged outbound native cases under the existing one-minute wrapper bound.
+Retain exact signature/digest/route source-control anchors and pin the envelope-vector input with the
+frozen sources. Credit the actual renderer crash and journal recovery at the lower-level editing
+owner. An observer's absent replay/outbound record there explains a preparation constraint; it does
+not establish a defect in the later captured/spooled sync composition. Keep full vector, wrapper,
+relay, second-device and immutable release qualification separate.

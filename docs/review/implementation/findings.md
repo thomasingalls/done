@@ -81,17 +81,17 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks. The general adapters
-   now cover 207 files / 1,708 cases: all 96 Vitest files and 111 Node files.
-   Account reservation durability fixtures adds 20 cases, passing in 69.247 seconds with worker/browser groups
-   drained. Twenty cases include 4,000 model histories, two retained policy counterexamples, native strict-
-   durability refusal/ordering and network-attempt accounting. Only native fixture ownership changes;
-   product and all test bodies remain unchanged. Physical power-loss behavior is not established.
-   All 93 runner checks and scoped gates pass; 204 prior contracts / 1,688 identities
-   and exclusions remain unchanged. There are 210 unresolved obligations: 51 test-file (35
+   now cover 208 files / 1,710 cases: all 96 Vitest files and 112 Node files.
+   Account outbound native fixture adds 2 cases, passing in 33.351 seconds with worker/browser groups
+   drained. Two unchanged cases retain three envelope-verifier omissions and one actual renderer crash. Journal
+   recovery works despite observer failure; this lower-level fixture does not exercise the completed
+   sync outbox. Product, fixtures and test bodies remain unchanged.
+   All 93 runner checks and scoped gates pass; 207 prior contracts / 1,708 identities
+   and exclusions remain unchanged. There are 209 unresolved obligations: 50 test-file (34
    Node, sixteen Playwright), 96 command, 63 campaign. Continue
-   22 remaining Account files in signed bounded groups, starting with Account outbound. Existing owner/
+   21 remaining Account files in signed bounded groups, starting with Account decision composition. Existing owner/
    headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-   Account preparation. The preceding phase `fa9f782` is signed and verified. [Evidence](../../account-conformance-runs/2026-09-14-reservation-durability-fixtures/README.md).
+   Account preparation. The preceding phase `19dfffe` is signed and verified. [Evidence](../../account-conformance-runs/2026-09-14-outbound-native-fixture/README.md).
    R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
    load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
@@ -161,7 +161,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 207 Vitest/Node files integrated, including twenty Account reservation-durability cases and 4,000 model histories with retained counterexamples; capture oracle limits, initial owner orphan classification and receive/delivery-oracle deadline headroom remain open; 210 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 208 Vitest/Node files integrated, including two Account outbound cases with three verifier omissions and one journal-only renderer crash; capture oracle limits, initial owner orphan classification and receive/delivery-oracle deadline headroom remain open; 209 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
