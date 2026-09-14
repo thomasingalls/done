@@ -26,16 +26,16 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1861-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1871-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 242);
+  assert.equal(general.length, 245);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1861,
+    1871,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -115,6 +115,9 @@ test('reviewed Vitest and Node selections preserve the 1861-case file denominato
     assert.equal(
       s.deadlineMs,
       {
+        'test/release-validation/playwright-native.test.mjs': 120000,
+        'test/local-app/startup.spec.ts': 300000,
+        'test/local-app/editor.spec.ts': 300000,
         'test/release-validation/stage.test.mjs': 120000,
         'test/release-validation/vitest-process.test.mjs': 120000,
         'test/release-validation/content-native.test.mjs': 120000,

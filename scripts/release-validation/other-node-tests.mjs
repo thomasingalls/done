@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 
 export const otherNodeGroups = {
+  'browser-runner-controls': ['test/release-validation/playwright-native.test.mjs'],
   'runner-self-tests': [
     'test/release-validation/stage.test.mjs',
     'test/release-validation/vitest-process.test.mjs',
@@ -34,7 +35,9 @@ export function otherNodeStage(root, file) {
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
-  const runner = otherNodeGroups['runner-self-tests'].includes(file);
+  const runner =
+    otherNodeGroups['runner-self-tests'].includes(file) ||
+    otherNodeGroups['browser-runner-controls'].includes(file);
   const registered = runner || otherNodeGroups['other-harness-fixtures'].includes(file);
   const nestedChromium = runner && file.endsWith('-native.test.mjs');
   const native =

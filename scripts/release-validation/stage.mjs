@@ -18,6 +18,8 @@ import { reconcileCarrier } from './carrier-adapter.mjs';
 import { reconcileVitest, vitestArgv } from './vitest-adapter.mjs';
 import { assertHistoricalInputs, validateHistoricalInputs } from './historical-inputs.mjs';
 
+import { validatePlaywrightStage, reconcilePlaywright } from './playwright-adapter.mjs';
+
 import { registrationModulePath } from './registration-modules.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -71,6 +73,7 @@ export function validateStage(stage) {
       'exit',
       'cases',
       'vitest',
+      'playwright',
       'content',
       'journal',
       'admission',
@@ -91,7 +94,7 @@ export function validateStage(stage) {
       [0],
       'Nonzero exit alone cannot prove a mutation was detected',
     );
-  else if (['cases', 'vitest'].includes(stage.expect.kind)) {
+  else if (['cases', 'vitest', 'playwright'].includes(stage.expect.kind)) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
       new Set(stage.expect.cases.map((c) => c.id)).size,
@@ -142,6 +145,9 @@ export function validateStage(stage) {
     assert(stage.argv.includes('--test'), 'Historical source metadata requires the Node reporter');
     validateHistoricalInputs(stage.expect.historyInputs);
   }
+  if (stage.expect.kind === 'playwright') validatePlaywrightStage(stage);
+  if (stage.argv[1] === 'scripts/release-validation/playwright-driver.mjs')
+    assert.equal(stage.expect.kind, 'playwright', 'Browser driver requires its exact case adapter');
   if (stage.expect.kind === 'vitest') {
     assert.equal(stage.expect.files?.length, 1, 'Only single-file Vitest stages are certified');
     assert.deepEqual(stage.argv, vitestArgv(stage.expect.files[0]), 'Unreviewed Vitest invocation');
@@ -581,6 +587,8 @@ export function createStageRunner({
             custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
           actual = { cases };
+        } else if (stage.expect.kind === 'playwright') {
+          actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
           actual = reconcileVitest(stage.expect, reported, nonce);
         } else {

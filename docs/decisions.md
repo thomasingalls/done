@@ -3147,3 +3147,8 @@ Replace obsolete port assumptions with current executable lifecycle checks rathe
 ## 2026-09-14 — Runner self-test integration and nested stage environment ownership
 
 Keep nested stage environment ownership explicit: an owned stage may reset its inherited Node-test marker and route violations to its own guarded scope; ordinary children cannot suppress violations by supplying a new environment. Accept the active guard or a guard inside the owned temporary tree, and constrain violation files to that tree or the disposable checkout output. Keep every registered leader in drain evidence and preserve the self-tests that reproduced the nesting failures. Resolve actual filesystem paths before checking the boundary; macOS aliases must not reject the same owned checkout, and a symlink must not extend ownership outside it.
+
+
+## 2026-09-14 — Owned Playwright adapter and Local startup/editor fixtures
+
+Introduce explicit single-file Playwright contracts and an independent static census before admitting browser suites. Retain default application case assertions and ordinary standalone behavior while owned runs supply browser and server lifetimes. Reject partial, repeated, filtered or unexpected-skip results, and retain bounded exact attachment bytes rather than losing generated histories. Preserve the failed fixture and metadata attempts.

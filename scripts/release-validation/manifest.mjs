@@ -77,6 +77,13 @@ import {
   nodeProtocolStage,
 } from './general-tests.mjs';
 
+import {
+  browserFiles,
+  browserGroups,
+  browserPolicy,
+  playwrightStage,
+} from './playwright-adapter.mjs';
+
 import { otherNodeGroups, otherNodeFiles, otherNodeStage } from './other-node-tests.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
@@ -166,7 +173,18 @@ export function compileManifest(root, inventory) {
   assertGeneralTestPopulation(account, inventory);
   const other = general.vitest.length ? otherNodeFiles : [];
   assertGeneralTestPopulation({ node: other, vitest: [] }, inventory);
+  const browsers = general.vitest.length ? browserFiles : [];
+  for (const file of browsers) {
+    const t = inventory.tests.find((t) => t.path === file);
+    assert(t?.status === 'required', 'Reviewed browser fixture removed or excluded: ' + file);
+    assert.equal(
+      t.invocation.config,
+      browserPolicy(file).config,
+      'Reviewed browser changed configuration',
+    );
+  }
   const reviewed = [
+    ...browsers,
     ...other,
     ...propertyFiles,
     ...general.vitest,
@@ -178,6 +196,7 @@ export function compileManifest(root, inventory) {
   ];
   assert.equal(new Set(reviewed).size, reviewed.length, 'Duplicate reviewed file disposition');
   const supportedTests = new Set([
+    'test/release-validation/playwright.test.mjs',
     'test/release-validation/inventory.test.mjs',
     'test/release-validation/manifest.test.mjs',
     'test/release-validation/identity.test.mjs',
@@ -234,6 +253,8 @@ export function compileManifest(root, inventory) {
       add({ id, kind: 'test', path: t.path, stage: generatedNodeStage(root, t.path) });
     } else if (account.node.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: accountFixtureNodeStage(root, t.path) });
+    } else if (browsers.includes(t.path)) {
+      add({ id, kind: 'test', path: t.path, stage: playwrightStage(root, t.path) });
     } else if (other.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: otherNodeStage(root, t.path) });
     } else
@@ -446,6 +467,18 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      ...Object.fromEntries(
+        Object.entries(browserGroups).map(([name, files]) => [
+          name,
+          rows.filter((r) => browsers.includes(r.path) && files.includes(r.path)).map((r) => r.id),
+        ]),
+      ),
+      'browser-local-qualification': [
+        ...rows
+          .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')
+          .map((r) => r.id),
+        ...rows.filter((r) => browsers.includes(r.path)).map((r) => r.id),
+      ],
       'runner-self-regression': rows
         .filter((r) =>
           [
@@ -694,6 +727,7 @@ export function compileManifest(root, inventory) {
         .filter(
           (r) =>
             r.stage?.expect.kind === 'vitest' ||
+            r.stage?.expect.kind === 'playwright' ||
             general.node.includes(r.path) ||
             generated.node.includes(r.path) ||
             account.node.includes(r.path) ||

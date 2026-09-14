@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 282,
-    "requiredTestFiles": 276,
+    "testFiles": 284,
+    "requiredTestFiles": 278,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 282,
+          "line": 285,
           "form": "fc.property"
         }
       ],
@@ -8937,6 +8937,41 @@
       "propertyFamilies": [
         {
           "line": 194,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/playwright-native.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/playwright-native.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/release-validation/playwright.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/playwright.test.mjs"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [
+        {
+          "line": 141,
           "form": "fc.property"
         }
       ],
@@ -11841,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "c6e2bbe314232b30e8f7cfa35441a70718375cc64dc7cd56fd65bbf38bcbcc74"
+      "sha256": "c4c7be0a795056951dbd1f7654f8342cbd046b02527d6b5491ef067f4a278f2d"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11885,7 +11920,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "27706afd2e956e274ef2609eafe3eb6fbdfc23ad5485734e793723c91888d545"
+      "sha256": "b52b7406f99729de35a8a69f62b88ee5acf5c2694e3730f3aaaa0c54f18b9d33"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -11901,7 +11936,7 @@
     },
     {
       "path": "scripts/release-validation/other-node-tests.mjs",
-      "sha256": "d7f52de2b2b9677b8ac1dfce56caa10f78606ddd3c77de634305ee1041fa5e36"
+      "sha256": "a1fe80848903ef1e2b1ec049f11690ff524105798561797a3a8d8a43bd00cb54"
     },
     {
       "path": "scripts/release-validation/owned-startup-adapter.mjs",
@@ -11910,6 +11945,22 @@
     {
       "path": "scripts/release-validation/plan.mjs",
       "sha256": "f68b3700939273790ba7e4425dc47eea195a239e41844bbb0658e964c8a0a4a8"
+    },
+    {
+      "path": "scripts/release-validation/playwright-adapter.mjs",
+      "sha256": "3077f5bca24fbb368c2d1604448651464b4a5f5908904128d906435551826fd0"
+    },
+    {
+      "path": "scripts/release-validation/playwright-census.mjs",
+      "sha256": "7805fbd5d691fcf13d6fa28aaeabc3171f33dc18e0f622ea13348da2760740fb"
+    },
+    {
+      "path": "scripts/release-validation/playwright-driver.mjs",
+      "sha256": "0088d17417798ed891b36a328dd7690bc903633ff06afeb1c9717d44b4087a03"
+    },
+    {
+      "path": "scripts/release-validation/playwright-reporter.mjs",
+      "sha256": "7473d70f914b383e088f209797ee6b659ef8afb905a0cc1bf072df94802a6a25"
     },
     {
       "path": "scripts/release-validation/policy.json",
@@ -11937,7 +11988,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "1e7631cc65d55762d4db38dfe72d1386c598352c8e4a61e5b25e73970f95ba13"
+      "sha256": "19f9180b8fa21013d4266d08786bd3c11878810d3b041a84fcf30bf42f4278bb"
     },
     {
       "path": "scripts/release-validation/vitest-adapter.mjs",
@@ -13589,7 +13640,7 @@
     },
     {
       "path": "test/local-app/editor.spec.ts",
-      "sha256": "1b95476767f2518f2f55ee7d04d0a3494d7e3384e8aa209a385b364c8d61d319"
+      "sha256": "0c9867d8ab1c06397c78d3b7bb1527d07c6ee23deefea9f2a8684a8ac390368d"
     },
     {
       "path": "test/local-app/packaged.spec.ts",
@@ -13597,7 +13648,7 @@
     },
     {
       "path": "test/local-app/startup.spec.ts",
-      "sha256": "aa7e930127d3e8412bb551217373fbf571a66315baf010b03f26da38cd4a4db4"
+      "sha256": "e6e38551656bcebba6095c9f2007e466557e2e7be6d689f4ad5f27d37961a317"
     },
     {
       "path": "test/local-clear/browser.mjs",
@@ -13720,6 +13771,10 @@
       "sha256": "546ef12809f45f5b8bb9f2ddc7061e2ecbcc7e416216d0e23501b99fb0488942"
     },
     {
+      "path": "test/release-validation/browser-fixture.ts",
+      "sha256": "9cd439b41af455477c710632a22694679f512e7590ef43bf7de4412b3ec69815"
+    },
+    {
       "path": "test/release-validation/carrier-fixture.mjs",
       "sha256": "1552bb6263ad87a31ac919a1421edb035683189d804c05955ef0ded1ee3fe052"
     },
@@ -13749,11 +13804,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "098bf01aabcb6fb4ad9f7da2c00098612ee89e5fe8f0a9fe0072e91d36d4ed7c"
+      "sha256": "9d3a84328bc6a3d7af67fc89f440b8a0d075e4b1120301bf016380e028fec73f"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "243137cfeb5783fae7fb2aca17da315274ec1076868820760561ec399e036316"
+      "sha256": "bca09914acc43b6200129e1641329695e794647ef199d4158a661ca773d06ec0"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13782,6 +13837,14 @@
     {
       "path": "test/release-validation/owned-startup.test.mjs",
       "sha256": "a009c73d1b9b2e8d8c0f7de4f44e829962544e68e7be6dfff6974bc4feb7174f"
+    },
+    {
+      "path": "test/release-validation/playwright-native.test.mjs",
+      "sha256": "f985c3c106f0b8fa97e9d77eab5129580425fb233456fbcd641a2e33d5da2f63"
+    },
+    {
+      "path": "test/release-validation/playwright.test.mjs",
+      "sha256": "0a343de7cbde331144bc693d525a47a58fb277b98729458a08b36c9d424a5efa"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

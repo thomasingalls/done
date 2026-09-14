@@ -3216,6 +3216,17 @@ General integration now covers 242 files / 1,861 cases. 16 test-file, 96 command
 
 [Evidence](./account-conformance-runs/2026-09-14-runner-self-tests/README.md).
 
+
+## Owned Playwright adapter and Local startup/editor fixtures (`L-1`)
+
+Owned Playwright adapter and Local startup/editor fixtures passes 10 cases in 3 files. The first browser application selection includes eight existing Local startup/editor cases and two new native adapter control cases. The existing application assertions remain, including 20 generated compose/history inputs at seed 8941 and a separate ledger before/after reload. Static binding-aware registration reading expands exact file/suite/project identities without executing hooks or test modules; it distinguishes RegExp.test from the imported test binding. Owned runs borrow Chromium over CDP, start ephemeral loopback Vite inside the guarded worker group and refuse server reuse or framework-launched browsers. Normal standalone Playwright behavior is retained. Reports require terminal success, exact collected and completed cases, one worker, no retries/repetition/unexpected skips, clean framework results and closed server. Inline/file attachments retain bounded exact bytes, size and SHA-256; the generated histories are included. Native controls exercise actual omission, skip, assertion/hook failure, timeout, cancellation, partial progress and attachment retention. The initial no-discovery fixture failure and subsequent public-metadata reconciliation refusal are retained; normal Vite discovery and the public top-level fullyParallel field correct those adapter mistakes. Five pure adapter controls include 160 generated population checks. File bounds are explicit (300 seconds for each Local file and 120 for native controls); existing case bounds are unchanged. This is Local application and runner evidence, not a private Account admission receipt or immutable release qualification. Other browser families, complete wrapper/output contracts and real-device measurements remain separate.
+
+All 98 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `25a204f3` has a verified signature. 242 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 245 files / 1,871 cases. 14 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: packaged Local, storage compatibility and private migration browser fixtures, then upgrade, geometry and latency files.
+
+[Evidence](./account-conformance-runs/2026-09-14-browser-local-fixtures/README.md).
+
 ## Next bounded integration
 
-browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files. 16 test-file, 96 command and 63 campaign obligations remain.
+packaged Local, storage compatibility and private migration browser fixtures, then upgrade, geometry and latency files. 14 test-file, 96 command and 63 campaign obligations remain.

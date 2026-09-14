@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect, type Page } from '@playwright/test';
 import * as fc from 'fast-check';
 import { openApp, reloadApp } from '../geometry/openApp';
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');

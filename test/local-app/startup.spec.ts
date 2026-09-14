@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect, type Page } from '@playwright/test';
 
 const app = (page: Page) => page.locator('.local-startup');
 const state = (page: Page, kind: string) =>
