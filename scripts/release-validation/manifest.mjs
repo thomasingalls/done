@@ -446,6 +446,14 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'runner-self-regression': rows
+        .filter((r) =>
+          [
+            ...otherNodeGroups['runner-self-tests'],
+            ...otherNodeGroups['other-harness-fixtures'],
+          ].includes(r.path),
+        )
+        .map((r) => r.id),
       'other-native-regression': rows
         .filter(
           (r) =>

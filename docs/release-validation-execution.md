@@ -3205,10 +3205,17 @@ General integration now covers 238 files / 1,811 cases. 20 test-file, 96 command
 
 [Evidence](./account-conformance-runs/2026-09-14-other-harness-fixtures/README.md).
 
+
+## Runner self-test integration and nested stage environment ownership (`L-1`)
+
+Runner self-test integration and nested stage environment ownership passes 68 cases in 6 files. The four runner self-test files now run with exact independent Node case census and registered group ownership; their two native files bind installed Chromium without launching an unused outer browser. The combined qualification contains all 50 self-tests and the 18 previously integrated cleanup/lifecycle regression cases. The first owned run exposed inherited NODE_TEST_CONTEXT suppressing nested Node execution and inner ownership refusals being charged to the outer stage. An explicit stage boundary now supplies its fresh environment and scoped violation sink; ordinary children retain the inherited guard. Reviewed boundaries allow temporary fixtures and the existing disposable checkout output. The initial nesting failures, checkout-boundary refusal and macOS /var versus /private/var alias refusal are retained. Boundary checks resolve existing paths before comparing ownership, including symlink targets. The additional registered stage leader remains in the cleanup census. No case or file deadline was increased. All other Node suites and runner self-test files are integrated; browser application tests remain next. This cooperative process ownership is not hostile-code confinement, and wrapper/output contracts and immutable qualification remain separate.
+
+All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `ff61b085` has a verified signature. 238 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 242 files / 1,861 cases. 16 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files.
+
+[Evidence](./account-conformance-runs/2026-09-14-runner-self-tests/README.md).
+
 ## Next bounded integration
 
-the four runner self-test files, followed by browser application tests. 20 test-file, 96 command and 63 campaign obligations remain.
-
-The completed harness phase is staged pending signing: the agent refused the signed commit
-(exit 128). No unsigned fallback was made. Runner self-tests and browser application tests remain
-not started; sign the staged phase before continuing.
+browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files. 16 test-file, 96 command and 63 campaign obligations remain.

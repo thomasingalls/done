@@ -49,25 +49,19 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: blocked
-blocks_on: signing agent refused the completed harness phase; work is staged; do not commit unsigned
+status: in flight
+blocks_on: none; continue authorized suite groups with signed commits; stop if signing blocks
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Signing boundary.** Other Node controls are signed `ef5112aa`; native maintenance/recovery/marker
-fixtures are signed `e7b98bcd`. The completed harness phase is staged. Its signed commit attempt
-failed with “agent refused operation” (exit 128); HEAD remains `e7b98bcd`. Stop here under the
-user's signing instruction. Resume by signing the staged phase, then integrate runner self-tests
-and browser application tests. Neither remaining group has started.
+**Just completed.** Runner self-test integration and nested stage environment ownership passes 68 cases in 6 files. The four runner self-test files now run with exact independent Node case census and registered group ownership; their two native files bind installed Chromium without launching an unused outer browser. The combined qualification contains all 50 self-tests and the 18 previously integrated cleanup/lifecycle regression cases. The first owned run exposed inherited NODE_TEST_CONTEXT suppressing nested Node execution and inner ownership refusals being charged to the outer stage. An explicit stage boundary now supplies its fresh environment and scoped violation sink; ordinary children retain the inherited guard. Reviewed boundaries allow temporary fixtures and the existing disposable checkout output. The initial nesting failures, checkout-boundary refusal and macOS /var versus /private/var alias refusal are retained. Boundary checks resolve existing paths before comparing ownership, including symlink targets. The additional registered stage leader remains in the cleanup census. No case or file deadline was increased. All other Node suites and runner self-test files are integrated; browser application tests remain next. This cooperative process ownership is not hostile-code confinement, and wrapper/output contracts and immutable qualification remain separate.
 
-**Just completed.** Registered harness groups and current storage lifecycle fixtures passes 18 cases in 2 files. The 14 cleanup-supervisor cases pass under registered group leaders, preserving their generated diagnostics and failure controls. Three obsolete fixed-port failure expectations are replaced by actual custody/content/journal worker cases that succeed on ephemeral loopback ports while the former ports remain occupied; each verifies clean server and process closure. Storage-properties retains its real fixed-port failure assertion and borrows owned Chromium to reach it. All four 25-second case bounds remain, with a 120-second file bound. The first stale-expectation run and a subsequent browser-identity refusal are retained. The group owner writes an intent before launch, publishes the leader before payload execution, prevents late payload start after closure and separately binds the actual worker PID for custody. Unknown registration or failed closure storage cannot prove drain. All 50 final ownership controls pass: 31 stage, five Vitest and fourteen native, including abrupt death, TERM resistance, late launch and closure-marker failure. This is cooperative ownership for reviewed tests, not hostile-code confinement. The other Node group is complete: nine files / 39 cases. Full campaign output retention, production old-writer exclusion and immutable qualification remain separate.
+All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `ff61b085` has a verified signature. 238 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
 
-All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `e7b98bcd` has a verified signature. 236 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+General integration now covers 242 files / 1,861 cases. 16 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files.
 
-General integration now covers 238 files / 1,811 cases. 20 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: the four runner self-test files, followed by browser application tests.
-
-[Evidence](./account-conformance-runs/2026-09-14-other-harness-fixtures/README.md).
+[Evidence](./account-conformance-runs/2026-09-14-runner-self-tests/README.md).
 
 **Open validation observations.** The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -83,7 +77,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** the four runner self-test files, followed by browser application tests. Continue through other Node suites, runner self-tests and browser application tests with signed intermediate commits. Stop if signing blocks.
+**Next bounded phase.** browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files. Continue through other Node suites, runner self-tests and browser application tests with signed intermediate commits. Stop if signing blocks.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

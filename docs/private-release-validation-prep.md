@@ -43,10 +43,10 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations.
-General integration covers **238 files / 1,811 cases**, including all 123 Account files.
-20 test-file, 96 command and 63 campaign obligations remain.
-The Registered harness groups and current storage lifecycle fixtures phase is complete; scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
-Next: the four runner self-test files, followed by browser application tests. [Latest evidence](./account-conformance-runs/2026-09-14-other-harness-fixtures/README.md).
+General integration covers **242 files / 1,861 cases**, including all 123 Account files.
+16 test-file, 96 command and 63 campaign obligations remain.
+The Runner self-test integration and nested stage environment ownership phase is complete; scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: browser application adapter controls and Local startup/editor fixtures, then the remaining browser application files. [Latest evidence](./account-conformance-runs/2026-09-14-runner-self-tests/README.md).
 
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded

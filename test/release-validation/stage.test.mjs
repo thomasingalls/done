@@ -891,7 +891,7 @@ test('registered group payloads preserve clean exit and their exact leader drain
   );
   const r = await f.run(registeredStage(f));
   assert.equal(r.status, 'passed', JSON.stringify(r.result));
-  assert.equal(r.result.nestedGroups.groups.length, 1);
+  assert.equal(r.result.nestedGroups.groups.length, process.env.RELEASE_NESTED_ROOT ? 2 : 1);
   assert(
     r.result.nestedGroups.groups.every((g) => g.state === 'gone' && groupState(g.pid) === 'gone'),
   );
@@ -924,7 +924,7 @@ test('timeout drains nested groups that ignore graceful termination at two level
   const r = await f.run(registeredStage(f));
   assert.equal(r.result.reason, 'timeout');
   assert(r.result.groupDrained, JSON.stringify(r.result));
-  assert.equal(r.result.nestedGroups.groups.length, 2);
+  assert.equal(r.result.nestedGroups.groups.length, process.env.RELEASE_NESTED_ROOT ? 3 : 2);
   assert(r.result.nestedGroups.groups.every((g) => groupState(g.pid) === 'gone'));
   assert.throws(() => process.kill(Number(readFileSync(join(f.root, 'grandchild'), 'utf8')), 0), {
     code: 'ESRCH',
@@ -940,7 +940,7 @@ test('registered stages still refuse unregistered detached launches and environm
   assert.equal(r.status, 'failed');
   assert.match(r.result.reason, /ownership violation/);
   assert(r.result.groupDrained);
-  assert.equal(r.result.nestedGroups.groups.length, 0);
+  assert.equal(r.result.nestedGroups.groups.length, process.env.RELEASE_NESTED_ROOT ? 1 : 0);
 });
 
 test('closed nested owner prevents a late leader from executing its payload', async (t) => {

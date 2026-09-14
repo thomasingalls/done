@@ -14,6 +14,9 @@ import { groupState, signalGroup } from './process-group.mjs';
 const permit = Symbol.for('done.release.registered-group');
 export const spawnOwnedGroup = (file, args, options) =>
   spawn(file, args, { ...options, [permit]: true });
+// Only the reviewed stage runner may replace its inherited test environment.
+export const spawnOwnedStage = (file, args, options) =>
+  spawnOwnedGroup(file, args, { ...options, [Symbol.for('done.release.stage-boundary')]: true });
 export const forkOwnedGroup = (file, args, options) =>
   fork(file, args, { ...options, [permit]: true });
 /** The public ChildProcess PID remains the group leader; profile custody binds the actual payload. */

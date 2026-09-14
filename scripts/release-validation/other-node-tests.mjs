@@ -5,6 +5,12 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 
 export const otherNodeGroups = {
+  'runner-self-tests': [
+    'test/release-validation/stage.test.mjs',
+    'test/release-validation/vitest-process.test.mjs',
+    'test/release-validation/content-native.test.mjs',
+    'test/release-validation/custody-native.test.mjs',
+  ],
   'other-harness-fixtures': [
     'test/legacy-cleanup/harness.node.mjs',
     'test/storage-harness/lifecycle.node.mjs',
@@ -28,7 +34,9 @@ export function otherNodeStage(root, file) {
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
-  const registered = otherNodeGroups['other-harness-fixtures'].includes(file);
+  const runner = otherNodeGroups['runner-self-tests'].includes(file);
+  const registered = runner || otherNodeGroups['other-harness-fixtures'].includes(file);
+  const nestedChromium = runner && file.endsWith('-native.test.mjs');
   const native =
     otherNodeGroups['other-native-fixtures'].includes(file) ||
     file === 'test/storage-harness/lifecycle.node.mjs';
@@ -48,10 +56,14 @@ export function otherNodeStage(root, file) {
       : profiles
         ? 'node-inherited-chromium-v1'
         : 'node-other-file-v1',
-    ...(native
+    ...(native || nestedChromium
       ? {
           fixture: {
-            kind: profiles ? 'chromium-inherited-profiles' : 'chromium-cdp',
+            kind: nestedChromium
+              ? 'chromium-registered-groups'
+              : profiles
+                ? 'chromium-inherited-profiles'
+                : 'chromium-cdp',
             startupMs: 15000,
           },
         }

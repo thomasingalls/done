@@ -3142,3 +3142,8 @@ Repair the shared fixture-name regression and qualify all four reviewed callers.
 ## 2026-09-14 — Registered harness groups and current storage lifecycle fixtures
 
 Replace obsolete port assumptions with current executable lifecycle checks rather than preserving false expectations. Keep the storage-properties startup refusal and all cleanup-supervisor assertions. Explicit owner sites may launch registered groups; ordinary detached launches still refuse. Publish an intent before creating a group, prevent payload execution until leader registration, fence late launch during teardown and refuse unresolved cleanup. Retain separate group-leader and actual-worker identities, inherited Chromium binding and failed-attempt evidence.
+
+
+## 2026-09-14 — Runner self-test integration and nested stage environment ownership
+
+Keep nested stage environment ownership explicit: an owned stage may reset its inherited Node-test marker and route violations to its own guarded scope; ordinary children cannot suppress violations by supplying a new environment. Accept the active guard or a guard inside the owned temporary tree, and constrain violation files to that tree or the disposable checkout output. Keep every registered leader in drain evidence and preserve the self-tests that reproduced the nesting failures. Resolve actual filesystem paths before checking the boundary; macOS aliases must not reject the same owned checkout, and a symlink must not extend ownership outside it.

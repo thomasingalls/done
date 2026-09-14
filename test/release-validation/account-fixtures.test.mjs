@@ -1034,7 +1034,8 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
   );
   for (const f of ['test/release-validation/content-native.test.mjs']) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), f), /Unreviewed/);
-    assert(m.rows.find((r) => r.path === f).blocked);
+    assert(m.selections['runner-self-tests'].includes('test:' + f));
+    assert(!m.selections['account-fixtures'].includes('test:' + f));
   }
   for (const runner of [
     'account-core',

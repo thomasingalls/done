@@ -26,16 +26,16 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1811-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1861-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 238);
+  assert.equal(general.length, 242);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1811,
+    1861,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -55,7 +55,7 @@ test('reviewed Vitest and Node selections preserve the 1811-case file denominato
     other.map((s) => s.expect.cases.length),
     [7, 7, 3, 1],
   );
-  for (const file of ['test/release-validation/stage.test.mjs', 'test/../hidden.mjs', '--test'])
+  for (const file of ['test/release-validation/unknown.test.mjs', 'test/../hidden.mjs', '--test'])
     assert.throws(() => otherNodeStage(process.cwd(), file), /Unreviewed/);
   assert(m.rows.find((r) => r.id === 'campaign:scripts/legacy-cleanup/run.mjs').blocked);
   const native = selectStages(m, 'other-native-fixtures');
@@ -92,11 +92,33 @@ test('reviewed Vitest and Node selections preserve the 1811-case file denominato
     assert.throws(() => validateStage({ ...s, processPolicy: 'inherited-group-v1' }));
     assert.throws(() => validateStage({ ...s, variant: 'current' }));
   }
+  assert.equal(selectStages(m, 'runner-self-regression').length, 6);
+  const runners = selectStages(m, 'runner-self-tests');
+  assert.deepEqual(
+    runners.map((s) => s.expect.cases.length),
+    [8, 6, 31, 5],
+  );
+  for (const s of runners) {
+    assert.equal(s.processPolicy, 'registered-groups-v1');
+    assert.equal(s.variant, 'node-registered-groups-v1');
+    assert.deepEqual(
+      s.fixture,
+      s.argv.at(-1).endsWith('-native.test.mjs')
+        ? { kind: 'chromium-registered-groups', startupMs: 15000 }
+        : undefined,
+    );
+    assert.throws(() => validateStage({ ...s, processPolicy: 'inherited-group-v1' }));
+    assert.throws(() => validateStage({ ...s, variant: 'node-inherited-chromium-v1' }));
+  }
   for (const s of general) {
     validateStage(s);
     assert.equal(
       s.deadlineMs,
       {
+        'test/release-validation/stage.test.mjs': 120000,
+        'test/release-validation/vitest-process.test.mjs': 120000,
+        'test/release-validation/content-native.test.mjs': 120000,
+        'test/release-validation/custody-native.test.mjs': 120000,
         'test/legacy-cleanup/harness.node.mjs': 120000,
         'test/storage-harness/lifecycle.node.mjs': 120000,
         'test/storage-capacity/marker-native.test.mjs': 120000,

@@ -1,6 +1,6 @@
 /** One bounded stage. This module grants no whole-release coverage claim. */
 import assert from 'node:assert/strict';
-import { spawnOwnedGroup as spawn, nestedGroupOwner, ownedPayloadPid } from './nested-groups.mjs';
+import { spawnOwnedStage as spawn, nestedGroupOwner, ownedPayloadPid } from './nested-groups.mjs';
 import { randomUUID } from 'node:crypto';
 import {
   appendFileSync,
@@ -187,6 +187,10 @@ export function validateStage(stage) {
       // The shared profile helper has a fixed 15-second startup bound. It launches
       // inside the guarded worker group, which also owns close/reopen lifetimes.
       assert.deepEqual(stage.fixture, { kind: 'chromium-inherited-profiles', startupMs: 15000 });
+    } else if (stage.fixture.kind === 'chromium-registered-groups') {
+      assert.equal(stage.variant, 'node-registered-groups-v1');
+      assert.equal(stage.processPolicy, 'registered-groups-v1');
+      assert.deepEqual(stage.fixture, { kind: 'chromium-registered-groups', startupMs: 15000 });
     } else assert.equal(stage.fixture.kind, 'chromium-cdp');
     assert(
       Number.isSafeInteger(stage.fixture.startupMs) &&
