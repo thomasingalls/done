@@ -2832,3 +2832,20 @@ wrap opening, candidate signature verification and Yjs semantics are not indepen
 this native file. Filtered inventory excludes every promotion row, generated restarts reload pages,
 and one directed cut kills a renderer. Keep crypto sibling and wrapper credit separate, and do not
 broaden a prepared proposal into service admission or Account editing authority.
+
+
+## 2026-09-14 — Keep promotion preparation evidence separate from broader recovery claims
+
+Integrate all twelve promotion native cases and 45 generated histories with the existing two-minute
+file allowance, 30-second directed and 60-second generated limits. Preserve product, fixture, wrapper,
+case bodies, population and seed; this file has no historical-source or registration-data input.
+Require the MAC mutant to actually return the substituted preparation identity after current-code
+refusal, rather than treating any failure as mutation detection.
+
+The generated scalar ledger checks reservation spending and stable credentials at preparation steps,
+not full writing or every post-action invariant. Record command preconditions/fallthrough and the
+main comparison's exclusion of the whole custody database; synthetic imported provenance does not
+constitute an importer replay or explicit all-claim preservation proof. Recovery cleanup observations
+remain scoped to the tested owner states; they do not establish same-slot re-registration, general
+reset or key-loss recovery. Two directed cuts kill renderers, while generated restarts reload pages.
+Keep core sibling, wrapper and later genesis/admission/index/editor/transport obligations separate.

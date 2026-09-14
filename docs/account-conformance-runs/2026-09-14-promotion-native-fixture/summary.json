@@ -1,0 +1,104 @@
+{
+  "base": "25c8be820ce761515515dd0218761666df4c9d3d",
+  "claim": "Account promotion native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T08-44-20.076Z",
+  "summary": {
+    "schema": 1,
+    "selection": "promotion-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-promotion/native.test.mjs",
+        "key": "75e7f83317a66438b174927b88f6c44c750927b119659b45028d7b2284051964",
+        "status": "passed",
+        "elapsedMs": 48734,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T08:44:20.079Z",
+    "input": "58fe8c22964bac0ae8a863393cc18d87ed14f97169f1368fd65b19f995cb6790",
+    "completedAt": "2026-09-14T08:45:33.298Z"
+  },
+  "elapsedMs": 73219,
+  "rawInputArchiveSha256": "67a053e9871a784b14e26f2900f7a793b8a79487d41bb4aeb385d3d57dbdaf94",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "25c8be820ce761515515dd0218761666df4c9d3d",
+    "sourceDigest": "ddc7d7d98067cf7bdb590800039c0c1b3375dfc9ed6ae8637fc3f6408ee76954",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 12,
+    "browserFiles": 1,
+    "generatedHistories": 45,
+    "seed": 9192026,
+    "priorGeneralFiles": 189,
+    "priorGeneralCases": 1626,
+    "currentGeneralFiles": 190,
+    "currentGeneralCases": 1638,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 94,
+    "accountFiles": 84,
+    "accountCases": 544,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 227,
+    "unresolvedTestFiles": 68,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 671721
+  },
+  "finalGatesSha256": "d989615a67cef9638b6065af9635eeb633cc8fb74e5fe8f55645873cbcb00a47",
+  "preservationSha256": "8b1407f1391b6cd1376ebb6dc8e6e0cd97f45188ed78f8f29e134792af246d97",
+  "limits": [
+    "One complete promotion native file retains twelve cases: eleven directed cases at 30 seconds and one 45-history generated case at 60 seconds, seed 9192026, endOnFailure:true. The adapter retains the existing 120-second wrapper allowance; browser startup is 15 seconds and drain grace five. Product code, native bodies, fixture/browser helpers, wrapper, populations, seeds, case limits, census and process owner are unchanged. No historical-source or registration-data input is used by this native file.",
+    "The base registers cleanup before setup, builds scripts in memory, borrows owned loopback CDP and uses temporary service/SQLite authority stores and synthetic operator, registration, Local and recovery factors. Setup calls the service core for synthetic registration/recovery; browser authority/inspection/abandonment and recovery routes also run. Credentials are Node-generated fixture assertions, not navigator.credentials.get or a personal/hardware authenticator. Context/browser/service/temp teardown and owner worker/browser group drain are distinct checked boundaries. No personal profile, package build, server or origin is touched.",
+    "The primary case journals fixed fixture writing and seeds synthetic authenticated imported-claim metadata. Preparation increments seal_reserved by exactly two, retains original envelope/credentials/seals/store/root fields and returns a distinct new credential ID tuple. The nonCustody comparison excludes the entire done.custody database, so it does not independently prove equality of the imported claim, every custody row or unrelated slots. Other serialized databases and localStorage compare equal. Same-page reload returns exact prepared output and snapshot. Wrong device code adds no network call; a foreign account refuses. Abandonment restores the previously observed text, retains spent budget, repeats as no-promotion and leaves the retired registration ineligible. This is not a full migration replay or forensic profile comparison.",
+    "Four reserved/prepared before/after commit cuts abort actual IDB transactions at request success or hold completion then kill the renderer. Each closes the page and opens another in the same context. Expected additional reservation spending is two for before-reserved and after-prepared, four for after-reserved and before-prepared. A committed prepared result keeps its exact winning credential descriptors; original Local credentials remain and fixed fixture text is readable after abandonment. There are two renderer deaths, not four; no browser-process, service-process or power-loss crash is simulated by this file.",
+    "The 45 generated histories retain two to nine labels selected from prepare/restart/wrong/tamper/abort/abandon/edit and an explicit completed-run count of 45. A separate scalar ledger starts at three seals and adds two on first successful preparation, comparing seal_reserved at preparation steps and exact repeated prepared results. Same-page reloads preserve storage. Wrong-code and altered-ID authentication failures refuse; tampered marker bytes are restored by the fixture. Pre-reservation abort reloads before retry; editing refuses while prepared and is attempted otherwise. Abandonment clears model preparation and makes subsequent preparation refuse for that retired account. This is a bounded behavioral/reservation model, not an independent crypto, full-state or plaintext oracle; successful unprepared edit outcomes are not checked for journalled status.",
+    "Generated label semantics follow actual control flow: tamper when not prepared and abort when already prepared can fall through to an ordinary prepare/retry; after abandonment those paths refuse. Not every label necessarily exercises its named fault. There is no generated renderer death, all-command/fault coverage assertion or shrinking. Counter/inventory equality is not asserted after every action. Histories use fresh slots/accounts in a shared browser context/service. Optional counterexample JSON is disabled by the sanitized environment; the native reporter retains failure details if the property fails.",
+    "The MAC control changes the retained preparation ID, observes current-code authentication refusal, removes the uniquely located Promotion authentication failed throw, and actually returns the substituted ID with the mutant. The helper checks anchor presence; current uniqueness was separately checked. This is a specific bad-acceptance control rather than a generic nonzero-exit expectation. No historical reader, abandoned-service guard mutation or native independent signature oracle is exercised here.",
+    "Deleting completed content metadata refuses with identical full serialized inventory and no additional authority/network calls. A validly re-MACed near-exhausted seal budget also refuses with identical inventory, but the test does not assert zero network calls for that second case. Counters are not repaired or reset by the test path.",
+    "Two preparers in different pages converge on the same result and budget five. The cancellation subcase holds a transport wrapper before sending its actual inspect request, aborts the owner and checks a competing page has not completed. Releasing the wrapper lets the request settle, the cancelled call must not return success and the competitor receives the original result. There is no pending-lock query or prolonged timing assertion in that subcase, nor a claim that it stalls an already in-flight HTTP response.",
+    "Recovery-owner cases cover unsaved and service-cancelled code preparation. A service abandonment commits then its response is lost; awaiting-code remains until a new owner acquisition repeats abandonment, empties progress and sees no eligible pending preparation. The two loop iterations use separate fresh slots/registrations; despite the title, the test does not explicitly register again against the same old slot after cleanup. No renderer reload is required for that owner disposal/reacquisition path.",
+    "Lost Local-promotion abandonment replies retain the exact prior snapshot and make further preparation refuse against the cancelled service. Aborting actual marker deletion retains the same prepared ID; same-page reload permits cleanup, preserving budget five. The final case confirms recovery with a synthetic assertion, rejects an unknown Local row before new network calls, refuses recovery cleanup while promotion remains, and clears recovery progress only after promotion abandonment. It checks status finalization-pending then empty, not a broad account reset or key-loss recovery contract.",
+    "ACCOUNT_REPORT_DIR exports are disabled. The wrapper's core sibling, generated service work, process-death coverage, saved outputs, scheduling and process ownership remain separate obligations. No runtime vector is read by this native file. Registration/recovery/preparation here do not establish genesis checkpoint, service activation/admission, issued epoch, Account index handoff, editor/transport, offline startup, personal Account or second-device adoption.",
+    "All 189 prior general contracts / 1626 identities and six retired-v8 exclusions remain unchanged. Unchanged 23 Node-owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence. Ledger initial orphan classification, core receive headroom, capture map-refresh/byte-length follow-ups and prior editing/handoff deadline evidence remain visible. Full frozen source/dependency/browser archives are retained locally and hash-bound; no immutable aggregate is claimed. All 52 personal/vector pins, L-2, historical evidence/debts/signing backups and unrelated root files remain unchanged. Genesis is the preceding signed, verified base."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 44949.36925,
+    "stageElapsedMs": 48734,
+    "selectionElapsedMs": 73219,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedPromotionMs": 16726.657542
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "directedMs": 30000,
+    "generatedMs": 60000,
+    "note": "Existing wrapper and all case limits retained; no allowance changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "95a89229922f60c4e1c1e47c0e59998d0a930f363f79748429067b2fd6287351",
+    "compressedSha256": "12e6e7ba7a7e0f82eb3851d3006878603ee668276fc638c093abee89e916c778"
+  }
+}

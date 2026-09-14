@@ -43,24 +43,24 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-189 files / 1,626 cases: all 96 Vitest files and 93 Node files. The Account genesis native fixture
-adds fourteen cases, passing in 97.153 seconds with worker/browser groups drained (Node 69.345
-within 180). All 40 histories retain seed 9222026 and the 90-second bound. Two IDB cuts include one
-renderer death; factor/ownership/attribution refusals, exact candidate retry, cancellation and signed
-semantic forgeries pass. Removing the snapshot/wrap refusals actually admits incomplete state or an
-unrecoverable wrap. Independent string/order models and Node/OpenSSL recovery opening check full state;
-Yjs/application decoding remains shared and filtered inventory excludes every promotion row. The
-independent native oracle does not open the device wrap or verify candidate signatures. Generated
-restarts reload pages; raw malformed marker edits are not re-signed. The outer allowance was set
-prospectively to 180 seconds using preceding timings; no genesis timeout is claimed. Native bodies,
-oracles, populations and case limits remain unchanged; the active reader gains 5-second/2-MiB bounds
-and exact pins. All 188 prior contracts / 1,612 identities remain unchanged. All 92 runner checks pass.
-Unchanged owner controls retain earlier evidence. Ledger orphan classification, core receive headroom,
-capture oracle follow-ups and historical deadline evidence remain visible. There are 228 unresolved
-obligations: 69 test-file (53 Node, sixteen Playwright), 96 command and 63 campaign. Next is Account
-promotion native fixtures, then remaining integration, R-04, P-06 and the immutable run. Crypto sibling
-and wrapper credit remain separate; this file does not establish admission, index handoff or Account
-editing/transport. Admission `b201784` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-genesis-native-fixture/README.md).
+190 files / 1,638 cases: all 96 Vitest files and 94 Node files. The Account promotion native fixture
+adds twelve cases, passing in 73.219 seconds with worker/browser groups drained (Node 44.949
+within 120). All 45 histories retain seed 9192026 and the 60-second bound. Four native commit cuts
+include two renderer deaths. Reservation spending, stable credentials, cancellation, lost abandonment
+replies, deletion abort and recovery-owner cleanup pass; the MAC mutant actually returns a substituted
+identity. Generated histories use a scalar reservation/behavior model, not independent writing/crypto
+reconstruction, and compare budgets at preparation steps. The main comparison excludes all custody
+rows; synthetic imported-claim equality is not separately asserted. Generated restarts reload pages.
+Recovery cleanup does not establish same-slot re-registration or general reset. Product code, native
+bodies, fixtures, wrapper, populations and all limits remain unchanged; no historical source or runtime
+vector is read. All 189 prior contracts / 1,626 identities and retired-v8 exclusions remain unchanged.
+All 92 runner checks pass; unchanged owner controls retain earlier evidence. Ledger orphan classification,
+core receive headroom, capture oracle follow-ups and historical deadline evidence remain visible.
+There are 227 unresolved obligations: 68 test-file (52 Node, sixteen Playwright), 96 command and 63
+campaign. Next is Account authority native fixtures, then remaining integration, R-04, P-06 and the
+immutable run. Core sibling and wrapper credit remain separate; this file does not establish genesis,
+admission, index handoff or Account editing/transport. Genesis `25c8be8` is signed and verified; new
+work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-promotion-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed
