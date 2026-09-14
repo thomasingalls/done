@@ -3177,3 +3177,8 @@ Keep the existing interaction semantics and platform applicability. Admit all fo
 ## 2026-09-14 — Integration of journal latency fixtures and measurement retention
 
 Require independent, exact project/metric reconciliation in addition to passing latency tests. Retain bounded measurement bytes beside the owned report and exercise partial-output survival under native timeout and cancellation. Pass the configured origin/device options to manual browser contexts, preserve the existing microbenchmark construction and budgets, and keep full production editing latency and real-device evidence separate.
+
+
+## 2026-09-14 — Integration of current Local application latency fixtures
+
+Finish application-latency adapter integration while keeping the measured budget failures explicitly open. Correct obsolete factor-free startup, absent-mark-as-zero behavior and legacy DB probing; preserve the workload and numeric budgets. Use guarded current-path timing marks and a locked encrypted payload census, and record factor-entry exclusion plus viewport/CPU interpretation. Collect timing failures at project teardown, enforce the same numeric predicates independently at the output boundary, and retain all observations even on failure. Diagnose timer calibration, frame scheduling and the editor/admission hot path in a separate bounded performance phase before claiming qualification; do not raise budgets or infer a handset regression from throttled emulation. Then continue the separate 96 command and 63 campaign adapter/output obligations, external-tool binding and immutable aggregate gates.

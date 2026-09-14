@@ -9,6 +9,29 @@ export function measurementPath(reportPath) {
 
 export const MEASUREMENT_LIMIT = 65536;
 export function measurementContract(file) {
+  if (file === 'test/latency/latency.spec.ts')
+    return {
+      kind: 'local-latency-v1',
+      unit: 'ms',
+      projects: ['desktop', 'android'],
+      metrics: [
+        'fresh launch → create prompt',
+        'confirm creation → Today editable',
+        'cold launch → unlock prompt',
+        'cold factor submit → Today editable',
+        'encrypted content load and replay',
+        'boot: module graph evaluated',
+        'warm launch → unlock prompt',
+        'warm factor submit → Today editable',
+        'keystroke → paint, compose field',
+        'keystroke → paint, card editor',
+        'card focus → editable',
+        'day-to-day navigation, goTo (response)',
+        'day-to-day navigation, goTo (settled)',
+        'day-to-day navigation, step (response)',
+        'day-to-day navigation, step (settled)',
+      ],
+    };
   if (file !== 'test/latency/journal.spec.ts') return undefined;
   return {
     kind: 'journal-latency-v1',
@@ -77,4 +100,35 @@ export function reconcileMeasurements(expected, artifact) {
       'Missing measurement interpretation',
     );
   }
+  if (expected.kind === 'local-latency-v1')
+    for (const project of expected.projects) {
+      const value = (metric) =>
+        rows.find((r) => r.project === project && r.metric === metric).value;
+      const budgets = [
+        [
+          'cold application work',
+          value('cold launch → unlock prompt') + value('cold factor submit → Today editable'),
+          2500,
+        ],
+        [
+          'warm application work',
+          value('warm launch → unlock prompt') + value('warm factor submit → Today editable'),
+          1000,
+        ],
+        ...[
+          ['encrypted content load and replay', 500],
+          ['keystroke → paint, compose field', 16],
+          ['keystroke → paint, card editor', 16],
+          ['card focus → editable', 50],
+          ['day-to-day navigation, goTo (response)', 100],
+          ['day-to-day navigation, goTo (settled)', 100],
+          ['day-to-day navigation, step (response)', 100],
+        ].map(([metric, limit]) => [metric, value(metric), limit]),
+      ];
+      for (const [metric, observed, limit] of budgets)
+        assert(
+          observed < limit,
+          project + ' ' + metric + ': ' + observed + ' ms exceeds <' + limit + ' ms',
+        );
+    }
 }

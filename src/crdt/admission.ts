@@ -1,5 +1,6 @@
 /** Ordered admission over the real factor-unlocked carriers; application wiring is a separate owner. */
 import { openJournalSession, type CustodyAuthority, type JournalSession } from './custody';
+import { mark, ADMISSION_LOAD_START, ADMISSION_LOAD_READY } from '../lib/marks';
 import {
   createAdmissionOwner,
   type AdmissionOptions,
@@ -37,7 +38,10 @@ export const openAdmissionSession = async (
       code,
       options.signal ? { signal: options.signal } : {},
     );
-    return await createAdmissionOwner(carrier, captured);
+    mark(ADMISSION_LOAD_START);
+    const session = await createAdmissionOwner(carrier, captured);
+    mark(ADMISSION_LOAD_READY);
+    return session;
   } catch (cause) {
     await carrier?.close();
     throw cause;

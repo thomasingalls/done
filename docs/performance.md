@@ -436,3 +436,44 @@ file records that the measurement happened and what it said.
 For cold start specifically, TRD §12 names the honest responses in advance: fewer stored records through
 more aggressive trimming (§6.1), or a revised budget — **not moving verification onto a lazy path where it
 silently stops happening.**
+
+
+## 2026-09-14 — Current Local application latency integration (budget gate failed)
+
+The source was based on signed `d8b8e00e` plus the reversible source patch and source pins in the
+[retained execution packet](./account-conformance-runs/2026-09-14-browser-application-latency/README.md).
+This is a dirty-source bounded validation run, not an immutable release qualification. All 12 project/cases
+executed without skips or retries; all 30 measurements survive in the packet. The two project teardowns
+fail because of three collected timing overruns. These failures are not treated as passing tests.
+
+Both projects admitted 300 cards across 20 days and 400 Goals lines through the real Local UI, drained,
+cold-reopened and verified the whole corpus. Mandatory factor entry is automated setup, excluded from
+application latency: launch-to-prompt and confirmation-to-editor are recorded separately. The cold/warm
+budgets apply to their sums. The new encrypted load/replay marks measure the factor-unlocked admission
+carrier read/decryption and journal-inclusive Yjs replay plus owner initialization, not the old plaintext
+marks. Missing marks now fail instead of supplying zero. The storage census reports encrypted payload
+bytes and journal UTF-8 bytes, not physical disk allocation.
+
+| Measurement (ms) | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 254.2 | 817.3 | <2500 |
+| Warm application work, excluding factor entry | 229.0 | 737.2 | <1000 |
+| Encrypted load and replay | 6.4 | 27.5 | <500 |
+| Compose typing p95, 120 keystrokes | 2.5 | 11.1 | <16 |
+| Card editor typing p95, 120 keystrokes | **18.3** | **84.2** | **<16 — failed** |
+| Card focus to editable | 7.4 | **61.4** | **<50 — Android failed** |
+| Peek navigation response / settled | 7.8 / 23.3 | 40.8 / 55.2 | <100 each |
+| Keyboard navigation response | 0.7 | 26.7 | <100 |
+
+Rounded display only; retained rows contain the original precision and actual viewport/CPU notes.
+Seeded editor work uses a 1280×900 viewport. This is host/emulator evidence, not a handset measurement.
+The keyboard transition's chosen animation is recorded separately and has no <100 ms settled assertion.
+No numeric budget or test deadline was raised. Timing failures are delayed until project teardown to keep
+later observations; functional failures remain immediate. The adapter independently enforces the same
+nine numeric predicates and rejects threshold equality, omitted metrics and malformed measurements.
+
+The earlier run is also retained: desktop card typing measured 16.7 ms, and the Android fixture timed out
+before seeding because its Lock button was in a closed off-screen menu. That helper now opens the menu
+normally. This correction explains the setup timeout, not the measured typing overruns. Timer calibration,
+frame scheduling and editor/admission profiling are the next bounded investigation; the cause and a
+performance repair are not established by this packet. The historical plaintext baselines remain unchanged.

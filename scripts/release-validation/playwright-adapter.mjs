@@ -7,6 +7,7 @@ import { playwrightDeclarations, playwrightCaseId } from './playwright-census.mj
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-application-latency': ['test/latency/latency.spec.ts'],
   'browser-journal-latency': ['test/latency/journal.spec.ts'],
   'browser-geometry-interaction': [
     'test/geometry/reorder.spec.ts',
@@ -31,6 +32,13 @@ export const browserGroups = {
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (file === 'test/latency/latency.spec.ts')
+    return {
+      config: 'playwright.latency.config.ts',
+      projects: ['desktop', 'android'],
+      mode: 'latency',
+      deadlineMs: 900000,
+    };
   if (file === 'test/latency/journal.spec.ts')
     return {
       config: 'playwright.latency.config.ts',

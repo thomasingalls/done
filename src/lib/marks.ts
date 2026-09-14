@@ -31,6 +31,10 @@ export const CONTENT_ROOT = 'done:content-root';
 /** `openStore` resolved: the document is ready for the shell to render. */
 export const STORE_READY = 'done:store-ready';
 
+/** Factor-unlocked admission: carrier read/decryption and Yjs replay, excluding factor entry. */
+export const ADMISSION_LOAD_START = 'done:admission-load-start';
+export const ADMISSION_LOAD_READY = 'done:admission-load-ready';
+
 export const mark = (name: string): void => {
   try {
     performance.mark(name);
