@@ -43,22 +43,23 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-185 files / 1,566 cases: all 96 Vitest files and 89 Node files. The Account capture native fixture
-adds one file / fifteen cases, passing in 182.651 seconds with worker/browser groups drained (Node
-execution 153.177 within 180). Sixteen generated histories retain their seed/population/bound;
-directed cases cover journal recovery, activation cuts, pressured atomic admission, ownership/drain,
-attribution, pending Yjs frames and route/ID reuse. Two mutations expose lost retention and wrong-route
-decoder acceptance. Product code, native test bodies, populations, wrapper and owner are unchanged;
-the pinned historical reader's Git read gains 5-second/2-MiB bounds. All 184 prior contracts / 1,551
-identities remain unchanged. All 92 pure runner checks pass; unchanged Node owner/Vitest-process/
-native-owner controls (23/5/12) retain earlier evidence. The initial ledger owner orphan classification
-and core receive's 297.025-of-300-second headroom remain at the reliability gate. The manifest retains
-232 unresolved obligations: 73 test-file (57 Node, sixteen Playwright), 96 command and 63 campaign.
-Next is Account editing native fixtures, then other owners/wrappers before R-04, P-06 and the immutable
-run. Retired-v8 exclusions and optional JSON/order/prerequisite obligations remain. Capture's generated
-map refresh can mask same-ID changes during an edit; it checks boundary retention. Strengthening that
-oracle and the overhead case's byte-length equality remain follow-ups, not proven product defects.
-Decisions `fb81e00` is signed and verified; this new phase is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-capture-native-fixture/README.md).
+186 files / 1,582 cases: all 96 Vitest files and 90 Node files. The Account editing native fixture
+adds one file / sixteen cases, passing in 213.811 seconds with worker/browser groups drained (Node
+execution 185.176 within 300). The 200 browser-memory ancestry comparisons and 24 native editing
+histories retain their seeds/populations; the native history bound is repaired from 90 to 180 seconds. Native cases cover activation cuts, local recovery,
+exclusive lifetime/drain, generation invalidation, pending dependencies, storage refusal and captured
+options/routes. Two guard mutations expose omitted ancestry/passkey checks; identity mutation is dormant.
+Product code, assertions, populations and owner are unchanged; the wrapper and adapter file bounds rise
+from 120 to 300 seconds and the pinned historical Git read gains 5-second/2-MiB bounds. The initial full
+selection and separate progressing-but-expiring diagnostic are retained; final execution is uninstrumented. All 185 prior contracts / 1,566 identities remain unchanged.
+All 92 pure runner checks pass; unchanged Node owner/Vitest-process/native-owner controls (23/5/12)
+retain earlier evidence. The initial ledger owner orphan classification, core receive's deadline
+headroom and capture's map/length oracle follow-ups remain open. The manifest retains 231 unresolved
+obligations: 72 test-file (56 Node, sixteen Playwright), 96 command and 63 campaign. Next is Account
+handoff native fixtures, then other owners/wrappers before R-04, P-06 and the immutable run. Retired-v8
+exclusions and optional JSON/order/prerequisite obligations remain. Generated editing compares writing
+and custody/logical progress after every reopen, not equality of all raw content/journal/counter bytes.
+Capture `599bba9` is signed and verified; this new phase is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-editing-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

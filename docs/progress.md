@@ -43,46 +43,53 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account editing native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account handoff native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews the Account editing native file and controls
+blocks_on: none; next bounded phase reviews the Account handoff native file and controls
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account capture native fixture](./release-validation-execution.md#account-capture-native-fixture--phase-2af)
-adds one file / fifteen cases under owned CDP. The 180-second file bound and existing case/startup/drain
-limits remain. Product code, native test bodies, mutations, wrapper, census and owner are unchanged.
-The historical reader `18ceb40:src/crdt/promotionRecord.ts` is pinned and its Git read bounded to five
-seconds / 2 MiB. This new registration/evidence phase is uncommitted.
+**Just completed.** [Account editing native fixture](./release-validation-execution.md#account-editing-native-fixture--phase-2ag)
+adds one file / sixteen cases under owned CDP. The file bound is repaired to 300 seconds, generated editing
+to 180; other case/startup/drain limits remain. Product code, assertions, populations, mutations, census
+and owner are unchanged. The direct wrapper receives the same file deadline.
+The historical reader `649925f:src/crdt/promotionRecord.ts` is pinned with a five-second / 2-MiB Git read.
+This new registration/evidence phase is uncommitted.
 
-**Evidence.** All fifteen cases pass in 182.651 seconds; worker/browser groups drain. Node execution
-took 153.177 of 180 seconds; stage time was 157.293 seconds. Directed controls cover journal
-recovery and overlap, activation cuts, pressured atomic admission/retry, ownership/cancellation/drain,
-actor attribution, retained pending Yjs frames and route/ID-reuse refusals. Two mutations expose omitted
-capsule retention and wrong-workspace decoder acceptance. The latter does not append altered bytes.
+**Evidence.** All sixteen cases pass in 213.811 seconds; worker/browser groups drain. Node execution
+took 185.176 of 300 seconds; stage time was 189.376 seconds. Directed cases cover activation
+cuts, local reopen/edit/undo/compaction, pending dependencies, ownership/cancellation/drain, generation
+invalidation, failed-storage exclusion, option capture and damaged-route refusals. Two guard mutations
+actually open empty writing or allow invalid-passkey editing. The helper's identity mutation is dormant.
 
-Sixteen histories retain seed 9322026, endOnFailure:true and 90 seconds. Two to six Unicode editing
-steps compare text/capsules across flush, compaction, reopen or renderer death. The saved map refreshes
-after each edit and may mask changes during it; first-observed byte equality is a focused follow-up.
-There is no unconditional final cold reopen or all-boundary/shrinking assertion. Four directed renderer
-crashes supplement generated choices; synthetic pagehide and getText instrumentation have narrower
-claims than real navigation and complete memory destruction.
+The 200 ancestry comparisons retain seed 9282026 and 30 seconds; they compare browser-memory text,
+known/missing ancestry and encoded current state. The 24 native histories retain seed 9292026 and
+180 seconds. Every step reopens and checks writing against a string model plus unchanged custody/logical
+progress. The comparison is not all raw source/counter inventories. Both campaigns retain
+endOnFailure:true with no all-mode/shrinking claim. One directed renderer crash supplements generated
+choices. HTTP request blocking, synthetic pagehide and getText instrumentation have narrower claims
+than whole-browser offline, real navigation and complete memory destruction.
+
+The initial selection timed out after twelve passing cases. A progress-only diagnostic completed
+nineteen native histories, then reached its 90-second case timeout in history twenty; the other fifteen
+cases passed. Both failed/partial runs and diagnostic trace are preserved. The new complete selection
+runs without that instrumentation and validates the repaired bounds.
 
 All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
-Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain prior evidence. The [packet](./account-conformance-runs/2026-09-14-capture-native-fixture/README.md)
+Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain prior evidence. The [packet](./account-conformance-runs/2026-09-14-editing-native-fixture/README.md)
 retains complete receipts, exact patch, frozen inputs/browser identities, source/helper pins,
 base/historical signatures, prior contracts and preservation. Synthetic service setup is exercised;
 no writing is sent to a peer or real Account. Optional JSON exports and wrapper saved-output, ordering
@@ -92,13 +99,14 @@ and prerequisite postconditions remain separate obligations.
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
 The ledger phase's first expected-pass historical service-path control reported orphaned-child.
 Its log remains; teardown removed its first receipt. Cause is unresolved despite later passes.
-Optional pre-cleanup capture retains later receipts; this phase establishes no fix.
+Optional pre-cleanup capture retains later receipts; this phase establishes no fix. Capture's generated
+comparison-map refresh and overhead byte-length equality remain focused oracle follow-ups.
 
-**Next bounded phase.** Review `test/account-editing/native.test.mjs` (sixteen static cases), then
+**Next bounded phase.** Review `test/account-handoff/native.test.mjs` (fifteen static cases), then
 remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections
-contain 185 files / 1,566 cases: all 96 Vitest and 89 Node files. All 184 prior contracts / 1,551 identities
-are unchanged. The 658,511-byte manifest retains 612 obligations / 232 blocked rows: 73 test-file
-(57 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
+contain 186 files / 1,582 cases: all 96 Vitest and 90 Node files. All 185 prior contracts / 1,566 identities
+are unchanged. The 661,533-byte manifest retains 612 obligations / 231 blocked rows: 72 test-file
+(56 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
 counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions
 and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose
 precede the immutable aggregate and private Account preparation.

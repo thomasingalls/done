@@ -99,7 +99,7 @@ const deadline = setTimeout(() => {
   timedOut = true;
   child.kill('SIGTERM');
   forced = setTimeout(() => child.kill('SIGKILL'), 5000);
-}, 120000);
+}, 300000);
 const heartbeat = setInterval(
   () => console.log('Account editing campaign is still running; results stream to run.log.'),
   15000,

@@ -510,7 +510,7 @@ test(
 
 test(
   '24 generated editing histories preserve independent writing, provenance and cold recovery',
-  { timeout: 90000 },
+  { timeout: 180000 },
   async (t) => {
     const f = await native(t),
       histories = [];

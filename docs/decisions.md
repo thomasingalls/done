@@ -2764,3 +2764,21 @@ is not BFCache, and getText document instrumentation is not a full heap inventor
 recovery establishes recovered text length but its source-byte predicate lacks a separate length
 assertion; atomic abort evidence comes from another case. These are evidence limits, not newly proven
 product failures, and do not erase the actual journal, attribution, pending-frame and crash checks.
+
+
+## 2026-09-14 — Separate native editing recovery from ancestry and provenance comparisons
+
+The original two-minute file bound expired after twelve passing cases. A separate progress-instrumented
+diagnostic retained the 90-second generated bound, completed nineteen histories and reached history
+twenty before expiry; all fifteen other cases passed. Retain both failed/partial runs. Repair the wrapper
+and adapter file allowance to five minutes and generated editing to three, without reducing the
+200 ancestry comparisons / 24 native histories or their assertions. Pin the historical promotion reader and bound
+its Git read at five seconds / 2 MiB. Product code, assertions, populations, owner and historical
+drift controls remain unchanged; saved-output and wrapper prerequisite obligations remain separate.
+
+Count only the two invoked guard mutations: ancestry omission and passkey refusal omission. The helper's
+identity branch is dormant. State the generated assertions precisely: ancestry compares browser-memory
+text and encoded state; native editing reopens after every step and compares writing plus custody and
+logical progress, not all raw source/counter inventories. Request blocking is not whole-browser offline,
+synthetic pagehide is not BFCache and getText instrumentation is not exhaustive memory accounting.
+These limits preserve useful observed evidence without expanding its release claim.

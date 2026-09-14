@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const editingNativeFixtureFiles = ['test/account-editing/native.test.mjs'];
+
 export const captureNativeFixtureFiles = ['test/account-capture/native.test.mjs'];
 
 export const decisionsNativeFixtureFiles = ['test/account-decisions/native.test.mjs'];
@@ -137,6 +139,7 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-editing/native.test.mjs': [['649925f', 'src/crdt/promotionRecord.ts']],
   'test/account-capture/native.test.mjs': [['18ceb40', 'src/crdt/promotionRecord.ts']],
   'test/account-delivery/native.test.mjs': [['81a4655', 'src/crdt/promotionRecord.ts']],
   'test/account-spool/native.test.mjs': [['7210b7d', 'src/crdt/promotionRecord.ts']],
@@ -213,6 +216,7 @@ export const accountFixtureFiles = {
     ...deliveryNativeFixtureFiles,
     ...decisionsNativeFixtureFiles,
     ...captureNativeFixtureFiles,
+    ...editingNativeFixtureFiles,
   ],
 };
 
@@ -227,7 +231,8 @@ export function accountFixtureNodeStage(root, file) {
     spoolFixtureFiles.includes(file) ||
     deliveryNativeFixtureFiles.includes(file) ||
     decisionsNativeFixtureFiles.includes(file) ||
-    captureNativeFixtureFiles.includes(file);
+    captureNativeFixtureFiles.includes(file) ||
+    editingNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -252,6 +257,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (editingNativeFixtureFiles.includes(file) ? 300000 : undefined) ??
       (captureNativeFixtureFiles.includes(file) ? 180000 : undefined) ??
       (decisionsNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
       (deliveryNativeFixtureFiles.includes(file) ? 480000 : undefined) ??

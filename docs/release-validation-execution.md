@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**232 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**231 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -55,6 +55,7 @@ node scripts/release-validation/execute.mjs --selection spool-fixture
 node scripts/release-validation/execute.mjs --selection delivery-native-fixture
 node scripts/release-validation/execute.mjs --selection decisions-native-fixture
 node scripts/release-validation/execute.mjs --selection capture-native-fixture
+node scripts/release-validation/execute.mjs --selection editing-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1412,11 +1413,95 @@ personal profiles/services/builds/recovery/factors, historical archives, formal 
 and unrelated root files remain untouched. Next: Account editing native fixtures (sixteen static cases),
 then remaining native/wrapper integration, R-04, P-06 and the immutable run before private Account prep.
 
+## Account editing native fixture — phase 2ag
+
+The preceding capture phase is signed and verified as `599bba9`. `editing-native-fixture` adds one
+complete native file / sixteen cases under existing owned Chromium/CDP. The file allowance is repaired to
+300 seconds and generated editing to 180; fifteen other cases retain 30 seconds. Browser startup
+stays 15 seconds, drain grace five. Product code, test assertions, populations, mutations,
+owner and census are unchanged. The historical-reader Git read gains 5-second/2-MiB bounds; the wrapper
+and adapter share the repaired file deadline.
+
+All sixteen cases pass in 213.811 seconds including fingerprint work; worker/browser groups drain.
+Node execution took 185.176 seconds against 300; stage time was 189.376 seconds. One run
+does not qualify loaded-host reliability. The old-reader control pins reference, full revision, path
+and exact bytes for `649925f:src/crdt/promotionRecord.ts`. Existing historical drift controls cover this
+path. Other imported historical branches stay dormant. Synthetic v4-to-v5 editing activation does not
+broaden the supported private v9 route or revive retired v8 support.
+
+The initial 120-second selection timed out after twelve passing cases. A separate progress-only loader
+diagnostic gave the complete file 240 seconds while keeping the 90-second generated case limit.
+Nineteen histories completed and history twenty reached its fourth reopen before that case expired;
+all fifteen other cases passed. This identified progressing work constrained by both bounds, without
+an assertion counterexample. Both failed/partial runs, the progress trace and diagnostic hook are
+preserved. The passing selection above is a fresh uninstrumented run after the deadline repair; the complete
+24-history case took 106.814 seconds within its new 180-second limit.
+
+Directed recovery checks edit/undo/compaction and new-page reopen; one reopen blocks Account HTTP
+requests, without stopping the service or putting the whole browser offline. Before-activation commit
+aborts an actual IDB transaction after request success; post-commit holds completion at v5 then kills
+the renderer. Neither exposes an editor early. Non-custody DB rows and localStorage remain unchanged
+at those boundaries. Wrong pin/code/passkey/actor and public receive refuse without inventory mutation.
+
+Exclusive ownership queues before passkey proof, drains cancelled native flush and revokes stale
+handles after synthetic pagehide. Only getText-observed documents are counted for destruction before
+permit release; this is not a full heap inventory or actual navigation/BFCache. Deliberately rewriting
+an authenticated counter to generation 2 closes the current owner on its next durability check and
+refuses reopen without a matching opener. This is fault injection, not a supported rotation procedure.
+Two active, uniquely anchored mutations produce specific bad results: opening empty writing after
+content erasure when ancestry checking is removed, and opening/editing with an invalid assertion when
+passkey refusal is removed. The helper's identity mutation is dormant and receives no control credit.
+
+The 200-case browser-memory ancestry campaign retains seed 9282026, numRuns:200, endOnFailure:true and
+30 seconds. It checks later insert/delete and optional unrelated pending child state against an
+independent string model, accepts known ancestry, rejects an empty replacement and compares encoded
+current bytes before/after inspection. It does not separately compare pending dependency bookkeeping
+or establish 200 persistent crash recoveries. A separate native pending-child case inserts through a
+low-level test carrier, preserves Local edits and integrates the parent after new-page reopen.
+
+The 24 native editing histories retain seed 9292026, numRuns:24, endOnFailure:true and the repaired
+180-second bound. Each
+fresh promoted workspace receives one to six edits/optional undos compared to an independent string
+model. The 250-ms flush callback is suppressed before each step. Flush and compaction run explicitly;
+crash uses CDP renderer death, while journal mode closes gracefully. Every step creates a new page,
+reopens, checks writing and compares custody plus logical promotion progress to a fixed pre-edit
+snapshot. That helper normalizes retained genesis references; equality of all raw content/journal/
+counter/source bytes is not asserted. No all-mode coverage or shrinking claim is made.
+
+Refused storage leaves pending writing outside the document and outgoing callbacks; discard rejects
+its ticket, and a later accepted edit survives reopen. Queued option changes cannot substitute slot,
+actor or pin. Missing/closed/empty-store selected indexes refuse without mutation. Aborting a held
+synthetic passkey callback keeps the permit until the callback drains, with no activation. The native
+file has one explicit directed renderer crash plus generated crash choices, not whole-browser death,
+power loss or another-device coverage.
+
+The existing base registers cleanup before setup, borrows owned CDP, builds in memory and uses
+synthetic factors and disposable service/SQLite stores. Registration/preparation/admission/handoff
+run there; no writing is sent to a peer or real Account. Generated native histories share a context/
+service with distinct workspaces. Optional JSON exports, wrapper ordering, saved-output and prerequisite
+contracts remain separate unresolved obligations.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain pinned earlier evidence.
+The initial ledger owner orphan classification, core receive's prior 297.025-of-300-second headroom,
+and capture's map-refresh/byte-length oracle follow-ups remain open; this phase establishes no fix.
+
+All 185 prior general contracts / 1,566 identities remain unchanged. General selections now contain
+186 files / 1,582 cases (96 Vitest, 90 Node), including 80 Account files / 488 cases. The 661,533-byte
+manifest retains 612 obligations / 231 unresolved: 72 test-file (56 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-editing-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base/historical signatures, prior contracts and preservation. This new phase is
+uncommitted and is not an immutable aggregate. All 52 personal/vector pins and L-2 are byte-identical;
+personal profiles/services/builds/recovery/factors, historical archives, formal debts, signing backups
+and unrelated root files remain untouched. Next: Account handoff native fixtures (fifteen static cases),
+then remaining native/wrapper integration, R-04, P-06 and the immutable run before private Account prep.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**232 blocked rows**: 73 test-file, 96 command, 63 campaign. All Vitest files have adapters; 57 Node
-and sixteen Playwright files remain. Next review the Account editing native fixture, then other
+**231 blocked rows**: 72 test-file, 96 command, 63 campaign. All Vitest files have adapters; 56 Node
+and sixteen Playwright files remain. Next review the Account handoff native fixture, then other
 owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper calls
 without reviving support. Preserve ordered vector/traceability prerequisites and open owner/loaded-host
 observations, including prior core receive deadline headroom. The capture generated map's per-edit
