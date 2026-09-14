@@ -3067,3 +3067,8 @@ frozen sources. Credit the actual renderer crash and journal recovery at the low
 owner. An observer's absent replay/outbound record there explains a preparation constraint; it does
 not establish a defect in the later captured/spooled sync composition. Keep full vector, wrapper,
 relay, second-device and immutable release qualification separate.
+
+
+## 2026-09-14 — Keep service-issued decision evidence distinct from arrival and crash campaigns
+
+Integrate the two unchanged directed decision files with twelve cases under their existing five-minute wrapper bounds. Retain genuine issuer verification, exact response/source retention and the three uniquely anchored persistence/closure/conflict controls. Credit direct HTTP, sender retry/halt and shared scheduler assertions. Keep separate generated ordering and service/renderer crash fixtures blocked until their own integration; optional reports, full wrapper preparation and immutable aggregate qualification remain separate.

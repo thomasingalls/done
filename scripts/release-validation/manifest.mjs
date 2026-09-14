@@ -58,6 +58,7 @@ import {
   admissionBoundsNativeFixtureFiles,
   reservationDurabilityFixtureFiles,
   outboundNativeFixtureFiles,
+  decisionDirectedFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -464,6 +465,11 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'decision-directed-fixtures': rows
+        .filter(
+          (r) => account.node.includes(r.path) && decisionDirectedFixtureFiles.includes(r.path),
+        )
         .map((r) => r.id),
       'outbound-native-fixture': rows
         .filter((r) => account.node.includes(r.path) && outboundNativeFixtureFiles.includes(r.path))

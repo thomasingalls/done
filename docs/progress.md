@@ -55,52 +55,38 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account outbound native fixture.
+**Just completed.** Account directed decision composition fixtures.
 
-The preceding phase is signed and verified as `19dfffe`. **Account outbound native fixture** adds 1 complete
-file / 2 cases. The selection passes in 33.351 seconds including
+The preceding phase is signed and verified as `02a1bfe`. **Account directed decision composition fixtures** adds 2 complete
+files / 12 cases. The selection passes in 210.759 seconds including
 fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-outbound-native-fixture/README.md).
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-decision-directed-fixtures/README.md).
 
-The two native test bodies and identities, inherited fixtures, product, owners, census, reporters
-and wrapper remain unchanged. The complete file retains its 60-second wrapper bound, with 30/45-second
-case limits. The codec case builds the actual envelope verifier in memory under Node WebCrypto.
-Signature, digest and route guard omissions are uniquely anchored; each accepts the predicted bad
-envelope that the baseline refuses. The private-envelope vector file is pinned in the frozen source
-identity. This is a content-blind codec boundary, not relay membership, authorization or decryption.
+Twelve unchanged cases in two complete files retain five-minute wrapper/file bounds: three 45-second omission controls, three 45-second direct delivery cases, four 50-second automatic sender cases and two 50-second shared sync scheduler cases. Only six runner/registration-test files and generated snapshots change. Product, inherited fixtures, oracles, owners, census, reporters and wrapper are unchanged.
 
-The other case opens the lower-level Account editing fixture, delays its flush with a test-only timer
-shim, and makes an outgoing observer throw. The accepted edit adds a synchronous encrypted journal
-entry while the measured database remains unchanged. An actual Page.crash is observed; replacing the
-page in the same live context recovers the edit. Compaction does not replay an observer installed
-after reopen, and session recovery includes a state record but no outbound record.
+Three in-memory source mutations separately omit response persistence, closure retention or conflict state. Each anchor is unique and the transformed bundle is checked once. Genuine synthetic-service replies remain cryptographically verified. The controls observe the predicted false ready state; missing persistence is independently exposed by the retained response census. They do not forge issuer keys or bypass signature validation.
 
-That gap demonstrates why an asynchronous observer cannot serve as a durable outbox at this editing
-boundary. It is not evidence of lost data in the completed captured/spooled sync composition, which
-this fixture does not open. No Account relay or second device is connected. One renderer crash runs;
-the browser, context and synthetic bootstrap service stay alive. The fixture uses generated service/
-authority secrets, a software authenticator and retained synthetic factor options, not personal data,
-a human PRF/passkey ceremony, a real Account receipt or a physical power-loss test.
+The nine directed cases cover actual loopback HTTP accepted/closed/conflict evidence, duplicate and altered-proof no-ops, cold reopen and compaction, automatic sender halts with and without a lost reply, and lane-specific shared scheduler halts. They assert exact original source rows, response bytes, service rows, prior captures and no extra seal invocation. Later Local edits remain durable while send is halted; retained halt prevents cold redispatch.
 
-Only six runner/registration-test files and generated snapshots change. Inherited historical-reader
-branches are not selected. OUTBOUND_REPORT_DIR remains unset, so optional codec/counterexample JSON
-exports are not emitted. Exact owned receipts, source/browser identities and the vector hash are
-archived. Vector regeneration, complete preparation/wrapper outputs and aggregate qualification remain
-separate. Prior owner controls retain pinned signed evidence, including admission-bounds drift checks.
+A synthetic competing signed request induces service closure or conflict. Service proofs are independently checked against the expected subject. Service and SQLite readers reopen around the cases, but no service process or renderer is killed in these two files. Cold creates a fresh page in the same live isolated browser context. Separate restart/order/generated files remain blocked.
+
+Twelve disposable fixture instances use generated service/authority secrets, synthetic retained factor options, a software authenticator and loopback services. This is no human passkey/PRF ceremony, real Account admission, second device, personal origin/profile/build, physical power loss or whole-profile erasure test. Shared driver fixtures are dependencies; excluded retired-v8 test files are not admitted. No historical input branch is selected.
+
+ACCOUNT_REPORT_DIR remains unset in the owned selection, so optional auxiliary decision reports are not emitted. Exact reporter cases, receipts, frozen source/browser identities and transformation hashes are retained. Full wrapper preparation/output and immutable aggregate qualification remain separate. Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and prior deadline evidence remain open.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 207 prior general contracts / 1,708 identities and exclusions remain unchanged.
-General selections now contain 208 files / 1,710 cases (96 Vitest,
-112 Node); Account has 102 files / 616 cases.
-The 691,932-byte manifest retains 612 obligations / 209 unresolved:
-50 test-file (34 Node, sixteen Playwright), 96 command,
+pass. All 208 prior general contracts / 1,710 identities and exclusions remain unchanged.
+General selections now contain 210 files / 1,722 cases (96 Vitest,
+114 Node); Account has 104 files / 628 cases.
+The 694,839-byte manifest retains 612 obligations / 207 unresolved:
+48 test-file (32 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
@@ -108,7 +94,7 @@ Exact receipts/patch, frozen source/browser identities, source-control pins, pri
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account decision composition. There are 21 Account files left; continue in signed
+qualification is separate. Next: Account decision restart, ordering and generated histories. There are 19 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
@@ -125,7 +111,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account decision composition. 21 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account decision restart, ordering and generated histories. 19 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 
