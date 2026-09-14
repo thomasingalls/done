@@ -42,6 +42,8 @@ import {
   localProvenanceNativeFixtureFiles,
   localCustodyNativeFixtureFiles,
   admissionBoundsNativeFixtureFiles,
+  reservationDurabilityFixtureFiles,
+  reservationDurabilityBrowserFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -56,7 +58,7 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 582 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 602 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
@@ -64,7 +66,7 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
       4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12, 24, 19, 6, 15, 16, 15, 15, 14, 12, 4, 1, 2, 5, 1,
-      6, 1, 3, 4, 5, 3, 4, 5, 6,
+      6, 1, 3, 4, 5, 3, 4, 5, 6, 3, 15, 2,
     ],
   );
   for (const s of stages) {
@@ -99,7 +101,8 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
       storeContractNativeFixtureFiles.includes(s.argv.at(-1)) ||
       localProvenanceNativeFixtureFiles.includes(s.argv.at(-1)) ||
       localCustodyNativeFixtureFiles.includes(s.argv.at(-1)) ||
-      admissionBoundsNativeFixtureFiles.includes(s.argv.at(-1));
+      admissionBoundsNativeFixtureFiles.includes(s.argv.at(-1)) ||
+      reservationDurabilityBrowserFiles.includes(s.argv.at(-1));
     assert.equal(
       s.deadlineMs,
       {
@@ -127,6 +130,9 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
         'test/account-local-provenance/native.test.mjs': 300000,
         'test/account-local-custody/native.test.mjs': 300000,
         'test/account-admission-bounds/native.test.mjs': 180000,
+        'test/account-reservation-durability/model.test.mjs': 300000,
+        'test/account-reservation-durability/native.test.mjs': 300000,
+        'test/account-reservation-durability/network.test.mjs': 300000,
         'test/account-delivery/native.test.mjs': 480000,
         'test/account-spool/native.test.mjs': 240000,
         'test/account-receive/native.test.mjs': 300000,
@@ -150,10 +156,10 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 98);
+  assert.equal(selected.length, 101);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    594,
+    614,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -736,6 +742,26 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
     assert.equal(pin.revision, bounds.expect.historyInputs[0].revision);
     assert(readFileSync('test/account-admission-bounds/fixtures.mjs', 'utf8').includes(pin.path));
   }
+  const durability = selectStages(m, 'reservation-durability-fixtures');
+  assert.deepEqual(
+    durability.map((s) => s.argv.at(-1)),
+    reservationDurabilityFixtureFiles,
+  );
+  assert.deepEqual(
+    durability.map((s) => s.expect.cases.length),
+    [3, 15, 2],
+  );
+  for (const s of durability) {
+    assert.equal(s.deadlineMs, 300000);
+    assert.deepEqual(
+      s.fixture,
+      reservationDurabilityBrowserFiles.includes(s.argv.at(-1))
+        ? { kind: 'chromium-cdp', startupMs: 15000 }
+        : undefined,
+    );
+    assert.equal(s.expect.historyInputs, undefined);
+    assert.equal(s.expect.dataInputs, undefined);
+  }
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -749,7 +775,7 @@ test('Account fixture selection admits exactly 582 Node cases and 12 delivery ca
       pin.reference + ':' + pin.path,
     ),
   );
-  for (const f of ['test/account-reservation-durability/native.test.mjs']) {
+  for (const f of ['test/account-outbound/native.test.mjs']) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), f), /Unreviewed/);
     assert(m.rows.find((r) => r.path === f).blocked);
   }

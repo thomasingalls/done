@@ -3046,3 +3046,14 @@ Extend the historical owner controls to this path, preserving prelaunch/reuse/mi
 replanned receipt separation. Keep production code and native assertions unchanged. Credit the two
 large deterministic coverage specimens, signed semantic lies and reduced-bound ordering control at
 their actual scope; they do not establish the maximum supported workload or whole historical-app support.
+
+
+## 2026-09-14 — Keep allocation-model power loss separate from native strict-durability evidence
+
+Integrate all three reservation-durability files under their existing five-minute wrapper bounds,
+adapting only the standalone native browser lifecycle. Preserve all test bodies and counters. Retain
+the pure model's two shrunk weakened-policy counterexamples via a separate repeat run with optional
+reporting enabled. That repeated seed adds evidence artifacts, not a new population or wrapper credit.
+Distinguish the model's strict-persistence assumption and explicit counter rollback from observed native
+transaction/AES ordering and API-reported durability. Keep physical power cuts, profile restore/clone
+safety and second-device delivery outside these claims.

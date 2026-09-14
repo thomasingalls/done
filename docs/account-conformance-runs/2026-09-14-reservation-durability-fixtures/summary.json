@@ -1,0 +1,172 @@
+{
+  "base": "fa9f782a1496e7e4895a6400cad1a9d19117edf6",
+  "claim": "Account reservation durability fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-35-52.149Z",
+  "summary": {
+    "schema": 1,
+    "selection": "reservation-durability-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-reservation-durability/model.test.mjs",
+        "key": "4d8612cb32842c5337aa51113d22f5c0c91ae650e66e636d9e01b740c92fcdbd",
+        "status": "passed",
+        "elapsedMs": 1914,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-reservation-durability/native.test.mjs",
+        "key": "c616e9d56094711f68b62558a5bfc369c81b69038340430616243a31da9fe47a",
+        "status": "passed",
+        "elapsedMs": 22527,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-reservation-durability/network.test.mjs",
+        "key": "e711e9b46993d126ba2ba0e07619fd7ea0106b1e273d03d348b1d37e9c5c3c49",
+        "status": "passed",
+        "elapsedMs": 15393,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:35:52.152Z",
+    "input": "97720ab9a31ec0515f420574d05155e31cc6da220e15c78071c6fddada7ebfd0",
+    "completedAt": "2026-09-14T11:37:01.399Z"
+  },
+  "elapsedMs": 69247,
+  "rawInputArchiveSha256": "690272dc1f243c0768c925699c76fbad6edf5293eced21721e28bba36becebeb",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "fa9f782a1496e7e4895a6400cad1a9d19117edf6",
+    "sourceDigest": "5114b77237298c9e92fe1cf1b6bd4ca0c347fb17947ab12d9daaf02a17266e3f",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 3,
+    "selectedCases": 20,
+    "browserFiles": 2,
+    "fixtureInstances": 17,
+    "generatedHistories": 4000,
+    "modelPolicyControls": 2,
+    "capabilityCases": 14,
+    "networkFaults": 2,
+    "auxiliaryModelReportRunCases": 3,
+    "sourceOmissionControls": 0,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 204,
+    "priorGeneralCases": 1688,
+    "currentGeneralFiles": 207,
+    "currentGeneralCases": 1708,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 111,
+    "accountFiles": 101,
+    "accountCases": 614,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 210,
+    "unresolvedTestFiles": 51,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 691196
+  },
+  "finalGatesSha256": "84787257ef31925e30f3b5d51e89c4e8448470a736507d3dadf0b57cdd83b3d6",
+  "preservationSha256": "f219b3e95613fd464151312f4966a5fa02df06f2d171b14d6646460991e6f769",
+  "limits": [
+    "Three complete files provide 20 cases: three model, fifteen native and two network-attempt cases. Each retains its existing 300-second wrapper/file bound. The primary native case retains 40 seconds, fourteen capability cases 20 seconds each and two network cases 40 seconds each. Browser startup remains 15 seconds and drain grace five. The model has no individual case timeout beyond the owned file deadline.",
+    "Only standalone native fixture setup/cleanup and six runner/registration-test files change. All product code, test bodies and identities, runtimes/browser/oracle helpers, wrappers, census, reporters and ownership helpers remain unchanged. The native fixture adopts the existing CDP helper, explicit isolated context, early nested cleanup and listen-error handling; the lifecycle block through context creation matches the signed store/counter fixtures. Prior cleanup/native-owner controls are pinned, not rerun. The old durability fixture already had independent server cleanup before launch; no prior setup leak is claimed.",
+    "The pure model runs 4000 fast-check histories at seed 150915, up to 300 commands, with two actors and three independent root/store/network allocation domains. Committed, flushed, invoked and retained counts are separate. Strict completion is assumed to persist, and modeled power loss discards unflushed state. Directed lifetime controls use sixteen successful invocations per domain without retaining ciphertext and require twelve refusals. These integer-state properties do not establish actual browser disk flushing or ciphertext/nonce uniqueness under cloned profiles.",
+    "Relaxed and early policy controls each must produce an undercount/lifetime failure with shrinking enabled. A separate unchanged model-file run enables optional reports to retain both counterexamples and seed/path evidence; those auxiliary outputs are not whole-wrapper or owned-stage output qualification. The observed early-policy shrunk history has three commands, with failure at invoke before commit; the relaxed-policy history has start/complete/invoke/power. Shrunk histories are not claimed globally minimal. This auxiliary run repeats the same seeded population rather than adding distinct model coverage.",
+    "The main native case observes real custody/content transaction completions and AES calls. An injected throw after actual content AES burns a sequence without retaining its event. Replacing the counter with the latest strictly reported committed snapshot models power loss; the retained count covers observed invocations. After page reload and explicit synthetic custody reconfiguration, a fresh retry preserves two retained events. This is an in-page rollback model with browser-reported durability, not a renderer kill, physical power cut or measurement of stable storage.",
+    "Fourteen boundary cases cover content and custody transaction wrappers with strict/default/relaxed/missing/getter-throws/options-throw/abort-throws reports. Instrumentation overrides durability properties or transaction behavior to force refusal. Strict mode runs the write body once; other modes must not run it. Except immediate options rejection, refusal settles after native abort or completion. Readonly operations remain available under the simulated unsupported modes. Custody boundary rows are deliberately synthetic shapes used only to exercise the wrapper and are never reopened as genuine custody records.",
+    "Two network cases use the inherited owned spool fixture and synthetic Account bootstrap service. One throws after actual envelope AES, requiring one retained attempt and no persisted envelope; retry accounts for a fresh attempt. The other downgrades the actual grant transaction to default durability and requires refusal with zero envelope AES calls/attempts before successful retry. A trace requires each observed envelope AES to follow a strictly requested/reported attempt commit and matches total grants, native invocation observations and stored attempts. These cases prepare local network envelopes; they do not exercise delivery to another device or establish remote network availability.",
+    "There are seventeen isolated browser fixture instances across the two native files; the pure model needs no browser. Synthetic local custody is configured directly in the standalone fixture; the network fixture uses software authenticators and generated service/authority secrets. No personal origin, profile, factor, browser, service, routing, package build, human passkey/PRF flow, physical power loss, profile restore or real Account admission receipt is involved. Inherited historical-reader branches are not selected and require no historical inputs here.",
+    "ACCOUNT_REPORT_DIR is unset in the owned selection; native wrapper JSON reports are not emitted. Exact reporter outcomes, frozen source/browser identities, auxiliary model reports and prior owner evidence are archived. All 93 pure runner checks, TypeScript and scoped gates pass. All 204 prior general contracts / 1688 identities, exclusions, 52 personal/vector pins and L-2 remain unchanged. Prior 23 Node-owner controls use the signed admission-bounds evidence; native/Vitest owner evidence remains historical. Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and earlier deadline evidence stay open. Full wrapper/regression/output/aggregate qualification remains separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-reservation-durability/model.test.mjs",
+        "nodeSummaryMs": 119.301333,
+        "stageElapsedMs": 1914,
+        "fileDeadlineMs": 300000
+      },
+      {
+        "id": "test:test/account-reservation-durability/native.test.mjs",
+        "nodeSummaryMs": 19436.755,
+        "stageElapsedMs": 22527,
+        "fileDeadlineMs": 300000
+      },
+      {
+        "id": "test:test/account-reservation-durability/network.test.mjs",
+        "nodeSummaryMs": 12672.261959,
+        "stageElapsedMs": 15393,
+        "fileDeadlineMs": 300000
+      }
+    ],
+    "selectionElapsedMs": 69247,
+    "note": "File bounds apply to Node execution. Stage and selection times include setup/fingerprinting/drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "nativeCaseMs": [
+      40000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000,
+      20000
+    ],
+    "networkCaseMs": [
+      40000,
+      40000
+    ],
+    "note": "Existing wrapper and case limits retained."
+  },
+  "auxiliaryModelCommand": {
+    "argv": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-reservation-durability/model.test.mjs"
+    ],
+    "env": {
+      "ACCOUNT_REPORT_DIR": "/private/tmp/done-reservation-durability-fixtures-model-details"
+    },
+    "exitCode": 0,
+    "claim": "Repeat same seeded model solely to retain optional counterexample reports; no additional distinct population or wrapper credit."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "365bf24d09fff230482e5521cf6b0ea970011b05af0e8d2289bbf0a9f33bd0af",
+    "compressedSha256": "f91e1e315bf3775cf8573eebd9b82800392f40b299033a4b2bc1d3b5f934b85d"
+  }
+}

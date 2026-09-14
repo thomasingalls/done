@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { bundle } from './runtime.mjs';
 const script = await bundle();
 const report = (n, v) => {
@@ -19,17 +20,31 @@ async function fixture(t) {
   const server = createServer((_req, res) =>
     res.end('<!doctype html><title>Disposable durability test</title>'),
   );
+  let browser, context;
+  t.after(async () => {
+    try {
+      try {
+        await context?.close();
+      } finally {
+        await browser?.close();
+      }
+    } finally {
+      if (server.listening)
+        await new Promise((resolve, reject) =>
+          server.close((error) => (error ? reject(error) : resolve())),
+        );
+    }
+  });
   await new Promise((resolve, reject) => {
     server.once('error', reject);
-    server.listen(0, '127.0.0.1', resolve);
+    server.listen(0, '127.0.0.1', () => {
+      server.off('error', reject);
+      resolve();
+    });
   });
-  t.after(() => new Promise((r) => server.close(r)));
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-  });
-  t.after(() => browser.close());
-  const page = await browser.newPage();
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
+  const page = await context.newPage();
   await page.goto('http://127.0.0.1:' + server.address().port);
   await page.evaluate(script);
   return page;
