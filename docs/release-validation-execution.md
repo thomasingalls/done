@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**243 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**238 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -49,6 +49,7 @@ node scripts/release-validation/execute.mjs --selection oracle-parser-fixtures
 node scripts/release-validation/execute.mjs --selection transport-service-fixtures
 node scripts/release-validation/execute.mjs --selection receive-transport-fixtures
 node scripts/release-validation/execute.mjs --selection receive-driver-fixtures
+node scripts/release-validation/execute.mjs --selection sync-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1037,12 +1038,59 @@ full receipts, browser/source identities, exact patch, prior contracts, signatur
 preservation. This new phase is uncommitted. Frozen bounded evidence is not an immutable aggregate;
 optional JSON outputs and original wrapper ordering/prerequisites require separate postconditions.
 
+## Account sync/composition fixtures — phase 2aa
+
+Receive-driver fixtures are now signed and verified as `8bd6a07`; historical receipts retain their
+execution identities. `sync-fixtures` adds five files / 29 cases: batch 7, scheduler controls 5,
+generated 1, native controls 4 and native 12. The scheduler file runs in Node; the other four borrow
+the owned CDP browser through the reviewed promotion fixture chain. File limits are 300/90/450/150/600
+seconds; browser startup remains 15 seconds and drain grace five seconds. Batch receives the prior
+liveness ownership group's 300-second ceiling as a complete file, not credit for that whole group.
+Other four bounds match the current sync wrapper. Per-case deadlines and generated population remain.
+
+The first focused scheduler run failed every case before assertions. R-01 added a real protocol
+EnvelopeSizeError import that became invalid when copying the module beneath test-results. The
+fixture now rewrites exactly that import to the actual current protocol module and keeps every
+mutation/assertion. Before/after logs and signed-history evidence are retained. The historical build
+uses two actual pre-R-01 sources at `4bb09042f37f68ec31f0d82587af608f599eb096`, preparation and delivery,
+plus one current sealer mutation. Both Git inputs are pinned in the native receipt; git reads are
+bounded to five seconds and 2 MiB. This is a composite fixture, not a complete historical app.
+
+All 29 cases pass in 990.122 seconds including fingerprint work, with worker/browser groups drained.
+Six batch cases exercise actual renderer death before/after IDB position/attempt/envelope commits.
+The seventh compares exact retry and grouping [8,3] after a lost accepted reply and later edits.
+Eight generated actual-service histories keep seed 9112062, numRuns:8, endOnFailure:true and a
+420-second test bound. Five to seven actions cover edit/offline-edit/lost-send/lost-read/compact/restart;
+after each action writing, captures, source-to-position mapping, send/read progress and invocation
+counts agree. Five virtual-clock scheduler omissions, five native omissions in four cases, and one
+native preflight omission remain effective. Twelve native cases also cover close/shared permit drain,
+local admission during sealing, retained receive conflict and current refusal/restart of old oversized
+sealed or prepared submissions, preserving originals and avoiding another seal invocation.
+
+Simulated navigator connectivity and routed HTTP losses do not establish real network behavior.
+Fresh-page reopen is within one context; renderer crash does not establish browser-process/power-loss
+persistence or second-device adoption. Batch's report import loads liveness/residue helper modules,
+but never invokes their separate browser/service constructors. Seven batch JSON reports go beneath
+ignored test-results in the disposable checkout and are not retained as output postconditions here.
+Other optional JSON exports remain disabled. Original wrappers and their ordering/prerequisites remain
+separate obligations. Product source is unchanged; only the copied import and Git-read bounds change
+in selected fixtures.
+
+All 92 pure runner and 23 Node owner checks pass, including real historical drift before launch/reuse
+and during execution for both added paths. Direct TypeScript, scoped style, planning, authority and
+signature checks pass. Unchanged five Vitest-process and twelve native-owner controls retain earlier
+evidence. The first expected-positive historical service-path orphan classification remains unresolved.
+All 174 prior contracts / 1,444 identities are unchanged. General selections now contain 179 files /
+1,473 cases (96 Vitest, 83 Node), including 73 Account files / 379 cases. The [packet](./account-conformance-runs/2026-09-14-sync-fixtures/README.md)
+retains full receipts, exact patch, browser/input identities, source/helper pins, owner controls and
+preservation. This new phase remains uncommitted; frozen execution is not an immutable aggregate.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**243 blocked rows**: 84 test-file, 96 command, 63 campaign. All Vitest files have adapters; 68 Node
-and sixteen Playwright files remain. Next review the five Account sync/composition fixture files,
-including historical-input and browser ownership requirements. Other owners and exact wrapper/output
+**238 blocked rows**: 79 test-file, 96 command, 63 campaign. All Vitest files have adapters; 63 Node
+and sixteen Playwright files remain. Next review core receive and ordered editor native fixtures,
+including the historical reader and durable publication controls. Other owners and exact wrapper/output
 postconditions follow. Keep retired-v8 exclusions and resolve remaining old wrapper calls without
 reviving support. Preserve ordered vector/traceability prerequisites and the open owner/loaded-host
 reliability observation.

@@ -2664,3 +2664,23 @@ Generated fixture pages and simulated navigator connectivity remain distinct fro
 polling case. Prior scheduler Vitest/property checks retain earlier evidence. Whole-wrapper ordering,
 prerequisites and optional JSON exports require their own postconditions. Signing completed phase
 commits reconciles navigation and the recorded staged tree without rewriting historical receipts.
+
+
+## 2026-09-14 — Pin historical sync builders and preserve real scheduler imports
+
+The Account sync/composition selection explicitly separates five virtual-clock Node scheduler
+controls from four files that need owned Chromium. Preserve complete case identities, individual
+case limits and generated seeds/populations. Use the four existing sync wrapper file deadlines and
+300 seconds for the batch file, the limit previously shared by the liveness ownership group. The
+single-file budget does not certify that multi-file group or its ordering/output prerequisites.
+
+A copied scheduler with a newly added runtime import must resolve the real protocol module, including
+its actual error class. Rewrite exactly that import in the fixture and retain the failing baseline;
+do not remove the dependency or substitute an error stub to make mutation checks load.
+
+The two actual historical sources used by the oversized-spool builder join the explicit historical
+locator allowlist and native receipt. Keep bounded git reads and verify bytes before launch/reuse
+and after execution, with real Git replacement controls for both paths. The current sealer mutation
+is separately pinned in fixture source; this is a composite test builder, not a complete old app.
+Dormant historical branches in other helpers receive no inferred execution credit. Batch reports
+written inside the disposable checkout and optional JSON exports remain separate output obligations.

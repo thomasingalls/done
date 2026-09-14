@@ -7,6 +7,22 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const syncBrowserFiles = [
+  'test/account-sync/batch.test.mjs',
+  'test/account-sync/generated.test.mjs',
+  'test/account-sync/native-controls.test.mjs',
+  'test/account-sync/native.test.mjs',
+];
+export const syncFixtureFiles = ['test/account-sync/controls.test.mjs', ...syncBrowserFiles];
+const syncDeadlines = {
+  // Batch previously shared the liveness wrapper's 300-second ownership stage.
+  'test/account-sync/batch.test.mjs': 300000,
+  'test/account-sync/controls.test.mjs': 90000,
+  'test/account-sync/generated.test.mjs': 450000,
+  'test/account-sync/native-controls.test.mjs': 150000,
+  'test/account-sync/native.test.mjs': 600000,
+};
+
 export const receiveDriverBrowserFiles = [
   'test/account-receive-driver/generated.test.mjs',
   'test/account-receive-driver/native-controls.test.mjs',
@@ -104,6 +120,10 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-sync/native.test.mjs': [
+    ['4bb09042f37f68ec31f0d82587af608f599eb096', 'src/crdt/accountEnvelopePreparation.ts'],
+    ['4bb09042f37f68ec31f0d82587af608f599eb096', 'src/crdt/accountDelivery.ts'],
+  ],
   'test/account-transport/service.test.mjs': [
     ['4bb09042f37f68ec31f0d82587af608f599eb096', 'account-service/delivery.ts'],
   ],
@@ -166,6 +186,7 @@ export const accountFixtureFiles = {
     ...transportServiceFixtureFiles,
     ...receiveTransportFixtureFiles,
     ...receiveDriverFixtureFiles,
+    ...syncFixtureFiles,
   ],
 };
 
@@ -174,7 +195,8 @@ export function accountFixtureNodeStage(root, file) {
   const browser =
     admissionEvidenceFiles.includes(file) ||
     receiveTransportFixtureFiles.includes(file) ||
-    receiveDriverBrowserFiles.includes(file);
+    receiveDriverBrowserFiles.includes(file) ||
+    syncBrowserFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -199,6 +221,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      syncDeadlines[file] ??
       receiveDriverDeadlines[file] ??
       receiveTransportDeadlines[file] ??
       (browser ? 360000 : 180000),

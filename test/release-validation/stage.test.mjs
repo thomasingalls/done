@@ -245,6 +245,8 @@ test('historical Git bytes are checked before launch and reuse and enter the rec
   for (const path of [
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
+    'src/crdt/accountEnvelopePreparation.ts',
+    'src/crdt/accountDelivery.ts',
     'account-protocol/admission.ts',
     'test/accountDelivery.test.ts',
     'src/crdt/promotionRecord.ts',
@@ -278,6 +280,8 @@ test('a passing historical fixture still fails and drains when Git bytes change 
   for (const path of [
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
+    'src/crdt/accountEnvelopePreparation.ts',
+    'src/crdt/accountDelivery.ts',
     'account-protocol/admission.ts',
     'test/accountDelivery.test.ts',
     'src/crdt/promotionRecord.ts',
@@ -310,6 +314,8 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
     pin,
     ...[
       'account-protocol/admission.ts',
+      'src/crdt/accountEnvelopePreparation.ts',
+      'src/crdt/accountDelivery.ts',
       'test/accountDelivery.test.ts',
       'src/crdt/promotionRecord.ts',
       'src/crdt/startupClassification.ts',

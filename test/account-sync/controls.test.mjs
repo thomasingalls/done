@@ -12,6 +12,13 @@ async function load(t, mode) {
   const temp = mkdtempSync(join(dir, 'case-'));
   t.after(() => rmSync(temp, { recursive: true, force: true }));
   let code = readFileSync('src/crdt/accountSyncDriver.ts', 'utf8');
+  // The copied scheduler must retain the real protocol error class added by R-01.
+  const protocolImport = "from '../../account-protocol/envelope'";
+  assert.equal(code.split(protocolImport).length, 2, 'scheduler protocol import');
+  code = code.replace(
+    protocolImport,
+    `from '${pathToFileURL(resolve('account-protocol/envelope.ts')).href}'`,
+  );
   const changes = {
     fairness: [['const name = due.find((n) => n !== last) ?? due[0];', 'const name = due[0];']],
     overlap: [

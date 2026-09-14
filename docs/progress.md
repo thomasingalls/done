@@ -43,62 +43,68 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account sync/composition fixtures (`L-1`)
+## Active slice: General validation-runner integration — core receive/editor native fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews sync/composition historical inputs and ownership
+blocks_on: none; next bounded phase reviews receive-store and ordered editor native fixtures
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Transport service fixtures are signed `b0e7828`, exactly matching recorded tree
-`6abb609`. Browser receive-transport fixtures are signed `fa80a53`; both signatures are verified.
-Prior evidence retains its actual execution identity and signing status at capture. Oracle/parser
-fixtures are signed `a20e678`; preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
-`01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
-`f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
+**Commit boundary.** Receive-driver fixtures are signed `8bd6a07` and verified. Receive transport is
+signed `fa80a53`; transport service `b0e7828` matches its recorded staged tree `6abb609`. Historical
+receipts keep actual execution identities and signing status at capture. Oracle/parser `a20e678`,
+preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation `01c4447`, delivery/inbound
+`dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations `f9111ea`, general adapters
+`38e4995`, properties `8acdee4`, R-01 `5872dc5` are signed.
 
-**Just completed.** [Receive-driver fixtures](./release-validation-execution.md#receive-driver-pollingreconnect-fixtures--phase-2z)
-add four files / seventeen cases: scheduler controls 5, generated 1, native dispatch controls 2,
-native 9. Only the last three files need a browser. Product source, selected tests and helpers remain
-unchanged; the existing census and owned-CDP adapter suffice. File deadlines are 90/270/90/180
-seconds. Ten generated histories keep seed 9112052, endOnFailure:true and a 240-second test bound.
-This new phase is uncommitted.
+**Just completed.** [Account sync/composition fixtures](./release-validation-execution.md#account-synccomposition-fixtures--phase-2aa)
+add five files / 29 cases: batch 7, scheduler controls 5, generated 1, native controls 4 and native 12.
+Only the four non-scheduler files need owned CDP. File bounds are 300/90/450/150/600 seconds; browser
+startup 15 seconds and drain grace five seconds. The preceding phase is committed; this new work is
+uncommitted. Product source, wrapper source and all selected case identities are unchanged.
 
-**Evidence.** The final owned selection passes in 424.417 seconds; all worker/browser groups drain.
-All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
-The [packet](./account-conformance-runs/2026-09-14-receive-driver-fixtures/README.md) retains full receipts, source/browser identities, exact patch, prior contracts
-and preservation, plus the two preceding signature verifications. Five scheduler omissions and two
-native dispatch controls remain effective. Generated histories compare writing, durable progress,
-local source count and reopen cursor after each action. Nine native cases cover real service polling,
-loss/backoff, sticky halt, storage refusal, exclusion drain and R-01 size refusal/retry. The first
-native file timed out after seven passing cases; its limit had not grown with four R-01 additions. Both adapter and wrapper now allow 180 seconds, preserving all 45-second case
-limits. The initial partial receipt and signed-history evidence are retained; test bodies are unchanged.
-Simulated navigator connectivity, signed fixture pages and same-context page reopen do not establish real network, second-device, crash or power-loss behavior.
+**Evidence.** The owned selection passes in 990.122 seconds; every worker/browser group drains.
+Eight generated histories retain seed 9112062, endOnFailure:true and their 420-second case bound.
+They use actual synthetic service delivery and compare writing, capture counts, source-to-position
+mapping, send/read progress and encryption invocation counts after each action. Six batch cases
+crash the renderer on both sides of three storage commits; the seventh verifies exact retry and
+later-source grouping after a lost accepted reply. Five scheduler omissions, five omissions across
+four native control cases and one native preflight omission remain effective. Twelve native cases
+include shared close/permit drain, local admission during sealing, retained receive conflict and
+R-01 size refusal with historical sealed/prepared-submission restart. Offline is simulated; page
+reopen and renderer crash do not establish second-device, full browser crash or power-loss behavior.
 
-All 170 prior general contracts / 1,427 identities remain unchanged. Unchanged Node owner, Vitest
-process and native owner controls (23/5/12) retain pinned earlier evidence. Optional JSON exports and
-original wrapper ordering/prerequisites remain separate obligations. This is bounded execution at
-frozen inputs, not an immutable aggregate.
+The first focused scheduler run failed all five cases while loading a copied module: its R-01 runtime
+protocol import resolved beneath test-results. The fixture now resolves the real current module;
+no stub or assertion reduction. Before/after logs and signed-history provenance are retained. The
+historical builder's git reads now have five-second/2-MiB bounds. Both pre-R-01 preparation/delivery
+files are pinned in the native receipt. All 92 pure runner and 23 Node owner checks pass, including
+prelaunch/reuse/midrun drift for both new historical paths. Direct TypeScript, scoped style, planning,
+authority and signatures pass. Unchanged Vitest-process/native-owner controls (5/12) retain earlier
+evidence. The [packet](./account-conformance-runs/2026-09-14-sync-fixtures/README.md) includes receipts, frozen source/browser identities, exact patch,
+prior contracts and preservation. It is not an immutable aggregate. Batch JSON reports written in
+the disposable checkout are not retained as output obligations; other optional exports are disabled.
 
 **Open validation observation.** The ledger phase's first owner run reported orphaned-child on an
-expected-pass historical service-path control. Its log remains; teardown removed its first receipt.
-Cause remains unresolved despite later passes. Optional pre-cleanup capture retains later control
-receipts. Investigate at the owner/loaded-host reliability gate; this phase establishes no fix.
+expected-pass historical service-path control. Its failure log remains; teardown removed its first
+receipt. Cause is unresolved despite later passes. Optional pre-cleanup capture now retains later
+control receipts. Keep this at the owner/loaded-host reliability gate; this phase establishes no fix.
 
-**Next bounded phase.** Review the five `test/account-sync/` files: batch, controls, generated,
-native-controls and native, including historical-source controls and browser ownership. General
-selections now contain 174 files / 1,444 cases: all 96 Vitest and 78 Node files. There are 612
-obligations / 243 blocked rows: 84 test-file (68 Node, sixteen Playwright), 96 command, 63 campaign.
-These are integration obligations, not 243 product defects. The 634,913-byte manifest
-stays below 700 kB; all eleven catalogues remain resolved (163 cases / 54 mutations). Other native/
-Playwright and nested owners, plus wrapper/output postconditions, follow. Keep retired-v8 exclusions
-and resolve remaining old wrapper calls without reviving support. R-04 style scopes/full checks and
-P-06 prose precede the immutable aggregate, private Account prep and human adoption.
+**Next bounded phase.** Review `test/account-receive/native.test.mjs` and
+`test/account-receive-editor/native.test.mjs`: core receive storage and ordered editor publication,
+including the historical reader, coverage/witness controls, crash boundaries and close/drain behavior.
+General selections now contain 179 files / 1,473 cases: all 96 Vitest and 83 Node files. All 174 prior
+contracts / 1,444 identities are unchanged. The 641,301-byte manifest contains 612 obligations /
+238 blocked rows: 79 test-file (63 Node, sixteen Playwright), 96 command and 63 campaign. These are
+integration obligations, not product defects. All eleven catalogues remain resolved (163 cases /
+54 mutations). Other native/Playwright/nested owners and wrapper/output/prerequisite postconditions
+follow. Keep retired-v8 exclusions and resolve old wrapper calls without reviving support. R-04
+style scopes/full checks and P-06 prose precede the immutable aggregate and private Account prep.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
@@ -110,8 +116,8 @@ F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain vis
 
 **Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 remain byte-identical.
 Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
-Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The earlier
-signing sweep and both preceding phase signatures are complete; the aggregate needs its own revision.
+Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The signing
+sweep and preceding phase signatures are complete; the aggregate needs its own immutable revision.
 
 ---
 

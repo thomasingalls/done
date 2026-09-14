@@ -4560,3 +4560,53 @@ All 21 personal/package pins, 31 prior vectors and L-2 are byte-identical. Perso
 root build, recovery/factors, historical archives, root `done `, formal debts and signing backups
 remain untouched. Next: the five Account sync/composition fixture files, including review of their
 historical-input and browser ownership requirements, before remaining native/wrapper integration.
+
+
+## 2026-09-14 — Account sync/composition fixture integration (`L-1`)
+
+The preceding receive-driver phase is signed and verified as `8bd6a07`. Historical evidence keeps
+its actual execution identity and signing status at capture. The new `sync-fixtures` selection adds
+five complete files / 29 cases: batch 7, scheduler controls 5, generated 1, native controls 4, native 12.
+Only the scheduler controls run without Chromium. File bounds are 300/90/450/150/600 seconds; the
+batch allowance comes from the prior liveness ownership group, while the other four match the sync
+wrapper. Browser startup remains 15 seconds and drain grace five seconds. Wrappers are unchanged.
+
+All 29 cases pass in 990.122 seconds, including fingerprint work. Every worker/browser group drains.
+Six batch cases crash the renderer before/after position, attempt and envelope commits; a seventh
+compares exact retry after an accepted reply is lost and later edits arrive. Eight actual-service
+histories retain seed 9112062, five to seven actions, endOnFailure:true and their 420-second test limit.
+They compare text, captures, source-to-position mapping, send/read progress and encryption invocation
+counts after each action. Five scheduler omissions, five omissions in four native control cases and
+one native preflight omission remain effective. Twelve native cases include shared permit drain,
+local admission during sealing, receive conflict and R-01 fitting/oversized/historical spool restart.
+
+The first focused scheduler run failed all five controls before their assertions: R-01 added a real
+EnvelopeSizeError import that the copied module resolved beneath test-results. The fixture now
+resolves that exact import to the current protocol module, retaining the actual class, its dependencies
+and every mutation/assertion. Before/after logs and signed-history provenance are retained. No product
+code changed. The historical browser builder's git reads now have five-second/2-MiB limits. The native
+receipt pins both pre-R-01 preparation/delivery source files at `4bb09042f37f68ec31f0d82587af608f599eb096`.
+The builder combines those two files with one current sealer mutation, not a complete historical app.
+
+All 92 pure runner checks and 23 Node owner checks pass, with actual before-launch/reuse/midrun
+historical drift controls for both new paths. Direct TypeScript, scoped style, inventory/manifest,
+authority and signature checks pass. Unchanged Vitest-process/native-owner controls (5/12) retain
+pinned earlier evidence. The ledger phase's first expected-positive historical service-path orphan
+classification remains unresolved; this phase establishes no fix for it.
+
+All 174 prior general contracts / 1,444 identities are unchanged. General selections now contain
+179 files / 1,473 cases (96 Vitest, 83 Node), including 73 Account files / 379 cases. Manifest:
+612 obligations / 238 unresolved (79 test-file: 63 Node and sixteen Playwright; 96 command; 63 campaign),
+641,301 bytes. All eleven catalogues remain resolved: 163 cases / 54 mutations.
+The [packet](./account-conformance-runs/2026-09-14-sync-fixtures/README.md) retains full receipts, input/browser identities, exact source patch,
+source/helper pins, control receipts, prior contracts and preservation. The new phase is uncommitted;
+it is bounded evidence, not an immutable aggregate or whole-wrapper qualification. Batch's seven
+JSON exports are written inside the disposable checkout and are not retained as output obligations;
+other optional exports remain disabled. Report/order/prerequisite contracts remain to integrate.
+
+Offline means a simulated navigator signal or routed request/response loss. Reopen uses a new page
+in the same context; renderer death does not establish browser crash, power loss or second-device
+behavior. All 21 personal/package pins, 31 prior vectors and L-2 remain byte-identical. Personal
+profiles/servers, root build, recovery/factors, historical archives, root `done `, formal debts and
+signing backups remain untouched. Next: the core receive and ordered editor native fixtures, including
+their historical reader and durable-publication controls, before other owners/wrappers and release work.

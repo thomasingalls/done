@@ -56,7 +56,7 @@ export async function syncBundle(control) {
                 return execFileSync(
                   'git',
                   ['show', '4bb09042f37f68ec31f0d82587af608f599eb096:' + path],
-                  { encoding: 'utf8' },
+                  { encoding: 'utf8', timeout: 5000, maxBuffer: 2 * 1024 * 1024 },
                 );
               }
               if (

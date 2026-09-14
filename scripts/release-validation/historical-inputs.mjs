@@ -10,6 +10,8 @@ function validateLocator(reference, path) {
       typeof path === 'string' &&
       (/^account-service\/[a-z-]+\.ts$/.test(path) ||
         path === 'src/crdt/spoolRecord.ts' ||
+        path === 'src/crdt/accountEnvelopePreparation.ts' ||
+        path === 'src/crdt/accountDelivery.ts' ||
         path === 'account-protocol/admission.ts' ||
         path === 'test/accountDelivery.test.ts' ||
         path === 'src/crdt/promotionRecord.ts' ||
