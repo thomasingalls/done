@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — remaining suites (`L-1`)
+## Active slice: General validation-runner integration — release qualification (`L-1`)
 
 ```yaml
 gate: L-1
@@ -54,6 +54,13 @@ blocks_on: application latency repair and budget disposition; remaining command/
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
+
+**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The F-17 excursion
+addresses a failing application gate. After Local handoff integration and its validation/performance
+disposition, resume the 96 command / 63 campaign wrapper obligations and remaining qualification
+repairs before the immutable aggregate. The [execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence)
+and [record audit](./account-conformance-runs/2026-09-14-release-status-audit.json) were reconciled at
+signed `82daaac0`; historical phase evidence remains revision-bound.
 
 **Just completed.** Private workspace preparation handoff component covers 20 case dispositions (20 passed; 0 explicitly not applicable) in 1 files. Adds the private workspacePreparation component without connecting it to admission or the editor. Frozen identity contexts bind the verified local head, job, slice, accepted revision and writer. Preparation is synchronous and one-shot; scoped history/buffers transfer ownership, verification precedes source custody capture, retries borrow the identical retained result, and close revokes authority while awaiting active writes before disposal. Adoption requires the same job/slice at exactly the next revision and successful full comparison before transferring history; verification failure after promotion is terminal. The component has no canonical reference or public workspace export; its integration callbacks must retain complete comparison, actual transaction-derived updates, queue reservations and independent Account source coverage. Twenty component cases use actual Yjs histories and source/canonical comparisons, including 120 generated accepted-text/revision/undo/cold-replay traces. Eight deliberate mutations fail their intended assertions. New tests first exposed two resource-cleanup gaps in this unconnected component: late async results and incomplete collection of a closing command's returned buffers; both are repaired with original source/tests/output retained. A control initially timed out because its fixture failed to release an unexpectedly successful borrow; its cleanup is corrected and the original failure remains. The first full unit run, concurrent with other validation, timed out in two unchanged five-second cases: Account liveness and position decisions. The same default full command then passes alone at unchanged limits: 97 files / 1,062 tests. This supports the bounded functional checkpoint, not closure of loaded-host timing headroom; concurrency as the cause is not established. The owned runner passes all 20 new cases with process drain. One reviewed suite and 20 cases are added; all 260 prior general contracts, exclusions, crypto labels and prior runtime source bytes are preserved. The runtime census adds only the new unconnected component. No application/native campaign or performance timing is run; the last independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x typing. Personal app, server, package and deployment remain untouched.
 

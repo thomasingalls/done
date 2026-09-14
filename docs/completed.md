@@ -6898,3 +6898,21 @@ All 99 pure runner checks, TypeScript, scoped style, inventory and authority gat
 General integration now covers 261 files / 2,042 case dispositions (11 not applicable). 0 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: integrate the private handoff into Local admission with matching job/slice publication, preserving the generic path as a reference; compare both paths through command/undo/selection, retry/discard, remote and shutdown histories plus native crash/pressure checks before a prospectively specified performance comparison; Account source activation remains separately gated.
 
 [Evidence](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
+
+
+## 2026-09-14 — Release-validation status and record reconciliation (`L-1`)
+
+At signed `82daaac0`, the inventory/manifest checks confirm 616 obligations: no unresolved test-file
+adapters, 96 command and 63 campaign obligations. All eleven catalogues and 261 general files /
+2,042 case dispositions (11 not applicable) are integrated; this is not an aggregate pass. The
+application gate still fails CPU-4x Android typing; the private handoff component is unconnected.
+After its Local integration/reference and performance gates, resume wrapper certification, remaining
+input/output/headroom/style/prose work and one immutable qualification run.
+
+Audited all eight phases from `dbc64150` through `82daaac0`: signatures verify, completed/decisions/
+performance records each append in every commit, and all 391 indexed compressed payloads and packet
+metadata hashes match. All 52 personal/vector pins and L-2 match. Corrected stale execution-overview
+counts (612/276/188 to 616/280/159), the findings heading claiming general test integration remained,
+and the phase-1 table's misleading “Current count” label. Historical measurements, failed attempts,
+phase receipts and tested revisions remain unchanged. No runtime test, timing or aggregate was rerun.
+[Audit](./account-conformance-runs/2026-09-14-release-status-audit.json).

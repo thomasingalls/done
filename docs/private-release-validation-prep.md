@@ -48,6 +48,11 @@ General integration covers **261 files / 2,042 case dispositions (11 not applica
 The private handoff component is implemented and its bounded checks pass, including a standalone full-unit rerun after two concurrent-run timeouts. It remains unconnected to the editor; Local integration and the application latency gate remain open. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
 Next: integrate the private handoff into Local admission with matching job/slice publication, preserving the generic path as a reference; compare both paths through command/undo/selection, retry/discard, remote and shutdown histories plus native crash/pressure checks before a prospectively specified performance comparison; Account source activation remains separately gated. [Latest evidence](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
 
+The [reconciled execution checkpoint](./release-validation-execution.md#checkpoint-and-remaining-sequence)
+separates completed test-file integration from the remaining wrapper obligations and the failed
+application gate. After the bounded F-17 integration/performance work, return to command/campaign
+certification and outstanding input/output/headroom/style/prose work before immutable qualification.
+
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

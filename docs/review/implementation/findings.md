@@ -76,28 +76,11 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    campaigns and three native consecutive expiries followed by automatic recovery/cold replay pass.
    See [result](./liveness-followups.md#q-05-result). No count-only terminal halt was added.
    F-10/N-08/P-07's completed refusal handling stands.
-4. **F-20/N-06/P-05 inventory, bounded runner and all eleven catalogue adapters are complete; general integration remains.**
+4. **F-20/N-06/P-05 inventory, bounded runner, all eleven catalogue adapters and test-file integration are complete; wrappers and qualification remain.**
    [Current execution scope](../../release-validation-execution.md) covers all 163 catalogue cases and
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
    General integration covers **261 files / 2,042 case dispositions (11 not applicable)**, including all 123 Account files.
    0 test-file, 96 command and 63 campaign obligations remain.

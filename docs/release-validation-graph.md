@@ -7,7 +7,8 @@ This phase maps the historical validation surface at `d03e473` (signed counterpa
 plus the inventory changes; the [crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json)
 retains the original IDs. It does not execute
 an aggregate, change runtime behavior, repair deadlines, sweep P-06's cryptographic prose, or qualify
-a release. The next phase implements bounded execution from this reviewed coverage inventory.
+a release. The subsequent bounded execution phases are recorded in the
+[current execution checkpoint](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 
 Run `pnpm validation:inventory`. The command checks the committed planning snapshot against current
 inputs, then tests the checker. After reviewing changed inputs or dispositions, explicitly regenerate
@@ -17,7 +18,7 @@ for the tests named in it. The [policy](../scripts/release-validation/policy.jso
 
 ## What is reconciled
 
-| Population | Current count | Mapping and limit |
+| Population | Phase-1 count | Mapping and limit |
 | --- | ---: | --- |
 | Package scripts | 122 | Every script has exactly one reviewed disposition. Alias expansion preserves order, arguments, environment and repeated prerequisites; cycles, missing aliases and unsupported shell syntax refuse. |
 | Campaign entrypoints | 78 | All immediate `scripts/*/{run,campaign}.mjs` files map to package commands, explicit phase commands, reviewed parent wrappers or exclusions. AST call locations expose dynamic arguments for the next phase; they are not resolved execution edges. |

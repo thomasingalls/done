@@ -13,18 +13,48 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 612 obligations, including all 276 current
+At the signed `82daaac0` checkpoint, the [manifest](./release-validation-manifest.json) contains
+616 obligations, including all 280 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**188 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
-missing tests in the product. The compiler refuses release execution before making a checkout.
+**159 obligations remain blocked: 96 command and 63 campaign rows; no test-file rows remain.**
+These require certification of the complete wrappers and their selected prerequisites/postconditions;
+they are not 159 missing product tests. The compiler still refuses whole-release execution before
+making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
 Catalogue data is resolved through a finite AST interpreter; unknown syntax refuses without import.
+
+## Checkpoint and remaining sequence
+
+At `82daaac0`, all eleven catalogue adapters (163 cases / 54 mutations) and all general test-file
+adapters are integrated: **261 files / 2,042 dispositions, including 11 explicitly not applicable**.
+That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
+and browser application files. The 19 infrastructure test files account for the other required files.
+These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
+they are not a passing full aggregate at the current head.
+
+The application-latency adapter exposed the current blocking F-17 result: last desktop/CPU-4x Android
+card typing is 15.2/69.4 ms against <16 ms. Complete-comparison and detached-fork repairs were retained;
+both metadata optimizations were rejected. The private preparation handoff is implemented and tested,
+but unconnected to the editor. Next integrate Local against the existing path, run the required
+semantic/native controls, and measure under a prospective comparison with unchanged application budgets.
+
+After that gate, resume command/campaign wrapper certification, including exact dependency/vector
+reuse and complete output retention. Resolve the host-Python input binding, recorded timeout/owner/
+oracle observations, whole-tree style scope (R-04) and remaining construction prose (P-06), then run
+the complete selected graph at one immutable revision for the declared workload/platform scope.
+The subsequent private Account rehearsal and human recovery/adoption milestones are described in
+[the release plan](./private-release-validation-prep.md#what-follows-validation).
+
+The [2026-09-14 record audit](./account-conformance-runs/2026-09-14-release-status-audit.json) verifies
+the eight recent signatures, append-only records and 391 archived payload hashes. This checkpoint is
+explicitly revision-bound; [progress](./progress.md) carries the active phase and the checked manifest
+carries current counts. Keep this overview reconciled when subsequent integration changes its scope.
 
 ## Commands and current execution scope
 
