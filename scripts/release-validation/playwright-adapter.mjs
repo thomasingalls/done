@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { playwrightDeclarations } from './playwright-census.mjs';
+import { playwrightDeclarations, playwrightCaseId } from './playwright-census.mjs';
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-upgrade-fixtures': ['test/app-upgrades/upgrades.spec.ts'],
   'browser-storage-fixtures': [
     'test/local-app/packaged.spec.ts',
     'test/storage-compatibility/compatibility.spec.ts',
@@ -16,6 +17,13 @@ export const browserGroups = {
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (file === 'test/app-upgrades/upgrades.spec.ts')
+    return {
+      config: 'playwright.app-upgrades.config.ts',
+      projects: [''],
+      mode: 'upgrades',
+      deadlineMs: 240000,
+    };
   if (file === 'test/local-app/packaged.spec.ts')
     return {
       config: 'playwright.local-startup.config.ts',
@@ -44,8 +52,29 @@ export function browserPolicy(file) {
     deadlineMs: 300000,
   };
 }
+export const upgradePriorDisposition = {
+  id: playwrightCaseId('test/app-upgrades/upgrades.spec.ts', '', [
+    'the supplied predecessor upgrades into the new policy with its later writing intact',
+  ]),
+  outcome: 'not-applicable',
+  reason: 'Supply APP_UPGRADE_PREDECESSOR_DIR to exercise the actual prior build.',
+};
+function disposition(id) {
+  return id === upgradePriorDisposition.id
+    ? { ...upgradePriorDisposition }
+    : { id, outcome: 'pass' };
+}
 export function playwrightStage(root, file) {
   const p = browserPolicy(file);
+  const cases = playwrightDeclarations(file, readFileSync(join(root, file), 'utf8'), {
+    root,
+    projects: p.projects,
+  }).map((c) => disposition(c.id));
+  if (p.mode === 'upgrades')
+    assert(
+      cases.some((c) => c.id === upgradePriorDisposition.id),
+      'Missing named predecessor disposition',
+    );
   return {
     id: 'test:' + file,
     argv: ['node', 'scripts/release-validation/playwright-driver.mjs', file],
@@ -56,10 +85,7 @@ export function playwrightStage(root, file) {
       kind: 'playwright',
       files: [file],
       projects: p.projects,
-      cases: playwrightDeclarations(file, readFileSync(join(root, file), 'utf8'), {
-        root,
-        projects: p.projects,
-      }),
+      cases,
     },
     deadlineMs: p.deadlineMs,
     graceMs: 5000,
@@ -79,8 +105,9 @@ export function validatePlaywrightStage(stage) {
   assert.equal(stage.processPolicy, 'inherited-group-v1');
   assert.deepEqual(stage.fixture, { kind: 'chromium-cdp', startupMs: 15000 });
   assert.deepEqual(stage.expect.projects, p.projects);
-  assert(
-    stage.expect.cases.every((c) => c.outcome === 'pass'),
+  assert.deepEqual(
+    stage.expect.cases,
+    stage.expect.cases.map((c) => disposition(c.id)),
     'Unreviewed browser disposition',
   );
 }
@@ -117,13 +144,24 @@ export function reconcilePlaywright(expected, actual, nonce) {
   );
   assert.deepEqual(
     actual.cases
-      .map((c) => ({ id: c.id, outcome: c.status === 'passed' ? 'pass' : c.status }))
+      .map((c) =>
+        c.status === 'skipped' && disposition(c.id).outcome === 'not-applicable'
+          ? disposition(c.id)
+          : { id: c.id, outcome: c.status === 'passed' ? 'pass' : c.status },
+      )
       .sort((a, b) => a.id.localeCompare(b.id)),
     [...expected.cases].sort((a, b) => a.id.localeCompare(b.id)),
     'Incomplete or non-passing Playwright census',
   );
   for (const c of actual.cases) {
-    assert.equal(c.expectedStatus, 'passed', 'Inverted Playwright expectation');
+    const declared = expected.cases.find((e) => e.id === c.id);
+    const skipped = declared.outcome === 'not-applicable';
+    assert.equal(
+      c.expectedStatus,
+      skipped ? 'skipped' : 'passed',
+      'Inverted Playwright expectation',
+    );
+    assert.equal(c.status, skipped ? 'skipped' : 'passed', 'Unexpected browser disposition');
     assert.equal(c.retry, 0, 'Retried Playwright case');
     assert.equal(c.repeatEachIndex, 0, 'Repeated Playwright case');
     assert.deepEqual(c.errors, [], 'Playwright case errors');
@@ -145,8 +183,12 @@ export function reconcilePlaywright(expected, actual, nonce) {
         'Attachment bytes changed',
       );
     }
-    assert.deepEqual(c.annotations, [], 'Unreviewed Playwright annotation');
+    assert.deepEqual(
+      c.annotations,
+      skipped ? [{ type: 'skip', description: declared.reason }] : [],
+      'Unreviewed Playwright annotation',
+    );
     assert(Number.isFinite(c.durationMs) && c.durationMs >= 0, 'Missing Playwright duration');
   }
-  return { ...actual, cases: actual.cases.map((c) => ({ id: c.id, outcome: 'pass' })) };
+  return { ...actual, cases: actual.cases.map((c) => disposition(c.id)) };
 }

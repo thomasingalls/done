@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 288,
+          "line": 289,
           "form": "fc.property"
         }
       ],
@@ -8971,7 +8971,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 148,
+          "line": 167,
           "form": "fc.property"
         }
       ],
@@ -11360,7 +11360,7 @@
     },
     {
       "path": "scripts/app-upgrades/server.mjs",
-      "sha256": "6b2f08a9237679de70c6a6fdb092f78bd826ae54be65af6c00cf8b1ed27244ec"
+      "sha256": "b2b29d494e01b20236e84e9331532d923fff1127e6b5f1ede056c7c1969eaa1a"
     },
     {
       "path": "scripts/bench-journal-device.mjs",
@@ -11876,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "3c66e61e0a2884e32709e1b1b53bcd90c6e717cfaca0c1ecf65178a3f61b58e7"
+      "sha256": "140998a1d54bac6dc1769c406a3e960015c7611f8d25995a93390ed6375dc36f"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11920,7 +11920,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "9b4c164da59667cd88a94fa93ad7ef13195da8897391edc9032869a3c2045580"
+      "sha256": "c71f875b95f3f4ae03279dff223c8900ed70d504eb6569b224938080afd26fbc"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -11948,7 +11948,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "306a49a4ae98076707d2803d65d8c79b788c457b4edeaa23563f85e8cd26dda1"
+      "sha256": "01e80558ab6b85a5539b7093b85351e49f4acab1b3acc2841d5b1afec4b0d9af"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -11956,7 +11956,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-driver.mjs",
-      "sha256": "1307143c68084c31cbab83bd2c78dc51cc2873743868c47d73273a43120776f4"
+      "sha256": "578f0685f60d727ebaf4fbe311395fc869686d0157aa007e712d6ad458a9da65"
     },
     {
       "path": "scripts/release-validation/playwright-reporter.mjs",
@@ -11988,7 +11988,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "19f9180b8fa21013d4266d08786bd3c11878810d3b041a84fcf30bf42f4278bb"
+      "sha256": "be72d95c31badea8d27c2c577a1498e79a88924c18ae10e3010bb0d602e85b62"
     },
     {
       "path": "scripts/release-validation/static-fixture.mjs",
@@ -13256,7 +13256,7 @@
     },
     {
       "path": "test/app-upgrades/upgrades.spec.ts",
-      "sha256": "84b81a82fa005ca309b807a7ef9558b185ff29f2437c180deae8d73bdf40da20"
+      "sha256": "ad941add7d3ac2f8e6804b49604a49bbb4e7ec5dd405c7e217528bc1901868ef"
     },
     {
       "path": "test/archiveProjection.test.ts",
@@ -13808,11 +13808,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "f40b2063b368fc8c8b0a4d65b21a19a1808ad38862ce44e58b2728be2ed96d1c"
+      "sha256": "b4ac2013f5ae015408e5357256c8a0954059c9ded895a3d465e1dafc48fb2c78"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "f7d1598790da83c6029ca7c494da2bc0f20321526d9a7e3fecbd45c3ba7bb7ce"
+      "sha256": "ebd66a5262af784c9ca5f72b1e8913e81b7f875487a8c948353b6370402bddeb"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13844,11 +13844,11 @@
     },
     {
       "path": "test/release-validation/playwright-native.test.mjs",
-      "sha256": "88b38f188a9f8dcb8a894e57a65d713646ad87accaec3e1a6d46197c15f6a97e"
+      "sha256": "1649aaf2f9327ec61cf6572a08137716ebb61f90e9f471c6188ab6c21db4b298"
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "4125ada10f587c4d6b2155749144ad5ed49dee99892575be473f9f0062f05136"
+      "sha256": "1177cdafd147da089a18829eda852fbaf3128f37847485ae38c766088070eba9"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

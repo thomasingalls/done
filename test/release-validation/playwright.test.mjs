@@ -7,6 +7,7 @@ import {
   browserFiles,
   playwrightStage,
   reconcilePlaywright,
+  upgradePriorDisposition,
 } from '../../scripts/release-validation/playwright-adapter.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
@@ -75,10 +76,10 @@ test('Playwright census refuses hidden, aliased, modified, skipped registrations
 });
 
 test('reviewed browser files preserve Local and storage cases and cannot bypass owned browser, driver or result contracts', () => {
-  assert.equal(browserFiles.length, 5);
+  assert.equal(browserFiles.length, 6);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [3, 6, 5, 4, 4],
+    [8, 3, 6, 5, 4, 4],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);
@@ -86,6 +87,7 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
     assert.equal(
       stage.deadlineMs,
       {
+        'test/app-upgrades/upgrades.spec.ts': 240000,
         'test/local-app/packaged.spec.ts': 180000,
         'test/storage-compatibility/compatibility.spec.ts': 270000,
         'test/private-migration/rehearsal.spec.ts': 540000,
@@ -108,6 +110,23 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
 test('Playwright reports refuse terminal, collected, retry, annotation, framework, server and outcome corruption', () => {
   const cases = population(['one', 'two']);
   assert.equal(reconcilePlaywright(expected(cases), report(cases), 'fresh').cases.length, 2);
+  const named = [upgradePriorDisposition],
+    inactive = report(named);
+  inactive.cases[0].status = 'skipped';
+  inactive.cases[0].expectedStatus = 'skipped';
+  inactive.cases[0].annotations = [{ type: 'skip', description: upgradePriorDisposition.reason }];
+  assert.deepEqual(reconcilePlaywright(expected(named), inactive, 'fresh').cases, named);
+  for (const mutate of [
+    (r) => (r.cases[0].annotations[0].description = 'different reason'),
+    (r) => (r.cases[0].status = 'passed'),
+    (r) => (r.cases[0].annotations = []),
+    (r) => (r.cases[0].status = 'failed'),
+  ]) {
+    const changed = structuredClone(inactive);
+    mutate(changed);
+    assert.throws(() => reconcilePlaywright(expected(named), changed, 'fresh'));
+  }
+
   for (const change of [
     (r) => (r.phase = 'running'),
     (r) => (r.status = 'failed'),

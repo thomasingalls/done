@@ -6766,3 +6766,14 @@ All 98 pure runner checks, TypeScript, scoped style, inventory and authority gat
 General integration now covers 248 files / 1,885 cases. 11 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: application upgrade browser fixtures, followed by geometry and latency files.
 
 [Evidence](./account-conformance-runs/2026-09-14-browser-storage-fixtures/README.md).
+
+
+## 2026-09-14 — Application upgrade browser fixtures (`L-1`)
+
+Application upgrade browser fixtures covers 10 case dispositions (9 passed; 1 explicitly not applicable) in 2 files. Seven upgrade cases run against two disposable builds and the existing switchable release server: exact asset bytes, first-install offline reopen, multi-tab waiting, interrupted and wrong-byte downloads with retry, renderer death and compatible rollback, and the immediate-activation sensitivity control. The optional actual-predecessor case is explicitly not applicable because no predecessor build is supplied; its named reason must match exactly and it grants no predecessor-upgrade evidence. The independent predecessor-input/wrapper obligation remains open. Two native adapter controls rerun ordinary passing/omitted/skipped/failed census and cancellation/deadline ownership. All application assertions and 35-second case bounds remain unchanged; the 240-second file bound includes both builds. The server factory preserves the standalone fixed-port command while owned runs use an ephemeral loopback server. The reconciler accepts only the exact declared non-applicable case/reason and still refuses every unexpected skip, inverted outcome, retry or annotation. Evidence counts distinguish passes from explicitly unexercised dispositions. This bounded selection is not immutable release qualification.
+
+All 98 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `703990b2` has a verified signature. 248 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 249 files / 1,893 case dispositions (1 not applicable). 10 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: geometry layout/editor browser fixtures, then interaction and latency fixtures.
+
+[Evidence](./account-conformance-runs/2026-09-14-browser-upgrade-fixtures/README.md).

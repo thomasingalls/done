@@ -3157,3 +3157,8 @@ Introduce explicit single-file Playwright contracts and an independent static ce
 ## 2026-09-14 — Packaged Local, compatibility and private migration browser fixtures
 
 Keep browser file admission explicit while adding disposable package builds and the original private migration Vite configuration. Serve exact build files with no missing-asset fallback or path escape; preserve application assertions, case bounds and standalone commands. Retain the native adapter regressions and seeded migration evidence without treating host Python or wrapper obligations as qualified.
+
+
+## 2026-09-14 — Application upgrade browser fixtures
+
+Admit the application upgrade file using two disposable builds and the existing fault server. Keep the supplied-predecessor variant visibly unexercised, represented by one exact identity/reason rather than general skip acceptance. Preserve standalone server behavior, all application assertions, wrapper obligations and strict failure/drain reconciliation. Report not-applicable cases separately from passing cases.

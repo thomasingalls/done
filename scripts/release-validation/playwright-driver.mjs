@@ -5,6 +5,7 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { createServer, build } from 'vite';
 import { once } from 'node:events';
+import { upgradeFixtureServer } from '../app-upgrades/server.mjs';
 import { staticFixtureServer } from './static-fixture.mjs';
 import { browserPolicy } from './playwright-adapter.mjs';
 import { listenEphemeralVite } from './server.mjs';
@@ -19,7 +20,21 @@ const output = join(process.env.TMPDIR, 'playwright');
 mkdirSync(output, { recursive: true });
 const fixtureEnv = {};
 let server, closeServer;
-if (policy.mode === 'packaged') {
+if (policy.mode === 'upgrades') {
+  const releases = join(output, 'releases');
+  for (const version of ['a', 'b'])
+    await build({
+      configFile: resolve('vite.config.ts'),
+      logLevel: 'error',
+      define: { 'import.meta.env.VITE_APP_VERSION': JSON.stringify('upgrade-' + version) },
+      build: { outDir: join(releases, version), sourcemap: false, emptyOutDir: true },
+    });
+  fixtureEnv.APP_UPGRADE_OUTPUT = releases;
+  fixtureEnv.APP_UPGRADE_HAS_PRIOR = '0';
+  server = upgradeFixtureServer(releases);
+  closeServer = () =>
+    new Promise((done, reject) => server.close((error) => (error ? reject(error) : done())));
+} else if (policy.mode === 'packaged') {
   const release = join(output, 'app');
   await build({
     configFile: resolve('vite.config.ts'),

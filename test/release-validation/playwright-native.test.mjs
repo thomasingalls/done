@@ -28,6 +28,7 @@ function fixture(t, text = ordinary) {
     'playwright.local-startup.config.ts',
     'test/local-app/startup.spec.ts',
     'test/release-validation/browser-fixture.ts',
+    'scripts/app-upgrades/server.mjs',
     ...[
       'process-guard',
       'nested-launcher',

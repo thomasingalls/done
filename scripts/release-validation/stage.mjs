@@ -103,7 +103,10 @@ export function validateStage(stage) {
     );
     for (const c of stage.expect.cases) {
       assert(
-        typeof c.id === 'string' && c.id.length && ['pass', 'detected'].includes(c.outcome),
+        typeof c.id === 'string' &&
+          c.id.length &&
+          (['pass', 'detected'].includes(c.outcome) ||
+            (stage.expect.kind === 'playwright' && c.outcome === 'not-applicable')),
         'Invalid expected case',
       );
       if (c.outcome === 'detected')
