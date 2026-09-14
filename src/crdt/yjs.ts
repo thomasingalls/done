@@ -54,12 +54,62 @@ const encodeIntegratedState = (doc: YDoc): Uint8Array =>
     store: { ...doc.store, pendingStructs: null, pendingDs: null },
   } as YDoc);
 
-/** Detached runtime fork, not a wire/archive format. Preserve pending bookkeeping without replaying it. */
+// V2 concatenates string fields before UTF-8 encoding. Replace unpaired edge surrogates before
+// joining, as independent V1 string encoding did; interior replacements cannot cross a field edge.
+const forkString = (value: string): string => {
+  const first = value.charCodeAt(0),
+    last = value.charCodeAt(value.length - 1);
+  if (first >= 0xdc00 && first <= 0xdfff) value = '\ufffd' + value.slice(1);
+  if (last >= 0xd800 && last <= 0xdbff) value = value.slice(0, -1) + '\ufffd';
+  return value;
+};
+/** Private paired codecs: V2 struct compression with the existing V1 legacy-JSON semantics. */
+class ForkEncoder extends Y.UpdateEncoderV2 {
+  override writeString(value: string): void {
+    super.writeString(forkString(value));
+  }
+  override writeKey(value: string): void {
+    super.writeKey(forkString(value));
+  }
+  override writeJSON(value: unknown): void {
+    encoding.writeVarString(this.restEncoder, JSON.stringify(value));
+  }
+}
+// lib0's any-decoder returns newly allocated trees, but their binary leaves alias the input.
+// Detach those leaves before clearing temporary bytes. No accepted/source object is traversed.
+const detachForkBuffers = (value: unknown): unknown => {
+  if (value instanceof Uint8Array) return value.slice();
+  if (value && typeof value === 'object') {
+    const tree = value as Record<string, unknown>;
+    for (const key of Object.keys(tree)) tree[key] = detachForkBuffers(tree[key]);
+  }
+  return value;
+};
+class ForkDecoder extends Y.UpdateDecoderV2 {
+  override readJSON(): unknown {
+    return JSON.parse(decoding.readVarString(this.restDecoder));
+  }
+  override readBuf(): Uint8Array {
+    return super.readBuf().slice();
+  }
+  override readAny(): unknown {
+    return detachForkBuffers(super.readAny());
+  }
+}
+
+/** Detached runtime fork. Its paired private codecs never escape as a wire/archive format. */
 export const forkDoc = (source: YDoc, gc = true): YDoc => {
-  const doc = new Y.Doc({ gc }),
-    bytes = encodeIntegratedState(source);
+  const bytes = Y.encodeStateAsUpdateV2(
+    {
+      ...source,
+      store: { ...source.store, pendingStructs: null, pendingDs: null },
+    } as YDoc,
+    undefined,
+    new ForkEncoder(),
+  );
+  const doc = new Y.Doc({ gc });
   try {
-    Y.applyUpdate(doc, bytes);
+    Y.applyUpdateV2(doc, bytes, undefined, ForkDecoder);
     const pending = source.store.pendingStructs;
     doc.store.pendingStructs = pending
       ? { missing: new Map(pending.missing), update: pending.update.slice() }

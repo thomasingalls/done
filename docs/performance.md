@@ -594,3 +594,86 @@ F-17 remains partial. Next is a bounded document/history fork-cost repair preser
 staging, refused-edit isolation, undo and pending delivery, followed by this unchanged application
 gate. Dense-history and device capacity, focus, remaining command/campaign adapters and immutable
 release qualification remain open. Personal browser, package and deployment are untouched.
+
+
+## 2026-09-14 — F-17 detached-fork repair (Android typing budget still failed)
+
+Based on signed `e2c93b05`, this [bounded experiment](./f17-forks.md) changes only the Yjs seam's
+runtime document construction. Admission still has a detached canonical draft and a separate
+private undo history, full verification on every transition, and unchanged publication ordering.
+[Evidence](./account-conformance-runs/2026-09-14-f17-forks/README.md) retains the prospective protocol,
+its refinement after semantic failures, final source patch/pins, every pilot/final sample, failed
+controls, full native reports and the unchanged failed application gate.
+
+The naïve public V2-codec swap was rejected. Directed tests demonstrate different legacy JSON
+conversion and adjacent unpaired-surrogate behavior. A generated isolation check shrank a third
+failure to a one-byte binary value: V2's decoder returned a view into the update, which the fork
+then cleared. Paired private codecs now use V2 struct compression with V1 JSON stringify/parse,
+independent string-edge replacement and detached binary buffers. Those temporary bytes never
+become a persistence or transport representation.
+
+A new test also fails against the signed V1 baseline: a binary leaf nested inside an arbitrary
+object/array aliases the temporary update and becomes zero when that update is cleared. The new
+fork detaches these leaves too. This is a demonstrated runtime-fork defect for that content shape;
+this evidence does not establish that personal writing used the shape or lost data. The baseline
+counterexample remains distinct from the three defects in the rejected candidate.
+
+Final sequential Node medians use 100k visible characters at the declared item counts, one warmup
+and five measured forks/comparisons, and six admitted commands with the first excluded. Whole
+commands use a controlled in-memory durable carrier, not physical browser storage:
+
+| Yjs items | Fork before / after, ms | Whole command before / after, ms |
+| --- | ---: | ---: |
+| 1,000 | 1.385 / 0.849 | 13.585 / 15.210 |
+| 10,000 | 4.971 / 3.498 | 26.115 / 23.815 |
+| 100,000 | 42.866 / 28.577 | 130.601 / 116.110 |
+
+Whole-command observations remain mixed. A predeclared alternating fork-only check uses ten
+warmups per variant and twenty AB/BA pairs with separate bundles. Correctness checks and disposal
+occur outside timing. No tests or other profiles ran concurrently with these measurements:
+
+| Yjs items | Fork median before / after, ms |
+| --- | ---: |
+| 1,000 | 0.695 / 0.415 |
+| 10,000 | 3.119 / 1.779 |
+| 100,000 | 36.897 / 22.252 |
+
+This meets the prospective rule: at least a 20% fork gain in a declared stratum with no consistent
+>10% fork regression in another. Samples share host/JIT/GC state; they establish neither a
+population estimate nor a universal speedup. The initial plain-V2 pilot is retained separately
+and is not used as evidence for the revised paired codec. Undo-stack copying remains unchanged.
+
+The unchanged packaged application gate ran alone against the UI-seeded, cold-verified 300-card /
+400-line corpus. All 12 project/cases execute without skips/retries and all 30 metrics survive.
+One project teardown reports Android card typing over budget; the run is failed and drained.
+Rounded values in milliseconds:
+
+| Measurement | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 223.7 | 704.0 | <2500 |
+| Warm application work, excluding factor entry | 208.0 | 627.4 | <1000 |
+| Encrypted load and replay | 5.2 | 23.2 | <500 |
+| Compose typing p95, 120 keys | 5.9 | 9.8 | <16 |
+| Card typing p95, 120 keys | 15.2 | **69.4** | **<16 — Android failed** |
+| Card focus to editable | 7.4 | 35.7 | <50 |
+| Peek navigation response / settled | 8.1 / 23.1 | 36.6 / 62.4 | <100 each |
+| Keyboard navigation response | 0.5 | 13.9 | <100 |
+
+Previous typing was 16.2/77.2 ms and focus 8.1/44.2 ms. These cross-run differences are descriptive,
+not controlled causal estimates. Both seeded editor workloads use 1280x900. CPU throttling is host
+emulation, not a handset, and the frame-plus-task recorder remains a paint proxy. Desktop meets its
+typing bound in this observation; this does not close the complete gate or the earlier focus tail.
+No numeric budget, deadline, recorder, personal app or deployment changed.
+
+The final unit suite passes 96 files / 1,035 cases. Two hundred generated Unicode/nested-content
+cases compare with a frozen V1 reference and exercise isolation in both directions; 150 generated
+undo/redo histories compare repeated forks against an unforked history and check selection metadata.
+Existing 500 fork and 350 comparison histories remain. Pending-map aliasing and omission of redone
+links each fail their intended control. Native pending and original-order delivery each pass 100
+histories plus directed crash/pressure cases. Owned admission passes ten cases and four mutations;
+all 99 pure runner, type, scoped style, inventory and authority checks pass.
+
+F-17 remains partial. Next isolate remaining undo-history and duplicate-preparation costs on the
+revised runtime before choosing an ownership or history-copy change. Private staging, refused-edit
+isolation, undo, pending delivery and full verification remain hard constraints. Dense-history,
+physical-device capacity, focus, command/campaign integration and immutable qualification remain open.
