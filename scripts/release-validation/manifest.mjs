@@ -52,6 +52,7 @@ import {
   promotionContractNativeFixtureFiles,
   checkpointContractNativeFixtureFiles,
   counterContractNativeFixtureFiles,
+  storeContractNativeFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -458,6 +459,11 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'store-contract-native-fixture': rows
+        .filter(
+          (r) => account.node.includes(r.path) && storeContractNativeFixtureFiles.includes(r.path),
+        )
         .map((r) => r.id),
       'counter-contract-native-fixture': rows
         .filter(

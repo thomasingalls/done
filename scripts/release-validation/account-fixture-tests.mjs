@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const storeContractNativeFixtureFiles = ['test/account-store-contract/native.test.mjs'];
+
 export const counterContractNativeFixtureFiles = ['test/account-counter-contract/native.test.mjs'];
 
 export const checkpointContractNativeFixtureFiles = [
@@ -268,6 +270,7 @@ export const accountFixtureFiles = {
     ...promotionContractNativeFixtureFiles,
     ...checkpointContractNativeFixtureFiles,
     ...counterContractNativeFixtureFiles,
+    ...storeContractNativeFixtureFiles,
   ],
 };
 
@@ -297,7 +300,8 @@ export function accountFixtureNodeStage(root, file) {
     parserConformanceNativeFixtureFiles.includes(file) ||
     promotionContractNativeFixtureFiles.includes(file) ||
     checkpointContractNativeFixtureFiles.includes(file) ||
-    counterContractNativeFixtureFiles.includes(file);
+    counterContractNativeFixtureFiles.includes(file) ||
+    storeContractNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -322,6 +326,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (storeContractNativeFixtureFiles.includes(file) ? 300000 : undefined) ??
       (counterContractNativeFixtureFiles.includes(file) ? 300000 : undefined) ??
       (checkpointContractNativeFixtureFiles.includes(file) ? 300000 : undefined) ??
       (promotionContractNativeFixtureFiles.includes(file) ? 180000 : undefined) ??

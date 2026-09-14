@@ -3001,3 +3001,14 @@ reservations after final transaction abort and the browser's reported strict dur
 power loss separate. The reserve omission is detected at the AES invocation: a late rewind refusal
 cannot compensate for encryption before durable allocation. The fixture configures synthetic custody
 directly; it does not establish Account admission, factor UX, profile restore or whole-wrapper coverage.
+
+
+## 2026-09-14 — Preserve independent store bytes and qualify reopen terminology
+
+Integrate all three store-contract native cases under their existing bounds, adapting only fixture
+ownership to the established CDP lifecycle. Retain byte-identical test bodies and the independent
+HKDF/AES/XChaCha oracle. Credit its storeId omission control separately from owner self-roundtrips.
+Distinguish page navigation/reconfiguration from session reopen and crash recovery. Reuse the signed
+counter fixture's identical cleanup block with pinned prior controls; do not claim those controls ran
+again. Continue the remaining Account suite integrations in signed bounded groups as authorized, and
+stop if signing needs unavailable interaction rather than falling back to unsigned commits.

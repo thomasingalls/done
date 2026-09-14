@@ -43,43 +43,64 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account store-contract native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account suites (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-blocks_on: none; next bounded phase reviews Account store-contract native fixture
+status: in flight
+blocks_on: none; continue bounded signed Account groups; stop if signing blocks
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account counter-contract native fixture](./release-validation-execution.md#account-counter-contract-native-fixture--phase-2au)
-adds one file / five cases. It passes in 47.159 seconds with worker/browser groups drained.
-Node execution took 12.285 of 300 seconds and stage time 16.829; cases retain forty seconds.
-Fixture setup now uses owned CDP, isolated contexts and early nested cleanup. Product, runtime/crypto
-helpers, interpreter, owner, wrapper and all five test bodies remain unchanged. New work is uncommitted.
+**Just completed.** Account store-contract native integration.
 
-**Evidence.** Independent Node crypto verifies metadata KDF and counter/witness MAC bytes. Eight
-correctly MACed semantic lies refuse. A final transaction abort burns its reservation while preserving
-the spool witness and committing no event; retry uses a fresh reservation. Strict durability is observed
-through IndexedDB, without a power-loss claim. Two source controls expose a stored-MAC race and AES
-invocation without prior reservation, even though a later rewind guard still refuses the latter.
+Counter-contract is signed and verified as `9a5bf1d`. The store-contract selection adds one complete
+native file / three cases, passing in 33.535 seconds including fingerprinting.
+Node execution takes 5.683 of the existing 300-second file bound;
+stage time is 8.298. Cases retain forty seconds. Worker and browser
+groups drain, and the recorded browser PID is absent afterward.
 
-The old late-cleanup registration leaks a mocked listener on setup failure; nine current cleanup
-scenarios and eight real native browser-owner controls pass. All 93 runner checks, TypeScript, scoped
-style, planning, authority and signatures pass. Prior Node/Vitest/native owner evidence (23/5/14) stays
-preserved. The [packet](./account-conformance-runs/2026-09-14-counter-contract-native-fixture/README.md) retains receipts, patch, source/browser identities and scope limits.
-Synthetic custody is configured directly; no Account admission service runs. No native generated
-histories, crash/profile-restore tests or optional wrapper reports are credited here.
+Independent Node HKDF/AES and noble XChaCha checks verify all seeded record/journal bytes, KDF info,
+identity encoding and key properties. Page navigation followed by explicit synthetic custody
+reconfiguration recovers the data; a fresh writer adds a third journal entry, and flush preserves
+all seven fixed frames while emptying the journal. Five record alterations and three journal-key
+alterations refuse. The latter case reopens sessions within the same page; it is not a browser restart.
+One checked source control removes storeId from the real custody KDF. Its local roundtrip succeeds,
+but the independent byte oracle detects incompatible ciphertext.
+
+Fixture setup now borrows owned CDP and creates an isolated context, with early nested cleanup and
+listen-error rejection. This lifecycle block is byte-identical to the signed counter fixture; its nine
+modeled cleanup and eight real browser-owner controls retain pinned prior evidence, without rerunning.
+The previous store fixture already registered server cleanup before launch; no prior setup leak is
+claimed here. All three test bodies, product, runtime/crypto helpers, owner, interpreter and wrapper
+remain unchanged. Synthetic custody is directly initialized; no Account admission service, generated
+histories, crash cuts, physical power-loss checks or historical readers run. Optional wrapper reports
+are not emitted. Full vector/format/wrapper and immutable aggregate qualification remain separate.
+
+All 93 pure runner checks, TypeScript, scoped style, inventory, manifest, authority and signatures pass.
+All 200 prior general contracts / 1,670 identities and exclusions are unchanged. General selections
+now contain 201 files / 1,673 cases (96 Vitest, 105 Node); Account has 95 files / 579 cases.
+The 682,490-byte manifest has 612 obligations / 216 unresolved: 57 test files
+(41 Node, sixteen Playwright), 96 commands and 63 campaigns. All eleven catalogues remain resolved
+(163 cases / 54 mutations). These are integration obligations, not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-store-contract-native-fixture/README.md) retains receipts, exact patch, frozen source/browser identities, control/helper
+pins, prior owner evidence, base signature and preservation checks. All 52 personal/vector pins and
+L-2 remain unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture
+oracle follow-ups and earlier deadline evidence remain open. Next: local custody/provenance fixtures,
+then the remaining Account suites in bounded signed groups under the current authorization. Stop if
+signing blocks; do not commit unsigned. R-04, P-06 and the immutable aggregate precede private Account
+preparation; this selection does not qualify that aggregate.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -95,14 +116,10 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Review `test/account-store-contract/native.test.mjs` (three cases),
-then remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General
-selections contain 200 files / 1,670 cases: all 96 Vitest and 104 Node files. All 199 prior contracts /
-1,665 identities remain unchanged. The 681,463-byte manifest retains 612 obligations / 217 blocked rows:
-58 test-file (42 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations,
-not defect counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8
-exclusions and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and
-P-06 prose precede the immutable aggregate and private Account preparation.
+**Next bounded phase.** Local custody/provenance, followed by admission bounds, reservation durability,
+outbound, decision composition, failures, liveness and residue. Twenty-eight Account files remain.
+After this authorized Account group, non-Account Node/nested/Playwright integration and command/campaign
+contracts remain; release qualification and human Account preparation still follow those gates.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

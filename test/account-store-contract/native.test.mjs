@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { bundle } from './runtime.mjs';
 import {
   key,
@@ -35,17 +36,31 @@ async function fixture(t, control = 'base') {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end('<!doctype html><title>Disposable store bridge</title>');
   });
-  await new Promise((r, rej) => {
-    server.once('error', rej);
-    server.listen(0, '127.0.0.1', r);
+  let browser, context;
+  t.after(async () => {
+    try {
+      try {
+        await context?.close();
+      } finally {
+        await browser?.close();
+      }
+    } finally {
+      if (server.listening)
+        await new Promise((resolve, reject) =>
+          server.close((error) => (error ? reject(error) : resolve())),
+        );
+    }
   });
-  t.after(() => new Promise((r) => server.close(r)));
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      server.off('error', reject);
+      resolve();
+    });
   });
-  t.after(() => browser.close());
-  const page = await browser.newPage(),
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
+  const page = await context.newPage(),
     url = 'http://127.0.0.1:' + server.address().port;
   const cold = async () => {
     await page.goto(url);
