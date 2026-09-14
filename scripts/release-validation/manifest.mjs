@@ -77,6 +77,8 @@ import {
   nodeProtocolStage,
 } from './general-tests.mjs';
 
+import { otherNodeGroups, otherNodeFiles, otherNodeStage } from './other-node-tests.mjs';
+
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
   argv,
@@ -162,7 +164,10 @@ export function compileManifest(root, inventory) {
   assertGeneralTestPopulation(generated, inventory);
   const account = general.vitest.length ? accountFixtureFiles : { vitest: [], node: [] };
   assertGeneralTestPopulation(account, inventory);
+  const other = general.vitest.length ? otherNodeFiles : [];
+  assertGeneralTestPopulation({ node: other, vitest: [] }, inventory);
   const reviewed = [
+    ...other,
     ...propertyFiles,
     ...general.vitest,
     ...general.node,
@@ -229,6 +234,8 @@ export function compileManifest(root, inventory) {
       add({ id, kind: 'test', path: t.path, stage: generatedNodeStage(root, t.path) });
     } else if (account.node.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: accountFixtureNodeStage(root, t.path) });
+    } else if (other.includes(t.path)) {
+      add({ id, kind: 'test', path: t.path, stage: otherNodeStage(root, t.path) });
     } else
       add({
         id,
@@ -439,6 +446,12 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      ...Object.fromEntries(
+        Object.entries(otherNodeGroups).map(([name, files]) => [
+          name,
+          rows.filter((r) => other.includes(r.path) && files.includes(r.path)).map((r) => r.id),
+        ]),
+      ),
       'vitest-properties': rows.filter((r) => propertyFiles.includes(r.path)).map((r) => r.id),
       'vitest-reviewed': rows
         .filter(
@@ -668,7 +681,8 @@ export function compileManifest(root, inventory) {
             r.stage?.expect.kind === 'vitest' ||
             general.node.includes(r.path) ||
             generated.node.includes(r.path) ||
-            account.node.includes(r.path),
+            account.node.includes(r.path) ||
+            other.includes(r.path),
         )
         .map((r) => r.id),
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),

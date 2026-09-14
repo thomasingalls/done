@@ -42,16 +42,12 @@ in items 2–4. Full-history capacity and the aggregate qualification work remai
 records current package wiring, proposed required families, explicit exclusions and concrete execution
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
-supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-229 files / 1,772 cases: all 96 Vitest files and 133 Node files.
-Account packaged UI and persistent-profile residue fixtures adds 2 cases, passing in 53.480 seconds with worker/browser groups
-drained. The final two Account cases cover packaged UI/export/offline whole-profile reopen and synthetic migration/cleanup/clear. Account integration is complete; no personal runtime or product source changed.
-All 93 runner checks and scoped gates pass; 228 prior contracts / 1,770 identities
-and exclusions remain unchanged. There are 188 unresolved obligations: 29 test-file (13
-Node, sixteen Playwright), 96 command, 63 campaign. All 123 Account files / 678 cases are integrated.
-Next proposed: non-Account Node fixtures, starting with storage-marker and origin controls.
-Existing owner/headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-Account preparation. The preceding phase `1135e75` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-residue-packaged-fixture/README.md).
+supply owned execution for 163 catalogue cases and 54 mutations.
+General integration covers **233 files / 1,790 cases**, including all 123 Account files.
+25 test-file, 96 command and 63 campaign obligations remain.
+The other Node marker, origin and legacy observer phase is complete; scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: native marker, packaged maintenance and partial Local recovery fixtures. [Latest evidence](./account-conformance-runs/2026-09-14-other-node-controls/README.md).
+
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

@@ -18,19 +18,24 @@ import { buildInventory } from '../../scripts/release-validation/inventory.mjs';
 import { compileManifest, selectStages } from '../../scripts/release-validation/manifest.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
+import {
+  otherNodeGroups,
+  otherNodeStage,
+} from '../../scripts/release-validation/other-node-tests.mjs';
+
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1772-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1790-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 229);
+  assert.equal(general.length, 233);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1772,
+    1790,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -41,11 +46,27 @@ test('reviewed Vitest and Node selections preserve the 1772-case file denominato
     selectStages(m, 'vitest-properties').reduce((n, s) => n + s.expect.cases.length, 0),
     62,
   );
+  const other = selectStages(m, 'other-node-controls');
+  assert.deepEqual(
+    other.map((s) => s.argv.at(-1)),
+    [...otherNodeGroups['other-node-controls']].sort(),
+  );
+  assert.deepEqual(
+    other.map((s) => s.expect.cases.length),
+    [7, 7, 3, 1],
+  );
+  for (const file of ['test/local-recovery/native.test.mjs', 'test/../hidden.mjs', '--test'])
+    assert.throws(() => otherNodeStage(process.cwd(), file), /Unreviewed/);
+  assert(m.rows.find((r) => r.id === 'campaign:scripts/legacy-cleanup/run.mjs').blocked);
   for (const s of general) {
     validateStage(s);
     assert.equal(
       s.deadlineMs,
       {
+        'test/storage-capacity/marker.test.mjs': 60000,
+        'test/validation-controls/origin.test.mjs': 60000,
+        'test/legacy-host/harness.node.mjs': 60000,
+        'test/legacy-host-cold/harness.node.mjs': 60000,
         'test/account-admission-evidence/receipt.test.mjs': 360000,
         'test/account-admission-evidence/size.test.mjs': 360000,
         'test/account-receive-transport/controls.test.mjs': 90000,

@@ -3172,12 +3172,17 @@ qualification is separate. The authorized Account suite integration group is com
 proposed group is the remaining non-Account Node fixtures, starting with storage-marker and origin
 controls; implementation of that group has not started.
 
+
+## Other Node marker, origin and legacy observer controls (`L-1`)
+
+Other Node marker, origin and legacy observer controls passes 18 cases in 4 files. Four unchanged files retain their 18 exact cases and 550 generated inputs (150 marker, 100 saved-file, 200 byte-decoder and 100 paged-inventory inputs). All stages use a 60-second file bound and the existing inherited process-group guard. Origin checks use disposable output; legacy host controls use files and protocol stubs. No browser, host denial policy or personal installation is used. These controls do not establish production old-writer exclusion or qualify their campaign wrappers.
+
+All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `94d4926b` has a verified signature. 229 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 233 files / 1,790 cases. 25 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: native marker, packaged maintenance and partial Local recovery fixtures.
+
+[Evidence](./account-conformance-runs/2026-09-14-other-node-controls/README.md).
+
 ## Next bounded integration
 
-All 123 Account files / 678 cases are integrated. The next proposed group is the remaining
-non-Account Node fixtures, starting with storage-marker and origin controls; this group has not started.
-There are **188 blocked rows**: 29 test-file (13 Node, sixteen Playwright),
-96 command and 63 campaign. All eleven catalogues remain
-resolved. Preserve retired-v8 exclusions and prior owner/headroom/oracle observations. Remaining
-integration, R-04 style checks, P-06 prose and the immutable aggregate precede private Account
-app/service preparation and human passkey/recovery/adoption work.
+native marker, packaged maintenance and partial Local recovery fixtures. 25 test-file, 96 command and 63 campaign obligations remain.

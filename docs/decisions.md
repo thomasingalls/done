@@ -3127,3 +3127,8 @@ Admit the unchanged 24-history native property at seed 1121040, preserving 330/3
 ## 2026-09-14 — Complete Account suite integration with owned persistent-profile lifetimes
 
 Use an explicit inherited-profile fixture kind to bind the installed browser without starting an unused CDP browser. Reuse the custody helper for real profile closure and reopen, keeping the packaged cases and existing time limits. Requalify the six profile-owner controls through this contract plus existing Node, Vitest and CDP controls. Distinguish acquired-file observations from the cases' narrower assertions and from forensic erasure. Close the authorized Account integration group; other suite, wrapper/output and immutable release gates remain.
+
+
+## 2026-09-14 — Other Node marker, origin and legacy observer controls
+
+Register only the four reviewed control files with exact static case identities and bounded inherited children. Preserve generated populations, retired-v8 exclusions, optional host experiment dispositions and separate wrapper obligations. Continue the authorized three suite groups with signed intermediate commits; stop if signing blocks.

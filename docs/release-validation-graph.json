@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 200,
+          "line": 221,
           "form": "fc.property"
         }
       ],
@@ -11841,7 +11841,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "46ff1cdacb5409dbd06d13aab7e36bd02b3f272c77595f44c35c04fe4fdf505e"
+      "sha256": "50192b49a3297a2154f54a6c5aa54ff3e5b1e79c3a0f632b998202046422ed32"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11885,11 +11885,15 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "cdbd7dc4395415ac16a4a4cc75a99d95f5273da498c83d521d554e7024d2e736"
+      "sha256": "adcd82f6f7b8512f7f8deef54ba67d3ed6f7ac87aa20f421c12d91e55c90f495"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
       "sha256": "5e17f0906b55e9db9454ee7127a217beb4847d0f0ae169103b999d05428b22eb"
+    },
+    {
+      "path": "scripts/release-validation/other-node-tests.mjs",
+      "sha256": "98eb030255d4b35acbfb14f851c1886fe7f059e8b48ace178a9ac7d097538ac5"
     },
     {
       "path": "scripts/release-validation/owned-startup-adapter.mjs",
@@ -13737,11 +13741,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "7fccbf46dedd55f8e68a36b00f3d19fbc711de60a3a92e98f6894c856b235154"
+      "sha256": "a38b5a8c13beb50dbddb98ab2239c9a7bd9489d8df41f76da3f55abb93e11935"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "9a2e2ec4e203b06b782d87180df6b3a391cb79cbf0402e803b98b47ca48dd182"
+      "sha256": "7cbd1837cbfc558da7d3cef1964cc71faec4026e0cbe0e6d9c4f1fbd9b7555f1"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
