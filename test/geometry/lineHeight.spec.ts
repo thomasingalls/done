@@ -1,3 +1,4 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /**
  * "Line heights must not shift when syntax reveals or hides. Text must never
@@ -16,7 +17,7 @@ import { openApp } from './openApp';
  * opens it first.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /**
  * Every line is short enough to fit the narrowest project viewport with its

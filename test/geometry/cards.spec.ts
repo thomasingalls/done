@@ -1,3 +1,4 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /**
  * "Hard constraint: static render and mounted editor must be pixel-identical.
@@ -12,7 +13,7 @@ import { openApp } from './openApp';
  * that keeps the restatement honest.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /** One construct per card, so a failure names the construct that broke. */
 const CARDS = [

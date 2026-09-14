@@ -1,7 +1,8 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /** Browser coverage for the viewport-derived part of TRD §8.6. */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 const section = (heading: string, count: number): string[] => [
   heading,

@@ -16,6 +16,6 @@ export function manifestSnapshot(manifest) {
       .join(',\n') +
     '\n}\n';
   // Bounded headroom for the reviewed Account registrations; serialization stays unchanged.
-  assert(Buffer.byteLength(code) <= 750000, 'Manifest size budget failed');
+  assert(Buffer.byteLength(code) <= 800000, 'Manifest size budget failed');
   return code;
 }

@@ -76,10 +76,10 @@ test('Playwright census refuses hidden, aliased, modified, skipped registrations
 });
 
 test('reviewed browser files preserve Local and storage cases and cannot bypass owned browser, driver or result contracts', () => {
-  assert.equal(browserFiles.length, 6);
+  assert.equal(browserFiles.length, 10);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [8, 3, 6, 5, 4, 4],
+    [6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);
@@ -88,6 +88,11 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
       stage.deadlineMs,
       {
         'test/app-upgrades/upgrades.spec.ts': 240000,
+        'test/geometry/breadcrumbs.spec.ts': 240000,
+        'test/geometry/cards.spec.ts': 240000,
+        'test/geometry/layout.spec.ts': 360000,
+        'test/geometry/lineHeight.spec.ts': 240000,
+
         'test/local-app/packaged.spec.ts': 180000,
         'test/storage-compatibility/compatibility.spec.ts': 270000,
         'test/private-migration/rehearsal.spec.ts': 540000,
@@ -104,7 +109,10 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
     ])
       assert.throws(() => validateStage({ ...stage, ...change }));
   }
-  assert.throws(() => playwrightStage(process.cwd(), 'test/geometry/layout.spec.ts'), /Unreviewed/);
+  assert.throws(
+    () => playwrightStage(process.cwd(), 'test/geometry/workflow.spec.ts'),
+    /Unreviewed/,
+  );
 });
 
 test('Playwright reports refuse terminal, collected, retry, annotation, framework, server and outcome corruption', () => {

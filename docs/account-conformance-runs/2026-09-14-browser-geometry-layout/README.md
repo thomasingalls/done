@@ -1,0 +1,9 @@
+# Integration of geometry layout and editor fixtures
+
+Integration of geometry layout and editor fixtures covers 50 case dispositions (50 passed; 0 explicitly not applicable) in 4 files. Four Playwright files contribute 50 desktop/Android-emulated cases: breadcrumbs and outline focus, static/mounted card geometry and edit guards, viewport and panel layout, and caret/live-preview line heights. All existing assertions, input fixtures, factor-unlock setup and 30-second per-case bounds are retained. Each file uses a fresh disposable packaged build and an ephemeral exact-file server under the owned Chromium group, with one worker, no retries and exact project/case reconciliation. File deadlines are 240 seconds except layout at 360 seconds; these include preparation and both projects. Android is browser emulation, not real-device performance evidence. The compact manifest is 747448 bytes; its writer and independent test ceiling move prospectively from 750000 to 800000 bytes for the remaining explicit project registrations, with no schema/layout change or deleted obligations. Runtime log/report bounds are unchanged. Predecessor-upgrade evidence and wrapper/build/output obligations remain separate.
+
+All 98 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `763fa7d3` has a verified signature. 249 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 253 files / 1,943 case dispositions (1 not applicable). 6 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: geometry interaction browser fixtures, then latency fixtures.
+
+[Exact scope and execution](./summary.json); [artifact hashes](./artifacts.json).

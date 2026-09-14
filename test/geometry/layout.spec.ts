@@ -1,3 +1,4 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /**
  * The layout constraints from TRD §8.2, which must hold under any
@@ -5,7 +6,7 @@ import { openApp } from './openApp';
  * against the CSS that currently satisfies them.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /**
  * Fills the day in focus with one very tall card. `insertText` puts the

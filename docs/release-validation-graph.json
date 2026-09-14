@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 289,
+          "line": 294,
           "form": "fc.property"
         }
       ],
@@ -8971,7 +8971,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 167,
+          "line": 175,
           "form": "fc.property"
         }
       ],
@@ -11876,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "140998a1d54bac6dc1769c406a3e960015c7611f8d25995a93390ed6375dc36f"
+      "sha256": "97f1b4027a10dd17c6ade7741a1f80eedfdd5e6fd0635f4b200f894bbbd1144c"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11916,7 +11916,7 @@
     },
     {
       "path": "scripts/release-validation/manifest-snapshot.mjs",
-      "sha256": "d01bf24fcd21ebb1f5014d80f1fc97e94cf7a1b2b2b44ff6df47bda38316161e"
+      "sha256": "c8597bc409b82778ac454786e50e19056e311dbc363793e82ad2d2d54966faad"
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
@@ -11948,7 +11948,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "01e80558ab6b85a5539b7093b85351e49f4acab1b3acc2841d5b1afec4b0d9af"
+      "sha256": "dd05636ca2ad36d3cdb9a755a1f5e9993ea16761c4b4f1ab4682d0671de35777"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -13356,19 +13356,19 @@
     },
     {
       "path": "test/geometry/breadcrumbs.spec.ts",
-      "sha256": "0723e3525756af88733070b9d238a96840385d2b3fed5e99232dcfd7d0773497"
+      "sha256": "2b452ce47de6ce5545f4c79f9b9d5b3fe26ec36a45893f89c02db8d846801112"
     },
     {
       "path": "test/geometry/cards.spec.ts",
-      "sha256": "99a2734082dbf8335529a5a935c82864d175f16315258ae9c5ea473c22a0356b"
+      "sha256": "600920c5f859f84978ab93fd5aec42ee3c7a979ac83d24709bc29ed8a313a411"
     },
     {
       "path": "test/geometry/layout.spec.ts",
-      "sha256": "7c6a1ea258678bac9845bd49564111fdf72a89446d9a7363cfb1fa989a711179"
+      "sha256": "2f2cc80bfa54e7cc0adb5e55313ac73731f186be70a010149f5e81e343c48b57"
     },
     {
       "path": "test/geometry/lineHeight.spec.ts",
-      "sha256": "36009aafe17595c701a5928793f1dc0207899e85bcca139ba627ac279a5b9d06"
+      "sha256": "56f6910c40c76b979a0a2b7060e17f17dcb59bce2aa3f5ff0dcb776e4abc0146"
     },
     {
       "path": "test/geometry/openApp.ts",
@@ -13808,11 +13808,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "b4ac2013f5ae015408e5357256c8a0954059c9ded895a3d465e1dafc48fb2c78"
+      "sha256": "2a3abdfbf33ea5284ecd1464861216804d479de40874c7f7026aed0869aab4e1"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "ebd66a5262af784c9ca5f72b1e8913e81b7f875487a8c948353b6370402bddeb"
+      "sha256": "5a5c72a6043d9da924e1940dccb95fa2e7a147e5ae93e7342a83ec6ceec27ce9"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13848,7 +13848,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "1177cdafd147da089a18829eda852fbaf3128f37847485ae38c766088070eba9"
+      "sha256": "d4d74f8eee3566e96d831a16886850c564ec1225257ef3eade822ac66eb58f58"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

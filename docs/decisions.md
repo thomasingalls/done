@@ -3162,3 +3162,8 @@ Keep browser file admission explicit while adding disposable package builds and 
 ## 2026-09-14 — Application upgrade browser fixtures
 
 Admit the application upgrade file using two disposable builds and the existing fault server. Keep the supplied-predecessor variant visibly unexercised, represented by one exact identity/reason rather than general skip acceptance. Preserve standalone server behavior, all application assertions, wrapper obligations and strict failure/drain reconciliation. Report not-applicable cases separately from passing cases.
+
+
+## 2026-09-14 — Integration of geometry layout and editor fixtures
+
+Admit the four geometry layout/editor files through the owned packaged browser adapter with their original desktop/Android projects and unchanged assertions. Keep execution serial, retain complete case/project populations and preserve per-case bounds. Prospectively allow the finite remaining browser census within an 800000-byte manifest ceiling in both writer and independent regression control; do not alter runtime report limits or remove obligations.

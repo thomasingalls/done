@@ -6,6 +6,12 @@ import { playwrightDeclarations, playwrightCaseId } from './playwright-census.mj
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-geometry-layout': [
+    'test/geometry/breadcrumbs.spec.ts',
+    'test/geometry/cards.spec.ts',
+    'test/geometry/layout.spec.ts',
+    'test/geometry/lineHeight.spec.ts',
+  ],
   'browser-upgrade-fixtures': ['test/app-upgrades/upgrades.spec.ts'],
   'browser-storage-fixtures': [
     'test/local-app/packaged.spec.ts',
@@ -17,6 +23,13 @@ export const browserGroups = {
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (browserGroups['browser-geometry-layout'].includes(file))
+    return {
+      config: 'playwright.config.ts',
+      projects: ['desktop', 'android'],
+      mode: 'packaged',
+      deadlineMs: file === 'test/geometry/layout.spec.ts' ? 360000 : 240000,
+    };
   if (file === 'test/app-upgrades/upgrades.spec.ts')
     return {
       config: 'playwright.app-upgrades.config.ts',

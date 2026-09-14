@@ -247,12 +247,12 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1893,
+    1943,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
-  // Reviewed Account registrations exceed 700 kB; retain bounded headroom for remaining adapters.
-  assert(Buffer.byteLength(serialized) < 750000);
+  // Reviewed browser project registrations need bounded headroom beyond the 750 kB census.
+  assert(Buffer.byteLength(serialized) < 800000);
 });
 
 test('160 generated literal populations preserve tuple binding, loop order and suite scope independently of runtime collection', () => {
