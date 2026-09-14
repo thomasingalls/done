@@ -1,0 +1,107 @@
+{
+  "base": "fdcf265ba0c27bb8c9d3054adc53606faef43f0e",
+  "claim": "Account Local provenance native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-11-31.535Z",
+  "summary": {
+    "schema": 1,
+    "selection": "local-provenance-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-local-provenance/native.test.mjs",
+        "key": "ffa0ddc9563d05d89fa553e79c74e1c2f44fe43c69a8db70c1ad5795b9ffb1f0",
+        "status": "passed",
+        "elapsedMs": 72784,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:11:31.537Z",
+    "input": "a3c58516688ff4048efcedc7014c4a0bd9202b94e00348d35b277db03a02f0f2",
+    "completedAt": "2026-09-14T11:13:10.825Z"
+  },
+  "elapsedMs": 99288,
+  "rawInputArchiveSha256": "389cd2696db403b93c633c5d3ebc56831ad9bb7fc8e45e9d2d0a4ad646cd6ad4",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "fdcf265ba0c27bb8c9d3054adc53606faef43f0e",
+    "sourceDigest": "67e036cd0db41f130c0e8351afc9d2d4325d3b93db62f4dfabe2b52a4dea6ed9",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 4,
+    "browserFiles": 1,
+    "fixtureInstances": 4,
+    "generatedHistories": 20,
+    "executedOmissionControls": 1,
+    "exclusionBarriers": 4,
+    "claimVariants": 4,
+    "blockingMarkerInputs": 3,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 201,
+    "priorGeneralCases": 1673,
+    "currentGeneralFiles": 202,
+    "currentGeneralCases": 1677,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 106,
+    "accountFiles": 96,
+    "accountCases": 583,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 215,
+    "unresolvedTestFiles": 56,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 683630
+  },
+  "finalGatesSha256": "d2ea91be03a14d01b7e113417a60fedc7fd0d7f213526167b626cb5ce2d302ac",
+  "preservationSha256": "a1cdf9ed872da51bb7b3c266e05291cecfba68e42f0cfa99eb8a7dc7a47496f2",
+  "limits": [
+    "Four complete native cases run under the existing 300-second wrapper/file bound; individual case limits remain 60, 30, 30 and 90 seconds. CDP startup is 15 seconds and drain grace five. This phase changes only six runner/registration test files and generated snapshots; selected test bodies, fixtures, product, interpreter, reporter, owners, runtimes, oracles and wrappers are unchanged.",
+    "The existing promotion/genesis/admission/handoff fixture chain owns a loopback Account service with disposable SQLite stores, generated authority/service secrets, a software authenticator and an isolated CDP context. Setup uses page navigation and reinstalls test bundles while retaining the browser/context and service. Software passkey assertions are not human authenticator/PRF UX. No personal account, origin, factor, deployment or browser is used. Inherited historical-reader branches exist but are not selected; no historical/data inputs are required by this selection.",
+    "Fresh, imported and cleanup-v1/v2 Local claims have independently reconstructed factor opening, HKDF and claim HMAC bytes. The fixture uses real Local genesis then synthetically signs imported/cleanup variants; it does not execute migration/source deletion to create them. Real preparation/genesis/admission/handoff then cold page startup preserve the exact claim and inventory. Startup network is disabled and four checked throwing barriers make calls into clear/import/source/fingerprinting fail; direct probes prove those barriers execute. This only establishes absence of those guarded calls on the exercised startup paths.",
+    "One uniquely anchored claim-MAC omission admits changed-MAC provenance at preflight where baseline refuses and preserves inventory. After Account handoff the same omission still cannot bypass the marker's binding to the exact winning claim MAC. Restoration permits Account startup. This separates effective preflight authentication from later redundant enforcement; no post-handoff authority bypass is claimed.",
+    "Three preactive import/Local-clear marker specimens block Account startup and preserve the measured inventory. Removing the marker permits Account startup. The clear specimen is a synthetically constructed shape, not a completed authenticated clear operation; the fixture never performs source deletion.",
+    "Twenty fast-check histories at seed 5110941 vary cleanup version, progress and which imported/cleanup field changes. Each constructs a distinct scope, performs Account handoff, alters stored provenance without updating its MAC, requires the exact authentication refusal and unchanged inventory after page startup, then restores exact bytes and opens Account. Shrinking is enabled on failure; this passing run has no observed shrunk counterexample. These histories do not simulate renderer/service kill, physical power loss, multiple devices or profile restore.",
+    "ACCOUNT_REPORT_DIR is unset so optional wrapper JSON reports are not emitted. Exact reporter results and frozen source/browser identities are archived. Full format/vector omissions, migration creation/cleanup campaigns, wrapper postconditions and immutable aggregate qualification remain separate. The adjacent local-custody file has nested Node subtests which the current census/reporter deliberately refuse; it is deferred to its own bounded adapter phase without changing that refusal policy here.",
+    "All 93 pure runner tests, TypeScript, scoped style, inventory, manifest, authority and signatures pass. All 201 prior general contracts / 1673 identities and exclusions remain unchanged. Prior owner controls retain pinned evidence, not a new run. All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups remain unchanged. Existing ledger orphan classification, receive/delivery-oracle deadline headroom, capture oracle follow-ups and earlier deadline repairs remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 68766.639333,
+    "stageElapsedMs": 72784,
+    "selectionElapsedMs": 99288,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "caseMs": [
+      60000,
+      30000,
+      30000,
+      90000
+    ],
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1befe36239c5c6df8c626f05a20fdb90ef83d91d634a17f3490552e851dddee9",
+    "compressedSha256": "a5ced6b774bde54b73afb63788d4d93eba47fd80ef1b112094074a146d26079b"
+  }
+}

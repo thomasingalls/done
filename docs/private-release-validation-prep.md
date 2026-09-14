@@ -43,16 +43,17 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-201 files / 1,673 cases: all 96 Vitest files and 105 Node files. Store-contract adds three native
-cases, passing in 33.535 seconds with worker/browser groups drained. Independent record/
-journal bytes, reopen/flush and one effective store-KDF omission control pass. Only fixture ownership
-and registration change; test bodies, product, helpers, interpreter and wrapper remain unchanged.
-All 93 pure checks and scoped gates pass; 200 prior contracts / 1,670 identities and exclusions remain
-unchanged. There are 216 unresolved obligations: 57 test-file (41 Node, sixteen Playwright), 96 command,
-63 campaign. Continue the remaining 28 Account files in signed bounded groups, starting with local
-custody/provenance. Existing owner/headroom/capture-oracle observations remain open. R-04, P-06 and
-the immutable run precede private Account preparation. Counter-contract `9a5bf1d` is signed and verified.
-[Evidence](./account-conformance-runs/2026-09-14-store-contract-native-fixture/README.md).
+202 files / 1,677 cases: all 96 Vitest files and 106 Node files. Local provenance adds four native
+cases and twenty generated histories, passing in 99.288 seconds with worker/browser groups
+drained. Independent claim authentication, guarded Account startup and tamper/restoration pass; imported
+claims are synthesized, not produced by a migration run. Only registration changes; product, test bodies,
+fixtures, helpers, interpreter, reporter and wrappers are unchanged. All 93 pure checks and scoped gates
+pass; 201 prior contracts / 1,673 identities and exclusions remain unchanged. There are 215 unresolved
+obligations: 56 test-file (40 Node, sixteen Playwright), 96 command, 63 campaign. Continue the remaining
+27 Account files in signed bounded groups, starting with local-custody's nested registrations and browser
+ownership. Existing owner/headroom/capture-oracle observations remain open. R-04, P-06 and the immutable
+run precede private Account preparation. Store-contract `fdcf265` is signed and verified.
+[Evidence](./account-conformance-runs/2026-09-14-local-provenance-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

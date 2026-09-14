@@ -3012,3 +3012,15 @@ Distinguish page navigation/reconfiguration from session reopen and crash recove
 counter fixture's identical cleanup block with pinned prior controls; do not claim those controls ran
 again. Continue the remaining Account suite integrations in signed bounded groups as authorized, and
 stop if signing needs unavailable interaction rather than falling back to unsigned commits.
+
+
+## 2026-09-14 — Separate Local provenance consumption from custody registration work
+
+Integrate the four unchanged provenance native cases with the existing owned promotion fixture chain
+and five-minute wrapper bound. Credit independent Local claim authentication, guarded read-only Account
+startup and twenty generated tamper/restoration histories. Imported/cleanup claims are synthesized;
+creation and deletion remain obligations of their existing campaigns. A preflight claim-MAC omission
+is effective before promotion, while the post-handoff winning-claim marker still refuses it.
+
+The adjacent local-custody file uses nested Node subtests that both current census and reporter reject.
+Keep that restriction unchanged in this phase and handle its registration/ownership explicitly next.
