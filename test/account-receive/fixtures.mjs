@@ -54,6 +54,8 @@ export async function receiveBundle(control) {
                 hits++;
                 return execFileSync('git', ['show', '8378596:src/crdt/promotionRecord.ts'], {
                   encoding: 'utf8',
+                  timeout: 5000,
+                  maxBuffer: 2 * 1024 * 1024,
                 });
               }
               if (control === 'witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {

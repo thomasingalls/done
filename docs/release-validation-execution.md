@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**238 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**236 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -50,6 +50,7 @@ node scripts/release-validation/execute.mjs --selection transport-service-fixtur
 node scripts/release-validation/execute.mjs --selection receive-transport-fixtures
 node scripts/release-validation/execute.mjs --selection receive-driver-fixtures
 node scripts/release-validation/execute.mjs --selection sync-fixtures
+node scripts/release-validation/execute.mjs --selection receive-editor-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1085,15 +1086,70 @@ All 174 prior contracts / 1,444 identities are unchanged. General selections now
 retains full receipts, exact patch, browser/input identities, source/helper pins, owner controls and
 preservation. This new phase remains uncommitted; frozen execution is not an immutable aggregate.
 
+## Core receive and ordered editor native fixtures — phase 2ab
+
+The preceding sync/composition phase is signed and verified as `0a7d6d4`. `receive-editor-fixtures`
+adds two complete files / 29 cases: ordered editor 12 and core receive 17. Both use the existing owned
+CDP browser. File bounds retain their wrapper limits of 480/300 seconds, with browser startup 15
+seconds and drain grace five seconds. Per-test bounds remain 45/40 seconds, with 200/180 seconds for
+the editor/core generated campaigns. Test bodies, seeds, populations, product code and wrappers remain
+unchanged. Only the historical-reader Git read gains five-second/2-MiB bounds.
+
+Core receive pins `8378596:src/crdt/promotionRecord.ts` and checks old-reader refusal of v9. Existing
+historical locator/owner controls already cover this path. The activation fixture's intermediate v8
+state and fencing checks do not revive v8 shipment. Four directed renderer crashes cover receive and
+activation before/after commit. Other cases test original content/evidence atomicity, duplicate handling,
+compaction and expired cold replay, missing/corrupt records, valid local AEAD/witness over invalid
+service proof, pending Yjs dependencies, retained conflict, close drain, native quota retry and authority
+change during sealing. A 256-update input refuses before reservation; 255 updates plus an event survive
+abort/retry. Coverage omissions test both individually redundant guards and their effective joint removal;
+witness, split-content and stored-page source mutations retain their specific readback/admission oracles.
+
+Editor cases require remote publication after durable commit with no local source/undo/outgoing event,
+then preparation of queued Local input. They exercise both commit-side renderer crashes, pending
+structs/deletes across compaction, pressure and suffix discard, refusal/conflict with continued Local
+editing, close with a second page waiting on the same slot, and observer-triggered close followed by
+full cold replay. Early-publication and local-relabel mutations expose premature visible text and an
+extra source capsule, respectively; the early-publication control also crashes its renderer.
+
+All 29 cases pass in 636.540 seconds including fingerprint work; worker/browser groups drain.
+Twelve core generated histories retain seed 9182026, numRuns:12, ordinary shrinking and a 180-second
+case bound. One to three operations mix commit cuts, compaction and cold reopen; cursor checks occur
+at each step and after crash/retry, then final replayed text is compared. Ten editor histories retain
+seed 9202026, numRuns:10, endOnFailure:true and 200 seconds. Three to six actions draw from receive,
+local, duplicate, invalid, compact and restart. Writing/cursor/source counts are checked after each
+action and writing/source counts after final reopen. The suite has no all-action-coverage assertion;
+a duplicate action before the first receive is a no-op.
+
+The fixture service provides setup and authority. Inbound envelopes use separate browser framing and
+WebCrypto under synthetic member keys; pages/acceptance proofs use the independent Node/OpenSSL oracle.
+This does not execute a real receive HTTP route. Core histories share a context/service across distinct
+workspaces; editor histories promptly close their separate contexts. Base cleanup is registered before
+setup and the owner drains Chromium. New-page reopen and renderer death do not establish full browser
+crash, power loss or second-device behavior. Optional JSON exports remain disabled; their saved-output
+postconditions and original wrapper ordering/prerequisites remain separate obligations.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner, Vitest-process and native-owner checks (23/5/12) retain pinned earlier evidence;
+the historical allowlist, owner implementation and existing promotionRecord drift controls are unchanged.
+The ledger phase's first expected-positive orphan classification remains unresolved. All 179 prior
+contracts / 1,473 identities are unchanged. General selections now contain 181 files / 1,502 cases
+(96 Vitest, 85 Node), including 75 Account files / 408 cases. The [packet](./account-conformance-runs/2026-09-14-receive-editor-fixtures/README.md) retains full
+receipts, exact patch, browser/input identities, source/helper pins, signatures and preservation. This
+new work remains uncommitted; bounded execution does not establish an immutable aggregate.
+
+The core Node run took 297.025 seconds against its 300-second deadline; its 301.462-second stage
+receipt includes preparation/drain overhead. This narrow margin remains a loaded-host reliability
+observation, not a reason to change a currently passing deadline.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**238 blocked rows**: 79 test-file, 96 command, 63 campaign. All Vitest files have adapters; 63 Node
-and sixteen Playwright files remain. Next review core receive and ordered editor native fixtures,
-including the historical reader and durable publication controls. Other owners and exact wrapper/output
-postconditions follow. Keep retired-v8 exclusions and resolve remaining old wrapper calls without
-reviving support. Preserve ordered vector/traceability prerequisites and the open owner/loaded-host
-reliability observation.
+**236 blocked rows**: 77 test-file, 96 command, 63 campaign. All Vitest files have adapters; 61 Node
+and sixteen Playwright files remain. Next review the Account spool native fixture, then delivery
+native fixtures and other owners/wrapper postconditions. Keep retired-v8 exclusions and resolve
+remaining old wrapper calls without reviving support. Preserve ordered vector/traceability prerequisites
+and the open owner/loaded-host reliability observation.
 
 R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
 prose sweep precede the complete immutable run. State workload/platform/claim dispositions before

@@ -18,6 +18,7 @@ import {
   receiveDriverBrowserFiles,
   syncFixtureFiles,
   syncBrowserFiles,
+  receiveEditorFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -32,14 +33,14 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 367 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 396 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
-      4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12,
+      4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12,
     ],
   );
   for (const s of stages) {
@@ -50,13 +51,16 @@ test('Account fixture selection admits exactly 367 Node cases and 12 delivery ca
       admissionEvidenceFiles.includes(s.argv.at(-1)) ||
       receiveTransportFixtureFiles.includes(s.argv.at(-1)) ||
       receiveDriverBrowserFiles.includes(s.argv.at(-1)) ||
-      syncBrowserFiles.includes(s.argv.at(-1));
+      syncBrowserFiles.includes(s.argv.at(-1)) ||
+      receiveEditorFixtureFiles.includes(s.argv.at(-1));
     assert.equal(
       s.deadlineMs,
       {
         'test/account-receive-transport/controls.test.mjs': 90000,
         'test/account-receive-transport/generated.test.mjs': 330000,
         'test/account-receive-transport/native.test.mjs': 120000,
+        'test/account-receive/native.test.mjs': 300000,
+        'test/account-receive-editor/native.test.mjs': 480000,
         'test/account-sync/batch.test.mjs': 300000,
         'test/account-sync/controls.test.mjs': 90000,
         'test/account-sync/generated.test.mjs': 450000,
@@ -76,10 +80,10 @@ test('Account fixture selection admits exactly 367 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 73);
+  assert.equal(selected.length, 75);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    379,
+    408,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -268,8 +272,8 @@ test('Account fixture selection admits exactly 367 Node cases and 12 delivery ca
   );
   assert(receive.every((s) => s.fixture && !s.expect.historyInputs && !s.expect.dataInputs));
   for (const file of [
-    'test/account-receive/native.test.mjs',
-    'test/account-receive-editor/native.test.mjs',
+    'test/account-delivery/native.test.mjs',
+    'test/account-spool/native.test.mjs',
   ]) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), file), /Unreviewed/);
     assert(m.rows.find((r) => r.path === file).blocked);
@@ -329,6 +333,33 @@ test('Account fixture selection admits exactly 367 Node cases and 12 delivery ca
   const syncScheduler = sync.find((s) => s.argv.at(-1).endsWith('/controls.test.mjs'));
   assert.equal(syncScheduler.fixture, undefined);
   assert.equal(syncScheduler.variant, 'node-account-fixture-file-v1');
+  const receiving = selectStages(m, 'receive-editor-fixtures');
+  assert.deepEqual(
+    receiving.map((s) => s.argv.at(-1)).sort(),
+    [...receiveEditorFixtureFiles].sort(),
+  );
+  assert.deepEqual(
+    receiving.map((s) => s.expect.cases.length),
+    [12, 17],
+  );
+  assert.deepEqual(
+    receiving.map((s) => s.deadlineMs),
+    [480000, 300000],
+  );
+  assert(receiving.every((s) => s.fixture && !s.expect.dataInputs));
+  const oldReader = receiving.filter((s) => s.expect.historyInputs);
+  assert.equal(oldReader.length, 1);
+  assert.equal(oldReader[0].argv.at(-1), 'test/account-receive/native.test.mjs');
+  assert.deepEqual(
+    oldReader[0].expect.historyInputs.map((p) => [p.reference, p.path]),
+    [['8378596', 'src/crdt/promotionRecord.ts']],
+  );
+  const readerPin = oldReader[0].expect.historyInputs[0];
+  assert(
+    readFileSync('test/account-receive/fixtures.mjs', 'utf8').includes(
+      readerPin.reference + ':' + readerPin.path,
+    ),
+  );
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -382,6 +413,8 @@ test('Account fixture selection admits exactly 367 Node cases and 12 delivery ca
     'account-parser-conformance',
     'account-receive-transport',
     'account-receive-driver',
+    'account-receive',
+    'account-receive-editor',
     'account-sync',
     'account-liveness',
   ])

@@ -2684,3 +2684,20 @@ and after execution, with real Git replacement controls for both paths. The curr
 is separately pinned in fixture source; this is a composite test builder, not a complete old app.
 Dormant historical branches in other helpers receive no inferred execution credit. Batch reports
 written inside the disposable checkout and optional JSON exports remain separate output obligations.
+
+
+## 2026-09-14 — Preserve receive/editor fixture boundaries and pin the old reader
+
+The core receive and ordered editor files enter the existing owned-CDP adapter as complete files,
+retaining their distinct 300/480-second wrapper deadlines, individual test bounds and generated
+populations. Pin the exact old promotionRecord reader in the core file's receipt and bound its Git
+read; do not infer historical-input execution from dormant branches in other imported helpers.
+The existing allowlist and historical drift controls already cover this path.
+
+Keep distinct evidence claims for atomic receive storage and ordered visible publication. Core
+histories check durable progress at each step and replayed text at the end; editor histories additionally
+check writing and local source counts after each action. Independently signed fixture pages do not
+establish service HTTP delivery. A new page in one browser context and CDP renderer death do not
+establish whole-browser/power-loss or second-device behavior. Retain the v8 exclusion: seeding and
+fencing an intermediate format in a fixture is not support for shipping that app. Wrapper output,
+ordering and prerequisite postconditions remain separate from direct-file execution.
