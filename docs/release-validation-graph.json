@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 221,
+          "line": 241,
           "form": "fc.property"
         }
       ],
@@ -11841,7 +11841,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "50192b49a3297a2154f54a6c5aa54ff3e5b1e79c3a0f632b998202046422ed32"
+      "sha256": "161d1601e2d53569e2ed115919a6c3ebf560b635e27551fe3e5e1f93c4a341d0"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11885,7 +11885,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "adcd82f6f7b8512f7f8deef54ba67d3ed6f7ac87aa20f421c12d91e55c90f495"
+      "sha256": "f96e63068de3e22272caa5a5d2d045556421ebfec11008488d7162d7887cb6b1"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11893,7 +11893,7 @@
     },
     {
       "path": "scripts/release-validation/other-node-tests.mjs",
-      "sha256": "98eb030255d4b35acbfb14f851c1886fe7f059e8b48ace178a9ac7d097538ac5"
+      "sha256": "f67bbd8b844cbbdebeaf6b762391cc531adea6a59751db1f0e7a542d710506d8"
     },
     {
       "path": "scripts/release-validation/owned-startup-adapter.mjs",
@@ -12921,7 +12921,7 @@
     },
     {
       "path": "test/account-residue/packaged-fixture.mjs",
-      "sha256": "8dc4e228a2abcd9fe7994ae10e5d91451bc8d0b42b5424061a7cff5470758d39"
+      "sha256": "14b9fef0a3e6e9f807a1409dd5371746c90befd194924f3345f27c620a145ac9"
     },
     {
       "path": "test/account-residue/packaged.test.mjs",
@@ -13741,11 +13741,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "a38b5a8c13beb50dbddb98ab2239c9a7bd9489d8df41f76da3f55abb93e11935"
+      "sha256": "28eda94d5acc355e7bc48bcc0354cb9809c3143b02256f8cd610dd3e4ab566cc"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "7cbd1837cbfc558da7d3cef1964cc71faec4026e0cbe0e6d9c4f1fbd9b7555f1"
+      "sha256": "a5c0a31f0f6b23e98f2d78693b10004bd6100ffd89381158fbfb26b23bdeef32"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

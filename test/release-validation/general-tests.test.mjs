@@ -26,16 +26,16 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1790-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1793-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 233);
+  assert.equal(general.length, 236);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1790,
+    1793,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -55,14 +55,34 @@ test('reviewed Vitest and Node selections preserve the 1790-case file denominato
     other.map((s) => s.expect.cases.length),
     [7, 7, 3, 1],
   );
-  for (const file of ['test/local-recovery/native.test.mjs', 'test/../hidden.mjs', '--test'])
+  for (const file of ['test/storage-harness/lifecycle.node.mjs', 'test/../hidden.mjs', '--test'])
     assert.throws(() => otherNodeStage(process.cwd(), file), /Unreviewed/);
   assert(m.rows.find((r) => r.id === 'campaign:scripts/legacy-cleanup/run.mjs').blocked);
+  const native = selectStages(m, 'other-native-fixtures');
+  assert.deepEqual(
+    native.map((s) => s.argv.at(-1)),
+    [...otherNodeGroups['other-native-fixtures']].sort(),
+  );
+  assert.deepEqual(
+    native.map((s) => s.expect.cases.length),
+    [1, 1, 1],
+  );
+  assert.equal(selectStages(m, 'other-native-regression').length, 4);
+  for (const s of native) {
+    const profiles = s.argv.at(-1) !== 'test/storage-capacity/marker-native.test.mjs';
+    assert.deepEqual(s.fixture, {
+      kind: profiles ? 'chromium-inherited-profiles' : 'chromium-cdp',
+      startupMs: 15000,
+    });
+  }
   for (const s of general) {
     validateStage(s);
     assert.equal(
       s.deadlineMs,
       {
+        'test/storage-capacity/marker-native.test.mjs': 120000,
+        'test/storage-capacity/maintenance.test.mjs': 120000,
+        'test/local-recovery/native.test.mjs': 120000,
         'test/storage-capacity/marker.test.mjs': 60000,
         'test/validation-controls/origin.test.mjs': 60000,
         'test/legacy-host/harness.node.mjs': 60000,

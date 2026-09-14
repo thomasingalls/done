@@ -3132,3 +3132,8 @@ Use an explicit inherited-profile fixture kind to bind the installed browser wit
 ## 2026-09-14 — Other Node marker, origin and legacy observer controls
 
 Register only the four reviewed control files with exact static case identities and bounded inherited children. Preserve generated populations, retired-v8 exclusions, optional host experiment dispositions and separate wrapper obligations. Continue the authorized three suite groups with signed intermediate commits; stop if signing blocks.
+
+
+## 2026-09-14 — Other native marker, maintenance and partial-recovery fixtures
+
+Repair the shared fixture-name regression and qualify all four reviewed callers. Bind installed Chromium to the new native adapters, preserve existing case/file deadlines and all prior contracts, and distinguish partial read-only recovery from complete recovery or physical erasure.

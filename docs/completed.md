@@ -6705,3 +6705,14 @@ All 93 pure runner checks, TypeScript, scoped style, inventory and authority gat
 General integration now covers 233 files / 1,790 cases. 25 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: native marker, packaged maintenance and partial Local recovery fixtures.
 
 [Evidence](./account-conformance-runs/2026-09-14-other-node-controls/README.md).
+
+
+## 2026-09-14 — Other native marker, maintenance and partial-recovery fixtures (`L-1`)
+
+Other native marker, maintenance and partial-recovery fixtures passes 5 cases in 4 files. Three newly integrated cases cover stored marker references through v9 sync/cold retry and tamper refusal without writes, automatic compaction after 140 edits with exact replay, and cancelled/completed partial ZIP recovery with all original carriers preserved. Their existing 120-second file limits are retained. The preceding phase introduced a fixture-name allowlist that rejected existing maintenance/recovery callers even outside the owned runner; both names are now admitted. The qualification selection also reruns both unchanged Account packaged cases, for five passing cases in four files. The marker uses an owned CDP browser; packaged cases use owned persistent profiles inside the guarded worker group. Independent ZIP interpretation still uses host Python without general external-tool identity binding; complete wrapper-output and forensic-erasure claims remain outside this result.
+
+All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `ef5112aa` has a verified signature. 233 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 236 files / 1,793 cases. 22 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: nested process-group ownership for the remaining two harness suites, then runner self-tests.
+
+[Evidence](./account-conformance-runs/2026-09-14-other-native-fixtures/README.md).

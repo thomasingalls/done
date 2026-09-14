@@ -41,7 +41,10 @@ const lib = async (entry, name) => {
   return (Array.isArray(result) ? result[0] : result).output.find((o) => o.type === 'chunk').code;
 };
 export async function packagedFixture(t, name) {
-  assert(['fresh', 'migration'].includes(name), 'Unknown packaged fixture');
+  assert(
+    ['fresh', 'migration', 'maintenance', 'recovery'].includes(name),
+    'Unknown packaged fixture',
+  );
   const dir = mkdtempSync(join(tmpdir(), 'done-packaged-residue-'));
   let context, server, profiles;
   t.after(async () => {

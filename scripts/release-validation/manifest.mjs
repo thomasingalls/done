@@ -446,6 +446,13 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'other-native-regression': rows
+        .filter(
+          (r) =>
+            otherNodeGroups['other-native-fixtures'].includes(r.path) ||
+            r.path === 'test/account-residue/packaged.test.mjs',
+        )
+        .map((r) => r.id),
       ...Object.fromEntries(
         Object.entries(otherNodeGroups).map(([name, files]) => [
           name,

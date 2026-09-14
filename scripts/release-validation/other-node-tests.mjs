@@ -5,6 +5,11 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 
 export const otherNodeGroups = {
+  'other-native-fixtures': [
+    'test/storage-capacity/marker-native.test.mjs',
+    'test/storage-capacity/maintenance.test.mjs',
+    'test/local-recovery/native.test.mjs',
+  ],
   'other-node-controls': [
     'test/storage-capacity/marker.test.mjs',
     'test/validation-controls/origin.test.mjs',
@@ -19,6 +24,8 @@ export function otherNodeStage(root, file) {
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
+  const native = otherNodeGroups['other-native-fixtures'].includes(file);
+  const profiles = native && file !== 'test/storage-capacity/marker-native.test.mjs';
   return {
     id: 'test:' + file,
     argv: [
@@ -29,13 +36,21 @@ export function otherNodeStage(root, file) {
       file,
     ],
     env: {},
-    variant: 'node-other-file-v1',
+    variant: profiles ? 'node-inherited-chromium-v1' : 'node-other-file-v1',
+    ...(native
+      ? {
+          fixture: {
+            kind: profiles ? 'chromium-inherited-profiles' : 'chromium-cdp',
+            startupMs: 15000,
+          },
+        }
+      : {}),
     expect: {
       kind: 'cases',
       cases: declarations.cases,
       ...(declarations.dataInputs.length ? { dataInputs: declarations.dataInputs } : {}),
     },
-    deadlineMs: 60000,
+    deadlineMs: native ? 120000 : 60000,
     graceMs: 5000,
     maxLogBytes: 4 * 1024 * 1024,
     maxReportBytes: 1024 * 1024,
