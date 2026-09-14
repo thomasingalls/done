@@ -1,0 +1,123 @@
+{
+  "base": "de8f421dba0d4180c25b39bfae24d98bef707e57",
+  "claim": "Account residue matcher and container fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-43-15.772Z",
+  "summary": {
+    "schema": 1,
+    "selection": "residue-node-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/extended.test.mjs",
+        "key": "1746c46891bde714429d31c5d843bee2a046b06ff38ae8e94f735ef7a7405c87",
+        "status": "passed",
+        "elapsedMs": 2481,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-residue/matcher.test.mjs",
+        "key": "414dad2efa5ed8ecdfa58653154e59223824e328c8843a1f1efe8dd381902215",
+        "status": "passed",
+        "elapsedMs": 1603,
+        "cases": 10,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:43:15.776Z",
+    "input": "8bfbf1bd9aa977d2d460101f07231cd1791734f6f3c9cfccb519d482cf9f124f",
+    "completedAt": "2026-09-14T12:43:45.205Z"
+  },
+  "elapsedMs": 29429,
+  "rawInputArchiveSha256": "3efcbd36d0c202f26f31ab66808db4eadbe446e2f73a594de701e6f1b92daaf3",
+  "rawBrowserArchiveSha256": null,
+  "input": {
+    "revision": "de8f421dba0d4180c25b39bfae24d98bef707e57",
+    "sourceDigest": "e08f37d4e1836f5686064f43ffbb557300c79613fea3d0e1a4180973227ca032",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    }
+  },
+  "counts": {
+    "selectedFiles": 2,
+    "selectedCases": 14,
+    "browserFiles": 0,
+    "fixtureInstances": 0,
+    "serviceFixtures": 0,
+    "generatedHistories": 60,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 222,
+    "priorGeneralCases": 1749,
+    "currentGeneralFiles": 224,
+    "currentGeneralCases": 1763,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 128,
+    "accountFiles": 118,
+    "accountCases": 669,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 193,
+    "unresolvedTestFiles": 34,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 706567
+  },
+  "finalGatesSha256": "f4532b6c2075ac2fb364c142bb6446bf1d83346f893990158b96bdc4ffa613c4",
+  "preservationSha256": "5932727774f0013b9080b3078b4a73a6281bc2b33642f56da27de2a1a2aa1c34",
+  "limits": [
+    "Fourteen complete cases cover the neutral residue matcher and bounded container readers, including 60 generated nested-container histories at seed 1209214. Both Node files receive a 60-second bound, drawn from the existing private-release neutral wrapper. No browser, Account workspace or personal profile is opened. Only the six registration files, generated snapshots and the Python ZIP producer call bounds change; test callbacks and product source remain unchanged.",
+    "The matcher exercises all fifteen declared representations, exact byte views and property keys, randomized needles, raw-before-hash and omitted-base64 controls, missing or unreadable surfaces, byte/depth limits, worker timeout, legacy carriers and observer-looking markers. The fragmented-record control deliberately does not detect a split needle: that remains an unqualified limitation. Static import checks cover five explicitly listed modules, not an exhaustive transitive or computed import graph.",
+    "Container controls cover independent Python stored/deflated ZIP, Node gzip and nested encodings, corrupt or truncated data, CRC errors, unsupported compression and budgets. Generated strings pass through one to four gzip layers around base64 content; corrupted gzip must be refused. File controls distinguish an empty logical SQL result from bytes retained in SQLite/WAL after deletion, and treat symlinks and insufficient budgets as incomplete. This is synthetic scanner calibration, not a forensic-erasure guarantee.",
+    "The ZIP producer now has a five-second timeout and one-MiB output ceiling per call. Its host Python 3.9.6 launcher, executable and 58 loaded file pins match before and after the selection, with PATH checked against both owned receipts. These observed pins are archived, but are not yet bound by the general runner frozen-input contract. Explicit external-tool binding remains necessary before immutable aggregate qualification. No Python installation or update occurred.",
+    "All prior contracts, exclusions, owner evidence and 52 personal/vector pins remain unchanged. Wrapper qualification, full output retention and immutable aggregate validation remain open. The runner currently omits per-test stdout and removes optional default reports with its disposable checkout; these file results are supported by owned case receipts, not by a claim that every wrapper report was retained."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-residue/extended.test.mjs",
+        "nodeSummaryMs": 850.813584,
+        "stageElapsedMs": 2481,
+        "fileDeadlineMs": 60000
+      },
+      {
+        "id": "test:test/account-residue/matcher.test.mjs",
+        "nodeSummaryMs": 81.303417,
+        "stageElapsedMs": 1603,
+        "fileDeadlineMs": 60000
+      }
+    ],
+    "selectionElapsedMs": 29429,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 60000,
+    "caseMs": null,
+    "note": "Existing wrapper and case limits retained."
+  },
+  "hostZipProducer": {
+    "version": "3.9.6 (default, May 22 2026, 11:13:45) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+    "launcher": "/usr/bin/python3",
+    "executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "files": 58,
+    "beforeAfterMatched": true,
+    "stagePathMatched": true,
+    "note": "Observed host-tool evidence. General-stage frozen input identity does not bind this Python tool; external-tool integration remains required before immutable aggregate qualification."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "6e3fb700836ee87f5c93a2bd2eae07b5b3803604574c69574f4cdcc2ea093801",
+    "compressedSha256": "00799b370d2b2b015b1c2ea20d77963d0e79d8e5299d4ba5d42b7549448700ed"
+  }
+}

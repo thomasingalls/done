@@ -3102,3 +3102,8 @@ Integrate the unchanged 80-edit, 30-edit burst and post-growth recovery workload
 ## 2026-09-14 — Keep growing-history liveness evidence tied to exact causal and source assertions
 
 Integrate the unchanged 24-job growth case under its existing 930/900-second file/case bounds. Credit ordered source/spool correspondence, exact prefixes, one ordinary-read census per observed poll, local-admission/send-wake equality and cold text preservation. Keep collected performance/control samples distinct from asserted thresholds or full object equivalence. Wrapper outputs and immutable release qualification remain separate.
+
+
+## 2026-09-14 — Bound the independent ZIP producer and retain residue matcher limitations
+
+Integrate fourteen neutral matcher/container cases under 60-second file bounds. Bound host Python ZIP generation to five seconds and one MiB, retaining before/after observed tool pins. This evidence does not substitute for binding external tools into immutable runner identity. Keep fragmented records, limited static-import checks and raw-file versus logical SQL observations explicit; claim no forensic erasure or complete wrapper-output qualification.

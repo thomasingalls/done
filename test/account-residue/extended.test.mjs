@@ -27,7 +27,7 @@ const zip = (text, method) =>
       'import sys,io,zipfile\nb=io.BytesIO()\nwith zipfile.ZipFile(b,"w",compression=int(sys.argv[1])) as z: z.writestr("unknown.txt",sys.stdin.buffer.read())\nsys.stdout.buffer.write(b.getvalue())',
       String(method),
     ],
-    { input: text },
+    { input: text, timeout: 5000, maxBuffer: 1024 * 1024 },
   );
 test('60 generated nested container histories preserve detection and refuse corrupt gzip', () => {
   fc.assert(

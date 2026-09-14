@@ -7,6 +7,11 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const residueNodeFixtureFiles = [
+  'test/account-residue/extended.test.mjs',
+  'test/account-residue/matcher.test.mjs',
+];
+
 export const livenessGrowthFixtureFiles = ['test/account-liveness/native.test.mjs'];
 
 export const livenessWorkloadFixtureFiles = ['test/account-liveness/workload.test.mjs'];
@@ -338,6 +343,7 @@ export const accountFixtureFiles = {
     ...livenessBrowserFixtureFiles,
     ...livenessWorkloadFixtureFiles,
     ...livenessGrowthFixtureFiles,
+    ...residueNodeFixtureFiles,
   ],
 };
 
@@ -404,6 +410,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (residueNodeFixtureFiles.includes(file) ? 60000 : undefined) ??
       (livenessGrowthFixtureFiles.includes(file) ? 930000 : undefined) ??
       (livenessWorkloadFixtureFiles.includes(file) ? 750000 : undefined) ??
       {
