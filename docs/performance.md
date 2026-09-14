@@ -732,3 +732,49 @@ itself. Duplicate preparation, full comparison, publication and device-capacity 
 All 99 pure runner checks, TypeScript, scoped style, inventory and authority checks pass. All 260
 prior general contracts, exclusions, 52 personal/vector pins and L-2 are unchanged. This phase adds
 no product correctness claim and no immutable release qualification.
+
+
+## 2026-09-14 — Metadata-copy attempts rejected under the prospective rule
+
+At signed `8c5fdaee`, two private selection-metadata copiers were tested and then discarded. The
+production seam is byte-for-byte restored. [Prospective protocol and disposition](./f17-metadata.md).
+[Candidates, all timings and regression evidence](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
+
+Both candidates preserve deep values/reference graphs in 200 generated cases, pass 150 generated
+undo/redo histories with restored master/card selections, and pass directed fallback/cycle/accessor
+checks. A nested-ID sharing mutation fails the intended source-isolation assertion for each. The
+first uses a recursive shape dispatcher; the second uses direct constructors with the same descriptor,
+shape and per-item memo safeguards. Each distinct source gets one full fixed-count measurement run:
+nine strata, five warmups each and twenty alternating baseline/candidate pairs. No tests or other
+profiles ran concurrently with timing. At 1,000 human undo groups:
+
+| Candidate | Targets per before/after map | Baseline / candidate median, ms | Gain |
+| --- | ---: | ---: | ---: |
+| Recursive dispatcher | 1 | 8.552 / 8.118 | 5.1% |
+| Recursive dispatcher | 100 | 576.683 / 460.767 | 20.1% |
+| Direct constructors | 1 | 8.456 / 7.583 | 10.3% |
+| Direct constructors | 100 | 571.345 / 396.992 | 30.5% |
+
+The rule required >=20% improvement in both nonzero-metadata 1,000-group strata, without consistent
+>10% regression in zero-metadata controls. Neither candidate meets the first requirement. The first
+has one 12.5% slower empty-history median among its three equivalent empty controls; the second's
+empty controls vary from 3.2% faster to 7.4% slower. All 720 measurements, all nine strata per attempt,
+ranges, complete candidate sources/patches and bundle hashes remain. The second implementation's
+larger stress-stratum gain does not justify lowering the rule after observation. These dependent
+single-host observations retain increasing-order/JIT/GC and synthetic-target-layout limitations;
+no measured application improvement follows.
+
+Three new regression cases remain against the original production implementation. A shallow metadata
+copy in that retained implementation fails the intended source-isolation assertion. The final full
+unit suite passes 96 files / 1,038 tests; owned execution of the changed suite passes all 15 cases
+with process drain. All 99 pure runner checks, TypeScript, scoped style, inventory and authority gates
+pass. The planning inventory and two fixed-denominator fixtures now account for 2,018 general cases.
+The initial planning refusal and stale 2,015 denominator assertions are retained; none was bypassed.
+
+Because the production candidates were rejected, the conditional runtime-native/application campaign
+was not reached. The last application typing gate remains failed at 15.2/69.4 ms desktop/CPU-4x
+Android; no new budget or native pass is claimed. F-17 stays partial. Next define an owned preparation
+handoff, its accepted-basis/writer binding, refusal/disposal behavior and Account source coverage
+before removing a duplicate draft. Keep full per-transition verification and use the existing two-draft
+implementation as the differential reference. Full comparison, publication, physical-device capacity,
+command/campaign integration and immutable qualification remain open.

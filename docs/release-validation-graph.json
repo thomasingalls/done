@@ -8501,18 +8501,26 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/pendingProjection.test.ts"]
       },
-      "declarations": 12,
+      "declarations": 15,
       "propertyFamilies": [
         {
-          "line": 155,
+          "line": 157,
           "form": "fc.property"
         },
         {
-          "line": 224,
+          "line": 226,
           "form": "fc.property"
         },
         {
-          "line": 325,
+          "line": 327,
+          "form": "fc.property"
+        },
+        {
+          "line": 489,
+          "form": "fc.property"
+        },
+        {
+          "line": 627,
           "form": "fc.property"
         }
       ],
@@ -13775,7 +13783,7 @@
     },
     {
       "path": "test/pendingProjection.test.ts",
-      "sha256": "73cce1f26b0f7a6222eb03e7c08f7c582963b7590a0256a9e44a8c5407ec98f9"
+      "sha256": "e83d7c8618429758ee30f87c730ea5a5f60d41a8a02b806cea4995eaefd5faf9"
     },
     {
       "path": "test/positionDecision.test.ts",
@@ -13847,11 +13855,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "54273f0676991d4bd103d615eb839b2354f8ef306a75a34575e6548651c27394"
+      "sha256": "18e6461618aad34e9866b76ccbd5253e9cd4977029f00fa013e9534d31d9b69f"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "c529e6190be1a1b40043df7660a0167e333acc19af26052ccb7166dd30218a0d"
+      "sha256": "e12e2c080c3d3656159a910f4067431203ff65d5c57a0fe6144e5c9cce76cef4"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

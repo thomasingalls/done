@@ -55,26 +55,27 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Just completed.** Profile residual preparation and undo-history copying covers 4 case dispositions (4 passed; 0 explicitly not applicable) in 1 files. No production, test, manifest or authority-contract changes. The unchanged browser diagnostic retains 1,440 raw timings, twelve p95 rows and four mapped CPU profiles, with cold-reopen checks. Card p95 is 15.0/16.4 ms desktop and 73.0/73.9 ms CPU-4x Android in the two blocks. The separate application budget gate remains failed at its last 15.2/69.4 ms observation. Across separate 60-key profiles, stack copying uses 157.8/738.2 ms desktop/Android, alongside 166.4/752.5 ms for the admission draft and 148.2/730.9 ms for the history draft. Nested totals overlap. Native structuredClone is not isolated from inline callback work. Nine controlled Node strata retain all 360 measured forks: at 1,000 undo groups, full history medians are 1.848, 8.802 and 559.527 ms with zero, one and 100 selection targets; corresponding document medians are 1.153, 1.180 and 1.348 ms. Fixed document state within pairs and metadata strata helps localize copying cost; increasing stratum order, dependent host/JIT/GC observations, stress-only target layout and zero redo/redone coverage limit inference. The prospective protocol, raw profiles/mapped nodes, probe, all samples, analysis and source-map hashes are retained; complete generated maps remain in the raw run. No application speedup or budget closure is claimed. The next bounded attempt preserves deep isolation and both drafts while specializing known selection metadata, with arbitrary metadata falling back to the existing clone. The personal app, server and deployment remain untouched.
+**Just completed.** History metadata optimization assessment covers 15 case dispositions (15 passed; 0 explicitly not applicable) in 1 files. Both metadata fast paths are rejected and all production bytes are restored to signed 8c5fdaee. The first recursive dispatcher passes focused correctness but improves the 1,000-group one/100-target strata by only 5.1%/20.1%; direct constructors improve them by 10.3%/30.5%. Neither satisfies the predeclared >=20% rule in both strata. Each distinct implementation has its own fixed nine-stratum, five-warmup, twenty-alternating-pair observation: all 720 measured forks, source patches, bundle hashes, ranges and failed acceptance decisions are preserved. These dependent single-host observations do not estimate a customer workload or application speedup. Three new retained cases add 200 generated reference-graph/isolation checks, fallback values/cycles/accessor behavior and 150 undo/redo histories with restored master/card selections against an unforked reference. Sharing a nested ID fails the intended isolation assertion in both discarded candidates; a shallow-copy mutation fails the same assertion in the retained baseline. The full unit suite passes 96 files / 1,038 tests. The owned runner executes the changed suite as an explicitly bounded subset, with all 15 cases passing and process drain. Only the changed suite, two runner denominator fixtures and their reviewed planning/case registrations change executable validation coverage; source, authority labels, exclusions and selection membership are unchanged. No runtime/native/application campaign is rerun after restoring production; the conditional optimization gate was not reached. The last independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x typing. The personal browser, server, package and deployment remain untouched.
 
-All 99 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `1fd04afa` has a verified signature. 260 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+All 99 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `8c5fdaee` has a verified signature. 259 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
 
-General integration now covers 260 files / 2,015 case dispositions (11 not applicable). 0 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: prototype fully detached selection-metadata copying with structuredClone fallback, generated value/alias/undo controls and balanced baseline/candidate timing before the unchanged application gate; duplicate preparation and the remaining command/campaign and immutable qualification work remain.
+General integration now covers 260 files / 2,018 case dispositions (11 not applicable). 0 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: specify and test a workspace-only preparation handoff bound to its accepted basis, with canonical ownership, refusal/disposal, Account source coverage and full per-transition verification preserved; then attempt removal of the duplicate draft under unchanged budgets.
 
-[Evidence](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
+[Evidence](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
 
-**Open validation observations.** The residual profile supports trying specialized, fully detached
-selection-metadata copying before a larger ownership change. Undo-stack copying uses 157.8/738.2 ms
-in separate 60-key desktop/CPU-4x Android profiles, alongside substantial costs for each draft,
-full comparison and publication. Controlled fixed-document metadata scaling agrees, but native
-structuredClone is not isolated in the browser samples and stress strata are not a user distribution.
-The diagnostic passes four cases with cold reopen; its card p95 is 15.0/16.4 ms desktop and
-73.0/73.9 ms Android over two blocks. Later bare-CodeMirror tails retain recorder/scheduler uncertainty.
-The independent application gate remains failed at its last 15.2/69.4 ms typing observation;
-focus was 7.4/35.7 ms and the other recorded budgets passed. No new application pass is claimed.
-Preserve the earlier focus failure, all negative fork controls and the pre-existing nested-binary
-repair. Both private drafts, deep isolation and full verification remain unchanged. These are host
-observations, not handset or immutable qualification. [Latest evidence](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
+**Open validation observations.** Both metadata-copy candidates pass focused semantic checks but
+miss the prospective performance rule. At 1,000 undo groups the recursive candidate improves one/100
+target medians by 5.1%/20.1%, and direct constructors by 10.3%/30.5%; the required gain was >=20% in
+both strata. All 720 timings, source variants and sharing controls survive. Production is restored
+exactly, while new graph/isolation, fallback and undo/selection regression tests remain. Next specify
+the ownership and verification contract before removing the duplicate preparation draft.
+The last residual profile still shows substantial costs for each draft, full comparison and
+publication. The independent application gate remains failed at its last 15.2/69.4 ms desktop/CPU-4x
+typing observation; focus was 7.4/35.7 ms and other recorded budgets passed. Neither native nor
+application campaigns were rerun for the rejected optimizations. Preserve the earlier focus failure,
+recorder/scheduler uncertainty and all negative fork controls. These host observations do not
+establish handset or immutable qualification. [Latest assessment](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
+[Residual profile](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
 [Last application gate](./account-conformance-runs/2026-09-14-f17-forks/README.md).
 
  The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
@@ -91,7 +92,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** prototype fully detached selection-metadata copying with structuredClone fallback, generated value/alias/undo controls and balanced baseline/candidate timing before the unchanged application gate; duplicate preparation and the remaining command/campaign and immutable qualification work remain. All declared suite adapters are integrated. Continue bounded measured performance work with signed intermediate commits; stop if signing blocks.
+**Next bounded phase.** specify and test a workspace-only preparation handoff bound to its accepted basis, with canonical ownership, refusal/disposal, Account source coverage and full per-transition verification preserved; then attempt removal of the duplicate draft under unchanged budgets. All declared suite adapters are integrated. Continue bounded measured performance work with signed intermediate commits; stop if signing blocks.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

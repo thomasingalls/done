@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import * as fc from 'fast-check';
+import assert from 'node:assert/strict';
+import { relativeSelection, resolveSelection } from '../src/crdt/workspaceCommands';
 import {
   Y,
   createHistoryDoc,
@@ -426,4 +428,300 @@ it('runtime forks preserve and detach binary leaves nested inside arbitrary arra
     actual.destroy();
     source.destroy();
   }
+});
+
+// Compare topology with native cloning, not just values: duplicate references must remain
+// duplicate references, distinct nodes must stay distinct, and no mutable source node may escape.
+const metadataGraph = (source: unknown, actual: unknown) => {
+  const expected = structuredClone(source),
+    forward = new Map<object, object>(),
+    reverse = new Map<object, object>(),
+    sources = new Set<object>();
+  const collect = (value: unknown) => {
+    if (!value || typeof value !== 'object' || sources.has(value)) return;
+    sources.add(value);
+    if (value instanceof Map)
+      for (const [k, v] of value) {
+        collect(k);
+        collect(v);
+      }
+    else if (value instanceof Set) for (const v of value) collect(v);
+    else if (ArrayBuffer.isView(value)) collect(value.buffer);
+    else for (const v of Object.values(value)) collect(v);
+  };
+  collect(source);
+  assert.deepStrictEqual(actual, expected);
+  const visit = (a: unknown, b: unknown) => {
+    if (!a || typeof a !== 'object') {
+      assert.equal(b, a);
+      return;
+    }
+    assert.ok(b && typeof b === 'object');
+    assert.ok(!sources.has(b), 'metadata must not share a mutable source node');
+    if (forward.has(a)) {
+      assert.equal(b, forward.get(a), 'shared reference was split');
+      return;
+    }
+    assert.ok(!reverse.has(b), 'distinct references were merged');
+    forward.set(a, b);
+    reverse.set(b, a);
+    if (a instanceof Map) {
+      assert.ok(b instanceof Map);
+      const entries = [...b];
+      [...a].forEach(([k, v], i) => {
+        visit(k, entries[i]![0]);
+        visit(v, entries[i]![1]);
+      });
+    } else if (a instanceof Set) {
+      assert.ok(b instanceof Set);
+      const values = [...b];
+      [...a].forEach((v, i) => visit(v, values[i]));
+    } else if (ArrayBuffer.isView(a)) {
+      assert.ok(ArrayBuffer.isView(b));
+      visit(a.buffer, b.buffer);
+    } else for (const key of Object.keys(a)) visit(Reflect.get(a, key), Reflect.get(b, key));
+  };
+  visit(expected, actual);
+};
+
+it('history metadata preserves generated selection graphs and isolates both mutation directions', () => {
+  fc.assert(
+    fc.property(
+      fc.array(fc.nat(19), { minLength: 1, maxLength: 12 }),
+      fc.boolean(),
+      (indices, shared) => {
+        const doc = createHistoryDoc(),
+          text = doc.getText('master'),
+          cards = doc.getMap<Y.Text>('cards');
+        text.insert(0, 'abcdefghijklmnopqrst');
+        const card = new Y.Text('ABCDEFGHIJKLMNOPQRST');
+        cards.set('one', card);
+        const history = workspaceUndo(doc, 'human');
+        doc.transact(() => text.insert(0, '!'), 'human');
+        history.stopCapturing();
+        doc.transact(() => card.insert(0, '?'), 'human');
+        history.undo();
+        const selection = (target: Y.Text) =>
+          structuredClone(
+            relativeSelection(target, {
+              ranges: [
+                { anchor: 1, head: 3 },
+                { anchor: 7, head: 9 },
+              ],
+              main: 1,
+            }),
+          );
+        const a = selection(card),
+          b = selection(text);
+        // Actual card positions share their parent type ID; explicitly cover cross-range/item aliases too.
+        if (shared) a.ranges[1]!.head = a.ranges[0]!.anchor;
+        const positions = new Map(indices.map((n, i) => ['card:' + i, n % 2 ? a : b]));
+        positions.set('master', b);
+        const meta = new Map([
+          ['before', positions],
+          ['after', shared ? positions : structuredClone(positions)],
+        ]);
+        history.undoStack[0]!.meta = meta;
+        history.redoStack[0]!.meta = meta;
+        const fork = forkWorkspaceHistory(history, 'human');
+        try {
+          metadataGraph(meta, fork.undoStack[0]!.meta);
+          metadataGraph(meta, fork.redoStack[0]!.meta);
+          const copied = fork.undoStack[0]!.meta.get('before') as typeof positions,
+            redo = fork.redoStack[0]!.meta.get('before') as typeof positions,
+            before = structuredClone(meta);
+          copied.get('master')!.ranges[0]!.anchor.assoc = 99;
+          assert.deepStrictEqual(meta, before);
+          assert.deepStrictEqual(redo, before.get('before'));
+          positions.get('master')!.ranges[0]!.head.assoc = -99;
+          assert.notEqual(copied.get('master')!.ranges[0]!.head.assoc, -99);
+          assert.notEqual(redo.get('master')!.ranges[0]!.head.assoc, -99);
+        } finally {
+          fork.destroy();
+          fork.doc.destroy();
+          history.destroy();
+          doc.destroy();
+        }
+      },
+    ),
+    { seed: 140920, numRuns: 200 },
+  );
+});
+
+it('history metadata retains native fallback values, cycles, descriptors and accessor behavior', () => {
+  const doc = createHistoryDoc(),
+    history = workspaceUndo(doc, 'human');
+  doc.transact(() => doc.getText('master').insert(0, 'hello'), 'human');
+  const position = structuredClone(
+    relativeSelection(doc.getText('master'), { ranges: [{ anchor: 1, head: 3 }], main: 0 }),
+  );
+  const ordinary = () => new Map([['before', new Map([['master', structuredClone(position)]])]]);
+  const cycle: Record<string, unknown> = {};
+  cycle['self'] = cycle;
+  const bytes = new Uint8Array([1, 2, 3]),
+    sparseRanges: unknown[] = [];
+  sparseRanges.length = 2;
+  class Selection {
+    ranges = position.ranges;
+    main = 0;
+    extra = 'retain';
+  }
+  const values: Map<unknown, unknown>[] = [
+    new Map([
+      [
+        'unknown',
+        { cycle, date: new Date(0), regex: /a/gi, set: new Set([cycle]), bytes, again: bytes },
+      ],
+    ]),
+    new Map([['before', new Map([['master', new Selection()]])]]),
+    new Map([['before', new Map([['master', { ...position, extra: 'retain' }]])]]),
+    new Map([['before', new Map([['master', { ...position, ranges: sparseRanges }]])]]),
+    new Map([['before', new Map([['master', Object.freeze(structuredClone(position))]])]]),
+  ];
+  const hidden = ordinary(),
+    selected = hidden.get('before')!.get('master')!;
+  Object.defineProperty(selected, 'hidden', { value: 'ignored' });
+  Object.defineProperty(selected, Symbol('ignored'), { value: 'ignored' });
+  values.push(hidden);
+  const cyclic = ordinary();
+  cyclic.set('before', cyclic as never);
+  values.push(cyclic);
+  try {
+    for (const value of values) {
+      history.undoStack[0]!.meta = value;
+      const fork = forkWorkspaceHistory(history, 'human');
+      try {
+        metadataGraph(value, fork.undoStack[0]!.meta);
+      } finally {
+        fork.destroy();
+        fork.doc.destroy();
+      }
+    }
+    let reads = 0;
+    const accessor = ordinary(),
+      selection = accessor.get('before')!.get('master')!;
+    Object.defineProperty(selection, 'main', {
+      enumerable: true,
+      get() {
+        reads++;
+        return 0;
+      },
+    });
+    history.undoStack[0]!.meta = accessor;
+    const fork = forkWorkspaceHistory(history, 'human');
+    try {
+      expect(reads).toBe(1);
+      expect(fork.undoStack[0]!.meta.get('before').get('master').main).toBe(0);
+    } finally {
+      fork.destroy();
+      fork.doc.destroy();
+    }
+  } finally {
+    history.destroy();
+    doc.destroy();
+  }
+});
+
+it('generated detached histories preserve undo redo and restored master and card selections', () => {
+  fc.assert(
+    fc.property(
+      fc.array(
+        fc.record({
+          kind: fc.constantFrom('edit', 'undo', 'redo'),
+          card: fc.boolean(),
+          at: fc.nat(30),
+        }),
+        { maxLength: 35 },
+      ),
+      (actions) => {
+        const source = createHistoryDoc();
+        source.clientID = 119;
+        source.getText('master').insert(0, 'master text');
+        source.getMap<Y.Text>('cards').set('one', new Y.Text('card text'));
+        const reference = workspaceUndo(source, 'human');
+        let actual = workspaceUndo(forkDoc(source, false), 'human');
+        const selections = (manager: typeof reference) =>
+          new Map([
+            [
+              'master',
+              relativeSelection(manager.doc.getText('master'), {
+                ranges: [{ anchor: 1, head: 3 }],
+                main: 0,
+              }),
+            ],
+            [
+              'card:one',
+              relativeSelection(manager.doc.getMap<Y.Text>('cards').get('one')!, {
+                ranges: [{ anchor: 0, head: 2 }],
+                main: 0,
+              }),
+            ],
+          ]);
+        const run = (manager: typeof reference, action: (typeof actions)[number]) => {
+          manager.doc.clientID = 119;
+          const before = structuredClone(selections(manager));
+          if (action.kind === 'edit') {
+            manager.stopCapturing();
+            const text = action.card
+              ? manager.doc.getMap<Y.Text>('cards').get('one')!
+              : manager.doc.getText('master');
+            manager.doc.transact(() => text.insert(action.at % (text.length + 1), 'x'), 'human');
+            manager.undoStack.at(-1)!.meta = new Map([
+              ['before', before],
+              ['after', structuredClone(selections(manager))],
+            ]);
+            return undefined;
+          }
+          const item = (action.kind === 'undo' ? manager.undoStack : manager.redoStack).at(-1);
+          if (!item) return undefined;
+          if (action.kind === 'undo') manager.undo();
+          else manager.redo();
+          const target = (action.kind === 'undo' ? manager.redoStack : manager.undoStack).at(-1)!;
+          target.meta = structuredClone(item.meta);
+          const restore = item.meta.get(action.kind === 'undo' ? 'before' : 'after') as ReturnType<
+            typeof selections
+          >;
+          return [...restore].map(([key, selection]) => [
+            key,
+            resolveSelection(
+              manager.doc,
+              key === 'master'
+                ? manager.doc.getText('master')
+                : manager.doc.getMap<Y.Text>('cards').get('one')!,
+              selection,
+            ).toJSON(),
+          ]);
+        };
+        try {
+          for (const action of [
+            { kind: 'edit' as const, card: false, at: 1 },
+            { kind: 'undo' as const, card: false, at: 0 },
+            { kind: 'redo' as const, card: false, at: 0 },
+            ...actions,
+          ]) {
+            const previous = actual;
+            actual = forkWorkspaceHistory(previous, 'human');
+            try {
+              for (const key of ['undoStack', 'redoStack'] as const)
+                for (const [i, item] of previous[key].entries())
+                  metadataGraph(item.meta, actual[key][i]!.meta);
+              expect(run(actual, action)).toEqual(run(reference, action));
+              expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(source));
+              expect(actual.undoStack.length).toBe(reference.undoStack.length);
+              expect(actual.redoStack.length).toBe(reference.redoStack.length);
+            } finally {
+              previous.destroy();
+              previous.doc.destroy();
+            }
+          }
+        } finally {
+          actual.destroy();
+          actual.doc.destroy();
+          reference.destroy();
+          source.destroy();
+        }
+      },
+    ),
+    { seed: 140921, numRuns: 150 },
+  );
 });
