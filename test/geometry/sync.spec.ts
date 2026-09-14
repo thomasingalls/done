@@ -1,5 +1,6 @@
+import { test } from '../release-validation/browser-fixture';
 /** The Local build has no transport attached; the legacy provider stays covered by its core harnesses. */
-import { expect, test } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { openApp, reloadApp } from './openApp';
 
 test('Local editing and reload work with no relay or plaintext identity cache', async ({

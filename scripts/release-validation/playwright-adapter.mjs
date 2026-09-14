@@ -6,6 +6,12 @@ import { playwrightDeclarations, playwrightCaseId } from './playwright-census.mj
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-geometry-interaction': [
+    'test/geometry/reorder.spec.ts',
+    'test/geometry/sync.spec.ts',
+    'test/geometry/wheel.spec.ts',
+    'test/geometry/workflow.spec.ts',
+  ],
   'browser-geometry-layout': [
     'test/geometry/breadcrumbs.spec.ts',
     'test/geometry/cards.spec.ts',
@@ -23,6 +29,13 @@ export const browserGroups = {
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (browserGroups['browser-geometry-interaction'].includes(file))
+    return {
+      config: 'playwright.config.ts',
+      projects: ['desktop', 'android'],
+      mode: 'packaged',
+      deadlineMs: file === 'test/geometry/workflow.spec.ts' ? 360000 : 180000,
+    };
   if (browserGroups['browser-geometry-layout'].includes(file))
     return {
       config: 'playwright.config.ts',
@@ -72,10 +85,64 @@ export const upgradePriorDisposition = {
   outcome: 'not-applicable',
   reason: 'Supply APP_UPGRADE_PREDECESSOR_DIR to exercise the actual prior build.',
 };
+export const namedBrowserDispositions = [
+  upgradePriorDisposition,
+  ...[
+    {
+      id: 'test/geometry/reorder.spec.ts::["android","Done-card reordering","a mouse drag on the grip reorders cards"]',
+      outcome: 'not-applicable',
+      reason: 'The mouse grip is the desktop activation path.',
+    },
+    {
+      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","a touch long-press then drag reorders cards"]',
+      outcome: 'not-applicable',
+      reason: 'Long-press activation is exercised in the Android project.',
+    },
+    {
+      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","a stationary touch long-press still unlocks Done"]',
+      outcome: 'not-applicable',
+      reason: 'Long-press activation is exercised in the Android project.',
+    },
+    {
+      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","movement before the hold remains day navigation"]',
+      outcome: 'not-applicable',
+      reason: 'The touch arbitration path is exercised in the Android project.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","an arbitrarily large wheel moves exactly one day"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","a fresh gesture can immediately move one more day"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","a large upward wheel moves exactly one day into the past"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","a wheel stays within a long day while it has scroll room"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","a fresh wheel at the end of a long day changes dates"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+    {
+      id: 'test/geometry/wheel.spec.ts::["android","day scroll reset","leaving a day resets its within-day scroll position"]',
+      outcome: 'not-applicable',
+      reason: 'Mouse-wheel navigation is a desktop interaction.',
+    },
+  ],
+];
 function disposition(id) {
-  return id === upgradePriorDisposition.id
-    ? { ...upgradePriorDisposition }
-    : { id, outcome: 'pass' };
+  const named = namedBrowserDispositions.find((c) => c.id === id);
+  return named ? { ...named } : { id, outcome: 'pass' };
 }
 export function playwrightStage(root, file) {
   const p = browserPolicy(file);
@@ -83,10 +150,10 @@ export function playwrightStage(root, file) {
     root,
     projects: p.projects,
   }).map((c) => disposition(c.id));
-  if (p.mode === 'upgrades')
+  for (const named of namedBrowserDispositions.filter((c) => c.id.startsWith(file + '::')))
     assert(
-      cases.some((c) => c.id === upgradePriorDisposition.id),
-      'Missing named predecessor disposition',
+      cases.some((c) => c.id === named.id),
+      'Missing named browser disposition',
     );
   return {
     id: 'test:' + file,

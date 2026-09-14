@@ -489,6 +489,14 @@ export function compileManifest(root, inventory) {
           .filter((r) => browserGroups['browser-storage-fixtures'].includes(r.path))
           .map((r) => r.id),
       ],
+      'browser-geometry-interaction-qualification': [
+        ...rows
+          .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')
+          .map((r) => r.id),
+        ...rows
+          .filter((r) => browserGroups['browser-geometry-interaction'].includes(r.path))
+          .map((r) => r.id),
+      ],
       'browser-upgrade-qualification': [
         ...rows
           .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')

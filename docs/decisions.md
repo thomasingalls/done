@@ -3167,3 +3167,8 @@ Admit the application upgrade file using two disposable builds and the existing 
 ## 2026-09-14 — Integration of geometry layout and editor fixtures
 
 Admit the four geometry layout/editor files through the owned packaged browser adapter with their original desktop/Android projects and unchanged assertions. Keep execution serial, retain complete case/project populations and preserve per-case bounds. Prospectively allow the finite remaining browser census within an 800000-byte manifest ceiling in both writer and independent regression control; do not alter runtime report limits or remove obligations.
+
+
+## 2026-09-14 — Integration of geometry interaction fixtures
+
+Keep the existing interaction semantics and platform applicability. Admit all four files through disposable packaged browser ownership and encode the ten device-specific non-applicable identities/reasons explicitly, retaining strict unknown-skip rejection and exact case/project reconciliation. Split the final latency work into journal microbenchmarks and application latency so obsolete plaintext startup/measurement setup can be repaired and validated separately.

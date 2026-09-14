@@ -6788,3 +6788,14 @@ All 98 pure runner checks, TypeScript, scoped style, inventory and authority gat
 General integration now covers 253 files / 1,943 case dispositions (1 not applicable). 6 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: geometry interaction browser fixtures, then latency fixtures.
 
 [Evidence](./account-conformance-runs/2026-09-14-browser-geometry-layout/README.md).
+
+
+## 2026-09-14 — Integration of geometry interaction fixtures (`L-1`)
+
+Integration of geometry interaction fixtures covers 46 case dispositions (36 passed; 10 explicitly not applicable) in 5 files. Four files declare 44 project/case dispositions: 34 exercised cases and 10 exact device-specific non-applicable cases. Mouse grip and wheel interactions remain desktop-only; touch hold/arbitration cases run only in the Android project. Every non-applicable identity and original reason is independently enumerated, must still exist in the source census, and must match the actual skip annotation exactly. Pure corruption controls cover all 11 named non-applicable dispositions including the previously retained predecessor case; unlisted skips still refuse. The qualification also reruns both native browser-adapter failure/deadline/drain controls. Application assertions and per-case bounds are unchanged. The owned package covers card reorder, touch/navigation arbitration, Local reopen without relay/plaintext identity caches, bounded native wheel behavior, menus, preference persistence, editor focus and deferred/frozen writing. File bounds are 180 seconds except workflow at 360 seconds, with desktop and Android emulation run serially. Emulation supplies no real-device latency evidence. Only the two latency test files remain unintegrated; command/campaign expansion, wrapper outputs and immutable qualification remain separate.
+
+All 98 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `d30b6468` has a verified signature. 253 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 257 files / 1,987 case dispositions (11 not applicable). 2 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: journal latency browser fixtures and measurement retention, then application latency setup and integration.
+
+[Evidence](./account-conformance-runs/2026-09-14-browser-geometry-interaction/README.md).

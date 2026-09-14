@@ -7,7 +7,7 @@ import {
   browserFiles,
   playwrightStage,
   reconcilePlaywright,
-  upgradePriorDisposition,
+  namedBrowserDispositions,
 } from '../../scripts/release-validation/playwright-adapter.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
@@ -76,10 +76,10 @@ test('Playwright census refuses hidden, aliased, modified, skipped registrations
 });
 
 test('reviewed browser files preserve Local and storage cases and cannot bypass owned browser, driver or result contracts', () => {
-  assert.equal(browserFiles.length, 10);
+  assert.equal(browserFiles.length, 14);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
+    [8, 2, 12, 22, 6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);
@@ -88,6 +88,11 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
       stage.deadlineMs,
       {
         'test/app-upgrades/upgrades.spec.ts': 240000,
+        'test/geometry/reorder.spec.ts': 180000,
+        'test/geometry/sync.spec.ts': 180000,
+        'test/geometry/wheel.spec.ts': 180000,
+        'test/geometry/workflow.spec.ts': 360000,
+
         'test/geometry/breadcrumbs.spec.ts': 240000,
         'test/geometry/cards.spec.ts': 240000,
         'test/geometry/layout.spec.ts': 360000,
@@ -109,32 +114,31 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
     ])
       assert.throws(() => validateStage({ ...stage, ...change }));
   }
-  assert.throws(
-    () => playwrightStage(process.cwd(), 'test/geometry/workflow.spec.ts'),
-    /Unreviewed/,
-  );
+  assert.throws(() => playwrightStage(process.cwd(), 'test/latency/latency.spec.ts'), /Unreviewed/);
 });
 
 test('Playwright reports refuse terminal, collected, retry, annotation, framework, server and outcome corruption', () => {
   const cases = population(['one', 'two']);
   assert.equal(reconcilePlaywright(expected(cases), report(cases), 'fresh').cases.length, 2);
-  const named = [upgradePriorDisposition],
-    inactive = report(named);
-  inactive.cases[0].status = 'skipped';
-  inactive.cases[0].expectedStatus = 'skipped';
-  inactive.cases[0].annotations = [{ type: 'skip', description: upgradePriorDisposition.reason }];
-  assert.deepEqual(reconcilePlaywright(expected(named), inactive, 'fresh').cases, named);
-  for (const mutate of [
-    (r) => (r.cases[0].annotations[0].description = 'different reason'),
-    (r) => (r.cases[0].status = 'passed'),
-    (r) => (r.cases[0].annotations = []),
-    (r) => (r.cases[0].status = 'failed'),
-  ]) {
-    const changed = structuredClone(inactive);
-    mutate(changed);
-    assert.throws(() => reconcilePlaywright(expected(named), changed, 'fresh'));
+  assert.equal(namedBrowserDispositions.length, 11);
+  for (const inactiveCase of namedBrowserDispositions) {
+    const named = [inactiveCase],
+      inactive = report(named);
+    inactive.cases[0].status = 'skipped';
+    inactive.cases[0].expectedStatus = 'skipped';
+    inactive.cases[0].annotations = [{ type: 'skip', description: inactiveCase.reason }];
+    assert.deepEqual(reconcilePlaywright(expected(named), inactive, 'fresh').cases, named);
+    for (const mutate of [
+      (r) => (r.cases[0].annotations[0].description = 'different reason'),
+      (r) => (r.cases[0].status = 'passed'),
+      (r) => (r.cases[0].annotations = []),
+      (r) => (r.cases[0].status = 'failed'),
+    ]) {
+      const changed = structuredClone(inactive);
+      mutate(changed);
+      assert.throws(() => reconcilePlaywright(expected(named), changed, 'fresh'));
+    }
   }
-
   for (const change of [
     (r) => (r.phase = 'running'),
     (r) => (r.status = 'failed'),

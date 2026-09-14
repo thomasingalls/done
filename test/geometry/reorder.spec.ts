@@ -1,7 +1,8 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /** Browser coverage for the pointer details of Done-card reordering. */
 
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
 

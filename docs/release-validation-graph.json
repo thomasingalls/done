@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 294,
+          "line": 299,
           "form": "fc.property"
         }
       ],
@@ -8971,7 +8971,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 175,
+          "line": 179,
           "form": "fc.property"
         }
       ],
@@ -11876,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "97f1b4027a10dd17c6ade7741a1f80eedfdd5e6fd0635f4b200f894bbbd1144c"
+      "sha256": "fd732089bbdf47d87296b7bdd00ad9c9178c00789b267e00f3be8cfdbf075488"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11920,7 +11920,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "c71f875b95f3f4ae03279dff223c8900ed70d504eb6569b224938080afd26fbc"
+      "sha256": "579c1ed616f8a136784227bf5ebcb7e6ec17ef8dfb43dcfdd188631bc856f903"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -11948,7 +11948,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "dd05636ca2ad36d3cdb9a755a1f5e9993ea16761c4b4f1ab4682d0671de35777"
+      "sha256": "18b4f8ced84e72599b9821abb89762632b6048da4030516bbaa6b243a0e186f4"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -13376,19 +13376,19 @@
     },
     {
       "path": "test/geometry/reorder.spec.ts",
-      "sha256": "442f2f895efc4ef2cc5b95e2b0a7f606dde49b5d0452098255e25fee44b4c7cb"
+      "sha256": "9d7b62e04f486973f7f0ebdcbf6672ca15dc0cfadb4602abc63b5f21eeac5537"
     },
     {
       "path": "test/geometry/sync.spec.ts",
-      "sha256": "7b1ebff3045ecc5f652918cb97d409c5606dbb1914aa11e4f3d6b74fd8c13e0b"
+      "sha256": "a957350b2b41062bbbf1a861af10e59a9e7ac7c15e98adc486be0b39b4977f71"
     },
     {
       "path": "test/geometry/wheel.spec.ts",
-      "sha256": "8d71292032a185b40303d0dfe9b6fad837a7d1f0aec48f4ff1174b0a0d05cfee"
+      "sha256": "05f6711602461ca8f8fa77d56cd65cdc8b09e7bb0d13877547a32ae0a83f4053"
     },
     {
       "path": "test/geometry/workflow.spec.ts",
-      "sha256": "f16b1f223a19fe0b52f50517c980e758c0b276a0c3dd334949e33999c4af5d02"
+      "sha256": "2f2d9f20a4683e022343bc5645fb56d8c14d8305b97958e5b98f86c86afaa690"
     },
     {
       "path": "test/gestureTargets.test.ts",
@@ -13808,11 +13808,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "2a3abdfbf33ea5284ecd1464861216804d479de40874c7f7026aed0869aab4e1"
+      "sha256": "c82fbec2323c2692827870462d3e80ababd897a1f4a968b65e9cb1cd28baee35"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "5a5c72a6043d9da924e1940dccb95fa2e7a147e5ae93e7342a83ec6ceec27ce9"
+      "sha256": "5bac05e70ad284cb940076eb0dc23f501e7e61425b9544d3b9d6488f777be4bd"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13848,7 +13848,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "d4d74f8eee3566e96d831a16886850c564ec1225257ef3eade822ac66eb58f58"
+      "sha256": "efb9e559d5e8a635eeb8716d9ca0f00839e8591112f2309b9a8cedd4c805fb45"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

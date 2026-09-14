@@ -1,7 +1,8 @@
+import { test } from '../release-validation/browser-fixture';
 import { openApp } from './openApp';
 /** Desktop regressions for the bounded native three-day wheel surface. */
 
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import { addDays, type ISODate } from '../../src/lib/date';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
