@@ -17,6 +17,8 @@ export async function genesisBundle(control) {
                 if (id.endsWith('/src/crdt/promotionRecord.ts'))
                   return execFileSync('git', ['show', 'a4e1c15:src/crdt/promotionRecord.ts'], {
                     encoding: 'utf8',
+                    timeout: 5000,
+                    maxBuffer: 2 * 1024 * 1024,
                   });
                 return;
               }

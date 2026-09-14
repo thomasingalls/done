@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**229 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**228 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -58,6 +58,7 @@ node scripts/release-validation/execute.mjs --selection capture-native-fixture
 node scripts/release-validation/execute.mjs --selection editing-native-fixture
 node scripts/release-validation/execute.mjs --selection handoff-native-fixture
 node scripts/release-validation/execute.mjs --selection admission-native-fixture
+node scripts/release-validation/execute.mjs --selection genesis-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1657,11 +1658,95 @@ pins, L-2, historical evidence/debts/signing backups and unrelated root files re
 Account genesis native fixtures (fourteen static cases), then remaining integration, R-04, P-06 and
 the immutable aggregate before private Account preparation and human adoption.
 
+## Account genesis native fixture — phase 2aj
+
+The preceding admission phase is signed and verified as `b201784`. `genesis-native-fixture` adds one
+complete native file / fourteen cases under the existing owned Chromium/CDP adapter. All fourteen pass
+in 97.153 seconds including fingerprint work; Node execution took 69.345 seconds within 180,
+stage time 72.933, and all 40 generated histories 35.478 within their unchanged 90-second bound.
+Worker and browser groups drain. This new phase remains uncommitted; it is not an immutable aggregate.
+
+Before the first native run, the adapter and wrapper received a three-minute outer allowance informed
+by preceding admission/handoff execution (113.829/121.212 seconds) and this larger generated population.
+No genesis timeout is claimed. Thirteen directed cases retain 30 seconds, generated histories 90,
+browser startup 15 and drain grace five. Product code, native bodies, oracles, populations, census
+and owner remain unchanged. The wrapper changes only its allowance from 120 to 180 seconds.
+The active `a4e1c15:src/crdt/promotionRecord.ts` reader gains exact pins and 5-second/2-MiB Git bounds.
+The inherited promotion MAC mutant is dormant; snapshot/wrap semantic mutants run at their current,
+uniquely checked refusal throws. The helper itself checks anchor presence.
+
+The primary case preserves full database/journal state and attribution under reversed delivery,
+independently opens the recovery wrap/checkpoint and compares full fixture state. It requires unchanged
+custody metadata, two wraps and proposed epoch 1; two absent JSON sentinels are a limited plaintext
+check, not broader privacy qualification. Reloading the same page returns exact candidate bytes.
+Preceding preparation leaves inventory unchanged, ordinary Local reading refuses the retained format,
+and authenticated abandonment removes the marker without changing other source carriers.
+
+The filtered inventory excludes every application-upgrade row in done.custody/entries, not only the
+current slot's marker. Remaining serialized database rows and localStorage compare equal. Cross-slot
+changes to excluded promotion rows are outside that oracle, as is forensic profile equality. The
+snapshot helper exposes logical shape and is not an authentication oracle.
+
+Two commit cuts abort the actual IDB transaction after request success or hold completion and kill the
+renderer. Both reopen new pages in the same context and recover full state. Before commit retains
+prepared; after commit returns the exact won candidate. There is one renderer death, no browser or
+service process crash. Existing boundary waits retain the 30-second case cap without an early-result
+diagnostic. Wrong factors, foreign account, changed recovery public key and current service abandonment
+refuse with unchanged inventory; unbound actor/card attribution refuses without rewriting content.
+
+Five forgeries carry valid candidate signatures and promotion MACs but alter checkpoint plaintext,
+recovery-wrap key, coverage, recipient or actor. All refuse without changing poisoned inventory.
+Removing the checkpoint coverage refusal actually admits incomplete state, detected by independent
+decryption and full-state inequality. Removing the wrap equality refusal actually admits a candidate
+that fails independent recovery opening. These are specific bad-acceptance outcomes; fixture signing
+uses production message/custody helpers. The previous-format reader refuses preparation/abandonment
+without network or inventory changes. Five malformed raw marker edits also refuse unchanged, but are
+not re-signed and do not isolate parser checks from MAC/signature refusal. Restoring the marker permits
+exact retry. Cancellation holds a competing page until acknowledgement drains; it then returns the
+exact retained candidate. The cancelled call's return value is not asserted.
+
+Forty histories retain seed 9222026, numRuns:40 and endOnFailure:true. One to twelve insert/delete edits
+mix database/journal persistence with optional reverse delivery, pre-commit abort and same-page reload.
+An independent string model derives master text; a parity model derives the two cards' order. Exact
+system/human author identities, decoded full state and coverage compare with the seeded fixture.
+Repeated genesis returns identical bytes, one of five signed semantic forgeries refuses, authenticated
+abandonment succeeds and filtered source inventory stays unchanged. No generated renderer death,
+service restart, shrinking or explicit all-fault-coverage assertion is claimed. Histories share one
+context/service and use fresh slots/accounts; earlier abandoned slots remain in inventory comparisons.
+
+The Node/OpenSSL oracle independently opens the recovery envelope, HPKE recovery wrap and AES-GCM
+checkpoint. Yjs decoding and application projections remain shared. This file does not independently
+open the device wrap or verify the candidate signature, and not all intermediate synthetic oracle
+buffers are zeroed. The separately integrated crypto sibling retains its own vector/interoperability
+evidence and was not rerun. No runtime vector is read by this native file.
+
+The base registers cleanup before setup, borrows owned loopback CDP, builds in memory and uses temporary
+service/SQLite stores and synthetic factors. Registration/recovery/preparation run there; the candidate
+is not admitted or sent to a peer. Setup assertions use Node fixture credentials, not a browser/hardware
+ceremony. Optional ACCOUNT_REPORT_DIR exports are disabled. Wrapper crypto/output/scheduling/ownership
+obligations remain separate. No issued epoch, service admission, Account index, editor/transport,
+offline Account startup, personal admission or second-device result is established here.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner/Vitest-process/native-owner controls (23/5/12) retain prior evidence. Initial
+ledger orphan classification, core receive headroom, capture map-refresh/byte-length follow-ups and
+historical editing/handoff deadline evidence remain visible. All 188 prior general contracts / 1,612
+identities and retired-v8 exclusions remain unchanged. General selections now contain 189 files /
+1,626 cases (96 Vitest, 93 Node); Account has 83 files / 532 cases. The 669,301-byte manifest has
+612 obligations / 228 unresolved: 69 test-file (53 Node, sixteen Playwright), 96 command and 63 campaign.
+All eleven catalogues remain resolved (163 cases / 54 mutations).
+
+The [packet](./account-conformance-runs/2026-09-14-genesis-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base/historical signatures, prior contracts and preservation. All 52 personal/vector
+pins, L-2, historical evidence/debts/signing backups and unrelated root files remain untouched. Next:
+Account promotion native fixtures (twelve static cases), then remaining integration, R-04, P-06 and
+the immutable aggregate before private Account preparation and human adoption.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**229 blocked rows**: 70 test-file, 96 command, 63 campaign. All Vitest files have adapters; 54 Node
-and sixteen Playwright files remain. Next review the Account genesis native fixture (fourteen cases),
+**228 blocked rows**: 69 test-file, 96 command, 63 campaign. All Vitest files have adapters; 53 Node
+and sixteen Playwright files remain. Next review Account promotion native fixtures (twelve cases),
 then other owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper
 calls without reviving support. Preserve ordered vector/traceability prerequisites and open owner/
 loaded-host observations. Capture's comparison-map refresh and missing byte-length assertion remain

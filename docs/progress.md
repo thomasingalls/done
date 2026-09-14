@@ -43,53 +43,53 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account genesis native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account promotion native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews the Account genesis native file and controls
+blocks_on: none; next bounded phase reviews the Account promotion native file and controls
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account admission native fixture](./release-validation-execution.md#account-admission-native-fixture--phase-2ai)
-adds one file / fifteen cases. All pass in 143.427 seconds, with worker/browser groups drained.
-Node execution took 113.829 of 180 seconds, stage time 118.284, and all 30 generated histories took
-59.692 within 90. The adapter/wrapper outer allowance is prospectively set to 180 based on the
-preceding handoff timing; no admission timeout is claimed. Case limits, populations, native bodies,
-oracles and owner remain unchanged. The active `280f616:src/crdt/promotionRecord.ts` reader is pinned
-and bounded at five seconds / 2 MiB. New work is uncommitted.
+**Just completed.** [Account genesis native fixture](./release-validation-execution.md#account-genesis-native-fixture--phase-2aj)
+adds one file / fourteen cases. All pass in 97.153 seconds, with worker/browser groups drained.
+Node execution took 69.345 of 180 seconds, stage time 72.933, and all 40 histories took 35.478
+within 90. The adapter/wrapper outer allowance was set prospectively to 180 using preceding timings;
+no genesis timeout is claimed. Native bodies, oracles, populations, case limits and owner are unchanged.
+The active `a4e1c15:src/crdt/promotionRecord.ts` reader is pinned and bounded at five seconds / 2 MiB.
+New work is uncommitted.
 
-**Evidence.** Retained receipts and lost begin/finish results survive exact retries. Six IDB cuts include
-three renderer deaths. Abandonment cannot roll back a committed admission; cancellation holds a queued
-owner until acknowledgement drains, and queued caller mutations cannot retarget the tested request.
-The final verifier mutation actually retains an invalid-signature receipt. The historical reader and
-ordinary Local paths refuse without further network calls or inventory changes.
+**Evidence.** Full database/journal state, cards/order and attribution survive exact candidate retry.
+Two commit cuts include one renderer death; wrong factors, foreign ownership, service abandonment,
+unbound attribution and signed semantic forgeries refuse unchanged. Removing the checkpoint or wrap
+refusal actually admits incomplete state or an unrecoverable wrap. Cancellation retains the permit
+until acknowledgement drains; the competing page obtains the exact retained candidate. Historical
+reader and malformed-marker refusals preserve inventory; unsigned raw marker edits do not isolate
+parser checks from authentication failures.
 
-Thirty histories retain seed 9242026, endOnFailure:true and the 90-second bound. Mixed disk/journal,
-reverse delivery and interrupted admission are checked against an independent string model and
-Node/OpenSSL signature/decryption oracle; Yjs replay checks exact coverage and full fixture state.
-SQLite readback requires one admitted promotion, active account and identical retained receipt.
-Generated retries reload pages rather than crash renderers. The filtered source comparison excludes
-all application-upgrade rows in done.custody; shared Yjs semantics and excluded cross-slot promotion
-rows remain explicit oracle limits. Synthetic activation is not a browser/hardware passkey ceremony.
+Forty histories retain seed 9222026, endOnFailure:true and 90 seconds. Independent text/card-order
+models and Node/OpenSSL recovery-path decryption check full state and attribution under mixed disk/
+journal, reverse delivery, aborted commit and reload. Each history checks exact repeated candidate,
+one signed forgery refusal and authenticated abandonment. Yjs/application decoding remains shared;
+the independent oracle does not open the device wrap or verify candidate signatures. Filtered inventory
+excludes all application-upgrade rows; generated restarts reload pages rather than kill renderers.
 
-All 92 pure runner checks, TypeScript, scoped style, planning, authority and signatures pass. The
-obsolete duplicate blocked-file assertion's first failure is retained alongside the passing rerun.
-Unchanged owner/Vitest-process/native-owner controls (23/5/12) retain prior evidence. The [packet](./account-conformance-runs/2026-09-14-admission-native-fixture/README.md)
+All 92 runner checks, TypeScript, scoped style, planning, authority and signatures pass. Unchanged
+owner/Vitest-process/native-owner controls (23/5/12) retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-genesis-native-fixture/README.md)
 contains complete receipts, exact patch, frozen inputs/browser, source pins and preservation. Optional
-JSON and core/restart/control wrapper siblings remain separate obligations. This phase grants no
-Account index handoff, editor/transport authority, offline startup or personal admission receipt.
+JSON, crypto sibling and wrapper outputs/ownership remain separate obligations. This candidate is not
+service admission, issued epoch, Account index selection, editor/transport authority or personal cutover.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -101,11 +101,11 @@ timeout/diagnostic and measured deadline repair remain preserved in its earlier 
 
 Handoff's original timeout and passing allowance repair remain preserved in its signed packet.
 
-**Next bounded phase.** Review `test/account-genesis/native.test.mjs` (fourteen static cases), then
+**Next bounded phase.** Review `test/account-promotion/native.test.mjs` (twelve static cases), then
 remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections
-contain 188 files / 1,612 cases: all 96 Vitest and 92 Node files. All 187 prior contracts / 1,597 identities
-are unchanged. The 666,953-byte manifest retains 612 obligations / 229 blocked rows: 70 test-file
-(54 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
+contain 189 files / 1,626 cases: all 96 Vitest and 93 Node files. All 188 prior contracts / 1,612 identities
+are unchanged. The 669,301-byte manifest retains 612 obligations / 228 blocked rows: 69 test-file
+(53 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
 counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions
 and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose
 precede the immutable aggregate and private Account preparation.

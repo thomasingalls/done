@@ -2816,3 +2816,19 @@ than a browser authenticator ceremony. The receipt mutant must actually retain a
 a generic failure does not establish detection. Wrapper siblings/outputs and Account handoff/editor/
 transport authority remain separate obligations. Preserve the stale runner-assertion failure and rerun
 the complete pure suite after correcting its obsolete blocked-file expectation.
+
+
+## 2026-09-14 — Preserve genesis semantics and identify the independent oracle's actual reach
+
+Integrate the complete fourteen-case genesis native file and all 40 histories. Keep their bodies,
+oracles, populations, seed and case limits unchanged. Set a three-minute adapter/wrapper allowance
+before running the file, informed by preceding admission/handoff timings and the larger population;
+this prospective choice is not a genesis timeout repair. Pin and bound only the active historical reader.
+
+Require the actual snapshot/wrap mutants to accept bad candidates, with independent decryption showing
+missing state or inability to recover. Distinguish signed semantic forgeries from unsigned malformed
+marker edits. Report that the independent Node/OpenSSL oracle opens the recovery path, while device
+wrap opening, candidate signature verification and Yjs semantics are not independently implemented by
+this native file. Filtered inventory excludes every promotion row, generated restarts reload pages,
+and one directed cut kills a renderer. Keep crypto sibling and wrapper credit separate, and do not
+broaden a prepared proposal into service admission or Account editing authority.
