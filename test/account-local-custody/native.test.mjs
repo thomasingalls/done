@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { bundle } from './runtime.mjs';
 import * as o from './oracle.mjs';
 const scripts = {};
@@ -30,17 +31,31 @@ async function fixture(t, control = 'base', race = false) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end('<!doctype html><title>Disposable D6 custody</title>');
   });
-  await new Promise((r, rej) => {
-    server.once('error', rej);
-    server.listen(0, '127.0.0.1', r);
+  let browser, context;
+  t.after(async () => {
+    try {
+      try {
+        await context?.close();
+      } finally {
+        await browser?.close();
+      }
+    } finally {
+      if (server.listening)
+        await new Promise((resolve, reject) =>
+          server.close((error) => (error ? reject(error) : resolve())),
+        );
+    }
   });
-  t.after(() => new Promise((r) => server.close(r)));
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      server.off('error', reject);
+      resolve();
+    });
   });
-  t.after(() => browser.close());
-  const page = await browser.newPage(),
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
+  const page = await context.newPage(),
     url = 'http://127.0.0.1:' + server.address().port;
   const cold = async (c = control) => {
     await page.goto(url);
@@ -248,42 +263,42 @@ test(
   },
 );
 
-test(
-  'native reservation comparison includes the prior MAC before any root encryption',
-  { timeout: 40000 },
-  async (t) => {
-    const evidence = [];
-    for (const control of ['base', 'equalMac'])
-      await t.test(control, async (child) => {
-        const f = await fixture(child, control, true),
-          created = await call(f.page, 'begin'),
-          r = await call(f.page, 'record'),
-          obs = await call(f.page, 'observations');
-        assert(obs.raceFired);
-        const rootEncryptions = obs.traces.filter(
-          (x) =>
-            x.kind === 'encrypt' &&
-            !Buffer.from(x.aad, 'hex').includes(Buffer.from('done/devicelock/v1')),
-        ).length;
-        if (control === 'base') {
-          assert.equal(created.ok, false);
-          assert.equal(created.error, 'repair-required');
-          assert.equal(r.state, 'creating');
-          assert.equal(rootEncryptions, 0);
-        } else {
-          assert(created.ok);
-          assert.equal(r.state, 'protected');
-          assert.equal(rootEncryptions, 3);
-        }
-        evidence.push({
-          control,
-          rootEncryptions,
-          result: created.ok ? 'completed' : created.error,
-        });
+// Both scenarios remain isolated tests; publish the same combined standalone report.
+const comparisonEvidence = [];
+for (const control of ['base', 'equalMac'])
+  test(
+    'native reservation comparison includes the prior MAC before any root encryption: ' + control,
+    { timeout: 20000 },
+    async (t) => {
+      const f = await fixture(t, control, true),
+        created = await call(f.page, 'begin'),
+        r = await call(f.page, 'record'),
+        obs = await call(f.page, 'observations');
+      assert(obs.raceFired);
+      const rootEncryptions = obs.traces.filter(
+        (x) =>
+          x.kind === 'encrypt' &&
+          !Buffer.from(x.aad, 'hex').includes(Buffer.from('done/devicelock/v1')),
+      ).length;
+      if (control === 'base') {
+        assert.equal(created.ok, false);
+        assert.equal(created.error, 'repair-required');
+        assert.equal(r.state, 'creating');
+        assert.equal(rootEncryptions, 0);
+      } else {
+        assert(created.ok);
+        assert.equal(r.state, 'protected');
+        assert.equal(rootEncryptions, 3);
+      }
+      comparisonEvidence.push({
+        control,
+        rootEncryptions,
+        result: created.ok ? 'completed' : created.error,
       });
-    report('native-comparison-control', {
-      evidence,
-      crypto: 'real native comparison race; changed stored MAC is not silently overwritten',
-    });
-  },
-);
+      if (comparisonEvidence.length === 2)
+        report('native-comparison-control', {
+          evidence: comparisonEvidence,
+          crypto: 'real native comparison race; changed stored MAC is not silently overwritten',
+        });
+    },
+  );

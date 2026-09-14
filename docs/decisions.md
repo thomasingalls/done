@@ -3024,3 +3024,14 @@ is effective before promotion, while the post-handoff winning-claim marker still
 
 The adjacent local-custody file uses nested Node subtests that both current census and reporter reject.
 Keep that restriction unchanged in this phase and handle its registration/ownership explicitly next.
+
+
+## 2026-09-14 — Give custody control scenarios explicit identities without broadening nested registration
+
+Promote the two fixed custody comparison subtests to named top-level tests, preserving assertions
+and their passing combined standalone report. Keep each scenario in an isolated fixture and split the
+former shared forty-second limit into twenty seconds each. The enclosing container has no independent
+assertion; it is removed rather than counted as another substantive case. Retain the source/AST and
+modeled report-equivalence checks, and adapt fixture ownership to the already qualified CDP lifecycle.
+Keep nested Node declarations refused by the general census/reporter. Credit logical buffer zeroing
+and parser refusal precisely; neither establishes physical erasure or an owner authority bypass.
