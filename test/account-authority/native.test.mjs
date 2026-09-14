@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { build } from 'vite';
 import fc from 'fast-check';
 import { PrivateAuthority } from '../../account-service/authority.ts';
@@ -30,8 +31,24 @@ async function native(t) {
   const dir = mkdtempSync(join(tmpdir(), 'done-authority-native-')),
     key = randomBytes(32),
     token = randomBytes(32).toString('base64url');
-  let pin;
-  const server = await createPrivateAccountServer({
+  let pin, server, browser, context;
+  t.after(async () => {
+    try {
+      try {
+        await context?.close();
+      } finally {
+        await browser?.close();
+      }
+    } finally {
+      try {
+        await server?.close();
+      } finally {
+        key.fill(0);
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+  });
+  server = await createPrivateAccountServer({
     path: join(dir, 'account.sqlite'),
     token,
     authority: (policy) => {
@@ -39,17 +56,8 @@ async function native(t) {
       return PrivateAuthority.open(join(dir, 'authority.sqlite'), pin, key);
     },
   });
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-  });
-  t.after(async () => {
-    await browser.close();
-    await server.close();
-    key.fill(0);
-    rmSync(dir, { recursive: true, force: true });
-  });
-  const context = await browser.newContext();
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
   // This inert page is the disposable application harness. The API adapter keeps its default-src none CSP.
   await context.route(server.origin + '/', (route) =>
     route.fulfill({

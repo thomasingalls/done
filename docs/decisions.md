@@ -2849,3 +2849,20 @@ constitute an importer replay or explicit all-claim preservation proof. Recovery
 remain scoped to the tested owner states; they do not establish same-slot re-registration, general
 reset or key-loss recovery. Two directed cuts kill renderers, while generated restarts reload pages.
 Keep core sibling, wrapper and later genesis/admission/index/editor/transport obligations separate.
+
+
+## 2026-09-14 — Borrow the owned browser for authority preflight without broadening its evidence
+
+Integrate all four authority native cases and forty generated histories under the existing shared
+browser owner. Register fixture cleanup before asynchronous setup and close the context explicitly;
+keep standalone launch, product code, every test body, seed/population and all deadlines unchanged.
+The native file's expected cases are exact; whole-wrapper scheduling and optional output obligations
+remain separate. No historical-source input or registration-data adapter is required.
+
+Credit logical inventory preservation, configured authority proof, specific refusal boundaries and
+observed context stability. Generated edits do not independently assert expected writing or journalled
+status. Page reloads are not process deaths; input mutation does not force queued contention, and
+cancellation delays a wrapper before its HTTP request. Keep service-only cryptographic mutations and
+full recovery/adoption evidence separate. The next recovery native fixture genuinely restarts a
+persistent browser profile and restores virtual credentials; its owner integration must preserve those
+semantics, rather than substitute a page reload.

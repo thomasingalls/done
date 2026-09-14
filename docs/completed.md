@@ -5347,3 +5347,65 @@ source/helper pins, base signature, prior contracts and preservation. All 52 per
 L-2, historical evidence/debts/signing backups and unrelated root files remain untouched. Next:
 Account authority native fixtures (four static cases), then remaining integration, R-04, P-06 and
 the immutable aggregate before private Account preparation and human adoption.
+
+
+## 2026-09-14 — Account authority native fixture integration (`L-1`)
+
+The preceding promotion phase is signed and verified as `f59d5f2`. `authority-native-fixture` adds
+one complete native file / four cases. All pass in 63.453 seconds including fingerprint work;
+Node execution took 28.635 within 120, stage time 32.592, and all 40 histories 21.182 within 40.
+Worker/browser groups drain. The main case retains 30 seconds, cancellation and input snapshot 20,
+startup 15 and drain grace five. The file allowance follows the existing authority wrapper bound.
+
+Native setup now registers cleanup before asynchronous setup, closes the fresh context, and borrows
+validated loopback CDP through the existing shared browser helper. Nested finalizers retain server
+close, operator-key zeroing and temporary-directory removal if another cleanup step fails. Standalone
+campaigns retain their launch path. Product code, all test bodies and identities, browser helpers,
+wrapper, generated population/seed and all limits remain unchanged. No runtime historical-source or
+registration-data input is needed. New work is uncommitted and is not an immutable aggregate.
+
+The main case journals fixed writing, checks its recovered entry and Local scope, compares retained
+logical IndexedDB/localStorage values before and after preflight, observes text through production
+recovery, and requires the exact preflight result after page reload. A synthetic authenticated imported
+claim retains the same context and inventory; this is not an importer replay. The configured pin is
+supplied by fixture initialization separately from the proof reply, not by real operator distribution.
+Recovery confirmation checks a 128-character signature with a generated challenge and production digest;
+it does not independently verify that signature or finalize recovery at the service.
+
+Wrong code and pending Yjs dependencies refuse before an additional authority HTTP call. A different
+configured authRoot refuses with pin-changed; heads material refuses with admission-material. A direct
+HTTP probe verifies a same-origin signed proof and observes 403 for one foreign Origin. This does not
+exhaust signature/nonce/parser or policy mutations. The inventory is a logical key/value census,
+including Uint8Array bytes; it does not establish forensic or physical power-loss preservation.
+
+Cancellation holds a prove wrapper before HTTP, aborts, observes another tab has not acquired, then
+releases the wrapper and requires non-success from the cancelled call plus successful subsequent
+acquisition/inspection. It does not delay an already in-flight HTTP reply or query lock-manager state.
+The input-snapshot case immediately replaces top-level caller fields and requires the first slot and
+principal. It does not force acquisition behind a competing lock or mutate nested pin fields.
+
+Forty histories retain seed 9182026, numRuns:40, endOnFailure:true and an explicit completed count.
+One to eight labels select inspect/wrong-code/restart/disk-edit/journal-edit in fresh Local slots under
+one shared service/context. Non-edit actions compare before/after inventory and successful inspections
+retain the first observed context for repeated equality. Edit actions skip the comparison and do not
+assert journalled status. This is an observed-context/inventory oracle, not an independent expected
+writing or cryptographic model. No generated fault control, shrinking or action-coverage assertion is
+present. Restarts reload the same page; this native file induces no renderer, browser or service death.
+
+All 92 runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+The unchanged 23 Node-owner, five Vitest-process and twelve native-owner controls retain prior evidence.
+Existing ledger orphan classification, core receive headroom, capture map-refresh/byte-length follow-ups
+and historical editing/handoff deadline evidence remain visible. All 190 prior general contracts /
+1,638 identities and retired-v8 exclusions are unchanged. General selections contain 191 files /
+1,642 cases (96 Vitest, 95 Node); Account has 85 files / 548 cases. The 672,735-byte manifest has 612
+obligations / 226 unresolved: 67 test-file (51 Node, sixteen Playwright), 96 command, 63 campaign.
+All eleven catalogues remain resolved (163 cases / 54 mutations).
+
+The [packet](./account-conformance-runs/2026-09-14-authority-native-fixture/README.md) retains complete receipts, exact patch, frozen inputs/browser identity,
+source/helper pins, base signature, prior contracts and preservation. All 52 personal/vector pins,
+L-2 and historical evidence/debts/signing backups remain unchanged. Optional counterexample JSON and
+whole-wrapper output/scheduling/ownership remain separate obligations; service-only sibling controls
+are not rerun here. This read-only preflight grants no epoch/admission/recipient authority and does not
+establish prepared promotion, activation, Account index/editor/transport, full recovery/adoption or a
+personal/hardware ceremony. Next: Account recovery native fixture (one case), preserving its actual
+persistent-profile browser restarts and virtual WebAuthn semantics when integrating ownership.

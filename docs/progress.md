@@ -43,51 +43,45 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account authority native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account recovery native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews the Account authority native file and controls
+blocks_on: none; next bounded phase reviews persistent-profile restart and virtual WebAuthn ownership
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account promotion native fixture](./release-validation-execution.md#account-promotion-native-fixture--phase-2ak)
-adds one file / twelve cases. All pass in 73.219 seconds with worker/browser groups drained.
-Node execution took 44.949 of 120 seconds, stage time 48.734, and all 45 histories took 16.727
-within 60. All original case limits, bodies, populations, helpers, wrapper and owner remain unchanged.
-This file has no historical-source or registration-data input. New work is uncommitted.
+**Just completed.** [Account authority native fixture](./release-validation-execution.md#account-authority-native-fixture--phase-2al)
+adds one file / four cases. All pass in 63.453 seconds with worker/browser groups drained.
+Node execution took 28.635 of 120 seconds, stage time 32.592, and all forty histories took 21.182
+within 40. Native setup now borrows the existing CDP owner and registers cleanup before setup; product,
+all test bodies/identities, browser helpers, wrapper, populations and deadlines remain unchanged.
+New work is uncommitted.
 
-**Evidence.** Exact prepared credentials and reservation spending survive four native commit cuts,
-including two renderer deaths. Wrong factors, missing completed counters and exhausted budgets refuse.
-The MAC mutant actually returns a substituted intent after authentication is removed. Competing owners
-converge; cancellation waits for a held transport wrapper to settle. Lost abandonment replies and local
-delete aborts preserve retry identity and spent budget. Recovery cleanup refuses unknown Local rows and
-retained promotion, then releases its progress after authenticated promotion abandonment.
+**Evidence.** Read-only preflight preserves logical retained values, verifies the configured authority
+pin and repeats the recovered context. Wrong factors and pending dependencies refuse before HTTP;
+a changed root and heads material refuse, and a foreign Origin is denied. Cancellation retains the
+slot while a held pre-request wrapper settles. Immediate caller mutation retains the original target.
+Forty generated histories compare non-edit inventory and observed context across edits and page reloads;
+they do not independently reconstruct writing, assert journalled edit status or induce process deaths.
+Input mutation does not force queued contention. Synthetic imported provenance is not an importer replay,
+and the recovery confirmation length check is not service finalization or independent signature proof.
 
-Forty-five histories retain seed 9192026, endOnFailure:true and 60 seconds. A scalar ledger checks spent
-seals and stable credentials at preparation steps; wrong/tampered states, failed reservation, reload,
-writing and abandonment follow the modeled preconditions. This is not an independent writing/crypto
-oracle or an assertion after every action. Some labels fall through when fault preconditions do not
-hold. The main inventory comparison excludes all custody rows; exact synthetic imported-claim equality
-is not separately asserted. Generated restarts reload pages. Recovery cleanup does not explicitly
-re-register the same old slot, and Node assertions are not a browser/hardware ceremony.
-
-All 92 runner checks, TypeScript, scoped style, planning, authority and signatures pass. Unchanged
-owner/Vitest-process/native-owner controls (23/5/12) retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-promotion-native-fixture/README.md)
-contains complete receipts, exact patch, frozen inputs/browser, source pins and preservation. Optional
-JSON, core sibling and wrapper outputs/ownership remain separate obligations. This phase establishes
-preparation/abandonment only, not genesis, admission, Account index, editor/transport or personal cutover.
+All 92 runner checks, TypeScript, scoped style, planning, authority and signatures pass. The unchanged
+owner controls retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-authority-native-fixture/README.md) records exact scope, complete receipts,
+patch, source/browser identities and preservation. No epoch, admission, prepared promotion, Account
+index/editor/transport or personal Account result follows. Wrapper and optional JSON credit stay separate.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -99,14 +93,15 @@ timeout/diagnostic and measured deadline repair remain preserved in its earlier 
 
 Handoff's original timeout and passing allowance repair remain preserved in its signed packet.
 
-**Next bounded phase.** Review `test/account-authority/native.test.mjs` (four static cases), then
-remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections
-contain 190 files / 1,638 cases: all 96 Vitest and 94 Node files. All 189 prior contracts / 1,626 identities
-are unchanged. The 671,721-byte manifest retains 612 obligations / 227 blocked rows: 68 test-file
-(52 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
-counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions
-and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose
-precede the immutable aggregate and private Account preparation.
+**Next bounded phase.** Review `test/account-recovery/native.test.mjs` (one static case). Preserve
+its actual persistent-profile browser restarts and virtual WebAuthn credentials when integrating process
+ownership. Then finish remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts.
+General selections contain 191 files / 1,642 cases: all 96 Vitest and 95 Node files. All 190 prior
+contracts / 1,638 identities are unchanged. The 672,735-byte manifest retains 612 obligations / 226
+blocked rows: 67 test-file (51 Node, sixteen Playwright), 96 command and 63 campaign. These are integration
+obligations, not defect counts. All eleven catalogues remain resolved (163 cases / 54 mutations).
+Keep retired-v8 exclusions and resolve old wrapper calls without reviving support. R-04 style scopes/
+full checks and P-06 prose precede the immutable aggregate and private Account preparation.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
