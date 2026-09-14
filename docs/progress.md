@@ -55,48 +55,48 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account failure and recovery fixtures.
+**Just completed.** Account liveness Node fixtures.
 
-The preceding phase is signed and verified as `d1eff10`. **Account failure and recovery fixtures** adds 3 complete
-files / 5 cases. The selection passes in 48.891 seconds including
-fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-failure-fixtures/README.md).
+The preceding phase is signed and verified as `b5b83ce`. **Account liveness Node fixtures** adds 2 complete
+files / 6 cases. The selection passes in 39.235 seconds including
+fingerprinting. Worker groups drain; this selection launches no browser.
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-liveness-node-fixtures/README.md).
 
-Five unchanged cases across three complete files retain the existing private-release native group allowance of 120 seconds per admitted file. The three admission cases and HTTP case each retain a 60-second case limit; the service case has no explicit inner timeout and is bounded by its file stage. This does not qualify the original combined 120-second wrapper stage.
+Six cases in two complete Node files retain their 60-second wrapper/file limits and have no explicit inner timeout. No Chromium fixture is launched. Two instrumentation checks and four service-cache cases run; three of those cache cases construct synthetic service stores. Product, cache implementation, instrumentation, probe and shared fixtures remain unchanged.
 
-Three synthetic admission transport refusals return expired once at begin/challenge/finish. The retained marker stays admission-requested for begin or admission-offered otherwise, has no receipt, and an exact retry reaches a promotion receipt. These hints never serve as authenticated receipts. No renderer crash or generated histories run in this group.
+The declaration array now uses literal 65536/1048576 rather than 64*1024/1024*1024. The former arithmetic was refused by the finite registration reader. A source comparison establishes that only this declaration and its explanatory comment changed; every test body is unchanged and the two byte sizes and resulting titles are identical. The census reader is not broadened.
 
-The service case throws a sentinel error from an actually reached before-commit hook. It checks an unknown/storage-unavailable response, a submit/commit diagnostic and no PRIVATE substring in the returned diagnostic list. This is a focused diagnostic redaction assertion, not a complete log/diagnostic memory bound or whole-profile privacy proof.
+Instrumentation checks all thirteen current source anchors, refusal on missing/duplicate anchors, and exact clock/verification seams. A synthetic instrumented module preserves awaited completion, result and throw behavior. The probe sees expected call/size counters and a real digest, refuses stop while active, and excludes a sentinel argument from its result. These are focused instrument invariants rather than timing/performance qualification.
 
-The HTTP case sends a one-byte invalid read-v2 request through an actual loopback service. The client returns null decision bytes and an exact invalid-request response diagnostic. This is invalid-request handling rather than an induced network/storage outage. The fixture writes its default focused http-hint report inside the disposable execution checkout; it is removed with that checkout. The exact answer/diagnostic assertions and owned reporter receipt are retained, without auxiliary JSON credit. Optional admission/service reports remain unset.
+Two service cases submit 35 larger rows under 64 KiB/1 MiB checkpoints. Warm and cold reads match, and the cold path performs exactly 105 additional signature checks. Changed request digest and checkpoint bytes refuse until restored. A four-row case also checks changed SQL digest, account state and response bytes; the logical inventory is unchanged for the earlier read comparison.
 
-The residue fixture shared by HTTP now uses the existing owned-CDP helper and closes its explicitly created context. Nested finally blocks attempt browser, service and directory cleanup even if an earlier close fails. Standalone execution retains the original launch fallback. Test bodies, collection/matching code, service fixture, product, owners, census, reporters and wrapper remain unchanged. Full residue suites retain separate unresolved obligations; HTTP success does not qualify their privacy collectors.
+The cache unit case checks owned bytes, context-sensitive misses, eviction after 513 keys, no caching of a 17 MiB input and clearing across in-flight work. The delayed result cannot repopulate the cleared cache. These are structural reuse and invalidation assertions, not a real Account device, browser responsiveness, physical memory census or exhaustive corruption proof.
 
-Four disposable browser fixture instances plus one Node service fixture use generated secrets, software authenticators, retained synthetic factor options and private loopback services. No human PRF/passkey, real Account receipt, second device, personal profile/origin/build, physical power loss or forensic-erasure claim. Excluded retired-v8 files and unselected historical branches remain excluded.
+The compact manifest grows to 701575 bytes. The writer ceiling and independent regression assertion both move from 700000 to 750000 bytes, with no schema/layout change, removed obligations or altered prior general contracts. The failed check from initially updating only the test ceiling is retained. Runtime reporter/log limits remain unchanged.
 
-All prior general contracts and exclusions remain unchanged; existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and deadline evidence remain open. Exact owned receipts, source/browser pins and the changed-fixture patch are archived. Whole wrapper/output and immutable aggregate qualification remain separate.
+Optional liveness reports are written inside the disposable execution checkout and removed with it. Exact case assertions/outcomes, owned receipts, source identities and patch are retained; no separately retained performance reports or whole wrapper-output credit is claimed. Existing owner/headroom/oracle observations, prior deadline evidence and immutable aggregate qualification remain separate.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 213 prior general contracts / 1,734 identities and exclusions remain unchanged.
-General selections now contain 216 files / 1,739 cases (96 Vitest,
-120 Node); Account has 110 files / 645 cases.
-The 699,942-byte manifest retains 612 obligations / 201 unresolved:
-42 test-file (26 Node, sixteen Playwright), 96 command,
+pass. All 216 prior general contracts / 1,739 identities and exclusions remain unchanged.
+General selections now contain 218 files / 1,745 cases (96 Vitest,
+122 Node); Account has 112 files / 651 cases.
+The 701,575-byte manifest retains 612 obligations / 199 unresolved:
+40 test-file (24 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
-Exact receipts/patch, frozen source/browser identities, source-control pins, prior owner evidence,
+Exact receipts/patch, frozen source identities, source-control pins, prior owner evidence,
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account liveness instrumentation and service-cache fixtures. There are 13 Account files left; continue in signed
+qualification is separate. Next: Account controlled liveness and verified-view browser fixtures. There are 11 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
@@ -113,7 +113,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account liveness instrumentation and service-cache fixtures. 13 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account controlled liveness and verified-view browser fixtures. 11 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 

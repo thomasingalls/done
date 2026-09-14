@@ -5,7 +5,8 @@ import { ready, mutate, inventory } from '../account-service-delivery/fixtures.m
 import { query, read } from '../account-service-inbound/oracle.mjs';
 import { report } from './fixtures.mjs';
 
-for (const checkpointBytes of [64 * 1024, 1024 * 1024])
+// 64 KiB and 1 MiB; literal byte counts keep registration statically enumerable.
+for (const checkpointBytes of [65536, 1048576])
   test(`service cache retains reuse with ${checkpointBytes}-byte checkpoint and 35 larger rows`, async (t) => {
     const x = await ready(t, { checkpointBytes });
     for (let i = 1; i <= 35; i++)

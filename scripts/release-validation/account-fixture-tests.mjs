@@ -7,6 +7,11 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const livenessNodeFixtureFiles = [
+  'test/account-liveness/instrument.test.mjs',
+  'test/account-liveness/service-cache.test.mjs',
+];
+
 export const failureBrowserFixtureFiles = [
   'test/account-failures/http.test.mjs',
   'test/account-failures/native.test.mjs',
@@ -320,6 +325,7 @@ export const accountFixtureFiles = {
     ...decisionDirectedFixtureFiles,
     ...decisionHistoryFixtureFiles,
     ...failureFixtureFiles,
+    ...livenessNodeFixtureFiles,
   ],
 };
 
@@ -383,6 +389,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (livenessNodeFixtureFiles.includes(file) ? 60000 : undefined) ??
       (failureFixtureFiles.includes(file) ? 120000 : undefined) ??
       (decisionHistoryFixtureFiles.includes(file) ? 300000 : undefined) ??
       (decisionDirectedFixtureFiles.includes(file) ? 300000 : undefined) ??

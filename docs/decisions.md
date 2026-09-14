@@ -3082,3 +3082,8 @@ Integrate the three unchanged restart/order/generated files under the existing f
 ## 2026-09-14 — Treat failure hints as diagnostics while retaining exact admission retry
 
 Integrate five unchanged service/HTTP/admission failure cases, retaining null decision bytes or no receipt on diagnostic hints and exact retryable progress. Borrow the existing owned browser for the shared residue HTTP fixture, explicitly close its context and attempt each cleanup boundary independently. Keep broad diagnostic/privacy claims, full residue suites and the original combined wrapper allowance separate.
+
+
+## 2026-09-14 — Keep liveness instrument and service-cache checks finite and independently observable
+
+Integrate six Node instrumentation/cache cases with the existing one-minute file limits. Replace only equivalent checkpoint-size registration expressions with literal bytes, leaving the finite reader and test bodies unchanged. Preserve exact warm/cold signature counts, cache ownership/invalidation checks and instrument controls. Raise the compact manifest ceiling to 750 kB in writer and regression assertion while preserving schema, layout and all earlier contracts. Performance workloads and browser liveness remain separate.
