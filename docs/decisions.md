@@ -2910,3 +2910,17 @@ acceptance. Preserve real renderer death at held assertion and lost committed fi
 with a pending competing lock and zero finish calls from the cancelled owner. Node-generated activation
 assertions do not establish browser/hardware ceremonies. Keep generated service histories, wrapper
 outputs/reproduction and subsequent index handoff separate.
+
+
+## 2026-09-14 — Separate inbound HTTP interoperability from browser transport and writing recovery
+
+Integrate the unchanged one-case Account service inbound native file under its existing 90-second
+wrapper bound and owned-CDP fixture chain. Retain its sixty-second case limit. No historical input or
+runtime registration-data adapter is needed for its baseline helper path.
+
+Credit exact envelope bytes, repeated response bytes, directed HTTP refusals and receive-cursor
+recovery after page replacement. The reader signs/verifies in the browser but sends reads with Node
+fetch; browser transport and CORS are separate. Repeated queries do not establish injected response
+loss or service-state immutability. Cold cursor recovery without a writing assertion does not establish
+independent content reconstruction, particularly for locally authored envelopes in the same workspace.
+Keep service-only controls/histories, wrapper postconditions and human Account work separate.

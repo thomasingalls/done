@@ -43,19 +43,19 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-194 files / 1,650 cases: all 96 Vitest files and 98 Node files. Account activation native adds five
-cases, passing in 49.384 seconds (Node 20.043 within 180), with worker/browser groups drained.
-Product, native tests/helpers, owner, wrapper and 30-second case limits are unchanged. Two omission
-controls actually reach the assertion callback only after the target/signature check is removed;
-this does not admit a forged receipt. Cancellation waits for callback settlement with a competing lock;
-two renderer crashes recover with one or zero assertions as appropriate. Node synthetic assertions are
-not browser/hardware WebAuthn. No generated histories or historical readers run here. All 92 runner
-checks pass; unchanged owner controls retain prior evidence. All 193 prior contracts / 1,645 identities
+195 files / 1,651 cases: all 96 Vitest files and 99 Node files. Account service inbound native adds
+one case, passing in 46.865 seconds (Node 15.488 within 90), with worker/browser groups drained.
+Product, native tests/helpers, owner, wrapper and sixty-second case limit are unchanged. Exact envelope
+bytes, repeated responses, directed HTTP refusals and receive-cursor recovery pass. Reads use Node
+fetch; browser receive transport/CORS, injected response loss and independent writing recovery are
+not asserted. No generated histories, controls or historical readers run in this file. All 92 runner
+checks pass; unchanged owner controls retain prior evidence. All 194 prior contracts / 1,650 identities
 and exclusions remain unchanged. Existing owner/headroom/capture-oracle observations and deadline
-evidence remain visible. There are 223 unresolved obligations: 64 test-file (48 Node, sixteen Playwright),
-96 command, 63 campaign. Next: Account service inbound native fixture (one case), then remaining
-integration, R-04, P-06 and the immutable run. Wrapper/service-history/index-handoff credit stays separate.
-Core `76ac103` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-activation-native-fixture/README.md).
+evidence remain visible. There are 222 unresolved obligations: 63 test-file (47 Node, sixteen Playwright),
+96 command, 63 campaign. Next: Account delivery-oracle native fixture (six cases including two controls,
+with computed registration names), then remaining integration, R-04, P-06 and the immutable run.
+Wrapper/service-history credit remains separate. Activation `bc536f3` is signed and verified;
+new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-service-inbound-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

@@ -5592,3 +5592,56 @@ personal/vector pins, L-2 and historical evidence/debts/signing backups remain u
 confirmation wording, OS passkey, general membership/revocation, Account index/editor/transport,
 personal/second-device adoption or deployment follows. Next: Account service inbound native fixture
 (one case), then remaining integration, R-04, P-06 and the immutable aggregate before private Account prep.
+
+
+## 2026-09-14 — Account service inbound native fixture integration (`L-1`)
+
+The preceding activation phase is signed and verified as `bc536f3`. `service-inbound-native-fixture`
+adds one complete file / one case. It passes in 46.865 seconds including fingerprint work;
+Node execution took 15.488 within the existing 90-second native wrapper/file allowance and stage time
+19.272. Worker/browser groups drain; a targeted post-run process check finds the browser gone.
+The case retains sixty seconds, startup fifteen and drain grace five. Product, native tests, helpers,
+wrapper, owner and limits remain unchanged. Only registration/selection, expected populations and
+documentation change. New work is uncommitted, not an immutable aggregate.
+
+The fixture uses in-memory builds, the existing owned-CDP browser, a temporary service database and
+synthetic credentials. One selected Account creates and submits two envelopes through its browser-owned
+delivery workspace. Its storage-only receive owner signs v2 read requests and verifies/persists original
+service response bytes. Reads travel through Node fetch with an explicit Origin header. This exercises
+service HTTP interoperability with the browser-owned receiver, not browser receive transport, CORS
+or automatic polling/reconnect. It publishes and receives the same workspace's own stream, not a second
+device's independently created content.
+
+The v1 endpoint and zeroed v2 read signature return 409. Foreign Origin, wrong content type and wrong
+bearer return 403; a 4097-byte request returns 413. These checks assert statuses, not independent
+before/after service-state equality or exhaustive bounds. Two single-entry pages preserve the exact
+original submission envelope bytes, through=2 and successive next positions 1 and 2. The independent
+helper extracts envelope bytes; production code decodes the pages and verifies them. The independent
+v1 page-proof oracle is not called.
+
+Repeating each signed query returns identical bytes. The duplicate final page reports duplicate and
+the receive cursor is 2. Despite the source comment, this does not inject a lost HTTP response or check
+that a service database census stays unchanged. Closing the owner and replacing its page in the same
+browser context recovers cursor 2; the next read reports empty. No renderer/browser/service process
+crash or fresh profile is induced, and recovered visible writing is not independently compared.
+Both envelopes were already created locally; this is not reconstruction solely from downloaded pages.
+
+No generated histories, omission controls or historical readers run in this native file. Shared helper
+branches for historical readers/mutations are not called. Complete wrapper execution, service-only
+histories/controls/restart cuts, report outputs and reproduction remain separate obligations.
+
+All 92 runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged 23 Node-owner, five Vitest-process and fourteen native-owner controls retain prior evidence.
+All 194 prior general contracts / 1,650 identities and retired-v8 exclusions remain unchanged.
+General selections now contain 195 files / 1,651 cases (96 Vitest, 99 Node); Account has 89 files /
+557 cases. The 675,744-byte manifest retains 612 obligations / 222 unresolved: 63 test-file
+(47 Node, sixteen Playwright), 96 command and 63 campaign. All eleven catalogues remain resolved
+(163 cases / 54 mutations). These are integration obligations, not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-service-inbound-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper pins, base signature, prior contracts and preservation. All 52 personal/vector pins,
+L-2 and historical evidence/debts/signing backups remain unchanged. Existing ledger orphan
+classification, core receive headroom, capture map-refresh/byte-length follow-ups and historical
+editing/handoff deadline evidence remain open. Next: Account delivery-oracle native fixture, six
+cases including two controls; its computed names need registration review. Remaining integration,
+R-04 and P-06 precede the immutable aggregate and private Account preparation.

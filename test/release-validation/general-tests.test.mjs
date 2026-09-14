@@ -21,16 +21,16 @@ import { validateStage } from '../../scripts/release-validation/stage.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1650-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1651-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 194);
+  assert.equal(general.length, 195);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1650,
+    1651,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -60,6 +60,7 @@ test('reviewed Vitest and Node selections preserve the 1650-case file denominato
         'test/account-authority/native.test.mjs': 120000,
         'test/account-recovery/native.test.mjs': 120000,
         'test/account-core/native.test.mjs': 120000,
+        'test/account-service-inbound/native.test.mjs': 90000,
         'test/account-delivery/native.test.mjs': 480000,
         'test/account-spool/native.test.mjs': 240000,
         'test/account-receive/native.test.mjs': 300000,

@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const serviceInboundNativeFixtureFiles = ['test/account-service-inbound/native.test.mjs'];
+
 export const activationNativeFixtureFiles = ['test/account-activation/native.test.mjs'];
 
 export const coreNativeFixtureFiles = ['test/account-core/native.test.mjs'];
@@ -244,6 +246,7 @@ export const accountFixtureFiles = {
     ...recoveryNativeFixtureFiles,
     ...coreNativeFixtureFiles,
     ...activationNativeFixtureFiles,
+    ...serviceInboundNativeFixtureFiles,
   ],
 };
 
@@ -267,7 +270,8 @@ export function accountFixtureNodeStage(root, file) {
     authorityNativeFixtureFiles.includes(file) ||
     recoveryNativeFixtureFiles.includes(file) ||
     coreNativeFixtureFiles.includes(file) ||
-    activationNativeFixtureFiles.includes(file);
+    activationNativeFixtureFiles.includes(file) ||
+    serviceInboundNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -292,6 +296,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (serviceInboundNativeFixtureFiles.includes(file) ? 90000 : undefined) ??
       (activationNativeFixtureFiles.includes(file) ? 180000 : undefined) ??
       (coreNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
       (recoveryNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
