@@ -24,6 +24,7 @@ import {
   decisionsNativeFixtureFiles,
   captureNativeFixtureFiles,
   editingNativeFixtureFiles,
+  handoffNativeFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -38,14 +39,14 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 476 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 491 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
-      4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12, 24, 19, 6, 15, 16,
+      4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12, 24, 19, 6, 15, 16, 15,
     ],
   );
   for (const s of stages) {
@@ -62,7 +63,8 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
       deliveryNativeFixtureFiles.includes(s.argv.at(-1)) ||
       decisionsNativeFixtureFiles.includes(s.argv.at(-1)) ||
       captureNativeFixtureFiles.includes(s.argv.at(-1)) ||
-      editingNativeFixtureFiles.includes(s.argv.at(-1));
+      editingNativeFixtureFiles.includes(s.argv.at(-1)) ||
+      handoffNativeFixtureFiles.includes(s.argv.at(-1));
     assert.equal(
       s.deadlineMs,
       {
@@ -72,6 +74,7 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
         'test/account-decisions/native.test.mjs': 120000,
         'test/account-capture/native.test.mjs': 180000,
         'test/account-editing/native.test.mjs': 300000,
+        'test/account-handoff/native.test.mjs': 180000,
         'test/account-delivery/native.test.mjs': 480000,
         'test/account-spool/native.test.mjs': 240000,
         'test/account-receive/native.test.mjs': 300000,
@@ -95,10 +98,10 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 80);
+  assert.equal(selected.length, 81);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    488,
+    503,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -286,7 +289,7 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
     [90000, 330000, 120000],
   );
   assert(receive.every((s) => s.fixture && !s.expect.historyInputs && !s.expect.dataInputs));
-  for (const file of ['test/account-handoff/native.test.mjs']) {
+  for (const file of ['test/account-admission/native.test.mjs']) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), file), /Unreviewed/);
     assert(m.rows.find((r) => r.path === file).blocked);
   }
@@ -458,6 +461,25 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
       editingPin.reference + ':' + editingPin.path,
     ),
   );
+  const handoff = selectStages(m, 'handoff-native-fixture');
+  assert.deepEqual(
+    handoff.map((s) => s.argv.at(-1)),
+    handoffNativeFixtureFiles,
+  );
+  assert.equal(handoff[0].expect.cases.length, 15);
+  assert.equal(handoff[0].deadlineMs, 180000);
+  assert.deepEqual(handoff[0].fixture, { kind: 'chromium-cdp', startupMs: 15000 });
+  assert.equal(handoff[0].expect.dataInputs, undefined);
+  assert.deepEqual(
+    handoff[0].expect.historyInputs.map((p) => [p.reference, p.path]),
+    [['beed8cf', 'src/crdt/promotionRecord.ts']],
+  );
+  const handoffPin = handoff[0].expect.historyInputs[0];
+  assert(
+    readFileSync('test/account-handoff/fixtures.mjs', 'utf8').includes(
+      handoffPin.reference + ':' + handoffPin.path,
+    ),
+  );
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -478,7 +500,6 @@ test('Account fixture selection admits exactly 476 Node cases and 12 delivery ca
     'test/account-recovery/native.test.mjs',
     'test/account-promotion/native.test.mjs',
     'test/account-activation/native.test.mjs',
-    'test/account-handoff/native.test.mjs',
     'test/account-service-inbound/native.test.mjs',
     'test/account-delivery-oracle/native.test.mjs',
     'test/account-parser-conformance/native.test.mjs',

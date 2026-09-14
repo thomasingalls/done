@@ -38,6 +38,7 @@ import {
   decisionsNativeFixtureFiles,
   captureNativeFixtureFiles,
   editingNativeFixtureFiles,
+  handoffNativeFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -444,6 +445,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'handoff-native-fixture': rows
+        .filter((r) => account.node.includes(r.path) && handoffNativeFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'editing-native-fixture': rows
         .filter((r) => account.node.includes(r.path) && editingNativeFixtureFiles.includes(r.path))

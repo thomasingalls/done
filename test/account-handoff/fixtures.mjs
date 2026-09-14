@@ -20,6 +20,8 @@ export async function handoffBundle(control) {
               if (control === 'old-reader' && id.endsWith('/src/crdt/promotionRecord.ts'))
                 return execFileSync('git', ['show', 'beed8cf:src/crdt/promotionRecord.ts'], {
                   encoding: 'utf8',
+                  timeout: 5000,
+                  maxBuffer: 2 * 1024 * 1024,
                 });
               if (control === 'passkey' && id.endsWith('/src/crdt/accountAccess.ts')) {
                 const needle = "throw Error('Account passkey refused: ' + result.refusal);";

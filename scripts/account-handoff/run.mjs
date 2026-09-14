@@ -95,7 +95,7 @@ const deadline = setTimeout(() => {
   timedOut = true;
   child.kill('SIGTERM');
   forced = setTimeout(() => child.kill('SIGKILL'), 5000);
-}, 120000);
+}, 180000);
 const heartbeat = setInterval(
   () => console.log('Account handoff campaign is still running; results stream to run.log.'),
   15000,

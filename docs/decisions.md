@@ -2782,3 +2782,20 @@ text and encoded state; native editing reopens after every step and compares wri
 logical progress, not all raw source/counter inventories. Request blocking is not whole-browser offline,
 synthetic pagehide is not BFCache and getText instrumentation is not exhaustive memory accounting.
 These limits preserve useful observed evidence without expanding its release claim.
+
+
+## 2026-09-14 — Preserve handoff boundaries and distinguish virtual authenticator evidence
+
+Admit the complete fifteen-case handoff native file, including all 24 generated histories, with its
+unchanged case limits. The original two-minute file allowance expired during the final provenance
+case after fourteen passes, including the entire generated campaign in 59.596 seconds. Preserve that
+failed run and raise only the wrapper/adapter file allowance to three minutes; do not reduce the
+population or raise case deadlines. Pin and bound only its active historical promotion
+reader. The old-slot-verifier environment branch remains dormant; do not grant negative-control credit
+for a branch that did not run. Existing core/ES256 sibling receipts and wrapper obligations stay separate.
+
+The ES256 case uses actual navigator.credentials.get backed by a disposable virtual authenticator,
+not a human/hardware ceremony. Directed post-commit cuts kill renderers; generated histories reload
+pages after aborted commits or simulated response failures. Stable inventory excludes two authorized
+rows, and independent crypto opening precedes handoff while Yjs decoding remains shared. Report those
+actual assertions and their limits without broadening classification into editor/transport authority.
