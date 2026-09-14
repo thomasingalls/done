@@ -3152,3 +3152,8 @@ Keep nested stage environment ownership explicit: an owned stage may reset its i
 ## 2026-09-14 — Owned Playwright adapter and Local startup/editor fixtures
 
 Introduce explicit single-file Playwright contracts and an independent static census before admitting browser suites. Retain default application case assertions and ordinary standalone behavior while owned runs supply browser and server lifetimes. Reject partial, repeated, filtered or unexpected-skip results, and retain bounded exact attachment bytes rather than losing generated histories. Preserve the failed fixture and metadata attempts.
+
+
+## 2026-09-14 — Packaged Local, compatibility and private migration browser fixtures
+
+Keep browser file admission explicit while adding disposable package builds and the original private migration Vite configuration. Serve exact build files with no missing-asset fallback or path escape; preserve application assertions, case bounds and standalone commands. Retain the native adapter regressions and seeded migration evidence without treating host Python or wrapper obligations as qualified.

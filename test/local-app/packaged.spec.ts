@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect } from '@playwright/test';
 import { readFile, access } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 

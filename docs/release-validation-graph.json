@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 285,
+          "line": 288,
           "form": "fc.property"
         }
       ],
@@ -8971,7 +8971,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 141,
+          "line": 148,
           "form": "fc.property"
         }
       ],
@@ -11876,7 +11876,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "c4c7be0a795056951dbd1f7654f8342cbd046b02527d6b5491ef067f4a278f2d"
+      "sha256": "3c66e61e0a2884e32709e1b1b53bcd90c6e717cfaca0c1ecf65178a3f61b58e7"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11920,7 +11920,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "b52b7406f99729de35a8a69f62b88ee5acf5c2694e3730f3aaaa0c54f18b9d33"
+      "sha256": "9b4c164da59667cd88a94fa93ad7ef13195da8897391edc9032869a3c2045580"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -11948,7 +11948,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "3077f5bca24fbb368c2d1604448651464b4a5f5908904128d906435551826fd0"
+      "sha256": "306a49a4ae98076707d2803d65d8c79b788c457b4edeaa23563f85e8cd26dda1"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -11956,7 +11956,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-driver.mjs",
-      "sha256": "0088d17417798ed891b36a328dd7690bc903633ff06afeb1c9717d44b4087a03"
+      "sha256": "1307143c68084c31cbab83bd2c78dc51cc2873743868c47d73273a43120776f4"
     },
     {
       "path": "scripts/release-validation/playwright-reporter.mjs",
@@ -11989,6 +11989,10 @@
     {
       "path": "scripts/release-validation/stage.mjs",
       "sha256": "19f9180b8fa21013d4266d08786bd3c11878810d3b041a84fcf30bf42f4278bb"
+    },
+    {
+      "path": "scripts/release-validation/static-fixture.mjs",
+      "sha256": "f564b8af6dde1630a9a39d6ddd1337b17dd018d0fa5df1e874aa1259fd285dc7"
     },
     {
       "path": "scripts/release-validation/vitest-adapter.mjs",
@@ -13644,7 +13648,7 @@
     },
     {
       "path": "test/local-app/packaged.spec.ts",
-      "sha256": "f39c3fcbbeba644351f3e525ee2c31f29fd4d874f62910e93e328d1c5cb7ee30"
+      "sha256": "784988d8bd021fefd1ca6afd741dfcf65066c4bcc70901d7ecd86a94b32c8d55"
     },
     {
       "path": "test/local-app/startup.spec.ts",
@@ -13740,7 +13744,7 @@
     },
     {
       "path": "test/private-migration/rehearsal.spec.ts",
-      "sha256": "ca20958741ed0b9f33c870e243a9d20dd9ce6a5a1099a66a1f5b850031941427"
+      "sha256": "c8458897ef3a3f8bd29137ffc7925b92b265ebb8a7392432fef59324dfbe2c63"
     },
     {
       "path": "test/privateDeliveryHttp.test.ts",
@@ -13804,11 +13808,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "9d3a84328bc6a3d7af67fc89f440b8a0d075e4b1120301bf016380e028fec73f"
+      "sha256": "f40b2063b368fc8c8b0a4d65b21a19a1808ad38862ce44e58b2728be2ed96d1c"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "bca09914acc43b6200129e1641329695e794647ef199d4158a661ca773d06ec0"
+      "sha256": "f7d1598790da83c6029ca7c494da2bc0f20321526d9a7e3fecbd45c3ba7bb7ce"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13840,11 +13844,11 @@
     },
     {
       "path": "test/release-validation/playwright-native.test.mjs",
-      "sha256": "f985c3c106f0b8fa97e9d77eab5129580425fb233456fbcd641a2e33d5da2f63"
+      "sha256": "88b38f188a9f8dcb8a894e57a65d713646ad87accaec3e1a6d46197c15f6a97e"
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "0a343de7cbde331144bc693d525a47a58fb277b98729458a08b36c9d424a5efa"
+      "sha256": "4125ada10f587c4d6b2155749144ad5ed49dee99892575be473f9f0062f05136"
     },
     {
       "path": "test/release-validation/stage.test.mjs",
@@ -13940,7 +13944,7 @@
     },
     {
       "path": "test/storage-compatibility/compatibility.spec.ts",
-      "sha256": "d7e5abe08de765791a7d870c85699c29c203b4227425e3880d5cc5ccbf8b604e"
+      "sha256": "8a36a13ee5ae367b1a3a78ca56375554996161e61fbb74f9a7855693f8bbc135"
     },
     {
       "path": "test/storage-conformance/adapters/codex.mjs",

@@ -477,7 +477,17 @@ export function compileManifest(root, inventory) {
         ...rows
           .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')
           .map((r) => r.id),
-        ...rows.filter((r) => browsers.includes(r.path)).map((r) => r.id),
+        ...rows
+          .filter((r) => browserGroups['browser-local-fixtures'].includes(r.path))
+          .map((r) => r.id),
+      ],
+      'browser-storage-qualification': [
+        ...rows
+          .filter((r) => r.path === 'test/release-validation/playwright-native.test.mjs')
+          .map((r) => r.id),
+        ...rows
+          .filter((r) => browserGroups['browser-storage-fixtures'].includes(r.path))
+          .map((r) => r.id),
       ],
       'runner-self-regression': rows
         .filter((r) =>

@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect, type Page } from '@playwright/test';
 const fixture = '/test/storage-compatibility/';
 const call = async (page: Page, name: string, ...args: unknown[]) => {
   // Module dependencies can still be evaluating after navigation completes.

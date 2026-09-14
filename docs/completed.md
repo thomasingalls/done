@@ -6755,3 +6755,14 @@ All 98 pure runner checks, TypeScript, scoped style, inventory and authority gat
 General integration now covers 245 files / 1,871 cases. 14 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: packaged Local, storage compatibility and private migration browser fixtures, then upgrade, geometry and latency files.
 
 [Evidence](./account-conformance-runs/2026-09-14-browser-local-fixtures/README.md).
+
+
+## 2026-09-14 — Packaged Local, compatibility and private migration browser fixtures (`L-1`)
+
+Packaged Local, compatibility and private migration browser fixtures passes 16 cases in 4 files. Three additional Playwright files contribute 14 cases: three packaged Local cases, six storage compatibility cases and five seeded private migration rehearsals. Qualification also reruns the two native browser-adapter controls. The package is built only in the disposable stage, served as exact files on an ephemeral loopback host without HTML fallback, and checked for real precache assets, byte equality and accepted offline writing at both entry points. Development fixtures retain their original Vite configurations; private migration retains its full optimization entry set. Existing application assertions and case deadlines are unchanged. Coverage includes live writer fencing, queued/cancelled opens, renderer death, journal-only future schema, exact source retention, saved-file verification, resumed import, authenticated cleanup and later writing. Source-input/preservation attachments are retained with exact bounded bytes. New file bounds are 180 seconds for the package, 270 for compatibility and 540 for private migration. Private rehearsal ZIP decoding uses host Python; external-tool identity binding remains owed before immutable qualification, as in earlier residue controls. These seeded tests establish no production old-writer exclusion, personal Account admission or whole-release result. Wrapper build/budget/origin/output obligations remain separate.
+
+All 98 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `228031a1` has a verified signature. 245 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 248 files / 1,885 cases. 11 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: application upgrade browser fixtures, followed by geometry and latency files.
+
+[Evidence](./account-conformance-runs/2026-09-14-browser-storage-fixtures/README.md).

@@ -43,10 +43,10 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations.
-General integration covers **245 files / 1,871 cases**, including all 123 Account files.
-14 test-file, 96 command and 63 campaign obligations remain.
-The Owned Playwright adapter and Local startup/editor fixtures phase is complete; scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
-Next: packaged Local, storage compatibility and private migration browser fixtures, then upgrade, geometry and latency files. [Latest evidence](./account-conformance-runs/2026-09-14-browser-local-fixtures/README.md).
+General integration covers **248 files / 1,885 cases**, including all 123 Account files.
+11 test-file, 96 command and 63 campaign obligations remain.
+The Packaged Local, compatibility and private migration browser fixtures phase is complete; scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: application upgrade browser fixtures, followed by geometry and latency files. [Latest evidence](./account-conformance-runs/2026-09-14-browser-storage-fixtures/README.md).
 
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded

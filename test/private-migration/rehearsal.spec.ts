@@ -1,4 +1,5 @@
-import { test, expect, type Page, type TestInfo } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect, type Page, type TestInfo } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import type { SourceInput } from '../legacy-export/source';

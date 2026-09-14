@@ -39,6 +39,7 @@ function fixture(t, text = ordinary) {
       'registration-data',
       'registration-modules',
       'identity',
+      'static-fixture',
       'server',
     ].map((n) => 'scripts/release-validation/' + n + '.mjs'),
   ];

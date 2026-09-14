@@ -6,11 +6,37 @@ import { playwrightDeclarations } from './playwright-census.mjs';
 
 // Explicit file admission; other browser files keep their own unresolved obligations.
 export const browserGroups = {
+  'browser-storage-fixtures': [
+    'test/local-app/packaged.spec.ts',
+    'test/storage-compatibility/compatibility.spec.ts',
+    'test/private-migration/rehearsal.spec.ts',
+  ],
   'browser-local-fixtures': ['test/local-app/startup.spec.ts', 'test/local-app/editor.spec.ts'],
 };
 export const browserFiles = Object.values(browserGroups).flat();
 export function browserPolicy(file) {
   assert(browserFiles.includes(file), 'Unreviewed browser fixture');
+  if (file === 'test/local-app/packaged.spec.ts')
+    return {
+      config: 'playwright.local-startup.config.ts',
+      projects: [''],
+      mode: 'packaged',
+      deadlineMs: 180000,
+    };
+  if (file === 'test/storage-compatibility/compatibility.spec.ts')
+    return {
+      config: 'playwright.storage-compatibility.config.ts',
+      projects: [''],
+      mode: 'development',
+      deadlineMs: 270000,
+    };
+  if (file === 'test/private-migration/rehearsal.spec.ts')
+    return {
+      config: 'playwright.private-migration.config.ts',
+      projects: [''],
+      mode: 'migration',
+      deadlineMs: 540000,
+    };
   return {
     config: 'playwright.local-startup.config.ts',
     projects: [''],
