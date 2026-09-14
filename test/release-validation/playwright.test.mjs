@@ -81,10 +81,10 @@ test('Playwright census refuses hidden, aliased, modified, skipped registrations
 });
 
 test('reviewed browser files preserve Local and storage cases and cannot bypass owned browser, driver or result contracts', () => {
-  assert.equal(browserFiles.length, 16);
+  assert.equal(browserFiles.length, 17);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [12, 4, 8, 2, 12, 22, 6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
+    [4, 12, 4, 8, 2, 12, 22, 6, 6, 26, 12, 8, 3, 6, 5, 4, 4],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);
@@ -95,6 +95,7 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
         'test/app-upgrades/upgrades.spec.ts': 240000,
         'test/latency/journal.spec.ts': 720000,
         'test/latency/latency.spec.ts': 900000,
+        'test/latency/diagnosis.spec.ts': 900000,
         'test/geometry/reorder.spec.ts': 180000,
         'test/geometry/sync.spec.ts': 180000,
         'test/geometry/wheel.spec.ts': 180000,

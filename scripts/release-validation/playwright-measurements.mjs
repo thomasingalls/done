@@ -9,6 +9,15 @@ export function measurementPath(reportPath) {
 
 export const MEASUREMENT_LIMIT = 65536;
 export function measurementContract(file) {
+  if (file === 'test/latency/diagnosis.spec.ts')
+    return {
+      kind: 'latency-diagnosis-v1',
+      unit: 'ms',
+      projects: ['desktop', 'android'],
+      metrics: [1, 2].flatMap((block) =>
+        ['textarea', 'codemirror', 'card'].map((surface) => surface + ' block ' + block),
+      ),
+    };
   if (file === 'test/latency/latency.spec.ts')
     return {
       kind: 'local-latency-v1',

@@ -477,3 +477,48 @@ before seeding because its Lock button was in a closed off-screen menu. That hel
 normally. This correction explains the setup timeout, not the measured typing overruns. Timer calibration,
 frame scheduling and editor/admission profiling are the next bounded investigation; the cause and a
 performance repair are not established by this packet. The historical plaintext baselines remain unchanged.
+
+
+## 2026-09-14 — Local latency diagnostic pilot (`dbc64150` application)
+
+This separate pilot completes measurement calibration and CPU profiling; it does not repair or
+pass the preceding application latency gate. [Prospective protocol](./latency-diagnosis.md) and
+[retained evidence](./account-conformance-runs/2026-09-14-application-latency-diagnosis/README.md).
+The application source and original nine budgets are unchanged. Two reverse-order blocks each
+contain 120 trusted keys at 50 ms gaps. Both projects use 1280×900 and the same UI-seeded,
+cold-verified 300-card/400-line corpus. CPU 4x remains emulation on this host, not a handset.
+
+| Surface p95, ms | Desktop block 1 / 2 | CPU-4x Android block 1 / 2 |
+| --- | --- | --- |
+| Plain textarea | 1.6 / 1.4 | 7.0 / 6.0 |
+| Bare CodeMirror | 1.9 / 15.5 | 8.6 / 19.0 |
+| Admitted card | 17.2 / 18.3 | 92.9 / 93.7 |
+
+All 1,440 raw timing samples and 12 aggregate rows are retained. The recorder is unchanged;
+its frame-plus-task timestamp is a paint proxy, not proof of presentation of the particular
+character. CodeMirror block variability makes scheduler/JIT/GC effects a live limitation.
+These dependent samples do not support independent-sample confidence intervals or subtraction
+of control p95 from card p95. Card text and history accumulate across blocks.
+
+Separate CPU profiles cover 60 further card keys and ten focus/close cycles per project.
+Sampling uses 1,000 µs intervals, and retains raw samples and mapped call locations. Typing
+profiles attribute 647.2 / 3,106.6 ms inclusive to `prepareIntent`, including
+371.3 / 1,775.5 ms in `forkWorkspaceHistory`; `sameDocState` projection verification accounts
+for 237.1 / 1,104.3 ms, desktop / Android. The nested inclusive times overlap and must not be
+added. These are sampled aggregates across the profiled workload, not per-key quantiles, exact
+CPU timings or estimated causal speedups. Focus profiles place the largest identified application
+stack at mounting the admitted editor (23.0 / 105.5 ms across ten cycles), but include closing,
+automation waits and profiler overhead; this does not establish the cause of the prior focus tail.
+
+The evidence supports targeting private document/history copying and projection verification
+first. Preserve journal-before-publication, refusal isolation, undo and pending-dependency checks;
+validate any optimization semantically and against the unchanged application gate. Further recorder
+calibration and focus profiling remain separate.
+
+The first diagnostic attempt was cancelled after inspecting only the owned disposable browser:
+the app service worker intercepted the control URL and returned the unlock page. That attempt,
+its exact source patch and drained-process receipt are retained. Controls now use their own
+disposable context with service workers blocked, a dedicated asset prefix, and explicit title/input
+assertions. The application context retains its normal service worker. The completed run has
+four passed cases, no skips/retries, and preserves all added writing through lock and cold reopen.
+The two native runner controls also pass. No personal browser, app package or deployment changed.

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 284,
-    "requiredTestFiles": 278,
+    "testFiles": 285,
+    "requiredTestFiles": 279,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -8032,6 +8032,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/latency/diagnosis.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.latency.config.ts",
+        "packages": ["test:latency"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/latency/journal.spec.ts",
       "status": "required",
       "invocation": {
@@ -8761,7 +8772,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 301,
+          "line": 302,
           "form": "fc.property"
         }
       ],
@@ -8971,7 +8982,7 @@
       "declarations": 6,
       "propertyFamilies": [
         {
-          "line": 186,
+          "line": 187,
           "form": "fc.property"
         }
       ],
@@ -11064,7 +11075,7 @@
     },
     {
       "path": "playwright.latency.config.ts",
-      "sha256": "2aa970770d3603a23284e10b63ea1f02ac6b6b71538f2dc62b34d652000cb9e5"
+      "sha256": "b097804d5cbde886394045393f54af444b566067b884ef6d2dde8257748b5b12"
     },
     {
       "path": "playwright.local-startup.config.ts",
@@ -11876,7 +11887,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "c0da1ea41ca84eeaed41155cc50cdda3727ac7d2bb66ca21e05278c3a2a4f9a1"
+      "sha256": "f041f32d24cf2e478557aae0dd9f255f3b979980e932a5ceb6e33f3269fe6fab"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11948,7 +11959,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "66fa9323b8fd6071f505bb18935cbc92ad88e83b7b0678327e5e2f5d3f4675e7"
+      "sha256": "a83574e24f6b217b3a49eaaa98bacf943d5bc87414522509e6a9f852f64ccad2"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -11956,11 +11967,11 @@
     },
     {
       "path": "scripts/release-validation/playwright-driver.mjs",
-      "sha256": "cf24c7256325a2a864329da7be89f5c0250695dadde9528e8362bedbda5d0c2f"
+      "sha256": "e3d9f8520280e7fa8120aab0004976bb0229dee043929fe6515b627fa9fc0f69"
     },
     {
       "path": "scripts/release-validation/playwright-measurements.mjs",
-      "sha256": "aa6b46990e8965709672dfb99a5ac764a5d20f4070bb8cbced91336f5c3efc3a"
+      "sha256": "f931d60181a8c127744d5ae854dff4de86a27506fc7f80210f76a48be90bebe9"
     },
     {
       "path": "scripts/release-validation/playwright-reporter.mjs",
@@ -13443,6 +13454,14 @@
       "sha256": "134e9ccbd5a95f2d23d9a02aafc328c1a37a0358e9390d8c74259f45271099e7"
     },
     {
+      "path": "test/latency/control.ts",
+      "sha256": "cef86078cd5226fb45b200f7b910b393a94b74b3413b7eb8c6e306187ce2ae9f"
+    },
+    {
+      "path": "test/latency/diagnosis.spec.ts",
+      "sha256": "95967dd03c88ad96187210e8b47bb0d7e8c6b8424201c86c2172cf3f98a58a1a"
+    },
+    {
       "path": "test/latency/global-setup.ts",
       "sha256": "34ff7e695a4e09dbd80238feef3025a8b264c5a3034d0f7ad0dcb9ce97895653"
     },
@@ -13469,6 +13488,10 @@
     {
       "path": "test/latency/measure.ts",
       "sha256": "b89ba59e22d3edd80c0bcafb2e87f9c73cf2a051dc19bdd1114331086f01eaf0"
+    },
+    {
+      "path": "test/latency/profile.ts",
+      "sha256": "0008e1d9ddc15840568fd07ef9cb825a65d395e1fca5bf2cccbf66d10b9a066f"
     },
     {
       "path": "test/latency/recorder.ts",
@@ -13812,11 +13835,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "e7b3d1c91f35bb3f7beefe360a59f0fd496ccc809d3087282656d22771b6d57b"
+      "sha256": "5d5e3449b9e2e1236ffd2f56e43f050e81b5928211d415f83767eb0769be91b6"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "825edb0d5425bbf67997ce4664f50af9ae873d131a61953c2ae550de7a66586f"
+      "sha256": "01d2067d2c997a2787a10f317b432529502460c6941993370aa64999b9188b5b"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13852,7 +13875,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "e403e60ccaf9f9212102ff299e41d9effd51b484253e2d5058e886c427226d56"
+      "sha256": "7d007487875b18abb6fbb0c4b5fc6dc36ff424ef3d4eaff441680bc605614be3"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

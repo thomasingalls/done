@@ -21,6 +21,7 @@ assert(
   process.env.RELEASE_BROWSER_ENDPOINT && process.env.RELEASE_CASE_REPORT,
   'Browser driver needs an owned stage',
 );
+const diagnosis = file === 'test/latency/diagnosis.spec.ts';
 const output = join(process.env.TMPDIR, 'playwright');
 mkdirSync(output, { recursive: true });
 const fixtureEnv =
@@ -47,8 +48,22 @@ if (policy.mode === 'upgrades') {
   await build({
     configFile: resolve('vite.config.ts'),
     logLevel: 'error',
-    build: { outDir: release, sourcemap: false, emptyOutDir: true },
+    build: { outDir: release, sourcemap: diagnosis ? 'hidden' : false, emptyOutDir: true },
   });
+  if (diagnosis) {
+    fixtureEnv.LATENCY_PROFILE_ROOT = release;
+    await build({
+      configFile: false,
+      base: '/diagnostic-control/',
+      logLevel: 'error',
+      build: {
+        target: 'es2022',
+        outDir: join(release, 'diagnostic-control'),
+        emptyOutDir: true,
+        rollupOptions: { input: 'test/latency/control.html' },
+      },
+    });
+  }
   fixtureEnv.LOCAL_STARTUP_PREVIEW = '1';
   fixtureEnv.LOCAL_STARTUP_PREVIEW_ROOT = release;
   server = staticFixtureServer(release);
@@ -81,7 +96,7 @@ try {
   writeFileSync(
     config,
     `import original from ${JSON.stringify(resolve(policy.config))};
-export default {...original, testDir:${JSON.stringify(resolve(dirname(file)))}, testMatch:[${JSON.stringify(file.split('/').at(-1))}], webServer:undefined, globalSetup:${policy.mode === 'latency' ? JSON.stringify(resolve('test/latency/global-setup.ts')) : 'undefined'}, globalTeardown:undefined,
+export default {...original, testDir:${JSON.stringify(resolve(dirname(file)))}, testMatch:[${JSON.stringify(file.split('/').at(-1))}], testIgnore:[], webServer:undefined, globalSetup:${policy.mode === 'latency' ? JSON.stringify(resolve('test/latency/global-setup.ts')) : 'undefined'}, globalTeardown:undefined,
   fullyParallel:false, workers:1, retries:0, repeatEach:1, maxFailures:0, forbidOnly:true, grep:/.*/, grepInvert:undefined, shard:null,
   outputDir:${JSON.stringify(join(output, 'artifacts'))}, reporter:[[${JSON.stringify(resolve('scripts/release-validation/playwright-reporter.mjs'))}]],
   use:{...original.use,baseURL:${JSON.stringify(origin)}},
