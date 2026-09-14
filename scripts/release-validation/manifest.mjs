@@ -44,6 +44,7 @@ import {
   promotionNativeFixtureFiles,
   authorityNativeFixtureFiles,
   recoveryNativeFixtureFiles,
+  coreNativeFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -450,6 +451,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'core-native-fixture': rows
+        .filter((r) => account.node.includes(r.path) && coreNativeFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'recovery-native-fixture': rows
         .filter((r) => account.node.includes(r.path) && recoveryNativeFixtureFiles.includes(r.path))

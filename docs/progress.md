@@ -43,44 +43,44 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account core native fixtures (`L-1`)
+## Active slice: General validation-runner integration — Account activation native fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews Account core native fixtures
+blocks_on: none; next bounded phase reviews Account activation native fixtures
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account recovery native fixture](./release-validation-execution.md#account-recovery-native-fixture--phase-2am)
-adds one file / one case. It passes in 33.310 seconds with worker/browser groups drained.
-Node execution took 8.529 of 120 seconds and stage time 11.013; the case retains 40 seconds.
+**Just completed.** [Account core native fixture](./release-validation-execution.md#account-core-native-fixture--phase-2an)
+adds one file / two cases. Both pass in 28.533 seconds with worker/browser groups drained.
+Node execution took 2.906 of 120 seconds and stage time 5.354; case limits remain 30 and ten seconds.
+The browser case borrows the existing CDP owner with explicit context cleanup. Both cases register
+cleanup before setup; all scenario bodies, identities, product, helpers, wrapper and limits are unchanged.
 No generated histories run in this file. New work is uncommitted.
 
-**Evidence.** The persistent-profile owner now permits two reopens after clean exit. Recovery retains
-its actual browser restarts and explicit virtual WebAuthn credential restoration. All three browser
-PIDs differ, share one profile and close cleanly. Original recovery operations and assertions, product,
-fixtures, wrapper and deadline remain unchanged; setup/cleanup and final ownership assertions are added.
-Draft/confirmation aborts, saved-code reentry, tab exclusion, cancellation, renderer death and lost
-finalization reply preserve the tested recovery states. A second full browser restart resumes without
-another assertion. The service account remains pending; this is not full recovery/adoption or admission.
+**Evidence.** Virtual resident-key registration/confirmation, repeated completion after service reopen,
+pending-account refusal, seeded-active login, browser cancellation and selected HTTP refusals pass.
+The service reopen is in the same Node process, with browser/authenticator still live. Activation is
+seeded directly in SQLite and does not establish real activation/admission. The 150-ms browser timeout
+is followed by explicit service cancellation. The HTTP case checks empty Authorization, foreign Origin,
+an actual hostile Host and one oversized ordinary JSON body; it is not exhaustive parser/streaming evidence.
 
-Fourteen native-owner controls pass, including clean reopen, invalid reopen refusal and worker death
-after reopen, alongside cold-copy and prior cleanup controls. All 92 runner checks, TypeScript, scoped
-style, planning, authority and signatures pass. Unchanged Node-owner/Vitest controls retain earlier
-evidence. The [packet](./account-conformance-runs/2026-09-14-recovery-native-fixture/README.md) preserves exact scope, receipts, all three profile records, owner controls,
-patch and source/browser identities. Virtual credentials do not prove hardware persistence; checking
-one row for a literal code does not prove whole-profile privacy. Wrapper and sibling evidence stay separate.
+All 92 runner checks, TypeScript, scoped style, planning, authority and signatures pass. Unchanged
+Node-owner/Vitest/native-owner controls (23/5/14) retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-core-native-fixture/README.md) preserves
+scope, complete receipts, patch, frozen sources/browser identity and preservation. Virtual WebAuthn is
+not hardware persistence. No Account index/editor/transport or personal adoption follows. Broader sibling
+and wrapper evidence remain separate.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -92,11 +92,11 @@ timeout/diagnostic and measured deadline repair remain preserved in its earlier 
 
 Handoff's original timeout and passing allowance repair remain preserved in its signed packet.
 
-**Next bounded phase.** Review `test/account-core/native.test.mjs` (two static cases), then
+**Next bounded phase.** Review `test/account-activation/native.test.mjs` (five cases), then
 remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections
-contain 192 files / 1,643 cases: all 96 Vitest and 96 Node files. All 191 prior contracts / 1,642 identities
-remain unchanged. The 673,303-byte manifest retains 612 obligations / 225 blocked rows: 66 test-file
-(50 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
+contain 193 files / 1,645 cases: all 96 Vitest and 97 Node files. All 192 prior contracts / 1,643 identities
+remain unchanged. The 673,989-byte manifest retains 612 obligations / 224 blocked rows: 65 test-file
+(49 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect
 counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions
 and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose
 precede the immutable aggregate and private Account preparation.

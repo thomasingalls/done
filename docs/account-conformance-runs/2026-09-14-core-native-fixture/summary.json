@@ -1,0 +1,100 @@
+{
+  "base": "4a52665005e4de54159b23ef2da99be0813e2223",
+  "claim": "Account core native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-13-20.886Z",
+  "summary": {
+    "schema": 1,
+    "selection": "core-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-core/native.test.mjs",
+        "key": "6ae67dccc6d5d47d98ae0eeaf2cf3c0d60ec6a3498445999b382b888fb93a027",
+        "status": "passed",
+        "elapsedMs": 5354,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:13:20.890Z",
+    "input": "8b45730b56c92a5c4b8342281fb5456b9f4470a0f7ef07b89f3150b12c81915b",
+    "completedAt": "2026-09-14T09:13:49.423Z"
+  },
+  "elapsedMs": 28533,
+  "rawInputArchiveSha256": "e39f99e4b6fd2e502b6a2369848739684d0f3e7382a52f89ab4e888530af1bd0",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "4a52665005e4de54159b23ef2da99be0813e2223",
+    "sourceDigest": "7163c8424f8ea5c352037cca3b9e9f48d25756b448421d00f0fd19e938fe8324",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 2,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "priorGeneralFiles": 192,
+    "priorGeneralCases": 1643,
+    "currentGeneralFiles": 193,
+    "currentGeneralCases": 1645,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 97,
+    "accountFiles": 87,
+    "accountCases": 551,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 224,
+    "unresolvedTestFiles": 65,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 673989
+  },
+  "finalGatesSha256": "de0e4b5a8ce46677f3bbbb116d669d5de4c618b8bc065c410200ce7c6c94b278",
+  "preservationSha256": "ea8613b437ebadede0da18be6c30a44d4ce0bcb52f56baf50ab84507602746bc",
+  "limits": [
+    "One complete two-case Account core native file retains both exact identities, original scenario bodies and the 30-second browser/10-second HTTP deadlines. The 120-second file allowance follows the existing wrapper. Only fixture setup/cleanup and runner registration change. There are no generated histories, deliberate mutants, historical sources or registration-data inputs in this file.",
+    "The first case now borrows validated loopback CDP from the unchanged shared browser owner, explicitly creates/closes a fresh context, and registers nested cleanup before asynchronous setup. The HTTP-only second case registers service cleanup before setup. Standalone campaigns retain browser launch through the shared helper. Production code, fixture utilities, native assertions, wrapper and shared owner code remain unchanged.",
+    "The browser case uses navigator.credentials create/get against a CDP virtual ctap2 internal authenticator configured for resident keys, user verification and automatic presence. HTTP begin/finish complete registration confirmation, and the fixture requires exactly one resident credential. This is actual browser WebAuthn protocol handling with virtual hardware, not an operating-system passkey or human prompt result. It does not separately compare the requested allowCredentials list.",
+    "The restart closes the private service/SQLite owner and creates it again on the same path and port within the same Node process, while the browser/authenticator remain live. Repeating the saved registration finish request must return the exact prior result. No service process, browser, renderer or host crash is induced, and no full-profile persistence is tested.",
+    "Authentication first refuses with account-not-active. The fixture directly updates the SQLite account state to active, then retries the same login proof and requires account-proof. This deliberately bypasses production activation, signed membership and admission; it cannot establish that registration activates an account or permits Account content access.",
+    "After disabling automatic presence, a browser credential request with AbortSignal.timeout(150) must reject with TimeoutError. The fixture then explicitly calls the service cancel route and requires cancelled, and resume must refuse cancelled. It does not prove automatic UI-to-service cancellation, absence of every possible late assertion, or whole request-owner cleanup under all races.",
+    "The HTTP-only case sends empty Authorization, one foreign Origin and an actual hostile Host through node:http, requiring 403. A 131073-byte whitespace body must return 413 against the 131072-byte ordinary JSON limit; a subsequent valid begin request must return 200. These are selected request-policy controls, not exhaustive malformed-header, streaming, parser, denial-of-service or admission/delivery-size coverage. The tests do not assert database byte equality or exact absence of side effects for every refusal.",
+    "Temporary SQLite services are supplied by the actual private adapter and retain its default headers/CSP. The native file has no Vite build or application UI bundle. Fixture utilities supply random retry/token values and the finish-request shape; their independent synthetic authenticator/CBOR generator is not invoked in these native cases.",
+    "Unchanged 23 Node-owner, five Vitest-process and fourteen native-owner controls retain earlier evidence, including the latest recovery profile-reopen/death controls. The complete new native caller runs under frozen source/dependency/browser identity and the owned reporter; the outer stage checks process-group drain. Whole-wrapper output/scheduling/ownership, generated/service-death/mutation siblings and optional ACCOUNT_REPORT_DIR exports remain separate obligations.",
+    "All previous general contracts and retired-v8 exclusions remain unchanged. Existing ledger orphan classification, core receive loaded-host headroom, capture map-refresh/byte-length follow-ups and historical editing/handoff deadline evidence remain open. The pinned personal/package/vector files and L-2 remain unchanged. One bounded passing selection is not an immutable aggregate or release qualification.",
+    "No Local content, recovery-code preparation, service-root trust distribution, real activation, Account admission/index/editor/transport, hardware passkey ceremony or personal/second-device adoption is exercised here. The next bounded file is Account activation native, whose separate checks must be reviewed before adapter credit."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 2906.276458,
+    "stageElapsedMs": 5354,
+    "selectionElapsedMs": 28533,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "browserCaseMs": 30000,
+    "httpCaseMs": 10000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "57b2542a4eea73d82d4d5c71edece39da41449e560406c91675cb98aa3248aad",
+    "compressedSha256": "a272281f195d7a4423b30c9170f411123726b2e461d88f408ddb051267e99c9e"
+  }
+}

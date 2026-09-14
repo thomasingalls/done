@@ -2883,3 +2883,16 @@ cold-copy compatibility, reopen refusal and actual worker death after reopening.
 credentials as hardware persistence, one row's literal-code check as forensic privacy, or pending-account
 recovery-code confirmation as full account recovery/adoption. Wrapper and broader recovery obligations
 remain separate.
+
+
+## 2026-09-14 — Bound core WebAuthn evidence to the native ceremonies actually exercised
+
+Integrate both Account core native cases under the existing shared CDP owner, with cleanup registered
+before setup and explicit context ownership. Preserve both original scenario bodies, identities, limits,
+product code, fixture utilities and wrapper. This file needs no historical or registration-data adapter.
+
+Credit virtual resident-key registration/confirmation, repeated completion after same-process service
+reopen, pending-account refusal, seeded-active authentication, browser cancellation and the specific
+HTTP refusals. Record the direct SQLite activation setup and distinguish service-object reopen from
+process death. These cases do not establish real activation, hardware passkey persistence or Account
+content authorization. Keep broader sibling and wrapper obligations separate.

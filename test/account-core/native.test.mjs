@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { request } from 'node:http';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { createPrivateAccountServer } from '../../account-service/private-server.ts';
 import { fresh, finishRequest } from './fixtures.mjs';
 
@@ -16,17 +17,26 @@ test(
     const dir = mkdtempSync(join(tmpdir(), 'done-account-native-')),
       path = join(dir, 'service.sqlite'),
       token = fresh();
-    let server = await createPrivateAccountServer({ path, token });
+    let server, browser, context;
     t.after(async () => {
-      await server.close();
-      rmSync(dir, { recursive: true, force: true });
+      try {
+        try {
+          await context?.close();
+        } finally {
+          await browser?.close();
+        }
+      } finally {
+        try {
+          await server?.close();
+        } finally {
+          rmSync(dir, { recursive: true, force: true });
+        }
+      }
     });
-    const browser = await chromium.launch({
-      headless: true,
-      ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-    });
-    t.after(() => browser.close());
-    const page = await browser.newPage();
+    server = await createPrivateAccountServer({ path, token });
+    browser = await openFixtureBrowser(chromium);
+    context = await browser.newContext();
+    const page = await context.newPage();
     await page.goto(server.origin);
     const cdp = await page.context().newCDPSession(page);
     await cdp.send('WebAuthn.enable');
@@ -119,11 +129,15 @@ test(
   async (t) => {
     const dir = mkdtempSync(join(tmpdir(), 'done-account-http-')),
       token = fresh();
-    const server = await createPrivateAccountServer({ path: join(dir, 'account.sqlite'), token });
+    let server;
     t.after(async () => {
-      await server.close();
-      rmSync(dir, { recursive: true, force: true });
+      try {
+        await server?.close();
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
     });
+    server = await createPrivateAccountServer({ path: join(dir, 'account.sqlite'), token });
     const headers = {
       'Content-Type': 'application/json',
       Origin: server.origin,

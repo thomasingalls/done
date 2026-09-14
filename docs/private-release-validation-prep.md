@@ -43,18 +43,19 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-192 files / 1,643 cases: all 96 Vitest files and 96 Node files. The Account recovery native fixture
-adds one case, passing in 33.310 seconds (Node 8.529 within 120), with worker/browser groups drained.
-Its 40-second case retains both full browser restarts, virtual WebAuthn restoration and original recovery
-operations. The persistent owner adds two bounded reopens; all three PIDs differ and share one profile.
-Fourteen native-owner controls and 92 runner checks pass. Draft/confirmation aborts, saved-code reentry,
-exclusion, cancellation, renderer death and lost reply preserve the tested pending-account states.
-This is not full account recovery/adoption; virtual credentials and a literal-code row check have limited
-scope. All 191 prior contracts / 1,642 identities and exclusions remain unchanged. Existing owner/headroom/
-capture-oracle observations and deadline evidence remain visible. There are 225 unresolved obligations:
-66 test-file (50 Node, sixteen Playwright), 96 command and 63 campaign. Next is Account core native fixtures
-(two cases), then remaining integration, R-04, P-06 and the immutable run. Wrapper/sibling credit remains
-separate. Authority `be8749f` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-recovery-native-fixture/README.md).
+193 files / 1,645 cases: all 96 Vitest files and 97 Node files. The Account core native fixture adds
+two cases, passing in 28.533 seconds (Node 2.906 within 120), with worker/browser groups drained.
+Both scenario bodies and 30-/10-second limits remain unchanged. Setup borrows owned CDP and registers
+cleanup early. Virtual resident-key ceremonies, service-object reopen/repeated completion, pending
+refusal, seeded-active login, browser cancellation and selected HTTP refusals pass. Restart is within
+the same Node process; activation is a direct SQLite fixture write. This does not establish real
+activation/admission or hardware persistence. All 92 runner checks pass; unchanged owner controls retain
+prior evidence. All 192 prior contracts / 1,643 identities and exclusions remain unchanged. Existing
+owner/headroom/capture-oracle observations and deadline evidence remain visible. There are 224 unresolved
+obligations: 65 test-file (49 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account activation
+native fixtures (five cases), then remaining integration, R-04, P-06 and the immutable run. Wrapper/sibling
+credit remains separate. Recovery `4a52665` is signed and verified; new work is uncommitted.
+[Evidence](./account-conformance-runs/2026-09-14-core-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed
