@@ -7648,10 +7648,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/admissionQueue.test.ts"]
       },
-      "declarations": 26,
+      "declarations": 28,
       "propertyFamilies": [
         {
           "line": 599,
+          "form": "fc.asyncProperty"
+        },
+        {
+          "line": 648,
           "form": "fc.asyncProperty"
         }
       ],
@@ -9178,7 +9182,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/sourceCapture.test.ts"]
       },
-      "declarations": 8,
+      "declarations": 9,
       "propertyFamilies": [
         {
           "line": 58,
@@ -9186,6 +9190,10 @@
         },
         {
           "line": 119,
+          "form": "fc.property"
+        },
+        {
+          "line": 315,
           "form": "fc.property"
         }
       ],
@@ -9510,7 +9518,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 23,
+      "declarations": 24,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -13283,7 +13291,7 @@
     },
     {
       "path": "test/admissionQueue.test.ts",
-      "sha256": "3a1c3f5bff5e8ed0cb6f22c75458f0d9c2188afd7f623b0028e25d13e6c60f0c"
+      "sha256": "9078d54be9cdb9265104de8f6618450d3c66d0b5e534ad86021fc32ff704b623"
     },
     {
       "path": "test/admittedText.test.ts",
@@ -13855,11 +13863,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "18e6461618aad34e9866b76ccbd5253e9cd4977029f00fa013e9534d31d9b69f"
+      "sha256": "167cd354e975d3389645768cba6a9840b14928274d3b1cd521b7c5b39293e19a"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "e12e2c080c3d3656159a910f4067431203ff65d5c57a0fe6144e5c9cce76cef4"
+      "sha256": "ae8c6f5b0db9c0bb402c7ea90f9ef8dc0b1c2124d76ce8cd079c679f718343af"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13959,7 +13967,7 @@
     },
     {
       "path": "test/sourceCapture.test.ts",
-      "sha256": "e38fc7158cd4d41002802bdc12024d6f5b2f5603f8320136d06bfc76af4d09b9"
+      "sha256": "60dabd0e285af82a16029de081edc5679e08016e265e77b6296fcbfd85516dc1"
     },
     {
       "path": "test/spoolBatch.test.ts",
@@ -14235,7 +14243,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "a5a3a17fa93a7d740516906e1b4e41ee5d8adc23733be69088d430246ef4ad1c"
+      "sha256": "f5445d3121088b9dd4ef6e10dce81dc9335d5e572f1831ef03191713e43c5fdc"
     },
     {
       "path": "test/write-session/browser.mjs",

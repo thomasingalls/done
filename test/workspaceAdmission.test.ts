@@ -1,9 +1,9 @@
 // @vitest-environment node
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
-import { createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
+import { Y, createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
 import { serializeCollections } from '../src/crdt/serialize';
 const identity = {
   id: 'human-one',
@@ -518,4 +518,63 @@ describe('admitted workspace commands and history', () => {
       await g.doc.close();
     }
   });
+});
+
+it('private prepared histories remain unpublished under pressure and are disposed on discard and drained close', async () => {
+  const histories = new Set<Y.Doc>(),
+    original = Y.Doc.prototype.transact;
+  const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
+    this: Y.Doc,
+    fn: (tr: Y.Transaction) => T,
+    origin?: unknown,
+  ): T {
+    if (
+      !this.gc &&
+      origin &&
+      typeof origin === 'object' &&
+      'kind' in origin &&
+      origin.kind === 'human'
+    )
+      histories.add(this);
+    return original.call(this, fn, origin) as T;
+  });
+  let f: Awaited<ReturnType<typeof fixture>> | undefined;
+  try {
+    f = await fixture();
+    await master(f.doc).input(insert('kept')).accepted;
+    const accepted = [...histories].at(-1)!;
+    expect(accepted).toBeDefined();
+    f.refuse();
+    f.fail();
+    const refused = master(f.doc).input(insert('refused'));
+    await until(() => f!.doc.status.state === 'blocked');
+    const abandoned = [...histories].at(-1)!;
+    expect(abandoned).not.toBe(accepted);
+    expect(abandoned.isDestroyed).toBe(false);
+    expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
+    expect(f.emitted).toHaveLength(1);
+    f.doc.discardPending();
+    await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
+    expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
+    expect(accepted.isDestroyed).toBe(false);
+    f.pause();
+    const late = master(f.doc).input(insert('late'));
+    await until(() => [...histories].at(-1) !== abandoned);
+    const closingHistory = [...histories].at(-1)!;
+    expect(closingHistory.isDestroyed).toBe(false);
+    expect(f.doc.read().master).toBe('kept');
+    const closing = f.doc.close();
+    f.resume();
+    await closing;
+    await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
+    expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
+    expect(
+      [...histories].every((d) => d.isDestroyed),
+      'close must dispose every owned history',
+    ).toBe(true);
+  } finally {
+    await f?.doc.close();
+    for (const history of histories) history.destroy();
+    spy.mockRestore();
+  }
 });

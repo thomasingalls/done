@@ -642,3 +642,141 @@ it('generated flush/idle schedules preserve every admitted input and bound maint
     vi.useRealTimers();
   }
 });
+
+it('80 generated preparation traces preserve the accepted basis through retry discard and remote delivery', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.array(
+        fc.record({
+          route: fc.constantFrom('journal', 'retry', 'discard', 'remote'),
+          value: fc.string({ minLength: 1, maxLength: 4 }),
+        }),
+        { maxLength: 12 },
+      ),
+      async (actions) => {
+        let f: Awaited<ReturnType<typeof fixture>>;
+        const seen: {
+          basis: string;
+          revision: number;
+          writer: number;
+          input: Bytes;
+          draft: ReturnType<typeof createDoc>;
+        }[] = [];
+        f = await fixture((draft, input) => {
+          seen.push({
+            basis: draft.getText('text').toString(),
+            revision: f.owner.status.revision,
+            writer: draft.clientID,
+            input,
+            draft,
+          });
+          append(draft, input, 16384);
+        });
+        let expected = '',
+          revision = 0;
+        try {
+          for (const action of [{ route: 'journal', value: 'base' }, ...actions]) {
+            const before = seen.length,
+              value = 'x' + action.value;
+            f.allow();
+            if (action.route === 'remote') {
+              const update = remote(f.owner.snapshot(), (d) =>
+                d.getText('text').insert(d.getText('text').length, value),
+              );
+              await f.owner.receive(update).accepted;
+              expected += value;
+              revision++;
+              expect(seen.length).toBe(before);
+            } else {
+              if (action.route !== 'journal') {
+                f.refuse();
+                f.failContent();
+              }
+              const ticket = f.owner.submit(intent(value));
+              await until(() => seen.length > before);
+              expect(seen.length).toBe(before + 1);
+              expect(seen.at(-1)!.basis, 'preparation must use the accepted predecessor').toBe(
+                expected,
+              );
+              expect(seen.at(-1)!.revision).toBe(revision);
+              expect(seen.at(-1)!.draft.isDestroyed).toBe(true);
+              expect(seen.at(-1)!.input.every((b) => b === 0)).toBe(true);
+              if (action.route !== 'journal') {
+                await until(() => f.owner.status.state === 'blocked');
+                expect(view(f.owner.snapshot()), 'failed storage cannot promote').toBe(expected);
+                expect(f.owner.status.revision).toBe(revision);
+                if (action.route === 'discard') {
+                  f.owner.discardPending();
+                  await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
+                } else {
+                  f.allow();
+                  f.owner.retry();
+                  await ticket.accepted;
+                  expect(seen.length, 'a storage retry must reuse its preparation').toBe(
+                    before + 1,
+                  );
+                  expected += value;
+                  revision++;
+                }
+              } else {
+                await ticket.accepted;
+                expected += value;
+                revision++;
+              }
+            }
+            expect(view(f.owner.snapshot())).toBe(expected);
+            expect(f.owner.status.revision).toBe(revision);
+            const cold = createDoc();
+            try {
+              for (const update of [...f.disk, ...f.wal]) applyUpdate(cold, update);
+              expect(
+                cold.getText('text').toString(),
+                'cold carriers must match the independent accepted ledger',
+              ).toBe(expected);
+            } finally {
+              cold.destroy();
+            }
+          }
+        } finally {
+          await f.owner.close();
+        }
+      },
+    ),
+    { seed: 140922, numRuns: 80 },
+  );
+});
+
+it('preparation revisions advance for no ops and new work uses the writer chosen after remote collision', async () => {
+  const seen: { revision: number; writer: number; basis: string }[] = [];
+  let f: Awaited<ReturnType<typeof fixture>>;
+  f = await fixture((draft, input) => {
+    seen.push({
+      revision: f.owner.status.revision,
+      writer: draft.clientID,
+      basis: draft.getText('text').toString(),
+    });
+    if (text(input) !== 'noop') append(draft, input, 16384);
+  });
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    const before = f.owner.snapshot(),
+      writer = seen[0]!.writer;
+    await f.owner.submit(intent('noop')).accepted;
+    expect(f.owner.snapshot()).toEqual(before);
+    expect(f.owner.status.revision).toBe(2);
+    const collision = remote(before, (d) => {
+      d.clientID = writer;
+      d.getText('text').insert(1, 'R');
+    });
+    await f.owner.receive(collision).accepted;
+    await f.owner.submit(intent('L')).accepted;
+    expect(seen.map((s) => s.revision)).toEqual([0, 1, 3]);
+    expect(seen.map((s) => s.basis)).toEqual(['', 'A', 'AR']);
+    expect(seen[2]!.writer, 'a preparation binding cannot retain a collided writer').not.toBe(
+      writer,
+    );
+    expect(view(f.owner.snapshot())).toBe('ARL');
+  } finally {
+    await f.owner.close();
+  }
+});

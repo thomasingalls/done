@@ -1,0 +1,73 @@
+{
+  "base": "213ada08c77a7546223367f8d3e779017eec13fe",
+  "selection": "vitest-reviewed/preparation-contract (bounded subset)",
+  "integrationGroup": "f17-preparation-contract",
+  "rawOutput": "test-results/release-validation/2026-09-14T19-43-42.823Z",
+  "result": {
+    "schema": 1,
+    "selection": "vitest-reviewed/preparation-contract (bounded subset)",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/admissionQueue.test.ts",
+        "key": "c7fee67e1fa5816c555b7f400312e01adbd86fcb9e9b85e268ab8e708bff642b",
+        "status": "passed",
+        "elapsedMs": 6311,
+        "cases": 26,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sourceCapture.test.ts",
+        "key": "9ba1181ab87b6df8338ffe4ff1da0c100e5bc46cdb83a1776daba5f4a31dd8c3",
+        "status": "passed",
+        "elapsedMs": 5585,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "4257d8d4dee0657deb3fbf2d2ddd14ca8bbda4d800ae6ff918656fba0c66021c",
+        "status": "passed",
+        "elapsedMs": 4349,
+        "cases": 23,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T19:43:42.826Z",
+    "input": "36c76998e818816105b89caf04161da7c20452fa14a614a4ad2ec1313bc4e9e6",
+    "completedAt": "2026-09-14T19:44:42.620Z"
+  },
+  "counts": {
+    "generalFiles": 260,
+    "generalCases": 2022,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 159,
+    "unresolvedTestFiles": 0
+  },
+  "priorContractsPreserved": 257,
+  "changedPriorContracts": [
+    "test:test/admissionQueue.test.ts",
+    "test:test/workspaceAdmission.test.ts",
+    "test:test/sourceCapture.test.ts"
+  ],
+  "rawInputArchiveSha256": "84f6d28da59a5d9891d2826312d415521d83a0750af8f64c9237493efaaa6823",
+  "sourceDigest": "bd90dc3963511f9ae53c2c4bc278e200492cb2869ab707da7ac41ef1f58ae40c",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1057,
+  "scope": "Defines the workspace-only preparation contract without changing production or removing a draft. The future handoff binds owner identity, accepted revision, current writer, queue job and slice; it consumes a preparation once, retains the same bytes/history for storage retry, and requires a fresh binding for remaining slices. Canonical privacy, complete post-promotion comparison, Account original-source replay/coverage, acknowledgement ordering and cleanup ownership remain mandatory. Four new cases cover 80 generated retry/discard/remote histories against an independent accepted-text/revision ledger and cold carriers, no-op revisions and writer collision, actual private-history disposal on discard and drained close, and 160 generated source-coverage checks with pending structs, missing clocks and pending delete sets. All four deliberate faults fail their intended assertions: a stale draft, premature promotion, leaked history and omitted source verification. These are baseline production tests, not proof that the unimplemented capability rejects forged or stale contexts. The full unit suite passes 96 files / 1,042 tests, and the owned runner executes all 57 cases across the three changed suites with process drain. Only those suites, two denominator fixtures and their reviewed inventory/manifest records change executable validation coverage; all selection membership and exclusions stay fixed. Initial fixture assumptions about synchronous queue completion and nested Yjs update emission, plus an incorrect import, were corrected before qualification; original failed logs remain. No runtime/native/application campaign or timing was rerun. The last independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x typing. Personal browser, server, package and deployment remain untouched.",
+  "artifactIndexSha256": "3427899ee30cc2e3ce3752b69e96fa0778b6d29e9fbca7f85756aebf0230cd80",
+  "gatesSha256": "30de4f8f48f208dd0b35bd65783103873b4dd082ae93e2ef2cb494dfb29d68d9",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

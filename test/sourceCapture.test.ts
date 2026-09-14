@@ -14,7 +14,7 @@ import {
 } from '../src/crdt/sourceCapture';
 import type { Bytes } from '../src/crdt/custodyCrypto';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
-import { prepareIntent } from '../src/crdt/admissionDocument';
+import { prepareIntent, cloneDocument } from '../src/crdt/admissionDocument';
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import { MAX_JOURNAL_UPDATE, type JournalSession } from '../src/crdt/custody';
 import { createAdmittedWorkspace } from '../src/crdt/admittedWorkspace';
@@ -308,4 +308,78 @@ describe('Account source capsule conformance', () => {
       await admission.close();
     }
   });
+});
+
+it('160 generated source coverage checks include preexisting pending structs missing clocks and delete sets', () => {
+  fc.assert(
+    fc.property(
+      fc.string({ minLength: 1, maxLength: 15 }),
+      fc.string({ minLength: 1, maxLength: 15 }),
+      (seed, input) => {
+        const producer = createDoc(),
+          canonical = createDoc();
+        producer.clientID = 701;
+        producer.getText('remote').insert(0, seed);
+        const later = transaction(producer, () =>
+          producer.getText('remote').insert(seed.length, 'later'),
+        );
+        const deletion = transaction(producer, () => producer.getText('remote').delete(0, 1));
+        applyUpdate(canonical, later);
+        applyUpdate(canonical, deletion);
+        expect(canonical.store.pendingStructs).not.toBeNull();
+        expect(canonical.store.pendingDs).not.toBeNull();
+        const before = structuredClone({
+          pending: canonical.store.pendingStructs,
+          ds: canonical.store.pendingDs,
+        });
+        const run = (fault: 'none' | 'structs' | 'clocks' | 'deletions') =>
+          prepareIntent(canonical, 42, wire('intent'), 32768, (draft) => {
+            const command = cloneDocument(draft);
+            command.clientID = draft.clientID;
+            let update: Bytes;
+            try {
+              update = transaction(command, () => command.getText('local').insert(0, input));
+              applyUpdate(draft, update);
+            } finally {
+              command.destroy();
+            }
+            if (fault === 'structs') draft.store.pendingStructs = null;
+            if (fault === 'clocks') draft.store.pendingStructs!.missing.set(999, 1);
+            if (fault === 'deletions') draft.store.pendingDs = null;
+            return { sources: [{ actor: route.principal, kind: 'human', bytes: update }] };
+          });
+        try {
+          const result = run('none');
+          try {
+            const cold = createDoc();
+            try {
+              applyUpdate(cold, Y.encodeStateAsUpdate(canonical));
+              applyUpdate(cold, result.update);
+              expect(cold.getText('local').toString()).toBe(input);
+              expect(cold.store.pendingStructs).not.toBeNull();
+              expect(cold.store.pendingDs).not.toBeNull();
+            } finally {
+              cold.destroy();
+            }
+          } finally {
+            result.update.fill(0);
+            for (const source of result.sources ?? []) source.bytes.fill(0);
+          }
+          for (const fault of ['structs', 'clocks', 'deletions'] as const)
+            expect(
+              () => run(fault),
+              'source verification must cover the complete pending basis',
+            ).toThrow(/Source updates do not cover/);
+          expect({
+            pending: canonical.store.pendingStructs,
+            ds: canonical.store.pendingDs,
+          }).toEqual(before);
+        } finally {
+          producer.destroy();
+          canonical.destroy();
+        }
+      },
+    ),
+    { seed: 140923, numRuns: 160 },
+  );
 });

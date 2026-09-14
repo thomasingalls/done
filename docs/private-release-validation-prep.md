@@ -43,10 +43,10 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations.
-General integration covers **260 files / 2,018 case dispositions (11 not applicable)**, including all 123 Account files.
+General integration covers **260 files / 2,022 case dispositions (11 not applicable)**, including all 123 Account files.
 0 test-file, 96 command and 63 campaign obligations remain.
-The metadata optimization assessment is complete: both production candidates were rejected under the prospective timing rule, and stronger tests remain. The independent application latency gate is still failed on CPU-4x Android typing. Scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
-Next: specify and test a workspace-only preparation handoff bound to its accepted basis, with canonical ownership, refusal/disposal, Account source coverage and full per-transition verification preserved; then attempt removal of the duplicate draft under unchanged budgets. [Latest evidence](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
+The workspace preparation contract and baseline controls are complete; production is unchanged and the actual handoff is not yet implemented. The independent application latency gate still fails CPU-4x Android typing. Scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: implement the private preparation context and handoff ownership component, with actual foreign/stale/reuse/wrong-slice and disposal controls while retaining the current editor path; then gate Local integration against the legacy path and unchanged application budgets, with Account source activation separately checked. [Latest evidence](./account-conformance-runs/2026-09-14-f17-preparation-contract/README.md).
 
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
@@ -85,7 +85,7 @@ No full `pnpm check`, broad platform qualification or public release is claimed 
 | Privacy, F-21.4 | Qualify supported browser/OS/custody opener combinations; document opaque/fragmented representations not covered by whole-sentinel scanning. Logical legacy cleanup does not erase forensic remnants. No heap/swap/unallocated-sector claim. |
 | Failures/recovery, F-09 | Current-format Local salvage is partial and requires intact authenticated custody. Account recovery, factor/key loss and unsupported historical formats need their own recovery/export/import contracts. Existing blocked-storage/prompt UX and lock-order documentation stay separately tracked (F-13/F-14/F-23/F-24). |
 | Storage, F-16 | The scheduler is advisory: continuous work can postpone it, pending dependencies preserve original frames, a large state stays large, and Account proof history is not pruned. Establish a supported growth/reopen envelope. |
-| Responsiveness, F-17 | Comparison and detached-fork repairs remain verified. Both metadata fast paths missed the prospective rule and were discarded; graph/undo/isolation tests remain. Next define the ownership and verification handoff before removing duplicate preparation. The last application gate still fails on CPU-4x Android typing. Focus observations and supported-device capacity remain open. |
+| Responsiveness, F-17 | Comparison and detached-fork repairs remain verified. Both metadata fast paths missed the prospective rule and were discarded; graph/undo/isolation tests remain. The preparation ownership contract and baseline controls are complete. Next implement and test the actual private handoff before integrating removal of duplicate preparation. The last application gate still fails on CPU-4x Android typing. Focus observations and supported-device capacity remain open. |
 | Retained markers, F-19 | Confirm native storage/resource costs and end-to-end admission/open capacity at the declared workload. Full MAC/parse work, completion duplication and the 72 MiB private promotion body ceiling remain; the microprofile is not maximum-body/concurrency qualification. |
 
 Q-06/R-02's signing sweep now has a [verified crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json).

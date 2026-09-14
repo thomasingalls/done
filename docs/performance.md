@@ -778,3 +778,29 @@ handoff, its accepted-basis/writer binding, refusal/disposal behavior and Accoun
 before removing a duplicate draft. Keep full per-transition verification and use the existing two-draft
 implementation as the differential reference. Full comparison, publication, physical-device capacity,
 command/campaign integration and immutable qualification remain open.
+
+
+## 2026-09-14 — Preparation ownership contract and reference controls
+
+At signed `213ada08`, define the [private preparation contract](./f17-preparation-contract.md) before
+attempting to remove the first canonical-derived draft. The proposed context binds owner identity,
+accepted revision, writer, job and slice. A failed storage attempt retains its already consumed
+handoff for exact retry; a new preparation requires a fresh context. Keep canonical state private,
+full post-promotion comparison and the independent Account source-coverage probe. The generic path
+remains a reference. The actual private component, its rejection/cleanup controls and subsequent
+Local/Account integration have not been implemented in this phase.
+
+Four added cases exercise the current production path: 80 generated admission histories with an
+independent accepted-state/cold-carrier ledger; no-op revision and remote-writer collision behavior;
+discard/close history ownership; and 160 generated complete pending-state source checks. Stale draft,
+premature promotion, missing disposal and omitted source verification each fail the intended control.
+All 1,042 unit tests, 99 runner self-tests and 57 owned cases across the affected suites pass. Initial
+fixture mistakes and final control outputs are retained in the
+[evidence packet](./account-conformance-runs/2026-09-14-f17-preparation-contract/README.md).
+
+Production bytes are unchanged, so this phase performs no new application/native timing and makes
+no speedup claim. Last application typing is still 15.2/69.4 ms desktop/CPU-4x Android, with Android
+failing <16 ms. F-17 remains partial; all budgets, recorder limitations and handset/immutable
+qualification requirements remain. Next build the actual private handoff with rejection and disposal
+tests, then qualify Local integration against the reference before timing; Account source activation
+needs a separate gate.
