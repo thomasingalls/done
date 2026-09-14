@@ -29,9 +29,10 @@ function fixture(t, text = ordinary, data = {}) {
     'vite.config.ts',
     'package.json',
     'scripts/release-validation/process-guard.mjs',
+    'scripts/release-validation/nested-launcher.mjs',
     'scripts/release-validation/vitest-reporter.mjs',
   ];
-  for (const name of ['process-guard.mjs', 'vitest-reporter.mjs'])
+  for (const name of ['process-guard.mjs', 'vitest-reporter.mjs', 'nested-launcher.mjs'])
     copyFileSync(
       'scripts/release-validation/' + name,
       join(root, 'scripts/release-validation', name),

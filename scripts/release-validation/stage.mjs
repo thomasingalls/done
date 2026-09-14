@@ -1,6 +1,6 @@
 /** One bounded stage. This module grants no whole-release coverage claim. */
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawnOwnedGroup as spawn, nestedGroupOwner, ownedPayloadPid } from './nested-groups.mjs';
 import { randomUUID } from 'node:crypto';
 import {
   appendFileSync,
@@ -52,7 +52,16 @@ export function validateStage(stage) {
       Number.isSafeInteger(stage[key]) && stage[key] > 0 && stage[key] <= max,
       'Invalid bound: ' + key,
     );
-  assert.equal(stage.processPolicy, 'inherited-group-v1', 'Unresolved process ownership');
+  assert(
+    ['inherited-group-v1', 'registered-groups-v1'].includes(stage.processPolicy),
+    'Unresolved process ownership',
+  );
+  if (stage.processPolicy === 'registered-groups-v1') {
+    assert.equal(stage.variant, 'node-registered-groups-v1');
+    assert(['cases', 'exit'].includes(stage.expect.kind));
+  }
+  if (stage.variant === 'node-registered-groups-v1')
+    assert.equal(stage.processPolicy, 'registered-groups-v1');
   assert(
     Array.isArray(stage.dependsOn) && new Set(stage.dependsOn).size === stage.dependsOn.length,
     'Invalid prerequisites',
@@ -327,6 +336,11 @@ export function createStageRunner({
     // Keep generated source beside the copied dependencies. Report directories may be
     // outside the checkout, where Vite would resolve a second package instance.
     const workerOutput = join(root, 'test-results', 'release-worker', key);
+    const nestedOwner =
+      stage.processPolicy === 'registered-groups-v1' || process.env.RELEASE_NESTED_ROOT
+        ? nestedGroupOwner(dir, root)
+        : undefined;
+    let nestedResult;
     const env = {
       PATH: dirname(process.execPath) + ':/usr/bin:/bin',
       HOME: join(dir, 'home'),
@@ -334,6 +348,7 @@ export function createStageRunner({
       LANG: 'C.UTF-8',
       TZ: 'UTC',
       CI: '1',
+      ...nestedOwner?.environment,
       ...stage.env,
       NODE_OPTIONS: '--import=' + guardPath,
       RELEASE_PROCESS_GUARD: guardPath,
@@ -377,6 +392,11 @@ export function createStageRunner({
     const stop = (why) => {
       if (reason !== null) return;
       reason ??= why;
+      try {
+        nestedOwner?.cancel();
+      } catch (error) {
+        reason += ': nested closure ' + error.code;
+      }
       if (child?.pid) {
         try {
           term();
@@ -511,6 +531,18 @@ export function createStageRunner({
         if (browserResult.failure) reason ??= browserResult.failure;
       }
     }
+    if (nestedOwner) {
+      try {
+        nestedResult = await nestedOwner.close(stage.graceMs);
+        groupDrained = groupDrained && nestedResult.groupDrained;
+        if (!nestedResult.groupDrained) reason ??= 'undrained-nested-groups';
+        else if (nestedResult.orphaned.length) reason ??= 'orphaned-nested-group';
+      } catch (error) {
+        groupDrained = false;
+        reason ??= 'nested-owner-close: ' + String(error);
+        nestedResult = { groupDrained: false, error: String(error) };
+      }
+    }
     let actual;
     try {
       assert.equal(code, 0, 'Nonzero or missing exit');
@@ -540,7 +572,7 @@ export function createStageRunner({
             nonce,
             sources: before.sources,
             root,
-            workerPid: child.pid,
+            workerPid: ownedPayloadPid(child),
             browserExecutable: browserRuntime?.executable,
             custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
@@ -574,6 +606,7 @@ export function createStageRunner({
     const artifacts = [
       'output.log',
       'ownership.jsonl',
+      ...(existsSync(join(dir, 'nested-groups.json')) ? ['nested-groups.json'] : []),
       ...(existsSync(report) ? ['cases.json'] : []),
       ...(browserOwner ? ['browser.json', 'browser.log'] : []),
     ].map((path) => {
@@ -589,6 +622,7 @@ export function createStageRunner({
       groupDrained,
       drainStarted,
       uncertainProbes,
+      ...(nestedResult ? { nestedGroups: nestedResult } : {}),
       ...(browserOwner ? { browser: structuredClone(browserOwner.result) } : {}),
       elapsedMs: Date.now() - started,
       artifacts,

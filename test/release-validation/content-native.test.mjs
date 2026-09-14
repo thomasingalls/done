@@ -33,6 +33,10 @@ function fixture(t, mode, extra = {}) {
     'scripts/release-validation/process-guard.mjs',
     join(root, 'scripts/release-validation/process-guard.mjs'),
   );
+  copyFileSync(
+    'scripts/release-validation/nested-launcher.mjs',
+    join(root, 'scripts/release-validation/nested-launcher.mjs'),
+  );
   copyFileSync('scripts/release-validation/server.mjs', join(root, 'listen.mjs'));
   copyFileSync('test/account-promotion/browser-owner.mjs', join(root, 'browser-owner.mjs'));
   writeFileSync(join(root, 'index.html'), '<title>Owned fixture</title>');
@@ -132,6 +136,7 @@ function fixture(t, mode, extra = {}) {
         'browser-owner.mjs',
         'index.html',
         'scripts/release-validation/process-guard.mjs',
+        'scripts/release-validation/nested-launcher.mjs',
       ]),
     ),
     dependencyDigest: 'fixture-only',

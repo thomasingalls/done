@@ -3137,3 +3137,8 @@ Register only the four reviewed control files with exact static case identities 
 ## 2026-09-14 — Other native marker, maintenance and partial-recovery fixtures
 
 Repair the shared fixture-name regression and qualify all four reviewed callers. Bind installed Chromium to the new native adapters, preserve existing case/file deadlines and all prior contracts, and distinguish partial read-only recovery from complete recovery or physical erasure.
+
+
+## 2026-09-14 — Registered harness groups and current storage lifecycle fixtures
+
+Replace obsolete port assumptions with current executable lifecycle checks rather than preserving false expectations. Keep the storage-properties startup refusal and all cleanup-supervisor assertions. Explicit owner sites may launch registered groups; ordinary detached launches still refuse. Publish an intent before creating a group, prevent payload execution until leader registration, fence late launch during teardown and refuse unresolved cleanup. Retain separate group-leader and actual-worker identities, inherited Chromium binding and failed-attempt evidence.

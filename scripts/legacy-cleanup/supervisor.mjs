@@ -1,4 +1,4 @@
-import { fork } from 'node:child_process';
+import { forkOwnedGroup as fork } from '../release-validation/nested-groups.mjs';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { atomicJSON, describeError } from './diagnostics.mjs';

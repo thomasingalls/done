@@ -6,6 +6,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../../test/account-promotion/browser-owner.mjs';
 import * as fc from 'fast-check';
 import { historyArbitrary, defaultSeeds } from './arbitrary.mjs';
 import { mutants } from './mutants.mjs';
@@ -279,8 +280,13 @@ async function withServer(mutation, action) {
 }
 
 try {
-  const executablePath = process.env.CHROMIUM_PATH ?? chromium.executablePath();
-  browser = await chromium.launch({ headless: true, executablePath });
+  const executablePath =
+    process.env.RELEASE_BROWSER_EXECUTABLE ??
+    process.env.CHROMIUM_PATH ??
+    chromium.executablePath();
+  browser = process.env.RELEASE_BROWSER_ENDPOINT
+    ? await openFixtureBrowser(chromium)
+    : await chromium.launch({ headless: true, executablePath });
   report.browser = {
     version: browser.version(),
     executablePath,

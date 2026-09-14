@@ -5,6 +5,10 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 
 export const otherNodeGroups = {
+  'other-harness-fixtures': [
+    'test/legacy-cleanup/harness.node.mjs',
+    'test/storage-harness/lifecycle.node.mjs',
+  ],
   'other-native-fixtures': [
     'test/storage-capacity/marker-native.test.mjs',
     'test/storage-capacity/maintenance.test.mjs',
@@ -24,8 +28,11 @@ export function otherNodeStage(root, file) {
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
-  const native = otherNodeGroups['other-native-fixtures'].includes(file);
-  const profiles = native && file !== 'test/storage-capacity/marker-native.test.mjs';
+  const registered = otherNodeGroups['other-harness-fixtures'].includes(file);
+  const native =
+    otherNodeGroups['other-native-fixtures'].includes(file) ||
+    file === 'test/storage-harness/lifecycle.node.mjs';
+  const profiles = native && !registered && file !== 'test/storage-capacity/marker-native.test.mjs';
   return {
     id: 'test:' + file,
     argv: [
@@ -36,7 +43,11 @@ export function otherNodeStage(root, file) {
       file,
     ],
     env: {},
-    variant: profiles ? 'node-inherited-chromium-v1' : 'node-other-file-v1',
+    variant: registered
+      ? 'node-registered-groups-v1'
+      : profiles
+        ? 'node-inherited-chromium-v1'
+        : 'node-other-file-v1',
     ...(native
       ? {
           fixture: {
@@ -50,11 +61,11 @@ export function otherNodeStage(root, file) {
       cases: declarations.cases,
       ...(declarations.dataInputs.length ? { dataInputs: declarations.dataInputs } : {}),
     },
-    deadlineMs: native ? 120000 : 60000,
+    deadlineMs: registered || native ? 120000 : 60000,
     graceMs: 5000,
     maxLogBytes: 4 * 1024 * 1024,
     maxReportBytes: 1024 * 1024,
-    processPolicy: 'inherited-group-v1',
+    processPolicy: registered ? 'registered-groups-v1' : 'inherited-group-v1',
     dependsOn: [],
   };
 }

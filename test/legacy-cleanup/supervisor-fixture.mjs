@@ -1,5 +1,5 @@
 // Node-only watchdog fault fixture. No browser or cleanup implementation is imported.
-import { fork } from 'node:child_process';
+import { forkOwnedGroup as fork } from '../../scripts/release-validation/nested-groups.mjs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { atomicJSON } from '../../scripts/legacy-cleanup/diagnostics.mjs';

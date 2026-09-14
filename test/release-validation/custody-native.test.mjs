@@ -30,6 +30,10 @@ function fixture(t, mode) {
     'scripts/release-validation/process-guard.mjs',
     join(root, 'scripts/release-validation/process-guard.mjs'),
   );
+  copyFileSync(
+    'scripts/release-validation/nested-launcher.mjs',
+    join(root, 'scripts/release-validation/nested-launcher.mjs'),
+  );
   writeFileSync(
     join(root, 'profiles.mjs'),
     readFileSync('scripts/custody/profiles.mjs', 'utf8').replace(
@@ -105,6 +109,7 @@ function fixture(t, mode) {
         'subject.mjs',
         'profiles.mjs',
         'scripts/release-validation/process-guard.mjs',
+        'scripts/release-validation/nested-launcher.mjs',
       ]),
     ),
     dependencyDigest: 'fixture-only',

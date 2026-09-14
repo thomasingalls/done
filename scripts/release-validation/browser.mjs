@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawnOwnedGroup as spawn, ownedPayloadPid } from './nested-groups.mjs';
 import {
   appendFileSync,
   existsSync,
@@ -15,7 +15,7 @@ import { groupState, signalGroup } from './process-group.mjs';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export function installedChromium() {
-  const executable = chromium.executablePath();
+  const executable = process.env.RELEASE_BROWSER_EXECUTABLE ?? chromium.executablePath();
   let bundle = dirname(executable);
   while (!/^chromium-\d+$/.test(bundle.split('/').at(-1))) {
     const parent = dirname(bundle);
@@ -136,6 +136,10 @@ export function startOwnedChromium({ runtime, directory, env, startupMs, graceMs
           ) {
             endpoint = `ws://127.0.0.1:${port}${path}`;
             result.endpoint = endpoint;
+            if (child.releaseGroup) {
+              result.leaderKind = 'registered-proxy';
+              result.payloadPid = ownedPayloadPid(child);
+            }
             result.readyMs = Date.now() - started;
             return endpoint;
           }

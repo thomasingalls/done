@@ -5131,7 +5131,7 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 37,
+          "line": 38,
           "form": "execFileSync",
           "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
         }
@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 241,
+          "line": 260,
           "form": "fc.property"
         }
       ],
@@ -8948,14 +8948,14 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/release-validation/stage.test.mjs"]
       },
-      "declarations": 24,
+      "declarations": 31,
       "propertyFamilies": [
         {
-          "line": 363,
+          "line": 370,
           "form": "fc.property"
         },
         {
-          "line": 592,
+          "line": 599,
           "form": "fc.property"
         }
       ],
@@ -9236,7 +9236,7 @@
           "test/storage-harness/lifecycle.node.mjs"
         ]
       },
-      "declarations": 1,
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11597,7 +11597,7 @@
     },
     {
       "path": "scripts/legacy-cleanup/supervisor.mjs",
-      "sha256": "6f2b18fc320a203732b48240c868d6a9f2f2cb9990885ea2cef0271822cb42c6"
+      "sha256": "122658f7be3bbd3ae039df3f04e80d21519ae96f244fa74a960c136cc6646826"
     },
     {
       "path": "scripts/legacy-coordinator/campaign.mjs",
@@ -11809,7 +11809,7 @@
     },
     {
       "path": "scripts/release-validation/browser.mjs",
-      "sha256": "dc03d36db2c2408de98e83c97db5ffc5b8b748bf6cacf4f9f4911bcded453a99"
+      "sha256": "4f891c196051b4d7607787e0430f589dc62926c9d31e5f9254cfe6a320c9e908"
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
@@ -11841,7 +11841,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "161d1601e2d53569e2ed115919a6c3ebf560b635e27551fe3e5e1f93c4a341d0"
+      "sha256": "3fac7b87a844705cd1d2ce72b3012e7fa76704aa8674ff9c772ff5f2853d2ef5"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11888,12 +11888,20 @@
       "sha256": "f96e63068de3e22272caa5a5d2d045556421ebfec11008488d7162d7887cb6b1"
     },
     {
+      "path": "scripts/release-validation/nested-groups.mjs",
+      "sha256": "3da4da4370d133a6b24084a200b6d24dd88f8481322eb0c3f56bbd4e2b474ebd"
+    },
+    {
+      "path": "scripts/release-validation/nested-launcher.mjs",
+      "sha256": "1d7598ee4ec3365682ea32cb52de8ca56bfb12a9808fd34a1632e9218a736cf2"
+    },
+    {
       "path": "scripts/release-validation/node-reporter.mjs",
       "sha256": "5e17f0906b55e9db9454ee7127a217beb4847d0f0ae169103b999d05428b22eb"
     },
     {
       "path": "scripts/release-validation/other-node-tests.mjs",
-      "sha256": "f67bbd8b844cbbdebeaf6b762391cc531adea6a59751db1f0e7a542d710506d8"
+      "sha256": "13f684af3f1831e3bfc41451648784825f66a9e034160eb8c144cc8542e800d8"
     },
     {
       "path": "scripts/release-validation/owned-startup-adapter.mjs",
@@ -11913,7 +11921,7 @@
     },
     {
       "path": "scripts/release-validation/process-guard.mjs",
-      "sha256": "c334ccf7024007e3909fa1d226f913644c8a2eb5c087e902a571823b4899944b"
+      "sha256": "240fe312d3a640f0114c69dffe34e2805124787cb083269c6de6a4d3bc65c07a"
     },
     {
       "path": "scripts/release-validation/registration-data.mjs",
@@ -11929,7 +11937,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "d2c09b792eb90a18eb3237c11785049707e051ef7e96f89ec6a9057c44fa0dfd"
+      "sha256": "5377aaeee5c015a3b42018755e786df0511ca795fb2ed74b12c43de9ac82ba4d"
     },
     {
       "path": "scripts/release-validation/vitest-adapter.mjs",
@@ -11997,7 +12005,7 @@
     },
     {
       "path": "scripts/storage-properties/run.mjs",
-      "sha256": "a3e7c956737a0f542c14c5aa00fab231bd69405dc7606ec08393926268baa9e6"
+      "sha256": "e4d10dd1a012aebad3134a67844c4b3f76adabc4ee65c5922c27860444d30e60"
     },
     {
       "path": "scripts/test-https.mjs",
@@ -13445,7 +13453,7 @@
     },
     {
       "path": "test/legacy-cleanup/supervisor-fixture.mjs",
-      "sha256": "d6fd9fbf816baf62048b19d5363b17a3121ac43e7da50c02236cf8f738b7ce14"
+      "sha256": "7c08a2dbec7ddf5ef2f515327e6cb83e718634d55bfe9dca0f5903cec79c16bb"
     },
     {
       "path": "test/legacy-coordinator/browser.mjs",
@@ -13717,7 +13725,7 @@
     },
     {
       "path": "test/release-validation/content-native.test.mjs",
-      "sha256": "15019c81e68491b20cfd59cf1cc44a245bd2d3e961505a7a9628b15f61fd08df"
+      "sha256": "2ed91ec0f8af3848ec5885f7a7e4077c7f0cd52ba870884a2c059fbb6c3b366f"
     },
     {
       "path": "test/release-validation/content-trim.test.mjs",
@@ -13729,7 +13737,7 @@
     },
     {
       "path": "test/release-validation/custody-native.test.mjs",
-      "sha256": "98ed39bb1da168d8347b25db692107d913226149b3c4b355d4caa0a2ba2fc69b"
+      "sha256": "63d45f08ce90be239e7db7ec516231e1d5691a255b253428ac4d619872887422"
     },
     {
       "path": "test/release-validation/custody.test.mjs",
@@ -13741,11 +13749,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "28eda94d5acc355e7bc48bcc0354cb9809c3143b02256f8cd610dd3e4ab566cc"
+      "sha256": "55a9e2ab1408908f935f281d3f22de091f15ea0c212cbdafa5d381eac24991eb"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "a5c0a31f0f6b23e98f2d78693b10004bd6100ffd89381158fbfb26b23bdeef32"
+      "sha256": "34c03364e6421737717dd10ceedc5feb10e2a208b8be3a39afe25cfa51436ad1"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13777,11 +13785,11 @@
     },
     {
       "path": "test/release-validation/stage.test.mjs",
-      "sha256": "b0fd72768c55b13482930f1720327a11999444c5cabe886d4930f328d01093e9"
+      "sha256": "f05f3203b73e614c757e58ce45c8283d16e013b4d1663619b930b2407d745f85"
     },
     {
       "path": "test/release-validation/vitest-process.test.mjs",
-      "sha256": "f0432435cdfb64876743e427b54f2d02f37bdecf296a30228bd0760d9196d2a4"
+      "sha256": "97271efcff669edfbcef61339d05719b9005ddf60ce68deb3da69bb8a20e36e0"
     },
     {
       "path": "test/release-validation/vitest.test.mjs",
@@ -13893,7 +13901,7 @@
     },
     {
       "path": "test/storage-harness/lifecycle.node.mjs",
-      "sha256": "3a52bc8efe79edd1c5ab832bd03a8a3e52a96c284a39df4af7fb48254be79bb0"
+      "sha256": "f7aa13e4e0e55069efeb14901164abe28abede577b81c9d59ab40948df41b8a1"
     },
     {
       "path": "test/storage-properties/browser.mjs",

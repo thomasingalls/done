@@ -3194,6 +3194,21 @@ General integration now covers 236 files / 1,793 cases. 22 test-file, 96 command
 
 [Evidence](./account-conformance-runs/2026-09-14-other-native-fixtures/README.md).
 
+
+## Registered harness groups and current storage lifecycle fixtures (`L-1`)
+
+Registered harness groups and current storage lifecycle fixtures passes 18 cases in 2 files. The 14 cleanup-supervisor cases pass under registered group leaders, preserving their generated diagnostics and failure controls. Three obsolete fixed-port failure expectations are replaced by actual custody/content/journal worker cases that succeed on ephemeral loopback ports while the former ports remain occupied; each verifies clean server and process closure. Storage-properties retains its real fixed-port failure assertion and borrows owned Chromium to reach it. All four 25-second case bounds remain, with a 120-second file bound. The first stale-expectation run and a subsequent browser-identity refusal are retained. The group owner writes an intent before launch, publishes the leader before payload execution, prevents late payload start after closure and separately binds the actual worker PID for custody. Unknown registration or failed closure storage cannot prove drain. All 50 final ownership controls pass: 31 stage, five Vitest and fourteen native, including abrupt death, TERM resistance, late launch and closure-marker failure. This is cooperative ownership for reviewed tests, not hostile-code confinement. The other Node group is complete: nine files / 39 cases. Full campaign output retention, production old-writer exclusion and immutable qualification remain separate.
+
+All 93 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `e7b98bcd` has a verified signature. 236 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+
+General integration now covers 238 files / 1,811 cases. 20 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: the four runner self-test files, followed by browser application tests.
+
+[Evidence](./account-conformance-runs/2026-09-14-other-harness-fixtures/README.md).
+
 ## Next bounded integration
 
-nested process-group ownership for the remaining two harness suites, then runner self-tests. 22 test-file, 96 command and 63 campaign obligations remain.
+the four runner self-test files, followed by browser application tests. 20 test-file, 96 command and 63 campaign obligations remain.
+
+The completed harness phase is staged pending signing: the agent refused the signed commit
+(exit 128). No unsigned fallback was made. Runner self-tests and browser application tests remain
+not started; sign the staged phase before continuing.

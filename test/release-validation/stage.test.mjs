@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   copyFileSync,
+  existsSync,
   cpSync,
   chmodSync,
   mkdtempSync,
@@ -24,6 +25,11 @@ import {
   historicalInput,
   validateHistoricalInputs,
 } from '../../scripts/release-validation/historical-inputs.mjs';
+import {
+  nestedGroupOwner,
+  spawnOwnedGroup,
+} from '../../scripts/release-validation/nested-groups.mjs';
+import { groupState } from '../../scripts/release-validation/process-group.mjs';
 import { startOwnedChromium } from '../../scripts/release-validation/browser.mjs';
 import { boundedStage } from '../../scripts/release-validation/manifest.mjs';
 import { digest, filePins } from '../../scripts/release-validation/identity.mjs';
@@ -34,7 +40,7 @@ function fixture(t, script) {
     root = join(base, 'checkout'),
     output = join(base, 'reports');
   mkdirSync(join(root, 'scripts/release-validation'), { recursive: true });
-  for (const name of ['process-guard.mjs', 'node-reporter.mjs'])
+  for (const name of ['process-guard.mjs', 'node-reporter.mjs', 'nested-launcher.mjs'])
     copyFileSync(
       'scripts/release-validation/' + name,
       join(root, 'scripts/release-validation', name),
@@ -54,6 +60,7 @@ function fixture(t, script) {
           .sort(),
         'scripts/release-validation/node-reporter.mjs',
         'scripts/release-validation/process-guard.mjs',
+        'scripts/release-validation/nested-launcher.mjs',
       ]),
     ),
     dependencyDigest: 'fixture-dependency-v1',
@@ -864,4 +871,136 @@ test('browser signal denial retries within grace but persistent denial cannot pr
       await cleanup();
     }
   }
+});
+
+const registeredStage = (f) => ({
+  ...f.stage,
+  variant: 'node-registered-groups-v1',
+  processPolicy: 'registered-groups-v1',
+  deadlineMs: 2000,
+  graceMs: 300,
+});
+const registeredSpawn = `import {spawn} from 'node:child_process'; import {writeFileSync,existsSync} from 'node:fs';
+const launch=(script)=>spawn(process.execPath,['-e',script],{detached:true,stdio:'ignore',[Symbol.for('done.release.registered-group')]:true});`;
+
+test('registered group payloads preserve clean exit and their exact leader drain', async (t) => {
+  const f = fixture(
+    t,
+    registeredSpawn +
+      `const child=launch('process.exit(0)');await new Promise((r,j)=>{child.on('error',j);child.on('close',c=>c===0?r():j(Error(String(c))));});`,
+  );
+  const r = await f.run(registeredStage(f));
+  assert.equal(r.status, 'passed', JSON.stringify(r.result));
+  assert.equal(r.result.nestedGroups.groups.length, 1);
+  assert(
+    r.result.nestedGroups.groups.every((g) => g.state === 'gone' && groupState(g.pid) === 'gone'),
+  );
+});
+
+test('registered descendants are drained after parent exception and abrupt death', async (t) => {
+  for (const ending of ['throw Error("parent failure")', 'process.kill(process.pid,"SIGKILL")']) {
+    const f = fixture(
+      t,
+      registeredSpawn +
+        `const child=launch('require("node:fs").writeFileSync("alive",String(process.pid));setInterval(()=>{},1000)');while(!existsSync('alive'))await new Promise(r=>setTimeout(r,5));${ending};`,
+    );
+    const r = await f.run(registeredStage(f));
+    assert.equal(r.status, 'failed');
+    assert(r.result.groupDrained, JSON.stringify(r.result));
+    assert.equal(r.result.nestedGroups.orphaned.length, 1);
+    assert(r.result.nestedGroups.groups.every((g) => groupState(g.pid) === 'gone'));
+    const payload = Number(readFileSync(join(f.root, 'alive'), 'utf8'));
+    assert.throws(() => process.kill(payload, 0), { code: 'ESRCH' });
+  }
+});
+
+test('timeout drains nested groups that ignore graceful termination at two levels', async (t) => {
+  const grandchild = `process.on('SIGTERM',()=>{});require('node:fs').writeFileSync('grandchild',String(process.pid));setInterval(()=>{},1000)`;
+  const nested = `const{spawn}=require('node:child_process');spawn(process.execPath,['-e',${JSON.stringify(grandchild)}],{detached:true,stdio:'ignore',[Symbol.for('done.release.registered-group')]:true});process.on('SIGTERM',()=>{});setInterval(()=>{},1000)`;
+  const f = fixture(
+    t,
+    registeredSpawn + `launch(${JSON.stringify(nested)});await new Promise(()=>{});`,
+  );
+  const r = await f.run(registeredStage(f));
+  assert.equal(r.result.reason, 'timeout');
+  assert(r.result.groupDrained, JSON.stringify(r.result));
+  assert.equal(r.result.nestedGroups.groups.length, 2);
+  assert(r.result.nestedGroups.groups.every((g) => groupState(g.pid) === 'gone'));
+  assert.throws(() => process.kill(Number(readFileSync(join(f.root, 'grandchild'), 'utf8')), 0), {
+    code: 'ESRCH',
+  });
+});
+
+test('registered stages still refuse unregistered detached launches and environment escape', async (t) => {
+  const f = fixture(
+    t,
+    `import {spawn} from 'node:child_process';try{spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{detached:true,env:{}})}catch{}`,
+  );
+  const r = await f.run(registeredStage(f));
+  assert.equal(r.status, 'failed');
+  assert.match(r.result.reason, /ownership violation/);
+  assert(r.result.groupDrained);
+  assert.equal(r.result.nestedGroups.groups.length, 0);
+});
+
+test('closed nested owner prevents a late leader from executing its payload', async (t) => {
+  const f = fixture(t, ''),
+    owner = nestedGroupOwner(f.output, f.root),
+    root = owner.environment.RELEASE_NESTED_ROOT;
+  const id = '11111111-2222-3333-4444-555555555555';
+  writeFileSync(join(root, id + '.intent.json'), JSON.stringify({ id, parent: process.pid }));
+  const child = spawnOwnedGroup(
+    process.execPath,
+    [
+      join(f.root, 'scripts/release-validation/nested-launcher.mjs'),
+      root,
+      id,
+      JSON.stringify({
+        file: process.execPath,
+        args: ['-e', 'require("node:fs").writeFileSync("forbidden","ran")'],
+      }),
+    ],
+    { cwd: f.root, env: { ...process.env, ...owner.environment }, detached: true, stdio: 'ignore' },
+  );
+  const ended = new Promise((r, j) => {
+    child.once('error', j);
+    child.once('close', r);
+  });
+  const until = Date.now() + 2000;
+  while (!existsSync(join(root, id + '.started.json')) && Date.now() < until)
+    await new Promise((r) => setTimeout(r, 5));
+  assert(existsSync(join(root, id + '.started.json')));
+  owner.cancel();
+  await ended;
+  const result = await owner.close(100);
+  assert(result.groupDrained, JSON.stringify(result));
+  assert.equal(existsSync(join(f.root, 'forbidden')), false);
+});
+
+test('unpublished nested intent cannot be credited as proven process drain', async (t) => {
+  const f = fixture(t, ''),
+    owner = nestedGroupOwner(f.output, f.root),
+    root = owner.environment.RELEASE_NESTED_ROOT;
+  const id = '11111111-2222-3333-4444-555555555555';
+  writeFileSync(join(root, id + '.intent.json'), JSON.stringify({ id, parent: process.pid }));
+  t.after(() => rmSync(join(root, id + '.intent.json'), { force: true }));
+  const result = await owner.close(30);
+  assert.equal(result.groupDrained, false);
+  assert.deepEqual(result.pending, [id]);
+});
+
+test('nested closure-marker failure still kills registered payloads and refuses cleanup credit', async (t) => {
+  const f = fixture(
+    t,
+    registeredSpawn +
+      `launch('require("node:fs").writeFileSync("alive",String(process.pid));setInterval(()=>{},1000)');while(!existsSync('alive'))await new Promise(r=>setTimeout(r,5));const {mkdirSync}=await import('node:fs');mkdirSync(process.env.RELEASE_NESTED_ROOT+'/closed');`,
+  );
+  const r = await f.run(registeredStage(f));
+  assert.equal(r.status, 'failed');
+  assert.equal(r.result.groupDrained, false);
+  assert.deepEqual(r.result.nestedGroups.closureErrors, ['EISDIR']);
+  assert(r.result.nestedGroups.groups.every((g) => groupState(g.pid) === 'gone'));
+  assert.throws(() => process.kill(Number(readFileSync(join(f.root, 'alive'), 'utf8')), 0), {
+    code: 'ESRCH',
+  });
 });
