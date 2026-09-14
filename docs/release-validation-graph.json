@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 285,
-    "requiredTestFiles": 279,
+    "testFiles": 286,
+    "requiredTestFiles": 280,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -9523,6 +9523,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workspacePreparation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workspacePreparation.test.ts"
+        ]
+      },
+      "declarations": 20,
+      "propertyFamilies": [
+        {
+          "line": 745,
+          "form": "fc.asyncProperty"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/writeAdmission.test.ts",
       "status": "required",
       "invocation": {
@@ -11919,7 +11939,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "e61222e2ad9f10ec1741832f97c964b29555489707c1eb0ba2d99701c4e4b670"
+      "sha256": "577c2c976219fef80c206baf0a9bbd406f2f204d0f7ded7ed0212deedb4bc4c6"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -13863,11 +13883,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "167cd354e975d3389645768cba6a9840b14928274d3b1cd521b7c5b39293e19a"
+      "sha256": "fe2f5f2d1206ccb13c6ca5841356a4269f009e287b155ea8ebf29da278ceccfb"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "ae8c6f5b0db9c0bb402c7ea90f9ef8dc0b1c2124d76ce8cd079c679f718343af"
+      "sha256": "0e1ea5f57179e300e38e976b7939883ced6bafd58f7507bc4a6625251e128d18"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14244,6 +14264,10 @@
     {
       "path": "test/workspaceAdmission.test.ts",
       "sha256": "f5445d3121088b9dd4ef6e10dce81dc9335d5e572f1831ef03191713e43c5fdc"
+    },
+    {
+      "path": "test/workspacePreparation.test.ts",
+      "sha256": "c78e9b0724c0fc5cf3ce3747b056f30af5b87774db0c35267feda9c2d458e5e4"
     },
     {
       "path": "test/write-session/browser.mjs",

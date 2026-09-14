@@ -73,6 +73,7 @@
     "test/verificationMemo.test.ts",
     "test/verifiedRecords.test.ts",
     "test/workspaceAdmission.test.ts",
+    "test/workspacePreparation.test.ts",
     "test/writeAdmission.test.ts",
     "test/writeSession.test.ts",
     "test/yjsDelivery.test.ts",

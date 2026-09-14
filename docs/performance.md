@@ -804,3 +804,33 @@ failing <16 ms. F-17 remains partial; all budgets, recorder limitations and hand
 qualification requirements remain. Next build the actual private handoff with rejection and disposal
 tests, then qualify Local integration against the reference before timing; Account source activation
 needs a separate gate.
+
+
+## 2026-09-14 — Private preparation ownership component, not yet integrated
+
+At signed `6c5502fd`, implement the [private handoff component](./f17-handoff.md) without wiring it
+into admission or the editor. Context identity binds verified local head, job, slice, revision and
+writer. Storage retry retains exact prepared bytes/history. Close revokes new authority while leases
+keep in-flight writes' references alive until release. Full verification is required before source
+capture and again after the matching durable canonical promotion, before history transfer. These
+callbacks must preserve the existing canonical/source checks when the component is integrated.
+
+Twenty component cases include 120 generated independent text/revision/undo/cold-replay histories;
+eight deliberate faults fail the intended assertions. Two new cleanup tests first reproduced gaps in
+late async-result erasure and collection of a closing command's returned buffers; both are fixed.
+The first revision-binding control was masked by its fixture retaining an unexpected borrow through
+cleanup. It now releases on that failure path. All first failures, code variants and final evidence
+are retained in the [packet](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
+
+The owned runner passes all 20 cases with drain. Full units pass 97 files / 1,062 cases on the same
+default command run alone, after a concurrent run timed out in two unchanged five-second tests
+(Account liveness and position decisions). All 99 runner self-tests and type/style/authority checks
+pass. The standalone pass does not resolve loaded-host headroom or establish concurrency as the
+cause. No timeout or application budget changes, and no application/native timing is run here.
+
+No existing runtime source changes. The new component has no editor/admission caller, so there is
+no product speedup claim. The last typing observation is still 15.2/69.4 ms desktop/CPU-4x Android,
+with Android failing <16 ms. Next integrate Local against the legacy reference through semantic and
+native pressure/crash checks, then use a prospectively specified performance comparison and the
+unchanged application gate. Account source integration, handset capacity and immutable qualification
+remain separate; F-17 is partial.

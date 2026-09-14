@@ -116,3 +116,10 @@ wrong-slice, throw, disposal and reentrancy tests while retaining the current ed
 Local integration with that reference before application timing under unchanged budgets. Account
 source/capture integration needs its own gate. Do not treat completion of this preparation phase as
 permission to bypass any of those checks.
+
+
+## Component follow-through
+
+The subsequent [private handoff component](./f17-handoff.md) implements the ownership mechanism and
+tests its actual rejection/cleanup behavior. It remains unconnected to admission and the editor; the
+Local reference comparison, native integration and Account source/capture gates above still apply.

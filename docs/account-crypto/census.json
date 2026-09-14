@@ -472,6 +472,10 @@
       "sha256": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e"
     },
     {
+      "path": "src/crdt/workspacePreparation.ts",
+      "sha256": "345a7599a6d29e74c9817443e8b23a5158e94b4b72a2cb0373b3accdd77cabdf"
+    },
+    {
       "path": "src/crdt/writeSession.ts",
       "sha256": "1a9b95f6f74f526947e8186ff72a1b2face902b43f4470d9aba8cbd87b0462e5"
     },
