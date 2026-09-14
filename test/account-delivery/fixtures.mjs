@@ -21,6 +21,8 @@ export async function deliveryBundle(control) {
               if (control === 'old-reader' && id.endsWith('/src/crdt/promotionRecord.ts'))
                 return execFileSync('git', ['show', '81a4655:src/crdt/promotionRecord.ts'], {
                   encoding: 'utf8',
+                  timeout: 5000,
+                  maxBuffer: 2 * 1024 * 1024,
                 });
               if (control === 'no-witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {
                 const p =

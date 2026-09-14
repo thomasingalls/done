@@ -34,6 +34,7 @@ import {
   syncFixtureFiles,
   receiveEditorFixtureFiles,
   spoolFixtureFiles,
+  deliveryNativeFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -440,6 +441,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'delivery-native-fixture': rows
+        .filter((r) => account.node.includes(r.path) && deliveryNativeFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'spool-fixture': rows
         .filter((r) => account.node.includes(r.path) && spoolFixtureFiles.includes(r.path))

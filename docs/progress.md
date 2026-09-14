@@ -43,65 +43,67 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account delivery native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account decisions native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews the Account delivery native file and its controls
+blocks_on: none; next bounded phase reviews the Account decisions native file and oracle controls
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Core receive/ordered editor is signed `2e05910` and verified. Sync/composition
+**Commit boundary.** Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account spool native fixture](./release-validation-execution.md#account-spool-native-fixture--phase-2ac)
-adds one file / 24 cases under owned CDP. File deadline remains 240 seconds, browser startup 15 seconds,
-drain grace five seconds; case limits and all test bodies/generated populations are unchanged. Only
-the historical-reader Git read gains five-second/2-MiB bounds. Product/wrapper code is unchanged.
+**Just completed.** [Account delivery native fixture](./release-validation-execution.md#account-delivery-native-fixture--phase-2ad)
+adds one file / 19 cases under owned CDP. The 480-second file bound, per-case bounds, 15-second browser
+startup and five-second drain grace stay unchanged. Only the historical Git read gains five-second /
+2-MiB limits. Test bodies, mutation bodies, generated population, product code and wrapper are unchanged.
 The new phase is uncommitted.
 
-**Evidence.** The full selection passes in 244.474 seconds; worker/browser groups drain. Node execution
-took 214.892 of 240 seconds; stage time was 219.332 seconds. Exact wire
-and sources survive compaction/reopen. Native cuts cover before/after position, attempt, envelope,
-marker and metadata commits. Corruption refuses without inventory changes/new observed encryption;
-close drains held crypto, preserves later writing and requires a fresh attempt. Early-return,
-attempt-reuse and missing-tail witness mutations expose their specific incorrect results. The lowered
-budget refuses the third encryption. The historical reader `7210b7d:src/crdt/promotionRecord.ts`
-is pinned in its receipt; synthetic intermediate-format fencing adds no supported app version.
+**Evidence.** The full selection passes in 280.555 seconds; worker/browser groups drain. Node
+execution took 252.008 of 480 seconds; stage time was 256.362 seconds. Exact submission retries,
+source/envelope retention, accepted suppression and subsequent eligibility survive reopen. Terminal
+proof states block outbound preparation while Local edits survive. Commit cuts cover submissions,
+responses and activation; missing final rows refuse against retained witnesses. Independently signed
+responses exercise contradictory prefix/refusal/final-cutoff arrival orders and exact duplicate no-ops.
+Early-return, witness, leaf-only and omitted-authority controls expose their particular incorrect results.
+Close during signing drains before releasing the slot. The old reader at
+`81a4655:src/crdt/promotionRecord.ts` is pinned; synthetic v8 activation adds no supported app version.
 
-Eight generated histories retain seed 9502026, endOnFailure:true and 180 seconds. Two to four steps
-compare writing, previously observed wire, contiguous positions, unique source references and durable
-attempts against Node-observed envelope encryption calls. Final draining checks source coverage/counts;
-there is no unconditional final cold reopen or explicit all-boundary-coverage assertion. Signature
-checks use the current verifier, not independent decryption. Same-context new-page reopen and renderer
-death do not establish full-browser/power-loss or second-device behavior. No spooled writing is sent.
+Eight generated histories retain seed 9812027, endOnFailure:true and 100 seconds. Each crashes before/
+after one submission commit, then checks three to six proof answers against an independent state oracle.
+Exact retries, recordedness, state, accepted prefix, counts and pending eligibility are checked. Final
+new-page reopen compares complete delivery status, envelope bytes and retained source capsules, not
+visible text. No all-kind/both-side coverage assertion or shrinking result is claimed. Six directed and
+eight generated renderer crashes remain distinct from whole-browser/power-loss and second-device use.
+Synthetic service setup is real, but the prepared writing is not dispatched; responses use Node/OpenSSL.
 
 All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
 The historical allowlist and owner implementation are unchanged; earlier prelaunch/reuse/midrun drift
 controls cover promotionRecord. Unchanged Node owner/Vitest-process/native-owner checks (23/5/12)
-retain pinned prior evidence. The [packet](./account-conformance-runs/2026-09-14-spool-fixture/README.md) retains full receipts, exact patch, input/browser
-identities, source/helper pins, historical signatures, prior contracts and preservation. Optional JSON
-exports, wrapper ordering/prerequisites and their saved-output postconditions remain separate obligations.
+retain prior evidence. The [packet](./account-conformance-runs/2026-09-14-delivery-native-fixture/README.md) retains full receipts, exact patch, frozen identities,
+source/helper/vector pins, historical signatures, prior contracts and preservation. Optional JSON exports,
+wrapper saved-output, ordering and prerequisite postconditions remain separate obligations.
 
-**Open validation observations.** Core receive previously used 297.025 of its 300-second Node deadline;
+**Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage total included preparation/drain. Narrow headroom remains at the loaded-host
 gate. The ledger phase's first expected-pass historical service-path control reported orphaned-child.
 Its log remains; teardown removed its first receipt. Cause remains unresolved despite later passes.
 Optional pre-cleanup capture retains later receipts; this phase establishes no fix.
 
-**Next bounded phase.** Review `test/account-delivery/native.test.mjs`, then remaining native/Playwright/
-nested owners and wrapper/output/prerequisite contracts. General selections now contain 182 files /
-1,526 cases: all 96 Vitest and 86 Node files. All 181 prior contracts / 1,502 identities are unchanged.
-The 650,727-byte manifest retains 612 obligations / 235 blocked rows: 76 test-file (60 Node, sixteen
-Playwright), 96 command and 63 campaign. These are integration obligations, not product-defect counts.
+**Next bounded phase.** Review `test/account-decisions/native.test.mjs` (six static cases), then remaining
+native/Playwright/nested owners and wrapper/output/prerequisite contracts. General selections contain
+183 files / 1,545 cases: all 96 Vitest and 87 Node files. All 182 prior contracts / 1,526 identities are
+unchanged. The 654,205-byte manifest retains 612 obligations / 234 blocked rows: 75 test-file (59 Node,
+sixteen Playwright), 96 command and 63 campaign. These are integration obligations, not defect counts.
 All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8 exclusions and resolve
 old wrapper calls without reviving support. R-04 style scopes/full checks and P-06 prose precede the
 immutable aggregate and private Account preparation.

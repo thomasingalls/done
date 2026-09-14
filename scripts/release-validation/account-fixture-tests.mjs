@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const deliveryNativeFixtureFiles = ['test/account-delivery/native.test.mjs'];
+
 export const spoolFixtureFiles = ['test/account-spool/native.test.mjs'];
 
 export const receiveEditorFixtureFiles = [
@@ -131,6 +133,7 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-delivery/native.test.mjs': [['81a4655', 'src/crdt/promotionRecord.ts']],
   'test/account-spool/native.test.mjs': [['7210b7d', 'src/crdt/promotionRecord.ts']],
   'test/account-receive/native.test.mjs': [['8378596', 'src/crdt/promotionRecord.ts']],
   'test/account-sync/native.test.mjs': [
@@ -202,6 +205,7 @@ export const accountFixtureFiles = {
     ...syncFixtureFiles,
     ...receiveEditorFixtureFiles,
     ...spoolFixtureFiles,
+    ...deliveryNativeFixtureFiles,
   ],
 };
 
@@ -213,7 +217,8 @@ export function accountFixtureNodeStage(root, file) {
     receiveDriverBrowserFiles.includes(file) ||
     syncBrowserFiles.includes(file) ||
     receiveEditorFixtureFiles.includes(file) ||
-    spoolFixtureFiles.includes(file);
+    spoolFixtureFiles.includes(file) ||
+    deliveryNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -238,6 +243,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (deliveryNativeFixtureFiles.includes(file) ? 480000 : undefined) ??
       (spoolFixtureFiles.includes(file) ? 240000 : undefined) ??
       receiveEditorDeadlines[file] ??
       syncDeadlines[file] ??

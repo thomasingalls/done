@@ -1,0 +1,96 @@
+{
+  "base": "9bf77c7dab8deefd345ea5fc760db407d9290723",
+  "claim": "Account delivery native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T07-17-12.027Z",
+  "summary": {
+    "schema": 1,
+    "selection": "delivery-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-delivery/native.test.mjs",
+        "key": "80b5067dc31ec9960219a5882ae08b2df0a16f4abb75fd4202ede9791e0d211d",
+        "status": "passed",
+        "elapsedMs": 256362,
+        "cases": 19,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T07:17:12.029Z",
+    "input": "5dec5ca11fb6a0d35b4ba05010306018945e2a20bed7f56ee8d684bbdc5b3565",
+    "completedAt": "2026-09-14T07:21:52.584Z"
+  },
+  "elapsedMs": 280555,
+  "rawInputArchiveSha256": "64272a2ac73c793d4d3dd7ff8e9c2d439243fc738bf373ffe07d7540dcdd1fbc",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "9bf77c7dab8deefd345ea5fc760db407d9290723",
+    "sourceDigest": "adb6330517b4ef3ba5d4d256038471ee36fdbcab13cfc8938c06fa3256c4050d",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 19,
+    "browserFiles": 1,
+    "generatedHistories": 8,
+    "seed": 9812027,
+    "priorGeneralFiles": 182,
+    "priorGeneralCases": 1526,
+    "currentGeneralFiles": 183,
+    "currentGeneralCases": 1545,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 87,
+    "accountFiles": 77,
+    "accountCases": 451,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 234,
+    "unresolvedTestFiles": 75,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 654205
+  },
+  "finalGatesSha256": "5da00e898fd557b9ecf3fc3b209b18c096eb46906628fbbd65c6bb585a4b5ee6",
+  "preservationSha256": "8a9cd06355ce3da4977807ae449624b9f0dde6c81a4ac1f4b266001664cd8c0c",
+  "limits": [
+    "One complete existing native file retains 19 cases: 18 directed and one eight-history generated campaign. The original 480-second wrapper deadline and case limits remain unchanged: ordinary directed cases use 30 seconds, contradictory proofs 60, authority and leaf-only controls 40, generated histories 100. Browser startup remains 15 seconds and drain grace five. Product code, test bodies, populations, mutation bodies, census and browser owner are unchanged. Only the active historical-reader Git read gains 5000-ms/2-MiB bounds.",
+    "The old-reader control uses promotionRecord.ts at 81a4655; its reference, full revision, path and exact Git bytes enter the stage receipt. Existing prelaunch/reuse/midrun historical drift controls already cover this path and remain unchanged. Other imported historical branches are dormant under the sanitized environment. Synthetic v7-to-v8 activation and v7-reader refusal do not revive retired v8 product support. This file exercises shared durable delivery operations through the existing private fixture factory.",
+    "The base registers cleanup before setup, borrows the validated owned loopback CDP endpoint and creates synthetic credentials/recovery data, contexts and temporary Account service/SQLite stores. Preparation, registration, admission and handoff run against that synthetic service. Builds are in memory. The genesis page stays separate from editing pages that are crashed/replaced. Generated histories share a context/service with distinct workspaces; test cleanup closes contexts/connections/services and removes temporary files, then the owner drains Chromium. Prepared writing is not dispatched.",
+    "Responses are framed and signed by the independent Node/OpenSSL account-decisions oracle. It reads the disposable service database read-only, independently opens its synthetic acceptance seal using the test operator key, closes the database, and zeroes temporary derived buffers. Foreign-key negatives use the pinned antireplay vector. Subjects are read from current envelope headers by the product decoder. This checks local handling of independently signed evidence, not actual service HTTP decision issuance, arbitrary malicious-member recovery or an independent envelope-encryption oracle.",
+    "Directed cases compare exact stored first-submission bytes across duplicate preparation, compaction and cold reopen, retain source capsules and envelope bytes, and verify acceptance suppresses the pending first submission while allowing the next position. Closed, finalized and conflicting evidence survives restart and blocks outbound preparation while a later Local edit survives. Invalid malformed/foreign-key/wrong-epoch responses and exact duplicates do not change recorded persistent inventory.",
+    "Four before/after submission/response commit cuts abort actual IDB transactions after request success or hold completion callbacks after commit, then kill the renderer. They check recovered entry counts and retry/duplicate behavior; the separate exact-retry case establishes saved byte equality. Two activation cuts withhold the editor until the v8 marker commits and subsequently reject v7 and historical readers. Missing final submission or response rows refuse reopen against the retained witness without further inventory change. This does not cover coordinated rollback of both ledger and witness.",
+    "Five directed contradictory-proof scenarios retain both responses and reach conflict after reopening: refusal/prefix head in either order, differing refusals, and final cutoff/later head in either order. The leaf-only mutation produces closed rather than conflict in both arrival orders; reloading the unmutated implementation recovers conflict from the same stored proofs. Early-return mutation exposes a ready submission absent from pending storage; witness omission resurrects ready/pending delivery after a retained closure row is removed. These are specific behavioral oracles, not generic nonzero-exit checks.",
+    "Paused signing plus close keeps the slot from a competing lock until signing drains, withholds submission bytes and leaves no pending submission after reopen. The authority control restores the earlier authenticated marker during paused signing: current code refuses, while omitting the authority recheck returns and persists a submission. Restoring the fixture marker enables readback. This checks the declared recheck point under fault injection, not atomicity against an arbitrary same-origin writer after the final check.",
+    "Eight generated histories retain seed 9812027, numRuns:8, endOnFailure:true and 100 seconds. Every history creates two envelope positions and crashes once at a generated before/after submission commit boundary, then compares duplicate retry bytes. Three to six generated accepted/refused/finalized/conflicting/junk answers are checked after each step against a separate proof-status oracle for recordedness, state, accepted prefix, response count and pending eligibility. Optional compaction and an unconditional final new-page reopen compare complete delivery status, original envelope bytes and retained source capsules. The generated case does not directly compare final visible text, require all answer kinds/both cut sides, or claim shrinking coverage.",
+    "There are six explicit directed renderer crashes plus one per each of eight generated histories. New-page reopen shares a browser context and CDP Page.crash is renderer death, not browser-process crash, power loss or another device. Optional ACCOUNT_REPORT_DIR JSON exports are disabled; their saved-output postconditions, original wrapper ordering and prerequisites remain separate unresolved obligations.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned earlier evidence rather than new execution. The ledger phase's first expected-pass historical service-path orphan classification remains unresolved despite subsequent passes. Core receive previously used 297.025 seconds of its 300-second Node deadline. Those observations stay at the loaded-host/owner reliability gate; this phase establishes no fix.",
+    "All 182 prior general contracts / 1526 case identities and six retired-v8 exclusions remain unchanged. Full frozen source/dependency/browser archives are retained locally and hashed here; later documentation edits do not establish an immutable aggregate. The preceding spool phase is signed and verified. Personal profiles/services/builds/recovery/factors, earlier vectors/evidence/debts/signing backups, unrelated root done-space and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 252007.975208,
+    "stageElapsedMs": 256362,
+    "selectionElapsedMs": 280555,
+    "nodeDeadlineMs": 480000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "357c6060e0a972abc72a5641e027c134565999a18c7354bd4556a97ee6800bb9",
+    "compressedSha256": "e8c0c38a5b8eb90431d282795db0b8b6a8e4b77ae1aed13994561a01712da381"
+  }
+}

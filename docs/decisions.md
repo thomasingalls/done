@@ -2717,3 +2717,18 @@ each step and final drain, with cold reopen only at selected crash boundaries. P
 instead of describing a final cold replay that the test does not perform. Wrapper saved outputs,
 ordering and prerequisites remain separate from direct-file execution; intermediate-format activation
 fixtures do not revive retired product support.
+
+
+## 2026-09-14 — Preserve durable delivery proof and restart fixture boundaries
+
+Admit the complete delivery native file with its existing eight-minute wrapper deadline, unchanged
+case limits and eight generated histories. Pin and bound the exact historical promotionRecord reader;
+reuse existing owned-CDP and historical drift contracts. Dormant helper branches add no historical
+execution claim. Intermediate-format activation in a fixture does not restore v8 as a supported product.
+
+Keep independently signed response framing, separate derived-state oracles and native storage cut
+observations distinct from actual service HTTP decision issuance. Exact-retry cases compare bytes;
+commit-cut cases additionally establish entry counts and duplicate/retry behavior. Generated final
+reopen compares status, envelope bytes and source capsules, not visible text. Authority-change controls
+establish the checked boundary without promising atomicity against arbitrary out-of-protocol writers.
+Wrapper outputs, ordering, prerequisites and complete immutable qualification remain separate obligations.

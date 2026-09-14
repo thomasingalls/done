@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**235 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**234 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -52,6 +52,7 @@ node scripts/release-validation/execute.mjs --selection receive-driver-fixtures
 node scripts/release-validation/execute.mjs --selection sync-fixtures
 node scripts/release-validation/execute.mjs --selection receive-editor-fixtures
 node scripts/release-validation/execute.mjs --selection spool-fixture
+node scripts/release-validation/execute.mjs --selection delivery-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1206,11 +1207,81 @@ byte-identical. Personal profiles/services/builds/recovery/factors, historical a
 signing backups and root `done ` are untouched. Next: the delivery native fixture, followed by remaining
 native/wrapper integration, R-04, P-06 and the immutable run before private Account preparation.
 
+## Account delivery native fixture — phase 2ad
+
+The preceding spool phase is signed and verified as `9bf77c7`. `delivery-native-fixture` adds one
+complete native file / 19 cases using the existing owned Chromium/CDP adapter. The original eight-minute
+file bound remains. Ordinary directed cases retain 30 seconds, contradictory proofs 60, authority and
+leaf-only controls 40, generated histories 100. Browser startup remains 15 seconds, drain grace five.
+Only the active historical-reader Git read gains five-second/2-MiB limits. Product code, test bodies,
+mutation bodies, generated seed/population, wrapper, owner and census remain unchanged.
+
+All 19 cases pass in 280.555 seconds including fingerprint work; worker/browser groups drain. Node
+execution took 252.008 seconds against its 480-second deadline; stage time was 256.362 seconds.
+The complete selection includes preparation/fingerprint/drain overhead. One run does not qualify
+loaded-host reliability. The receipt pins `81a4655:src/crdt/promotionRecord.ts` for old-reader refusal.
+Existing historical allowlist and prelaunch/reuse/midrun drift controls already cover this path.
+Other imported historical branches remain dormant under the sanitized environment. Synthetic v7-to-v8
+activation/fencing through the private fixture factory does not revive retired v8 product support.
+
+Exact first-submission bytes survive duplicate preparation, compaction and cold reopen. Acceptance
+suppresses the pending submission while retaining its stored bytes, sources and envelopes, and permits
+the next position. Closed, finalized and conflicting evidence halts outbound preparation while a later
+Local edit survives restart. Invalid malformed/foreign-key/wrong-epoch responses and exact duplicates
+leave the recorded persistent inventory unchanged. Four submission/response and two activation commit
+cuts use actual IDB abort/completion hooks and renderer death. Missing final submission/response rows
+refuse reopen against the retained witness without further inventory changes. Coordinated rollback of
+both metadata and ledger is outside that observation.
+
+Five directed contradictory-proof scenarios retain two responses and recover conflict after reopening:
+refusal/prefix acceptance in either order, different refusals, and final cutoff/later head in either
+order. The leaf-only mutation yields closed instead of conflict in both arrival orders; unmutated cold
+replay recovers conflict from the retained proofs. Early-return mutation exposes ready bytes absent from
+pending storage. Omitting the witness resurrects ready/pending state after deleting a closure response.
+Paused signing plus close retains the slot until drain and withholds uncommitted submission bytes.
+Restoring an earlier authenticated marker during signing makes current code refuse; omitting the
+recheck returns and persists a submission. This tests the recheck point, not atomicity against an
+arbitrary same-origin writer after that point.
+
+Eight generated histories retain seed 9812027, numRuns:8, endOnFailure:true and 100 seconds. Every
+history creates two envelope positions, crashes once before/after a submission commit and compares
+exact retry bytes. Three to six accepted/refused/finalized/conflicting/junk answers are checked at each
+step against a separate oracle for recordedness, state, accepted prefix, response count and pending
+eligibility. Optional compaction and an unconditional final new-page reopen compare complete delivery
+status, original envelope bytes and retained source capsules. This generated case does not directly
+compare final visible text or require all answer kinds/both cut sides; no shrinking coverage is claimed.
+
+The independent Node/OpenSSL response oracle opens only the disposable service acceptance seal using
+the synthetic operator key, closes its read-only DB and erases intermediate buffers. Foreign-key
+negatives use the pinned antireplay vector; subjects come from the current envelope decoder. Setup uses
+actual synthetic registration/preparation/admission/handoff, but prepared writing is not dispatched and
+the responses are not HTTP service decisions. Base cleanup precedes setup; builds are in memory and
+histories use distinct workspaces in a shared context/service. Six directed and eight generated renderer
+crashes are not browser-process death, power loss or another device. Optional JSON exports, wrapper
+saved-output/ordering/prerequisite postconditions and malicious-member recovery remain separate.
+
+All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node owner/Vitest-process/native-owner checks (23/5/12) retain pinned earlier evidence rather
+than new execution. The ledger phase's first expected-pass historical service-path orphan classification
+remains unresolved despite later passes. Core receive previously used 297.025 of its 300-second Node
+bound. Those observations remain at the owner/loaded-host gate; this phase establishes no fix.
+
+All 182 prior general contracts / 1,526 identities remain unchanged. General selections now contain
+183 files / 1,545 cases (96 Vitest, 87 Node), including 77 Account files / 451 cases. The 654,205-byte
+manifest retains 612 obligations / 234 unresolved: 75 test-file (59 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-delivery-native-fixture/README.md) retains complete receipts, exact patch, frozen input/browser identities,
+source/helper/vector pins, historical signatures, prior contracts and preservation. This new phase is
+uncommitted and is not an immutable aggregate. All 52 personal/vector pins and L-2 remain byte-identical;
+personal profiles/services/builds/recovery/factors, historical archives, formal debts, signing backups
+and root `done ` are untouched. Next: the Account decisions native fixture, then remaining native/wrapper
+integration, R-04, P-06 and the immutable run before private Account preparation.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**235 blocked rows**: 76 test-file, 96 command, 63 campaign. All Vitest files have adapters; 60 Node
-and sixteen Playwright files remain. Next review the Account delivery native fixture, then other
+**234 blocked rows**: 75 test-file, 96 command, 63 campaign. All Vitest files have adapters; 59 Node
+and sixteen Playwright files remain. Next review the Account decisions native fixture, then other
 owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper calls
 without reviving support. Preserve ordered vector/traceability prerequisites and the open owner /
 loaded-host observations, including the prior core receive deadline headroom.
