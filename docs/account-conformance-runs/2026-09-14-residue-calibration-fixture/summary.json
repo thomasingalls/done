@@ -1,0 +1,103 @@
+{
+  "base": "9e243caa022e5e7b2b1a6f437c1c3ee3e194138f",
+  "claim": "residue-calibration-fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-53-26.717Z",
+  "summary": {
+    "schema": 1,
+    "selection": "residue-calibration-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/calibration.test.mjs",
+        "key": "0c1338edacb22cdb790d3e8a9725ca73e1184e0c0de164c1149902edb616899a",
+        "status": "passed",
+        "elapsedMs": 12353,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:53:26.719Z",
+    "input": "9dd05878a80997ad0a52f0ad1e86728b77961dce2f193a8e4c54a89a3dc8d449",
+    "completedAt": "2026-09-14T12:54:02.799Z"
+  },
+  "elapsedMs": 36080,
+  "rawInputArchiveSha256": "2c7720b85e46d64adb40f09ca6edb9bc52fa1f00fe13b40de33543e0883b1acc",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "9e243caa022e5e7b2b1a6f437c1c3ee3e194138f",
+    "sourceDigest": "fbcd7ed86d7d42935bd3620f4cdd4feb9cd1e09513b2d3bdc62122c9b9c02ab0",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "priorGeneralFiles": 224,
+    "priorGeneralCases": 1763,
+    "currentGeneralFiles": 225,
+    "currentGeneralCases": 1765,
+    "currentNodeFiles": 129,
+    "accountFiles": 119,
+    "accountCases": 671,
+    "selectedFiles": 1,
+    "selectedCases": 2,
+    "browserFiles": 1,
+    "fixtureInstances": 2,
+    "generatedHistories": 0,
+    "executedOmissionControls": 14,
+    "rendererCrashes": 0,
+    "currentVitestFiles": 96,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 192,
+    "unresolvedTestFiles": 33,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 707310
+  },
+  "finalGatesSha256": "45642b77bbc384ab00e547cdf925be24e0587ab7ed2ca1adb5688f6e33abda24",
+  "preservationSha256": "89927e70d787a810d95cd0f5aa85191f9b7d170fc2577885be99762a65be6ca7",
+  "limits": [
+    "Two complete unchanged native cases retain the canonical residue wrapper file bound of 150 seconds and 120/90-second case bounds. Six registration files and generated snapshots change. Existing product, neutral collectors, representations, matcher, browser/service fixture, test bodies and wrappers remain unchanged. Two isolated contexts run under one owned browser; no personal profile or origin is opened.",
+    "The matrix plants all fifteen declared representations across ten required acquisition surfaces, excluding six inapplicable cookie encodings: 144 cells. A clean scan must be complete with no prohibited match; the planted scan must detect every exact needle/surface pair with no issues. Each of the ten whole-surface omissions must both lose its planted match and report a missing collector.",
+    "The second case plants twelve independent markers in structured clones, keys, blobs, exact typed-array views, maps, sets, files, numeric arrays, chunk boundaries, headers, cookies and diagnostics. Four intentional collector faults must lose the corresponding match. Missing collection, tiny budgets and unsupported clone values must produce issues. Non-extractable CryptoKey metadata is observed; its underlying contents are outside this scanner assertion.",
+    "These controls calibrate detection on declared synthetic surfaces and representations. They do not prove absence in every physical browser carrier or establish forensic erasure. Optional wrapper report files are not retained by this general case adapter; owned receipts establish the full two-case result. Formal host-Python binding from the neutral container phase, wrapper/output contracts and immutable aggregate qualification remain separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-residue/calibration.test.mjs",
+        "nodeSummaryMs": 9928.675709,
+        "stageElapsedMs": 12353,
+        "fileDeadlineMs": 150000
+      }
+    ],
+    "selectionElapsedMs": 36080,
+    "note": "File bounds apply to Node execution; stage and selection include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 150000,
+    "caseMs": [
+      120000,
+      90000
+    ],
+    "note": "Existing file and case bounds retained; wrapper qualification remains separate."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "0da3dfa39319786e329b39547815c05e1b45f6b982cc8a89b2d54e80746210b9",
+    "compressedSha256": "6b79735948801c89334addcf25bb110e852a25cb1ab0455fbe85832d5d4ef670"
+  }
+}

@@ -3107,3 +3107,8 @@ Integrate the unchanged 24-job growth case under its existing 930/900-second fil
 ## 2026-09-14 — Bound the independent ZIP producer and retain residue matcher limitations
 
 Integrate fourteen neutral matcher/container cases under 60-second file bounds. Bound host Python ZIP generation to five seconds and one MiB, retaining before/after observed tool pins. This evidence does not substitute for binding external tools into immutable runner identity. Keep fragmented records, limited static-import checks and raw-file versus logical SQL observations explicit; claim no forensic erasure or complete wrapper-output qualification.
+
+
+## 2026-09-14 — Keep residue calibration credit tied to planted surfaces and fault controls
+
+Admit the unchanged two-case native calibration file with its canonical 150-second file and 120/90-second case bounds. Credit all 144 applicable representation/surface cells, ten missing-surface controls and four collector faults. Keep opaque-key contents, physical-carrier completeness, wrapper outputs and immutable qualification outside this result.

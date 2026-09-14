@@ -55,44 +55,42 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Growing-history liveness is signed `de8f421` and verified. Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Residue matcher and container fixtures is signed `9e243ca` and verified. Growing-history liveness is signed `de8f421` and verified. Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account residue matcher and container fixtures.
+**Just completed.** Account residue calibration native fixtures.
 
-The preceding phase is signed and verified as `de8f421`. **Account residue matcher and container fixtures** adds 2 complete
-files / 14 cases. The selection passes in 29.429 seconds including
-fingerprinting. Worker groups drain; this selection launches no browser.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-node-fixtures/README.md).
+The preceding phase is signed and verified as `9e243ca`. **Account residue calibration native fixtures** adds 1 complete
+file / 2 cases. The selection passes in 36.080 seconds including
+fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-calibration-fixture/README.md).
 
-Fourteen complete cases cover the neutral residue matcher and bounded container readers, including 60 generated nested-container histories at seed 1209214. Both Node files receive a 60-second bound, drawn from the existing private-release neutral wrapper. No browser, Account workspace or personal profile is opened. Only the six registration files, generated snapshots and the Python ZIP producer call bounds change; test callbacks and product source remain unchanged.
+Two complete unchanged native cases retain the canonical residue wrapper file bound of 150 seconds and 120/90-second case bounds. Six registration files and generated snapshots change. Existing product, neutral collectors, representations, matcher, browser/service fixture, test bodies and wrappers remain unchanged. Two isolated contexts run under one owned browser; no personal profile or origin is opened.
 
-The matcher exercises all fifteen declared representations, exact byte views and property keys, randomized needles, raw-before-hash and omitted-base64 controls, missing or unreadable surfaces, byte/depth limits, worker timeout, legacy carriers and observer-looking markers. The fragmented-record control deliberately does not detect a split needle: that remains an unqualified limitation. Static import checks cover five explicitly listed modules, not an exhaustive transitive or computed import graph.
+The matrix plants all fifteen declared representations across ten required acquisition surfaces, excluding six inapplicable cookie encodings: 144 cells. A clean scan must be complete with no prohibited match; the planted scan must detect every exact needle/surface pair with no issues. Each of the ten whole-surface omissions must both lose its planted match and report a missing collector.
 
-Container controls cover independent Python stored/deflated ZIP, Node gzip and nested encodings, corrupt or truncated data, CRC errors, unsupported compression and budgets. Generated strings pass through one to four gzip layers around base64 content; corrupted gzip must be refused. File controls distinguish an empty logical SQL result from bytes retained in SQLite/WAL after deletion, and treat symlinks and insufficient budgets as incomplete. This is synthetic scanner calibration, not a forensic-erasure guarantee.
+The second case plants twelve independent markers in structured clones, keys, blobs, exact typed-array views, maps, sets, files, numeric arrays, chunk boundaries, headers, cookies and diagnostics. Four intentional collector faults must lose the corresponding match. Missing collection, tiny budgets and unsupported clone values must produce issues. Non-extractable CryptoKey metadata is observed; its underlying contents are outside this scanner assertion.
 
-The ZIP producer now has a five-second timeout and one-MiB output ceiling per call. Its host Python 3.9.6 launcher, executable and 58 loaded file pins match before and after the selection, with PATH checked against both owned receipts. These observed pins are archived, but are not yet bound by the general runner frozen-input contract. Explicit external-tool binding remains necessary before immutable aggregate qualification. No Python installation or update occurred.
-
-All prior contracts, exclusions, owner evidence and 52 personal/vector pins remain unchanged. Wrapper qualification, full output retention and immutable aggregate validation remain open. The runner currently omits per-test stdout and removes optional default reports with its disposable checkout; these file results are supported by owned case receipts, not by a claim that every wrapper report was retained.
+These controls calibrate detection on declared synthetic surfaces and representations. They do not prove absence in every physical browser carrier or establish forensic erasure. Optional wrapper report files are not retained by this general case adapter; owned receipts establish the full two-case result. Formal host-Python binding from the neutral container phase, wrapper/output contracts and immutable aggregate qualification remain separate.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 222 prior general contracts / 1,749 identities and exclusions remain unchanged.
-General selections now contain 224 files / 1,763 cases (96 Vitest,
-128 Node); Account has 118 files / 669 cases.
-The 706,567-byte manifest retains 612 obligations / 193 unresolved:
-34 test-file (18 Node, sixteen Playwright), 96 command,
+pass. All 224 prior general contracts / 1,763 identities and exclusions remain unchanged.
+General selections now contain 225 files / 1,765 cases (96 Vitest,
+129 Node); Account has 119 files / 671 cases.
+The 707,310-byte manifest retains 612 obligations / 192 unresolved:
+33 test-file (17 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
-Exact receipts/patch, frozen source identities, source-control pins, prior owner evidence,
+Exact receipts/patch, frozen source/browser identities, source-control pins, prior owner evidence,
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account residue calibration native fixtures. There are 5 Account files left; continue in signed
+qualification is separate. Next: Account residue lifecycle and service-file native fixtures. There are 4 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
@@ -109,7 +107,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account residue calibration native fixtures. 5 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account residue lifecycle and service-file native fixtures. 4 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 

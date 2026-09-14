@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const residueCalibrationFixtureFiles = ['test/account-residue/calibration.test.mjs'];
+
 export const residueNodeFixtureFiles = [
   'test/account-residue/extended.test.mjs',
   'test/account-residue/matcher.test.mjs',
@@ -344,12 +346,14 @@ export const accountFixtureFiles = {
     ...livenessWorkloadFixtureFiles,
     ...livenessGrowthFixtureFiles,
     ...residueNodeFixtureFiles,
+    ...residueCalibrationFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser =
+    residueCalibrationFixtureFiles.includes(file) ||
     admissionEvidenceFiles.includes(file) ||
     receiveTransportFixtureFiles.includes(file) ||
     receiveDriverBrowserFiles.includes(file) ||
@@ -410,6 +414,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (residueCalibrationFixtureFiles.includes(file) ? 150000 : undefined) ??
       (residueNodeFixtureFiles.includes(file) ? 60000 : undefined) ??
       (livenessGrowthFixtureFiles.includes(file) ? 930000 : undefined) ??
       (livenessWorkloadFixtureFiles.includes(file) ? 750000 : undefined) ??
