@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**224 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**223 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -63,6 +63,7 @@ node scripts/release-validation/execute.mjs --selection promotion-native-fixture
 node scripts/release-validation/execute.mjs --selection authority-native-fixture
 node scripts/release-validation/execute.mjs --selection recovery-native-fixture
 node scripts/release-validation/execute.mjs --selection core-native-fixture
+node scripts/release-validation/execute.mjs --selection activation-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -2010,12 +2011,71 @@ preparation, authority-root distribution, real activation/admission, Account ind
 personal/second-device adoption is performed. Next: Account activation native fixtures (five cases),
 then remaining integration, R-04, P-06 and the immutable aggregate before private Account preparation.
 
+## Account activation native fixture — phase 2ao
+
+The preceding core phase is signed and verified as `76ac103`. `activation-native-fixture` adds
+one complete native file / five cases. All pass in 49.384 seconds including fingerprint work;
+Node execution took 20.043 within the existing 180-second native wrapper/file allowance and stage time
+22.997. Worker/browser groups drain. Every case retains 30 seconds; startup stays fifteen and drain
+grace five. Product, native tests, fixtures, helpers, wrapper, owner and limits remain unchanged.
+Only registration/selection, expected populations and documentation change. New work is uncommitted,
+not an immutable aggregate.
+
+The fixture chain builds promotion/genesis/admission bundles in memory and uses the existing owned-CDP
+browser with fresh contexts, temporary SQLite stores, synthetic factors and early nested cleanup.
+It runs Local genesis, fixed journal seeding, recovery preparation, promotion/genesis and private
+activation/admission routes. Activation assertions use an exposed Node synthetic-authenticator binding;
+no navigator.credentials or hardware/browser WebAuthn ceremony is used in these five cases.
+
+Two omission controls first capture an authentic challenge at the assertion callback. The signature
+case substitutes zero signature bytes; the target case reuses one target's authentic challenge for a
+separately prepared target. Current code must reject with the specific error and zero prompts. Removing
+the relevant check in an in-memory build must actually reach the callback once and throw prompt-reached;
+the marker stays admission-offered. These controls establish refusal before assertion prompting, not
+forged service acceptance. The target anchor and signature block start are unique in the reviewed
+source; the removed signature span contains only its awaited verification. Anchor review is retained.
+
+Cancellation holds an assertion callback, verifies abort propagation, starts a competing tab for the
+same target and waits for a pending lock observation. Neither operation settles before release. Once
+the original assertion settles, the cancelled owner has made zero finish calls and the competing owner
+returns a promotion-receipt. The first returned value is not separately checked for a specific
+cancellation error. This is synthetic callback settlement, not physical passkey cancellation.
+
+Two cases actually kill renderers using Page.crash: while the assertion callback is held, or after
+finish has returned its HTTP reply but before delivery to the caller. New pages in the same context
+recover promotion-receipts. The first needs one assertion; the committed lost-finish case needs none.
+The test compares against the captured reply when truthy; it does not separately assert capture presence.
+Browser and service processes remain live. No complete profile restart or physical power loss is induced.
+The fixed seeded writing is not independently reconstructed after activation, and the later Account
+index handoff is not performed by this native file.
+
+There are no generated histories or shrinking here; the wrapper's 120-history claim belongs to its
+separate core stage. Shared helpers contain optional historical readers but only baseline bundles are
+called, so no historical-source input is needed. Optional ACCOUNT_REPORT_DIR JSON exports, wrapper
+XML/reproduction/scheduling/ownership and service-only cryptographic/history controls remain separate.
+
+All 92 runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged 23 Node-owner, five Vitest-process and fourteen native-owner controls retain prior evidence.
+Existing ledger orphan classification, core receive headroom, capture map-refresh/byte-length follow-ups
+and historical editing/handoff deadline evidence remain visible. All 193 prior general contracts /
+1,645 identities and retired-v8 exclusions remain unchanged. General selections contain 194 files /
+1,650 cases (96 Vitest, 98 Node); Account has 88 files / 556 cases. The 675,149-byte manifest has 612
+obligations / 223 unresolved: 64 test-file (48 Node, sixteen Playwright), 96 command, 63 campaign.
+All eleven catalogues remain resolved (163 cases / 54 mutations).
+
+The [packet](./account-conformance-runs/2026-09-14-activation-native-fixture/README.md) retains complete receipts, control-anchor review, exact patch, frozen input/
+browser identities, source/helper pins, base signature, prior contracts and preservation. All 52
+personal/vector pins, L-2 and historical evidence/debts/signing backups remain unchanged. No human
+confirmation wording, OS passkey, general membership/revocation, Account index/editor/transport,
+personal/second-device adoption or deployment follows. Next: Account service inbound native fixture
+(one case), then remaining integration, R-04, P-06 and the immutable aggregate before private Account prep.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**224 blocked rows**: 65 test-file, 96 command, 63 campaign. All Vitest files have adapters; 49 Node
-and sixteen Playwright files remain. Next review Account activation native fixtures (five cases), then
-remaining owners/wrapper postconditions. Keep retired-v8 exclusions and ordered vector/traceability
+**223 blocked rows**: 64 test-file, 96 command, 63 campaign. All Vitest files have adapters; 48 Node
+and sixteen Playwright files remain. Next review Account service inbound native fixture (one case),
+then remaining owners/wrapper postconditions. Keep retired-v8 exclusions and ordered vector/traceability
 prerequisites. Existing ledger orphan classification, core receive headroom, capture oracle follow-ups
 and deadline evidence remain open. R-04 style scopes/full checks and P-06 prose precede the immutable
 run, then private Account app/service preparation and human passkey/recovery/adoption work.

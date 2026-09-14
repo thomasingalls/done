@@ -81,19 +81,19 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks. The general adapters
-   now cover 193 files / 1,645 cases: all 96 Vitest files and 97 Node files. The Account core native fixture adds
-   two cases, passing in 28.533 seconds (Node 2.906 within 120), with worker/browser groups drained.
-   Both scenario bodies and 30-/10-second limits remain unchanged. Setup borrows owned CDP and registers
-   cleanup early. Virtual resident-key ceremonies, service-object reopen/repeated completion, pending
-   refusal, seeded-active login, browser cancellation and selected HTTP refusals pass. Restart is within
-   the same Node process; activation is a direct SQLite fixture write. This does not establish real
-   activation/admission or hardware persistence. All 92 runner checks pass; unchanged owner controls retain
-   prior evidence. All 192 prior contracts / 1,643 identities and exclusions remain unchanged. Existing
-   owner/headroom/capture-oracle observations and deadline evidence remain visible. There are 224 unresolved
-   obligations: 65 test-file (49 Node, sixteen Playwright), 96 command, 63 campaign. Next: Account activation
-   native fixtures (five cases), then remaining integration, R-04, P-06 and the immutable run. Wrapper/sibling
-   credit remains separate. Recovery `4a52665` is signed and verified; new work is uncommitted.
-   [Evidence](../../account-conformance-runs/2026-09-14-core-native-fixture/README.md).
+   now cover 194 files / 1,650 cases: all 96 Vitest files and 98 Node files. Account activation native adds five
+   cases, passing in 49.384 seconds (Node 20.043 within 180), with worker/browser groups drained.
+   Product, native tests/helpers, owner, wrapper and 30-second case limits are unchanged. Two omission
+   controls actually reach the assertion callback only after the target/signature check is removed;
+   this does not admit a forged receipt. Cancellation waits for callback settlement with a competing lock;
+   two renderer crashes recover with one or zero assertions as appropriate. Node synthetic assertions are
+   not browser/hardware WebAuthn. No generated histories or historical readers run here. All 92 runner
+   checks pass; unchanged owner controls retain prior evidence. All 193 prior contracts / 1,645 identities
+   and exclusions remain unchanged. Existing owner/headroom/capture-oracle observations and deadline
+   evidence remain visible. There are 223 unresolved obligations: 64 test-file (48 Node, sixteen Playwright),
+   96 command, 63 campaign. Next: Account service inbound native fixture (one case), then remaining
+   integration, R-04, P-06 and the immutable run. Wrapper/service-history/index-handoff credit stays separate.
+   Core `76ac103` is signed and verified; new work is uncommitted. [Evidence](../../account-conformance-runs/2026-09-14-activation-native-fixture/README.md).
    R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
    load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
@@ -163,7 +163,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 193 Vitest/Node files integrated, including two Account core native cases with virtual WebAuthn, service-object restart and selected HTTP refusals; capture oracle limits, initial owner orphan classification and prior receive deadline headroom remain open; 224 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 194 Vitest/Node files integrated, including five Account activation native cases with effective prompt controls, cancellation and two renderer crashes; capture oracle limits, initial owner orphan classification and prior receive deadline headroom remain open; 223 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |

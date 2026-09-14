@@ -2896,3 +2896,17 @@ reopen, pending-account refusal, seeded-active authentication, browser cancellat
 HTTP refusals. Record the direct SQLite activation setup and distinguish service-object reopen from
 process death. These cases do not establish real activation, hardware passkey persistence or Account
 content authorization. Keep broader sibling and wrapper obligations separate.
+
+
+## 2026-09-14 — Require activation omission controls to reach the assertion callback
+
+Integrate the unchanged five-case activation native file under its existing owned-CDP fixture chain
+and three-minute wrapper bound, preserving 30 seconds per case. No historical reader or runtime
+registration-data adapter is needed; optional helper branches do not grant historical execution credit.
+
+The two omission controls must show current-code refusal with zero callbacks, then reach the callback
+once after removal of the relevant target/signature check. Do not reinterpret that as forged admission
+acceptance. Preserve real renderer death at held assertion and lost committed finish, and cancellation
+with a pending competing lock and zero finish calls from the cancelled owner. Node-generated activation
+assertions do not establish browser/hardware ceremonies. Keep generated service histories, wrapper
+outputs/reproduction and subsequent index handoff separate.
