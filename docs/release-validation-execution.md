@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**190 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**189 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -86,6 +86,7 @@ node scripts/release-validation/execute.mjs --selection liveness-growth-fixture
 node scripts/release-validation/execute.mjs --selection residue-node-fixtures
 node scripts/release-validation/execute.mjs --selection residue-calibration-fixture
 node scripts/release-validation/execute.mjs --selection residue-lifecycle-fixtures
+node scripts/release-validation/execute.mjs --selection residue-generated-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -3099,10 +3100,43 @@ headroom, capture oracle follow-ups and prior deadline evidence remain open. Wra
 qualification is separate. Next: Account residue generated native histories. There are 2 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
+## Account residue generated native histories — phase 2bl
+
+The preceding phase is signed and verified as `15884e1`. **Account residue generated native histories** adds 1 complete
+file / 1 cases. The selection passes in 254.795 seconds including
+fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-generated-fixture/README.md).
+
+One complete unchanged native case retains its existing 330-second file bound, 300-second case bound and fast-check 270-second interruption limit with interruption treated as failure. Seed 1121040 selects 24 operation schedules; each attempt independently generates synthetic markers, factors and cryptographic randomness after compilation. Six registration files and generated snapshots change; product code, property body, browser/service fixture, collectors, matcher and wrappers remain unchanged.
+
+Each history varies one to three Local edits, front insertion, flush and page reopen, optional compaction and lost final reply, followed by one or two Account edits. Checkpoints require a complete logical scan with no prohibited plaintext match, subject to the explicit recovery retry-key exposure policy. Reopening must preserve exactly the independently assembled text. The terminal assertions require all 24 runs, no property failure and no interruption. The generated case does not introduce new omission mutants, process crashes or physical power-loss simulation.
+
+Twenty-four isolated fixture instances share one stage-owned Chromium process. Cold means replacement of the page within its isolated context; the factor material is held by the synthetic controller. This is not a personal browser, a human passkey ceremony, a real Account admission receipt, second-device adoption or forensic-erasure evidence.
+
+The optional final property report and the 24 history records are copied read-only while the stage runs, with matching repeated reads and hashes. Their source checkout and capture time are checked against the owned receipt and selection interval. They supplement the exact owned case result; they do not qualify the original wrapper's full output contract. The general reporter still suppresses per-test stdout, and raw checkpoint reports otherwise disappear with the disposable checkout.
+
+Prior general contracts, exclusions, the newly repaired browser owner, 52 personal/vector pins and L-2 remain unchanged. Earlier failed receipts retain their original identities. Host-Python binding, complete output contracts, owner/headroom and capture-oracle observations, wrapper campaigns and immutable aggregate qualification remain separate.
+
+All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
+pass. All 227 prior general contracts / 1,769 identities and exclusions remain unchanged.
+General selections now contain 228 files / 1,770 cases (96 Vitest,
+132 Node); Account has 122 files / 676 cases.
+The 709,377-byte manifest retains 612 obligations / 189 unresolved:
+30 test-file (14 Node, sixteen Playwright), 96 command,
+63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+These are integration obligations, not defect counts.
+
+Exact receipts/patch, frozen source/browser identities, source-control pins, prior owner evidence,
+base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
+evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
+headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
+qualification is separate. Next: Account packaged UI and persistent-profile residue fixtures. There are 1 Account files left; continue in signed
+bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
+
 ## Next bounded integration
 
-Continue the remaining 2 Account files in bounded signed groups, starting with Account residue generated native histories.
-There are **190 blocked rows**: 31 test-file (15 Node, sixteen Playwright),
+Continue the remaining 1 Account files in bounded signed groups, starting with Account packaged UI and persistent-profile residue fixtures.
+There are **189 blocked rows**: 30 test-file (14 Node, sixteen Playwright),
 96 command and 63 campaign. All eleven catalogues remain
 resolved. Preserve retired-v8 exclusions and prior owner/headroom/oracle observations. Remaining
 integration, R-04 style checks, P-06 prose and the immutable aggregate precede private Account

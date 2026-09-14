@@ -3117,3 +3117,8 @@ Admit the unchanged two-case native calibration file with its canonical 150-seco
 ## 2026-09-14 — Retain directed lifecycle and acquired service-file residue evidence without widening its claim
 
 Integrate the unchanged three lifecycle cases and one service-file case under their existing 240-second file bounds. Credit exact journal/flush/cold content assertions, explicit recovery retry-key exposure rules, actual storage failure and plaintext side-record controls, and stable acquired DB/WAL file scans. Keep directed synthetic evidence distinct from process crashes, human Account qualification and forensic erasure. The initial empty-checkpoint refusal traced to a Chromium extension worker. Align the direct launcher with Playwright extension-disabling defaults, retaining worker refusal and a positive app-worker observation control. Rerun the 24 Node-owner and 14 native-owner controls; preserve the failed receipt and probe. Bound browser signal-denial retries within existing grace intervals, with transient/persistent denial controls. Preserve the earlier failed crash-cleanup receipt and require actual group disappearance for success.
+
+
+## 2026-09-14 — Retain the generated residue population and its scoped recovery assertions
+
+Admit the unchanged 24-history native property at seed 1121040, preserving 330/300/270-second file/case/property bounds and treating interruption as failure. Credit exact cold text and declared logical-carrier scans. Preserve the final operation histories as auxiliary observations, distinct from full wrapper-output or physical-profile qualification.

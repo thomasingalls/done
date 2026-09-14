@@ -43,15 +43,15 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-227 files / 1,769 cases: all 96 Vitest files and 131 Node files.
-Account residue lifecycle and service-file native fixtures adds 4 cases, passing in 52.677 seconds with worker/browser groups
-drained. Four unchanged cases cover Local/recovery/Account lifecycle, storage fallback, a plaintext side-record control and stable acquired service DB/WAL files.
-All 93 runner checks and scoped gates pass; 225 prior contracts / 1,765 identities
-and exclusions remain unchanged. There are 190 unresolved obligations: 31 test-file (15
+228 files / 1,770 cases: all 96 Vitest files and 132 Node files.
+Account residue generated native histories adds 1 cases, passing in 254.795 seconds with worker/browser groups
+drained. One unchanged native property passes 24 schedules at seed 1121040 with exact text and logical residue checks; auxiliary final/history observations are retained.
+All 93 runner checks and scoped gates pass; 227 prior contracts / 1,769 identities
+and exclusions remain unchanged. There are 189 unresolved obligations: 30 test-file (14
 Node, sixteen Playwright), 96 command, 63 campaign. Continue
-2 remaining Account files in signed bounded groups, starting with Account residue generated native histories. Existing owner/
+1 remaining Account files in signed bounded groups, starting with Account packaged UI and persistent-profile residue fixtures. Existing owner/
 headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-Account preparation. The preceding phase `c5e2112` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-residue-lifecycle-fixtures/README.md).
+Account preparation. The preceding phase `15884e1` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-residue-generated-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

@@ -66,6 +66,7 @@ import {
   livenessWorkloadFixtureFiles,
   livenessGrowthFixtureFiles,
   residueNodeFixtureFiles,
+  residueGeneratedFixtureFiles,
   residueLifecycleFixtureFiles,
   residueCalibrationFixtureFiles,
 } from './account-fixture-tests.mjs';
@@ -483,6 +484,11 @@ export function compileManifest(root, inventory) {
       'residue-lifecycle-fixtures': rows
         .filter(
           (r) => account.node.includes(r.path) && residueLifecycleFixtureFiles.includes(r.path),
+        )
+        .map((r) => r.id),
+      'residue-generated-fixture': rows
+        .filter(
+          (r) => account.node.includes(r.path) && residueGeneratedFixtureFiles.includes(r.path),
         )
         .map((r) => r.id),
       'residue-node-fixtures': rows

@@ -1,0 +1,114 @@
+{
+  "base": "15884e1d32f8a007f9d489e806b567ca184f7806",
+  "claim": "residue-generated-fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T13-16-08.290Z",
+  "summary": {
+    "schema": 1,
+    "selection": "residue-generated-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/generated.test.mjs",
+        "key": "d547a54552d345ef5d92c69e9f1a05d78ea41895f724d61ad5adbdfa8198029c",
+        "status": "passed",
+        "elapsedMs": 227622,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T13:16:08.293Z",
+    "input": "8e7bf4dd5a5a33259e59fa2c42f5e0edc8ac9bdb6885f40b03b52bf78aab57c2",
+    "completedAt": "2026-09-14T13:20:23.088Z"
+  },
+  "elapsedMs": 254795,
+  "rawInputArchiveSha256": "3f44b3c4f0dae9ba06c96984c04706cf7e8697b5fa775569e821b43d3ab1f80a",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "15884e1d32f8a007f9d489e806b567ca184f7806",
+    "sourceDigest": "00877d9317a6ef045659440ef1166fa31a3f5064fdf472a4ae5ee7a8bc92be27",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "priorGeneralFiles": 227,
+    "priorGeneralCases": 1769,
+    "currentGeneralFiles": 228,
+    "currentGeneralCases": 1770,
+    "currentNodeFiles": 132,
+    "accountFiles": 122,
+    "accountCases": 676,
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "browserFiles": 1,
+    "fixtureInstances": 24,
+    "generatedHistories": 24,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "currentVitestFiles": 96,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 24,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 189,
+    "unresolvedTestFiles": 30,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 709377
+  },
+  "finalGatesSha256": "0dca08407405979760c692cd22d0c049a318e4aef033b11fe42db459f455a189",
+  "preservationSha256": "81eca433b08fe0e473fd4d384811a258519f4c3d3fa89acedfce8be804ce6e42",
+  "limits": [
+    "One complete unchanged native case retains its existing 330-second file bound, 300-second case bound and fast-check 270-second interruption limit with interruption treated as failure. Seed 1121040 selects 24 operation schedules; each attempt independently generates synthetic markers, factors and cryptographic randomness after compilation. Six registration files and generated snapshots change; product code, property body, browser/service fixture, collectors, matcher and wrappers remain unchanged.",
+    "Each history varies one to three Local edits, front insertion, flush and page reopen, optional compaction and lost final reply, followed by one or two Account edits. Checkpoints require a complete logical scan with no prohibited plaintext match, subject to the explicit recovery retry-key exposure policy. Reopening must preserve exactly the independently assembled text. The terminal assertions require all 24 runs, no property failure and no interruption. The generated case does not introduce new omission mutants, process crashes or physical power-loss simulation.",
+    "Twenty-four isolated fixture instances share one stage-owned Chromium process. Cold means replacement of the page within its isolated context; the factor material is held by the synthetic controller. This is not a personal browser, a human passkey ceremony, a real Account admission receipt, second-device adoption or forensic-erasure evidence.",
+    "The optional final property report and the 24 history records are copied read-only while the stage runs, with matching repeated reads and hashes. Their source checkout and capture time are checked against the owned receipt and selection interval. They supplement the exact owned case result; they do not qualify the original wrapper's full output contract. The general reporter still suppresses per-test stdout, and raw checkpoint reports otherwise disappear with the disposable checkout.",
+    "Prior general contracts, exclusions, the newly repaired browser owner, 52 personal/vector pins and L-2 remain unchanged. Earlier failed receipts retain their original identities. Host-Python binding, complete output contracts, owner/headroom and capture-oracle observations, wrapper campaigns and immutable aggregate qualification remain separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-residue/generated.test.mjs",
+        "nodeSummaryMs": 223216.966917,
+        "stageElapsedMs": 227622,
+        "fileDeadlineMs": 330000
+      }
+    ],
+    "selectionElapsedMs": 254795,
+    "note": "File bounds apply to Node execution; stage and selection include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 330000,
+    "caseMs": [
+      300000
+    ],
+    "note": "Existing file and case bounds retained; wrapper qualification remains separate."
+  },
+  "auxiliaryHistories": {
+    "retained": true,
+    "sourceMatchedOwnedCheckout": true,
+    "capturedDuringSelection": true,
+    "seed": 1121040,
+    "runs": 24,
+    "shrinks": 0,
+    "attempts": 24,
+    "allHistoriesPassed": true,
+    "note": "Stable-byte read-only observation, separate from the owned result and complete wrapper-output qualification."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "20f0ae26bc8664959a6baeb0870a2be0f0cf14c342712200a9562dc2d30884f0",
+    "compressedSha256": "7221f8e702ff511652cb31048363851d07fe064f3c3c473b2d0f129e071961cd"
+  }
+}

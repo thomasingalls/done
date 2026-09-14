@@ -14,6 +14,8 @@ export const residueLifecycleFixtureFiles = [
   'test/account-residue/service-files.test.mjs',
 ];
 
+export const residueGeneratedFixtureFiles = ['test/account-residue/generated.test.mjs'];
+
 export const residueNodeFixtureFiles = [
   'test/account-residue/extended.test.mjs',
   'test/account-residue/matcher.test.mjs',
@@ -353,12 +355,14 @@ export const accountFixtureFiles = {
     ...residueNodeFixtureFiles,
     ...residueCalibrationFixtureFiles,
     ...residueLifecycleFixtureFiles,
+    ...residueGeneratedFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser =
+    residueGeneratedFixtureFiles.includes(file) ||
     residueLifecycleFixtureFiles.includes(file) ||
     residueCalibrationFixtureFiles.includes(file) ||
     admissionEvidenceFiles.includes(file) ||
@@ -421,6 +425,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (residueGeneratedFixtureFiles.includes(file) ? 330000 : undefined) ??
       (residueLifecycleFixtureFiles.includes(file) ? 240000 : undefined) ??
       (residueCalibrationFixtureFiles.includes(file) ? 150000 : undefined) ??
       (residueNodeFixtureFiles.includes(file) ? 60000 : undefined) ??
