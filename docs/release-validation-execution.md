@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**218 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**217 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -69,6 +69,7 @@ node scripts/release-validation/execute.mjs --selection delivery-oracle-native-f
 node scripts/release-validation/execute.mjs --selection parser-conformance-native-fixture
 node scripts/release-validation/execute.mjs --selection promotion-contract-native-fixture
 node scripts/release-validation/execute.mjs --selection checkpoint-contract-native-fixture
+node scripts/release-validation/execute.mjs --selection counter-contract-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -2355,11 +2356,77 @@ Existing ledger orphan classification, receive/delivery-oracle headroom, capture
 and deadline evidence remain open. Next: Account counter-contract native fixture, five cases; then
 remaining integration, R-04, P-06 and the immutable aggregate before private Account preparation.
 
+## Account counter-contract native fixture — phase 2au
+
+The preceding checkpoint-contract phase is signed and verified as `3ea2c19`.
+`counter-contract-native-fixture` adds one complete native file / five cases. It passes in 47.159
+seconds including fingerprint work; Node execution took 12.285 within the existing 300-second native
+wrapper/file allowance and stage time 16.829. Worker/browser groups drain; the recorded disposable
+browser PID is absent afterward. Cases retain forty seconds, startup fifteen and drain grace five.
+Product, runtime/crypto helpers, interpreter, browser owner and wrapper remain unchanged. The fixture's
+setup/cleanup changes; all five test bodies and identities remain byte-identical. New work is uncommitted
+and does not qualify an immutable aggregate.
+
+The fixture previously launched Chromium directly and registered cleanup only after successful launch.
+It now borrows owned CDP through the existing openFixtureBrowser helper, creates an explicit isolated
+context for each of seven instances and registers cleanup before listening or connecting. Nested finally
+blocks attempt context, browser connection and loopback server closure despite earlier failures; listen
+errors reject setup. Standalone launch remains available outside the runner through the shared helper.
+A saved source-extraction probe reproduces the old setup leak with mocked resources; nine current
+setup/teardown/success scenarios pass. Those mocks verify cleanup ordering, not whether a failed native
+close releases resources. Eight existing real browser-owner controls also pass, including isolated
+Account reconnect, deadlines, cancellation and worker/browser death. Their evidence is retained.
+
+The native fixture enrolls synthetic custody and initializes a content store with a no-op creation
+check. Its server serves fixture HTML; it does not provision an Account service or admission receipt.
+Node/OpenSSL independently derives the metadata key and verifies a browser HMAC probe, counter v1/v2
+MACs and initialization witness MACs. The non-ASCII slot exercises UTF-8 length-prefix encoding.
+Browser key traces check exact info, empty salt, non-extractability and sign/verify usage. One spool
+event survives navigation/reconfiguration, and an ordinary content reader refuses the v2 counter.
+Root ID is authenticated in the payload rather than included in the selected metadata KDF info.
+
+Eight correctly MACed allocation/witness lies refuse: counter intent, active generation, range,
+spool hash/count, reservation ceiling and witness intent/state. Restoring originals permits one-row
+readback after navigation. These generic refusal checks do not isolate each sub-check or prove that
+all storage is unchanged. The transaction-abort case burns one reservation while keeping the spool
+counter witness equal and committing no event. Retry consumes another reservation and commits one
+event. Metadata readwrite transactions request and report strict durability; physical power loss is
+not tested. The checked witness here is the spool witness in the counter, not every custody field.
+
+Two uniquely anchored source controls demonstrate ordering. Removing the MAC portion of equalCounter
+lets an event overwrite a counter whose stored MAC changes after authentication; baseline rejects with
+an authentication error and the race hook must run. Skipping durable reservation lets AES execute once
+without a persisted allocation; the later rewind guard still refuses. Baseline also invokes AES once,
+with allocation already present. This control distinguishes allocation-before-encryption from eventual
+refusal. The races are deterministic in-page interleavings, not multi-tab scheduling histories.
+
+Navigation replaces the page realm while keeping its context, browser and server alive. Synthetic
+factor/generation values retained by the Node fixture are reconfigured explicitly. No native generated
+histories, renderer crashes, profile restores or historical readers run. ACCOUNT_REPORT_DIR is unset;
+optional native wrapper reports are not emitted. Full format/vector controls, spool/receive regressions,
+report postconditions and immutable aggregate qualification remain separate obligations.
+
+All 93 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+The prior 23 Node-owner, fourteen native-owner and five Vitest-process controls retain historical
+evidence, supplemented by the current eight browser-owner controls. All 199 prior general contracts /
+1,665 identities and exclusions remain unchanged. General selections now contain 200 files / 1,670
+cases (96 Vitest, 104 Node); Account has 94 files / 576 cases. The 681,463-byte manifest retains
+612 obligations / 217 unresolved: 58 test-file (42 Node, sixteen Playwright), 96 command and 63 campaign.
+All eleven catalogues remain resolved (163 cases / 54 mutations). These are integration obligations,
+not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-counter-contract-native-fixture/README.md) preserves receipts, exact patch, frozen source/browser identities, control/helper
+pins, cleanup reproduction, owner evidence, base signature and preservation. All 52 personal/vector
+pins, L-2 and historical evidence/debts/signing backups remain unchanged. Existing ledger orphan
+classification, receive/delivery-oracle headroom, capture oracle follow-ups and deadline evidence stay
+open. Next: Account store-contract native fixture, three cases; then remaining integration, R-04,
+P-06 and the immutable aggregate before private Account preparation.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**218 blocked rows**: 59 test-file, 96 command, 63 campaign. All Vitest files have adapters; 43 Node
-and sixteen Playwright files remain. Next review Account counter-contract native fixture (five cases),
+**217 blocked rows**: 58 test-file, 96 command, 63 campaign. All Vitest files have adapters; 42 Node
+and sixteen Playwright files remain. Next review Account store-contract native fixture (three cases),
 then remaining owners and wrapper postconditions. Keep retired-v8 exclusions and ordered vector/
 traceability prerequisites. Existing ledger orphan classification, core receive/delivery-oracle headroom,
 capture oracle follow-ups and deadline evidence remain open. R-04 style scopes/full checks and P-06 prose

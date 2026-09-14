@@ -1,0 +1,105 @@
+{
+  "base": "3ea2c19c4e3c4dbcbc36531c9b13b5b07825950f",
+  "claim": "Account counter-contract native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T10-23-11.398Z",
+  "summary": {
+    "schema": 1,
+    "selection": "counter-contract-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-counter-contract/native.test.mjs",
+        "key": "961f2ec7c5a52205cc49b98e4e5b96e7bb373aae2f57dd8cec998949c9aec8e9",
+        "status": "passed",
+        "elapsedMs": 16829,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T10:23:11.400Z",
+    "input": "3af82cffa7e2f669bd17b9433668ad9db98f5cda4f45e5b47d244e6687bb790d",
+    "completedAt": "2026-09-14T10:23:58.559Z"
+  },
+  "elapsedMs": 47159,
+  "rawInputArchiveSha256": "000d01a77a71698ef66da2fa57824d3cb2214e36a8255cf7e9b3dd1020844e78",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "3ea2c19c4e3c4dbcbc36531c9b13b5b07825950f",
+    "sourceDigest": "142d51d1a5b1c9d8558d69250bfe88021af806f440138048fe11f3c5f8018616",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 5,
+    "browserFiles": 1,
+    "fixtureInstances": 7,
+    "generatedHistories": 0,
+    "executedOmissionControls": 2,
+    "semanticInputs": 8,
+    "abortBoundaryInputs": 1,
+    "cleanupModelControls": 9,
+    "currentNativeOwnerTests": 8,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 199,
+    "priorGeneralCases": 1665,
+    "currentGeneralFiles": 200,
+    "currentGeneralCases": 1670,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 104,
+    "accountFiles": 94,
+    "accountCases": 576,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 217,
+    "unresolvedTestFiles": 58,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 681463
+  },
+  "finalGatesSha256": "15023d67932bfb56e33ce9e803183fac67e7f28b46202a673ca05fcce34ea00e",
+  "preservationSha256": "f219b3e95613fd464151312f4966a5fa02df06f2d171b14d6646460991e6f769",
+  "limits": [
+    "Exactly five complete native cases run under counter-contract-native-fixture, with seven fixture instances across those cases. The existing 300-second wrapper/file allowance, 40-second case limits, 15-second CDP startup and 5-second drain grace remain unchanged. All five test bodies and case identities are byte-identical to the signed base; only fixture setup/cleanup and runner registration change.",
+    "The fixture now uses the existing openFixtureBrowser helper, which borrows the runner-owned CDP endpoint and retains standalone launch behavior outside an owned stage. Each instance creates an explicit isolated context and a temporary loopback HTML server. Cleanup is registered before listening/connecting and uses nested finally blocks to attempt context, browser connection and server closure even after earlier failures. Listen errors reject setup. This fixture does not create an Account service, real admission receipt or production Account lifecycle; it directly enrolls synthetic custody with a no-op creation check and initializes its content store.",
+    "A saved source-extraction probe reproduces the old browser-setup failure leaving no cleanup registered and a mocked listener open. Nine current scenarios cover six setup failure points, context-close failure, browser-close failure and success; cleanup ordering and modeled listener closure pass. These are mocked lifecycle controls, not evidence that a real failed close frees its resource. Eight existing native browser-owner controls are rerun and pass, covering completion, timeouts, cancellation, worker/browser death, module identity and isolated Account CDP reconnect. The selected real native run separately proves normal fixture completion and drained worker/browser groups.",
+    "The KDF case independently derives metadata HMAC key material in Node/OpenSSL from the synthetic generation key. A non-ASCII slot exercises UTF-8 length-prefix encoding. Browser metadata deriveKey calls are observed for exact info, empty salt, non-extractability and sign/verify usages; a signed probe matches the independent key. Counter v1 and activated v2 MACs and initialization witness MACs match independent JSON/HMAC encoders. After one spool event and page navigation, a configured Account custody reader sees one row and an ordinary content reader refuses v2. Root ID is bound in the authenticated payload; it is not included in the selected metadata KDF info.",
+    "The semantic case correctly MACs eight lies: counter intent, active generation, allocation range, spool hash, spool event count, reservation ceiling, witness intent and witness state. Each read must reject, then restored originals allow one-row readback after navigation. Most refusals are generic and do not independently identify the rejecting sub-check or assert whole-storage immutability. Fixed synthetic mutation values are not generated histories.",
+    "The atomicity case aborts the actual final transaction on a heads-store add success event. The next sequence advances by one for the burned reservation, spool counter witness stays equal, and no event row is present. A retry consumes a fresh reservation and commits one event. Observed metadata readwrite transactions must request and report strict durability. This is browser-reported transaction durability, not a physical power-loss test; the title witness refers to the spool witness checked in the counter, not an independent equality assertion over every custody witness field.",
+    "The equalMac control removes the MAC part of equalCounter with exactly one checked source transformation. A sign hook flips the stored counter MAC after authentication. The baseline refuses with an authentication error; the mutated comparison overwrites the changed counter and commits one event, and the race hook must have run. It is a deterministic in-page storage interleaving, not a multi-tab scheduling campaign; the baseline does not separately count AES calls in this case.",
+    "The reserve control skips compareAndWrite at the durable reservation boundary with exactly one checked transformation. Encryption instrumentation reads the persisted counter immediately before a store-domain AES invocation. Baseline has one call with a nonzero reserved allocation; the mutant has one call without it and subsequently refuses with the rewind error. The test therefore distinguishes allocation-before-encryption from a later refusal. No renderer/browser/service crashes, generated histories, nonce distribution, profile restore or power-loss campaign executes.",
+    "Navigation reloads the existing page realm but keeps the context/browser and loopback server alive; synthetic factor and generation bytes retained by the Node fixture are explicitly reconfigured afterward. This is test-only custody access, not key-erasure or factor-unlock UX evidence. ACCOUNT_REPORT_DIR is unset, so optional native wrapper report JSON is not emitted; exact reporter receipts and fixed pinned source are retained. Broader counter format/vector omissions, spool/receive regressions, wrapper output postconditions and immutable aggregate qualification remain separate.",
+    "All 93 pure runner checks, TypeScript and scoped style/planning/authority/signature checks pass. All 199 prior general contracts / 1665 identities and exclusions remain unchanged. Product, runtime/crypto helpers, browser owner, registration interpreter and wrapper are unchanged. The selected native setup is adapted; its five test bodies remain identical. Prior 23 Node-owner, fourteen native-owner and five Vitest-process controls retain historical evidence, supplemented by the current eight browser-owner controls. All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups remain unchanged."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 12285.104625,
+    "stageElapsedMs": 16829,
+    "selectionElapsedMs": 47159,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "caseMs": 40000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "4e14899d740be582fd5a687a7ccdb1740738e9bfa67bebade5d2d1720f987e8e",
+    "compressedSha256": "359a7afb9eb9a613902a48ab5592afa87468e4d81bf1736b89ae24ec692a47d6"
+  }
+}

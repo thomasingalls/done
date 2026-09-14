@@ -2986,3 +2986,18 @@ browser and service alive. The generated histories compare seeded text independe
 classification and journal removal/restoration; full final editor/card equality is a separate claim.
 Checkpoint observations and serialized storage equality do not establish whole-profile residue freedom.
 Keep wrapper JSON/report postconditions and complete vector/regression chains as separate obligations.
+
+
+## 2026-09-14 — Own counter fixtures before setup and distinguish reservation order from eventual refusal
+
+Integrate the five counter-contract native cases under the existing five-minute wrapper bound and
+forty-second case limits. Keep their bodies unchanged. Adapt fixture setup to the existing owned CDP
+helper with an isolated context per instance and cleanup registered before resource acquisition.
+Attempt later cleanup steps even if an earlier close fails, and reject loopback listen errors.
+Retain the mocked setup-leak reproduction, nine cleanup scenarios and eight real browser-owner controls.
+
+Credit independent metadata MAC bytes, semantic refusal of correctly authenticated lies, burned
+reservations after final transaction abort and the browser's reported strict durability. Keep physical
+power loss separate. The reserve omission is detected at the AES invocation: a late rewind refusal
+cannot compensate for encryption before durable allocation. The fixture configures synthetic custody
+directly; it does not establish Account admission, factor UX, profile restore or whole-wrapper coverage.
