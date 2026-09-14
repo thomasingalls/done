@@ -29,7 +29,7 @@ export async function bundle(control) {
                         ? 'account-protocol/admission.ts'
                         : 'src/crdt/promotionAdmission.ts'),
                   ],
-                  { encoding: 'utf8' },
+                  { encoding: 'utf8', timeout: 5000, maxBuffer: 2 * 1024 * 1024 },
                 );
               }
               if (control === 'small-bound' && id.endsWith('/account-protocol/admission.ts')) {

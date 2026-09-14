@@ -43,17 +43,17 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-203 files / 1,682 cases: all 96 Vitest files and 107 Node files.
-Account Local custody native fixture adds 5 cases, passing in 31.729 seconds with worker/browser groups
-drained. Five source controls distinguish correspondence, metadata and reservation guards; malformed-state
-coercion still cannot open the owner. Only fixture ownership/registration changes; assertions are
-preserved and general nested tests remain refused.
-All 93 runner checks and scoped gates pass; 202 prior contracts / 1,677 identities
-and exclusions remain unchanged. There are 214 unresolved obligations: 55 test-file (39
+204 files / 1,688 cases: all 96 Vitest files and 108 Node files.
+Account admission bounds native fixture adds 6 cases, passing in 55.543 seconds with worker/browser groups
+drained. Six unchanged native cases cover large coverage, independent replay, signed semantic lies and old/
+current refusal. Two historical inputs are pinned and Git reads bounded; 23 owner checks pass with
+new-path drift evidence. Product and native assertions are unchanged.
+All 93 runner checks and scoped gates pass; 203 prior contracts / 1,682 identities
+and exclusions remain unchanged. There are 213 unresolved obligations: 54 test-file (38
 Node, sixteen Playwright), 96 command, 63 campaign. Continue
-26 remaining Account files in signed bounded groups, starting with Account admission bounds. Existing owner/
+25 remaining Account files in signed bounded groups, starting with Account reservation durability. Existing owner/
 headroom/capture-oracle observations remain open. R-04, P-06 and the immutable run precede private
-Account preparation. The preceding phase `8fed0da` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-local-custody-native-fixture/README.md).
+Account preparation. The preceding phase `474aeaa` is signed and verified. [Evidence](./account-conformance-runs/2026-09-14-admission-bounds-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

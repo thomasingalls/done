@@ -245,6 +245,7 @@ test('historical Git bytes are checked before launch and reuse and enter the rec
   for (const path of [
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
+    'src/crdt/promotionAdmission.ts',
     'src/crdt/accountEnvelopePreparation.ts',
     'src/crdt/accountDelivery.ts',
     'account-protocol/admission.ts',
@@ -280,6 +281,7 @@ test('a passing historical fixture still fails and drains when Git bytes change 
   for (const path of [
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
+    'src/crdt/promotionAdmission.ts',
     'src/crdt/accountEnvelopePreparation.ts',
     'src/crdt/accountDelivery.ts',
     'account-protocol/admission.ts',
@@ -310,6 +312,7 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
   };
   validateHistoricalInputs([pin]);
   validateHistoricalInputs([{ ...pin, path: 'src/crdt/spoolRecord.ts' }]);
+  validateHistoricalInputs([{ ...pin, path: 'src/crdt/promotionAdmission.ts' }]);
   validateHistoricalInputs([
     pin,
     ...[
@@ -329,6 +332,7 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
     'account-protocol/../admission.ts',
     'src/crdt/other.ts',
     'src/crdt/../spoolRecord.ts',
+    'src/crdt/../promotionAdmission.ts',
     'src/other/spoolRecord.ts',
     '/src/crdt/spoolRecord.ts',
   ])

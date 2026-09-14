@@ -3035,3 +3035,14 @@ assertion; it is removed rather than counted as another substantive case. Retain
 modeled report-equivalence checks, and adapt fixture ownership to the already qualified CDP lifecycle.
 Keep nested Node declarations refused by the general census/reporter. Credit logical buffer zeroing
 and parser refusal precisely; neither establishes physical erasure or an owner authority bypass.
+
+
+## 2026-09-14 — Bind both admission compatibility modules and bound their historical reads
+
+Integrate the six unchanged admission-bounds native cases under their existing three-minute wrapper
+bound. Pin both Git modules read by the old/current compatibility cases, allow only the exact new
+promotionAdmission path and apply the established five-second/2 MiB limits to the fixture's Git reads.
+Extend the historical owner controls to this path, preserving prelaunch/reuse/midrun refusal and
+replanned receipt separation. Keep production code and native assertions unchanged. Credit the two
+large deterministic coverage specimens, signed semantic lies and reduced-bound ordering control at
+their actual scope; they do not establish the maximum supported workload or whole historical-app support.

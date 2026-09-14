@@ -55,53 +55,61 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** Account Local custody native fixture.
+**Just completed.** Account admission bounds native fixture.
 
-The preceding phase is signed and verified as `8fed0da`. **Account Local custody native fixture** adds 1 complete
-file(s) / 5 cases. The selection passes in 31.729 seconds including
+The preceding phase is signed and verified as `474aeaa`. **Account admission bounds native fixture** adds 1 complete
+file / 6 cases. The selection passes in 55.543 seconds including
 fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-local-custody-native-fixture/README.md).
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-admission-bounds-native-fixture/README.md).
 
-The former two nested comparison scenarios are promoted to named top-level cases; their empty
-container disappears. First-three test bodies remain byte-identical. Normalized AST comparison
-preserves both promoted assertion bodies after context/evidence-variable renames. The pair's former
-40-second shared allowance becomes 20 seconds each; the other cases retain forty seconds and the
-file retains 300. A modeled execution of old/new scenario registration confirms the passing combined
-standalone report is unchanged. Actual optional report files are not emitted by this selection.
+All six native test bodies and identities remain unchanged, with the existing 180-second file bound
+and 60/60/30/30/30/30-second case limits. Node execution took 27.837 seconds and the stage 31.733.
+The inherited fixture owns isolated Chromium contexts and disposable loopback Account services;
+software authentication and synthetic custody do not qualify a human passkey/PRF ceremony or a real
+Account receipt. Fresh-page retry closes/replaces the page within the same live browser/context/service.
 
-Fixture setup now borrows owned CDP with explicit isolated contexts and early nested cleanup. The
-lifecycle block matches the signed store/counter fixtures; prior cleanup/owner evidence is pinned,
-not rerun. The old custody fixture already had server cleanup registered before browser launch.
-Product, runtime/oracle/browser helpers, interpreter, reporter, owner and wrapper remain unchanged;
-general nested-test registration still refuses.
+Two deterministic Yjs stress specimens use 12,000 writer incarnations or delete ranges, producing
+admitted state-vector/delete-set coverage above 32,767 bytes. Independent Node/OpenSSL signature,
+recovery/HPKE and checkpoint opening checks replay the plaintext and derive matching coverage without
+pending dependencies. The oracle shares the installed Yjs implementation; it is not an independent
+CRDT implementation. Retry preserves exact receipt, marker and measured inventory.
 
-Independent factor/HKDF/AES/HMAC/public-key checks establish persisted custody bytes and native key
-properties. Correctly authenticated wrong private-key pairs refuse; signing/wrapping correspondence
-omissions permit opening. Changed metadata refuses until its authentication guard is omitted, and a
-wrong factor preserves the record. Array/boxed-string states refuse at parsing; the coercion control
-accepts their parser shape but the ordinary owner still refuses creation-pending. No authority bypass
-is claimed from that parser defect.
+Two correctly signed and root-MACed false coverage claims pass cryptographic verification but are
+refused as changed retained completions, before any finish submission and without measured carrier/
+storage changes. Historical modules refuse current v2 state; the current owner refuses a genuine
+historically generated v1 offered carrier without changing it. A one-anchor COVERAGE_LIMIT=32 control
+with a 100-writer specimen refuses before admission begin or requested-carrier writes. That reduced
+bound checks ordering, not the exact production-size frontier. No native fast-check histories,
+renderer/service crashes, power-loss or profile-restore tests run in this selection.
 
-The real stored-MAC race fires in both promoted scenarios. Baseline remains creating and performs
-zero root encryptions; omitting the MAC comparison completes protected custody with three. Five
-uniquely anchored mutant bundles execute. Logical zeroing of observed owned temporary buffers passes;
-this does not establish physical heap erasure or whole-profile secrecy. Synthetic custody is directly
-enrolled with a no-op creation check; no real Account service/admission, human passkey/PRF, generated
-histories, crash/profile restore or power-loss campaign runs. Navigation retains the browser/context.
+Both historical files from 6398e33da4fd4b5b413de23078a04707557599bf enter the receipt contract:
+account-protocol/admission.ts and src/crdt/promotionAdmission.ts. The latter exact path is added to the
+historical-input allowlist. Fixture Git reads gain five-second and 2 MiB limits; bundles require two
+historical substitutions. These are two old modules composed with current dependencies, not a complete
+historical app or support for shipping retired v8 paths. Product, native cases, browser/oracle/history
+helpers, inherited owners, census, reporter and wrapper remain unchanged.
+
+All 23 Node-owner checks pass, with ten historical path variants covering prelaunch/reuse/midrun drift
+and replanned receipt separation. Thirty historical receipts remain in raw control output and the
+owner log; this packet also archives all stage artifacts for the new path's three receipts. During-run
+changed history fails even when the test itself passes, with groups drained. This does not resolve the
+earlier ledger orphan classification. Prior native/Vitest owner evidence stays pinned rather than rerun.
+Optional native wrapper reports are disabled; full protocol/vector/generated campaigns, wrapper output
+postconditions and aggregate qualification remain separate.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 202 prior general contracts / 1,677 identities and exclusions remain unchanged.
-General selections now contain 203 files / 1,682 cases (96 Vitest,
-107 Node); Account has 97 files / 588 cases.
-The 684,946-byte manifest retains 612 obligations / 214 unresolved:
-55 test-file (39 Node, sixteen Playwright), 96 command,
+pass. All 203 prior general contracts / 1,682 identities and exclusions remain unchanged.
+General selections now contain 204 files / 1,688 cases (96 Vitest,
+108 Node); Account has 98 files / 594 cases.
+The 686,736-byte manifest retains 612 obligations / 213 unresolved:
+54 test-file (38 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
@@ -109,7 +117,7 @@ Exact receipts/patch, frozen source/browser identities, source-control pins, pri
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account admission bounds. There are 26 Account files left; continue in signed
+qualification is separate. Next: Account reservation durability. There are 25 Account files left; continue in signed
 bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
@@ -126,7 +134,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account admission bounds. 26 Account files remain. Non-Account Node/nested/
+**Next bounded phase.** Account reservation durability. 25 Account files remain. Non-Account Node/nested/
 Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
 P-06, immutable release validation and human Account preparation remain later gates.
 

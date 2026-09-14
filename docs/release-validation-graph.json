@@ -8611,7 +8611,7 @@
       "declarations": 4,
       "propertyFamilies": [
         {
-          "line": 808,
+          "line": 831,
           "form": "fc.property"
         }
       ],
@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 174,
+          "line": 175,
           "form": "fc.property"
         }
       ],
@@ -8951,11 +8951,11 @@
       "declarations": 23,
       "propertyFamilies": [
         {
-          "line": 359,
+          "line": 363,
           "form": "fc.property"
         },
         {
-          "line": 588,
+          "line": 592,
           "form": "fc.property"
         }
       ],
@@ -11797,7 +11797,7 @@
     },
     {
       "path": "scripts/release-validation/account-fixture-tests.mjs",
-      "sha256": "fcabd13d2bf6f678267e7541c8962dc0c94602f904fba0b8516b03dae9c73f94"
+      "sha256": "83116f0daa1c55b54f0d4a5a24b3ba23166f7d1cf5bfb895bdc7391cab6cb502"
     },
     {
       "path": "scripts/release-validation/admission-adapter.mjs",
@@ -11841,7 +11841,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "e8325e66cc726157173a9d991522685797c4354ab23984de4690c94fd715e2b0"
+      "sha256": "a8d99ea629b883871e8731943c7f139225adb5ca1d32a16b64434fd1496015b3"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11857,7 +11857,7 @@
     },
     {
       "path": "scripts/release-validation/historical-inputs.mjs",
-      "sha256": "d16e7545e603360a5df9c7ffc8d2bf5e9316c19ff0a48f3d30e599c608fee921"
+      "sha256": "cddbee3c057d6b091c29c2b51572087e7cae1da5827039c5f6e16c64c4165bdb"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11885,7 +11885,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "84e0184d36ba1253f0a9b0137392ca8732a9791e07055a1145b0f8813b0b3474"
+      "sha256": "005b9993bbe05dac857a793595248043944062220595acfd378b6ac89147882d"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -12077,7 +12077,7 @@
     },
     {
       "path": "test/account-admission-bounds/fixtures.mjs",
-      "sha256": "a31ab3a600ab73214d771bcce25085bb82a9054561615e9acf13e86b14c757cd"
+      "sha256": "b3e4682b468697d327e3f920b4f00c17476fb92f8ffdf82da8a03ab2a8d88407"
     },
     {
       "path": "test/account-admission-bounds/histories.mjs",
@@ -13701,7 +13701,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "dceca5401f7162dc90ccfcae7237291df80d497ffe964d055361f50c8bd25d9a"
+      "sha256": "ca2efe2c3c98327b35ae835abb607045379d7a8c7d29cee15beef5cd76b6d3a8"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -13737,11 +13737,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "71b55473c38f50eb9f6acd716111c8272b2b6266758efd9c2748cf76412cf8ce"
+      "sha256": "dca3c5de8b87d0db10e35a8b38abd1dfefd1a4715275590cf67931aa902dccc6"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "3ba6adc04a611eb1a6fa9cfdf2504dcb40e75cdd9f4036226779697a34e587c2"
+      "sha256": "2a5c755fd20cce38efbc1fc62097501d7d4ba61926c1578f6e986bb71c5e6e43"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13773,7 +13773,7 @@
     },
     {
       "path": "test/release-validation/stage.test.mjs",
-      "sha256": "2631d4869db41fef97ed0495d85e4c371814daecd4dd93f5028a76b3d033ecf1"
+      "sha256": "2c2c67c0594b64947b1a910c640e5e332a4ea50fa9eb88839cf2471897131af0"
     },
     {
       "path": "test/release-validation/vitest-process.test.mjs",
