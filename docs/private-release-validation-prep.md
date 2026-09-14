@@ -43,21 +43,20 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-198 files / 1,661 cases: all 96 Vitest files and 102 Node files. Account promotion-contract native
-adds three cases, passing in 36.446 seconds (Node 8.325 within 180), with worker/browser groups drained.
-Thirteen stage/version carriers, ten source/budget/collision inputs and three HMAC-message omissions
-exercise reader authentication and effective controls. Directly installed synthetic marker rows and
-same-page reads do not prove service-authorized lifecycle transitions or cold writing recovery.
-A no-op receipt substitution reproduced in the signed base; toggling and asserting inequality passes
-160 generated sets, and the native fixture now forces the edge every run. Product, runtime helpers,
-interpreter, owner, wrapper and sixty-second case limits remain unchanged. No native generated histories,
-crashes or historical readers run here. All 93 runner checks pass; unchanged Node/Vitest/native owner
-controls retain earlier evidence. All 197 prior contracts / 1,658 identities and exclusions remain
-unchanged. Existing owner/headroom/capture-oracle observations and deadline evidence remain visible.
-There are 219 unresolved obligations: sixty test-file (44 Node, sixteen Playwright), 96 command,
-63 campaign. Next: Account checkpoint-contract native fixture (four cases), then remaining integration,
-R-04, P-06 and the immutable run. Complete wrapper/vector credit remains separate. Parser-conformance
-`85d964a` is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-promotion-contract-native-fixture/README.md).
+199 files / 1,665 cases: all 96 Vitest files and 103 Node files. Account checkpoint-contract native
+adds four cases, passing in 146.819 seconds (Node 114.457 within 300), with worker/browser groups drained.
+Independent ciphertext reconstruction, read-only persisted startup, three effective source controls,
+five locally reauthenticated nested mutations and 24 generated histories (seed 5110932) pass. A directed
+edit is compared after reopen; generated histories test classification and journal removal/restoration.
+Page navigation resets the JavaScript realm while retaining storage; browser/service crashes and full
+final-card comparisons are not claimed. Product, native tests/helpers, interpreter, owner, wrapper and
+case limits remain unchanged. All 93 runner checks pass; unchanged Node/Vitest/native owner controls
+retain earlier evidence. All 198 prior contracts / 1,661 identities and exclusions remain unchanged.
+Existing owner/headroom/capture-oracle observations and deadline evidence remain visible. There are
+218 unresolved obligations: 59 test-file (43 Node, sixteen Playwright), 96 command, 63 campaign.
+Next: Account counter-contract native fixture (five cases), then remaining integration, R-04, P-06 and
+the immutable run. Complete wrapper/vector/report credit remains separate. Promotion-contract `b3b70d8`
+is signed and verified; new work is uncommitted. [Evidence](./account-conformance-runs/2026-09-14-checkpoint-contract-native-fixture/README.md).
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

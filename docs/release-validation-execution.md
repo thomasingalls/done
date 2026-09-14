@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**219 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**218 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -68,6 +68,7 @@ node scripts/release-validation/execute.mjs --selection service-inbound-native-f
 node scripts/release-validation/execute.mjs --selection delivery-oracle-native-fixture
 node scripts/release-validation/execute.mjs --selection parser-conformance-native-fixture
 node scripts/release-validation/execute.mjs --selection promotion-contract-native-fixture
+node scripts/release-validation/execute.mjs --selection checkpoint-contract-native-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -2291,11 +2292,74 @@ capture oracle follow-ups and prior deadline evidence remain open. Next: Account
 native fixture, four cases; then remaining integration, R-04, P-06 and the immutable aggregate before
 private Account preparation.
 
+## Account checkpoint-contract native fixture — phase 2at
+
+The preceding promotion-contract phase is signed and verified as `b3b70d8`.
+`checkpoint-contract-native-fixture` adds one complete native file / four cases. It passes in 146.819
+seconds including fingerprint work; Node execution took 114.457 within the existing 300-second native
+wrapper/file allowance and stage time 119.122. Worker/browser groups drain; the recorded disposable
+browser PID is absent afterward. Three directed cases retain forty seconds and the generated case
+120 seconds; startup retains fifteen and drain grace five. Product, native tests/helpers, registration
+interpreter, owner, wrapper and limits are unchanged. New integration work is uncommitted and does
+not qualify an immutable aggregate.
+
+The fixture creates synthetic Local custody, Account recovery and real temporary-service admission/
+handoff. Its startup setup navigates the existing page to the fixture origin, replacing the JavaScript
+realm and reinstalling in-memory bundles and hooks while retaining storage. Browser/context/service
+stay alive. This exercises persisted startup after navigation, without a crash, profile copy or power loss.
+
+The byte case independently unwraps the synthetic generation key and reproduces the genesis
+ciphertext through Node/OpenSSL LP, HKDF and AES-GCM oracles. A repeated genesis call returns the same
+candidate with one observed seal. Startup succeeds with fetch disabled and no recovery code. It leaves
+serialized IndexedDB/localStorage inventory unchanged and checks decrypt-only non-extractable key
+usage, KDF info/salt, checkpoint AAD/ciphertext/tag length, no new seals and zeroed observed temporary
+buffers. Removing workspace from startup KDF info makes startup refuse. Instrumentation covers
+checkpoint operations and observed buffers, not the whole heap, key-store representation or filesystem.
+
+The coverage case deletes journal writing from a selected destination, then erases content and journal
+from an active destination. Baseline startup must refuse with the exact retained-source error without
+changing inventory. Omitting the corresponding selected/active coverage predicate accepts each damaged
+state. Restoring the journal recovers classification; a later admitted edit is compared after editor
+close/navigation/open. Together with startupWorkspace these are three uniquely anchored, executed
+source controls, not additional reporter cases.
+
+The authority case recomputes a local marker MAC around five damaged fields: receipt signature,
+candidate signature and checkpoint salt, nonce or ciphertext. Every input refuses before observed
+checkpoint operations and leaves inventory unchanged. Restoring the marker accepts; a wrong authority
+pin separately refuses. These generic refusal assertions leave nested service proofs unauthenticated;
+they do not isolate every verifier or establish GCM refusal of a fully reauthorized changed checkpoint.
+
+The final case runs 24 shrinking-enabled histories with seed 5110932. Generated insert/delete operations
+choose database or journal persistence and optional reversed delivery, with a mandatory journal-only
+operation. Each history and shrink attempt uses a new scope. An independent string-splice calculation
+checks seeded master text; admission/handoff and reloaded startup succeed. Removing the journal must
+refuse without inventory change; restoring it permits classification. Generated histories do not open
+the final editor to compare full cards/metadata independently of production coverage checks.
+No failure or shrink was observed. Optional wrapper report JSON/history arrays are not emitted because
+this selection leaves ACCOUNT_REPORT_DIR unset; fixed source/seed and reporter receipts are retained.
+
+All 93 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+The initial pure log retains two corrected integration bookkeeping failures: a nonexistent blocked-file
+example and a missing five-minute expected deadline. Unchanged 23 Node-owner, fourteen native-owner
+and five Vitest-process controls retain prior evidence. All 198 prior general contracts / 1,661 identities
+and exclusions remain unchanged. General selections now contain 199 files / 1,665 cases (96 Vitest,
+103 Node); Account has 93 files / 571 cases. The 680,137-byte manifest retains 612 obligations /
+218 unresolved: 59 test-file (43 Node, sixteen Playwright), 96 command and 63 campaign. All eleven
+catalogues remain resolved (163 cases / 54 mutations). These are integration obligations, not defects.
+
+The [packet](./account-conformance-runs/2026-09-14-checkpoint-contract-native-fixture/README.md) preserves receipts, exact patch, frozen source/browser identities, helper/control
+pins, base signature and preservation. No historical transforms or optional vector-file reads execute.
+Complete wrapper matrices, broader regressions and vector/report postconditions remain separate.
+All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups remain unchanged.
+Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups
+and deadline evidence remain open. Next: Account counter-contract native fixture, five cases; then
+remaining integration, R-04, P-06 and the immutable aggregate before private Account preparation.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**219 blocked rows**: sixty test-file, 96 command, 63 campaign. All Vitest files have adapters; 44 Node
-and sixteen Playwright files remain. Next review Account checkpoint-contract native fixture (four cases),
+**218 blocked rows**: 59 test-file, 96 command, 63 campaign. All Vitest files have adapters; 43 Node
+and sixteen Playwright files remain. Next review Account counter-contract native fixture (five cases),
 then remaining owners and wrapper postconditions. Keep retired-v8 exclusions and ordered vector/
 traceability prerequisites. Existing ledger orphan classification, core receive/delivery-oracle headroom,
 capture oracle follow-ups and deadline evidence remain open. R-04 style scopes/full checks and P-06 prose

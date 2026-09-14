@@ -43,44 +43,45 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account checkpoint-contract native fixture (`L-1`)
+## Active slice: General validation-runner integration — Account counter-contract native fixture (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded phase reviews Account checkpoint-contract native fixture
+blocks_on: none; next bounded phase reviews Account counter-contract native fixture
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
+**Commit boundary.** Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
 `0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
 oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
 `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
 `f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
 receipts retain actual execution identities and signing status at capture.
 
-**Just completed.** [Account promotion-contract native fixture](./release-validation-execution.md#account-promotion-contract-native-fixture--phase-2as)
-adds one file / three cases. It passes in 36.446 seconds with worker/browser groups drained.
-Node execution took 8.325 of 180 seconds and stage time 10.860; cases retain sixty seconds.
-Product, runtime helpers, interpreter, owner, wrapper and limits remain unchanged.
-Runner integration and the native control repair are uncommitted.
+**Just completed.** [Account checkpoint-contract native fixture](./release-validation-execution.md#account-checkpoint-contract-native-fixture--phase-2at)
+adds one file / four cases. It passes in 146.819 seconds with worker/browser groups drained.
+Node execution took 114.457 of 300 seconds and stage time 119.122. Directed cases retain forty seconds;
+the generated case retains 120. Product, native tests/helpers, interpreter, owner, wrapper and limits
+remain unchanged. New integration work is uncommitted.
 
-**Evidence.** Thirteen stage/version carriers exercise current marker authentication; ten correctly
-authenticated source/budget/collision lies demonstrate one omitted guard's effect. Three omitted
-HMAC-message bindings refuse with the baseline reader and accept when the corresponding verification
-message field is omitted through real WebCrypto. Directly installed synthetic rows and same-page
-reads do not establish service-authorized transitions or cold writing reconstruction.
+**Evidence.** Independent Node crypto reproduces browser genesis ciphertext; retry does not reseal.
+Persisted startup uses a decrypt-only key, zeros observed checkpoint buffers and leaves serialized
+storage unchanged with fetch disabled. Three source controls exercise wrong KDF info and omitted
+selected/active coverage. Five locally reauthenticated nested-proof/checkpoint mutations and a wrong
+pin refuse. A later editor edit survives reopen. Twenty-four generated histories (seed 5110932)
+exercise mixed/reversed persistence and journal removal/restoration through startup classification.
 
-A fixed receipt prefix could make one substitution a no-op. The signed-base reproduction fails;
-the repaired toggle/inequality guard passes 160 generated sets (seed 140902). The native pending
-case now forces that edge deterministically. This repairs the fixture, not production code.
-All 93 runner checks, TypeScript, scoped style, planning, authority and signatures pass. Unchanged
-Node/Vitest/native owner controls (23/5/14) retain earlier evidence. The [packet](./account-conformance-runs/2026-09-14-promotion-contract-native-fixture/README.md) preserves
-receipts, patch, source/browser identities, generated evidence and scope limits. No native generated
-histories, crashes or historical readers run; complete wrapper/vector credit remains separate.
+Setup navigates the page and replaces its JavaScript realm while retaining browser storage. It does
+not restart the browser/service or inject crashes. Generated classification uses production coverage
+checks; no separate final full-card comparison is claimed. Optional wrapper report files are not
+emitted. All 93 runner checks, TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged Node/Vitest/native owner controls (23/5/14) retain prior evidence. The [packet](./account-conformance-runs/2026-09-14-checkpoint-contract-native-fixture/README.md)
+preserves exact receipts, patch, source/browser identities and scope limits. No native/helper repair
+was needed. Complete wrapper/vector credit remains separate.
 
 **Open validation observations.** Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -96,14 +97,14 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Review `test/account-checkpoint-contract/native.test.mjs` (four cases),
+**Next bounded phase.** Review `test/account-counter-contract/native.test.mjs` (five cases),
 then remaining native/Playwright/nested owners and wrapper/output/prerequisite contracts. General
-selections contain 198 files / 1,661 cases: all 96 Vitest and 102 Node files. All 197 prior contracts /
-1,658 identities remain unchanged. The 678,973-byte manifest retains 612 obligations / 219 blocked rows:
-sixty test-file (44 Node, sixteen Playwright), 96 command and 63 campaign. These are integration
-obligations, not defect counts. All eleven catalogues remain resolved (163 cases / 54 mutations).
-Keep retired-v8 exclusions and resolve old wrapper calls without reviving support. R-04 style scopes/
-full checks and P-06 prose precede the immutable aggregate and private Account preparation.
+selections contain 199 files / 1,665 cases: all 96 Vitest and 103 Node files. All 198 prior contracts /
+1,661 identities remain unchanged. The 680,137-byte manifest retains 612 obligations / 218 blocked rows:
+59 test-file (43 Node, sixteen Playwright), 96 command and 63 campaign. These are integration obligations,
+not defect counts. All eleven catalogues remain resolved (163 cases / 54 mutations). Keep retired-v8
+exclusions and resolve old wrapper calls without reviving support. R-04 style scopes/full checks and
+P-06 prose precede the immutable aggregate and private Account preparation.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

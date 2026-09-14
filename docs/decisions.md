@@ -2970,3 +2970,19 @@ unconditional verification success would not establish this control's effect.
 Credit current reader authentication and source binding of directly installed synthetic marker rows.
 Fixture stage/version carriers do not prove service-authorized lifecycle transitions or cold writing
 recovery, and the v8 carrier remains a shared reader case rather than a supported product path.
+
+
+## 2026-09-14 — Separate persisted checkpoint startup from full crash and wrapper qualification
+
+Integrate the four unchanged checkpoint-contract native cases under the existing five-minute wrapper
+bound. Keep forty seconds for each directed case and two minutes for the 24-history generated case.
+Use the current literal declaration interpreter and owned CDP fixture; no historical/data input is
+needed for this native path. Optional vector builders are imported but not called.
+
+Credit independent ciphertext reconstruction, no reseal on retry, read-only startup after page
+navigation, effective selected/active coverage omissions, wrong-KDF refusal and nested authority
+refusal despite a recomputed local MAC. Navigation replaces the JavaScript realm but keeps the
+browser and service alive. The generated histories compare seeded text independently, then test
+classification and journal removal/restoration; full final editor/card equality is a separate claim.
+Checkpoint observations and serialized storage equality do not establish whole-profile residue freedom.
+Keep wrapper JSON/report postconditions and complete vector/regression chains as separate obligations.

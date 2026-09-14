@@ -7,6 +7,10 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const checkpointContractNativeFixtureFiles = [
+  'test/account-checkpoint-contract/native.test.mjs',
+];
+
 export const promotionContractNativeFixtureFiles = [
   'test/account-promotion-contract/native.test.mjs',
 ];
@@ -260,6 +264,7 @@ export const accountFixtureFiles = {
     ...deliveryOracleNativeFixtureFiles,
     ...parserConformanceNativeFixtureFiles,
     ...promotionContractNativeFixtureFiles,
+    ...checkpointContractNativeFixtureFiles,
   ],
 };
 
@@ -287,7 +292,8 @@ export function accountFixtureNodeStage(root, file) {
     serviceInboundNativeFixtureFiles.includes(file) ||
     deliveryOracleNativeFixtureFiles.includes(file) ||
     parserConformanceNativeFixtureFiles.includes(file) ||
-    promotionContractNativeFixtureFiles.includes(file);
+    promotionContractNativeFixtureFiles.includes(file) ||
+    checkpointContractNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -312,6 +318,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (checkpointContractNativeFixtureFiles.includes(file) ? 300000 : undefined) ??
       (promotionContractNativeFixtureFiles.includes(file) ? 180000 : undefined) ??
       (parserConformanceNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
       (deliveryOracleNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
