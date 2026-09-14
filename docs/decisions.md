@@ -3072,3 +3072,8 @@ relay, second-device and immutable release qualification separate.
 ## 2026-09-14 — Keep service-issued decision evidence distinct from arrival and crash campaigns
 
 Integrate the two unchanged directed decision files with twelve cases under their existing five-minute wrapper bounds. Retain genuine issuer verification, exact response/source retention and the three uniquely anchored persistence/closure/conflict controls. Credit direct HTTP, sender retry/halt and shared scheduler assertions. Keep separate generated ordering and service/renderer crash fixtures blocked until their own integration; optional reports, full wrapper preparation and immutable aggregate qualification remain separate.
+
+
+## 2026-09-14 — Qualify decision ordering with exact retained proof sets and native process cuts
+
+Integrate the three unchanged restart/order/generated files under the existing five-minute file bounds. Credit four actual service SIGKILL and four renderer crashes, two directed proof-arrival orders and 28 fixed-seed property histories. Keep command-level optional reports, full wrapper output, physical power-loss guarantees and immutable aggregate qualification separate. Preserve the initially failed registration-order check and the passing correction.
