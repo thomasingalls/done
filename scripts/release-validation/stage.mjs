@@ -172,7 +172,13 @@ export function validateStage(stage) {
     );
   }
   if (stage.fixture) {
-    assert.equal(stage.fixture.kind, 'chromium-cdp');
+    if (stage.fixture.kind === 'chromium-inherited-profiles') {
+      assert.equal(stage.variant, 'node-inherited-chromium-v1');
+      assert(['cases', 'exit'].includes(stage.expect.kind), 'Unreviewed profile result adapter');
+      // The shared profile helper has a fixed 15-second startup bound. It launches
+      // inside the guarded worker group, which also owns close/reopen lifetimes.
+      assert.deepEqual(stage.fixture, { kind: 'chromium-inherited-profiles', startupMs: 15000 });
+    } else assert.equal(stage.fixture.kind, 'chromium-cdp');
     assert(
       Number.isSafeInteger(stage.fixture.startupMs) &&
         stage.fixture.startupMs > 0 &&
@@ -180,6 +186,12 @@ export function validateStage(stage) {
       'Invalid browser startup bound',
     );
   }
+  if (stage.variant === 'node-inherited-chromium-v1')
+    assert.equal(
+      stage.fixture?.kind,
+      'chromium-inherited-profiles',
+      'Missing profile tool binding',
+    );
   if (stage.argv.includes('--test')) {
     assert.equal(stage.expect.kind, 'cases', 'A test process needs an exact census');
     assert(
@@ -376,7 +388,7 @@ export function createStageRunner({
     const abort = () => stop('cancelled');
     let timer, pulse;
     try {
-      if (!reason && stage.fixture) {
+      if (!reason && stage.fixture?.kind === 'chromium-cdp') {
         browserOwner = startOwnedChromium({
           runtime: browserRuntime,
           directory: dir,

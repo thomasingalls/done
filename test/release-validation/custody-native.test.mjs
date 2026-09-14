@@ -90,6 +90,8 @@ function fixture(t, mode) {
     ['node', 'subject.mjs'],
     { kind: 'exit', exitCodes: [0] },
     {
+      variant: 'node-inherited-chromium-v1',
+      fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 },
       deadlineMs: mode === 'timeout' ? 8000 : 20000,
       graceMs: 1000,
       maxLogBytes: 65536,

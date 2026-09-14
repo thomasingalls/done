@@ -43,48 +43,50 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — Account suites (`L-1`)
+## Active slice: General validation-runner integration — Account group complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: none; continue bounded signed Account groups; stop if signing blocks
+blocks_on: none; Account group complete; next integration group not started
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Commit boundary.** Residue lifecycle and service-file fixtures is signed `15884e1` and verified. Residue calibration fixtures is signed `c5e2112` and verified. Residue matcher and container fixtures is signed `9e243ca` and verified. Growing-history liveness is signed `de8f421` and verified. Ordinary-scheduling workload is signed `379b115` and verified. Controlled liveness and verified view is signed `c85e548` and verified. Liveness instrument and cache is signed `16d1612` and verified. Failure and recovery is signed `b5b83ce` and verified. Decision restart and history is signed `d1eff10` and verified. Directed decision composition is signed `d0735a6` and verified. Outbound is signed `02a1bfe` and verified. Reservation durability is signed `19dfffe` and verified. Admission bounds is signed `fa9f782` and verified. Local custody is signed `474aeaa` and verified. Local provenance is signed `8fed0da` and verified. Store-contract is signed `fdcf265` and verified. Counter-contract is signed `9a5bf1d` and verified. Checkpoint-contract is signed `3ea2c19` and verified. Promotion-contract is signed `b3b70d8` and verified. Parser-conformance is signed `85d964a` and verified. Delivery-oracle is signed `ed48158` and verified. Service inbound is signed `a946620` and verified. Activation is signed `bc536f3` and verified. Core is signed `76ac103` and verified. Recovery is signed `4a52665` and verified. Authority is signed `be8749f` and verified. Promotion is signed `f59d5f2` and verified. Genesis is signed `25c8be8` and verified. Admission is signed `b201784` and verified. Handoff is signed `bd484a6` and verified. Editing is signed `2e77b02` and verified. Capture is signed `599bba9` and verified. Decisions is signed `fb81e00` and verified. Delivery is signed `d85036e` and verified. Spool is signed `9bf77c7` and verified. Receive/editor `2e05910`, sync/composition
-`0a7d6d4`, receive-driver `8bd6a07`, receive transport `fa80a53`, transport service `b0e7828`,
-oracle/parser `a20e678`, preparation `950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation
-`01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated registrations
-`f9111ea`, general adapters `38e4995`, properties `8acdee4` and R-01 `5872dc5` are signed. Historical
-receipts retain actual execution identities and signing status at capture.
+**Commit boundary.** Lifecycle and service-file fixtures are signed `15884e1d`; generated histories
+are signed `1135e757`. Both signatures are verified. The final packaged/profile phase is validated
+for its signed commit. Earlier phases and execution identities remain in [completed.md](./completed.md)
+and their evidence packets; historical receipts retain signing status at capture.
 
-**Just completed.** Account residue generated native histories.
+**Just completed.** Account packaged UI and persistent-profile residue fixtures.
 
-The preceding phase is signed and verified as `15884e1`. **Account residue generated native histories** adds 1 complete
-file / 1 cases. The selection passes in 254.795 seconds including
+The preceding phase is signed and verified as `1135e75`. **Account packaged UI and persistent-profile residue fixtures** adds 1 complete
+file / 2 cases. The selection passes in 53.480 seconds including
 fingerprinting. Worker/browser groups drain, and recorded disposable browser PIDs are absent afterward.
-Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-generated-fixture/README.md).
+Precise Node/stage timings, deadlines and scope limits are in the [packet](./account-conformance-runs/2026-09-14-residue-packaged-fixture/README.md).
 
-One complete unchanged native case retains its existing 330-second file bound, 300-second case bound and fast-check 270-second interruption limit with interruption treated as failure. Seed 1121040 selects 24 operation schedules; each attempt independently generates synthetic markers, factors and cryptographic randomness after compilation. Six registration files and generated snapshots change; product code, property body, browser/service fixture, collectors, matcher and wrappers remain unchanged.
+The final two unchanged Account cases now run under an explicit inherited-profile fixture contract. The 240-second file bound and 180/240-second case bounds remain unchanged. The runner binds installed Chromium bytes, supplies the owned output root and executable, and leaves profile lifetimes inside its guarded Node process group. No unused CDP browser is started for this fixture kind. Missing or mismatched kind/variant/startup metadata refuses during planning. Ordinary CDP and Vitest contracts remain unchanged.
 
-Each history varies one to three Local edits, front insertion, flush and page reopen, optional compaction and lost final reply, followed by one or two Account edits. Checkpoints require a complete logical scan with no prohibited plaintext match, subject to the explicit recovery retry-key exposure policy. Reopening must preserve exactly the independently assembled text. The terminal assertions require all 24 runs, no property failure and no interruption. The generated case does not introduce new omission mutants, process crashes or physical power-loss simulation.
+The packaged fixture reuses the existing custody profile owner, which requires a clean actual browser exit and released singleton locks before reading or reopening a profile. Two isolated synthetic profiles create three browser lifetimes, including one true whole-profile reopen. The existing viewport and context interface are retained; nested teardown closes profiles and the loopback server even after an earlier close fails. Both extension-disabling flags now also apply to this shared profile launcher. Standalone campaigns retain their original Playwright launch path.
 
-Twenty-four isolated fixture instances share one stage-owned Chromium process. Cold means replacement of the page within its isolated context; the factor material is held by the synthetic controller. This is not a personal browser, a human passkey ceremony, a real Account admission receipt, second-device adoption or forensic-erasure evidence.
+Fresh Local UI creation, an actual edit, explicit ZIP export, lock, packaged service-worker readiness, closed-profile acquisition and offline reopen all pass. The export must include the intended writing and exclude the factor. A planted marker in an actual service-worker console must be detected. The unchanged fresh physical assertion requires zero prohibited matches; it does not require an empty issue list. In this particular observed run the acquired-file result was complete-no-prohibited-match with no issues. That observation is retained separately from the narrower executable assertion.
 
-The optional final property report and the 24 history records are copied read-only while the stage runs, with matching repeated reads and hashes. Their source checkout and capture time are checked against the owned receipt and selection interval. They supplement the exact owned case result; they do not qualify the original wrapper's full output contract. The general reporter still suppresses per-test stdout, and raw checkpoint reports otherwise disappear with the disposable checkout.
+The migration case exercises synthetic source and journal data, recovery files, restart and verification, import and selection, later writing, authenticated source cleanup, and Local clear interrupted after custody removal then resumed. Logical scans must pass at the specified points. The final acquired-file scan also reported complete-no-prohibited-match with no issues in this run; its result is observational and the case does not promise physical deletion of legacy plaintext. Neither case establishes forensic erasure or coverage of every possible filesystem carrier.
 
-Prior general contracts, exclusions, the newly repaired browser owner, 52 personal/vector pins and L-2 remain unchanged. Earlier failed receipts retain their original identities. Host-Python binding, complete output contracts, owner/headroom and capture-oracle observations, wrapper campaigns and immutable aggregate qualification remain separate.
+All 24 Node-owner, five Vitest-process and fourteen native-owner controls pass. Six persistent-profile controls now execute the explicit new fixture kind, covering clean close/copy, timeout, cancellation, worker death, bounded reopen and death after reopen. Eight existing CDP controls also pass. Direct post-run checks find all three recorded packaged browser PIDs absent, no process referencing either synthetic profile, and all three CDP listeners refusing connections. The original failed ownership evidence remains preserved in its earlier packet.
+
+Final outcome, export, worker-control, profile-lifetime and asset reports were copied read-only during the selection with matching repeated reads and per-file hashes. Their checkout and capture interval are checked against the owned receipt. These bounded auxiliary observations preserve the actual profile results; complete wrapper-output contracts and immutable aggregate qualification remain separate. All product sources and both test bodies remain unchanged. Temporary packaged builds precede secret generation; no personal app, profile, root dist or packaged dogfood release was changed.
+
+This completes the Account suite integration group: 123 files / 678 cases. The general runner has 229 integrated files / 1772 cases, with all eleven catalogues still resolved. Remaining integration is 29 non-Account test files (nine other Node suites, four nested-owner files, sixteen Playwright files), 96 command rows and 63 campaign rows. These are integration obligations, not defect counts. Host-Python input binding, full output retention, existing headroom/oracle observations, R-04 style, P-06 prose and the immutable aggregate remain before private Account app/service preparation and human passkey/recovery/adoption validation.
 
 All 93 pure runner checks, TypeScript, scoped style, planning, authority and signatures
-pass. All 227 prior general contracts / 1,769 identities and exclusions remain unchanged.
-General selections now contain 228 files / 1,770 cases (96 Vitest,
-132 Node); Account has 122 files / 676 cases.
-The 709,377-byte manifest retains 612 obligations / 189 unresolved:
-30 test-file (14 Node, sixteen Playwright), 96 command,
+pass. All 228 prior general contracts / 1,770 identities and exclusions remain unchanged.
+General selections now contain 229 files / 1,772 cases (96 Vitest,
+133 Node); Account has 123 files / 678 cases.
+The 710,121-byte manifest retains 612 obligations / 188 unresolved:
+29 test-file (13 Node, sixteen Playwright), 96 command,
 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
 These are integration obligations, not defect counts.
 
@@ -92,8 +94,9 @@ Exact receipts/patch, frozen source/browser identities, source-control pins, pri
 base signature and preservation checks are archived. All 52 personal/vector pins, L-2 and historical
 evidence/debts/signing backups remain unchanged. Ledger orphan classification, receive/delivery-oracle
 headroom, capture oracle follow-ups and prior deadline evidence remain open. Wrapper/aggregate
-qualification is separate. Next: Account packaged UI and persistent-profile residue fixtures. There are 1 Account files left; continue in signed
-bounded groups as authorized, stopping if signing blocks rather than committing unsigned.
+qualification is separate. The authorized Account suite integration group is complete. The next
+proposed group is the remaining non-Account Node fixtures, starting with storage-marker and origin
+controls; implementation of that group has not started.
 
 **Open validation observations.** The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -109,9 +112,10 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Account packaged UI and persistent-profile residue fixtures. 1 Account files remain. Non-Account Node/nested/
-Playwright integration and command/campaign contracts follow this authorized Account group. R-04,
-P-06, immutable release validation and human Account preparation remain later gates.
+**Next proposed group.** Non-Account Node fixtures, starting with storage-marker and origin controls.
+The Account group is complete. Thirteen Node files (including four nested-owner suites) and sixteen
+Playwright files remain, followed by complete command/campaign contracts. R-04, P-06 and immutable
+release validation precede private Account app/service preparation and human validation.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

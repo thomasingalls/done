@@ -16,6 +16,8 @@ export const residueLifecycleFixtureFiles = [
 
 export const residueGeneratedFixtureFiles = ['test/account-residue/generated.test.mjs'];
 
+export const residuePackagedFixtureFiles = ['test/account-residue/packaged.test.mjs'];
+
 export const residueNodeFixtureFiles = [
   'test/account-residue/extended.test.mjs',
   'test/account-residue/matcher.test.mjs',
@@ -356,12 +358,14 @@ export const accountFixtureFiles = {
     ...residueCalibrationFixtureFiles,
     ...residueLifecycleFixtureFiles,
     ...residueGeneratedFixtureFiles,
+    ...residuePackagedFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser =
+    residuePackagedFixtureFiles.includes(file) ||
     residueGeneratedFixtureFiles.includes(file) ||
     residueLifecycleFixtureFiles.includes(file) ||
     residueCalibrationFixtureFiles.includes(file) ||
@@ -414,8 +418,21 @@ export function accountFixtureNodeStage(root, file) {
       file,
     ],
     env: {},
-    variant: browser ? 'node-account-browser-file-v1' : 'node-account-fixture-file-v1',
-    ...(browser ? { fixture: { kind: 'chromium-cdp', startupMs: 15000 } } : {}),
+    variant: residuePackagedFixtureFiles.includes(file)
+      ? 'node-inherited-chromium-v1'
+      : browser
+        ? 'node-account-browser-file-v1'
+        : 'node-account-fixture-file-v1',
+    ...(browser
+      ? {
+          fixture: {
+            kind: residuePackagedFixtureFiles.includes(file)
+              ? 'chromium-inherited-profiles'
+              : 'chromium-cdp',
+            startupMs: 15000,
+          },
+        }
+      : {}),
     expect: {
       kind: 'cases',
       cases: declarations.cases,
@@ -425,6 +442,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (residuePackagedFixtureFiles.includes(file) ? 240000 : undefined) ??
       (residueGeneratedFixtureFiles.includes(file) ? 330000 : undefined) ??
       (residueLifecycleFixtureFiles.includes(file) ? 240000 : undefined) ??
       (residueCalibrationFixtureFiles.includes(file) ? 150000 : undefined) ??

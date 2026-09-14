@@ -73,6 +73,8 @@ export function ownedProfiles({ directory, origin, records, save }) {
       '--no-default-browser-check',
       '--disable-background-networking',
       '--disable-component-update',
+      '--disable-component-extensions-with-background-pages',
+      '--disable-extensions',
       '--disable-sync',
       '--disable-breakpad',
       '--disable-crash-reporter',

@@ -10,6 +10,7 @@ import { captureDiagnostic, collectBrowser } from './browser-collector.mjs';
 import { collectValues } from './node-collector.mjs';
 import { collectFiles } from './files.mjs';
 import { assess, hash, LIMITS } from './matcher.mjs';
+import { ownedProfiles } from '../../scripts/custody/profiles.mjs';
 
 export const extendedLimits = { ...LIMITS, containers: true };
 const required = [
@@ -40,12 +41,23 @@ const lib = async (entry, name) => {
   return (Array.isArray(result) ? result[0] : result).output.find((o) => o.type === 'chunk').code;
 };
 export async function packagedFixture(t, name) {
+  assert(['fresh', 'migration'].includes(name), 'Unknown packaged fixture');
   const dir = mkdtempSync(join(tmpdir(), 'done-packaged-residue-'));
-  let context, server;
+  let context, server, profiles;
   t.after(async () => {
-    await context?.close();
-    await new Promise((r) => (server ? server.close(r) : r()));
-    rmSync(dir, { recursive: true, force: true });
+    try {
+      await context?.close();
+    } finally {
+      try {
+        await profiles?.close();
+      } finally {
+        try {
+          await new Promise((r) => (server ? server.close(r) : r()));
+        } finally {
+          rmSync(dir, { recursive: true, force: true });
+        }
+      }
+    }
   });
   // All product and test assets precede secret generation.
   await build({ logLevel: 'error', build: { outDir: join(dir, 'app'), emptyOutDir: true } });
@@ -93,14 +105,40 @@ export async function packagedFixture(t, name) {
     }
   });
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
-  const origin = 'http://127.0.0.1:' + server.address().port,
-    profile = join(dir, 'profile');
-  const launch = () =>
+  const origin = 'http://127.0.0.1:' + server.address().port;
+  let profile = join(dir, 'profile');
+  let launch = () =>
     chromium.launchPersistentContext(profile, {
       headless: true,
       viewport: { width: 1280, height: 900 },
       ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
     });
+  if (process.env.RELEASE_PROCESS_GUARD) {
+    assert(process.env.RELEASE_CUSTODY_OUTPUT && process.env.RELEASE_BROWSER_EXECUTABLE);
+    const directory = join(process.env.RELEASE_CUSTODY_OUTPUT, 'packaged', name);
+    const records = [];
+    profiles = ownedProfiles({
+      directory,
+      origin,
+      records,
+      save: () => report(name + '-profiles', records),
+    });
+    profile = join(directory, 'source-false');
+    launch = async () => {
+      const c = await (records.length
+        ? profiles.reopenProfile('source-false')
+        : profiles.profile('source-false'));
+      // Preserve the scenario's viewport and context API while its close method
+      // shuts down the actual persistent browser and waits for a clean exit.
+      const newPage = c.newPage.bind(c);
+      c.newPage = async () => {
+        const page = await newPage();
+        await page.setViewportSize({ width: 1280, height: 900 });
+        return page;
+      };
+      return c;
+    };
+  }
   const diagnostics = [],
     pending = new Set(),
     errors = [],

@@ -3122,3 +3122,8 @@ Integrate the unchanged three lifecycle cases and one service-file case under th
 ## 2026-09-14 — Retain the generated residue population and its scoped recovery assertions
 
 Admit the unchanged 24-history native property at seed 1121040, preserving 330/300/270-second file/case/property bounds and treating interruption as failure. Credit exact cold text and declared logical-carrier scans. Preserve the final operation histories as auxiliary observations, distinct from full wrapper-output or physical-profile qualification.
+
+
+## 2026-09-14 — Complete Account suite integration with owned persistent-profile lifetimes
+
+Use an explicit inherited-profile fixture kind to bind the installed browser without starting an unused CDP browser. Reuse the custody helper for real profile closure and reopen, keeping the packaged cases and existing time limits. Requalify the six profile-owner controls through this contract plus existing Node, Vitest and CDP controls. Distinguish acquired-file observations from the cases' narrower assertions and from forensic erasure. Close the authorized Account integration group; other suite, wrapper/output and immutable release gates remain.
