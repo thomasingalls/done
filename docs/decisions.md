@@ -2701,3 +2701,19 @@ establish service HTTP delivery. A new page in one browser context and CDP rende
 establish whole-browser/power-loss or second-device behavior. Retain the v8 exclusion: seeding and
 fencing an intermediate format in a fixture is not support for shipping that app. Wrapper output,
 ordering and prerequisite postconditions remain separate from direct-file execution.
+
+
+## 2026-09-14 — Preserve spool native crash oracles and historical identity
+
+Admit the complete spool native file with its existing four-minute wrapper deadline and unchanged
+case limits, assertions and generated population. Pin the exact historical promotionRecord reader
+used by this file, bound its Git read, and reuse the existing owned-CDP and historical drift contracts.
+Do not infer execution from dormant historical branches elsewhere in the imported fixture chain.
+
+Keep exact-wire, source-coverage and external invocation-count observations distinct. Native transaction
+cuts and a Node observer support the stated crash/accounting checks; they do not establish nonce
+uniqueness, power-loss behavior or an independent cryptographic oracle. Generated histories check after
+each step and final drain, with cold reopen only at selected crash boundaries. Preserve that limit
+instead of describing a final cold replay that the test does not perform. Wrapper saved outputs,
+ordering and prerequisites remain separate from direct-file execution; intermediate-format activation
+fixtures do not revive retired product support.

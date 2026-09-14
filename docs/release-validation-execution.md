@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**236 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**235 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -51,6 +51,7 @@ node scripts/release-validation/execute.mjs --selection receive-transport-fixtur
 node scripts/release-validation/execute.mjs --selection receive-driver-fixtures
 node scripts/release-validation/execute.mjs --selection sync-fixtures
 node scripts/release-validation/execute.mjs --selection receive-editor-fixtures
+node scripts/release-validation/execute.mjs --selection spool-fixture
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -1142,14 +1143,77 @@ The core Node run took 297.025 seconds against its 300-second deadline; its 301.
 receipt includes preparation/drain overhead. This narrow margin remains a loaded-host reliability
 observation, not a reason to change a currently passing deadline.
 
+## Account spool native fixture — phase 2ac
+
+The preceding receive/editor phase is signed and verified as `2e05910`. `spool-fixture` adds one
+complete native file / 24 cases, using the existing owned Chromium/CDP adapter. The original four-minute
+file deadline, 30-second directed and 180-second generated case limits, 15-second browser startup and
+five-second drain grace are unchanged. Only the active historical-reader Git read gains five-second /
+2-MiB bounds. Product code, test bodies, seeds/populations, mutation bodies and wrapper are unchanged.
+
+All 24 cases pass in 244.474 seconds including fingerprint work; worker and browser groups drain.
+Node execution took 214.892 seconds against the 240-second deadline; stage time was 219.332
+seconds. The complete selection includes fingerprint/setup/drain overhead. This single pass does not
+qualify loaded-host reliability.
+The receipt pins `7210b7d:src/crdt/promotionRecord.ts`, used by the old-reader rejection control. The
+existing historical allowlist and prelaunch/reuse/midrun drift controls already cover this path; other
+historical branches in imported helpers stay dormant under the sanitized environment. Intermediate
+v6-to-v7 activation/fencing in synthetic fixtures does not add app support or revive retired v8.
+
+Six before/after position, attempt and envelope commit cuts use real IndexedDB abort/completion hooks
+and renderer death. Four more cuts interrupt marker and metadata activation before editor exposure.
+Cases preserve exact stored wire bytes and sources through compaction/reopen, compare positions and
+source indices, verify prepared-signer signatures and refuse the former Local key. Mixed capsules retain
+separate human/system frames, including a large source and an unresolved pending child. These assertions
+use the current wire verifier; they do not independently decrypt every output frame.
+
+Authenticated-at-rest source/wire/attempt/ledger corruption must refuse reopening without changing the
+recorded database inventory or causing another observed envelope encryption. A witness mismatch can
+reject before deeper wire verification; no claim is made that each validation layer was reached. Close
+during held crypto keeps the slot until drain, withholds wire and preserves a later edit. The lowered
+budget admits two encryptions and refuses a third; it does not promise no position was allocated.
+Controls expose returned-but-unpersisted wire, two invocations backed by one durable attempt after crash,
+and reminting the same position with different bytes when the missing-tail witness check is removed.
+
+Eight generated histories retain seed 9502026, numRuns:8, endOnFailure:true and 180 seconds. Two to four
+steps mix Unicode edits, ordinary preparation, compaction and before/after allocation/attempt/envelope
+crashes. At each step they check writing, previously observed exact wire, contiguous positions, unique
+source references and a durable-attempt bound against Node-observed browser encryption calls. Final
+draining checks source-count coverage and the invocation bound, then closes. There is no unconditional
+final cold reopen, all-boundary-coverage assertion or shrinking campaign. The observer checks invocation
+counts, not nonce uniqueness. Twelve explicit directed renderer crashes supplement the generated cuts.
+
+The base registers cleanup before setup and creates synthetic credentials, temporary loopback service /
+SQLite state and browser contexts. Builds are in memory. Setup uses actual private registration,
+preparation, admission and handoff; spooled writing is not sent. New-page reopen shares a browser context;
+renderer death is not browser-process crash, power loss or another device. Optional JSON exports remain
+disabled; wrapper saved-output, ordering and prerequisite postconditions need separate integration.
+
+All 92 pure runner checks, direct TypeScript, scoped style, inventory/manifest, authority and signatures
+pass. Unchanged Node owner/Vitest-process/native-owner controls (23/5/12) retain pinned earlier evidence
+rather than new execution. The ledger phase's initial expected-pass historical service-path orphan
+classification remains unresolved; this phase establishes no fix. Core receive previously used 297.025
+of its 300-second Node deadline; narrow headroom remains at the loaded-host reliability gate.
+
+All 181 prior general contracts / 1,502 identities remain unchanged. General selections now contain
+182 files / 1,526 cases (96 Vitest, 86 Node), including 76 Account files / 432 cases. The 650,727-byte
+manifest retains 612 obligations / 235 unresolved: 76 test-file (60 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved (163 cases / 54 mutations).
+The [packet](./account-conformance-runs/2026-09-14-spool-fixture/README.md) retains complete receipts, frozen input/browser identities, the exact patch,
+source/helper pins, historical signatures, prior contracts and preservation. This new phase remains
+uncommitted; it does not establish the immutable aggregate. All 52 personal/vector pins and L-2 are
+byte-identical. Personal profiles/services/builds/recovery/factors, historical archives, formal debts,
+signing backups and root `done ` are untouched. Next: the delivery native fixture, followed by remaining
+native/wrapper integration, R-04, P-06 and the immutable run before private Account preparation.
+
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**236 blocked rows**: 77 test-file, 96 command, 63 campaign. All Vitest files have adapters; 61 Node
-and sixteen Playwright files remain. Next review the Account spool native fixture, then delivery
-native fixtures and other owners/wrapper postconditions. Keep retired-v8 exclusions and resolve
-remaining old wrapper calls without reviving support. Preserve ordered vector/traceability prerequisites
-and the open owner/loaded-host reliability observation.
+**235 blocked rows**: 76 test-file, 96 command, 63 campaign. All Vitest files have adapters; 60 Node
+and sixteen Playwright files remain. Next review the Account delivery native fixture, then other
+owners/wrapper postconditions. Keep retired-v8 exclusions and resolve remaining old wrapper calls
+without reviving support. Preserve ordered vector/traceability prerequisites and the open owner /
+loaded-host observations, including the prior core receive deadline headroom.
 
 R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
 prose sweep precede the complete immutable run. State workload/platform/claim dispositions before

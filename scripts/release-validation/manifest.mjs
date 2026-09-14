@@ -33,6 +33,7 @@ import {
   receiveDriverFixtureFiles,
   syncFixtureFiles,
   receiveEditorFixtureFiles,
+  spoolFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -439,6 +440,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'spool-fixture': rows
+        .filter((r) => account.node.includes(r.path) && spoolFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'receive-editor-fixtures': rows
         .filter((r) => account.node.includes(r.path) && receiveEditorFixtureFiles.includes(r.path))
