@@ -45,8 +45,8 @@ gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. 
 supply owned execution for 163 catalogue cases and 54 mutations.
 General integration covers **260 files / 2,015 case dispositions (11 not applicable)**, including all 123 Account files.
 0 test-file, 96 command and 63 campaign obligations remain.
-The detached-fork repair is verified; the unchanged application latency gate remains failed on CPU-4x Android typing. Pure/type/style checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
-Next: isolate the remaining undo-history and duplicate-preparation costs with the revised runtime, then choose a bounded ownership or history-copy repair that preserves staging and full verification; remaining command/campaign adapters and immutable qualification follow. [Latest evidence](./account-conformance-runs/2026-09-14-f17-forks/README.md).
+The residual preparation diagnostic is complete; the independent application latency gate remains failed on CPU-4x Android typing. Scoped checks pass. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: prototype fully detached selection-metadata copying with structuredClone fallback, generated value/alias/undo controls and balanced baseline/candidate timing before the unchanged application gate; duplicate preparation and the remaining command/campaign and immutable qualification work remain. [Latest evidence](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
 
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
@@ -85,7 +85,7 @@ No full `pnpm check`, broad platform qualification or public release is claimed 
 | Privacy, F-21.4 | Qualify supported browser/OS/custody opener combinations; document opaque/fragmented representations not covered by whole-sentinel scanning. Logical legacy cleanup does not erase forensic remnants. No heap/swap/unallocated-sector claim. |
 | Failures/recovery, F-09 | Current-format Local salvage is partial and requires intact authenticated custody. Account recovery, factor/key loss and unsupported historical formats need their own recovery/export/import contracts. Existing blocked-storage/prompt UX and lock-order documentation stay separately tracked (F-13/F-14/F-23/F-24). |
 | Storage, F-16 | The scheduler is advisory: continuous work can postpone it, pending dependencies preserve original frames, a large state stays large, and Account proof history is not pruned. Establish a supported growth/reopen envelope. |
-| Responsiveness, F-17 | Comparison and detached-fork repairs are verified. Desktop typing meets <16 ms in the latest run; CPU-4x Android remains over. Isolate residual undo/duplicate preparation, retaining dense/deletion/undo profiles, focus observations and supported-device validation. |
+| Responsiveness, F-17 | Comparison and detached-fork repairs are verified. The residual profile supports a fully detached selection-metadata clone attempt with fallback; both drafts and full verification stay. The independent application gate still fails on CPU-4x Android typing. Retain dense/deletion/undo profiles, focus observations and supported-device validation. |
 | Retained markers, F-19 | Confirm native storage/resource costs and end-to-end admission/open capacity at the declared workload. Full MAC/parse work, completion duplication and the 72 MiB private promotion body ceiling remain; the microprofile is not maximum-body/concurrency qualification. |
 
 Q-06/R-02's signing sweep now has a [verified crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json).

@@ -677,3 +677,58 @@ F-17 remains partial. Next isolate remaining undo-history and duplicate-preparat
 revised runtime before choosing an ownership or history-copy change. Private staging, refused-edit
 isolation, undo, pending delivery and full verification remain hard constraints. Dense-history,
 physical-device capacity, focus, command/campaign integration and immutable qualification remain open.
+
+
+## 2026-09-14 — Residual preparation and undo-history profile
+
+At signed `1fd04afa`, the unchanged browser diagnostic passes four cases with cold reopen, no retries
+and process drain. This evidence-only phase changes no runtime, test contract or budget. The last
+independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x Android card typing.
+[Protocol, full tables and next design](./f17-history-profile.md).
+[Evidence and retained analysis](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
+
+Twelve diagnostic p95 rows retain 1,440 raw timings. Over the two reverse-order blocks, desktop
+textarea/bare-CodeMirror/card values are 2.5/1.8, 2.4/17.9 and 15.0/16.4 ms; Android CPU-4x values
+are 5.1/5.4, 7.3/18.0 and 73.0/73.9 ms. Later bare-CodeMirror tails preserve the recorder/scheduler
+uncertainty. Do not subtract these controls or interpret the diagnostic as a new budget pass.
+
+Separate 60-key profiles attribute the following inclusive sampled milliseconds:
+
+| Work | Desktop | Android CPU 4x |
+| --- | ---: | ---: |
+| Private preparation | 542.9 | 2555.5 |
+| Admission document fork | 166.4 | 752.5 |
+| History document fork | 148.2 | 730.9 |
+| Undo/redo stack copying | 157.8 | 738.2 |
+| Full comparison after admission | 186.4 | 774.4 |
+| Publication listeners | 64.4 | 522.9 |
+
+Preparation includes both forks and stack copying; do not sum nested totals. The stack-item callback
+has 137.9/645.9 ms own sampled time, which cannot isolate native structuredClone from other inline
+work. Separate ten-cycle focus profiles attribute 19.3/100.6 ms to mounting; these are not per-event
+quantiles. Raw CPU profiles and complete resolved node mappings survive in the packet. Full generated
+source maps remain in the raw run with retained hashes, not duplicated into the bounded packet.
+
+The Node probe retains 360 measured document/history forks across nine declared strata, with five
+warmups per variant and twenty alternating pairs. At 1,000 human groups and 100,000 visible characters
+(3,000 integrated items), history medians with zero/one/100 targets per before/after selection are
+1.848/8.802/559.527 ms; corresponding document medians are 1.153/1.180/1.348 ms. All medians/ranges,
+state hashes and samples survive, including a 12.721 ms document-fork tail in another stratum.
+The document is fixed within each metadata comparison, but cross-depth item complexity grows.
+Synthetic target keys share the master-text basis; redo and redone counts are zero. These dependent,
+increasing-stratum-order host observations do not estimate a customer distribution or a causal
+application speedup. They do support metadata copying as a bounded next target alongside the browser
+stack attribution.
+
+Next prototype a specialized fully detached selection-metadata copy with structuredClone fallback,
+preserving within-item graph identity and separate clones across items. Pin generated value/alias,
+undo/redo and restoration oracles plus a deliberate sharing fault control before production edits.
+Keep both drafts, deletion sets, redone links, admission order and full verification unchanged. The
+prospective timing rule requires >=20% median improvement in both nonzero-metadata 1,000-group strata
+without consistent >10% regression in zero-metadata controls; then run semantic/native controls and
+the unchanged application gate alone. This optimization is not expected to close Android typing by
+itself. Duplicate preparation, full comparison, publication and device-capacity work remain open.
+
+All 99 pure runner checks, TypeScript, scoped style, inventory and authority checks pass. All 260
+prior general contracts, exclusions, 52 personal/vector pins and L-2 are unchanged. This phase adds
+no product correctness claim and no immutable release qualification.
