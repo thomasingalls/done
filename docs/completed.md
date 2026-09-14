@@ -5645,3 +5645,64 @@ classification, core receive headroom, capture map-refresh/byte-length follow-up
 editing/handoff deadline evidence remain open. Next: Account delivery-oracle native fixture, six
 cases including two controls; its computed names need registration review. Remaining integration,
 R-04 and P-06 precede the immutable aggregate and private Account preparation.
+
+
+## 2026-09-14 — Account delivery-oracle native fixture integration (`L-1`)
+
+The preceding service inbound phase is signed and verified as `a946620`.
+`delivery-oracle-native-fixture` adds one complete file / six cases: refusals and final heads in both
+orders, plus two forward-order mutation controls. All pass in 143.695 seconds including fingerprint
+work; Node execution took 113.095 within the existing 120-second native wrapper/file allowance and
+stage time 117.760. Only 6.905 seconds of Node headroom remains; retain this at the loaded-host gate.
+Worker/browser groups drain. Every case retains sixty seconds, startup fifteen and
+drain grace five. Product, native tests/helpers, owner, wrapper and limits remain unchanged.
+New integration work is uncommitted, not an immutable aggregate.
+
+Static registration previously refused the fixture's string-plus-boolean titles. A small finite-data
+interpreter extension admits string/boolean concatenation in either order; boolean arithmetic,
+object/function coercion, dynamic calls and null/undefined concatenation still refuse. The new generated
+test fails before repair and passes 160 populations afterward for both Node and Vitest. Six exact
+native identities are explicitly pinned; all 195 prior general contracts / 1,651 identities are unchanged.
+No test/helper module is executed during planning, and no historical/data input is needed for these
+inline declaration loops.
+
+The native fixture uses in-memory builds, owned CDP, temporary service custody and a synthetic Account.
+Its independent Node signer opens the fixture's acceptance seal and creates contradictory proofs;
+these are not claims issued by the live HTTP service state machine. The import-free constraint reference
+predicts accepted prefix, first refusal identity, first final cutoff, conflict/publication and exact
+submission/response wires. A unique test-only observation hook copies those fields from describeDelivery
+in baseline and mutant builds. Native assertions compare the full state after proofs, orderly page
+replacement and compaction. Shared active delivery code is exercised; retired-v8 exclusions stay intact.
+
+Two unique, single-hit mutations replace the first refusal identity or first final cutoff with the last.
+Each control must differ from the full-state reference after the second proof while publication remains
+conflict; a positive mismatch count is required. The assertion does not separately name the wrong field;
+the constrained mutation and retained anchor review identify the intended defect. Baselines must match.
+
+After closing the editor, the logical authenticated ledger census checks original heads/outbound rows,
+exact retained response-wire order and a witness event increase of one per retained proof. Duplicates
+and later terminal claims report recorded=false. The census does not compare physical ciphertext files
+or assert its returned counter. Visible master text, original envelopes and each original capture are
+compared across reopen/compaction. Additional captures must have the expected principal/human actor and
+empty [0,0] updates; they are not forbidden by count. The instrumented done/env/v2 encryption invocation
+count stays unchanged after preparation; this does not mean zero disk writes or all crypto activity.
+
+Cold closes a page and opens another in the same context. There are no renderer/browser/service crash
+cuts, fresh-profile restores, generated native histories or historical readers. Wrapper outputs,
+service-issued decision composition, finite-world/oracle histories and broader vector/control campaigns
+remain separate obligations.
+
+All 93 pure runner checks, five current Vitest-process controls, direct TypeScript, scoped style,
+planning, authority and signatures pass. Unchanged 23 Node-owner and fourteen native-owner controls
+retain earlier evidence. General selections contain 196 files / 1,657 cases (96 Vitest, 100 Node);
+Account has 90 files / 563 cases. The 677,364-byte manifest retains 612 obligations / 221 unresolved:
+62 test-file (46 Node, sixteen Playwright), 96 command and 63 campaign. All eleven catalogues remain
+resolved (163 cases / 54 mutations). These are integration obligations, not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-delivery-oracle-native-fixture/README.md) retains full receipts, the pre-repair counterexample, control anchors, exact
+patch, frozen input/browser identities, source/helper pins, base signature, prior contracts and
+preservation. All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups remain
+unchanged. Ledger orphan classification, core receive and delivery-oracle headroom, capture map-refresh/byte-length
+follow-ups and historical editing/handoff deadline evidence remain open. Next: Account parser-conformance
+native fixture, one case; then remaining integration, R-04, P-06 and the immutable aggregate before
+private Account preparation.

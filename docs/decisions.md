@@ -2924,3 +2924,18 @@ fetch; browser transport and CORS are separate. Repeated queries do not establis
 loss or service-state immutability. Cold cursor recovery without a writing assertion does not establish
 independent content reconstruction, particularly for locally authored envelopes in the same workspace.
 Keep service-only controls/histories, wrapper postconditions and human Account work separate.
+
+
+## 2026-09-14 — Admit boolean title concatenation without general coercion; retain full-state oracle controls
+
+Extend finite registration only for string/boolean concatenation in either order. Keep arithmetic
+booleans, object/function coercion, unknown calls and null/undefined concatenation outside the subset.
+Require generated Node/Vitest identity checks and exact six-case native reconciliation. This changes
+planning support, not native test bodies or product behavior.
+
+The delivery-oracle native controls must expose a full-state mismatch even while publication remains
+conflict. Preserve the unique first-refusal and first-final assignment mutations and the observation
+hook used equally by baseline and mutants. Signed contradictory proofs come from synthetic acceptance
+custody, not live service issuance. Credit logical proof retention, text/envelope preservation and orderly
+page reopen/compaction within the existing two-minute wrapper bound. Do not credit physical-disk
+immutability, crash recovery, all cryptographic activity or separate wrapper/oracle campaigns.

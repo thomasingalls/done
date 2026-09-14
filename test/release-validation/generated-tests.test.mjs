@@ -247,7 +247,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1651,
+    1657,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
@@ -378,6 +378,73 @@ test('160 generated boolean title branches preserve Node and Vitest identities w
       ),
     ),
     [['known']],
+  );
+});
+
+test('160 generated boolean concatenations preserve Node and Vitest titles while coercible objects and boolean arithmetic refuse', () => {
+  fc.assert(
+    fc.property(
+      fc.uniqueArray(fc.integer({ min: -1000, max: 1000 }), { minLength: 1, maxLength: 12 }),
+      fc.boolean(),
+      (ids, reverse) => {
+        const flags = reverse ? [true, false] : [false, true];
+        const body = `for(const id of ${JSON.stringify(ids)}) for(const flag of ${JSON.stringify(flags)}) {
+          test('right '+id+':'+flag,()=>{});
+          test(flag+':left '+id,()=>{});
+          test('sum '+(id+1)+':'+flag,()=>{});
+        }`;
+        const titles = ids.flatMap((id) =>
+          flags.flatMap((flag) => [
+            `right ${id}:${flag}`,
+            `${flag}:left ${id}`,
+            `sum ${id + 1}:${flag}`,
+          ]),
+        );
+        assert.deepEqual(
+          generatedNodeCensus('test/a.test.mjs', "import test from 'node:test';" + body).map(
+            (c) => c.id,
+          ),
+          titles.map((title) => 'test/a.test.mjs::' + title),
+        );
+        assert.deepEqual(
+          names(vitestCensus(subject, "import {test} from 'vitest';" + body)),
+          titles.map((title) => [title]),
+        );
+      },
+    ),
+    { seed: 140901, numRuns: 160 },
+  );
+  for (const value of [
+    'null',
+    'undefined',
+    '[]',
+    '{}',
+    '()=>true',
+    'unknown()',
+    '1e400',
+    '1n',
+    'true+1',
+    '1+false',
+    'true+false',
+  ])
+    for (const expression of [`'title '+(${value})`, `(${value})+' title'`]) {
+      const body = `test(${expression},()=>{});`;
+      assert.throws(
+        () => generatedNodeCensus('test/a.test.mjs', "import test from 'node:test';" + body),
+        /Unresolved|Nonfinite/,
+      );
+      assert.throws(
+        () => vitestCensus(subject, "import {test} from 'vitest';" + body),
+        /Unresolved|Nonfinite/,
+      );
+    }
+  assert.throws(
+    () =>
+      generatedNodeCensus(
+        'test/a.test.mjs',
+        "import test from 'node:test';for(const flag of [false,false]) test('flag '+flag,()=>{});",
+      ),
+    /duplicate/,
   );
 });
 

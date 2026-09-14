@@ -130,6 +130,12 @@ export function registrationData({ root, path, ast }) {
     if (n.type === 'BinaryExpression' && n.operator === '+') {
       const left = next(n.left),
         right = next(n.right);
+      // Test titles may concatenate a boolean, but boolean arithmetic remains unreviewed.
+      if (
+        (typeof left === 'string' && typeof right === 'boolean') ||
+        (typeof left === 'boolean' && typeof right === 'string')
+      )
+        return String(left) + String(right);
       assert(
         ['string', 'number'].includes(typeof left) && ['string', 'number'].includes(typeof right),
         'Unresolved addition',

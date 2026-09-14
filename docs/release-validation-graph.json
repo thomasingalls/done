@@ -8611,7 +8611,7 @@
       "declarations": 4,
       "propertyFamilies": [
         {
-          "line": 696,
+          "line": 717,
           "form": "fc.property"
         }
       ],
@@ -8761,7 +8761,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 167,
+          "line": 168,
           "form": "fc.property"
         }
       ],
@@ -8778,7 +8778,7 @@
           "test/release-validation/generated-tests.test.mjs"
         ]
       },
-      "declarations": 11,
+      "declarations": 12,
       "propertyFamilies": [
         {
           "line": 50,
@@ -8794,6 +8794,10 @@
         },
         {
           "line": 386,
+          "form": "fc.property"
+        },
+        {
+          "line": 453,
           "form": "fc.property"
         }
       ],
@@ -11793,7 +11797,7 @@
     },
     {
       "path": "scripts/release-validation/account-fixture-tests.mjs",
-      "sha256": "b826915ff518cde4644b30c01fc46c128b3f1ce40b6c2b179d7d0a52c6402406"
+      "sha256": "ae10616416487dc26048b142ae69039410f59c481d996ab084cf78b08714692e"
     },
     {
       "path": "scripts/release-validation/admission-adapter.mjs",
@@ -11837,7 +11841,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "51fc9d90652c1b6f4500b847e37bb5dc5b103738609104018c980b1bb308a191"
+      "sha256": "eca50a50579324c17997dc097a395c437645730ebf3fb332d0c3955acbb614c3"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -11881,7 +11885,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "7059fcd63fcedcdd474d95aca81c8186fafb12fad7564479f76049fbe63f11c8"
+      "sha256": "2be2c7cf1b3e1416db5c21345094df060fa0c243bde3c5dfc00cc669300a0f66"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11909,7 +11913,7 @@
     },
     {
       "path": "scripts/release-validation/registration-data.mjs",
-      "sha256": "00a00c8cb97bbeb9160a4d048cb67fb61b4e22d5f6612f3fb0e952ede36527c8"
+      "sha256": "85668a23ba17d9b188c859c3a1042ce9d3c8075f92beda1dcbbd54225cf41d95"
     },
     {
       "path": "scripts/release-validation/registration-modules.mjs",
@@ -13697,7 +13701,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "9b95eee348ff064150d658edfd79409d2d9781d42a9ca12ce7b2bf6e95848d60"
+      "sha256": "2cadbf018d2c5bbe2447ccb5cb858b92eb73a7b6ba07c2d5c1429336d9e6d1ee"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -13733,11 +13737,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "176499bc975c6e18fd54e8f92b431fd11c254d457c6c31775804549aa4373f0e"
+      "sha256": "6879382385fc72376b8fb17092114184af24b42810935cf02bba50d98232459c"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "1d8afda8fb360354757266915ecf445b719a0fe54e95f166956ca5035930b757"
+      "sha256": "4b9715cfbc7e31a14e67f7afd295de37dace1aa382daf57c601ad46592a79dca"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const deliveryOracleNativeFixtureFiles = ['test/account-delivery-oracle/native.test.mjs'];
+
 export const serviceInboundNativeFixtureFiles = ['test/account-service-inbound/native.test.mjs'];
 
 export const activationNativeFixtureFiles = ['test/account-activation/native.test.mjs'];
@@ -247,6 +249,7 @@ export const accountFixtureFiles = {
     ...coreNativeFixtureFiles,
     ...activationNativeFixtureFiles,
     ...serviceInboundNativeFixtureFiles,
+    ...deliveryOracleNativeFixtureFiles,
   ],
 };
 
@@ -271,7 +274,8 @@ export function accountFixtureNodeStage(root, file) {
     recoveryNativeFixtureFiles.includes(file) ||
     coreNativeFixtureFiles.includes(file) ||
     activationNativeFixtureFiles.includes(file) ||
-    serviceInboundNativeFixtureFiles.includes(file);
+    serviceInboundNativeFixtureFiles.includes(file) ||
+    deliveryOracleNativeFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -296,6 +300,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (deliveryOracleNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
       (serviceInboundNativeFixtureFiles.includes(file) ? 90000 : undefined) ??
       (activationNativeFixtureFiles.includes(file) ? 180000 : undefined) ??
       (coreNativeFixtureFiles.includes(file) ? 120000 : undefined) ??
