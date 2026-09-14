@@ -5,6 +5,7 @@ import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir, release } from 'node:os';
 import { join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 import { build } from 'vite';
 import { authenticator, finishRequest } from '../account-core/fixtures.mjs';
 import { hash, assess } from './matcher.mjs';
@@ -135,20 +136,24 @@ export async function fixture(t, { leak = false } = {}) {
   const dispose = async () => {
     if (closed) return;
     closed = true;
-    await browser?.close();
     try {
-      await rpc('close');
+      await context?.close();
     } finally {
-      child.kill();
-      rmSync(dir, { recursive: true, force: true });
+      try {
+        await browser?.close();
+      } finally {
+        try {
+          await rpc('close');
+        } finally {
+          child.kill();
+          rmSync(dir, { recursive: true, force: true });
+        }
+      }
     }
   };
   t.after(dispose);
   const { origin, pin } = await rpc('start', { dir, token });
-  browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-  });
+  browser = await openFixtureBrowser(chromium);
   context = await browser.newContext();
   await context.route(origin + '/', (route) =>
     route.fulfill({

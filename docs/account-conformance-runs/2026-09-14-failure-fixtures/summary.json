@@ -1,0 +1,146 @@
+{
+  "base": "d1eff10b765de4c514007cf496e55a2924e79833",
+  "claim": "Account failure and recovery fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-06-30.229Z",
+  "summary": {
+    "schema": 1,
+    "selection": "failure-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-failures/http.test.mjs",
+        "key": "222a9c2cbc6f4bb12b15589b0b31032ae2999fe27fe2b69e5733e65c9bc29c05",
+        "status": "passed",
+        "elapsedMs": 5926,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-failures/native.test.mjs",
+        "key": "9207670c96f52cabd5af839105fa886162bc00a997d0bfbb710b38be57791e9d",
+        "status": "passed",
+        "elapsedMs": 11452,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-failures/service.test.mjs",
+        "key": "c0e18c0293c56257b35d4c9325b4498a0ed5764a94f73140445bb4b087e8c874",
+        "status": "passed",
+        "elapsedMs": 2218,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:06:30.232Z",
+    "input": "4128c7d8495af243e426616232b57698904b8568bbfd7772aef3359202131e12",
+    "completedAt": "2026-09-14T12:07:19.123Z"
+  },
+  "elapsedMs": 48891,
+  "rawInputArchiveSha256": "c2e2f5dd78497c535dd25803ebcc6c6ec67ab212130939e6e1ae98381dd734d6",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "d1eff10b765de4c514007cf496e55a2924e79833",
+    "sourceDigest": "31b2f781caac88fa205047a503c2e0f56b91734360a2707f6f29d2ca4e05a3f9",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 3,
+    "selectedCases": 5,
+    "browserFiles": 2,
+    "fixtureInstances": 4,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "admissionRefusalControls": 3,
+    "serviceCommitFaults": 1,
+    "httpInvalidRequestControls": 1,
+    "priorGeneralFiles": 213,
+    "priorGeneralCases": 1734,
+    "currentGeneralFiles": 216,
+    "currentGeneralCases": 1739,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 120,
+    "accountFiles": 110,
+    "accountCases": 645,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 201,
+    "unresolvedTestFiles": 42,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 699942
+  },
+  "finalGatesSha256": "44147430b8ab7cded9669d1df884d2c15653cf493804c2f1a06bc7c0776bb69c",
+  "preservationSha256": "41807e48665f19071189f15269fec7edba42f83ed598ae93e109edc65e5673fe",
+  "limits": [
+    "Five unchanged cases across three complete files retain the existing private-release native group allowance of 120 seconds per admitted file. The three admission cases and HTTP case each retain a 60-second case limit; the service case has no explicit inner timeout and is bounded by its file stage. This does not qualify the original combined 120-second wrapper stage.",
+    "Three synthetic admission transport refusals return expired once at begin/challenge/finish. The retained marker stays admission-requested for begin or admission-offered otherwise, has no receipt, and an exact retry reaches a promotion receipt. These hints never serve as authenticated receipts. No renderer crash or generated histories run in this group.",
+    "The service case throws a sentinel error from an actually reached before-commit hook. It checks an unknown/storage-unavailable response, a submit/commit diagnostic and no PRIVATE substring in the returned diagnostic list. This is a focused diagnostic redaction assertion, not a complete log/diagnostic memory bound or whole-profile privacy proof.",
+    "The HTTP case sends a one-byte invalid read-v2 request through an actual loopback service. The client returns null decision bytes and an exact invalid-request response diagnostic. This is invalid-request handling rather than an induced network/storage outage. The fixture writes its default focused http-hint report inside the disposable execution checkout; it is removed with that checkout. The exact answer/diagnostic assertions and owned reporter receipt are retained, without auxiliary JSON credit. Optional admission/service reports remain unset.",
+    "The residue fixture shared by HTTP now uses the existing owned-CDP helper and closes its explicitly created context. Nested finally blocks attempt browser, service and directory cleanup even if an earlier close fails. Standalone execution retains the original launch fallback. Test bodies, collection/matching code, service fixture, product, owners, census, reporters and wrapper remain unchanged. Full residue suites retain separate unresolved obligations; HTTP success does not qualify their privacy collectors.",
+    "Four disposable browser fixture instances plus one Node service fixture use generated secrets, software authenticators, retained synthetic factor options and private loopback services. No human PRF/passkey, real Account receipt, second device, personal profile/origin/build, physical power loss or forensic-erasure claim. Excluded retired-v8 files and unselected historical branches remain excluded.",
+    "All prior general contracts and exclusions remain unchanged; existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and deadline evidence remain open. Exact owned receipts, source/browser pins and the changed-fixture patch are archived. Whole wrapper/output and immutable aggregate qualification remain separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-failures/http.test.mjs",
+        "nodeSummaryMs": 3213.91875,
+        "stageElapsedMs": 5926,
+        "fileDeadlineMs": 120000
+      },
+      {
+        "id": "test:test/account-failures/native.test.mjs",
+        "nodeSummaryMs": 8817.84075,
+        "stageElapsedMs": 11452,
+        "fileDeadlineMs": 120000
+      },
+      {
+        "id": "test:test/account-failures/service.test.mjs",
+        "nodeSummaryMs": 299.985083,
+        "stageElapsedMs": 2218,
+        "fileDeadlineMs": 120000
+      }
+    ],
+    "selectionElapsedMs": 48891,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "nativeCaseMs": [
+      60000,
+      60000,
+      60000
+    ],
+    "httpCaseMs": 60000,
+    "serviceCaseMs": null,
+    "note": "Existing wrapper and case limits retained."
+  },
+  "httpDiagnosticReport": {
+    "retained": false,
+    "note": "The fixture writes its default focused report inside the disposable execution checkout. That checkout is removed after the run. The exact null answer and diagnostic are asserted by the passed case; no auxiliary JSON or wrapper-output credit is claimed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "89f0b91cf8635b9e6f8220f1ec3eda83b037f699b1497ef0638ed0f521bf1657",
+    "compressedSha256": "b3d36c5e1b6eba5b86dbfa71c00d4463fe91e72ba0c1da055e03a9de94421a21"
+  }
+}

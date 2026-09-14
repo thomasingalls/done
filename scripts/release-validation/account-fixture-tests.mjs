@@ -7,6 +7,15 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const failureBrowserFixtureFiles = [
+  'test/account-failures/http.test.mjs',
+  'test/account-failures/native.test.mjs',
+];
+export const failureFixtureFiles = [
+  ...failureBrowserFixtureFiles,
+  'test/account-failures/service.test.mjs',
+];
+
 export const decisionHistoryFixtureFiles = [
   'test/account-decision-composition/generated.test.mjs',
   'test/account-decision-composition/order.test.mjs',
@@ -310,6 +319,7 @@ export const accountFixtureFiles = {
     ...outboundNativeFixtureFiles,
     ...decisionDirectedFixtureFiles,
     ...decisionHistoryFixtureFiles,
+    ...failureFixtureFiles,
   ],
 };
 
@@ -347,7 +357,8 @@ export function accountFixtureNodeStage(root, file) {
     reservationDurabilityBrowserFiles.includes(file) ||
     outboundNativeFixtureFiles.includes(file) ||
     decisionDirectedFixtureFiles.includes(file) ||
-    decisionHistoryFixtureFiles.includes(file);
+    decisionHistoryFixtureFiles.includes(file) ||
+    failureBrowserFixtureFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -372,6 +383,7 @@ export function accountFixtureNodeStage(root, file) {
         : {}),
     },
     deadlineMs:
+      (failureFixtureFiles.includes(file) ? 120000 : undefined) ??
       (decisionHistoryFixtureFiles.includes(file) ? 300000 : undefined) ??
       (decisionDirectedFixtureFiles.includes(file) ? 300000 : undefined) ??
       (outboundNativeFixtureFiles.includes(file) ? 60000 : undefined) ??

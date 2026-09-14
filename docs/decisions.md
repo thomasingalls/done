@@ -3077,3 +3077,8 @@ Integrate the two unchanged directed decision files with twelve cases under thei
 ## 2026-09-14 — Qualify decision ordering with exact retained proof sets and native process cuts
 
 Integrate the three unchanged restart/order/generated files under the existing five-minute file bounds. Credit four actual service SIGKILL and four renderer crashes, two directed proof-arrival orders and 28 fixed-seed property histories. Keep command-level optional reports, full wrapper output, physical power-loss guarantees and immutable aggregate qualification separate. Preserve the initially failed registration-order check and the passing correction.
+
+
+## 2026-09-14 — Treat failure hints as diagnostics while retaining exact admission retry
+
+Integrate five unchanged service/HTTP/admission failure cases, retaining null decision bytes or no receipt on diagnostic hints and exact retryable progress. Borrow the existing owned browser for the shared residue HTTP fixture, explicitly close its context and attempt each cleanup boundary independently. Keep broad diagnostic/privacy claims, full residue suites and the original combined wrapper allowance separate.
