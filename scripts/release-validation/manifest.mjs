@@ -49,6 +49,7 @@ import {
   serviceInboundNativeFixtureFiles,
   deliveryOracleNativeFixtureFiles,
   parserConformanceNativeFixtureFiles,
+  promotionContractNativeFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -455,6 +456,12 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'oracle-parser-fixtures': rows
         .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'promotion-contract-native-fixture': rows
+        .filter(
+          (r) =>
+            account.node.includes(r.path) && promotionContractNativeFixtureFiles.includes(r.path),
+        )
         .map((r) => r.id),
       'parser-conformance-native-fixture': rows
         .filter(

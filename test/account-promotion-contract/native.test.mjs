@@ -80,6 +80,9 @@ async function install(page, change) {
               r.account.draft.principalId = r.source.principalId;
             if (change.field === 'source.workspaceId')
               r.account.draft.workspaceId = r.source.workspaceId;
+            // Exercise the old no-op substitution edge deterministically before signing.
+            if (change.omit?.[0] === 'pending')
+              r.account.confirmation.receiptId = 'a' + r.account.confirmation.receiptId.slice(1);
             const signed = await PromotionContract.signPromotion(root, r, subtle);
             if (change.omit) {
               const a = JSON.parse(
@@ -104,11 +107,16 @@ async function install(page, change) {
                 ),
               );
               // Change the omitted value after signing: the native control must accept a real substitution.
-              if (p[0] === 'pending')
-                signed.account.confirmation.receiptId =
-                  'a' + signed.account.confirmation.receiptId.slice(1);
-              else if (p.length === 1) signed.id = 'ff'.repeat(16);
-              else signed.handoff.destination.account.promotionId = 'ff'.repeat(16);
+              const target =
+                  p[0] === 'pending'
+                    ? signed.account.confirmation
+                    : p.length === 1
+                      ? signed
+                      : signed.handoff.destination.account,
+                field = p[0] === 'pending' ? 'receiptId' : p.length === 1 ? 'id' : 'promotionId',
+                original = target[field];
+              target[field] = (original[0] === 'a' ? 'b' : 'a') + original.slice(1);
+              if (target[field] === original) throw Error('Omitted binding must actually change');
             }
             await PromotionContract.put(d2saved.key, signed);
           },

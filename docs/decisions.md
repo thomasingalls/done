@@ -2952,3 +2952,21 @@ positive and refusal of seven malformed records after reopening the connection. 
 is structurally valid only. The same page remains alive and parsePromotion is called directly; this is
 not authenticated workspace startup or crash recovery. Keep the wrapper's broader parser matrices,
 omission controls, old-source comparison and report postconditions separate.
+
+
+## 2026-09-14 — Require omitted-binding controls to perform a real substitution
+
+Integrate the three promotion-contract native cases under the existing three-minute wrapper bound,
+with sixty seconds per case. Retain the current interpreter and owned browser fixture. Credit thirteen
+stage/version carriers, ten inputs for one source-guard omission and three HMAC-message omissions
+within those three reporter identities, separately from complete wrapper/vector qualification.
+
+Repair the receipt substitution that could leave an `a`-prefixed value unchanged. Toggle and assert
+inequality for all three target bindings, and force the pending receipt's old no-op edge before signing
+on every native run. Preserve the source-extraction reproduction and 160 generated repaired checks.
+The mutated verifier must still invoke real WebCrypto verification with the omitted message field;
+unconditional verification success would not establish this control's effect.
+
+Credit current reader authentication and source binding of directly installed synthetic marker rows.
+Fixture stage/version carriers do not prove service-authorized lifecycle transitions or cold writing
+recovery, and the v8 carrier remains a shared reader case rather than a supported product path.

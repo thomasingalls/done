@@ -35,6 +35,7 @@ import {
   serviceInboundNativeFixtureFiles,
   deliveryOracleNativeFixtureFiles,
   parserConformanceNativeFixtureFiles,
+  promotionContractNativeFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -49,7 +50,7 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 552 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 555 Node cases and 12 delivery cases while remaining native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
@@ -57,7 +58,7 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
       4, 1, 9, 5, 1, 2, 9, 5, 7, 1, 4, 12, 17, 12, 24, 19, 6, 15, 16, 15, 15, 14, 12, 4, 1, 2, 5, 1,
-      6, 1,
+      6, 1, 3,
     ],
   );
   for (const s of stages) {
@@ -85,7 +86,8 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
       activationNativeFixtureFiles.includes(s.argv.at(-1)) ||
       serviceInboundNativeFixtureFiles.includes(s.argv.at(-1)) ||
       deliveryOracleNativeFixtureFiles.includes(s.argv.at(-1)) ||
-      parserConformanceNativeFixtureFiles.includes(s.argv.at(-1));
+      parserConformanceNativeFixtureFiles.includes(s.argv.at(-1)) ||
+      promotionContractNativeFixtureFiles.includes(s.argv.at(-1));
     assert.equal(
       s.deadlineMs,
       {
@@ -106,6 +108,7 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
         'test/account-service-inbound/native.test.mjs': 90000,
         'test/account-delivery-oracle/native.test.mjs': 120000,
         'test/account-parser-conformance/native.test.mjs': 120000,
+        'test/account-promotion-contract/native.test.mjs': 180000,
         'test/account-delivery/native.test.mjs': 480000,
         'test/account-spool/native.test.mjs': 240000,
         'test/account-receive/native.test.mjs': 300000,
@@ -129,10 +132,10 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 91);
+  assert.equal(selected.length, 92);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    564,
+    567,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -635,6 +638,16 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
   assert.deepEqual(parserConformance[0].fixture, { kind: 'chromium-cdp', startupMs: 15000 });
   assert.equal(parserConformance[0].expect.dataInputs, undefined);
   assert.equal(parserConformance[0].expect.historyInputs, undefined);
+  const promotionContract = selectStages(m, 'promotion-contract-native-fixture');
+  assert.deepEqual(
+    promotionContract.map((s) => s.argv.at(-1)),
+    promotionContractNativeFixtureFiles,
+  );
+  assert.equal(promotionContract[0].expect.cases.length, 3);
+  assert.equal(promotionContract[0].deadlineMs, 180000);
+  assert.deepEqual(promotionContract[0].fixture, { kind: 'chromium-cdp', startupMs: 15000 });
+  assert.equal(promotionContract[0].expect.dataInputs, undefined);
+  assert.equal(promotionContract[0].expect.historyInputs, undefined);
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -649,7 +662,7 @@ test('Account fixture selection admits exactly 552 Node cases and 12 delivery ca
     ),
   );
   for (const f of [
-    'test/account-promotion-contract/native.test.mjs',
+    'test/account-checkpoint-contract/native.test.mjs',
     'test/account-admission-bounds/native.test.mjs',
   ]) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), f), /Unreviewed/);

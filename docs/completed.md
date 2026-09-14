@@ -5756,3 +5756,60 @@ core receive and delivery-oracle headroom, capture map-refresh/byte-length follo
 editing/handoff deadline evidence remain open. Next: Account promotion-contract native fixture,
 three cases; then remaining integration, R-04, P-06 and the immutable aggregate before private
 Account preparation.
+
+
+## 2026-09-14 — Account promotion-contract native fixture integration (`L-1`)
+
+The preceding parser-conformance phase is signed and verified as `85d964a`.
+`promotion-contract-native-fixture` adds one complete native file / three cases. It passes in 36.446
+seconds including fingerprint work; Node execution took 8.325 within the existing 180-second native
+wrapper/file allowance and stage time 10.860. Worker/browser groups drain; the recorded disposable
+browser PID is absent afterward. Cases retain sixty seconds, startup fifteen and drain grace five.
+Product, runtime helpers, registration interpreter, owner, wrapper and limits are unchanged.
+New runner integration and a native control repair are uncommitted, not an immutable aggregate.
+
+The fixture creates synthetic Local custody, registers an Account, confirms recovery and prepares
+promotion through the existing owned CDP context and temporary loopback service. In-memory Vite
+exports expose test signing and digest seams. Each input restores the saved prepared marker before
+directly installing a test row. All reads occur in the same page.
+
+The first case checks thirteen stage/version carriers from v1 through v9. Correct-MAC records must
+return their expected stage through readPromotion; changing the marker ID afterward must cause the
+exact authentication failure. Nested genesis/admission/handoff payloads are fixture substitutions,
+not completed service-authorized transitions. This tests the shared reader's carrier grammar, MAC
+and source binding, not nested proof authorization, index selection or cold writing reconstruction.
+Reading a v8 carrier does not restore retired-v8 product support.
+
+The second case authenticates ten source, budget and credential-collision lies. Current code rejects
+each with the exact source-or-budget refusal; an in-memory omission of that one guard accepts each.
+The source-generation comparison exists but is not independently varied by this native case.
+The third case omits three HMAC-message bindings: marker ID, pending confirmation receipt ID and
+v9 handoff destination promotion ID. Baseline reads refuse. A verification hook removes the matching
+field and delegates to the original WebCrypto verifier; the read must accept and the interception
+counter must be positive. The hook does not return true unconditionally and is restored in finally.
+
+Review found a real control weakness: assigning a fixed leading `a` to a receipt already beginning
+with `a` made no change. A saved source-extraction check reproduces that defect in the signed base.
+All three binding substitutions now toggle the first character and assert inequality. The native
+pending case deliberately starts with `a` before signing, exercising the old no-op edge every run.
+The repaired substitution passes 160 generated input sets (seed 140902), checking actual change and
+valid-width identifier alphabets across three prefixes and target paths. This is fixture hardening,
+not evidence of a production protocol defect. The generated check is supplementary saved evidence;
+the native test retains the deterministic edge and guard. Reporter identities remain three cases.
+
+All 93 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures pass.
+Unchanged 23 Node-owner, fourteen native-owner and five Vitest-process controls retain prior evidence.
+All 197 prior general contracts / 1,658 identities and exclusions remain unchanged. General selections
+now contain 198 files / 1,661 cases (96 Vitest, 102 Node); Account has 92 files / 567 cases.
+The 678,973-byte manifest retains 612 obligations / 219 unresolved: sixty test-file (44 Node, sixteen
+Playwright), 96 command and 63 campaign. All eleven catalogues remain resolved (163 cases /
+54 mutations). These are integration obligations, not defect counts.
+
+The [packet](./account-conformance-runs/2026-09-14-promotion-contract-native-fixture/README.md) retains receipts, exact patch, frozen input/browser identities, source/helper
+pins, base signature, generated before/after evidence and preservation. No native generated histories,
+crashes or historical readers run. Wrapper matrices, broader vectors/controls and report postconditions
+remain separate obligations. All 52 personal/vector pins, L-2 and historical evidence/debts/signing
+backups remain unchanged. Ledger orphan classification, core receive/delivery-oracle headroom,
+capture oracle follow-ups and prior deadline evidence remain open. Next: Account checkpoint-contract
+native fixture, four cases; then remaining integration, R-04, P-06 and the immutable aggregate before
+private Account preparation.
