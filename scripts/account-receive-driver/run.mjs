@@ -124,7 +124,8 @@ try {
       60000,
     ],
     ...[
-      ['native', 120000],
+      // Includes the four R-01 size cases added after the original five-case suite.
+      ['native', 180000],
       ['controls', 90000],
       ['native-controls', 90000],
       ['generated', 270000],

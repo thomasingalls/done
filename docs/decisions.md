@@ -2645,3 +2645,22 @@ selected calls do not use those branches and the owner clears ambient fixture-co
 Optional JSON exports, original wrapper ordering/prerequisites and saved-output postconditions remain
 separate obligations. Distinguish real service HTTP, independently signed fixture pages, renderer
 crash and same-context page reopen when stating the evidence's scope.
+
+
+## 2026-09-14 — Separate receive scheduler and browser fixture ownership
+
+The receive-driver selection explicitly admits four complete files. Its five scheduler omission
+controls use a copied TypeScript module and virtual clock, with no browser; only generated histories,
+final dispatch controls and native cases receive an owned Chromium/CDP fixture. Preserve each file's
+reviewed whole-file bounds, rather than inferring ownership from the directory name. Existing case census and process ownership need no implementation changes.
+
+The initial native run exhausted the original 120-second file bound after seven passing cases.
+Signed history shows four R-01 cases were added after that bound was set for five cases. Use
+180 seconds for the complete nine-case file in both adapter and wrapper; keep its individual
+45-second limits and every assertion. Preserve the failure and partial report. Other file bounds
+remain unchanged. This calibrates one fixture suite, not loaded-host aggregate reliability.
+
+Generated fixture pages and simulated navigator connectivity remain distinct from the real service
+polling case. Prior scheduler Vitest/property checks retain earlier evidence. Whole-wrapper ordering,
+prerequisites and optional JSON exports require their own postconditions. Signing completed phase
+commits reconciles navigation and the recorded staged tree without rewriting historical receipts.

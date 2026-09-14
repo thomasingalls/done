@@ -7,6 +7,23 @@ import { join } from 'node:path';
 import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
 
+export const receiveDriverBrowserFiles = [
+  'test/account-receive-driver/generated.test.mjs',
+  'test/account-receive-driver/native-controls.test.mjs',
+  'test/account-receive-driver/native.test.mjs',
+];
+export const receiveDriverFixtureFiles = [
+  'test/account-receive-driver/controls.test.mjs',
+  ...receiveDriverBrowserFiles,
+];
+const receiveDriverDeadlines = {
+  'test/account-receive-driver/controls.test.mjs': 90000,
+  'test/account-receive-driver/generated.test.mjs': 270000,
+  'test/account-receive-driver/native-controls.test.mjs': 90000,
+  // Nine cases now include four R-01 size checks; keep the reviewed wrapper bound.
+  'test/account-receive-driver/native.test.mjs': 180000,
+};
+
 export const receiveTransportFixtureFiles = [
   'test/account-receive-transport/controls.test.mjs',
   'test/account-receive-transport/generated.test.mjs',
@@ -148,13 +165,16 @@ export const accountFixtureFiles = {
     ...oracleParserFixtureFiles,
     ...transportServiceFixtureFiles,
     ...receiveTransportFixtureFiles,
+    ...receiveDriverFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser =
-    admissionEvidenceFiles.includes(file) || receiveTransportFixtureFiles.includes(file);
+    admissionEvidenceFiles.includes(file) ||
+    receiveTransportFixtureFiles.includes(file) ||
+    receiveDriverBrowserFiles.includes(file);
   const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
     root,
   });
@@ -178,7 +198,10 @@ export function accountFixtureNodeStage(root, file) {
         ? { historyInputs: history[file].map((locator) => historicalInput(root, ...locator)) }
         : {}),
     },
-    deadlineMs: receiveTransportDeadlines[file] ?? (browser ? 360000 : 180000),
+    deadlineMs:
+      receiveDriverDeadlines[file] ??
+      receiveTransportDeadlines[file] ??
+      (browser ? 360000 : 180000),
     graceMs: 5000,
     maxLogBytes: 4 * 1024 * 1024,
     maxReportBytes: 1024 * 1024,

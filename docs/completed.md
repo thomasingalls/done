@@ -4516,3 +4516,47 @@ All 21 personal/package pins, 31 prior vectors and L-2 are byte-identical. Perso
 root build, recovery/factor files, root `done `, historical archives, formal debts and signing backups
 remain untouched. Next review the four browser receive-driver fixtures for polling and reconnect,
 then remaining native/Playwright/nested owners and wrappers before R-04, P-06 and the immutable run.
+
+
+## 2026-09-14 — Receive-driver polling/reconnect fixture integration (`L-1`)
+
+Both preceding phases are now signed and verified: transport service `b0e7828` and browser receive
+transport `fa80a53`. The former exactly matches the previously recorded `6abb609` staged tree.
+Historical evidence retains its actual execution revision and signing status at capture; current
+navigation records closure. No history rewrite, evidence substitution or aggregate rerun follows.
+
+The new `receive-driver-fixtures` selection adds four files / seventeen cases: scheduler controls 5,
+generated 1, native dispatch controls 2 and native 9. Only the last three files need owned Chromium.
+Product source, all four selected tests and their helpers are unchanged. Existing ownership and
+finite census suffice. Final file bounds are 90/270/90/180 seconds, with 15-second browser startup and
+five-second drain grace. Ten generated histories keep seed 9112052, endOnFailure:true and 240 seconds.
+
+All seventeen cases pass in the final owned run in 424.417 seconds, including fingerprint work;
+every worker and browser group drains. The five virtual-clock omissions and two native dispatch
+controls remain effective. Generated histories compare writing, durable progress, capture count and
+reopen cursor after five to seven publish/local/lost/offline/halt/restart actions. Nine native cases
+cover real service polling after later acceptance, loss/backoff, sticky halt, storage failure,
+close/exclusion drain and four R-01 size refusals with explicit retry. Offline is a simulated
+navigator signal; generated pages are signed fixture responses. Reopen uses a fresh page in the same
+context. This is not real network-loss, second-device, crash, power-loss or capacity qualification.
+
+All 92 pure runner checks, direct TypeScript, scoped style, inventory/manifest, authority and
+signature checks pass. Unchanged owner/Vitest-process/native controls (23/5/12) retain pinned prior
+evidence. The initial native file timed out after seven passing cases. Its old 120-second bound preceded
+the four R-01 additions to the original five-case suite. Both wrapper and adapter now allow
+180 seconds for that file; all individual 45-second case limits remain. The first failure, partial
+case report and signed history proving the expansion are retained. Test bodies need no repair. The ledger phase's initial
+expected-positive historical-control orphan classification remains unresolved; no fix is claimed.
+
+All 170 prior contracts / 1,427 case identities remain unchanged. General selections now contain
+174 files / 1,444 cases (96 Vitest, 78 Node), including 68 Account files / 350 cases. Manifest:
+612 obligations / 243 unresolved (84 test-file: 68 Node and sixteen Playwright; 96 command; 63 campaign),
+634,913 bytes. All eleven catalogues remain resolved: 163 cases / 54 mutations.
+The [packet](./account-conformance-runs/2026-09-14-receive-driver-fixtures/README.md) retains full receipts, browser/source pins, exact patch, prior contracts,
+signature reconciliation and preservation. The new phase remains uncommitted; it is not an immutable
+aggregate and does not discharge whole-wrapper ordering, prerequisites or optional JSON outputs.
+
+All 21 personal/package pins, 31 prior vectors and L-2 are byte-identical. Personal profiles/servers,
+root build, recovery/factors, historical archives, root `done `, formal debts and signing backups
+remain untouched. Next: the five Account sync/composition fixture files, including review of their
+historical-input and browser ownership requirements, before remaining native/wrapper integration.

@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**247 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**243 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -48,6 +48,7 @@ node scripts/release-validation/execute.mjs --selection preparation-fixtures
 node scripts/release-validation/execute.mjs --selection oracle-parser-fixtures
 node scripts/release-validation/execute.mjs --selection transport-service-fixtures
 node scripts/release-validation/execute.mjs --selection receive-transport-fixtures
+node scripts/release-validation/execute.mjs --selection receive-driver-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -945,11 +946,13 @@ initial failed selection, expanded-fixture timeout, final receipts, exact patch,
 and preservation. An earlier new planning assertion misclassified the already-retired wrapper; its
 corrected exclusion check and original failure log are also retained. Product source is unchanged.
 All 164 prior contracts / 1,403 identities remain unchanged. General selections now cover 167 files /
-1,413 cases (96 Vitest, 71 Node), with 61 Account files / 319 cases. This phase is uncommitted.
+1,413 cases (96 Vitest, 71 Node), with 61 Account files / 319 cases. Signed `b0e7828` closes this phase.
 
 ## Browser receive-transport fixtures — phase 2y
 
-Transport service fixtures remain staged at tree `6abb609`; the SSH signing agent refused the requested commit. Signing is pending; new phase changes remain unstaged. `receive-transport-fixtures` adds three files / fourteen cases (controls 4, generated 1,
+Transport service fixtures are signed `b0e7828`, matching the recorded `6abb609` tree.
+Browser receive-transport fixtures are signed `fa80a53`. Both signatures are verified; historical
+evidence retains its actual execution identity and signing status at capture. `receive-transport-fixtures` adds three files / fourteen cases (controls 4, generated 1,
 native 9) through the existing owned-CDP adapter. Product code, control/generated tests and shared
 helpers are unchanged. A stale native overflow assertion is corrected to the exact R-01 refusal. Preserve the original wrapper's individual 90/330/120-second file
 bounds, 15-second browser startup and five-second drain grace. Earlier admission-evidence browser
@@ -989,18 +992,60 @@ All 167 prior contracts / 1,413 identities remain unchanged. General selections 
 1,427 cases (96 Vitest, 74 Node), with 64 Account files / 333 cases. The [packet](./account-conformance-runs/2026-09-13-receive-transport-fixtures/README.md) retains full
 receipts, browser/source pins, ownership evidence, exact patch and preservation. Its source patch is
 relative to the preceding staged transport tree; the execution retains its actual HEAD and full input
-fingerprint. New documentation/evidence does not make this an immutable aggregate. This phase is
-uncommitted. Optional JSON exports and the wrapper's original order/prerequisites remain separate.
+fingerprint. New documentation/evidence does not make this an immutable aggregate. Signed `fa80a53`
+closes this phase. Optional JSON exports and the wrapper's original order/prerequisites remain separate.
+
+## Receive-driver polling/reconnect fixtures — phase 2z
+
+Transport service `b0e7828` and receive transport `fa80a53` are signed and verified. The former matches
+the preceding packet's recorded staged tree exactly. Archived receipts and signing-status-at-capture
+text remain unchanged; current navigation records closure. `receive-driver-fixtures` adds four files /
+seventeen cases: scheduler controls 5, generated 1, native dispatch controls 2, native 9.
+
+The scheduler controls need only Node and a copied TypeScript module under the disposable checkout's
+ignored test-results directory. Its type-only import is erased by Node. A virtual clock and held
+operation promises expose overlap, missing idle polling, cleared sticky halt, observer cancellation
+and lost resume; each source replacement requires an exact anchor. Only three files use the existing
+owned-CDP browser. Final file deadlines are 90/270/90/180 seconds; per-test bounds,
+15-second browser startup and five-second drain grace remain. No owner or finite-reader changes.
+
+Ten generated browser histories retain seed 9112052, endOnFailure:true and 240 seconds. Five to seven
+publish/local/lost/offline/halt/restart actions compare writing, durable receive progress and local
+capture count at each step, including reopen request cursor. All action types must occur. Fixture
+pages are signed independently; generated histories do not exercise randomized real-service delivery.
+
+Nine native cases cover real service empty-to-later-acceptance polling with fresh requests and no
+local wake; lost replies/backoff plus local editing; sticky invalid-page halt; aborted native receive
+and Local repair; close/exclusion drain and prompt backoff close; four R-01 wire/count/declared/streamed
+size refusals that preserve Local and retry only explicitly. Two native controls inject offline or
+journal pressure at the final dispatch boundary: baseline fetches zero times, bypass fetches once.
+Offline/online uses a navigator override and synthetic events. Reopen is a fresh page in the same
+context with clean close, not a browser crash, power-loss or real second-device test.
+
+The final selection passes all seventeen cases in 424.417 seconds with all worker/browser groups
+drained. All 92 pure runner checks, direct TypeScript, scoped style, planning, authority and signatures
+pass. Product source, selected tests/helpers, assertions and populations are unchanged. The initial
+native file hit its 120-second deadline after seven passing cases; signed history shows that bound
+predated four R-01 additions to the original five-case suite. Both adapter and wrapper now allow
+180 seconds for the whole file while all 45-second case limits remain. The initial partial report,
+full failure receipts and signed provenance are retained. Unchanged Node owner/Vitest-process/native
+controls (23/5/12) retain pinned prior evidence. The earlier expected-positive owner orphan classification remains unresolved.
+
+All 170 prior contracts / 1,427 identities remain unchanged. General selections now contain 174 files /
+1,444 cases (96 Vitest, 78 Node), including 68 Account files / 350 cases. The [packet](./account-conformance-runs/2026-09-14-receive-driver-fixtures/README.md) retains
+full receipts, browser/source identities, exact patch, prior contracts, signature reconciliation and
+preservation. This new phase is uncommitted. Frozen bounded evidence is not an immutable aggregate;
+optional JSON outputs and original wrapper ordering/prerequisites require separate postconditions.
 
 ## Next bounded integration
 
 All eleven catalogues remain resolved: 163 cases and 54 mutations. The manifest has 612 obligations /
-**247 blocked rows**: 88 test-file, 96 command, 63 campaign. All Vitest files have adapters; 72 Node
-and sixteen Playwright files remain. Next review the four browser receive-driver files for polling
-and reconnect. Other owners and exact wrapper/output postconditions follow. Optional ACCOUNT_REPORT_DIR
-exports remain disabled in these file selections. Keep retired-v8 exclusions and resolve remaining
-old wrapper calls without reviving support. Preserve ordered vector/traceability prerequisites and
-the open owner/loaded-host reliability observation.
+**243 blocked rows**: 84 test-file, 96 command, 63 campaign. All Vitest files have adapters; 68 Node
+and sixteen Playwright files remain. Next review the five Account sync/composition fixture files,
+including historical-input and browser ownership requirements. Other owners and exact wrapper/output
+postconditions follow. Keep retired-v8 exclusions and resolve remaining old wrapper calls without
+reviving support. Preserve ordered vector/traceability prerequisites and the open owner/loaded-host
+reliability observation.
 
 R-04's archive/generated style scopes, live-source repairs and full checks, then P-06's cryptographic
 prose sweep precede the complete immutable run. State workload/platform/claim dispositions before
