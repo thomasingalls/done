@@ -7361,3 +7361,61 @@ pins, root perspective, append-only record prefixes and L-2 are preserved; perso
 phone, relay and deployment remain untouched. This new integration phase is uncommitted.
 [Phase and scope](./f17-rc-integration.md);
 [frozen source, receipts and controls](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).
+
+
+## 2026-09-15 — F-17 lifetime evidence passes; core-receive qualification hits its existing deadline
+
+The selected integration is signed and signature-verified as `132bc7d3`. Its runtime, tests,
+registrations, defaults and formats remain unchanged throughout this phase. The fixed controlled-
+carrier Chromium campaign passes four reference/candidate/candidate/reference sessions, 1,920 main
+text edits and 152 collection checkpoints. Each mode uses the currently integrated common code;
+this compares preparation modes, not a historical pre-optimization runtime.
+
+Candidate sessions each create 36 workspace histories versus 508 for the reference across the same
+editing, reset, pressure, discard, retry and close/reopen sequence. Actual candidate text batches
+create one or two histories versus 40 for reference batches. Quiescent text retains at most two
+candidate histories and one reference history; pending/leased work can retain two in either mode.
+All observed histories are destroyed and collected after close despite retaining five closed facade
+objects per session. Idle listeners do not accumulate. Scratch remains at most two encoders with
+256 KiB/1,024-slot per-encoder caps and cleared byte/string fields. Large input actually crosses
+both caps before cleanup (about 1.36 MB/1,601 fields); small input, reentry and throwing encoders
+retain correctness. Three deliberate faults detect strong history retention, missing idle-listener
+removal and uncleared scratch strings. Every campaign/control browser context and process drains.
+
+The measurements establish a bounded workspace-history/scratch result, not whole-application memory
+release. A supplementary probe confirms that a retained closed facade still holds its destroyed
+canonical admission document and writing in both modes; dropping that facade permits collection.
+The const canonical binding and destroy-only disposal predate this integration. The initial
+protocol's broad word “document” must be read as the instrumented workspace-history documents;
+it does not establish eager release of every document. Record canonical-facade cleanup as a separate
+existing hardening opportunity, not a buffer regression or forensic-erasure guarantee. Total heap
+rises by about 1.8 MB in both modes during this short instrumented fixture; no general heap saving,
+long-session or handset claim follows. The initial import error, invalid read-during-close observer
+and wrong canonical-length field remain with their corrected probes.
+
+Ten complete owned Account files pass 102 cases: receive/editor, all five sync files, editing,
+handoff, capture and admission. Original-order receive, authored sources, pending dependencies,
+compaction/cold replay, cancellation, page loss, close/drain and R-01 historical 600 KiB boundaries
+retain their checks. All owned groups drain. Core receive fails twice at its unchanged 300-second
+stage bound (300.612 and 300.660 seconds including drain), after 16 and 15 passing cases respectively.
+Both complete-file attempts remain failed; neither is replaced by their partial cases. The final
+authority-change case passes alone in 8.086 seconds (9.971 seconds for its diagnostic command),
+with the existing 40-second case timeout, but this earns no complete-file receipt. This reinforces
+the previously recorded 297/300-second headroom concern; it does not prove that every timing
+variation has the same cause or that the combination caused no runtime slowdown.
+
+The bounded lifetime assessment is complete. Overall Account qualification remains open on one
+file, so do not advance to default activation or claim the planned 119-case selection passed.
+Next repair/qualify the existing core-receive fixture's execution headroom using the preserved
+attempts and unchanged semantic/case contracts; avoid a blind deadline increase. Then run the
+unchanged application gate and decide Local activation with explicit latency-debt disposition.
+Optimization exploration stays closed; Account buffer activation remains excluded.
+
+Planning is unchanged: 626 obligations, 290 required files, 271 general files/2,189 dispositions
+(11 not applicable), and zero test-file/96 command/63 campaign unresolved adapter rows. Those counts
+do not encode this new failed execution attempt. F-17 remains partial; no application latency,
+immutable release or whole-wrapper receipt is added. Prior evidence, personal/vector pins, source,
+append-only records and L-2 remain unchanged. Personal app/server, phone, relay and deployment are
+untouched. This new evidence/checkpoint phase is uncommitted.
+[Protocol and assessment](./f17-rc-lifetime.md);
+[retained source, observations and failures](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).

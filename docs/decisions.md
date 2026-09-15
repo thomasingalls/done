@@ -3540,3 +3540,19 @@ and Account buffers remain excluded. Next qualify lifetime/memory and remaining 
 boundaries, then run the unchanged application gate and explicitly disposition any accepted
 latency debt. Do not reopen optimization exploration or weaken the gate to make this integration
 appear complete. The 96 command/63 campaign wrappers and immutable qualification remain ahead.
+
+
+## 2026-09-15 — Keep selected F-17 runtime fixed; resolve native execution headroom before the next gate
+
+The selected combination passes the bounded history/scratch lifetime campaign and three sensitive
+fault controls. Do not turn those observations into a general heap or erasure guarantee: the
+pre-existing canonical admission document remains reachable while its closed facade is retained,
+and becomes collectible when that facade is dropped. No runtime change is made for that separate
+hardening opportunity. [Evidence and scope](./f17-rc-lifetime.md).
+
+Ten complete Account files pass 102 cases, but core receive twice exhausts its existing 300-second
+stage limit. Its separately passing final authority-change case cannot replace a full-file receipt.
+Keep both failures. Next diagnose and qualify that fixture's execution headroom with semantic/case
+controls unchanged; do not blindly loosen the bound or restart product optimization exploration.
+Then resume the unchanged application gate and Local activation decision. The selected runtime,
+defaults, budgets and adapter counts remain unchanged here; whole-release qualification remains open.

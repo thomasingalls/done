@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/memory-browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/memory-inputs.json.gz",
+    "sha256": "8593a5736bd9486428e91fb2cdeef320eb489663520729c80efa0481f0e6bbd8",
+    "bytes": 1218714
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account/inputs.json.gz",
+    "sha256": "6082d366cbbcd8cd3ed4f6574da3c6e520f5e75e64578671b0759980f476f6ac",
+    "bytes": 1218778
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account-receive-repeat/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account-receive-repeat/inputs.json.gz",
+    "sha256": "6082d366cbbcd8cd3ed4f6574da3c6e520f5e75e64578671b0759980f476f6ac",
+    "bytes": 1218778
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account-remaining/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-lifetime/account-remaining/inputs.json.gz",
+    "sha256": "6082d366cbbcd8cd3ed4f6574da3c6e520f5e75e64578671b0759980f476f6ac",
+    "bytes": 1218778
+  }
+]

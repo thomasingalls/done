@@ -50,28 +50,34 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: selected combination lifetime/native qualification and latency disposition; remaining command/campaign and immutable qualification work
+blocks_on: core-receive fixture execution headroom; application latency disposition; remaining command/campaign and immutable qualification work
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
 **Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The selected F-17
-combination is now maintained code and passes this bounded functional qualification. Default Local
-activation is still gated; F-17 remains partial. There are **626 obligations, 290 required test
+combination is now maintained code and passed functional integration. The subsequent Account
+qualification remains open on core-receive execution headroom. Default Local activation is still
+gated; F-17 remains partial. There are **626 obligations, 290 required test
 files, and 271 general files/2,189 dispositions (11 not applicable)**. The unresolved set is
 unchanged: **zero test-file /96 command /63 campaign**. These are adapter obligations, not passed
 release tests. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 
-**Just completed.** Replay evidence is signed and signature-verified as `902cc397`.
-[RC integration](./f17-rc-integration.md) freezes the exact six runtime files from that candidate:
-R3 + membership-repair eligibility + Local replay buffers. Eight maintained suites and additions
-to existing suites add 68 cases, including 13 recovered earlier codec controls. The complete unit
-suite passes **107 files/1,209 tests**. Two owned epochs pass **29 Vitest files/365 cases** and the
-workspace catalogue's **10 cases/four mutations**. Both native campaigns pass, with **100 generated
-histories and one renderer death each**; nine isolated faults are caught. TypeScript, scoped style,
-pinned Yjs, authority/census and 27 runner checks pass. Original setup/bookkeeping failures remain.
-Only the planning-file size ceiling changes; runtime/report/deadline/performance limits remain.
-This integration phase is uncommitted. [Retained evidence](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).
+**Just completed.** The selected integration is signed and signature-verified as `132bc7d3`.
+[Lifetime/composition qualification](./f17-rc-lifetime.md) passes four controlled-carrier Chromium
+sessions, **1,920 main edits/152 collection checkpoints** and three faults. Candidate histories are
+bounded and collectible after close; scratch is cleared and capped. This is not complete memory
+erasure: the existing canonical document remains reachable while a closed facade is retained in
+both modes, then becomes collectible when that facade is dropped. No production changes were made.
+
+**Native qualification result.** Ten complete Account files pass **102 cases**, including all sync,
+receive/editor, editing, handoff, capture and admission fixtures. Core receive times out twice at
+its unchanged **300-second** stage limit, after 16/17 and 15/17 cases. Both attempts drain and stay
+failed. Its last authority-change case passes alone, but that diagnostic does not complete the file.
+The planned 119-case selection remains open on core receive. The preceding integration's 1,209
+unit tests and owned/native controls retain their own signed evidence; they are not rerun here.
+[Current evidence](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
+This new evidence/checkpoint phase is uncommitted.
 
 **Selection boundary.** The operator has ended optimization exploration. Keep existing full
 canonical verification and detached stack copies. UI/publication alternatives, the first buffer's
@@ -129,10 +135,11 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Qualify buffer lifetime and memory, plus relevant native crash/close and
-shared Account composition boundaries not covered by the completed fixtures. Check bounded retained
-histories and scratch, reset/discard/drained-close disposal and listener lifetime under repeated
-editing and transitions. Keep the selected runtime fixed unless qualification uncovers a defect.
+**Next bounded phase.** Repair and qualify the existing core-receive fixture's execution headroom.
+Use both 300-second failures and the previously recorded 297-second pass to distinguish fixture
+setup/body/teardown costs and select a justified bounded repair. Preserve the test's semantic and
+individual-case contracts; do not blindly increase its stage limit. Optimization exploration is
+closed, and the selected runtime remains fixed unless this investigation finds a defect.
 
 **Following phases.** Run the unchanged application gate on the integrated combination, decide
 default Local activation and explicitly record any accepted latency shortfall as release debt.
@@ -141,7 +148,7 @@ repairs before the immutable aggregate, private Account rehearsal and human reco
 milestones. Larger rewrites and wider normalization are later work; no release receipt is claimed.
 
 The earlier eight-phase commit backlog is closed in five verified signed commits through
-`e2d42fac`. Subsequent optimization records are signed through `902cc397`; historical receipts
+`e2d42fac`. Subsequent optimization and integration records are signed through `132bc7d3`; historical receipts
 retain their original revision IDs. The personal packaged app, phone, relay and deployment remain
 untouched by this integration.
 
