@@ -3688,3 +3688,14 @@ DER signature bytes independently, while preserving the original test as authori
 and malformed-DER refusal. These report postconditions corroborate bounded execution; they do not replace
 native state/content assertions or establish aggregate correctness.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).
+
+
+## 2026-09-15 — Editing reports require observed outcomes and per-command recovery
+
+Record the actual ancestry control's original writing and unchanged refusal baseline, and the passkey
+control's invalid signature and unauthorized writing. Retain generated ancestry text and source hashes;
+require the expected splice, descendant acceptance, missing-genesis refusal and no source mutation.
+Reconstruct every generated editing/undo observation, not only the final result. Keep the native Yjs,
+provenance and storage assertions as execution authority; a matching report is not independent ancestry
+or browser/database verification.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).

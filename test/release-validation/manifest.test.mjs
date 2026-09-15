@@ -281,6 +281,310 @@ function admissionHistories(commands = ['offer', 'finish']) {
   };
 }
 
+test('editing wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-editing');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', editingCampaign]);
+  assert.equal(stage.expect.cases.length, 16);
+  assert.deepEqual([...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))], editingFiles);
+  assert.deepEqual(stage.fileOutputs.required, editingReports);
+  assert.deepEqual(
+    stage.expect.historyInputs.map(({ reference, path }) => [reference, path]),
+    [['649925f', 'src/crdt/promotionRecord.ts']],
+  );
+  assertHistoricalInputs(process.cwd(), stage.expect.historyInputs);
+  assert.throws(
+    () =>
+      assertHistoricalInputs(
+        process.cwd(),
+        stage.expect.historyInputs.map((p) => ({ ...p, sha256: '0'.repeat(64) })),
+      ),
+    /Historical source changed/,
+  );
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'editing-filter',
+    argv: ['node', editingCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:editing-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('editing wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = editingCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 300001 },
+    { graceMs: 5001 },
+    { expect: { ...stage.expect, historyInputs: undefined } },
+    { expect: { ...stage.expect, historyInputs: [] } },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: [...stage.expect.historyInputs, ...stage.expect.historyInputs],
+      },
+    },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: stage.expect.historyInputs.map((p) => ({ ...p, reference: p.revision })),
+      },
+    },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+import {
+  editingCampaign,
+  editingCampaignStage,
+  editingFiles,
+  editingReports,
+  reconcileEditingReports,
+  reconcileEditingControls,
+  reconcileEditingHistories,
+} from '../../scripts/release-validation/account-editing-wrapper.mjs';
+function editingEvidence(master = 'original') {
+  return {
+    ancestry: {
+      normal: 'refused',
+      baselineUnchanged: true,
+      original: { master, cards: [] },
+      mutant: { master: '', cards: [] },
+    },
+    passkey: {
+      normal: 'refused',
+      baselineUnchanged: true,
+      signature: '00'.repeat(64),
+      before: master,
+      insert: 'unauthorized ',
+      mutant: 'unauthorized ' + master,
+    },
+  };
+}
+function editingHistories(
+  h = { seedText: 'abc', at: 1, remove: 1, insert: 'x', pending: false },
+  commands = [{ at: 4, remove: 0, insert: ' later', undo: false, mode: 'crash' }],
+) {
+  // Independent mutable array oracle, using JavaScript UTF-16 units, including no-op/undo cases.
+  const units = h.seedText.split('');
+  units.splice(h.at % (units.length + 1), h.remove, ...h.insert.split(''));
+  const ancestry = {
+    seed: 9282026,
+    histories: Array.from({ length: 200 }, () => ({
+      ...h,
+      observed: {
+        text: units.join(''),
+        accepted: true,
+        refused: true,
+        beforeSha256: '01'.repeat(32),
+        afterSha256: '01'.repeat(32),
+      },
+    })),
+  };
+  let characters = 'base original'.split('');
+  const observed = [];
+  for (const c of commands) {
+    const before = [...characters];
+    characters.splice(c.at % (characters.length + 1), c.remove, ...c.insert.split(''));
+    if (c.undo) characters = before;
+    observed.push(characters.join(''));
+  }
+  return {
+    ancestry,
+    native: {
+      seed: 9292026,
+      histories: Array.from({ length: 24 }, () => ({
+        commands: structuredClone(commands),
+        observed: [...observed],
+        expected: characters.join(''),
+      })),
+    },
+  };
+}
+
+test('editing reports require successful complete output, exact source pins and observed outcomes', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-editing-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = editingEvidence(),
+    histories = editingHistories();
+  const sources = [
+    'package.json',
+    'src/crdt/example.ts',
+    'src/lib/example.tsx',
+    'src/account/slotUnlock.ts',
+    'src/account/es256Signature.ts',
+    'test/slotUnlock.test.ts',
+    'test/account-editing/native.test.mjs',
+    'test/account-handoff/fixtures.mjs',
+    'test/account-admission/fixtures.mjs',
+    'test/account-genesis/oracle.mjs',
+    'test/account-authority/fixtures.mjs',
+    'docs/account-handoff.md',
+    'docs/account-editing.md',
+    'docs/account-admission.md',
+    editingCampaign,
+  ].map((path) => ({ path, sha256: 'a'.repeat(64) }));
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-ancestry.json': controls.ancestry,
+    'control-passkey.json': controls.passkey,
+    'generated-ancestry.json': histories.ancestry,
+    'generated-native.json': histories.native,
+  };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary');
+  };
+  save(good);
+  reconcileEditingReports(directory, [
+    ...sources,
+    { path: 'unrelated.txt', sha256: 'b'.repeat(64) },
+  ]);
+  for (const change of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['summary.json'].code = 1),
+    (r) => (r['summary.json'].timedOut = true),
+    (r) => (r['summary.json'].completedAt = '2026-09-14T00:00:00.000Z'),
+    (r) => r['sources.json'].pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['sources.json'].push(r['sources.json'][0]),
+    (r) => (r['control-ancestry.json'].original.master = ''),
+    (r) => (r['control-passkey.json'].mutant = 'unchanged'),
+    (r) => (r['generated-ancestry.json'].histories[0].observed.accepted = false),
+    (r) => (r['generated-native.json'].histories[0].observed[0] = 'wrong'),
+    (r) => r['generated-native.json'].histories.pop(),
+  ]) {
+    const bad = structuredClone(good);
+    change(bad);
+    save(bad);
+    assert.throws(() => reconcileEditingReports(directory, sources));
+  }
+  for (const file of editingReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileEditingReports(directory, sources));
+  }
+});
+
+test('100 generated editing controls reject ineffective ancestry and unauthorized-write faults', () => {
+  fc.assert(
+    fc.property(fc.string({ minLength: 1, maxLength: 40 }), (master) => {
+      const good = editingEvidence(master);
+      reconcileEditingControls(good.ancestry, good.passkey);
+      for (const change of [
+        (r) => (r.ancestry.normal = 'accepted'),
+        (r) => (r.ancestry.baselineUnchanged = false),
+        (r) => (r.ancestry.original.master = ''),
+        (r) => (r.ancestry.mutant.master = master),
+        (r) => (r.ancestry.mutant.cards = [{}]),
+        (r) => (r.passkey.normal = 'accepted'),
+        (r) => (r.passkey.baselineUnchanged = false),
+        (r) => (r.passkey.signature = '01'.repeat(64)),
+        (r) => (r.passkey.before = ''),
+        (r) => (r.passkey.insert = 'allowed '),
+        (r) => (r.passkey.mutant = master),
+      ]) {
+        const bad = structuredClone(good);
+        change(bad);
+        assert.throws(() => reconcileEditingControls(bad.ancestry, bad.passkey));
+      }
+    }),
+    { seed: 150944, numRuns: 100 },
+  );
+});
+
+test('generated editing reports match array-splice and undo models and reject incomplete or altered recovery', () => {
+  fc.assert(
+    fc.property(
+      fc.record({
+        seedText: fc.string({ minLength: 1, maxLength: 20 }),
+        at: fc.nat(30),
+        remove: fc.nat(20),
+        insert: fc.string({ maxLength: 20 }),
+        pending: fc.boolean(),
+      }),
+      (history) => {
+        const good = editingHistories(history);
+        reconcileEditingHistories(good.ancestry, good.native);
+        for (const change of [
+          (r) => r.ancestry.seed++,
+          (r) => r.ancestry.histories.pop(),
+          (r) => (r.ancestry.histories[0].observed.accepted = false),
+          (r) => (r.ancestry.histories[0].observed.refused = false),
+          (r) => (r.ancestry.histories[0].observed.afterSha256 = '02'.repeat(32)),
+          (r) => (r.ancestry.histories[0].observed.text += '!'),
+          (r) => (r.ancestry.histories[0].pending = 'true'),
+          (r) => (r.ancestry.histories[0].seedText = ''),
+        ]) {
+          const bad = structuredClone(good);
+          change(bad);
+          assert.throws(() => reconcileEditingHistories(bad.ancestry, bad.native));
+        }
+      },
+    ),
+    { seed: 150945, numRuns: 100 },
+  );
+  fc.assert(
+    fc.property(
+      fc.array(
+        fc.record({
+          at: fc.nat(50),
+          remove: fc.nat(12),
+          insert: fc.string({ maxLength: 10 }),
+          undo: fc.boolean(),
+          mode: fc.constantFrom('journal', 'flush', 'compact', 'crash'),
+        }),
+        { minLength: 1, maxLength: 6 },
+      ),
+      (commands) => {
+        const good = editingHistories(undefined, commands);
+        reconcileEditingHistories(good.ancestry, good.native);
+        for (const change of [
+          (r) => r.native.seed++,
+          (r) => r.native.histories.pop(),
+          (r) => (r.native.histories[0].commands = []),
+          (r) => r.native.histories[0].observed.pop(),
+          (r) => (r.native.histories[0].observed[0] += '!'),
+          (r) => (r.native.histories[0].expected += '!'),
+          (r) => (r.native.histories[0].commands[0].mode = 'unknown'),
+          (r) => (r.native.histories[0].commands[0].undo = 'true'),
+          (r) => (r.native.histories[0].commands[0].at = 51),
+          (r) => (r.native.histories[0].commands[0].remove = -1),
+          (r) => (r.native.histories[0].commands[0].insert = 'x'.repeat(11)),
+        ]) {
+          const bad = structuredClone(good);
+          change(bad);
+          assert.throws(() => reconcileEditingHistories(bad.ancestry, bad.native));
+        }
+      },
+    ),
+    { seed: 150946, numRuns: 160 },
+  );
+});
+
 test('handoff wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -1756,7 +2060,11 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-handoff/run.mjs').stage.expect.kind,
     'account-handoff',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-editing/run.mjs').blocked);
+  assert.equal(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-editing/run.mjs').stage.expect.kind,
+    'account-editing',
+  );
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

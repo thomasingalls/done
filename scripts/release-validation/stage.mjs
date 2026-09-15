@@ -1,4 +1,9 @@
 import {
+  editingCampaign,
+  validateEditingCampaign,
+  reconcileEditingReports,
+} from './account-editing-wrapper.mjs';
+import {
   handoffCampaign,
   validateHandoffCampaign,
   reconcileHandoffReports,
@@ -118,6 +123,7 @@ export function validateStage(stage) {
       'account-genesis',
       'account-admission',
       'account-handoff',
+      'account-editing',
       'vitest',
       'playwright',
       'content',
@@ -152,6 +158,7 @@ export function validateStage(stage) {
       'account-genesis',
       'account-admission',
       'account-handoff',
+      'account-editing',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -217,6 +224,12 @@ export function validateStage(stage) {
     stage.variant === 'account-handoff-campaign-v1'
   )
     validateHandoffCampaign(stage);
+  if (
+    stage.expect.kind === 'account-editing' ||
+    stage.argv[1] === editingCampaign ||
+    stage.variant === 'account-editing-campaign-v1'
+  )
+    validateEditingCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -245,7 +258,11 @@ export function validateStage(stage) {
     }
   }
   if (Object.hasOwn(stage.expect, 'historyInputs')) {
-    if (!['account-genesis', 'account-admission', 'account-handoff'].includes(stage.expect.kind)) {
+    if (
+      !['account-genesis', 'account-admission', 'account-handoff', 'account-editing'].includes(
+        stage.expect.kind,
+      )
+    ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
       assert(
         stage.argv.includes('--test'),
@@ -746,6 +763,7 @@ export function createStageRunner({
               'account-genesis',
               'account-admission',
               'account-handoff',
+              'account-editing',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
@@ -793,6 +811,13 @@ export function createStageRunner({
               'Handoff report producers or inventory incomplete',
             );
             reconcileHandoffReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-editing') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Editing report producers or inventory incomplete',
+            );
+            reconcileEditingReports(fileDirectory, before.sources);
           }
           if (stage.expect.kind === 'account-recovery') {
             assert(

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
@@ -312,7 +313,7 @@ test(
   async (t) => {
     const f = await native(t),
       item = await selected(f, 'ancestry');
-    await open(f.page, item);
+    const original = await open(f.page, item);
     await close(f.page);
     await f.page.evaluate(
       (item) => Harness.contentFault(item.slotId, item.code, 'erase'),
@@ -320,7 +321,8 @@ test(
     );
     const before = await inventory(f.page);
     await assert.rejects(open(f.page, item), /checkpoint differs/);
-    assert.equal(await inventory(f.page), before);
+    const refusedInventory = await inventory(f.page);
+    assert.equal(refusedInventory, before);
     await f.page.evaluate(await editingBundle('ancestry'));
     const bad = await open(f.page, item);
     assert.equal(bad.master, '');
@@ -328,6 +330,8 @@ test(
     await close(f.page);
     artifact('control-ancestry.json', {
       normal: 'refused',
+      baselineUnchanged: refusedInventory === before,
+      original: { master: original.master, cards: original.cards },
       mutant: { master: bad.master, cards: bad.cards },
     });
   },
@@ -338,22 +342,35 @@ test(
   { timeout: 30000 },
   async (t) => {
     const f = await native(t),
-      item = await selected(f, 'passkey-control');
+      item = await selected(f, 'passkey-control'),
+      before = await inventory(f.page);
     await f.page.evaluate(() => {
       const actual = assertPasskey;
       window.assertPasskey = async (r) => {
         const a = await actual(r);
         a.signature.fill(0);
+        window.invalidEditingSignature = a.signature;
         return a;
       };
     });
     await assert.rejects(open(f.page, item), /passkey refused/);
+    const refusedInventory = await inventory(f.page);
+    assert.equal(refusedInventory, before);
     await f.page.evaluate(await editingBundle('passkey'));
-    await open(f.page, item);
+    const openedState = await open(f.page, item);
     const bad = await edit(f.page, 0, 0, 'unauthorized ');
     assert.equal(bad, 'unauthorized base original');
     await close(f.page);
-    artifact('control-passkey.json', { normal: 'refused', mutant: bad });
+    artifact('control-passkey.json', {
+      normal: 'refused',
+      baselineUnchanged: refusedInventory === before,
+      signature: await f.page.evaluate(() =>
+        Array.from(invalidEditingSignature, (b) => b.toString(16).padStart(2, '0')).join(''),
+      ),
+      before: openedState.master,
+      insert: 'unauthorized ',
+      mutant: bad,
+    });
   },
 );
 
@@ -499,7 +516,17 @@ test(
           assert.ok(result.accepted);
           assert.ok(result.refused);
           assert.deepEqual(result.after, result.before);
-          histories.push(history);
+          const sha = (bytes) => createHash('sha256').update(Buffer.from(bytes)).digest('hex');
+          histories.push({
+            ...history,
+            observed: {
+              text: result.text,
+              accepted: result.accepted,
+              refused: result.refused,
+              beforeSha256: sha(result.before),
+              afterSha256: sha(result.after),
+            },
+          });
         },
       ),
       { seed: 9282026, numRuns: 200, endOnFailure: true },

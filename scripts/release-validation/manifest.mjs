@@ -1,3 +1,4 @@
+import { editingCampaign, editingCampaignStage } from './account-editing-wrapper.mjs';
 import { handoffCampaign, handoffCampaignStage } from './account-handoff-wrapper.mjs';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -369,6 +370,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['campaign:' + promotionCampaign];
     else if (exactCommand(command, ['node', genesisCampaign]))
       row.requires = ['campaign:' + genesisCampaign];
+    else if (exactCommand(command, ['node', editingCampaign]))
+      row.requires = ['campaign:' + editingCampaign];
     else if (exactCommand(command, ['node', handoffCampaign]))
       row.requires = ['campaign:' + handoffCampaign];
     else if (exactCommand(command, ['node', admissionCampaign]))
@@ -430,24 +433,28 @@ export function compileManifest(root, inventory) {
                     ? { stage: admissionCampaignStage(root) }
                     : c.path === handoffCampaign
                       ? { stage: handoffCampaignStage(root) }
-                      : [
-                            'scripts/content/run.mjs',
-                            'scripts/journal/run.mjs',
-                            'scripts/admission/run.mjs',
-                            'scripts/editor-admission/run.mjs',
-                            'scripts/workspace-admission/run.mjs',
-                            'scripts/owned-startup/run.mjs',
-                            'scripts/local-genesis/run.mjs',
-                            'scripts/write-session/run.mjs',
-                            'scripts/custody/run.mjs',
-                            'scripts/content-trim/run.mjs',
-                            'scripts/local-clear/run.mjs',
-                          ].includes(c.path)
-                        ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
-                        : {
-                            blocked:
-                              'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-                          }),
+                      : c.path === editingCampaign
+                        ? { stage: editingCampaignStage(root) }
+                        : [
+                              'scripts/content/run.mjs',
+                              'scripts/journal/run.mjs',
+                              'scripts/admission/run.mjs',
+                              'scripts/editor-admission/run.mjs',
+                              'scripts/workspace-admission/run.mjs',
+                              'scripts/owned-startup/run.mjs',
+                              'scripts/local-genesis/run.mjs',
+                              'scripts/write-session/run.mjs',
+                              'scripts/custody/run.mjs',
+                              'scripts/content-trim/run.mjs',
+                              'scripts/local-clear/run.mjs',
+                            ].includes(c.path)
+                          ? {
+                              requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')],
+                            }
+                          : {
+                              blocked:
+                                'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                            }),
     });
   }
   for (const c of inventory.constructions) {
@@ -552,6 +559,13 @@ export function compileManifest(root, inventory) {
           (r) =>
             r.id === 'campaign:' + handoffCampaign ||
             (r.kind === 'command' && exactCommand(r, ['node', handoffCampaign])),
+        )
+        .map((r) => r.id),
+      'wrapper-account-editing': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + editingCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', editingCampaign])),
         )
         .map((r) => r.id),
       'wrapper-account-recovery': rows

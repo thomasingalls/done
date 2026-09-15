@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**142 obligations remain blocked: 87 command and 55 campaign rows; no test-file rows remain.**
+**140 obligations remain blocked: 86 command and 54 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 142 missing product tests. The compiler still refuses whole-release execution before
+they are not 140 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4134,3 +4134,56 @@ F-17 debt bytes, earlier archives and L-2 checkpoint are unchanged. No personal 
 device or deployment operation occurs. This phase is uncommitted. Next: Account editing wrapper integration,
 remaining wrapper/qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).
+
+
+## 2026-09-15 — Account editing wrapper integration
+
+Handoff is signed and signature-verified as `9b7f02ea`. Editing preserves the wrapper's complete native
+invocation, 300-second bound and five-second grace. Owned execution adds terminal reporting, the disposable
+CDP browser and retained output. Exact argv and empty user environment alias the campaign. Pin
+`649925f:src/crdt/promotionRecord.ts` before/after execution and reuse. Standalone invocation and spec/JUnit
+output remain available; weaker invocation, result, history, output and browser contracts refuse.
+
+Require eight reports within 4 MiB /32-entry /one-level bounds: sources, summary, JUnit, log, ancestry/
+passkey controls and generated ancestry/native evidence. Reconcile all 16 terminal outcomes, successful
+summary/code/no timeout and exact wrapper source hashes against owned inputs. Ancestry control evidence
+now records the original writing and actual unchanged refusal baseline before the mutant opens an empty
+replacement. Passkey evidence records unchanged refusal baseline, actual injected zero signature, opening
+text and unauthorized edit. Require an originally nonempty workspace, the expected empty ancestry mutant,
+and the actual unauthorized prefix applied to the passkey mutant's original text. No secret factors are
+added to reports; all writing remains synthetic fixture data.
+
+Require 200 ancestry histories at seed 9282026, now retaining observed text, accepted descendant, refused
+missing genesis and before/after source hashes. Recompute text using the recorded splice and require source
+hash equality. Require 24 native histories at seed 9292026, their operation/mode/undo bounds, every recorded
+reopened observation and final state. A separate string fold checks each edit/undo result; tests use a
+mutable UTF-16 array-splice oracle. This is report reconciliation, not independent reconstruction of Yjs
+ancestry, regeneration of the seeded schedule or browser/database replay. Original native assertions and
+source inventories remain; the terminal census is case authority and JUnit/logs are auxiliary.
+
+The owned epoch passes **103 cases in six executions**: 66 planning cases in four full suites, 16 editing
+and 21 handoff regression cases. Editing takes **207.660s /300s**; handoff takes
+142.745s /180s. Editing includes activation commit interruption, journal-only recovery,
+compaction, exclusive lifetime and cancellation/native drain, stale-handle invalidation, pending
+dependencies, generation and routing refusals, 200 ancestry comparisons, 24 editing histories and historical
+reader refusal. Every process/browser group drains. A seventh request reuses the exact editing receipt after
+handoff; all eight reports survive copied-checkout removal. Both historical reader blobs are archived.
+
+Five new infrastructure cases cover exact invocation/history, weaker contracts, twelve directed report
+corruptions, eight missing files, 100 generated control sets with eleven corruptions each (seed 150944),
+100 ancestry histories with eight corruptions each (seed 150945), and 160 native command sequences with
+eleven corruptions each (seed 150946). Six synthetic process runs accept valid reports and reject zero-exit
+failed summary, empty original ancestry, missing unauthorized edit and incorrect intermediate observation;
+an omitted report hook admits a failed summary. A separate adapter fault omits the intermediate-observation
+check and admits the wrong observation with an otherwise correct final state. Both faults discriminate.
+Synthetic case claims are instrumentation controls, not Account executions. Planning and owned campaigns
+pass without a new failure. Existing reporter listener-limit and experimental API diagnostics are retained;
+this phase does not claim to repair them.
+
+Counts stay **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Five added cases belong to an existing infrastructure file. Unresolved wrappers fall from 142 to
+**140: zero test-file /86 command /54 campaign**. Runtime, package/dependency, crypto-census/vector and
+F-17 debt bytes, earlier archives and L-2 checkpoint are unchanged. No personal browser, server, relay,
+device or deployment operation occurs. This phase is uncommitted. Next: Account outbound wrapper integration,
+remaining wrapper/qualification repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).
