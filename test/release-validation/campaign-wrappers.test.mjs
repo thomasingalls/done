@@ -1,3 +1,12 @@
+import { manifestSnapshot } from '../../scripts/release-validation/manifest-snapshot.mjs';
+import {
+  receiveCampaign,
+  receiveCampaignStage,
+  receiveSteps,
+  receiveReports,
+  reconcileReceiveReports,
+  reconcileReceiveEvidence,
+} from '../../scripts/release-validation/account-receive-wrapper.mjs';
 import {
   inboundCodecsCampaign,
   inboundCodecsCampaignStage,
@@ -961,5 +970,349 @@ test('160 generated codec control corruptions reject wrong mutation source and n
       }
     }),
     { seed: 150962, numRuns: 160 },
+  );
+});
+
+function receiveEvidence() {
+  const hash = (v) => createHash('sha256').update(v).digest('hex'),
+    hex = (b) => Buffer.from(b).toString('hex'),
+    frame = (v) => hex(Buffer.from(JSON.stringify(v))),
+    doc = new Y.Doc({ gc: false }),
+    ledger = new Y.Doc({ gc: false });
+  doc.clientID = 1919;
+  ledger.clientID = 880;
+  try {
+    ledger.getText('master').insert(0, 'test');
+    const insert = Y.encodeStateAsUpdate(ledger),
+      sv = Y.encodeStateVector(ledger);
+    ledger.getText('master').delete(0, 1);
+    const deletion = Y.encodeStateAsUpdate(ledger, sv),
+      unit = {
+        text: 'test',
+        n: 1,
+        insert: hex(insert),
+        deletion: hex(deletion),
+        merged: hex(Y.mergeUpdates([insert, deletion])),
+        missing: 'Error: coverage',
+        withoutDeletion: 'Error: coverage',
+      };
+    const actions = ['before', 'after', 'none'].map((cut) => ({ cut, compact: true, cold: true })),
+      frames = [],
+      wires = [],
+      observations = [],
+      events = [];
+    let previous = '00'.repeat(32);
+    for (let i = 0; i < 3; i++) {
+      const sv = Y.encodeStateVector(doc);
+      doc.getText('remote-fixture').insert(i, String(i));
+      frames.push(hex(Y.encodeStateAsUpdate(doc, sv)));
+      wires.push('aa' + i + '0');
+      const link = (i + 1).toString(16).padStart(64, '0'),
+        request = frame([
+          'done/private-read/v2',
+          2,
+          'service',
+          'origin',
+          'workspace',
+          'reader',
+          'publisher',
+          'lineage',
+          'head',
+          1,
+          i,
+          1,
+          'nonce',
+          30000,
+          'sig',
+        ]),
+        page = frame([
+          'done/private-read-page/v2',
+          2,
+          hash(Buffer.from(request, 'hex')),
+          3,
+          i + 1,
+          [[wires[i], 'aa']],
+          'sig',
+        ]),
+        status = { state: 'ready', receivedThrough: i + 1, link, observedThrough: 3 };
+      observations.push({
+        cutCursor: i === 0 ? 0 : i === 1 ? 2 : null,
+        request,
+        page,
+        link,
+        result: { kind: i === 1 ? 'duplicate' : 'received', recorded: i !== 1, status },
+        status,
+      });
+      events.push({
+        seq: i * 2 + 3,
+        bytes: frame([
+          'done/account-inbound/v1',
+          1,
+          'baseline',
+          'lineage',
+          'head',
+          'reader',
+          'publisher',
+          'received',
+          i + 1,
+          previous,
+          link,
+          request,
+          page,
+        ]),
+      });
+      previous = link;
+    }
+    const h = {
+      actions,
+      frames,
+      wires,
+      observations,
+      events,
+      content: [{ seq: 9, kind: 'state', bytes: hex(Y.encodeStateAsUpdate(doc)) }],
+      value: '012',
+      pending: false,
+    };
+    return {
+      'control-coverage.json': {
+        normalError: 'Error: coverage',
+        omitted: ['startup fallback', 'owner reuse'],
+        single: ['reuse', 'fallback'].map((branch) => ({ branch, error: 'Error: coverage' })),
+        joint: { receivedThrough: 1 },
+      },
+      'control-witness.json': {
+        normalError: 'Error: incomplete witness',
+        changed: { receivedThrough: 0 },
+      },
+      'control-split.json': { readbackError: 'Error: coverage', coldError: 'Error: coverage' },
+      'control-stored-page.json': {
+        normalError: 'Error: unverified',
+        changed: { receivedThrough: 1 },
+      },
+      'unit-ledger-histories.json': {
+        status: 'passed',
+        seed: 9172026,
+        histories: Array.from({ length: 200 }, () => structuredClone(unit)),
+      },
+      'generated-native.json': {
+        status: 'passed',
+        seed: 9182026,
+        runs: 12,
+        histories: Array.from({ length: 12 }, () => structuredClone(h)),
+      },
+    };
+  } finally {
+    doc.destroy();
+    ledger.destroy();
+  }
+}
+test('receive wrapper binds the unchanged property/native commands, 62 cases, browser and old marker reader', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-receive');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 62);
+  assert.equal(s.deadlineMs, 360000);
+  assert.equal(s.expect.steps[1].deadlineMs, 300000);
+  assert.equal(s.expect.historyInputs[0].reference, '8378596');
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.deepEqual(s.fileOutputs.required, receiveReports);
+  assert.equal(receiveReports.length, 24);
+  const recorded = manifestSnapshot(m);
+  assert.deepEqual(JSON.parse(recorded), m);
+  assert(Buffer.byteLength(recorded) <= 4 * 1024 * 1024);
+  assert.throws(
+    () => manifestSnapshot({ ...m, unreviewedPadding: 'x'.repeat(4 * 1024 * 1024) }),
+    /Manifest size budget/,
+  );
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 360001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({ id: 'receive-filter', argv: ['node', receiveCampaign, '--case', 'one'] });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:receive-filter:0')
+      .blocked,
+  );
+});
+test('receive trace requires both exact Vitest and native censuses with distinct nonces', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = receiveCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    },
+    v = s.expect.steps[0].expect,
+    n = s.expect.steps[1].expect;
+  const reports = [
+    {
+      schema: 1,
+      adapter: 'vitest-v1',
+      nonce: 'fresh:properties',
+      reason: 'passed',
+      modules: v.files.map((file) => ({ file, state: 'passed' })),
+      errors: [],
+      cases: v.cases.map((c) => ({
+        ...c,
+        durationMs: 0,
+        retryCount: 0,
+        repeatCount: 0,
+        expectedFailure: false,
+        mode: 'run',
+        errors: [],
+      })),
+    },
+    {
+      schema: 1,
+      nonce: 'fresh:native',
+      phase: 'complete',
+      cases: n.cases,
+      errors: [],
+      summary: {
+        success: true,
+        counts: { tests: n.cases.length, failed: 0, cancelled: 0, skipped: 0, todo: 0 },
+      },
+    },
+  ];
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    (v) => v.reports[0].cases.pop(),
+    (v) => v.reports[1].cases.pop(),
+    (v) => (v.reports[0].nonce = 'fresh:native'),
+    (v) => (v.reports[1].phase = 'running'),
+    (v) => v.trace.steps[1].argv.pop(),
+    (v) => (v.trace.steps[1].timedOut = true),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('receive reports require native histories and controls alongside preserved codec evidence', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const source = readFileSync('src/crdt/accountInbound.ts', 'utf8'),
+    sources = [
+      { path: receiveCampaign, sha256: 'a'.repeat(64) },
+      {
+        path: 'src/crdt/accountInbound.ts',
+        sha256: createHash('sha256').update(source).digest('hex'),
+      },
+    ],
+    r = {
+      ...codecsEvidence(source),
+      ...receiveEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: receiveSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = ['results.xml', 'properties.log', 'native.log'],
+    save = (r) => {
+      for (const [file, value] of Object.entries(r))
+        writeFileSync(join(dir, file), JSON.stringify(value));
+      for (const file of aux) writeFileSync(join(dir, file), 'observed');
+    };
+  save(r);
+  reconcileReceiveReports(dir, sources, process.cwd());
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated-native.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileReceiveReports(dir, sources, process.cwd()));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileReceiveReports(dir, sources, process.cwd()));
+  }
+});
+test('160 generated receive report corruptions reject lost commit cuts, changed stored bytes and missing original coverage', () => {
+  const r = receiveEvidence();
+  reconcileReceiveEvidence(r);
+  // A suffix with an absent dependency can leave snapshots unchanged; pending state must fail too.
+  const pendingDoc = new Y.Doc({ gc: false });
+  pendingDoc.clientID = 8888;
+  pendingDoc.getText('remote-fixture').insert(0, 'dependency');
+  const sv = Y.encodeStateVector(pendingDoc);
+  pendingDoc.getText('remote-fixture').insert(10, 'suffix');
+  const pending = Buffer.from(Y.encodeStateAsUpdate(pendingDoc, sv)).toString('hex');
+  pendingDoc.destroy();
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 11 }), (index) => {
+      for (const alter of [
+        (h) => h.observations[0].cutCursor++,
+        (h) => (h.observations[1].result.recorded = true),
+        (h) => (h.observations[2].status.receivedThrough = 0),
+        (h) => h.events.pop(),
+        (h) => (h.observations[0].page = h.observations[1].page),
+        (h) => (h.content[0].bytes = '0000'),
+        (h) => (h.frames[0] = pending),
+        (h) => (h.value = 'missing'),
+      ]) {
+        const bad = structuredClone(r);
+        alter(bad['generated-native.json'].histories[index]);
+        assert.throws(() => reconcileReceiveEvidence(bad));
+      }
+    }),
+    { seed: 150963, numRuns: 160 },
+  );
+});
+test('160 generated receive control and unit-ledger corruptions reject ineffective guards or deletion loss', () => {
+  const r = receiveEvidence();
+  reconcileReceiveEvidence(r);
+  const changes = [
+    (r) => r['control-coverage.json'].single.pop(),
+    (r) => (r['control-coverage.json'].joint.receivedThrough = 0),
+    (r) => (r['control-witness.json'].changed.receivedThrough = 1),
+    (r) => (r['control-split.json'].coldError = ''),
+    (r) => (r['control-stored-page.json'].normalError = ''),
+    (r) =>
+      (r['unit-ledger-histories.json'].histories[0].merged =
+        r['unit-ledger-histories.json'].histories[0].insert),
+    (r) => (r['unit-ledger-histories.json'].status = 'running'),
+  ];
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: changes.length - 1 }), (index) => {
+      const bad = structuredClone(r);
+      changes[index](bad);
+      assert.throws(() => reconcileReceiveEvidence(bad));
+    }),
+    { seed: 150964, numRuns: 160 },
   );
 });

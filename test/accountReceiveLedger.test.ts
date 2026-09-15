@@ -1,3 +1,5 @@
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 // @vitest-environment node
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
@@ -80,6 +82,15 @@ it('replays independent stored events, detects a gap, wrong baseline and events 
   );
 });
 it('200 generated content/deletion histories remain covered after valid compaction; dropping the only content fails', () => {
+  const histories: unknown[] = [];
+  const hex = (b: Uint8Array) => Buffer.from(b).toString('hex');
+  const save = (status: string) => {
+    if (process.env['ACCOUNT_REPORT_DIR'])
+      writeFileSync(
+        join(process.env['ACCOUNT_REPORT_DIR'], 'unit-ledger-histories.json'),
+        JSON.stringify({ status, seed: 9172026, histories }, null, 2) + '\n',
+      );
+  };
   fc.assert(
     fc.property(fc.string({ minLength: 1, maxLength: 70 }), fc.nat(60), (text, n) => {
       const doc = new Y.Doc({ gc: false });
@@ -94,13 +105,34 @@ it('200 generated content/deletion histories remain covered after valid compacti
         expect(() =>
           verifyInboundCoverage([row(merged, 3, 'state')], [insert, deletion]),
         ).not.toThrow();
-        expect(() => verifyInboundCoverage([], [insert])).toThrow('coverage');
-        if (n > 0)
-          expect(() => verifyInboundCoverage([row(insert)], [deletion])).toThrow('coverage');
+        const refused = (fn: () => unknown) => {
+          let reason: string | undefined;
+          try {
+            fn();
+          } catch (e) {
+            reason = String(e);
+          }
+          expect(reason).toContain('coverage');
+          return reason!;
+        };
+        const missing = refused(() => verifyInboundCoverage([], [insert])),
+          withoutDeletion =
+            n > 0 ? refused(() => verifyInboundCoverage([row(insert)], [deletion])) : null;
+        histories.push({
+          text,
+          n,
+          insert: hex(insert),
+          deletion: hex(deletion),
+          merged: hex(merged),
+          missing,
+          withoutDeletion,
+        });
+        save('running');
       } finally {
         doc.destroy();
       }
     }),
     { seed: 9172026, numRuns: 200 },
   );
+  save('passed');
 });

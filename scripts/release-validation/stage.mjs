@@ -1,4 +1,9 @@
 import {
+  receiveCampaign,
+  validateReceiveCampaign,
+  reconcileReceiveReports,
+} from './account-receive-wrapper.mjs';
+import {
   inboundCodecsCampaign,
   validateInboundCodecsCampaign,
   reconcileInboundCodecsReports,
@@ -173,6 +178,7 @@ export function validateStage(stage) {
       'account-service-delivery',
       'account-inbound-prep',
       'account-inbound-codecs',
+      'account-receive',
       'vitest',
       'playwright',
       'content',
@@ -216,6 +222,7 @@ export function validateStage(stage) {
       'account-service-delivery',
       'account-inbound-prep',
       'account-inbound-codecs',
+      'account-receive',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -335,6 +342,12 @@ export function validateStage(stage) {
     stage.variant === 'account-inbound-codecs-campaign-v1'
   )
     validateInboundCodecsCampaign(stage);
+  if (
+    stage.expect.kind === 'account-receive' ||
+    stage.argv[1] === receiveCampaign ||
+    stage.variant === 'account-receive-campaign-v1'
+  )
+    validateReceiveCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -381,6 +394,7 @@ export function validateStage(stage) {
         'account-service-delivery',
         'account-inbound-prep',
         'account-inbound-codecs',
+        'account-receive',
       ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
@@ -878,6 +892,7 @@ export function createStageRunner({
             'account-service-delivery',
             'account-inbound-prep',
             'account-inbound-codecs',
+            'account-receive',
           ].includes(stage.expect.kind)
         ) {
           assert(
@@ -905,7 +920,9 @@ export function createStageRunner({
             reconcileServiceDeliveryReports(fileDirectory, before.sources);
           else if (stage.expect.kind === 'account-inbound-prep')
             reconcileInboundPrepReports(fileDirectory, before.sources);
-          else reconcileInboundCodecsReports(fileDirectory, before.sources, root);
+          else if (stage.expect.kind === 'account-inbound-codecs')
+            reconcileInboundCodecsReports(fileDirectory, before.sources, root);
+          else reconcileReceiveReports(fileDirectory, before.sources, root);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -930,6 +947,7 @@ export function createStageRunner({
               'account-service-delivery',
               'account-inbound-prep',
               'account-inbound-codecs',
+              'account-receive',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

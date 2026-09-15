@@ -55,36 +55,38 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Inbound preparation is signed and verified as `9937b8b7`. All catalogue/test-file
-adapters are integrated; transport/driver whole-wrapper exclusions remain. Inventory stays **629 obligations
-/292 required files** and **272 general files /2,198 dispositions (11 not applicable)**. Inbound codecs resolves
-one command and campaign: **zero test-file /78 command /46 campaign** remain, down from 126 to 124.
-These are integration counts, not a passing aggregate.
+**Roadmap checkpoint.** Inbound codecs is signed and verified as `70788d4e`. All catalogue/test-file
+adapters are integrated; retired transport/driver whole campaigns remain excluded. Inventory stays
+**629 obligations /292 required files** and **272 general files /2,198 dispositions (11 not applicable)**.
+Receive resolves one command and campaign: **zero test-file /77 command /45 campaign** remain unresolved,
+down from 124 to 122. These are integration counts, not a passing aggregate.
 
-**Just completed.** Inbound codecs preserves its two original Vitest invocations/114 cases, child concurrency,
-reporters and one-minute limits, followed by the exact 15-second Node import probe. Owned execution adds a
-135-second aggregate, separate case reports, pinned vector inputs and 28 retained files in separate codec/
-preparation namespaces. Actual guard-removal observations and source hashes corroborate all eight controls.
-Four hundred generated live/cold records and 500 changed-wire refusals retain byte/hash comparisons; an
-independent plaintext Yjs replay supplements actual crypto assertions. Preparation's 300 histories remain
-required. The report oracle does not authenticate signatures, recompile bundles or prove native storage.
+**Just completed.** Receive preserves both original commands/62 cases, child concurrency/reporters and
+60/300-second limits. Owned execution adds a 360-second aggregate, disposable browser, pinned old marker
+reader and 24 retained reports. Native controls now preserve actual refusal/mutated progress. Twelve
+histories retain commit-cut/retry status, the request/page actually stored, original wire, final events
+and content rows. Independent event/framing/plaintext coverage checks include pending data. Two hundred
+unit ledger histories and all codec evidence remain required; signature/AEAD/native owner verification
+remains the responsibility of actual tests.
 
-The epoch passes **292 cases in seven executions**: 106 planning, 114 codec-wrapper and 72 preparation
-regression, then exact codec reuse. Codecs take **23.110s /135s**. All groups drain; 28 report files
-survive checkout removal. Five new infrastructure cases include two 160-run corruption campaigns; eight
-synthetic runs and two omitted checks discriminate. The unchanged manifest suite passes in 56.083s
-/60s. This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).
+The epoch passes **287 cases in seven executions**: 111 planning, 62 receive and 114 codec regression,
+then exact receive reuse. Receive takes **145.872s /360s**. Every group drains and 24 files survive
+checkout removal. Five infrastructure cases include two 160-run corruptions; eight synthetic runs and
+two omitted checks discriminate. The unchanged manifest suite passes in 53.706s /60s.
+This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).
 
-**Preserved observations.** The first synthetic launcher omitted the regression report directory and
-failed file inventory. Its partial reports/receipt/log remain; setup is corrected. The real epoch passes
-without repair or limit relaxation. Prior focused/setup,
-delivery/capture, registration, planning ceiling, startup SIGABRT, owner/headroom and reporter observations
-remain in their archives. No loaded-host reliability or immutable aggregate claim is added. Report custody
-uses cooperative bounded polling, not a disk quota or sandbox.
+**Preserved observations.** Focused controls exposed Node async-resource exhaustion from repeated identical
+Yjs replay; exact per-report tuple caching fixes it without dropping observations. The planning manifest
+crossed its old one-million-byte cap; prospective four-MiB capacity and round-trip/overflow controls preserve
+the complete plan. A missed duplicate cap assertion stopped the first owned epoch in planning; it is
+aligned and the complete epoch rerun. Original logs/source/receipts remain. Runtime report/deadline/archive
+limits, prior failures and
+headroom observations remain. No loaded-host reliability or immutable aggregate claim is added.
 
-**Next bounded phase.** Account receive wrapper integration, then further families, serially.
+**Next bounded phase.** Account receive-editor wrapper integration, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
+Report custody remains cooperative bounded polling, not a disk quota or sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

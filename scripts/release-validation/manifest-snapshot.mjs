@@ -16,7 +16,8 @@ export function manifestSnapshot(manifest) {
       .join(',\n') +
     '\n}\n';
   // Reviewed wrapper contracts now include ordered child invocations and separate case domains.
-  // Keep bounded planning-file headroom; runtime report limits are separate.
-  assert(Buffer.byteLength(code) <= 1000000, 'Manifest size budget failed');
+  // Four MiB bounds the growing finite plan while keeping exact per-child case domains.
+  // Runtime reports, campaign deadlines and evidence archives retain their own bounds.
+  assert(Buffer.byteLength(code) <= 4 * 1024 * 1024, 'Manifest size budget failed');
   return code;
 }

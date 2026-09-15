@@ -23,6 +23,16 @@ import {
   boundary,
   snapshot,
 } from './fixtures.mjs';
+const hex = (bytes) => Buffer.from(bytes).toString('hex');
+async function refusal(op, pattern) {
+  let reason;
+  await assert.rejects(op, (e) => {
+    reason = String(e);
+    if (pattern) assert.match(reason, pattern);
+    return true;
+  });
+  return reason;
+}
 const artifact = (name, value) => {
   if (process.env.ACCOUNT_REPORT_DIR)
     writeFileSync(
@@ -149,32 +159,39 @@ for (const fault of ['content', 'event', 'ciphertext'])
     await closeReceive(f.page);
     await census(f.page, item, fault);
     await cold(f);
-    await assert.rejects(
+    const normalError = await refusal(
       openReceive(f.page, item),
       /coverage|incomplete|authentication|decrypt|operation|Operation/i,
     );
     if (fault === 'content') {
       // Startup uses full verification before the receive owner uses reuse. Each guard alone must
       // still reject; only their joint omission exposes the forbidden cold admission.
+      const single = [];
       for (const branch of ['reuse', 'fallback']) {
         await f.page.evaluate(await receiveBundle('coverage-without-' + branch));
-        await assert.rejects(openReceive(f.page, item), /coverage/i);
+        single.push({ branch, error: await refusal(openReceive(f.page, item), /coverage/i) });
       }
       await f.page.evaluate(await receiveBundle('coverage'));
-      assert.equal((await openReceive(f.page, item)).receivedThrough, 1);
+      const joint = await openReceive(f.page, item);
+      assert.equal(joint.receivedThrough, 1);
       await closeReceive(f.page);
       artifact('control-coverage.json', {
         omitted: ['startup fallback', 'owner reuse'],
-        eachSingleOmissionStillRefuses: true,
+        normalError,
+        single,
+        joint,
         outcome:
           'Removing both executed coverage checks admits an event whose unique remote content row was deleted.',
       });
     }
     if (fault === 'event') {
       await f.page.evaluate(await receiveBundle('witness'));
-      assert.equal((await openReceive(f.page, item)).receivedThrough, 0);
+      const changed = await openReceive(f.page, item);
+      assert.equal(changed.receivedThrough, 0);
       await closeReceive(f.page);
       artifact('control-witness.json', {
+        normalError,
+        changed,
         outcome:
           'Removing actual completeness verification silently loses a receive event and resets receipt progress.',
       });
@@ -189,11 +206,13 @@ test(
     await f.page.evaluate(await receiveBundle('split'));
     await openReceive(f.page, item);
     const a = answer(f, item, await request(f.page), wire);
-    await assert.rejects(receive(f.page, a.bytes), /coverage/);
+    const readbackError = await refusal(receive(f.page, a.bytes), /coverage/);
     await closeReceive(f.page);
     await cold(f);
-    await assert.rejects(openReceive(f.page, item), /coverage/);
+    const coldError = await refusal(openReceive(f.page, item), /coverage/);
     artifact('control-split.json', {
+      readbackError,
+      coldError,
       outcome:
         'Actual removal of content inputs commits an evidence-only event, detected by readback and cold replay.',
     });
@@ -355,12 +374,32 @@ test(
             wires.push(await envelope(f.page, item, i + 1, [frames[i]]));
           await openReceive(f.page, item);
           let previous;
-          const saved = [];
+          const evidence = {
+            actions,
+            frames: frames.map(hex),
+            wires: wires.map(hex),
+            observations: [],
+            content: null,
+            events: null,
+            value: null,
+            pending: null,
+          };
+          histories.push(evidence);
           for (const [i, action] of actions.entries()) {
-            const a = answer(f, item, await request(f.page), wires[i], previous, frames.length);
-            if (action.cut === 'none')
-              assert.equal((await receive(f.page, a.bytes)).recorded, true);
-            else {
+            const query = await request(f.page),
+              a = answer(f, item, query, wires[i], previous, frames.length);
+            const observed = {
+              cutCursor: null,
+              request: hex(query),
+              page: hex(a.bytes),
+              link: a.link,
+              result: null,
+              status: null,
+            };
+            if (action.cut === 'none') {
+              observed.result = await receive(f.page, a.bytes);
+              assert.equal(observed.result.recorded, true);
+            } else {
               await receiveBoundary(f.page, action.cut);
               await f.page.evaluate(
                 (b) => {
@@ -374,22 +413,18 @@ test(
               await waitPredicate(f.page, () => !!window.hit);
               await crash(f);
               await cold(f);
-              assert.equal(
-                (await openReceive(f.page, item)).receivedThrough,
-                i + (action.cut === 'after' ? 1 : 0),
-              );
-              const retry = answer(
-                f,
-                item,
-                await request(f.page, i),
-                wires[i],
-                previous,
-                frames.length,
-              );
-              assert.equal((await receive(f.page, retry.bytes)).recorded, action.cut === 'before');
+              observed.cutCursor = (await openReceive(f.page, item)).receivedThrough;
+              assert.equal(observed.cutCursor, i + (action.cut === 'after' ? 1 : 0));
+              const query = await request(f.page, i),
+                retry = answer(f, item, query, wires[i], previous, frames.length);
+              observed.result = await receive(f.page, retry.bytes);
+              assert.equal(observed.result.recorded, action.cut === 'before');
+              if (action.cut === 'before') {
+                observed.request = hex(query);
+                observed.page = hex(retry.bytes);
+              }
             }
             previous = a.link;
-            saved.push(frames[i]);
             assert.equal((await status(f.page)).receivedThrough, i + 1);
             if (action.compact) await f.page.evaluate(() => receiver.compactContent());
             if (action.cold) {
@@ -397,6 +432,14 @@ test(
               await cold(f);
               assert.equal((await openReceive(f.page, item)).receivedThrough, i + 1);
             }
+            observed.status = await status(f.page);
+            evidence.observations.push(observed);
+            artifact('generated-native.json', {
+              seed: 9182026,
+              status: 'running',
+              runs: histories.length,
+              histories,
+            });
           }
           await closeReceive(f.page);
           const rows = await census(f.page, item);
@@ -405,19 +448,43 @@ test(
             for (const r of rows)
               if (['update', 'state'].includes(r.kind))
                 Harness.Y.applyUpdate(d, new Uint8Array(r.bytes));
-            const text = d.getText('remote-fixture').toString();
+            const text = d.getText('remote-fixture').toString(),
+              pending = d.store.pendingStructs !== null || d.store.pendingDs !== null;
             d.destroy();
-            return text;
+            return { text, pending };
           }, rows);
-          assert.equal(value, actions.map((_, i) => String(i)).join(''));
-          histories.push({ actions, expected: value });
+          evidence.value = value.text;
+          evidence.pending = value.pending;
+          evidence.content = rows
+            .filter((r) => ['update', 'state'].includes(r.kind))
+            .map((r) => ({ seq: r.seq, kind: r.kind, bytes: hex(r.bytes) }));
+          evidence.events = rows
+            .filter(
+              (r) =>
+                r.kind === 'heads' &&
+                Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+            )
+            .map((r) => ({ seq: r.seq, bytes: hex(r.bytes) }));
+          artifact('generated-native.json', {
+            seed: 9182026,
+            status: 'running',
+            runs: histories.length,
+            histories,
+          });
+          assert.equal(value.text, actions.map((_, i) => String(i)).join(''));
+          assert.equal(value.pending, false);
           console.log('Receive history ' + histories.length + '/12 passed');
           await cold(f);
         },
       ),
       { seed: 9182026, numRuns: 12 },
     );
-    artifact('generated-native.json', { seed: 9182026, runs: histories.length, histories });
+    artifact('generated-native.json', {
+      seed: 9182026,
+      status: 'passed',
+      runs: histories.length,
+      histories,
+    });
   },
 );
 for (const mode of ['page', 'baseline'])
@@ -433,12 +500,18 @@ for (const mode of ['page', 'baseline'])
         { item: args(item), mode },
       );
       await cold(f);
-      await assert.rejects(openReceive(f.page, item), mode === 'page' ? /unverified/ : /record/);
+      const normalError = await refusal(
+        openReceive(f.page, item),
+        mode === 'page' ? /unverified/ : /record/,
+      );
       if (mode === 'page') {
         await f.page.evaluate(await receiveBundle('stored-page'));
-        assert.equal((await openReceive(f.page, item)).receivedThrough, 1);
+        const changed = await openReceive(f.page, item);
+        assert.equal(changed.receivedThrough, 1);
         await closeReceive(f.page);
         artifact('control-stored-page.json', {
+          normalError,
+          changed,
           outcome:
             'Actual page-signature removal accepts locally reauthenticated evidence with an invalid service page signature.',
         });

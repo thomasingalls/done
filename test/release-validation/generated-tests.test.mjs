@@ -252,7 +252,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
   // Ordered wrapper contracts need bounded planning headroom; this is not a runtime limit.
-  assert(Buffer.byteLength(serialized) <= 1000000);
+  assert(Buffer.byteLength(serialized) <= 4 * 1024 * 1024);
 });
 
 test('160 generated literal populations preserve tuple binding, loop order and suite scope independently of runtime collection', () => {

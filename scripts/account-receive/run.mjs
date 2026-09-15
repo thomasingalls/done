@@ -1,13 +1,17 @@
+import { createCampaignReporting } from '../release-validation/campaign-reporting.mjs';
+import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const output = resolve(
-  'test-results/account-receive',
-  new Date().toISOString().replaceAll(':', '-'),
-);
+const owned = Boolean(process.env.RELEASE_PROCESS_GUARD);
+if (owned) assert(process.env.ACCOUNT_REPORT_DIR, 'Owned receive campaign requires reports');
+const output = owned
+  ? resolve(process.env.ACCOUNT_REPORT_DIR)
+  : resolve('test-results/account-receive', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
+const reporting = createCampaignReporting(output);
 console.log(`Account native receive evidence: ${output}`);
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
@@ -73,9 +77,10 @@ async function run(name, args, timeoutMs) {
   const log = createWriteStream(join(output, name + '.log'));
   const reportDir = name === 'regressions' ? join(output, 'regression-artifacts') : output;
   mkdirSync(reportDir, { recursive: true });
-  const child = spawn(process.execPath, args, {
+  const childReport = reporting?.begin(name, args, timeoutMs);
+  const child = spawn(process.execPath, childReport?.args ?? args, {
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: { ...process.env, ACCOUNT_REPORT_DIR: reportDir },
+    env: { ...process.env, ACCOUNT_REPORT_DIR: reportDir, ...childReport?.env },
   });
   let timedOut = false,
     forced,
@@ -103,6 +108,7 @@ async function run(name, args, timeoutMs) {
   clearInterval(heartbeat);
   await new Promise((resolve) => log.end(resolve));
   const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
+  reporting?.end(result);
   summary.stages.push(result);
   save();
   return code === 0 && !timedOut;
@@ -137,6 +143,7 @@ try {
   ];
   for (const [name, args, timeout] of stages)
     if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
+  reporting?.finish();
   summary.status = 'passed';
 } catch (e) {
   summary.status = 'failed';

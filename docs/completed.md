@@ -8419,3 +8419,56 @@ Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives 
 Next: Account receive wrapper integration, then remaining families/qualification repairs, immutable
 aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).
+
+
+## 2026-09-15 — Account receive wrapper integration
+
+Inbound codecs is signed and verified as `70788d4e`. Receive preserves its original three-file Vitest
+invocation (45 cases), maxWorkers=2, verbose output and 60-second limit, followed by all 17 native cases
+with original Node/spec/JUnit command and 300-second child limit. Owned execution adds a 360-second
+aggregate/five-second grace, distinct child reports, disposable CDP fixture and 24 required report files.
+The invoked old marker reader is pinned as `8378596:src/crdt/promotionRecord.ts`; its existing five-second/
+2-MiB Git read bounds remain. No other history input is inferred from unused inherited helper branches.
+
+Four native controls now retain actual normal/cold/readback errors and mutated receipt progress. Coverage
+requires each single omission to refuse before the joint omission admits missing content; witness removal
+resets progress; split writes fail authenticated readback/cold replay; page-signature removal admits
+locally reauthenticated bad service evidence. Original compiled mutation checks remain in the fixture.
+The 12 generated histories (9182026, 1–3 actions) retain authored frames, original envelopes, actual commit-
+cut cursor, retry result, recovered status, the request/page that really committed, final inbound events,
+content rows and replayed text/pending state. Report reconciliation checks exact framing/bytes, original
+ordered event links, commit-cut retry disposition and content coverage by independent plaintext Yjs replay.
+Applying originals must leave snapshots unchanged and introduce no pending dependencies. This corroborates
+the native assertions; it does not independently authenticate signatures, local AEAD/witnesses or storage.
+
+Two hundred unit ledger histories (9172026) now have a distinct report containing original insert/deletion/
+merged bytes and actual refusal reasons. Their plaintext and deletion coverage are independently replayed.
+Codec mutation/400 generated recovery/500 wire corruption reports remain required and use the previous
+adapter. Native observations save after completed steps, with final rows before assertions; unit/codec
+reports save completed cases. Interrupted active work may be absent, and incomplete reports cannot pass.
+
+The first focused corruption run overflowed Node's async-resource tracking after recreating identical
+Yjs unit fixtures hundreds of thousands of times in one synchronous test. Cache exact input-tuple replay
+within each report reconciliation while continuing to check every observation. The unchanged five controls
+then pass in 4.32s; the original failing log and adapter/test source are retained. Recording the complete
+plan separately exceeded its one-million-byte cap (1,005,453 compact JSON bytes). Prospectively set a
+four-MiB planning-file cap with exact JSON round-trip and overflow checks, retaining every case/command.
+The first owned epoch then stopped in generated-registration planning because its separate cap assertion
+still used one million; align that assertion and retain all three completed stage receipts before rerunning
+the entire epoch. Neither Account campaign had started. Campaign deadlines, runtime report caps and the
+one-million-byte evidence archive limit are unchanged.
+
+The owned epoch passes **287 cases in seven executions**: 111 planning cases in five suites, 62 receive
+wrapper cases and 114 unchanged codec-wrapper regression cases. Receive takes **145.872s /360s**;
+codecs take 21.493s /135s. All groups drain. Exact receive reuse passes; 24 report files survive checkout
+removal in a 25-entry inventory within 4 MiB /40-entry /two-level limits. The unchanged 70-case manifest
+suite passes in 53.706s /60s. Five new infrastructure cases include two 160-run corruptions
+(150963/150964); eight synthetic zero-exit runs and two omitted semantic/native-census checks discriminate.
+Synthetic report controls are not additional Account receive executions. No loaded-host headroom claim.
+
+Inventory stays **629 obligations /292 required files**, 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 124 to **122: zero test-file /77 command /45 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives and L-2 remain unchanged.
+Next: Account receive-editor wrapper integration, then remaining families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).

@@ -3781,3 +3781,14 @@ live/cold byte agreement; generated wire faults retain their actual changed byte
 Yjs replay and report framing supplement the executed crypto assertions without claiming independent
 signature validation, compiled-bundle replay or native persistence.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).
+
+
+## 2026-09-15 — Receive evidence retains exact committed wire; planning capacity is separate
+
+Preserve original receive commands/cases/deadlines. Retain the request/page actually committed across
+before/after cuts, and independently reconcile receipt progress and plaintext content coverage including
+pending state. Cache only exact repeated unit-replay tuples within one report check, avoiding synthetic
+Node async-resource exhaustion without skipping observations. The finite checked-in planning manifest
+gets a four-MiB cap as explicit child contracts grow; exact round-trip/overflow checks cover it. Native,
+process-report and archive limits are separate and unchanged.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).
