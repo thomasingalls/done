@@ -1,0 +1,26 @@
+[
+  {
+    "session": "smoke-0-30-retain",
+    "days": 2,
+    "condition": "retain",
+    "block": 0,
+    "started": "2026-09-15T09:21:08.179Z",
+    "finished": "2026-09-15T09:21:17.286Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "smoke-0-30-clear",
+    "days": 2,
+    "condition": "clear",
+    "block": 0,
+    "started": "2026-09-15T09:21:17.286Z",
+    "finished": "2026-09-15T09:21:25.466Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

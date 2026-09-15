@@ -1,0 +1,313 @@
+{
+  "note": "Descriptive session-level engineering comparisons. Keys are dependent; two repeats per cell do not establish population confidence. Clear intervention removes history/retention together; accelerated setup does not simulate sustained CPU4 load. No strict complexity or release-budget claim.",
+  "sessions": [
+    {
+      "session": "campaign-v2-0-300-retain",
+      "cards": 301,
+      "condition": "retain",
+      "repeat": 0,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        1010,
+        1090
+      ],
+      "earlyStructs": 2797,
+      "deepStructs": 2797,
+      "earlyHistoryBytes": 140994,
+      "deepHistoryBytes": 141995,
+      "earlyP50": 47.30000019073486,
+      "deepP50": 48.5,
+      "earlyP95": 51,
+      "deepP95": 51.39999961853027,
+      "withinSessionMedianRatio": 1.0253699747235983
+    },
+    {
+      "session": "campaign-v2-0-300-clear",
+      "cards": 301,
+      "condition": "clear",
+      "repeat": 0,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        8,
+        88
+      ],
+      "earlyStructs": 2797,
+      "deepStructs": 2797,
+      "earlyHistoryBytes": 140985,
+      "deepHistoryBytes": 141986,
+      "earlyP50": 48.09999942779541,
+      "deepP50": 53.5,
+      "earlyP95": 51.19999980926514,
+      "deepP95": 69.59999942779541,
+      "withinSessionMedianRatio": 1.1122661254977917
+    },
+    {
+      "session": "campaign-v2-0-600-clear",
+      "cards": 601,
+      "condition": "clear",
+      "repeat": 0,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        8,
+        88
+      ],
+      "earlyStructs": 5577,
+      "deepStructs": 5577,
+      "earlyHistoryBytes": 264936,
+      "deepHistoryBytes": 265937,
+      "earlyP50": 73.69999980926514,
+      "deepP50": 72.70000076293945,
+      "earlyP95": 79.30000019073486,
+      "deepP95": 78.89999961853027,
+      "withinSessionMedianRatio": 0.9864314918736272
+    },
+    {
+      "session": "campaign-v2-0-600-retain",
+      "cards": 601,
+      "condition": "retain",
+      "repeat": 0,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        1010,
+        1090
+      ],
+      "earlyStructs": 5577,
+      "deepStructs": 5577,
+      "earlyHistoryBytes": 264929,
+      "deepHistoryBytes": 265930,
+      "earlyP50": 75.90000057220459,
+      "deepP50": 77.79999923706055,
+      "earlyP95": 82.20000076293945,
+      "deepP95": 83.10000038146973,
+      "withinSessionMedianRatio": 1.0250329202968644
+    },
+    {
+      "session": "campaign-v2-1-600-retain",
+      "cards": 601,
+      "condition": "retain",
+      "repeat": 1,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        1010,
+        1090
+      ],
+      "earlyStructs": 5577,
+      "deepStructs": 5577,
+      "earlyHistoryBytes": 264935,
+      "deepHistoryBytes": 265936,
+      "earlyP50": 76.40000057220459,
+      "deepP50": 80.19999980926514,
+      "earlyP95": 83.60000038146973,
+      "deepP95": 88.10000038146973,
+      "withinSessionMedianRatio": 1.0497382095366508
+    },
+    {
+      "session": "campaign-v2-1-600-clear",
+      "cards": 601,
+      "condition": "clear",
+      "repeat": 1,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        8,
+        88
+      ],
+      "earlyStructs": 5577,
+      "deepStructs": 5577,
+      "earlyHistoryBytes": 264936,
+      "deepHistoryBytes": 265937,
+      "earlyP50": 76.19999980926514,
+      "deepP50": 77.39999961853027,
+      "earlyP95": 82.40000057220459,
+      "deepP95": 85.10000038146973,
+      "withinSessionMedianRatio": 1.0157480290323995
+    },
+    {
+      "session": "campaign-v2-1-300-clear",
+      "cards": 301,
+      "condition": "clear",
+      "repeat": 1,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        8,
+        88
+      ],
+      "earlyStructs": 2797,
+      "deepStructs": 2797,
+      "earlyHistoryBytes": 140988,
+      "deepHistoryBytes": 141989,
+      "earlyP50": 50.60000038146973,
+      "deepP50": 50.10000038146973,
+      "earlyP95": 57.30000019073486,
+      "deepP95": 63,
+      "withinSessionMedianRatio": 0.9901185771495942
+    },
+    {
+      "session": "campaign-v2-1-300-retain",
+      "cards": 301,
+      "condition": "retain",
+      "repeat": 1,
+      "earlyUndo": [
+        10,
+        90
+      ],
+      "deepUndo": [
+        1010,
+        1090
+      ],
+      "earlyStructs": 2797,
+      "deepStructs": 2797,
+      "earlyHistoryBytes": 140993,
+      "deepHistoryBytes": 141994,
+      "earlyP50": 48.59999942779541,
+      "deepP50": 50.69999980926514,
+      "earlyP95": 55.40000057220459,
+      "deepP95": 55.39999961853027,
+      "withinSessionMedianRatio": 1.043209884901124
+    }
+  ],
+  "cells": [
+    {
+      "seededCards": 300,
+      "condition": "retain",
+      "earlyP50": 47.94999980926514,
+      "deepP50": 49.59999990463257,
+      "earlyP95": 53.200000286102295,
+      "deepP95": 53.39999961853027
+    },
+    {
+      "seededCards": 300,
+      "condition": "clear",
+      "earlyP50": 49.34999990463257,
+      "deepP50": 51.80000019073486,
+      "earlyP95": 54.25,
+      "deepP95": 66.2999997138977
+    },
+    {
+      "seededCards": 600,
+      "condition": "retain",
+      "earlyP50": 76.15000057220459,
+      "deepP50": 78.99999952316284,
+      "earlyP95": 82.90000057220459,
+      "deepP95": 85.60000038146973
+    },
+    {
+      "seededCards": 600,
+      "condition": "clear",
+      "earlyP50": 74.94999980926514,
+      "deepP50": 75.05000019073486,
+      "earlyP95": 80.85000038146973,
+      "deepP95": 82
+    }
+  ],
+  "comparisons": [
+    {
+      "kind": "retained-over-cleared",
+      "seededCards": 300,
+      "pairs": [
+        {
+          "repeat": 0,
+          "retain": "campaign-v2-0-300-retain",
+          "clear": "campaign-v2-0-300-clear",
+          "p50Ratio": 0.9065420560747663,
+          "p95Ratio": 0.7385057477170496
+        },
+        {
+          "repeat": 1,
+          "retain": "campaign-v2-1-300-retain",
+          "clear": "campaign-v2-1-300-clear",
+          "p50Ratio": 1.0119760363917547,
+          "p95Ratio": 0.8793650733100044
+        }
+      ],
+      "p50Ratio": 0.9592590462332605,
+      "p95Ratio": 0.8089354105135269
+    },
+    {
+      "kind": "retained-over-cleared",
+      "seededCards": 600,
+      "pairs": [
+        {
+          "repeat": 0,
+          "retain": "campaign-v2-0-600-retain",
+          "clear": "campaign-v2-0-600-clear",
+          "p50Ratio": 1.0701512850151293,
+          "p95Ratio": 1.0532319490905682
+        },
+        {
+          "repeat": 1,
+          "retain": "campaign-v2-1-600-retain",
+          "clear": "campaign-v2-1-600-clear",
+          "p50Ratio": 1.0361757132368838,
+          "p95Ratio": 1.0352526437902725
+        }
+      ],
+      "p50Ratio": 1.0531634991260066,
+      "p95Ratio": 1.0442422964404203
+    },
+    {
+      "kind": "600-over-300",
+      "condition": "retain",
+      "pairs": [
+        {
+          "repeat": 0,
+          "small": "campaign-v2-0-300-retain",
+          "large": "campaign-v2-0-600-retain",
+          "p50Ratio": 1.6041236956094957,
+          "p95Ratio": 1.6167315369300364
+        },
+        {
+          "repeat": 1,
+          "small": "campaign-v2-1-300-retain",
+          "large": "campaign-v2-1-600-retain",
+          "p50Ratio": 1.5818540455814567,
+          "p95Ratio": 1.5902527254170216
+        }
+      ],
+      "p50Ratio": 1.5929888705954762,
+      "p95Ratio": 1.603492131173529
+    },
+    {
+      "kind": "600-over-300",
+      "condition": "clear",
+      "pairs": [
+        {
+          "repeat": 0,
+          "small": "campaign-v2-0-300-clear",
+          "large": "campaign-v2-0-600-clear",
+          "p50Ratio": 1.3588785189334478,
+          "p95Ratio": 1.1336206934941557
+        },
+        {
+          "repeat": 1,
+          "small": "campaign-v2-1-300-clear",
+          "large": "campaign-v2-1-600-clear",
+          "p50Ratio": 1.5449101602633497,
+          "p95Ratio": 1.3507936568487258
+        }
+      ],
+      "p50Ratio": 1.4518943395983988,
+      "p95Ratio": 1.2422071751714407
+    }
+  ]
+}

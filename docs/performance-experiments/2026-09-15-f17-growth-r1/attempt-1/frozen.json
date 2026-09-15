@@ -1,0 +1,19 @@
+{
+  "files": {
+    "protocol.md": "fe2012b23c38fd18ca81a3b4965e03ae0a1c59d54838c34bcfb7820d73c7b852",
+    "probe.mjs": "5a8d95ce0d77a361e25916ef15507906c281a7d755523fd91efab74df2f0ef73",
+    "build.mjs": "7a8a71cfbc1eaa889c13f3bb3e3a6d3693e8386ed7e01933338c133b57d77e5d",
+    "activated-admittedWorkspace.ts": "47a6b6578475ee7597594fa4f7cdc3213faef109780b65118770a9f64a249609",
+    "screen.mjs": "d4a96b080a6089ab86ff10d02d3c47f11a250f2c30e2482008c5294dfd918495",
+    "batch.mjs": "62da8b38ac75bc2011663e6b91e26fb60ab573ba5a47fe0a0b9a57a2de9811eb",
+    "measure.mjs": "4be0af6dad24b3b69e8f509799f80aef69fbda0540a5aef1f029d04ba856c6ed",
+    "recorder.mjs": "c9613b4e72ce89aa763810ecea1e43db4150e42638cb1c7784459739a6836480",
+    "selected.patch": "b2a65443c631398537a5ea9e185d9eade0fb4688969703290638c6b746628d0e"
+  },
+  "sourceManifestSha256": "5ebd3856174e378b29463ecbd1146103254812d52aee3037b54fe6533cd959a0",
+  "bundleManifestSha256": "d6a8bf64ba063018e4a946036af99d3dde03c1e5df6b57b3f38841a6b443bec4",
+  "focusedCases": 6,
+  "discriminatingFaults": 2,
+  "smokeSessions": 2,
+  "status": "ready-for-fixed-campaign"
+}

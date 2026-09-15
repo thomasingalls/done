@@ -1,0 +1,44 @@
+[
+  {
+    "command": "node --test /private/tmp/done-f17-growth-r1/probe.test.mjs",
+    "exitCode": 0,
+    "log": "probe-tests.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-growth-r1/build.mjs",
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-growth-r1/batch.mjs smoke",
+    "exitCode": 0,
+    "log": "smoke-batch.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-growth-r1/batch.mjs campaign",
+    "exitCode": 1,
+    "log": "campaign-batch.log",
+    "note": "Original helper and mode in attempt-1; preserve setup failure."
+  },
+  {
+    "command": "EXPLORE_DAYS=20 node /private/tmp/done-f17-growth-r1/growth-repro.mjs retain growth-setup-repro",
+    "exitCode": 0,
+    "log": "growth-repro.log",
+    "note": "Standalone reproduction reports resource closure; parent process-group receipt applies to batch sessions only."
+  },
+  {
+    "command": "node /private/tmp/done-f17-growth-r1/batch.mjs campaign-v2",
+    "exitCode": 0,
+    "log": "campaign-v2-batch.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-growth-r1/analyze.mjs",
+    "exitCode": 0,
+    "log": "analysis.log"
+  },
+  {
+    "command": "python3 /private/tmp/done-f17-growth-r1/audit.py",
+    "exitCode": 0,
+    "log": "audit.log"
+  }
+]

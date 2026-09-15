@@ -1,0 +1,89 @@
+{
+  "signedBase": "ac0b84ce96b068d30c9256a476eec4ace52a87df",
+  "campaignSessions": [
+    {
+      "session": "campaign-v2-0-300-retain",
+      "sha256": "62e7db1e36b27e7fc8f0b6b505b40105aa32af077988c804e2325728ee753cd5",
+      "undo": [
+        1010,
+        1090
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-0-300-clear",
+      "sha256": "0ec201c00c99d6e35ebf6612bac385e1cdc4bcaa56db922a6bde80d084ac53b2",
+      "undo": [
+        8,
+        88
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-0-600-clear",
+      "sha256": "f6aaed3815c02bcbddd3aeff74ebcd51e82b337fd8ab1038c863613b44539611",
+      "undo": [
+        8,
+        88
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-0-600-retain",
+      "sha256": "2e2a106566141e2688d2f8aad26bc7599b4bbd6e0109bb69810c1a4a4664a247",
+      "undo": [
+        1010,
+        1090
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-1-600-retain",
+      "sha256": "bbb58192c6ecdb98f5ae20dcdd0b9042cab3487c40f790eaa0bb7e1165781afb",
+      "undo": [
+        1010,
+        1090
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-1-600-clear",
+      "sha256": "76a77099d3a6e684f67284b8f3774973b725b849cda740c895536453590d014d",
+      "undo": [
+        8,
+        88
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-1-300-clear",
+      "sha256": "c4df984a5b4765911bf843d21aa317195a1d48eedfc6b05a5909d636445bc8f6",
+      "undo": [
+        8,
+        88
+      ],
+      "measuredKeys": 160
+    },
+    {
+      "session": "campaign-v2-1-300-retain",
+      "sha256": "c207d66e59032bcdfb20ed069c570c7f287bc6ab700997938ee8c75d58903611",
+      "undo": [
+        1010,
+        1090
+      ],
+      "measuredKeys": 160
+    }
+  ],
+  "measuredKeys": 1280,
+  "untimedSetupAndWarmupKeys": 7424,
+  "smokeSessions": 2,
+  "standaloneReproductionPassed": true,
+  "originalFailedSessionRetained": true,
+  "sourceAndBundleUnchanged": true,
+  "previousPacketFiles": 66,
+  "personalAndVectorPins": 52,
+  "rootPerspectiveUnchanged": true,
+  "appendOnlyPrefixesPreserved": true,
+  "L2Unchanged": true,
+  "mainRuntimeTestsUnchanged": true
+}
