@@ -57,7 +57,7 @@ input found and fixed an initial validator defect. The subsequent [explicit priv
 cases, 215 owned cases, both 100-history native campaigns and the ten-case/four-mutation workspace
 catalogue. Five new unit faults are detected; a synchronous startup cleanup gap is repaired. The
 final full repeat passes 99 files / 1,141 tests, with an intervening two-case timeout run retained.
-Next prospectively compare performance before the unchanged application gate. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
+The subsequent [snapshot comparison](./f17-selection-performance.md) completes 64 sessions with semantic checks passing but misses the incremental gain rule (2.9% shallow versus 10.3% deeper-history improvement over H). All regression guardrails pass. The single unchanged application gate still fails Android card typing at 12.2/75.1 ms desktop/CPU-4x. Android focus also exceeds <50 ms at 54.2 ms. Default activation stays refused. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
 
 Once the application gate has an acceptable disposition, resume command/campaign wrapper certification, including exact dependency/vector
 reuse and complete output retention. Resolve the host-Python input binding, recorded timeout/owner/
@@ -3428,11 +3428,9 @@ General integration now covers 261 files / 2,073 case dispositions (11 not appli
 
 ## Next bounded integration
 
-Specify and run a balanced comparison of the explicit private selection-snapshot variant with the
-current reference, existing Local handoff and appropriate signed baseline. Pin the useful-gain
-rule before execution and retain the unchanged application gate before default activation.
-[Functional integration checkpoint](./f17-selection-integration.md). Account activation remains
-separately gated; 0 test-file, 96 command and 63 campaign obligations remain.
+Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+[Latest comparison and gate](./f17-selection-performance.md). Account activation, wrapper
+certification and immutable qualification remain separately gated.
 
 
 ## 2026-09-15 — Selection-snapshot ownership contract and baseline controls
@@ -3542,3 +3540,49 @@ occurs. F-17 remains partial and the application gate remains 12.9/63.5 ms deskt
 card p95, with Android failing <16 ms. Next specify and run a balanced comparison with the reference,
 existing Local handoff and appropriate signed baseline before the unchanged application gate.
 [Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).
+
+
+## 2026-09-15 — Private Local selection-snapshot performance decision
+
+The [prospective four-variant comparison](./f17-selection-performance.md) completes **64 fresh
+sessions, 5,248 warmups and 4,096 measured insertions**, with all exact text/caret/revision/history
+and canonical cold-replay checks passing. B is complete signed `0c84e5cc`; R/H/S share current
+runtime/dependency bytes with explicit reference, Local-handoff and Local-snapshot selection.
+Four balanced orders cover three 100,000-character document item-count strata plus a deeper
+10,000-item history growing from 256 to 320 undo groups. The memory carrier excludes encryption,
+IndexedDB and paint; this is a host engineering comparison, not fleet qualification.
+
+The snapshot increment over H is **2.9%** at 10,000 items with shallow history and **10.3%** with
+deeper history. The prospective rule requires >=10% in both, so the relative gate **fails**.
+Cumulative S/R and S/B benefits and all median/p95 regression guardrails pass. At 100,000 items
+S is 0.7% slower than H by median paired ratio; the substantial cumulative gain comes from the
+existing handoff. Preserve the mixed result rather than declaring a broad snapshot speedup.
+
+The unchanged application gate runs **once** on a disposable current-source build with exactly
+one runtime patch selecting `local-snapshots` at the Local opener. All twelve cases execute and
+all thirty measurement rows are retained; browser, process group and localhost server drain.
+Card p95 is **12.2/75.1 ms desktop/CPU-4x Android** against <16 ms. Android focus is
+**54.2 ms** against <50 ms; both Android budgets fail. The remaining budgeted metrics pass. The failure is reported through the deferred afterAll budget hook,
+not a navigation correctness failure. The earlier H observation (12.9/63.5 ms) is a separate,
+unpaired run; its difference from this run is not a controlled browser treatment effect.
+
+Default Local and Account retain the reference. No runtime, adapter, manifest, census or registry
+changes occur in this phase. F-17 stays partial; general integration remains **263 files / 2,121
+dispositions (11 not applicable)** and unresolved obligations remain **0 test-file / 96 command /
+63 campaign**. Seven preceding evidence packets, 52 personal/vector pins, append-only prefixes
+and L-2 are preserved. The packet embeds all command observations, helper/protocol bytes,
+application measurements/receipts and preservation data; large pinned inputs and bundles remain
+under ignored local test-results with hashes. No personal app, phone, relay or deployment changes.
+
+Next: Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-performance/README.md).
+
+| Seed items / history | Signed B | Current R | Handoff H | Snapshots S |
+| --- | ---: | ---: | ---: | ---: |
+| 1,000 / 24–88 groups | 12.41 | 12.57 | 12.26 | 11.84 |
+| 10,000 / 24–88 groups | 21.06 | 21.21 | 18.53 | 18.06 |
+| 100,000 / 24–88 groups | 92.34 | 94.57 | 63.85 | 64.48 |
+| 10,000 / 256–320 groups | 22.74 | 22.81 | 20.51 | 18.48 |
+
+Values are medians of four session medians, in milliseconds. Decisions use the retained paired
+ratios, not ratios of this summary table. Raw within-session timings are dependent.

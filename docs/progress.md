@@ -61,15 +61,20 @@ is refused; F-17 remains open. The 96 command / 63 campaign wrapper obligations 
 qualification repairs also precede the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 The record audit is committed with a verified signature as `0c84e5cc`.
 
-**Just completed.** The [explicit private Local snapshot integration](./f17-selection-integration.md)
-passes 86 workspace cases, five history-owner cases and 215 affected/timing-follow-up owned cases.
-Both native pending/delivery campaigns pass directed cases plus 100 histories each; the owned
-workspace catalogue passes ten cases and four mutations. Five additional unit faults are detected.
-A synchronous-startup cleanup gap was reproduced and fixed. The final full repeat passes 99 files /
-1,141 tests; an intervening run hit the two previously recorded five-second Account-liveness/
-position-decision timeouts. All runs remain, with timing uncertainty still open. Twenty-one runner
-checks and type/style/inventory/census/authority checks pass. Default Local and Account retain the
-reference; no performance measurement or activation occurs.
+**Just completed.** The [private Local snapshot comparison](./f17-selection-performance.md)
+completes 64 fresh sessions / 5,248 warmups / 4,096 measurements with all semantic checks passing.
+Snapshot reuse improves the deeper-history case by 10.3% over the existing handoff, but the
+shallow 10,000-item gain is 2.9%; the required >=10% in both strata is missed. All regression
+guardrails and cumulative reference/signed-baseline benefits pass. The unchanged application gate
+runs once: **12.2/75.1 ms desktop/CPU-4x Android card p95**, with Android still over <16 ms;
+Android focus is also over <50 ms at 54.2 ms. Remaining budgeted metrics pass. All twelve cases and thirty measurement rows are retained, with
+browser/process/server drain. Default Local and Account retain the reference; F-17 remains partial.
+
+The preceding functional integration remains verified: 86 workspace cases, 215 owned cases,
+both 100-history native campaigns, ten workspace catalogue cases/four mutations and five unit
+faults. A synchronous startup cleanup gap was fixed. The final full repeat passes 99 files /
+1,141 tests; the intervening Account-liveness/position-decision timeouts remain at loaded-host
+qualification. This performance phase does not rerun those full functional campaigns.
 
 The physical Pixel 9a companion completes all four fresh R/C/C/R sessions.
 All 960 trusted-key samples survive, with full-corpus and exact edited-card cold-reopen checks passing.
@@ -129,13 +134,13 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Current bounded phase.** Specify and run a balanced performance comparison of the private
-selection-snapshot variant against the current reference, existing Local handoff and appropriate
-signed baseline. Pin workloads, order, measurements and the useful-gain rule before execution;
-the unchanged application gate follows. [Functional checkpoint and next gate](./f17-selection-integration.md).
-Default activation remains conditional on the evidence. Remaining phone/manual work is cancelled;
-test servers and the dedicated ADB server are stopped. Emulation remains the reference, with a
-rough 1.5× card-latency planning estimate. F-17 and the 96 command / 63 campaign obligations remain open.
+**Current bounded phase.** Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+Eight completed bounded phases remain uncommitted above verified signed `0c84e5cc`; these are
+working-tree changes, not unsigned commit replacements. No commit is made in this performance
+phase. The latest user asked about the backlog; signing/grouping should precede immutable
+qualification. Remaining phone/manual work is cancelled; all test servers and the dedicated ADB
+server are stopped. Emulation remains the reference, with the earlier rough 1.5× phone planning
+estimate. F-17 and the 96 command / 63 campaign obligations remain open.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

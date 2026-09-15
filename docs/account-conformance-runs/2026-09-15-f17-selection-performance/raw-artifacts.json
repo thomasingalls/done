@@ -1,0 +1,912 @@
+[
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/inputs.json.gz",
+    "bytes": 1181152,
+    "sha256": "27bf89f1bf51251ba5b81bd7dea6f53ca65a9e219b3b9f31ab9024cb17389226"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/assets/main-BBv1bmH8.css",
+    "bytes": 22825,
+    "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/assets/main-BPIKAk94.js",
+    "bytes": 1041892,
+    "sha256": "eab0e8d1846a1376367748aa3bce6b9a4acaa0fdb3f5a29ab03819251ff0f8ea"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/assets/promotionRecord-wTSENZmt.js",
+    "bytes": 19628,
+    "sha256": "eefa75cc170513d224a21e253b05c9a16a9524435d5c6880045776e55d3dedd6"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/favicon.svg",
+    "bytes": 274,
+    "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/icon-192.png",
+    "bytes": 1906,
+    "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/icon-512.png",
+    "bytes": 6151,
+    "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/icon-maskable-512.png",
+    "bytes": 3197,
+    "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/index.html",
+    "bytes": 1472,
+    "sha256": "e9afc639bf4ed1460cb1d176add2c4d2bee7b0eee2599b62f564f8301c29bf4d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/local.html",
+    "bytes": 531,
+    "sha256": "038d79b565e53f6f7aec05cb86f9464e58a1812cec734e03aa5d5a1cc1ab8b3f"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/manifest.webmanifest",
+    "bytes": 835,
+    "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+  },
+  {
+    "path": "test-results/f17-selection-performance/application-candidate/stages/81877f12a36a349ebdcc4580d80f901b9fd9e584975a9f89df96809d247943af/tmp/playwright/app/sw.js",
+    "bytes": 3943,
+    "sha256": "bd6448690dc6750212168fb545832029876d6671683e044b87c9d39e746dd087"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/B.js",
+    "bytes": 1498797,
+    "sha256": "fa76a73200356769e644cfb8433dc2d73f513e12a2c99dcbf17a25eb31eff16a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/H.js",
+    "bytes": 1518161,
+    "sha256": "67dd3347a89db5ed807710f6f799ef80d6d1569ee9ef6e85f6f8cfd650bb5630"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/R.js",
+    "bytes": 1518161,
+    "sha256": "67dd3347a89db5ed807710f6f799ef80d6d1569ee9ef6e85f6f8cfd650bb5630"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/S.js",
+    "bytes": 1518161,
+    "sha256": "67dd3347a89db5ed807710f6f799ef80d6d1569ee9ef6e85f6f8cfd650bb5630"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/activation.patch",
+    "bytes": 253,
+    "sha256": "a2733029ba4615d0dd91d03ff8f7a7749d5a433a6c01b6d258a3ca2d1ed21bec"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/analysis.json",
+    "bytes": 70227,
+    "sha256": "957591ca07174d0423e49b8dd3b296f10b7c40be1e27080af403405e6f51d378"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/analysis.log",
+    "bytes": 8883,
+    "sha256": "1738763757229e4407323db8ca8eed5f90d899fc6098a293dac5a0650a5b5799"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/analyze.mjs",
+    "bytes": 2377,
+    "sha256": "a40d67ea56458d0c4c381a458223275a9a35165b495e80e77e1bcdec465049ff"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/application-before-inputs.json.gz",
+    "bytes": 1181081,
+    "sha256": "38a641d54c4c0b6359a8a56d042a213ff1e248b52584eaed57ea0c8c08a893f5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/application-variant.json",
+    "bytes": 3993,
+    "sha256": "2310586d3e43b3a0982b28a88acaea322a5ec9de85e651a8ce5dd74176f42f70"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/application.log",
+    "bytes": 776,
+    "sha256": "18f129fbe56740d21f768238f49ddc233f51eb7cb2edf688e78215b29e3da0e4"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/application.mjs",
+    "bytes": 3932,
+    "sha256": "3d85e2e6eaf0550b8a0dd5c023186e86e35905e8d12388ba735593ee14f6c48e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/build.log",
+    "bytes": 144,
+    "sha256": "e29953c4faf1e0242a261bb6758c05a6c6a4feea39d1355e635f064ba72a0bbd"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/build.mjs",
+    "bytes": 4041,
+    "sha256": "e42c5b63b682a9d471cd594c7b5a34d3bd584db67e8ff8e0752d7258d010c1f1"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/check--1-1000-B.json",
+    "bytes": 999,
+    "sha256": "6c3a1f9afdac993f5bfd2d4e616a1cd65e165273b0d235474cbeb61bbd06393e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/check--1-1000-H.json",
+    "bytes": 998,
+    "sha256": "2e95770d08626ee2727baefeacd8881ebd8046cec4b8b4654877761c4c5fceee"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/check--1-1000-R.json",
+    "bytes": 999,
+    "sha256": "22de51630d5f4daaa167904f70e9e9240e20d22e2a6175d3a958c27aa0da1950"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/check--1-1000-S.json",
+    "bytes": 998,
+    "sha256": "d64dbb1e1970ea95cac99cd5e3e5b119fb9e051498a8040a7ccd1caec90a4ad7"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/comparison.log",
+    "bytes": 659,
+    "sha256": "b73a8f5e6682b3b245c95414206cca0aad65a5748882453e93e64909023088f5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/frozen.json",
+    "bytes": 610,
+    "sha256": "74e9d69eb472048344f85305d6c10239745df58281f0aafabc9384f988a9b607"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/functional-packet.log",
+    "bytes": 252,
+    "sha256": "a830ea123fa2a36ce588739f88f9dd294b0da2aa904d7b883a78bbf9900a4b71"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/input-preservation.log",
+    "bytes": 91,
+    "sha256": "98b52c9b640f94b7a6ccf2411204ae8838ab2e944e5e2e46cf0cbb17373a7c62"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/inputs.json.gz",
+    "bytes": 1190688,
+    "sha256": "a4d58d88aae930bfbaafa19bd637beddca1773b80815fcd1c233d93f865b9e69"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/inventory.log",
+    "bytes": 323,
+    "sha256": "b6860ce92cdcab1a0b53cf8f68bfc2718b890be37e52979c1ea3bbec4423790d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/manifest.log",
+    "bytes": 100,
+    "sha256": "d02ee0650dd32eb416308d5ab1e4ab713fa267e254d92081809d0c4e8aadaa0b"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-1000-B.json",
+    "bytes": 8529,
+    "sha256": "dec2576fe00342103cfcd8567479fd559bfd93a3c87cea839c0c4fd543190bf0"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-1000-H.json",
+    "bytes": 8536,
+    "sha256": "58cdecd908615685d7f4be961d79edaaa3048e90a56edb5337bb68a642cbd89a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-1000-R.json",
+    "bytes": 8521,
+    "sha256": "210ba2f194bbe7a43cb3d64d7f137bbbc4e833cf10e7a22053184be54bde7444"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-1000-S.json",
+    "bytes": 8508,
+    "sha256": "96da0362a77b5f5c53fa40e9d01981e1bb0892df442c8457092053b76f69c8ef"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-10000-B.json",
+    "bytes": 8538,
+    "sha256": "c2bf60acb195f67bb26e7bd7e62288deef8d892b2189fb0cea1792c9a72201e5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-10000-H.json",
+    "bytes": 8482,
+    "sha256": "d81c64e141ddd36eb0bf51f2b87e15c718b395dc52b91fb0b0e4cffe8ab013e5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-10000-R.json",
+    "bytes": 8523,
+    "sha256": "ffd44a05f908169a4d61d5de73c3a856c90a8bafee6c13bba1b8235bdafe98b1"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-10000-S.json",
+    "bytes": 8512,
+    "sha256": "bb4ba815d3cd61ba32a7b278e85bade450ef0fe1573f349f2cab280ef0b9a3d3"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-100000-B.json",
+    "bytes": 8515,
+    "sha256": "64c0f66080d865f1541a0cf4c251c2268b177ddd04a86beb0036e22e08795c91"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-100000-H.json",
+    "bytes": 8477,
+    "sha256": "0af14c8c6452acf28392c92a053ad08f1da037de202c0ff621bda98048fe28e6"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-100000-R.json",
+    "bytes": 8502,
+    "sha256": "6c47967228bea625779f07d68ceb0de32c6c7de61597a1a5a9603bc995192a2e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-100000-S.json",
+    "bytes": 8471,
+    "sha256": "4007a3acf84b5578fe43f1c17101c046dce0a125abda10f27eed3e877432451c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-deep-B.json",
+    "bytes": 29077,
+    "sha256": "80ac199b26ad24b1ca09dc730a3df01dabedfeaa881828d4a19251c7f2421f46"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-deep-H.json",
+    "bytes": 29083,
+    "sha256": "556433825f0d88b827361c1fdb2195f76612b513ed181579ee413088cd952527"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-deep-R.json",
+    "bytes": 29062,
+    "sha256": "86601c4a7dc8ff2b28976099299b6da0deb771d4c6f3130226ca5b286043e3eb"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-0-deep-S.json",
+    "bytes": 29043,
+    "sha256": "97d277e40034333d4355a1b23ba2c78433a3d2a2e88c32d375328ce67dc0cbaa"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-1000-B.json",
+    "bytes": 8533,
+    "sha256": "8e3789a4f25d439eab2d0b2d0aefc2992db0c6bf367232db216c42faf277a0fc"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-1000-H.json",
+    "bytes": 8525,
+    "sha256": "b8869fd1fdd0d3af0fc0cc41bc50499a2710b4af857887df343761bd4312bfae"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-1000-R.json",
+    "bytes": 8537,
+    "sha256": "a3815e8586f8079201588b15def44a45a30b71e809d9a5a377b3b371327d71a1"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-1000-S.json",
+    "bytes": 8522,
+    "sha256": "ab5f266379eb8cf951814a365a82be860b985042db09dc58120edef2b8059177"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-10000-B.json",
+    "bytes": 8539,
+    "sha256": "5197a16dddc8b490fac686c5abda45ed8064bcc1f4e5c89d1353bccb08ff0245"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-10000-H.json",
+    "bytes": 8530,
+    "sha256": "d34ccbadae33ae84eea9a292341f78ba66ec3516d0fbd8eafe59c180b7bd7302"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-10000-R.json",
+    "bytes": 8513,
+    "sha256": "59f00a4e317fc6053f6c9b55773aec355f9eb0f2ce553ce22e3c83d6ebf348df"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-10000-S.json",
+    "bytes": 8526,
+    "sha256": "4873fefe8dae5f931288a70b31791735e7a415f4bb52709e09e4428d4263b53a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-100000-B.json",
+    "bytes": 8475,
+    "sha256": "f048859f4805a5d847dcc934d98e5ed6e09d2c90bb572a35e07c1ce72f23db8c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-100000-H.json",
+    "bytes": 8507,
+    "sha256": "cbd812c87c81ea9e62844b548171df493dab965f569e3ae5b1af8ffde27e4de2"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-100000-R.json",
+    "bytes": 8470,
+    "sha256": "b2479ce9cae0748cc219868275cf7f8facba017edcd88041e3a3c51f434245e5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-100000-S.json",
+    "bytes": 8489,
+    "sha256": "8dc8e26a09b71f23cae8150d2bd4b60eac89fa0bde8db52bcab108abb6218569"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-deep-B.json",
+    "bytes": 29047,
+    "sha256": "271d72bd64963f9cb657cda8cced45201ca58708dc39ccdebac0a1c34305354c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-deep-H.json",
+    "bytes": 29043,
+    "sha256": "e609262532fc6ca7dd79c8b592f2f587ddb10d6186ea8e12bdeabbca4e28cf7b"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-deep-R.json",
+    "bytes": 29045,
+    "sha256": "707d42c8e5e8a9ef8b9353f96ab7e090d3cebf40dcbcde01440695f8f8f2c2cb"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-1-deep-S.json",
+    "bytes": 29055,
+    "sha256": "d401a1409dbf278e4e774a842ea73bdaaa68421151005d1281d8e00e7f760d9f"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-1000-B.json",
+    "bytes": 8487,
+    "sha256": "27b3e2df412fc3e8eb1dc698bad76f75bf61e2c4b99ca7c2bf6869af83d892f3"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-1000-H.json",
+    "bytes": 8549,
+    "sha256": "3fa9c587558ae3b5187edaf80bb15d753d9a22d25ef97ae9b3e04a422828fec7"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-1000-R.json",
+    "bytes": 8558,
+    "sha256": "bd2c211a50e12677c382e42a0a1ce98ecca63eef52b21a3eb99ad46c4bb51e69"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-1000-S.json",
+    "bytes": 8545,
+    "sha256": "4f830872341516c802577f278351e8127f15ba8a8d1df423af089ea0d9b7179c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-10000-B.json",
+    "bytes": 8514,
+    "sha256": "d4ab7ca24d787674a3fa23ccc8f6ac30a0aef7844f0dbf9f563e3d752cbbb8ac"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-10000-H.json",
+    "bytes": 8520,
+    "sha256": "01e119f6346fad16c48594c5609ed113419120d2fa49c20e3e9b25d5355e32f6"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-10000-R.json",
+    "bytes": 8515,
+    "sha256": "6ae4c47b5a64da6b2745cb3a2e9b13a77c543a8a16651a6fce6c128de4fc32fa"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-10000-S.json",
+    "bytes": 8531,
+    "sha256": "10551f3ba1b4c007f67cdcfabe212a2bf1d7f5d3e395516a66dd35f3fc3c7c13"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-100000-B.json",
+    "bytes": 8475,
+    "sha256": "d44ebaa438ebf66fe2f9fb38e2d3e16d21542c51980f50312ecb7f4221b9efda"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-100000-H.json",
+    "bytes": 8478,
+    "sha256": "a3883599d156e33dcd3913facc3394f6b2d5402fff998697cf56e61af7a5adf0"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-100000-R.json",
+    "bytes": 8474,
+    "sha256": "11c6974ef825086e69557eac8efbebd3e157d814125e7cc2d2bc8482c6bdf99f"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-100000-S.json",
+    "bytes": 8471,
+    "sha256": "0862a614c672ccd7ee3ee240d4cc702ea5f99c33a4503b8d5e56705596adff72"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-deep-B.json",
+    "bytes": 29043,
+    "sha256": "350e3abe67191f817d4959b384483d7d94a9494990336ea485eea6ca248e271d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-deep-H.json",
+    "bytes": 29029,
+    "sha256": "9948fd5cbfd09b0008c7c08f2399435b8a27641f8082b966781a5a1c243b179e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-deep-R.json",
+    "bytes": 29056,
+    "sha256": "5831e1fe55ae3632e44d22535d6b08e39e9a921fdb8c854d1cf5fec6d3514b2c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-2-deep-S.json",
+    "bytes": 29052,
+    "sha256": "3103cb436a8d048dc34f4e771a3062685711546dda3a94a53266ecebd4171df5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-1000-B.json",
+    "bytes": 8536,
+    "sha256": "be09ad5864d19acba05d9cb5cc4d2435cf60650a2864f059087fc885a33b5f1c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-1000-H.json",
+    "bytes": 8549,
+    "sha256": "f275a3a81e4c18b475fff680c69608a93e5be0881504564e21c6de49b0c42d73"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-1000-R.json",
+    "bytes": 8530,
+    "sha256": "02e65698787046b1efcb66e696ee7f3a769771e37daaa781440d0369799f78a3"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-1000-S.json",
+    "bytes": 8521,
+    "sha256": "2f1b7aea13d614722e5563bd843afc5e8c51c910e2823b32284a4606a47b0bc9"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-10000-B.json",
+    "bytes": 8513,
+    "sha256": "9ce8016860f6f845b3bc60f5cb1eb4929b574f376d8c51b107c66d23f41e94c4"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-10000-H.json",
+    "bytes": 8507,
+    "sha256": "bc013c174def9a7e8247357e809dbb4bfe17722c82f6663750f7e66e01f8fdbf"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-10000-R.json",
+    "bytes": 8524,
+    "sha256": "5296a4a67a4c5f14263c5f743a4738c4fe514b8a867156f3bd16edcd2bdb652f"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-10000-S.json",
+    "bytes": 8493,
+    "sha256": "11e277226e0b954ef5527d73ff59c34734e6494464f26ab6d0048b4a8995bca9"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-100000-B.json",
+    "bytes": 8466,
+    "sha256": "f27ab85345e8189a7cdd0c3e0fec80a2c6c4708c6f8ab0588ac6dfed02270a57"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-100000-H.json",
+    "bytes": 8443,
+    "sha256": "e7f6d1ee839aa81a0525e32d0ea52a946f52cbb036c4951580685f368e9eb55c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-100000-R.json",
+    "bytes": 8472,
+    "sha256": "5b519185f19e126f5a1c1d588530a305959a876a35b0229709c3e6002f6f1f81"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-100000-S.json",
+    "bytes": 8468,
+    "sha256": "37bfa0a645a03de2bb5616a967f889128bc739748b588efe7f2be1735d8329d5"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-deep-B.json",
+    "bytes": 29069,
+    "sha256": "addfe51abfddf07ff0222f8435eec75d701a903766ca9cec9a8b080c4771ec6d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-deep-H.json",
+    "bytes": 29063,
+    "sha256": "3c6ff5f5188fb5a1f0af27eae105723b23d54b06209892226bfc5ff18e0f17fa"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-deep-R.json",
+    "bytes": 29090,
+    "sha256": "cd127e86d1cf8410da31a7af5e87331eb843b35dc9ceab0e869e0695b2b6d2ed"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/measure-3-deep-S.json",
+    "bytes": 29070,
+    "sha256": "c2c1fb72b007fd0dcfbe1adce8cf102322d2070e435f579f9b0629e7b1c190da"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/package.py",
+    "bytes": 5157,
+    "sha256": "1aab54af8ca70948c7e09194fe35ee58c171b80bec98b38f819aff7f24117f84"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/packaging-initial-artifacts.json.gz",
+    "bytes": 335903,
+    "sha256": "5912e652d02a1e41468c5eebbe75cc2151a897b7010f4ab30f45191bf14cbfdc"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/packaging-note.json",
+    "bytes": 257,
+    "sha256": "6237d5b7133dfc6ee7ed5ef18a6e8585db872eff7e082d9cabed5d27b8552365"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/preservation.json",
+    "bytes": 67351,
+    "sha256": "5ce0128b85480965cdc5b5bd0cb01ba16db0c18b825aa62b00d60197ac0478eb"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/protocol.md",
+    "bytes": 7728,
+    "sha256": "34ce363c249cf1b009db406cc8c90af3c483f0e5d0678139a0b221f15039daf9"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/run.json",
+    "bytes": 8812,
+    "sha256": "a678e63d6e224e03f2b101c26d787f67919a86555164e05b35e56abe85378593"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/run.mjs",
+    "bytes": 2453,
+    "sha256": "b3abbd83e0b1ee7c1c46fdc10ff5b7cb73902af6a9601bb18d03a8e548add872"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-1000-B.json",
+    "bytes": 6997,
+    "sha256": "6506460194926d7003bdd4cb26552a01f58936345b0f02e21e8f9ab1e96e0c64"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-1000-H.json",
+    "bytes": 337,
+    "sha256": "2c754ee6237389954b94af59444941878687f1d84dda1c65b087a24ae9f62d47"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-1000-R.json",
+    "bytes": 6997,
+    "sha256": "4a073a12f291e9cbdff2c3ee04677076d0b98c70af2e6c490125d24441241214"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-1000-S.json",
+    "bytes": 337,
+    "sha256": "5bb08d53ce18f94f5bd8ca80fb76c05d05cb896c0bfc3b8af93d352dd366c42d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-10000-B.json",
+    "bytes": 6998,
+    "sha256": "3323b888bc2a2682876eca2831e1e05a399fa49a61b92f7ba9619cb42f777f7e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-10000-H.json",
+    "bytes": 338,
+    "sha256": "e2147245bb2d49b28001d389e0453c883c3e408c71d8827d86b9253d662bb5cf"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-10000-R.json",
+    "bytes": 6998,
+    "sha256": "68f697c48c9da182b5cf7c19ab1617be39ed4785adeb4436d6de4309642df10a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-10000-S.json",
+    "bytes": 338,
+    "sha256": "38896e657b0ec357d6a9e3283bbb24b13b18c2b9c4556ca808a62aae9410fc63"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-100000-B.json",
+    "bytes": 6999,
+    "sha256": "b28c162573fe4ef02fdb8e169d8ed37e6e718c4088d4f3a0e0c281e710730767"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-100000-H.json",
+    "bytes": 339,
+    "sha256": "9c101b00cdd4fc47e30ac8def8d4ee629ab1ac768ecc8708eeed18e4209a1255"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-100000-R.json",
+    "bytes": 6999,
+    "sha256": "7cc35a9caf0091a583adc6fe48117900a227548ddefadccceba2794f549246d3"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-100000-S.json",
+    "bytes": 339,
+    "sha256": "06f1d5e52cc50c965387c02635f541a6b4580368083d32f1a894b94949f17b2c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-deep-B.json",
+    "bytes": 24166,
+    "sha256": "53c933a3c1ae429b7680ada95d7870c8e9bb035ef86f6f579a9a3e0788cf36a7"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-deep-H.json",
+    "bytes": 338,
+    "sha256": "11b840d3f06df20c05fa02d0cf1de00186fd5d2d1028685f436102a18062a697"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-deep-R.json",
+    "bytes": 24166,
+    "sha256": "372c6da7cdea67b4d796d4a688deafe7ffb8eeaa5cc3c827fb0c2de1a52762da"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-0-deep-S.json",
+    "bytes": 338,
+    "sha256": "d19842b948d078ad9b3cdab7a88600f09bd85510b2c9c15c14c495edeeeabc88"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-1000-B.json",
+    "bytes": 6997,
+    "sha256": "18c8cb6b7025dd2f0ab9414013f1485cc7baf18f7a47e99b5e72d9fc5f54ab89"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-1000-H.json",
+    "bytes": 337,
+    "sha256": "d19a9507e3deb830dac27aa1e56bf8e5fd06c503b7d6a4041dc6835f3920f021"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-1000-R.json",
+    "bytes": 6997,
+    "sha256": "a857dad3f811334355fbf4c9119a8b0ab89810bf0158260a4ea14b8dcdc5986b"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-1000-S.json",
+    "bytes": 337,
+    "sha256": "2451b3363ad6c3251e2e80681efa5808b71b09068d2f3fe68b47251c72e142ec"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-10000-B.json",
+    "bytes": 6998,
+    "sha256": "5828789168dabcf7f0eaa0a2cebc1ad8a6038c09eefcfe1d391809e01d4164d2"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-10000-H.json",
+    "bytes": 338,
+    "sha256": "4e6426e3aa60a4351e4696d6630c224af5df9772396cade264c70d71d35544ab"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-10000-R.json",
+    "bytes": 6998,
+    "sha256": "8f3f5002b501ffed9da22cefe16b5751bfb0edd53dbb87a40a1fe678c1249b30"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-10000-S.json",
+    "bytes": 338,
+    "sha256": "4bf625c750686043b20bdb705b074feaa7376f6983d26c5f01a2a3ec7388a2e2"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-100000-B.json",
+    "bytes": 6999,
+    "sha256": "bb61378b9cb23c9ecd77e6ce74fd454cdbb9543f78493a153fb60389bd173c10"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-100000-H.json",
+    "bytes": 339,
+    "sha256": "a78d8b8ed3620efb8ab2cb8704756d66fff2bab5ab2aa6468638a8345d568764"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-100000-R.json",
+    "bytes": 6999,
+    "sha256": "3cdde07fe5cb216b516341e6420c8391123bf9b57708f0564cf8d69312b61cd7"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-100000-S.json",
+    "bytes": 339,
+    "sha256": "be694c213fb0b1f0dc46a0bf6e28f80876d0c73848d1171f4c38809aab581e6c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-deep-B.json",
+    "bytes": 24166,
+    "sha256": "12e0a40210f7e57f801784862480b2f78fa27ac591012d5e24ae54e14aefdbc2"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-deep-H.json",
+    "bytes": 338,
+    "sha256": "a77f230557d1b049f682b462e7fcc4079a0137c4a332725fb56bd903a92d39ce"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-deep-R.json",
+    "bytes": 24166,
+    "sha256": "4d0391ea2e31e3cfd2bd2a26b17ba6ed6083560d3369eac878ec0c3ccac9bd96"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-1-deep-S.json",
+    "bytes": 338,
+    "sha256": "52960b1e6e66672b877c37cc6c61eaca3915d13628a6cb068333da4d702a3d40"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-1000-B.json",
+    "bytes": 6997,
+    "sha256": "0c0b230d7817f8695a3af8aefc4ae39d68d5aa692d96fda6f30b9de6d564e86d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-1000-H.json",
+    "bytes": 337,
+    "sha256": "461d7754761e40174572b0b94eda6bd4a0fa6536707fe206e289d3d3fe5cff0e"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-1000-R.json",
+    "bytes": 6997,
+    "sha256": "0ebe3cbe17121394ebbcf5105272b860bfdd95e88a182f5bc8b9f569067b86f8"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-1000-S.json",
+    "bytes": 337,
+    "sha256": "dd0b60808b9a4f783473aa018e1ecc81832e668c5ec2926130942b26f8f9797d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-10000-B.json",
+    "bytes": 6998,
+    "sha256": "979160fd6b579f727373762505a9d15b3815122cb1c321b6da1b2a77824ae6eb"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-10000-H.json",
+    "bytes": 338,
+    "sha256": "0e09e5cdfaa7278b6083b16c781a90a05caa07646bf1745f97bb6f966bbdf1e4"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-10000-R.json",
+    "bytes": 6998,
+    "sha256": "41c299ea81c48ced7935b375f6e2a8c3b3e0efa823e4ac479de14ef72a0d5ae2"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-10000-S.json",
+    "bytes": 338,
+    "sha256": "51dc705612f0fc2d51b08cf8dd6d9f66507a813ab075533fff41e6e0d9bddb84"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-100000-B.json",
+    "bytes": 6999,
+    "sha256": "7df3053ff9a01c9a56e59833b37238e0b0302620958e718df22b7867dd9b9105"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-100000-H.json",
+    "bytes": 339,
+    "sha256": "6167d7c72933d4bf74678ebec08c8faa12a14ab84a00a2b72e2757a8e6c70514"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-100000-R.json",
+    "bytes": 6999,
+    "sha256": "01a0cd841dbb1c395ac7e04de74ae2b264ca0918fc66ecf526b547108e11d347"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-100000-S.json",
+    "bytes": 339,
+    "sha256": "26314679794198c73d4471c15caf814e434bd140498fa261bc4c4ae03ca5b0d4"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-deep-B.json",
+    "bytes": 24166,
+    "sha256": "c656bd28a7ee1bf236ab0b4b1d64d34ffe5e333670a1ffa372da5714ced26e59"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-deep-H.json",
+    "bytes": 338,
+    "sha256": "ffafaaea7297fb9128661db0e50de52a010553c0f4e9156decc519ab550aafc1"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-deep-R.json",
+    "bytes": 24166,
+    "sha256": "37d81944c1cf205720d2ad02a258b161c2614b0222c1ab27ce716ba607b0a34a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-2-deep-S.json",
+    "bytes": 338,
+    "sha256": "cafc21d47543dbccd2c8b8452d8e0b42ef88976a00e292c68f87d3c3d7448b51"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-1000-B.json",
+    "bytes": 6997,
+    "sha256": "0041e3ebfe4d1252a8126238b64dd67464930e6028177f0ff8bd326b9f2aa687"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-1000-H.json",
+    "bytes": 337,
+    "sha256": "f72c271c0eb080cdb8f5cf23a75873bdd207be3c5c9c835a0685916eb05452cc"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-1000-R.json",
+    "bytes": 6997,
+    "sha256": "d03c90e27a12e0c7380ab11cd6400799630927320d0af4505e5fb821adc83ee9"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-1000-S.json",
+    "bytes": 337,
+    "sha256": "921e6776c3f30d109f3f4c9cfc9b517d5845dd996d159e132841b69ff5bdb351"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-10000-B.json",
+    "bytes": 6998,
+    "sha256": "764cec9113bc388fe434e63e6eda6476a5ec0b7ed30045b0d5bbd3b7c0a0c694"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-10000-H.json",
+    "bytes": 338,
+    "sha256": "c4a324717a4996a8d739f113e1f2a9c873c401cee9fe95bab522b6908d846e76"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-10000-R.json",
+    "bytes": 6998,
+    "sha256": "7ea9a8aa545ffa849852a89e0242cd025a434930585e6d87daed57c0ab3ffafe"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-10000-S.json",
+    "bytes": 338,
+    "sha256": "c14ce7387e1b0ee2af604a9f0162e1328bbb42278e6ccce34aa1e72f3b06757c"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-100000-B.json",
+    "bytes": 6999,
+    "sha256": "0b21edb9532d2e37a5d86f20bb14874c898ecf10c93b215020615ce2925e6425"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-100000-H.json",
+    "bytes": 339,
+    "sha256": "06f7e769ab1f7f0bf1dd7b457141f79223f0e4300a39975fb9d3bc003e145a40"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-100000-R.json",
+    "bytes": 6999,
+    "sha256": "526144be0bf5878c1d2e61e0bc340182c9489ca8ec8c50c569ec99e37d03b8aa"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-100000-S.json",
+    "bytes": 339,
+    "sha256": "e27572e71dfd7761f3aadfc1d6ac2dce801df5eced57132a875650df61c71285"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-deep-B.json",
+    "bytes": 24166,
+    "sha256": "83cf1f9a197b444630ff0d0088e1380649216127cef2d4b377de29d50374ca78"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-deep-H.json",
+    "bytes": 338,
+    "sha256": "22b6c9b0324a6a4d48b670d2f03b605b61f52e5af1ec3136b22654fc734b9406"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-deep-R.json",
+    "bytes": 24166,
+    "sha256": "ea92f8baa2af18f1c7570c695c212d2faf7d66f7629d672b2070526717f4f092"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/session-3-deep-S.json",
+    "bytes": 338,
+    "sha256": "c3671814acdde2f0db18d2e1fb7ae76bc5223fb2452a91c0c73dc8796c75bf57"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/signature.log",
+    "bytes": 104,
+    "sha256": "458cf7d4463cfd90149f8aba575b1de05a47632895b1172055c309f6033ab627"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/smoke-B.log",
+    "bytes": 687,
+    "sha256": "378e8daf6a5248f8b8ceadf7158e7e3d005dfafd25802616a3c656cbb8e7666d"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/smoke-H.log",
+    "bytes": 249,
+    "sha256": "60248d20a2fe7f98e12788263eaccb723e1ab8d9c62b3f139395b3845079f9fd"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/smoke-R.log",
+    "bytes": 687,
+    "sha256": "6fecdfa973050eb5035955a5142d8f16013b424dffd81236253c0b3ab551ae0a"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/smoke-S.log",
+    "bytes": 249,
+    "sha256": "d5d462231fdde4816a4d508234591c7fb69fa16bd486383c263d22c0c0ecebd9"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/update-docs.py",
+    "bytes": 10197,
+    "sha256": "52f59522c90b47d900eecd4be64be64adebf2ec48fea5eeda220c5c70a543ed6"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/verify.py",
+    "bytes": 11626,
+    "sha256": "b97b0213abe703d5d5dac7e0817729d6e0091d67ae2979a4e3d86b36fe879b95"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/whitespace.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "test-results/f17-selection-performance/comparison/worker.mjs",
+    "bytes": 4623,
+    "sha256": "854e4a425f89a8fbe3d7f923a7431f0624e9baa42881a00d81008a978a7c10de"
+  }
+]

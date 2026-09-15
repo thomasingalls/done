@@ -95,3 +95,13 @@ previous packets, 52 personal/vector pins, append-only records and L-2 are prese
 [Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).
 The next bounded phase is the prospective performance comparison above. Functional agreement does
 not establish a speedup, default activation, whole-wrapper certification or immutable release pass.
+
+
+## Subsequent performance checkpoint
+
+The [prospective comparison](./f17-selection-performance.md) completes all 64 sessions and their
+semantic checks, but fails the incremental useful-gain rule: 2.9% shallow and 10.3% deeper-history
+improvement over the existing handoff, with >=10% required in both. All regression guardrails pass.
+The single unchanged application gate records 12.2/75.1 ms desktop/CPU-4x Android card p95;
+Android still exceeds <16 ms, and its 54.2 ms focus observation exceeds <50 ms. The functional evidence above remains intact. Default Local/Account
+retain the reference; F-17 remains partial. Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
