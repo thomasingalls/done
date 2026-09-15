@@ -1,0 +1,88 @@
+Starting all ablation-0 2026-09-15T07:37:29.421Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+all ablation-0 shallow p50 54.60000038146973 p95 75.80000019073486
+all ablation-0 deeper p50 54 p95 60.80000019073486
+Finished all ablation-0 passed
+Starting no-preparation ablation-0 2026-09-15T07:38:11.888Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-preparation ablation-0 shallow p50 58 p95 79.69999980926514
+no-preparation ablation-0 deeper p50 57.09999942779541 p95 82.40000057220459
+Finished no-preparation ablation-0 passed
+Starting no-pool ablation-0 2026-09-15T07:38:54.474Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-pool ablation-0 shallow p50 57.09999942779541 p95 76.80000019073486
+no-pool ablation-0 deeper p50 57.5 p95 78.5
+Finished no-pool ablation-0 passed
+Starting no-publication ablation-0 2026-09-15T07:39:37.274Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication ablation-0 shallow p50 56.39999961853027 p95 81.5
+no-publication ablation-0 deeper p50 55.79999923706055 p95 79.59999942779541
+Finished no-publication ablation-0 passed
+Starting no-publication ablation-1 2026-09-15T07:40:20.584Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication ablation-1 shallow p50 55.39999961853027 p95 76.5
+no-publication ablation-1 deeper p50 55.09999942779541 p95 74.09999942779541
+Finished no-publication ablation-1 passed
+Starting no-pool ablation-1 2026-09-15T07:41:02.983Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-pool ablation-1 shallow p50 57.80000019073486 p95 77
+no-pool ablation-1 deeper p50 57.39999961853027 p95 72.10000038146973
+Finished no-pool ablation-1 passed
+Starting no-preparation ablation-1 2026-09-15T07:41:46.193Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-preparation ablation-1 shallow p50 57.30000019073486 p95 80.79999923706055
+no-preparation ablation-1 deeper p50 56.80000019073486 p95 75.39999961853027
+Finished no-preparation ablation-1 passed
+Starting all ablation-1 2026-09-15T07:42:29.423Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+all ablation-1 shallow p50 54 p95 69.10000038146973
+all ablation-1 deeper p50 53.19999980926514 p95 67
+Finished all ablation-1 passed

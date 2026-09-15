@@ -3457,3 +3457,10 @@ retain the unchanged budgets, failed observations and loaded-host uncertainty.
 ## 2026-09-15 — Separate F-17 exploration from RC qualification
 
 Keep isolated, composable optimization prototypes behind a cheap focused-correctness floor and a common serial browser screen. Preserve credible small gains and negative/inconclusive observations; do not require every component to solve the whole overrun or rerun every release validator per prototype. Combine and compare before selecting a candidate for ownership/native/recovery/memory qualification and the unchanged application gate. No release budget or default activation rule changes. The [first round](./f17-exploration-r1.md) retains about a 9.4% median full-corpus improvement as experimental work, with all source patches and failed probes preserved.
+
+
+## 2026-09-15 — Retain a simpler F-17 experimental combination
+
+Keep preparation reuse and bounded comparison pooling, park the conservative publication cache, and add the editor projection shortcut for further exploration. Publication's measured ordinary-text gain remains useful evidence; the mixed requested-Unicode guard, incomplete condition assertion in those initial sessions and semantic complexity support preferring a simpler baseline, not a universal rejection of small gains. The editor contributes about 3–4% median improvement against that exact companion configuration. All patches and observations remain available. This does not establish a net speedup over round one's complete combination or change default/RC gates. [Comparison and limitations](./f17-exploration-r2.md).
+
+Continue bounded profiling/optimization before paying for whole-release qualification. A Rust/Wasm migration is not part of this phase: the current stateful Yjs/history/editor boundary makes it a substantial engine/integration change, while journal encryption already uses a narrow Rust/Wasm implementation. Reconsider a resident kernel or engine migration only when a measured remaining target justifies the integration and behavioral proof work.

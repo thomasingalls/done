@@ -1,0 +1,9 @@
+# Editor companion choice — before editor measurements
+
+Retain primitive-string fork reuse and comparison pooling. In the two full-corpus ablation blocks, all beats no-preparation by ~5.8% at median and no-pool by ~5.5–6.7%. Publication contributes ~2.9–3.3% on the ordinary corpus, but the emoji condition is mixed early and slower in both later comparisons (later median ratios all/no-publication1.027/1.255; p951.108/1.220). Host variation makes the exact penalty uncertain. Its conservative fallback and semantic complexity are sufficient reason to park this particular implementation while preserving its patch and measured conditional gain. No global rule discards small gains.
+
+Use no-publication (preparation+pooling) as the exact comparator for the editor candidate. Transplant only the editor projection change, preserving its forced composition reconciliation. Run focused editor/workspace/equality/pending tests and TypeScript on this composition. Then four fixed full-corpus sessions: no-publication/editor/editor/no-publication. No source changes during measurement.
+
+Strengthen the shared untimed setup by explicitly checking that the edited card contains the setup marker and that its emoji presence matches the requested condition; persist those booleans. Earlier runs used the requested setup but did not explicitly assert emoji presence in the chosen card, so retain that measurement limitation instead of retroactively claiming the stronger check. Append a bounded Unicode pair (no-publication then editor) with this explicit condition check to probe the new shortcut; two sessions are a guard observation, not a broad effect estimate. No new profiling campaign this round.
+
+Round ends after these comparisons. Keep a useful editor increment as experimental source; do not trigger the entire release suite or public/default activation. Native IME/pending/remote behavior and direct scratch-lifetime qualification remain ahead of RC entry.

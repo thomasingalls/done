@@ -1,0 +1,22 @@
+Starting no-publication editor-unicode-0 2026-09-15T07:56:06.948Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication editor-unicode-0 shallow p50 59.40000057220459 p95 81.19999980926514
+no-publication editor-unicode-0 deeper p50 59 p95 83.19999980926514
+Finished no-publication editor-unicode-0 passed
+Starting editor editor-unicode-0 2026-09-15T07:56:52.287Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+editor editor-unicode-0 shallow p50 58 p95 78.80000019073486
+editor editor-unicode-0 deeper p50 57.5 p95 82.30000019073486
+Finished editor editor-unicode-0 passed

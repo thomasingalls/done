@@ -1,0 +1,44 @@
+Starting no-publication editor-0 2026-09-15T07:51:39.521Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication editor-0 shallow p50 60.89999961853027 p95 92.10000038146973
+no-publication editor-0 deeper p50 58.79999923706055 p95 78.10000038146973
+Finished no-publication editor-0 passed
+Starting editor editor-0 2026-09-15T07:52:24.481Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+editor editor-0 shallow p50 59.5 p95 87.60000038146973
+editor editor-0 deeper p50 57.59999942779541 p95 78.89999961853027
+Finished editor editor-0 passed
+Starting editor editor-1 2026-09-15T07:53:08.009Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+editor editor-1 shallow p50 57.5 p95 79.40000057220459
+editor editor-1 deeper p50 55.90000057220459 p95 66.5
+Finished editor editor-1 passed
+Starting no-publication editor-1 2026-09-15T07:53:51.132Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication editor-1 shallow p50 60.09999942779541 p95 83.69999980926514
+no-publication editor-1 deeper p50 59.39999961853027 p95 78.89999961853027
+Finished no-publication editor-1 passed

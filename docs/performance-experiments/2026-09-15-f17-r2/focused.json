@@ -1,0 +1,17 @@
+[
+  {
+    "variant": "no-preparation",
+    "code": 0,
+    "command": "node node_modules/vitest/vitest.mjs run test/workspaceAdmission.test.ts test/projectionEquality.test.ts"
+  },
+  {
+    "variant": "no-pool",
+    "code": 0,
+    "command": "node node_modules/vitest/vitest.mjs run test/workspaceAdmission.test.ts test/projectionEquality.test.ts"
+  },
+  {
+    "variant": "no-publication",
+    "code": 0,
+    "command": "node node_modules/vitest/vitest.mjs run test/workspaceAdmission.test.ts test/projectionEquality.test.ts"
+  }
+]
