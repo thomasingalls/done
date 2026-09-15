@@ -32,7 +32,20 @@ test(
       if (process.env.ACCOUNT_REPORT_DIR)
         writeFileSync(
           join(process.env.ACCOUNT_REPORT_DIR, 'generated-native.json'),
-          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
+          JSON.stringify(
+            {
+              seed,
+              runs: 8,
+              status:
+                histories.length === 8 && histories.every((h) => h.completed)
+                  ? 'passed'
+                  : 'running',
+              histories,
+              coverage,
+            },
+            null,
+            2,
+          ) + '\n',
         );
     };
     await fc.assert(
@@ -43,7 +56,7 @@ test(
         ),
         async (generated) => {
           const actions = [...generated, 'edit', 'restart'],
-            entry = { actions, completed: false };
+            entry = { actions, completed: false, submissions: [], reads: [], observations: [] };
           histories.push(entry);
           save();
           const f = await native(t),
@@ -63,11 +76,23 @@ test(
                 wires.set(n, wire);
                 invocationsAt.set(n, f.invocations.length);
               }
+              const sent = { position: n, wire, sealCount: f.invocations.length };
+              entry.submissions.push(sent);
               const response = await route.fetch();
+              sent.responseStatus = response.status();
+              sent.responseBody = Buffer.from(await response.body()).toString('hex');
+              sent.reply = mode === 'lost-send' ? 'lost' : 'delivered';
+              save();
               if (mode === 'lost-send') await route.abort();
               else await route.fulfill({ response });
             });
             await f.context.route(f.server.origin + '/account/delivery/read-v2', async (route) => {
+              entry.reads.push({
+                request: Buffer.from(route.request().postData()).toString('hex'),
+                sentPositions: wires.size,
+                reply: mode === 'lost-read' ? 'lost' : 'continued',
+              });
+              save();
               if (mode === 'lost-read') await route.abort();
               else await route.continue();
             });
@@ -75,8 +100,14 @@ test(
             expected = await view(f.page);
             await settled(f.page);
             const baseline = await captures(f.page);
+            entry.initial = expected;
+            entry.before = baseline;
+            save();
             for (const action of actions) {
               coverage[action] = (coverage[action] ?? 0) + 1;
+              const sendStart = entry.submissions.length,
+                readStart = entry.reads.length;
+              let transition = null;
               if (action === 'restart') {
                 const before = await captures(f.page);
                 await close(f.page);
@@ -92,7 +123,10 @@ test(
                 const text = ' [' + counter++ + ']';
                 await edit(f.page, expected.length, 0, text);
                 expected += text;
-                if (action === 'offline-edit') await online(f.page, true);
+                if (action === 'offline-edit') {
+                  transition = await syncStatus(f.page);
+                  await online(f.page, true);
+                }
                 if (action.startsWith('lost')) {
                   if (action === 'lost-read') await retryLane(f.page, 'receive');
                   // Wait for evidence of the actual unknown reply before restarting; status polling is bounded.
@@ -102,6 +136,7 @@ test(
                     if (Date.now() > until) throw Error('No unknown transport result');
                     await new Promise((r) => setTimeout(r, 20));
                   }
+                  transition = await syncStatus(f.page);
                   await close(f.page);
                   await cold(f);
                   mode = 'good';
@@ -115,6 +150,21 @@ test(
               const spool = await f.page.evaluate(() => opened.spoolStatus());
               const n = spool.positions.length,
                 status = await syncStatus(f.page);
+              entry.observations.push({
+                action,
+                sendStart,
+                readStart,
+                sendEnd: entry.submissions.length,
+                readEnd: entry.reads.length,
+                transition,
+                visible: await view(f.page),
+                captures: c,
+                spool,
+                status,
+                nonces: f.invocations.map((v) => v.nonce),
+                wires: [...wires].map(([position, wire]) => ({ position, wire })),
+              });
+              save();
               assert.equal(status.send.acceptedThrough, n);
               assert.equal(status.receive.receivedThrough, n);
               assert.equal(wires.size, n);
@@ -126,6 +176,15 @@ test(
                 c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
               );
             }
+            entry.final = {
+              visible: await view(f.page),
+              captures: await captures(f.page),
+              spool: await f.page.evaluate(() => opened.spoolStatus()),
+              status: await syncStatus(f.page),
+              nonces: f.invocations.map((v) => v.nonce),
+              wires: [...wires].map(([position, wire]) => ({ position, wire })),
+            };
+            save();
             await close(f.page);
             entry.completed = true;
             entry.positions = wires.size;

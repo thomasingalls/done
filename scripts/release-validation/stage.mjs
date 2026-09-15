@@ -1,4 +1,9 @@
 import {
+  syncCampaign,
+  validateSyncCampaign,
+  reconcileSyncReports,
+} from './account-sync-wrapper.mjs';
+import {
   receiveDriverCampaign,
   validateReceiveDriverCampaign,
   reconcileReceiveDriverReports,
@@ -197,6 +202,7 @@ export function validateStage(stage) {
       'account-receive-editor',
       'account-receive-transport',
       'account-receive-driver',
+      'account-sync',
       'vitest',
       'playwright',
       'content',
@@ -244,6 +250,7 @@ export function validateStage(stage) {
       'account-receive-editor',
       'account-receive-transport',
       'account-receive-driver',
+      'account-sync',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -387,6 +394,12 @@ export function validateStage(stage) {
     stage.variant === 'account-receive-driver-campaign-v1'
   )
     validateReceiveDriverCampaign(stage);
+  if (
+    stage.expect.kind === 'account-sync' ||
+    stage.argv[1] === syncCampaign ||
+    stage.variant === 'account-sync-campaign-v1'
+  )
+    validateSyncCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -437,6 +450,7 @@ export function validateStage(stage) {
         'account-receive-editor',
         'account-receive-transport',
         'account-receive-driver',
+        'account-sync',
       ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
@@ -938,6 +952,7 @@ export function createStageRunner({
             'account-receive-editor',
             'account-receive-transport',
             'account-receive-driver',
+            'account-sync',
           ].includes(stage.expect.kind)
         ) {
           assert(
@@ -973,7 +988,9 @@ export function createStageRunner({
             reconcileReceiveEditorReports(fileDirectory, before.sources);
           else if (stage.expect.kind === 'account-receive-transport')
             reconcileReceiveTransportReports(fileDirectory, before.sources);
-          else reconcileReceiveDriverReports(fileDirectory, before.sources);
+          else if (stage.expect.kind === 'account-receive-driver')
+            reconcileReceiveDriverReports(fileDirectory, before.sources);
+          else reconcileSyncReports(fileDirectory, before.sources);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -1002,6 +1019,7 @@ export function createStageRunner({
               'account-receive-editor',
               'account-receive-transport',
               'account-receive-driver',
+              'account-sync',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

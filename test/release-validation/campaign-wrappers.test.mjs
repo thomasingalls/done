@@ -1,4 +1,12 @@
 import {
+  syncCampaign,
+  syncCampaignStage,
+  syncSteps,
+  syncReports,
+  reconcileSyncReports,
+  reconcileSyncEvidence,
+} from '../../scripts/release-validation/account-sync-wrapper.mjs';
+import {
   receiveDriverCampaign,
   receiveDriverCampaignStage,
   receiveDriverSteps,
@@ -2318,5 +2326,431 @@ test('160 generated receive-driver control corruptions reject ineffective schedu
       assert.throws(() => reconcileReceiveDriverEvidence(bad));
     }),
     { seed: 150970, numRuns: 160 },
+  );
+});
+
+function syncEvidence() {
+  const capsule = (id) => ({
+      id,
+      sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
+    }),
+    before = [capsule('startup')];
+  const lane = (phase = 'idle', n = 0, failures = 0) => ({
+    phase,
+    failures,
+    reason: null,
+    nextAttemptAt: phase === 'idle' ? 5000 : null,
+    acceptedThrough: n,
+    receivedThrough: n,
+  });
+  const status = (phase = 'idle', n = 0, failures = 0) => ({
+    send: lane(phase, n, failures),
+    receive: lane(phase, n, failures),
+  });
+  const u32 = (n) => {
+    const b = Buffer.alloc(4);
+    b.writeUInt32BE(n);
+    return b;
+  };
+  const lp = (...ss) =>
+    Buffer.concat(
+      ss.flatMap((s) => {
+        const b = Buffer.from(s),
+          n = Buffer.alloc(2);
+        n.writeUInt16BE(b.length);
+        return [n, b];
+      }),
+    );
+  const wire = (n) => {
+    const ct = Buffer.alloc(16, n),
+      e = Buffer.concat([
+        lp('done/envelope-wire/v2', '2', 'workspace', 'credential', '1', '1', String(n)),
+        Buffer.alloc(12, n),
+        createHash('sha256').update(ct).digest(),
+        u32(ct.length),
+        ct,
+        Buffer.alloc(64),
+      ]);
+    return Buffer.concat([
+      lp('done/envelope-submission-wire/v1', '1', '11'.repeat(32)),
+      u32(e.length),
+      e,
+      u32(0),
+      Buffer.alloc(64),
+    ]).toString('hex');
+  };
+  const actions = [
+      'offline-edit',
+      'lost-send',
+      'lost-read',
+      'compact',
+      'restart',
+      'edit',
+      'restart',
+    ],
+    h = {
+      actions,
+      completed: true,
+      initial: 'base',
+      before,
+      submissions: [],
+      reads: [],
+      observations: [],
+    };
+  let current = structuredClone(before),
+    expected = 'base',
+    edits = 0;
+  const send = (reply) => {
+    const position = current.length;
+    h.submissions.push({
+      position,
+      wire: wire(position),
+      sealCount: position,
+      responseStatus: 200,
+      responseBody: 'aa',
+      reply,
+    });
+  };
+  const read = (reply) => {
+    const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+    q[10] = current.length;
+    q[11] = 1;
+    h.reads.push({
+      request: Buffer.from(JSON.stringify(q)).toString('hex'),
+      sentPositions: current.length,
+      reply,
+    });
+  };
+  const state = () => ({
+    visible: expected,
+    captures: structuredClone(current),
+    status: status('idle', current.length),
+    spool: {
+      attempts: current.length,
+      positions: current.map((c, i) => ({
+        position: i + 1,
+        source: { id: c.id, index: 0, hash: 'aa'.repeat(32) },
+        attempts: [i + 1],
+        persisted: true,
+      })),
+    },
+    nonces: current.map((_, i) => Array(12).fill(i + 1)),
+    wires: current.map((_, i) => ({ position: i + 1, wire: wire(i + 1) })),
+  });
+  send('delivered');
+  read('continued');
+  for (const action of actions) {
+    const sendStart = h.submissions.length,
+      readStart = h.reads.length;
+    let transition = null;
+    if (!['compact', 'restart'].includes(action)) {
+      expected += ' [' + edits + ']';
+      current.push(capsule('local' + edits++));
+      send(action === 'lost-send' ? 'lost' : 'delivered');
+    }
+    read(action === 'lost-read' ? 'lost' : 'continued');
+    if (action === 'offline-edit') transition = status('offline', current.length - 1);
+    if (action.startsWith('lost')) {
+      transition = status('retrying', current.length - 1, 1);
+      if (action === 'lost-send') send('delivered');
+      else read('continued');
+    }
+    h.observations.push({
+      action,
+      sendStart,
+      readStart,
+      sendEnd: h.submissions.length,
+      readEnd: h.reads.length,
+      transition,
+      ...state(),
+    });
+  }
+  h.final = state();
+  h.positions = current.length;
+  const coverage = {};
+  for (const a of actions) coverage[a] = (coverage[a] ?? 0) + 8;
+  const r = {
+    'generated-native.json': {
+      status: 'passed',
+      seed: 9112062,
+      runs: 8,
+      histories: Array.from({ length: 8 }, () => structuredClone(h)),
+      coverage,
+    },
+  };
+  for (const [mode, pair] of Object.entries({
+    fairness: ['receive', 'send'],
+    overlap: [1, 2],
+    halt: ['receive', 'send'],
+    resume: ['send', 'receive'],
+    wake: [3, 2],
+  }))
+    r['control-' + mode + '.json'] = {
+      effective: true,
+      observations: [false, true].map((mutant, i) => {
+        const calls = typeof pair[i] === 'number' ? Array(pair[i]).fill('send') : [pair[i]];
+        return {
+          mutant,
+          observed: pair[i],
+          held: { calls, timers: 0, status: status('working') },
+          disposed: { calls, timers: 0, status: status('closed') },
+        };
+      }),
+    };
+  for (const gate of ['offline', 'pressure'])
+    r['control-dispatch-' + gate + '.json'] = {
+      effective: true,
+      observations: [false, true].map((mutant) => ({
+        mutant,
+        calls: mutant ? 1 : 0,
+        held: status(gate === 'offline' ? 'offline' : 'blocked'),
+        closed: status('closed'),
+      })),
+    };
+  r['control-witness.json'] = {
+    effective: true,
+    observations: [
+      { mutant: false, opened: false, error: 'witness refusal' },
+      { mutant: true, opened: true, master: 'base', status: status('offline') },
+    ],
+  };
+  const baseline = {
+    mode: 'baseline',
+    advanced: false,
+    editorState: 'active',
+    status: status('blocked'),
+  };
+  for (const mode of ['self', 'classification']) {
+    const s = status('blocked');
+    s.receive.receivedThrough = mode === 'self' ? 1 : 0;
+    r['control-' + mode + '.json'] = {
+      effective: true,
+      observations: [
+        baseline,
+        {
+          mode,
+          advanced: mode === 'self',
+          editorState: mode === 'self' ? 'active' : 'closed',
+          status: s,
+        },
+      ],
+    };
+  }
+  return r;
+}
+test('sync wrapper binds all six commands, 52 cases and inherited browser process ownership', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-sync');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 52);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [60000, 60000, 600000, 90000, 150000, 450000],
+  );
+  assert.equal(s.deadlineMs, 1410000);
+  assert.deepEqual(
+    s.expect.historyInputs.map((p) => [p.reference, p.path]),
+    ['src/crdt/accountEnvelopePreparation.ts', 'src/crdt/accountDelivery.ts'].map((p) => [
+      '4bb09042f37f68ec31f0d82587af608f599eb096',
+      p,
+    ]),
+  );
+  assert.equal(s.expect.dataInputs, undefined);
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.equal(s.processPolicy, 'inherited-group-v1');
+  assert.deepEqual(s.fileOutputs.required, syncReports);
+  assert.equal(syncReports.length, 28);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 1410001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'sync-filter',
+    argv: ['node', syncCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:sync-filter:0')
+      .blocked,
+  );
+});
+test('sync trace rejects missing cases from any child or a lost typecheck exit', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-sync-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = syncCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps
+    .filter((s) => s.kind !== 'exit')
+    .map((step) =>
+      step.kind === 'vitest'
+        ? {
+            schema: 1,
+            adapter: 'vitest-v1',
+            nonce: 'fresh:' + step.name,
+            reason: 'passed',
+            modules: step.expect.files.map((file) => ({ file, state: 'passed' })),
+            errors: [],
+            cases: step.expect.cases.map((c) => ({
+              ...c,
+              durationMs: 0,
+              retryCount: 0,
+              repeatCount: 0,
+              expectedFailure: false,
+              mode: 'run',
+              errors: [],
+            })),
+          }
+        : {
+            schema: 1,
+            nonce: 'fresh:' + step.name,
+            phase: 'complete',
+            cases: step.expect.cases,
+            errors: [],
+            summary: {
+              success: true,
+              counts: {
+                tests: step.expect.cases.length,
+                failed: 0,
+                cancelled: 0,
+                skipped: 0,
+                todo: 0,
+              },
+            },
+          },
+    );
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i + 1].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...reports.map((_, i) => (v) => v.reports[i].cases.pop()),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[1].nonce = 'fresh:controls'),
+    (v) => (v.trace.steps[4].phase = 'running'),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('sync reports require complete HTTP histories and effective control observations', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-sync-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: syncCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...syncEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: syncSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = [
+    ...['native', 'controls', 'native-controls', 'generated'].map((n) => n + '.xml'),
+    ...syncSteps.map((s) => s.name + '.log'),
+  ];
+  const save = (r) => {
+    for (const [file, v] of Object.entries(r)) writeFileSync(join(dir, file), JSON.stringify(v));
+    for (const file of aux) writeFileSync(join(dir, file), file === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileSyncReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated-native.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileSyncReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileSyncReports(dir, sources));
+  }
+});
+
+test('160 generated sync corruptions reject rewritten retries, reused nonces, lost text and source/cursor disagreement', () => {
+  const r = syncEvidence();
+  reconcileSyncEvidence(r);
+  const alters = [
+    (h) => h.observations.pop(),
+    (h) => (h.submissions[0].wire += '00'),
+    (h) => (h.submissions[3].wire = h.submissions[0].wire),
+    (h) => (h.observations[1].nonces[1] = h.observations[1].nonces[0]),
+    (h) => (h.observations[2].spool.positions[0].source.hash = 'bb'.repeat(32)),
+    (h) => (h.observations[3].captures[0].sources[0].bytes = [99]),
+    (h) => h.final.captures.pop(),
+    (h) => (h.final.visible += 'L'),
+    (h) => (h.reads[0].request += '00'),
+    (h) => (h.observations[1].transition.send.failures = 0),
+    (h) => (h.final.status.receive.receivedThrough = 0),
+    (h) => (h.submissions[2].reply = 'delivered'),
+  ];
+  fc.assert(
+    fc.property(fc.nat(7), fc.nat(alters.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      alters[k](bad['generated-native.json'].histories[i]);
+      assert.throws(() => reconcileSyncEvidence(bad));
+    }),
+    { seed: 150971, numRuns: 160 },
+  );
+});
+test('160 generated sync control corruptions reject ineffective scheduler, dispatch, witness and self-stream controls', () => {
+  const r = syncEvidence();
+  reconcileSyncEvidence(r);
+  const alters = [
+    (r) => (r['control-overlap.json'].observations[1].observed = 1),
+    (r) => (r['control-fairness.json'].observations[0].observed = 'send'),
+    (r) => (r['control-halt.json'].observations[0].observed = 'send'),
+    (r) => (r['control-wake.json'].observations[0].observed = 2),
+    (r) => (r['control-resume.json'].observations[1].observed = 'send'),
+    (r) => (r['control-dispatch-offline.json'].observations[0].calls = 1),
+    (r) => (r['control-dispatch-pressure.json'].observations[1].closed.send.phase = 'blocked'),
+    (r) => (r['control-overlap.json'].observations[1].disposed.timers = 1),
+    (r) => (r['control-witness.json'].observations[0].opened = true),
+    (r) => (r['control-self.json'].observations[1].advanced = false),
+    (r) => (r['control-classification.json'].observations[1].editorState = 'active'),
+    (r) => r['generated-native.json'].coverage['lost-send']--,
+  ];
+  fc.assert(
+    fc.property(fc.nat(alters.length - 1), (k) => {
+      const bad = structuredClone(r);
+      alters[k](bad);
+      assert.throws(() => reconcileSyncEvidence(bad));
+    }),
+    { seed: 150972, numRuns: 160 },
   );
 });

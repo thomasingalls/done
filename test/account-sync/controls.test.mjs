@@ -149,10 +149,24 @@ for (const mode of ['fairness', 'overlap', 'halt', 'resume', 'wake'])
           assert.equal(observed, mutant ? 2 : 3);
         }
       }
+      const held = {
+        status: s.runtime.status,
+        calls: calls.map((c) => c.lane),
+        timers: timers.size,
+      };
       const closing = s.dispose();
       for (const call of calls) call.resolve();
       await closing;
-      observations.push({ mutant, observed });
+      observations.push({
+        mutant,
+        observed,
+        held,
+        disposed: {
+          status: s.runtime.status,
+          calls: calls.map((c) => c.lane),
+          timers: timers.size,
+        },
+      });
     }
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(

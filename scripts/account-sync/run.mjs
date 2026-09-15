@@ -1,10 +1,17 @@
+import { createCampaignReporting } from '../release-validation/campaign-reporting.mjs';
+import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const output = resolve('test-results/account-sync', new Date().toISOString().replaceAll(':', '-'));
+const owned = Boolean(process.env.RELEASE_PROCESS_GUARD);
+if (owned) assert(process.env.ACCOUNT_REPORT_DIR, 'Owned sync campaign requires reports');
+const output = owned
+  ? resolve(process.env.ACCOUNT_REPORT_DIR)
+  : resolve('test-results/account-sync', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
+const reporting = createCampaignReporting(output);
 console.log(`Account composition evidence: ${output}`);
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
@@ -65,17 +72,19 @@ save();
 async function run(name, args, timeoutMs) {
   console.log(`Starting ${name}`);
   const log = createWriteStream(join(output, name + '.log'));
-  const child = spawn(process.execPath, args, {
-    detached: true,
+  const childReport = reporting?.begin(name, args, timeoutMs);
+  const child = spawn(process.execPath, childReport?.args ?? args, {
+    detached: !owned,
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
+    env: { ...process.env, ACCOUNT_REPORT_DIR: output, ...childReport?.env },
   });
   let timedOut = false,
     forced,
     launchError;
   const kill = (signal) => {
     try {
-      process.kill(-child.pid, signal);
+      if (owned) child.kill(signal);
+      else process.kill(-child.pid, signal);
     } catch {}
   };
   const deadline = setTimeout(() => {
@@ -101,6 +110,7 @@ async function run(name, args, timeoutMs) {
   clearInterval(heartbeat);
   await new Promise((resolve) => log.end(resolve));
   const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
+  reporting?.end(result);
   summary.stages.push(result);
   save();
   return code === 0 && !timedOut;
@@ -143,6 +153,7 @@ try {
   ];
   for (const [name, args, timeout] of stages)
     if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
+  reporting?.finish();
   summary.status = 'passed';
 } catch (e) {
   summary.status = 'failed';

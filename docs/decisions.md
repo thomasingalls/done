@@ -3821,3 +3821,13 @@ durable receipt progress. Preserve exact source identities/bytes throughout. Sch
 must include disposal state and cleared timers, while original clock/authority properties remain the
 scheduler oracle. A background empty poll may change idle/working status without changing progress.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).
+
+
+## 2026-09-15 — Composition evidence binds sealed positions to actual request bytes
+
+Retain observed encryption nonces and complete detached submissions, not only aggregate seal counts.
+Reconcile their independently parsed positions/nonces, exact retry bytes, first source assignments,
+authored text and both recovered lane counters. Distinguish server responses from replies actually
+delivered to the client. Keep existing native cryptographic and scheduler oracles authoritative, and
+save actual witness refusal/reopen observations in effective mutation reports.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-sync/README.md).

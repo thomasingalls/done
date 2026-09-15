@@ -55,34 +55,35 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Receive-transport is signed and verified as `a05369a1`. All catalogue/test-file
+**Roadmap checkpoint.** Receive-driver is signed and verified as `50bb2d2c`. All catalogue/test-file
 adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay **629
 obligations /292 required files** and **272 general files /2,198 dispositions (11 not applicable)**.
-Receive-driver resolves one command and campaign: **zero test-file /74 command /42 campaign** remain
-unresolved, down from 118 to 116. These are integration counts, not a passing aggregate.
+Composition resolves one command and campaign: **zero test-file /73 command /41 campaign** remain
+unresolved, down from 116 to 114. These are integration counts, not a passing aggregate.
 
-**Just completed.** Receive-driver retains six child commands/36 cases, original reporters/concurrency
-and 60/60/180/90/90/270-second bounds. Owned execution adds a 750-second aggregate, disposable browser,
-inherited child groups and 25 retained files. Five actual scheduler controls retain calls/timers and
-before/after-disposal state; two native controls retain held/closed status and dispatch counts. Ten
-histories now retain requests/candidate pages/response bodies, transient gate/failure states, action
-windows, recovered cursor, text and full source identities/bytes. Independent progress/framing/text/
-source checks corroborate the original native owners; unit-generated scheduler assertions remain intact.
+**Just completed.** Composition retains six child commands/52 cases, original reporters/concurrency and
+60/60/600/90/150/450-second bounds. Owned execution adds a 1,410-second aggregate, disposable browser,
+inherited groups and 28 retained files. Two invoked historical writer files are pinned. Five scheduler
+controls retain choices/calls/timers and disposal; native dispatch, witness and self-stream controls
+retain their actual observations. Eight actual-service histories now bind submission positions/nonces,
+first retry bytes/source assignments, authored text and send/receive progress through lost replies and
+cold reopen. Existing unit-generated and native oracles remain intact.
 
-The epoch passes **191 cases in seven executions**: 126 planning, 36 driver and 29 transport regression,
-then exact reuse. Driver takes **186.877s /750s**. Every group drains and 25 files survive checkout
-removal. Five infrastructure cases include two 160-run corruptions; eight synthetic runs and two omitted
-hooks discriminate. Manifest passes in 55.025s /60s; the earlier 58.674-second observation remains
-recorded and loaded-host headroom still needs qualification. This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).
+The epoch passes **219 cases in seven executions**: 131 planning, 52 composition and 36 driver regression,
+then exact reuse. Composition takes **563.242s /1,410s**. Every group drains; all 28 files survive
+checkout removal. Five infrastructure cases include two 160-run corruptions; eight synthetic runs and two
+omitted hooks discriminate. Manifest passes in 57.162s /60s; earlier 58.674-second evidence and
+loaded-host headroom debt remain. This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-sync/README.md).
 
-**Scope and retained limits.** Timer/control reports do not rerun the scheduler; original 400/100/80 unit
-campaigns retain their clock/authority/lifetime assertions. Native owners retain authentication and CRDT
-verification. Candidate pages do not imply delivery on failed transport. No historical reader/vector
-input is invoked. Runtime/report/deadline/archive limits, prior failures and headroom observations remain.
-Report custody is cooperative bounded polling, not a disk quota or sandbox. No immutable aggregate claim.
+**Scope and retained limits.** Report framing/digest/source checks do not replace native authentication,
+decryption or timer assertions. Server responses do not prove delivery when discarded. Read response
+bodies are not newly retained. One seal per position remains required; self-stream recovery can avoid
+retrying a lost submit. Active interrupted work may be absent and cannot pass. Original deadlines,
+report/archive bounds, earlier failures and headroom observations remain. Report custody uses cooperative
+bounded polling, not a disk quota or sandbox. No immutable aggregate claim.
 
-**Next bounded phase.** Account sync/composition wrapper integration, then further families, serially.
+**Next bounded phase.** Account service-inbound wrapper integration, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local

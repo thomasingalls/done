@@ -69,8 +69,10 @@ for (const gate of ['offline', 'pressure'])
       // Drain the operation, not just its runtime gate publication, before counting actual requests.
       await f.page.evaluate(() => opened.deliveryStatus().catch(() => {}));
       assert.equal(calls, mutant ? 1 : 0);
+      const held = await syncStatus(f.page);
       await close(f.page);
-      observations.push({ mutant, calls });
+      const closed = await syncStatus(f.page);
+      observations.push({ mutant, calls, held, closed });
       await f.context.close();
     }
     save('dispatch-' + gate, observations);
@@ -87,11 +89,13 @@ test(
     await close(f.page);
     await census(f.page, item, 'last-event');
     await cold(f);
-    let refused = false;
+    let refused = false,
+      normalError;
     try {
       await syncing(f.page, item);
-    } catch {
+    } catch (cause) {
       refused = true;
+      normalError = String(cause);
     }
     assert.equal(refused, true);
     await f.page.evaluate(await syncBundle('witness'));
@@ -100,11 +104,12 @@ test(
     await f.page.evaluate(() =>
       Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false }),
     );
-    await syncing(f.page, item);
+    const recovered = await syncing(f.page, item);
+    const status = await syncStatus(f.page);
     await close(f.page);
     save('witness', [
-      { mutant: false, opened: false },
-      { mutant: true, opened: true },
+      { mutant: false, opened: !refused, error: normalError },
+      { mutant: true, opened: recovered !== undefined, master: recovered.master, status },
     ]);
   },
 );
@@ -160,12 +165,13 @@ test(
         );
         throw cause;
       });
-      const advanced = (await syncStatus(f.page)).receive.receivedThrough === 1;
+      const status = await syncStatus(f.page);
+      const advanced = status.receive.receivedThrough === 1;
       assert.equal(advanced, mutant);
       const editorState = await f.page.evaluate(() => editor.status.state);
       assert.equal(editorState, mode === 'classification' ? 'closed' : 'active');
       await close(f.page);
-      observations.push({ mode, advanced, editorState });
+      observations.push({ mode, advanced, editorState, status });
       await f.context.close();
     }
     save('self', observations.slice(0, 2));
