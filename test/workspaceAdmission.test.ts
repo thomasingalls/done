@@ -175,6 +175,43 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
     const insert = (text: string) => ({ name: 'insert' as const, text });
     describe('admitted workspace commands and history', () => {
+      it('keeps line movement private until retry, then preserves undo/redo and cold text', async () => {
+        const f = await fixture();
+        try {
+          const text = master(f.doc);
+          await text.input(insert('one\ntwo\nthree')).accepted;
+          const before = text.read();
+          const sent = f.emitted.length;
+          f.refuse();
+          f.fail();
+          const move = text.input({ name: 'moveLineUp' }, selection(5));
+          await until(() => f.doc.status.state === 'blocked');
+          expect(text.read()).toEqual(before);
+          expect(f.emitted).toHaveLength(sent);
+          f.doc.retry();
+          await move.accepted;
+          expect(text.read().text).toBe('two\none\nthree');
+          expect(text.read().selection).toEqual(selection(1));
+          await text.input({ name: 'moveLineDown' }).accepted;
+          expect(text.read().text).toBe('one\ntwo\nthree');
+          expect(text.read().selection).toEqual(selection(5));
+          await text.input({ name: 'undo' }).accepted;
+          expect(text.read().text).toBe('two\none\nthree');
+          await text.input({ name: 'redo' }).accepted;
+          expect(text.read().text).toBe('one\ntwo\nthree');
+          await f.doc.whenDurable();
+          const cold = createDoc();
+          try {
+            for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+            expect(cold.getText('master').toString()).toBe('one\ntwo\nthree');
+          } finally {
+            cold.destroy();
+          }
+        } finally {
+          await f.doc.close();
+        }
+      });
+
       it('projects retained legacy archives as read-only bodies without creating live cards', async () => {
         const seed = createDoc();
         const day = newMap();
