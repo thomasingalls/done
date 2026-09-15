@@ -1,0 +1,253 @@
+{
+  "sessions": 6,
+  "measuredKeys": 480,
+  "warmupKeys": 624,
+  "comparisons": [
+    {
+      "session": "final-comparison-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 43.80000019073486,
+        "p95": 48.30000019073486
+      },
+      "candidate": {
+        "p50": 47.89999961853027,
+        "p95": 51.39999961853027
+      },
+      "medianRatio": 1.0936072924644118,
+      "p95Ratio": 1.0641821825166382
+    },
+    {
+      "session": "final-comparison-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 43.29999923706055,
+        "p95": 45.69999980926514
+      },
+      "candidate": {
+        "p50": 46.19999980926514,
+        "p95": 49.5
+      },
+      "medianRatio": 1.0669746102379252,
+      "p95Ratio": 1.0831509892033842
+    },
+    {
+      "session": "final-comparison-1",
+      "block": "shallow",
+      "selected": {
+        "p50": 43.80000019073486,
+        "p95": 47.5
+      },
+      "candidate": {
+        "p50": 45.69999980926514,
+        "p95": 49.20000076293945
+      },
+      "medianRatio": 1.043378986535534,
+      "p95Ratio": 1.0357894897460938
+    },
+    {
+      "session": "final-comparison-1",
+      "block": "deeper",
+      "selected": {
+        "p50": 44.39999961853027,
+        "p95": 46.29999923706055
+      },
+      "candidate": {
+        "p50": 45,
+        "p95": 46.40000057220459
+      },
+      "medianRatio": 1.0135135222212777,
+      "p95Ratio": 1.0021598560862177
+    },
+    {
+      "session": "final-unicode-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 43.60000038146973,
+        "p95": 47.10000038146973
+      },
+      "candidate": {
+        "p50": 45,
+        "p95": 47.60000038146973
+      },
+      "medianRatio": 1.0321100827128726,
+      "p95Ratio": 1.0106157111666758
+    },
+    {
+      "session": "final-unicode-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 43.39999961853027,
+        "p95": 48.59999942779541
+      },
+      "candidate": {
+        "p50": 44.30000019073486,
+        "p95": 47.40000057220459
+      },
+      "medianRatio": 1.020737340555651,
+      "p95Ratio": 0.9753086652321129
+    }
+  ],
+  "ordinary": [
+    {
+      "block": "shallow",
+      "selectedMedian": 43.80000019073486,
+      "candidateMedian": 46.799999713897705,
+      "medianPairedRatio": 1.068493139499973,
+      "medianPairedP95Ratio": 1.0499858361313659
+    },
+    {
+      "block": "deeper",
+      "selectedMedian": 43.84999942779541,
+      "candidateMedian": 45.59999990463257,
+      "medianPairedRatio": 1.0402440662296013,
+      "medianPairedP95Ratio": 1.0426554226448008
+    }
+  ],
+  "results": [
+    {
+      "name": "selected",
+      "session": "final-comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 43.80000019073486,
+          "p95": 48.30000019073486
+        },
+        {
+          "block": "deeper",
+          "p50": 43.29999923706055,
+          "p95": 45.69999980926514
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 153.1036249999961,
+      "redoSettledMs": 122.73270800000319
+    },
+    {
+      "name": "candidate",
+      "session": "final-comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 47.89999961853027,
+          "p95": 51.39999961853027
+        },
+        {
+          "block": "deeper",
+          "p50": 46.19999980926514,
+          "p95": 49.5
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 141.32920799999556,
+      "redoSettledMs": 140.79037500000413
+    },
+    {
+      "name": "candidate",
+      "session": "final-comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 45.69999980926514,
+          "p95": 49.20000076293945
+        },
+        {
+          "block": "deeper",
+          "p50": 45,
+          "p95": 46.40000057220459
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 155.96487500000512,
+      "redoSettledMs": 132.0812919999953
+    },
+    {
+      "name": "selected",
+      "session": "final-comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 43.80000019073486,
+          "p95": 47.5
+        },
+        {
+          "block": "deeper",
+          "p50": 44.39999961853027,
+          "p95": 46.29999923706055
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 146.23595800000476,
+      "redoSettledMs": 121.74250000000029
+    },
+    {
+      "name": "selected",
+      "session": "final-unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 43.60000038146973,
+          "p95": 47.10000038146973
+        },
+        {
+          "block": "deeper",
+          "p50": 43.39999961853027,
+          "p95": 48.59999942779541
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 145.55454199999804,
+      "redoSettledMs": 119.25595800000156
+    },
+    {
+      "name": "candidate",
+      "session": "final-unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 45,
+          "p95": 47.60000038146973
+        },
+        {
+          "block": "deeper",
+          "p50": 44.30000019073486,
+          "p95": 47.40000057220459
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 146.67662500000006,
+      "redoSettledMs": 128.5870419999992
+    }
+  ]
+}

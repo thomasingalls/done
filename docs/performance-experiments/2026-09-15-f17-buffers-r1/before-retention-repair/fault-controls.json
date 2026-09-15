@@ -1,0 +1,65 @@
+[
+  {
+    "name": "premature-retirement",
+    "file": "src/crdt/workspacePreparation.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/historyRetirement.test.ts",
+      "-t",
+      "history retirement permits one exact previous",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-buffers-r1/premature-retirement-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "history retirement permits one exact previous transfer and rejects active foreign duplicate or alias states"
+    ],
+    "originalSourceSha256": "1a3e7243becaec4fc0e6186727bbdaca904f4f0d02a87933b70c4031cea57266",
+    "test": "test/historyRetirement.test.ts",
+    "testSha256": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b"
+  },
+  {
+    "name": "omitted-catch-up",
+    "file": "src/crdt/yjs.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/textBufferBasis.test.ts",
+      "-t",
+      "text history catch-up applies the exact delta",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-buffers-r1/omitted-catch-up-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "text history catch-up applies the exact delta and copies both detached stacks"
+    ],
+    "originalSourceSha256": "45d79bdf3cfd01e78b0caa2b34acd4209014898bbf4ebe8965c26963cdfdc92b",
+    "test": "test/textBufferBasis.test.ts",
+    "testSha256": "4c9e1d5b811d91deaa290b6f91548500042f7272a3130d7d06712742b412acd7"
+  },
+  {
+    "name": "shared-history",
+    "file": "src/crdt/yjs.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspaceAdmission.test.ts",
+      "-t",
+      "alternates two actual histories",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-buffers-r1/shared-history-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "persistent text buffers alternates two actual histories, detaches ranges and erases consumed delta copies"
+    ],
+    "originalSourceSha256": "45d79bdf3cfd01e78b0caa2b34acd4209014898bbf4ebe8965c26963cdfdc92b",
+    "test": "test/workspaceAdmission.test.ts",
+    "testSha256": "9f2f443155a8be23b9f170f15eebce441401065f3ce72848f11a0bd211186a20"
+  }
+]

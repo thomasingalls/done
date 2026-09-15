@@ -1,0 +1,46 @@
+[
+  {
+    "name": "negative-zero",
+    "sourceNegativeZero": true,
+    "forkNegativeZero": true,
+    "sourceKeys": [],
+    "forkKeys": []
+  },
+  {
+    "name": "sparse",
+    "sourceNegativeZero": false,
+    "forkNegativeZero": false,
+    "sourceKeys": [
+      "1",
+      "length"
+    ],
+    "forkKeys": [
+      "0",
+      "1",
+      "length"
+    ]
+  },
+  {
+    "name": "extra-array-property",
+    "sourceNegativeZero": false,
+    "forkNegativeZero": false,
+    "sourceKeys": [
+      "0",
+      "length",
+      "extra"
+    ],
+    "forkKeys": [
+      "0",
+      "length"
+    ]
+  },
+  {
+    "name": "nonenumerable",
+    "sourceNegativeZero": false,
+    "forkNegativeZero": false,
+    "sourceKeys": [
+      "hidden"
+    ],
+    "forkKeys": []
+  }
+]

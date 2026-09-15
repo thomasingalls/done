@@ -1,0 +1,22 @@
+Starting selected final-unicode-0 2026-09-15T11:43:19.320Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected final-unicode-0 shallow p50 43.60000038146973 p95 47.10000038146973
+selected final-unicode-0 deeper p50 43.39999961853027 p95 48.59999942779541
+Finished selected final-unicode-0 passed
+Starting candidate final-unicode-0 2026-09-15T11:43:59.862Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate final-unicode-0 shallow p50 45 p95 47.60000038146973
+candidate final-unicode-0 deeper p50 44.30000019073486 p95 47.40000057220459
+Finished candidate final-unicode-0 passed

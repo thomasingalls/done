@@ -104,4 +104,4 @@ unresolved**. No aggregate receipt or release-adapter credit is added.
 
 The prior packet, 52 personal/package/vector pins, root perspective, signed append-only prefixes and
 L-2 verify unchanged. Personal app/server, phone, relay and deployment remain untouched. This new
-phase is uncommitted.
+phase is signed and signature-verified as `85a58bd4ef247612cfbfe66215ec084ca4ace2a3`. The archived packet retains its original pre-commit identity.
