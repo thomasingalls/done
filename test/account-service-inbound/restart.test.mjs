@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { fork } from 'node:child_process';
 import { once } from 'node:events';
 import { ready, inventory } from '../account-service-delivery/fixtures.mjs';
-import { query, read, pageProof } from './oracle.mjs';
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { envelope } from '../account-transport/oracle.mjs';
+import { query, read, pageProof, hash } from './oracle.mjs';
 for (const cut of ['verified', 'signed'])
   test(
     `service SIGKILL after ${cut} read leaves no writes and retry returns originals`,
@@ -52,7 +55,33 @@ for (const cut of ['verified', 'signed'])
       assert.equal(inventory(x), before);
       x.f.restart();
       x.authority.restart();
-      pageProof(await read(x, q), q, x, [{ w, r }]);
+      const recovered = await read(x, q);
+      pageProof(recovered, q, x, [{ w, r }]);
+      if (process.env.ACCOUNT_REPORT_DIR)
+        writeFileSync(
+          join(process.env.ACCOUNT_REPORT_DIR, 'restart-' + cut + '.json'),
+          JSON.stringify(
+            {
+              cut,
+              code,
+              signal,
+              replies,
+              before: hash(before),
+              after: hash(inventory(x)),
+              publicKey: x.offer.epoch.acceptancePublicKey,
+              request: Buffer.from(q).toString('hex'),
+              result: { kind: recovered.kind, bytes: Buffer.from(recovered.bytes).toString('hex') },
+              originals: [
+                {
+                  envelope: Buffer.from(envelope(w)).toString('hex'),
+                  result: { kind: r.kind, bytes: Buffer.from(r.bytes).toString('hex') },
+                },
+              ],
+            },
+            null,
+            2,
+          ) + '\n',
+        );
       assert.equal(inventory(x), before);
     },
   );

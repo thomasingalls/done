@@ -3831,3 +3831,13 @@ authored text and both recovered lane counters. Distinguish server responses fro
 delivered to the client. Keep existing native cryptographic and scheduler oracles authoritative, and
 save actual witness refusal/reopen observations in effective mutation reports.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-sync/README.md).
+
+
+## 2026-09-15 — Service read evidence retains actual refusals and signed originals
+
+Replace control success labels with the observed baseline and mutated results, retaining separate queries
+when a simulated clock change requires them. Record exact pages/acceptances, generated inventory continuity,
+process-death outcomes and HTTP/cold receipts. Verify signatures against observed keys as internal evidence
+consistency, while retaining the independent fixture's authentication/authority assertions. Update planning
+expectations when a wrapper becomes concrete without allowing unintegrated wrappers to borrow its receipt.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-inbound/README.md).

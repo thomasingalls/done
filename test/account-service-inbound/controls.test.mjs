@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { generateKeyPairSync } from 'node:crypto';
 import { ready, mutate } from '../account-service-delivery/fixtures.mjs';
+import { envelope } from '../account-transport/oracle.mjs';
 import { query, read, pageProof } from './oracle.mjs';
 
 const replace = (code, from, to) => {
@@ -102,8 +103,20 @@ for (const control of [
         r = await x.call(w),
         good = query(x),
         retained = [{ w, r }];
-      pageProof(await read(x, good), good, x, retained);
-      pageProof(await owner.readInbound(core, good), good, x, retained);
+      const observe = (q, result) => ({
+        request: Buffer.from(q).toString('hex'),
+        result:
+          result.kind === 'decision'
+            ? { kind: result.kind, bytes: Buffer.from(result.bytes).toString('hex') }
+            : result,
+      });
+      const ordinary = [],
+        activation = [];
+      for (const result of [await read(x, good), await owner.readInbound(core, good)]) {
+        ordinary.push(observe(good, result));
+        pageProof(result, good, x, retained);
+      }
+      let baseline, mutant;
       let q = query(
         x,
         0,
@@ -119,8 +132,10 @@ for (const control of [
         });
         // Fresh activation independently binds the real passkey. Removing the older
         // registration check must no longer rescue a replaced current credential.
-        assert.equal((await read(x, q)).kind, 'unknown');
-        assert.equal((await owner.readInbound(core, q)).kind, 'unknown');
+        for (const result of [await read(x, q), await owner.readInbound(core, q)]) {
+          activation.push(observe(q, result));
+          assert.equal(result.kind, 'unknown');
+        }
         mutate(x, (db) => {
           db.prepare('UPDATE credentials SET id=?').run(credential);
           const row = db.prepare("SELECT id,result FROM attempts WHERE mode='register'").get();
@@ -154,21 +169,29 @@ for (const control of [
         MutantCustody.prototype.inboundPage = wrap(mutated);
         try {
           q = query(x);
-          assert.equal((await read(x, q)).kind, 'unknown');
+          const refused = await read(x, q);
+          baseline = observe(q, refused);
+          assert.equal(refused.kind, 'unknown');
           q = query(x);
-          pageProof(await owner.readInbound(core, q), q, x, retained);
+          const escaped = await owner.readInbound(core, q);
+          mutant = observe(q, escaped);
+          pageProof(escaped, q, x, retained);
         } finally {
           Date.now = now;
           AcceptanceCustody.prototype.inboundPage = original;
           MutantCustody.prototype.inboundPage = mutated;
         }
       } else {
-        assert.equal((await read(x, q)).kind, 'unknown');
+        const refused = await read(x, q);
+        baseline = observe(q, refused);
+        assert.equal(refused.kind, 'unknown');
         if (control === 'current') {
           mutate(x, (db) => db.exec("UPDATE accounts SET state='active'"));
           armed = true;
         }
-        pageProof(await owner.readInbound(core, q), q, x, control === 'witness' ? [] : retained);
+        const escaped = await owner.readInbound(core, q);
+        mutant = observe(q, escaped);
+        pageProof(escaped, q, x, control === 'witness' ? [] : retained);
       }
       if (process.env.ACCOUNT_REPORT_DIR)
         writeFileSync(
@@ -176,17 +199,15 @@ for (const control of [
           JSON.stringify(
             {
               control,
-              baseline: 'refused',
-              mutant: 'signed page escaped',
-              ...(control === 'registration'
-                ? {
-                    isolatedFault:
-                      'retained registration credential differs; activation and current credential agree',
-                    replacedCurrentCredentialWithRegistrationCheckOmitted:
-                      'still refused by activation binding',
-                  }
-                : {}),
-              request: Buffer.from(q).toString('hex'),
+              baseline,
+              mutant,
+              ordinary,
+              activation,
+              publicKey: x.offer.epoch.acceptancePublicKey,
+              originals: retained.map(({ w, r }) => ({
+                envelope: Buffer.from(envelope(w)).toString('hex'),
+                result: { kind: r.kind, bytes: Buffer.from(r.bytes).toString('hex') },
+              })),
             },
             null,
             2,

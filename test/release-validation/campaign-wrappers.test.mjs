@@ -1,4 +1,12 @@
 import {
+  serviceInboundCampaign,
+  serviceInboundCampaignStage,
+  serviceInboundSteps,
+  serviceInboundReports,
+  reconcileServiceInboundReports,
+  reconcileServiceInboundEvidence,
+} from '../../scripts/release-validation/account-service-inbound-wrapper.mjs';
+import {
   syncCampaign,
   syncCampaignStage,
   syncSteps,
@@ -48,7 +56,7 @@ import {
   reconcileInboundCodecsReports,
   reconcileInboundCodecsEvidence,
 } from '../../scripts/release-validation/account-inbound-codecs-wrapper.mjs';
-import { createHash } from 'node:crypto';
+import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import * as Y from 'yjs';
 import {
   inboundPrepCampaign,
@@ -2752,5 +2760,364 @@ test('160 generated sync control corruptions reject ineffective scheduler, dispa
       assert.throws(() => reconcileSyncEvidence(bad));
     }),
     { seed: 150972, numRuns: 160 },
+  );
+});
+
+function serviceInboundEvidence() {
+  const key = generateKeyPairSync('ed25519'),
+    publicKey = key.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex');
+  const hex = (v) => Buffer.from(JSON.stringify(v)).toString('hex'),
+    digest = (v) => createHash('sha256').update(Buffer.from(v, 'hex')).digest('hex');
+  const request = (after = 0, limit = 1, role) => {
+    const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+    q[10] = after;
+    q[11] = limit;
+    if (role) q[role === 'reader' ? 5 : 6] = 'ac'.repeat(16);
+    return hex(q);
+  };
+  const one = {
+      envelope: 'aa',
+      result: {
+        kind: 'decision',
+        bytes: hex(['done/position-response/v1', 1, 'accepted', 'workspace', 'credential', 1]),
+      },
+    },
+    two = {
+      envelope: 'bb',
+      result: {
+        kind: 'decision',
+        bytes: hex(['done/position-response/v1', 1, 'accepted', 'workspace', 'credential', 2]),
+      },
+    };
+  const page = (q, originals) => {
+    const after = JSON.parse(Buffer.from(q, 'hex'))[10],
+      entries = originals.slice(after, after + 1).map((o) => [o.envelope, o.result.bytes]);
+    const p = [
+      'done/private-read-page/v2',
+      2,
+      digest(q),
+      originals.length,
+      after + entries.length,
+      entries,
+    ];
+    return {
+      request: q,
+      result: {
+        kind: 'decision',
+        bytes: hex([
+          ...p,
+          sign(null, Buffer.from(JSON.stringify(p)), key.privateKey).toString('hex'),
+        ]),
+      },
+    };
+  };
+  const refused = (q) => ({ request: q, result: { kind: 'unknown', reason: 'fixture' } });
+  const commands = ['append', 'read', 'replay', 'reader', 'publisher', 'ledger', 'restart'].map(
+      (op) => ({ op, limit: 1, cursor: 0 }),
+    ),
+    h = { commands, observations: [], completed: true, publicKey };
+  const before = '00'.repeat(32),
+    after = '11'.repeat(32),
+    q = request();
+  h.observations.push({ op: 'append', before, after, position: 1, ...one });
+  for (const op of commands.slice(1).map((c) => c.op)) {
+    const o = { op, before: after, after };
+    if (op === 'read' || op === 'replay') Object.assign(o, page(q, [one]));
+    else if (['reader', 'publisher', 'ledger'].includes(op)) {
+      Object.assign(o, refused(request(0, 1, op === 'ledger' ? undefined : op)));
+      if (op === 'ledger') o.faulted = '22'.repeat(32);
+    }
+    h.observations.push(o);
+  }
+  h.final = [{ before: after, after, ...page(q, [one]) }];
+  const coverage = Object.fromEntries(commands.map((c) => [c.op, 60]));
+  const r = {
+    'generated.json': {
+      status: 'passed',
+      seed: 9112031,
+      coverage,
+      histories: Array.from({ length: 60 }, () => structuredClone(h)),
+      details: {
+        failed: false,
+        numRuns: 60,
+        numShrinks: 0,
+        counterexample: null,
+        counterexamplePath: null,
+        error: null,
+      },
+    },
+  };
+  for (const control of [
+    'reader',
+    'publisher',
+    'signature',
+    'current',
+    'registration',
+    'witness',
+    'expiry',
+    'custody',
+  ])
+    r['control-' + control + '.json'] = {
+      control,
+      publicKey,
+      originals: [one],
+      ordinary: [page(q, [one]), page(q, [one])],
+      baseline: refused(q),
+      mutant: page(q, control === 'witness' ? [] : [one]),
+      activation: control === 'registration' ? [refused(q), refused(q)] : [],
+    };
+  for (const cut of ['verified', 'signed'])
+    r['restart-' + cut + '.json'] = {
+      cut,
+      code: null,
+      signal: 'SIGKILL',
+      replies: 0,
+      before,
+      after: before,
+      publicKey,
+      originals: [one],
+      ...page(q, [one]),
+    };
+  const response = (p) => ({
+    status: 200,
+    cache: 'no-store',
+    type: 'application/octet-stream',
+    bytes: p.result.bytes,
+  });
+  const pages = [0, 1].map((i) => {
+      const p = page(request(i), [one, two]),
+        res = response(p);
+      return {
+        position: i + 1,
+        request: p.request,
+        response: res,
+        retry: structuredClone(res),
+        outcome: { kind: 'received', status: { receivedThrough: i + 1 } },
+      };
+    }),
+    end = page(request(2), [one, two]);
+  r['native-http.json'] = {
+    refused: [
+      ['v1', 409],
+      ['Origin', 403],
+      ['Content-Type', 403],
+      ['Authorization', 403],
+      ['size', 413],
+      ['signature', 409],
+    ].map(([tag, status]) => ({ tag, status })),
+    originals: ['aa', 'bb'],
+    pages,
+    duplicate: { kind: 'duplicate' },
+    beforeCold: { receivedThrough: 2 },
+    afterCold: { receivedThrough: 2 },
+    end: { request: end.request, response: response(end), outcome: { kind: 'empty' } },
+  };
+  return r;
+}
+test('service-inbound wrapper binds all three commands, 21 cases and inherited browser process ownership', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-service-inbound');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 21);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [60000, 120000, 90000],
+  );
+  assert.equal(s.deadlineMs, 270000);
+  assert.deepEqual(
+    s.expect.historyInputs.map((p) => [p.reference, p.path]),
+    ['account-service/delivery.ts'].map((p) => ['4bb09042f37f68ec31f0d82587af608f599eb096', p]),
+  );
+  assert.equal(s.expect.dataInputs, undefined);
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.equal(s.processPolicy, 'inherited-group-v1');
+  assert.deepEqual(s.fileOutputs.required, serviceInboundReports);
+  assert.equal(serviceInboundReports.length, 20);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 270001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'serviceInbound-filter',
+    argv: ['node', serviceInboundCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find(
+      (r) => r.id === 'command:serviceInbound-filter:0',
+    ).blocked,
+  );
+});
+test('service-inbound trace rejects missing cases from any child or a lost typecheck exit', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-serviceInbound-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = serviceInboundCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps
+    .filter((s) => s.kind !== 'exit')
+    .map((step) =>
+      step.kind === 'vitest'
+        ? {
+            schema: 1,
+            adapter: 'vitest-v1',
+            nonce: 'fresh:' + step.name,
+            reason: 'passed',
+            modules: step.expect.files.map((file) => ({ file, state: 'passed' })),
+            errors: [],
+            cases: step.expect.cases.map((c) => ({
+              ...c,
+              durationMs: 0,
+              retryCount: 0,
+              repeatCount: 0,
+              expectedFailure: false,
+              mode: 'run',
+              errors: [],
+            })),
+          }
+        : {
+            schema: 1,
+            nonce: 'fresh:' + step.name,
+            phase: 'complete',
+            cases: step.expect.cases,
+            errors: [],
+            summary: {
+              success: true,
+              counts: {
+                tests: step.expect.cases.length,
+                failed: 0,
+                cancelled: 0,
+                skipped: 0,
+                todo: 0,
+              },
+            },
+          },
+    );
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i + 1].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...reports.map((_, i) => (v) => v.reports[i].cases.pop()),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[1].nonce = 'fresh:controls'),
+    (v) => (v.trace.steps[2].phase = 'running'),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('service-inbound reports require complete HTTP histories and effective control observations', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-serviceInbound-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: serviceInboundCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...serviceInboundEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: serviceInboundSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = ['results.xml', ...serviceInboundSteps.map((s) => s.name + '.log')];
+  const save = (r) => {
+    for (const [file, v] of Object.entries(r)) writeFileSync(join(dir, file), JSON.stringify(v));
+    for (const file of aux) writeFileSync(join(dir, file), file === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileServiceInboundReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileServiceInboundReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileServiceInboundReports(dir, sources));
+  }
+});
+
+test('160 generated service-inbound report corruptions reject changed originals, replay, read-only inventory and page signatures', () => {
+  const r = serviceInboundEvidence();
+  reconcileServiceInboundEvidence(r);
+  const alters = [
+    (h) => h.observations.pop(),
+    (h) => (h.observations[0].envelope = 'bb'),
+    (h) => (h.observations[1].after = '22'.repeat(32)),
+    (h) => (h.observations[2].request += '00'),
+    (h) => (h.observations[3].result.kind = 'decision'),
+    (h) => (h.observations[5].faulted = h.observations[5].before),
+    (h) => h.final.pop(),
+    (h) => (h.final[0].result.bytes += '00'),
+    (h) => (h.completed = false),
+    (h) => (h.publicKey = '00'.repeat(32)),
+  ];
+  fc.assert(
+    fc.property(fc.nat(7), fc.nat(alters.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      alters[k](bad['generated.json'].histories[i]);
+      assert.throws(() => reconcileServiceInboundEvidence(bad));
+    }),
+    { seed: 150973, numRuns: 160 },
+  );
+});
+test('160 generated service-inbound control corruptions reject missing refusal, activation, SIGKILL and cold HTTP evidence', () => {
+  const r = serviceInboundEvidence();
+  reconcileServiceInboundEvidence(r);
+  const alters = [
+    (r) => (r['control-reader.json'].baseline.result.kind = 'decision'),
+    (r) => (r['control-witness.json'].mutant.result.kind = 'unknown'),
+    (r) => r['control-registration.json'].activation.pop(),
+    (r) => (r['control-signature.json'].mutant.result.bytes += '00'),
+    (r) => (r['restart-signed.json'].replies = 1),
+    (r) => (r['restart-verified.json'].signal = 'SIGTERM'),
+    (r) => (r['native-http.json'].pages[0].retry.bytes = 'aa'),
+    (r) => (r['native-http.json'].afterCold.receivedThrough = 1),
+    (r) => (r['native-http.json'].refused[0].status = 200),
+    (r) => r['generated.json'].coverage.read--,
+  ];
+  fc.assert(
+    fc.property(fc.nat(alters.length - 1), (k) => {
+      const bad = structuredClone(r);
+      alters[k](bad);
+      assert.throws(() => reconcileServiceInboundEvidence(bad));
+    }),
+    { seed: 150974, numRuns: 160 },
   );
 });

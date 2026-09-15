@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   native,
   selected,
@@ -53,19 +55,25 @@ test(
         bytes: new Uint8Array(await r.arrayBuffer()),
       };
     };
+    const report = { refused: [], pages: [] };
+    const response = (r) => ({ ...r, bytes: Buffer.from(r.bytes).toString('hex') });
+    const refusal = (tag, result, expected) => {
+      report.refused.push({ tag, ...response(result) });
+      assert.equal(result.status, expected);
+    };
     await openReceive(f.page, item);
     let q = await request(f.page);
-    assert.equal((await send(q, '/account/delivery/read')).status, 409);
+    refusal('v1', await send(q, '/account/delivery/read'), 409);
     for (const headers of [
       { Origin: 'https://foreign.test' },
       { 'Content-Type': 'application/json' },
       { Authorization: 'Bearer ' + 'B'.repeat(43) },
     ])
-      assert.equal((await send(q, undefined, headers)).status, 403);
-    assert.equal((await send(new Uint8Array(4097))).status, 413);
+      refusal(Object.keys(headers)[0], await send(q, undefined, headers), 403);
+    refusal('size', await send(new Uint8Array(4097)), 413);
     const forged = JSON.parse(Buffer.from(q).toString());
     forged[14] = '00'.repeat(64);
-    assert.equal((await send(Buffer.from(JSON.stringify(forged)))).status, 409);
+    refusal('signature', await send(Buffer.from(JSON.stringify(forged))), 409);
     let saved;
     for (let position = 1; position <= 2; position++) {
       q = await request(f.page);
@@ -79,19 +87,42 @@ test(
       assert.equal(p.next, position);
       assert.equal(p.entries.length, 1);
       // Lost HTTP response adds no service state; exact replay returns the same signed bytes.
-      assert.deepEqual((await send(q)).bytes, r.bytes);
-      assert.equal((await receive(f.page, r.bytes)).kind, 'received');
+      const retry = await send(q),
+        outcome = await receive(f.page, r.bytes);
+      report.pages.push({
+        position,
+        request: Buffer.from(q).toString('hex'),
+        response: response(r),
+        retry: response(retry),
+        outcome,
+      });
+      assert.deepEqual(retry.bytes, r.bytes);
+      assert.equal(outcome.kind, 'received');
       saved = r.bytes;
     }
-    assert.equal((await receive(f.page, saved)).kind, 'duplicate');
-    assert.equal((await status(f.page)).receivedThrough, 2);
+    report.duplicate = await receive(f.page, saved);
+    assert.equal(report.duplicate.kind, 'duplicate');
+    report.beforeCold = await status(f.page);
+    assert.equal(report.beforeCold.receivedThrough, 2);
     await closeReceive(f.page);
     await cold(f);
     await openReceive(f.page, item);
-    assert.equal((await status(f.page)).receivedThrough, 2);
+    report.afterCold = await status(f.page);
+    assert.equal(report.afterCold.receivedThrough, 2);
     q = await request(f.page);
     const end = await send(q);
-    assert.equal((await receive(f.page, end.bytes)).kind, 'empty');
+    report.end = {
+      request: Buffer.from(q).toString('hex'),
+      response: response(end),
+      outcome: await receive(f.page, end.bytes),
+    };
+    assert.equal(report.end.outcome.kind, 'empty');
+    report.originals = originals.map((w) => Buffer.from(envelope(w)).toString('hex'));
+    if (process.env.ACCOUNT_REPORT_DIR)
+      writeFileSync(
+        join(process.env.ACCOUNT_REPORT_DIR, 'native-http.json'),
+        JSON.stringify(report, null, 2) + '\n',
+      );
     await closeReceive(f.page);
   },
 );
