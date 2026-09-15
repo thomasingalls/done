@@ -34,7 +34,7 @@ export interface PreparedWorkspace extends PreparationBytes {
   readonly carrierBytes?: Bytes;
 }
 export interface PreparationScope {
-  /** Transfer a fresh, detached history immediately after construction, before running commands. */
+  /** Transfer a detached history, fresh or explicitly retired, before running commands. */
   ownState(state: PreparedWorkspaceState): void;
   /** Register temporary buffers as they are created, so a thrown command cannot leak them. */
   ownBytes(bytes: Bytes): Bytes;
@@ -44,7 +44,7 @@ export const localWorkspacePreparation: unique symbol = Symbol('localWorkspacePr
 export interface LocalWorkspacePreparation {
   verifiedRevision(): number;
   command(context: PreparationContext, input: Bytes, scope: PreparationScope): PreparationBytes;
-  accept(state: PreparedWorkspaceState, revision: number): void;
+  accept(state: PreparedWorkspaceState, revision: number): PreparedWorkspaceState | void;
   fail(cause: unknown): void;
 }
 type Phase = 'issued' | 'preparing' | 'prepared' | 'adopting' | 'adopted';
@@ -90,6 +90,8 @@ export const createWorkspacePreparation = (options: {
     rejectClose: ((error: unknown) => void) | undefined;
   // Remember transferred histories too: a late callback must not destroy accepted state.
   const knownDocs = new WeakSet<Y.Doc>();
+  const transferred = new WeakSet<PreparedWorkspaceState>();
+  const retired = new WeakMap<Y.Doc, PreparedWorkspaceState>();
   const destroy = (state: PreparedWorkspaceState) => {
     try {
       state.history.destroy();
@@ -213,7 +215,20 @@ export const createWorkspacePreparation = (options: {
     const scope: PreparationScope = Object.freeze({
       ownState(state: PreparedWorkspaceState) {
         if (!(state.history instanceof Y.UndoManager)) throw Error('Invalid prepared history');
-        if (knownDocs.has(state.history.doc)) throw Error('History was already owned');
+        if (
+          knownDocs.has(state.history.doc) &&
+          !(
+            slot === entry &&
+            !entry.invalid &&
+            entry.phase === 'preparing' &&
+            !closed &&
+            !entry.state &&
+            retired.get(state.history.doc) === state &&
+            !state.history.doc.isDestroyed
+          )
+        )
+          throw Error('History was already owned');
+        retired.delete(state.history.doc);
         knownDocs.add(state.history.doc);
         if (entry.invalid || entry.phase !== 'preparing' || closed || entry.state) {
           destroy(state);
@@ -340,6 +355,7 @@ export const createWorkspacePreparation = (options: {
       const state = entry.state!;
       delete entry.state;
       entry.phase = 'adopted';
+      transferred.add(state);
       return state;
     } catch (error) {
       closed = true;
@@ -355,6 +371,23 @@ export const createWorkspacePreparation = (options: {
     prepare,
     borrow,
     adopt,
+    /** Trusted composition returns a previous transferred state after adopting its successor.
+     * Registration permits one later acquisition; the workspace still owns spare disposal. */
+    retire(state: PreparedWorkspaceState) {
+      live();
+      if (
+        !slot ||
+        slot.phase !== 'adopted' ||
+        slot.invalid ||
+        state === slot.prepared?.state ||
+        !transferred.has(state) ||
+        state.history.doc.isDestroyed ||
+        retired.has(state.history.doc)
+      )
+        throw Error('History cannot be retired');
+      transferred.delete(state);
+      retired.set(state.history.doc, state);
+    },
     /** Copy any remaining intent before finishing. The adopted history belongs to the workspace. */
     finish(context: PreparationContext) {
       abandon(current(context, 'adopted'));

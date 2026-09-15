@@ -15,7 +15,8 @@ export function manifestSnapshot(manifest) {
       )
       .join(',\n') +
     '\n}\n';
-  // Bounded headroom for the reviewed Account registrations; serialization stays unchanged.
-  assert(Buffer.byteLength(code) <= 800000, 'Manifest size budget failed');
+  // Reviewed F-17 integration adds six files and 55 cases (802,108 bytes before this
+  // writer change). Keep bounded planning-file headroom; runtime report limits are separate.
+  assert(Buffer.byteLength(code) <= 850000, 'Manifest size budget failed');
   return code;
 }

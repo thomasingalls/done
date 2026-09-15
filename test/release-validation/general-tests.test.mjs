@@ -26,18 +26,18 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 2121-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 2189-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
-  assert.equal(p.vitest.length, 80);
+  assert.equal(p.vitest.length, 88);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 263);
+  assert.equal(general.length, 271);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    2121,
+    2189,
   );
-  assert.equal(selectStages(m, 'vitest-reviewed').length, 99);
+  assert.equal(selectStages(m, 'vitest-reviewed').length, 107);
   assert.equal(
     selectStages(m, 'node-protocol').reduce((n, s) => n + s.expect.cases.length, 0),
     66,

@@ -368,7 +368,8 @@ export const createAdmissionOwner = async (
           const candidate = preparation!.adopt(job.preparation, (prepared) =>
             sameDocState(canonical, prepared.state.history.doc),
           );
-          local!.accept(candidate, revision);
+          const retired = local!.accept(candidate, revision);
+          if (retired) preparation!.retire(retired);
         } catch (cause) {
           // Persistence already succeeded. Never retry this input or expose the failed projection.
           const error = new AdmissionError(

@@ -6,6 +6,7 @@ import {
   workspaceUndo,
   forkWorkspaceHistory,
   createSelectionHistory,
+  isTextBufferBasis,
   type YUndoManager,
 } from './yjs';
 import {
@@ -40,7 +41,7 @@ import { createArchiveProjection } from './archiveProjection';
 import { currentDate, plainDate, type ISODate } from '../lib/date';
 import { exportArchive, exportEntries } from './export';
 import {
-  runWorkspaceCommand,
+  createWorkspaceCommandRunner,
   relativeSelection,
   resolveSelection,
   targetText,
@@ -149,7 +150,39 @@ export const createAdmittedWorkspace = async (
   if (localHandoff && options.captureSources)
     throw Error('Local preparation cannot capture Account sources');
   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+  // Private experiment: one retired predecessor, never more than two workspace histories.
+  let spare:
+    | { state: State; basis: State; update: Bytes; untouched(): boolean; unwatch(): void }
+    | undefined;
+  // Only the owning preparation may mutate a retired buffer. Conservative: even an idle
+  // no-op transaction invalidates it. Raw private-field writes remain outside this contract.
+  const watchRetired = (state: State) => {
+    let untouched = true;
+    const changed = () => {
+      untouched = false;
+    };
+    state.history.doc.on('beforeTransaction', changed);
+    return {
+      untouched: () => untouched,
+      unwatch: () => state.history.doc.off('beforeTransaction', changed),
+    };
+  };
+  const stable = new WeakMap<YUndoManager, boolean>();
+  const transferred = new WeakSet<PreparedWorkspaceState>();
+  const transitions = new WeakMap<PreparedWorkspaceState, { update: Bytes; textOnly: boolean }>();
+  const resetSpare = () => {
+    if (!spare) return;
+    const old = spare;
+    spare = undefined;
+    try {
+      old.unwatch();
+      old.update.fill(0);
+    } finally {
+      dispose(old.state);
+    }
+  };
   const archiveProjection = createArchiveProjection();
+  const commands = createWorkspaceCommandRunner();
   const identity = structuredClone(options.identity);
   const human: Origin = Object.freeze({
     actor: identity.id,
@@ -189,13 +222,75 @@ export const createAdmittedWorkspace = async (
     const intent = JSON.parse(
       new TextDecoder('utf-8', { fatal: true }).decode(input),
     ) as WorkspaceIntent;
-    const history = selectionHistory
-        ? selectionHistory.fork(accepted.history, human)
-        : forkWorkspaceHistory(accepted.history, human),
+    const basis = accepted;
+    const textCommand = intent.command.kind === 'text';
+    let reusable = false;
+    if (selectionHistory && scope && textCommand) {
+      let clean = stable.get(basis.history);
+      if (clean === undefined) {
+        clean = isTextBufferBasis(basis.history.doc);
+        stable.set(basis.history, clean);
+      }
+      reusable =
+        clean &&
+        !(
+          intent.command.kind === 'text' &&
+          intent.command.action.name === 'insert' &&
+          /[\uD800-\uDFFF]/.test(intent.command.action.text)
+        );
+    }
+    if (!reusable || spare?.basis !== basis) resetSpare();
+    let state: State;
+    if (spare) {
+      const old = spare;
+      spare = undefined;
+      state = old.state;
+      try {
+        scope!.ownState(state);
+        if (!old.untouched()) throw Error('Retired text buffer changed while idle');
+        old.unwatch();
+        selectionHistory!.catchUpText(state.history, basis.history, old.update);
+      } finally {
+        old.unwatch();
+        old.update.fill(0);
+      }
+      state.selections = new Map();
+      state.group = intent.group;
+      state.value = false;
+    } else {
+      const history = selectionHistory
+        ? selectionHistory.fork(basis.history, human)
+        : forkWorkspaceHistory(basis.history, human);
+      state = { history, selections: new Map(), group: intent.group, value: false };
+      scope?.ownState(state);
+    }
+    const history = state.history,
       doc = history.doc;
+    commands.inherit(basis.history, history);
     doc.clientID = writer;
-    const state: State = { history, selections: new Map(), group: intent.group, value: false };
-    scope?.ownState(state);
+    let textOnly = reusable;
+    const changed = (transaction: Y.Transaction) => {
+      if (!textOnly) return;
+      for (const type of transaction.changed.keys()) {
+        const parent = type.parent;
+        const id = parent instanceof Y.Map ? parent.get('id') : undefined;
+        if (
+          !(
+            type instanceof Y.Text &&
+            ((type as unknown) === doc.share.get('master') ||
+              (parent instanceof Y.Map &&
+                parent.parent === doc.getMap('cards') &&
+                typeof id === 'string' &&
+                doc.getMap('cards').get(id) === parent &&
+                parent.get('text') === type))
+          )
+        ) {
+          textOnly = false;
+          break;
+        }
+      }
+    };
+    doc.on('afterTransaction', changed);
     const selections = state.selections;
     const updates: Bytes[] = [],
       sources: import('./sourceCapture').SourceUpdate[] = [];
@@ -230,7 +325,7 @@ export const createAdmittedWorkspace = async (
     try {
       for (const [key, value] of accepted.selections) selections.set(key, structuredClone(value));
       if (intent.group !== accepted.group) history.stopCapturing();
-      const result = runWorkspaceCommand(
+      const result = commands.run(
         history,
         intent,
         { identity, human, system, today: today() },
@@ -273,6 +368,12 @@ export const createAdmittedWorkspace = async (
       }
       state.value = result.value;
       const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
+      if (selectionHistory && scope) {
+        transitions.set(state, { update, textOnly });
+        // Unknown/structural transitions rescan later. A conservative negative text fact may persist.
+        if (textOnly) stable.set(history, true);
+        else if (textCommand && stable.get(basis.history) === false) stable.set(history, false);
+      }
       return {
         state,
         update,
@@ -293,6 +394,7 @@ export const createAdmittedWorkspace = async (
       }
       throw error;
     } finally {
+      doc.off('afterTransaction', changed);
       doc.off('update', capture);
       history.off('stack-item-added', captureItem);
       history.off('stack-item-updated', captureItem);
@@ -304,8 +406,21 @@ export const createAdmittedWorkspace = async (
     const previous = accepted;
     accepted = state;
     verifiedRevision = adoptedRevision = revision;
-    dispose(previous);
+    const transition = transitions.get(state);
+    transitions.delete(state);
+    let retired: PreparedWorkspaceState | undefined;
+    if (selectionHistory && previous && transferred.has(previous) && transition?.textOnly) {
+      spare = {
+        state: previous,
+        basis: state as State,
+        update: transition.update.slice(),
+        ...watchRetired(previous),
+      };
+      retired = previous;
+    } else dispose(previous);
+    transferred.add(state);
     outcomes.set(state.group, state.value);
+    return retired;
   };
   let session: AdmissionSession;
   try {
@@ -369,6 +484,7 @@ export const createAdmittedWorkspace = async (
   let closing: Promise<void> | undefined,
     repairQueued = false;
   const teardown = () => {
+    resetSpare();
     archiveProjection.clear();
     dispose(pending);
     dispose(accepted);
@@ -475,7 +591,14 @@ export const createAdmittedWorkspace = async (
           pending = undefined;
           dispose(previous);
           outcomes.set(accepted.group, accepted.value);
-        } else applyUpdate(accepted!.history.doc, event.update, 'received');
+        } else {
+          // Invalidate before apply and publication: a subscriber may submit input before
+          // the queued membership repair runs, including when dependencies become visible.
+          resetSpare();
+          stable.delete(accepted!.history);
+          commands.invalidate(accepted!.history);
+          applyUpdate(accepted!.history.doc, event.update, 'received');
+        }
         // Check every accepted transition, including later remote dependencies, before exposure.
         if (!localHandoff || event.source === 'remote') verifyProjection();
         verifiedRevision = event.revision;

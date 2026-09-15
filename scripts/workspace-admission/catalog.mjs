@@ -32,8 +32,8 @@ export const mutants = [
     file: 'src/crdt/admittedWorkspace.ts',
     case: 'W06.remote',
     assertion: 'undo-preserves-remote',
-    from: "else applyUpdate(accepted!.history.doc, event.update, 'received');",
-    to: 'else applyUpdate(accepted!.history.doc, event.update, human);',
+    from: "applyUpdate(accepted!.history.doc, event.update, 'received');",
+    to: 'applyUpdate(accepted!.history.doc, event.update, human);',
   },
   {
     id: 'lost-redone-links',

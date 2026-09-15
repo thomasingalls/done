@@ -110,11 +110,48 @@ export const resolveSelection = (
     : EditorSelection.single(0);
 };
 
-export const runWorkspaceCommand = (
+type CommandRunner = (
   history: YUndoManager,
   intent: WorkspaceIntent,
   context: CommandContext,
   selections: Map<string, RelativeSelection>,
+) => { value: CommandValue; remaining?: WorkspaceIntent };
+
+/** Unconditional reference runner, also used by callers that do not own a repair basis. */
+export const runWorkspaceCommand: CommandRunner = (...args) =>
+  executeWorkspaceCommand(...args, false);
+
+/** Private to one admission owner. No eligibility capability escapes its workspace API. */
+export const createWorkspaceCommandRunner = () => {
+  const repaired = new WeakSet<YUndoManager>();
+  return Object.freeze({
+    inherit(source: YUndoManager, fork: YUndoManager) {
+      if (source === fork) throw Error('Repair eligibility requires a detached history.');
+      if (repaired.has(source)) repaired.add(fork);
+      else repaired.delete(fork);
+    },
+    invalidate(history: YUndoManager) {
+      repaired.delete(history);
+    },
+    run(...args: Parameters<CommandRunner>) {
+      const history = args[0],
+        knownRepaired = repaired.has(history);
+      repaired.delete(history);
+      const result = executeWorkspaceCommand(...args, knownRepaired);
+      // Failed execution cannot establish a fact. A private candidate only marks itself;
+      // its identity follows the existing verified adoption/disposal lifecycle.
+      repaired.add(history);
+      return result;
+    },
+  });
+};
+
+const executeWorkspaceCommand = (
+  history: YUndoManager,
+  intent: WorkspaceIntent,
+  context: CommandContext,
+  selections: Map<string, RelativeSelection>,
+  knownRepaired: boolean,
 ): { value: CommandValue; remaining?: WorkspaceIntent } => {
   const doc = history.doc,
     command = intent.command;
@@ -134,7 +171,7 @@ export const runWorkspaceCommand = (
     return { value: repairCardMemberships(doc, context.system) };
   }
   // Repair is its own system transaction, including before a later queued human command.
-  repairCardMemberships(doc, context.system);
+  if (command.kind !== 'text' || !knownRepaired) repairCardMemberships(doc, context.system);
   const from = 'id' in command ? cardLocation(doc, command.id) : null;
   let value: CommandValue = false;
   switch (command.kind) {

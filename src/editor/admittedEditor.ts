@@ -122,7 +122,8 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
         compositionSelection = undefined;
         queueMicrotask(() => {
           suppressComposition = false;
-          if (!destroyed) project();
+          // Reconcile any transient preedit DOM even when admission refused it.
+          if (!destroyed) project(true);
         });
         return false;
       },
@@ -191,7 +192,7 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
       }
     },
   });
-  function project() {
+  function project(force = false) {
     if (destroyed) return;
     try {
       const snapshot = document.read();
@@ -199,25 +200,50 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
       isEditable = snapshot.editable !== false;
       const before = view.state.doc.toString(),
         after = snapshot.text;
-      let from = 0,
-        end = before.length,
-        last = after.length;
-      while (from < end && from < last && before[from] === after[from]) from++;
-      while (end > from && last > from && before[end - 1] === after[last - 1]) {
-        end--;
-        last--;
-      }
       // Copying or moving a card can publish without changing this text. Keep the
       // user's local selection then; it has not been submitted as a text intent.
       const nextSelection = before === after && selection ? selection : snapshot.selection;
       if (before !== after) selection = undefined;
+      const projectedSelection = EditorSelection.fromJSON(nextSelection);
+      // Other workspace surfaces publish together. An unchanged projection does
+      // not need a selection transaction (which also rebuilds live preview).
+      // eq includes positions and goal columns; check the remaining cursor state
+      // so this preserves the normalization performed by an actual dispatch.
+      if (
+        !force &&
+        !composing &&
+        !suppressComposition &&
+        !view.composing &&
+        before === after &&
+        !changedEditable &&
+        view.state.selection.eq(projectedSelection, true) &&
+        view.state.selection.ranges.every((range, index) => {
+          const projected = projectedSelection.ranges[index]!;
+          return (
+            range.assoc === projected.assoc &&
+            range.bidiLevel === projected.bidiLevel &&
+            range.undirectional === projected.undirectional
+          );
+        })
+      )
+        return;
+      let changes: { from: number; to: number; insert: string } | undefined;
+      if (before !== after) {
+        let from = 0,
+          end = before.length,
+          last = after.length;
+        while (from < end && from < last && before[from] === after[from]) from++;
+        while (end > from && last > from && before[end - 1] === after[last - 1]) {
+          end--;
+          last--;
+        }
+        changes = { from, to: end, insert: after.slice(from, last) };
+      }
       projecting = true;
       try {
         view.dispatch({
-          ...(before === after
-            ? {}
-            : { changes: { from, to: end, insert: after.slice(from, last) } }),
-          selection: EditorSelection.fromJSON(nextSelection),
+          ...(changes ? { changes } : {}),
+          selection: projectedSelection,
           ...(changedEditable
             ? { effects: editable.reconfigure(EditorView.editable.of(isEditable)) }
             : {}),

@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/private/tmp/done-f17-rc-integration/owned/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-integration/owned/inputs.json.gz",
+    "sha256": "329a21a20e03e85078f0cd1a52e0e8680307775e7085c67e815cb2861e6447c9",
+    "bytes": 1218329
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-integration/owned-recovered/inputs.json.gz",
+    "sha256": "92de0bdf0b4005548172c39a25faf93add7799495741e9dba9b7d39bbe90eba8",
+    "bytes": 1218380
+  }
+]

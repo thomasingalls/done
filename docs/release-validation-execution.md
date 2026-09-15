@@ -13,8 +13,8 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-Following signed `0c84e5cc` and the private Local integration checkpoint, the current [manifest](./release-validation-manifest.json) contains
-618 obligations, including all 282 current
+Following signed replay evidence `902cc397` and the selected RC integration, the current [manifest](./release-validation-manifest.json) contains
+626 obligations, including all 290 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
@@ -37,8 +37,8 @@ connect these commits to the original phase receipts without changing those rece
 This is bookkeeping, not a new immutable aggregate result.
 
 All eleven catalogue adapters (163 cases / 54 mutations) and all general test-file
-adapters are integrated. After private Local selection-snapshot integration, the current set is
-**263 files / 2,121 dispositions, including 11 explicitly not applicable**.
+adapters are integrated. After selected F-17 combination integration, the current set is
+**271 files / 2,189 dispositions, including 11 explicitly not applicable**.
 That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
 and browser application files. The 19 infrastructure test files account for the other required files.
 These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
@@ -78,7 +78,11 @@ The [persistent text-history buffer experiment](./f17-buffers-r1.md) introduces 
 
 The [replay cost/equivalence phase](./f17-replay-r1.md) completes the operator's final optimization round. Four instrumented sessions measure the added comparison at about 11 ms, native replay at 1 ms and fresh document fork at 9 ms; complete stack copying is about 0.1 ms early /0.4–0.5 ms later. The restricted exact-predecessor/native-delta invariant and idle transaction fence replace only the prototype's added comparison. All existing full canonical checks remain. The raw private-field mutation boundary is explicit. Controls pass 227 tests /16 files, 100 new generated histories plus 60 retained workspace histories, TypeScript and four faults. Six separate application sessions /480 measured keys pass semantics, actual reuse/fallback and drain; ordinary paired median gains are 21.1%/20.5% early/later and p95 gains 21.5%/19.8%. Emoji-bearing histories still fall back, with mixed small fallback median changes.
 
-Recommend R3 + repair eligibility + replay buffers for the RC combination; park UI/publication and the first buffer comparison. Next choose/freeze and integrate this combination, then qualify native ownership/crash/close/memory/shared Account effects and run the unchanged application gate. This ends optimization exploration. An accepted latency shortfall requires explicit release debt/disposition, not a relabeled passing receipt; broader normalization, incremental history/verification and larger rewrites are later work. This new phase is uncommitted. Main runtime/defaults, F-17's partial status, release counts and the last actual gate remain unchanged.
+The replay phase is signed and signature-verified as `902cc397`. It recommended R3 + repair
+eligibility + replay buffers, with UI/publication and the first buffer comparison parked. That
+experimental phase left main runtime, defaults and counts unchanged; the following integration
+has now selected and maintained the combination. Broader normalization, incremental history/
+verification and larger rewrites remain later work.
 
 Once the application gate has an acceptable disposition, resume command/campaign wrapper certification, including exact dependency/vector
 reuse and complete output retention. Resolve the host-Python input binding, recorded timeout/owner/
@@ -91,6 +95,22 @@ The [2026-09-14 record audit](./account-conformance-runs/2026-09-14-release-stat
 the eight recent signatures, append-only records and 391 archived payload hashes. This checkpoint is
 explicitly revision-bound; [progress](./progress.md) carries the active phase and the checked manifest
 carries current counts. Keep this overview reconciled when subsequent integration changes its scope.
+
+The [selected RC integration](./f17-rc-integration.md) now carries the exact measured replay
+runtime into maintained code and tests. The full suite passes 107 files/1,209 tests; two owned
+epochs pass 29 Vitest files/365 cases plus ten native workspace cases/four mutations. Both native
+100-history campaigns and nine isolated faults pass. Eight new file obligations and 68 cases
+increase planning counts; the 159 unresolved wrappers are unchanged. Earlier codec tests missing
+from the combined patch are restored. Only the planning manifest's administrative size ceiling
+increases (800,000→850,000); execution/report/log/performance limits are unchanged.
+
+**Next qualify lifetime/memory and remaining
+native close/crash/shared Account boundaries**, then run the unchanged application gate and decide
+default Local activation with explicit latency-debt disposition. Exploration is closed. Shared
+optimizations are integrated, Local buffers remain private and Account buffer activation remains
+excluded. No new timing, heap result, wrapper resolution or immutable release receipt is claimed.
+The full source, separate input identities, failures and checks are
+[retained here](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).
 
 ## Commands and current execution scope
 

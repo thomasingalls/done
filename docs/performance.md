@@ -1238,3 +1238,58 @@ Six separate application sessions /480 measured keys /624 warmups pass text, bou
 Recommend R3 + repair eligibility + replay buffers for the RC combination. Park the UI/publication candidates and the first guarded buffer variant. At the operator's direction this closes the optimization round: choose/freeze the combination, integrate it and qualify native ownership/crash/close/memory, shared Account effects and the unchanged application gate. Larger rewrites, incremental stack mirroring, broader normalization and incremental canonical verification become later work. Record any accepted latency shortfall explicitly as release debt without changing a failing receipt. This phase does not activate defaults or complete RC qualification.
 
 Main runtime/tests and release counts remain unchanged: 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. F-17 remains partial; last actual gate remains 12.2/75.1 ms desktop/CPU4 card p95 and 54.2 ms Android focus. Both source/build freezes, the preceding packet, 52 personal/package/vector pins, root perspective, append-only prefixes and L-2 verify unchanged. Personal app/server, phone, relay and deployment remain untouched. New phase is uncommitted. [Assessment](./f17-replay-r1.md); [source and evidence](./performance-experiments/2026-09-15-f17-replay-r1/README.md).
+
+
+## 2026-09-15 — F-17 selected combination integrated and functionally qualified
+
+The preceding replay assessment is signed and signature-verified as `902cc397`. At the operator's
+selection, the exact six runtime files from that measured candidate are now maintained source:
+R3 preparation/value-string reuse, bounded comparison scratch pooling, editor projection shortcut,
+membership-repair eligibility and restricted Local replay buffers. Every existing full canonical
+comparison and complete detached history copy remains. Optional UI/publication patches and the
+first buffer's added comparison stay out. The Local and Account constructors still select the
+reference; shared comparison/editor/command improvements are integrated, while replay remains
+available only through the explicit private Local composition. No default activation is claimed.
+
+Eight maintained suites and additions to two existing suites add 68 cases. The audit recovers
+13 codec controls from the signed R3 archive that were absent from the later combined patch,
+including two 150-history generated tests (seeds 193917/150917). The normalization probe loses only
+its exploratory file output; two tests receive AST-equivalent formatting. All earlier assertions
+and case identities remain, apart from one administrative denominator title. The full unit command
+passes twice, first 105 files/1,196 tests and then 107 files/1,209 tests after coverage recovery.
+The final formatting-only change is AST-checked and passes its owned test afterward.
+
+Two separately identified owned epochs pass 29 Vitest files/365 cases and the workspace catalogue's
+10 cases/4 mutations. Both native campaigns select `local-snapshots`: pending projection passes
+12 cases and delivery passes eight, each with 100 generated histories (seed 8941) and one actual
+renderer death. Pressure/retry, pending dependencies, projection drift, original delivery order,
+undo, encrypted cold replay and channel handoff retain their directed checks. Stage groups drain;
+the catalogue records five closed origins and browser drain, and standalone runners complete their
+awaited browser/server shutdown and outer process-group checks. Nine isolated faults catch missing
+fencing, premature retirement, omitted replay, shared history, fork-marker and comparison corruption,
+remote invalidation, composition reconciliation and false accepted-basis cleanliness.
+
+TypeScript, scoped formatting/lint, pinned Yjs/seam, authority/census, manifest/inventory and 27
+runner checks pass. Initial formatting, stale census and denominator failures remain with their
+repairs. The remote-history mutation receives a reviewed anchor adjustment for the new braced
+block; its identity and discriminating assertion are unchanged. The planning manifest grows past
+800,000 bytes, so only that administrative file ceiling increases to 850,000 (final 805,675 bytes).
+Stage/case deadlines and report/log/runtime/performance limits are unchanged. The first standalone
+native attempt uses a directory outside Vite's allowlist and stops before a semantic result; it
+remains recorded separately from the passing run in the supported ignored output directory.
+
+Planning now contains 626 obligations and 290 required test files, with 271 general files/2,189
+dispositions (11 not applicable). The 159 unresolved rows are unchanged: zero test-file, 96 command
+and 63 campaign. No wrapper or immutable release receipt is earned. F-17 remains partial and the
+last actual unchanged application gate remains 12.2/75.1 ms desktop/CPU4 card p95, with Android
+focus 54.2 ms. This functional phase produces no new performance measurement or heap claim.
+
+Optimization exploration is closed. Next qualify lifetime/memory and remaining native crash/close
+and shared Account composition boundaries, then run the unchanged application gate on the selected
+combination and decide default Local activation. Any accepted shortfall needs an explicit release
+debt while preserving the failed gate. Account buffer activation, wider normalization, incremental
+history copying and architectural rewrites remain excluded. The prior archives, 52 personal/vector
+pins, root perspective, append-only record prefixes and L-2 are preserved; personal app/server,
+phone, relay and deployment remain untouched. This new integration phase is uncommitted.
+[Phase and scope](./f17-rc-integration.md);
+[frozen source, receipts and controls](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).

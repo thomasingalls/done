@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 288,
-    "requiredTestFiles": 282,
+    "testFiles": 296,
+    "requiredTestFiles": 290,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -7662,6 +7662,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/admittedEditorProjection.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/admittedEditorProjection.test.ts"
+        ]
+      },
+      "declarations": 12,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/admittedText.test.ts",
       "status": "required",
       "invocation": {
@@ -7985,6 +8000,31 @@
       "status": "required",
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/goals.test.ts"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/historyReplay.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyReplay.test.ts"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [
+        {
+          "line": 51,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/historyRetirement.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyRetirement.test.ts"]
       },
       "declarations": 3,
       "propertyFamilies": [],
@@ -8426,6 +8466,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/membershipEligibility.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/membershipEligibility.test.ts"
+        ]
+      },
+      "declarations": 7,
+      "propertyFamilies": [
+        {
+          "line": 393,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/moves.test.ts",
       "status": "required",
       "invocation": {
@@ -8613,7 +8673,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/projectionEquality.test.ts"]
       },
-      "declarations": 4,
+      "declarations": 7,
       "propertyFamilies": [
         {
           "line": 39,
@@ -9131,6 +9191,41 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/runtimeForkPreparation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/runtimeForkPreparation.test.ts"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [
+        {
+          "line": 46,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/runtimeForkStrings.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/runtimeForkStrings.test.ts"]
+      },
+      "declarations": 8,
+      "propertyFamilies": [
+        {
+          "line": 97,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/seam.test.ts",
       "status": "required",
       "invocation": {
@@ -9495,6 +9590,31 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/textBufferBasis.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/textBufferBasis.test.ts"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/textBufferNormalizationProbe.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/textBufferNormalizationProbe.test.ts"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/unfiledPanel.test.tsx",
       "status": "required",
       "invocation": {
@@ -9560,14 +9680,18 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 34,
+      "declarations": 44,
       "propertyFamilies": [
         {
-          "line": 689,
+          "line": 777,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 792,
+          "line": 880,
+          "form": "fc.asyncProperty"
+        },
+        {
+          "line": 1413,
           "form": "fc.asyncProperty"
         }
       ],
@@ -11990,7 +12114,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "df95707dc72f50bba40dab4c2ccccae253abad13e078f2954db84123b7cd95e3"
+      "sha256": "573d4bf8d3d173757a02b164e4b54aed597333a9c7e580576c20563bf3ecc498"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -12026,7 +12150,7 @@
     },
     {
       "path": "scripts/release-validation/manifest-snapshot.mjs",
-      "sha256": "c8597bc409b82778ac454786e50e19056e311dbc363793e82ad2d2d54966faad"
+      "sha256": "2d355f31f358f892313f74a67f211ce1ca51fd4e28f0f381dee8655fee88d5f6"
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
@@ -12190,7 +12314,7 @@
     },
     {
       "path": "scripts/workspace-admission/catalog.mjs",
-      "sha256": "1f4b20a9c0cc966a9c762cd74e0b2b618019fe5d4616f60788eed39d5dbc60a3"
+      "sha256": "fa72d4daff9236bb77a5e62484a72ac698984f20f7c5b2c1551ec559ea35c272"
     },
     {
       "path": "scripts/workspace-admission/run.mjs",
@@ -13365,6 +13489,10 @@
       "sha256": "9078d54be9cdb9265104de8f6618450d3c66d0b5e534ad86021fc32ff704b623"
     },
     {
+      "path": "test/admittedEditorProjection.test.ts",
+      "sha256": "4f3e58c34436e5f17cf73f88af754e0609dfd1faaf600378c6ae016c4d0233a1"
+    },
+    {
       "path": "test/admittedText.test.ts",
       "sha256": "f29d38d1ef576ee5f9bf17322ca1a30c96cbe8a2b1cb85169fd1a9b3ba4e26b8"
     },
@@ -13519,6 +13647,14 @@
     {
       "path": "test/helpers.ts",
       "sha256": "6554d5ff8da94a92d12849b6aa60ab606eaae33c6aa6e3ceaa308c20111d760f"
+    },
+    {
+      "path": "test/historyReplay.test.ts",
+      "sha256": "5a8bac3b35165f0a3fa78e0cc45e56f49f21be6ec7e6a6aaf04f0dfa243f5c4a"
+    },
+    {
+      "path": "test/historyRetirement.test.ts",
+      "sha256": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b"
     },
     {
       "path": "test/hostedRetention.test.ts",
@@ -13825,6 +13961,10 @@
       "sha256": "9969ec968fb16bc7c9f10d6a7045cf2f4a2db131f5dca2d9eecdb934efb4ad5e"
     },
     {
+      "path": "test/membershipEligibility.test.ts",
+      "sha256": "c26bc82453fdd7c3e53af1eaa5e9fdca2f4e259359530cc6a6697d973a6efece"
+    },
+    {
       "path": "test/moves.test.ts",
       "sha256": "16adedd57e4c2dc0d8b485ebe5b4efabb99adaf15d59ca49661a9304f0d1664d"
     },
@@ -13882,7 +14022,7 @@
     },
     {
       "path": "test/projectionEquality.test.ts",
-      "sha256": "7fdb19b824af8b268cbb9da0fad1d68313267908ff65c8a971d8fa3a444a6b28"
+      "sha256": "850f6cec9a09511dc3b531dc460a30a8b802a3a4d9f01df4f6cdd288c149033f"
     },
     {
       "path": "test/random.ts",
@@ -13934,11 +14074,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "5098b8d5482832b34a80c9ece447b91c3a3c01121f80dc7e8ad9a90727478d89"
+      "sha256": "b9a64b2987e9261043c33a793238ebaaf287fd66509e8b59b02adb281c8daf7f"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "b72a16546e688e9e9380b84d202c86d7d9a9b8907b52b2be89ab66fbdaf0a927"
+      "sha256": "9781b12a0ec13602b6d0794696d92f06820c46ef9fcfa71b6b908f36897b14a0"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14007,6 +14147,14 @@
     {
       "path": "test/roundTrip.test.ts",
       "sha256": "ed79bc9dcd6383a30064eb4a131cde7064f47c8ed6d7b1a1aa5aa91f9b8a8935"
+    },
+    {
+      "path": "test/runtimeForkPreparation.test.ts",
+      "sha256": "45e88f68e99bc291b5401bb3c701ca37158548b03505617a55502865bbcdb1e8"
+    },
+    {
+      "path": "test/runtimeForkStrings.test.ts",
+      "sha256": "829dea731d1218621a110da5cfacba7969547d73fe30e1f1e41861b91c416b2b"
     },
     {
       "path": "test/scheduler.ts",
@@ -14173,6 +14321,14 @@
       "sha256": "d06ff3e5132a0972414bf5cd2a213e1a368b541d7958ffad8ed1460e80c69602"
     },
     {
+      "path": "test/textBufferBasis.test.ts",
+      "sha256": "4c9e1d5b811d91deaa290b6f91548500042f7272a3130d7d06712742b412acd7"
+    },
+    {
+      "path": "test/textBufferNormalizationProbe.test.ts",
+      "sha256": "03fc27d751b25b68360a57ef4554f440e009b8e94555830b8774d596356dbfd8"
+    },
+    {
       "path": "test/unfiledPanel.test.tsx",
       "sha256": "dad73c1695cbfba0b4e576329b23ff81dca7784ff0fbf6d1ef4549d392fb9605"
     },
@@ -14322,7 +14478,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "4d1fd276512fb7e4a7c757293ee4a9e472fe16a0711e65ba1a0e598984d4946f"
+      "sha256": "11d93b1cbbc85ba373f81f284a77242a0e5b3ce469dd2c9321de2b493acb3c4f"
     },
     {
       "path": "test/workspacePreparation.test.ts",

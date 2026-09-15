@@ -69,10 +69,32 @@ const forkString = (value: string): string => {
   if (last >= 0xd800 && last <= 0xdbff) value = value.slice(0, -1) + '\ufffd';
   return value;
 };
+const reusableForkString = (value: unknown): value is string =>
+  typeof value === 'string' && value.length >= 32 && !/[\uD800-\uDFFF]/.test(value);
 /** Private paired codecs: V2 struct compression with the existing V1 legacy-JSON semantics. */
 class ForkEncoder extends Y.UpdateEncoderV2 {
+  constructor(readonly strings?: (string | null)[]) {
+    super();
+  }
   override writeString(value: string): void {
+    if (this.strings) {
+      // Private paired runtime transport: strings are immutable. Keep surrogate-containing
+      // fields on the old UTF-8 path so its exact replacement behavior stays authoritative.
+      if (reusableForkString(value)) {
+        this.strings.push(value);
+        return;
+      }
+      this.strings.push(null);
+    }
     super.writeString(forkString(value));
+  }
+  override writeAny(value: unknown): void {
+    if (this.strings && reusableForkString(value)) {
+      // Pinned lib0 any tags are 116–127. This reserved tag exists only in the paired
+      // runtime fork and consumes the same ordered string tape as ordinary string fields.
+      encoding.writeUint8(this.restEncoder, 0);
+      this.strings.push(value);
+    } else super.writeAny(value);
   }
   override writeKey(value: string): void {
     super.writeKey(forkString(value));
@@ -92,6 +114,23 @@ const detachForkBuffers = (value: unknown): unknown => {
   return value;
 };
 class ForkDecoder extends Y.UpdateDecoderV2 {
+  private stringAt = 0;
+  constructor(
+    decoder: decoding.Decoder,
+    private readonly strings?: readonly (string | null)[],
+  ) {
+    super(decoder);
+  }
+  override readString(): string {
+    if (!this.strings) return super.readString();
+    if (this.stringAt >= this.strings.length) throw Error('Missing private fork string');
+    const value = this.strings[this.stringAt++]!;
+    return value === null ? super.readString() : value;
+  }
+  complete(): void {
+    if (this.strings && this.stringAt !== this.strings.length)
+      throw Error('Unconsumed private fork string');
+  }
   override readJSON(): unknown {
     return JSON.parse(decoding.readVarString(this.restDecoder));
   }
@@ -99,23 +138,33 @@ class ForkDecoder extends Y.UpdateDecoderV2 {
     return super.readBuf().slice();
   }
   override readAny(): unknown {
+    if (this.strings && decoding.peekUint8(this.restDecoder) === 0) {
+      decoding.readUint8(this.restDecoder);
+      return this.readString();
+    }
     return detachForkBuffers(super.readAny());
   }
 }
 
 /** Detached runtime fork. Its paired private codecs never escape as a wire/archive format. */
-export const forkDoc = (source: YDoc, gc = true): YDoc => {
-  const bytes = Y.encodeStateAsUpdateV2(
-    {
-      ...source,
-      store: { ...source.store, pendingStructs: null, pendingDs: null },
-    } as YDoc,
-    undefined,
-    new ForkEncoder(),
-  );
-  const doc = new Y.Doc({ gc });
+export const forkDoc = (source: YDoc, gc = true): YDoc => forkRuntimeDoc(source, gc, false);
+const forkRuntimeDoc = (source: YDoc, gc: boolean, reuseStrings: boolean): YDoc => {
+  const strings: (string | null)[] | undefined = reuseStrings ? [] : undefined;
+  let bytes: Uint8Array | undefined, doc: YDoc | undefined;
   try {
-    Y.applyUpdateV2(doc, bytes, undefined, ForkDecoder);
+    bytes = Y.encodeStateAsUpdateV2(
+      {
+        ...source,
+        store: { ...source.store, pendingStructs: null, pendingDs: null },
+      } as YDoc,
+      undefined,
+      new ForkEncoder(strings),
+    );
+    doc = new Y.Doc({ gc });
+    const decoder = decoding.createDecoder(bytes),
+      paired = new ForkDecoder(decoder, strings);
+    Y.readUpdateV2(decoder, doc, undefined, paired);
+    paired.complete();
     const pending = source.store.pendingStructs;
     doc.store.pendingStructs = pending
       ? { missing: new Map(pending.missing), update: pending.update.slice() }
@@ -123,10 +172,11 @@ export const forkDoc = (source: YDoc, gc = true): YDoc => {
     doc.store.pendingDs = source.store.pendingDs?.slice() ?? null;
     return doc;
   } catch (error) {
-    doc.destroy();
+    doc?.destroy();
     throw error;
   } finally {
-    bytes.fill(0);
+    bytes?.fill(0);
+    if (strings) strings.length = 0;
   }
 };
 const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
@@ -148,13 +198,56 @@ const normalizedIntegratedState = (bytes: Uint8Array): Uint8Array => {
  * equality; it is not a state-vector shortcut, hash, cache, or sampled content check.
  */
 class ComparisonEncoder extends Y.UpdateEncoderV1 {
+  override writeAny(value: unknown): void {
+    if (typeof value === 'string') {
+      // Exactly the pinned native lib0 string tag followed by writeVarString. The
+      // latter can use the same lossless byte-position/string-field representation.
+      encoding.writeUint8(this.restEncoder, 119);
+      this.writeString(value);
+    } else super.writeAny(value);
+  }
   readonly strings: { at: number; value: string }[] = [];
+  stringCount = 0;
+  override toUint8Array(): Uint8Array {
+    // A warm scratch buffer is contiguous. Its borrowed view stays private to this comparison,
+    // and the encoder is not returned until comparison/fallback has consumed every byte.
+    const rest = this.restEncoder;
+    return rest.bufs.length === 0 ? rest.cbuf.subarray(0, rest.cpos) : super.toUint8Array();
+  }
   override writeString(value: string): void {
     // Small fragmented items keep the ordinary encoder path and avoid a field allocation.
     if (value.length < 32) super.writeString(value);
-    else this.strings.push({ at: encoding.length(this.restEncoder), value });
+    else {
+      const index = this.stringCount++,
+        at = encoding.length(this.restEncoder),
+        field = this.strings[index];
+      if (field) {
+        field.at = at;
+        field.value = value;
+      } else this.strings.push({ at, value });
+    }
   }
 }
+// This private pool retains only cleared synchronous scratch. A borrowed encoder is removed
+// before encoding, so getters that reenter sameDocState cannot borrow an active encoder.
+// No document, escaped output, pending update or history capability enters the pool.
+const comparisonScratch: ComparisonEncoder[] = [];
+const returnComparisonScratch = (encoder: ComparisonEncoder): void => {
+  const rest = encoder.restEncoder;
+  for (const bytes of rest.bufs) bytes.fill(0);
+  rest.cbuf.fill(0);
+  rest.bufs.length = 0;
+  rest.cpos = 0;
+  if (rest.cbuf.length > 256 * 1024) rest.cbuf = new Uint8Array(100);
+  for (let i = 0; i < encoder.stringCount; i++) {
+    const field = encoder.strings[i]!;
+    field.value = '';
+    field.at = 0;
+  }
+  encoder.stringCount = 0;
+  if (encoder.strings.length > 1024) encoder.strings.length = 1024;
+  if (comparisonScratch.length < 2) comparisonScratch.push(encoder);
+};
 const hasEarlyLongString = (doc: YDoc): boolean => {
   // A bounded eligibility probe avoids adding per-string dispatch cost to dense short-fragment
   // histories. Missing a later long string only forgoes an optimization; both paths encode all data.
@@ -175,19 +268,34 @@ const hasEarlyLongString = (doc: YDoc): boolean => {
   return longStrings;
 };
 const comparisonEncoding = (doc: YDoc) => {
-  const encoder = new ComparisonEncoder();
-  const bytes = Y.encodeStateAsUpdateV2(
-    { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
-    undefined,
-    encoder,
-  );
-  return { bytes, strings: encoder.strings };
+  const encoder = comparisonScratch.pop() ?? new ComparisonEncoder();
+  try {
+    const bytes = Y.encodeStateAsUpdateV2(
+      { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
+      undefined,
+      encoder,
+    );
+    return { bytes, encoder };
+  } catch (error) {
+    returnComparisonScratch(encoder);
+    throw error;
+  }
+};
+const sameComparisonStrings = (a: ComparisonEncoder, b: ComparisonEncoder): boolean => {
+  if (a.stringCount !== b.stringCount) return false;
+  for (let i = 0; i < a.stringCount; i++) {
+    const aa = a.strings[i]!,
+      bb = b.strings[i]!;
+    if (aa.at !== bb.at || aa.value !== bb.value) return false;
+  }
+  return true;
 };
 const completeEncoding = (parts: ReturnType<typeof comparisonEncoding>): Uint8Array => {
-  if (!parts.strings.length) return parts.bytes;
+  if (!parts.encoder.stringCount) return parts.bytes;
   const encoder = encoding.createEncoder();
   let at = 0;
-  for (const field of parts.strings) {
+  for (let i = 0; i < parts.encoder.stringCount; i++) {
+    const field = parts.encoder.strings[i]!;
     encoding.writeUint8Array(encoder, parts.bytes.subarray(at, field.at));
     encoding.writeVarString(encoder, field.value);
     at = field.at;
@@ -247,11 +355,7 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   try {
     partsB = comparisonEncoding(b);
     if (
-      partsA.strings.length === partsB.strings.length &&
-      partsA.strings.every(
-        (field, i) =>
-          field.at === partsB!.strings[i]!.at && field.value === partsB!.strings[i]!.value,
-      ) &&
+      sameComparisonStrings(partsA.encoder, partsB.encoder) &&
       equalBytes(partsA.bytes, partsB.bytes)
     )
       return true;
@@ -262,9 +366,9 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
     return sameEncoding(rawA, rawB);
   } finally {
     partsA.bytes.fill(0);
-    partsA.strings.length = 0;
+    returnComparisonScratch(partsA.encoder);
     partsB?.bytes.fill(0);
-    if (partsB) partsB.strings.length = 0;
+    if (partsB) returnComparisonScratch(partsB.encoder);
     rawA?.fill(0);
     rawB?.fill(0);
   }
@@ -500,8 +604,9 @@ const forkHistory = (
   source: YUndoManager,
   origin: unknown,
   copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
+  reuseStrings = false,
 ): YUndoManager => {
-  const doc = forkDoc(source.doc, false);
+  const doc = forkRuntimeDoc(source.doc, false, reuseStrings);
   try {
     doc.transact((tr) => {
       for (const structs of source.doc.store.clients.values())
@@ -519,29 +624,88 @@ const forkHistory = (
         }
     });
     const manager = workspaceUndo(doc, origin);
-    const copySet = (value: (typeof source.undoStack)[number]['insertions']) => {
-      const copy = Y.createDeleteSet();
-      for (const [client, ranges] of value.clients)
-        copy.clients.set(
-          client,
-          ranges.map((r) => ({ clock: r.clock, len: r.len })),
-        );
-      return copy;
-    };
-    const copyStack = (stack: typeof source.undoStack) =>
-      stack.map((item) => ({
-        insertions: copySet(item.insertions),
-        deletions: copySet(item.deletions),
-        meta: copyMetadata(item.meta),
-      }));
-    manager.undoStack = copyStack(source.undoStack);
-    manager.redoStack = copyStack(source.redoStack);
-    manager.lastChange = source.lastChange;
+    copyHistoryStacks(source, manager, copyMetadata);
     return manager;
   } catch (error) {
     doc.destroy();
     throw error;
   }
+};
+
+/** Every mutable range and outer metadata map remains detached. */
+const copyHistoryStacks = (
+  source: YUndoManager,
+  target: YUndoManager,
+  copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
+) => {
+  const copySet = (value: (typeof source.undoStack)[number]['insertions']) => {
+    const copy = Y.createDeleteSet();
+    for (const [client, ranges] of value.clients)
+      copy.clients.set(
+        client,
+        ranges.map((r) => ({ clock: r.clock, len: r.len })),
+      );
+    return copy;
+  };
+  const copyStack = (stack: typeof source.undoStack) =>
+    stack.map((item) => ({
+      insertions: copySet(item.insertions),
+      deletions: copySet(item.deletions),
+      meta: copyMetadata(item.meta),
+    }));
+  target.undoStack = copyStack(source.undoStack);
+  target.redoStack = copyStack(source.redoStack);
+  target.lastChange = source.lastChange;
+};
+
+/** Conservative once-per-basis guard for delta catch-up to equal a fresh normalized fork.
+ * Reject every surrogate, including complete pairs; extending that domain is separate work. */
+export const isTextBufferBasis = (doc: YDoc): boolean => {
+  if (hasPendingUpdates(doc) || doc.isDestroyed || doc.gc) return false;
+  const cleanString = (s: string) => !/[\uD800-\uDFFF]/.test(s);
+  const seen = new Set<object>();
+  const value = (v: unknown): boolean => {
+    if (typeof v === 'string') return cleanString(v);
+    if (v === null || typeof v === 'boolean' || typeof v === 'undefined') return true;
+    if (typeof v === 'number') return Number.isFinite(v);
+    if (!v || typeof v !== 'object' || seen.has(v)) return false;
+    if (!Array.isArray(v) && Object.getPrototypeOf(v) !== Object.prototype) return false;
+    if (
+      Array.isArray(v) &&
+      (Reflect.ownKeys(v).length !== v.length + 1 ||
+        !Array.from({ length: v.length }, (_, i) => Object.hasOwn(v, i)).every(Boolean))
+    )
+      return false;
+    seen.add(v);
+    const result = Reflect.ownKeys(v).every((key) => {
+      if (typeof key !== 'string' || !cleanString(key)) return false;
+      const d = Object.getOwnPropertyDescriptor(v, key)!;
+      return (
+        key !== '__proto__' &&
+        'value' in d &&
+        (d.enumerable || (Array.isArray(v) && key === 'length')) &&
+        value(d.value)
+      );
+    });
+    seen.delete(v);
+    return result;
+  };
+  if (![...doc.share.keys()].every(cleanString)) return false;
+  for (const structs of doc.store.clients.values())
+    for (const item of structs) {
+      if (!(item instanceof Y.Item)) continue;
+      if (item.parentSub && !cleanString(item.parentSub)) return false;
+      const c = item.content;
+      if (c instanceof Y.ContentString) {
+        if (!cleanString(c.str)) return false;
+      } else if (c instanceof Y.ContentAny) {
+        if (!value(c.arr)) return false;
+      } else if (c instanceof Y.ContentType) {
+        if (!(c.type instanceof Y.Text || c.type instanceof Y.Map || c.type instanceof Y.Array))
+          return false;
+      } else if (!(c instanceof Y.ContentDeleted)) return false;
+    }
+  return true;
 };
 
 /** Explicit private Local history mode. Never infer it from a metadata shape or token lookalike. */
@@ -569,7 +733,19 @@ export const createSelectionHistory = () => {
     },
     fork(history: YUndoManager, origin: unknown): YUndoManager {
       check(history);
-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta)));
+      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+    },
+    /** A retired predecessor catches up only across an owner-proven text transition.
+     * The workspace must supply its untouched exact predecessor and retained accepted delta.
+     * This is not a general catch-up validator. Native text replay preserves the guarded
+     * normalization domain and inherited redone links; complete stack copying follows.
+     * Existing post-admission canonical verification remains in the preparation owner. */
+    catchUpText(target: YUndoManager, source: YUndoManager, update: Uint8Array): void {
+      check(target);
+      check(source);
+      if (target === source) throw Error('Text buffer aliases accepted history');
+      applyUpdate(target.doc, update, 'text-buffer-catch-up');
+      copyHistoryStacks(source, target, (meta) => snapshots.fork(meta));
     },
     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
       check(history);

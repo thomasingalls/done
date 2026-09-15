@@ -184,3 +184,83 @@ it('compares all content even when long strings occur after the bounded eligibil
     b.destroy();
   }
 });
+
+it('keeps simultaneously borrowed comparison scratch separate under encoding reentry', () => {
+  const docs = Array.from({ length: 4 }, () => new Y.Doc({ gc: false }));
+  try {
+    for (const doc of docs) {
+      doc.clientID = 91;
+      doc.getText('master').insert(0, 'same long text'.repeat(8));
+    }
+    let reentries = 0;
+    const value = {
+      get nested() {
+        reentries++;
+        expect(sameDocState(docs[2]!, docs[3]!)).toBe(full(docs[2]!, docs[3]!));
+        return 'same';
+      },
+    };
+    docs[0]!.getMap('meta').set('value', value);
+    docs[1]!.getMap('meta').set('value', { nested: 'same' });
+    expect(sameDocState(docs[0]!, docs[1]!)).toBe(true);
+    expect(reentries).toBeGreaterThan(0);
+    docs[3]!.getText('master').insert(0, 'different');
+    docs[0]!.getMap('meta').set('value', { nested: 'same' });
+    Y.applyUpdate(docs[1]!, Y.encodeStateAsUpdate(docs[0]!));
+    expect(sameDocState(docs[0]!, docs[1]!)).toBe(full(docs[0]!, docs[1]!));
+  } finally {
+    for (const doc of docs) doc.destroy();
+  }
+});
+
+it('releases partial comparison scratch when an encoded value throws', () => {
+  const a = new Y.Doc({ gc: false }),
+    b = new Y.Doc({ gc: false });
+  let fail = false;
+  try {
+    for (const doc of [a, b]) {
+      doc.clientID = 92;
+      doc.getText('master').insert(0, 'long text that must not survive a scratch lease'.repeat(4));
+    }
+    a.getMap('meta').set('value', {
+      get nested() {
+        if (fail) throw Error('encoding failed');
+        return 'same';
+      },
+    });
+    b.getMap('meta').set('value', { nested: 'same' });
+    fail = true;
+    expect(() => sameDocState(a, b)).toThrow('encoding failed');
+    fail = false;
+    expect(sameDocState(a, b)).toBe(full(a, b));
+    expect(sameDocState(b, a)).toBe(true);
+  } finally {
+    a.destroy();
+    b.destroy();
+  }
+});
+
+it('compares large then small documents without retaining active scratch fields', () => {
+  const a = new Y.Doc({ gc: false }),
+    b = new Y.Doc({ gc: false }),
+    c = new Y.Doc({ gc: false }),
+    d = new Y.Doc({ gc: false });
+  try {
+    for (const doc of [a, b, c, d]) {
+      doc.clientID = 93;
+      doc.getText('master').insert(0, 'same text'.repeat(8));
+    }
+    for (const doc of [a, b]) {
+      for (let i = 0; i < 1100; i++) doc.getText('text' + i).insert(0, 'long text'.repeat(5));
+      doc.getMap('meta').set('binary', new Uint8Array(400_000));
+    }
+    expect(sameDocState(a, b)).toBe(true);
+    expect(sameDocState(c, d)).toBe(true);
+    const content = d.store.clients.get(93)![0]! as Y.Item;
+    (content.content as Y.ContentString).str = 'othertex'.repeat(9);
+    expect(sameDocState(c, d)).toBe(full(c, d));
+    expect(sameDocState(c, d)).toBe(false);
+  } finally {
+    for (const doc of [a, b, c, d]) doc.destroy();
+  }
+});

@@ -3524,3 +3524,19 @@ Retain R3 preparation/value-string reuse, comparison pooling, editor projection 
 Four diagnostic sessions identify the added comparison as about 11 ms against about 9 ms for a fresh document fork, with replay about 1 ms and relatively small stack copying in this corpus. The separate fixed six-session application screen favors replay in both ordinary pairs: median paired gains 21.1% early /20.5% later and p95 gains 21.5%/19.8%, with all correctness/drain checks passing. Emoji-bearing histories still use fresh forks. This is descriptive incremental evidence, not additive cumulative gains or a passing release budget.
 
 The operator explicitly ends optimization exploration after this round and intends to accept the best supported combination for the RC while deferring a larger rewrite. Next choose/freeze and integrate this combination, then qualify its relevant native ownership/crash/memory/shared Account effects and run the unchanged application gate. Record any accepted performance shortfall as explicit release debt; do not relabel failing evidence. UI/publication alternatives, incremental history copying, wider normalization and incremental canonical verification stay out of this release integration. Defaults, F-17's partial status, release counts and immutable receipts remain unchanged in this phase.
+
+
+## 2026-09-15 — Freeze the selected F-17 runtime and end exploratory selection
+
+Integrate the exact measured R3 + membership-repair eligibility + Local replay candidate. Preserve
+full canonical verification and full detached history copies. Keep the UI/publication alternatives
+out. The candidate's six runtime files are unchanged during functional integration; the maintained
+suite now includes the earlier codec controls missing from the combined patch. The full unit,
+owned/native and nine discriminating fault checks pass. [Scope and evidence](./f17-rc-integration.md).
+
+This selects the combination for qualification, without claiming default activation or release
+acceptance. Shared comparison/editor/command changes enter source; Local replay remains private
+and Account buffers remain excluded. Next qualify lifetime/memory and remaining native/Account
+boundaries, then run the unchanged application gate and explicitly disposition any accepted
+latency debt. Do not reopen optimization exploration or weaken the gate to make this integration
+appear complete. The 96 command/63 campaign wrappers and immutable qualification remain ahead.

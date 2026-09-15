@@ -50,59 +50,46 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: application latency repair and budget disposition; remaining command/campaign and immutable qualification work
+blocks_on: selected combination lifetime/native qualification and latency disposition; remaining command/campaign and immutable qualification work
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. This F-17 work
-addresses the failing application-latency gate. The comparison is complete and default activation
-is refused; F-17 remains open. The 96 command / 63 campaign wrapper obligations and remaining
-qualification repairs also precede the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
-The record audit is signed `0c84e5cc`; the subsequent F-17 backlog is now signed through `e2d42fac`.
+**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The selected F-17
+combination is now maintained code and passes this bounded functional qualification. Default Local
+activation is still gated; F-17 remains partial. There are **626 obligations, 290 required test
+files, and 271 general files/2,189 dispositions (11 not applicable)**. The unresolved set is
+unchanged: **zero test-file /96 command /63 campaign**. These are adapter obligations, not passed
+release tests. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 
-**Just completed.** The first buffer phase is signed and signature-verified as `aa54be31`. [Replay cost accounting and bounded equivalence](./f17-replay-r1.md) passes **227 tests /16 files**, including 100 new generated histories plus 60 retained workspace histories, TypeScript and four faults. Four diagnostic sessions measure about 11 ms for the added comparison, 1 ms replay and 9 ms fresh document fork, with stack copying about 0.1/0.4–0.5 ms early/later. Six separate application sessions /480 measured keys pass correctness, actual reuse/fallback receipts and drain. Ordinary paired median gains are **21.1% early /20.5% later**, p95 21.5%/19.8%; the Unicode fallback passes with mixed small median changes. Recommend R3 + repair eligibility + replay buffers for RC integration. Every existing full canonical check stays unchanged. Raw private-field mutation remains outside the sole-mutator contract, and emoji-bearing histories still fall back. The operator ends optimization exploration here. Main runtime/defaults, counts and the last actual gate remain unchanged; this new phase is uncommitted.
+**Just completed.** Replay evidence is signed and signature-verified as `902cc397`.
+[RC integration](./f17-rc-integration.md) freezes the exact six runtime files from that candidate:
+R3 + membership-repair eligibility + Local replay buffers. Eight maintained suites and additions
+to existing suites add 68 cases, including 13 recovered earlier codec controls. The complete unit
+suite passes **107 files/1,209 tests**. Two owned epochs pass **29 Vitest files/365 cases** and the
+workspace catalogue's **10 cases/four mutations**. Both native campaigns pass, with **100 generated
+histories and one renderer death each**; nine isolated faults are caught. TypeScript, scoped style,
+pinned Yjs, authority/census and 27 runner checks pass. Original setup/bookkeeping failures remain.
+Only the planning-file size ceiling changes; runtime/report/deadline/performance limits remain.
+This integration phase is uncommitted. [Retained evidence](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).
 
-The preceding [publication experiment](./f17-publication-r1.md) remains parked after passing 218 tests and its six-session screen but showing mixed early timing and later median/p95 regressions of 12.3%/18.2%. Its normalization/detachment/history controls remain useful optional work.
+**Selection boundary.** The operator has ended optimization exploration. Keep existing full
+canonical verification and detached stack copies. UI/publication alternatives, the first buffer's
+added comparison, incremental stack copying and broader normalization stay out. Transactional
+idle drift refuses before another append; raw private-field mutation remains outside the
+sole-mutator contract. Emoji-bearing histories still fall back to fresh forks. Production Local
+and Account constructors retain the reference mode; shared comparison/editor/command changes
+are integrated, while Local buffer use remains explicit and private. Account buffer activation
+is excluded.
 
-The retained [repair-eligibility increment](./f17-repair-r1.md) passes 176 tests /nine files and two faults in four owner modes. Its six sessions favor the candidate with ordinary paired median gains 5.5% early /10.1% later, though later pair effects vary. These remain descriptive incremental results, not additive percentages or release qualification.
-
-The preceding [growth diagnostic](./f17-growth-r1.md) remains the workspace/history scaling evidence: doubling seeded cards 300→600 raises paired deep medians 59.3% retained /45.2% cleared. The history-clear effect is modest at 600 and mixed at 300. This motivates whole-document work but does not estimate persistent buffers' full benefit. Its original setup failure, settlement reproduction and all observations remain.
-
-**Previous qualification attempt.** The [private Local snapshot comparison](./f17-selection-performance.md)
-completes 64 fresh sessions / 5,248 warmups / 4,096 measurements with all semantic checks passing.
-Snapshot reuse improves the deeper-history case by 10.3% over the existing handoff, but the
-shallow 10,000-item gain is 2.9%; the required >=10% in both strata is missed. All regression
-guardrails and cumulative reference/signed-baseline benefits pass. The unchanged application gate
-runs once: **12.2/75.1 ms desktop/CPU-4x Android card p95**, with Android still over <16 ms;
-Android focus is also over <50 ms at 54.2 ms. Remaining budgeted metrics pass. All twelve cases and thirty measurement rows are retained, with
-browser/process/server drain. Default Local and Account retain the reference; F-17 remains partial.
-
-The preceding functional integration remains verified: 86 workspace cases, 215 owned cases,
-both 100-history native campaigns, ten workspace catalogue cases/four mutations and five unit
-faults. A synchronous startup cleanup gap was fixed. The final full repeat passes 99 files /
-1,141 tests; the intervening Account-liveness/position-decision timeouts remain at loaded-host
-qualification. This performance phase does not rerun those full functional campaigns.
-
-The physical Pixel 9a companion completes all four fresh R/C/C/R sessions.
-All 960 trusted-key samples survive, with full-corpus and exact edited-card cold-reopen checks passing.
-Card p95 is **107.9/87.1/86.9/108.3 ms**: candidate reductions are 19.3% and 19.8% in the two
-opposite-order pairs, but every card budget still fails <16 ms. Compose, focus, startup and replay
-budgets pass. Setup races and every diagnostic observation are retained separately. Actual delivered
-key cadence and temperature vary; this is one-phone automated-input evidence, not ordinary keyboard
-or fleet qualification. [Protocol](./f17-pixel9a.md);
-[evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
-
-The preceding prospective B/R/C command comparison passes (54 sessions / 3,456 measured insertions),
-but the unchanged candidate application gate still fails at 12.9/63.5 ms desktop/CPU-4x Android card
-p95. Default Local and Account retain the reference; the candidate stays private and F-17 partial.
-[Prior comparison and gate](./f17-local-performance.md).
-
-The preceding functional integration remains verified: 54 workspace cases, 155 affected owned cases,
-97 files / 1,093 full unit tests, native pending/delivery campaigns and 10 workspace cases / 4 mutations.
-The general set is now **263 files / 2,121 dispositions (11 not applicable)**. There are still
-**zero blocked test-file rows, 96 command rows and 63 campaign rows**. These count adapter obligations,
-not passed release tests or remaining product defects.
+**Last performance evidence.** The [replay screen](./f17-replay-r1.md) passes six application
+sessions/480 measured keys and favors replay in both ordinary pairs: median paired gains
+21.1% early/20.5% later, p95 21.5%/19.8%. These are descriptive incremental gains, not additive
+percentages or a budget pass. The [last unchanged application gate](./f17-selection-performance.md)
+still records **12.2/75.1 ms desktop/CPU4 card p95**, with Android over <16 ms, and Android focus
+54.2 ms over <50 ms. No new application gate or timing campaign runs in this functional phase.
+Keep the emulation reference; the cancelled physical-device campaign remains a rough 1.5× planning
+comparison only. [Phone evidence](./f17-pixel9a.md).
 
 **Open validation observations.** Both metadata-copy candidates pass focused semantic checks but
 miss the prospective performance rule. At 1,000 undo groups the recursive candidate improves one/100
@@ -142,30 +129,21 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Choose/freeze the recommended combination and integrate it for RC qualification: R3 + membership-repair eligibility + Local replay buffers, with complete history copying and existing full verification. Carry its ownership/reset/disposal/normalization controls into the maintained test suite. Park the optional UI/publication and guarded-buffer alternatives. This is the end of the requested optimization search; no incremental history or larger rewrite precedes this selection.
+**Next bounded phase.** Qualify buffer lifetime and memory, plus relevant native crash/close and
+shared Account composition boundaries not covered by the completed fixtures. Check bounded retained
+histories and scratch, reset/discard/drained-close disposal and listener lifetime under repeated
+editing and transitions. Keep the selected runtime fixed unless qualification uncovers a defect.
 
-**Following phases.** Qualify the integrated combination's native ownership/crash/close/memory and shared Account effects, then run the unchanged application gate. Give any accepted latency shortfall an explicit release debt/disposition rather than rewriting a failing receipt. Account buffer activation is excluded. Resume the 96 command /63 campaign wrappers and remaining qualification repairs before the immutable aggregate, private Account rehearsal and human recovery/adoption milestones. Broader normalization and architectural rewrites are later work; no release receipt is claimed.
+**Following phases.** Run the unchanged application gate on the integrated combination, decide
+default Local activation and explicitly record any accepted latency shortfall as release debt.
+Retain failing receipts. Resume the 96 command/63 campaign wrappers and remaining qualification
+repairs before the immutable aggregate, private Account rehearsal and human recovery/adoption
+milestones. Larger rewrites and wider normalization are later work; no release receipt is claimed.
 
-The eight-phase commit backlog is closed in five verified signed commits through `e2d42fac`;
-`15eb389c` is the latest runtime/test integration checkpoint. The following documentation commit
-records the [grouping, original evidence identities and reproducible checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md).
-No historical commit or receipt is rewritten. There is no remaining F-17 commit backlog through
-the final comparison. Remaining phone/manual work is cancelled; test servers and the dedicated
-ADB server are stopped. Emulation remains the reference, with the earlier rough 1.5× phone
-planning estimate. F-17 and the 96 command / 63 campaign obligations remain open.
-
-**Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
-the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
-no real Account admission receipt exists. The author's old second device must adopt the first workspace
-with fresh custody, store, counters and credentials, without importing/merging its old writing.
-Membership/revocation/rotation, signout/remove/reset, continuity, operations/deployment and public
-assurance remain later work. Wider F-21.4 privacy, F-09 Account/key-loss/malicious-member recovery,
-F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain visible.
-
-**Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 remain byte-identical.
-Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
-Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The signing
-sweep and preceding phase signatures are complete; the aggregate needs its own immutable revision.
+The earlier eight-phase commit backlog is closed in five verified signed commits through
+`e2d42fac`. Subsequent optimization records are signed through `902cc397`; historical receipts
+retain their original revision IDs. The personal packaged app, phone, relay and deployment remain
+untouched by this integration.
 
 ---
 

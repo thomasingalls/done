@@ -213,11 +213,11 @@
     },
     {
       "path": "src/crdt/admissionQueue.ts",
-      "sha256": "7aa8aea592b8d622adacc84ce3061ab556611ec72a2c517fc03c07d05f0e05b2"
+      "sha256": "5f44852471884aae6bf2a61eced8413de941147176267eda889f6af9db219803"
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "e31888918b9f1898d2faeab1962f56a2d19e937eb9f186c998f394a688847e82"
+      "sha256": "e4759c7ab14fede6d492431c4c10dd9d17b0cf0155122613a9f078e1720c153d"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -477,11 +477,11 @@
     },
     {
       "path": "src/crdt/workspaceCommands.ts",
-      "sha256": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e"
+      "sha256": "d04615dc731b769437473185f81b3ff2bb38d7b15ff35872ff005b30a1af767e"
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
-      "sha256": "f95fedd40f5e5b44b4e45477b2ddac9bf52d9a0b8910871f0c68cd4fb40b1437"
+      "sha256": "e6cca82eb2b86a42e31e190a32b88b6c66ce9565e6058a33fbf203c72f3103f3"
     },
     {
       "path": "src/crdt/writeSession.ts",
@@ -489,7 +489,7 @@
     },
     {
       "path": "src/crdt/yjs.ts",
-      "sha256": "21ce99552212474e96982c9d1e53ff53ce29c28e3766a66cd62825f1f6e9bbcf"
+      "sha256": "5521dcc56b06ca0beb3e4132fa44b67b2ba006cff6a98a0f01038485d1341625"
     },
     {
       "path": "src/editor/admittedCommands.ts",
@@ -497,7 +497,7 @@
     },
     {
       "path": "src/editor/admittedEditor.ts",
-      "sha256": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e"
+      "sha256": "0dd3c5836c594ea909df76fc143edc87f8ce3c02ef3437ea02b1a68e1d1b8de5"
     },
     {
       "path": "src/editor/admittedText.ts",
