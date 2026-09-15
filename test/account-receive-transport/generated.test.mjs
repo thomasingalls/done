@@ -29,7 +29,20 @@ test(
       if (process.env.ACCOUNT_REPORT_DIR)
         writeFileSync(
           join(process.env.ACCOUNT_REPORT_DIR, 'generated.json'),
-          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
+          JSON.stringify(
+            {
+              seed,
+              runs: 16,
+              status:
+                histories.length === 16 && histories.every((h) => h.completed)
+                  ? 'passed'
+                  : 'running',
+              histories,
+              coverage,
+            },
+            null,
+            2,
+          ) + '\n',
         );
     };
     await fc.assert(
@@ -40,7 +53,7 @@ test(
         }),
         async (generated) => {
           const actions = ['lost', ...generated, 'receive', 'restart'],
-            entry = { actions, completed: false };
+            entry = { actions, completed: false, observations: [], requests: [] };
           histories.push(entry);
           save();
           const { f, item, initial, snapshot } = await ready(
@@ -63,7 +76,11 @@ test(
             for (let n = 0; n < count; n++)
               wires.push(await envelope(f.page, item, n + 1, [updates[n]]));
             await open(f.page, item);
-            const originalCount = (await captures(f.page)).length;
+            entry.initial = initial;
+            entry.before = await captures(f.page);
+            entry.wires = wires.map((w) => Buffer.from(w).toString('hex'));
+            const originalCount = entry.before.length;
+            save();
             let mode = 'receive',
               position = 0,
               expected = initial,
@@ -74,6 +91,17 @@ test(
               assert.equal(after, position, 'request follows actual durable progress');
               const page = answer(f, item, q, wires[after], links[after], count);
               if (wires[after]) links[after + 1] = page.link;
+              entry.requests.push({
+                mode,
+                request: q.toString('hex'),
+                candidatePage: Buffer.from(page.bytes).toString('hex'),
+                responseBody:
+                  mode === 'lost'
+                    ? null
+                    : Buffer.from(mode === 'corrupt' ? 'bad page' : page.bytes).toString('hex'),
+                link: page.link,
+              });
+              save();
               if (mode === 'lost') {
                 await route.abort();
                 return;
@@ -87,8 +115,10 @@ test(
             for (const action of actions) {
               coverage[action] = (coverage[action] ?? 0) + 1;
               mode = action;
+              let outcome = null;
               if (['receive', 'lost', 'corrupt'].includes(action)) {
                 const r = await next(f).catch((e) => ({ error: String(e) }));
+                outcome = r;
                 if (action === 'receive') {
                   assert.equal(r.kind, 'received');
                   expected = `R${position} ` + expected;
@@ -106,10 +136,24 @@ test(
                 await cold(f);
                 await open(f.page, item);
               }
+              entry.observations.push({
+                action,
+                outcome,
+                visible: await view(f.page),
+                status: await status(f.page),
+                captures: await captures(f.page),
+              });
+              save();
               assert.equal(await view(f.page), expected);
               assert.equal((await status(f.page)).receivedThrough, position);
               assert.equal((await captures(f.page)).length, originalCount + locals);
             }
+            entry.final = {
+              visible: await view(f.page),
+              status: await status(f.page),
+              captures: await captures(f.page),
+            };
+            save();
             await close(f.page);
             entry.completed = true;
             save();

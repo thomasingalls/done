@@ -55,7 +55,7 @@ for (const mutation of ['queue', 'flight'])
             text = await view(f.page);
           assert.equal(through, 1);
           assert.equal(text, (changed ? '' : 'REMOTE ') + initial);
-          observations.push({ changed, through, published: text === 'REMOTE ' + initial });
+          observations.push({ changed, through, initial, text, result });
         } else {
           await f.page.evaluate(() => {
             window.calls = 0;
@@ -193,7 +193,10 @@ for (const mutation of ['bound', 'drain'])
             assert.equal(settled, changed);
             observations.push({ changed, cancelled, settledBeforeCancellationCompleted: settled });
             release();
-            assert.equal(await work, null);
+            const result = await work;
+            observations.at(-1).settledAfterCancellationCompleted = settled;
+            observations.at(-1).result = result;
+            assert.equal(result, null);
           }
         }
       } finally {

@@ -3802,3 +3802,12 @@ only on source counts. Require measured normal/crash and compiled-mutation obser
 early publication from durable recovery and remote relabeling from local authorship. Empty successful
 typecheck output is permitted while command identity, completion and log presence remain required.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-editor/README.md).
+
+
+## 2026-09-15 — Owned transport wrappers keep descendants in the runner's group
+
+Preserve standalone detached-child behavior while owned transport campaigns inherit the supervising
+process group. Retain exact child invocations, case domains and deadlines. HTTP evidence distinguishes
+the candidate signed page from the chosen response body or aborted transport, and checks actual durable
+request positions plus first-observation source continuity across retries and cold reopen.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-transport/README.md).

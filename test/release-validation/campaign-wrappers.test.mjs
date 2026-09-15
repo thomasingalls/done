@@ -1,4 +1,12 @@
 import {
+  receiveTransportCampaign,
+  receiveTransportCampaignStage,
+  receiveTransportSteps,
+  receiveTransportReports,
+  reconcileReceiveTransportReports,
+  reconcileReceiveTransportEvidence,
+} from '../../scripts/release-validation/account-receive-transport-wrapper.mjs';
+import {
   receiveEditorCampaign,
   receiveEditorCampaignStage,
   receiveEditorSteps,
@@ -1607,5 +1615,334 @@ test('160 generated receive-editor control corruptions reject ineffective early-
       assert.throws(() => reconcileReceiveEditorEvidence(bad));
     }),
     { seed: 150966, numRuns: 160 },
+  );
+});
+
+function receiveTransportEvidence() {
+  const capsule = (id) => ({
+      id,
+      sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
+    }),
+    before = [capsule('startup')],
+    local = capsule('local');
+  const actions = [
+    'lost',
+    'local',
+    'receive',
+    'corrupt',
+    'compact',
+    'restart',
+    'receive',
+    'restart',
+  ];
+  const h = {
+    actions,
+    completed: true,
+    initial: 'base',
+    before,
+    wires: ['aa', 'bb'],
+    observations: [],
+    requests: [],
+  };
+  let through = 0,
+    text = 'base',
+    link = '00'.repeat(32),
+    current = structuredClone(before);
+  const status = () => ({
+    state: 'ready',
+    receivedThrough: through,
+    observedThrough: through ? 2 : 0,
+    link,
+  });
+  for (const action of actions) {
+    let outcome = null;
+    if (['lost', 'corrupt', 'receive'].includes(action)) {
+      const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+      q[10] = through;
+      q[11] = 1;
+      const request = Buffer.from(JSON.stringify(q)).toString('hex'),
+        nextLink = (through ? 'bb' : 'aa').repeat(32),
+        page = [
+          'done/private-read-page/v2',
+          2,
+          createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
+          2,
+          through + 1,
+          [[h.wires[through], 'proof']],
+          'signature',
+        ],
+        candidatePage = Buffer.from(JSON.stringify(page)).toString('hex');
+      h.requests.push({
+        mode: action,
+        request,
+        candidatePage,
+        responseBody:
+          action === 'lost'
+            ? null
+            : action === 'corrupt'
+              ? Buffer.from('bad page').toString('hex')
+              : candidatePage,
+        link: nextLink,
+      });
+      if (action === 'receive') {
+        text = `R${through} ` + text;
+        through++;
+        link = nextLink;
+        outcome = { kind: 'received', recorded: true, status: status() };
+      } else if (action === 'lost') outcome = { kind: 'unknown' };
+      else outcome = { error: 'AdmissionError: invalid page' };
+    } else if (action === 'local') {
+      text += 'L';
+      current.push(local);
+    }
+    h.observations.push({
+      action,
+      outcome,
+      visible: text,
+      status: status(),
+      captures: structuredClone(current),
+    });
+  }
+  h.final = { visible: text, status: status(), captures: structuredClone(current) };
+  const coverage = {};
+  for (const a of actions) coverage[a] = (coverage[a] ?? 0) + 16;
+  const r = {
+    'generated.json': {
+      status: 'passed',
+      seed: 9112042,
+      runs: 16,
+      histories: Array.from({ length: 16 }, () => structuredClone(h)),
+      coverage,
+    },
+  };
+  for (const mode of ['queue', 'flight', 'bound', 'drain'])
+    r['control-' + mode + '.json'] = {
+      effective: true,
+      observations: [false, true].map((changed) => ({
+        changed,
+        ...(mode === 'queue'
+          ? {
+              initial: 'base',
+              text: (changed ? '' : 'REMOTE ') + 'base',
+              through: 1,
+              result: { kind: 'received', status: { receivedThrough: 1 } },
+            }
+          : mode === 'flight'
+            ? { calls: changed ? 2 : 1, result: { kind: changed ? 'unknown' : 'busy' } }
+            : mode === 'bound'
+              ? { length: changed ? 17 : null }
+              : {
+                  cancelled: true,
+                  settledBeforeCancellationCompleted: changed,
+                  settledAfterCancellationCompleted: true,
+                  result: null,
+                }),
+      })),
+    };
+  return r;
+}
+test('receive-transport wrapper binds all five commands, 29 cases and inherited browser process ownership', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-receive-transport');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 29);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [60000, 60000, 120000, 90000, 330000],
+  );
+  assert.equal(s.deadlineMs, 660000);
+  assert.equal(s.expect.historyInputs, undefined);
+  assert.equal(s.expect.dataInputs, undefined);
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.equal(s.processPolicy, 'inherited-group-v1');
+  assert.deepEqual(s.fileOutputs.required, receiveTransportReports);
+  assert.equal(receiveTransportReports.length, 19);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 660001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'receive-transport-filter',
+    argv: ['node', receiveTransportCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find(
+      (r) => r.id === 'command:receive-transport-filter:0',
+    ).blocked,
+  );
+});
+test('receive-transport trace rejects missing cases from any child or a lost typecheck exit', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-transport-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = receiveTransportCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps
+    .filter((s) => s.kind !== 'exit')
+    .map((step) =>
+      step.kind === 'vitest'
+        ? {
+            schema: 1,
+            adapter: 'vitest-v1',
+            nonce: 'fresh:' + step.name,
+            reason: 'passed',
+            modules: step.expect.files.map((file) => ({ file, state: 'passed' })),
+            errors: [],
+            cases: step.expect.cases.map((c) => ({
+              ...c,
+              durationMs: 0,
+              retryCount: 0,
+              repeatCount: 0,
+              expectedFailure: false,
+              mode: 'run',
+              errors: [],
+            })),
+          }
+        : {
+            schema: 1,
+            nonce: 'fresh:' + step.name,
+            phase: 'complete',
+            cases: step.expect.cases,
+            errors: [],
+            summary: {
+              success: true,
+              counts: {
+                tests: step.expect.cases.length,
+                failed: 0,
+                cancelled: 0,
+                skipped: 0,
+                todo: 0,
+              },
+            },
+          },
+    );
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i + 1].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...reports.map((_, i) => (v) => v.reports[i].cases.pop()),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[1].nonce = 'fresh:controls'),
+    (v) => (v.trace.steps[4].phase = 'running'),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('receive-transport reports require complete HTTP histories and effective control observations', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-transport-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: receiveTransportCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...receiveTransportEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: receiveTransportSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = [
+    ...['native', 'controls', 'generated'].map((n) => n + '.xml'),
+    ...receiveTransportSteps.map((s) => s.name + '.log'),
+  ];
+  const save = (r) => {
+    for (const [file, v] of Object.entries(r)) writeFileSync(join(dir, file), JSON.stringify(v));
+    for (const file of aux) writeFileSync(join(dir, file), file === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileReceiveTransportReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileReceiveTransportReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileReceiveTransportReports(dir, sources));
+  }
+});
+test('160 generated receive-transport corruptions reject false progress, source loss and mismatched request/page bytes', () => {
+  const r = receiveTransportEvidence();
+  reconcileReceiveTransportEvidence(r);
+  const alters = [
+    (h) => h.observations.pop(),
+    (h) => h.requests.pop(),
+    (h) => (h.observations[0].outcome.kind = 'received'),
+    (h) => (h.observations[2].status.receivedThrough = 0),
+    (h) => (h.observations[3].outcome.error = 'accepted'),
+    (h) => (h.observations[4].captures[0].sources[0].bytes = [99]),
+    (h) => h.final.captures.pop(),
+    (h) => (h.final.visible += 'L'),
+    (h) => (h.requests[0].request += '00'),
+    (h) => (h.requests[2].responseBody = h.requests[2].candidatePage),
+    (h) => (h.wires[0] = 'bb'),
+  ];
+  fc.assert(
+    fc.property(fc.nat(15), fc.nat(alters.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      alters[k](bad['generated.json'].histories[i]);
+      assert.throws(() => reconcileReceiveTransportEvidence(bad));
+    }),
+    { seed: 150967, numRuns: 160 },
+  );
+});
+test('160 generated receive-transport control corruptions reject queue, flight, bound and cancellation omissions', () => {
+  const r = receiveTransportEvidence();
+  reconcileReceiveTransportEvidence(r);
+  const alters = [
+    (r) => (r['control-queue.json'].observations[1].text = 'REMOTE base'),
+    (r) => (r['control-flight.json'].observations[0].calls = 2),
+    (r) => (r['control-bound.json'].observations[0].length = 17),
+    (r) => (r['control-drain.json'].observations[0].settledBeforeCancellationCompleted = true),
+    (r) => (r['control-drain.json'].observations[1].settledAfterCancellationCompleted = false),
+    (r) => (r['generated.json'].status = 'running'),
+    (r) => r['generated.json'].coverage.lost--,
+    (r) => (r['generated.json'].histories[0].completed = false),
+  ];
+  fc.assert(
+    fc.property(fc.nat(alters.length - 1), (k) => {
+      const bad = structuredClone(r);
+      alters[k](bad);
+      assert.throws(() => reconcileReceiveTransportEvidence(bad));
+    }),
+    { seed: 150968, numRuns: 160 },
   );
 });
