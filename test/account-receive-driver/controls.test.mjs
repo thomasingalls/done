@@ -128,10 +128,11 @@ for (const mode of ['overlap', 'poll', 'halt', 'observer', 'resume'])
         await tick(0);
         assert.equal(calls, changed ? 0 : 1);
       }
-      observations.push({ changed, calls, timers: timers.size });
+      observations.push({ changed, calls, timers: timers.size, status: s.status() });
       controller.abort();
       for (const release of pending) release({ kind: 'idle', receivedThrough: 0 });
       await s.dispose();
+      observations.at(-1).disposed = { calls, timers: timers.size, status: s.status() };
     }
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(

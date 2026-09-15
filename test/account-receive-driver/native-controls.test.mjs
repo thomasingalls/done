@@ -59,9 +59,11 @@ for (const gate of ['offline', 'pressure'])
         await waitPredicate(f.page, () =>
           ['offline', 'blocked'].includes(opened.receiver.status.phase),
         );
+        const held = await f.page.evaluate(() => opened.receiver.status);
         await close(f.page);
+        const closed = await f.page.evaluate(() => opened.receiver.status);
         assert.equal(calls, mode === 'dispatch' ? 1 : 0);
-        observations.push({ mode, calls });
+        observations.push({ mode, calls, held, closed });
         await f.context.close();
       }
       if (process.env.ACCOUNT_REPORT_DIR)

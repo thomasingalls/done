@@ -3811,3 +3811,13 @@ process group. Retain exact child invocations, case domains and deadlines. HTTP 
 the candidate signed page from the chosen response body or aborted transport, and checks actual durable
 request positions plus first-observation source continuity across retries and cold reopen.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-transport/README.md).
+
+
+## 2026-09-15 — Polling evidence distinguishes transient gates from recovered progress
+
+Keep original polling commands, effective mutations, generated counts and deadlines. Retain transient
+failure/offline observations separately from the restored idle state, and bind cold restart queries to
+durable receipt progress. Preserve exact source identities/bytes throughout. Scheduler control reports
+must include disposal state and cleared timers, while original clock/authority properties remain the
+scheduler oracle. A background empty poll may change idle/working status without changing progress.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).

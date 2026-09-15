@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**118 obligations remain blocked: 75 command and 43 campaign rows; no test-file rows remain.**
+**116 obligations remain blocked: 74 command and 42 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 118 missing product tests. The compiler still refuses whole-release execution before
+they are not 116 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is signed as `9937b8b7`. Inbound codecs is signed as `70788d4e`. Receive is signed as `ccffd280`. Receive-editor is signed as `d178d349`. Receive-transport is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is signed as `9937b8b7`. Inbound codecs is signed as `70788d4e`. Receive is signed as `ccffd280`. Receive-editor is signed as `d178d349`. Receive-transport is signed as `a05369a1`. Receive-driver is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4736,3 +4736,50 @@ Runtime, package/dependencies, vectors/crypto census, F-17 debt, previous archiv
 Next: Account receive-driver wrapper integration, then further families/qualification repairs, immutable
 aggregate and private human rehearsal. No personal browser/server/relay/device/deployment actions occur.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-transport/README.md).
+
+
+## 2026-09-15 — Account receive-driver wrapper integration
+
+Receive-transport is signed and verified as `a05369a1`. Receive-driver retains six original child
+commands: typecheck (60 seconds), two-file Vitest (19 cases, maxWorkers=2/verbose, 60 seconds), native
+(9 cases/180 seconds, including four R-01 size cases), scheduler controls (5/90 seconds), native controls
+(2/90 seconds) and generated (1/270 seconds). All Node commands retain concurrency=1/spec/JUnit. Owned
+execution adds a 750-second aggregate/five-second grace, disposable CDP fixture, five distinct case reports
+and 25 required files. Owned children inherit the runner group; standalone detached groups remain.
+No historical reader or vector input is invoked. Typecheck remains exit-only with its log retained.
+
+Five actual scheduler mutation controls now retain before/after-disposal status, call counts and timer
+counts. They distinguish overlap, missing polling, online clearing a halt, dispatch after observer close,
+and stranded resume; disposal must report closed status and no timers. Two native dispatch controls retain
+actual held/closed receiver status and network-call counts for baseline versus omitted offline/pressure
+guards. The original effective source mutations and assertions remain mandatory.
+
+Ten native histories (9112052, 5–7 actions with forced publish/restart) now retain original wires, actual
+requests, candidate pages/chosen response bodies, initial/source state, action request windows, transient
+offline/lost/halt observations, final text/status/captures and cold restart queries. Independent report
+accounting follows durable query positions through data/empty/lost/corrupt replies, checks canonical
+framing/hash/wire agreement and confirms restart begins at the recovered cursor. It checks authored text,
+source allocation only on local actions, and full first-observation source-byte continuity. Idle/working
+observations permit an unchanged background empty poll; they cannot fabricate progress. Completed records
+save incrementally and before final assertions. Interrupted active work can be absent and cannot pass.
+
+The original 400/100/80 generated unit campaigns remain within the 19 unit cases with their independent
+clock/authority/lifetime assertions; this phase does not claim new per-history unit reports. Native owners
+retain signature/authentication/CRDT authority. Timers in report observations corroborate the actual source
+controls; offline reconciliation does not rerun the scheduler or authenticate service evidence.
+
+The owned epoch passes **191 cases in seven executions**: 126 planning cases in five suites, 36 driver
+cases and 29 unchanged transport cases. Driver takes **186.877s /750s**; transport takes 190.284s /660s.
+Every group drains; exact reuse passes. Twenty-five files survive checkout removal in a 26-entry inventory
+within 4 MiB /40 entries /two levels. The unchanged 70-case manifest suite passes in 55.025s /60s;
+its earlier 58.674-second observation remains recorded, and loaded-host headroom is not qualified. Five
+new infrastructure cases include two 160-run corruptions (150969/150970); eight synthetic zero-exit runs
+and two omitted semantic/native-census hooks discriminate. Synthetic controls are not Account executions.
+All original campaign and infrastructure deadlines remain.
+
+Totals stay **629 obligations /292 required files** and 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 118 to **116: zero test-file /74 command /42 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, previous archives and L-2 remain unchanged.
+Next: Account sync/composition wrapper integration, then further families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment actions occur.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).

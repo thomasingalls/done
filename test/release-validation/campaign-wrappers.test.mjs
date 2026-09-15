@@ -1,4 +1,12 @@
 import {
+  receiveDriverCampaign,
+  receiveDriverCampaignStage,
+  receiveDriverSteps,
+  receiveDriverReports,
+  reconcileReceiveDriverReports,
+  reconcileReceiveDriverEvidence,
+} from '../../scripts/release-validation/account-receive-driver-wrapper.mjs';
+import {
   receiveTransportCampaign,
   receiveTransportCampaignStage,
   receiveTransportSteps,
@@ -1944,5 +1952,371 @@ test('160 generated receive-transport control corruptions reject queue, flight, 
       assert.throws(() => reconcileReceiveTransportEvidence(bad));
     }),
     { seed: 150968, numRuns: 160 },
+  );
+});
+
+function receiveDriverEvidence() {
+  const capsule = (id) => ({
+      id,
+      sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
+    }),
+    before = [capsule('startup')],
+    local = capsule('local');
+  const actions = ['lost', 'offline', 'halt', 'local', 'publish', 'publish', 'restart'];
+  const h = {
+    actions,
+    completed: true,
+    initial: 'base',
+    before,
+    wires: ['aa', 'bb'],
+    observations: [],
+    requests: [],
+  };
+  let available = 0,
+    through = 0,
+    link = '00'.repeat(32),
+    locals = 0,
+    current = structuredClone(before);
+  const status = (phase = 'idle', failures = 0, reason = null) => ({
+    phase,
+    receivedThrough: through,
+    failures,
+    reason,
+    nextAttemptAt: phase === 'idle' ? 5000 : phase === 'retrying' ? 1000 : null,
+  });
+  const request = (mode) => {
+    const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+    q[10] = through;
+    q[11] = 1;
+    const request = Buffer.from(JSON.stringify(q)).toString('hex'),
+      advance = through < available,
+      nextLink = advance ? (through ? 'bb' : 'aa').repeat(32) : link,
+      page = [
+        'done/private-read-page/v2',
+        2,
+        createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
+        available,
+        through + (advance ? 1 : 0),
+        advance ? [[h.wires[through], 'proof']] : [],
+        'signature',
+      ],
+      candidatePage = Buffer.from(JSON.stringify(page)).toString('hex');
+    h.requests.push({
+      mode,
+      available,
+      request,
+      candidatePage,
+      responseBody:
+        mode === 'lost'
+          ? null
+          : mode === 'halt'
+            ? Buffer.from('corrupt page').toString('hex')
+            : candidatePage,
+      link: nextLink,
+    });
+    if (mode === 'good' && advance) {
+      through++;
+      link = nextLink;
+    }
+  };
+  request('good');
+  h.startupRequests = 1;
+  for (const action of actions) {
+    const requestStart = h.requests.length;
+    let transition = null;
+    if (action === 'publish') {
+      available++;
+      request('good');
+      request('good');
+    } else if (action === 'local') {
+      locals++;
+      current.push(local);
+    } else if (action === 'restart') request('good');
+    else if (action === 'offline') {
+      transition = status('offline');
+      request('good');
+    } else {
+      request(action);
+      transition =
+        action === 'lost' ? status('retrying', 1) : status('blocked', 0, 'operation-failed');
+      request('good');
+    }
+    const visible =
+      Array.from({ length: available }, (_, i) => `REMOTE${available - 1 - i} `).join('') +
+      'base' +
+      'L'.repeat(locals);
+    h.observations.push({
+      action,
+      requestStart,
+      requestEnd: h.requests.length,
+      transition,
+      visible,
+      status: status(),
+      captures: structuredClone(current),
+    });
+  }
+  h.final = {
+    visible: h.observations.at(-1).visible,
+    status: status(),
+    captures: structuredClone(current),
+  };
+  const coverage = {};
+  for (const a of actions) coverage[a] = (coverage[a] ?? 0) + 10;
+  const r = {
+    'generated-native.json': {
+      status: 'passed',
+      seed: 9112052,
+      runs: 10,
+      histories: Array.from({ length: 10 }, () => structuredClone(h)),
+      coverage,
+    },
+  };
+  for (const [mode, pair] of Object.entries({
+    overlap: [1, 2],
+    poll: [2, 1],
+    halt: [1, 2],
+    observer: [0, 1],
+    resume: [1, 0],
+  }))
+    r['control-' + mode + '.json'] = {
+      mode,
+      effective: true,
+      observations: [false, true].map((changed, i) => ({
+        changed,
+        calls: pair[i],
+        timers: 0,
+        status: { ...status('working'), receivedThrough: 0 },
+        disposed: {
+          calls: pair[i],
+          timers: 0,
+          status: { ...status('closed'), receivedThrough: 0 },
+        },
+      })),
+    };
+  for (const gate of ['offline', 'pressure'])
+    r['control-dispatch-' + gate + '.json'] = {
+      effective: true,
+      observations: ['baseline', 'dispatch'].map((mode) => ({
+        mode,
+        calls: mode === 'dispatch' ? 1 : 0,
+        held: {
+          ...status(
+            gate === 'offline' ? 'offline' : 'blocked',
+            0,
+            gate === 'offline' ? null : 'local-storage',
+          ),
+          receivedThrough: 0,
+        },
+        closed: { ...status('closed'), receivedThrough: 0 },
+      })),
+    };
+  return r;
+}
+test('receive-driver wrapper binds all six commands, 36 cases and inherited browser process ownership', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-receive-driver');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 36);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [60000, 60000, 180000, 90000, 90000, 270000],
+  );
+  assert.equal(s.deadlineMs, 750000);
+  assert.equal(s.expect.historyInputs, undefined);
+  assert.equal(s.expect.dataInputs, undefined);
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.equal(s.processPolicy, 'inherited-group-v1');
+  assert.deepEqual(s.fileOutputs.required, receiveDriverReports);
+  assert.equal(receiveDriverReports.length, 25);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 750001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'receive-driver-filter',
+    argv: ['node', receiveDriverCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find(
+      (r) => r.id === 'command:receive-driver-filter:0',
+    ).blocked,
+  );
+});
+test('receive-driver trace rejects missing cases from any child or a lost typecheck exit', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-driver-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = receiveDriverCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps
+    .filter((s) => s.kind !== 'exit')
+    .map((step) =>
+      step.kind === 'vitest'
+        ? {
+            schema: 1,
+            adapter: 'vitest-v1',
+            nonce: 'fresh:' + step.name,
+            reason: 'passed',
+            modules: step.expect.files.map((file) => ({ file, state: 'passed' })),
+            errors: [],
+            cases: step.expect.cases.map((c) => ({
+              ...c,
+              durationMs: 0,
+              retryCount: 0,
+              repeatCount: 0,
+              expectedFailure: false,
+              mode: 'run',
+              errors: [],
+            })),
+          }
+        : {
+            schema: 1,
+            nonce: 'fresh:' + step.name,
+            phase: 'complete',
+            cases: step.expect.cases,
+            errors: [],
+            summary: {
+              success: true,
+              counts: {
+                tests: step.expect.cases.length,
+                failed: 0,
+                cancelled: 0,
+                skipped: 0,
+                todo: 0,
+              },
+            },
+          },
+    );
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i + 1].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...reports.map((_, i) => (v) => v.reports[i].cases.pop()),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[1].nonce = 'fresh:controls'),
+    (v) => (v.trace.steps[4].phase = 'running'),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('receive-driver reports require complete HTTP histories and effective control observations', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-driver-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: receiveDriverCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...receiveDriverEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: receiveDriverSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = [
+    ...['native', 'controls', 'native-controls', 'generated'].map((n) => n + '.xml'),
+    ...receiveDriverSteps.map((s) => s.name + '.log'),
+  ];
+  const save = (r) => {
+    for (const [file, v] of Object.entries(r)) writeFileSync(join(dir, file), JSON.stringify(v));
+    for (const file of aux) writeFileSync(join(dir, file), file === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileReceiveDriverReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated-native.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileReceiveDriverReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileReceiveDriverReports(dir, sources));
+  }
+});
+
+test('160 generated receive-driver corruptions reject skipped durable queries, false restart progress and changed sources', () => {
+  const r = receiveDriverEvidence();
+  reconcileReceiveDriverEvidence(r);
+  const alters = [
+    (h) => h.observations.pop(),
+    (h) => h.requests.pop(),
+    (h) => (h.observations[0].transition.receivedThrough = 1),
+    (h) => (h.observations[4].status.receivedThrough = 0),
+    (h) => (h.observations[6].requestStart = 0),
+    (h) => (h.observations[4].captures[0].sources[0].bytes = [99]),
+    (h) => h.final.captures.pop(),
+    (h) => (h.final.visible += 'L'),
+    (h) => (h.requests[0].request += '00'),
+    (h) => (h.requests[4].responseBody = h.requests[4].candidatePage),
+    (h) => (h.wires[0] = 'bb'),
+  ];
+  fc.assert(
+    fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      alters[k](bad['generated-native.json'].histories[i]);
+      assert.throws(() => reconcileReceiveDriverEvidence(bad));
+    }),
+    { seed: 150969, numRuns: 160 },
+  );
+});
+test('160 generated receive-driver control corruptions reject ineffective scheduler/dispatch omissions and incomplete disposal', () => {
+  const r = receiveDriverEvidence();
+  reconcileReceiveDriverEvidence(r);
+  const alters = [
+    (r) => (r['control-overlap.json'].observations[1].calls = 1),
+    (r) => (r['control-poll.json'].observations[0].calls = 1),
+    (r) => (r['control-halt.json'].observations[0].calls = 2),
+    (r) => (r['control-observer.json'].observations[0].calls = 1),
+    (r) => (r['control-resume.json'].observations[1].calls = 1),
+    (r) => (r['control-dispatch-offline.json'].observations[0].calls = 1),
+    (r) => (r['control-dispatch-pressure.json'].observations[1].closed.phase = 'blocked'),
+    (r) => (r['control-overlap.json'].observations[1].disposed.timers = 1),
+    (r) => (r['generated-native.json'].status = 'running'),
+    (r) => r['generated-native.json'].coverage.lost--,
+  ];
+  fc.assert(
+    fc.property(fc.nat(alters.length - 1), (k) => {
+      const bad = structuredClone(r);
+      alters[k](bad);
+      assert.throws(() => reconcileReceiveDriverEvidence(bad));
+    }),
+    { seed: 150970, numRuns: 160 },
   );
 });

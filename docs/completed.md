@@ -8557,3 +8557,50 @@ Runtime, package/dependencies, vectors/crypto census, F-17 debt, previous archiv
 Next: Account receive-driver wrapper integration, then further families/qualification repairs, immutable
 aggregate and private human rehearsal. No personal browser/server/relay/device/deployment actions occur.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-transport/README.md).
+
+
+## 2026-09-15 — Account receive-driver wrapper integration
+
+Receive-transport is signed and verified as `a05369a1`. Receive-driver retains six original child
+commands: typecheck (60 seconds), two-file Vitest (19 cases, maxWorkers=2/verbose, 60 seconds), native
+(9 cases/180 seconds, including four R-01 size cases), scheduler controls (5/90 seconds), native controls
+(2/90 seconds) and generated (1/270 seconds). All Node commands retain concurrency=1/spec/JUnit. Owned
+execution adds a 750-second aggregate/five-second grace, disposable CDP fixture, five distinct case reports
+and 25 required files. Owned children inherit the runner group; standalone detached groups remain.
+No historical reader or vector input is invoked. Typecheck remains exit-only with its log retained.
+
+Five actual scheduler mutation controls now retain before/after-disposal status, call counts and timer
+counts. They distinguish overlap, missing polling, online clearing a halt, dispatch after observer close,
+and stranded resume; disposal must report closed status and no timers. Two native dispatch controls retain
+actual held/closed receiver status and network-call counts for baseline versus omitted offline/pressure
+guards. The original effective source mutations and assertions remain mandatory.
+
+Ten native histories (9112052, 5–7 actions with forced publish/restart) now retain original wires, actual
+requests, candidate pages/chosen response bodies, initial/source state, action request windows, transient
+offline/lost/halt observations, final text/status/captures and cold restart queries. Independent report
+accounting follows durable query positions through data/empty/lost/corrupt replies, checks canonical
+framing/hash/wire agreement and confirms restart begins at the recovered cursor. It checks authored text,
+source allocation only on local actions, and full first-observation source-byte continuity. Idle/working
+observations permit an unchanged background empty poll; they cannot fabricate progress. Completed records
+save incrementally and before final assertions. Interrupted active work can be absent and cannot pass.
+
+The original 400/100/80 generated unit campaigns remain within the 19 unit cases with their independent
+clock/authority/lifetime assertions; this phase does not claim new per-history unit reports. Native owners
+retain signature/authentication/CRDT authority. Timers in report observations corroborate the actual source
+controls; offline reconciliation does not rerun the scheduler or authenticate service evidence.
+
+The owned epoch passes **191 cases in seven executions**: 126 planning cases in five suites, 36 driver
+cases and 29 unchanged transport cases. Driver takes **186.877s /750s**; transport takes 190.284s /660s.
+Every group drains; exact reuse passes. Twenty-five files survive checkout removal in a 26-entry inventory
+within 4 MiB /40 entries /two levels. The unchanged 70-case manifest suite passes in 55.025s /60s;
+its earlier 58.674-second observation remains recorded, and loaded-host headroom is not qualified. Five
+new infrastructure cases include two 160-run corruptions (150969/150970); eight synthetic zero-exit runs
+and two omitted semantic/native-census hooks discriminate. Synthetic controls are not Account executions.
+All original campaign and infrastructure deadlines remain.
+
+Totals stay **629 obligations /292 required files** and 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 118 to **116: zero test-file /74 command /42 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, previous archives and L-2 remain unchanged.
+Next: Account sync/composition wrapper integration, then further families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment actions occur.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).

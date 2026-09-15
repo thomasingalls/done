@@ -29,7 +29,20 @@ test(
       if (process.env.ACCOUNT_REPORT_DIR)
         writeFileSync(
           join(process.env.ACCOUNT_REPORT_DIR, 'generated-native.json'),
-          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
+          JSON.stringify(
+            {
+              seed,
+              runs: 10,
+              status:
+                histories.length === 10 && histories.every((h) => h.completed)
+                  ? 'passed'
+                  : 'running',
+              histories,
+              coverage,
+            },
+            null,
+            2,
+          ) + '\n',
         );
     };
     await fc.assert(
@@ -40,7 +53,7 @@ test(
         }),
         async (generated) => {
           const actions = [...generated, 'publish', 'restart'],
-            entry = { actions, completed: false };
+            entry = { actions, completed: false, observations: [], requests: [] };
           histories.push(entry);
           save();
           const { f, item, initial, wires } = await remote(
@@ -49,6 +62,8 @@ test(
             actions.filter((x) => x === 'publish').length,
           );
           try {
+            entry.initial = initial;
+            entry.wires = wires.map((w) => Buffer.from(w).toString('hex'));
             let available = 0,
               mode = 'good',
               locals = 0;
@@ -68,6 +83,18 @@ test(
                 available,
               );
               if (after < available) links[after + 1] = a.link;
+              entry.requests.push({
+                mode,
+                available,
+                request: q.toString('hex'),
+                candidatePage: Buffer.from(a.bytes).toString('hex'),
+                responseBody:
+                  mode === 'lost'
+                    ? null
+                    : Buffer.from(mode === 'halt' ? 'corrupt page' : a.bytes).toString('hex'),
+                link: a.link,
+              });
+              save();
               if (mode === 'lost') {
                 await route.abort();
                 return;
@@ -81,9 +108,14 @@ test(
             const idle = () => waitPredicate(f.page, () => opened.receiver.status.phase === 'idle');
             await polling(f.page, item);
             await idle();
-            const baseline = (await captures(f.page)).length;
+            entry.before = await captures(f.page);
+            const baseline = entry.before.length;
+            entry.startupRequests = queries.length;
+            save();
             for (const action of actions) {
               coverage[action] = (coverage[action] ?? 0) + 1;
+              const requestStart = queries.length;
+              let transition = null;
               if (action === 'publish') {
                 available++;
                 await retry(f.page);
@@ -102,7 +134,8 @@ test(
               } else if (action === 'offline') {
                 await online(f.page, false);
                 await retry(f.page);
-                assert.equal((await driverStatus(f.page)).phase, 'offline');
+                transition = await driverStatus(f.page);
+                assert.equal(transition.phase, 'offline');
                 await online(f.page, true);
                 await waitPredicate(f.page, () => opened.receiver.status.phase === 'working');
                 await idle();
@@ -112,7 +145,8 @@ test(
                 await waitPredicate(f.page, () =>
                   ['retrying', 'blocked'].includes(opened.receiver.status.phase),
                 );
-                assert.equal((await driverStatus(f.page)).receivedThrough, available);
+                transition = await driverStatus(f.page);
+                assert.equal(transition.receivedThrough, available);
                 mode = 'good';
                 await retry(f.page);
                 await waitPredicate(f.page, () => opened.receiver.status.phase === 'working');
@@ -124,10 +158,26 @@ test(
                 ) +
                 initial +
                 'L'.repeat(locals);
+              entry.observations.push({
+                action,
+                requestStart,
+                requestEnd: queries.length,
+                transition,
+                visible: await view(f.page),
+                status: await driverStatus(f.page),
+                captures: await captures(f.page),
+              });
+              save();
               assert.equal(await view(f.page), expected);
               assert.equal((await driverStatus(f.page)).receivedThrough, available);
               assert.equal((await captures(f.page)).length, baseline + locals);
             }
+            entry.final = {
+              visible: await view(f.page),
+              status: await driverStatus(f.page),
+              captures: await captures(f.page),
+            };
+            save();
             await close(f.page);
             entry.completed = true;
             save();

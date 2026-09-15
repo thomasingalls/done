@@ -3498,19 +3498,19 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 147,
+          "line": 154,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
       ],
       "processCallSites": [
         {
-          "line": 71,
+          "line": 76,
           "form": "spawn",
           "arguments": [
             "process.execPath",
-            "args",
-            "{\n    detached: true,\n    stdio: ['ignore', 'pipe', 'pipe'],\n    env: { ...process.env, ACCOUNT_REPORT_DIR: output },\n  }"
+            "childReport?.args ?? args",
+            "{\n    detached: !owned,\n    stdio: ['ignore', 'pipe', 'pipe'],\n    env: { ...process.env, ACCOUNT_REPORT_DIR: output, ...childReport?.env },\n  }"
           ]
         }
       ]
@@ -6628,7 +6628,7 @@
       "declarations": 1,
       "propertyFamilies": [
         {
-          "line": 36,
+          "line": 49,
           "form": "fc.asyncProperty"
         }
       ],
@@ -8747,54 +8747,62 @@
           "test/release-validation/campaign-wrappers.test.mjs"
         ]
       },
-      "declarations": 30,
+      "declarations": 35,
       "propertyFamilies": [
         {
-          "line": 307,
+          "line": 315,
           "form": "fc.property"
         },
         {
-          "line": 327,
+          "line": 335,
           "form": "fc.property"
         },
         {
-          "line": 616,
+          "line": 624,
           "form": "fc.property"
         },
         {
-          "line": 650,
+          "line": 658,
           "form": "fc.property"
         },
         {
-          "line": 948,
+          "line": 956,
           "form": "fc.property"
         },
         {
-          "line": 972,
+          "line": 980,
           "form": "fc.property"
         },
         {
-          "line": 1293,
+          "line": 1301,
           "form": "fc.property"
         },
         {
-          "line": 1327,
+          "line": 1335,
           "form": "fc.property"
         },
         {
-          "line": 1589,
+          "line": 1597,
           "form": "fc.property"
         },
         {
-          "line": 1612,
+          "line": 1620,
           "form": "fc.property"
         },
         {
-          "line": 1919,
+          "line": 1927,
           "form": "fc.property"
         },
         {
-          "line": 1941,
+          "line": 1949,
+          "form": "fc.property"
+        },
+        {
+          "line": 2291,
+          "form": "fc.property"
+        },
+        {
+          "line": 2315,
           "form": "fc.property"
         }
       ],
@@ -11678,7 +11686,7 @@
     },
     {
       "path": "scripts/account-receive-driver/run.mjs",
-      "sha256": "57dac9636b9ca7c5300e5a67a7a6fe46149128894ac25fe22265e24d3dc21950"
+      "sha256": "923d773018bac23e39f57e6d45a4aa353766245f7a4b67f9c57814fc06385a7c"
     },
     {
       "path": "scripts/account-receive-editor/run.mjs",
@@ -12305,6 +12313,10 @@
       "sha256": "634d9e4fedb27af6f2abe03c52641a4599b1fd551dae18f282f559fc7e01dc10"
     },
     {
+      "path": "scripts/release-validation/account-receive-driver-wrapper.mjs",
+      "sha256": "8ecbcba775b83d0440a90873f00def44700082677f095e1b6b81ca933546d6a0"
+    },
+    {
       "path": "scripts/release-validation/account-receive-editor-wrapper.mjs",
       "sha256": "2a29fc30f3af092e22543db796778e2c4309a7fb97873fac9220b502576e5b36"
     },
@@ -12378,7 +12390,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "f4dbeec8a7294abf6a31935ca62c21e04de837a88a5d0fddeb6af5be1c99208c"
+      "sha256": "6290df5b8f97850acc48e71c2abd76ce55d2988352512fbd8831978c3baf910f"
     },
     {
       "path": "scripts/release-validation/file-outputs.mjs",
@@ -12426,7 +12438,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "c02b84c8fea0779dac325c46e1e959534901285834a21422f09e20f17207fcb4"
+      "sha256": "1b5de76650d7b547d4f3789406560d8d57f9d5db8b78b64e29439c6892adc953"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -12498,7 +12510,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "7cdac732fe9f7163e953796f1e67d21c0ee47bb53665ad430251e8496796ff31"
+      "sha256": "6070ce4c33aff9e76d57bb2807616d03578e4932f9faae86d8f09b021777b88e"
     },
     {
       "path": "scripts/release-validation/static-fixture.mjs",
@@ -13318,7 +13330,7 @@
     },
     {
       "path": "test/account-receive-driver/controls.test.mjs",
-      "sha256": "240d89f536cb42f8c9fcdca24afc886bc05ca9967a194e1ed1c1a7bef8649108"
+      "sha256": "3ac496d09b1f4f62591e9c2d1afc33c7eea94c874da969628b8e82e36b088be1"
     },
     {
       "path": "test/account-receive-driver/fixtures.mjs",
@@ -13326,11 +13338,11 @@
     },
     {
       "path": "test/account-receive-driver/generated.test.mjs",
-      "sha256": "f85253db5752278fbf1eaa9271829b486f53831c41aaa3bd98295328416903be"
+      "sha256": "6d5f5a7b8264dc86871b324e2c4655b7a69cc5454dfc1a6e71d70cee1ca3f459"
     },
     {
       "path": "test/account-receive-driver/native-controls.test.mjs",
-      "sha256": "48d7ab080f981a2fd943823d194db4bdb700d0b466ee486bd28a13da70074581"
+      "sha256": "a8cf0d2941aacdac9eaa1bb5fb9fb1fe66a641c34cbf19fe9a6e08e189461db6"
     },
     {
       "path": "test/account-receive-driver/native.test.mjs",
@@ -14310,7 +14322,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "5a8efc8dca126d77ee15ac92df31ba253eda77436e06e0f9b95f35da9139509e"
+      "sha256": "aa32c952376774f5fd1f787734f2c360090b45f9c284f2e9b6906392d55675c9"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -14322,7 +14334,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "b75f03c440964bd978b1a2f8a3add20d9cf3968841e98b85950da95407d012d1"
+      "sha256": "917ea03a3ac15415bd72869a2dd983ba992585887777fafa58ed49cb7b314669"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
