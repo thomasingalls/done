@@ -132,6 +132,7 @@ async function run(mutation = null) {
     resolve: {
       alias: {
         '@workspace': join(folder, 'src/crdt/admittedWorkspace.ts'),
+        '@admission': join(folder, 'src/crdt/admission.ts'),
         '@styles': join(folder, 'src/styles/index.css'),
         '@editor': join(folder, 'src/editor/admittedEditor.ts'),
         '@channel': join(folder, 'src/crdt/workspaceChannel.ts'),

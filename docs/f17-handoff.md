@@ -104,3 +104,12 @@ The reviewed general set now contains 261 files / 2,042 case dispositions, inclu
 The crypto census adds this one source while retaining every prior source hash, label and group.
 There are still 96 command and 63 campaign obligations, plus immutable aggregate qualification.
 All 52 personal/vector pins and L-2 remain unchanged.
+
+
+## Private Local integration follow-through
+
+The subsequent [Local integration checkpoint](./f17-local-handoff.md) connects this owner through an
+explicit private constructor selection and passes reference/generated/native functional checks. It
+repairs the publication-source counterexample found during integration. Default Local and Account
+retain the reference path; performance comparison and activation decisions remain ahead. Earlier
+statements above about the unconnected component describe that component's recorded checkpoint.

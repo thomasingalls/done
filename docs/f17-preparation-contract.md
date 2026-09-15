@@ -123,3 +123,12 @@ permission to bypass any of those checks.
 The subsequent [private handoff component](./f17-handoff.md) implements the ownership mechanism and
 tests its actual rejection/cleanup behavior. It remains unconnected to admission and the editor; the
 Local reference comparison, native integration and Account source/capture gates above still apply.
+
+
+## Private Local integration follow-through
+
+The subsequent [Local integration checkpoint](./f17-local-handoff.md) connects this owner through an
+explicit private constructor selection and passes reference/generated/native functional checks. It
+repairs the publication-source counterexample found during integration. Default Local and Account
+retain the reference path; performance comparison and activation decisions remain ahead. Earlier
+statements above about the unconnected component describe that component's recorded checkpoint.

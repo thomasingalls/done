@@ -16,8 +16,8 @@ export const mutants = [
     file: 'src/crdt/admittedWorkspace.ts',
     case: 'W02.pressure',
     assertion: 'pending-history-private',
-    from: 'undo: history.undoStack.length,',
-    to: 'undo: (pending ?? accepted).history.undoStack.length,',
+    from: 'state.value = result.value;',
+    to: 'state.value = result.value; accepted = state;',
   },
   {
     id: 'system-bulk-in-human-history',

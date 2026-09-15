@@ -4273,7 +4273,7 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 115,
+          "line": 116,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         }
@@ -4582,12 +4582,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 148,
+          "line": 155,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         },
         {
-          "line": 150,
+          "line": 157,
           "form": "execFileSync",
           "arguments": ["'git'", "['status', '--porcelain']", "{ encoding: 'utf8' }"]
         }
@@ -9518,8 +9518,13 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 24,
-      "propertyFamilies": [],
+      "declarations": 30,
+      "propertyFamilies": [
+        {
+          "line": 687,
+          "form": "fc.asyncProperty"
+        }
+      ],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -11519,7 +11524,7 @@
     },
     {
       "path": "scripts/core-reproductions/browser.mjs",
-      "sha256": "ba8e4e9cb17b42f15feebb3522f33050f768b566aec5104ab320d139bd0f1af6"
+      "sha256": "d3ad6d370695f514efe6fef5b0ee6126e58bcbbb55ec09db604082297f42e360"
     },
     {
       "path": "scripts/core-reproductions/source.mjs",
@@ -11651,7 +11656,7 @@
     },
     {
       "path": "scripts/journal-contention/run.mjs",
-      "sha256": "72a4e7fe73c449fa29178f07758c867fbc4e02095398dd7506ad928499868cf4"
+      "sha256": "996d4b5c051aa1c6fa5db7e4f159f8bccce9312de12cd086a84bfc3de3a3b40c"
     },
     {
       "path": "scripts/journal/catalog.mjs",
@@ -11871,7 +11876,7 @@
     },
     {
       "path": "scripts/pending-projection/run.mjs",
-      "sha256": "1b6981eab3fba1cb26f7673e1fd6ff31650539b4eb5a7b1d2ccc3cef54604de8"
+      "sha256": "e83581b6c0ea016e4768fa281943f6d5e2f84abacd62a665295ee221f5edd931"
     },
     {
       "path": "scripts/private-release/profile-editor.mjs",
@@ -12139,7 +12144,7 @@
     },
     {
       "path": "scripts/workspace-admission/catalog.mjs",
-      "sha256": "c99d3e01e64733c162f7d4806b78e4abfdcc02a2bfc7ef36d02c19cb3424c03c"
+      "sha256": "cf6ca7fe9250e8efecd2055855d0ffe9ad636a975a232264c8acdb5abdfb29fb"
     },
     {
       "path": "scripts/workspace-admission/run.mjs",
@@ -12151,7 +12156,7 @@
     },
     {
       "path": "scripts/workspace-admission/worker.mjs",
-      "sha256": "9979a0da06040bc5e9bc91aeaf59d3c015c4c9c95afb11c16fe0947d41b9f360"
+      "sha256": "e4507209e6af286e2104f014048f0cf192b9d8b1c9e979d5210ee9f2e767d204"
     },
     {
       "path": "scripts/write-session/catalog.mjs",
@@ -13807,7 +13812,7 @@
     },
     {
       "path": "test/pending-projection/browser.mjs",
-      "sha256": "ddd62eeaef0a5fbcd1f4ab2eb333e17207e2006fb501ab90f32c1483f6831fcf"
+      "sha256": "86f778bd99d46090f1dab3aa581e89fee5cd67eba79e6e229478c905a2410076"
     },
     {
       "path": "test/pendingProjection.test.ts",
@@ -13883,11 +13888,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "fe2f5f2d1206ccb13c6ca5841356a4269f009e287b155ea8ebf29da278ceccfb"
+      "sha256": "8356a8083a93444f45de7e6becf556ad75b99f04f54b05636753c7c142240727"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "0e1ea5f57179e300e38e976b7939883ced6bafd58f7507bc4a6625251e128d18"
+      "sha256": "a16fbedc45f0ea03ce09da2cb52e53219de8e967c79fecbb4065f888d89705b1"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14255,7 +14260,7 @@
     },
     {
       "path": "test/workspace-admission/browser.mjs",
-      "sha256": "f0c9245d095ab5f242e991c19eb0a625b4838fded15c89a8305a0be86a1d13df"
+      "sha256": "f29a815a11ef361be5b64b8f319f796c93da74323398bcdacdde64bd71468e09"
     },
     {
       "path": "test/workspace.ts",
@@ -14263,7 +14268,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "f5445d3121088b9dd4ef6e10dce81dc9335d5e572f1831ef03191713e43c5fdc"
+      "sha256": "a7468a636f90cdea95e9f241e8507df41aa48a5db2dd3bc234a73334e5c7ced9"
     },
     {
       "path": "test/workspacePreparation.test.ts",

@@ -201,7 +201,7 @@
     },
     {
       "path": "src/crdt/admission.ts",
-      "sha256": "96639d41fe9dc35c460bd452122933e4bc91cffe3c280a8af5d8eba0f01bb107"
+      "sha256": "9cdedad44a27e60e0a0e9321f8a88da2a1b3c2e98cbf1d9564008ae5e5508f3f"
     },
     {
       "path": "src/crdt/admissionDocument.ts",
@@ -209,11 +209,11 @@
     },
     {
       "path": "src/crdt/admissionQueue.ts",
-      "sha256": "fe88f1e2d02d28970f436983a226de9473d3d94fd5668a85a7a196571f7ace26"
+      "sha256": "7aa8aea592b8d622adacc84ce3061ab556611ec72a2c517fc03c07d05f0e05b2"
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "6e918fabe4a43389756ffde2c1cc4ea01d3c0e8583705b1f66c6784c20cb6290"
+      "sha256": "7b41d8a2518a1de93d8d5e28a99345df2b1272b734463c2d407e94f3771f0198"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -473,7 +473,7 @@
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
-      "sha256": "345a7599a6d29e74c9817443e8b23a5158e94b4b72a2cb0373b3accdd77cabdf"
+      "sha256": "f95fedd40f5e5b44b4e45477b2ddac9bf52d9a0b8910871f0c68cd4fb40b1437"
     },
     {
       "path": "src/crdt/writeSession.ts",

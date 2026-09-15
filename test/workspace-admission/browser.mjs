@@ -1,6 +1,7 @@
 import '../journal/browser.mjs';
 import '@styles';
-import { openAdmittedWorkspace } from '@workspace';
+import { createAdmittedWorkspace } from '@workspace';
+import { openAdmissionSession } from '@admission';
 import { createAdmittedEditor } from '@editor';
 import { connectWorkspaceChannel } from '@channel';
 import { createDoc, applyUpdate, Y } from '@yjs';
@@ -59,9 +60,13 @@ const mount = (surface, target) => {
 window.integration = {
   open: (code, actor = 'human-one', connect = false) =>
     track('open', async () => {
-      workspace = await openAdmittedWorkspace(
-        { ...scope, resolvePrincipal: () => scope.principalId },
-        code,
+      workspace = await createAdmittedWorkspace(
+        (options) =>
+          openAdmissionSession(
+            { ...scope, resolvePrincipal: () => scope.principalId },
+            code,
+            options,
+          ),
         {
           identity: {
             id: actor,
@@ -71,6 +76,7 @@ window.integration = {
           validateReceive: () => {},
           today: () => date,
         },
+        'local-handoff',
       );
       workspace.outgoing((b) => outgoing.push(Array.from(b)));
       workspace.subscribe(() => {

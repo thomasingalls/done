@@ -1,4 +1,4 @@
-/** Private composition capability. Not wired into admission or exported by a workspace yet. */
+/** Private composition capability. Never exported by an application workspace. */
 import { Y, type YUndoManager } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import type { SourceUpdate } from './sourceCapture';
@@ -38,6 +38,14 @@ export interface PreparationScope {
   ownState(state: PreparedWorkspaceState): void;
   /** Register temporary buffers as they are created, so a thrown command cannot leak them. */
   ownBytes(bytes: Bytes): Bytes;
+}
+/** Explicit internal constructor registration; absent from application/transport workspace APIs. */
+export const localWorkspacePreparation: unique symbol = Symbol('localWorkspacePreparation');
+export interface LocalWorkspacePreparation {
+  verifiedRevision(): number;
+  command(context: PreparationContext, input: Bytes, scope: PreparationScope): PreparationBytes;
+  accept(state: PreparedWorkspaceState, revision: number): void;
+  fail(cause: unknown): void;
 }
 type Phase = 'issued' | 'preparing' | 'prepared' | 'adopting' | 'adopted';
 type Slot = {

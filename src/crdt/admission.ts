@@ -1,5 +1,6 @@
 /** Ordered admission over the real factor-unlocked carriers; application wiring is a separate owner. */
 import { openJournalSession, type CustodyAuthority, type JournalSession } from './custody';
+import { localWorkspacePreparation } from './workspacePreparation';
 import { mark, ADMISSION_LOAD_START, ADMISSION_LOAD_READY } from '../lib/marks';
 import {
   createAdmissionOwner,
@@ -30,7 +31,12 @@ export const openAdmissionSession = async (
   // Capture required application validators before obtaining keys. They are trusted synchronous adapters.
   if (typeof options?.prepare !== 'function' || typeof options?.validateReceive !== 'function')
     throw new TypeError('Admission requires a command preparer and receive validator.');
-  const captured = { prepare: options.prepare, validateReceive: options.validateReceive };
+  const local = options[localWorkspacePreparation];
+  const captured = {
+    prepare: options.prepare,
+    validateReceive: options.validateReceive,
+    ...(local ? { [localWorkspacePreparation]: local } : {}),
+  };
   let carrier: JournalSession | undefined;
   try {
     carrier = await openJournalSession(

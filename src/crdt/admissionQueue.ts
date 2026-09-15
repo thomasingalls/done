@@ -1,4 +1,11 @@
 import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState, type YDoc } from './yjs';
+import {
+  createWorkspacePreparation,
+  localWorkspacePreparation,
+  type LocalWorkspacePreparation,
+  type PreparationContext,
+  type PreparationBytes,
+} from './workspacePreparation';
 import { MAX_JOURNAL_UPDATE, type JournalSession } from './custody';
 import type { Bytes } from './custodyCrypto';
 import {
@@ -39,6 +46,7 @@ export class AdmissionError extends Error {
   }
 }
 export interface AdmissionOptions {
+  readonly [localWorkspacePreparation]?: LocalWorkspacePreparation;
   readonly prepare: PrepareIntent;
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
   readonly validateReceive: (bytes: Bytes) => void;
@@ -107,7 +115,7 @@ const deferred = <T>() => {
   void promise.catch(() => {});
   return { promise, resolve, reject };
 };
-type Prepared = ReturnType<typeof prepareIntent>;
+type Prepared = PreparationBytes & { carrierBytes?: Bytes };
 type InputJob = {
   kind: 'local' | 'remote';
   id: number;
@@ -116,6 +124,7 @@ type InputJob = {
   slices: number;
   sliced: boolean;
   prepared?: Prepared | undefined;
+  preparation?: PreparationContext | undefined;
   force?: string;
   commit?: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<void>;
   completion: ReturnType<typeof deferred<AdmissionReceipt>>;
@@ -127,6 +136,8 @@ const codeOf = (error: unknown): string =>
 const erase = (job: Job) => {
   if (job.kind === 'flush') return;
   job.input.fill(0);
+  // The preparation owner drains these buffers after any outstanding write lease.
+  if (job.preparation) return;
   job.prepared?.update.fill(0);
   job.prepared?.remaining?.fill(0);
   job.prepared?.carrierBytes?.fill(0);
@@ -139,6 +150,9 @@ export const createAdmissionOwner = async (
   options: AdmissionOptions,
   bindOwnedReceive?: (enqueue: OwnedReceiveQueue) => void,
 ): Promise<AdmissionSession> => {
+  const local = options[localWorkspacePreparation];
+  if (local && carrier.captureLocal)
+    throw Error('Local preparation is not authorized for Account source capture');
   const canonical = createDoc(),
     listeners = new Set<(e: AcceptedUpdate) => void>(),
     statusListeners = new Set<(s: AdmissionStatus) => void>();
@@ -147,6 +161,17 @@ export const createAdmissionOwner = async (
     revision = 0,
     nextId = 0,
     writer = newWriterId();
+  const preparation = local
+    ? createWorkspacePreparation({
+        head: () => {
+          const job = queue[0];
+          return state === 'active' && job && job.kind !== 'flush'
+            ? { kind: job.kind, job, slice: job.slices, revision, writer }
+            : undefined;
+        },
+        verifiedRevision: local.verifiedRevision,
+      })
+    : undefined;
   let repairRequired = false;
   let pressure: AdmissionStatus['pressure'] = null,
     journalDirty = false,
@@ -176,6 +201,7 @@ export const createAdmissionOwner = async (
   try {
     carrier.beforeRelease?.(async () => {
       await inFlight;
+      await preparation?.close();
       dispose();
     });
   } catch (cause) {
@@ -255,6 +281,7 @@ export const createAdmissionOwner = async (
       'inactive-session',
       'Admission closed before this input completed.',
     );
+    const preparationStopped = preparation?.close();
     for (const job of queue) {
       job.completion.reject(error);
       erase(job);
@@ -262,7 +289,7 @@ export const createAdmissionOwner = async (
     queue.length = 0;
     notify();
     const stopped = carrier.close();
-    void Promise.allSettled([inFlight, stopped]).then((results) => {
+    void Promise.allSettled([inFlight, stopped, preparationStopped]).then((results) => {
       dispose();
       const failure = results.find((r) => r.status === 'rejected');
       state = failure ? 'failed' : 'closed';
@@ -328,28 +355,63 @@ export const createAdmissionOwner = async (
   };
   const promote = (job: InputJob, update: Bytes) => {
     live();
-    const before = writerClock(canonical, writer);
-    applyUpdate(canonical, update);
-    if (job.kind === 'remote' && writerClock(canonical, writer) !== before) writer = newWriterId();
-    revision++;
-    job.slices++;
-    for (const listener of [...listeners]) {
-      if (state !== 'active') break;
-      try {
-        listener(Object.freeze({ source: job.kind, revision, update: update.slice() }));
-      } catch {
-        /* completed acceptance cannot be rolled back */
+    // A closing observer may revoke and erase the handoff during publication.
+    const publication = update.slice();
+    try {
+      const before = writerClock(canonical, writer);
+      applyUpdate(canonical, update);
+      if (job.kind === 'remote' && writerClock(canonical, writer) !== before)
+        writer = newWriterId();
+      revision++;
+      if (job.preparation) {
+        try {
+          const candidate = preparation!.adopt(job.preparation, (prepared) =>
+            sameDocState(canonical, prepared.state.history.doc),
+          );
+          local!.accept(candidate, revision);
+        } catch (cause) {
+          // Persistence already succeeded. Never retry this input or expose the failed projection.
+          const error = new AdmissionError(
+            'projection-mismatch',
+            'Prepared workspace adoption failed.',
+            { cause },
+          );
+          try {
+            local!.fail(error);
+          } finally {
+            void close().catch(() => {});
+          }
+          throw error;
+        }
       }
+      // Adoption must see the original slice ordinal at the newly promoted revision.
+      job.slices++;
+      for (const listener of [...listeners]) {
+        if (state !== 'active') break;
+        try {
+          listener(Object.freeze({ source: job.kind, revision, update: publication.slice() }));
+        } catch {
+          /* completed acceptance cannot be rolled back */
+        }
+      }
+    } finally {
+      publication.fill(0);
     }
   };
   const completeInput = (job: InputJob) => {
     live();
-    const rest = job.prepared?.remaining;
+    // The queue takes its own remainder before finish erases all handoff buffers.
+    const rest = job.preparation ? job.prepared?.remaining?.slice() : job.prepared?.remaining;
+    if (job.preparation) {
+      preparation!.finish(job.preparation);
+      job.preparation = undefined;
+      job.prepared = undefined;
+    }
     if (rest) {
       job.input.fill(0);
-      job.prepared!.update.fill(0);
-      job.prepared!.carrierBytes?.fill(0);
-      for (const source of job.prepared!.sources ?? []) source.bytes.fill(0);
+      job.prepared?.update.fill(0);
+      job.prepared?.carrierBytes?.fill(0);
+      for (const source of job.prepared?.sources ?? []) source.bytes.fill(0);
       job.input = rest;
       job.prepared = undefined;
       job.sliced = true;
@@ -386,9 +448,14 @@ export const createAdmissionOwner = async (
   const forceLocal = async (job: InputJob) => {
     await flush();
     live();
-    await carrier.appendBatch([
-      { kind: 'update', bytes: job.prepared!.carrierBytes ?? job.prepared!.update },
-    ]);
+    const lease = job.preparation ? preparation!.borrow(job.preparation) : undefined;
+    try {
+      await carrier.appendBatch([
+        { kind: 'update', bytes: job.prepared!.carrierBytes ?? job.prepared!.update },
+      ]);
+    } finally {
+      lease?.release();
+    }
     live();
     changedContent(1, (job.prepared!.carrierBytes ?? job.prepared!.update).length);
     promote(job, job.prepared!.update);
@@ -454,13 +521,42 @@ export const createAdmissionOwner = async (
     }
     if (!job.prepared) {
       try {
-        job.prepared = prepareIntent(
-          canonical,
-          writer,
-          job.input,
-          MAX_JOURNAL_UPDATE,
-          options.prepare,
-        );
+        if (preparation) {
+          const context = preparation.issue();
+          preparation.prepare(
+            context,
+            job.input,
+            MAX_JOURNAL_UPDATE,
+            local!.command,
+            (candidate) => {
+              // Local frames come directly from the command's actual transactions. A source-free
+              // no-op additionally proves full equality before storage; Account needs its own probe.
+              if (candidate.sources !== undefined) return false;
+              return (
+                !(
+                  candidate.update.length === 2 &&
+                  candidate.update[0] === 0 &&
+                  candidate.update[1] === 0
+                ) || sameDocState(canonical, candidate.state.history.doc)
+              );
+            },
+          );
+          job.preparation = context;
+          const lease = preparation.borrow(context);
+          try {
+            job.prepared = lease.prepared;
+          } finally {
+            lease.release();
+          }
+        } else {
+          job.prepared = prepareIntent(
+            canonical,
+            writer,
+            job.input,
+            MAX_JOURNAL_UPDATE,
+            options.prepare,
+          );
+        }
         if (carrier.captureLocal && job.prepared.sources?.length !== 0)
           job.prepared.carrierBytes = carrier.captureLocal(
             job.prepared.update,
@@ -475,6 +571,10 @@ export const createAdmissionOwner = async (
           job.reservation += extra;
         }
       } catch (cause) {
+        if (job.preparation) {
+          preparation!.discard(job.preparation);
+          job.preparation = undefined;
+        }
         job.prepared?.update.fill(0);
         job.prepared?.remaining?.fill(0);
         job.prepared?.carrierBytes?.fill(0);
@@ -517,10 +617,16 @@ export const createAdmissionOwner = async (
       completeInput(job);
       return;
     }
-    const attempt =
-      job.force || job.sliced || job.prepared.remaining
-        ? { status: 'refused' as const, reason: job.force ?? 'oversize' }
-        : carrier.appendLocal(job.prepared.carrierBytes ?? job.prepared.update);
+    const lease = job.preparation ? preparation!.borrow(job.preparation) : undefined;
+    let attempt: { status: 'journalled' } | { status: 'refused'; reason: string };
+    try {
+      attempt =
+        job.force || job.sliced || job.prepared.remaining
+          ? { status: 'refused', reason: job.force ?? 'oversize' }
+          : carrier.appendLocal(job.prepared.carrierBytes ?? job.prepared.update);
+    } finally {
+      lease?.release();
+    }
     if (attempt.status === 'journalled') {
       journalDirty = true;
       journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
@@ -750,6 +856,10 @@ export const createAdmissionOwner = async (
       const error = new AdmissionError('discarded', 'The unaccepted pending suffix was discarded.');
       for (const job of queue) {
         job.completion.reject(error);
+        if (job.kind !== 'flush' && job.preparation) {
+          preparation!.discard(job.preparation);
+          job.preparation = undefined;
+        }
         erase(job);
       }
       queue.length = 0;

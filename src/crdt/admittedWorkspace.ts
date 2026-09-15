@@ -45,6 +45,11 @@ import {
   type TextTarget,
   type CommandValue,
 } from './workspaceCommands';
+import {
+  localWorkspacePreparation,
+  type PreparationScope,
+  type PreparedWorkspaceState,
+} from './workspacePreparation';
 import type { AdmittedTextSurface, TextAction, TextSelection } from '../editor/admittedText';
 
 export type { WorkspaceCommand, TextTarget } from './workspaceCommands';
@@ -129,7 +134,10 @@ const dispose = (s: State | undefined) => {
 export const createAdmittedWorkspace = async (
   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
   options: WorkspaceOptions,
+  preparation: 'reference' | 'local-handoff' = 'reference',
 ): Promise<AdmittedWorkspace> => {
+  if (preparation === 'local-handoff' && options.captureSources)
+    throw Error('Local preparation cannot capture Account sources');
   const archiveProjection = createArchiveProjection();
   const identity = structuredClone(options.identity);
   const human: Origin = Object.freeze({
@@ -157,113 +165,151 @@ export const createAdmittedWorkspace = async (
     plainDate(date);
     return date;
   };
+  let verifiedRevision = -1,
+    adoptedRevision = -1;
+  const prepareWorkspace = (input: Bytes, writer: number, scope?: PreparationScope) => {
+    const allocated: Bytes[] = [];
+    const own = (bytes: Bytes) => {
+      if (scope) return scope.ownBytes(bytes);
+      allocated.push(bytes);
+      return bytes;
+    };
+    if (!accepted) throw Error('Workspace recovery is not complete.');
+    const intent = JSON.parse(
+      new TextDecoder('utf-8', { fatal: true }).decode(input),
+    ) as WorkspaceIntent;
+    const history = forkWorkspaceHistory(accepted.history, human),
+      doc = history.doc;
+    doc.clientID = writer;
+    const state: State = { history, selections: new Map(), group: intent.group, value: false };
+    scope?.ownState(state);
+    const selections = state.selections;
+    const updates: Bytes[] = [],
+      sources: import('./sourceCapture').SourceUpdate[] = [];
+    const capture = (bytes: Uint8Array, origin: unknown) => {
+      const copy = own(new Uint8Array(bytes));
+      updates.push(copy);
+      if (options.captureSources) {
+        const actor = origin === history ? human : (origin as typeof human);
+        if (
+          !actor ||
+          !(
+            (actor.actor === identity.id && actor.kind === 'human') ||
+            (actor.actor === 'system' && actor.kind === 'system')
+          )
+        )
+          throw Error('Unbound transaction source');
+        sources.push({ actor: actor.actor, kind: actor.kind, bytes: copy });
+      }
+    };
+    doc.on('update', capture);
+    let humanItem: (typeof history.undoStack)[number] | undefined,
+      popped: (typeof history.undoStack)[number] | undefined;
+    const captureItem = (e: { origin: unknown; stackItem: (typeof history.undoStack)[number] }) => {
+      if (e.origin === human) humanItem = e.stackItem;
+    };
+    history.on('stack-item-added', captureItem);
+    history.on('stack-item-updated', captureItem);
+    const capturePopped = (e: { stackItem: (typeof history.undoStack)[number] }) => {
+      popped = e.stackItem;
+    };
+    history.on('stack-item-popped', capturePopped);
+    try {
+      for (const [key, value] of accepted.selections) selections.set(key, structuredClone(value));
+      if (intent.group !== accepted.group) history.stopCapturing();
+      const result = runWorkspaceCommand(
+        history,
+        intent,
+        { identity, human, system, today: today() },
+        selections,
+      );
+      if (humanItem) {
+        if (!humanItem.meta.has('before'))
+          humanItem.meta.set('before', structuredClone(accepted.selections));
+        humanItem.meta.set('after', structuredClone(selections));
+      }
+      if (popped) {
+        const undoing = intent.command.kind === 'undo';
+        const target = (undoing ? history.redoStack : history.undoStack).at(-1);
+        if (target) target.meta = structuredClone(popped.meta);
+        const restore = popped.meta.get(undoing ? 'before' : 'after') as
+          | Map<string, RelativeSelection>
+          | undefined;
+        if (restore) {
+          selections.clear();
+          for (const [key, value] of restore) selections.set(key, structuredClone(value));
+        }
+      }
+      state.value = result.value;
+      const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
+      return {
+        state,
+        update,
+        ...(result.remaining ? { remaining: own(encode(result.remaining)) } : {}),
+        ...(options.captureSources
+          ? {
+              sources: (sources.length || options.suppressEmptySources
+                ? sources
+                : [{ actor: identity.id, kind: 'human' as const, bytes: new Uint8Array([0, 0]) }]
+              ).map((s) => ({ ...s, bytes: own(s.bytes.slice()) })),
+            }
+          : {}),
+      };
+    } catch (error) {
+      if (!scope) {
+        dispose(state);
+        for (const bytes of allocated) bytes.fill(0);
+      }
+      throw error;
+    } finally {
+      doc.off('update', capture);
+      history.off('stack-item-added', captureItem);
+      history.off('stack-item-updated', captureItem);
+      history.off('stack-item-popped', capturePopped);
+      for (const b of updates) b.fill(0);
+    }
+  };
+  const accept = (state: PreparedWorkspaceState, revision: number) => {
+    const previous = accepted;
+    accepted = state;
+    verifiedRevision = adoptedRevision = revision;
+    dispose(previous);
+    outcomes.set(state.group, state.value);
+  };
   const session = await open({
     validateReceive: options.validateReceive,
+    ...(preparation === 'local-handoff'
+      ? ({
+          [localWorkspacePreparation]: {
+            verifiedRevision: () => verifiedRevision,
+            command: (context, input, scope) => prepareWorkspace(input, context.writer, scope),
+            accept,
+            fail: (cause) => {
+              failure = cause;
+            },
+          },
+        } satisfies Partial<AdmissionOptions>)
+      : {}),
     prepare(draft, input) {
-      if (!accepted) throw Error('Workspace recovery is not complete.');
       dispose(pending);
       pending = undefined;
-      const intent = JSON.parse(
-        new TextDecoder('utf-8', { fatal: true }).decode(input),
-      ) as WorkspaceIntent;
-      const history = forkWorkspaceHistory(accepted.history, human),
-        doc = history.doc;
-      doc.clientID = draft.clientID;
-      const selections = structuredClone(accepted.selections);
-      if (intent.group !== accepted.group) history.stopCapturing();
-      const updates: Bytes[] = [],
-        sources: import('./sourceCapture').SourceUpdate[] = [];
-      const capture = (bytes: Uint8Array, origin: unknown) => {
-        const copy = new Uint8Array(bytes);
-        updates.push(copy);
-        if (options.captureSources) {
-          const actor = origin === history ? human : (origin as typeof human);
-          if (
-            !actor ||
-            !(
-              (actor.actor === identity.id && actor.kind === 'human') ||
-              (actor.actor === 'system' && actor.kind === 'system')
-            )
-          )
-            throw Error('Unbound transaction source');
-          sources.push({ actor: actor.actor, kind: actor.kind, bytes: copy });
-        }
-      };
-      doc.on('update', capture);
-      let humanItem: (typeof history.undoStack)[number] | undefined,
-        popped: (typeof history.undoStack)[number] | undefined;
-      const captureItem = (e: {
-        origin: unknown;
-        stackItem: (typeof history.undoStack)[number];
-      }) => {
-        if (e.origin === human) humanItem = e.stackItem;
-      };
-      history.on('stack-item-added', captureItem);
-      history.on('stack-item-updated', captureItem);
-      const capturePopped = (e: { stackItem: (typeof history.undoStack)[number] }) => {
-        popped = e.stackItem;
-      };
-      history.on('stack-item-popped', capturePopped);
+      const result = prepareWorkspace(input, draft.clientID);
       try {
-        const result = runWorkspaceCommand(
-          history,
-          intent,
-          { identity, human, system, today: today() },
-          selections,
-        );
-        if (humanItem) {
-          if (!humanItem.meta.has('before'))
-            humanItem.meta.set('before', structuredClone(accepted.selections));
-          humanItem.meta.set('after', structuredClone(selections));
-        }
-        if (popped) {
-          const undoing = intent.command.kind === 'undo';
-          const target = (undoing ? history.redoStack : history.undoStack).at(-1);
-          if (target) target.meta = structuredClone(popped.meta);
-          const restore = popped.meta.get(undoing ? 'before' : 'after') as
-            | Map<string, RelativeSelection>
-            | undefined;
-          if (restore) {
-            selections.clear();
-            for (const [key, value] of restore) selections.set(key, structuredClone(value));
-          }
-        }
-        const update = new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]);
-        try {
-          applyUpdate(draft, update);
-        } finally {
-          update.fill(0);
-        }
-        pending = { history, selections, group: intent.group, value: result.value };
+        applyUpdate(draft, result.update);
+        pending = result.state;
         return result.remaining || options.captureSources
           ? {
-              ...(result.remaining ? { remaining: encode(result.remaining) } : {}),
-              ...(options.captureSources
-                ? {
-                    sources: (sources.length || options.suppressEmptySources
-                      ? sources
-                      : [
-                          {
-                            actor: identity.id,
-                            kind: 'human' as const,
-                            bytes: new Uint8Array([0, 0]),
-                          },
-                        ]
-                    ).map((s) => ({ ...s, bytes: s.bytes.slice() })),
-                  }
-                : {}),
+              ...(result.remaining ? { remaining: result.remaining } : {}),
+              ...(result.sources ? { sources: result.sources } : {}),
             }
           : undefined;
       } catch (error) {
-        history.destroy();
-        doc.destroy();
+        dispose(result.state);
+        result.remaining?.fill(0);
+        for (const source of result.sources ?? []) source.bytes.fill(0);
         throw error;
       } finally {
-        doc.off('update', capture);
-        history.off('stack-item-added', captureItem);
-        history.off('stack-item-updated', captureItem);
-        history.off('stack-item-popped', capturePopped);
-        for (const b of updates) b.fill(0);
+        result.update.fill(0);
       }
     },
   });
@@ -369,10 +415,26 @@ export const createAdmittedWorkspace = async (
         );
     };
     verifyProjection();
+    verifiedRevision = session.status.revision;
     session.subscribe((event) => {
       try {
         live();
-        if (event.source === 'local') {
+        if (
+          preparation === 'local-handoff' &&
+          adoptedRevision === event.revision &&
+          event.source !== 'local'
+        )
+          throw new AdmissionError(
+            'projection-mismatch',
+            'Prepared Local publication has the wrong source.',
+          );
+        if (event.source === 'local' && preparation === 'local-handoff') {
+          if (adoptedRevision !== event.revision || verifiedRevision !== event.revision)
+            throw new AdmissionError(
+              'projection-mismatch',
+              'Local publication has no matching verified adoption.',
+            );
+        } else if (event.source === 'local') {
           if (!pending) throw Error('Accepted workspace command has no prepared history.');
           const previous = accepted;
           accepted = pending;
@@ -381,7 +443,8 @@ export const createAdmittedWorkspace = async (
           outcomes.set(accepted.group, accepted.value);
         } else applyUpdate(accepted!.history.doc, event.update, 'received');
         // Check every accepted transition, including later remote dependencies, before exposure.
-        verifyProjection();
+        if (preparation !== 'local-handoff' || event.source === 'remote') verifyProjection();
+        verifiedRevision = event.revision;
         emit();
         if (
           event.source === 'local' &&

@@ -834,3 +834,36 @@ with Android failing <16 ms. Next integrate Local against the legacy reference t
 native pressure/crash checks, then use a prospectively specified performance comparison and the
 unchanged application gate. Account source integration, handset capacity and immutable qualification
 remain separate; F-17 is partial.
+
+
+## 2026-09-14 — Private Local handoff: functional integration before timing
+
+At signed `0c84e5cc`, integrate the private preparation owner through an explicit Local constructor
+selection. The candidate avoids the first canonical-derived draft while retaining a detached history,
+actual transaction capture, exact retry, write leases, per-slice renewal and complete comparison
+before publication. Default Local and Account factories retain the reference path. Sharing the
+command helper does change internal code on that reference path, so the next performance comparison
+must also retain the signed baseline; do not assume its timing stayed identical.
+
+The 23 original workspace cases run against both strategies. Each additionally checks no-op/writer
+renewal, reentrant submission and the same 80 generated text/revision/undo/redo/cold-replay histories
+(seed 140925). Two Local-specific close/adoption cases bring the workspace total to 54. Eight owned
+files pass 155 cases; full units pass alone at unchanged limits (97 files / 1,093 tests). The native
+pending-state and original-order delivery campaigns each pass directed cases and 100 generated
+histories. The final owned workspace catalogue passes ten cases and four mutations with drain.
+All 99 runner self-tests and type/style/authority checks pass.
+
+A directed native initialization test first exposed a new private-integration gap: an event labeled
+remote after Local adoption was tolerated because the adopted document already matched canonical.
+The workspace now checks source and revision; failure retains the projection-mismatch cause through
+startup. The original source/report, directed repair and final campaign survive. Removing that check
+reproduces the intended native failure. Separate unit controls detect omitted adoption comparison
+and erasure of a leased write. [Implementation](./f17-local-handoff.md);
+[evidence](./account-conformance-runs/2026-09-14-f17-local-handoff/README.md).
+
+No performance measurement or application-budget change occurs. The last application gate remains
+15.2/69.4 ms desktop/CPU-4x Android typing against <16 ms, with Android failing. Functional agreement
+is not evidence of a speedup. Next specify a balanced comparison prospectively, run it and the
+unchanged application gate, then decide Local default activation. Account source activation,
+physical-device capacity and immutable qualification remain separate. After the F-17 disposition,
+resume the 96 command / 63 campaign wrapper obligations and remaining qualification repairs.

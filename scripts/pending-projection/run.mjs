@@ -21,6 +21,13 @@ for (let i = 0; i < argv.length; i++)
   if (!['--output', '--runs', '--mutant', '--case', '--replay'].includes(argv[i]) || !argv[++i])
     throw Error('Invalid arguments');
 const mutants = {
+  'skip-local-publication-source': {
+    file: 'src/crdt/admittedWorkspace.ts',
+    from: 'adoptedRevision === event.revision &&',
+    to: 'false &&',
+    case: 'initialization-projection-drift',
+    assertion: 'initialization-preserves-projection-cause',
+  },
   'drop-pending-structs': {
     file: 'src/crdt/yjs.ts',
     from: 'const pending = source.store.pendingStructs;',

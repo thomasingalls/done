@@ -43,15 +43,10 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations.
-General integration covers **261 files / 2,042 case dispositions (11 not applicable)**, including all 123 Account files.
+General integration covers **261 files / 2,073 case dispositions (11 not applicable)**, including all 123 Account files.
 0 test-file, 96 command and 63 campaign obligations remain.
-The private handoff component is implemented and its bounded checks pass, including a standalone full-unit rerun after two concurrent-run timeouts. It remains unconnected to the editor; Local integration and the application latency gate remain open. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
-Next: integrate the private handoff into Local admission with matching job/slice publication, preserving the generic path as a reference; compare both paths through command/undo/selection, retry/discard, remote and shutdown histories plus native crash/pressure checks before a prospectively specified performance comparison; Account source activation remains separately gated. [Latest evidence](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
-
-The [reconciled execution checkpoint](./release-validation-execution.md#checkpoint-and-remaining-sequence)
-separates completed test-file integration from the remaining wrapper obligations and the failed
-application gate. After the bounded F-17 integration/performance work, return to command/campaign
-certification and outstanding input/output/headroom/style/prose work before immutable qualification.
+The private Local handoff passes functional integration/reference/native gates; default activation and performance qualification remain open. Prior owner/headroom/oracle observations, R-04/P-06, wrapper outputs and immutable qualification remain open.
+Next: prospectively specify and run balanced candidate/reference whole-command measurements, retaining the signed baseline as a comparison, and the unchanged application latency gate before deciding default Local activation; Account source/capture activation remains separately gated. [Latest evidence](./account-conformance-runs/2026-09-14-f17-local-handoff/README.md).
 
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
@@ -90,7 +85,7 @@ No full `pnpm check`, broad platform qualification or public release is claimed 
 | Privacy, F-21.4 | Qualify supported browser/OS/custody opener combinations; document opaque/fragmented representations not covered by whole-sentinel scanning. Logical legacy cleanup does not erase forensic remnants. No heap/swap/unallocated-sector claim. |
 | Failures/recovery, F-09 | Current-format Local salvage is partial and requires intact authenticated custody. Account recovery, factor/key loss and unsupported historical formats need their own recovery/export/import contracts. Existing blocked-storage/prompt UX and lock-order documentation stay separately tracked (F-13/F-14/F-23/F-24). |
 | Storage, F-16 | The scheduler is advisory: continuous work can postpone it, pending dependencies preserve original frames, a large state stays large, and Account proof history is not pruned. Establish a supported growth/reopen envelope. |
-| Responsiveness, F-17 | Comparison and detached-fork repairs remain verified. Both metadata fast paths missed the prospective rule and were discarded; graph/undo/isolation tests remain. The preparation contract, baseline controls and private handoff component are complete. Next integrate Local against the retained reference before measuring removal of duplicate preparation. The last application gate still fails on CPU-4x Android typing. Focus observations and supported-device capacity remain open. |
+| Responsiveness, F-17 | Comparison and detached-fork repairs remain verified. Both metadata fast paths missed the prospective rule and were discarded; graph/undo/isolation tests remain. Private Local handoff integration now passes reference/generated/native checks. Default Local and Account retain the reference. Next prospectively compare performance, including the signed baseline, before deciding Local activation. The last application gate still fails on CPU-4x Android typing. Focus observations and supported-device capacity remain open. |
 | Retained markers, F-19 | Confirm native storage/resource costs and end-to-end admission/open capacity at the declared workload. Full MAC/parse work, completion duplication and the 72 MiB private promotion body ceiling remain; the microprofile is not maximum-body/concurrency qualification. |
 
 Q-06/R-02's signing sweep now has a [verified crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json).

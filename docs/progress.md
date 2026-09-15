@@ -55,32 +55,49 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-14
 ```
 
-**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The F-17 excursion
-addresses a failing application gate. After Local handoff integration and its validation/performance
-disposition, resume the 96 command / 63 campaign wrapper obligations and remaining qualification
-repairs before the immutable aggregate. The [execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence)
-and [record audit](./account-conformance-runs/2026-09-14-release-status-audit.json) were reconciled at
-signed `82daaac0`; historical phase evidence remains revision-bound.
+**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. This F-17 work
+addresses the failing application-latency gate. After its performance/default-activation disposition,
+resume the 96 command / 63 campaign wrapper obligations and remaining qualification repairs before
+the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
+The record audit is committed with a verified signature as `0c84e5cc`.
 
-**Just completed.** Private workspace preparation handoff component covers 20 case dispositions (20 passed; 0 explicitly not applicable) in 1 files. Adds the private workspacePreparation component without connecting it to admission or the editor. Frozen identity contexts bind the verified local head, job, slice, accepted revision and writer. Preparation is synchronous and one-shot; scoped history/buffers transfer ownership, verification precedes source custody capture, retries borrow the identical retained result, and close revokes authority while awaiting active writes before disposal. Adoption requires the same job/slice at exactly the next revision and successful full comparison before transferring history; verification failure after promotion is terminal. The component has no canonical reference or public workspace export; its integration callbacks must retain complete comparison, actual transaction-derived updates, queue reservations and independent Account source coverage. Twenty component cases use actual Yjs histories and source/canonical comparisons, including 120 generated accepted-text/revision/undo/cold-replay traces. Eight deliberate mutations fail their intended assertions. New tests first exposed two resource-cleanup gaps in this unconnected component: late async results and incomplete collection of a closing command's returned buffers; both are repaired with original source/tests/output retained. A control initially timed out because its fixture failed to release an unexpectedly successful borrow; its cleanup is corrected and the original failure remains. The first full unit run, concurrent with other validation, timed out in two unchanged five-second cases: Account liveness and position decisions. The same default full command then passes alone at unchanged limits: 97 files / 1,062 tests. This supports the bounded functional checkpoint, not closure of loaded-host timing headroom; concurrency as the cause is not established. The owned runner passes all 20 new cases with process drain. One reviewed suite and 20 cases are added; all 260 prior general contracts, exclusions, crypto labels and prior runtime source bytes are preserved. The runtime census adds only the new unconnected component. No application/native campaign or performance timing is run; the last independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x typing. Personal app, server, package and deployment remain untouched.
+**Just completed.** Private Local preparation integration now passes its functional gates. An
+explicit internal constructor selection uses the handoff; the default Local opener and all Account
+factories retain the generic reference path. The candidate removes the first canonical-derived draft,
+retains the same prepared state through retry, leases write buffers until storage settles, and
+verifies complete canonical state plus matching job/slice/revision/writer before adoption. Workspace
+publication must match the verified revision and source. No performance measurement or default
+activation occurs in this phase.
 
-All 99 pure runner checks, TypeScript, scoped style, inventory and authority gates pass. The preceding commit `6c5502fd` has a verified signature. 260 prior general contracts and all exclusions are preserved; 52 personal/vector pins and L-2 remain unchanged.
+The native initialization control found a new integration gap: a Local event relabeled remote passed
+after candidate adoption. The source-binding repair passes that counterexample and a mutation that
+removes it fails as intended. Before/after source and reports remain. Terminal adoption failures also
+retain their projection-mismatch cause. Two unit mutations detect omitted comparison and premature
+byte erasure.
 
-General integration now covers 261 files / 2,042 case dispositions (11 not applicable). 0 test-file, 96 command and 63 campaign obligations remain. These counts describe integration coverage, not defect counts. Wrapper/output, host-Python binding, prior owner/headroom/oracle observations, R-04/P-06 and immutable aggregate qualification remain separate. Next: integrate the private handoff into Local admission with matching job/slice publication, preserving the generic path as a reference; compare both paths through command/undo/selection, retry/discard, remote and shutdown histories plus native crash/pressure checks before a prospectively specified performance comparison; Account source activation remains separately gated.
+The 23 original workspace cases run against both strategies. Additional writer/no-op, reentrant,
+close/adoption and identical 80-history generated checks yield 54 workspace cases. The owned runner
+passes 155 cases in eight affected files; full units pass alone at unchanged limits (97 files /
+1,093 tests). Native pending-state and delivery each pass their directed cases and 100 generated
+histories; the final owned workspace catalogue passes 10 cases and 4 mutations with drain. All 99
+runner checks, type/style/authority gates, 52 personal/vector pins and L-2 checks pass.
 
-[Evidence](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
+The reviewed general set is **261 files / 2,073 dispositions (11 not applicable)**. All 260 other
+general contracts and original reference assertions remain. There are **zero blocked test-file
+rows, 96 command rows and 63 campaign rows**. These are integration obligations, not defect counts.
+[Implementation and scope](./f17-local-handoff.md);
+[evidence](./account-conformance-runs/2026-09-14-f17-local-handoff/README.md).
 
 **Open validation observations.** Both metadata-copy candidates pass focused semantic checks but
 miss the prospective performance rule. At 1,000 undo groups the recursive candidate improves one/100
 target medians by 5.1%/20.1%, and direct constructors by 10.3%/30.5%; the required gain was >=20% in
 both strata. All 720 timings, source variants and sharing controls survive. Production is restored
 exactly, while new graph/isolation, fallback and undo/selection regression tests remain. The ownership/verification contract and baseline controls are recorded. The private handoff
-component now passes actual rejection/disposal tests but remains unconnected. Local integration and
-reference comparisons are next; they must preserve full verification and queue/capture bounds.
+now passes the explicit Local integration/reference gates. Default activation and Account source
+activation remain separate. Full verification and queue/capture bounds are retained.
 The last residual profile still shows substantial costs for each draft, full comparison and
 publication. The independent application gate remains failed at its last 15.2/69.4 ms desktop/CPU-4x
-typing observation; focus was 7.4/35.7 ms and other recorded budgets passed. Neither native nor
-application campaigns were rerun for the rejected optimizations, contract/test phase or unconnected component. Preserve the earlier focus failure,
+typing observation; focus was 7.4/35.7 ms and other recorded budgets passed. No application timing was added by Local integration; its native semantic campaigns now pass. Preserve the earlier focus failure,
 recorder/scheduler uncertainty and all negative fork controls. These host observations do not
 establish handset or immutable qualification. [Rejected metadata assessment](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
 [Preparation contract and controls](./f17-preparation-contract.md).
@@ -107,7 +124,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** integrate the private handoff into Local admission with matching job/slice publication, preserving the generic path as a reference; compare both paths through command/undo/selection, retry/discard, remote and shutdown histories plus native crash/pressure checks before a prospectively specified performance comparison; Account source activation remains separately gated. All declared suite adapters are integrated. Continue bounded performance work with signed intermediate commits; stop if signing blocks.
+**Next bounded phase.** prospectively specify and run balanced candidate/reference whole-command measurements, retaining the signed baseline as a comparison, and the unchanged application latency gate before deciding default Local activation; Account source/capture activation remains separately gated. All declared suite adapters are integrated. After the F-17 disposition, resume wrapper certification and remaining qualification repairs. Stop if signing blocks.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

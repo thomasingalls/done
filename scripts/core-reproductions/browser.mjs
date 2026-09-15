@@ -45,6 +45,7 @@ for (const path of paths) {
 }
 const aliases = {
   '@workspace': 'src/crdt/admittedWorkspace.ts',
+  '@admission': 'src/crdt/admission.ts',
   '@styles': 'src/styles/index.css',
   '@editor': 'src/editor/admittedEditor.ts',
   '@channel': 'src/crdt/workspaceChannel.ts',

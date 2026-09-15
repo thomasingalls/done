@@ -157,11 +157,15 @@ window.projection = {
       };
       workspace =
         type === 'workspace'
-          ? await createAdmittedWorkspace(open, {
-              identity,
-              validateReceive: () => {},
-              today: () => '2026-09-08',
-            })
+          ? await createAdmittedWorkspace(
+              open,
+              {
+                identity,
+                validateReceive: () => {},
+                today: () => '2026-09-08',
+              },
+              'local-handoff',
+            )
           : await createAdmittedText(open, () => {});
       workspace.subscribe(() => {
         try {

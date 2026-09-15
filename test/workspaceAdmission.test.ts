@@ -1,5 +1,10 @@
 // @vitest-environment node
 import { describe, it, expect, vi } from 'vitest';
+import * as fc from 'fast-check';
+import {
+  localWorkspacePreparation,
+  type PreparedWorkspaceState,
+} from '../src/crdt/workspacePreparation';
 import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
@@ -36,12 +41,18 @@ const until = async (condition: () => boolean) => {
   }
   throw Error('Condition not reached');
 };
-const fixture = async (seed?: Uint8Array) => {
+const makeFixture = async (
+  seed?: Uint8Array,
+  preparation: 'reference' | 'local-handoff' = 'reference',
+) => {
   let date = '2026-09-08';
   let refuse = false,
     fail = false,
     release: (() => void) | undefined,
     gate: Promise<void> | undefined;
+  const preparations: number[] = [],
+    writeReferences: Uint8Array[] = [];
+  let corrupt = false;
   const abort = new AbortController(),
     disk: Uint8Array[] = seed ? [seed] : [],
     wal: Uint8Array[] = [];
@@ -58,6 +69,7 @@ const fixture = async (seed?: Uint8Array) => {
       return { status: 'journalled' };
     },
     async appendBatch(records: { bytes: Uint8Array }[]) {
+      writeReferences.push(...records.map((r) => r.bytes));
       await gate;
       if (fail) {
         fail = false;
@@ -74,15 +86,53 @@ const fixture = async (seed?: Uint8Array) => {
       release?.();
     },
   } as unknown as JournalSession;
-  const doc = await createAdmittedWorkspace((options) => createAdmissionOwner(carrier, options), {
-    identity,
-    validateReceive: () => {},
-    today: () => date,
-  });
+  const doc = await createAdmittedWorkspace(
+    (options) => {
+      const local = options[localWorkspacePreparation];
+      return createAdmissionOwner(carrier, {
+        ...options,
+        prepare: (...args) => {
+          preparations.push(args[0].clientID);
+          return options.prepare(...args);
+        },
+        ...(local
+          ? {
+              [localWorkspacePreparation]: {
+                ...local,
+                command(context, input, scope) {
+                  preparations.push(context.writer);
+                  let candidate: PreparedWorkspaceState | undefined;
+                  const result = local.command(context, input, {
+                    ...scope,
+                    ownState(state) {
+                      scope.ownState(state);
+                      candidate = state;
+                    },
+                  });
+                  if (corrupt) candidate!.history.doc.getText('uncovered').insert(0, 'drift');
+                  return result;
+                },
+              },
+            }
+          : {}),
+      });
+    },
+    {
+      identity,
+      validateReceive: () => {},
+      today: () => date,
+    },
+    preparation,
+  );
   const emitted: Uint8Array[] = [];
   doc.outgoing((b) => emitted.push(b));
   return {
     doc,
+    preparations,
+    writeReferences,
+    corrupt: () => {
+      corrupt = true;
+    },
     setDate: (value: string) => {
       date = value;
     },
@@ -106,475 +156,667 @@ const fixture = async (seed?: Uint8Array) => {
     },
   };
 };
-const insert = (text: string) => ({ name: 'insert' as const, text });
-describe('admitted workspace commands and history', () => {
-  it('projects retained legacy archives as read-only bodies without creating live cards', async () => {
-    const seed = createDoc();
-    const day = newMap();
-    seed.getMap('days').set('2026-08-01', day);
-    const archived = { next: ['old next'], scheduled: [], done: ['old done'] };
-    day.set('archive', newText(serializeCollections(archived)));
-    const f = await fixture(new Uint8Array(encodeState(seed)));
-    seed.destroy();
-    try {
-      expect(f.doc.read().days.find((d) => d.date === '2026-08-01')?.archived).toEqual(archived);
-      expect(f.doc.read().cards).toEqual([]);
-      expect(
-        f.doc.exportEntries().find((entry) => entry.path === 'days/2026-08-01.md')?.content,
-      ).toContain('old done');
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('archive projection refreshes content and membership without lending cached arrays to callers', async () => {
-    const seed = createDoc(),
-      day = newMap();
-    seed.getMap('days').set('2026-08-01', day);
-    day.set(
-      'archive',
-      newText(serializeCollections({ next: ['old'], scheduled: [], done: ['kept'] })),
-    );
-    const f = await fixture(new Uint8Array(encodeState(seed)));
-    seed.destroy();
-    const archive = () => f.doc.read().days.find((d) => d.date === '2026-08-01')!.archived!;
-    try {
-      (archive().next as string[]).push('caller mutation');
-      expect(archive().next).toEqual(['old']);
-      await f.doc.receive(
-        remote(f.doc, (d) => {
-          const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
-          day.set('next', newArray());
-        }),
-      ).accepted;
-      expect(archive().next).toEqual([]);
-      await f.doc.receive(
-        remote(f.doc, (d) => {
-          const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
-          day.delete('next');
-          day.set(
-            'archive',
-            newText(serializeCollections({ next: ['new'], scheduled: [], done: [] })),
+describe.each(['reference', 'local-handoff'] as const)(
+  'workspace preparation %s',
+  (preparation) => {
+    const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
+    const insert = (text: string) => ({ name: 'insert' as const, text });
+    describe('admitted workspace commands and history', () => {
+      it('projects retained legacy archives as read-only bodies without creating live cards', async () => {
+        const seed = createDoc();
+        const day = newMap();
+        seed.getMap('days').set('2026-08-01', day);
+        const archived = { next: ['old next'], scheduled: [], done: ['old done'] };
+        day.set('archive', newText(serializeCollections(archived)));
+        const f = await fixture(new Uint8Array(encodeState(seed)));
+        seed.destroy();
+        try {
+          expect(f.doc.read().days.find((d) => d.date === '2026-08-01')?.archived).toEqual(
+            archived,
           );
-        }),
-      ).accepted;
-      expect(archive().next).toEqual(['new']);
-      await f.doc.receive(
-        remote(f.doc, (d) => {
-          (d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>).delete('archive');
-        }),
-      ).accepted;
-      expect(archive()).toBeUndefined();
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('admits device display labels into encrypted content and recovers them without changing identity', async () => {
-    const f = await fixture();
-    let reopened: Awaited<ReturnType<typeof fixture>> | undefined;
-    try {
-      expect(f.doc.read().deviceName).toBe('test device');
-      await f.doc.command({ kind: 'device-label', name: 'Kitchen laptop' }).accepted;
-      expect(f.doc.read().deviceName).toBe('Kitchen laptop');
-      reopened = await fixture(f.doc.snapshot());
-      expect(reopened.doc.read().deviceName).toBe('Kitchen laptop');
-      expect(reopened.doc.read().actors.find((actor) => actor.id === identity.id)?.name).toBe(
-        'Alice',
-      );
-      expect(f.doc.read().undo).toBe(0);
-      expect((await f.doc.command({ kind: 'undo' }).accepted).value).toBe(false);
-      expect(f.doc.read().deviceName).toBe('Kitchen laptop');
-    } finally {
-      await f.doc.close();
-      await reopened?.doc.close();
-    }
-  });
-  it('preserves null business results without treating them as a storage failure', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      const result = await f.doc.command({ kind: 'merge', id }).accepted;
-      expect(result.value).toBeNull();
-      expect(f.doc.status.state).toBe('active');
-      expect(f.doc.read().undo).toBe(1);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('refuses a future schema during initialization without modifying the source', async () => {
-    const seed = createDoc();
-    seed.getMap('meta').set('schemaVersion', 999);
-    const bytes = new Uint8Array(encodeState(seed)),
-      original = bytes.slice();
-    seed.destroy();
-    await expect(fixture(bytes)).rejects.toThrow();
-    expect(bytes).toEqual(original);
-  });
-  it('keeps returned projections and submitted commands detached from the owner', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      const snapshot = f.doc.read();
-      snapshot.cards[0]!.text = 'tampered';
-      f.refuse();
-      f.pause();
-      const command = { kind: 'move' as const, id, to: { ...done } };
-      const pending = f.doc.command(command);
-      command.to.date = '2030-01-01';
-      f.resume();
-      await pending.accepted;
-      expect(f.doc.read().cards[0]!.text).toBe('card');
-      expect(f.doc.read().cards[0]!.location).toEqual(done);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('follows local redone links when undoing an edit inside a restored parent', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      await f.doc.text({ kind: 'card', id }).input(insert('!'), selection(4)).accepted;
-      await f.doc.command({ kind: 'remove', id }).accepted;
-      await f.doc.command({ kind: 'undo' }).accepted;
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().cards[0]?.text).toBe('card');
-      await f.doc.command({ kind: 'redo' }).accepted;
-      expect(f.doc.read().cards[0]?.text).toBe('card!');
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('durably initializes the actor and schema without adding human undo', async () => {
-    const f = await fixture();
-    try {
-      expect(
-        f.doc
-          .read()
-          .actors.map((a) => a.id)
-          .sort(),
-      ).toEqual(['human-one', 'system']);
-      expect(f.doc.read().undo).toBe(0);
-      expect(f.disk.length).toBeGreaterThan(0);
-      expect(f.wal.length).toBe(0);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('shares human history across Goals, cards and movement', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      const text = f.doc.text({ kind: 'card', id });
-      await master(f.doc).input(insert('goals')).accepted;
-      await text.input(insert('!'), selection(4)).accepted;
-      await f.doc.command({ kind: 'move', id, to: done }).accepted;
-      expect(f.doc.read().undo).toBe(4);
-      await master(f.doc).input({ name: 'undo' }).accepted;
-      expect(f.doc.read().cards[0]?.location).toEqual(next);
-      await master(f.doc).input({ name: 'undo' }).accepted;
-      expect(text.read().text).toBe('card');
-      await text.input({ name: 'undo' }).accepted;
-      expect(master(f.doc).read().text).toBe('');
-      await text.input({ name: 'undo' }).accepted;
-      expect(f.doc.read().cards).toHaveLength(0);
-      expect(f.doc.read().days).toHaveLength(1);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('retains repeated undo/redo links through private history forks', async () => {
-    const f = await fixture();
-    try {
-      const t = master(f.doc);
-      t.input(insert('A'));
-      t.input(insert('B'));
-      for (let n = 0; n < 3; n++) {
-        await t.input({ name: 'undo' }).accepted;
-        expect(t.read().text).toBe('A');
-        await t.input({ name: 'undo' }).accepted;
-        expect(t.read().text).toBe('');
-        await t.input({ name: 'redo' }).accepted;
-        expect(t.read().text).toBe('A');
-        await t.input({ name: 'redo' }).accepted;
-        expect(t.read().text).toBe('AB');
-      }
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('restores a deleted nested card and its text through undo, redo, and undo', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      await f.doc.command({ kind: 'remove', id }).accepted;
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().cards[0]?.text).toBe('card');
-      await f.doc.command({ kind: 'redo' }).accepted;
-      expect(f.doc.read().cards).toHaveLength(0);
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().cards[0]?.text).toBe('card');
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('does not publish a failed move or advance its undo stack before forced retry', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      f.refuse();
-      f.fail();
-      const move = f.doc.command({ kind: 'move', id, to: done });
-      await until(() => f.doc.status.state === 'blocked');
-      const type = master(f.doc).input(insert('later'));
-      expect(f.doc.read().cards[0]?.location).toEqual(next);
-      expect(f.doc.read().undo).toBe(1);
-      expect(f.emitted).toHaveLength(1);
-      f.doc.retry();
-      await move.accepted;
-      await type.accepted;
-      expect(f.doc.read().cards[0]?.location).toEqual(done);
-      expect(f.doc.read().master).toBe('later');
-      expect(f.doc.read().undo).toBe(3);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('retries refused undo without making its history authoritative', async () => {
-    const f = await fixture();
-    try {
-      await create(f.doc);
-      f.refuse();
-      f.fail();
-      const undo = f.doc.command({ kind: 'undo' });
-      await until(() => f.doc.status.state === 'blocked');
-      expect(f.doc.read().undo).toBe(1);
-      expect(f.doc.read().redo).toBe(0);
-      expect(f.doc.read().cards).toHaveLength(1);
-      f.doc.retry();
-      await undo.accepted;
-      expect(f.doc.read().cards).toHaveLength(0);
-      expect(f.doc.read().redo).toBe(1);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('evaluates Next capacity at the head after earlier accepted commands', async () => {
-    const f = await fixture();
-    try {
-      await create(f.doc, '1');
-      await create(f.doc, '2');
-      f.refuse();
-      f.pause();
-      const third = f.doc.command({ kind: 'compose', to: next, text: '3' }),
-        fourth = f.doc.command({ kind: 'compose', to: next, text: '4' });
-      expect(f.doc.read().cards).toHaveLength(2);
-      f.resume();
-      await third.accepted;
-      expect((await fourth.accepted).value).toBe(false);
-      expect(f.doc.read().cards).toHaveLength(3);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('excludes bulk, settings and actor housekeeping from human content undo', async () => {
-    const f = await fixture();
-    try {
-      await create(f.doc);
-      await f.doc.command({ kind: 'bulk', from: next.date, to: done }).accepted;
-      await f.doc.command({ kind: 'settings', rolloverHour: 4 }).accepted;
-      await f.doc.command({ kind: 'actor', patch: { name: 'Renamed' } }).accepted;
-      expect(f.doc.read().undo).toBe(1);
-      expect(f.doc.read().settings.rolloverHour).toBe(4);
-      expect(f.doc.read().actors.find((a) => a.id === identity.id)?.name).toBe('Renamed');
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('keeps the day container and a remote card when undoing the first human card', async () => {
-    const f = await fixture();
-    try {
-      await create(f.doc, 'local');
-      const g = await fixture(f.doc.snapshot());
-      try {
-        await create(g.doc, 'remote');
-        await f.doc.receive(new Uint8Array(g.emitted.at(-1)!)).accepted;
-      } finally {
-        await g.doc.close();
-      }
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().cards.map((c) => c.text)).toEqual(['remote']);
-      expect(f.doc.read().days[0]?.next).toHaveLength(1);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('does not undo a remote text insertion or remote location change', async () => {
-    const f = await fixture();
-    try {
-      master(f.doc).input(insert('AB'));
-      await f.doc.receive(remote(f.doc, (d) => d.getText('master').insert(1, 'R'))).accepted;
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().master).toBe('R');
-      const id = await create(f.doc);
-      await f.doc.command({ kind: 'move', id, to: done }).accepted;
-      const scheduled = { ...next, section: 'scheduled' };
-      await f.doc.receive(
-        remote(f.doc, (d) =>
-          d.getMap('cardLocations').set(id, scheduled.date + ':' + scheduled.section),
-        ),
-      ).accepted;
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(f.doc.read().cards[0]?.location).toEqual(scheduled);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('splits and merges through existing card rules and export', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc, 'onetwo');
-      const split = await f.doc.command({ kind: 'split', id, at: 3 }).accepted;
-      expect(typeof split.value).toBe('string');
-      expect(
-        f.doc
-          .read()
-          .cards.map((c) => c.text)
-          .sort(),
-      ).toEqual(['one', 'two']);
-      await f.doc.command({ kind: 'merge', id: split.value as string }).accepted;
-      expect(f.doc.read().cards[0]?.text).toBe('onetwo');
-      expect(f.doc.exportEntries().some((e) => e.content.includes('onetwo'))).toBe(true);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('rechecks freeze while preserving Goals editing', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      f.setDate('2026-09-20');
-      expect(f.doc.text({ kind: 'card', id }).read().editable).toBe(false);
-      expect(() => f.doc.text({ kind: 'card', id }).input(insert('x'))).toThrow();
-      expect((await f.doc.command({ kind: 'move', id, to: done }).accepted).value).toBe(false);
-      await master(f.doc).input(insert('always')).accepted;
-      expect(f.doc.read().master).toBe('always');
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('slices Unicode text and groups the accepted paste in workspace history', async () => {
-    const f = await fixture();
-    try {
-      const t = master(f.doc),
-        source = '🙂'.repeat(1250);
-      await t.input(insert(source)).accepted;
-      expect(t.read().text).toBe(source);
-      expect(f.doc.read().undo).toBe(1);
-      await f.doc.command({ kind: 'undo' }).accepted;
-      expect(t.read().text).toBe('');
-      await f.doc.command({ kind: 'redo' }).accepted;
-      expect(t.read().text).toBe(source);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('discards an entire refused suffix and starts a fresh private candidate', async () => {
-    const f = await fixture();
-    try {
-      const id = await create(f.doc);
-      f.refuse();
-      f.fail();
-      const move = f.doc.command({ kind: 'move', id, to: done });
-      await until(() => f.doc.status.state === 'blocked');
-      const suffix = master(f.doc).input(insert('discard'));
-      f.doc.discardPending();
-      await expect(move.accepted).rejects.toHaveProperty('code', 'discarded');
-      await expect(suffix.accepted).rejects.toHaveProperty('code', 'discarded');
-      await master(f.doc).input(insert('keep')).accepted;
-      expect(f.doc.read().cards[0]?.location).toEqual(next);
-      expect(f.doc.read().master).toBe('keep');
-      expect(f.doc.read().undo).toBe(2);
-    } finally {
-      await f.doc.close();
-    }
-  });
-  it('drains close without late publication and does not persist runtime history', async () => {
-    const f = await fixture();
-    await create(f.doc);
-    const saved = f.doc.snapshot();
-    f.refuse();
-    f.pause();
-    const late = master(f.doc).input(insert('late'));
-    const closing = f.doc.close();
-    f.resume();
-    await closing;
-    await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
-    expect(f.emitted).toHaveLength(1);
-    expect(() => f.doc.read()).toThrow();
-    const g = await fixture(saved);
-    try {
-      expect(g.doc.read().cards).toHaveLength(1);
-      expect(g.doc.read().undo).toBe(0);
-    } finally {
-      await g.doc.close();
-    }
-  });
-});
+          expect(f.doc.read().cards).toEqual([]);
+          expect(
+            f.doc.exportEntries().find((entry) => entry.path === 'days/2026-08-01.md')?.content,
+          ).toContain('old done');
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('archive projection refreshes content and membership without lending cached arrays to callers', async () => {
+        const seed = createDoc(),
+          day = newMap();
+        seed.getMap('days').set('2026-08-01', day);
+        day.set(
+          'archive',
+          newText(serializeCollections({ next: ['old'], scheduled: [], done: ['kept'] })),
+        );
+        const f = await fixture(new Uint8Array(encodeState(seed)));
+        seed.destroy();
+        const archive = () => f.doc.read().days.find((d) => d.date === '2026-08-01')!.archived!;
+        try {
+          (archive().next as string[]).push('caller mutation');
+          expect(archive().next).toEqual(['old']);
+          await f.doc.receive(
+            remote(f.doc, (d) => {
+              const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
+              day.set('next', newArray());
+            }),
+          ).accepted;
+          expect(archive().next).toEqual([]);
+          await f.doc.receive(
+            remote(f.doc, (d) => {
+              const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
+              day.delete('next');
+              day.set(
+                'archive',
+                newText(serializeCollections({ next: ['new'], scheduled: [], done: [] })),
+              );
+            }),
+          ).accepted;
+          expect(archive().next).toEqual(['new']);
+          await f.doc.receive(
+            remote(f.doc, (d) => {
+              (d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>).delete('archive');
+            }),
+          ).accepted;
+          expect(archive()).toBeUndefined();
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('admits device display labels into encrypted content and recovers them without changing identity', async () => {
+        const f = await fixture();
+        let reopened: Awaited<ReturnType<typeof fixture>> | undefined;
+        try {
+          expect(f.doc.read().deviceName).toBe('test device');
+          await f.doc.command({ kind: 'device-label', name: 'Kitchen laptop' }).accepted;
+          expect(f.doc.read().deviceName).toBe('Kitchen laptop');
+          reopened = await fixture(f.doc.snapshot());
+          expect(reopened.doc.read().deviceName).toBe('Kitchen laptop');
+          expect(reopened.doc.read().actors.find((actor) => actor.id === identity.id)?.name).toBe(
+            'Alice',
+          );
+          expect(f.doc.read().undo).toBe(0);
+          expect((await f.doc.command({ kind: 'undo' }).accepted).value).toBe(false);
+          expect(f.doc.read().deviceName).toBe('Kitchen laptop');
+        } finally {
+          await f.doc.close();
+          await reopened?.doc.close();
+        }
+      });
+      it('preserves null business results without treating them as a storage failure', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          const result = await f.doc.command({ kind: 'merge', id }).accepted;
+          expect(result.value).toBeNull();
+          expect(f.doc.status.state).toBe('active');
+          expect(f.doc.read().undo).toBe(1);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('refuses a future schema during initialization without modifying the source', async () => {
+        const seed = createDoc();
+        seed.getMap('meta').set('schemaVersion', 999);
+        const bytes = new Uint8Array(encodeState(seed)),
+          original = bytes.slice();
+        seed.destroy();
+        await expect(fixture(bytes)).rejects.toThrow();
+        expect(bytes).toEqual(original);
+      });
+      it('keeps returned projections and submitted commands detached from the owner', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          const snapshot = f.doc.read();
+          snapshot.cards[0]!.text = 'tampered';
+          f.refuse();
+          f.pause();
+          const command = { kind: 'move' as const, id, to: { ...done } };
+          const pending = f.doc.command(command);
+          command.to.date = '2030-01-01';
+          f.resume();
+          await pending.accepted;
+          expect(f.doc.read().cards[0]!.text).toBe('card');
+          expect(f.doc.read().cards[0]!.location).toEqual(done);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('follows local redone links when undoing an edit inside a restored parent', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          await f.doc.text({ kind: 'card', id }).input(insert('!'), selection(4)).accepted;
+          await f.doc.command({ kind: 'remove', id }).accepted;
+          await f.doc.command({ kind: 'undo' }).accepted;
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards[0]?.text).toBe('card');
+          await f.doc.command({ kind: 'redo' }).accepted;
+          expect(f.doc.read().cards[0]?.text).toBe('card!');
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('durably initializes the actor and schema without adding human undo', async () => {
+        const f = await fixture();
+        try {
+          expect(
+            f.doc
+              .read()
+              .actors.map((a) => a.id)
+              .sort(),
+          ).toEqual(['human-one', 'system']);
+          expect(f.doc.read().undo).toBe(0);
+          expect(f.disk.length).toBeGreaterThan(0);
+          expect(f.wal.length).toBe(0);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('shares human history across Goals, cards and movement', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          const text = f.doc.text({ kind: 'card', id });
+          await master(f.doc).input(insert('goals')).accepted;
+          await text.input(insert('!'), selection(4)).accepted;
+          await f.doc.command({ kind: 'move', id, to: done }).accepted;
+          expect(f.doc.read().undo).toBe(4);
+          await master(f.doc).input({ name: 'undo' }).accepted;
+          expect(f.doc.read().cards[0]?.location).toEqual(next);
+          await master(f.doc).input({ name: 'undo' }).accepted;
+          expect(text.read().text).toBe('card');
+          await text.input({ name: 'undo' }).accepted;
+          expect(master(f.doc).read().text).toBe('');
+          await text.input({ name: 'undo' }).accepted;
+          expect(f.doc.read().cards).toHaveLength(0);
+          expect(f.doc.read().days).toHaveLength(1);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('retains repeated undo/redo links through private history forks', async () => {
+        const f = await fixture();
+        try {
+          const t = master(f.doc);
+          t.input(insert('A'));
+          t.input(insert('B'));
+          for (let n = 0; n < 3; n++) {
+            await t.input({ name: 'undo' }).accepted;
+            expect(t.read().text).toBe('A');
+            await t.input({ name: 'undo' }).accepted;
+            expect(t.read().text).toBe('');
+            await t.input({ name: 'redo' }).accepted;
+            expect(t.read().text).toBe('A');
+            await t.input({ name: 'redo' }).accepted;
+            expect(t.read().text).toBe('AB');
+          }
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('restores a deleted nested card and its text through undo, redo, and undo', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          await f.doc.command({ kind: 'remove', id }).accepted;
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards[0]?.text).toBe('card');
+          await f.doc.command({ kind: 'redo' }).accepted;
+          expect(f.doc.read().cards).toHaveLength(0);
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards[0]?.text).toBe('card');
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('does not publish a failed move or advance its undo stack before forced retry', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          f.refuse();
+          f.fail();
+          const move = f.doc.command({ kind: 'move', id, to: done });
+          await until(() => f.doc.status.state === 'blocked');
+          const type = master(f.doc).input(insert('later'));
+          expect(f.doc.read().cards[0]?.location).toEqual(next);
+          expect(f.doc.read().undo).toBe(1);
+          expect(f.emitted).toHaveLength(1);
+          f.doc.retry();
+          await move.accepted;
+          await type.accepted;
+          expect(f.doc.read().cards[0]?.location).toEqual(done);
+          expect(f.doc.read().master).toBe('later');
+          expect(f.doc.read().undo).toBe(3);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('retries refused undo without making its history authoritative', async () => {
+        const f = await fixture();
+        try {
+          await create(f.doc);
+          f.refuse();
+          f.fail();
+          const undo = f.doc.command({ kind: 'undo' });
+          await until(() => f.doc.status.state === 'blocked');
+          expect(f.doc.read().undo).toBe(1);
+          expect(f.doc.read().redo).toBe(0);
+          expect(f.doc.read().cards).toHaveLength(1);
+          f.doc.retry();
+          await undo.accepted;
+          expect(f.doc.read().cards).toHaveLength(0);
+          expect(f.doc.read().redo).toBe(1);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('evaluates Next capacity at the head after earlier accepted commands', async () => {
+        const f = await fixture();
+        try {
+          await create(f.doc, '1');
+          await create(f.doc, '2');
+          f.refuse();
+          f.pause();
+          const third = f.doc.command({ kind: 'compose', to: next, text: '3' }),
+            fourth = f.doc.command({ kind: 'compose', to: next, text: '4' });
+          expect(f.doc.read().cards).toHaveLength(2);
+          f.resume();
+          await third.accepted;
+          expect((await fourth.accepted).value).toBe(false);
+          expect(f.doc.read().cards).toHaveLength(3);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('excludes bulk, settings and actor housekeeping from human content undo', async () => {
+        const f = await fixture();
+        try {
+          await create(f.doc);
+          await f.doc.command({ kind: 'bulk', from: next.date, to: done }).accepted;
+          await f.doc.command({ kind: 'settings', rolloverHour: 4 }).accepted;
+          await f.doc.command({ kind: 'actor', patch: { name: 'Renamed' } }).accepted;
+          expect(f.doc.read().undo).toBe(1);
+          expect(f.doc.read().settings.rolloverHour).toBe(4);
+          expect(f.doc.read().actors.find((a) => a.id === identity.id)?.name).toBe('Renamed');
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('keeps the day container and a remote card when undoing the first human card', async () => {
+        const f = await fixture();
+        try {
+          await create(f.doc, 'local');
+          const g = await fixture(f.doc.snapshot());
+          try {
+            await create(g.doc, 'remote');
+            await f.doc.receive(new Uint8Array(g.emitted.at(-1)!)).accepted;
+          } finally {
+            await g.doc.close();
+          }
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards.map((c) => c.text)).toEqual(['remote']);
+          expect(f.doc.read().days[0]?.next).toHaveLength(1);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('does not undo a remote text insertion or remote location change', async () => {
+        const f = await fixture();
+        try {
+          master(f.doc).input(insert('AB'));
+          await f.doc.receive(remote(f.doc, (d) => d.getText('master').insert(1, 'R'))).accepted;
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().master).toBe('R');
+          const id = await create(f.doc);
+          await f.doc.command({ kind: 'move', id, to: done }).accepted;
+          const scheduled = { ...next, section: 'scheduled' };
+          await f.doc.receive(
+            remote(f.doc, (d) =>
+              d.getMap('cardLocations').set(id, scheduled.date + ':' + scheduled.section),
+            ),
+          ).accepted;
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards[0]?.location).toEqual(scheduled);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('splits and merges through existing card rules and export', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc, 'onetwo');
+          const split = await f.doc.command({ kind: 'split', id, at: 3 }).accepted;
+          expect(typeof split.value).toBe('string');
+          expect(
+            f.doc
+              .read()
+              .cards.map((c) => c.text)
+              .sort(),
+          ).toEqual(['one', 'two']);
+          await f.doc.command({ kind: 'merge', id: split.value as string }).accepted;
+          expect(f.doc.read().cards[0]?.text).toBe('onetwo');
+          expect(f.doc.exportEntries().some((e) => e.content.includes('onetwo'))).toBe(true);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('rechecks freeze while preserving Goals editing', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          f.setDate('2026-09-20');
+          expect(f.doc.text({ kind: 'card', id }).read().editable).toBe(false);
+          expect(() => f.doc.text({ kind: 'card', id }).input(insert('x'))).toThrow();
+          expect((await f.doc.command({ kind: 'move', id, to: done }).accepted).value).toBe(false);
+          await master(f.doc).input(insert('always')).accepted;
+          expect(f.doc.read().master).toBe('always');
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('slices Unicode text and groups the accepted paste in workspace history', async () => {
+        const f = await fixture();
+        try {
+          const t = master(f.doc),
+            source = '🙂'.repeat(1250);
+          await t.input(insert(source)).accepted;
+          expect(t.read().text).toBe(source);
+          expect(f.doc.read().undo).toBe(1);
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(t.read().text).toBe('');
+          await f.doc.command({ kind: 'redo' }).accepted;
+          expect(t.read().text).toBe(source);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('discards an entire refused suffix and starts a fresh private candidate', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc);
+          f.refuse();
+          f.fail();
+          const move = f.doc.command({ kind: 'move', id, to: done });
+          await until(() => f.doc.status.state === 'blocked');
+          const suffix = master(f.doc).input(insert('discard'));
+          f.doc.discardPending();
+          await expect(move.accepted).rejects.toHaveProperty('code', 'discarded');
+          await expect(suffix.accepted).rejects.toHaveProperty('code', 'discarded');
+          await master(f.doc).input(insert('keep')).accepted;
+          expect(f.doc.read().cards[0]?.location).toEqual(next);
+          expect(f.doc.read().master).toBe('keep');
+          expect(f.doc.read().undo).toBe(2);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('drains close without late publication and does not persist runtime history', async () => {
+        const f = await fixture();
+        await create(f.doc);
+        const saved = f.doc.snapshot();
+        f.refuse();
+        f.pause();
+        const late = master(f.doc).input(insert('late'));
+        const closing = f.doc.close();
+        f.resume();
+        await closing;
+        await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
+        expect(f.emitted).toHaveLength(1);
+        expect(() => f.doc.read()).toThrow();
+        const g = await fixture(saved);
+        try {
+          expect(g.doc.read().cards).toHaveLength(1);
+          expect(g.doc.read().undo).toBe(0);
+        } finally {
+          await g.doc.close();
+        }
+      });
+    });
 
-it('private prepared histories remain unpublished under pressure and are disposed on discard and drained close', async () => {
-  const histories = new Set<Y.Doc>(),
-    original = Y.Doc.prototype.transact;
-  const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
-    this: Y.Doc,
-    fn: (tr: Y.Transaction) => T,
-    origin?: unknown,
-  ): T {
-    if (
-      !this.gc &&
-      origin &&
-      typeof origin === 'object' &&
-      'kind' in origin &&
-      origin.kind === 'human'
-    )
-      histories.add(this);
-    return original.call(this, fn, origin) as T;
+    it('private prepared histories remain unpublished under pressure and are disposed on discard and drained close', async () => {
+      const histories = new Set<Y.Doc>(),
+        original = Y.Doc.prototype.transact;
+      const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
+        this: Y.Doc,
+        fn: (tr: Y.Transaction) => T,
+        origin?: unknown,
+      ): T {
+        if (
+          !this.gc &&
+          origin &&
+          typeof origin === 'object' &&
+          'kind' in origin &&
+          origin.kind === 'human'
+        )
+          histories.add(this);
+        return original.call(this, fn, origin) as T;
+      });
+      let f: Awaited<ReturnType<typeof fixture>> | undefined;
+      try {
+        f = await fixture();
+        await master(f.doc).input(insert('kept')).accepted;
+        const accepted = [...histories].at(-1)!;
+        expect(accepted).toBeDefined();
+        f.refuse();
+        f.fail();
+        const refused = master(f.doc).input(insert('refused'));
+        await until(() => f!.doc.status.state === 'blocked');
+        const abandoned = [...histories].at(-1)!;
+        expect(abandoned).not.toBe(accepted);
+        expect(abandoned.isDestroyed).toBe(false);
+        expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
+        expect(f.emitted).toHaveLength(1);
+        f.doc.discardPending();
+        await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
+        expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
+        expect(accepted.isDestroyed).toBe(false);
+        f.pause();
+        const late = master(f.doc).input(insert('late'));
+        await until(() => [...histories].at(-1) !== abandoned);
+        const closingHistory = [...histories].at(-1)!;
+        expect(closingHistory.isDestroyed).toBe(false);
+        expect(f.doc.read().master).toBe('kept');
+        const closing = f.doc.close();
+        f.resume();
+        await closing;
+        await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
+        expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
+        expect(
+          [...histories].every((d) => d.isDestroyed),
+          'close must dispose every owned history',
+        ).toBe(true);
+      } finally {
+        await f?.doc.close();
+        for (const history of histories) history.destroy();
+        spy.mockRestore();
+      }
+    });
+    it('no-op and remote writer collisions renew the verified preparation basis', async () => {
+      const f = await fixture();
+      try {
+        await master(f.doc).input(insert('local')).accepted;
+        const writer = f.preparations.at(-1)!;
+        const revision = f.doc.status.revision;
+        await f.doc.command({ kind: 'device-label', name: 'test device' }).accepted;
+        expect(f.doc.status.revision).toBe(revision + 1);
+        const peer = createDoc();
+        let bytes: Uint8Array<ArrayBuffer> | undefined;
+        try {
+          applyUpdate(peer, f.doc.snapshot());
+          peer.clientID = writer;
+          peer.on('update', (update) => {
+            bytes = new Uint8Array(update);
+          });
+          peer.getText('master').insert(5, 'remote');
+        } finally {
+          peer.destroy();
+        }
+        await f.doc.receive(bytes!).accepted;
+        await master(f.doc).input(insert('next'), selection(0)).accepted;
+        expect(f.preparations.at(-1)).not.toBe(writer);
+        expect(f.doc.status.revision).toBe(revision + 3);
+        expect(f.doc.read().master).toBe('nextlocalremote');
+      } finally {
+        await f.doc.close();
+      }
+    });
+    it('reentrant observers enqueue against the next verified state after the current slice finishes', async () => {
+      const f = await fixture();
+      let queued = false,
+        nested: Promise<unknown> | undefined;
+      try {
+        f.doc.subscribe(() => {
+          if (queued) return;
+          queued = true;
+          expect(f.doc.read().master).toBe('first');
+          nested = master(f.doc).input(insert('second'), selection(5)).accepted;
+        });
+        await master(f.doc).input(insert('first')).accepted;
+        await nested;
+        expect(f.doc.read().master).toBe('firstsecond');
+        expect(f.doc.read().undo).toBe(2);
+      } finally {
+        await f.doc.close();
+      }
+    });
+    it('generated histories retain command results, retry bytes, selections and cold replay', async () => {
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(
+            fc.constantFrom('insert', 'retry', 'discard', 'remote', 'undo', 'redo', 'noop'),
+            {
+              minLength: 1,
+              maxLength: 18,
+            },
+          ),
+          async (steps) => {
+            const f = await fixture();
+            let local = '',
+              remoteText = '',
+              revision = f.doc.status.revision;
+            const undo: string[] = [],
+              redo: string[] = [];
+            try {
+              for (const step of steps) {
+                if (step === 'insert' || step === 'retry' || step === 'discard') {
+                  const beforeCalls = f.preparations.length;
+                  if (step !== 'insert') {
+                    f.refuse();
+                    f.fail();
+                  }
+                  const ticket = master(f.doc).input(insert('x'), selection(0));
+                  if (step !== 'insert') {
+                    await until(() => f.doc.status.state === 'blocked');
+                    expect(f.doc.read().master).toBe(local + remoteText);
+                    expect(f.preparations.length).toBe(beforeCalls + 1);
+                    if (step === 'discard') {
+                      f.doc.discardPending();
+                      await expect(ticket.accepted).rejects.toMatchObject({ code: 'discarded' });
+                    } else {
+                      f.doc.retry();
+                      await ticket.accepted;
+                      expect(f.preparations.length, 'retry must reuse the retained candidate').toBe(
+                        beforeCalls + 1,
+                      );
+                    }
+                  } else await ticket.accepted;
+                  if (step !== 'discard') {
+                    undo.push(local);
+                    redo.length = 0;
+                    local = 'x' + local;
+                    revision++;
+                    expect(master(f.doc).read().selection).toEqual(selection(1));
+                  }
+                } else if (step === 'remote') {
+                  await f.doc.receive(
+                    remote(f.doc, (d) => {
+                      const text = d.getText('master');
+                      text.insert(text.length, 'R');
+                    }),
+                  ).accepted;
+                  remoteText += 'R';
+                  revision++;
+                } else {
+                  const action = step === 'noop' ? 'device-label' : step;
+                  await f.doc.command(
+                    action === 'device-label'
+                      ? { kind: action, name: 'test device' }
+                      : { kind: action },
+                  ).accepted;
+                  revision++;
+                  if (step === 'undo' && undo.length) {
+                    redo.push(local);
+                    local = undo.pop()!;
+                  }
+                  if (step === 'redo' && redo.length) {
+                    undo.push(local);
+                    local = redo.pop()!;
+                  }
+                }
+                expect(f.doc.status.revision).toBe(revision);
+                expect(f.doc.read().master).toBe(local + remoteText);
+                expect(f.doc.read().undo).toBe(undo.length);
+                expect(f.doc.read().redo).toBe(redo.length);
+                const cold = createDoc();
+                try {
+                  for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+                  expect(cold.getText('master').toString()).toBe(local + remoteText);
+                } finally {
+                  cold.destroy();
+                }
+              }
+            } finally {
+              await f.doc.close();
+            }
+          },
+        ),
+        { numRuns: 80, seed: 140925 },
+      );
+    });
+  },
+);
+const insert = (text: string) => ({ name: 'insert' as const, text });
+it('Local leases preserve an in-flight write through close without late publication', async () => {
+  const f = await makeFixture(undefined, 'local-handoff');
+  f.refuse();
+  f.pause();
+  const ticket = master(f.doc).input(insert('unacknowledged write'));
+  await until(() => f.writeReferences.length > 0);
+  const reference = f.writeReferences.at(-1)!;
+  const expected = reference.slice();
+  const emitted = f.emitted.length;
+  await f.doc.close();
+  await expect(ticket.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+  expect(f.disk.at(-1), 'write must not observe erased handoff bytes').toEqual(expected);
+  expect(reference.every((b) => b === 0)).toBe(true);
+  expect(f.emitted.length).toBe(emitted);
+});
+it('Local post-promotion mismatch closes before publication and cannot be retried', async () => {
+  const f = await makeFixture(undefined, 'local-handoff');
+  let publications = 0;
+  f.doc.subscribe(() => {
+    try {
+      f.doc.read();
+      publications++;
+    } catch {}
   });
-  let f: Awaited<ReturnType<typeof fixture>> | undefined;
+  f.corrupt();
+  const ticket = master(f.doc).input(insert('durable'));
+  await expect(ticket.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+  await f.doc.close();
+  expect(publications, 'unverified candidate must never be published').toBe(0);
+  expect(() => f.doc.read()).toThrow('Prepared workspace adoption failed.');
+  expect(f.emitted).toEqual([]);
+  expect(() => f.doc.retry()).toThrow();
+  const cold = createDoc();
   try {
-    f = await fixture();
-    await master(f.doc).input(insert('kept')).accepted;
-    const accepted = [...histories].at(-1)!;
-    expect(accepted).toBeDefined();
-    f.refuse();
-    f.fail();
-    const refused = master(f.doc).input(insert('refused'));
-    await until(() => f!.doc.status.state === 'blocked');
-    const abandoned = [...histories].at(-1)!;
-    expect(abandoned).not.toBe(accepted);
-    expect(abandoned.isDestroyed).toBe(false);
-    expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
-    expect(f.emitted).toHaveLength(1);
-    f.doc.discardPending();
-    await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
-    expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
-    expect(accepted.isDestroyed).toBe(false);
-    f.pause();
-    const late = master(f.doc).input(insert('late'));
-    await until(() => [...histories].at(-1) !== abandoned);
-    const closingHistory = [...histories].at(-1)!;
-    expect(closingHistory.isDestroyed).toBe(false);
-    expect(f.doc.read().master).toBe('kept');
-    const closing = f.doc.close();
-    f.resume();
-    await closing;
-    await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
-    expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
-    expect(
-      [...histories].every((d) => d.isDestroyed),
-      'close must dispose every owned history',
-    ).toBe(true);
+    for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+    expect(cold.getText('master').toString()).toBe('durable');
+    expect(cold.getText('uncovered').toString()).toBe('');
   } finally {
-    await f?.doc.close();
-    for (const history of histories) history.destroy();
-    spy.mockRestore();
+    cold.destroy();
   }
 });
