@@ -1,0 +1,79 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r3/candidate
+
+ ❯ test/exploratoryAnyStrings.test.ts (8 tests | 7 failed) 45ms
+   × forks interleaved primitive any strings and text fields with native canonical bytes 9ms
+   × generated primitive any forks and same-clock mutations agree with native normalization 7ms
+   × retains Unicode fallback and UTF-8 equivalence for any string fields 1ms
+   × keeps boxed, nonplain and nested any objects native and detaches mutable binary leaves 1ms
+   × preserves and detaches pending updates, missing dependencies and pending delete bytes 1ms
+   × keeps any-string scratch private under reentry and recovers after a native getter throws 1ms
+   × keeps full-byte normalization when adjacent any items are split differently 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/exploratoryAnyStrings.test.ts > forks interleaved primitive any strings and text fields with native canonical bytes
+ FAIL  test/exploratoryAnyStrings.test.ts > retains Unicode fallback and UTF-8 equivalence for any string fields
+ FAIL  test/exploratoryAnyStrings.test.ts > keeps boxed, nonplain and nested any objects native and detaches mutable binary leaves
+ FAIL  test/exploratoryAnyStrings.test.ts > preserves and detaches pending updates, missing dependencies and pending delete bytes
+ FAIL  test/exploratoryAnyStrings.test.ts > keeps any-string scratch private under reentry and recovers after a native getter throws
+ FAIL  test/exploratoryAnyStrings.test.ts > keeps full-byte normalization when adjacent any items are split differently
+TypeError: readAnyLookupTable[(127 - readUint8(...))] is not a function
+ ❯ Module.readAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js:501:79
+ ❯ ForkDecoder.readAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:951:21
+ ❯ ForkDecoder.readAny src/crdt/yjs.ts:145:36
+    143|       return this.readString();
+    144|     }
+    145|     return detachForkBuffers(super.readAny());
+       |                                    ^
+    146|   }
+    147| }
+ ❯ Array.readContentAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:9250:21
+ ❯ readItemContent ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:10196:76
+ ❯ readClientsStructRefs ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1432:13
+ ❯ ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1659:16
+ ❯ transact ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:3417:14
+ ❯ Module.readUpdateV2 ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1652:3
+ ❯ forkRuntimeDoc src/crdt/yjs.ts:166:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/exploratoryAnyStrings.test.ts > generated primitive any forks and same-clock mutations agree with native normalization
+Error: Property failed after 1 tests
+{ seed: 193917, path: "0:0:0", endOnFailure: true }
+Counterexample: [[0]]
+Shrunk 2 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+ ❯ buildError ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16
+ ❯ throwIfFailed ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2469:8
+ ❯ reportRunDetails ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2485:14
+ ❯ Module.assert ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2542:7
+ ❯ test/exploratoryAnyStrings.test.ts:90:6
+     88|
+     89| it('generated primitive any forks and same-clock mutations agree with …
+     90|   fc.assert(
+       |      ^
+     91|     fc.property(
+     92|       fc.array(
+
+Caused by: TypeError: readAnyLookupTable[(127 - readUint8(...))] is not a function
+ ❯ Module.readAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js:501:79
+ ❯ ForkDecoder.readAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:951:21
+ ❯ ForkDecoder.readAny src/crdt/yjs.ts:145:36
+ ❯ Array.readContentAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:9250:21
+ ❯ readItemContent ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:10196:76
+ ❯ readClientsStructRefs ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1432:13
+ ❯ ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1659:16
+ ❯ transact ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:3417:14
+ ❯ Module.readUpdateV2 ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1652:3
+ ❯ forkRuntimeDoc src/crdt/yjs.ts:166:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 1 passed (8)
+   Start at  10:22:55
+   Duration  417ms (transform 59ms, setup 47ms, import 144ms, tests 45ms, environment 0ms)
+

@@ -1,0 +1,32 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r3/candidate
+
+ ❯ test/exploratoryAnyStrings.test.ts (8 tests | 1 failed) 392ms
+   × forks interleaved primitive any strings and text fields with native canonical bytes 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/exploratoryAnyStrings.test.ts > forks interleaved primitive any strings and text fields with native canonical bytes
+TypeError: Cannot read properties of undefined (reading 'constructor')
+ ❯ ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5391:17
+ ❯ typeListInsertGenericsAfter ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5387:11
+ ❯ typeListPushGenerics ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5497:10
+ ❯ ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5852:9
+ ❯ transact ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:3417:14
+ ❯ YArray.push ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5851:7
+ ❯ test/exploratoryAnyStrings.test.ts:68:31
+     66|     source.getText('next').insert(0, 'middle'.repeat(20));
+     67|     source.getMap('cards').set('long-key-'.repeat(7), 'map value '.rep…
+     68|     source.getArray('values').push(['tail'.repeat(100), null, undefine…
+       |                               ^
+     69|     source.getText('last').insert(0, 'last'.repeat(80));
+     70|     withFork(source, (actual, native) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  10:20:33
+   Duration  707ms (transform 57ms, setup 65ms, import 128ms, tests 392ms, environment 0ms)
+

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r3/candidate
+
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  10:20:57
+   Duration  659ms (transform 53ms, setup 45ms, import 119ms, tests 375ms, environment 0ms)
+
