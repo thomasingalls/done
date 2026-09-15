@@ -1,0 +1,30 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r1/publication
+
+ ❯ test/workspaceAdmission.test.ts (92 tests | 1 failed | 89 skipped) 85ms
+       × refreshes cached projections when a later history fork normalizes UTF-16 fields 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspaceAdmission.test.ts > workspace preparation local-snapshots > admitted workspace commands and history > refreshes cached projections when a later history fork normalizes UTF-16 fields
+AssertionError: expected '�' to be '\ufffd' // Object.is equality
+
+Expected: "�"
+Received: "�"
+
+ ❯ test/workspaceAdmission.test.ts:349:41
+    347|             f.doc.read();
+    348|             await f.doc.text({ kind: 'card', id }).input(insert('!')).…
+    349|             expect(f.doc.read().master).toBe(master(f.doc).read().text…
+       |                                         ^
+    350|             await f.doc.command({ kind: 'actor', patch: { name: text }…
+    351|             await f.doc.command({ kind: 'device-label', name: text }).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed | 89 skipped (92)
+   Start at  09:10:09
+   Duration  711ms (transform 278ms, setup 46ms, import 457ms, tests 85ms, environment 0ms)
+

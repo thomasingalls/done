@@ -64,6 +64,8 @@ catalogue. Five new unit faults are detected; a synchronous startup cleanup gap 
 final full repeat passes 99 files / 1,141 tests, with an intervening two-case timeout run retained.
 The subsequent [snapshot comparison](./f17-selection-performance.md) completes 64 sessions with semantic checks passing but misses the incremental gain rule (2.9% shallow versus 10.3% deeper-history improvement over H). All regression guardrails pass. The single unchanged application gate still fails Android card typing at 12.2/75.1 ms desktop/CPU-4x. Android focus also exceeds <50 ms at 54.2 ms. Default activation stays refused. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
 
+The subsequent [exploratory three-agent round](./f17-exploration-r1.md) preserves a combined patch with about 9.4% median full-corpus improvement and smaller p95 gains. It uses focused checks and short serial browser comparisons, leaving all main runtime/tests and defaults unchanged. It adds no release receipts or resolved obligations. Continue from that experimental combination with component-removal comparisons and the next measured bottleneck; selected RC entry still requires the ownership/native/memory checks and unchanged application gate.
+
 Once the application gate has an acceptable disposition, resume command/campaign wrapper certification, including exact dependency/vector
 reuse and complete output retention. Resolve the host-Python input binding, recorded timeout/owner/
 oracle observations, whole-tree style scope (R-04) and remaining construction prose (P-06), then run

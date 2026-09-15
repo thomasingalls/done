@@ -1,0 +1,3 @@
+src/crdt/admittedWorkspace.ts(243,42): error TS2367: This comparison appears to be unintentional because the types 'YText' and 'AbstractType<YEvent<any>> | undefined' have no overlap.
+src/crdt/admittedWorkspace.ts(254,16): error TS2339: Property 'get' does not exist on type 'AbstractType<any>'.
+test/workspaceAdmission.test.ts(296,20): error TS2540: Cannot assign to 'master' because it is a read-only property.

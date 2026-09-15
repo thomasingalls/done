@@ -1,0 +1,56 @@
+Starting preparation screen-0 2026-09-15T07:13:00.155Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+preparation screen-0 shallow p50 32 p95 34.19999980926514
+preparation screen-0 deeper p50 30.100000381469727 p95 32.89999961853027
+Finished preparation screen-0 passed
+Starting allocation screen-0 2026-09-15T07:13:24.015Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+allocation screen-0 shallow p50 31.899999618530273 p95 40.60000038146973
+allocation screen-0 deeper p50 31.90000057220459 p95 38
+Finished allocation screen-0 passed
+Starting publication screen-0 2026-09-15T07:13:47.838Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+publication screen-0 shallow p50 34.10000038146973 p95 39.5
+publication screen-0 deeper p50 31.899999618530273 p95 35.59999942779541
+Finished publication screen-0 passed
+Starting publication screen-1 2026-09-15T07:14:12.368Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+publication screen-1 shallow p50 32.80000019073486 p95 36.70000076293945
+publication screen-1 deeper p50 30.699999809265137 p95 33.69999980926514
+Finished publication screen-1 passed
+Starting allocation screen-1 2026-09-15T07:14:36.606Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+allocation screen-1 shallow p50 32 p95 35.69999980926514
+allocation screen-1 deeper p50 30.5 p95 32.69999980926514
+Finished allocation screen-1 passed
+Starting preparation screen-1 2026-09-15T07:14:59.963Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+preparation screen-1 shallow p50 32.10000038146973 p95 42.80000019073486
+preparation screen-1 deeper p50 34.5 p95 40.59999942779541
+Finished preparation screen-1 passed
+Starting baseline screen-1 2026-09-15T07:15:24.318Z
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+baseline screen-1 shallow p50 36.30000019073486 p95 39
+baseline screen-1 deeper p50 35.39999961853027 p95 38.69999980926514
+Finished baseline screen-1 passed

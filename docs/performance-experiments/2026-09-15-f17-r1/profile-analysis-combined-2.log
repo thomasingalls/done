@@ -1,0 +1,290 @@
+{
+  "summary": {
+    "sampledAllocationBytes": 92051348,
+    "gcMs": 113.441
+  },
+  "topAllocation": [
+    {
+      "id": 662,
+      "function": "Set",
+      "source": "",
+      "selfBytes": 5749260,
+      "children": [],
+      "inclusiveBytes": 5749260
+    },
+    {
+      "id": 786,
+      "function": "x",
+      "source": "../../../combined/src/editor/admittedEditor.ts",
+      "line": 194,
+      "selfBytes": 4025836,
+      "children": [
+        2559,
+        791,
+        1636,
+        2316,
+        2675,
+        2663,
+        794,
+        2646,
+        2495,
+        2586,
+        2531,
+        787
+      ],
+      "inclusiveBytes": 11103716
+    },
+    {
+      "id": 785,
+      "function": "read",
+      "source": "../../../combined/src/crdt/admittedWorkspace.ts",
+      "line": 699,
+      "selfBytes": 3905540,
+      "children": [
+        1412
+      ],
+      "inclusiveBytes": 3938492
+    },
+    {
+      "id": 85,
+      "function": "MG",
+      "source": "../../../combined/src/ui/Card.tsx",
+      "line": 76,
+      "selfBytes": 3403012,
+      "children": [
+        1067,
+        86,
+        96,
+        1216,
+        1288,
+        1285,
+        1290,
+        1219,
+        876,
+        95,
+        100,
+        878,
+        98,
+        1820
+      ],
+      "inclusiveBytes": 6520216
+    },
+    {
+      "id": 74,
+      "function": "set",
+      "source": "",
+      "selfBytes": 2811656,
+      "children": [],
+      "inclusiveBytes": 2811656
+    },
+    {
+      "id": 775,
+      "function": "so",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2066,
+      "selfBytes": 2499936,
+      "children": [
+        776,
+        777
+      ],
+      "inclusiveBytes": 2602944
+    },
+    {
+      "id": 647,
+      "function": "e",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9752,
+      "selfBytes": 2264136,
+      "children": [],
+      "inclusiveBytes": 2264136
+    },
+    {
+      "id": 79,
+      "function": "",
+      "source": "../../../combined/src/ui/Collection.tsx",
+      "line": 70,
+      "selfBytes": 1899704,
+      "children": [],
+      "inclusiveBytes": 1899704
+    },
+    {
+      "id": 658,
+      "function": "Ba",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 1496,
+      "selfBytes": 1835084,
+      "children": [
+        1624,
+        667,
+        659,
+        1789,
+        2363,
+        1530,
+        2263
+      ],
+      "inclusiveBytes": 11356936
+    },
+    {
+      "id": 2206,
+      "function": "Fc",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9246,
+      "selfBytes": 1750308,
+      "children": [
+        2212,
+        2257,
+        2669
+      ],
+      "inclusiveBytes": 2616744
+    },
+    {
+      "id": 778,
+      "function": "writeString",
+      "source": "../../../combined/src/crdt/yjs.ts",
+      "line": 195,
+      "selfBytes": 1281080,
+      "children": [
+        779
+      ],
+      "inclusiveBytes": 1342680
+    },
+    {
+      "id": 589,
+      "function": "so",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2066,
+      "selfBytes": 1077256,
+      "children": [
+        591,
+        604
+      ],
+      "inclusiveBytes": 1139076
+    }
+  ],
+  "topCpu": [
+    {
+      "id": 91,
+      "function": "(idle)",
+      "source": "",
+      "selfUs": 2149038,
+      "children": [],
+      "inclusiveUs": 2149038
+    },
+    {
+      "id": 2,
+      "function": "(program)",
+      "source": "",
+      "selfUs": 824350,
+      "children": [],
+      "inclusiveUs": 824350
+    },
+    {
+      "id": 150,
+      "function": "(garbage collector)",
+      "source": "",
+      "selfUs": 113441,
+      "children": [],
+      "inclusiveUs": 113441
+    },
+    {
+      "id": 397,
+      "function": "collapse",
+      "source": "",
+      "selfUs": 105589,
+      "children": [],
+      "inclusiveUs": 105589
+    },
+    {
+      "id": 312,
+      "function": "integrate",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9910,
+      "selfUs": 58709,
+      "children": [
+        313,
+        421,
+        1199
+      ],
+      "inclusiveUs": 79392
+    },
+    {
+      "id": 353,
+      "function": "read",
+      "source": "../../../combined/src/crdt/admittedWorkspace.ts",
+      "line": 699,
+      "selfUs": 44630,
+      "children": [
+        1156
+      ],
+      "inclusiveUs": 47609
+    },
+    {
+      "id": 349,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 37664,
+      "children": [],
+      "inclusiveUs": 37664
+    },
+    {
+      "id": 342,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 36238,
+      "children": [],
+      "inclusiveUs": 36238
+    },
+    {
+      "id": 348,
+      "function": "",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+      "line": 344,
+      "selfUs": 34459,
+      "children": [
+        349,
+        1152,
+        1249
+      ],
+      "inclusiveUs": 87677
+    },
+    {
+      "id": 354,
+      "function": "x",
+      "source": "../../../combined/src/editor/admittedEditor.ts",
+      "line": 194,
+      "selfUs": 33683,
+      "children": [
+        355,
+        357,
+        470
+      ],
+      "inclusiveUs": 495358
+    },
+    {
+      "id": 32,
+      "function": "HG",
+      "source": "../../../combined/src/ui/Collection.tsx",
+      "line": 61,
+      "selfUs": 29944,
+      "children": [
+        33,
+        610,
+        733,
+        1351
+      ],
+      "inclusiveUs": 60149
+    },
+    {
+      "id": 690,
+      "function": "UK",
+      "source": "../../../combined/src/ui/App.tsx",
+      "line": 49,
+      "selfUs": 24433,
+      "children": [
+        800,
+        1046
+      ],
+      "inclusiveUs": 27052
+    }
+  ]
+}

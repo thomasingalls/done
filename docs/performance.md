@@ -1131,3 +1131,10 @@ measurement campaign, personal app operation or deployment occur during this boo
 The backlog through this performance phase is closed. Next profile the snapshot application's
 remaining document/history fork, complete comparison and publication costs before another repair;
 retain the unchanged budgets, failed observations and loaded-host uncertainty.
+
+
+## 2026-09-15 — F-17 exploratory optimization round 1
+
+Three isolated agent prototypes (primitive-string fork transport, bounded comparison scratch pooling, and conservative private publication reuse) compose above signed `20a535c4`. All twelve serial browser timing sessions pass exact text, undo/redo and cold reopen. On the held-aside full corpus, B/C/C/B gives about 9.4% paired median improvement; paired p95 improvements are 8.6% early and 5.6% later. These are incremental exploratory gains; the application budget remains unmet. Combined focused checks pass 5 files /126 cases and TypeScript. Review found and repaired boxed-string sharing eligibility and stale publication after surrogate normalization; publication now conservatively excludes emoji-bearing snapshots. A separate profiling postcheck exposed a premature immediate Undo assertion; a bounded follow-up reproduces the unchanged immediate read and observes the same action settle within 160 ms, then passes redo/cold reopen. All failed evidence remains.
+
+Allocation sampling suggests less churn with slightly more retained heap; it does not establish a GC-time improvement. Keep the combined patch as the next experimental baseline, then remove components in controlled comparisons and target remaining editor/rendering/history costs. No main runtime/test/default changes, full suites or release gate runs occur. Counts remain 263 files /2,121 dispositions (11 not applicable), with 0 test-file /96 command /63 campaign obligations unresolved. F-17 remains partial. [Assessment](./f17-exploration-r1.md); [patches, data and logs](./performance-experiments/2026-09-15-f17-r1/README.md).

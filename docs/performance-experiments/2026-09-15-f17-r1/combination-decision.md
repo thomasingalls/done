@@ -1,0 +1,9 @@
+# Combination decision — before full-corpus measurements
+
+Retain all three candidates for one combined experiment. All focused correctness checks and eight short browser sessions pass. Paired median improvements are modest: preparation ~5–8%, pooling ~8%, publication ~4–8%; early-block p95 is effectively unchanged across two sessions, with mixed individual tails. The later baseline session is slower than the earlier one, so temporal drift limits attribution. These are screens, not proof of precise effects.
+
+The candidates target different work and their patches compose: scoped immutable-string transport during private forks, bounded comparison scratch reuse, and private publication reuse with conservative fallback. No candidate must independently clear the whole release budget. Publication's surrogate/emoji exclusion and pooling's retained capacity remain costs to consider.
+
+Apply all three patches to a fresh isolated baseline, run the five affected focused test files plus TypeScript once, and build the same explicit private Local mode. Compare combined against baseline on the held-aside full 20×15-card/400-line corpus in B/C/C/B fresh sessions. Capture one combined allocation/CPU diagnostic afterward on the original short corpus. The profiles use the same sampling configuration but are single diagnostic sessions with instrumentation overhead. This round ends there; do not widen a promising outcome into automatic RC activation. Ablation and protocol/memory qualification are subsequent decisions.
+
+Combined focused suite: 5 files /126 cases pass. Initial TypeScript run found an overly narrow typed-array return annotation in the pool prototype and an intentionally supported pinned XML-hook runtime fixture omitted by its public insertion type. Combined-only type annotations/comments were corrected; final TypeScript passes. Initial/intermediate logs remain. Runtime logic and measured individual prototype semantics are unchanged.

@@ -1,0 +1,41 @@
+{
+  "name": "baseline",
+  "session": "profile-0",
+  "corpus": {
+    "days": 5,
+    "cardsPerDay": 15,
+    "masterLines": 400
+  },
+  "started": "2026-09-15T07:12:27.742Z",
+  "profiling": true,
+  "rows": [],
+  "checks": [
+    "exact text after every block",
+    "undo/redo exact roundtrip",
+    "cold reopen exact text"
+  ],
+  "errors": [],
+  "browser": "151.0.7922.34",
+  "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "heapBefore": {
+    "usedSize": 10632956,
+    "totalSize": 12713984,
+    "embedderHeapUsedSize": 2450376,
+    "backingStorageSize": 1312687
+  },
+  "heapAfter": {
+    "usedSize": 11303896,
+    "totalSize": 11927552,
+    "embedderHeapUsedSize": 2260752,
+    "backingStorageSize": 1284627
+  },
+  "heapLocked": {
+    "usedSize": 9797908,
+    "totalSize": 10616832,
+    "embedderHeapUsedSize": 1926360,
+    "backingStorageSize": 1244136
+  },
+  "status": "passed",
+  "finished": "2026-09-15T07:12:44.772Z",
+  "closed": true
+}

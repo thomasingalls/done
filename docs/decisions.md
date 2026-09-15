@@ -3452,3 +3452,8 @@ measurement campaign, personal app operation or deployment occur during this boo
 The backlog through this performance phase is closed. Next profile the snapshot application's
 remaining document/history fork, complete comparison and publication costs before another repair;
 retain the unchanged budgets, failed observations and loaded-host uncertainty.
+
+
+## 2026-09-15 — Separate F-17 exploration from RC qualification
+
+Keep isolated, composable optimization prototypes behind a cheap focused-correctness floor and a common serial browser screen. Preserve credible small gains and negative/inconclusive observations; do not require every component to solve the whole overrun or rerun every release validator per prototype. Combine and compare before selecting a candidate for ownership/native/recovery/memory qualification and the unchanged application gate. No release budget or default activation rule changes. The [first round](./f17-exploration-r1.md) retains about a 9.4% median full-corpus improvement as experimental work, with all source patches and failed probes preserved.

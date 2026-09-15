@@ -1,0 +1,19 @@
+# F-17 exploratory round 1 — prospective screen
+
+Base: signed 20a535c44d2c33b394306fa67023c62d2d9c5f40. Isolated source checkouts; packaged actual application. Every variant explicitly enables existing local-snapshots at the Local opener via the same build-only transform. Account and repository defaults unchanged.
+
+Decision: which compatible incremental optimizations deserve focused combination and subsequent qualification? This is not release evidence and does not change budgets/counts.
+
+Screen: 5 future days × 15 cards, 400 Goals lines, seeded through the UI at native CPU speed and cold-reopened. Pixel 7 browser settings, viewport 1280×900, CPU 4× only after setup. Existing trusted-key paint-proxy recorder. Each fresh browser context measures 40 card keystrokes after 8 warmup keys, then another 40 after 96 additional warmup keys, 50 ms between keys. Per-session p50/p95, full raw samples; rows within a session are dependent. Two fresh sessions per candidate in baseline/preparation/allocation/publication then reverse order. Exact editor text, undo/redo roundtrip and cold reopen checked outside timed blocks. Any setup failure is retained and corrected openly, not silently retried.
+
+Cheap floor: focused tests selected for changed ownership/isolation semantics, no full suite per prototype. Separate baseline allocation sampling (60 keys), outside timing; assess retained heap after lock/collection separately. Code review and all measured sessions determine whether to retain a patch; small gains are allowed, inconsistent/small effects remain inconclusive. No statistical significance claims from two sessions. No minimum improvement in every stratum.
+
+Combination: test a compatible subset if individual results or a credible distinct mechanism justify it; compare against baseline in forward/reverse order. Confirmation uses the previously unmeasured full release corpus (20×15 cards, 400 Goals lines), same timing blocks, baseline/combined then combined/baseline. This is a held-aside workload, not independent release qualification. Stop after this round, retain negative results and patches. Before RC promotion, apply protocol-focused regressions and the unchanged application gate.
+
+All build/test/timing work serialized by root. No physical-phone continuation or personal-server changes. Source hashes and build identity saved; factors stay only in disposable in-memory test helpers.
+
+Clarification after the first baseline screen: the second block is identified as `deeper` in raw output, but its 96 extra keys use ordinary editor grouping; it is later in the typing session, not a controlled count of distinct undo groups. No workload or measurement was changed. Initial harness setup corrected a JavaScript brace and moved the activation seam from transform to load before the successful build; neither failed setup produced timing data.
+
+Execution note: baseline screen-0 was run while the other candidates were being completed; the baseline diagnostic profile and final candidate checks/builds intervene before preparation screen-0. There was no concurrent build/test during a timing session, but block 0 is temporally loose. Retain that ordering limitation; the full-corpus confirmation uses adjacent baseline/candidate pairs in reverse order.
+
+Post-timing diagnostic amendment: combined profile-0 captured allocation/CPU data and exact typing, then failed the immediate post-key Undo assertion. Browser key delivery is not an admission-settlement promise. Keep that failure; profile-1 adds a bounded 3-second eventual undo/redo check and records immediate state/elapsed time. It passes, though its added pre-undo UI observation could allow an extra turn. A final profile-2 removes that extra observation and retains the bounded settlement check, to distinguish eventual admission from immediate-read timing. No timed observations or candidate code are changed; no repeat-until-green campaign.

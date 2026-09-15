@@ -1,0 +1,7 @@
+src/crdt/yjs.ts(193,72): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'Uint8Array<ArrayBuffer>'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
+test/exploratoryPreparation.test.ts(167,7): error TS2322: Type 'YXmlHook' is not assignable to type 'YXmlElement<{ [key: string]: string; }> | YXmlText'.
+  Type 'YXmlHook' is missing the following properties from type 'YXmlElement<{ [key: string]: string; }>': firstChild, length, nodeName, _prelimAttrs, and 16 more.

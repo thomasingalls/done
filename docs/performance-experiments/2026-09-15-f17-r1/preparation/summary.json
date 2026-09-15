@@ -1,0 +1,27 @@
+{
+  "baseline": "20a535c44d2c33b394306fa67023c62d2d9c5f40",
+  "candidate": "private-long-string-tape",
+  "activation": "Existing explicit local-snapshots mode only",
+  "files": {
+    "src/crdt/yjs.ts": "600cdcab78d61504abb879434303f6baf9e128b2162f636ecc131a0d220c373d",
+    "test/exploratoryPreparation.test.ts": "35b766c682240b03b5e6f136127793c9c9d243b1487e492013712e3f4a9c132c"
+  },
+  "patchSha256": "12cf0e7e04fb093870d7575a2e55dfbdda597d97ce26602389bd7100ec860ae3",
+  "checks": {
+    "command": "node node_modules/vitest/vitest.mjs run test/exploratoryPreparation.test.ts test/selectionHistory.test.ts test/pendingProjection.test.ts test/projectionEquality.test.ts test/workspaceAdmission.test.ts",
+    "filesPassed": 5,
+    "testsPassed": 115,
+    "durationSeconds": 6.57,
+    "fullLog": "focused.log",
+    "appliesTo": "Candidate before additional primitive eligibility guard; retained without rewrite"
+  },
+  "performanceMeasured": false,
+  "adversarialChecks": {
+    "command": "node node_modules/vitest/vitest.mjs run test/exploratoryPreparation.test.ts",
+    "filesPassed": 1,
+    "testsPassed": 5,
+    "durationSeconds": 0.49,
+    "fullLog": "focused-adversarial.log",
+    "appliesTo": "Final candidate including primitive eligibility guard and two new compatibility tests"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "combined",
+  "session": "profile-0",
+  "corpus": {
+    "days": 5,
+    "cardsPerDay": 15,
+    "masterLines": 400
+  },
+  "started": "2026-09-15T07:22:05.148Z",
+  "profiling": true,
+  "rows": [],
+  "checks": [
+    "exact text after every block"
+  ],
+  "errors": [],
+  "browser": "151.0.7922.34",
+  "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "heapBefore": {
+    "usedSize": 10838896,
+    "totalSize": 11665408,
+    "embedderHeapUsedSize": 2461472,
+    "backingStorageSize": 1313736
+  },
+  "heapAfter": {
+    "usedSize": 11528668,
+    "totalSize": 12451840,
+    "embedderHeapUsedSize": 2693352,
+    "backingStorageSize": 1314791
+  },
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'goal 16 — a line of the master lista card to open and type intowwwwwwwwpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp'\n    at file:///private/tmp/done-f17-exploration-r1/screen.mjs:58:53",
+  "finished": "2026-09-15T07:22:20.211Z",
+  "closed": true
+}

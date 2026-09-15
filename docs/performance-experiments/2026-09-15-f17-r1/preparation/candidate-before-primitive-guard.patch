@@ -1,0 +1,243 @@
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index ea605627..6bdf0506 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -71,7 +71,19 @@ const forkString = (value: string): string => {
+ };
+ /** Private paired codecs: V2 struct compression with the existing V1 legacy-JSON semantics. */
+ class ForkEncoder extends Y.UpdateEncoderV2 {
++  constructor(readonly strings?: (string | null)[]) {
++    super();
++  }
+   override writeString(value: string): void {
++    if (this.strings) {
++      // Private paired runtime transport: strings are immutable. Keep surrogate-containing
++      // fields on the old UTF-8 path so its exact replacement behavior stays authoritative.
++      if (value.length >= 32 && !/[\uD800-\uDFFF]/.test(value)) {
++        this.strings.push(value);
++        return;
++      }
++      this.strings.push(null);
++    }
+     super.writeString(forkString(value));
+   }
+   override writeKey(value: string): void {
+@@ -92,6 +104,23 @@ const detachForkBuffers = (value: unknown): unknown => {
+   return value;
+ };
+ class ForkDecoder extends Y.UpdateDecoderV2 {
++  private stringAt = 0;
++  constructor(
++    decoder: decoding.Decoder,
++    private readonly strings?: readonly (string | null)[],
++  ) {
++    super(decoder);
++  }
++  override readString(): string {
++    if (!this.strings) return super.readString();
++    if (this.stringAt >= this.strings.length) throw Error('Missing private fork string');
++    const value = this.strings[this.stringAt++]!;
++    return value === null ? super.readString() : value;
++  }
++  complete(): void {
++    if (this.strings && this.stringAt !== this.strings.length)
++      throw Error('Unconsumed private fork string');
++  }
+   override readJSON(): unknown {
+     return JSON.parse(decoding.readVarString(this.restDecoder));
+   }
+@@ -104,18 +133,24 @@ class ForkDecoder extends Y.UpdateDecoderV2 {
+ }
+ 
+ /** Detached runtime fork. Its paired private codecs never escape as a wire/archive format. */
+-export const forkDoc = (source: YDoc, gc = true): YDoc => {
+-  const bytes = Y.encodeStateAsUpdateV2(
+-    {
+-      ...source,
+-      store: { ...source.store, pendingStructs: null, pendingDs: null },
+-    } as YDoc,
+-    undefined,
+-    new ForkEncoder(),
+-  );
+-  const doc = new Y.Doc({ gc });
++export const forkDoc = (source: YDoc, gc = true): YDoc => forkRuntimeDoc(source, gc, false);
++const forkRuntimeDoc = (source: YDoc, gc: boolean, reuseStrings: boolean): YDoc => {
++  const strings: (string | null)[] | undefined = reuseStrings ? [] : undefined;
++  let bytes: Uint8Array | undefined, doc: YDoc | undefined;
+   try {
+-    Y.applyUpdateV2(doc, bytes, undefined, ForkDecoder);
++    bytes = Y.encodeStateAsUpdateV2(
++      {
++        ...source,
++        store: { ...source.store, pendingStructs: null, pendingDs: null },
++      } as YDoc,
++      undefined,
++      new ForkEncoder(strings),
++    );
++    doc = new Y.Doc({ gc });
++    const decoder = decoding.createDecoder(bytes),
++      paired = new ForkDecoder(decoder, strings);
++    Y.readUpdateV2(decoder, doc, undefined, paired);
++    paired.complete();
+     const pending = source.store.pendingStructs;
+     doc.store.pendingStructs = pending
+       ? { missing: new Map(pending.missing), update: pending.update.slice() }
+@@ -123,10 +158,11 @@ export const forkDoc = (source: YDoc, gc = true): YDoc => {
+     doc.store.pendingDs = source.store.pendingDs?.slice() ?? null;
+     return doc;
+   } catch (error) {
+-    doc.destroy();
++    doc?.destroy();
+     throw error;
+   } finally {
+-    bytes.fill(0);
++    bytes?.fill(0);
++    if (strings) strings.length = 0;
+   }
+ };
+ const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
+@@ -500,8 +536,9 @@ const forkHistory = (
+   source: YUndoManager,
+   origin: unknown,
+   copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
++  reuseStrings = false,
+ ): YUndoManager => {
+-  const doc = forkDoc(source.doc, false);
++  const doc = forkRuntimeDoc(source.doc, false, reuseStrings);
+   try {
+     doc.transact((tr) => {
+       for (const structs of source.doc.store.clients.values())
+@@ -569,7 +606,7 @@ export const createSelectionHistory = () => {
+     },
+     fork(history: YUndoManager, origin: unknown): YUndoManager {
+       check(history);
+-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta)));
++      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+     },
+     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+       check(history);
+diff --git a/test/exploratoryPreparation.test.ts b/test/exploratoryPreparation.test.ts
+new file mode 100644
+index 00000000..ab655978
+--- /dev/null
++++ b/test/exploratoryPreparation.test.ts
+@@ -0,0 +1,119 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import fc from 'fast-check';
++import { Y, createHistoryDoc, createSelectionHistory, forkDoc } from '../src/crdt/yjs';
++
++it('private string-tape forks retain mixed field ordering and detached mutable content', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  source.getText('long-root-' + 'r'.repeat(70)).insert(0, '\uFEFF' + 'body'.repeat(300));
++  source.getText('short').insert(0, 'small');
++  const text = source.getText('master');
++  text.insert(0, 'ordinary'.repeat(100));
++  text.format(0, 8, { ['format-' + 'k'.repeat(60)]: { nested: ['value'] } });
++  text.insertEmbed(3, { embed: 'E'.repeat(100) });
++  source.getText('surrogate\uD800').insert(0, '\uDC00' + '😀\uD800x\uDC00'.repeat(40));
++  source.getMap('meta').set('nested', { binary: new Uint8Array([1, 2, 3]), values: ['v'] });
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++    expect(actual.doc.getText('master').toDelta()).toEqual(expected.getText('master').toDelta());
++    const original = source.getMap('meta').get('nested') as {
++      binary: Uint8Array;
++      values: string[];
++    };
++    const copied = actual.doc.getMap('meta').get('nested') as typeof original;
++    copied.binary.fill(9);
++    copied.values.push('child');
++    expect([...original.binary]).toEqual([1, 2, 3]);
++    expect(original.values).toEqual(['v']);
++    original.values.push('parent');
++    expect(copied.values).toEqual(['v', 'child']);
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
++
++it('generated private string-tape forks match the existing codec for BMP, surrogate and mixed fields', () => {
++  fc.assert(
++    fc.property(
++      fc.array(fc.integer({ min: 0, max: 0xffff }), { minLength: 0, maxLength: 180 }),
++      fc.integer({ min: 32, max: 500 }),
++      (units, count) => {
++        const source = createHistoryDoc(),
++          owner = createSelectionHistory();
++        const text = String.fromCharCode(...units);
++        source.getText('master').insert(0, 'a'.repeat(count));
++        source.getText('unicode').insert(0, text);
++        source.getText('root-' + 'x'.repeat(count)).insert(0, 'middle');
++        source.getText('tail').insert(0, text + 'z'.repeat(count));
++        const history = owner.create(source, 'human'),
++          expected = forkDoc(source, false),
++          actual = owner.fork(history, 'human');
++        try {
++          expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++          for (const key of expected.share.keys())
++            if (key !== 'days' && key !== 'cards' && key !== 'cardLocations')
++              expect(actual.doc.getText(key).toString()).toBe(expected.getText(key).toString());
++        } finally {
++          actual.destroy();
++          actual.doc.destroy();
++          expected.destroy();
++          history.destroy();
++          source.destroy();
++          owner.close();
++        }
++      },
++    ),
++    { seed: 150917, numRuns: 150 },
++  );
++});
++
++it('private string tapes remain scoped when encoding triggers a nested owned fork', () => {
++  const owner = createSelectionHistory(),
++    source = createHistoryDoc(),
++    nested = createHistoryDoc();
++  source.getText('master').insert(0, 'outer'.repeat(200));
++  nested.getText('master').insert(0, 'inner'.repeat(100));
++  const history = owner.create(source, 'human'),
++    other = owner.create(nested, 'human');
++  let armed = false,
++    forks = 0;
++  source.getMap('meta').set('accessor', {
++    get nested() {
++      if (armed) {
++        const copy = owner.fork(other, 'human');
++        try {
++          expect(copy.doc.getText('master').toString()).toBe('inner'.repeat(100));
++          forks++;
++        } finally {
++          copy.destroy();
++          copy.doc.destroy();
++        }
++      }
++      return 'value';
++    },
++  });
++  armed = true;
++  const actual = owner.fork(history, 'human');
++  try {
++    expect(forks).toBeGreaterThan(0);
++    expect(actual.doc.getText('master').toString()).toBe('outer'.repeat(200));
++    expect(actual.doc.getMap('meta').get('accessor')).toEqual({ nested: 'value' });
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    history.destroy();
++    other.destroy();
++    source.destroy();
++    nested.destroy();
++    owner.close();
++  }
++});

@@ -61,7 +61,9 @@ is refused; F-17 remains open. The 96 command / 63 campaign wrapper obligations 
 qualification repairs also precede the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 The record audit is signed `0c84e5cc`; the subsequent F-17 backlog is now signed through `e2d42fac`.
 
-**Just completed.** The [private Local snapshot comparison](./f17-selection-performance.md)
+**Just completed.** The [three-agent exploratory round](./f17-exploration-r1.md) retains a combined private patch with about **9.4% median** full-corpus improvement over the existing snapshot variant; p95 improves about 8.6% early /5.6% later. Twelve timing sessions and 126 focused combined cases pass. The held-aside comparison is B/C/C/B; small component gains are retained without full qualification per prototype. Boxed-string and surrogate-cache defects were repaired in isolation; the original diagnostic Undo failure is preserved and a bounded follow-up demonstrates eventual settlement. Publication reuse excludes emoji-bearing snapshots. Allocation sampling suggests less churn, with slightly more retained heap. Main runtime/tests and defaults are unchanged; these results are not release receipts or a budget pass. Patches and data are preserved with this checkpoint.
+
+**Previous qualification attempt.** The [private Local snapshot comparison](./f17-selection-performance.md)
 completes 64 fresh sessions / 5,248 warmups / 4,096 measurements with all semantic checks passing.
 Snapshot reuse improves the deeper-history case by 10.3% over the existing handoff, but the
 shallow 10,000-item gain is 2.9%; the required >=10% in both strata is missed. All regression
@@ -134,9 +136,7 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Current bounded phase.** Profile the snapshot application variant to separate remaining
-document/history fork, full comparison and publication costs before choosing another repair.
-Retain the unchanged budgets and failed measurements.
+**Next bounded phase.** Continue from the combined experimental patch: compare selected components removed (especially publication with its Unicode restriction), then investigate remaining document/history and editor projection/rendering costs. Use focused checks and serial short browser screens; reserve ownership/native/recovery/memory qualification and the unchanged application gate for the selected RC candidate. Retain the gains, failed observations and current reference defaults.
 
 The eight-phase commit backlog is closed in five verified signed commits through `e2d42fac`;
 `15eb389c` is the latest runtime/test integration checkpoint. The following documentation commit
