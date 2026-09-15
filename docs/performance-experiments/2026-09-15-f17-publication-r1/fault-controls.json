@@ -1,0 +1,53 @@
+[
+  {
+    "name": "normalization-refresh",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspacePublication.test.ts",
+      "-t",
+      "refreshes unedited lone and split-pair",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-publication-r1/normalization-refresh-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": "refreshes unedited lone and split-pair text, card metadata and archived text after a fork",
+    "originalSourceSha256": "983449d11be772eff00550ac7d08c17f06bb50ed794d1a45df2c31134746168e",
+    "testSha256": "529f7f4f4a3eccfa2251f6e03b27dc3f130598631a165424da1bac5257b4e6e5"
+  },
+  {
+    "name": "structural-fallback",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspacePublication.test.ts",
+      "-t",
+      "falls back for structural and unknown",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-publication-r1/structural-fallback-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": "falls back for structural and unknown transactions even with the normal human origin",
+    "originalSourceSha256": "983449d11be772eff00550ac7d08c17f06bb50ed794d1a45df2c31134746168e",
+    "testSha256": "529f7f4f4a3eccfa2251f6e03b27dc3f130598631a165424da1bac5257b4e6e5"
+  },
+  {
+    "name": "aliased-output",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspacePublication.test.ts",
+      "-t",
+      "refreshes only the changed card",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-publication-r1/aliased-output-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": "refreshes only the changed card and sensitive fields, while every public read stays detached",
+    "originalSourceSha256": "983449d11be772eff00550ac7d08c17f06bb50ed794d1a45df2c31134746168e",
+    "testSha256": "529f7f4f4a3eccfa2251f6e03b27dc3f130598631a165424da1bac5257b4e6e5"
+  }
+]

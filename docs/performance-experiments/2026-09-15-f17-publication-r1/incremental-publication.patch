@@ -1,0 +1,1108 @@
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index ddac2fa1..2afdd282 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -18,25 +18,18 @@ import {
+ } from './admission';
+ import { type CustodyAuthority } from './custody';
+ import { type Bytes } from './custodyCrypto';
+-import { type WorkspaceActorIdentity, type Origin, listActors } from './actors';
++import { type WorkspaceActorIdentity, type Origin, type listActors } from './actors';
+ import { readSettings, SCHEMA_VERSION } from './doc';
+ import { ContentError } from './contentRecord';
+ import { StorageCompatibilityError } from './storageCompatibility';
+-import {
+-  cardAt,
+-  cardBody,
+-  cardAuthor,
+-  cardOrigin,
+-  cardLocation,
+-  cardMembershipIssues,
+-  listDays,
+-  cardsIn,
+-  archiveOf,
+-  dayAt,
+-  collectionOf,
+-  type Section,
+-} from './days';
++import { type cardLocation, cardMembershipIssues, type Section } from './days';
+ import { createArchiveProjection } from './archiveProjection';
++import {
++  createWorkspacePublication,
++  readWorkspaceSnapshot,
++  recordPublicationChanges,
++  type PublicationChanges,
++} from './workspacePublication';
+ import { currentDate, plainDate, type ISODate } from '../lib/date';
+ import { exportArchive, exportEntries } from './export';
+ import {
+@@ -150,8 +143,12 @@ export const createAdmittedWorkspace = async (
+     throw Error('Local preparation cannot capture Account sources');
+   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+   const archiveProjection = createArchiveProjection();
++  const preparedReads = new WeakMap<PreparedWorkspaceState, PublicationChanges>();
+   const commands = createWorkspaceCommandRunner();
+   const identity = structuredClone(options.identity);
++  const publication = selectionHistory
++    ? createWorkspacePublication(identity, archiveProjection)
++    : undefined;
+   const human: Origin = Object.freeze({
+     actor: identity.id,
+     kind: 'human',
+@@ -199,6 +196,12 @@ export const createAdmittedWorkspace = async (
+     const state: State = { history, selections: new Map(), group: intent.group, value: false };
+     scope?.ownState(state);
+     const selections = state.selections;
++    const readChanges: PublicationChanges | undefined = publication
++      ? { basis: verifiedRevision, master: false, cards: new Set(), full: false }
++      : undefined;
++    const trackRead = (transaction: Y.Transaction) =>
++      recordPublicationChanges(doc, readChanges!, transaction);
++    if (readChanges) doc.on('afterTransaction', trackRead);
+     const updates: Bytes[] = [],
+       sources: import('./sourceCapture').SourceUpdate[] = [];
+     const capture = (bytes: Uint8Array, origin: unknown) => {
+@@ -274,6 +277,7 @@ export const createAdmittedWorkspace = async (
+         }
+       }
+       state.value = result.value;
++      if (readChanges) preparedReads.set(state, readChanges);
+       const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
+       return {
+         state,
+@@ -295,6 +299,7 @@ export const createAdmittedWorkspace = async (
+       }
+       throw error;
+     } finally {
++      if (readChanges) doc.off('afterTransaction', trackRead);
+       doc.off('update', capture);
+       history.off('stack-item-added', captureItem);
+       history.off('stack-item-updated', captureItem);
+@@ -303,6 +308,8 @@ export const createAdmittedWorkspace = async (
+     }
+   };
+   const accept = (state: PreparedWorkspaceState, revision: number) => {
++    publication?.advance(state.history, revision, preparedReads.get(state));
++    preparedReads.delete(state);
+     const previous = accepted;
+     accepted = state;
+     verifiedRevision = adoptedRevision = revision;
+@@ -372,6 +379,7 @@ export const createAdmittedWorkspace = async (
+     repairQueued = false;
+   const teardown = () => {
+     archiveProjection.clear();
++    publication?.clear();
+     dispose(pending);
+     dispose(accepted);
+     pending = accepted = undefined;
+@@ -480,6 +488,7 @@ export const createAdmittedWorkspace = async (
+         } else {
+           // Invalidate before apply and publication: a subscriber may submit input before
+           // the queued membership repair runs, including when dependencies become visible.
++          publication?.clear();
+           commands.invalidate(accepted!.history);
+           applyUpdate(accepted!.history.doc, event.update, 'received');
+         }
+@@ -552,47 +561,9 @@ export const createAdmittedWorkspace = async (
+   }
+   const read = (): WorkspaceSnapshot => {
+     live();
+-    const history = accepted!.history,
+-      doc = history.doc;
+-    archiveProjection.retain(new Set(listDays(doc).filter((date) => archiveOf(dayAt(doc, date)))));
+-    return {
+-      master: doc.getText('master').toString(),
+-      cards: [...doc.getMap('cards').keys()].sort().map((id) => {
+-        const c = cardAt(doc, id)!;
+-        return {
+-          id,
+-          text: cardBody(c),
+-          author: cardAuthor(c),
+-          origin: cardOrigin(c),
+-          location: cardLocation(doc, id),
+-        };
+-      }),
+-      days: listDays(doc).map((date) => ({
+-        date,
+-        next: cardsIn(doc, date, 'next').map((c) => c.get('id') as string),
+-        scheduled: cardsIn(doc, date, 'scheduled').map((c) => c.get('id') as string),
+-        done: cardsIn(doc, date, 'done').map((c) => c.get('id') as string),
+-        ...(archiveOf(dayAt(doc, date))
+-          ? {
+-              archived: (() => {
+-                const day = dayAt(doc, date);
+-                const parsed = archiveProjection.read(date, archiveOf(day)!.toString());
+-                for (const section of ['next', 'scheduled', 'done'] as const)
+-                  if (collectionOf(day, section)) parsed[section] = [];
+-                return parsed;
+-              })(),
+-            }
+-          : {}),
+-      })),
+-      actors: structuredClone(listActors(doc)),
+-      settings: readSettings(doc.getMap('meta')),
+-      deviceName:
+-        typeof doc.getMap('meta').get(`device-label:${identity.device.id}`) === 'string'
+-          ? (doc.getMap('meta').get(`device-label:${identity.device.id}`) as string)
+-          : identity.device.name,
+-      undo: history.undoStack.length,
+-      redo: history.redoStack.length,
+-    };
++    return publication
++      ? publication.read(accepted!.history, verifiedRevision)
++      : readWorkspaceSnapshot(accepted!.history, identity, archiveProjection);
+   };
+   const api: AdmittedWorkspace = {
+     get status() {
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index 27d663d7..c198c3f2 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -363,6 +363,83 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
+           await f.doc.close();
+         }
+       });
++      it('keeps incremental text projections detached and falls back for structural and remote changes', async () => {
++        const f = await fixture();
++        try {
++          const first = await create(f.doc, 'first');
++          await create(f.doc, 'second');
++          const pristine = f.doc.read();
++          const poisoned = f.doc.read();
++          (poisoned as { master: string }).master = 'caller mutation';
++          poisoned.cards[0]!.text = 'caller mutation';
++          poisoned.cards[0]!.location!.date = '2030-01-01';
++          (poisoned.days[0]!.next as string[]).length = 0;
++          poisoned.actors[0]!.name = 'caller mutation';
++          poisoned.settings.rolloverHour = 13;
++          expect(f.doc.read()).toEqual(pristine);
++          const compareCold = async () => {
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              const { undo: _undo, redo: _redo, ...actual } = f.doc.read();
++              const { undo: _coldUndo, redo: _coldRedo, ...expected } = cold.doc.read();
++              expect(actual).toEqual(expected);
++            } finally {
++              await cold.doc.close();
++            }
++          };
++          await f.doc.text({ kind: 'card', id: first }).input(insert('!'), selection(5)).accepted;
++          await compareCold();
++          expect(pristine.cards.find((card) => card.id === first)!.text).toBe('first');
++          await master(f.doc).input(insert('master')).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'move', id: first, to: done }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'undo' }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'settings', rolloverHour: 4 }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'actor', patch: { name: 'Renamed' } }).accepted;
++          await compareCold();
++          await f.doc.receive(
++            remote(f.doc, (doc) => {
++              doc.getText('master').insert(0, 'remote ');
++              doc.getMap('meta').set('device-label:device-one', 'Remote label');
++              doc.getText('unknown-extension').insert(0, 'not a projected field');
++            }),
++          ).accepted;
++          await compareCold();
++          expect(f.doc.read().deviceName).toBe('Remote label');
++          await f.doc.text({ kind: 'card', id: first }).input(insert('?'), selection(6)).accepted;
++          await compareCold();
++        } finally {
++          await f.doc.close();
++        }
++      });
++      it('refreshes cached projections when a later history fork normalizes UTF-16 fields', async () => {
++        const f = await fixture();
++        try {
++          const id = await create(f.doc);
++          for (const text of ['\uD800', '\uDC00', '😀']) {
++            await master(f.doc).input(insert(text)).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('!')).accepted;
++            expect(f.doc.read().master).toBe(master(f.doc).read().text);
++            await f.doc.command({ kind: 'actor', patch: { name: text } }).accepted;
++            await f.doc.command({ kind: 'device-label', name: text }).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('?')).accepted;
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              expect(f.doc.read().actors).toEqual(cold.doc.read().actors);
++              expect(f.doc.read().deviceName).toEqual(cold.doc.read().deviceName);
++            } finally {
++              await cold.doc.close();
++            }
++          }
++        } finally {
++          await f.doc.close();
++        }
++      });
+       it('follows local redone links when undoing an edit inside a restored parent', async () => {
+         const f = await fixture();
+         try {
+diff --git a/src/crdt/workspacePublication.ts b/src/crdt/workspacePublication.ts
+new file mode 100644
+index 00000000..355a44c1
+--- /dev/null
++++ b/src/crdt/workspacePublication.ts
+@@ -0,0 +1,224 @@
++/** Owner-private projected values. Every public read is detached from this cache. */
++import { Y, type YDoc, type YUndoManager } from './yjs';
++import { listActors, type WorkspaceActorIdentity } from './actors';
++import { readSettings } from './doc';
++import {
++  cardAt,
++  cardBody,
++  cardAuthor,
++  cardOrigin,
++  cardLocation,
++  listDays,
++  cardsIn,
++  archiveOf,
++  dayAt,
++  collectionOf,
++  type Section,
++} from './days';
++import type { createArchiveProjection } from './archiveProjection';
++import type { WorkspaceSnapshot } from './admittedWorkspace';
++
++type ArchiveProjection = ReturnType<typeof createArchiveProjection>;
++const card = (doc: YDoc, id: string): WorkspaceSnapshot['cards'][number] => {
++  const c = cardAt(doc, id)!;
++  return {
++    id,
++    text: cardBody(c),
++    author: cardAuthor(c),
++    origin: cardOrigin(c),
++    location: cardLocation(doc, id),
++  };
++};
++const header = (doc: YDoc, identity: WorkspaceActorIdentity) => ({
++  actors: structuredClone(listActors(doc)),
++  settings: readSettings(doc.getMap('meta')),
++  deviceName:
++    typeof doc.getMap('meta').get(`device-label:${identity.device.id}`) === 'string'
++      ? (doc.getMap('meta').get(`device-label:${identity.device.id}`) as string)
++      : identity.device.name,
++});
++const archived = (doc: YDoc, date: string, projection: ArchiveProjection) => {
++  const day = dayAt(doc, date),
++    source = archiveOf(day);
++  if (!source) return undefined;
++  const parsed = projection.read(date, source.toString());
++  for (const section of ['next', 'scheduled', 'done'] as const)
++    if (collectionOf(day, section)) parsed[section] = [];
++  return parsed;
++};
++/** Established full reader, shared by the reference and incremental paths. */
++export const readWorkspaceSnapshot = (
++  history: YUndoManager,
++  identity: WorkspaceActorIdentity,
++  projection: ArchiveProjection,
++): WorkspaceSnapshot => {
++  const doc = history.doc;
++  projection.retain(new Set(listDays(doc).filter((date) => archiveOf(dayAt(doc, date)))));
++  return {
++    master: doc.getText('master').toString(),
++    cards: [...doc.getMap('cards').keys()].sort().map((id) => card(doc, id)),
++    days: listDays(doc).map((date) => ({
++      date,
++      next: cardsIn(doc, date, 'next').map((c) => c.get('id') as string),
++      scheduled: cardsIn(doc, date, 'scheduled').map((c) => c.get('id') as string),
++      done: cardsIn(doc, date, 'done').map((c) => c.get('id') as string),
++      ...(archiveOf(dayAt(doc, date)) ? { archived: archived(doc, date, projection)! } : {}),
++    })),
++    ...header(doc, identity),
++    undo: history.undoStack.length,
++    redo: history.redoStack.length,
++  };
++};
++export interface PublicationChanges {
++  readonly basis: number;
++  master: boolean;
++  readonly cards: Set<string>;
++  full: boolean;
++}
++/** Classification uses actual changed types, not transaction origin or command labels. */
++export const recordPublicationChanges = (
++  doc: YDoc,
++  changes: PublicationChanges,
++  transaction: Y.Transaction,
++) => {
++  if (changes.full) return;
++  const cards = doc.getMap('cards');
++  for (const changed of transaction.changed.keys()) {
++    const target: unknown = changed;
++    if (changed instanceof Y.Text && target === doc.share.get('master')) {
++      changes.master = true;
++      continue;
++    }
++    const parent = changed.parent;
++    const id = parent instanceof Y.Map ? parent.get('id') : undefined;
++    if (
++      changed instanceof Y.Text &&
++      parent instanceof Y.Map &&
++      parent.parent === cards &&
++      typeof id === 'string' &&
++      cards.get(id) === parent &&
++      parent.get('text') === changed
++    ) {
++      changes.cards.add(id);
++      continue;
++    }
++    changes.full = true;
++    break;
++  }
++};
++// A pair may span independently encoded Yjs fragments. Refresh all surrogate-bearing fields,
++// even valid displayed pairs, rather than guessing whether a fork preserves their visible text.
++const sensitive = (value: unknown): boolean => {
++  if (typeof value === 'string') return /[\uD800-\uDFFF]/.test(value);
++  if (Array.isArray(value)) return value.some(sensitive);
++  if (value && typeof value === 'object')
++    return Object.entries(value).some(([key, entry]) => sensitive(key) || sensitive(entry));
++  return false;
++};
++const cacheSnapshot = (value: WorkspaceSnapshot, revision: number) => {
++  const cards = [...value.cards],
++    days = [...value.days];
++  const cardIndices = new Map(cards.map((c, i) => [c.id, i]));
++  const dayIndices = new Map(days.map((d, i) => [d.date, i]));
++  return {
++    revision,
++    value: { ...value, cards, days } as WorkspaceSnapshot,
++    cards,
++    days,
++    cardIndices,
++    dayIndices,
++    // Normalized keys can change membership/order/collisions, requiring the full reader.
++    stableShape:
++      cards.every((c) => !sensitive(c.id)) &&
++      days.every((d) => !sensitive([d.date, d.next, d.scheduled, d.done])),
++    masterSensitive: sensitive(value.master),
++    sensitiveCards: new Set(cards.filter(sensitive).map((c) => c.id)),
++    sensitiveArchives: new Set(days.filter((d) => sensitive(d.archived)).map((d) => d.date)),
++  };
++};
++export const createWorkspacePublication = (
++  identity: WorkspaceActorIdentity,
++  projection: ArchiveProjection,
++) => {
++  let cached: ReturnType<typeof cacheSnapshot> | undefined;
++  return {
++    clear() {
++      cached = undefined;
++    },
++    advance(history: YUndoManager, revision: number, changes?: PublicationChanges) {
++      if (
++        !cached ||
++        !cached.stableShape ||
++        !changes ||
++        changes.full ||
++        changes.basis !== cached.revision
++      ) {
++        cached = undefined;
++        return;
++      }
++      const doc = history.doc;
++      const ids = new Set([...cached.sensitiveCards, ...changes.cards]);
++      const replacements: [number, WorkspaceSnapshot['cards'][number]][] = [];
++      const nextSensitive = new Set<string>();
++      for (const id of ids) {
++        const index = cached.cardIndices.get(id);
++        if (index === undefined || !cardAt(doc, id)) {
++          cached = undefined;
++          return;
++        }
++        const value = card(doc, id);
++        replacements.push([index, value]);
++        if (sensitive(value)) nextSensitive.add(id);
++      }
++      const archives: [number, Readonly<Record<Section, readonly string[]>>][] = [];
++      const nextArchives = new Set<string>();
++      for (const date of cached.sensitiveArchives) {
++        const index = cached.dayIndices.get(date),
++          value = archived(doc, date, projection);
++        if (index === undefined || !value) {
++          cached = undefined;
++          return;
++        }
++        archives.push([index, value]);
++        if (sensitive(value)) nextArchives.add(date);
++      }
++      const master =
++        changes.master || cached.masterSensitive
++          ? doc.getText('master').toString()
++          : cached.value.master;
++      // Metadata can normalize during the fork too. Read the small header from the new basis.
++      const metadata = header(doc, identity);
++      // Commit private projected values only after every source read succeeds.
++      for (const [index, value] of replacements) cached.cards[index] = value;
++      for (const [index, value] of archives)
++        cached.days[index] = { ...cached.days[index]!, archived: value };
++      cached.sensitiveCards = nextSensitive;
++      cached.sensitiveArchives = nextArchives;
++      cached.masterSensitive = sensitive(master);
++      cached.revision = revision;
++      cached.value = {
++        ...cached.value,
++        ...metadata,
++        master,
++        undo: history.undoStack.length,
++        redo: history.redoStack.length,
++      };
++    },
++    read(history: YUndoManager, revision: number): WorkspaceSnapshot {
++      if (!cached || cached.revision !== revision)
++        cached = cacheSnapshot(readWorkspaceSnapshot(history, identity, projection), revision);
++      // Runtime history can be cleared without a content revision (the growth diagnostic).
++      // These two live counters are constant-time; cached content still requires a revision.
++      if (
++        cached.value.undo !== history.undoStack.length ||
++        cached.value.redo !== history.redoStack.length
++      )
++        cached.value = {
++          ...cached.value,
++          undo: history.undoStack.length,
++          redo: history.redoStack.length,
++        };
++      return structuredClone(cached.value);
++    },
++  };
++};
+diff --git a/test/workspacePublication.test.ts b/test/workspacePublication.test.ts
+new file mode 100644
+index 00000000..36cd74ca
+--- /dev/null
++++ b/test/workspacePublication.test.ts
+@@ -0,0 +1,377 @@
++// @vitest-environment node
++import { afterEach, expect, it, vi } from 'vitest';
++import * as fc from 'fast-check';
++import { Y, createHistoryDoc, workspaceUndo, forkWorkspaceHistory, newText } from '../src/crdt/yjs';
++import {
++  createWorkspacePublication,
++  readWorkspaceSnapshot,
++  recordPublicationChanges,
++  type PublicationChanges,
++} from '../src/crdt/workspacePublication';
++import { createArchiveProjection } from '../src/crdt/archiveProjection';
++import { runWorkspaceCommand, type RelativeSelection } from '../src/crdt/workspaceCommands';
++import * as days from '../src/crdt/days';
++import { serializeCollections } from '../src/crdt/serialize';
++const identity = {
++  id: 'alice',
++  actor: { kind: 'human' as const, name: 'Alice', color: '#123456' },
++  device: { id: 'device', name: 'Device' },
++};
++const human = { actor: identity.id, kind: 'human' as const, device: identity.device.id };
++const system = { actor: 'system', kind: 'system' as const, device: identity.device.id };
++const context = { identity, human, system, today: '2026-09-08' };
++const next = { date: context.today, section: 'scheduled' as const };
++const archiveDate = '2026-08-01';
++const fixture = () => {
++  const doc = createHistoryDoc();
++  let history = workspaceUndo(doc, human),
++    revision = 1;
++  runWorkspaceCommand(history, { group: 0, command: { kind: 'initialize' } }, context, new Map());
++  doc.transact(() => {
++    const day = days.ensureDay(doc, human, next.date);
++    for (let i = 0; i < 8; i++) {
++      const id = 'card-' + i;
++      days.registerCard(
++        doc,
++        id,
++        days.newCard('text ' + i, identity.id, { id, createdAt: '2026-09-08T00:00:00Z' }),
++        next,
++      );
++      days.collectionOf(day, next.section)!.push([id]);
++    }
++  }, human);
++  const archives = createArchiveProjection(),
++    projection = createWorkspacePublication(identity, archives);
++  const read = () => projection.read(history, revision);
++  const full = () => readWorkspaceSnapshot(history, identity, createArchiveProjection());
++  const prepare = (change: (h: typeof history) => void, basis = revision) => {
++    const fork = forkWorkspaceHistory(history, human);
++    fork.doc.clientID = 777;
++    fork.stopCapturing();
++    const changes: PublicationChanges = { basis, full: false, master: false, cards: new Set() };
++    const record = (transaction: Y.Transaction) =>
++      recordPublicationChanges(fork.doc, changes, transaction);
++    fork.doc.on('afterTransaction', record);
++    try {
++      change(fork);
++    } finally {
++      fork.doc.off('afterTransaction', record);
++    }
++    return { fork, changes };
++  };
++  const adopt = (
++    { fork, changes }: ReturnType<typeof prepare>,
++    plan: PublicationChanges | undefined = changes,
++  ) => {
++    const old = history;
++    projection.advance(fork, ++revision, plan);
++    history = fork;
++    old.destroy();
++    old.doc.destroy();
++  };
++  const step = (change: (h: typeof history) => void) => adopt(prepare(change));
++  return {
++    doc,
++    read,
++    full,
++    prepare,
++    adopt,
++    step,
++    projection,
++    get history() {
++      return history;
++    },
++    get revision() {
++      return revision;
++    },
++    close() {
++      projection.clear();
++      archives.clear();
++      history.destroy();
++      history.doc.destroy();
++    },
++  };
++};
++const edit = (id: string, text: string) => (history: ReturnType<typeof workspaceUndo>) =>
++  history.doc.transact(() => days.cardText(days.cardAt(history.doc, id)!).insert(0, text), human);
++afterEach(() => vi.restoreAllMocks());
++
++it('refreshes only the changed card and sensitive fields, while every public read stays detached', () => {
++  const f = fixture();
++  try {
++    f.doc.transact(() => days.cardText(days.cardAt(f.doc, 'card-1')!).insert(0, '🙂'), human);
++    const old = f.read(),
++      poisoned = f.read();
++    poisoned.cards[0]!.text = 'poison';
++    poisoned.cards[0]!.location!.date = '2030-01-01';
++    (poisoned.days[0]!.scheduled as string[]).length = 0;
++    poisoned.actors[0]!.name = 'poison';
++    poisoned.settings.rolloverHour = 9;
++    expect(f.read()).toEqual(old);
++    const spy = vi.spyOn(days, 'cardBody');
++    f.step(edit('card-0', '!'));
++    const actual = f.read();
++    expect(spy).toHaveBeenCalledTimes(2);
++    expect(actual.cards.find((c) => c.id === 'card-0')!.text).toBe('!text 0');
++    expect(actual.cards.find((c) => c.id === 'card-1')!.text).toBe('🙂text 1');
++    expect(old.cards.find((c) => c.id === 'card-0')!.text).toBe('text 0');
++    f.read();
++    expect(spy).toHaveBeenCalledTimes(2);
++    expect(actual).toEqual(f.full());
++  } finally {
++    f.close();
++  }
++});
++
++it('refreshes unedited lone and split-pair text, card metadata and archived text after a fork', () => {
++  for (const sensitive of ['\uD800', '\uDC00', '😀']) {
++    const f = fixture();
++    try {
++      f.doc.transact(() => {
++        f.doc.getText('master').insert(0, sensitive);
++        days.cardText(days.cardAt(f.doc, 'card-1')!).insert(0, sensitive);
++        days.cardAt(f.doc, 'card-2')!.set('author', sensitive);
++        days.cardAt(f.doc, 'card-2')!.set('origin', sensitive);
++        const day = days.ensureDay(f.doc, human, archiveDate);
++        for (const section of days.SECTIONS) day.delete(section);
++        day.set(
++          'archive',
++          newText(serializeCollections({ next: [sensitive], scheduled: [], done: [] })),
++        );
++      }, human);
++      if (sensitive === '😀') {
++        // Distinct writers prevent adjacent halves from merging. Splitting an existing
++        // pair through a text edit would normalize it immediately inside Yjs.splice.
++        const text = f.doc.getText('master'),
++          writer = f.doc.clientID;
++        text.delete(0, text.length);
++        f.doc.clientID = 1001;
++        text.insert(0, '\uD83D');
++        f.doc.clientID = 1002;
++        text.insert(1, '\uDE00');
++        f.doc.clientID = writer;
++        expect(text.toString()).toBe('😀');
++      }
++      const old = f.read();
++      f.step(edit('card-0', '!'));
++      const actual = f.read();
++      expect(actual).toEqual(f.full());
++      expect(actual.master).not.toBe(old.master);
++      const value = actual.days.find((d) => d.date === archiveDate)!.archived!;
++      (value.next as string[]).push('caller poison');
++      expect(f.read()).toEqual(f.full());
++      f.step(edit('card-0', '?'));
++      expect(f.read()).toEqual(f.full());
++    } finally {
++      f.close();
++    }
++  }
++});
++
++it('reloads metadata normalization without rebuilding unrelated cards', () => {
++  const f = fixture();
++  try {
++    const selections = new Map<string, RelativeSelection>();
++    runWorkspaceCommand(
++      f.history,
++      { group: 1, command: { kind: 'actor', patch: { name: '\uD800' } } },
++      context,
++      selections,
++    );
++    runWorkspaceCommand(
++      f.history,
++      { group: 2, command: { kind: 'device-label', name: '\uDC00' } },
++      context,
++      selections,
++    );
++    f.read();
++    const spy = vi.spyOn(days, 'cardBody');
++    f.step(edit('card-0', '!'));
++    const actual = f.read();
++    expect(spy).toHaveBeenCalledTimes(1);
++    expect(actual).toEqual(f.full());
++  } finally {
++    f.close();
++  }
++});
++
++it('falls back for structural and unknown transactions even with the normal human origin', () => {
++  const f = fixture();
++  try {
++    f.read();
++    f.step((h) =>
++      h.doc.transact(() => {
++        days.setCardLocation(h.doc, 'card-0', { ...next, section: 'done' });
++        days.repairCardMemberships(h.doc, human);
++        h.doc.getText('unprojected').insert(0, 'unknown');
++      }, human),
++    );
++    expect(f.read()).toEqual(f.full());
++    expect(f.read().days[0]!.done).toEqual(['card-0']);
++    f.step((h) =>
++      h.doc.transact(() => {
++        days.cardsMap(h.doc).set('new', days.newCard('new', identity.id, { id: 'new' }));
++      }, human),
++    );
++    expect(f.read()).toEqual(f.full());
++    expect(f.read().cards).toHaveLength(9);
++  } finally {
++    f.close();
++  }
++});
++
++it('falls back when normalized keys can change the snapshot shape', () => {
++  const f = fixture();
++  try {
++    f.doc.transact(() => {
++      const id = 'id-\uD800';
++      days.registerCard(f.doc, id, days.newCard('key', identity.id, { id }), next);
++      days.collectionOf(days.dayAt(f.doc, next.date), next.section)!.push([id]);
++    }, human);
++    const before = f.read();
++    f.step(edit('card-0', '!'));
++    const actual = f.read();
++    expect(actual).toEqual(f.full());
++    expect(actual.cards.map((c) => c.id)).not.toEqual(before.cards.map((c) => c.id));
++  } finally {
++    f.close();
++  }
++});
++
++it('rejects missing, stale and absent-cache plans and does not expose a prepared candidate', () => {
++  const f = fixture();
++  try {
++    const before = f.read(),
++      pending = f.prepare(edit('card-0', 'pending'));
++    expect(f.read()).toEqual(before);
++    pending.fork.destroy();
++    pending.fork.doc.destroy();
++    const stale = f.prepare(edit('card-0', '!'), -99);
++    f.adopt(stale);
++    expect(f.read()).toEqual(f.full());
++    const missing = f.prepare(edit('card-1', '?'));
++    f.projection.advance(missing.fork, f.revision + 1); // A missing plan invalidates the cache.
++    f.adopt(missing);
++    expect(f.read()).toEqual(f.full());
++    f.projection.clear();
++    f.step(edit('card-2', '*'));
++    expect(f.read()).toEqual(f.full());
++  } finally {
++    f.close();
++  }
++});
++
++it('publishes no-op and text undo/redo counts without replaying unrelated card bodies', () => {
++  const f = fixture();
++  try {
++    f.read();
++    f.step(edit('card-0', '!'));
++    f.read();
++    const spy = vi.spyOn(days, 'cardBody');
++    f.step(() => {});
++    const noop = f.read();
++    expect(spy).toHaveBeenCalledTimes(0);
++    f.step((h) => {
++      h.undo();
++    });
++    const undone = f.read();
++    expect(undone.cards[0]!.text).toBe('text 0');
++    expect(undone.redo).toBe(1);
++    expect(undone.undo).toBe(noop.undo - 1);
++    f.step((h) => {
++      h.redo();
++    });
++    expect(f.read()).toEqual(f.full());
++    expect(f.read().cards[0]!.text).toBe('!text 0');
++  } finally {
++    f.close();
++  }
++});
++
++it('generated publication histories match full projections after edits, normalization, structural changes and abandoned drafts', () => {
++  fc.assert(
++    fc.property(
++      fc.array(
++        fc.record({
++          kind: fc.constantFrom(
++            'card',
++            'master',
++            'move',
++            'undo',
++            'redo',
++            'discard',
++            'unknown',
++            'metadata',
++            'noop',
++          ),
++          id: fc.integer({ min: 0, max: 7 }),
++          text: fc.constantFrom('a', '🙂', '\uD800', '\uDC00', ''),
++        }),
++        { minLength: 15, maxLength: 45 },
++      ),
++      (steps) => {
++        const f = fixture();
++        try {
++          let prior = f.read();
++          for (const step of steps) {
++            const id = 'card-' + step.id;
++            const change = (h: typeof f.history) => {
++              if (step.kind === 'undo') {
++                h.undo();
++                return;
++              }
++              if (step.kind === 'redo') {
++                h.redo();
++                return;
++              }
++              h.doc.transact(() => {
++                if (step.kind === 'card' || step.kind === 'discard') {
++                  const c = days.cardAt(h.doc, id);
++                  if (c) days.cardText(c).insert(0, step.text);
++                }
++                if (step.kind === 'master') h.doc.getText('master').insert(0, step.text);
++                if (step.kind === 'unknown') h.doc.getText('other').insert(0, 'x');
++                if (step.kind === 'metadata')
++                  h.doc.getMap('meta').set('device-label:device', step.text);
++                if (step.kind === 'move' && days.cardAt(h.doc, id)) {
++                  days.setCardLocation(h.doc, id, { ...next, section: 'done' });
++                  days.repairCardMemberships(h.doc, human);
++                }
++              }, human);
++            };
++            const prepared = f.prepare(change);
++            expect(f.read()).toEqual(prior);
++            if (step.kind === 'discard') {
++              prepared.fork.destroy();
++              prepared.fork.doc.destroy();
++            } else f.adopt(prepared);
++            expect(f.read()).toEqual(f.full());
++            prior = f.read();
++            prior.cards[0] && (prior.cards[0].text = 'caller poison');
++            expect(f.read()).toEqual(f.full());
++            prior = f.read();
++          }
++        } finally {
++          f.close();
++        }
++      },
++    ),
++    { seed: 171509, numRuns: 60 },
++  );
++});
++
++it('reads current runtime undo counts after the existing out-of-band history-clear diagnostic', () => {
++  const f = fixture();
++  try {
++    expect(f.read().undo).toBeGreaterThan(0);
++    const spy = vi.spyOn(days, 'cardBody');
++    f.history.clear();
++    const cleared = f.read();
++    expect(cleared.undo).toBe(0);
++    expect(cleared.redo).toBe(0);
++    expect(spy).toHaveBeenCalledTimes(0);
++    expect(cleared).toEqual(f.full());
++  } finally {
++    f.close();
++  }
++});
+diff --git a/test/admittedEditorProjection.test.ts b/test/admittedEditorProjection.test.ts
+new file mode 100644
+index 00000000..08f9a140
+--- /dev/null
++++ b/test/admittedEditorProjection.test.ts
+@@ -0,0 +1,245 @@
++import { EditorSelection } from '@codemirror/state';
++import { EditorView } from '@codemirror/view';
++import { afterEach, describe, expect, it, vi } from 'vitest';
++import { createAdmittedEditor } from '../src/editor/admittedEditor';
++import type { AdmittedTextSurface, TextSnapshot } from '../src/editor/admittedText';
++import type { AdmissionStatus } from '../src/crdt/admission';
++
++const cleanups: (() => void)[] = [];
++afterEach(() => {
++  while (cleanups.length) cleanups.pop()?.();
++});
++
++const mount = (text = 'accepted text') => {
++  let snapshot: TextSnapshot = {
++      text,
++      selection: EditorSelection.single(0).toJSON(),
++      undo: 0,
++      redo: 0,
++    },
++    status: AdmissionStatus = {
++      state: 'active',
++      revision: 0,
++      pendingItems: 0,
++      pendingBytes: 0,
++      reservedBytes: 0,
++      durable: true,
++      pressure: null,
++    },
++    unreadable = false,
++    updates = 0;
++  const publications = new Set<() => void>(),
++    statuses = new Set<(status: AdmissionStatus) => void>();
++  const read = vi.fn(() => {
++    if (unreadable) throw Error('unreadable');
++    return snapshot;
++  });
++  const input = vi.fn<AdmittedTextSurface['input']>(() => ({
++    id: 1,
++    accepted: Promise.resolve({ id: 1, source: 'local', revision: 1, slices: 1 }),
++  }));
++  const surface: AdmittedTextSurface = {
++    get status() {
++      return status;
++    },
++    read,
++    input,
++    subscribe(listener) {
++      publications.add(listener);
++      return () => publications.delete(listener);
++    },
++    onStatus(listener) {
++      statuses.add(listener);
++      return () => statuses.delete(listener);
++    },
++    retry() {},
++    discardPending() {},
++  };
++  const parent = document.createElement('div');
++  document.body.append(parent);
++  const editor = createAdmittedEditor({
++    parent,
++    document: surface,
++    extra: [EditorView.updateListener.of(() => updates++)],
++  });
++  cleanups.push(() => {
++    editor.destroy();
++    parent.remove();
++  });
++  const publish = () => {
++    for (const listener of publications) listener();
++  };
++  return {
++    ...editor,
++    parent,
++    read,
++    input,
++    publish,
++    get updates() {
++      return updates;
++    },
++    resetUpdates: () => (updates = 0),
++    setSnapshot(value: Partial<TextSnapshot>) {
++      snapshot = { ...snapshot, ...value };
++      publish();
++    },
++    setUnreadable(value: boolean) {
++      unreadable = value;
++    },
++    setStatus(value: Partial<AdmissionStatus>) {
++      status = { ...status, ...value };
++      for (const listener of statuses) listener(status);
++    },
++  };
++};
++
++describe('admitted editor projection', () => {
++  it('reads every publication while leaving an unchanged editor state alone', () => {
++    const editor = mount('unchanged master '.repeat(6000));
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.read.mockClear();
++    for (let index = 0; index < 5; index++) editor.publish();
++    expect(editor.read).toHaveBeenCalledTimes(5);
++    expect(editor.view.state).toBe(before);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('preserves a local selection when another surface publishes', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(2, 7) });
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: EditorSelection.single(0).toJSON() });
++    expect(editor.view.state).toBe(before);
++    expect(editor.view.state.selection.main.anchor).toBe(2);
++    expect(editor.view.state.selection.main.head).toBe(7);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('projects selection-only changes including secondary ranges and main range', () => {
++    const editor = mount();
++    const selection = EditorSelection.create(
++      [EditorSelection.range(0, 2), EditorSelection.range(6, 8)],
++      1,
++    );
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: selection.toJSON() });
++    expect(editor.view.state.selection.toJSON()).toEqual(selection.toJSON());
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: { ...selection.toJSON(), main: 0 } });
++    expect(editor.view.state.selection.mainIndex).toBe(0);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('still normalizes cursor association, bidi level and goal column', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.cursor(2, 1, 1, 9)]),
++    });
++    editor.resetUpdates();
++    editor.publish();
++    const cursor = editor.view.state.selection.main;
++    expect(cursor.head).toBe(2);
++    expect(cursor.assoc).toBe(0);
++    expect(cursor.bidiLevel).toBe(null);
++    expect(cursor.goalColumn).toBeUndefined();
++    expect(editor.updates).toBe(1);
++  });
++
++  it('normalizes an undirectional range on an otherwise unchanged publication', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.undirectionalRange(2, 7)]),
++    });
++    expect(editor.view.state.selection.main.undirectional).toBe(true);
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.view.state.selection.main.undirectional).toBe(false);
++    expect(editor.updates).toBe(1);
++  });
++
++  it('applies text changes with the accepted selection and drops the old local selection', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(3) });
++    editor.resetUpdates();
++    editor.setSnapshot({
++      text: 'accepted new text',
++      selection: EditorSelection.single(12).toJSON(),
++    });
++    expect(editor.view.state.doc.toString()).toBe('accepted new text');
++    expect(editor.view.state.selection.main.head).toBe(12);
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: EditorSelection.single(4).toJSON() });
++    expect(editor.view.state.selection.main.head).toBe(4);
++  });
++
++  it('projects editability-only changes and restores editing', () => {
++    const editor = mount();
++    editor.resetUpdates();
++    editor.setSnapshot({ editable: false });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    expect(editor.view.contentDOM.getAttribute('contenteditable')).toBe('false');
++    editor.setSnapshot({ editable: true });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('clears stale writing when a publication becomes unreadable and projects a later valid read', () => {
++    const editor = mount();
++    editor.setUnreadable(true);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    editor.setUnreadable(false);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++  });
++
++  it('keeps blocked pending input out of the editor and reacts to unavailable status', () => {
++    const editor = mount();
++    editor.setStatus({ state: 'blocked', pendingItems: 1 });
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Input is waiting for storage.',
++    );
++    editor.setUnreadable(true);
++    editor.setStatus({ state: 'failed' });
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Editing is unavailable.',
++    );
++  });
++
++  it('keeps a local input error visible through an unchanged publication', () => {
++    const editor = mount();
++    editor.input.mockImplementationOnce(() => {
++      throw Error('input refused');
++    });
++    editor.view.contentDOM.dispatchEvent(
++      new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }),
++    );
++    editor.publish();
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain('input refused');
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++
++  it('keeps projection transactions during composition and reconciles after a cancelled preedit', async () => {
++    const editor = mount();
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionstart', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.updates).toBeGreaterThan(0);
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionend', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    await Promise.resolve();
++    expect(editor.updates).toBeGreaterThan(0);
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++});

@@ -1,0 +1,39 @@
+{
+  "scope": "Final controls and frozen timing above e0a87263; historical/repeated/failing control logs are preserved separately.",
+  "controlsCwd": "/private/tmp/done-f17-publication-r1/candidate",
+  "finalControls": [
+    {
+      "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspacePublication.test.ts", "test/workspaceAdmission.test.ts", "test/membershipEligibility.test.ts", "test/workspacePreparation.test.ts", "test/membership.test.ts", "test/membership.property.test.ts", "test/pendingProjection.test.ts", "test/sourceCapture.test.ts", "test/selectionHistory.test.ts", "test/projectionEquality.test.ts", "test/archiveProjection.test.ts", "test/admittedText.test.ts"],
+      "exit": 0,
+      "log": "affected-tests.log",
+      "files": 12,
+      "tests": 207
+    },
+    {
+      "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/admittedEditorProjection.test.ts"],
+      "exit": 0,
+      "log": "editor-final.log",
+      "files": 1,
+      "tests": 11,
+      "note": "Repeated after fault source restoration; the earlier overlapping editor run also passed and remains in editor-tests.log."
+    },
+    {
+      "argv": ["node", "node_modules/typescript/bin/tsc", "-b", "--noEmit"],
+      "exit": 0,
+      "log": "typecheck-complete.log",
+      "note": "The successful compiler emits no output; exit zero was observed from the execution tool."
+    }
+  ],
+  "faultControls": "fault-controls.json contains each exact command, original runtime/test hash, exit and catching assertion.",
+  "measurementCwd": "/private/tmp/done-f17-publication-r1",
+  "serialMeasurement": [
+    {"argv": ["node", "build.mjs", "selected"], "exit": 0, "log": "build-selected.log"},
+    {"argv": ["node", "build.mjs", "candidate"], "exit": 0, "log": "build-candidate.log"},
+    {"argv": ["python3", "freeze.py"], "exit": 0, "log": "freeze.log"},
+    {"argv": ["node", "batch.mjs", "comparison"], "exit": 0, "log": "comparison-batch.log"},
+    {"argv": ["node", "batch.mjs", "unicode"], "exit": 0, "log": "unicode-batch.log"},
+    {"argv": ["node", "analyze.mjs"], "exit": 0, "log": "analysis.log"}
+  ],
+  "timingPermission": "Host execution for disposable loopback/Chromium fixtures only. No personal app or profile.",
+  "counts": {"uniqueTests": 218, "uniqueFiles": 13, "newTests": 9, "newGeneratedHistories": 60, "generatedSeed": 171509, "faults": 3, "sessions": 6, "measuredKeys": 480, "warmupKeys": 624}
+}

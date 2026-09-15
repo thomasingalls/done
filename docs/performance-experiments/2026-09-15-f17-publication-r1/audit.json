@@ -1,0 +1,61 @@
+{
+  "signedBase": "e0a8726347b75d8c57a89afcbdf9ca34ed829b39",
+  "sessions": [
+    {
+      "variant": "selected",
+      "session": "comparison-0",
+      "sha256": "35ffaf331e4990e9be0dd19ebc0b245ffc939b02d4e123290653c37eb0ac77bc",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "comparison-0",
+      "sha256": "d9967405d3f7b470b9c11a7abb54e33e6d057095e8c68c5a90188e9597d5004b",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "comparison-1",
+      "sha256": "452031e1996a22384868b443f92982f35eeff2f89d5a8633c359f96a56849de4",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "selected",
+      "session": "comparison-1",
+      "sha256": "69d270e386fdf4172c7e886b23d4d4dcc1c943eb9653ca4b06504d82e08fb674",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "selected",
+      "session": "unicode-0",
+      "sha256": "5285fb1170097885194878971325cf6a0a7993e318d241e30cd591ee5bce37e2",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "unicode-0",
+      "sha256": "88afb738d9b2b96f692b769211547f0fa03de2ca28baa238580511acdc019580",
+      "measuredKeys": 80
+    }
+  ],
+  "measuredKeys": 480,
+  "warmupKeys": 624,
+  "sourceBundleAndHelpersUnchanged": 416,
+  "newTests": 9,
+  "newGeneratedHistories": 60,
+  "generatedSeed": 171509,
+  "affectedTests": 218,
+  "affectedFiles": 13,
+  "discriminatingFaults": 3,
+  "typecheckPassed": true,
+  "previousPacketFiles": 90,
+  "personalAndVectorPins": 52,
+  "rootPerspectiveUnchanged": true,
+  "appendOnlyPrefixesPreserved": true,
+  "L2Unchanged": true,
+  "mainRuntimeTestsUnchanged": true,
+  "historicalPerformancePacketsUnchanged": true,
+  "fixtureSetupFailureRetained": true,
+  "historyCounterDefectAndRepairRetained": true,
+  "selectedCombination": "R3 plus membership-repair eligibility; publication parked"
+}
