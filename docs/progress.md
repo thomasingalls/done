@@ -50,34 +50,37 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: core-receive fixture execution headroom; application latency disposition; remaining command/campaign and immutable qualification work
+blocks_on: application latency disposition; remaining command/campaign and immutable qualification work
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
 **Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The selected F-17
-combination is now maintained code and passed functional integration. The subsequent Account
-qualification remains open on core-receive execution headroom. Default Local activation is still
-gated; F-17 remains partial. There are **626 obligations, 290 required test
+combination is now maintained code and passed functional integration. The bounded core-receive
+headroom repair now passes at unchanged limits. Default Local activation is still gated; F-17 remains partial. There are **626 obligations, 290 required test
 files, and 271 general files/2,189 dispositions (11 not applicable)**. The unresolved set is
 unchanged: **zero test-file /96 command /63 campaign**. These are adapter obligations, not passed
 release tests. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 
-**Just completed.** The selected integration is signed and signature-verified as `132bc7d3`.
-[Lifetime/composition qualification](./f17-rc-lifetime.md) passes four controlled-carrier Chromium
-sessions, **1,920 main edits/152 collection checkpoints** and three faults. Candidate histories are
-bounded and collectible after close; scratch is cleared and capped. This is not complete memory
-erasure: the existing canonical document remains reachable while a closed facade is retained in
-both modes, then becomes collectible when that facade is dropped. No production changes were made.
+**Just completed.** The lifetime/Account checkpoint is signed and signature-verified as `52a6aa80`.
+One fixture investigation found repeated bundle evaluation taking 7.342 of 10.084 seconds in a
+representative pending-dependencies case. Receive now supplies one complete browser bundle through
+inherited setup; all bindings, real transitions, page replacement and semantic checks remain.
 
-**Native qualification result.** Ten complete Account files pass **102 cases**, including all sync,
-receive/editor, editing, handoff, capture and admission fixtures. Core receive times out twice at
-its unchanged **300-second** stage limit, after 16/17 and 15/17 cases. Both attempts drain and stay
-failed. Its last authority-change case passes alone, but that diagnostic does not complete the file.
-The planned 119-case selection remains open on core receive. The preceding integration's 1,209
-unit tests and owned/native controls retain their own signed evidence; they are not rerun here.
-[Current evidence](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
-This new evidence/checkpoint phase is uncommitted.
+**Native qualification result.** One owned attempt passes **17 core-receive cases in 149.007s/300s**
+and **12 ordered-editor cases in 150.515s/480s**, including 12/10 generated histories and crash,
+mutation and close/drain controls. Both process/browser groups drain. Native test bodies, counts,
+seeds and limits are unchanged. This clears the bounded headroom blocker; the two prior core-receive
+timeouts remain failed. Other Account evidence retains its original input identity; this is not a
+single current-input 119-case pass. Four runner checks and formatting pass. Only ten fixture hashes
+and the planning inventory digest change; production code/defaults are untouched.
+[Single-round repair and receipts](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+The repair and this checkpoint are uncommitted. The operator's one-round limit is reached.
+
+The preceding [lifetime checks](./f17-rc-lifetime.md) pass 1,920 edits/152 observations and three faults.
+Scratch and workspace histories are bounded/collectible; the pre-existing canonical document stays
+reachable while a closed facade is retained, then becomes collectible when the facade is dropped.
+This remains a separate hardening opportunity, not a complete memory-erasure guarantee.
 
 **Selection boundary.** The operator has ended optimization exploration. Keep existing full
 canonical verification and detached stack copies. UI/publication alternatives, the first buffer's
@@ -135,20 +138,17 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** Repair and qualify the existing core-receive fixture's execution headroom.
-Use both 300-second failures and the previously recorded 297-second pass to distinguish fixture
-setup/body/teardown costs and select a justified bounded repair. Preserve the test's semantic and
-individual-case contracts; do not blindly increase its stage limit. Optimization exploration is
-closed, and the selected runtime remains fixed unless this investigation finds a defect.
+**Next bounded phase.** Run the unchanged application-latency gate on the selected integration,
+then decide default Local activation and explicitly record any accepted latency shortfall as release
+debt. Keep failed receipts and the selected runtime fixed. The one-round fixture repair is complete;
+optimization exploration remains closed.
 
-**Following phases.** Run the unchanged application gate on the integrated combination, decide
-default Local activation and explicitly record any accepted latency shortfall as release debt.
-Retain failing receipts. Resume the 96 command/63 campaign wrappers and remaining qualification
+**Following phases.** Resume the 96 command/63 campaign wrappers and remaining qualification
 repairs before the immutable aggregate, private Account rehearsal and human recovery/adoption
 milestones. Larger rewrites and wider normalization are later work; no release receipt is claimed.
 
 The earlier eight-phase commit backlog is closed in five verified signed commits through
-`e2d42fac`. Subsequent optimization and integration records are signed through `132bc7d3`; historical receipts
+`e2d42fac`. Subsequent optimization, integration and lifetime records are signed through `52a6aa80`; historical receipts
 retain their original revision IDs. The personal packaged app, phone, relay and deployment remain
 untouched by this integration.
 

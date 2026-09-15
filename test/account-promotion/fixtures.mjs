@@ -42,7 +42,7 @@ export async function bundle(mutant = false) {
   return (Array.isArray(built) ? built[0] : built).output.find((f) => f.type === 'chunk').code;
 }
 const script = await bundle();
-export async function native(t) {
+export async function native(t, harness) {
   const dir = mkdtempSync(join(tmpdir(), 'done-promotion-')),
     key = randomBytes(32),
     token = fresh();
@@ -86,7 +86,8 @@ export async function native(t) {
   );
   const setup = async (page) => {
     await page.goto(server.origin);
-    await page.evaluate(script);
+    // A derived fixture may supply its full transitive bundle; configuration still runs.
+    await page.evaluate(harness ?? script);
     await page.evaluate(
       ({ pin, token }) => {
         window.pin = pin;

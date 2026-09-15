@@ -94,14 +94,9 @@ export async function receiveBundle(control) {
 }
 const script = await receiveBundle();
 export async function native(t) {
-  const f = await base(t),
-    setup = f.setup;
-  f.setup = async (page) => {
-    await setup(page);
-    await page.evaluate(script);
-  };
-  await f.setup(f.page);
-  return f;
+  // This bundle re-exports every inherited browser harness. Load it once per setup while
+  // retaining all ancestor bindings/configuration, the genesis page and cold-page replacement.
+  return base(t, script);
 }
 export async function selected(f, id) {
   const item = await baseSelected(f, id);

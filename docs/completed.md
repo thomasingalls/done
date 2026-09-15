@@ -7419,3 +7419,42 @@ append-only records and L-2 remain unchanged. Personal app/server, phone, relay 
 untouched. This new evidence/checkpoint phase is uncommitted.
 [Protocol and assessment](./f17-rc-lifetime.md);
 [retained source, observations and failures](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
+
+
+## 2026-09-15 — One core-receive headroom repair qualifies at unchanged limits
+
+The preceding lifetime/Account checkpoint is signed and signature-verified as `52a6aa80`.
+The operator limited this phase to one investigation and repair round. A standalone, filtered
+pending-dependencies probe passes in 10.084 seconds; timing wrappers observe 75 browser-bundle
+evaluations taking 7.342 seconds, versus 0.165 seconds in navigation and small teardown costs.
+This diagnostic is one synthetic case on one host, not a complete-file receipt or application
+performance result. It identifies repeated inherited bundle setup as a substantial fixture cost;
+it does not attribute every earlier timeout or timing variation to that cause.
+
+Receive now supplies its full transitive browser bundle through the existing fixture chain.
+Each page setup loads that bundle once while retaining ancestor configuration/bindings, the original
+genesis page, cold replacement pages, real storage, credential checks and all promotion transitions.
+Nine ancestor fixtures forward an optional override; calls without it keep their previous path.
+No production code, native test bodies, generated counts/seeds, mutants or deadlines change.
+
+The single owned validation attempt passes both files: **17 core-receive cases in 149.007 seconds
+against 300 seconds**, and **12 ordered-editor cases in 150.515 seconds against 480 seconds**.
+The cases retain 12 receive/10 editor generated histories, renderer death, exact content/evidence,
+pending dependencies, mutation controls and close/drain assertions. Both worker/browser groups drain.
+The prior core-receive 300-second failures remain failed, and the earlier editor 307.237-second
+result remains historical. This run clears the bounded core-receive headroom blocker; it is not
+an unchanged-input rerun of all 119 previously selected Account cases or immutable qualification.
+
+Four runner checks and scoped formatting pass. Planning records change only ten fixture hashes
+and the manifest inventory digest: 626 obligations, 290 required files, 271 general files/2,189
+dispositions (11 not applicable), zero test-file/96 command/63 campaign unresolved rows remain.
+The initial pre-record inventory refusal and mistaken unavailable Prettier invocation are retained;
+the installed oxfmt and separately executed runner checks pass. No failed native attempt occurred
+in this round. Runtime, budgets, personal/vector pins, prior evidence, append-only records and L-2
+are preserved. The repair and this checkpoint are uncommitted.
+
+Stop here at the requested single-round boundary. Next is the unchanged application-latency gate
+on the selected integration, then default Local activation with explicit disposition of any accepted
+latency debt. F-17 remains partial; larger optimization exploration and Account buffers stay out.
+Personal app/server, phone, relay and deployment are untouched.
+[Investigation, exact repair and owned receipts](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).

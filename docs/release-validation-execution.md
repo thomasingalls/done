@@ -104,17 +104,21 @@ increase planning counts; the 159 unresolved wrappers are unchanged. Earlier cod
 from the combined patch are restored. Only the planning manifest's administrative size ceiling
 increases (800,000→850,000); execution/report/log/performance limits are unchanged.
 
-The subsequent [lifetime/composition assessment](./f17-rc-lifetime.md), based on signed integration
-`132bc7d3`, passes 152 history/scratch collection checkpoints and three faults. Ten complete Account
-files pass 102 cases. Core receive times out twice at its unchanged 300-second stage bound; the
-separately passing final case is diagnostic only. **Next repair/qualify that fixture's execution
-headroom**, then run the unchanged application gate and decide default Local activation with explicit
-latency-debt disposition. Exploration is closed. Shared
-optimizations are integrated, Local buffers remain private and Account buffer activation remains
-excluded. No new application-latency result, wrapper resolution or immutable release receipt is claimed.
-The lifetime observations do not establish whole-application memory release: a deliberately retained
-closed facade retains the pre-existing canonical document until that facade is dropped.
-Source, separate input identities, failures and checks are retained in the
+The [lifetime/composition assessment](./f17-rc-lifetime.md), now signed as `52a6aa80`, passes 152
+history/scratch observations and three faults; ten complete Account files pass 102 cases. Its two
+core-receive timeouts remain preserved. The subsequent single-round fixture repair passes **17 core
+receive cases in 149.007s/300s** and **12 ordered-editor cases in 150.515s/480s** in one owned
+attempt, with both groups drained. Receive loads its full browser bundle once per inherited setup;
+test bodies, generated seeds/counts, deadlines and runtime remain unchanged. Only ten fixture hashes
+and the inventory digest change. This clears the bounded headroom blocker, not all Account files
+under one new input identity. [Repair evidence](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+
+**Next run the unchanged application-latency gate**, then decide default Local activation with explicit
+latency-debt disposition. The operator's one-round fixture repair is complete. Exploration is closed;
+Local buffers remain private, Account buffers stay excluded and F-17 remains partial. No new
+application-latency result, wrapper resolution or immutable receipt is claimed. A retained closed
+facade still retains the pre-existing canonical document until the facade is dropped.
+Historical source, inputs and failures remain in the
 [integration packet](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md) and
 [lifetime/composition packet](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
 

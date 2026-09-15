@@ -47,8 +47,8 @@ export async function handoffBundle(control) {
 const script = await handoffBundle(
   process.env.HANDOFF_SLOT_BASELINE === '1' ? 'old-slot-verifier' : undefined,
 );
-export async function native(t) {
-  const f = await base(t),
+export async function native(t, harness) {
+  const f = await base(t, harness),
     setup = f.setup;
   const keys = new Map();
   await f.context.exposeBinding('testAssertion', async (_source, request) => {
@@ -76,7 +76,7 @@ export async function native(t) {
   };
   f.setup = async (page) => {
     await setup(page);
-    await page.evaluate(script);
+    if (!harness) await page.evaluate(script);
     await page.evaluate(() => {
       window.bindingTransport = (input) => request('/account/promotion/binding', input);
       window.assertPasskey = async (req) => {

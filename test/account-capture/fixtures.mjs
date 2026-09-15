@@ -54,12 +54,12 @@ export async function captureBundle(control) {
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await captureBundle();
-export async function native(t) {
-  const f = await base(t),
+export async function native(t, harness) {
+  const f = await base(t, harness),
     setup = f.setup;
   f.setup = async (page) => {
     await setup(page);
-    await page.evaluate(script);
+    if (!harness) await page.evaluate(script);
     await configure(page);
   };
   await f.setup(f.page);

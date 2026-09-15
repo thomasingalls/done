@@ -42,8 +42,8 @@ export async function admissionBundle(control) {
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await admissionBundle();
-export async function native(t) {
-  const f = await base(t),
+export async function native(t, harness) {
+  const f = await base(t, harness),
     setup = f.setup;
   const keys = new Map(),
     ready = f.ready;
@@ -59,7 +59,7 @@ export async function native(t) {
   });
   f.setup = async (page) => {
     await setup(page);
-    await page.evaluate(script);
+    if (!harness) await page.evaluate(script);
     await page.evaluate(() => {
       window.assertActivation = (options) => testActivationAssertion(options);
       window.admissionTransport = {

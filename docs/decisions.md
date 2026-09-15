@@ -3556,3 +3556,17 @@ Keep both failures. Next diagnose and qualify that fixture's execution headroom 
 controls unchanged; do not blindly loosen the bound or restart product optimization exploration.
 Then resume the unchanged application gate and Local activation decision. The selected runtime,
 defaults, budgets and adapter counts remain unchanged here; whole-release qualification remains open.
+
+
+## 2026-09-15 — Stop after one receive-fixture headroom repair
+
+Following signed checkpoint `52a6aa80`, one measured fixture repair removes repeated ancestor
+bundle evaluation only for receive's explicit full-bundle path. All test bodies, generated seeds,
+crash operations and 300/480-second bounds stay unchanged. The single owned pass qualifies core
+receive (17 cases/149.007s) and its ordered editor derivative (12 cases/150.515s). No second
+repair or campaign round is undertaken. Earlier failed attempts stay preserved; this establishes
+bounded fixture headroom, not application speed or full current-input Account qualification.
+Return next to the unchanged application-latency gate and Local activation/debt decision. Keep
+production defaults and the selected optimization combination fixed. Larger rewrites remain later
+work; 159 wrapper obligations and immutable/loaded-host qualification remain open.
+[Evidence and scope](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).

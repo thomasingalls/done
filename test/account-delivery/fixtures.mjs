@@ -84,12 +84,12 @@ export async function configure(page) {
     };
   });
 }
-export async function native(t) {
-  const f = await base(t),
+export async function native(t, harness) {
+  const f = await base(t, harness),
     setup = f.setup;
   f.setup = async (page) => {
     await setup(page);
-    await page.evaluate(script);
+    if (!harness) await page.evaluate(script);
     await configure(page);
   };
   await f.setup(f.page);

@@ -67,12 +67,12 @@ export async function editingBundle(control) {
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await editingBundle();
-export async function native(t) {
-  const f = await base(t),
+export async function native(t, harness) {
+  const f = await base(t, harness),
     setup = f.setup;
   f.setup = async (page) => {
     await setup(page);
-    await page.evaluate(script);
+    if (!harness) await page.evaluate(script);
     await page.evaluate(() => {
       window.optionsFor = (item) => ({
         slotId: item.slotId,
