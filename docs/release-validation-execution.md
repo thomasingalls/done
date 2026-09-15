@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**159 obligations remain blocked: 96 command and 63 campaign rows; no test-file rows remain.**
+**156 obligations remain blocked: 94 command and 62 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 159 missing product tests. The compiler still refuses whole-release execution before
+they are not 156 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -39,7 +39,7 @@ This is bookkeeping, not a new immutable aggregate result.
 
 All eleven catalogue adapters (163 cases / 54 mutations) and all general test-file
 adapters are integrated. After selected F-17 combination integration, the current set is
-**271 files / 2,189 dispositions, including 11 explicitly not applicable**.
+**271 files / 2,191 dispositions, including 11 explicitly not applicable**.
 That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
 and browser application files. The 19 infrastructure test files account for the other required files.
 These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
@@ -128,12 +128,13 @@ unchanged. [Open F-17 RC debt](./review/implementation/f17-rc-latency-debt.json)
 disposition, not a test waiver or immutable pass. No personal app/server or phone is changed.
 [Current receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
 
-**Next resume command/campaign wrapper certification**, including exact dependency/vector reuse and
-complete output retention; 96 command/63 campaign obligations remain. Keep the failed timing receipt
-visible through qualification repairs and the immutable release report. Larger optimization work
-remains deferred. Historical [integration](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md),
-[lifetime](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md) and
-[headroom](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md) packets remain unchanged.
+**Wrapper preparation integration now resolves two command rows and one campaign row**, leaving
+94 command/62 campaign obligations. The final owned epoch passes 35 executions/65 cases and one
+identical vector receipt reuse, with drain. Passing Node output is retained; campaign file-output
+retention is next. The crypto census's sole stale activation source hash is refreshed. Earlier
+control failure/cancellation evidence remains. [Current wrapper evidence](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+The activation is signed as `83b5f157`; this wrapper phase is uncommitted. Preserve the failed F-17
+timing receipt through qualification and immutable reporting; larger optimization remains deferred.
 
 ## Commands and current execution scope
 
@@ -141,6 +142,7 @@ remains deferred. Historical [integration](./account-conformance-runs/2026-09-15
 node scripts/release-validation/check.mjs
 node scripts/release-validation/plan.mjs
 node --test --test-concurrency=1 test/release-validation/*.test.mjs
+node scripts/release-validation/execute.mjs --selection wrapper-preparation
 node scripts/release-validation/execute.mjs --selection infrastructure
 node scripts/release-validation/execute.mjs --selection vitest-properties
 node scripts/release-validation/execute.mjs --selection vitest-reviewed
@@ -3679,3 +3681,49 @@ measurement campaign, personal app operation or deployment occur during this boo
 The backlog through this performance phase is closed. Next profile the snapshot application's
 remaining document/history fork, complete comparison and publication costs before another repair;
 retain the unchanged budgets, failed observations and loaded-host uncertainty.
+
+## 2026-09-15 — Command/campaign wrapper preparation integration
+
+The Local activation and explicit RC latency-debt checkpoint is signed and signature-verified as
+`83b5f157`. The first wrapper slice now executes the real crypto preparation check-mode campaign,
+including registry/home/manual-entry/snapshot postconditions. Its package command shares that
+campaign obligation. The exact two-file Node command expands a reviewed glob, preserves default
+file concurrency and executes all six cases together after the campaign. Serial single-file
+receipts do not discharge it. Extra arguments, environment variants and changed glob membership
+refuse. Existing catalogue/check aliases now also match argv boundaries and empty environment.
+
+The Node reporter retains passing-test stdout, stderr and diagnostics in the owner's bounded log.
+The signed reporter passes a control while dropping those messages; the new reporter retains them.
+Oversized passing-test output fails log-limit and drains. This is text exposed through Node reporter
+events; optional campaign files and arbitrary binary streams are not claimed as preserved here.
+Summary entries now explicitly say whether an exact same-owner receipt was reused.
+
+The final owned epoch passes three full planning suites (26 cases), all 33 runner controls, all
+29 vector checks, the actual crypto preparation campaign and its grouped Node command (six cases).
+An additional identical vector consumer reuses the original key under the same frozen inputs.
+That is 35 executions plus one reuse, 65 cases, and all groups drained. Runner controls take
+107.911 seconds against their unchanged 120-second stage bound; retain that headroom observation.
+This bounded vector selection does not include AAD coverage or whole traceability/package checks.
+
+The first direct planning pass was 25/26 because a denominator assertion still expected 31 runner
+cases instead of 33. The corrected assertion is qualified by the final full planning suites.
+The direct runner pass was 32/33: an existing historical-input control reported orphaned-child.
+Its complete log remains, but that test removed its original temporary receipt. The later owned
+pass does not explain or close the intermittent classification issue. An intermediate inventory
+preflight also refused the new summary-writer source bytes before the reviewed refresh.
+
+The first owned epoch passed three planning suites, then was explicitly cancelled with drain after
+a separate crypto preflight found the activation source pin stale. Refresh exactly the
+admittedWorkspace.ts source hash in docs/account-crypto/census.json; every other census field,
+label and group remains identical. The final epoch uses those repaired inputs; earlier failure,
+cancellation and successful receipts remain separate. No runtime, personal app, server, performance
+budget, protocol or test exclusion changes in this phase.
+
+Counts remain 626 obligations and 290 required files. General integration is 271 files/2,191
+case dispositions (11 not applicable), reflecting two new runner controls; three new infrastructure
+controls are separate. Unresolved obligations fall from 96 command/63 campaign to **94 command/62
+campaign**, with zero test-file obligations. This is adapter coverage, not an immutable release pass.
+F-17's failed budgets and explicit RC debt are unchanged. Next: owned file-output retention for
+report-producing campaigns, then the first multi-stage Account wrapper with exact prerequisites
+and report postconditions. The new phase is uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).

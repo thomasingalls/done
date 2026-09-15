@@ -3589,3 +3589,14 @@ full canonical verification and complete detached stacks; stop optimization expl
 disposition does not turn the failed gate green or claim a supported-device performance floor.
 [Scope and closure criterion](./review/implementation/f17-rc-latency-debt.json);
 [retained failed gate and functional receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+## 2026-09-15 — Preserve grouped wrapper semantics and passing-test evidence
+
+The crypto preparation Node wrapper retains its reviewed two-file glob and default file concurrency.
+Existing serial per-file receipts are different invocation contracts and cannot discharge that
+command. Its real check-mode campaign is an explicit prerequisite, even in the bounded selection.
+Vector aliases share only exact argv/environment contracts and same-owner, unchanged input/result
+receipts. The final qualification includes an actual reused vector key rather than inferring reuse
+from common source paths. Passing Node stdout/stderr/diagnostics enter the existing bounded stage
+log; overflow fails instead of silently discarding success-path evidence. Campaign file outputs
+remain a separate adapter obligation. [Evidence](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).

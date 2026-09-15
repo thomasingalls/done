@@ -43,109 +43,63 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — release qualification (`L-1`)
+## Active slice: General validation-runner integration — command/campaign wrappers (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: remaining command/campaign and immutable qualification work; explicit F-17 RC latency debt
+blocks_on: remaining command/campaign adapters and immutable qualification; explicit F-17 RC latency debt
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** All catalogue and test-file adapters are integrated. The selected F-17
-combination is now maintained code and passed functional integration. The bounded core-receive
-headroom repair passes at unchanged limits. The selected Local combination is now the repository
-default with explicit RC latency debt; Account stays reference and F-17 remains partial. There are **626 obligations, 290 required test
-files, and 271 general files/2,189 dispositions (11 not applicable)**. The unresolved set is
-unchanged: **zero test-file /96 command /63 campaign**. These are adapter obligations, not passed
-release tests. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
+**Roadmap checkpoint.** The Local activation and latency-debt checkpoint is signed and verified as
+`83b5f157`. All catalogue/test-file adapters are integrated. Counts are **626 obligations, 290
+required test files, 271 general files/2,191 dispositions (11 not applicable)**. Three wrapper
+obligations are resolved in this phase: **zero test-file /94 command /62 campaign** remain.
+These are integration counts, not passing aggregate tests.
 
-**Just completed.** The fixture repair is signed and signature-verified as `e38be54c`.
-The unchanged application gate on the selected Local combination completes all twelve bodies and
-thirty measurement rows, then **fails** Android card p95 (**38.7 ms**, <16 required) and settled
-navigation (**113.6 ms**, <100 required). Desktop card is **9.0 ms** and Android focus **35.4 ms**;
-all other budgets pass. Browser/process/server drain succeeds. The original known-metric exception
-rule also refuses activation; the operator's broader RC direction supports the explicitly recorded
-post-measurement navigation exception. The receipt and original assessment stay failed.
+**Just completed.** The crypto preparation check-mode campaign and exact grouped two-file Node
+command now have executable contracts. The reviewed glob retains default Node concurrency; changed
+membership, argv or environment refuses. The reporter preserves passing stdout/stderr/diagnostics
+under its existing log limit. The final owned epoch passes **35 executions/65 cases**, with one
+additional identical vector consumer reusing the same receipt key. All groups drain. This includes
+four complete control suites, all 29 vector checks, the preparation campaign and its six grouped
+cases. It does not discharge vectors:coverage, traceability or whole-package checks.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+This wrapper phase is uncommitted.
 
-**Activation and validation.** The exact measured candidate passes **147 owned unit cases**, the
-native workspace catalogue's **ten cases/four mutations**, and **eight normal Local app cases** with
-20 generated histories. All ten stages share the timing run's candidate input identity. The exact
-one-line Local factory selection is applied afterward. Account constructors and the internal default
-remain reference. TypeScript, format and planning checks pass. No personal app/server is deployed.
-[Protocol and RC decision](./f17-rc-activation.md);
-[evidence](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
-The activation and checkpoint are uncommitted.
+**Preserved observations.** The direct runner pass failed one historical-input control with
+orphaned-child (32/33); the final owned pass does not establish its cause or repair. The final runner
+stage takes 107.911s of its unchanged 120s limit. An initial planning count mismatch is corrected.
+The first owned epoch was cancelled and drained after a separate check found the activation's stale
+crypto census pin. Only the admittedWorkspace.ts source hash is refreshed; all labels/groups and
+other fields match. All original logs, cancellation receipts and final results remain separate.
 
-**Selection boundary.** R3 + membership-repair eligibility + restricted replay buffers is the Local
-RC combination. Keep full canonical verification, complete detached stacks, idle fencing and
-surrogate/unsupported-input fallbacks. UI/publication alternatives, incremental stack copying,
-broader normalization and Account buffer activation remain excluded. Optimization exploration is
-closed. [Open F-17 RC debt and closure](./review/implementation/f17-rc-latency-debt.json) records the
-two timing exceptions separately from gate results; it is not a machine-readable waiver.
+**Next bounded phase.** Add owned file-output retention for report-producing campaigns, then expand
+the first multi-stage Account wrapper with its exact prerequisites, variants and report postconditions.
+Optional reports still disappear with disposable checkouts unless explicitly retained; forwarded
+Node text does not close that obligation. Keep all failures and report/log bounds.
 
-**Evidence limits.** The prior lifetime checks pass 1,920 edits/152 observations and three faults;
-a retained closed facade still holds its destroyed canonical document until the facade is dropped.
-The bounded fixture headroom repair passes 17 core receive and 12 editor cases at original limits;
-its earlier timeouts remain failed. Other Account evidence retains its original input identity.
-Keep emulation as the timing reference and the cancelled physical companion as a rough 1.5× planning
-comparison only. The current gate retains 30 summary rows and typing sample counts, not individual
-key arrays. No handset, population, arbitrary-history or immutable release claim follows.
+**RC selection.** R3 + membership-repair eligibility + restricted replay buffers is the Local
+repository default. Account/internal defaults stay reference. Optimization exploration is closed.
+The unchanged application gate remains **failed**: Android card p95 38.7ms (<16), settled navigation
+113.6ms (<100). Desktop card is 9.0ms, Android focus 35.4ms. The explicit post-measurement product
+disposition accepts the two misses for this RC; it is not an automated waiver or a passing receipt.
+[RC decision](./f17-rc-activation.md); [open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
+All prior functional/lifetime/native and timing evidence retains its original revision and limits.
+The physical companion remains cancelled, with emulation as reference and only a rough planning
+conversion. No personal app/server, relay, deployment or device operation occurs here.
 
-**Open validation observations.** Both metadata-copy candidates pass focused semantic checks but
-miss the prospective performance rule. At 1,000 undo groups the recursive candidate improves one/100
-target medians by 5.1%/20.1%, and direct constructors by 10.3%/30.5%; the required gain was >=20% in
-both strata. All 720 timings, source variants and sharing controls survive. Production is restored
-exactly, while new graph/isolation, fallback and undo/selection regression tests remain. The ownership/verification contract and baseline controls are recorded. The private handoff
-now passes the explicit Local integration/reference gates. Default activation and Account source
-activation remain separate. Full verification and queue/capture bounds are retained.
-The last reference residual profile shows substantial costs for each draft, full comparison and
-publication. Its application observation is 15.2/69.4 ms desktop/CPU-4x typing, with focus 7.4/35.7 ms.
-The subsequent private candidate observation is 12.9/63.5 ms typing and 7.5/43.2 ms focus. Android
-typing fails in both runs; other budgeted measurements pass. Neither run is physical-device
-qualification, and the old reference profile cannot attribute candidate costs. Preserve the earlier focus failure,
-recorder/scheduler uncertainty and all negative fork controls. These host observations do not
-establish handset or immutable qualification. [Rejected metadata assessment](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
-[Preparation contract and controls](./f17-preparation-contract.md).
-[Private handoff component and evidence](./f17-handoff.md).
-
-The handoff phase's first full unit run, concurrent with runner checks and owned input
-fingerprinting/execution, timed out at five seconds in unchanged Account-liveness and position-decision
-cases. The same default full command passed alone at unchanged limits. Both runs survive; concurrency
-as the cause is not established. Keep this at loaded-host qualification instead of relaxing deadlines.
-[Residual profile](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
-[Last reference application gate](./account-conformance-runs/2026-09-14-f17-forks/README.md).
-
- The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
-its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
-The ledger phase's first expected-pass historical service-path control reported orphaned-child.
-Its log remains; teardown removed its first receipt. Cause is unresolved despite later passes.
-Optional pre-cleanup capture retains later receipts; this phase establishes no fix. Capture's generated
-comparison-map refresh and overhead byte-length equality remain focused oracle follow-ups. Editing's
-timeout/diagnostic and measured deadline repair remain preserved in its earlier packet.
-
-Handoff's original timeout and passing allowance repair remain preserved in its signed packet.
-
-**Delivery-oracle timing.** This pass used 113.095 of 120 seconds of Node execution, leaving
-6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
-at the loaded-host aggregate gate; the allowance is unchanged.
-
-**Next bounded phase.** Resume command/campaign wrapper integration, starting with exact dependency/
-vector reuse and complete output retention. There remain **96 command and 63 campaign obligations**.
-Retain explicit RC latency debt and the failed gate in the release report; do not silently convert
-it into a passing receipt. Larger optimization work is deferred.
-
-**Following phases.** Resolve remaining qualification repairs, then run the immutable aggregate and
-private Account rehearsal before the human recovery/adoption milestones. Supported-device capacity
-and the listed timing guarantees remain open; no release receipt is claimed.
-
-The earlier eight-phase commit backlog is closed in five verified signed commits through
-`e2d42fac`. Subsequent optimization, integration, lifetime and headroom records are signed through `e38be54c`; historical receipts
-retain their original revision IDs. The personal packaged app, phone, relay and deployment remain
-untouched by this integration.
+**Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,
+capture comparison-map/byte-length oracles, delivery-oracle headroom, R-04 whole-tree style scope,
+P-06 construction prose and Q-08 artifact budgets explicit. Core-receive headroom is repaired at its
+unchanged bound, with older timeouts retained. After remaining wrappers/qualification repairs, run
+the immutable aggregate with failed F-17 budgets visible, then private Account rehearsal and the
+human recovery/adoption milestones. [Execution roadmap](./release-validation-execution.md);
+[release plan](./private-release-validation-prep.md#what-follows-validation).
 
 ---
 

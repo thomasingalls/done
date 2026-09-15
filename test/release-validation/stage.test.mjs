@@ -737,6 +737,95 @@ test('Node property failure retains its counterexample and seed that the old rep
   }
 });
 
+test('passing Node stdout, stderr and diagnostics survive the owned reporter and exact reuse', async (t) => {
+  const f = fixture(t, '');
+  f.write(
+    'actual.test.mjs',
+    `import test from 'node:test';
+    test('evidence', t => {
+      process.stdout.write('generated stdout evidence\\n');
+      process.stderr.write('generated stderr evidence\\n');
+      t.diagnostic('seed=150931 diagnostic evidence');
+    });`,
+  );
+  const stage = {
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'actual.test.mjs',
+    ],
+    expect: { kind: 'cases', cases: [{ id: 'actual.test.mjs::evidence', outcome: 'pass' }] },
+    deadlineMs: 5000,
+  };
+  f.write(
+    'scripts/release-validation/node-reporter.mjs',
+    execFileSync('git', ['show', '83b5f157:scripts/release-validation/node-reporter.mjs'], {
+      encoding: 'utf8',
+    }),
+  );
+  const before = await f.run(stage);
+  assert.equal(before.status, 'passed', before.result.reason);
+  assert.doesNotMatch(
+    readFileSync(join(f.output, before.key, 'output.log'), 'utf8'),
+    /generated stdout evidence|generated stderr evidence|seed=150931/,
+  );
+  f.write(
+    'scripts/release-validation/node-reporter.mjs',
+    readFileSync('scripts/release-validation/node-reporter.mjs'),
+  );
+  const after = await f.run(stage);
+  assert.equal(after.status, 'passed', after.result.reason);
+  assert.equal(after.result.groupDrained, true);
+  const output = readFileSync(join(f.output, after.key, 'output.log'), 'utf8');
+  for (const marker of [
+    'generated stdout evidence',
+    'generated stderr evidence',
+    'seed=150931 diagnostic evidence',
+  ])
+    assert(output.includes(marker), 'Missing retained evidence: ' + marker);
+  assert.equal((await f.run({ ...stage, id: 'other-consumer' })).reused, true);
+  if (process.env.STREAM_CONTROL_OUTPUT) {
+    mkdirSync(process.env.STREAM_CONTROL_OUTPUT, { recursive: true });
+    for (const [name, receipt] of [
+      ['before', before],
+      ['after', after],
+    ])
+      for (const file of ['receipt.json', 'output.log', 'cases.json'])
+        copyFileSync(
+          join(f.output, receipt.key, file),
+          join(process.env.STREAM_CONTROL_OUTPUT, name + '-' + file),
+        );
+  }
+  writeFileSync(join(f.output, after.key, 'output.log'), output + 'changed');
+  await assert.rejects(() => f.run(stage), /Changed reusable result artifact/);
+});
+
+test('forwarded passing-test output cannot bypass the stage log bound', async (t) => {
+  const f = fixture(t, '');
+  f.write(
+    'actual.test.mjs',
+    `import test from 'node:test';
+    test('output',()=>process.stdout.write('x'.repeat(32768)));`,
+  );
+  const receipt = await f.run({
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'actual.test.mjs',
+    ],
+    expect: { kind: 'cases', cases: [{ id: 'actual.test.mjs::output', outcome: 'pass' }] },
+    deadlineMs: 5000,
+  });
+  assert.equal(receipt.status, 'failed');
+  assert.equal(receipt.result.reason, 'log-limit');
+  assert.equal(receipt.result.groupDrained, true);
+  assert.equal(readFileSync(join(f.output, receipt.key, 'output.log')).length, 4096);
+});
+
 test('a stuck Node test cannot pass and leaves completed-case progress after owned deadline drain', async (t) => {
   const f = fixture(t, '');
   f.write(

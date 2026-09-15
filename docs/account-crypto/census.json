@@ -217,7 +217,7 @@
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "e4759c7ab14fede6d492431c4c10dd9d17b0cf0155122613a9f078e1720c153d"
+      "sha256": "5512e4071018b32a8c211cfbd354f8b9a5bd3cc643c2591fbad4a18a3b37bf9e"
     },
     {
       "path": "src/crdt/archiveProjection.ts",

@@ -13,6 +13,69 @@ import {
 } from '../../scripts/release-validation/manifest.mjs';
 import { packageGraph } from '../../scripts/release-validation/inventory.mjs';
 import { digest } from '../../scripts/release-validation/identity.mjs';
+import {
+  preparationCampaign,
+  preparationCommand,
+  preparationTestStage,
+} from '../../scripts/release-validation/command-wrappers.mjs';
+
+test('preparation wrappers retain grouped Node execution and vector aliases share only exact invocations', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const selected = selectStages(plan, 'wrapper-preparation');
+  assert.equal(selected.length, 31);
+  assert.equal(selected.filter((s) => s.id.startsWith('vector:')).length, 29);
+  assert.equal(new Set(selected.map((s) => digest(s.argv))).size, selected.length);
+  const tests = selected.find((s) => s.variant === 'crypto-preparation-tests-v1');
+  assert.equal(tests.expect.cases.length, 6);
+  assert.equal(tests.argv.includes('--test-concurrency=1'), false);
+  assert.deepEqual(tests.dependsOn, ['campaign:' + preparationCampaign]);
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push(
+    { id: 'vector-variant', argv: [...inventory.vectors[0].argv, '--changed'] },
+    { id: 'prep-record', argv: ['node', preparationCampaign, '--record'] },
+  );
+  const variants = compileManifest(process.cwd(), changed);
+  for (const id of ['command:vector-variant:0', 'command:prep-record:0'])
+    assert(variants.rows.find((r) => r.id === id).blocked, id);
+});
+
+test('160 generated wrapper argument and environment variants cannot borrow a check receipt', () => {
+  const command = { argv: ['node', preparationCampaign], env: {} };
+  assert.deepEqual(preparationCommand(process.cwd(), command, 'check'), {
+    requires: ['campaign:' + preparationCampaign],
+  });
+  fc.assert(
+    fc.property(fc.string({ maxLength: 60 }), (value) => {
+      for (const changed of [
+        { ...command, env: { MODE: value } },
+        { ...command, argv: [...command.argv, value] },
+        { ...command, argv: [command.argv.join(' ')] },
+      ])
+        assert.equal(preparationCommand(process.cwd(), changed, 'check'), null);
+    }),
+    { seed: 150931, numRuns: 160 },
+  );
+});
+
+test('a changed preparation shell glob refuses before losing or inventing a test file', (t) => {
+  const root = mkdtempSync(join(tmpdir(), 'done-wrapper-glob-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const dir = join(root, 'test/account-crypto-prep');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'census.test.mjs'), '');
+  assert.throws(
+    () => preparationTestStage(root, 'prep'),
+    /changed crypto preparation command glob/,
+  );
+  writeFileSync(join(dir, 'contracts.test.mjs'), '');
+  writeFileSync(join(dir, 'new.test.mjs'), '');
+  assert.throws(
+    () => preparationTestStage(root, 'prep'),
+    /changed crypto preparation command glob/,
+  );
+});
 
 test('finite catalogue evaluation expands real crash boundaries and keeps discriminating mutations', () => {
   const genesis = catalogueCensus(readFileSync('scripts/local-genesis/catalog.mjs', 'utf8'));

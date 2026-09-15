@@ -7506,3 +7506,49 @@ output retention, then remaining qualification repairs and immutable validation.
 receipt remains visible in eventual release reporting; no machine-readable waiver or release pass
 is supplied here. Larger optimization work stays deferred.
 [Protocol and disposition](./f17-rc-activation.md); [exact evidence](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+## 2026-09-15 — Command/campaign wrapper preparation integration
+
+The Local activation and explicit RC latency-debt checkpoint is signed and signature-verified as
+`83b5f157`. The first wrapper slice now executes the real crypto preparation check-mode campaign,
+including registry/home/manual-entry/snapshot postconditions. Its package command shares that
+campaign obligation. The exact two-file Node command expands a reviewed glob, preserves default
+file concurrency and executes all six cases together after the campaign. Serial single-file
+receipts do not discharge it. Extra arguments, environment variants and changed glob membership
+refuse. Existing catalogue/check aliases now also match argv boundaries and empty environment.
+
+The Node reporter retains passing-test stdout, stderr and diagnostics in the owner's bounded log.
+The signed reporter passes a control while dropping those messages; the new reporter retains them.
+Oversized passing-test output fails log-limit and drains. This is text exposed through Node reporter
+events; optional campaign files and arbitrary binary streams are not claimed as preserved here.
+Summary entries now explicitly say whether an exact same-owner receipt was reused.
+
+The final owned epoch passes three full planning suites (26 cases), all 33 runner controls, all
+29 vector checks, the actual crypto preparation campaign and its grouped Node command (six cases).
+An additional identical vector consumer reuses the original key under the same frozen inputs.
+That is 35 executions plus one reuse, 65 cases, and all groups drained. Runner controls take
+107.911 seconds against their unchanged 120-second stage bound; retain that headroom observation.
+This bounded vector selection does not include AAD coverage or whole traceability/package checks.
+
+The first direct planning pass was 25/26 because a denominator assertion still expected 31 runner
+cases instead of 33. The corrected assertion is qualified by the final full planning suites.
+The direct runner pass was 32/33: an existing historical-input control reported orphaned-child.
+Its complete log remains, but that test removed its original temporary receipt. The later owned
+pass does not explain or close the intermittent classification issue. An intermediate inventory
+preflight also refused the new summary-writer source bytes before the reviewed refresh.
+
+The first owned epoch passed three planning suites, then was explicitly cancelled with drain after
+a separate crypto preflight found the activation source pin stale. Refresh exactly the
+admittedWorkspace.ts source hash in docs/account-crypto/census.json; every other census field,
+label and group remains identical. The final epoch uses those repaired inputs; earlier failure,
+cancellation and successful receipts remain separate. No runtime, personal app, server, performance
+budget, protocol or test exclusion changes in this phase.
+
+Counts remain 626 obligations and 290 required files. General integration is 271 files/2,191
+case dispositions (11 not applicable), reflecting two new runner controls; three new infrastructure
+controls are separate. Unresolved obligations fall from 96 command/63 campaign to **94 command/62
+campaign**, with zero test-file obligations. This is adapter coverage, not an immutable release pass.
+F-17's failed budgets and explicit RC debt are unchanged. Next: owned file-output retention for
+report-producing campaigns, then the first multi-stage Account wrapper with exact prerequisites
+and report postconditions. The new phase is uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).

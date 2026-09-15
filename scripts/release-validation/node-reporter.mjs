@@ -23,6 +23,11 @@ export default async function* reporter(events) {
     );
   save('running');
   for await (const { type, data } of events) {
+    // Passing-test output is evidence too (generated seeds, diagnostic observations).
+    // Stream it through the owner's existing bounded log instead of buffering another
+    // unbounded copy in cases.json. Exceeding that bound must fail the stage.
+    if (type === 'test:stdout' || type === 'test:stderr') yield data.message;
+    if (type === 'test:diagnostic') yield `test:diagnostic ${data.message}\n`;
     if (type === 'test:pass' || type === 'test:fail') {
       if (data.nesting !== 0 || data.details?.type === 'suite')
         errors.push('Unsupported nested case: ' + data.name);

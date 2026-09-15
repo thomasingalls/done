@@ -26,7 +26,7 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 2189-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 2191-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 88);
@@ -35,7 +35,7 @@ test('reviewed Vitest and Node selections preserve the 2189-case file denominato
   assert.equal(general.length, 271);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    2189,
+    2191,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 107);
   assert.equal(
@@ -96,7 +96,7 @@ test('reviewed Vitest and Node selections preserve the 2189-case file denominato
   const runners = selectStages(m, 'runner-self-tests');
   assert.deepEqual(
     runners.map((s) => s.expect.cases.length),
-    [8, 6, 31, 5],
+    [8, 6, 33, 5],
   );
   for (const s of runners) {
     assert.equal(s.processPolicy, 'registered-groups-v1');

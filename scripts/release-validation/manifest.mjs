@@ -85,6 +85,12 @@ import {
 } from './playwright-adapter.mjs';
 
 import { otherNodeGroups, otherNodeFiles, otherNodeStage } from './other-node-tests.mjs';
+import {
+  exactCommand,
+  preparationCampaign,
+  preparationCampaignStage,
+  preparationCommand,
+} from './command-wrappers.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -343,32 +349,34 @@ export function compileManifest(root, inventory) {
       env: command.env,
       orderedAfter: prerequisite ? [prerequisite] : [],
     };
-    if (vector) row.requires = ['vector:' + vector.path];
-    else if (command.argv.join(' ') === 'node scripts/content/run.mjs')
+    const preparation = preparationCommand(root, command, id);
+    if (preparation) Object.assign(row, preparation);
+    else if (vector) row.requires = ['vector:' + vector.path];
+    else if (exactCommand(command, ['node', 'scripts/content/run.mjs']))
       row.requires = ['catalogue:scripts/content/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/journal/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/journal/run.mjs']))
       row.requires = ['catalogue:scripts/journal/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/admission/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/admission/run.mjs']))
       row.requires = ['catalogue:scripts/admission/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/editor-admission/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/editor-admission/run.mjs']))
       row.requires = ['catalogue:scripts/editor-admission/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/workspace-admission/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/workspace-admission/run.mjs']))
       row.requires = ['catalogue:scripts/workspace-admission/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/owned-startup/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/owned-startup/run.mjs']))
       row.requires = ['catalogue:scripts/owned-startup/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/local-genesis/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/local-genesis/run.mjs']))
       row.requires = ['catalogue:scripts/local-genesis/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/local-clear/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/local-clear/run.mjs']))
       row.requires = ['catalogue:scripts/local-clear/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/content-trim/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/content-trim/run.mjs']))
       row.requires = ['catalogue:scripts/content-trim/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/custody/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/custody/run.mjs']))
       row.requires = ['catalogue:scripts/custody/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/write-session/run.mjs')
+    else if (exactCommand(command, ['node', 'scripts/write-session/run.mjs']))
       row.requires = ['catalogue:scripts/write-session/catalog.mjs'];
-    else if (command.argv.join(' ') === 'node scripts/release-validation/check.mjs')
+    else if (exactCommand(command, ['node', 'scripts/release-validation/check.mjs']))
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
-    else if (command.argv.join(' ') === 'node scripts/check-authority-map.mjs')
+    else if (exactCommand(command, ['node', 'scripts/check-authority-map.mjs']))
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
     else
       row.blocked =
@@ -384,24 +392,26 @@ export function compileManifest(root, inventory) {
       path: c.path,
       ...(c.parent ? { parent: 'campaign:' + c.parent } : {}),
       callSites: c.runCallSites,
-      ...([
-        'scripts/content/run.mjs',
-        'scripts/journal/run.mjs',
-        'scripts/admission/run.mjs',
-        'scripts/editor-admission/run.mjs',
-        'scripts/workspace-admission/run.mjs',
-        'scripts/owned-startup/run.mjs',
-        'scripts/local-genesis/run.mjs',
-        'scripts/write-session/run.mjs',
-        'scripts/custody/run.mjs',
-        'scripts/content-trim/run.mjs',
-        'scripts/local-clear/run.mjs',
-      ].includes(c.path)
-        ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
-        : {
-            blocked:
-              'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-          }),
+      ...(c.path === preparationCampaign
+        ? { stage: preparationCampaignStage() }
+        : [
+              'scripts/content/run.mjs',
+              'scripts/journal/run.mjs',
+              'scripts/admission/run.mjs',
+              'scripts/editor-admission/run.mjs',
+              'scripts/workspace-admission/run.mjs',
+              'scripts/owned-startup/run.mjs',
+              'scripts/local-genesis/run.mjs',
+              'scripts/write-session/run.mjs',
+              'scripts/custody/run.mjs',
+              'scripts/content-trim/run.mjs',
+              'scripts/local-clear/run.mjs',
+            ].includes(c.path)
+          ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
+          : {
+              blocked:
+                'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+            }),
     });
   }
   for (const c of inventory.constructions) {
@@ -467,6 +477,15 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'wrapper-preparation': rows
+        .filter(
+          (r) =>
+            r.kind === 'command' &&
+            (exactCommand(r, ['node', preparationCampaign]) ||
+              exactCommand(r, ['node', '--test', 'test/account-crypto-prep/*.test.mjs']) ||
+              r.requires?.some((id) => id.startsWith('vector:'))),
+        )
+        .map((r) => r.id),
       ...Object.fromEntries(
         Object.entries(browserGroups).map(([name, files]) => [
           name,
