@@ -1,0 +1,12 @@
+[
+  {
+    "variant": "selected",
+    "session": "comparison-0",
+    "started": "2026-09-15T10:04:20.152Z",
+    "finished": "2026-09-15T10:04:20.415Z",
+    "code": 1,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

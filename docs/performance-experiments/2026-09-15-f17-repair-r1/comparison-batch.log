@@ -1,0 +1,29 @@
+Starting selected comparison-0 2026-09-15T10:04:20.152Z
+Error: listen EPERM: operation not permitted 127.0.0.1
+    at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+    at listenInCluster (node:net:2437:12)
+    at node:net:2666:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+node:net:2819
+        cb(new ERR_SERVER_NOT_RUNNING());
+           ^
+
+Error [ERR_SERVER_NOT_RUNNING]: Server is not running.
+    at Server.close (node:net:2819:12)
+    at Server.wrapper (node:events:639:12)
+    at Server.emit (node:events:514:20)
+    at emitCloseNT (node:net:2879:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'ERR_SERVER_NOT_RUNNING'
+}
+
+Node.js v26.8.2
+file:///private/tmp/done-f17-repair-r1/batch.mjs:22
+ if(code!==0||timedOut||!drained)throw Error('Session failed; batch stopped and evidence retained');
+                                       ^
+
+Error: Session failed; batch stopped and evidence retained
+    at file:///private/tmp/done-f17-repair-r1/batch.mjs:22:40
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.8.2

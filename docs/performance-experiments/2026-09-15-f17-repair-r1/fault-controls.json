@@ -1,0 +1,42 @@
+[
+  {
+    "fault": "no-remote-invalidation",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/membershipEligibility.test.ts",
+      "-t",
+      "repairs a dirty remote basis",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-repair-r1/no-remote-invalidation.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "repair eligibility owner reference repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner local-handoff repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner local-snapshots repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner account repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage"
+    ]
+  },
+  {
+    "fault": "unaccepted-cleanliness",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/membershipEligibility.test.ts",
+      "-t",
+      "does not transfer unaccepted cleanliness",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-repair-r1/unaccepted-cleanliness.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "repair eligibility owner reference does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner local-handoff does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner local-snapshots does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner account does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate"
+    ]
+  }
+]

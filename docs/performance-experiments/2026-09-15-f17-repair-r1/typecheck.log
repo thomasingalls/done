@@ -1,0 +1,41 @@
+test/membershipEligibility.test.ts(115,28): error TS2554: Expected 3 arguments, but got 2.
+test/membershipEligibility.test.ts(222,11): error TS2322: Type 'AdmissionTicket' is not assignable to type 'WorkspaceTicket'.
+  Types of property 'accepted' are incompatible.
+    Type 'Promise<AdmissionReceipt>' is not assignable to type 'Promise<AdmissionReceipt & { readonly value: CommandValue; }>'.
+      Type 'AdmissionReceipt' is not assignable to type 'AdmissionReceipt & { readonly value: CommandValue; }'.
+        Property 'value' is missing in type 'AdmissionReceipt' but required in type '{ readonly value: CommandValue; }'.
+test/membershipEligibility.test.ts(229,25): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'Bytes'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
+test/membershipEligibility.test.ts(281,9): error TS2322: Type 'AdmissionTicket' is not assignable to type 'WorkspaceTicket'.
+  Types of property 'accepted' are incompatible.
+    Type 'Promise<AdmissionReceipt>' is not assignable to type 'Promise<AdmissionReceipt & { readonly value: CommandValue; }>'.
+      Type 'AdmissionReceipt' is not assignable to type 'AdmissionReceipt & { readonly value: CommandValue; }'.
+        Property 'value' is missing in type 'AdmissionReceipt' but required in type '{ readonly value: CommandValue; }'.
+test/membershipEligibility.test.ts(283,25): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'Bytes'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
+test/membershipEligibility.test.ts(316,25): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'Bytes'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
+test/membershipEligibility.test.ts(332,25): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'Bytes'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
+test/membershipEligibility.test.ts(338,9): error TS2322: Type 'AdmissionTicket' is not assignable to type 'WorkspaceTicket'.
+  Types of property 'accepted' are incompatible.
+    Type 'Promise<AdmissionReceipt>' is not assignable to type 'Promise<AdmissionReceipt & { readonly value: CommandValue; }>'.
+      Type 'AdmissionReceipt' is not assignable to type 'AdmissionReceipt & { readonly value: CommandValue; }'.
+        Property 'value' is missing in type 'AdmissionReceipt' but required in type '{ readonly value: CommandValue; }'.
+test/membershipEligibility.test.ts(341,25): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'Bytes'.
+  Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+    Type 'SharedArrayBuffer' is not assignable to type 'ArrayBuffer'.
+      Types of property '[Symbol.toStringTag]' are incompatible.
+        Type '"SharedArrayBuffer"' is not assignable to type '"ArrayBuffer"'.
