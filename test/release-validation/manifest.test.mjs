@@ -3667,7 +3667,7 @@ test('report-writing preparation remains a separate variant with required retain
     'account-outbound',
   );
   assert(
-    plan.rows.find((r) => r.id === 'campaign:scripts/account-service-delivery/run.mjs').blocked,
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-service-inbound/run.mjs').blocked,
   );
 });
 

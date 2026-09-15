@@ -14,16 +14,16 @@ runner foundation and every native/wrapper adapter together; inspection showed t
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
 Following signed replay evidence `902cc397` and the selected RC integration, the current [manifest](./release-validation-manifest.json) contains
-628 obligations, including all 291 current
+629 obligations, including all 292 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**130 obligations remain blocked: 81 command and 49 campaign rows; no test-file rows remain.**
+**128 obligations remain blocked: 80 command and 48 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 130 missing product tests. The compiler still refuses whole-release execution before
+they are not 128 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4461,3 +4461,54 @@ package/dependencies, crypto census/vectors, F-17 debt, earlier archives and L-2
 personal browser/server/relay/device/deployment operation occurs. Next: Account service-delivery wrapper,
 including disposition of its retired native child, then remaining qualification repairs and immutable
 aggregate/private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).
+
+
+## 2026-09-15 — Account service-delivery wrapper integration
+
+Delivery is signed and verified as `6ca643f5`. The service-delivery wrapper now runs only its four
+required service files (core/generated/restart/controls), preserving all 32 cases, exact argv, default
+Node file concurrency, spec/JUnit and 90-second child bound. Remove its already-retired v8 HTTP browser
+child; all six existing product-test exclusions remain. V9 interoperability remains required elsewhere.
+Owned execution adds the ordered trace, distinct service report, 95-second aggregate/five-second grace,
+and ten retained report files. This service stage acquires no browser. Its delivery regression uses a
+separate disposable CDP fixture. Pin `2cb42a2:account-service/core.ts` for the invoked old reader and bound
+that Git read to five seconds/2 MiB; the regression keeps `81a4655`.
+
+The four actual service mutation controls now retain normal-code outcomes beside the mutant result.
+Normal commit persists acceptance; generation mismatch refuses; membership changed during verification
+and a missing closure ledger return unknown without a new decision. Mutants respectively return acceptance
+without persistence, accept the wrong generation, commit after membership becomes pending, or resurrect
+the missing closure. Require actual outcomes, row counts and account states; baseline subjects use
+independent synthetic workspaces except the witness control's same damaged ledger.
+
+Eighty generated histories (seed 9822026, 3–16 commands, unchanged 45-second case bound) retain every
+command observation before assertions, inventory digests, projected ledger rows, captured request hashes,
+first/final response bytes, proof classifications and cold-retry bytes. Reconciliation checks read-only
+inventory equality, exact retries, before/after commit rows, permanent row identity, contiguous acceptance,
+response framing/subject agreement and final retained responses. The compact row projection covers ordinal,
+kind, position and digest. It does not independently authenticate signatures, reproduce ciphertext, replay
+the database or regenerate schedules; existing Node/OpenSSL proof assertions and directed exact-submission
+tests remain execution authority. Inventory scope remains promotions and delivery decisions, not the whole
+profile. No browser interoperability or deployment claim is added to this service stage.
+
+The owned epoch passes **159 cases in seven executions**: 96 planning cases in five full suites,
+32 service-delivery and 31 delivery regression cases. Service takes **23.776s /95s**; delivery takes
+269.083s /510s. All groups drain. An eighth request reuses the exact service receipt, and ten files
+survive checkout removal within the unchanged 4 MiB /40-entry /two-level report bounds. The new five-case
+`campaign-wrappers.test.mjs` infrastructure file keeps additional wrapper controls out of the existing
+manifest suite. That suite remains at its original 70 cases and 60-second limit, passing in 56.718s;
+this is not loaded-host headroom qualification. Two 160-run corruption campaigns (150957/150958) and eight
+synthetic process runs reject incomplete zero-exit evidence. Omitting semantic reconciliation or the child
+census admits the corresponding fault; both controls discriminate. Synthetic reports are not additional
+service executions. No new planning/native failure occurs; previous failures and diagnostics remain.
+
+The initial gzip archive exceeded its fixed 1,000,000-byte budget. Retain that packaging failure and
+original script; XZ compression preserves all payload bytes under the same ceiling. No campaign or
+resource limit is weakened.
+
+The new resolved infrastructure file changes totals to **629 obligations /292 required files**. General
+coverage stays **272 files /2,198 dispositions (11 not applicable)**. Unresolved integration falls from 130
+to **128: zero test-file /80 command /48 campaign**. Runtime, dependencies, crypto census/vectors, F-17 debt,
+previous archives and L-2 remain unchanged. No personal browser/server/relay/device/deployment work occurs.
+Next: transport wrapper disposition/integration, then remaining wrapper families and qualification repairs,
+immutable aggregate and private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).

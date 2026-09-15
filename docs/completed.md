@@ -8282,3 +8282,54 @@ package/dependencies, crypto census/vectors, F-17 debt, earlier archives and L-2
 personal browser/server/relay/device/deployment operation occurs. Next: Account service-delivery wrapper,
 including disposition of its retired native child, then remaining qualification repairs and immutable
 aggregate/private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).
+
+
+## 2026-09-15 — Account service-delivery wrapper integration
+
+Delivery is signed and verified as `6ca643f5`. The service-delivery wrapper now runs only its four
+required service files (core/generated/restart/controls), preserving all 32 cases, exact argv, default
+Node file concurrency, spec/JUnit and 90-second child bound. Remove its already-retired v8 HTTP browser
+child; all six existing product-test exclusions remain. V9 interoperability remains required elsewhere.
+Owned execution adds the ordered trace, distinct service report, 95-second aggregate/five-second grace,
+and ten retained report files. This service stage acquires no browser. Its delivery regression uses a
+separate disposable CDP fixture. Pin `2cb42a2:account-service/core.ts` for the invoked old reader and bound
+that Git read to five seconds/2 MiB; the regression keeps `81a4655`.
+
+The four actual service mutation controls now retain normal-code outcomes beside the mutant result.
+Normal commit persists acceptance; generation mismatch refuses; membership changed during verification
+and a missing closure ledger return unknown without a new decision. Mutants respectively return acceptance
+without persistence, accept the wrong generation, commit after membership becomes pending, or resurrect
+the missing closure. Require actual outcomes, row counts and account states; baseline subjects use
+independent synthetic workspaces except the witness control's same damaged ledger.
+
+Eighty generated histories (seed 9822026, 3–16 commands, unchanged 45-second case bound) retain every
+command observation before assertions, inventory digests, projected ledger rows, captured request hashes,
+first/final response bytes, proof classifications and cold-retry bytes. Reconciliation checks read-only
+inventory equality, exact retries, before/after commit rows, permanent row identity, contiguous acceptance,
+response framing/subject agreement and final retained responses. The compact row projection covers ordinal,
+kind, position and digest. It does not independently authenticate signatures, reproduce ciphertext, replay
+the database or regenerate schedules; existing Node/OpenSSL proof assertions and directed exact-submission
+tests remain execution authority. Inventory scope remains promotions and delivery decisions, not the whole
+profile. No browser interoperability or deployment claim is added to this service stage.
+
+The owned epoch passes **159 cases in seven executions**: 96 planning cases in five full suites,
+32 service-delivery and 31 delivery regression cases. Service takes **23.776s /95s**; delivery takes
+269.083s /510s. All groups drain. An eighth request reuses the exact service receipt, and ten files
+survive checkout removal within the unchanged 4 MiB /40-entry /two-level report bounds. The new five-case
+`campaign-wrappers.test.mjs` infrastructure file keeps additional wrapper controls out of the existing
+manifest suite. That suite remains at its original 70 cases and 60-second limit, passing in 56.718s;
+this is not loaded-host headroom qualification. Two 160-run corruption campaigns (150957/150958) and eight
+synthetic process runs reject incomplete zero-exit evidence. Omitting semantic reconciliation or the child
+census admits the corresponding fault; both controls discriminate. Synthetic reports are not additional
+service executions. No new planning/native failure occurs; previous failures and diagnostics remain.
+
+The initial gzip archive exceeded its fixed 1,000,000-byte budget. Retain that packaging failure and
+original script; XZ compression preserves all payload bytes under the same ceiling. No campaign or
+resource limit is weakened.
+
+The new resolved infrastructure file changes totals to **629 obligations /292 required files**. General
+coverage stays **272 files /2,198 dispositions (11 not applicable)**. Unresolved integration falls from 130
+to **128: zero test-file /80 command /48 campaign**. Runtime, dependencies, crypto census/vectors, F-17 debt,
+previous archives and L-2 remain unchanged. No personal browser/server/relay/device/deployment work occurs.
+Next: transport wrapper disposition/integration, then remaining wrapper families and qualification repairs,
+immutable aggregate and private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).

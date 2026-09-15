@@ -3750,3 +3750,13 @@ cold-reopened source/wire retention after producer drain. The event oracle corro
 it does not independently authenticate responses or replay storage. Preserve original native bounds,
 case identities and intermediate fixture fencing without restoring retired v8 product support.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).
+
+
+## 2026-09-15 — Service wrapper excludes its retired browser child and keeps full service evidence
+
+The current service-delivery wrapper preserves its required Node files and removes the already-excluded
+v8 HTTP interoperability invocation. Required v9 interoperability stays separate. New wrapper controls live
+in another bounded infrastructure file; the existing manifest suite retains its cases and one-minute limit.
+Retain observed baseline/mutant results and each generated command's ledger/response/recovery evidence.
+Report reconciliation corroborates execution without claiming independent signature or database replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).

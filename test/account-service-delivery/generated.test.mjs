@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fc from 'fast-check';
@@ -33,8 +34,10 @@ test(
           { minLength: 3, maxLength: 16 },
         ),
         async (commands) => {
-          histories.push(commands);
-          artifact({ seed, histories, status: 'running' });
+          const evidence = { commands, observations: [], recovered: [] };
+          histories.push(evidence);
+          const save = () => artifact({ seed, histories, status: 'running' });
+          save();
           let armed = '';
           const x = await ready(t, {
             hook(point, op) {
@@ -44,6 +47,19 @@ test(
               }
             },
           });
+          const census = () =>
+            x.f
+              .rows('delivery_decisions')
+              .map(({ ordinal, kind, position, digest }) => ({ ordinal, kind, position, digest }));
+          const inv = () => createHash('sha256').update(inventory(x)).digest('hex');
+          const resultBytes = (r) =>
+            r.kind === 'decision'
+              ? { kind: r.kind, bytes: Buffer.from(r.bytes).toString('hex') }
+              : r;
+          const observe = (value) => {
+            evidence.observations.push(value);
+            save();
+          };
           let through = 0,
             previous = ZERO,
             parent = null;
@@ -51,14 +67,25 @@ test(
           let expectedRows = 0;
           for (const [step, cmd] of commands.entries()) {
             if (cmd === 'restart') {
+              const before = inv();
               x.f.restart();
               x.authority.restart();
+              observe({ kind: 'restart', before, after: inv(), rows: census() });
               continue;
             }
             if (cmd === 'retry' && retained.length) {
               const item = retained[step % retained.length],
                 before = inventory(x);
-              assert.deepEqual(await x.call(item.w), item.r);
+              const result = await x.call(item.w);
+              observe({
+                kind: 'retry',
+                index: step % retained.length,
+                result: resultBytes(result),
+                before: createHash('sha256').update(before).digest('hex'),
+                after: inv(),
+                rows: census(),
+              });
+              assert.deepEqual(result, item.r);
               assert.equal(inventory(x), before);
               continue;
             }
@@ -70,12 +97,29 @@ test(
               }),
               before = inventory(x);
             if (cmd === 'gap' || cmd === 'future') {
-              assert.equal((await x.call(w)).kind, 'unknown');
+              const result = await x.call(w);
+              observe({
+                kind: 'unknown',
+                result: resultBytes(result),
+                before: createHash('sha256').update(before).digest('hex'),
+                after: inv(),
+                rows: census(),
+              });
+              assert.equal(result.kind, 'unknown');
               assert.equal(inventory(x), before);
               continue;
             }
             if (cmd === 'before' || cmd === 'after') armed = cmd + '-commit';
             const first = await x.call(w);
+            const observation = {
+              kind: 'decision',
+              subject: w.subject,
+              requestHash: createHash('sha256').update(w.bytes).digest('hex'),
+              first: resultBytes(first),
+              firstRows: census(),
+            };
+            evidence.observations.push(observation);
+            save();
             if (cmd === 'before' || cmd === 'after') {
               assert.equal(first.kind, 'unknown');
               assert.equal(
@@ -93,6 +137,12 @@ test(
               previous,
               w.parent,
             );
+            Object.assign(observation, {
+              result: resultBytes(r),
+              proofKind: parsed.kind,
+              rows: census(),
+            });
+            save();
             assert.equal(parsed.kind, gen === 1 ? 'accepted' : 'refused');
             retained.push({ w, r });
             expectedRows++;
@@ -111,7 +161,14 @@ test(
           }
           x.f.restart();
           x.authority.restart();
-          for (const item of retained) assert.deepEqual(await x.call(item.w), item.r);
+          for (const item of retained) {
+            const result = await x.call(item.w);
+            evidence.recovered.push(resultBytes(result));
+            save();
+            assert.deepEqual(result, item.r);
+          }
+          evidence.finalRows = census();
+          save();
         },
       ),
       { seed, numRuns: 80, endOnFailure: true },

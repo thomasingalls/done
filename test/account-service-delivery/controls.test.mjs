@@ -46,6 +46,8 @@ async function mutant(t, control) {
       if (control === 'old-reader' && folder === 'account-service' && file === 'core.ts')
         code = execFileSync('git', ['show', '2cb42a2:account-service/core.ts'], {
           encoding: 'utf8',
+          timeout: 5000,
+          maxBuffer: 2 * 1024 * 1024,
         });
       writeFileSync(join(dir, folder, file), code);
     }
@@ -58,6 +60,41 @@ async function mutant(t, control) {
 }
 for (const control of ['commit', 'generation', 'current', 'witness'])
   test(`actual ${control} control demonstrates the protected bad outcome`, async (t) => {
+    let baseline;
+    if (control !== 'witness') {
+      let normal,
+        armed = false;
+      normal = await ready(t, {
+        hook(point, op) {
+          if (
+            control === 'current' &&
+            armed &&
+            point === 'after-verify' &&
+            op === 'decide-submission'
+          ) {
+            armed = false;
+            mutate(normal, (db) => db.exec("UPDATE accounts SET state='pending'"));
+          }
+        },
+      });
+      const w = normal.make(1, 'baseline', { gen: control === 'generation' ? 2 : 1 });
+      armed = true;
+      const result = await normal.call(w);
+      const outcome =
+        result.kind === 'unknown'
+          ? result.kind
+          : proof(result, normal.offer.epoch.acceptancePublicKey, w.subject).kind;
+      baseline = {
+        outcome,
+        persisted: normal.f.rows('delivery_decisions').length,
+        account: normal.f.rows('accounts')[0].state,
+      };
+      assert.equal(
+        outcome,
+        control === 'generation' ? 'refused' : control === 'current' ? 'unknown' : 'accepted',
+      );
+      assert.equal(baseline.persisted, control === 'current' ? 0 : 1);
+    }
     const x = await ready(t),
       { Core, Authority } = await mutant(t, control);
     let armed = false;
@@ -92,7 +129,13 @@ for (const control of ['commit', 'generation', 'current', 'witness'])
       assert.equal(proof(closure, x.offer.epoch.acceptancePublicKey, bad.subject).kind, 'refused');
       mutate(x, (db) => db.exec('DELETE FROM delivery_decisions'));
       w = x.make(1, 'restamped', { ct: bad.ct });
-      assert.equal((await x.call(w)).kind, 'unknown');
+      const result = await x.call(w);
+      baseline = {
+        outcome: result.kind,
+        persisted: x.f.rows('delivery_decisions').length,
+        account: x.f.rows('accounts')[0].state,
+      };
+      assert.equal(result.kind, 'unknown');
     }
     if (control === 'current') armed = true;
     const r = await call(w),
@@ -101,6 +144,7 @@ for (const control of ['commit', 'generation', 'current', 'witness'])
     const rows = x.f.rows('delivery_decisions');
     assert.equal(rows.length, control === 'commit' ? 0 : 1);
     artifact('control-' + control, {
+      baseline,
       outcome: p.kind,
       persisted: rows.length,
       account: x.f.rows('accounts')[0].state,
