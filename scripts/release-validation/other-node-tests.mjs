@@ -8,6 +8,7 @@ export const otherNodeGroups = {
   'browser-runner-controls': ['test/release-validation/playwright-native.test.mjs'],
   'runner-self-tests': [
     'test/release-validation/stage.test.mjs',
+    'test/release-validation/file-outputs.test.mjs',
     'test/release-validation/vitest-process.test.mjs',
     'test/release-validation/content-native.test.mjs',
     'test/release-validation/custody-native.test.mjs',
@@ -82,5 +83,16 @@ export function otherNodeStage(root, file) {
     maxReportBytes: 1024 * 1024,
     processPolicy: registered ? 'registered-groups-v1' : 'inherited-group-v1',
     dependsOn: [],
+    ...(file === 'test/release-validation/file-outputs.test.mjs'
+      ? {
+          fileOutputs: {
+            kind: 'account-reports-v1',
+            required: [],
+            maxEntries: 256,
+            maxBytes: 1048576,
+            maxDepth: 8,
+          },
+        }
+      : {}),
   };
 }

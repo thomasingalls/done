@@ -90,6 +90,7 @@ import {
   preparationCampaign,
   preparationCampaignStage,
   preparationCommand,
+  preparationReportStage,
 } from './command-wrappers.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
@@ -439,6 +440,12 @@ export function compileManifest(root, inventory) {
     });
   }
   const contentId = 'catalogue:scripts/content/catalog.mjs';
+  if (rows.some((row) => row.id === 'test:test/account-crypto-prep/contracts.test.mjs'))
+    add({
+      id: 'variant:preparation-reports',
+      kind: 'variant',
+      stage: preparationReportStage(root),
+    });
   if (rows.some((r) => r.id === contentId))
     add({
       id: 'variant:content-unreadable',
@@ -477,6 +484,10 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'wrapper-file-output': [
+        'test:test/release-validation/file-outputs.test.mjs',
+        'variant:preparation-reports',
+      ].filter((id) => byId.has(id)),
       'wrapper-preparation': rows
         .filter(
           (r) =>

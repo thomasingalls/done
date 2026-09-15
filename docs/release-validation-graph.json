@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 296,
-    "requiredTestFiles": 290,
+    "testFiles": 297,
+    "requiredTestFiles": 291,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -8847,6 +8847,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/file-outputs.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/file-outputs.test.mjs"
+        ]
+      },
+      "declarations": 7,
+      "propertyFamilies": [
+        {
+          "line": 118,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/general-tests.test.mjs",
       "status": "required",
       "invocation": {
@@ -8860,7 +8880,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 302,
+          "line": 303,
           "form": "fc.property"
         }
       ],
@@ -9012,14 +9032,14 @@
           "test/release-validation/manifest.test.mjs"
         ]
       },
-      "declarations": 9,
+      "declarations": 10,
       "propertyFamilies": [
         {
           "line": 50,
           "form": "fc.property"
         },
         {
-          "line": 213,
+          "line": 229,
           "form": "fc.property"
         }
       ],
@@ -12098,7 +12118,7 @@
     },
     {
       "path": "scripts/release-validation/command-wrappers.mjs",
-      "sha256": "1fe5235b039cc0cea2d5722cca5c21a476dc081f678eb1e89f331a5f5fc55f56"
+      "sha256": "0b0ff7d9b77e08c4ce3cad63b99224b2d8466da4bb5adda64998c0adaf625474"
     },
     {
       "path": "scripts/release-validation/content-adapter.mjs",
@@ -12118,7 +12138,11 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "362c81b3794b5d48f2fa6d7db0d1975c826904350fd5f12197dcd0f77cd8342a"
+      "sha256": "39166f8709f8ed3085d4972cb45c52f96cf60777e1d68ca0de935956bce7bcb8"
+    },
+    {
+      "path": "scripts/release-validation/file-outputs.mjs",
+      "sha256": "efcac17c16a8dcdc85610c90c9b61b5c2ebbf075cea57c4272b1f8c0b3c2b5b5"
     },
     {
       "path": "scripts/release-validation/general-tests.json",
@@ -12162,7 +12186,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "6950d97c6d91494464dd6c0c409f20000bfb5cc12814686c1e4ebeed493ad770"
+      "sha256": "0be205aa8cc64ec2e38840fc70d0dd6c197d762f1a4e59eb198801dac2cce300"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -12178,7 +12202,7 @@
     },
     {
       "path": "scripts/release-validation/other-node-tests.mjs",
-      "sha256": "a1fe80848903ef1e2b1ec049f11690ff524105798561797a3a8d8a43bd00cb54"
+      "sha256": "9a36d33f88970d90868f0d2886c190dd51ff97f6d7dd766cdd5cb3f6e08db341"
     },
     {
       "path": "scripts/release-validation/owned-startup-adapter.mjs",
@@ -12234,7 +12258,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "be72d95c31badea8d27c2c577a1498e79a88924c18ae10e3010bb0d602e85b62"
+      "sha256": "98b19024d0e68e787d639023f20e89fa6ac1097db2ab6ec8e4fb651cb0b7db66"
     },
     {
       "path": "scripts/release-validation/static-fixture.mjs",
@@ -14081,12 +14105,16 @@
       "sha256": "3427c7f8d41a5101266e406cd84be1034283379fc88082771479a8f9be92337d"
     },
     {
+      "path": "test/release-validation/file-outputs.test.mjs",
+      "sha256": "7b372423d7ef7c9ef6958fb6ba051a35c10b5a67fae7ebb602add33672efef03"
+    },
+    {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "a0078a4e0c7fbe18d10ace3518262bcf8c11c3b53e9742df50bfad30ad7d3910"
+      "sha256": "43bf4d6149c6824d477a7be0e14105a1af2f9bc324172943558124d7654b6dfe"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "0966ffc75a90143189fe7fab54d25bfe184c962770ec05005012f2e3927bd50b"
+      "sha256": "5cd1b7ae1146d19664bd517be79c4c6df32393634806d8369fb1d08c795621d3"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14110,7 +14138,7 @@
     },
     {
       "path": "test/release-validation/manifest.test.mjs",
-      "sha256": "b54b45a9d028968a5a456ad2a0f87d143c9705de7372028b0f29e702224f859a"
+      "sha256": "0c5beba38c028e6f9cccd6632ef4de4f8112eb218855d6192838b6b3b3ae3b38"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",

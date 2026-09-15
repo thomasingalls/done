@@ -21,6 +21,7 @@ import { assertHistoricalInputs, validateHistoricalInputs } from './historical-i
 import { validatePlaywrightStage, reconcilePlaywright } from './playwright-adapter.mjs';
 
 import { registrationModulePath } from './registration-modules.mjs';
+import { validateFileOutputs, inspectFileOutputs } from './file-outputs.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -41,9 +42,12 @@ export function validateStage(stage) {
     'Invalid environment',
   );
   assert(
-    Object.keys(stage.env).every((k) => !/^(?:NODE_OPTIONS|RELEASE_.*|HOME|PATH|TMPDIR)$/.test(k)),
+    Object.keys(stage.env).every(
+      (k) => !/^(?:NODE_OPTIONS|RELEASE_.*|HOME|PATH|TMPDIR|ACCOUNT_REPORT_DIR)$/.test(k),
+    ),
     'Owned environment override',
   );
+  if (Object.hasOwn(stage, 'fileOutputs')) validateFileOutputs(stage.fileOutputs);
   for (const [key, max] of [
     ['deadlineMs', 3600000],
     ['graceMs', 10000],
@@ -291,6 +295,12 @@ export function createStageRunner({
         r.owner === owner && r.status === 'passed' && issued.has(r),
         'Unverified prerequisite receipt',
       );
+      if (r.contract.fileOutputs)
+        assert.deepEqual(
+          inspectFileOutputs(join(receipts.get(r.key).dir, 'files'), r.contract.fileOutputs),
+          r.result.fileOutputs,
+          'Changed prerequisite report tree',
+        );
       for (const artifact of r.artifacts)
         assert.equal(
           hash(readFileSync(join(receipts.get(r.key).dir, artifact.path))),
@@ -327,6 +337,12 @@ export function createStageRunner({
       assert.equal(r.input, identityKey(before), 'Stale prerequisite inputs');
     const cached = receipts.get(key);
     if (cached) {
+      if (stage.fileOutputs)
+        assert.deepEqual(
+          inspectFileOutputs(join(cached.dir, 'files'), stage.fileOutputs),
+          cached.receipt.result.fileOutputs,
+          'Changed reusable report tree',
+        );
       for (const a of cached.receipt.artifacts)
         assert.equal(
           hash(readFileSync(join(cached.dir, a.path))),
@@ -341,6 +357,8 @@ export function createStageRunner({
     assert(!existsSync(dir), 'Refuse stale or partially written stage directory');
     mkdirSync(dir);
     for (const p of ['home', 'tmp']) mkdirSync(join(dir, p));
+    const fileDirectory = join(dir, 'files');
+    if (stage.fileOutputs) mkdirSync(fileDirectory);
     const report = join(dir, 'cases.json'),
       violations = join(dir, 'ownership.jsonl');
     writeFileSync(violations, '');
@@ -363,6 +381,7 @@ export function createStageRunner({
       CI: '1',
       ...nestedOwner?.environment,
       ...stage.env,
+      ...(stage.fileOutputs ? { ACCOUNT_REPORT_DIR: fileDirectory } : {}),
       NODE_OPTIONS: '--import=' + guardPath,
       RELEASE_PROCESS_GUARD: guardPath,
       RELEASE_GUARD_VIOLATIONS: violations,
@@ -483,11 +502,20 @@ export function createStageRunner({
         // Polling here bounds both a stuck leader and pipes inherited by an orphan. Waiting
         // only for ChildProcess.close was the old harness's unbounded edge.
         let ended = false;
+        let nextFileCheck = 0;
         void exited.then(() => {
           ended = true;
         });
         while (!ended && !reason) {
           if (browserOwner?.failed) stop(browserOwner.failed);
+          if (stage.fileOutputs && Date.now() >= nextFileCheck) {
+            const files = inspectFileOutputs(fileDirectory, stage.fileOutputs, {
+              hashes: false,
+              required: false,
+            });
+            if (!files.complete) stop('file-outputs: ' + files.error);
+            nextFileCheck = Date.now() + 100;
+          }
           await delay(10);
         }
         if (child.pid) {
@@ -556,6 +584,14 @@ export function createStageRunner({
         nestedResult = { groupDrained: false, error: String(error) };
       }
     }
+    let fileOutputs;
+    if (stage.fileOutputs) {
+      fileOutputs = groupDrained
+        ? inspectFileOutputs(fileDirectory, stage.fileOutputs)
+        : { complete: false, entries: [], bytes: 0, error: 'Report producers not drained' };
+      if (!fileOutputs.complete) reason ??= 'file-outputs: ' + fileOutputs.error;
+      writeFileSync(join(dir, 'files.json'), canonical(fileOutputs) + '\n');
+    }
     let actual;
     try {
       assert.equal(code, 0, 'Nonzero or missing exit');
@@ -623,6 +659,7 @@ export function createStageRunner({
       'ownership.jsonl',
       ...(existsSync(join(dir, 'nested-groups.json')) ? ['nested-groups.json'] : []),
       ...(existsSync(report) ? ['cases.json'] : []),
+      ...(fileOutputs ? ['files.json'] : []),
       ...(browserOwner ? ['browser.json', 'browser.log'] : []),
     ].map((path) => {
       const size = statSync(join(dir, path)).size;
@@ -630,6 +667,9 @@ export function createStageRunner({
         ? { path, sha256: hash(readFileSync(join(dir, path))) }
         : { path, size, oversized: true };
     });
+    for (const entry of fileOutputs?.entries ?? [])
+      if (entry.type === 'file')
+        artifacts.push({ path: 'files/' + entry.path, sha256: entry.sha256 });
     const result = {
       code,
       signal: childSignal,
@@ -642,6 +682,7 @@ export function createStageRunner({
       elapsedMs: Date.now() - started,
       artifacts,
       ...(actual ? { cases: actual.cases } : {}),
+      ...(fileOutputs ? { fileOutputs } : {}),
     };
     const receipt = {
       schema: 1,

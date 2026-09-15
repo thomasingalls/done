@@ -7552,3 +7552,49 @@ F-17's failed budgets and explicit RC debt are unchanged. Next: owned file-outpu
 report-producing campaigns, then the first multi-stage Account wrapper with exact prerequisites
 and report postconditions. The new phase is uncommitted.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+
+## 2026-09-15 — Owned campaign report-file retention
+
+Preparation wrapper integration is signed and signature-verified as `5cbad3fa`. Add opt-in
+`account-reports-v1` stage output custody: the owner creates a fresh report directory outside the
+disposable checkout and supplies ACCOUNT_REPORT_DIR. The contract binds required file paths,
+cumulative bytes, entry count and depth to execution/reuse identity. Unmanaged report-directory
+environment overrides refuse. Bounded traversal rejects unsupported paths, symlinks, hard links and
+non-regular files. Reads are capped and include file identity/size checks; successful inventories
+hash every retained file and include empty directories. Reuse and prerequisite validation check
+both bytes and complete tree membership, so an added file cannot borrow the old receipt.
+
+Cooperative polling stops a violating writer. After producer drain, a bounded inventory and files
+enter the stage receipt even when the test fails, times out or is cancelled. Required-file absence
+refuses a zero exit. Partial/incomplete inventories stay explicit, and oversized files remain in the
+owned output directory without receiving artifact credit. File presence/integrity is not semantic
+report validation, and polling is not a hard disk quota or hostile-code filesystem sandbox. Existing
+unowned output locations and larger campaign adapters remain separate obligations.
+
+Seven new controls include 80 generated binary trees, missing/changed files, link and size/depth/
+entry limits, checkout removal, exact reuse and changed-bound identity, added-file prerequisite
+refusal, failed exit, cancellation and timeout. Two isolated faults fail their intended assertions:
+omitting required-report checks and omitting tree-membership checks before reuse. All seven cases
+complete for each mutant, and exact patches/source bytes, diagnostics and inner receipts are retained.
+An initial mutant setup omitted a transitive helper and failed at module import; that is preserved
+as a setup failure, not fault detection. The first planning run refused an outdated inventory and
+the new file's absent deadline expectation; the reviewed refresh/expectation correction then passes.
+
+One fresh owned epoch passes **68 cases in six executions**: three whole planning suites (27 cases),
+the unchanged 33-case runner suite, all seven report-retention controls, and the existing one-case
+crypto preparation contract probe under a separate report-writing variant. A seventh request reuses
+that probe's exact receipt key and rechecks its report tree. Every group drains. The real
+contract-probes.json survives removal of the disposable checkout, with six message/signature probes,
+recovery payload lengths and verification outcomes intact. The runner suite takes 101.478s against
+its unchanged 120s stage bound; older orphan/headroom observations stay open. No ordinary preparation
+command gains an environment change or borrowed variant credit. Scoped lint/format and planning
+checks pass; runtime, package/dependency, vector, census and F-17 debt bytes are unchanged.
+
+Counts become **628 obligations, 291 required files, 272 general files/2,198 case dispositions**
+(11 not applicable): one new seven-case test file plus one independently registered report variant,
+and one new infrastructure assertion. Unresolved rows are identical: **zero test-file /94 command /
+62 campaign**. This infrastructure phase does not close another wrapper or establish immutable
+qualification. The new work is uncommitted. Next: integrate the Account core wrapper with its exact
+selected cases/process contract, owned reports and semantic postconditions, then continue bounded
+wrapper families. F-17's failed budgets and explicit RC disposition remain unchanged.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).

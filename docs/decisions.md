@@ -3600,3 +3600,15 @@ receipts. The final qualification includes an actual reused vector key rather th
 from common source paths. Passing Node stdout/stderr/diagnostics enter the existing bounded stage
 log; overflow fails instead of silently discarding success-path evidence. Campaign file outputs
 remain a separate adapter obligation. [Evidence](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+
+## 2026-09-15 — Retain report files under the execution owner
+
+Opted-in report writers receive a fresh ACCOUNT_REPORT_DIR beneath the stage's retained output,
+outside the disposable checkout. Required paths and byte/entry/depth limits are part of the receipt
+contract. Inventory includes regular-file bytes and empty directories; both cache reuse and
+prerequisite consumption recheck tree membership as well as hashes. Partial files remain after
+failure/cancellation, while incomplete or oversized trees cannot establish passing output custody.
+The first real report writer is a separate crypto probe variant, leaving package-command semantics
+unchanged. Semantic report assertions and other output roots require their own wrapper review;
+cooperative polling does not promise a disk quota or hostile-code confinement.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).

@@ -55,43 +55,49 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** The Local activation and latency-debt checkpoint is signed and verified as
-`83b5f157`. All catalogue/test-file adapters are integrated. Counts are **626 obligations, 290
-required test files, 271 general files/2,191 dispositions (11 not applicable)**. Three wrapper
-obligations are resolved in this phase: **zero test-file /94 command /62 campaign** remain.
-These are integration counts, not passing aggregate tests.
+**Roadmap checkpoint.** Preparation wrappers are signed and verified as `5cbad3fa`. All catalogue/
+test-file adapters are integrated. Counts are **628 obligations, 291 required test files, 272 general
+files/2,198 dispositions (11 not applicable)**. The new report-output test file and variant add two
+obligations; **zero test-file /94 command /62 campaign** remain unresolved, unchanged in this phase.
+These are integration counts, not a passing aggregate.
 
-**Just completed.** The crypto preparation check-mode campaign and exact grouped two-file Node
-command now have executable contracts. The reviewed glob retains default Node concurrency; changed
-membership, argv or environment refuses. The reporter preserves passing stdout/stderr/diagnostics
-under its existing log limit. The final owned epoch passes **35 executions/65 cases**, with one
-additional identical vector consumer reusing the same receipt key. All groups drain. This includes
-four complete control suites, all 29 vector checks, the preparation campaign and its six grouped
-cases. It does not discharge vectors:coverage, traceability or whole-package checks.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
-This wrapper phase is uncommitted.
+**Just completed.** Opted-in report writers receive a fresh owned directory outside the disposable
+checkout. The receipt binds required files and bounded byte/entry/depth limits, rejects unsafe links/
+paths, and inventories file hashes plus directories. Exact reuse and prerequisite checks revalidate
+both bytes and membership. Failure, timeout and cancellation preserve partial outputs with explicit
+inventory status. Unmanaged ACCOUNT_REPORT_DIR overrides refuse. Cooperative polling is not a disk
+quota or hostile-code sandbox; file custody does not establish arbitrary report semantics.
 
-**Preserved observations.** The direct runner pass failed one historical-input control with
-orphaned-child (32/33); the final owned pass does not establish its cause or repair. The final runner
-stage takes 107.911s of its unchanged 120s limit. An initial planning count mismatch is corrected.
-The first owned epoch was cancelled and drained after a separate check found the activation's stale
-crypto census pin. Only the admittedWorkspace.ts source hash is refreshed; all labels/groups and
-other fields match. All original logs, cancellation receipts and final results remain separate.
+The final owned epoch passes **68 cases in six executions**, then reuses the real report probe's
+exact receipt once. All groups drain. This includes 27 planning cases, all 33 existing runner cases,
+seven new controls with 80 generated binary trees, and the unchanged one-case crypto contract probe
+under an explicit report-writing variant. Its report survives checkout deletion and retains all six
+message probes and recovery observations. Two deliberate faults fail their intended assertions.
+The new code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
 
-**Next bounded phase.** Add owned file-output retention for report-producing campaigns, then expand
-the first multi-stage Account wrapper with its exact prerequisites, variants and report postconditions.
-Optional reports still disappear with disposable checkouts unless explicitly retained; forwarded
-Node text does not close that obligation. Keep all failures and report/log bounds.
+**Preserved observations.** The first planning pass refused a stale inventory and missing new-file
+deadline expectation; the corrected registration passes. A mutation setup failed to import a
+transitive helper before any test body; its corrected isolated copy detects the intended faults.
+Both failures remain recorded. The existing runner suite takes 101.478s of its unchanged 120s bound;
+its earlier orphan-classification failures and headroom observations remain open. No claim of a
+repair follows from the later passes. The prior activation census pin correction and all previous
+failure/cancellation/latency receipts retain their original evidence.
 
-**RC selection.** R3 + membership-repair eligibility + restricted replay buffers is the Local
-repository default. Account/internal defaults stay reference. Optimization exploration is closed.
-The unchanged application gate remains **failed**: Android card p95 38.7ms (<16), settled navigation
-113.6ms (<100). Desktop card is 9.0ms, Android focus 35.4ms. The explicit post-measurement product
-disposition accepts the two misses for this RC; it is not an automated waiver or a passing receipt.
-[RC decision](./f17-rc-activation.md); [open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
-All prior functional/lifetime/native and timing evidence retains its original revision and limits.
-The physical companion remains cancelled, with emulation as reference and only a rough planning
-conversion. No personal app/server, relay, deployment or device operation occurs here.
+**Next bounded phase.** Integrate the Account core wrapper: exact selected cases and process
+ownership, owned report files, and semantic postconditions. Continue other wrapper families in
+bounded phases. Optional reports in unintegrated output locations still need explicit treatment;
+this mechanism does not retroactively retain or credit them.
+
+**RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
+repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
+exploration is closed. The unchanged application gate remains **failed**: Android card p95 38.7ms
+(<16), settled navigation 113.6ms (<100). Desktop card is 9.0ms, Android focus 35.4ms. The explicit
+post-measurement product disposition accepts the two misses for the RC; it is not an automated waiver
+or passing receipt. [RC decision](./f17-rc-activation.md);
+[open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
+No runtime, package/dependency, vector, census or F-17 debt changes occur in this report phase.
+No personal app/server, relay, deployment or device operation occurs.
 
 **Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,
 capture comparison-map/byte-length oracles, delivery-oracle headroom, R-04 whole-tree style scope,

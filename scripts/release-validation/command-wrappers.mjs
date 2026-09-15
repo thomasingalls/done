@@ -68,3 +68,19 @@ export function preparationCommand(root, command, id) {
     return { requires, stage: preparationTestStage(root, id) };
   return null;
 }
+
+/** Report-writing qualification variant, separate from the unchanged package command. */
+export function preparationReportStage(root) {
+  return {
+    ...accountFixtureNodeStage(root, 'test/account-crypto-prep/contracts.test.mjs'),
+    id: 'variant:preparation-reports',
+    variant: 'crypto-preparation-reports-v1',
+    fileOutputs: {
+      kind: 'account-reports-v1',
+      required: ['contract-probes.json'],
+      maxEntries: 16,
+      maxBytes: 1024 * 1024,
+      maxDepth: 2,
+    },
+  };
+}

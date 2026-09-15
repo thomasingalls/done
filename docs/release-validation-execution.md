@@ -14,7 +14,7 @@ runner foundation and every native/wrapper adapter together; inspection showed t
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
 Following signed replay evidence `902cc397` and the selected RC integration, the current [manifest](./release-validation-manifest.json) contains
-626 obligations, including all 290 current
+628 obligations, including all 291 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
@@ -39,7 +39,7 @@ This is bookkeeping, not a new immutable aggregate result.
 
 All eleven catalogue adapters (163 cases / 54 mutations) and all general test-file
 adapters are integrated. After selected F-17 combination integration, the current set is
-**271 files / 2,191 dispositions, including 11 explicitly not applicable**.
+**272 files / 2,198 dispositions, including 11 explicitly not applicable**.
 That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
 and browser application files. The 19 infrastructure test files account for the other required files.
 These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
@@ -128,13 +128,15 @@ unchanged. [Open F-17 RC debt](./review/implementation/f17-rc-latency-debt.json)
 disposition, not a test waiver or immutable pass. No personal app/server or phone is changed.
 [Current receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
 
-**Wrapper preparation integration now resolves two command rows and one campaign row**, leaving
-94 command/62 campaign obligations. The final owned epoch passes 35 executions/65 cases and one
-identical vector receipt reuse, with drain. Passing Node output is retained; campaign file-output
-retention is next. The crypto census's sole stale activation source hash is refreshed. Earlier
-control failure/cancellation evidence remains. [Current wrapper evidence](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
-The activation is signed as `83b5f157`; this wrapper phase is uncommitted. Preserve the failed F-17
-timing receipt through qualification and immutable reporting; larger optimization remains deferred.
+**Preparation wrappers are signed as `5cbad3fa`. Owned file-output retention now passes** 68 cases
+in six owned executions plus exact report reuse. The real crypto probe report survives checkout
+removal; two faults are detected, and original setup failures are retained. Ordinary command variants
+are unchanged. [Current report-retention evidence](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
+This phase adds one test-file and one report-variant obligation; it leaves 94 command/62 campaign rows
+unresolved. Next integrate the Account core wrapper with owned files and semantic postconditions.
+File custody alone does not establish those postconditions or close other output locations. The
+new phase is uncommitted. The failed F-17 receipt stays visible through qualification and immutable
+reporting; larger optimization remains deferred.
 
 ## Commands and current execution scope
 
@@ -142,6 +144,7 @@ timing receipt through qualification and immutable reporting; larger optimizatio
 node scripts/release-validation/check.mjs
 node scripts/release-validation/plan.mjs
 node --test --test-concurrency=1 test/release-validation/*.test.mjs
+node scripts/release-validation/execute.mjs --selection wrapper-file-output
 node scripts/release-validation/execute.mjs --selection wrapper-preparation
 node scripts/release-validation/execute.mjs --selection infrastructure
 node scripts/release-validation/execute.mjs --selection vitest-properties
@@ -3727,3 +3730,49 @@ F-17's failed budgets and explicit RC debt are unchanged. Next: owned file-outpu
 report-producing campaigns, then the first multi-stage Account wrapper with exact prerequisites
 and report postconditions. The new phase is uncommitted.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+
+## 2026-09-15 — Owned campaign report-file retention
+
+Preparation wrapper integration is signed and signature-verified as `5cbad3fa`. Add opt-in
+`account-reports-v1` stage output custody: the owner creates a fresh report directory outside the
+disposable checkout and supplies ACCOUNT_REPORT_DIR. The contract binds required file paths,
+cumulative bytes, entry count and depth to execution/reuse identity. Unmanaged report-directory
+environment overrides refuse. Bounded traversal rejects unsupported paths, symlinks, hard links and
+non-regular files. Reads are capped and include file identity/size checks; successful inventories
+hash every retained file and include empty directories. Reuse and prerequisite validation check
+both bytes and complete tree membership, so an added file cannot borrow the old receipt.
+
+Cooperative polling stops a violating writer. After producer drain, a bounded inventory and files
+enter the stage receipt even when the test fails, times out or is cancelled. Required-file absence
+refuses a zero exit. Partial/incomplete inventories stay explicit, and oversized files remain in the
+owned output directory without receiving artifact credit. File presence/integrity is not semantic
+report validation, and polling is not a hard disk quota or hostile-code filesystem sandbox. Existing
+unowned output locations and larger campaign adapters remain separate obligations.
+
+Seven new controls include 80 generated binary trees, missing/changed files, link and size/depth/
+entry limits, checkout removal, exact reuse and changed-bound identity, added-file prerequisite
+refusal, failed exit, cancellation and timeout. Two isolated faults fail their intended assertions:
+omitting required-report checks and omitting tree-membership checks before reuse. All seven cases
+complete for each mutant, and exact patches/source bytes, diagnostics and inner receipts are retained.
+An initial mutant setup omitted a transitive helper and failed at module import; that is preserved
+as a setup failure, not fault detection. The first planning run refused an outdated inventory and
+the new file's absent deadline expectation; the reviewed refresh/expectation correction then passes.
+
+One fresh owned epoch passes **68 cases in six executions**: three whole planning suites (27 cases),
+the unchanged 33-case runner suite, all seven report-retention controls, and the existing one-case
+crypto preparation contract probe under a separate report-writing variant. A seventh request reuses
+that probe's exact receipt key and rechecks its report tree. Every group drains. The real
+contract-probes.json survives removal of the disposable checkout, with six message/signature probes,
+recovery payload lengths and verification outcomes intact. The runner suite takes 101.478s against
+its unchanged 120s stage bound; older orphan/headroom observations stay open. No ordinary preparation
+command gains an environment change or borrowed variant credit. Scoped lint/format and planning
+checks pass; runtime, package/dependency, vector, census and F-17 debt bytes are unchanged.
+
+Counts become **628 obligations, 291 required files, 272 general files/2,198 case dispositions**
+(11 not applicable): one new seven-case test file plus one independently registered report variant,
+and one new infrastructure assertion. Unresolved rows are identical: **zero test-file /94 command /
+62 campaign**. This infrastructure phase does not close another wrapper or establish immutable
+qualification. The new work is uncommitted. Next: integrate the Account core wrapper with its exact
+selected cases/process contract, owned reports and semantic postconditions, then continue bounded
+wrapper families. F-17's failed budgets and explicit RC disposition remain unchanged.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).

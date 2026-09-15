@@ -26,16 +26,16 @@ import {
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 2191-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 2198-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 88);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 271);
+  assert.equal(general.length, 272);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    2191,
+    2198,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 107);
   assert.equal(
@@ -92,11 +92,11 @@ test('reviewed Vitest and Node selections preserve the 2191-case file denominato
     assert.throws(() => validateStage({ ...s, processPolicy: 'inherited-group-v1' }));
     assert.throws(() => validateStage({ ...s, variant: 'current' }));
   }
-  assert.equal(selectStages(m, 'runner-self-regression').length, 6);
+  assert.equal(selectStages(m, 'runner-self-regression').length, 7);
   const runners = selectStages(m, 'runner-self-tests');
   assert.deepEqual(
     runners.map((s) => s.expect.cases.length),
-    [8, 6, 33, 5],
+    [8, 6, 7, 33, 5],
   );
   for (const s of runners) {
     assert.equal(s.processPolicy, 'registered-groups-v1');
@@ -136,6 +136,7 @@ test('reviewed Vitest and Node selections preserve the 2191-case file denominato
         'test/local-app/startup.spec.ts': 300000,
         'test/local-app/editor.spec.ts': 300000,
         'test/release-validation/stage.test.mjs': 120000,
+        'test/release-validation/file-outputs.test.mjs': 120000,
         'test/release-validation/vitest-process.test.mjs': 120000,
         'test/release-validation/content-native.test.mjs': 120000,
         'test/release-validation/custody-native.test.mjs': 120000,

@@ -59,6 +59,22 @@ test('160 generated wrapper argument and environment variants cannot borrow a ch
   );
 });
 
+test('report-writing preparation remains a separate variant with required retained output', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const stages = selectStages(plan, 'wrapper-file-output');
+  assert.equal(stages.length, 2);
+  const report = stages.find((s) => s.id === 'variant:preparation-reports');
+  assert.equal(report.expect.cases.length, 1);
+  assert.deepEqual(report.fileOutputs.required, ['contract-probes.json']);
+  const ordinary = selectStages(plan, 'wrapper-preparation');
+  assert(
+    ordinary.every((s) => !s.fileOutputs),
+    'Do not silently add an environment variant to the package command',
+  );
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-core/run.mjs').blocked);
+});
+
 test('a changed preparation shell glob refuses before losing or inventing a test file', (t) => {
   const root = mkdtempSync(join(tmpdir(), 'done-wrapper-glob-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
