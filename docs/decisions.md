@@ -3771,3 +3771,13 @@ omission, mode and retry checks. Independently replay plaintext fixture updates 
 history while retaining crypto/full-state assertions in the actual tests. Atomic model evidence does not
 establish IndexedDB safety or production receiver behavior.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).
+
+
+## 2026-09-15 — Codec wrapper evidence retains actual mutation and recovery observations
+
+Keep codec and preparation evidence in separate existing namespaces. Preserve both Vitest child commands
+and the exit-only Node import probe. Corroborate actual normal/mutant results, exact source edits and
+live/cold byte agreement; generated wire faults retain their actual changed byte and refusal. Plaintext
+Yjs replay and report framing supplement the executed crypto assertions without claiming independent
+signature validation, compiled-bundle replay or native persistence.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).

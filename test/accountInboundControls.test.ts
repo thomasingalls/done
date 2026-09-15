@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 // @vitest-environment node
 import { writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -34,8 +35,21 @@ const changes: Record<string, [string, string][]> = {
     ["current();\n    if (kind === 'conflict')", "void 0;\n    if (kind === 'conflict')"],
   ],
 };
-async function mutant(mode: string): Promise<typeof actual> {
-  let hits = 0;
+const digest = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
+async function refusal(op: Promise<unknown>) {
+  let reason: string | undefined;
+  try {
+    await op;
+  } catch (e) {
+    reason = String(e);
+  }
+  expect(reason).toBeDefined();
+  return reason!;
+}
+async function mutant(mode: string) {
+  let hits = 0,
+    before = '',
+    after = '';
   const result = await build({
     configFile: false,
     logLevel: 'silent',
@@ -45,6 +59,7 @@ async function mutant(mode: string): Promise<typeof actual> {
         enforce: 'pre',
         transform(code, id) {
           if (!id.endsWith('/src/crdt/accountInbound.ts')) return;
+          before = digest(code);
           for (const [from, to] of changes[mode]!) {
             expect(code.split(from)).toHaveLength(2);
             code = code.replace(from, to);
@@ -54,6 +69,7 @@ async function mutant(mode: string): Promise<typeof actual> {
             code =
               "import { decodePositionResponse } from '../../account-protocol/positionDecision';\n" +
               code;
+          after = digest(code);
           return code;
         },
       },
@@ -70,14 +86,15 @@ async function mutant(mode: string): Promise<typeof actual> {
   if (!('output' in output)) throw Error('Unexpected build watcher');
   const chunk = output.output.find((o) => o.type === 'chunk');
   if (!chunk || chunk.type !== 'chunk') throw Error('Missing bundle');
-  return (await import(
+  const module = (await import(
     /* @vite-ignore */ 'data:text/javascript;base64,' + Buffer.from(chunk.code).toString('base64')
   )) as typeof actual;
+  return { module, mutation: { before, after, hits, bundle: digest(chunk.code) } };
 }
 afterEach(() => vi.restoreAllMocks());
 for (const mode of Object.keys(changes))
   it(`actual ${mode} removal produces the prohibited outcome`, async () => {
-    const changed = await mutant(mode),
+    const { module: changed, mutation } = await mutant(mode),
       f = sources();
     let e = f.entries[0]!,
       q = packet(e);
@@ -105,12 +122,21 @@ for (const mode of Object.keys(changes))
       q = packet(e);
     }
     let outcome: string;
+    let observation: unknown;
     if (mode === 'record-binding') {
       const v = JSON.parse(Buffer.from(eventWire(e)).toString());
       v[2] = 'ab'.repeat(32);
       const bytes = json(v);
-      await expect(actual.verifyStoredInbound(c, bytes, live)).rejects.toThrow('record');
-      expect((await changed.verifyStoredInbound(c, bytes, live)).kind).toBe('received');
+      const normalError = await refusal(actual.verifyStoredInbound(c, bytes, live));
+      expect(normalError).toContain('record');
+      const bad = await changed.verifyStoredInbound(c, bytes, live);
+      expect(bad.kind).toBe('received');
+      observation = {
+        normalError,
+        mutantKind: bad.kind,
+        storedBaseline: v[2],
+        heldBaseline: c.baseline.id,
+      };
       outcome = 'Wrong baseline metadata accepted on stored replay.';
     } else if (mode === 'buffer-copy') {
       const run = async (module: typeof actual) => {
@@ -127,7 +153,14 @@ for (const mode of Object.keys(changes))
         bad = await run(changed);
       expect(decodeInboundRecord(correct.record).request).toEqual(correct.original);
       expect(decodeInboundRecord(bad.record).request).not.toEqual(bad.original);
-      await expect(actual.verifyStoredInbound(c, bad.record, live)).rejects.toThrow();
+      const coldError = await refusal(actual.verifyStoredInbound(c, bad.record, live));
+      observation = {
+        normalRequest: hex(correct.original),
+        normalRetained: hex(decodeInboundRecord(correct.record).request),
+        mutantRequest: hex(bad.original),
+        mutantRetained: hex(decodeInboundRecord(bad.record).request),
+        coldError,
+      };
       outcome = 'Retained caller-mutated request differs from verified bytes.';
     } else if (mode === 'late-close') {
       let closed = false;
@@ -143,19 +176,27 @@ for (const mode of Object.keys(changes))
         },
         now: () => 1000,
       };
-      await expect(actual.verifyInboundPage(c, q.request, q.page, lifetime)).rejects.toThrow(
-        'closed',
-      );
+      const normalError = await refusal(actual.verifyInboundPage(c, q.request, q.page, lifetime));
+      expect(normalError).toContain('closed');
       closed = false;
-      expect((await changed.verifyInboundPage(c, q.request, q.page, lifetime)).kind).toBe(
-        'received',
-      );
+      const bad = await changed.verifyInboundPage(c, q.request, q.page, lifetime);
+      expect(bad.kind).toBe('received');
       expect(closed).toBe(true);
+      observation = { normalError, mutantKind: bad.kind, closed };
       outcome = 'Received result returned after the last decrypt completed into a closed lifetime.';
     } else {
-      await expect(actual.verifyInboundPage(c, q.request, q.page, live)).rejects.toThrow();
+      const normalError = await refusal(actual.verifyInboundPage(c, q.request, q.page, live));
       const result = await changed.verifyInboundPage(c, q.request, q.page, live);
       expect(result.kind).toBe('received');
+      if (result.kind !== 'received') throw Error();
+      observation = {
+        normalError,
+        mutantKind: result.kind,
+        actor: result.actor,
+        updates: result.updates.length,
+        prefix: c.prefix,
+        record: digest(result.record),
+      };
       outcome =
         mode === 'batch-count'
           ? '256 updates admitted, requiring 257 local records.'
@@ -170,7 +211,19 @@ for (const mode of Object.keys(changes))
     if (process.env['ACCOUNT_REPORT_DIR'])
       writeFileSync(
         join(process.env['ACCOUNT_REPORT_DIR'], 'control-' + mode + '.json'),
-        JSON.stringify({ mode, changes: changes[mode], outcome }, null, 2) + '\n',
+        JSON.stringify(
+          {
+            mode,
+            changes: changes[mode],
+            mutation,
+            observation,
+            request: hex(q.request),
+            page: hex(q.page),
+            outcome,
+          },
+          null,
+          2,
+        ) + '\n',
       );
     // Keep hex framing independently observable without depending on a mutant encoder.
     expect(hex(q.request).length).toBeGreaterThan(0);

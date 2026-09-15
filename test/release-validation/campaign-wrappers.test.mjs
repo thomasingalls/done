@@ -1,3 +1,12 @@
+import {
+  inboundCodecsCampaign,
+  inboundCodecsCampaignStage,
+  inboundCodecsSteps,
+  inboundCodecsReports,
+  inboundCodecsMutations,
+  reconcileInboundCodecsReports,
+  reconcileInboundCodecsEvidence,
+} from '../../scripts/release-validation/account-inbound-codecs-wrapper.mjs';
 import { createHash } from 'node:crypto';
 import * as Y from 'yjs';
 import {
@@ -620,5 +629,337 @@ test('160 generated inbound control corruptions reject counterexamples that no l
       assert.throws(() => reconcileInboundPrepEvidence(bad));
     }),
     { seed: 150960, numRuns: 160 },
+  );
+});
+
+function codecsEvidence(source) {
+  const hash = (v) => createHash('sha256').update(v).digest('hex'),
+    hex = (v) => Buffer.from(JSON.stringify(v)).toString('hex');
+  const request = hex([
+      'done/private-read/v2',
+      2,
+      'service',
+      'origin',
+      'workspace',
+      'reader',
+      'publisher',
+      'lineage',
+      'head',
+      1,
+      0,
+      1,
+      'nonce',
+      30000,
+      'signature',
+    ]),
+    page = hex([
+      'done/private-read-page/v2',
+      2,
+      hash(Buffer.from(request, 'hex')),
+      1,
+      1,
+      [['aa', 'bb']],
+      'signature',
+    ]),
+    record = hex([
+      'done/account-inbound/v1',
+      1,
+      'baseline',
+      'lineage',
+      'head',
+      'reader',
+      'publisher',
+      'received',
+      1,
+      'previous',
+      'link',
+      request,
+      page,
+    ]);
+  const doc = new Y.Doc();
+  doc.clientID = 999;
+  doc.getText('master').insert(0, 'test');
+  const update = Buffer.from(Y.encodeStateAsUpdate(doc)).toString('hex');
+  doc.destroy();
+  const r = {
+    'independent-bytes.json': {
+      request,
+      page,
+      record,
+      updates: [update],
+      observedRecord: record,
+      observedUpdates: [update],
+    },
+    'generated.json': {
+      seed: 9152026,
+      status: 'passed',
+      runs: 400,
+      histories: Array.from({ length: 400 }, () => ({
+        text: 'test',
+        nonce: 1,
+        update,
+        expectedRecord: 'aa'.repeat(32),
+        observedRecord: 'aa'.repeat(32),
+        coldRecord: 'aa'.repeat(32),
+        observedUpdates: [update],
+        coldUpdates: [update],
+        actorRefusal: 'Error: actor',
+      })),
+    },
+    'wire-corruptions.json': {
+      seed: 9162026,
+      status: 'passed',
+      page: hash(Buffer.from(page, 'hex')),
+      mutations: Array.from({ length: 500 }, () => ({
+        index: 0,
+        mask: 1,
+        original: 91,
+        changed: 90,
+        reason: 'Error: invalid frame',
+      })),
+    },
+  };
+  for (const [mode, changes] of Object.entries(inboundCodecsMutations)) {
+    let after = source;
+    for (const [from, to] of changes) after = after.replace(from, to);
+    if (mode === 'prefix-proof')
+      after =
+        "import { decodePositionResponse } from '../../account-protocol/positionDecision';\n" +
+        after;
+    const observation =
+      mode === 'buffer-copy'
+        ? {
+            normalRequest: request,
+            normalRetained: request,
+            mutantRequest: request,
+            mutantRetained: request + '00',
+            coldError: 'Error: request',
+          }
+        : mode === 'record-binding'
+          ? {
+              normalError: 'Error: record',
+              mutantKind: 'received',
+              storedBaseline: 'ab',
+              heldBaseline: 'cd',
+            }
+          : mode === 'late-close'
+            ? { normalError: 'Error: closed', mutantKind: 'received', closed: true }
+            : {
+                normalError: 'Error: unverified',
+                mutantKind: 'received',
+                actor: { id: (mode === 'actor' ? '22' : '11').repeat(16), kind: 'human' },
+                updates: mode === 'batch-count' ? 256 : 1,
+                prefix: { position: mode === 'prefix-proof' ? 1 : 0 },
+                record: 'aa'.repeat(32),
+              };
+    r['control-' + mode + '.json'] = {
+      mode,
+      changes,
+      mutation: {
+        before: hash(source),
+        after: hash(after),
+        hits: changes.length,
+        bundle: 'bb'.repeat(32),
+      },
+      observation,
+      request,
+      page,
+      outcome: 'synthetic report control',
+    };
+  }
+  return r;
+}
+test('inbound codecs wrapper retains three exact commands, 114 cases and isolated preparation reports', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-inbound-codecs');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 114);
+  assert.equal(s.expect.steps.length, 3);
+  assert.equal(s.expect.steps[2].kind, 'exit');
+  assert.equal(s.deadlineMs, 135000);
+  assert.equal(s.fixture, undefined);
+  assert.deepEqual(s.fileOutputs.required, inboundCodecsReports);
+  assert.equal(inboundCodecsReports.length, 28);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { argv: [...s.argv, '--case', 'one'] },
+    { env: { MODE: 'other' } },
+    { fileOutputs: undefined },
+    { deadlineMs: 135001 },
+    { fixture: { kind: 'chromium-cdp', startupMs: 15000 } },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, dataInputs: s.expect.dataInputs.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  const altered = structuredClone(s);
+  altered.expect.steps[2].argv.pop();
+  assert.throws(() => validateStage(altered));
+  graph.extraRoots.push({
+    id: 'inbound-codecs-filter',
+    argv: ['node', inboundCodecsCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find(
+      (r) => r.id === 'command:inbound-codecs-filter:0',
+    ).blocked,
+  );
+});
+test('inbound codecs trace requires both exact Vitest domains and the terminal Node import', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-inbound-codecs-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = inboundCodecsCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps
+    .filter((s) => s.kind === 'vitest')
+    .map((step) => ({
+      schema: 1,
+      adapter: 'vitest-v1',
+      nonce: 'fresh:' + step.name,
+      reason: 'passed',
+      modules: step.expect.files.map((file) => ({ file, state: 'passed' })),
+      errors: [],
+      cases: step.expect.cases.map((c) => ({
+        ...c,
+        durationMs: 0,
+        retryCount: 0,
+        repeatCount: 0,
+        expectedFailure: false,
+        mode: 'run',
+        errors: [],
+      })),
+    }));
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    (v) => v.trace.steps.pop(),
+    (v) => (v.trace.steps[2].code = 1),
+    (v) => (v.trace.steps[1].timedOut = true),
+    (v) => v.reports[0].cases.pop(),
+    (v) => (v.reports[0].nonce = 'stale'),
+    (v) => v.reports[1].cases[0].retryCount++,
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('inbound codecs requires observed reports, pinned mutation source and nested preparation evidence', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-inbound-codecs-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'regression-artifacts'));
+  const source = readFileSync('src/crdt/accountInbound.ts', 'utf8'),
+    sources = [
+      { path: inboundCodecsCampaign, sha256: 'a'.repeat(64) },
+      {
+        path: 'src/crdt/accountInbound.ts',
+        sha256: createHash('sha256').update(source).digest('hex'),
+      },
+    ],
+    reports = {
+      ...codecsEvidence(source),
+      ...Object.fromEntries(
+        Object.entries(inboundEvidence()).map(([f, v]) => ['regression-artifacts/' + f, v]),
+      ),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: inboundCodecsSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = ['results.xml', ...inboundCodecsSteps.map((s) => s.name + '.log')],
+    save = (r) => {
+      for (const [file, value] of Object.entries(r))
+        writeFileSync(join(dir, file), JSON.stringify(value));
+      for (const file of aux) writeFileSync(join(dir, file), 'observed');
+    };
+  save(reports);
+  reconcileInboundCodecsReports(dir, sources, process.cwd());
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => (r['regression-artifacts/generated.json'].histories[0].final.pending = true),
+  ]) {
+    const bad = structuredClone(reports);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileInboundCodecsReports(dir, sources, process.cwd()));
+  }
+  for (const file of [...Object.keys(reports), ...aux]) {
+    save(reports);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileInboundCodecsReports(dir, sources, process.cwd()));
+  }
+});
+test('160 generated codec report corruptions reject lost cold records, wrong plaintext and ineffective wire changes', () => {
+  const source = readFileSync('src/crdt/accountInbound.ts', 'utf8'),
+    r = codecsEvidence(source);
+  reconcileInboundCodecsEvidence(r, source);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 399 }), (index) => {
+      for (const alter of [
+        (r) => (r['generated.json'].histories[index].coldRecord = '00'.repeat(32)),
+        (r) => (r['generated.json'].histories[index].observedUpdates = []),
+        (r) => (r['generated.json'].histories[index].text = 'different'),
+        (r) => (r['generated.json'].histories[index].actorRefusal = 'not refused'),
+        (r) => (r['wire-corruptions.json'].mutations[index].changed ^= 1),
+        (r) => (r['wire-corruptions.json'].mutations[index].reason = ''),
+        (r) => (r['independent-bytes.json'].observedRecord += '00'),
+      ]) {
+        const bad = structuredClone(r);
+        alter(bad);
+        assert.throws(() => reconcileInboundCodecsEvidence(bad, source));
+      }
+    }),
+    { seed: 150961, numRuns: 160 },
+  );
+});
+test('160 generated codec control corruptions reject wrong mutation source and non-discriminating outcomes', () => {
+  const source = readFileSync('src/crdt/accountInbound.ts', 'utf8'),
+    r = codecsEvidence(source),
+    modes = Object.keys(inboundCodecsMutations);
+  reconcileInboundCodecsEvidence(r, source);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: modes.length - 1 }), (index) => {
+      const mode = modes[index];
+      for (const alter of [
+        (c) => (c.mutation.before = '00'.repeat(32)),
+        (c) => (c.mutation.after = '00'.repeat(32)),
+        (c) => c.mutation.hits++,
+        (c) => {
+          if (mode === 'buffer-copy') c.observation.mutantRetained = c.observation.mutantRequest;
+          else c.observation.mutantKind = 'unknown';
+        },
+      ]) {
+        const bad = structuredClone(r);
+        alter(bad['control-' + mode + '.json']);
+        assert.throws(() => reconcileInboundCodecsEvidence(bad, source));
+      }
+    }),
+    { seed: 150962, numRuns: 160 },
   );
 });

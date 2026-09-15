@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**126 obligations remain blocked: 79 command and 47 campaign rows; no test-file rows remain.**
+**124 obligations remain blocked: 78 command and 46 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 126 missing product tests. The compiler still refuses whole-release execution before
+they are not 124 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is signed as `9937b8b7`. Inbound codecs is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4554,3 +4554,47 @@ Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives 
 Next: inbound-codecs wrapper integration, then remaining families/qualification repairs, immutable
 aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).
+
+
+## 2026-09-15 — Account inbound-codecs wrapper integration
+
+Inbound preparation is signed and verified as `9937b8b7`. The codec wrapper preserves all three original
+commands: two Vitest invocations (42 codec/control and 72 preparation/primitive regression cases),
+maxWorkers=2, verbose/JUnit and 60-second child limits, followed by the exact 15-second Node import probe.
+Owned execution adds a 135-second aggregate/five-second grace, distinct child reports, pinned vector
+registration inputs and 28 required files. Preparation evidence stays in its original regression-artifacts
+namespace. No native/browser fixture or historical reader is used. The import probe remains exit-only,
+not an invented additional case.
+
+The eight real compiled-source guard-removal controls now retain actual normal refusals, mutated received
+results, actor/update count/prefix details, closed-lifetime state, baseline mismatch and retained-buffer
+comparisons as applicable. Mutation reports retain before/after source hashes, applied replacements/hit
+counts and bundle hashes. Reconciliation reconstructs each exact source edit against the phase-pinned
+accountInbound.ts input, including the extra prefix-proof import. Bundle bytes are not independently
+recompiled or authenticated by this report oracle; the actual Vite control execution supplies that evidence.
+
+Four hundred generated signed updates (seed 9152026) retain authored text/nonce/update bytes, independent
+expected record hash, actual live/cold record hashes, full returned update bytes and forbidden-actor refusal.
+Reconciliation independently replays plaintext Yjs and checks exact byte/hash agreement. Five hundred
+changed-wire cases (seed 9162026) retain the original page hash, index/mask, before/after byte and actual
+refusal. Partial reports save after completed cases; an interrupted active case need not survive.
+Independent request/page/record framing is checked alongside actual observed bytes, with original request
+hash and reader/publisher separation. The existing 300-history preparation evidence is also reconciled.
+None of this adds independent signature authentication, native persistence or production activation claims.
+
+The epoch passes **292 cases in seven executions**: 106 planning in five suites, 114 codec-wrapper cases
+and 72 unchanged preparation-wrapper regression cases. Codecs take **23.110s /135s** and preparation
+15.571s /120s; all groups drain. Exact codec receipt reuse passes, and 28 files survive checkout removal
+in a 30-entry inventory within the unchanged 4 MiB /40-entry /two-level bounds. The original manifest suite
+keeps 70 cases and its 60-second limit, passing in 56.083s. Five new infrastructure cases include two
+160-run corruption campaigns (150961/150962). Eight synthetic zero-exit runs and two omitted semantic/
+child-Vitest hooks discriminate; these are not additional codec executions. The first synthetic launcher omitted the regression report directory and
+failed file inventory after its child exited nonzero; its partial output/log/receipt and corrected setup
+remain. The real qualification epoch passed without repair or limit relaxation. Prior observations remain.
+
+Inventory stays **629 obligations /292 required files**, 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 126 to **124: zero test-file /78 command /46 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives and L-2 remain unchanged.
+Next: Account receive wrapper integration, then remaining families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).

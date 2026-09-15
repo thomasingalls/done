@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 // @vitest-environment node
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -33,6 +34,17 @@ import {
   prior,
   reframe,
 } from './account-inbound-codecs/oracle';
+const digest = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+async function refusal(op: Promise<unknown>) {
+  let reason: string | undefined;
+  try {
+    await op;
+  } catch (e) {
+    reason = String(e);
+  }
+  expect(reason).toBeDefined();
+  return reason!;
+}
 const f = sources(),
   first = f.entries[0]!,
   p = packet(first);
@@ -64,6 +76,8 @@ describe('closed inbound v2 transport and local record codecs', () => {
       page: hex(p.page),
       record: hex(wire),
       updates: first.updates.map(hex),
+      observedRecord: hex(result.record),
+      observedUpdates: result.updates.map(hex),
     });
   });
   it.each(['request', 'page', 'record'] as const)(
@@ -491,13 +505,33 @@ describe('first-epoch inbound evidence under independently held owner context', 
             if (result.kind !== 'received') throw Error();
             expect(result.record).toEqual(expected);
             expect(result.updates).toEqual([update]);
-            expect(
-              await verifyStoredInbound(context(), expected, { ...live, now: () => 999999 }),
-            ).toEqual(result);
-            await expect(
+            const cold = await verifyStoredInbound(context(), expected, {
+              ...live,
+              now: () => 999999,
+            });
+            expect(cold).toEqual(result);
+            if (cold.kind !== 'received') throw Error();
+            const actorRefusal = await refusal(
               verify(packet(entry(e, 1, ZERO, { actor: B, nonceByte: nonce }))),
-            ).rejects.toThrow('actor');
-            histories.push({ text, nonce });
+            );
+            expect(actorRefusal).toContain('actor');
+            histories.push({
+              text,
+              nonce,
+              update: hex(update),
+              expectedRecord: digest(expected),
+              observedRecord: digest(result.record),
+              coldRecord: digest(cold.record),
+              observedUpdates: result.updates.map(hex),
+              coldUpdates: cold.updates.map(hex),
+              actorRefusal,
+            });
+            save('generated', {
+              seed: 9152026,
+              status: 'running',
+              runs: histories.length,
+              histories,
+            });
           } finally {
             doc.destroy();
           }
@@ -505,9 +539,10 @@ describe('first-epoch inbound evidence under independently held owner context', 
       ),
       { seed: 9152026, numRuns: 400 },
     );
-    save('generated', { seed: 9152026, runs: 400, histories });
+    save('generated', { seed: 9152026, status: 'passed', runs: 400, histories });
   }, 30000);
   it('500 arbitrary changed wire bytes never authenticate as the original frame', async () => {
+    const mutations: unknown[] = [];
     await fc.assert(
       fc.asyncProperty(
         fc.nat(p.page.length - 1),
@@ -515,10 +550,18 @@ describe('first-epoch inbound evidence under independently held owner context', 
         async (index, mask) => {
           const bytes = p.page.slice();
           bytes[index] = bytes[index]! ^ mask;
-          await expect(verify({ request: p.request, page: bytes })).rejects.toThrow();
+          const reason = await refusal(verify({ request: p.request, page: bytes }));
+          mutations.push({ index, mask, original: p.page[index], changed: bytes[index], reason });
+          save('wire-corruptions', {
+            seed: 9162026,
+            status: 'running',
+            page: digest(p.page),
+            mutations,
+          });
         },
       ),
       { seed: 9162026, numRuns: 500 },
     );
+    save('wire-corruptions', { seed: 9162026, status: 'passed', page: digest(p.page), mutations });
   }, 30000);
 });
