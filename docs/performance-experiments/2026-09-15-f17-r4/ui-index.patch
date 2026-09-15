@@ -1,0 +1,483 @@
+diff --git a/src/ui/Collection.tsx b/src/ui/Collection.tsx
+index 0497b5c6..79035e46 100644
+--- a/src/ui/Collection.tsx
++++ b/src/ui/Collection.tsx
+@@ -64,11 +64,13 @@ export const Collection = ({
+   frozen,
+   active,
+ }: CollectionProps): React.ReactElement | null => {
+-  const { snapshot, execute } = useWorkspaceUi();
++  const { snapshot, cardById, execute } = useWorkspaceUi();
+   const day = snapshot.days.find((value) => value.date === date);
+   const ids = day?.[section] ?? [];
+-  const byId = new Map(snapshot.cards.map((card) => [card.id, card]));
+-  const cards = ids.flatMap((id) => (byId.get(id) ? [byId.get(id)!] : []));
++  const cards = ids.flatMap((id) => {
++    const card = cardById(id);
++    return card ? [card] : [];
++  });
+   const archived = day?.archived?.[section] ?? [];
+   const nextIsFull = (day?.next.length ?? 0) >= NEXT_CAP;
+ 
+diff --git a/src/ui/workspaceUi.tsx b/src/ui/workspaceUi.tsx
+index 619b4395..fc4b2b84 100644
+--- a/src/ui/workspaceUi.tsx
++++ b/src/ui/workspaceUi.tsx
+@@ -21,6 +21,7 @@ import type {
+ export interface WorkspaceUi {
+   workspace: AdmittedWorkspace;
+   snapshot: WorkspaceSnapshot;
++  cardById(id: string): WorkspaceSnapshot['cards'][number] | undefined;
+   actorId: string;
+   status: AdmittedWorkspace['status'];
+   error: string;
+@@ -56,6 +57,12 @@ export const WorkspaceUiProvider = ({
+   children: React.ReactNode;
+ }) => {
+   const [snapshot, setSnapshot] = useState(() => workspace.read());
++  const cardById = useMemo(() => {
++    // Share an index for this detached UI card array across Collections.
++    const cards = new Map<string, WorkspaceSnapshot['cards'][number]>();
++    for (const card of snapshot.cards) cards.set(card.id, card);
++    return (id: string) => cards.get(id);
++  }, [snapshot.cards]);
+   const [status, setStatus] = useState(() => workspace.status);
+   const [error, setError] = useState('');
+   const [storage, setStorage] = useState('Unknown');
+@@ -176,7 +183,17 @@ export const WorkspaceUiProvider = ({
+   };
+   return (
+     <Context
+-      value={{ workspace, snapshot, actorId, status, error, storage, ...actions, lock: onLock }}
++      value={{
++        workspace,
++        snapshot,
++        cardById,
++        actorId,
++        status,
++        error,
++        storage,
++        ...actions,
++        lock: onLock,
++      }}
+     >
+       {children}
+       {(blocked || error || status.pendingItems > 0) && (
+diff --git a/test/workspaceUiIndex.test.tsx b/test/workspaceUiIndex.test.tsx
+new file mode 100644
+index 00000000..8098962f
+--- /dev/null
++++ b/test/workspaceUiIndex.test.tsx
+@@ -0,0 +1,412 @@
++import { act, type ReactNode } from 'react';
++import { createRoot, type Root } from 'react-dom/client';
++import { afterEach, describe, expect, it, vi } from 'vitest';
++import fc from 'fast-check';
++import type {
++  AdmittedWorkspace,
++  WorkspaceCommand,
++  WorkspaceSnapshot,
++} from '../src/crdt/admittedWorkspace';
++import type { AdmissionStatus } from '../src/crdt/admissionQueue';
++import type { CardProps } from '../src/ui/Card';
++import type { ComposeProps } from '../src/ui/Compose';
++import { Collection } from '../src/ui/Collection';
++import { WorkspaceUiProvider, useWorkspaceUi, type WorkspaceUi } from '../src/ui/workspaceUi';
++
++// Keep the provider, collections, membership callbacks, reorder hook and archived
++// renderer real. Only the leaf editor/compose ports are replaced with inspectable
++// controls; no fake index or provider participates in the oracle.
++const cardPorts = new Map<string, CardProps>();
++const composePorts: ComposeProps[] = [];
++vi.mock('../src/ui/Card', () => ({
++  Card: (props: CardProps) => {
++    cardPorts.set(`${props.section}:${props.card.id}`, props);
++    return (
++      <article className="card" data-card={props.card.id} data-section={props.section}>
++        {props.card.text}
++      </article>
++    );
++  },
++}));
++vi.mock('../src/ui/Compose', () => ({
++  Compose: (props: ComposeProps) => {
++    composePorts.push(props);
++    return <button data-compose="true">{props.placeholder}</button>;
++  },
++}));
++
++Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
++let root: Root | undefined;
++let host: HTMLDivElement | undefined;
++const date = '2026-09-15';
++const nextDate = '2026-09-16';
++type Card = WorkspaceSnapshot['cards'][number];
++type Day = WorkspaceSnapshot['days'][number];
++const card = (id: string, text = id): Card => ({
++  id,
++  text,
++  author: 'actor',
++  origin: null,
++  location: null,
++});
++const day = (overrides: Partial<Day> = {}): Day => ({
++  date,
++  next: [],
++  scheduled: [],
++  done: [],
++  ...overrides,
++});
++const snapshot = (cards: readonly Card[], days: readonly Day[] = [day()]): WorkspaceSnapshot => ({
++  master: 'Goals 🚀',
++  cards,
++  days,
++  actors: [],
++  settings: { rolloverHour: 0 },
++  deviceName: 'Device',
++  undo: 0,
++  redo: 0,
++});
++const initialStatus: AdmissionStatus = {
++  state: 'active',
++  revision: 0,
++  pendingItems: 0,
++  pendingBytes: 0,
++  reservedBytes: 0,
++  durable: true,
++  pressure: null,
++};
++
++const controlledWorkspace = (initial: WorkspaceSnapshot) => {
++  let current = initial;
++  let status = initialStatus;
++  let unreadable = false;
++  let commandValue: unknown = true;
++  const publications = new Set<() => void>();
++  const statuses = new Set<(value: AdmissionStatus) => void>();
++  const read = vi.fn(() => {
++    if (unreadable) throw Error('Unavailable');
++    return current;
++  });
++  const command = vi.fn((_command: WorkspaceCommand) => ({
++    id: 1,
++    accepted: Promise.resolve({ value: commandValue }),
++  }));
++  const retry = vi.fn();
++  const discardPending = vi.fn();
++  // Unused carrier/editor operations are intentionally absent: an accidental
++  // call outside this read/command/status boundary fails rather than succeeding.
++  const workspace = {
++    get status() {
++      return status;
++    },
++    read,
++    command,
++    retry,
++    discardPending,
++    subscribe(listener: () => void) {
++      publications.add(listener);
++      return () => publications.delete(listener);
++    },
++    onStatus(listener: (value: AdmissionStatus) => void) {
++      statuses.add(listener);
++      return () => statuses.delete(listener);
++    },
++  } as unknown as AdmittedWorkspace;
++  return {
++    workspace,
++    read,
++    command,
++    retry,
++    discardPending,
++    publications,
++    statuses,
++    result(value: unknown) {
++      commandValue = value;
++    },
++    publish(value: WorkspaceSnapshot = current) {
++      current = value;
++      cardPorts.clear();
++      act(() => publications.forEach((listener) => listener()));
++    },
++    unavailable(value: boolean) {
++      unreadable = value;
++    },
++    status(value: Partial<AdmissionStatus>) {
++      status = { ...status, ...value };
++      act(() => statuses.forEach((listener) => listener(status)));
++    },
++  };
++};
++const values: WorkspaceUi[] = [];
++const Probe = ({ slot }: { slot: number }) => {
++  values[slot] = useWorkspaceUi();
++  return null;
++};
++const currentUi = (slot = 0): WorkspaceUi => {
++  const value = values[slot];
++  if (!value) throw Error('Probe has not rendered');
++  return value;
++};
++const render = (workspace: AdmittedWorkspace, children?: ReactNode) => {
++  if (!host) {
++    host = document.createElement('div');
++    document.body.append(host);
++    root = createRoot(host);
++  }
++  act(() =>
++    root?.render(
++      <WorkspaceUiProvider
++        workspace={workspace}
++        actorId="actor"
++        registerEditor={() => () => {}}
++        onLock={() => {}}
++      >
++        <Probe slot={0} />
++        <Probe slot={1} />
++        {children}
++      </WorkspaceUiProvider>,
++    ),
++  );
++};
++const collections = (at = date) => (
++  <>
++    <Collection date={at} section="next" frozen={false} active />
++    <Collection date={at} section="scheduled" frozen={false} active />
++    <Collection date={at} section="done" frozen={false} active />
++  </>
++);
++const rendered = (section: string) =>
++  Array.from(
++    host?.querySelectorAll(`.collection[data-section="${section}"] [data-card]`) ?? [],
++  ).map((element) => [element.getAttribute('data-card'), element.textContent]);
++const port = (section: string, id: string): CardProps => {
++  const value = cardPorts.get(`${section}:${id}`);
++  if (!value) throw Error(`Missing ${section}:${id}`);
++  return value;
++};
++const action = (section: string, id: string, label: string) => {
++  const value = port(section, id).actions.find((entry) => entry.label === label);
++  if (!value) throw Error(`Missing ${label}`);
++  return value;
++};
++const settle = async (callback: () => unknown) => {
++  await act(async () => {
++    callback();
++    await Promise.resolve();
++  });
++};
++afterEach(() => {
++  act(() => root?.unmount());
++  host?.remove();
++  root = undefined;
++  host = undefined;
++  cardPorts.clear();
++  composePorts.length = 0;
++  values.length = 0;
++});
++
++describe('shared detached UI card lookup', () => {
++  it('reads each publication and exposes current last-wins cards to separate consumers', () => {
++    const first = card('a', 'old');
++    const model = controlledWorkspace(snapshot([first]));
++    render(model.workspace);
++    const reads = model.read.mock.calls.length;
++    const previousLookup = currentUi().cardById;
++    expect(previousLookup('a')).toBe(first);
++    expect(currentUi(1).cardById).toBe(previousLookup);
++    model.publish();
++    expect(model.read).toHaveBeenCalledTimes(reads + 1);
++    expect(currentUi().cardById('a')).toBe(first);
++
++    const replacement = card('a', 'new 🚀 e\u0301 中');
++    const winner = card('__proto__', 'last');
++    const next = snapshot([card('__proto__', 'first'), replacement, winner]);
++    model.publish(next);
++    expect(model.read).toHaveBeenCalledTimes(reads + 2);
++    expect(currentUi().snapshot).toBe(next);
++    expect(currentUi().cardById('a')).toBe(replacement);
++    expect(currentUi().cardById('__proto__')).toBe(winner);
++    expect(currentUi().cardById('missing')).toBeUndefined();
++    expect(currentUi(1).cardById).toBe(currentUi().cardById);
++    // Older detached publications retain their own objects; the latest lookup
++    // must not be a mutable singleton repointed behind old consumers' backs.
++    expect(previousLookup('a')).toBe(first);
++  });
++
++  it('renders replacement, addition, removal, order and movement from current memberships', () => {
++    const model = controlledWorkspace(
++      snapshot(
++        [card('a'), card('b'), card('c')],
++        [day({ next: ['a'], scheduled: ['b'], done: ['c'] })],
++      ),
++    );
++    render(model.workspace, collections());
++    expect(rendered('next')).toEqual([['a', 'a']]);
++    expect(rendered('scheduled')).toEqual([['b', 'b']]);
++    expect(rendered('done')).toEqual([['c', 'c']]);
++    model.publish(
++      snapshot(
++        [card('b', 'old duplicate'), card('d', 'new'), card('b', 'replacement 🚀')],
++        [day({ next: ['missing'], scheduled: ['d', 'b', 'a'], done: [] })],
++      ),
++    );
++    expect(rendered('next')).toEqual([]);
++    expect(rendered('scheduled')).toEqual([
++      ['d', 'new'],
++      ['b', 'replacement 🚀'],
++    ]);
++    expect(rendered('done')).toEqual([]);
++    expect(currentUi().cardById('a')).toBeUndefined();
++    model.publish(
++      snapshot([card('d'), card('b')], [day({ next: ['b'], done: ['d'], scheduled: [] })]),
++    );
++    expect(rendered('next')).toEqual([['b', 'b']]);
++    expect(rendered('done')).toEqual([['d', 'd']]);
++    expect(host?.querySelector('.collection[data-section="scheduled"]')).toBeNull();
++  });
++
++  it('keeps current lookups through status-only/error updates and leaves retry/discard operative', async () => {
++    const model = controlledWorkspace(snapshot([card('a')], [day({ scheduled: ['a'] })]));
++    render(model.workspace, collections());
++    const lookup = currentUi().cardById;
++    const reads = model.read.mock.calls.length;
++    model.status({ state: 'blocked', pendingItems: 1, durable: false });
++    expect(currentUi().cardById).toBe(lookup);
++    expect(currentUi(1).cardById).toBe(lookup);
++    expect(model.read).toHaveBeenCalledTimes(reads);
++    for (const label of ['Retry storage', 'Discard pending input']) {
++      await settle(() => {
++        const button = Array.from(host?.querySelectorAll('button') ?? []).find(
++          (element) => element.textContent === label,
++        );
++        expect(button).toBeDefined();
++        button?.click();
++      });
++    }
++    expect(model.retry).toHaveBeenCalledTimes(1);
++    expect(model.discardPending).toHaveBeenCalledTimes(1);
++    model.status({ state: 'active', pendingItems: 0, durable: true });
++    model.result(false);
++    await settle(() => action('scheduled', 'a', 'Done').run());
++    expect(currentUi().error).toContain('could not be applied');
++    expect(currentUi().cardById).toBe(lookup);
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'a',
++      to: { date, section: 'done' },
++    });
++  });
++
++  it('uses fresh Next capacity, command destinations, merge membership and reorder positions', async () => {
++    const cards = [card('a'), card('b'), card('c'), card('d')];
++    const model = controlledWorkspace(
++      snapshot(cards, [day({ next: ['a', 'b', 'c'], scheduled: ['d'], done: ['a', 'b', 'c'] })]),
++    );
++    render(model.workspace, collections());
++    expect(action('scheduled', 'd', 'Next').disabled).toBe(true);
++    expect(port('done', 'a').hooks.mergeBackwards()).toBeNull();
++    model.publish(snapshot(cards, [day({ next: ['a'], scheduled: ['d'], done: ['c', 'a', 'b'] })]));
++    expect(action('scheduled', 'd', 'Next').disabled).toBe(false);
++    await settle(() => action('scheduled', 'd', 'Next').run());
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'd',
++      to: { date, section: 'next' },
++    });
++    model.result(7);
++    await settle(() => expect(port('done', 'a').hooks.mergeBackwards()).toBe(0));
++    expect(model.command).toHaveBeenLastCalledWith({ kind: 'merge', id: 'a' });
++    expect(port('done', 'c').autoFocusAt).toBe(7);
++    await settle(() => port('done', 'c').reorder?.moveBy(1));
++    expect(model.command).toHaveBeenLastCalledWith({ kind: 'reorder', id: 'c', index: 1 });
++
++    model.publish(snapshot(cards, [day({ date: nextDate, scheduled: ['d'] })]));
++    render(model.workspace, collections(nextDate));
++    await settle(() => action('scheduled', 'd', 'Done').run());
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'd',
++      to: { date: nextDate, section: 'done' },
++    });
++    await settle(() => composePorts.at(-1)?.onSubmit('a new card 🚀'));
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'compose',
++      to: { date: nextDate, section: 'done' },
++      text: 'a new card 🚀',
++    });
++  });
++
++  it('preserves archived content outside the live card lookup', () => {
++    const model = controlledWorkspace(
++      snapshot(
++        [card('a', 'live')],
++        [day({ done: ['a'], archived: { next: [], scheduled: [], done: ['Archive **one** 🚀'] } })],
++      ),
++    );
++    render(model.workspace, collections());
++    expect(rendered('done')).toEqual([['a', 'live']]);
++    expect(host?.querySelector('[data-frozen="true"]')?.textContent).toContain('Archive one 🚀');
++    model.publish(
++      snapshot([], [day({ archived: { next: [], scheduled: [], done: ['Archive **two** 中'] } })]),
++    );
++    expect(rendered('done')).toEqual([]);
++    expect(host?.querySelector('[data-frozen="true"]')?.textContent).toContain('Archive two 中');
++    expect(currentUi().cardById('a')).toBeUndefined();
++  });
++
++  it('recovers from unreadable publications and cleans both subscriptions on replacement/unmount', () => {
++    const model = controlledWorkspace(snapshot([card('a')]));
++    render(model.workspace);
++    const reads = model.read.mock.calls.length;
++    model.unavailable(true);
++    model.publish();
++    expect(model.read).toHaveBeenCalledTimes(reads + 1);
++    expect(currentUi().cardById('a')?.text).toBe('a');
++    model.unavailable(false);
++    model.publish(snapshot([card('b', 'recovered')]));
++    expect(currentUi().cardById('a')).toBeUndefined();
++    expect(currentUi().cardById('b')?.text).toBe('recovered');
++    const replacement = controlledWorkspace(snapshot([card('b', 'different owner')]));
++    render(replacement.workspace);
++    expect(model.publications.size).toBe(0);
++    expect(model.statuses.size).toBe(0);
++    expect(currentUi().cardById('b')?.text).toBe('different owner');
++    expect(replacement.publications.size).toBe(1);
++    expect(replacement.statuses.size).toBe(1);
++    act(() => root?.unmount());
++    root = undefined;
++    expect(replacement.publications.size).toBe(0);
++    expect(replacement.statuses.size).toBe(0);
++  });
++
++  it('matches an independent native Map across generated publication histories', () => {
++    const ids = fc.constantFrom('a', 'b', 'c', '__proto__', '中', '🚀');
++    const step = fc.record({
++      cards: fc.array(fc.record({ id: ids, text: fc.string({ maxLength: 12 }) }), {
++        maxLength: 12,
++      }),
++      members: fc.uniqueArray(ids, { maxLength: 6 }),
++    });
++    const model = controlledWorkspace(snapshot([]));
++    render(model.workspace, collections());
++    fc.assert(
++      fc.property(fc.array(step, { minLength: 1, maxLength: 12 }), (history) => {
++        for (const entry of history) {
++          const cards = entry.cards.map(({ id, text }) => card(id, `${text} 🚀`));
++          const expected = new Map(cards.map((value) => [value.id, value]));
++          model.publish(snapshot(cards, [day({ scheduled: entry.members })]));
++          expect(currentUi(1).cardById).toBe(currentUi().cardById);
++          for (const id of [...entry.members, ...cards.map((value) => value.id), 'absent'])
++            expect(currentUi().cardById(id)).toBe(expected.get(id));
++          expect(rendered('scheduled')).toEqual(
++            entry.members.flatMap((id) => {
++              const value = expected.get(id);
++              return value ? [[value.id, value.text]] : [];
++            }),
++          );
++        }
++      }),
++      { seed: 170409, numRuns: 50 },
++    );
++  });
++});

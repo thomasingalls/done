@@ -1,0 +1,36 @@
+{
+  "records": [
+    {
+      "name": "stale-index",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/workspaceUiIndex.test.tsx"
+      ],
+      "exitCode": 1,
+      "expected": "nonzero assertion/test failure",
+      "mutation": {
+        "before": "}, [snapshot.cards]);",
+        "after": "}, []);"
+      }
+    },
+    {
+      "name": "wrong-id",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/workspaceUiIndex.test.tsx"
+      ],
+      "exitCode": 1,
+      "expected": "nonzero assertion/test failure",
+      "mutation": {
+        "before": "return (id: string) => cards.get(id);",
+        "after": "return (id: string) => cards.get('absent-fault-card');"
+      }
+    }
+  ],
+  "sourceRestored": true,
+  "sourceSha256": "db8d113ac458d1e4149fba48dc6601419ad442e69d0ee84e0407a92998a2e5b0"
+}

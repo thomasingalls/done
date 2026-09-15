@@ -1,0 +1,11 @@
+# Shared UI index — before comparison
+
+The candidate changes only src/ui/workspaceUi.tsx and src/ui/Collection.tsx relative to the complete round-three combination. CRDT, admission, private codecs, journal, history, editor projection and workspace.read bytes are identical between variants.
+
+The provider uses useMemo over snapshot.cards to build a Map directly with a for-of loop, avoiding tuple intermediates. It exposes only a closure that retrieves a card by id. A fresh cards array creates a fresh lookup; status/error/storage changes can reuse the existing one. React may discard memoized values or retry renders, so this is not a new correctness assumption or an exactly-once construction guarantee. Each consumer receives the provider's lookup for its current snapshot. No global cache or old-snapshot invalidation bookkeeping is introduced.
+
+Collection resolves each current section id once and emits the same ordered card records, excluding missing ids. Map construction keeps last-id-wins behavior for duplicate card records. Collection still creates its current cards array, callbacks/actions and reorder inputs; there is no broad React.memo comparator that ignores changed callbacks, no filtered workspace publication, and no accepted-document cache. Archives and Next capacity continue to use the current snapshot directly. Returned records are the already detached UI snapshot records, just as before; the mutable Map itself does not escape.
+
+The lookup lives with the provider's memoized UI snapshot. A renderer can retain a previous value through ordinary React lifetime rules, as it already can retain previous snapshots; this does not establish immediate memory erasure or a measured retained-heap win. No new memory campaign is planned. This phase is a bounded allocation-work reduction candidate with separate end-to-end latency measurement.
+
+Focused provider/Collection tests and deliberate stale/wrong-id faults precede the compiled application screen. The previous profile/static review establishes a candidate opportunity; compilation inspection must confirm the expected code survives the actual React Compiler before attributing removed source work. Native movement/drag/IME/default qualification remains later.

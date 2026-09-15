@@ -1,0 +1,43 @@
+{
+  "changedRuntimeFiles": [
+    "src/ui/workspaceUi.tsx",
+    "src/ui/Collection.tsx"
+  ],
+  "runtimeRestoredAfterFaults": true,
+  "typeScriptExitCode": 0,
+  "newTests": {
+    "files": 1,
+    "cases": 7,
+    "generatedHistories": 50,
+    "seed": 170409,
+    "exitCode": 0
+  },
+  "affectedTests": {
+    "files": 6,
+    "cases": 42,
+    "exitCode": 0
+  },
+  "faultControlsDetected": 2,
+  "sourceHashes": {
+    "src/ui/workspaceUi.tsx": "db8d113ac458d1e4149fba48dc6601419ad442e69d0ee84e0407a92998a2e5b0",
+    "src/ui/Collection.tsx": "b7c44fa543694299c3c1f50d943eaf4228257b375cbda69c1526472b9cdba97e",
+    "test/workspaceUiIndex.test.tsx": "d4c132d3fe7e5ad2ffb8ae8cfc71b7e5206ce5630dfd8ab51d038badb9c9741c"
+  },
+  "commands": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/cardCommands.test.ts test/goals.test.ts test/reorder.test.ts test/unfiledPanel.test.tsx test/admittedEditorProjection.test.ts test/pendingProjection.test.ts",
+      "log": "affected-tests.log",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+      "log": "typecheck.log",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/workspaceUiIndex.test.tsx",
+      "log": "restored-ui-tests.log",
+      "exitCode": 0
+    }
+  ]
+}
