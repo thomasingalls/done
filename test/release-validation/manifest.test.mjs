@@ -282,6 +282,230 @@ function admissionHistories(commands = ['offer', 'finish']) {
 }
 
 import {
+  spoolCampaign,
+  spoolCampaignStage,
+  spoolSteps,
+  spoolReports,
+  reconcileSpoolReports,
+  reconcileSpoolEvidence,
+} from '../../scripts/release-validation/account-spool-wrapper.mjs';
+function spoolEvidenceFixture() {
+  const positions = [1, 2].map((position) => ({
+    position,
+    source: { id: String(position).padStart(32, '0'), index: 0, hash: 'ab'.repeat(32) },
+    attempts: [position],
+    persisted: true,
+  }));
+  const wires = positions.map((p) => ({ position: p.position, bytes: [p.position, 2, 3] }));
+  const step = (n) => ({
+    ledgerBeforeRecovery: { attempts: n, positions: positions.slice(0, n) },
+    invocationsBeforeRecovery: n,
+    ledger: { attempts: n, positions: positions.slice(0, n) },
+    invocations: n,
+    envelopes: wires.slice(0, n),
+    observed: n === 1 ? 'xbase original' : 'éxbase original',
+  });
+  return {
+    'controls.json': {
+      earlyReturn: { envelope: wires[0], persistedBeforeCrash: 0, persistedAfterCrash: 0 },
+      reuse: { nativeInvocations: 2, durableAttempts: 1 },
+    },
+    'missing-tail-baseline.json': {
+      before: wires[0],
+      refused: true,
+      reason: 'Error: Spool ledger is incomplete',
+      invocations: 1,
+    },
+    'missing-tail-control.json': {
+      before: wires[0],
+      after: { position: 1, bytes: [4, 5, 6] },
+      invocations: 2,
+    },
+    'generated.json': {
+      status: 'passed',
+      seed: 9502026,
+      histories: Array.from({ length: 8 }, () => ({
+        commands: [
+          { text: 'x', boundary: 'normal' },
+          { text: 'é', boundary: 'compact' },
+        ],
+        steps: [structuredClone(step(1)), structuredClone(step(2))],
+        final: {
+          ledger: structuredClone(step(2).ledger),
+          invocations: 2,
+          envelopes: structuredClone(wires),
+          sources: positions.map((p) => ({ id: p.source.id, count: 1 })),
+          observed: 'éxbase original',
+        },
+      })),
+    },
+  };
+}
+
+test('spool wrapper binds complete property/native invocations, exact reader and report contracts', () => {
+  const m = compileManifest(
+      process.cwd(),
+      JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    ),
+    [s, ...rest] = selectStages(m, 'wrapper-account-spool');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 30);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.expect.cases.length),
+    [6, 24],
+  );
+  assert.deepEqual(s.fileOutputs.required, spoolReports);
+  assert.deepEqual(
+    s.expect.historyInputs.map((x) => [x.reference, x.path]),
+    [['7210b7d', 'src/crdt/promotionRecord.ts']],
+  );
+  assert.equal(s.deadlineMs, 270000);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const changes of [
+    { argv: [...s.argv, '--case', 'native'] },
+    { env: { MODE: 'other' } },
+    { variant: 'current' },
+    { deadlineMs: 270001 },
+    { graceMs: 5001 },
+    { fixture: undefined },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, historyInputs: [] } },
+    { expect: { ...s.expect, steps: s.expect.steps.toReversed() } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...changes }));
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  graph.extraRoots.push({ id: 'spool-filter', argv: ['node', spoolCampaign, '--case', 'native'] });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:spool-filter:0')
+      .blocked,
+  );
+});
+
+test('spool child reports require complete distinct case domains despite a passing wrapper trace', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-spool-trace-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const f = outboundTraceFixture(directory, spoolCampaignStage(process.cwd()));
+  const run = (trace) =>
+    reconcileCampaignTrace(f.stage.expect.steps, trace, 'fresh', directory, reconcileCampaignNode);
+  assert.deepEqual(run(f.trace).cases, f.stage.expect.cases);
+  for (const change of [
+    (v) => v.reports.properties.cases.pop(),
+    (v) => v.reports.native.cases.pop(),
+    (v) => (v.reports.native.summary.success = false),
+    (v) => (v.reports.properties.reason = 'failed'),
+    (v) => v.trace.steps.reverse(),
+    (v) => v.trace.steps[0].argv.push('--retry'),
+  ]) {
+    const v = structuredClone({ trace: f.trace, reports: f.reports });
+    change(v);
+    f.save(v.reports);
+    assert.throws(() => run(v.trace));
+  }
+});
+
+test('spool reports refuse failed summary, wrong sources, leftover counterexamples and missing files', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-spool-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: spoolCampaign, sha256: 'a'.repeat(64) }],
+    reports = {
+      ...spoolEvidenceFixture(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: spoolSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'properties.log', 'native.log'])
+      writeFileSync(join(directory, file), 'observed');
+  };
+  save(reports);
+  reconcileSpoolReports(directory, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => r['summary.json'].stages.pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+  ]) {
+    const bad = structuredClone(reports);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileSpoolReports(directory, sources));
+  }
+  save(reports);
+  writeFileSync(join(directory, 'missing-tail-counterexample.json'), '{}');
+  assert.throws(() => reconcileSpoolReports(directory, sources));
+  rmSync(join(directory, 'missing-tail-counterexample.json'));
+  for (const file of [...Object.keys(reports), 'results.xml', 'properties.log', 'native.log']) {
+    save(reports);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileSpoolReports(directory, sources));
+  }
+});
+
+test('160 generated spool control faults reject ineffective early-return, grant-reuse and missing-tail controls', () => {
+  const reports = spoolEvidenceFixture();
+  reconcileSpoolEvidence(reports);
+  fc.assert(
+    fc.property(fc.integer({ min: 1, max: 255 }), (value) => {
+      for (const alter of [
+        (r) => (r['controls.json'].earlyReturn.envelope.bytes = []),
+        (r) => (r['controls.json'].earlyReturn.persistedBeforeCrash = value),
+        (r) => (r['controls.json'].earlyReturn.persistedAfterCrash = value),
+        (r) => (r['controls.json'].reuse.durableAttempts = 2),
+        (r) => (r['missing-tail-baseline.json'].refused = false),
+        (r) => (r['missing-tail-baseline.json'].reason = 'unrelated error'),
+        (r) => (r['missing-tail-control.json'].after = r['missing-tail-control.json'].before),
+        (r) => (r['missing-tail-control.json'].after.position = 2),
+        (r) => (r['missing-tail-control.json'].invocations = 1),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad);
+        assert.throws(() => reconcileSpoolEvidence(bad));
+      }
+    }),
+    { seed: 150951, numRuns: 160 },
+  );
+});
+
+test('160 generated spool histories reject changed retry bytes, grant gaps and incomplete exact source coverage', () => {
+  const reports = spoolEvidenceFixture();
+  reconcileSpoolEvidence(reports);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 7 }), (index) => {
+      for (const alter of [
+        (r) => r.histories.pop(),
+        (r) => (r.status = 'running'),
+        (r) => r.histories[index].steps.pop(),
+        (r) => (r.histories[index].steps[0].ledger.attempts = 0),
+        (r) => (r.histories[index].steps[0].ledger.attempts = 2 ** 32),
+        (r) => (r.histories[index].steps[1].ledger.positions[1].attempts = [1]),
+        (r) => (r.histories[index].steps[1].ledger.positions[0].source.hash = 'ff'.repeat(32)),
+        (r) => (r.histories[index].steps[1].envelopes[0].bytes[0] ^= 1),
+        (r) => r.histories[index].steps[1].envelopes.pop(),
+        (r) => (r.histories[index].steps[1].observed = 'wrong'),
+        (r) => (r.histories[index].final.invocations = 3),
+        (r) => (r.histories[index].final.sources[0].count = 2),
+        (r) => (r.histories[index].final.sources[0].count = 2 ** 32),
+        (r) => (r.histories[index].final.sources[1].id = r.histories[index].final.sources[0].id),
+        (r) => (r.histories[index].final.ledger.positions[1].position = 3),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad['generated.json']);
+        assert.throws(() => reconcileSpoolEvidence(bad));
+      }
+    }),
+    { seed: 150952, numRuns: 160 },
+  );
+});
+
+import {
   captureCampaign,
   captureCampaignStage,
   captureSteps,
@@ -2759,7 +2983,7 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').stage.expect.kind,
     'account-outbound',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-spool/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-decisions/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

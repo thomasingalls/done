@@ -300,12 +300,15 @@ test(
     await open(f.page, item);
     const early = await prepare(f.page);
     assert.ok(early.bytes.length);
-    assert.equal((await envelopes(f.page)).length, 0);
+    const persistedBeforeCrash = (await envelopes(f.page)).length;
+    assert.equal(persistedBeforeCrash, 0);
     await crash(f);
     await cold(f);
     await open(f.page, item);
-    assert.equal((await envelopes(f.page)).length, 0);
+    const persistedAfterCrash = (await envelopes(f.page)).length;
+    assert.equal(persistedAfterCrash, 0);
     await close(f.page);
+    const startReuse = f.invocations.length;
     const next = await selected(f, 'reuse');
     await f.page.evaluate(await spoolBundle('reuse-attempt'));
     await configure(f.page);
@@ -320,11 +323,14 @@ test(
     await open(f.page, next);
     await prepare(f.page);
     assert.equal(f.invocations.length, prior + 1);
-    assert.equal((await status(f.page)).attempts, 1);
+    const durableAttempts = (await status(f.page)).attempts;
+    assert.equal(durableAttempts, 1);
+    const nativeInvocations = f.invocations.length - startReuse;
+    assert.equal(nativeInvocations, 2);
     await close(f.page);
     artifact('controls.json', {
-      earlyReturn: { returnedBytes: early.bytes.length, persistedEnvelopes: 0 },
-      reuse: { nativeInvocations: 2, durableAttempts: 1 },
+      earlyReturn: { envelope: early, persistedBeforeCrash, persistedAfterCrash },
+      reuse: { nativeInvocations, durableAttempts },
     });
   },
 );
@@ -409,7 +415,8 @@ test(
           { minLength: 2, maxLength: 4 },
         ),
         async (history) => {
-          histories.push(history);
+          const evidence = { commands: history, steps: [] };
+          histories.push(evidence);
           artifact('generated.json', { seed, histories, status: 'running' });
           console.log(`spool history ${histories.length}/8: ${JSON.stringify(history)}`);
           const item = await selected(f, 'generated-' + histories.length),
@@ -436,7 +443,8 @@ test(
               await open(f.page, item);
             }
             const ledger = await status(f.page);
-            assert.ok(ledger.attempts >= f.invocations.length - base);
+            const invocationsBeforeRecovery = f.invocations.length - base;
+            assert.ok(ledger.attempts >= invocationsBeforeRecovery);
             if (ledger.positions.at(-1) && !ledger.positions.at(-1).persisted)
               await prepare(f.page);
             if (step.boundary === 'compact') await f.page.evaluate(() => opened.compactContent());
@@ -444,8 +452,18 @@ test(
             for (const [pos, bytes] of saved)
               assert.deepEqual(current.find((e) => e.position === pos)?.bytes, bytes);
             for (const e of current) saved.set(e.position, e.bytes);
-            assert.equal(await f.page.evaluate(() => editor.read().master), expected);
+            const observed = await f.page.evaluate(() => editor.read().master);
+            assert.equal(observed, expected);
             const now = await status(f.page);
+            evidence.steps.push({
+              ledgerBeforeRecovery: ledger,
+              invocationsBeforeRecovery,
+              ledger: now,
+              invocations: f.invocations.length - base,
+              envelopes: current,
+              observed,
+            });
+            artifact('generated.json', { seed, histories, status: 'running' });
             assert.deepEqual(
               now.positions.map((p) => p.position),
               now.positions.map((_, i) => i + 1),
@@ -464,6 +482,14 @@ test(
             sources.reduce((n, c) => n + c.sources.length, 0),
           );
           assert.ok(final.attempts >= f.invocations.length - base);
+          evidence.final = {
+            ledger: final,
+            invocations: f.invocations.length - base,
+            envelopes: await envelopes(f.page),
+            sources: sources.map((c) => ({ id: c.id, count: c.sources.length })),
+            observed: await f.page.evaluate(() => editor.read().master),
+          };
+          artifact('generated.json', { seed, histories, status: 'running' });
           await close(f.page);
         },
       ),
@@ -486,11 +512,13 @@ test(
       (item) => Harness.spoolFault(item.slotId, item.code, 'envelope-missing'),
       args(item),
     );
-    let refused = false;
+    let refused = false,
+      reason;
     try {
       await open(f.page, item);
-    } catch {
+    } catch (error) {
       refused = true;
+      reason = String(error);
     }
     if (!refused) {
       const after = await prepare(f.page);
@@ -504,6 +532,13 @@ test(
       assert.notDeepEqual(after.bytes, before.bytes);
     }
     assert.equal(refused, true, 'A deleted persisted wire must not reopen as permission to remint');
+    assert.match(reason, /Spool ledger is incomplete/);
+    artifact('missing-tail-baseline.json', {
+      before,
+      refused,
+      reason,
+      invocations: f.invocations.length,
+    });
   },
 );
 

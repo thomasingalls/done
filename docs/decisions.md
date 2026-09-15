@@ -3721,3 +3721,13 @@ reopened and control outcomes so the wrapper can corroborate the native assertio
 and text fold. These checks repair the recorded map-refresh/byte-prefix weaknesses without changing
 product admission or source-capture behavior.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).
+
+
+## 2026-09-15 — Spool evidence binds observed wire, grants and source coverage
+
+Keep actual returned/persisted bytes and observed WebCrypto invocation counts in control and generated
+reports. Reconcile complete grant events, immutable source positions, unchanged persisted wires and
+exact final id/index coverage, with bounded allocation for malformed numeric fields. A missing-tail
+control needs both the actual incomplete-ledger refusal and same-position changed-wire mutant. These
+checks corroborate existing native/codec assertions; they are not independent decryption or storage replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-spool/README.md).

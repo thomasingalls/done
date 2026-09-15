@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**136 obligations remain blocked: 84 command and 52 campaign rows; no test-file rows remain.**
+**134 obligations remain blocked: 83 command and 51 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 136 missing product tests. The compiler still refuses whole-release execution before
+they are not 134 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4299,3 +4299,53 @@ Runtime/dependencies, crypto census/vectors, F-17 debt, prior archives and L-2 r
 browser/server/relay/device/deployment operation occurs. Next: Account spool wrapper, remaining qualification
 repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).
+
+
+## 2026-09-15 — Account spool wrapper integration
+
+Capture is signed and verified as `652fd13f`. Spool preserves both exact child invocations: spool-record
+Vitest properties with maxWorkers=2 /30 seconds and the native campaign with original spec/JUnit /240
+seconds. Owned execution adds the shared ordered completion trace, distinct nonce-bound child reports,
+270-second aggregate bound with five-second grace and disposable CDP browser. Pin
+`7210b7d:src/crdt/promotionRecord.ts` before/after execution and reuse. Exact command aliases the campaign;
+weaker invocation, output, browser, historical and result contracts refuse. Standalone remains available.
+
+Require eleven files (twelve inventory entries) within 4 MiB /40-entry /two-level limits. Reconcile all
+30 outcomes, successful ordered stages/summary, exact wrapper source pins, early-return and grant-reuse
+controls, missing-final-row baseline/mutant and eight generated histories (seed 9502026). Early-return
+reports now include the actual returned envelope and observed absence before/after renderer death.
+Grant reuse records actual observed invocation/attempt counts. The missing-tail baseline retains its
+exposed bytes, actual incomplete-ledger refusal and unchanged invocation count. The existing witness
+mutation must remint different bytes at the same position. Leftover missing-tail counterexamples refuse
+passing-wrapper credit.
+
+Generated reports now retain each command, before/after recovery ledger, external invocation counts,
+persisted envelopes, reopened text and final source reference counts. The adapter checks monotone
+observed invocation/grant counts, complete distinct grant events, contiguous immutable source positions,
+exact persisted-wire continuity and final complete id/index coverage of captured sources. A separate
+text fold checks every observed edit. Bounded generated-report sizes (128 grants, 64 positions/capsules,
+32 sources per capsule) prevent small malformed numeric fields causing unbounded allocation; these are
+fixture-evidence bounds, not new product limits. Native/codec assertions remain authority; reconciliation
+does not independently decrypt or replay storage/Yjs, regenerate schedules or prove grant counts outside
+the fixture's WebCrypto observation hook.
+
+The owned epoch passes **134 cases in six executions**: 81 planning cases in four full suites, 30 spool
+(6 Vitest /24 native), and 23 capture regression cases. Spool takes **228.836s /270s**; capture
+regression takes 169.698s /210s. All groups drain. A seventh request reuses the exact spool receipt
+after capture; eleven reports survive checkout removal. Both selected historical readers are retained.
+Five new infrastructure cases cover exact contracts, separate child domains, source/output omissions,
+160 generated control corruptions (seed 150951), and 160 generated history corruptions (150952).
+
+Eight synthetic process runs accept valid reports and reject zero-exit failed summary, changed persisted
+wire, missing native case, ineffective grant-reuse control and incomplete final source coverage. Omitting
+the semantic hook or child census admits the corresponding invalid evidence; both deliberate faults
+discriminate. Synthetic claims are not additional Account executions. Local planning and owned campaigns
+pass without a new failure. Earlier capture-oracle failures and other historical observations retain
+their original archives. Reporter/experimental API diagnostics remain without a repair claim.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Unresolved integration falls from 136 to **134: zero test-file /83 command /51 campaign**. Runtime,
+package/dependencies, crypto census/vectors, F-17 debt, previous archives and L-2 are unchanged. No personal
+browser/server/relay/device/deployment work occurs. Next: Account decisions wrapper, remaining qualification
+repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-spool/README.md).
