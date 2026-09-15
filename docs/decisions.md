@@ -3635,3 +3635,13 @@ owner; reported PIDs are cooperative observations, and virtual passkey restorati
 Keep the standalone wrapper and native report fallback intact. Previous blocked-wrapper assertions
 must advance to explicit resolved-contract checks as adapters land, while unresolved rows still refuse.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).
+
+
+## 2026-09-15 — Authority control evidence must distinguish trust and freshness
+
+The authority wrapper's retained reports must show the specific controlled failures: a substituted
+root with the requested nonce, and an old nonce with the expected root. Require baseline refusal,
+mutant acceptance of the supplied pin and independently valid signatures over the archived message
+bytes. A self-signature alone supplies neither the expected trust anchor nor a fresh challenge.
+Preserve actual grouped execution and its exact case census; report labels and exit zero are
+insufficient. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).

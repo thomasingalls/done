@@ -55,40 +55,38 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Account core wrapper integration is signed and verified as `d41a0a56`.
+**Roadmap checkpoint.** Recovery wrapper integration is signed and verified as `4e8a8f3a`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Recovery resolves one command and one
-campaign row: **zero test-file /92 command /60 campaign** remain unresolved, down from 154 to 152.
+272 general files/2,198 dispositions (11 not applicable)**. Authority resolves one command and one
+campaign row: **zero test-file /91 command /59 campaign** remain unresolved, down from 152 to 150.
 These are integration counts, not a passing aggregate.
 
-**Just completed.** The actual recovery wrapper preserves all six files, default Node concurrency,
-120-second bound and five-second grace. Owned execution retains its reports and terminal census and
-uses the existing persistent-profile fixture in the worker group, with pinned Chromium. Lifecycle
-records now join the owned report tree when opted in; other native invocations retain the prior
-fallback. The adapter checks all 25 outcomes, successful summary, source hashes, both factor-control
-pairs, substituted-root evidence and three distinct clean browser lifetimes through one owned profile.
-Case outcomes come from the owned Node census; JUnit/logs remain auxiliary. Lifecycle reports are
-cooperative fixture observations coupled to owner group drain; virtual passkey restoration is simulated.
+**Just completed.** The actual authority wrapper preserves five-file order, default Node concurrency,
+120-second bound and five-second grace. Owned execution adds terminal reporting, a disposable browser
+and six retained reports. The adapter checks all 14 outcomes, successful summary, owned source hashes
+and the actual substituted-root/replayed-nonce distinctions. Archived proof signatures are checked
+independently with Node crypto; self-signatures establish neither trusted roots nor fresh challenges.
+The owned Node census is the case authority, with JUnit/logs as auxiliary evidence. Standalone behavior
+and the production protocol are unchanged.
 
-The final epoch passes **93 cases in six executions**: 38 planning, 25 recovery and 30 core-regression
-cases, then one exact recovery receipt reuse. Recovery takes **11.900s /120s**, including 160 generated
-service histories and actual browser restarts. Every group drains. Ten recovery reports and the three
-lifecycle records survive checkout deletion. Four new infrastructure cases include 100 generated
-profile histories, 14 breakage variants each, and directed report/missing-file controls. Five synthetic
-process runs and two deliberate faults discriminate; their case/profile claims are not real executions.
-The code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).
+The final epoch passes **81 cases in six executions**: 42 planning, 14 authority and 25 recovery
+regression cases, followed by exact authority receipt reuse. Authority takes **30.635s /120s**,
+including 160 generated service and 40 generated native preflight histories. Every group drains and
+all six authority reports survive checkout deletion. Four new infrastructure cases include 100
+signed-report pairs with ten invalid variants each, directed corruptions and missing files. Six
+synthetic process runs and two deliberate faults discriminate; their case claims are not real tests.
+The new code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
 
-**Preserved observations.** An outdated Account-fixture planning assertion still marked already
-integrated core/preparation wrappers blocked. Its failure is retained; positive resolved-contract
-checks and the remaining blocked assertions now pass. Prior core browser-startup SIGABRT, older
-orphan/headroom observations, report setup failures and all failure/cancellation/latency receipts
-retain their evidence. No runtime repair follows from correcting the stale planning assertion.
+**Preserved observations.** No new validation failure occurs. The previous stale wrapper assertion,
+core browser-startup SIGABRT, older orphan/headroom observations, report setup failures and all
+failure/cancellation/latency receipts retain their evidence. Resolved authority assertions replace
+its previous blocked disposition while checks for unintegrated wrappers remain.
 
-**Next bounded phase.** Account authority wrapper integration, with its exact grouped selection,
-owned reports and semantic postconditions, then other bounded wrapper families. Optional outputs in
+**Next bounded phase.** Account promotion wrapper integration with exact grouped selection, owned
+reports and semantic postconditions, then further bounded wrapper families. Optional outputs in
 unintegrated locations still need explicit treatment. File custody is cooperative bounded polling,
-not a disk quota or hostile-code sandbox; this phase does not establish whole-profile residue bounds.
+not a disk quota or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

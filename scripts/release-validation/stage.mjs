@@ -32,6 +32,11 @@ import {
   validateRecoveryCampaign,
   reconcileRecoveryReports,
 } from './account-recovery-wrapper.mjs';
+import {
+  authorityCampaign,
+  validateAuthorityCampaign,
+  reconcileAuthorityReports,
+} from './account-authority-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -88,6 +93,7 @@ export function validateStage(stage) {
       'cases',
       'account-core',
       'account-recovery',
+      'account-authority',
       'vitest',
       'playwright',
       'content',
@@ -111,9 +117,14 @@ export function validateStage(stage) {
       'Nonzero exit alone cannot prove a mutation was detected',
     );
   else if (
-    ['cases', 'vitest', 'playwright', 'account-core', 'account-recovery'].includes(
-      stage.expect.kind,
-    )
+    [
+      'cases',
+      'vitest',
+      'playwright',
+      'account-core',
+      'account-recovery',
+      'account-authority',
+    ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
@@ -148,6 +159,12 @@ export function validateStage(stage) {
     stage.variant === 'account-recovery-campaign-v1'
   )
     validateRecoveryCampaign(stage);
+  if (
+    stage.expect.kind === 'account-authority' ||
+    stage.argv[1] === authorityCampaign ||
+    stage.variant === 'account-authority-campaign-v1'
+  )
+    validateAuthorityCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -664,7 +681,7 @@ export function createStageRunner({
         } else {
           if (
             stage.argv.includes('--test') ||
-            ['account-core', 'account-recovery'].includes(stage.expect.kind)
+            ['account-core', 'account-recovery', 'account-authority'].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
             assert(reported.summary, 'Missing terminal Node summary');
@@ -676,6 +693,13 @@ export function createStageRunner({
               'Core report producers or inventory incomplete',
             );
             reconcileCoreReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-authority') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Authority report producers or inventory incomplete',
+            );
+            reconcileAuthorityReports(fileDirectory, before.sources);
           }
           if (stage.expect.kind === 'account-recovery') {
             assert(

@@ -27,6 +27,258 @@ import {
 } from '../../scripts/release-validation/account-core-wrapper.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 import {
+  authorityCampaign,
+  authorityCampaignStage,
+  authorityFiles,
+  authorityReports,
+  reconcileAuthorityReports,
+  reconcileAuthorityControls,
+} from '../../scripts/release-validation/account-authority-wrapper.mjs';
+import { generateKeyPairSync, sign } from 'node:crypto';
+
+function authorityEvidence(
+  serviceId = 'ab'.repeat(16),
+  first = '01'.repeat(32),
+  second = '02'.repeat(32),
+) {
+  const make = () => {
+    const keys = generateKeyPairSync('ed25519');
+    return {
+      keys,
+      pin: {
+        v: 1,
+        serviceId,
+        origin: 'http://localhost:4999',
+        rpId: 'localhost',
+        authRoot: keys.publicKey
+          .export({ format: 'der', type: 'spki' })
+          .subarray(-32)
+          .toString('hex'),
+      },
+    };
+  };
+  const expected = make(),
+    attacker = make();
+  const proof = (owner, nonce) => {
+    const p = owner.pin;
+    const message = Buffer.concat(
+      [
+        'done/service-authority-bootstrap/v1',
+        '1',
+        p.serviceId,
+        p.origin,
+        p.rpId,
+        p.authRoot,
+        nonce,
+      ].map((v) => {
+        const b = Buffer.from(v),
+          size = Buffer.alloc(2);
+        size.writeUInt16BE(b.length);
+        return Buffer.concat([size, b]);
+      }),
+    );
+    return {
+      v: 1,
+      pin: p,
+      nonce,
+      signature: sign(null, message, owner.keys.privateKey).toString('hex'),
+    };
+  };
+  return {
+    pin: {
+      expected: expected.pin,
+      nonce: first,
+      proof: proof(attacker, first),
+      baseline: 'refused',
+      mutant: attacker.pin,
+    },
+    replay: {
+      expected: expected.pin,
+      requestedNonce: second,
+      proof: proof(expected, first),
+      baseline: 'refused',
+      mutant: expected.pin,
+    },
+  };
+}
+
+test('authority wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-authority');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', authorityCampaign]);
+  assert.equal(stage.expect.cases.length, 14);
+  assert.deepEqual(
+    [...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))],
+    authorityFiles,
+  );
+  assert.deepEqual(stage.fileOutputs.required, authorityReports);
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'authority-filter',
+    argv: ['node', authorityCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:authority-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('authority wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = authorityCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 120001 },
+    { graceMs: 5001 },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('authority reports require complete successful output and exact wrapper source pins', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-authority-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = authorityEvidence();
+  const sources = [
+    { path: 'package.json', sha256: 'a'.repeat(64) },
+    { path: 'src/crdt/example.ts', sha256: 'b'.repeat(64) },
+    { path: 'wasm/journal-seal/seal.generated.ts', sha256: 'c'.repeat(64) },
+  ];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-pin.json': controls.pin,
+    'control-nonce.json': controls.replay,
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcileAuthorityReports(directory, sources);
+  const faults = [
+    (r) => {
+      r['summary.json'].status = 'failed';
+    },
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'error';
+    },
+    (r) => {
+      r['summary.json'].completedAt = 'invalid';
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'].pop();
+    },
+    (r) => {
+      r['sources.json'][1].sha256 = 'd'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-pin.json'].baseline = 'accepted';
+    },
+    (r) => {
+      r['control-nonce.json'].mutant = r['control-pin.json'].mutant;
+    },
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcileAuthorityReports(directory, sources));
+  }
+  for (const file of authorityReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileAuthorityReports(directory, sources));
+  }
+});
+
+test('100 generated signed authority controls distinguish substituted roots and stale challenges', () => {
+  fc.assert(
+    fc.property(
+      fc.uint8Array({ minLength: 16, maxLength: 16 }),
+      fc.uint8Array({ minLength: 32, maxLength: 32 }),
+      (id, nonce) => {
+        const second = Buffer.from(nonce);
+        second[0] ^= 1;
+        const good = authorityEvidence(
+          Buffer.from(id).toString('hex'),
+          Buffer.from(nonce).toString('hex'),
+          second.toString('hex'),
+        );
+        reconcileAuthorityControls(good.pin, good.replay);
+        const faults = [
+          (r) => {
+            r.pin.expected = r.pin.proof.pin;
+          },
+          (r) => {
+            r.replay.requestedNonce = r.replay.proof.nonce;
+          },
+          (r) => {
+            r.pin.nonce = second.toString('hex');
+          },
+          (r) => {
+            r.replay.expected = r.pin.proof.pin;
+          },
+          (r) => {
+            r.pin.proof.signature = '00'.repeat(64);
+          },
+          (r) => {
+            r.replay.proof.nonce = second.toString('hex');
+          },
+          (r) => {
+            r.pin.proof.signature = r.replay.proof.signature;
+          },
+          (r) => {
+            r.pin.mutant = r.pin.expected;
+          },
+          (r) => {
+            r.replay.baseline = 'accepted';
+          },
+          (r) => {
+            r.pin.proof.v = 2;
+          },
+        ];
+        for (const fault of faults) {
+          const bad = structuredClone(good);
+          fault(bad);
+          assert.throws(() => reconcileAuthorityControls(bad.pin, bad.replay));
+        }
+      },
+    ),
+    { seed: 150935, numRuns: 100 },
+  );
+});
+import {
   recoveryCampaign,
   recoveryCampaignStage,
   recoveryFiles,
@@ -307,7 +559,7 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-authority/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-promotion/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

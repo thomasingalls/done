@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**152 obligations remain blocked: 92 command and 60 campaign rows; no test-file rows remain.**
+**150 obligations remain blocked: 91 command and 59 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 152 missing product tests. The compiler still refuses whole-release execution before
+they are not 150 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -3875,3 +3875,51 @@ server, relay, device or deployment operation occurs. This phase is uncommitted.
 authority wrapper integration with its own selected tests and report postconditions, followed by
 remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).
+
+
+## 2026-09-15 — Account authority wrapper integration
+
+Recovery wrapper integration is signed and signature-verified as `4e8a8f3a`. Integrate the actual
+Account authority wrapper with its five-file order, default Node concurrency, 120-second bound and
+five-second grace unchanged. Owned execution adds the terminal reporter, disposable CDP browser and
+retained report directory; spec/JUnit output and standalone behavior remain. Exact argv with an
+empty user environment aliases the campaign. Weaker result/report/browser contracts and changed
+arguments or environment refuse. Other wrappers retain their unresolved dispositions.
+
+Require six reports under 4 MiB /32-entry /one-level bounds: sources, summary, JUnit, log and both
+pin/nonce controls. Besides exact 14-case terminal completion and successful summary/code/no timeout,
+verify the wrapper's source hashes against owned inputs, including src/crdt and the generated sealer.
+Both controls must record baseline refusal and mutant acceptance of the supplied proof pin. The pin
+control must substitute an actual authority root while retaining the requested nonce and policy; the
+nonce control must replay a different challenge while retaining the expected pin. Independently
+verify both archived Ed25519 signatures using Node crypto and explicit length-prefixed message bytes.
+A valid response signature establishes neither trust in its self-declared root nor challenge freshness.
+The owned Node census remains the case authority; JUnit/logs are auxiliary evidence, not independent
+oracles. Optional counterexample reports stay in the bounded retained tree.
+
+The final owned epoch passes **81 cases in six executions**: 42 planning cases in four complete
+suites, all 14 authority cases and the 25-case recovery wrapper regression. Authority takes
+**30.635s /120s**; recovery takes 11.021s /120s. This includes the unchanged 160 generated authority
+service histories and 40 generated native Local preflight histories, encrypted-root/cold-restart,
+SIGKILL and competing initialization controls, Local database+journal preflight and cancellation
+exclusion. Every process/browser group drains. A seventh request reuses the exact authority receipt
+and rechecks the six reports after the recovery regression. Reports survive copied-checkout deletion.
+
+Four new infrastructure cases cover exact invocation/ownership, eleven directed report corruptions,
+six missing files and 100 generated signed control pairs with ten invalid variants each. Five
+synthetic process controls distinguish valid reports from zero-exit failed summary, unsubstituted
+root, unreplayed challenge and invalid signature. A sixth synthetic execution deliberately omits
+semantic reconciliation and admits the bad summary that the baseline refuses. A second isolated
+fault removes signature verification and admits the damaged proof. Both faults discriminate. Synthetic
+case claims are instrumentation controls, not Account executions. Scoped lint/format, inventory/
+manifest and whitespace checks pass; no new validation failure occurs. Prior failures remain archived.
+The existing wrapper-blocked assertions advance to explicit positive authority-contract checks.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not
+applicable)**. The four new cases belong to an existing infrastructure file. Unresolved wrappers
+fall from 152 to **150: zero test-file /91 command /59 campaign**. Runtime, package/dependency,
+crypto-census/vector and F-17 debt bytes, prior archives and L-2's checkpoint are unchanged. No personal
+browser, server, relay, device or deployment operation occurs. This phase is uncommitted. Next:
+Account promotion wrapper integration with its own selected tests and report postconditions, then
+remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
