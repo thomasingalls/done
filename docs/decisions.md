@@ -3222,3 +3222,59 @@ Implement the private ownership component without activating it. Require a match
 ## 2026-09-14 — Private Local preparation handoff integration
 
 Keep the candidate an explicit private Local selection while retaining the generic/default and Account paths. Preserve one verified queue basis, leased prepared resources, exact retry, per-slice renewal and complete post-promotion comparison before workspace publication. Reject Account capture registration. Bind both publication revision and source; preserve terminal projection failure causes. The native initialization counterexample and three new discriminating faults remain in the evidence. Functional integration passes without changing latency budgets or claiming a speedup. Next compare against the retained reference and signed baseline under a prospective protocol before default Local activation. After the F-17 disposition, resume wrapper certification and immutable qualification.
+
+
+## 2026-09-14 — Keep the faster Local handoff private while its application budget fails
+
+Require both the prospectively specified relative command improvement and the unchanged application
+budgets before default activation. The six-block comparison meets its criteria against current
+reference and signed baseline, but CPU-4x Android card typing is 63.5 ms against <16 ms. Keep the
+candidate private, preserve every observation, and leave F-17 partial. Do not relax the budget,
+repeat a valid failing gate or infer a browser effect from separate historical runs. Diagnose the
+candidate's remaining work before selecting a further repair; Account activation stays separate.
+
+
+## 2026-09-15 — Keep Local handoff private after the physical-phone comparison
+
+The Pixel 9a companion shows lower candidate card-typing p95 in both opposite-order pairs, but
+86.9–87.1 ms remains above the unchanged <16 ms budget. Retain the candidate privately and keep
+F-17 partial. Preserve every failed setup and diagnostic run, all four comparison sessions, delivered
+input cadence and thermal observations. Do not generalize automated trusted keys to ordinary phone
+keyboard composition or treat one device as fleet qualification. Finish the manual input/recovery
+exercise, then profile the remaining candidate card cost before another repair. The 96 command /
+63 campaign obligations and immutable qualification remain separate.
+
+
+## 2026-09-15 — Close the phone comparison and resume candidate diagnosis
+
+The operator cancels the remaining physical-device campaign, including the planned manual
+keyboard exercise. Preserve its completed four-session evidence without claiming that exercise
+passed. The fixture server exited cleanly after removing its five owned USB reverse forwards;
+the dedicated ADB server on port 5047 is stopped. Keep the emulation reference values and use
+roughly 1.5 times card-typing latency for planning only: C 87.0/63.5 = 1.37; R 108.1/69.4 = 1.56.
+These separate sessions are not a controlled hardware calibration or evidence for other metrics.
+Resume the [bounded private-candidate browser profile](./f17-local-profile.md) once, with unchanged
+samples and source-mapped attribution before another repair. Default activation stays refused.
+
+
+## 2026-09-15 — Attribute remaining private Local card work
+
+The unchanged owned browser diagnostic passes once on the isolated Local handoff variant:
+4 cases, no retries/skips, 1,440 raw timings, 4 CPU profiles, exact text/cold-reopen checks and
+process drain (208.584-second stage). Full maps independently reproduce 2,168 mapped nodes;
+79 mapped application source files match the activated candidate. Original workspace identity
+is unchanged during execution. Card diagnostic p95 is 14.6/13.7 ms desktop and 80.5/68.7 ms
+CPU-4x Android across the two blocks; these do not replace the prior 12.9/63.5 ms application
+gate observation. The later bare-CodeMirror tail persists and limits timing interpretation.
+Across separate 60-key profiles, full history copying takes 345.2/1,558.4 ms desktop/Android,
+including document copying 170.3/770.1 and stack copying 172.4/778.8. Full comparison uses
+190.2/804.8 ms and publication/listeners 61.4/489.9 ms. Nested totals overlap; callback self time
+does not isolate structuredClone. Native/unmapped and GC samples are retained.
+
+Next define and test an ownership contract for private immutable selection snapshots: detach
+at capture, safely reuse only owned sealed values, detach on restore, and prove foreign/stale
+reference, nested-alias, undo/redo and lifetime behavior. Keep generic history forks fully detached,
+full verification and durable admission unchanged. Both rejected metadata copiers remain rejected;
+no speedup or default activation follows from this diagnosis. F-17 is partial; adapter obligations
+remain 0 test-file / 96 command / 63 campaign. [Protocol and next phase](./f17-local-profile.md);
+[evidence](./account-conformance-runs/2026-09-15-f17-local-profile/README.md).

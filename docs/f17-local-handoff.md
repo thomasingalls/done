@@ -81,3 +81,12 @@ retained. All 52 personal/vector pins and L-2 remain unchanged. Command/campaign
 qualification remain open. The next timing comparison should include the signed baseline as well
 as the retained reference, because sharing the command helper also changes reference implementation
 code; semantic agreement does not establish identical cost.
+
+
+## Performance follow-through
+
+The subsequent [prospective performance phase](./f17-local-performance.md) meets its relative Node
+criteria against both this reference path and signed `0c84e5cc`, while preserving every semantic
+check. The unchanged candidate application gate still fails Android typing at 63.5 ms (<16 ms),
+so default activation is refused and this handoff remains private. No product code changes in that
+phase. Earlier statements about timing being next describe this functional checkpoint.

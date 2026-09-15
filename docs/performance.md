@@ -867,3 +867,83 @@ is not evidence of a speedup. Next specify a balanced comparison prospectively, 
 unchanged application gate, then decide Local default activation. Account source activation,
 physical-device capacity and immutable qualification remain separate. After the F-17 disposition,
 resume the 96 command / 63 campaign wrapper obligations and remaining qualification repairs.
+
+
+## 2026-09-14 — Private Local performance comparison and activation disposition (`L-1`)
+
+The prospectively frozen B/R/C comparison passes its relative criteria: 54 sessions, 3,456 measured
+commands, six balanced orders, all semantic/replay assertions passing. The private candidate improves
+paired medians by 10.2%/12.0% versus current reference/signed `0c84e5cc` at 10,000 items and
+29.7%/29.0% at 100,000 items; the medium result is narrow. Tail and reference-baseline regression
+rules pass, with all raw observations and warning output retained. This synthetic Node comparison
+does not measure encrypted storage or paint.
+
+The unchanged application gate on a disposable candidate activation variant fails Android card
+typing: 63.5 ms p95 against <16 ms; desktop is 12.9 ms. Other budgeted metrics pass. All twelve
+cases execute, all thirty measurements survive, no retry occurs, and processes drain normally.
+The prospective document's seven-per-project count was a clerical error; the exact frozen stage
+always contains six per project. The original protocol and this correction both remain.
+
+Do not activate Local by default. Keep the candidate private and F-17 partial. The last reference
+application observation is still 15.2/69.4 ms; do not treat the separate candidate run as a paired
+browser speedup estimate. Next diagnose remaining candidate browser cost before choosing another
+repair. General integration remains 261 files / 2,073 dispositions (11 N/A), with 96 command and
+63 campaign obligations; no aggregate or physical-device qualification follows. No product source,
+test, adapter, personal package or browser changes occur in this performance phase.
+[Protocol and results](./f17-local-performance.md);
+[evidence](./account-conformance-runs/2026-09-14-f17-local-performance/README.md).
+
+
+## 2026-09-15 — Physical Pixel 9a R/C/C/R companion
+
+The four-session companion completes on Android 17 / Chrome 152.0.7977.83, using the native narrow
+viewport and no CPU/device emulation. Card-typing p95 is 107.9, 87.1, 86.9 and 108.3 ms (R/C/C/R):
+19.3% and 19.8% lower for C within the two opposite-order pairs, still failing <16 ms in all four.
+Compose p95 is 14.8, 14.4, 14.2 and 15.7 ms; all compose, focus, cold/warm startup and replay budgets
+pass. All 960 trusted-key samples survive, and full-corpus plus exact edited-card cold-reopen checks
+pass per session. The unchanged prior CPU-4x candidate gate remains failed at 63.5 ms; this companion
+does not replace it or authorize default activation.
+
+The measured typing viewport is 411.43×403.81 CSS pixels, DPR 2.625, with the phone keyboard open.
+Separate frame-interval medians are 16.6–16.7 ms. Median delivered key intervals are 67.7–68.0 ms in
+compose and 140.9–158.8 ms in cards, despite the same 50 ms driver pause after command completion;
+this is not a fixed delivered-input-rate comparison. Battery temperature rises 34.6→37.6 °C while
+charge stays 81%. Preserve these period/cadence limitations and all failed setup/diagnostic attempts.
+No valid comparison session was rerun. Native on-screen keyboard/composition/undo testing remains
+pending. Keep Local handoff private and profile the remaining card path after that manual check.
+[Protocol](./f17-pixel9a.md); [raw evidence and independent recomputation](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
+
+
+## 2026-09-15 — Close the phone comparison and resume candidate diagnosis
+
+The operator cancels the remaining physical-device campaign, including the planned manual
+keyboard exercise. Preserve its completed four-session evidence without claiming that exercise
+passed. The fixture server exited cleanly after removing its five owned USB reverse forwards;
+the dedicated ADB server on port 5047 is stopped. Keep the emulation reference values and use
+roughly 1.5 times card-typing latency for planning only: C 87.0/63.5 = 1.37; R 108.1/69.4 = 1.56.
+These separate sessions are not a controlled hardware calibration or evidence for other metrics.
+Resume the [bounded private-candidate browser profile](./f17-local-profile.md) once, with unchanged
+samples and source-mapped attribution before another repair. Default activation stays refused.
+
+
+## 2026-09-15 — Attribute remaining private Local card work
+
+The unchanged owned browser diagnostic passes once on the isolated Local handoff variant:
+4 cases, no retries/skips, 1,440 raw timings, 4 CPU profiles, exact text/cold-reopen checks and
+process drain (208.584-second stage). Full maps independently reproduce 2,168 mapped nodes;
+79 mapped application source files match the activated candidate. Original workspace identity
+is unchanged during execution. Card diagnostic p95 is 14.6/13.7 ms desktop and 80.5/68.7 ms
+CPU-4x Android across the two blocks; these do not replace the prior 12.9/63.5 ms application
+gate observation. The later bare-CodeMirror tail persists and limits timing interpretation.
+Across separate 60-key profiles, full history copying takes 345.2/1,558.4 ms desktop/Android,
+including document copying 170.3/770.1 and stack copying 172.4/778.8. Full comparison uses
+190.2/804.8 ms and publication/listeners 61.4/489.9 ms. Nested totals overlap; callback self time
+does not isolate structuredClone. Native/unmapped and GC samples are retained.
+
+Next define and test an ownership contract for private immutable selection snapshots: detach
+at capture, safely reuse only owned sealed values, detach on restore, and prove foreign/stale
+reference, nested-alias, undo/redo and lifetime behavior. Keep generic history forks fully detached,
+full verification and durable admission unchanged. Both rejected metadata copiers remain rejected;
+no speedup or default activation follows from this diagnosis. F-17 is partial; adapter obligations
+remain 0 test-file / 96 command / 63 campaign. [Protocol and next phase](./f17-local-profile.md);
+[evidence](./account-conformance-runs/2026-09-15-f17-local-profile/README.md).

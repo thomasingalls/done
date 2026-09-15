@@ -1,0 +1,94 @@
+[
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/assets/main-BBv1bmH8.css",
+    "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/assets/main-Bfjb_wmI.js",
+    "sha256": "bc30e4910a311408fc694595fe164ecf40594bb4bd710231a021da9a6613c113"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/assets/promotionRecord-BcBR1R_N.js",
+    "sha256": "0eee11a65599ed723534ebba8c8c81e1049d16d95f4f4735c3303dc01ca6c96a"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/favicon.svg",
+    "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/icon-192.png",
+    "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/icon-512.png",
+    "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/icon-maskable-512.png",
+    "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/index.html",
+    "sha256": "3e46afc9c21a61d925eac850f13a57ab30247e41db0f0229dffbbb6e8ace2ade"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/local.html",
+    "sha256": "6e35d67498750888abe42cf824da8a65b6e429fe1443557c4ff899a988f97c02"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/manifest.webmanifest",
+    "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/R/sw.js",
+    "sha256": "24604acd6b9ab853daf1af4043213f160c57614b613645692548e5120cb64327"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/assets/main-BBv1bmH8.css",
+    "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/assets/main-BfNk6HWo.js",
+    "sha256": "585612c3ceb9fff59da740199c3cdb9d8aab9ab7413a0aa05eaae85ea24edcb7"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/assets/promotionRecord-BbwrSbdm.js",
+    "sha256": "c2af4b9b40add6a14261a9c910f7d5af1339e224ae8a3c7e6ddc1d98302482b9"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/favicon.svg",
+    "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/icon-192.png",
+    "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/icon-512.png",
+    "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/icon-maskable-512.png",
+    "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/index.html",
+    "sha256": "0dd8ed54656f7565078df2858c2434a4352728e17d87f4adc7fd5e2e39844694"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/local.html",
+    "sha256": "faac7060c2cb3138e353115e1ec8528ab80e5eb9c1c338c3a2ad1be4976c0426"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/manifest.webmanifest",
+    "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/builds/C/sw.js",
+    "sha256": "1253f2bfc5d9206fd1504846d2108267c75845c08900ecdedd51ea5050b8a97c"
+  },
+  {
+    "path": "/private/tmp/done-pixel9a/inputs.json.gz",
+    "sha256": "7b28bb7dba3e07a6e676dc87dd0ba0cac233af155cfb68e5297f16a99e293a7a"
+  }
+]
