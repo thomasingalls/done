@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-capture/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-capture/owned/inputs.json.gz",
+    "bytes": 1222899,
+    "sha256": "5e8571c2097d925cb6d7021d57d3690ea60cf71e64249bf3fac50f1af79eded5"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-capture/failed-owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-capture/failed-owned/inputs.json.gz",
+    "bytes": 1222903,
+    "sha256": "441fb16a56e451a1b0996b2c010f35391aa9da8d25a2b9ea421b15fbf86e215e"
+  }
+]

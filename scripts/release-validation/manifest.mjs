@@ -1,3 +1,4 @@
+import { captureCampaign, captureCampaignStage } from './account-capture-wrapper.mjs';
 import { outboundCampaign, outboundCampaignStage } from './account-outbound-wrapper.mjs';
 import { editingCampaign, editingCampaignStage } from './account-editing-wrapper.mjs';
 import { handoffCampaign, handoffCampaignStage } from './account-handoff-wrapper.mjs';
@@ -371,6 +372,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['campaign:' + promotionCampaign];
     else if (exactCommand(command, ['node', genesisCampaign]))
       row.requires = ['campaign:' + genesisCampaign];
+    else if (exactCommand(command, ['node', captureCampaign]))
+      row.requires = ['campaign:' + captureCampaign];
     else if (exactCommand(command, ['node', outboundCampaign]))
       row.requires = ['campaign:' + outboundCampaign];
     else if (exactCommand(command, ['node', editingCampaign]))
@@ -438,30 +441,32 @@ export function compileManifest(root, inventory) {
                       ? { stage: handoffCampaignStage(root) }
                       : c.path === editingCampaign
                         ? { stage: editingCampaignStage(root) }
-                        : c.path === outboundCampaign
-                          ? { stage: outboundCampaignStage(root) }
-                          : [
-                                'scripts/content/run.mjs',
-                                'scripts/journal/run.mjs',
-                                'scripts/admission/run.mjs',
-                                'scripts/editor-admission/run.mjs',
-                                'scripts/workspace-admission/run.mjs',
-                                'scripts/owned-startup/run.mjs',
-                                'scripts/local-genesis/run.mjs',
-                                'scripts/write-session/run.mjs',
-                                'scripts/custody/run.mjs',
-                                'scripts/content-trim/run.mjs',
-                                'scripts/local-clear/run.mjs',
-                              ].includes(c.path)
-                            ? {
-                                requires: [
-                                  'catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs'),
-                                ],
-                              }
-                            : {
-                                blocked:
-                                  'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-                              }),
+                        : c.path === captureCampaign
+                          ? { stage: captureCampaignStage(root) }
+                          : c.path === outboundCampaign
+                            ? { stage: outboundCampaignStage(root) }
+                            : [
+                                  'scripts/content/run.mjs',
+                                  'scripts/journal/run.mjs',
+                                  'scripts/admission/run.mjs',
+                                  'scripts/editor-admission/run.mjs',
+                                  'scripts/workspace-admission/run.mjs',
+                                  'scripts/owned-startup/run.mjs',
+                                  'scripts/local-genesis/run.mjs',
+                                  'scripts/write-session/run.mjs',
+                                  'scripts/custody/run.mjs',
+                                  'scripts/content-trim/run.mjs',
+                                  'scripts/local-clear/run.mjs',
+                                ].includes(c.path)
+                              ? {
+                                  requires: [
+                                    'catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs'),
+                                  ],
+                                }
+                              : {
+                                  blocked:
+                                    'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                                }),
     });
   }
   for (const c of inventory.constructions) {
@@ -573,6 +578,13 @@ export function compileManifest(root, inventory) {
           (r) =>
             r.id === 'campaign:' + editingCampaign ||
             (r.kind === 'command' && exactCommand(r, ['node', editingCampaign])),
+        )
+        .map((r) => r.id),
+      'wrapper-account-capture': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + captureCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', captureCampaign])),
         )
         .map((r) => r.id),
       'wrapper-account-outbound': rows

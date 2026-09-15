@@ -1,3 +1,4 @@
+import { rememberCaptures, verifyCaptures } from './oracles.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
@@ -200,14 +201,32 @@ test(
   { timeout: 30000 },
   async (t) => {
     const f = await native(t),
-      item = await selected(f, 'retention-control');
+      baselineItem = await selected(f, 'retention-baseline');
+    await open(f.page, baselineItem);
+    const before = (await captures(f.page)).length;
+    await edit(f.page, 4, 0, ' control');
+    await f.page.evaluate(() => editor.whenDurable());
+    const baseline = {
+      before,
+      after: (await captures(f.page)).length,
+      text: await f.page.evaluate(() => editor.read().master),
+    };
+    assert.equal(baseline.after, before + 1);
+    assert.equal(baseline.text, 'base control original');
+    await close(f.page);
+    await cold(f);
+    const item = await selected(f, 'retention-control');
     await f.page.evaluate(await captureBundle('retention'));
     await configure(f.page);
     await open(f.page, item);
     await edit(f.page, 4, 0, ' control');
     await f.page.evaluate(() => editor.whenDurable());
-    assert.equal((await captures(f.page)).length, 0);
-    assert.equal(await f.page.evaluate(() => editor.read().master), 'base control original');
+    const mutant = {
+      captures: (await captures(f.page)).length,
+      text: await f.page.evaluate(() => editor.read().master),
+    };
+    assert.equal(mutant.captures, 0);
+    assert.equal(mutant.text, 'base control original');
     await close(f.page);
     // A validly encoded capsule from another workspace must fail before it can be journalled.
     const next = await selected(f, 'route-control');
@@ -227,9 +246,17 @@ test(
               epoch: c.epoch,
               generation: c.generation,
             });
-            return 'accepted';
+            return {
+              status: 'accepted',
+              actualWorkspace: c.workspace,
+              expectedWorkspace: opened.workspaceId,
+            };
           } catch {
-            return 'refused';
+            return {
+              status: 'refused',
+              actualWorkspace: c.workspace,
+              expectedWorkspace: opened.workspaceId,
+            };
           } finally {
             b.fill(0);
           }
@@ -237,13 +264,16 @@ test(
           Harness.eraseCapsule(c);
         }
       });
-    assert.equal(await check(), 'refused');
+    const routeBaseline = await check();
+    assert.equal(routeBaseline.status, 'refused');
+    assert.notEqual(routeBaseline.actualWorkspace, routeBaseline.expectedWorkspace);
     await f.page.evaluate(await captureBundle('route'));
-    assert.equal(await check(), 'accepted');
+    const routeMutant = await check();
+    assert.deepEqual(routeMutant, { ...routeBaseline, status: 'accepted' });
     await close(f.page);
     artifact('controls.json', {
-      retention: 'edit visible with no durable source capsule after omitted outbound write',
-      route: 'wrong-workspace capsule accepted after route guard removal',
+      retention: { baseline, mutant },
+      route: { baseline: routeBaseline, mutant: routeMutant },
     });
   },
 );
@@ -265,7 +295,8 @@ test(
           { minLength: 2, maxLength: 6 },
         ),
         async (history) => {
-          histories.push(history);
+          const evidence = { commands: history, initial: [], steps: [] };
+          histories.push(evidence);
           artifact('generated.json', {
             seed,
             runs: histories.length,
@@ -276,13 +307,16 @@ test(
           const item = await selected(f, 'generated-' + histories.length);
           await open(f.page, item);
           let expected = 'base original';
-          const retained = new Map((await captures(f.page)).map((c) => [c.id, c]));
+          const retained = new Map();
+          evidence.initial = await captures(f.page);
+          rememberCaptures(retained, evidence.initial);
           for (const step of history) {
             await freezeFlush(f.page);
             const n = step.cut ? (Array.from(expected)[0]?.length ?? 0) : 0;
             await edit(f.page, 0, n, step.text);
             expected = step.text + expected.slice(n);
-            for (const c of await captures(f.page)) retained.set(c.id, c);
+            const admitted = await captures(f.page);
+            rememberCaptures(retained, admitted);
             if (step.boundary === 'flush') await f.page.evaluate(() => editor.whenDurable());
             if (step.boundary === 'compact') await f.page.evaluate(() => opened.compactContent());
             if (step.boundary === 'reopen' || step.boundary === 'crash') {
@@ -291,13 +325,21 @@ test(
               await cold(f);
               await open(f.page, item);
             }
-            assert.equal(await f.page.evaluate(() => editor.read().master), expected);
-            const now = await captures(f.page);
-            for (const [id, c] of retained)
-              assert.deepEqual(
-                now.find((x) => x.id === id),
-                c,
-              );
+            const observed = await f.page.evaluate(() => editor.read().master);
+            assert.equal(observed, expected);
+            const recovered = await captures(f.page);
+            evidence.steps.push({ admitted, recovered, observed });
+            artifact('generated.json', {
+              seed,
+              runs: histories.length,
+              histories,
+              status: 'running',
+            });
+            verifyCaptures(
+              retained,
+              recovered,
+              ['reopen', 'crash'].includes(step.boundary) ? evidence.initial[0] : undefined,
+            );
           }
           await close(f.page);
         },
@@ -638,16 +680,21 @@ test(
       const attempt = carrier.appendLocal(capsule);
       await carrier.appendBatch([{ kind: 'update', bytes: capsule }]);
       const saved = await listCaptures();
-      const same = saved.length === 1 && saved[0].sources[0].bytes.every((b, i) => b === update[i]);
+      const savedBytes = saved.map((c) => c.sources.map((s) => [...s.bytes]));
       for (const c of saved) Harness.eraseCapsule(c);
       await carrier.close();
-      return { attempt, same };
+      return { attempt, savedBytes, update: [...update] };
     }, args(item));
     assert.deepEqual(
       { status: result.attempt.status, reason: result.attempt.reason },
       { status: 'refused', reason: 'oversize' },
     );
-    assert.equal(result.same, true);
+    assert.deepEqual(
+      result.savedBytes,
+      [[result.update]],
+      'Captured bytes must match length and every byte',
+    );
+    artifact('overhead.json', result);
     await cold(f);
     await open(f.page, item);
     assert.equal(

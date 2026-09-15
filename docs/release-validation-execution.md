@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**138 obligations remain blocked: 85 command and 53 campaign rows; no test-file rows remain.**
+**136 obligations remain blocked: 84 command and 52 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 138 missing product tests. The compiler still refuses whole-release execution before
+they are not 136 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4239,3 +4239,63 @@ package/dependency, crypto census/vectors, F-17 debt, prior archives and L-2 che
 No personal browser, server, relay, device or deployment operation occurs. Next: Account capture wrapper
 integration, remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).
+
+
+## 2026-09-15 — Account capture wrapper and first-observation oracles
+
+Outbound is signed and verified as `49cbb1e2`. Capture preserves the exact ordered Vitest source-capsule
+properties (30 seconds, maxWorkers=2) and native capture invocation (180 seconds, original spec/JUnit).
+Owned execution adds the shared completion trace and separate nonce-bound child reports, a 210-second
+aggregate bound with five-second grace, and disposable CDP browser. Pin
+`18ceb40:src/crdt/promotionRecord.ts` before/after execution and reuse. Exact command aliases the campaign;
+weaker arguments, environment, history, output, case or browser contracts refuse. Standalone remains available.
+
+Repair both recorded capture oracle weaknesses. Generated native histories now retain a cloned first
+observation of every capsule and compare it before adding new ones. Reopen/flush/compaction/crash must
+preserve every prior record and all original metadata/actor/bytes, with no duplicate, lost or substituted
+capsules. Reopen/crash may add the v6 empty human initialization capsule only with the same route and
+exact [0,0] source bytes; such additions become first observations for later comparisons. Reports retain initial capsules, each admitted/recovered set and actual reopened text for all
+16 histories (seed 9322026). Independent report reconciliation keeps its own first observations and folds
+the recorded Unicode edit commands. It does not independently replay Yjs or regenerate the random schedule.
+The overhead case compares complete nested byte arrays, replacing a prefix-only `every` predicate that
+accepted truncated or empty updates. Its actual oversize refusal and original/saved bytes are retained.
+
+Retention controls now record a working baseline's added capsule, observed text and the mutant's lost
+capsules. Route controls record the actual wrong and expected workspace and baseline refusal/mutant
+acceptance. Require those concrete differences, not label strings. Require ten files (eleven inventory
+entries) within 4 MiB /40-entry /two-level limits: summary, exact source pins, JUnit, logs, both child case
+reports, controls, generated histories and overhead bytes. Existing native assertions remain authority;
+report validation is corroboration, not independent storage/crypto replay.
+
+The owned epoch passes **128 cases in six executions**: 76 planning cases in four full suites, 23 capture
+(8 Vitest /15 native), and 29 outbound regression cases. Capture takes **167.775s /210s**; outbound
+regression takes 11.455s /150s. Every group drains. A seventh request reuses capture's exact receipt
+after the regression; all ten reports survive disposable checkout removal. Five new infrastructure cases
+cover exact contracts, independent child domains, output omissions, 160 generated report corruptions
+(seed 150949) and 160 generated first-observation comparisons (150950). The old overwrite and byte-prefix
+predicates demonstrably admit the same changes the repaired oracles reject.
+
+Eight synthetic process runs accept valid reports and reject zero-exit failed summary, changed first
+observation, missing native case, ineffective retention fault and truncated bytes. Deliberately omitting
+the semantic hook or native census causes corresponding invalid reports to pass; both faults discriminate.
+These synthetic case claims are not additional Account executions. All local planning tests initially
+pass, but the new report corruption case spends 45.8 seconds constructing full-array error diagnostics.
+Checking length before byte contents retains all assertions and 160 generated cases while reducing that
+case to 1.1 seconds. Preserve both timing logs; the complete owned suites pass under their unchanged bounds.
+An initial stage-construction probe exposed the missing explicit capture historical-kind allowlist entry;
+adding the reviewed kind retains the exact historical pin checks. The first owned native run fails on an
+extra capsule after reopen: the newly added exact-count rule was too strict for v6 initialization, whose
+source intentionally records an empty human [0,0] source. Preserve that failed epoch and source; permit
+only route-matching empty initialization records on reopen/crash, retaining all prior expectations.
+Generated controls reject a nonempty initializer, changed route or initializer at a flush boundary. The
+final native run verifies this explicit allowance. Failed-case evidence initially contains the history
+and count mismatch; the repaired reporter now saves each observed transition before checking it.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Unresolved integration falls from 138 to **136: zero test-file /84 command /52 campaign**. The capture
+comparison-map/byte-length follow-ups are closed for these exercised fixtures. Host-Python binding,
+historical owner/orphan observations, delivery-oracle headroom, R-04/P-06 and immutable qualification remain.
+Runtime/dependencies, crypto census/vectors, F-17 debt, prior archives and L-2 remain unchanged. No personal
+browser/server/relay/device/deployment operation occurs. Next: Account spool wrapper, remaining qualification
+repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).

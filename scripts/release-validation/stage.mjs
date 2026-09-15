@@ -1,4 +1,9 @@
 import {
+  captureCampaign,
+  validateCaptureCampaign,
+  reconcileCaptureReports,
+} from './account-capture-wrapper.mjs';
+import {
   outboundCampaign,
   validateOutboundCampaign,
   reconcileOutboundReports,
@@ -131,6 +136,7 @@ export function validateStage(stage) {
       'account-handoff',
       'account-editing',
       'account-outbound',
+      'account-capture',
       'vitest',
       'playwright',
       'content',
@@ -167,6 +173,7 @@ export function validateStage(stage) {
       'account-handoff',
       'account-editing',
       'account-outbound',
+      'account-capture',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -244,6 +251,12 @@ export function validateStage(stage) {
     stage.variant === 'account-outbound-campaign-v1'
   )
     validateOutboundCampaign(stage);
+  if (
+    stage.expect.kind === 'account-capture' ||
+    stage.argv[1] === captureCampaign ||
+    stage.variant === 'account-capture-campaign-v1'
+  )
+    validateCaptureCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -276,9 +289,13 @@ export function validateStage(stage) {
   }
   if (Object.hasOwn(stage.expect, 'historyInputs')) {
     if (
-      !['account-genesis', 'account-admission', 'account-handoff', 'account-editing'].includes(
-        stage.expect.kind,
-      )
+      ![
+        'account-genesis',
+        'account-admission',
+        'account-handoff',
+        'account-editing',
+        'account-capture',
+      ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
       assert(
@@ -765,10 +782,10 @@ export function createStageRunner({
             custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
           actual = { cases };
-        } else if (stage.expect.kind === 'account-outbound') {
+        } else if (['account-outbound', 'account-capture'].includes(stage.expect.kind)) {
           assert(
             groupDrained && fileOutputs?.complete,
-            'Outbound report producers or inventory incomplete',
+            'Campaign report producers or inventory incomplete',
           );
           actual = reconcileCampaignTrace(
             stage.expect.steps,
@@ -777,7 +794,9 @@ export function createStageRunner({
             fileDirectory,
             reconcileCases,
           );
-          reconcileOutboundReports(fileDirectory, before.sources);
+          if (stage.expect.kind === 'account-outbound')
+            reconcileOutboundReports(fileDirectory, before.sources);
+          else reconcileCaptureReports(fileDirectory, before.sources);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -795,6 +814,7 @@ export function createStageRunner({
               'account-handoff',
               'account-editing',
               'account-outbound',
+              'account-capture',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

@@ -3709,3 +3709,15 @@ checks as such; a successful wrapper summary cannot stand in for terminal test o
 standalone invocation and original concurrency, arguments and child deadlines. The complete planning
 snapshot needs a 1,000,000-byte ceiling; runtime artifact bounds remain separate and unchanged.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).
+
+
+## 2026-09-15 — Source-capture evidence preserves the first complete observation
+
+Generated capture histories must compare every previously observed capsule before admitting new ones;
+never refresh the expectation from the value being checked. Clone first observations to avoid aliases,
+require retention of every prior record and compare both byte lengths and contents. Admit only the
+existing v6 route-matching empty initialization capsule on reopen/crash, then retain its first observation. Retain actual admitted,
+reopened and control outcomes so the wrapper can corroborate the native assertions with a separate map
+and text fold. These checks repair the recorded map-refresh/byte-prefix weaknesses without changing
+product admission or source-capture behavior.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).

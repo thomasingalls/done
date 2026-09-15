@@ -282,6 +282,289 @@ function admissionHistories(commands = ['offer', 'finish']) {
 }
 
 import {
+  captureCampaign,
+  captureCampaignStage,
+  captureSteps,
+  captureReports,
+  reconcileCaptureReports,
+  reconcileCaptureEvidence,
+} from '../../scripts/release-validation/account-capture-wrapper.mjs';
+import { rememberCaptures, verifyCaptures } from '../account-capture/oracles.mjs';
+function captureEvidenceFixture() {
+  const capsule = {
+    id: '12'.repeat(16),
+    v: 1,
+    workspace: '01'.repeat(16),
+    principal: 'person',
+    credential: '02'.repeat(16),
+    epoch: 1,
+    generation: 1,
+    sources: [{ actor: 'person', kind: 'human', bytes: [1, 2, 3] }],
+  };
+  return {
+    'controls.json': {
+      retention: {
+        baseline: { before: 1, after: 2, text: 'base control original' },
+        mutant: { captures: 0, text: 'base control original' },
+      },
+      route: {
+        baseline: {
+          status: 'refused',
+          actualWorkspace: 'ab'.repeat(16),
+          expectedWorkspace: '01'.repeat(16),
+        },
+        mutant: {
+          status: 'accepted',
+          actualWorkspace: 'ab'.repeat(16),
+          expectedWorkspace: '01'.repeat(16),
+        },
+      },
+    },
+    'generated.json': {
+      status: 'passed',
+      seed: 9322026,
+      runs: 16,
+      histories: Array.from({ length: 16 }, () => ({
+        commands: [
+          { text: '🙂', cut: true, boundary: 'crash' },
+          { text: 'x', cut: true, boundary: 'compact' },
+        ],
+        initial: [structuredClone(capsule)],
+        steps: ['🙂ase original', 'xase original'].map((observed) => ({
+          admitted: [structuredClone(capsule)],
+          recovered: [structuredClone(capsule)],
+          observed,
+        })),
+      })),
+    },
+    'overhead.json': {
+      attempt: { status: 'refused', reason: 'oversize' },
+      update: Array(10001).fill(42),
+      savedBytes: [[Array(10001).fill(42)]],
+    },
+  };
+}
+
+test('capture wrapper binds exact property/native stages, historical reader and full case/output contracts', () => {
+  const m = compileManifest(
+    process.cwd(),
+    JSON.parse(readFileSync('docs/release-validation-graph.json')),
+  );
+  const [s, ...rest] = selectStages(m, 'wrapper-account-capture');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 23);
+  assert.deepEqual(
+    s.expect.steps.map((x) => x.expect.cases.length),
+    [8, 15],
+  );
+  assert.deepEqual(s.fileOutputs.required, captureReports);
+  assert.deepEqual(
+    s.expect.historyInputs.map((x) => [x.reference, x.path]),
+    [['18ceb40', 'src/crdt/promotionRecord.ts']],
+  );
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const changes of [
+    { argv: [...s.argv, '--case', 'native'] },
+    { env: { MODE: 'other' } },
+    { variant: 'current' },
+    { deadlineMs: 210001 },
+    { graceMs: 5001 },
+    { fixture: undefined },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, historyInputs: [] } },
+    { expect: { ...s.expect, steps: s.expect.steps.toReversed() } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, dataInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...changes }));
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  graph.extraRoots.push({
+    id: 'capture-filter',
+    argv: ['node', captureCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:capture-filter:0')
+      .blocked,
+  );
+});
+
+test('capture case domains cannot trade missing Vitest cases for successful native results', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-capture-trace-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const f = outboundTraceFixture(directory, captureCampaignStage(process.cwd()));
+  const run = (trace) =>
+    reconcileCampaignTrace(f.stage.expect.steps, trace, 'fresh', directory, reconcileCampaignNode);
+  assert.deepEqual(run(f.trace).cases, f.stage.expect.cases);
+  for (const change of [
+    (v) => v.reports.properties.cases.pop(),
+    (v) => v.reports.native.cases.pop(),
+    (v) => (v.reports.properties.nonce = 'fresh:native'),
+    (v) => v.trace.steps.pop(),
+    (v) => v.trace.steps.reverse(),
+    (v) => (v.trace.steps[0].code = 1),
+  ]) {
+    const v = structuredClone({ trace: f.trace, reports: f.reports });
+    change(v);
+    f.save(v.reports);
+    assert.throws(() => run(v.trace));
+  }
+});
+
+test('capture reports refuse failed summary, wrong pins and each missing semantic file', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-capture-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: captureCampaign, sha256: 'a'.repeat(64) }],
+    reports = {
+      ...captureEvidenceFixture(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: captureSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'properties.log', 'native.log'])
+      writeFileSync(join(directory, file), 'observed');
+  };
+  save(reports);
+  reconcileCaptureReports(directory, sources);
+  for (const change of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => r['summary.json'].stages.pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+  ]) {
+    const bad = structuredClone(reports);
+    change(bad);
+    save(bad);
+    assert.throws(() => reconcileCaptureReports(directory, sources));
+  }
+  for (const file of [...Object.keys(reports), 'results.xml', 'properties.log', 'native.log']) {
+    save(reports);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileCaptureReports(directory, sources));
+  }
+});
+
+test('160 generated capture report faults reject first-observation drift, omitted transitions and truncated bytes', () => {
+  const reports = captureEvidenceFixture();
+  reconcileCaptureEvidence(reports);
+  const startup = structuredClone(reports),
+    h = startup['generated.json'].histories[0];
+  const added = {
+    ...h.initial[0],
+    id: '34'.repeat(16),
+    sources: [{ actor: h.initial[0].principal, kind: 'human', bytes: [0, 0] }],
+  };
+  h.steps[0].recovered.push(added);
+  h.steps[1].admitted.push(structuredClone(added));
+  h.steps[1].recovered.push(structuredClone(added));
+  reconcileCaptureEvidence(startup);
+  for (const alter of [
+    (r) => (r['generated.json'].histories[0].commands[0].boundary = 'flush'),
+    (r) => r['generated.json'].histories[0].steps[0].recovered.at(-1).sources[0].bytes.push(0),
+    (r) =>
+      (r['generated.json'].histories[0].steps[0].recovered.at(-1).credential = 'ff'.repeat(16)),
+  ]) {
+    const bad = structuredClone(startup);
+    alter(bad);
+    assert.throws(() => reconcileCaptureEvidence(bad));
+  }
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 15 }), (index) => {
+      for (const alter of [
+        (r) => (r['controls.json'].retention.baseline.after = 1),
+        (r) => (r['controls.json'].retention.mutant.captures = 2),
+        (r) => (r['controls.json'].route.mutant.status = 'refused'),
+        (r) => (r['controls.json'].route.mutant.expectedWorkspace = '02'.repeat(16)),
+        (r) => r['generated.json'].histories.pop(),
+        (r) => (r['generated.json'].status = 'running'),
+        (r) => r['generated.json'].histories[index].steps.pop(),
+        (r) => (r['generated.json'].histories[index].steps[0].observed = 'wrong'),
+        (r) => {
+          const h = r['generated.json'].histories[index];
+          h.steps[0].admitted[0].sources[0].bytes[0]++;
+          h.steps[0].recovered = structuredClone(h.steps[0].admitted);
+        },
+        (r) => r['generated.json'].histories[index].steps[0].recovered[0].sources[0].bytes.pop(),
+        (r) => (r['generated.json'].histories[index].steps[0].recovered = []),
+        (r) => (r['overhead.json'].savedBytes[0][0] = []),
+        (r) => r['overhead.json'].savedBytes[0][0].pop(),
+        (r) => r['overhead.json'].savedBytes[0][0].push(42),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad);
+        assert.throws(() => reconcileCaptureEvidence(bad));
+      }
+    }),
+    { seed: 150949, numRuns: 160 },
+  );
+});
+
+test('160 generated capsule observations preserve first bytes and reject overwritten expectations or loss', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 2, maxLength: 64 }), (bytes) => {
+      const original = {
+          id: 'first',
+          sources: [{ actor: 'person', kind: 'human', bytes: [...bytes] }],
+        },
+        retained = new Map();
+      rememberCaptures(retained, [original]);
+      original.sources[0].bytes[0] ^= 1;
+      assert.throws(() => rememberCaptures(retained, [original]));
+      const second = { id: 'second', sources: [{ actor: 'system', kind: 'system', bytes: [3] }] };
+      rememberCaptures(retained, [
+        { id: 'first', sources: [{ actor: 'person', kind: 'human', bytes: [...bytes] }] },
+        second,
+      ]);
+      const good = [...retained.values()].map((c) => structuredClone(c));
+      verifyCaptures(retained, good);
+      assert.throws(() => verifyCaptures(retained, good.slice(1)));
+      assert.throws(() => rememberCaptures(retained, [...good, good[0]]));
+      const shortened = structuredClone(good);
+      shortened[0].sources[0].bytes.pop();
+      assert.throws(() => verifyCaptures(retained, shortened));
+      // Former overwrite-before-compare oracle accepts this drift; first-observation oracle refuses it.
+      const drift = structuredClone(good);
+      drift[0].sources[0].bytes[0] ^= 1;
+      const overwritten = new Map(retained);
+      for (const c of drift) overwritten.set(c.id, c);
+      assert.deepEqual([...overwritten.values()], drift);
+      assert.throws(() => rememberCaptures(retained, drift));
+      assert(shortened[0].sources[0].bytes.every((b, i) => b === bytes[i]));
+      assert.notDeepEqual(shortened[0].sources[0].bytes, [...bytes]);
+      const route = {
+        v: 1,
+        workspace: 'workspace',
+        principal: 'person',
+        credential: 'device',
+        epoch: 1,
+        generation: 1,
+      };
+      const initializer = {
+        ...route,
+        id: 'third',
+        sources: [{ actor: 'person', kind: 'human', bytes: [0, 0] }],
+      };
+      assert.throws(() => verifyCaptures(new Map(retained), [...good, initializer]));
+      verifyCaptures(new Map(retained), [...good, initializer], route);
+      const wrong = structuredClone(initializer);
+      wrong.sources[0].bytes[0] = 1;
+      assert.throws(() => verifyCaptures(new Map(retained), [...good, wrong], route));
+      wrong.sources[0].bytes[0] = 0;
+      wrong.credential = 'other';
+      assert.throws(() => verifyCaptures(new Map(retained), [...good, wrong], route));
+    }),
+    { seed: 150950, numRuns: 160 },
+  );
+});
+
+import {
   outboundCampaign,
   outboundCampaignStage,
   outboundSteps,
@@ -2476,7 +2759,7 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').stage.expect.kind,
     'account-outbound',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-capture/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-spool/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

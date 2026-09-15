@@ -55,31 +55,34 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Editing wrapper integration is signed and verified as `61e53cdb`.
+**Roadmap checkpoint.** Outbound wrapper integration is signed and verified as `49cbb1e2`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Outbound resolves one command and one campaign:
-**zero test-file /85 command /53 campaign** remain unresolved, down from 140 to 138. These are integration
+272 general files/2,198 dispositions (11 not applicable)**. Capture resolves one command and one campaign:
+**zero test-file /84 command /52 campaign** remain unresolved, down from 138 to 136. These are integration
 counts, not a passing aggregate.
 
-**Just completed.** Outbound preserves all five ordered vector/Node/Vitest/native children and their
-original arguments, concurrency and per-child bounds. Owned execution adds a 150-second aggregate bound,
-disposable browser, completion trace and three distinct nonce-bound case reports. Reconcile 29 terminal
-outcomes plus complete stages, summary/source pins, actual codec corruptions, model controls, 1,000
-preparation histories, 100 codec histories and journal-only crash recovery. Retain 18 files in a bounded
-19-entry inventory. Model and report checks do not independently replay Yjs or regenerate schedules.
+**Just completed.** Capture preserves both exact property/native invocations and their 30/180-second
+limits. Owned execution adds a 210-second aggregate bound, historical reader pin, disposable browser,
+trace, distinct child reports and ten retained files. Repair the recorded map-refresh and byte-prefix
+oracles: keep cloned first capsule observations, check them before adding new capsules, require all prior recovered
+records and compare original/saved lengths and bytes. Only route-matching empty v6 initialization
+records may be added after reopen/crash; retain them as new first observations. Retain each admitted/reopened result,
+actual retention/route controls and overhead refusal. A separate report map and text fold corroborate
+native assertions across 16 generated histories; no independent Yjs/crypto replay claim is made.
 
-The epoch passes **116 cases in six executions**: 71 planning, 29 outbound and 16 editing regression,
-followed by exact outbound receipt reuse. Outbound takes **12.483s /150s**. All groups drain
-and reports survive checkout removal. Five new infrastructure cases include two generated corruption
-campaigns. Eight synthetic process runs and two deliberate omitted-check faults discriminate; their
-claims are not Account executions. The complete manifest grows to 857,891 bytes under a reviewed
-1,000,000-byte planning ceiling, without changing runtime limits. New phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).
+The epoch passes **128 cases in six executions**: 76 planning, 23 capture and 29 outbound regression,
+followed by exact capture receipt reuse. Capture takes **167.775s /210s**. All groups drain and ten
+reports survive checkout removal. Five new infrastructure cases include two generated 160-case controls.
+Eight synthetic process runs and two deliberate omitted-check faults discriminate. The earlier slow
+negative-assertion run is retained; bounded error diagnostics improve it without dropping cases or
+relaxing deadlines. This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).
 
-**Preserved observations.** Both planning ceiling failures and their passing owned rerun are retained.
-Prior startup SIGABRT, owner/headroom, cancellation/latency and reporter observations retain their evidence.
+**Preserved observations.** Capture comparison-map/byte-length follow-ups are repaired in exercised
+fixtures. The initial overly strict population check and its failed epoch are preserved. Earlier planning ceilings, startup SIGABRT, owner/headroom, cancellation/latency and reporter
+observations retain their evidence.
 
-**Next bounded phase.** Account capture wrapper integration, then further wrapper families, serially.
+**Next bounded phase.** Account spool wrapper integration, then further wrapper families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
 File custody uses cooperative bounded polling, not a disk quota or hostile-code sandbox.
 
@@ -94,7 +97,7 @@ No runtime, package/dependency, vector, crypto-census or F-17 debt changes occur
 No personal app/server, relay, deployment or device operation occurs.
 
 **Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,
-capture comparison-map/byte-length oracles, delivery-oracle headroom, R-04 whole-tree style scope,
+delivery-oracle headroom, R-04 whole-tree style scope,
 P-06 construction prose and Q-08 artifact budgets explicit. Core-receive headroom is repaired at its
 unchanged bound, with older timeouts retained. After remaining wrappers/qualification repairs, run
 the immutable aggregate with failed F-17 budgets visible, then private Account rehearsal and the
