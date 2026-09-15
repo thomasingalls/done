@@ -55,39 +55,37 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Preparation wrappers are signed and verified as `5cbad3fa`. All catalogue/
-test-file adapters are integrated. Counts are **628 obligations, 291 required test files, 272 general
-files/2,198 dispositions (11 not applicable)**. The new report-output test file and variant add two
-obligations; **zero test-file /94 command /62 campaign** remain unresolved, unchanged in this phase.
+**Roadmap checkpoint.** Report-file retention is signed and verified as `9e4a1d9e`. All catalogue/
+test-file adapters are integrated. Counts remain **628 obligations, 291 required test files, 272
+general files/2,198 dispositions (11 not applicable)**. Account core resolves one command and one
+campaign row: **zero test-file /93 command /61 campaign** remain unresolved, down from 156 to 154.
 These are integration counts, not a passing aggregate.
 
-**Just completed.** Opted-in report writers receive a fresh owned directory outside the disposable
-checkout. The receipt binds required files and bounded byte/entry/depth limits, rejects unsafe links/
-paths, and inventories file hashes plus directories. Exact reuse and prerequisite checks revalidate
-both bytes and membership. Failure, timeout and cancellation preserve partial outputs with explicit
-inventory status. Unmanaged ACCOUNT_REPORT_DIR overrides refuse. Cooperative polling is not a disk
-quota or hostile-code sandbox; file custody does not establish arbitrary report semantics.
+**Just completed.** The actual Account core wrapper preserves its five-file order and default Node
+file concurrency, 120-second bound and five-second grace. Owned execution adds the terminal census,
+borrows disposable Chromium, retains ten reports outside the copied checkout and drains descendants.
+The adapter checks all 30 case outcomes, successful summary, source hashes and all three paired
+fault-control results. Exact command aliases share this campaign; serial per-file receipts remain
+separate. JUnit and run.log are retained auxiliary evidence; the owned census is the case authority.
 
-The final owned epoch passes **68 cases in six executions**, then reuses the real report probe's
-exact receipt once. All groups drain. This includes 27 planning cases, all 33 existing runner cases,
-seven new controls with 80 generated binary trees, and the unchanged one-case crypto contract probe
-under an explicit report-writing variant. Its report survives checkout deletion and retains all six
-message probes and recovery observations. Two deliberate faults fail their intended assertions.
-The new code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
+The final owned epoch passes **60 cases in four executions**, then reuses the campaign receipt once.
+Account core takes **8.103s /120s**. All groups drain and all ten reports survive checkout removal.
+Three new infrastructure assertions, 160 generated summary corruptions, directed corruptions and
+missing-report controls pass. Five synthetic process executions and two deliberate faults verify
+refusal of successful-looking but invalid evidence; their case claims are not Account executions.
+The code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
 
-**Preserved observations.** The first planning pass refused a stale inventory and missing new-file
-deadline expectation; the corrected registration passes. A mutation setup failed to import a
-transitive helper before any test body; its corrected isolated copy detects the intended faults.
-Both failures remain recorded. The existing runner suite takes 101.478s of its unchanged 120s bound;
-its earlier orphan-classification failures and headroom observations remain open. No claim of a
-repair follows from the later passes. The prior activation census pin correction and all previous
-failure/cancellation/latency receipts retain their original evidence.
+**Preserved observations.** Inside the execution sandbox, the first attempt passed planning but
+Chromium exited SIGABRT before any Account body. The outside-sandbox retry passes on the same input
+identity. Both remain recorded; no runtime repair is inferred. The earlier runner suite's
+101.478s/120s observation, older orphan-classification failures, report-phase setup failures and all
+previous failure/cancellation/latency receipts retain their original evidence.
 
-**Next bounded phase.** Integrate the Account core wrapper: exact selected cases and process
-ownership, owned report files, and semantic postconditions. Continue other wrapper families in
-bounded phases. Optional reports in unintegrated output locations still need explicit treatment;
-this mechanism does not retroactively retain or credit them.
+**Next bounded phase.** Integrate the Account recovery wrapper with its grouped selection, owned
+reports and semantic postconditions, then continue bounded wrapper families. Optional reports in
+unintegrated output locations still need explicit treatment. File custody is cooperative bounded
+polling, not a disk quota or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
@@ -96,7 +94,7 @@ exploration is closed. The unchanged application gate remains **failed**: Androi
 post-measurement product disposition accepts the two misses for the RC; it is not an automated waiver
 or passing receipt. [RC decision](./f17-rc-activation.md);
 [open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
-No runtime, package/dependency, vector, census or F-17 debt changes occur in this report phase.
+No runtime, package/dependency, vector, census or F-17 debt changes occur in this wrapper phase.
 No personal app/server, relay, deployment or device operation occurs.
 
 **Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,

@@ -22,6 +22,11 @@ import { validatePlaywrightStage, reconcilePlaywright } from './playwright-adapt
 
 import { registrationModulePath } from './registration-modules.mjs';
 import { validateFileOutputs, inspectFileOutputs } from './file-outputs.mjs';
+import {
+  coreCampaign,
+  validateCoreCampaign,
+  reconcileCoreReports,
+} from './account-core-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -76,6 +81,7 @@ export function validateStage(stage) {
     [
       'exit',
       'cases',
+      'account-core',
       'vitest',
       'playwright',
       'content',
@@ -98,7 +104,7 @@ export function validateStage(stage) {
       [0],
       'Nonzero exit alone cannot prove a mutation was detected',
     );
-  else if (['cases', 'vitest', 'playwright'].includes(stage.expect.kind)) {
+  else if (['cases', 'vitest', 'playwright', 'account-core'].includes(stage.expect.kind)) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
       new Set(stage.expect.cases.map((c) => c.id)).size,
@@ -120,6 +126,12 @@ export function validateStage(stage) {
         );
     }
   }
+  if (
+    stage.expect.kind === 'account-core' ||
+    stage.argv[1] === coreCampaign ||
+    stage.variant === 'account-core-campaign-v1'
+  )
+    validateCoreCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -631,11 +643,18 @@ export function createStageRunner({
         } else if (stage.expect.kind === 'vitest') {
           actual = reconcileVitest(stage.expect, reported, nonce);
         } else {
-          if (stage.argv.includes('--test')) {
+          if (stage.argv.includes('--test') || stage.expect.kind === 'account-core') {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
             assert(reported.summary, 'Missing terminal Node summary');
           }
           reconcileCases(stage.expect.cases, reported, nonce);
+          if (stage.expect.kind === 'account-core') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Core report producers or inventory incomplete',
+            );
+            reconcileCoreReports(fileDirectory, before.sources);
+          }
           actual = reported;
         }
       }

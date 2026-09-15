@@ -18,6 +18,14 @@ import {
   preparationCommand,
   preparationTestStage,
 } from '../../scripts/release-validation/command-wrappers.mjs';
+import {
+  coreCampaign,
+  coreCampaignStage,
+  coreFiles,
+  coreReports,
+  reconcileCoreReports,
+} from '../../scripts/release-validation/account-core-wrapper.mjs';
+import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
 test('preparation wrappers retain grouped Node execution and vector aliases share only exact invocations', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
@@ -72,7 +80,140 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-core/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-authority/run.mjs').blocked);
+});
+
+test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-core');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', coreCampaign]);
+  assert.deepEqual([...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))], coreFiles);
+  assert.equal(stage.expect.cases.length, 30);
+  assert.deepEqual(stage.fileOutputs.required, coreReports);
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({ id: 'core-filter', argv: ['node', coreCampaign, '--case', 'native'] });
+  const other = compileManifest(process.cwd(), changed);
+  assert(other.rows.find((r) => r.id === 'command:core-filter:0').blocked);
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('core wrapper cannot borrow exit-only, missing reports, changed bounds or browser ownership', () => {
+  const stage = coreCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { deadlineMs: 120001 },
+    { graceMs: 5001 },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('160 generated core report corruptions refuse successful-looking campaign evidence', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-core-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: 'package.json', sha256: 'a'.repeat(64) }];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-replay-baseline.json': {
+      first: { stage: 'account-proof', receiptId: 'a' },
+      second: { stage: 'account-proof', receiptId: 'a' },
+    },
+    'control-replay-mutant.json': {
+      first: { stage: 'account-proof', receiptId: 'b' },
+      second: { stage: 'account-proof', receiptId: 'c' },
+    },
+    ...Object.fromEntries(
+      ['purpose', 'key'].flatMap((name) => [
+        [`control-${name}-baseline.json`, { result: { refusal: 'invalid-proof' } }],
+        [`control-${name}-mutant.json`, { result: { stage: 'account-proof' } }],
+      ]),
+    ),
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcileCoreReports(directory, sources);
+  fc.assert(
+    fc.property(
+      fc.string({ maxLength: 50 }).filter((s) => s !== 'passed'),
+      (value) => {
+        const bad = structuredClone(good);
+        bad['summary.json'].status = value;
+        save(bad);
+        assert.throws(
+          () => reconcileCoreReports(directory, sources),
+          /Core campaign summary failed/,
+        );
+      },
+    ),
+    { seed: 150933, numRuns: 160 },
+  );
+  const faults = [
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'failure';
+    },
+    (r) => {
+      r['summary.json'].completedAt = r['summary.json'].startedAt.replace('15T', '14T');
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'][0].sha256 = 'b'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-replay-baseline.json'].second.receiptId = 'b';
+    },
+    (r) => {
+      r['control-replay-mutant.json'].second.receiptId = 'b';
+    },
+    (r) => {
+      r['control-key-baseline.json'].result = { stage: 'account-proof' };
+    },
+    (r) => {
+      r['control-purpose-mutant.json'].result = { refusal: 'invalid-proof' };
+    },
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcileCoreReports(directory, sources));
+  }
+  for (const file of coreReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileCoreReports(directory, sources));
+  }
 });
 
 test('a changed preparation shell glob refuses before losing or inventing a test file', (t) => {

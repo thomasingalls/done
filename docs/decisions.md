@@ -3612,3 +3612,14 @@ The first real report writer is a separate crypto probe variant, leaving package
 unchanged. Semantic report assertions and other output roots require their own wrapper review;
 cooperative polling does not promise a disk quota or hostile-code confinement.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
+
+
+## 2026-09-15 — Account core wrappers require semantic report reconciliation
+
+Execute the actual grouped Account core campaign with owner-issued process/browser/report resources.
+A passing exit and intact report files alone are insufficient: require the complete terminal case
+census, successful campaign summary, owned source hashes and discriminating baseline/mutant reports.
+Keep spec/JUnit output as auxiliary evidence and exact per-file obligations separate from grouped
+wrapper execution. Alias only exact command arguments and empty user environment. The first browser
+startup abort remains a failed receipt; its passing retry does not erase it or establish a repair.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).

@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "base": "9e4a1d9e",
+  "payloads": 191,
+  "compressedBytes": 630222,
+  "artifactsSha256": "97b78b958878aeec17994de1f7fd17c241460687c3178b46bd78f3be394a2e1e",
+  "rawIndexSha256": "cb4926ed4ca25d931627b39d7bdf9ab72f7d931106f264ac68e689569868dc84",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-core-with-planning-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "a6d3eb139ecd227417d0bef84e4774f22cf14f4c708791119400ac2af553424a",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 9161,
+        "cases": 13,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "0bd74ecec99eeeb4c4c7a5aa059aa210a62d9e73df07b36ae39733fc91e8814d",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5870,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "cc1647f906d30469b943306651fefd40ef66a649af9e57c20c507111b142fd10",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4917,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-core/run.mjs",
+        "key": "a0eba82532b3ca9b9de51a9c279e8410d55be020bca113beaf0b5e449bc65ecc",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 8103,
+        "cases": 30,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:core-reuse",
+        "key": "a0eba82532b3ca9b9de51a9c279e8410d55be020bca113beaf0b5e449bc65ecc",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 8103,
+        "cases": 30,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T15:56:05.487Z",
+    "input": "680c5edf8ea24d9af357b390d194ecc4faef4f0344bf750d918bb7fabddfb9da",
+    "completedAt": "2026-09-15T15:57:14.430Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 93,
+    "campaign": 61
+  },
+  "claim": "Bounded Account core wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

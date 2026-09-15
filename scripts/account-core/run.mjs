@@ -2,8 +2,20 @@ import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, readdirSync, writeFileSync, createWriteStream } from 'node:fs';
 import { resolve, join } from 'node:path';
+import assert from 'node:assert/strict';
 
-const output = resolve('test-results/account-core', new Date().toISOString().replaceAll(':', '-'));
+const owned = Boolean(process.env.RELEASE_PROCESS_GUARD);
+if (owned) {
+  assert(process.env.ACCOUNT_REPORT_DIR, 'Owned core campaign requires retained output');
+  assert(
+    process.env.RELEASE_CASE_REPORT && process.env.RELEASE_RUN_NONCE,
+    'Owned core campaign requires its reporter',
+  );
+  assert(process.env.RELEASE_BROWSER_ENDPOINT, 'Owned core campaign requires its browser');
+}
+const output = owned
+  ? resolve(process.env.ACCOUNT_REPORT_DIR)
+  : resolve('test-results/account-core', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
 console.log(`Account core evidence: ${output}`);
 const files = [
@@ -40,6 +52,12 @@ const child = spawn(
     '--test-reporter-destination=stdout',
     '--test-reporter=junit',
     `--test-reporter-destination=${join(output, 'results.xml')}`,
+    ...(owned
+      ? [
+          '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+          '--test-reporter-destination=stdout',
+        ]
+      : []),
     ...['core', 'properties', 'restart', 'controls', 'native'].map(
       (name) => `test/account-core/${name}.test.mjs`,
     ),

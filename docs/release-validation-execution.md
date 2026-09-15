@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**156 obligations remain blocked: 94 command and 62 campaign rows; no test-file rows remain.**
+**154 obligations remain blocked: 93 command and 61 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 156 missing product tests. The compiler still refuses whole-release execution before
+they are not 154 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -33,7 +33,8 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
-is signed through `e38be54c`; the current Local activation phase is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -3776,3 +3777,49 @@ qualification. The new work is uncommitted. Next: integrate the Account core wra
 selected cases/process contract, owned reports and semantic postconditions, then continue bounded
 wrapper families. F-17's failed budgets and explicit RC disposition remain unchanged.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
+
+
+## 2026-09-15 — Account core wrapper integration
+
+Owned report-file retention is signed and signature-verified as `9e4a1d9e`. Integrate the actual
+Account core campaign, preserving its five-file order, default Node file concurrency, 120-second
+bound and five-second termination grace. Owned execution adds a terminal case reporter, borrows the
+owner's disposable Chromium and retains its output directory after checkout removal. Standalone
+execution keeps its existing output location and spec/JUnit reporters; owned execution retains those
+reporters too. The owner drains the campaign, Node children, crash workers and browser. Exact package
+argv/environment aliases the campaign; changed arguments or environment cannot borrow its receipt.
+
+The contract requires all ten report files with a 4 MiB /32-entry /one-level bound. Beyond custody,
+reconcile the exact 30-case terminal census, successful wrapper summary/code/no timeout or launch
+error, source hashes against the owned input snapshot, and all three baseline/mutant distinctions:
+replay result identity, wrong-purpose refusal and substituted-key refusal. Source-pin checking uses
+the wrapper's declared report scope; the runner separately binds complete source/dependency/tool
+inputs. The owned Node census is authoritative for case outcomes. JUnit and run.log are retained
+auxiliary evidence, not independently parsed or credited as separate test oracles. Existing optional
+counterexamples and ledger diagnostics stay within the retained report tree and its explicit bounds.
+
+The final disposable epoch passes **60 cases in four executions**: 30 planning cases across three
+whole suites, then all 30 Account core cases. The campaign takes **8.103s /120s**; all groups drain.
+A fifth request reuses the exact campaign receipt and revalidates its ten report files. The files
+survive deletion of the copied checkout. Three new infrastructure assertions cover command identity,
+required ownership/report contracts and generated/directed report corruptions. The 160 generated
+summary corruptions, eleven directed corruptions and ten missing-file checks all refuse.
+
+Four synthetic process controls verify valid evidence, zero-exit failed summary, zero-exit
+non-discriminating replay and incomplete terminal reporting. A fifth synthetic execution deliberately
+omits the semantic reconciliation call and admits the failed summary; the baseline rejects it.
+A second isolated fault omits replay discrimination and admits the otherwise invalid paired report.
+Both faults discriminate. Synthetic case claims are instrumentation controls, not Account executions.
+The first native attempt, inside the execution sandbox, passed 30 planning cases but Chromium exited
+with SIGABRT before any campaign body. The outside-sandbox retry passes with the same input identity.
+Retain the first failure and browser receipt without credit; do not infer a runtime repair.
+
+Inventory/manifest checks, scoped lint/format, and whitespace checks pass. Counts remain **628
+obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**; the three
+new cases belong to the existing infrastructure file. Unresolved wrappers decrease from 156 to
+**154: zero test-file /93 command /61 campaign**. Runtime, dependencies, package commands, vector/
+census inputs, F-17 debt, prior archives and the L-2 checkpoint are unchanged. No personal browser,
+server, relay, device or deployment operation occurs. This phase is uncommitted; next is the Account
+recovery wrapper with its own grouped selection and report postconditions. Immutable aggregate and
+private Account/human recovery-adoption qualification remain ahead.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
