@@ -126,6 +126,7 @@ export const openAdmittedWorkspace = (
         ...(options.signal ? { signal: options.signal } : {}),
       }),
     options,
+    'local-snapshots',
   );
 type State = {
   history: YUndoManager;

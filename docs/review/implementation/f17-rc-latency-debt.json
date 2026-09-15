@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "F-17-RC-latency-2026-09-15",
+  "finding": "F-17",
+  "status": "accepted-for-local-rc; open",
+  "namespace": "Implementation review RC disposition; not a Stage 0 debt entry or runner waiver.",
+  "owner": "L-1 Local editor responsiveness work",
+  "registered": "2026-09-15",
+  "scope": "Selected Local replay combination at the prescribed corpus on this Chromium/macOS host and CPU-4x Android emulation. Repository default only; no personal app deployment, Account buffer activation, fleet or arbitrary-history guarantee.",
+  "authorization": "Operator directed choosing the best-performing combination for the release candidate and accepting remaining latency shortfall while deferring larger architecture work.",
+  "decision": "Accept the two observed timing misses for this Local RC. The prospective known-metric exception list did not include navigation; this is an explicit post-measurement product disposition amendment. Preserve that failed assessment.",
+  "evidence": {
+    "base": "e38be54caa1d16b1782c5eb8e5ab952cc2314f4c",
+    "input": "4b8dd124dc491affa1c668160f6a8e22bb6d4114b5ee80f9c814829d58cea7fa",
+    "packet": "docs/account-conformance-runs/2026-09-15-f17-rc-activation/README.md",
+    "gateStatus": "failed",
+    "measurements": [
+      {
+        "project": "android",
+        "metric": "card p95",
+        "valueMs": 38.69999980926514,
+        "strictLimitMs": 16
+      },
+      {
+        "project": "android",
+        "metric": "goTo (settled)",
+        "valueMs": 113.60000038146973,
+        "strictLimitMs": 100
+      }
+    ]
+  },
+  "closure": "A future unchanged budget run at a declared workload/platform scope passes card p95 <16 ms and settled goTo navigation <100 ms, with the other original guardrails and correctness checks retained. Revisit supported-device/history capacity before broad timing promises.",
+  "limits": "No threshold, test, manifest disposition or failed receipt is changed. This manual RC decision does not implement machine-readable waiver support or complete immutable release validation."
+}

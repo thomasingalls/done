@@ -7458,3 +7458,51 @@ on the selected integration, then default Local activation with explicit disposi
 latency debt. F-17 remains partial; larger optimization exploration and Account buffers stay out.
 Personal app/server, phone, relay and deployment are untouched.
 [Investigation, exact repair and owned receipts](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+
+
+## 2026-09-15 — Frozen Local combination activated with explicit RC latency debt
+
+The receive-fixture repair is signed and signature-verified as `e38be54c`. One unchanged application-
+latency stage runs on the frozen integrated runtime with exactly one disposable change: the Local
+factory selects `local-snapshots`. All twelve test bodies complete; thirty measurement rows and
+four 120-key sample counts survive, with browser/process/server drain. The unchanged harness keeps
+summary rows and sample counts, not individual key arrays; this packet cannot independently
+recompute typing percentiles from raw key timings. This narrows the protocol's broad “all samples”
+wording without changing the recorder or inventing absent samples.
+
+The gate **fails**: CPU-4x Android card p95 is **38.7 ms** against <16 ms and settled goTo navigation
+is **113.6 ms** against <100 ms. Desktop card p95 is **9.0 ms** and Android focus is **35.4 ms**;
+all other budgeted measurements pass. The final Android case carries the deferred afterAll timing
+failure; it is not a failed navigation functional assertion. Earlier 12.2/75.1 ms card and 54.2 ms
+focus observations remain separate, unpaired historical results; these differences are not a causal
+speedup estimate or handset/population evidence.
+
+The initial protocol allowed only known card/focus exceptions, so its recorded activation eligibility
+is false. Under the operator's broader instruction to accept the best combination for the RC and
+defer larger architecture work, a separate explicit post-measurement disposition accepts both
+remaining timing misses as open F-17 RC debt. Neither the original rule/result nor any threshold,
+test outcome or runner disposition changes. The implementation-review debt has its own owner,
+evidence, scope and closure criterion; the older Stage 0 debt namespace is untouched.
+
+The exact measured candidate then passes seven maintained suites/**147 cases**, the native workspace
+catalogue's **ten cases/four mutations**, and **eight normal Local application cases**, including
+20 generated edit/undo/redo histories and cold reopen. All ten owned stages share the application's
+input identity and drain. The catalogue uses the internal factory with real encrypted admission;
+normal-factory coverage comes from the application tests. The prospective wording is corrected
+explicitly before this functional run. An initial selection draft named a nonexistent editor unit
+file and refused before execution; the registered projection suite was selected instead.
+
+After those checks, apply the exact measured one-line argument in `openAdmittedWorkspace` to the
+main tree. The full source/dependency identity matches the measured candidate before record updates.
+Account constructors and the internal default remain reference; full verification, detached stack
+copying, idle fencing, fallback and formats stay unchanged. TypeScript, scoped format and inventory/
+manifest checks pass. Prior evidence, personal/vector pins, append-only prefixes and L-2 are retained.
+No personal build/server, phone, relay or deployment is changed. This new phase is uncommitted.
+
+F-17 stays partial with explicit RC debt. Counts stay 626 obligations, 290 required files, 271 general
+files/2,189 dispositions (11 not applicable), and zero test-file/96 command/63 campaign unresolved.
+Next return to command/campaign wrapper integration: exact dependency/vector reuse and complete
+output retention, then remaining qualification repairs and immutable validation. The failed timing
+receipt remains visible in eventual release reporting; no machine-readable waiver or release pass
+is supplied here. Larger optimization work stays deferred.
+[Protocol and disposition](./f17-rc-activation.md); [exact evidence](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).

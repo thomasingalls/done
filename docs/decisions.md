@@ -3570,3 +3570,22 @@ Return next to the unchanged application-latency gate and Local activation/debt 
 production defaults and the selected optimization combination fixed. Larger rewrites remain later
 work; 159 wrapper obligations and immutable/loaded-host qualification remain open.
 [Evidence and scope](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+
+
+## 2026-09-15 — Activate the selected Local RC with open F-17 timing debt
+
+Following signed `e38be54c`, retain the unchanged gate's failure: Android card p95 38.7 ms (<16 ms
+required) and settled navigation 113.6 ms (<100 ms required). Desktop card is 9.0 ms and Android focus
+35.4 ms; the other budgets pass. The initial card/focus-only exception rule refuses activation;
+preserve that assessment. The operator's existing broader direction to accept the best combination
+for the RC supports a separate explicit post-measurement navigation exception. Record both misses
+as open implementation-review RC debt, with no altered test, threshold, receipt or automatic waiver.
+
+The same measured candidate passes 147 owned unit cases, ten native workspace cases/four mutations,
+and eight normal Local app cases with 20 generated histories. Apply its exact one-line Local factory
+selection after those checks. Account and the internal constructor default stay reference. Keep
+full canonical verification and complete detached stacks; stop optimization exploration. Return to
+96 command/63 campaign wrappers, qualification repairs and immutable validation. The manual debt
+disposition does not turn the failed gate green or claim a supported-device performance floor.
+[Scope and closure criterion](./review/implementation/f17-rc-latency-debt.json);
+[retained failed gate and functional receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).

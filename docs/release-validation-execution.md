@@ -31,8 +31,9 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 
 ## Checkpoint and remaining sequence
 
-The F-17 backlog is now recorded in five verified signed commits through `e2d42fac`; the latest
-runtime/test integration checkpoint is `15eb389c`. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
+including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
+is signed through `e38be54c`; the current Local activation phase is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -52,7 +53,7 @@ candidate variant. Other budgeted metrics pass; all twelve cases execute and pro
 The physical Pixel 9a companion subsequently completes R/C/C/R with card p95 of
 107.9/87.1/86.9/108.3 ms: C improves both paired comparisons but every card budget still fails.
 All 960 trusted-key samples and exact edited-card cold-reopen checks survive; other measured budgets
-pass. Default Local and Account retain the reference; F-17 remains partial. The operator cancels remaining phone/manual work. Keep emulation as the reference, with a rough
+pass. At that checkpoint Local and Account retained the reference; F-17 remains partial. The operator cancels remaining phone/manual work. Keep emulation as the reference, with a rough
 1.5× phone card-latency estimate for planning. The [candidate profile](./f17-local-profile.md) passes all four cases, retaining 1,440 timings
 and four profiles. History copying, complete comparison and publication remain substantial.
 The [selection-snapshot contract and baseline controls](./f17-selection-snapshots.md) now pass
@@ -62,7 +63,7 @@ input found and fixed an initial validator defect. The subsequent [explicit priv
 cases, 215 owned cases, both 100-history native campaigns and the ten-case/four-mutation workspace
 catalogue. Five new unit faults are detected; a synchronous startup cleanup gap is repaired. The
 final full repeat passes 99 files / 1,141 tests, with an intervening two-case timeout run retained.
-The subsequent [snapshot comparison](./f17-selection-performance.md) completes 64 sessions with semantic checks passing but misses the incremental gain rule (2.9% shallow versus 10.3% deeper-history improvement over H). All regression guardrails pass. The single unchanged application gate still fails Android card typing at 12.2/75.1 ms desktop/CPU-4x. Android focus also exceeds <50 ms at 54.2 ms. Default activation stays refused. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
+The subsequent [snapshot comparison](./f17-selection-performance.md) completes 64 sessions with semantic checks passing but misses the incremental gain rule (2.9% shallow versus 10.3% deeper-history improvement over H). All regression guardrails pass. The single unchanged application gate still fails Android card typing at 12.2/75.1 ms desktop/CPU-4x. Android focus also exceeds <50 ms at 54.2 ms. Default activation was refused at that checkpoint. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
 
 The exploratory sequence uses focused controls and short serial browser screens with all main runtime/tests/defaults unchanged. It adds no release receipts or resolved obligations. [Round one](./f17-exploration-r1.md), signed `cc0f85c5`, records the initial combined gain. [Round two](./f17-exploration-r2.md), signed `602e4cee`, retains preparation + comparison pooling + an editor shortcut, while parking publication after mixed requested-Unicode evidence. [Round three](./f17-exploration-r3.md), signed `55ab217e`, profiles that combination and extends string reuse to primitive Yjs values. Its six timing sessions /480 keys, two profiles and 134 focused cases pass, with two faults caught. Paired median/p95 gains are about 13%/30% over its comparator, with a passing separate Unicode guard. These are conditional exploratory effects, not additive percentages or a release budget pass.
 
@@ -113,14 +114,26 @@ test bodies, generated seeds/counts, deadlines and runtime remain unchanged. Onl
 and the inventory digest change. This clears the bounded headroom blocker, not all Account files
 under one new input identity. [Repair evidence](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
 
-**Next run the unchanged application-latency gate**, then decide default Local activation with explicit
-latency-debt disposition. The operator's one-round fixture repair is complete. Exploration is closed;
-Local buffers remain private, Account buffers stay excluded and F-17 remains partial. No new
-application-latency result, wrapper resolution or immutable receipt is claimed. A retained closed
-facade still retains the pre-existing canonical document until the facade is dropped.
-Historical source, inputs and failures remain in the
-[integration packet](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md) and
-[lifetime/composition packet](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
+The selected Local combination is now the repository default after the
+[application gate and explicit RC disposition](./f17-rc-activation.md). The unchanged gate remains
+**failed**: Android card p95 38.7 ms (<16 required), settled navigation 113.6 ms (<100 required).
+Desktop card is 9.0 ms, Android focus 35.4 ms and the other budgets pass. All twelve bodies/thirty
+measurement rows complete with resource drain. The initial exception rule did not allow navigation;
+a separate documented post-measurement RC amendment follows the operator's broader authorization.
+
+The same candidate input then passes 147 owned unit cases, ten native catalogue cases/four mutations,
+and eight normal Local application cases (20 generated histories). The measured one-line factory
+change is applied exactly; Account/internal defaults stay reference. Counts/registrations/limits are
+unchanged. [Open F-17 RC debt](./review/implementation/f17-rc-latency-debt.json) is a manual product
+disposition, not a test waiver or immutable pass. No personal app/server or phone is changed.
+[Current receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+**Next resume command/campaign wrapper certification**, including exact dependency/vector reuse and
+complete output retention; 96 command/63 campaign obligations remain. Keep the failed timing receipt
+visible through qualification repairs and the immutable release report. Larger optimization work
+remains deferred. Historical [integration](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md),
+[lifetime](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md) and
+[headroom](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md) packets remain unchanged.
 
 ## Commands and current execution scope
 
