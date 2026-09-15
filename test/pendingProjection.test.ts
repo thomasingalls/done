@@ -725,3 +725,137 @@ it('generated detached histories preserve undo redo and restored master and card
     { seed: 140921, numRuns: 150 },
   );
 });
+
+it('generated retained history branches isolate selections through mutation clear and disposal', () => {
+  fc.assert(
+    fc.property(fc.array(fc.nat(30), { minLength: 3, maxLength: 8 }), (choices) => {
+      const doc = createHistoryDoc(),
+        text = doc.getText('master');
+      text.insert(0, 'master text');
+      const source = workspaceUndo(doc, 'human');
+      doc.transact(() => text.insert(1, 'a'), 'human');
+      source.stopCapturing();
+      doc.transact(() => text.insert(3, 'b'), 'human');
+      source.undo();
+      const selected = structuredClone(
+        relativeSelection(text, {
+          ranges: [
+            { anchor: 1, head: 4 },
+            { anchor: 6, head: 8 },
+          ],
+          main: 1,
+        }),
+      );
+      selected.ranges[1]!.anchor = selected.ranges[0]!.head;
+      const positions = new Map([['master', selected]]);
+      const meta = new Map([
+        ['before', positions],
+        ['after', positions],
+      ]);
+      source.undoStack[0]!.meta = meta;
+      source.redoStack[0]!.meta = meta;
+      const live = [source];
+      const allItems = (h: typeof source) => [...h.undoStack, ...h.redoStack];
+      const value = (h: typeof source) => allItems(h).map((item) => structuredClone(item.meta));
+      const resolved = (h: typeof source) =>
+        allItems(h).map((item) =>
+          resolveSelection(
+            h.doc,
+            h.doc.getText('master'),
+            item.meta.get('before').get('master'),
+          ).toJSON(),
+        );
+      try {
+        for (const choice of choices) {
+          const parent = live[choice % live.length]!;
+          const before = live.map(value);
+          const fork = forkWorkspaceHistory(parent, 'human');
+          live.push(fork);
+          for (const [i, item] of allItems(parent).entries())
+            metadataGraph(item.meta, allItems(fork)[i]!.meta);
+          const original = value(fork);
+          allItems(fork)[0]!.meta.get('before').get('master').ranges[0].head.assoc = 91;
+          expect(live.slice(0, -1).map(value), 'retained branch metadata must be isolated').toEqual(
+            before,
+          );
+          expect(
+            allItems(fork)[1]!.meta,
+            'undo and redo items must not share mutable metadata',
+          ).toEqual(original[1]);
+          allItems(fork).forEach((item, i) => {
+            item.meta = original[i]!;
+          });
+          const survivorValues = live.map(value),
+            survivorSelections = live.map(resolved);
+          if (live.length > 2) {
+            const removed = choice % (live.length - 1),
+              history = live[removed]!;
+            history.clear();
+            history.destroy();
+            history.doc.destroy();
+            live.splice(removed, 1);
+            survivorValues.splice(removed, 1);
+            survivorSelections.splice(removed, 1);
+          }
+          expect(
+            live.map(value),
+            'clearing another branch must preserve retained metadata',
+          ).toEqual(survivorValues);
+          expect(live.map(resolved), 'surviving branches must still restore selections').toEqual(
+            survivorSelections,
+          );
+        }
+      } finally {
+        for (const history of live) {
+          history.destroy();
+          history.doc.destroy();
+        }
+      }
+    }),
+    { seed: 150901, numRuns: 96 },
+  );
+});
+
+it('generic forks detach frozen maps and lookalike snapshot ownership fields', () => {
+  const doc = createHistoryDoc(),
+    history = workspaceUndo(doc, 'human');
+  doc.transact(() => doc.getText('master').insert(0, 'text'), 'human');
+  const positions = Object.freeze(
+    new Map([
+      [
+        'master',
+        relativeSelection(doc.getText('master'), {
+          ranges: [{ anchor: 1, head: 3 }],
+          main: 0,
+        }),
+      ],
+    ]),
+  );
+  const token = Object.freeze({ kind: 'selection-snapshot', owner: 'same-owner', positions });
+  history.undoStack[0]!.meta = new Map([
+    ['before', token],
+    ['after', token],
+  ]);
+  const fork = forkWorkspaceHistory(history, 'human');
+  try {
+    metadataGraph(history.undoStack[0]!.meta, fork.undoStack[0]!.meta);
+    const captured = structuredClone(fork.undoStack[0]!.meta);
+    positions.get('master')!.ranges[0]!.anchor.assoc = 19;
+    positions.set(
+      'other',
+      relativeSelection(doc.getText('master'), { ranges: [{ anchor: 0, head: 0 }], main: 0 }),
+    );
+    expect(fork.undoStack[0]!.meta, 'frozen or lookalike fields do not authorize sharing').toEqual(
+      captured,
+    );
+    history.clear();
+    history.destroy();
+    doc.destroy();
+    expect(fork.undoStack[0]!.meta).toEqual(captured);
+  } finally {
+    fork.destroy();
+    fork.doc.destroy();
+    history.destroy();
+    doc.destroy();
+  }
+});

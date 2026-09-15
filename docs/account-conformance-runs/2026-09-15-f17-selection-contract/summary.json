@@ -1,0 +1,196 @@
+{
+  "status": "contract and baseline controls passed; component not implemented",
+  "runtimeChanged": false,
+  "defaultActivation": false,
+  "artifactsSha256": "21a1a0a3f8e719fa9acb05354f5f57c9efe13c477e1f281db37c74ff69203157",
+  "rawIndexSha256": "78ad518659a6b9a88588681e9e8e30ee424967643f770b9256ba91ebe75b5a38",
+  "files": 79,
+  "uniqueBlobs": 59,
+  "owned": {
+    "stages": [
+      {
+        "id": "test:test/admittedText.test.ts",
+        "key": "ab0923a60c60fe93f2a4e996d1a8ba79ad9eab7fea7e637d86bada805c4a2d17",
+        "status": "passed",
+        "elapsedMs": 3495,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/ownedReceiveQueue.test.ts",
+        "key": "e8564d0b38da0f654a69f9455d396319245f29da51c697af382c7787e826080e",
+        "status": "passed",
+        "elapsedMs": 2733,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "0649a4d828bda007b684fcbaa8a2a7a888b8354b5254b73bc978f08d6a87ae9b",
+        "status": "passed",
+        "elapsedMs": 5854,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "1d6dac25cc58673493867406df715fb1202f44e0cce717b6fc41dac4fd9dead0",
+        "status": "passed",
+        "elapsedMs": 6613,
+        "cases": 56,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspacePreparation.test.ts",
+        "key": "3d43dc02e360eca94fd7d6c857777b0b95dccfd5f1e0b2f3c061d43b67508636",
+        "status": "passed",
+        "elapsedMs": 2723,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/yjsDelivery.test.ts",
+        "key": "528f40d7e74a82941934a4b56c5ec2609ccb8a37ee757ff4dcb6b283aad2eafd",
+        "status": "passed",
+        "elapsedMs": 7165,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "cases": 118,
+    "input": "fed7af3d6e1899b54f10e33ef7b8a7285ab882f95d1e37438e4ee9c6f786e918",
+    "startedAt": "2026-09-14T23:26:32.311Z",
+    "completedAt": "2026-09-14T23:27:38.385Z"
+  },
+  "properties": [
+    {
+      "seed": 150901,
+      "runs": 96,
+      "scope": "retained generic history branches"
+    },
+    {
+      "seed": 150902,
+      "runsPerStrategy": 80,
+      "strategies": [
+        "reference",
+        "local-handoff"
+      ],
+      "scope": "independent master/card selection and recovery ledger"
+    }
+  ],
+  "controls": [
+    {
+      "name": "share-nested",
+      "path": "src/crdt/yjs.ts",
+      "title": "generated retained history branches isolate selections through mutation clear and disposal",
+      "marker": "metadata must not share a mutable source node",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-contract/share-nested.config.mts",
+        "-t",
+        "generated retained history branches isolate selections through mutation clear and disposal"
+      ],
+      "exit": 1,
+      "elapsedMs": 1068,
+      "intendedFailure": true,
+      "log": "share-nested-final.log",
+      "priorAttempt": "initial-controls/share-nested.log: caught prototype normalization before alias assertion; source fixture now uses production-shaped cloned metadata"
+    },
+    {
+      "name": "stale-before",
+      "path": "src/crdt/admittedWorkspace.ts",
+      "title": "generated master and card selection snapshots follow an independent undo and recovery ledger",
+      "marker": "selection snapshot restore must match the independent ledger",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-contract/stale-before.config.mts",
+        "-t",
+        "generated master and card selection snapshots follow an independent undo and recovery ledger"
+      ],
+      "exit": 1,
+      "elapsedMs": 831,
+      "intendedFailure": true
+    },
+    {
+      "name": "stale-after",
+      "path": "src/crdt/admittedWorkspace.ts",
+      "title": "generated master and card selection snapshots follow an independent undo and recovery ledger",
+      "marker": "selection snapshot restore must match the independent ledger",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-contract/stale-after.config.mts",
+        "-t",
+        "generated master and card selection snapshots follow an independent undo and recovery ledger"
+      ],
+      "exit": 1,
+      "elapsedMs": 3771,
+      "intendedFailure": true
+    }
+  ],
+  "runnerChecks": 17,
+  "registration": {
+    "additions": [
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "before": 15,
+        "after": 17,
+        "added": [
+          {
+            "id": "test/pendingProjection.test.ts::[\"generated retained history branches isolate selections through mutation clear and disposal\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/pendingProjection.test.ts::[\"generic forks detach frozen maps and lookalike snapshot ownership fields\"]",
+            "outcome": "pass"
+          }
+        ]
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "change": "Only denominator self-test title 2073 -> 2077; count and execution contract unchanged"
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "before": 54,
+        "after": 56,
+        "added": [
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation reference\",\"generated master and card selection snapshots follow an independent undo and recovery ledger\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-handoff\",\"generated master and card selection snapshots follow an independent undo and recovery ledger\"]",
+            "outcome": "pass"
+          }
+        ]
+      }
+    ],
+    "priorContractsPreserved": 613,
+    "totalRows": 616,
+    "unresolved": 159,
+    "generalFiles": 261,
+    "generalDispositions": 2077
+  },
+  "noFullUnitNativeOrTimingAggregate": true,
+  "next": "Implement the unmounted private snapshot owner with direct capture/restore isolation, foreign/forged/cloned/closed-token and branch-lifetime controls.",
+  "obligations": {
+    "testFile": 0,
+    "command": 96,
+    "campaign": 63
+  }
+}

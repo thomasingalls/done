@@ -1,6 +1,10 @@
 {
   "v": 1,
-  "scope": ["account-protocol", "account-service", "src"],
+  "scope": [
+    "account-protocol",
+    "account-service",
+    "src"
+  ],
   "exclusions": [
     "*.test.ts(x)",
     "*.spec.ts(x)",
@@ -414,6 +418,10 @@
     {
       "path": "src/crdt/promotionRecord.ts",
       "sha256": "2645e99185eedfafcdbe4297ab88f8f43f5879ad22a7034ef3d992825e0caa03"
+    },
+    {
+      "path": "src/crdt/selectionSnapshots.ts",
+      "sha256": "1c8236906b653c0a50e00323d04e7d6ffa64b8dcc7a6a40b4334794aa698b21d"
     },
     {
       "path": "src/crdt/serialize.ts",

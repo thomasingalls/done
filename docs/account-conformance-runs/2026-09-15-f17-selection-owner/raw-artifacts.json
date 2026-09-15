@@ -1,0 +1,27 @@
+[
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-owner/owned/inputs.json.gz",
+    "bytes": 1180467,
+    "sha256": "5c5f59e5d7a7790a9c0c92f26f5a9c9cc0ba627c8ba93d6c9d73cc1615c1a058"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-owner/before/docs/release-validation-manifest.json",
+    "bytes": 777075,
+    "sha256": "c1e96b3127eb9940bd2a6a0217edf009b76bccbb9ac86d00d2e7fdb4cb4c8d11"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-owner/before/docs/release-validation-graph.json",
+    "bytes": 454225,
+    "sha256": "1e952515b52cd78476f5d43736aab0099bdb6632e2e6ff2396153bf60289289e"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-owner/before/docs/account-crypto/census.json",
+    "bytes": 43356,
+    "sha256": "f17e05d9258ee9eccc5d64282bce4c0a88787216ca0b45292bf7890c6a96d345"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-owner/before/scripts/release-validation/general-tests.json",
+    "bytes": 3243,
+    "sha256": "577c2c976219fef80c206baf0a9bbd406f2f204d0f7ded7ed0212deedb4bc4c6"
+  }
+]

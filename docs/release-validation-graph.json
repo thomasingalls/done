@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 286,
-    "requiredTestFiles": 280,
+    "testFiles": 287,
+    "requiredTestFiles": 281,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -8505,7 +8505,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/pendingProjection.test.ts"]
       },
-      "declarations": 15,
+      "declarations": 17,
       "propertyFamilies": [
         {
           "line": 157,
@@ -8525,6 +8525,10 @@
         },
         {
           "line": 627,
+          "form": "fc.property"
+        },
+        {
+          "line": 731,
           "form": "fc.property"
         }
       ],
@@ -9147,6 +9151,29 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/selectionSnapshots.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/selectionSnapshots.test.ts"]
+      },
+      "declarations": 9,
+      "propertyFamilies": [
+        {
+          "line": 104,
+          "form": "fc.property"
+        },
+        {
+          "line": 365,
+          "form": "fc.property"
+        },
+        {
+          "line": 483,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/serialize.test.ts",
       "status": "required",
       "invocation": {
@@ -9518,10 +9545,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 30,
+      "declarations": 31,
       "propertyFamilies": [
         {
-          "line": 687,
+          "line": 688,
+          "form": "fc.asyncProperty"
+        },
+        {
+          "line": 791,
           "form": "fc.asyncProperty"
         }
       ],
@@ -11944,7 +11975,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "577c2c976219fef80c206baf0a9bbd406f2f204d0f7ded7ed0212deedb4bc4c6"
+      "sha256": "3962b88ef284ee987d2eae4900bbf5ec570eb75a6d8bb7c1b2868e896bc163d6"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -13816,7 +13847,7 @@
     },
     {
       "path": "test/pendingProjection.test.ts",
-      "sha256": "e83d7c8618429758ee30f87c730ea5a5f60d41a8a02b806cea4995eaefd5faf9"
+      "sha256": "07233d4b8d9f88611acd330f293e015769592bc1a7811278d8b4439bf9cadc8e"
     },
     {
       "path": "test/positionDecision.test.ts",
@@ -13888,11 +13919,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "8356a8083a93444f45de7e6becf556ad75b99f04f54b05636753c7c142240727"
+      "sha256": "c3386a555ce9ba1fd0905d0fcf6f6169d7c7e2a25d4dfd4631d35372eb037bfb"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "a16fbedc45f0ea03ce09da2cb52e53219de8e967c79fecbb4065f888d89705b1"
+      "sha256": "2e05907d509a9ed4c262bfbe0adb76423811f65339dc994d54fe5327c0b6fc25"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -13973,6 +14004,10 @@
     {
       "path": "test/sections.test.ts",
       "sha256": "6f96ce6cbae06451fa48ba56bc550da8f9bb2c1571dac97982fd3b3f55038982"
+    },
+    {
+      "path": "test/selectionSnapshots.test.ts",
+      "sha256": "086b17479ddb08a48ddfe0c16e2906c9ddde55da9a0bf030cb22474a8ca57340"
     },
     {
       "path": "test/serialize.test.ts",
@@ -14268,7 +14303,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "a7468a636f90cdea95e9f241e8507df41aa48a5db2dd3bc234a73334e5c7ced9"
+      "sha256": "2670c9cbbbe8a02d9677ba8c90b32b57213a607b6b6f11dcc9feef317dacf168"
     },
     {
       "path": "test/workspacePreparation.test.ts",

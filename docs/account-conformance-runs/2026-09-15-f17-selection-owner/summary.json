@@ -1,0 +1,271 @@
+{
+  "status": "unmounted owner component and affected regressions passed; editor integration pending",
+  "existingRuntimeChanged": false,
+  "newRuntimeSource": "src/crdt/selectionSnapshots.ts",
+  "defaultActivation": false,
+  "artifactsSha256": "2dd8d493c8c0047ae988ab9d570120328d04d57a16c3759c6491b019dd390d44",
+  "rawIndexSha256": "c63e1747c402cd3d31612991e4b179608c0ce00ac155347b056145751da82e2d",
+  "files": 82,
+  "uniqueBlobs": 71,
+  "owned": {
+    "stages": [
+      {
+        "id": "test:test/admittedText.test.ts",
+        "key": "9fab70cce0d2444967cd41670df4a824354802f10092e0753e1b2c74410f7181",
+        "status": "passed",
+        "elapsedMs": 6276,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/ownedReceiveQueue.test.ts",
+        "key": "45acf23ad5842da931ebec4a7165a9a35e20b7ba0ec71e1d8f342a2d03838707",
+        "status": "passed",
+        "elapsedMs": 4978,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "d80bdeba15d9ca318c5a91e0b8241d418349b65f703670ded25cd80144b483c0",
+        "status": "passed",
+        "elapsedMs": 7918,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/selectionSnapshots.test.ts",
+        "key": "c815967eb59394b2e66c69452b03481652a51eae1a071cef2cf78e84283ece5f",
+        "status": "passed",
+        "elapsedMs": 5239,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "8c27394a259e7134fd884fb27585f55ad7b38435503480dd2197040d9810b7ea",
+        "status": "passed",
+        "elapsedMs": 8510,
+        "cases": 56,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspacePreparation.test.ts",
+        "key": "acfd800b5887a74a900f7885036d4f6bf1b94ca4bcfd878f2deb2d06df532db1",
+        "status": "passed",
+        "elapsedMs": 5051,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/yjsDelivery.test.ts",
+        "key": "0c84fa942caaeb4cd347d490ef814840d242766fbb1518bf6a51cbe02daec5bf",
+        "status": "passed",
+        "elapsedMs": 9073,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "cases": 127,
+    "input": "134806266536f9547e42ab3819bb9171b3f471e494f61a5f2055d4f1942eedd4",
+    "startedAt": "2026-09-14T23:46:28.189Z",
+    "completedAt": "2026-09-14T23:47:54.687Z"
+  },
+  "properties": [
+    {
+      "seed": 150903,
+      "runs": 200,
+      "scope": "graph alias preservation and capture/restore isolation"
+    },
+    {
+      "seed": 150904,
+      "runs": 160,
+      "scope": "independent branch/group lifetime ledger"
+    },
+    {
+      "seed": 150905,
+      "runs": 80,
+      "scope": "sparse arrays with disguising enumerable properties"
+    }
+  ],
+  "defect": {
+    "scope": "initial unmounted validator",
+    "counterexample": "one missing range plus one extra enumerable property",
+    "repair": "require consecutive array indexes as well as key count",
+    "originalSource": "phase/sparse-before.ts",
+    "originalTest": "phase/sparse-reproduction.test.ts",
+    "failedRun": "phase/sparse-before.log"
+  },
+  "controls": [
+    {
+      "name": "borrow-input",
+      "title": "generated capture and repeated restores preserve aliases without lending mutable snapshot data",
+      "marker": "capture must detach mutable input",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-owner/borrow-input.config.mts",
+        "-t",
+        "generated capture and repeated restores preserve aliases without lending mutable snapshot data"
+      ],
+      "exit": 1,
+      "elapsedMs": 975,
+      "intendedFailure": true
+    },
+    {
+      "name": "lend-restore",
+      "title": "generated capture and repeated restores preserve aliases without lending mutable snapshot data",
+      "marker": "restore must not lend the private payload",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-owner/lend-restore.config.mts",
+        "-t",
+        "generated capture and repeated restores preserve aliases without lending mutable snapshot data"
+      ],
+      "exit": 1,
+      "elapsedMs": 696,
+      "intendedFailure": true
+    },
+    {
+      "name": "share-owners",
+      "title": "tokens expose no payload and reject foreign cloned reconstructed and primitive identities",
+      "marker": "foreign owner must not restore a snapshot",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-owner/share-owners.config.mts",
+        "-t",
+        "tokens expose no payload and reject foreign cloned reconstructed and primitive identities"
+      ],
+      "exit": 1,
+      "elapsedMs": 703,
+      "intendedFailure": true
+    },
+    {
+      "name": "invalidate-branch",
+      "title": "generated branch and group lifetimes match an independent snapshot ledger through owner close",
+      "marker": "retained branch snapshot must survive metadata disposal",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-owner/invalidate-branch.config.mts",
+        "-t",
+        "generated branch and group lifetimes match an independent snapshot ledger through owner close"
+      ],
+      "exit": 1,
+      "elapsedMs": 678,
+      "intendedFailure": true
+    }
+  ],
+  "runnerChecks": 17,
+  "registration": {
+    "added": {
+      "id": "test:test/selectionSnapshots.test.ts",
+      "kind": "test",
+      "path": "test/selectionSnapshots.test.ts",
+      "stage": {
+        "id": "test:test/selectionSnapshots.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/selectionSnapshots.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": [
+            "test/selectionSnapshots.test.ts"
+          ],
+          "cases": [
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"captures actual root and nested Yjs positions and restores detached resolvable selections\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"generated capture and repeated restores preserve aliases without lending mutable snapshot data\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"rejects malformed cloned selection graphs without changing existing snapshots\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"tokens expose no payload and reject foreign cloned reconstructed and primitive identities\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"forks only the private metadata schema and refuses mixed owners without altering its inputs\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"capture failures publish no token and leave existing snapshots usable\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"close during native capture prevents issuance and terminal owners never regain access\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"generated branch and group lifetimes match an independent snapshot ledger through owner close\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionSnapshots.test.ts::[\"generated sparse range arrays cannot disguise holes with extra enumerable properties\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    "priorContractsPreserved": 615,
+    "renamed": "Only general denominator test title 2077 -> 2086",
+    "newSource": {
+      "path": "src/crdt/selectionSnapshots.ts",
+      "sha256": "1c8236906b653c0a50e00323d04e7d6ffa64b8dcc7a6a40b4334794aa698b21d"
+    },
+    "totalRows": 617,
+    "unresolved": 159,
+    "generalFiles": 262,
+    "generalDispositions": 2086,
+    "policyAdded": "test/selectionSnapshots.test.ts",
+    "cryptoDomainsUnchanged": true
+  },
+  "noFullUnitNativeOrTimingAggregate": true,
+  "next": "Integrate an explicit private Local variant with workspace/history owner binding and conversion of all metadata producers and consumers; generated/native functional gates precede performance.",
+  "obligations": {
+    "testFile": 0,
+    "command": 96,
+    "campaign": 63
+  }
+}

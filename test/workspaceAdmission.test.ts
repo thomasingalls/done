@@ -9,6 +9,7 @@ import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/adm
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
 import { Y, createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
+import { targetText } from '../src/crdt/workspaceCommands';
 import { serializeCollections } from '../src/crdt/serialize';
 const identity = {
   id: 'human-one',
@@ -774,6 +775,151 @@ describe.each(['reference', 'local-handoff'] as const)(
           },
         ),
         { numRuns: 80, seed: 140925 },
+      );
+    });
+    it('generated master and card selection snapshots follow an independent undo and recovery ledger', async () => {
+      const setup = await fixture();
+      let seed: Uint8Array, id: string;
+      try {
+        id = await create(setup.doc, 'card');
+        await master(setup.doc).input(insert('master')).accepted;
+        seed = setup.doc.snapshot();
+      } finally {
+        await setup.doc.close();
+      }
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(
+            fc.record({
+              kind: fc.constantFrom('edit', 'retry', 'discard', 'undo', 'redo', 'remote'),
+              card: fc.boolean(),
+              at: fc.nat(40),
+            }),
+            { maxLength: 14 },
+          ),
+          async (suffix) => {
+            const f = await fixture(seed);
+            type State = { text: string[]; positions: (number | null)[] };
+            let current: State = { text: ['master', 'card'], positions: [null, null] };
+            const undo: { before: State; after: State }[] = [],
+              redo: typeof undo = [];
+            let revision = f.doc.status.revision;
+            const targets = [{ kind: 'master' as const }, { kind: 'card' as const, id }];
+            const observed = () => targets.map((target) => f.doc.text(target).read());
+            const check = () => {
+              const actual = observed();
+              expect(
+                actual.map((r) => r.text),
+                'selection ledger text',
+              ).toEqual(current.text);
+              expect(
+                actual.map((r) => r.selection),
+                'selection snapshot restore must match the independent ledger',
+              ).toEqual(current.positions.map((at) => selection(at ?? 0)));
+              expect(f.doc.read().undo).toBe(undo.length);
+              expect(f.doc.read().redo).toBe(redo.length);
+              expect(f.doc.status.revision).toBe(revision);
+              for (const r of actual)
+                Object.assign(r.selection.ranges[0]!, { anchor: 9999, head: 9999 });
+              expect(
+                observed().map((r) => r.selection),
+                'public reads must not lend selection state',
+              ).toEqual(current.positions.map((at) => selection(at ?? 0)));
+              const cold = createDoc();
+              try {
+                for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+                expect(targets.map((target) => targetText(cold, target).toString())).toEqual(
+                  current.text,
+                );
+              } finally {
+                cold.destroy();
+              }
+            };
+            const prefix: typeof suffix = [
+              { kind: 'edit', card: false, at: 2 },
+              { kind: 'edit', card: true, at: 1 },
+              { kind: 'retry', card: false, at: 3 },
+              { kind: 'undo', card: false, at: 0 },
+              { kind: 'redo', card: false, at: 0 },
+              { kind: 'discard', card: true, at: 2 },
+              { kind: 'remote', card: false, at: 0 },
+              { kind: 'undo', card: false, at: 0 },
+              { kind: 'redo', card: false, at: 0 },
+            ];
+            try {
+              check();
+              for (const step of [...prefix, ...suffix]) {
+                if (['edit', 'retry', 'discard'].includes(step.kind)) {
+                  const index = step.card ? 1 : 0,
+                    before = structuredClone(current);
+                  const at = step.at % (current.text[index]!.length + 1),
+                    inputSelection = selection(at);
+                  const preparations = f.preparations.length;
+                  if (step.kind !== 'edit') {
+                    f.refuse();
+                    f.fail();
+                  }
+                  const ticket = f.doc.text(targets[index]!).input(insert('x'), inputSelection);
+                  inputSelection.ranges[0]!.anchor = 9999;
+                  inputSelection.ranges[0]!.head = 9999;
+                  if (step.kind !== 'edit') {
+                    await until(() => f.doc.status.state === 'blocked');
+                    check();
+                    expect(f.preparations.length).toBe(preparations + 1);
+                    if (step.kind === 'discard') {
+                      f.doc.discardPending();
+                      await expect(ticket.accepted).rejects.toMatchObject({ code: 'discarded' });
+                    } else {
+                      f.doc.retry();
+                      await ticket.accepted;
+                    }
+                  } else await ticket.accepted;
+                  expect(
+                    f.preparations.length,
+                    'retry must retain the prepared selection snapshot',
+                  ).toBe(preparations + 1);
+                  if (step.kind !== 'discard') {
+                    current.text[index] =
+                      current.text[index]!.slice(0, at) + 'x' + current.text[index]!.slice(at);
+                    current.positions[index] = at + 1;
+                    undo.push({ before, after: structuredClone(current) });
+                    redo.length = 0;
+                    revision++;
+                  }
+                } else if (step.kind === 'remote') {
+                  await f.doc.receive(
+                    remote(f.doc, (d) => {
+                      for (const target of targets) targetText(d, target).insert(0, 'R');
+                    }),
+                  ).accepted;
+                  // Independent model: a remote prefix survives local undo and shifts every
+                  // captured cursor that existed at that historical point. Unset stays unset.
+                  const states = new Set([
+                    current,
+                    ...[...undo, ...redo].flatMap((frame) => [frame.before, frame.after]),
+                  ]);
+                  for (const state of states) {
+                    state.text = state.text.map((s) => 'R' + s);
+                    state.positions = state.positions.map((p) => (p === null ? null : p + 1));
+                  }
+                  revision++;
+                } else {
+                  await f.doc.command({ kind: step.kind as 'undo' | 'redo' }).accepted;
+                  const frame = (step.kind === 'undo' ? undo : redo).pop();
+                  if (frame) {
+                    (step.kind === 'undo' ? redo : undo).push(frame);
+                    current = structuredClone(step.kind === 'undo' ? frame.before : frame.after);
+                  }
+                  revision++;
+                }
+                check();
+              }
+            } finally {
+              await f.doc.close();
+            }
+          },
+        ),
+        { seed: 150902, numRuns: 80 },
       );
     });
   },
