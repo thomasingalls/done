@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "b9d4efa2",
+  "payloads": 207,
+  "compressedBytes": 887301,
+  "artifactsSha256": "9817581c3fcab47318e6172cb49fb946cb99d14bf6e20d59b6652ec86f52ad97",
+  "rawIndexSha256": "c52191456837b35525273973c3397e164b3c7708eb45dfc2de54759ee426446e",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-handoff-with-planning-admission-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "902704ad81ca32abda801e5387e8dbe4ca6529f1aab2f18c1e608e5711aa12a0",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 29543,
+        "cases": 40,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "d04c5e386257de1fabae7a8c9a7f4d9fa887fee8b88ae86a6be428a163d44243",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6152,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "b92dbf35dc81601b5632e5c3c479fbf440342aef0566c228743eca0a2428dec0",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4800,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "6896983a2bf62656b80492f039712b11b7060b5c0c6af077fc5426d82e587f10",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5705,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-handoff/run.mjs",
+        "key": "f1aff478d95695287b7fc83cb2b571139380a30b052d1e7b621a4d90a344ed58",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 137063,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-admission/run.mjs",
+        "key": "e9c1ef82a611b036219aeda31dc70b813fc15424d6f517f3c6ff7b6470330527",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 128411,
+        "cases": 34,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:handoff-reuse",
+        "key": "f1aff478d95695287b7fc83cb2b571139380a30b052d1e7b621a4d90a344ed58",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 137063,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T17:57:11.330Z",
+    "input": "770889452a50b4eb1f1a9727dd2d5cd08155cd030c471d3578fab076098436ca",
+    "completedAt": "2026-09-15T18:03:10.720Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 87,
+    "campaign": 55
+  },
+  "claim": "Bounded Account handoff wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

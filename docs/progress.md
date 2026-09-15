@@ -55,37 +55,37 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Genesis wrapper integration is signed and verified as `d38a0ab0`.
+**Roadmap checkpoint.** Admission wrapper integration is signed and verified as `b9d4efa2`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Admission resolves one command and one
-campaign: **zero test-file /88 command /56 campaign** remain unresolved, down from 146 to 144.
-These are integration counts, not a passing aggregate.
+272 general files/2,198 dispositions (11 not applicable)**. Handoff resolves one command and one campaign:
+**zero test-file /87 command /55 campaign** remain unresolved, down from 144 to 142. These are integration
+counts, not a passing aggregate.
 
-**Just completed.** Admission preserves its actual four-file grouping, default concurrency,
-180-second bound and five-second grace. Owned execution adds terminal reporting, disposable browser
-and nine retained reports, with the historical reader explicitly pinned before/after execution and
-reuse. Check all 34 outcomes, summary/source hashes, actual activated account/request targets,
-corrupted approval signatures and exact retention of the invalid service receipt. Replay the
-recorded service commands to compare all 80 final states; require 30 complete native histories and
-operation/fault/retry bounds. These reports corroborate native/service assertions, not independent
-signature/passkey verification or browser/database replay. Existing oracles remain unchanged.
+**Just completed.** Handoff preserves its actual three-file grouping, default concurrency, 180-second
+bound and five-second grace. Owned execution adds terminal reporting, disposable browser and nine retained
+reports, with the historical reader pinned before/after execution and reuse. Check all 21 outcomes,
+summary/source hashes, credential baseline and substitution, independently verified binding signatures,
+invalid passkey injection and exact selected/classified route agreement. Independently verify 200 DER
+signatures; require all 60 service and 24 native histories, activation/operation/fault/retry bounds.
+Reports corroborate actual service/native assertions. The original test remains authority for runtime
+DER-to-P1363 conversion and malformed-DER refusal; no claim to regenerate the seeded schedule or replay
+browser/database semantics is made.
 
-The epoch passes **107 cases in six executions**: 56 planning, 34 admission and 17 genesis regression
-cases, followed by exact admission receipt reuse. Admission takes **121.704s /180s**. All
-process/browser groups drain and nine reports survive checkout removal. Five new infrastructure cases
-include 100 generated control sets with twelve invalid variants and 160 generated histories checked
-against event ordering, with ten corruptions each. Six synthetic process runs and two deliberate
-faults discriminate; their case claims are not Account tests. New code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).
+The epoch passes **116 cases in six executions**: 61 planning, 21 handoff and 34 admission regression,
+followed by exact handoff receipt reuse. Handoff takes **137.063s /180s**. All process/browser
+groups drain and nine reports survive checkout removal. Five new infrastructure cases include generated
+control, DER and history corruption checks. Six synthetic process runs and two deliberate faults discriminate;
+their case claims are not Account tests. New code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).
 
-**Preserved observations.** No new campaign/test failure occurs. Earlier stale wrapper assertions,
-core browser-startup SIGABRT, orphan/headroom observations and failure/cancellation/latency receipts
-retain their evidence. Admission's blocked assertion advances to an explicit positive disposition.
+**Preserved observations.** Preliminary duplicate-import and stale blocked-wrapper planning failures are
+retained with the passing retry. No owned campaign failure occurred. Earlier core startup SIGABRT,
+orphan/headroom observations, cancellation/latency receipts and reporter diagnostics retain their evidence.
 
-**Next bounded phase.** Account handoff wrapper integration with exact grouped selection, owned
-reports and semantic postconditions, then further wrapper families. Optional outputs in unintegrated
-locations still need explicit treatment. File custody uses cooperative bounded polling, not a disk
-quota or hostile-code sandbox.
+**Next bounded phase.** Account editing wrapper integration with exact grouped selection, owned reports
+and semantic postconditions, then further wrapper families. Optional outputs in unintegrated locations
+still need explicit treatment. File custody uses cooperative bounded polling, not a disk quota or
+hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

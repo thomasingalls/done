@@ -281,6 +281,339 @@ function admissionHistories(commands = ['offer', 'finish']) {
   };
 }
 
+test('handoff wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-handoff');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', handoffCampaign]);
+  assert.equal(stage.expect.cases.length, 21);
+  assert.deepEqual([...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))], handoffFiles);
+  assert.deepEqual(stage.fileOutputs.required, handoffReports);
+  assert.deepEqual(
+    stage.expect.historyInputs.map(({ reference, path }) => [reference, path]),
+    [['beed8cf', 'src/crdt/promotionRecord.ts']],
+  );
+  assertHistoricalInputs(process.cwd(), stage.expect.historyInputs);
+  assert.throws(
+    () =>
+      assertHistoricalInputs(
+        process.cwd(),
+        stage.expect.historyInputs.map((p) => ({ ...p, sha256: '0'.repeat(64) })),
+      ),
+    /Historical source changed/,
+  );
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'handoff-filter',
+    argv: ['node', handoffCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:handoff-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('handoff wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = handoffCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 180001 },
+    { graceMs: 5001 },
+    { expect: { ...stage.expect, historyInputs: undefined } },
+    { expect: { ...stage.expect, historyInputs: [] } },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: [...stage.expect.historyInputs, ...stage.expect.historyInputs],
+      },
+    },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: stage.expect.historyInputs.map((p) => ({ ...p, reference: p.revision })),
+      },
+    },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+import {
+  handoffCampaign,
+  handoffCampaignStage,
+  handoffFiles,
+  handoffReports,
+  reconcileHandoffReports,
+  reconcileHandoffControls,
+  reconcileHandoffDer,
+  reconcileHandoffHistories,
+} from '../../scripts/release-validation/account-handoff-wrapper.mjs';
+const handoffServiceKey = generateKeyPairSync('ed25519');
+const handoffOriginalKey = generateKeyPairSync('ed25519');
+const handoffSubstitutedKey = generateKeyPairSync('ed25519');
+const handoffDerKey = generateKeyPairSync('ec', { namedCurve: 'prime256v1' });
+const spkiEvidence = (key) => key.publicKey.export({ format: 'der', type: 'spki' }).toString('hex');
+function handoffEvidence(principal = '01'.repeat(16)) {
+  const proof = (publicKey) => {
+    const binding = {
+      v: 1,
+      epoch: 1,
+      accountId: 'A'.repeat(43),
+      principalId: principal,
+      rpId: 'localhost',
+      credId: 'credential',
+      publicKey,
+    };
+    const message = [
+      'done/slotbind/v1',
+      1,
+      binding.accountId,
+      principal,
+      'localhost',
+      1,
+      'credential',
+      publicKey,
+    ]
+      .map((v) => Buffer.from(String(v)))
+      .map((b) => Buffer.concat([Buffer.from([b.length >> 8, b.length & 255]), b]));
+    return {
+      v: 1,
+      kind: 'promotion-slot-binding',
+      requestDigest: '01'.repeat(32),
+      epochHead: '02'.repeat(32),
+      stored: {
+        binding,
+        bindingSignature: sign(null, Buffer.concat(message), handoffServiceKey.privateKey).toString(
+          'hex',
+        ),
+      },
+    };
+  };
+  const expected = {
+    slotId: 'slot',
+    accountId: 'A'.repeat(43),
+    principalId: principal,
+    workspaceId: '03'.repeat(16),
+  };
+  const accepted = {
+    ...expected,
+    kind: 'account-selected',
+    dbName: 'destination',
+    epochHead: '02'.repeat(32),
+  };
+  return {
+    credential: {
+      baseline: 'substituted credential refused',
+      baselineOk: false,
+      authRoot: spkiEvidence(handoffServiceKey).slice(-64),
+      original: proof(spkiEvidence(handoffOriginalKey)),
+      substitutedKey: spkiEvidence(handoffSubstitutedKey),
+      accepted: proof(spkiEvidence(handoffSubstitutedKey)),
+    },
+    passkey: {
+      baseline: 'invalid signature refused',
+      baselineUnchanged: true,
+      signature: '00'.repeat(64),
+      expected,
+      accepted,
+      classified: { ...accepted, kind: 'account' },
+    },
+  };
+}
+function handoffHistories(commands = ['activate', 'issue']) {
+  return {
+    service: {
+      seed: 9252026,
+      histories: Array.from({ length: 60 }, () => ({
+        commands: [...commands],
+        activated: commands.includes('activate'),
+        status: 'passed',
+      })),
+    },
+    native: {
+      seed: 9272026,
+      histories: Array.from({ length: 24 }, () => ({
+        ops: [{ at: 4, remove: 0, insert: 'x', disk: false }],
+        reverse: false,
+        fault: 'none',
+        retries: 1,
+        status: 'passed',
+      })),
+    },
+  };
+}
+function handoffDerEvidence(message = Buffer.from('evidence')) {
+  const row = {
+    message: message.toString('hex'),
+    der: sign('sha256', message, handoffDerKey.privateKey).toString('hex'),
+  };
+  return {
+    seed: 9262026,
+    publicKey: spkiEvidence(handoffDerKey),
+    cases: Array.from({ length: 200 }, () => ({ ...row })),
+  };
+}
+
+test('handoff reports require successful complete output, exact source pins and signed evidence', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-handoff-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = handoffEvidence(),
+    histories = handoffHistories();
+  const sources = [
+    'package.json',
+    'src/crdt/example.ts',
+    'src/lib/example.tsx',
+    'src/account/slotUnlock.ts',
+    'src/account/es256Signature.ts',
+    'test/slotUnlock.test.ts',
+    'test/account-handoff/core.test.mjs',
+    'test/account-admission/fixtures.mjs',
+    'test/account-genesis/oracle.mjs',
+    'test/account-authority/fixtures.mjs',
+    'docs/account-handoff.md',
+    'docs/account-admission.md',
+    handoffCampaign,
+  ].map((path) => ({ path, sha256: 'a'.repeat(64) }));
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-credential.json': controls.credential,
+    'control-passkey.json': controls.passkey,
+    'generated-der.json': handoffDerEvidence(),
+    'generated-service.json': histories.service,
+    'generated-native.json': histories.native,
+  };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary');
+  };
+  save(good);
+  reconcileHandoffReports(directory, [
+    ...sources,
+    { path: 'unrelated.txt', sha256: 'b'.repeat(64) },
+  ]);
+  for (const change of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['summary.json'].code = 1),
+    (r) => (r['summary.json'].timedOut = true),
+    (r) => (r['summary.json'].completedAt = '2026-09-14T00:00:00.000Z'),
+    (r) => r['sources.json'].pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['sources.json'].push(r['sources.json'][0]),
+    (r) => (r['control-credential.json'].baselineOk = true),
+    (r) => (r['control-passkey.json'].classified.dbName = 'other'),
+    (r) => (r['generated-der.json'].cases[0].der = '00'.repeat(70)),
+    (r) => (r['generated-service.json'].histories[0].activated = false),
+    (r) => r['generated-native.json'].histories.pop(),
+  ]) {
+    const bad = structuredClone(good);
+    change(bad);
+    save(bad);
+    assert.throws(() => reconcileHandoffReports(directory, sources));
+  }
+  for (const file of handoffReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileHandoffReports(directory, sources));
+  }
+});
+
+test('80 generated handoff control sets distinguish substituted keys, signature corruption and route mismatches', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 16, maxLength: 16 }), (bytes) => {
+      const good = handoffEvidence(Buffer.from(bytes).toString('hex'));
+      reconcileHandoffControls(good.credential, good.passkey);
+      for (const change of [
+        (r) => (r.credential.baselineOk = true),
+        (r) => (r.credential.authRoot = '00'.repeat(32)),
+        (r) => (r.credential.original.stored.bindingSignature = '00'.repeat(64)),
+        (r) => (r.credential.accepted.stored.bindingSignature = '00'.repeat(64)),
+        (r) => (r.credential.substitutedKey = r.credential.original.stored.binding.publicKey),
+        (r) => (r.credential.accepted.requestDigest = '03'.repeat(32)),
+        (r) => (r.passkey.baselineUnchanged = false),
+        (r) => (r.passkey.signature = '01'.repeat(64)),
+        (r) => (r.passkey.expected.slotId = 'other'),
+        (r) => (r.passkey.accepted.kind = 'local'),
+        (r) => (r.passkey.classified.dbName = 'other'),
+        (r) => (r.passkey.classified.epochHead = '03'.repeat(32)),
+      ]) {
+        const bad = structuredClone(good);
+        change(bad);
+        assert.throws(() => reconcileHandoffControls(bad.credential, bad.passkey));
+      }
+    }),
+    { seed: 150941, numRuns: 80 },
+  );
+});
+
+test('80 generated DER reports and 160 histories reject signature, completion and activation faults', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ maxLength: 1024 }), (bytes) => {
+      const good = handoffDerEvidence(Buffer.from(bytes));
+      reconcileHandoffDer(good);
+      for (const change of [
+        (r) => r.seed++,
+        (r) => r.cases.pop(),
+        (r) => (r.cases[0].message += '00'),
+        (r) => (r.cases[0].der = '00'.repeat(70)),
+        (r) => (r.publicKey = spkiEvidence(handoffOriginalKey)),
+      ]) {
+        const bad = structuredClone(good);
+        change(bad);
+        assert.throws(() => reconcileHandoffDer(bad));
+      }
+    }),
+    { seed: 150942, numRuns: 80 },
+  );
+  fc.assert(
+    fc.property(
+      fc.array(fc.constantFrom('issue', 'activate', 'restart', 'wrong'), {
+        minLength: 2,
+        maxLength: 14,
+      }),
+      (commands) => {
+        const good = handoffHistories(commands);
+        reconcileHandoffHistories(good.service, good.native);
+        for (const change of [
+          (r) => r.service.seed++,
+          (r) => r.service.histories.pop(),
+          (r) => (r.service.histories[0].activated = !r.service.histories[0].activated),
+          (r) => r.service.histories[0].commands.push('unknown'),
+          (r) => (r.service.histories[0].status = 'failed'),
+          (r) => r.native.histories.pop(),
+          (r) => (r.native.histories[0].status = 'failed'),
+          (r) => (r.native.histories[0].fault = 'unknown'),
+          (r) => (r.native.histories[0].ops[0].insert = ''),
+          (r) => (r.native.histories[0].retries = 4),
+        ]) {
+          const bad = structuredClone(good);
+          change(bad);
+          assert.throws(() => reconcileHandoffHistories(bad.service, bad.native));
+        }
+      },
+    ),
+    { seed: 150943, numRuns: 160 },
+  );
+});
+
 test('admission wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -1419,7 +1752,11 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-handoff/run.mjs').blocked);
+  assert.equal(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-handoff/run.mjs').stage.expect.kind,
+    'account-handoff',
+  );
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-editing/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

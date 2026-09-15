@@ -7902,3 +7902,56 @@ server, relay, device or deployment operation occurs. This phase is uncommitted.
 wrapper integration, remaining wrapper/qualification repairs, immutable aggregate and private
 Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).
+
+
+## 2026-09-15 — Account handoff wrapper integration
+
+Admission is signed and signature-verified as `b9d4efa2`. Handoff preserves the actual core/es256/native
+grouping, default Node concurrency, 180-second bound and five-second grace. Owned execution adds terminal
+reporting, the disposable CDP browser and retained output. Exact argv and empty user environment alias the
+campaign. Pin `beed8cf:src/crdt/promotionRecord.ts` before/after execution and reuse. The inactive
+`HANDOFF_SLOT_BASELINE` variant is not selected or inherited by the owner. Standalone invocation and
+spec/JUnit output remain available; weaker invocation, result, history, output and browser contracts refuse.
+
+Require nine reports within 4 MiB /32-entry /one-level bounds: sources, summary, JUnit, log, credential/
+passkey controls and generated DER/service/native evidence. Reconcile all 21 terminal outcomes, successful
+summary/code/no timeout and exact wrapper source hashes against owned inputs. Credential evidence now
+includes the actual refused baseline, original binding, substituted key, accepted binding and public
+service root. Independently verify both binding signatures using locally constructed row-12 bytes and
+Node/OpenSSL, require a changed key, and require the otherwise identical binding target. Passkey evidence
+records the actual injected zero signature, unchanged baseline storage, expected target and actual selected/
+classified routes. Require exact route agreement. No secret factors are added to reports.
+
+Independently verify all 200 retained P-256 DER signatures with Node/OpenSSL, seed 9262026. This corroborates
+signature evidence; the original grouped test remains authority for runtime DER-to-P1363 conversion and
+malformed-DER refusal. Require 60 passing service histories at seed 9252026 and final activation consistent
+with the recorded commands; require 24 passing native histories at seed 9272026 and their declared
+operation/fault/retry bounds. These checks do not regenerate the seed schedule or replay browser/database
+semantics. The owned terminal census remains case authority; JUnit/logs are auxiliary.
+
+The owned epoch passes **116 cases in six executions**: 61 planning cases in four full suites, 21 handoff
+and 34 admission regression cases. Handoff takes **137.063s /180s**; admission takes
+128.411s /180s. Handoff includes generated DER/service/native histories, actual browser
+ES256 assertion, offline startup, IDB abort/renderer interruption, source-inventory and content-replay
+assertions, historical-reader refusal and cancellation drain. Every process/browser group drains. A seventh
+request reuses the exact handoff receipt after admission; all nine reports survive copied-checkout removal.
+Both historical reader blobs are retained in the lossless archive.
+
+Five new infrastructure cases cover exact invocation/history, weaker contracts, twelve directed report
+corruptions, nine missing files, 80 generated control sets with twelve corruptions each (seed 150941),
+80 generated DER reports with five corruptions each (seed 150942), and 160 service command histories with
+ten corruptions each (seed 150943). Six synthetic process runs accept valid reports, reject zero-exit
+failed summary, unchanged credential key, mismatched route and invalid DER, and show an omitted report hook
+admits a failed summary. A second isolated adapter fault omits DER verification and admits an invalid
+signature. Both deliberate faults discriminate. Synthetic case claims are instrumentation controls, not
+Account executions. Preliminary planning failures from a duplicate import and stale blocked-wrapper
+assertion are preserved with the passing retry; no owned campaign failure occurred. The existing Node
+reporter listener-limit and experimental API diagnostics remain visible and are not claimed fixed.
+
+Counts stay **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Five added cases belong to an existing infrastructure file. Unresolved wrappers fall from 144 to
+**142: zero test-file /87 command /55 campaign**. Runtime, package/dependency, crypto-census/vector and
+F-17 debt bytes, earlier archives and L-2 checkpoint are unchanged. No personal browser, server, relay,
+device or deployment operation occurs. This phase is uncommitted. Next: Account editing wrapper integration,
+remaining wrapper/qualification repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).

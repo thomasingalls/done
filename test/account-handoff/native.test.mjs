@@ -251,22 +251,41 @@ test(
       const call = assertPasskey;
       window.assertPasskey = async (req) => ({
         ...(await call(req)),
-        signature: new Uint8Array(64),
+        signature: (window.invalidHandoffSignature = new Uint8Array(64)),
       });
     });
     await assert.rejects(handoff(f.page, item), /signature/);
-    assert.equal(await inventory(f.page), before);
+    const baselineInventory = await inventory(f.page);
+    assert.equal(baselineInventory, before);
     await f.page.evaluate(await handoffBundle('passkey'));
     const accepted = await handoff(f.page, item),
       classified = await classify(f.page, item);
     assert.equal(accepted.kind, 'account-selected');
-    assert.equal(classified.kind, 'account');
+    assert.deepEqual(classified, { ...accepted, kind: 'account' });
     if (process.env.ACCOUNT_REPORT_DIR) {
       const { writeFileSync } = await import('node:fs'),
         { join } = await import('node:path');
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-passkey.json'),
-        JSON.stringify({ baseline: 'invalid signature refused', accepted, classified }, null, 2),
+        JSON.stringify(
+          {
+            baseline: 'invalid signature refused',
+            baselineUnchanged: baselineInventory === before,
+            signature: await f.page.evaluate(() =>
+              Array.from(invalidHandoffSignature, (b) => b.toString(16).padStart(2, '0')).join(''),
+            ),
+            expected: {
+              slotId: item.slotId,
+              accountId: item.accountId,
+              principalId: item.scope.principalId,
+              workspaceId: item.scope.workspaceId,
+            },
+            accepted,
+            classified,
+          },
+          null,
+          2,
+        ),
       );
     }
   },

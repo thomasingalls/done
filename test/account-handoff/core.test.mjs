@@ -179,10 +179,12 @@ test('credential-integrity control actually signs a substituted key only when th
   const x = await active(t),
     key = generateKeyPairSync('ed25519'),
     pub = key.publicKey.export({ format: 'der', type: 'spki' }).toString('hex');
+  const original = await binding(x);
   const db = new DatabaseSync(x.f.path);
   db.prepare('UPDATE credentials SET spki=?').run(pub);
   db.close();
-  assert.equal((await binding(x)).ok, false);
+  const baseline = await binding(x);
+  assert.equal(baseline.ok, false);
   const bad = new AccountCore(x.f.path, { rpId: 'localhost', origin: 'http://localhost:4999' });
   try {
     const accepted = await x.authority.owner.promotionBinding(bad, {
@@ -205,7 +207,18 @@ test('credential-integrity control actually signs a substituted key only when th
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-credential.json'),
-        JSON.stringify({ baseline: 'substituted credential refused', accepted }, null, 2),
+        JSON.stringify(
+          {
+            baseline: 'substituted credential refused',
+            baselineOk: baseline.ok,
+            authRoot: x.authority.pin.authRoot,
+            original,
+            substitutedKey: pub,
+            accepted,
+          },
+          null,
+          2,
+        ),
       );
   } finally {
     bad.close();

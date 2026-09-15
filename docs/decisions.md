@@ -3677,3 +3677,14 @@ recorded service-history commands to check their final ledger state; preserve th
 receipt/coverage oracle. These report postconditions corroborate actual execution and do not replace
 cryptographic verification, passkey checks or browser/database replay.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).
+
+
+## 2026-09-15 — Handoff reports bind credential substitution, routes and signature evidence
+
+Require a refused credential baseline and an actually substituted public key with otherwise identical
+binding targets; independently verify original and accepted service binding signatures. Require the invalid
+passkey control's selected and classified routes to agree with its intended target. Verify retained P-256
+DER signature bytes independently, while preserving the original test as authority for runtime conversion
+and malformed-DER refusal. These report postconditions corroborate bounded execution; they do not replace
+native state/content assertions or establish aggregate correctness.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).
