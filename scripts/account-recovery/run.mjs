@@ -3,10 +3,23 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, readdirSync, writeFileSync, createWriteStream } from 'node:fs';
 import { resolve, join } from 'node:path';
 
-const output = resolve(
-  'test-results/account-recovery',
-  new Date().toISOString().replaceAll(':', '-'),
-);
+import assert from 'node:assert/strict';
+
+const owned = Boolean(process.env.RELEASE_PROCESS_GUARD);
+if (owned) {
+  assert(process.env.ACCOUNT_REPORT_DIR, 'Owned recovery campaign requires retained output');
+  assert(
+    process.env.RELEASE_CASE_REPORT && process.env.RELEASE_RUN_NONCE,
+    'Owned recovery campaign requires its reporter',
+  );
+  assert(
+    process.env.RELEASE_BROWSER_EXECUTABLE && process.env.RELEASE_CUSTODY_OUTPUT,
+    'Owned recovery campaign requires persistent browser ownership',
+  );
+}
+const output = owned
+  ? resolve(process.env.ACCOUNT_REPORT_DIR)
+  : resolve('test-results/account-recovery', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
 console.log(`Account recovery evidence: ${output}`);
 const files = [
@@ -48,6 +61,12 @@ const child = spawn(
     '--test-reporter-destination=stdout',
     '--test-reporter=junit',
     `--test-reporter-destination=${join(output, 'results.xml')}`,
+    ...(owned
+      ? [
+          '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+          '--test-reporter-destination=stdout',
+        ]
+      : []),
     ...['core', 'crypto', 'properties', 'restart', 'controls', 'native'].map(
       (name) => `test/account-recovery/${name}.test.mjs`,
     ),

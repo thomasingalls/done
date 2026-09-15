@@ -55,46 +55,49 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Report-file retention is signed and verified as `9e4a1d9e`. All catalogue/
-test-file adapters are integrated. Counts remain **628 obligations, 291 required test files, 272
-general files/2,198 dispositions (11 not applicable)**. Account core resolves one command and one
-campaign row: **zero test-file /93 command /61 campaign** remain unresolved, down from 156 to 154.
+**Roadmap checkpoint.** Account core wrapper integration is signed and verified as `d41a0a56`.
+All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
+272 general files/2,198 dispositions (11 not applicable)**. Recovery resolves one command and one
+campaign row: **zero test-file /92 command /60 campaign** remain unresolved, down from 154 to 152.
 These are integration counts, not a passing aggregate.
 
-**Just completed.** The actual Account core wrapper preserves its five-file order and default Node
-file concurrency, 120-second bound and five-second grace. Owned execution adds the terminal census,
-borrows disposable Chromium, retains ten reports outside the copied checkout and drains descendants.
-The adapter checks all 30 case outcomes, successful summary, source hashes and all three paired
-fault-control results. Exact command aliases share this campaign; serial per-file receipts remain
-separate. JUnit and run.log are retained auxiliary evidence; the owned census is the case authority.
+**Just completed.** The actual recovery wrapper preserves all six files, default Node concurrency,
+120-second bound and five-second grace. Owned execution retains its reports and terminal census and
+uses the existing persistent-profile fixture in the worker group, with pinned Chromium. Lifecycle
+records now join the owned report tree when opted in; other native invocations retain the prior
+fallback. The adapter checks all 25 outcomes, successful summary, source hashes, both factor-control
+pairs, substituted-root evidence and three distinct clean browser lifetimes through one owned profile.
+Case outcomes come from the owned Node census; JUnit/logs remain auxiliary. Lifecycle reports are
+cooperative fixture observations coupled to owner group drain; virtual passkey restoration is simulated.
 
-The final owned epoch passes **60 cases in four executions**, then reuses the campaign receipt once.
-Account core takes **8.103s /120s**. All groups drain and all ten reports survive checkout removal.
-Three new infrastructure assertions, 160 generated summary corruptions, directed corruptions and
-missing-report controls pass. Five synthetic process executions and two deliberate faults verify
-refusal of successful-looking but invalid evidence; their case claims are not Account executions.
+The final epoch passes **93 cases in six executions**: 38 planning, 25 recovery and 30 core-regression
+cases, then one exact recovery receipt reuse. Recovery takes **11.900s /120s**, including 160 generated
+service histories and actual browser restarts. Every group drains. Ten recovery reports and the three
+lifecycle records survive checkout deletion. Four new infrastructure cases include 100 generated
+profile histories, 14 breakage variants each, and directed report/missing-file controls. Five synthetic
+process runs and two deliberate faults discriminate; their case/profile claims are not real executions.
 The code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).
 
-**Preserved observations.** Inside the execution sandbox, the first attempt passed planning but
-Chromium exited SIGABRT before any Account body. The outside-sandbox retry passes on the same input
-identity. Both remain recorded; no runtime repair is inferred. The earlier runner suite's
-101.478s/120s observation, older orphan-classification failures, report-phase setup failures and all
-previous failure/cancellation/latency receipts retain their original evidence.
+**Preserved observations.** An outdated Account-fixture planning assertion still marked already
+integrated core/preparation wrappers blocked. Its failure is retained; positive resolved-contract
+checks and the remaining blocked assertions now pass. Prior core browser-startup SIGABRT, older
+orphan/headroom observations, report setup failures and all failure/cancellation/latency receipts
+retain their evidence. No runtime repair follows from correcting the stale planning assertion.
 
-**Next bounded phase.** Integrate the Account recovery wrapper with its grouped selection, owned
-reports and semantic postconditions, then continue bounded wrapper families. Optional reports in
-unintegrated output locations still need explicit treatment. File custody is cooperative bounded
-polling, not a disk quota or hostile-code sandbox.
+**Next bounded phase.** Account authority wrapper integration, with its exact grouped selection,
+owned reports and semantic postconditions, then other bounded wrapper families. Optional outputs in
+unintegrated locations still need explicit treatment. File custody is cooperative bounded polling,
+not a disk quota or hostile-code sandbox; this phase does not establish whole-profile residue bounds.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
 exploration is closed. The unchanged application gate remains **failed**: Android card p95 38.7ms
 (<16), settled navigation 113.6ms (<100). Desktop card is 9.0ms, Android focus 35.4ms. The explicit
-post-measurement product disposition accepts the two misses for the RC; it is not an automated waiver
+post-measurement product disposition accepts both misses for the RC; it is not an automated waiver
 or passing receipt. [RC decision](./f17-rc-activation.md);
 [open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
-No runtime, package/dependency, vector, census or F-17 debt changes occur in this wrapper phase.
+No runtime, package/dependency, vector, crypto-census or F-17 debt changes occur in this phase.
 No personal app/server, relay, deployment or device operation occurs.
 
 **Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,

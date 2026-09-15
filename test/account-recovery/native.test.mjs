@@ -55,7 +55,10 @@ test(
         records,
         save: () =>
           writeFileSync(
-            join(dirname(process.env.RELEASE_CASE_REPORT), 'recovery-profiles.json'),
+            join(
+              process.env.ACCOUNT_REPORT_DIR ?? dirname(process.env.RELEASE_CASE_REPORT),
+              'recovery-profiles.json',
+            ),
             JSON.stringify(records, null, 2) + '\n',
           ),
       });

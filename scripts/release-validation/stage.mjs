@@ -27,6 +27,11 @@ import {
   validateCoreCampaign,
   reconcileCoreReports,
 } from './account-core-wrapper.mjs';
+import {
+  recoveryCampaign,
+  validateRecoveryCampaign,
+  reconcileRecoveryReports,
+} from './account-recovery-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -82,6 +87,7 @@ export function validateStage(stage) {
       'exit',
       'cases',
       'account-core',
+      'account-recovery',
       'vitest',
       'playwright',
       'content',
@@ -104,7 +110,11 @@ export function validateStage(stage) {
       [0],
       'Nonzero exit alone cannot prove a mutation was detected',
     );
-  else if (['cases', 'vitest', 'playwright', 'account-core'].includes(stage.expect.kind)) {
+  else if (
+    ['cases', 'vitest', 'playwright', 'account-core', 'account-recovery'].includes(
+      stage.expect.kind,
+    )
+  ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
     assert.equal(
       new Set(stage.expect.cases.map((c) => c.id)).size,
@@ -132,6 +142,12 @@ export function validateStage(stage) {
     stage.variant === 'account-core-campaign-v1'
   )
     validateCoreCampaign(stage);
+  if (
+    stage.expect.kind === 'account-recovery' ||
+    stage.argv[1] === recoveryCampaign ||
+    stage.variant === 'account-recovery-campaign-v1'
+  )
+    validateRecoveryCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -207,8 +223,11 @@ export function validateStage(stage) {
   }
   if (stage.fixture) {
     if (stage.fixture.kind === 'chromium-inherited-profiles') {
-      assert.equal(stage.variant, 'node-inherited-chromium-v1');
-      assert(['cases', 'exit'].includes(stage.expect.kind), 'Unreviewed profile result adapter');
+      if (stage.expect.kind === 'account-recovery') validateRecoveryCampaign(stage);
+      else {
+        assert.equal(stage.variant, 'node-inherited-chromium-v1');
+        assert(['cases', 'exit'].includes(stage.expect.kind), 'Unreviewed profile result adapter');
+      }
       // The shared profile helper has a fixed 15-second startup bound. It launches
       // inside the guarded worker group, which also owns close/reopen lifetimes.
       assert.deepEqual(stage.fixture, { kind: 'chromium-inherited-profiles', startupMs: 15000 });
@@ -643,7 +662,10 @@ export function createStageRunner({
         } else if (stage.expect.kind === 'vitest') {
           actual = reconcileVitest(stage.expect, reported, nonce);
         } else {
-          if (stage.argv.includes('--test') || stage.expect.kind === 'account-core') {
+          if (
+            stage.argv.includes('--test') ||
+            ['account-core', 'account-recovery'].includes(stage.expect.kind)
+          ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
             assert(reported.summary, 'Missing terminal Node summary');
           }
@@ -654,6 +676,16 @@ export function createStageRunner({
               'Core report producers or inventory incomplete',
             );
             reconcileCoreReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-recovery') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Recovery report producers or inventory incomplete',
+            );
+            reconcileRecoveryReports(fileDirectory, before.sources, {
+              custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
+              browserExecutable: browserRuntime.executable,
+            });
           }
           actual = reported;
         }

@@ -1038,10 +1038,8 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     assert(!m.selections['account-fixtures'].includes('test:' + f));
   }
   for (const runner of [
-    'account-core',
     'account-authority',
     'account-admission',
-    'account-recovery',
     'account-promotion',
     'account-activation',
     'account-handoff',
@@ -1054,7 +1052,6 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     'account-service-custody',
     'account-admission-bounds',
     'account-admission-evidence',
-    'account-crypto-prep',
     'account-first-authority',
     'account-genesis',
     'account-outbound',
@@ -1075,6 +1072,15 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     'private-release',
   ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
+  for (const [runner, kind] of [
+    ['account-core', 'account-core'],
+    ['account-recovery', 'account-recovery'],
+    ['account-crypto-prep', 'exit'],
+  ]) {
+    const row = m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`);
+    assert.equal(row.blocked, undefined);
+    assert.equal(row.stage.expect.kind, kind);
+  }
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);
 });
 

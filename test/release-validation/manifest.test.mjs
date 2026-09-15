@@ -26,6 +26,233 @@ import {
   reconcileCoreReports,
 } from '../../scripts/release-validation/account-core-wrapper.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
+import {
+  recoveryCampaign,
+  recoveryCampaignStage,
+  recoveryFiles,
+  recoveryReports,
+  reconcileRecoveryReports,
+  reconcileRecoveryProfiles,
+} from '../../scripts/release-validation/account-recovery-wrapper.mjs';
+
+const recoveryOwner = { custodyOutput: '/owned/custody', browserExecutable: '/pinned/chromium' };
+function profileRecords(pids = [101, 102, 103], owner = recoveryOwner) {
+  const profile = join(owner.custodyOutput, 'recovery', 'profiles', 'source-false');
+  return pids.map((pid, i) => ({
+    pid,
+    workerPid: 10,
+    name: 'source-false',
+    profile,
+    executable: owner.browserExecutable,
+    ownership: 'inherited-worker-group',
+    closed: true,
+    exit: 0,
+    signal: null,
+    ...(i ? { reopen: { priorPid: pids[i - 1], ordinal: i } } : {}),
+    argv: [
+      '--use-mock-keychain',
+      '--password-store=basic',
+      '--remote-debugging-port=0',
+      '--user-data-dir=' + profile,
+    ],
+    endpoint: 'ws://127.0.0.1:12345/devtools/browser/11111111-1111-1111-1111-111111111111',
+  }));
+}
+
+test('recovery wrapper preserves its complete grouped selection and exact command identity', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-recovery');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', recoveryCampaign]);
+  assert.deepEqual([...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))], recoveryFiles);
+  assert.equal(stage.expect.cases.length, 25);
+  assert.deepEqual(stage.fileOutputs.required, recoveryReports);
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'recovery-filter',
+    argv: ['node', recoveryCampaign, '--case', 'native'],
+  });
+  const variants = compileManifest(process.cwd(), changed);
+  assert(variants.rows.find((r) => r.id === 'command:recovery-filter:0').blocked);
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('recovery wrapper refuses weaker result, report and persistent-browser contracts', () => {
+  const stage = recoveryCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'node-inherited-chromium-v1' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-cdp', startupMs: 15000 } },
+    { deadlineMs: 120001 },
+    { graceMs: 5001 },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('recovery evidence requires both factor controls, a substituted sealed root and bound source reports', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-recovery-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: 'package.json', sha256: 'a'.repeat(64) }];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-root.json': {
+      original: {
+        authRoot: 'ab'.repeat(32),
+        rootCommitment: 'cd'.repeat(32),
+        envelope: { ct: 'ef' },
+      },
+      draft: { authRoot: '12'.repeat(32), rootCommitment: '34'.repeat(32), envelope: { ct: 'ef' } },
+      result: { stage: 'recovery-confirmed' },
+    },
+    'recovery-profiles.json': profileRecords(),
+    ...Object.fromEntries(
+      ['recovery', 'passkey'].flatMap((gate) => [
+        [`control-${gate}-baseline.json`, { result: { refusal: 'invalid-proof' } }],
+        [`control-${gate}-mutant.json`, { result: { stage: 'recovery-confirmed' } }],
+      ]),
+    ),
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcileRecoveryReports(directory, sources, recoveryOwner);
+  const faults = [
+    (r) => {
+      r['summary.json'].status = 'failed';
+    },
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'error';
+    },
+    (r) => {
+      r['summary.json'].completedAt = 'invalid';
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'][0].sha256 = 'b'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-root.json'].result.stage = 'refused';
+    },
+    (r) => {
+      r['control-root.json'].draft.authRoot = r['control-root.json'].original.authRoot;
+    },
+    (r) => {
+      r['control-root.json'].draft.rootCommitment = r['control-root.json'].original.rootCommitment;
+    },
+    (r) => {
+      r['control-root.json'].draft.envelope.ct = 'different';
+    },
+    ...['recovery', 'passkey'].flatMap((gate) => [
+      (r) => {
+        r[`control-${gate}-baseline.json`].result = { stage: 'recovery-confirmed' };
+      },
+      (r) => {
+        r[`control-${gate}-mutant.json`].result = { refusal: 'invalid-proof' };
+      },
+    ]),
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcileRecoveryReports(directory, sources, recoveryOwner));
+  }
+  for (const file of recoveryReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileRecoveryReports(directory, sources, recoveryOwner));
+  }
+});
+
+test('100 generated persistent-profile histories preserve one profile and refuse broken lifetime chains', () => {
+  fc.assert(
+    fc.property(
+      fc.uniqueArray(fc.integer({ min: 100, max: 1000000 }), { minLength: 3, maxLength: 3 }),
+      fc.integer({ min: 1, max: 100000 }),
+      (pids, directory) => {
+        const owner = { ...recoveryOwner, custodyOutput: '/owned/' + directory };
+        const good = profileRecords(pids, owner);
+        reconcileRecoveryProfiles(good, owner);
+        const faults = [
+          (r) => r.pop(),
+          (r) => r.reverse(),
+          (r) => {
+            r[2].pid = r[0].pid;
+          },
+          (r) => {
+            r[1].workerPid++;
+          },
+          (r) => {
+            r[1].profile += '-foreign';
+          },
+          (r) => {
+            r[1].executable += '-foreign';
+          },
+          (r) => {
+            r[1].closed = false;
+          },
+          (r) => {
+            r[1].exit = 1;
+          },
+          (r) => {
+            r[1].copy = {};
+          },
+          (r) => {
+            r[1].argv = [];
+          },
+          (r) => {
+            r[1].endpoint = 'ws://external.invalid:123/browser';
+          },
+          (r) => {
+            r[1].reopen.ordinal = 2;
+          },
+          (r) => {
+            r[1].reopen.priorPid = r[2].pid;
+          },
+          (r) => {
+            r[0].reopen = { priorPid: r[2].pid, ordinal: 0 };
+          },
+        ];
+        for (const fault of faults) {
+          const bad = structuredClone(good);
+          fault(bad);
+          assert.throws(() => reconcileRecoveryProfiles(bad, owner));
+        }
+      },
+    ),
+    { seed: 150934, numRuns: 100 },
+  );
+});
 
 test('preparation wrappers retain grouped Node execution and vector aliases share only exact invocations', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));

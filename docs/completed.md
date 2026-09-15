@@ -7644,3 +7644,55 @@ server, relay, device or deployment operation occurs. This phase is uncommitted;
 recovery wrapper with its own grouped selection and report postconditions. Immutable aggregate and
 private Account/human recovery-adoption qualification remain ahead.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
+
+
+## 2026-09-15 — Account recovery wrapper integration
+
+Account core wrapper integration is signed and signature-verified as `d41a0a56`. Integrate the actual
+recovery campaign, preserving its six-file order, default Node file concurrency, 120-second bound,
+five-second grace and spec/JUnit reporters. Owned execution adds a terminal case reporter and a
+retained output directory. The native recovery case already uses persistent browsers in its inherited
+worker group; certify that fixture directly, with pinned Chromium and its existing 15-second startup
+bound, without launching an additional unused CDP browser. Its lifecycle records join the owned report
+tree when ACCOUNT_REPORT_DIR is supplied; the prior case-report-adjacent fallback remains for other
+native invocations. Exact argv/empty-environment commands alias the campaign; variants refuse.
+
+Require ten files under 4 MiB /32-entry /one-level bounds. Reconcile all 25 terminal case outcomes,
+summary success/code/no timeout or launch error, source hashes, both recovery/passkey baseline-mutant
+pairs, substituted-root evidence and three clean browser lifetimes. Profile records must use three
+distinct PIDs, one native worker, one exact owned profile, pinned browser executable and an ordered
+predecessor/reopen chain; each browser must close successfully. These are cooperative fixture
+observations plus the owner's independent group-drain check, not OS attestation. The native test's
+virtual passkey restoration remains explicitly simulated. The owned Node census is the case authority;
+JUnit/logs are auxiliary, not independently parsed or credited. Whole-profile residue testing remains
+outside this wrapper phase.
+
+The final owned epoch passes **93 cases in six executions**: 38 planning cases in four whole suites,
+25 recovery campaign cases and the 30-case Account core regression. Recovery takes **11.900s /120s**,
+including 160 generated durable-ledger histories, independent crypto, factor/root controls, SIGKILL
+service restarts, IndexedDB aborts, renderer death and three persistent-browser incarnations. Every
+process group drains. A seventh request reuses the exact recovery receipt and revalidates its report
+tree. All ten recovery reports, including the three lifecycle records, survive copied-checkout deletion.
+
+Four new infrastructure assertions cover invocation/ownership contracts, 16 directed report
+corruptions, ten missing files and 100 generated profile histories with 14 broken-chain variants each.
+Four synthetic process controls distinguish valid evidence from zero-exit failed summary, missing
+passkey refusal and broken profile predecessor. A fifth synthetic run omits semantic reconciliation
+and admits the invalid summary that the baseline rejects. A second isolated fault removes the reopen
+predecessor check and admits the broken chain. Both faults discriminate. Synthetic case/lifecycle
+claims are instrumentation controls, not Account cases or actual browser restarts.
+
+A pre-change Account-fixture planning run exposes an outdated assertion that all Account wrappers
+remain blocked, including already integrated core/preparation. Preserve that failure. Replace those
+stale assertions with positive checks for their exact resolved adapters, add recovery's disposition,
+and retain the unintegrated wrapper checks. All four planning cases subsequently pass. No product
+repair is inferred. Inventory/manifest, scoped lint/format and whitespace checks pass.
+
+Counts stay **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not
+applicable)**. Four new cases belong to an existing infrastructure file. Unresolved wrappers decrease
+from 154 to **152: zero test-file /92 command /60 campaign**. Runtime, package/dependency, crypto-census/
+vector and F-17 debt bytes, old archives and the L-2 checkpoint are unchanged. No personal browser,
+server, relay, device or deployment operation occurs. This phase is uncommitted. Next: Account
+authority wrapper integration with its own selected tests and report postconditions, followed by
+remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).

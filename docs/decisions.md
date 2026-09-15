@@ -3623,3 +3623,15 @@ Keep spec/JUnit output as auxiliary evidence and exact per-file obligations sepa
 wrapper execution. Alias only exact command arguments and empty user environment. The first browser
 startup abort remains a failed receipt; its passing retry does not erase it or establish a repair.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
+
+
+## 2026-09-15 — Recovery wrapper receipts bind persistent browser lifetimes
+
+The owned recovery wrapper uses the existing inherited persistent-profile fixture and retains its
+lifecycle report beside campaign evidence. Require three distinct clean browser incarnations, the
+same owned profile and the complete reopen predecessor chain, along with exact terminal cases,
+summary/source pins and recovery factor/root controls. Group drain is independently checked by the
+owner; reported PIDs are cooperative observations, and virtual passkey restoration is simulated.
+Keep the standalone wrapper and native report fallback intact. Previous blocked-wrapper assertions
+must advance to explicit resolved-contract checks as adapters land, while unresolved rows still refuse.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).

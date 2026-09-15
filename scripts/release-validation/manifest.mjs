@@ -93,6 +93,7 @@ import {
   preparationReportStage,
 } from './command-wrappers.mjs';
 import { coreCampaign, coreCampaignStage } from './account-core-wrapper.mjs';
+import { recoveryCampaign, recoveryCampaignStage } from './account-recovery-wrapper.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -355,6 +356,8 @@ export function compileManifest(root, inventory) {
     if (preparation) Object.assign(row, preparation);
     else if (exactCommand(command, ['node', coreCampaign]))
       row.requires = ['campaign:' + coreCampaign];
+    else if (exactCommand(command, ['node', recoveryCampaign]))
+      row.requires = ['campaign:' + recoveryCampaign];
     else if (vector) row.requires = ['vector:' + vector.path];
     else if (exactCommand(command, ['node', 'scripts/content/run.mjs']))
       row.requires = ['catalogue:scripts/content/catalog.mjs'];
@@ -400,24 +403,26 @@ export function compileManifest(root, inventory) {
         ? { stage: preparationCampaignStage() }
         : c.path === coreCampaign
           ? { stage: coreCampaignStage(root) }
-          : [
-                'scripts/content/run.mjs',
-                'scripts/journal/run.mjs',
-                'scripts/admission/run.mjs',
-                'scripts/editor-admission/run.mjs',
-                'scripts/workspace-admission/run.mjs',
-                'scripts/owned-startup/run.mjs',
-                'scripts/local-genesis/run.mjs',
-                'scripts/write-session/run.mjs',
-                'scripts/custody/run.mjs',
-                'scripts/content-trim/run.mjs',
-                'scripts/local-clear/run.mjs',
-              ].includes(c.path)
-            ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
-            : {
-                blocked:
-                  'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-              }),
+          : c.path === recoveryCampaign
+            ? { stage: recoveryCampaignStage(root) }
+            : [
+                  'scripts/content/run.mjs',
+                  'scripts/journal/run.mjs',
+                  'scripts/admission/run.mjs',
+                  'scripts/editor-admission/run.mjs',
+                  'scripts/workspace-admission/run.mjs',
+                  'scripts/owned-startup/run.mjs',
+                  'scripts/local-genesis/run.mjs',
+                  'scripts/write-session/run.mjs',
+                  'scripts/custody/run.mjs',
+                  'scripts/content-trim/run.mjs',
+                  'scripts/local-clear/run.mjs',
+                ].includes(c.path)
+              ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
+              : {
+                  blocked:
+                    'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                }),
     });
   }
   for (const c of inventory.constructions) {
@@ -489,6 +494,13 @@ export function compileManifest(root, inventory) {
     unresolved,
     selections: {
       infrastructure,
+      'wrapper-account-recovery': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + recoveryCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', recoveryCampaign])),
+        )
+        .map((r) => r.id),
       'wrapper-account-core': rows
         .filter(
           (r) =>
