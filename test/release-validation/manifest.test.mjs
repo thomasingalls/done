@@ -282,6 +282,342 @@ function admissionHistories(commands = ['offer', 'finish']) {
 }
 
 import {
+  deliveryCampaign,
+  deliveryCampaignStage,
+  deliverySteps,
+  deliveryReports,
+  reconcileDeliveryReports,
+  reconcileDeliveryEvidence,
+} from '../../scripts/release-validation/account-delivery-wrapper.mjs';
+function deliveryEvidenceFixture() {
+  const saved = { kind: 'ready', position: 1, bytes: [1, 2, 3] },
+    pending = [{ position: 1, bytes: [1, 2, 3] }];
+  const state = (state, acceptedThrough, counts) => ({
+    state,
+    acceptedThrough,
+    responses: counts.map(([position, count]) => ({ position, count })),
+  });
+  const cases = [
+    {
+      answers: [
+        ['junk', 1],
+        ['accepted', 1],
+        ['accepted', 1],
+      ],
+      values: [
+        ['ready', 0, [], false],
+        ['ready', 1, [[1, 1]], true],
+        ['ready', 1, [[1, 1]], false],
+      ],
+    },
+    {
+      answers: [
+        ['refused', 2],
+        ['accepted', 1],
+        ['accepted', 2],
+      ],
+      values: [
+        ['closed', 0, [[2, 1]], true],
+        [
+          'closed',
+          1,
+          [
+            [2, 1],
+            [1, 1],
+          ],
+          true,
+        ],
+        [
+          'conflict',
+          2,
+          [
+            [2, 2],
+            [1, 1],
+          ],
+          true,
+        ],
+      ],
+    },
+    {
+      answers: [
+        ['finalized', 1],
+        ['junk', 2],
+        ['accepted', 2],
+      ],
+      values: [
+        ['finalized', 1, [[1, 1]], true],
+        ['finalized', 1, [[1, 1]], false],
+        [
+          'conflict',
+          2,
+          [
+            [1, 1],
+            [2, 1],
+          ],
+          true,
+        ],
+      ],
+    },
+    {
+      answers: [
+        ['conflict', 1],
+        ['accepted', 2],
+        ['refused', 1],
+      ],
+      values: [
+        ['conflict', 0, [[1, 1]], true],
+        ['conflict', 0, [[1, 1]], false],
+        ['conflict', 0, [[1, 1]], false],
+      ],
+    },
+  ];
+  const histories = Array.from({ length: 8 }, (_, index) => {
+    const sample = cases[index % 4],
+      side = index % 2 ? 'after' : 'before';
+    const observations = sample.values.map(([kind, through, counts, recorded], i) => ({
+      bytes: [
+        ['accepted', 'refused', 'finalized', 'conflict', 'junk'].indexOf(sample.answers[i][0]),
+        sample.answers[i][1],
+      ],
+      recorded,
+      status: state(kind, through, counts),
+      pending: kind === 'ready' && through === 0 ? structuredClone(pending) : [],
+    }));
+    const sources = [{ id: 'source', sources: [{ actor: 'a', kind: 'human', bytes: [4, 5] }] }],
+      wires = [
+        { position: 1, bytes: [6, 7] },
+        { position: 2, bytes: [8, 9] },
+      ];
+    return {
+      side,
+      compact: !!(index % 2),
+      answers: sample.answers.map(([kind, position]) => ({ kind, position })),
+      observations,
+      before: { sources, wires },
+      postCrashPending: side === 'after' ? structuredClone(pending) : [],
+      saved: structuredClone(saved),
+      retry: structuredClone(saved),
+      beforeReopen: structuredClone(observations.at(-1).status),
+      recovered: {
+        status: structuredClone(observations.at(-1).status),
+        sources: structuredClone(sources),
+        wires: structuredClone(wires),
+      },
+    };
+  });
+  return {
+    'controls.json': {
+      earlyReturn: {
+        escaped: structuredClone(saved),
+        pending: [],
+        baseline: structuredClone(saved),
+        baselinePending: structuredClone(pending),
+      },
+      missingClosure: {
+        before: state('closed', 0, [[1, 1]]),
+        refusalReason: 'Spool ledger is incomplete',
+        after: state('ready', 0, []),
+        pending: structuredClone(pending),
+      },
+    },
+    'authority-control.json': [
+      { control: false, returned: false, persisted: 0 },
+      { control: true, returned: true, persisted: 1 },
+    ],
+    'prefix-control.json': [false, true].map((reverse) => ({
+      reverse,
+      mutant: state('closed', 2, [
+        [1, 1],
+        [2, 1],
+      ]),
+      actual: state('conflict', 2, [
+        [1, 1],
+        [2, 1],
+      ]),
+    })),
+    'unit-histories.json': {
+      failed: false,
+      interrupted: false,
+      numRuns: 500,
+      numSkips: 0,
+      numShrinks: 0,
+      seed: 1121060,
+      counterexample: null,
+      counterexamplePath: null,
+      error: null,
+      errorInstance: null,
+      failures: [],
+      executionSummary: [],
+      runConfiguration: {
+        seed: 1121060,
+        numRuns: 500,
+        path: '',
+        endOnFailure: false,
+        examples: [],
+      },
+      prefixes: 9168,
+    },
+    'generated.json': { seed: 9812027, status: 'passed', histories },
+  };
+}
+test('delivery wrapper binds all property/native cases and pins the invoked historical reader', () => {
+  const m = compileManifest(
+      process.cwd(),
+      JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    ),
+    [s, ...rest] = selectStages(m, 'wrapper-account-delivery');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 31);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.expect.cases.length),
+    [12, 19],
+  );
+  assert.equal(s.expect.historyInputs[0].reference, '81a4655');
+  assert.deepEqual(s.fileOutputs.required, deliveryReports);
+  assert.equal(s.deadlineMs, 510000);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const changes of [
+    { argv: [...s.argv, '--case', 'native'] },
+    { env: { MODE: 'other' } },
+    { variant: 'current' },
+    { deadlineMs: 510001 },
+    { fixture: undefined },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, historyInputs: [] } },
+    { expect: { ...s.expect, steps: s.expect.steps.toReversed() } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...changes }));
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  graph.extraRoots.push({
+    id: 'delivery-filter',
+    argv: ['node', deliveryCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:delivery-filter:0')
+      .blocked,
+  );
+});
+
+test('delivery reports retain complete separate case domains and reject successful-looking omissions', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-delivery-trace-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const f = outboundTraceFixture(directory, deliveryCampaignStage(process.cwd()));
+  const run = (trace) =>
+    reconcileCampaignTrace(f.stage.expect.steps, trace, 'fresh', directory, reconcileCampaignNode);
+  assert.deepEqual(run(f.trace).cases, f.stage.expect.cases);
+  for (const alter of [
+    (v) => v.reports.properties.cases.pop(),
+    (v) => v.reports.native.cases.pop(),
+    (v) => (v.reports.native.nonce = 'old'),
+    (v) => (v.trace.steps[1].timedOut = true),
+    (v) => v.trace.steps.reverse(),
+  ]) {
+    const v = structuredClone({ trace: f.trace, reports: f.reports });
+    alter(v);
+    f.save(v.reports);
+    assert.throws(() => run(v.trace));
+  }
+});
+
+test('delivery wrapper requires successful summary, exact source pins and all semantic outputs', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-delivery-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: deliveryCampaign, sha256: 'a'.repeat(64) }],
+    reports = {
+      ...deliveryEvidenceFixture(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: deliverySteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'properties.log', 'native.log'])
+      writeFileSync(join(directory, file), 'observed');
+  };
+  save(reports);
+  reconcileDeliveryReports(directory, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => r['summary.json'].stages.pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+  ]) {
+    const bad = structuredClone(reports);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileDeliveryReports(directory, sources));
+  }
+  for (const file of [...Object.keys(reports), 'results.xml', 'properties.log', 'native.log']) {
+    save(reports);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileDeliveryReports(directory, sources));
+  }
+});
+
+test('160 generated delivery controls reject ineffective baseline, authority and prefix evidence', () => {
+  const reports = deliveryEvidenceFixture();
+  reconcileDeliveryEvidence(reports);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 1 }), (index) => {
+      for (const alter of [
+        (r) => (r['unit-histories.json'].failed = true),
+        (r) => r['unit-histories.json'].prefixes++,
+        (r) => r['unit-histories.json'].numRuns--,
+        (r) => r['controls.json'].earlyReturn.pending.push({ position: 1, bytes: [1, 2, 3] }),
+        (r) => r['controls.json'].earlyReturn.baselinePending.pop(),
+        (r) => (r['controls.json'].missingClosure.refusalReason = 'unrelated refusal'),
+        (r) => r['controls.json'].missingClosure.pending[0].bytes.pop(),
+        (r) => (r['controls.json'].missingClosure.after.state = 'closed'),
+        (r) => (r['authority-control.json'][index].persisted ^= 1),
+        (r) => (r['prefix-control.json'][index].actual.state = 'closed'),
+        (r) => r['prefix-control.json'][index].actual.responses.pop(),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad);
+        assert.throws(() => reconcileDeliveryEvidence(bad));
+      }
+    }),
+    { seed: 150955, numRuns: 160 },
+  );
+});
+test('160 generated delivery histories reject incorrect recordedness, recovery bytes and proof-derived status', () => {
+  const reports = deliveryEvidenceFixture();
+  reconcileDeliveryEvidence(reports);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 7 }), (index) => {
+      for (const alter of [
+        (r) => (r.status = 'running'),
+        (r) => r.histories.pop(),
+        (r) => r.histories[index].observations.pop(),
+        (r) => r.histories[index].postCrashPending.push({ position: 2, bytes: [1] }),
+        (r) => r.histories[index].retry.bytes.pop(),
+        (r) =>
+          (r.histories[index].observations[0].recorded =
+            !r.histories[index].observations[0].recorded),
+        (r) => r.histories[index].observations[0].status.acceptedThrough++,
+        (r) => r.histories[index].observations[0].pending.push({ position: 2, bytes: [1] }),
+        (r) => (r.histories[index].recovered.status.state = 'unexpected'),
+        (r) => r.histories[index].recovered.wires[0].bytes.pop(),
+        (r) => r.histories[index].recovered.sources[0].sources[0].bytes.pop(),
+        (r) => r.histories[0].observations[2].bytes[0]++,
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad['generated.json']);
+        assert.throws(() => reconcileDeliveryEvidence(bad));
+      }
+    }),
+    { seed: 150956, numRuns: 160 },
+  );
+});
+
+import {
   decisionsCampaign,
   decisionsCampaignStage,
   decisionsSteps,
@@ -3330,7 +3666,9 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').stage.expect.kind,
     'account-outbound',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-delivery/run.mjs').blocked);
+  assert(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-service-delivery/run.mjs').blocked,
+  );
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

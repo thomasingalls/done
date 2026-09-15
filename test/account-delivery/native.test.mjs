@@ -328,25 +328,51 @@ test(
     await open(f.page, item);
     const escaped = await submission(f.page);
     assert.equal(escaped.kind, 'ready');
-    assert.deepEqual(await pending(f.page), []);
+    const escapedPending = await pending(f.page);
+    assert.deepEqual(escapedPending, []);
     await close(f.page);
     await cold(f);
     await open(f.page, item);
-    await submission(f.page);
+    const baselineSubmission = await submission(f.page),
+      baselinePending = await pending(f.page);
+    assert.equal(baselineSubmission.kind, 'ready');
+    assert.deepEqual(baselinePending, [
+      { position: baselineSubmission.position, bytes: baselineSubmission.bytes },
+    ]);
     await record(f.page, 1, response({ kind: 'refused', refusal: refusal(s, signer) }));
+    const closedStatus = await deliveryStatus(f.page);
+    assert.equal(closedStatus.state, 'closed');
     await close(f.page);
     await f.page.evaluate(
       (item) => Harness.removeDeliveryRow(item.slotId, item.code, 'response'),
       args(item),
     );
+    let refusalReason;
+    await assert.rejects(open(f.page, item), (e) => {
+      refusalReason = String(e);
+      assert.match(refusalReason, /incomplete|commitment/);
+      return true;
+    });
     await f.page.evaluate(await deliveryBundle('no-witness'));
     await configure(f.page);
     await open(f.page, item);
-    assert.equal((await deliveryStatus(f.page)).state, 'ready');
-    assert.equal((await pending(f.page)).length, 1);
+    const revivedStatus = await deliveryStatus(f.page),
+      revivedPending = await pending(f.page);
+    assert.equal(revivedStatus.state, 'ready');
+    assert.equal(revivedPending.length, 1);
     artifact('controls.json', {
-      earlyReturn: { bytes: escaped.bytes.length, persisted: 0 },
-      missingClosure: { state: 'ready', pending: 1 },
+      earlyReturn: {
+        escaped,
+        pending: escapedPending,
+        baseline: baselineSubmission,
+        baselinePending,
+      },
+      missingClosure: {
+        before: closedStatus,
+        refusalReason,
+        after: revivedStatus,
+        pending: revivedPending,
+      },
     });
     await close(f.page);
   },
@@ -441,12 +467,14 @@ test(
         [2, response({ kind: 'accepted', head: head(b, link(a, ZERO), 1, signer), leaf: b })],
       ];
       for (const [n, b] of reverse ? answers.reverse() : answers) await record(f.page, n, b);
-      assert.equal((await deliveryStatus(f.page)).state, 'closed');
+      const mutant = await deliveryStatus(f.page);
+      assert.equal(mutant.state, 'closed');
       await close(f.page);
       await cold(f);
       await open(f.page, item);
-      assert.equal((await deliveryStatus(f.page)).state, 'conflict');
-      results.push({ reverse, mutant: 'closed', actual: 'conflict' });
+      const actual = await deliveryStatus(f.page);
+      assert.equal(actual.state, 'conflict');
+      results.push({ reverse, mutant, actual });
       await close(f.page);
     }
     artifact('prefix-control.json', results);
@@ -494,8 +522,10 @@ test(
           ),
         }),
         async (history) => {
-          histories.push(history);
-          artifact('generated.json', { seed, histories, status: 'running' });
+          const evidence = { ...history, observations: [] };
+          histories.push(evidence);
+          const save = () => artifact('generated.json', { seed, histories, status: 'running' });
+          save();
           console.log(`delivery history ${histories.length}/8: ${JSON.stringify(history)}`);
           const item = await selected(f, 'generated-delivery-' + histories.length);
           await open(f.page, item);
@@ -507,6 +537,8 @@ test(
             wires = await envelopes(f.page),
             ss = await subjects(f.page),
             signer = fixtureAcceptance(f, item.scope.workspaceId);
+          evidence.before = { sources, wires };
+          save();
           await deliveryBoundary(f.page, 'submission', history.side);
           await f.page.evaluate(() => {
             window.work = opened.prepareSubmission(1).then(
@@ -520,9 +552,13 @@ test(
           await crash(f);
           await cold(f);
           await open(f.page, item);
-          assert.equal((await pending(f.page)).length, history.side === 'after' ? 1 : 0);
+          evidence.postCrashPending = await pending(f.page);
+          assert.equal(evidence.postCrashPending.length, history.side === 'after' ? 1 : 0);
           const saved = await submission(f.page);
-          assert.deepEqual(await submission(f.page), saved);
+          evidence.saved = saved;
+          evidence.retry = await submission(f.page);
+          save();
+          assert.deepEqual(evidence.retry, saved);
           const events = [],
             seen = new Set();
           for (const event of history.answers) {
@@ -544,13 +580,21 @@ test(
             const shouldRecord =
               event.kind !== 'junk' && before.state !== 'conflict' && !seen.has(key);
             const result = await record(f.page, event.position, bytes);
+            const observation = {
+              bytes: [...bytes],
+              recorded: result.recorded,
+              status: await deliveryStatus(f.page),
+              pending: await pending(f.page),
+            };
+            evidence.observations.push(observation);
+            save();
             assert.equal(result.recorded, shouldRecord);
             if (shouldRecord) {
               events.push(event);
               seen.add(key);
             }
             const expected = oracle(events),
-              actual = await deliveryStatus(f.page);
+              actual = observation.status;
             assert.equal(actual.state, expected.state);
             assert.equal(actual.acceptedThrough, expected.acceptedThrough);
             assert.equal(
@@ -558,18 +602,25 @@ test(
               expected.count,
             );
             assert.equal(
-              (await pending(f.page)).length,
+              observation.pending.length,
               expected.state === 'ready' && expected.acceptedThrough === 0 ? 1 : 0,
             );
           }
           if (history.compact) await f.page.evaluate(() => opened.compactContent());
           const before = await deliveryStatus(f.page);
+          evidence.beforeReopen = before;
           await close(f.page);
           await cold(f);
           await open(f.page, item);
-          assert.deepEqual(await deliveryStatus(f.page), before);
-          assert.deepEqual(await envelopes(f.page), wires);
-          const retained = await captures(f.page);
+          evidence.recovered = {
+            status: await deliveryStatus(f.page),
+            wires: await envelopes(f.page),
+            sources: await captures(f.page),
+          };
+          save();
+          assert.deepEqual(evidence.recovered.status, before);
+          assert.deepEqual(evidence.recovered.wires, wires);
+          const retained = evidence.recovered.sources;
           for (const source of sources)
             assert.deepEqual(
               retained.find((c) => c.id === source.id),

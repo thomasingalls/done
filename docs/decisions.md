@@ -3740,3 +3740,13 @@ control. Bind the recorded response/submission fields to the bytes used, require
 proof change and preserve observation/storage histories. Report checks corroborate native assertions;
 structural framing and predecessor hashing do not independently verify signatures or replay storage.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).
+
+
+## 2026-09-15 — Delivery wrapper evidence retains observed transitions and exact retry bytes
+
+Persist generated observations before their assertions and pair fault outcomes with actual normal-code
+persistence/refusal. Reconcile commit recovery, retries, proof-derived status, pending eligibility and
+cold-reopened source/wire retention after producer drain. The event oracle corroborates native assertions;
+it does not independently authenticate responses or replay storage. Preserve original native bounds,
+case identities and intermediate fixture fencing without restoring retired v8 product support.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).

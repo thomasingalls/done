@@ -8224,3 +8224,61 @@ package/dependencies, crypto census/vectors, F-17 debt, earlier archives and L-2
 personal browser/server/relay/device/deployment work occurs. Next: Account delivery wrapper, remaining
 qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).
+
+
+## 2026-09-15 — Account delivery wrapper integration
+
+Decisions is signed and verified as `21198b4f`. Delivery preserves its exact Vitest invocation
+(maxWorkers=2 /30 seconds) and native invocation (spec/JUnit /480 seconds), including all 12 property
+and 19 native cases. Owned execution adds the shared ordered trace, distinct nonce-bound child reports,
+510-second aggregate bound, five-second grace and disposable CDP browser. The exact command aliases
+the campaign; weaker contracts refuse. Pin `81a4655:src/crdt/promotionRecord.ts` for the invoked historical
+reader. Synthetic v7-to-v8 activation/fencing does not revive retired v8 product support.
+
+Require twelve files (thirteen inventory entries) within 4 MiB /40-entry /two-level bounds: exact source
+pins, successful summary, JUnit/logs, both child reports, three control reports, generated histories and the unit-history report.
+The early-return control retains actual ready bytes and empty pending storage, then normal-code ready
+bytes and exact persisted pending submission. Missing closure records its prior closed status, an actual
+normal-code incomplete/commitment refusal after deletion, then omitted-witness ready status and pending
+bytes. Authority records normal/mutant returnedness and durable counts; prefix controls retain actual
+mutant and cold-replayed status in both proof orders instead of hardcoded labels.
+
+Eight generated histories retain seed 9812027 and original population, cut sides and 100-second case
+bound. Save each response observation before asserting it: bytes, recordedness, status and pending
+submissions. Retain original sources/envelopes, post-crash pending bytes, prepared/duplicate submission,
+pre-reopen status and final cold-reopened status/envelopes/sources. Reconciliation checks exact commit
+recovery and retries, duplicate response consistency, proof-derived status/accepted prefix/response
+count, pending eligibility and original source/wire retention. Its separate event oracle consumes the
+recorded kind and position; it does not independently verify signatures, regenerate seeds or replay disk.
+Native assertions and independent fixture response signing remain the execution authority. No visible-text,
+whole-profile, arbitrary concurrent writer or power-loss claim is added.
+
+The owned epoch passes **140 cases in six executions**: 91 planning cases in four full suites,
+31 delivery and 18 decisions regression cases. Delivery takes **276.253s /510s**; decisions takes
+82.269s /150s. All groups drain. A seventh request reuses the exact delivery receipt; twelve
+reports survive checkout removal. Five new infrastructure cases include two 160-run report-corruption
+campaigns (seeds 150955/150956). Nine synthetic process runs reject zero-exit bad summary, failed unit histories, incorrect
+status, missing native case, ineffective baseline and changed recovered wire. Removing the semantic hook
+or child census admits the corresponding fault; both controls discriminate. Synthetic reports are not
+additional Account executions.
+
+Initial adapter construction refused a new RegExp.test assertion as unresolved nested test registration.
+The assertion now uses assert.match; original failed-registration source is retained. No census weakening
+or test identity change occurred. The first owned epoch passed all 140 cases and reuse, but its final scratch inventory assertion failed:
+13 entries instead of 12 revealed the existing unit-histories.json output missing from the required list.
+Make it mandatory and require all 500 generated histories (seed 1121060), zero failures/skips/shrinks/
+interruption, original configuration and a plausible three-order prefix count. The final epoch reruns
+all 140 cases and reuse under the corrected contract. Both epochs, the failed script/log/source, five
+focused repair checks and separate report-failure process control are retained. Existing
+reporter/experimental API diagnostics, prior failures and owner/headroom observations remain without a
+repair claim; this single-host run does not establish loaded-host reliability. The first owned manifest suite
+uses 57.591s of its unchanged 60-second bound; the final suite uses 57.649s.
+Its small remaining margin needs attention before adding
+further wrapper cases; this result does not justify raising the bound.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Unresolved integration falls from 132 to **130: zero test-file /81 command /49 campaign**. Runtime,
+package/dependencies, crypto census/vectors, F-17 debt, earlier archives and L-2 remain unchanged. No
+personal browser/server/relay/device/deployment operation occurs. Next: Account service-delivery wrapper,
+including disposition of its retired native child, then remaining qualification repairs and immutable
+aggregate/private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).

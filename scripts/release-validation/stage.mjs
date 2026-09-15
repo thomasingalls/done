@@ -1,4 +1,9 @@
 import {
+  deliveryCampaign,
+  validateDeliveryCampaign,
+  reconcileDeliveryReports,
+} from './account-delivery-wrapper.mjs';
+import {
   decisionsCampaign,
   validateDecisionsCampaign,
   reconcileDecisionsReports,
@@ -149,6 +154,7 @@ export function validateStage(stage) {
       'account-capture',
       'account-spool',
       'account-decisions',
+      'account-delivery',
       'vitest',
       'playwright',
       'content',
@@ -188,6 +194,7 @@ export function validateStage(stage) {
       'account-capture',
       'account-spool',
       'account-decisions',
+      'account-delivery',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -283,6 +290,12 @@ export function validateStage(stage) {
     stage.variant === 'account-decisions-campaign-v1'
   )
     validateDecisionsCampaign(stage);
+  if (
+    stage.expect.kind === 'account-delivery' ||
+    stage.argv[1] === deliveryCampaign ||
+    stage.variant === 'account-delivery-campaign-v1'
+  )
+    validateDeliveryCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -323,6 +336,7 @@ export function validateStage(stage) {
         'account-capture',
         'account-spool',
         'account-decisions',
+        'account-delivery',
       ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
@@ -811,9 +825,13 @@ export function createStageRunner({
           });
           actual = { cases };
         } else if (
-          ['account-outbound', 'account-capture', 'account-spool', 'account-decisions'].includes(
-            stage.expect.kind,
-          )
+          [
+            'account-outbound',
+            'account-capture',
+            'account-spool',
+            'account-decisions',
+            'account-delivery',
+          ].includes(stage.expect.kind)
         ) {
           assert(
             groupDrained && fileOutputs?.complete,
@@ -832,7 +850,9 @@ export function createStageRunner({
             reconcileCaptureReports(fileDirectory, before.sources);
           else if (stage.expect.kind === 'account-spool')
             reconcileSpoolReports(fileDirectory, before.sources);
-          else reconcileDecisionsReports(fileDirectory, before.sources);
+          else if (stage.expect.kind === 'account-decisions')
+            reconcileDecisionsReports(fileDirectory, before.sources);
+          else reconcileDeliveryReports(fileDirectory, before.sources);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -853,6 +873,7 @@ export function createStageRunner({
               'account-capture',
               'account-spool',
               'account-decisions',
+              'account-delivery',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

@@ -1055,7 +1055,6 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     'account-receive-driver',
     'account-receive',
     'account-receive-editor',
-    'account-delivery',
     'account-sync',
     'account-liveness',
     'account-residue',
@@ -1075,6 +1074,7 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     ['account-capture', 'account-capture'],
     ['account-spool', 'account-spool'],
     ['account-decisions', 'account-decisions'],
+    ['account-delivery', 'account-delivery'],
     ['account-crypto-prep', 'exit'],
   ]) {
     const row = m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`);

@@ -55,33 +55,36 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Spool wrapper integration is signed and verified as `d107f244`.
+**Roadmap checkpoint.** Decisions wrapper integration is signed and verified as `21198b4f`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Decisions resolves one command and campaign:
-**zero test-file /82 command /50 campaign** remain unresolved, down from 134 to 132. These are integration
+272 general files/2,198 dispositions (11 not applicable)**. Delivery resolves one command and campaign:
+**zero test-file /81 command /49 campaign** remain unresolved, down from 132 to 130. These are integration
 counts, not a passing aggregate.
 
-**Just completed.** Decisions preserves exact property/native invocations and 30/120-second child bounds.
-Owned execution adds a 150-second aggregate bound, disposable browser, ordered trace, distinct child
-reports and nine retained files. All five proof controls pair normal and mutated verification on the
-same bytes. Require actual baseline outcomes, intended proof differences and byte/field agreement;
-predecessor hashing rejects ineffective link controls. Eight generated histories retain observed
-classifications, storage digests, source/counter snapshots and exact reopened wire. These corroborate
-native/codec assertions, not independent signature verification or storage/seed replay.
+**Just completed.** Delivery preserves its exact property/native invocations and 30/480-second child
+bounds. Owned execution adds a 510-second aggregate bound, disposable browser, ordered trace and twelve
+retained reports, including the required 500-history unit result. Early-return/missing-witness controls
+pair actual normal and mutated outcomes; authority
+and prefix controls retain observed results. Eight generated histories now retain every response and
+status, crash recovery, exact retries and cold-reopened sources/envelopes. A separate event oracle checks
+recordedness, proof-derived status and pending eligibility; it does not independently verify signatures
+or replay disk. The historical reader is pinned; intermediate fixture activation does not revive v8 support.
 
-The epoch passes **134 cases in six executions**: 86 planning, 18 decisions and 30 spool regression,
-followed by exact decisions receipt reuse. Decisions takes **75.266s /150s**. Every group drains
-and nine reports survive checkout removal. Five new infrastructure cases include two 160-run generated
-campaigns. Eight synthetic process runs and two omitted checks discriminate. This phase is ready for
-signed commit. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).
+The epoch passes **140 cases in six executions**: 91 planning, 31 delivery and 18 decisions regression,
+followed by exact delivery receipt reuse. Delivery takes **276.253s /510s**. Every group drains and
+twelve reports survive checkout removal. Five new infrastructure cases include two 160-run corruption
+campaigns. Nine synthetic process runs and two omitted checks discriminate. This phase is ready for
+signed commit. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).
 
-**Preserved observations.** No new planning or native failure occurs. Earlier capture-oracle failures,
+**Preserved observations.** Initial registration refusal and source, plus the first post-run missing-unit-report failure, remain; assert.match resolves the
+new assertion's census ambiguity without weakening registration rules. Previous capture-oracle failures,
 planning ceilings, startup SIGABRT, owner/headroom, cancellation/latency and reporter observations remain
-in their original evidence. Existing capture and spool repairs remain in the exercised dependency chain.
+in their original archives. This phase adds no loaded-host reliability claim.
 
-**Next bounded phase.** Account delivery wrapper integration, then further wrapper families, serially.
-Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
-File custody uses cooperative bounded polling, not a disk quota or hostile-code sandbox.
+**Next bounded phase.** Account service-delivery wrapper integration, including its retired native-child
+disposition, then further families, serially. Continue signed commits between phases; if signing fails,
+finish and stage the phase, then pause. File custody uses cooperative bounded polling, not a disk quota
+or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
