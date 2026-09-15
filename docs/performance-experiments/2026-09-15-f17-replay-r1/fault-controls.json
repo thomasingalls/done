@@ -1,0 +1,86 @@
+[
+  {
+    "name": "idle-transaction-fence",
+    "file": "src/crdt/admittedWorkspace.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspaceAdmission.test.ts",
+      "-t",
+      "idle no-op transactions refuse",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-replay-r1/idle-transaction-fence-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "persistent text buffers idle no-op transactions refuse before append and release watchers on discard and reset"
+    ],
+    "originalSourceSha256": "e4759c7ab14fede6d492431c4c10dd9d17b0cf0155122613a9f078e1720c153d",
+    "test": "test/workspaceAdmission.test.ts",
+    "testSha256": "11d93b1cbbc85ba373f81f284a77242a0e5b3ce469dd2c9321de2b493acb3c4f"
+  },
+  {
+    "name": "premature-retirement",
+    "file": "src/crdt/workspacePreparation.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/historyRetirement.test.ts",
+      "-t",
+      "history retirement permits one exact previous",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-replay-r1/premature-retirement-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "history retirement permits one exact previous transfer and rejects active foreign duplicate or alias states"
+    ],
+    "originalSourceSha256": "e6cca82eb2b86a42e31e190a32b88b6c66ce9565e6058a33fbf203c72f3103f3",
+    "test": "test/historyRetirement.test.ts",
+    "testSha256": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b"
+  },
+  {
+    "name": "omitted-catch-up",
+    "file": "src/crdt/yjs.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/textBufferBasis.test.ts",
+      "-t",
+      "text history catch-up applies the exact delta",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-replay-r1/omitted-catch-up-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "text history catch-up applies the exact delta and copies both detached stacks"
+    ],
+    "originalSourceSha256": "5521dcc56b06ca0beb3e4132fa44b67b2ba006cff6a98a0f01038485d1341625",
+    "test": "test/textBufferBasis.test.ts",
+    "testSha256": "4c9e1d5b811d91deaa290b6f91548500042f7272a3130d7d06712742b412acd7"
+  },
+  {
+    "name": "shared-history",
+    "file": "src/crdt/yjs.ts",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/workspaceAdmission.test.ts",
+      "-t",
+      "alternates two actual histories",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-replay-r1/shared-history-fault.json"
+    ],
+    "exit": 1,
+    "caughtBy": [
+      "persistent text buffers alternates two actual histories, detaches ranges and erases consumed delta copies"
+    ],
+    "originalSourceSha256": "5521dcc56b06ca0beb3e4132fa44b67b2ba006cff6a98a0f01038485d1341625",
+    "test": "test/workspaceAdmission.test.ts",
+    "testSha256": "11d93b1cbbc85ba373f81f284a77242a0e5b3ce469dd2c9321de2b493acb3c4f"
+  }
+]

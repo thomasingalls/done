@@ -1,0 +1,418 @@
+{
+  "base": "aa54be3161c2267404e7a5901bad117757105013",
+  "previousPacket": "/Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-09-15-f17-buffers-r1",
+  "previousPacketPins": {
+    "buffer-tests-2.log": "03ff5f1e5eae579527ec5b8b8c4e060807daa563c2d27fa9ca76e8f781979646",
+    "add-tests.py": "55ec89e9759467b279fb9911bc7c7fd66f5a41d8f72a5d7b86c634d21a541fa5",
+    "analysis.log": "d8c751695485f46e93a58b163617520fef65c28d099a9dd38fffaffa426da721",
+    "initial-tests.log": "67a2857ce3cbd75849d11302ea6788a891c98c0942ff888dc80bebce94fb182b",
+    "before-close-fixture.test.ts": "dd82225dac782565e9055e60d309c1057469f6b4f3c055d5d613a80458d56611",
+    "final-comparison-batch.log": "568f7582be984b6e184846f8d1bd8256eb0105f5876593f08a701baa3655a036",
+    "audit-final.log": "7b66f57c90b5309802528e48ded01dc4c542a43fa148710b5c7355343c730a91",
+    "screen.mjs": "8285f7772aa628dc01a80eb4681dcf01e3dfdbcf408b321a7a3f5b1a7bcc2631",
+    "normalization-probe.log": "14d20c1fb9e2a7c002bc460be1de58ad4c82415ac4d94377ff0c5732739e77f4",
+    "final-comparison-batch.json": "799afc1e3287845f7df55343f756161cbdda8f2c1fb45f1063eec924743ba49c",
+    "typecheck-final-complete.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "typecheck-complete.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audit.json": "2015c6cab4a39c6568464775ce3715942841925ae9d4699c2265ab215432fe6d",
+    "shared-history-fault.log": "458c319f0ee0dbfa4ff9512c63f1731e28618c7520e0b74d9ce9f45f88a5ac3b",
+    "build-candidate-final.log": "8ceed212c2bd5ab246766f412d0def475050a4bf69df4258c274fd41d8af523f",
+    "audit.py": "aa7681f00ec4c28631a0f755b6f003464ea6415189140c3ac6032fadc8e219b8",
+    "typecheck-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256.json": "05497a8beb86d61bb9f33e3346640d17b913c5dcbc6cad6871823675e5fe72b4",
+    "format.log": "fecef3c333158f49681656c8caf2e8343fbe47dbfb8c11f9cdcc602166efd1ec",
+    "candidate.patch": "7b0c63c32680cb26c518ba6dc629dafbb0d9d173c6db89d2951761199273b30e",
+    "typecheck-initial.log": "428066987f1538a9f45b808ac4fb9fb36210d109fdc05cb22b7b13a36f2c797b",
+    "normalization-probe-values.log": "7c72c70ca9ab1ce0d0d7964cc3c60f26fda1693058b0f54004ab7e97f7f53890",
+    "freeze-final.log": "d5bf7ad342c2448947a6b3e4af46d1ee2276d5272f7092c24f68e155fb3bb526",
+    "typecheck-retention-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "frozen.json": "3c044bf85212486a333fcdf87d4fe69cfeafbf9145f1d9daebae7c5bac51f886",
+    "affected-tests.log": "1dc395d2bd601536bacd68461049e14c9759141176b801320884fd8396f566a7",
+    "normalization-probe-final.log": "85ecd6bb6fca75242a415d15ac983bed144d60c4a497a7c519e15414cb0018d8",
+    "typecheck-runtime.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fault-controls.json": "7670d65773b2304f338ca1cd76d2f4bc39110dec63232bbde161b1cfeb2eabdd",
+    "freeze-final.py": "7c4c998663f75216e14d2c5d25500f970a2ccdba1898c9daa5df915efce60e14",
+    "format-test.log": "1a774c8eafbdf3256088251fdc32d9e22f84f57d07b1de0814e0727eeced2f07",
+    "candidate-activated-admittedWorkspace.ts": "0122e34b6477e708a3ece5cf3ba231c920282784ff3c1ba3b6475a2e42fb3b9f",
+    "measure.mjs": "4be0af6dad24b3b69e8f509799f80aef69fbda0540a5aef1f029d04ba856c6ed",
+    "shared-history-fault.ts": "59e761e992079508cc65f1ce407935bbec9a393857fe74e8159d0b7bc9fa32d6",
+    "typecheck-tests.log": "aa7402f7d380609ce0c1c353e68a4d8bfe6b76144e5103e0898c96c66571438c",
+    "basis-initial.log": "ef63496ccdd8cf046b787b3c793a266267b00e0b900056026402612185df8568",
+    "premature-retirement-fault.ts": "ef41f2c08fd071004525dc179d1409c686306783d50d1f965b77da99f853af3a",
+    "build-selected.log": "f1df7d9a71ac7916ad008f3d5bae35285c6c300b7802e1e1ac311fdabc5d7782",
+    "retention-repair-tests.log": "1f4ee22628a065aec82101c0129e38bc3871a87a19b19334d3d00f22f0702f79",
+    "analyze-final.mjs": "b9d41564bbaaabb69a4d27b1d190e772bee632f7c2d85aea18f6c7891898c66f",
+    "premature-retirement-fault.log": "0667880ea971ae38546639146ae4f1f4433ed918d9fb547ab715f7655144a9ca",
+    "new-workspace-tests.ts": "bd60fe04aeed8942ee26e3c36e17bbf8297aaec4d60486e02efcba79cb844eee",
+    "update-records.py": "e133e4a098f8b5b8d4df68f459255906ac44d6ae19ad52bc72460cd12aa6eabb",
+    "prepare-measurement.py": "6fc812916922f2b56cd42550ed4aa072c05bb84d146f8c167372397fa8ce697a",
+    "commands.json": "3159610d344e187ef5a380c15fc901ed055a6d9d2ae16cc77c9a61378cdca1f9",
+    "setup.log": "7badb36e24d67edd08dfe25fe24c1702266bfa44d6be026dc3bcba02d0ab3951",
+    "freeze.log": "d5bf7ad342c2448947a6b3e4af46d1ee2276d5272f7092c24f68e155fb3bb526",
+    "README.md": "02ccf22f59aeed5a7789315d7f5201bdac72fe544364ca56260326dfeb48bc4d",
+    "selected.patch": "d7ab1adec43d43e5e86112247c5cadbda9d4390da8540d3f9f3872e2ce805946",
+    "candidate-bundle.json": "7aaeac0b6b93b332065b3c1f9e792d705ded1bd91d38bdc684bf25304ce0729c",
+    "control-findings.md": "4e082ee7cefad92ae8276af3b5897f96239f20647b2582b81a515894ed3894a3",
+    "catchup-test.ts": "b80f25cd2d960554a8ec1a4d13ead03325cb7dbd9b0346bfdc112dc1bf8f1bb1",
+    "audit.log": "7b66f57c90b5309802528e48ded01dc4c542a43fa148710b5c7355343c730a91",
+    "build-candidate.log": "8ceed212c2bd5ab246766f412d0def475050a4bf69df4258c274fd41d8af523f",
+    "start.json": "67b7245f453dd2b830d718f767b5ad3f4034dcdde0b1555abd1758ec6d7ae517",
+    "setup.py": "dee9fee0edca9d728c5fffd33a9efdbaa8798f1cfb61a55e0162042bb078253a",
+    "omitted-catch-up-fault.ts": "dae69d2dd05febfe4a12c2d159f9da7028cf2011b7c93108f71e210c35448cb6",
+    "selected-activated-admittedWorkspace.ts": "4f530ace722a2b1205e0a295199483aa16382feacf2753d4420236cf46c81c13",
+    "batch.mjs": "90df700c53b3ddb9214ee4f6abd7f5b443cb1efc5b14d0658c8fa181876e9146",
+    "batch-final.mjs": "db016d37d731df6c495c8c0c9dfcd38805017b061b46fdb0058db17f70b66841",
+    "comparison-batch.log": "89b8c31e46950e61b253d9ac17328049d96af0b1b797416b5a4908a325d15bad",
+    "build.mjs": "e9e823eb24ec6ac903b4fc05e4a978611f8bbf8e212fbaca5e97a905f1314523",
+    "omitted-catch-up-fault.log": "130362cd8c11fec20657bb897a2fdfabde568808e2f3a53347417330584746ab",
+    "fault-controls.py": "c883d07af626b34e015d3507ddf7dc384c9b4531c946958103e8ee77b6da3301",
+    "comparison-batch.json": "4412e526e9c17de85ba23d7c0411165a3f56315953061ad0b962cf77d6fc739a",
+    "analyze.mjs": "abb9f2212f6817b06baa2f2dc0cb1654a9ea35207c06b8171754d3b845194f2b",
+    "implementation-review.md": "f78f0bdea8b466c582ffb077b552e9c79263003060cb430d6d6e0c337b715ecc",
+    "implement.py": "afbd56519deaedc2dee8f7517762c391664e4941289e7cfb550e4e736d3b2276",
+    "shared-history-fault.json": "8dfdc024a4843b0cf6247c6dcbcd695b14f0e3d02a61d8103c62dbec8db5c643",
+    "frozen-final.json": "b9eed85555e8535477665616a7b5f98bec881992deaa0b9c1b0f726c7af93868",
+    "freeze.py": "e370bf64701db006249a3f46462abaa68f89762e97449e13069412f0c6dc0180",
+    "recorder.mjs": "c9613b4e72ce89aa763810ecea1e43db4150e42638cb1c7784459739a6836480",
+    "normalization-values.json": "be1ac47d48148a9c64ef2614224ccf9e9649da835e986fff4f6f3a7a760b8cdc",
+    "analysis.json": "d8c751695485f46e93a58b163617520fef65c28d099a9dd38fffaffa426da721",
+    "final-unicode-batch.log": "d7fcc7366c28530681de20577cad065189690364a94f9098b9755df81be4c202",
+    "fault-controls-final.log": "aafa49b5494460b209f9f719dd6ea88061b0336b9d47e9baaa83ca03dbd84cb9",
+    "final-unicode-batch.json": "77386d33d609555c0c161b61d2988f904924efbf66467b5f82d27acbfc883866",
+    "omitted-catch-up-fault.json": "6cefdd8faf2a5f1160fad078ada7d7058fde14e96d128bf408008359039af0bb",
+    "persistent-buffers.patch": "839865294751ac68e0275ed0f76747bb05238b19503864cdb58fc75b89bbbf87",
+    "editor-tests.log": "5c66cf03d0799e2ff413dbfe5c6e97bdac3e7f17504cf6e8816d20f8d1139e0d",
+    "normalization-control.py": "3ffccbb7b65b725a732f6fb049c6b21e17b2c130a8781c9706bb5138614e257c",
+    "preserve.py": "9e076f2ee9d4779ff9d2f0c76018e07f91d6b7ea4e3152f246bd4aeddf8dde6b",
+    "normalization-control.log": "3bcdabd2396546f57efc0f7d71ab854e66b1b54cd0528b4d0247056182dba15d",
+    "decision.md": "a94394cd9ccccb1315cf428d3b4a94998f43818ba84215b0cb7d8cf946a0326b",
+    "original-screen.mjs": "a1495211f6948b1745c26bb7e2927746aacfae8c0c76ba6875f038712efc7532",
+    "premature-retirement-fault.json": "2d6e08cebd816f28a0915e62b354ec2df36e4b01b14d97f5bbeb8d0e01004505",
+    "selected-bundle.json": "67fcb73838a8c8c6a7275795da1fc579f69f1e9c47ce974d6fef425540842d33",
+    "retirement-tests.log": "1a4ef3ddb39a526e040194c08bc0786d8db39feb3d2e1c24109d5fec7c4f6c5b",
+    "fault-controls.log": "aafa49b5494460b209f9f719dd6ea88061b0336b9d47e9baaa83ca03dbd84cb9",
+    "buffer-tests-initial.log": "f57f1c069db13ec6021326c60f87548016370e21bde96e35a23f858fb0cfe88b",
+    "normalization-shape-before.log": "f445f2bd9c20e831c4146312fc11ca78d6289e73e3ae667c0335920eb7a79522",
+    "protocol.md": "1c1832b5689393512c24e997169afe8e5412fc2a1a4579a43fcd39d188445586",
+    "before-normalization-guard.ts": "b2f20173371576175aa9e8b85fb2a2c41f86f5f6902322ec8a4f9f7cb24fe51c",
+    "before-retention-repair/buffer-tests-2.log": "03ff5f1e5eae579527ec5b8b8c4e060807daa563c2d27fa9ca76e8f781979646",
+    "before-retention-repair/add-tests.py": "55ec89e9759467b279fb9911bc7c7fd66f5a41d8f72a5d7b86c634d21a541fa5",
+    "before-retention-repair/initial-tests.log": "67a2857ce3cbd75849d11302ea6788a891c98c0942ff888dc80bebce94fb182b",
+    "before-retention-repair/before-close-fixture.test.ts": "dd82225dac782565e9055e60d309c1057469f6b4f3c055d5d613a80458d56611",
+    "before-retention-repair/screen.mjs": "8285f7772aa628dc01a80eb4681dcf01e3dfdbcf408b321a7a3f5b1a7bcc2631",
+    "before-retention-repair/normalization-probe.log": "14d20c1fb9e2a7c002bc460be1de58ad4c82415ac4d94377ff0c5732739e77f4",
+    "before-retention-repair/typecheck-final-complete.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-retention-repair/typecheck-complete.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-retention-repair/shared-history-fault.log": "458c319f0ee0dbfa4ff9512c63f1731e28618c7520e0b74d9ce9f45f88a5ac3b",
+    "before-retention-repair/typecheck-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-retention-repair/format.log": "fecef3c333158f49681656c8caf2e8343fbe47dbfb8c11f9cdcc602166efd1ec",
+    "before-retention-repair/candidate.patch": "ffadc69e3a675964a904a8cae390e88c68321d2217b0125931ed98c638a55cb5",
+    "before-retention-repair/typecheck-initial.log": "428066987f1538a9f45b808ac4fb9fb36210d109fdc05cb22b7b13a36f2c797b",
+    "before-retention-repair/normalization-probe-values.log": "7c72c70ca9ab1ce0d0d7964cc3c60f26fda1693058b0f54004ab7e97f7f53890",
+    "before-retention-repair/frozen.json": "3c044bf85212486a333fcdf87d4fe69cfeafbf9145f1d9daebae7c5bac51f886",
+    "before-retention-repair/affected-tests.log": "1dc395d2bd601536bacd68461049e14c9759141176b801320884fd8396f566a7",
+    "before-retention-repair/normalization-probe-final.log": "85ecd6bb6fca75242a415d15ac983bed144d60c4a497a7c519e15414cb0018d8",
+    "before-retention-repair/typecheck-runtime.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-retention-repair/fault-controls.json": "9e808299f4422825535e5b9d751569b6b685b766aa151b10ea2d88763b912498",
+    "before-retention-repair/format-test.log": "1a774c8eafbdf3256088251fdc32d9e22f84f57d07b1de0814e0727eeced2f07",
+    "before-retention-repair/candidate-activated-admittedWorkspace.ts": "0122e34b6477e708a3ece5cf3ba231c920282784ff3c1ba3b6475a2e42fb3b9f",
+    "before-retention-repair/measure.mjs": "4be0af6dad24b3b69e8f509799f80aef69fbda0540a5aef1f029d04ba856c6ed",
+    "before-retention-repair/shared-history-fault.ts": "59e761e992079508cc65f1ce407935bbec9a393857fe74e8159d0b7bc9fa32d6",
+    "before-retention-repair/typecheck-tests.log": "aa7402f7d380609ce0c1c353e68a4d8bfe6b76144e5103e0898c96c66571438c",
+    "before-retention-repair/basis-initial.log": "ef63496ccdd8cf046b787b3c793a266267b00e0b900056026402612185df8568",
+    "before-retention-repair/premature-retirement-fault.ts": "ded8521bd9ebf592deb1de9a374b3e4d3e8c632987aef5401ec75efde70d81e4",
+    "before-retention-repair/build-selected.log": "f1df7d9a71ac7916ad008f3d5bae35285c6c300b7802e1e1ac311fdabc5d7782",
+    "before-retention-repair/premature-retirement-fault.log": "0667880ea971ae38546639146ae4f1f4433ed918d9fb547ab715f7655144a9ca",
+    "before-retention-repair/new-workspace-tests.ts": "bd60fe04aeed8942ee26e3c36e17bbf8297aaec4d60486e02efcba79cb844eee",
+    "before-retention-repair/prepare-measurement.py": "6fc812916922f2b56cd42550ed4aa072c05bb84d146f8c167372397fa8ce697a",
+    "before-retention-repair/setup.log": "7badb36e24d67edd08dfe25fe24c1702266bfa44d6be026dc3bcba02d0ab3951",
+    "before-retention-repair/freeze.log": "d5bf7ad342c2448947a6b3e4af46d1ee2276d5272f7092c24f68e155fb3bb526",
+    "before-retention-repair/selected.patch": "d7ab1adec43d43e5e86112247c5cadbda9d4390da8540d3f9f3872e2ce805946",
+    "before-retention-repair/candidate-bundle.json": "ccb870fc9a203e2f2a74bda7ea5a0418be520933af4c686dca72dc3c7021b8c1",
+    "before-retention-repair/catchup-test.ts": "b80f25cd2d960554a8ec1a4d13ead03325cb7dbd9b0346bfdc112dc1bf8f1bb1",
+    "before-retention-repair/build-candidate.log": "8ceed212c2bd5ab246766f412d0def475050a4bf69df4258c274fd41d8af523f",
+    "before-retention-repair/start.json": "67b7245f453dd2b830d718f767b5ad3f4034dcdde0b1555abd1758ec6d7ae517",
+    "before-retention-repair/setup.py": "dee9fee0edca9d728c5fffd33a9efdbaa8798f1cfb61a55e0162042bb078253a",
+    "before-retention-repair/omitted-catch-up-fault.ts": "dae69d2dd05febfe4a12c2d159f9da7028cf2011b7c93108f71e210c35448cb6",
+    "before-retention-repair/selected-activated-admittedWorkspace.ts": "4f530ace722a2b1205e0a295199483aa16382feacf2753d4420236cf46c81c13",
+    "before-retention-repair/batch.mjs": "90df700c53b3ddb9214ee4f6abd7f5b443cb1efc5b14d0658c8fa181876e9146",
+    "before-retention-repair/comparison-batch.log": "89b8c31e46950e61b253d9ac17328049d96af0b1b797416b5a4908a325d15bad",
+    "before-retention-repair/build.mjs": "e9e823eb24ec6ac903b4fc05e4a978611f8bbf8e212fbaca5e97a905f1314523",
+    "before-retention-repair/omitted-catch-up-fault.log": "130362cd8c11fec20657bb897a2fdfabde568808e2f3a53347417330584746ab",
+    "before-retention-repair/fault-controls.py": "9905514caf63949f3708533a6441799de416eb49f57f647dd4a4733dc3448656",
+    "before-retention-repair/comparison-batch.json": "4412e526e9c17de85ba23d7c0411165a3f56315953061ad0b962cf77d6fc739a",
+    "before-retention-repair/analyze.mjs": "abb9f2212f6817b06baa2f2dc0cb1654a9ea35207c06b8171754d3b845194f2b",
+    "before-retention-repair/implement.py": "afbd56519deaedc2dee8f7517762c391664e4941289e7cfb550e4e736d3b2276",
+    "before-retention-repair/shared-history-fault.json": "30641032cf363256962ade17d9e22290e4cbc0476ae5c36d0fdb67adae395a27",
+    "before-retention-repair/freeze.py": "e370bf64701db006249a3f46462abaa68f89762e97449e13069412f0c6dc0180",
+    "before-retention-repair/recorder.mjs": "c9613b4e72ce89aa763810ecea1e43db4150e42638cb1c7784459739a6836480",
+    "before-retention-repair/normalization-values.json": "be1ac47d48148a9c64ef2614224ccf9e9649da835e986fff4f6f3a7a760b8cdc",
+    "before-retention-repair/omitted-catch-up-fault.json": "981ea9268c5a935ae7ab9f6b33972db24d14ede0ae37bcb7f3d95b4f51a9f329",
+    "before-retention-repair/persistent-buffers.patch": "3887d69caa94ba4fab94dcc3c7b1929a033c3f898eb8ce2a70b95eb7e685e800",
+    "before-retention-repair/editor-tests.log": "5c66cf03d0799e2ff413dbfe5c6e97bdac3e7f17504cf6e8816d20f8d1139e0d",
+    "before-retention-repair/normalization-control.py": "3ffccbb7b65b725a732f6fb049c6b21e17b2c130a8781c9706bb5138614e257c",
+    "before-retention-repair/normalization-control.log": "3bcdabd2396546f57efc0f7d71ab854e66b1b54cd0528b4d0247056182dba15d",
+    "before-retention-repair/original-screen.mjs": "a1495211f6948b1745c26bb7e2927746aacfae8c0c76ba6875f038712efc7532",
+    "before-retention-repair/premature-retirement-fault.json": "0adfbe0ceaf5ebf3b2fdd9f70d3ce72c483ee55439137dd4d53ea158a6f6d23f",
+    "before-retention-repair/workspacePreparation.ts": "1a3e7243becaec4fc0e6186727bbdaca904f4f0d02a87933b70c4031cea57266",
+    "before-retention-repair/selected-bundle.json": "67fcb73838a8c8c6a7275795da1fc579f69f1e9c47ce974d6fef425540842d33",
+    "before-retention-repair/retirement-tests.log": "1a4ef3ddb39a526e040194c08bc0786d8db39feb3d2e1c24109d5fec7c4f6c5b",
+    "before-retention-repair/fault-controls.log": "aafa49b5494460b209f9f719dd6ea88061b0336b9d47e9baaa83ca03dbd84cb9",
+    "before-retention-repair/buffer-tests-initial.log": "f57f1c069db13ec6021326c60f87548016370e21bde96e35a23f858fb0cfe88b",
+    "before-retention-repair/normalization-shape-before.log": "f445f2bd9c20e831c4146312fc11ca78d6289e73e3ae667c0335920eb7a79522",
+    "before-retention-repair/protocol.md": "68ba41c9fe48a321653df1797293c7e23c879a56b597dd232964f1f43038a0c4",
+    "before-retention-repair/before-normalization-guard.ts": "b2f20173371576175aa9e8b85fb2a2c41f86f5f6902322ec8a4f9f7cb24fe51c",
+    "builds/selected-source.json": "47b12f1c9344731ece5beb474d2b2922a24373d3f49f34f8abd3131948db5484",
+    "builds/candidate-source.json": "7825e623e050ceb6bfc17eebf9ebd05c3b72d8e5a457f8a69700fdb52dec6d4c",
+    "implementation/test/textBufferNormalizationProbe.test.ts": "4eea703ccf561040c8ad6ea8f6a02aeba19b376c633e55be2792f86f9a5c0647",
+    "implementation/test/workspaceAdmission.test.ts": "9f2f443155a8be23b9f170f15eebce441401065f3ce72848f11a0bd211186a20",
+    "implementation/test/textBufferBasis.test.ts": "4c9e1d5b811d91deaa290b6f91548500042f7272a3130d7d06712742b412acd7",
+    "implementation/test/historyRetirement.test.ts": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b",
+    "implementation/test/admittedEditorProjection.test.ts": "4f3e58c34436e5f17cf73f88af754e0609dfd1faaf600378c6ae016c4d0233a1",
+    "implementation/src/crdt/admissionQueue.ts": "5f44852471884aae6bf2a61eced8413de941147176267eda889f6af9db219803",
+    "implementation/src/crdt/admittedWorkspace.ts": "dba88f27dc5535153870519e84c6a719c45efdf0808e26df3947fbcf28e41e4d",
+    "implementation/src/crdt/yjs.ts": "45d79bdf3cfd01e78b0caa2b34acd4209014898bbf4ebe8965c26963cdfdc92b",
+    "implementation/src/crdt/workspacePreparation.ts": "e6cca82eb2b86a42e31e190a32b88b6c66ce9565e6058a33fbf203c72f3103f3",
+    "results/final-comparison-1-candidate/result.json": "f7a7f2e72e660bb557e18c65f7ef3011940f4f2a20a51bfd83f40f108884de1f",
+    "results/final-comparison-1-candidate/partial.json": "eabca156804946eb98c290463210dd6bc0da0f0bf83d838bcf34d19606d9d367",
+    "results/comparison-0-selected/result.json": "a79ee9eb5ba1340cf5545513714a05f4b2d7d418f9e305911095759b063d227c",
+    "results/comparison-0-selected/partial.json": "ec4b9ff21fa4652d731dcbdc9da6287d54d3b50d025b9678dd2085a7222fac1b",
+    "results/comparison-1-selected/result.json": "b77f12aaaeaebfdb18c7fde8d9392a42264bcea46f7fde7a04c2775951f8f7f8",
+    "results/comparison-1-selected/partial.json": "f105e6fab12c7030d6fd53843ad62629e4078d029fe2bca1dcb18523684a04f0",
+    "results/final-comparison-0-candidate/result.json": "e6e2186d0610659d418d57831bb1977ad86b5e5907d870a676b62b14ec394a12",
+    "results/final-comparison-0-candidate/partial.json": "bdddefa468034b212c2a058cc319ae7bcbd25d3951d020d331dbba5e04148abf",
+    "results/final-unicode-0-selected/result.json": "f311fb5d99bcf2fd44fc432631cdb8d2c4bdf67d3fb4162eaf8a6c02c81b9a4b",
+    "results/final-unicode-0-selected/partial.json": "3160f3930d7070ef98482d27e6916cfa7e60f3ccdb74616e4b01178f62848a57",
+    "results/final-unicode-0-candidate/result.json": "7e25e7946c803796d6c2170d3821e419a76c33be54a978399f5adc03fc9e4159",
+    "results/final-unicode-0-candidate/partial.json": "8063daaa9f5054d7a3d447a24536d24d4785b37eb3f1b93342268c3e0a7a6152",
+    "results/comparison-0-candidate/result.json": "d2e9b446a5a6cd654d6a1a402791912f8b6aa05f375e64053555250c22fe35d8",
+    "results/comparison-0-candidate/partial.json": "5404335c2f795a1092f0c10bc101e43cee4d454c897cc29447bd9187ca865edb",
+    "results/final-comparison-1-selected/result.json": "0993ed7cf973581c3d716b436661aab4895081efd04e24bee7b2eb69f170c03f",
+    "results/final-comparison-1-selected/partial.json": "c384cb7ee4d87ca32df755f7c3f9e57f4867df6a0dfae5a97b4be6c57b69c1b3",
+    "results/final-comparison-0-selected/result.json": "33326268f91c504cd5e229dc4a524d748799464783ef451494db9f0989555664",
+    "results/final-comparison-0-selected/partial.json": "0a46de101e96a2b5e75ef13652e3199dce7f85fee749d036db78b9bdbb2a4e32",
+    "results/comparison-1-candidate/result.json": "3b4d77aed35405353c9006b155d81b37f0039c8c91d1660ae2889060590a4761",
+    "results/comparison-1-candidate/partial.json": "0d0486dd63f87facd0ab66e8a470ac7727272bb04f8e748b4731703090b724cb",
+    "before-retention-repair/builds/selected-source.json": "47b12f1c9344731ece5beb474d2b2922a24373d3f49f34f8abd3131948db5484",
+    "before-retention-repair/builds/candidate-source.json": "0dbc66af1637e4cdae628412c923bf7d9ed7fc0499e6e79ee5d5629d3ec41c9e",
+    "before-retention-repair/results/comparison-0-selected/result.json": "a79ee9eb5ba1340cf5545513714a05f4b2d7d418f9e305911095759b063d227c",
+    "before-retention-repair/results/comparison-0-selected/partial.json": "ec4b9ff21fa4652d731dcbdc9da6287d54d3b50d025b9678dd2085a7222fac1b",
+    "before-retention-repair/results/comparison-1-selected/result.json": "b77f12aaaeaebfdb18c7fde8d9392a42264bcea46f7fde7a04c2775951f8f7f8",
+    "before-retention-repair/results/comparison-1-selected/partial.json": "f105e6fab12c7030d6fd53843ad62629e4078d029fe2bca1dcb18523684a04f0",
+    "before-retention-repair/results/comparison-0-candidate/result.json": "d2e9b446a5a6cd654d6a1a402791912f8b6aa05f375e64053555250c22fe35d8",
+    "before-retention-repair/results/comparison-0-candidate/partial.json": "5404335c2f795a1092f0c10bc101e43cee4d454c897cc29447bd9187ca865edb",
+    "before-retention-repair/results/comparison-1-candidate/result.json": "3b4d77aed35405353c9006b155d81b37f0039c8c91d1660ae2889060590a4761",
+    "before-retention-repair/results/comparison-1-candidate/partial.json": "0d0486dd63f87facd0ab66e8a470ac7727272bb04f8e748b4731703090b724cb"
+  },
+  "personalAndVectorPins": [
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js",
+      "sha256": "3ac59f06a8feecd324d551ce7b64bac42f2bd4334aa6e11989582f7630d25b77"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js.map",
+      "sha256": "22c4b0b24e48ccda6b6741e8c726a69b29b65bb85bd1bbffbf63f4a68dfa1cff"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/index.html",
+      "sha256": "b1c40d390f76787eb8f386b047d3412b0ee319a6e35a5b38974b70174f0ad244"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/local.html",
+      "sha256": "58f9fb240a2ca48aff5715341e4d4748502e2c7a28ae29b3762c64bcefc186b2"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/sw.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-QtGIH--m.js",
+      "sha256": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/index.html",
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/local.html",
+      "sha256": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/sw.js",
+      "sha256": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a"
+    },
+    {
+      "path": "test/vectors/account-checkpoint.json",
+      "sha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03"
+    },
+    {
+      "path": "test/vectors/account-counter.json",
+      "sha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
+    },
+    {
+      "path": "test/vectors/account-credential.json",
+      "sha256": "ca891a46e3739dac529893bd687b7436f15b0044c2477253104a6e26b8827e5b"
+    },
+    {
+      "path": "test/vectors/account-ledger.json",
+      "sha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c"
+    },
+    {
+      "path": "test/vectors/account-local-custody.json",
+      "sha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27"
+    },
+    {
+      "path": "test/vectors/account-local-provenance.json",
+      "sha256": "a15f93629a0657756159db942e959ec9dc594b1b225b64082d9d030d2e08231d"
+    },
+    {
+      "path": "test/vectors/account-promotion.json",
+      "sha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34"
+    },
+    {
+      "path": "test/vectors/account-recovery.json",
+      "sha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a"
+    },
+    {
+      "path": "test/vectors/account-service-custody.json",
+      "sha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c"
+    },
+    {
+      "path": "test/vectors/account-store.json",
+      "sha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
+    },
+    {
+      "path": "test/vectors/account-transport.json",
+      "sha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41"
+    },
+    {
+      "path": "test/vectors/admission-coverage.json",
+      "sha256": "1e20a41ed2dd7330833090d1fa033a4e84c764a7bbd3de891edcf49fb8690712"
+    },
+    {
+      "path": "test/vectors/algorithm-suite.json",
+      "sha256": "a844647ff43a851016742f25fed41e4fd513ab467452d85e40d39375f2e7fd22"
+    },
+    {
+      "path": "test/vectors/antireplay.json",
+      "sha256": "58c00dc33f0db2fcbb8de7e6826c0c35afe61662b22bcea4210c9b5b832e37b7"
+    },
+    {
+      "path": "test/vectors/attribution.json",
+      "sha256": "cf9f8c33898588e204e93436307e62f130576784b08db7e1af9d166f2e15182b"
+    },
+    {
+      "path": "test/vectors/checkpoint.json",
+      "sha256": "803d8c3a2532dd70a0c2dd76fe6dbeb855e4a43bb764f150ef4c490ff1259893"
+    },
+    {
+      "path": "test/vectors/device-lock.json",
+      "sha256": "8e56b26b79389995d4e1d308728ab6160087dff0ea147c908334ea4759973862"
+    },
+    {
+      "path": "test/vectors/enrollment-ceremony.json",
+      "sha256": "d7f7184a427f1ebbf178c2e8fa410d0436254790a239c3dc4e0a6b37ff20ef84"
+    },
+    {
+      "path": "test/vectors/envelope.json",
+      "sha256": "12953a7382ef7005ec50d6ed64449e3a9ecfd0161f2b06b33b2621e550905029"
+    },
+    {
+      "path": "test/vectors/finalization.json",
+      "sha256": "4aefdafcc053f1b45ca9535d60db34a069614c0436d96c0aae7e17a6351e13f1"
+    },
+    {
+      "path": "test/vectors/first-authority.json",
+      "sha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9"
+    },
+    {
+      "path": "test/vectors/head-discovery.json",
+      "sha256": "dd348ad5e0abb92f83e2c794ab7c3bfe4967b23026e1cff908b2f1da12db10ae"
+    },
+    {
+      "path": "test/vectors/historical/README.md",
+      "sha256": "6110e2aac28fc30682160aa763a6db9fc4e8903646b32b507afaf8ee89c50ea9"
+    },
+    {
+      "path": "test/vectors/historical/recovery-code.scalar-only.json",
+      "sha256": "08900f54013d8211462f3e38af161a163423c2d62d6925eebc439bc9da972a19"
+    },
+    {
+      "path": "test/vectors/journal-aead.json",
+      "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
+    },
+    {
+      "path": "test/vectors/package.json",
+      "sha256": "c625ce1d70ad65e58c8b803879a39ddfc2984003ccf7f746ef0db3e34241e610"
+    },
+    {
+      "path": "test/vectors/private-envelope.json",
+      "sha256": "81a753a0aaf2e8ffb354a699340b294638f9fdb0cdbfdcbbf97cc7fc5e6b3dd5"
+    },
+    {
+      "path": "test/vectors/record-format.json",
+      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+    },
+    {
+      "path": "test/vectors/recovery-code.json",
+      "sha256": "49b741f2a0970ea91084d0c90e3fb9e430db886e88633e0b3df8263feb24f6b8"
+    },
+    {
+      "path": "test/vectors/transition.json",
+      "sha256": "7569daf02c789ac47bb2070d3afdf3b5ec0dcf9255ef74b434c682cde6e91a66"
+    },
+    {
+      "path": "test/vectors/web-security-baseline.json",
+      "sha256": "1c7981b9043a50cf2705f21ac9cd53d7af4ce175ea77d1141c255e8e179ef797"
+    }
+  ],
+  "perspectiveSha256": "d95dda59fb81f49938d515a7dbf095da91d8f6d959b991b1a3dccd36d322cd32"
+}

@@ -1,0 +1,1112 @@
+{
+  "name": "guarded",
+  "session": "cost-0",
+  "corpus": {
+    "days": 20,
+    "cardsPerDay": 15,
+    "masterLines": 400
+  },
+  "started": "2026-09-15T12:03:24.236Z",
+  "profiling": false,
+  "unicode": false,
+  "rows": [
+    {
+      "block": "shallow",
+      "samples": [
+        50,
+        16.59999942779541,
+        59.40000057220459,
+        47.80000019073486,
+        47.79999923706055,
+        41.89999961853027,
+        43.89999961853027,
+        44.80000019073486,
+        44.5,
+        45.90000057220459,
+        54.90000057220459,
+        46.79999923706055,
+        46,
+        50.09999942779541,
+        47.19999980926514,
+        46.10000038146973,
+        46.40000057220459,
+        47.39999961853027,
+        48,
+        46.90000057220459,
+        45.89999961853027,
+        46.70000076293945,
+        47.59999942779541,
+        51,
+        47.10000038146973,
+        49.30000019073486,
+        47.69999980926514,
+        48,
+        47.90000057220459,
+        41.39999961853027,
+        47.40000057220459,
+        45.89999961853027,
+        47.30000019073486,
+        47.90000057220459,
+        47.09999942779541,
+        48.80000019073486,
+        47.39999961853027,
+        46.19999980926514,
+        46.10000038146973,
+        45.60000038146973
+      ],
+      "p50": 47.10000038146973,
+      "p95": 51
+    },
+    {
+      "block": "deeper",
+      "samples": [
+        47.20000076293945,
+        45.60000038146973,
+        42.89999961853027,
+        47.09999942779541,
+        45.40000057220459,
+        48,
+        46.19999980926514,
+        45.39999961853027,
+        49.30000019073486,
+        45.89999961853027,
+        46.19999980926514,
+        47.10000038146973,
+        52.69999980926514,
+        49.69999980926514,
+        46.89999961853027,
+        46.39999961853027,
+        46.69999980926514,
+        47.5,
+        46.69999980926514,
+        46.09999942779541,
+        47.10000038146973,
+        47,
+        46.80000019073486,
+        51.70000076293945,
+        48.30000019073486,
+        44.69999980926514,
+        45.29999923706055,
+        52.5,
+        45.80000019073486,
+        48,
+        44.80000019073486,
+        46.69999980926514,
+        44.69999980926514,
+        42.79999923706055,
+        44.60000038146973,
+        46.20000076293945,
+        44.39999961853027,
+        46.09999942779541,
+        46.5,
+        46.5
+      ],
+      "p50": 46.5,
+      "p95": 51.70000076293945
+    }
+  ],
+  "checks": [],
+  "errors": [],
+  "browser": "151.0.7922.34",
+  "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "setupMarkerPresent": true,
+  "setupEmojiPresent": false,
+  "costs": [
+    {
+      "block": "shallow",
+      "calls": [
+        {
+          "name": "catchup-replay",
+          "ms": 0.7999992370605469
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.40000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.200000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.5999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.5
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.899999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.3000001907348633
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.7999992370605469
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.9000005722045898
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.59999942779541
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.700000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.7000007629394531
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.2999992370605469
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.5
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.09999942779541
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.399999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.4000005722045898
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.300000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.59999942779541
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.399999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.899999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.399999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.700000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.3000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.59999942779541
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.9000005722045898
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.40000057220459
+        }
+      ]
+    },
+    {
+      "block": "deeper",
+      "calls": [
+        {
+          "name": "catchup-replay",
+          "ms": 1.2000007629394531
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.5999994277954102
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.5
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.3000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.9000005722045898
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.5999994277954102
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.5
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.700000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 1
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.40000057220458984
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.399999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 2.3999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.200000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.0999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.4000005722045898
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.5
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.899999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.5999994277954102
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.700000762939453
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.399999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.40000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.40000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.800000190734863
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.7999992370605469
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.7000007629394531
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.899999618530273
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.90000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.40000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.40000057220459
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.7000007629394531
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.5
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.3000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 1
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.199999809265137
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.2000007629394531
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.2999992370605469
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.600000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 10.100000381469727
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1.3000001907348633
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 12.09999942779541
+        },
+        {
+          "name": "catchup-replay",
+          "ms": 1
+        },
+        {
+          "name": "catchup-stacks",
+          "ms": 0.5999994277954102
+        },
+        {
+          "name": "catchup-compare",
+          "ms": 11.5
+        }
+      ]
+    }
+  ],
+  "bufferReceipts": [
+    {
+      "block": "shallow",
+      "before": {
+        "prepares": 11,
+        "reuses": 7
+      },
+      "after": {
+        "prepares": 51,
+        "reuses": 47
+      },
+      "reused": 40
+    },
+    {
+      "block": "deeper",
+      "before": {
+        "prepares": 147,
+        "reuses": 143
+      },
+      "after": {
+        "prepares": 187,
+        "reuses": 183
+      },
+      "reused": 40
+    }
+  ]
+}

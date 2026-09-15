@@ -1,0 +1,308 @@
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index 24edfd3f..5d6ce5f2 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -151,7 +151,22 @@ export const createAdmittedWorkspace = async (
+     throw Error('Local preparation cannot capture Account sources');
+   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+   // Private experiment: one retired predecessor, never more than two workspace histories.
+-  let spare: { state: State; basis: State; update: Bytes } | undefined;
++  let spare:
++    | { state: State; basis: State; update: Bytes; untouched(): boolean; unwatch(): void }
++    | undefined;
++  // Only the owning preparation may mutate a retired buffer. Conservative: even an idle
++  // no-op transaction invalidates it. Raw private-field writes remain outside this contract.
++  const watchRetired = (state: State) => {
++    let untouched = true;
++    const changed = () => {
++      untouched = false;
++    };
++    state.history.doc.on('beforeTransaction', changed);
++    return {
++      untouched: () => untouched,
++      unwatch: () => state.history.doc.off('beforeTransaction', changed),
++    };
++  };
+   const stable = new WeakMap<YUndoManager, boolean>();
+   const transferred = new WeakSet<PreparedWorkspaceState>();
+   const transitions = new WeakMap<PreparedWorkspaceState, { update: Bytes; textOnly: boolean }>();
+@@ -160,6 +175,7 @@ export const createAdmittedWorkspace = async (
+     const old = spare;
+     spare = undefined;
+     try {
++      old.unwatch();
+       old.update.fill(0);
+     } finally {
+       dispose(old.state);
+@@ -231,8 +247,11 @@ export const createAdmittedWorkspace = async (
+       state = old.state;
+       try {
+         scope!.ownState(state);
++        if (!old.untouched()) throw Error('Retired text buffer changed while idle');
++        old.unwatch();
+         selectionHistory!.catchUpText(state.history, basis.history, old.update);
+       } finally {
++        old.unwatch();
+         old.update.fill(0);
+       }
+       state.selections = new Map();
+@@ -391,7 +410,12 @@ export const createAdmittedWorkspace = async (
+     transitions.delete(state);
+     let retired: PreparedWorkspaceState | undefined;
+     if (selectionHistory && previous && transferred.has(previous) && transition?.textOnly) {
+-      spare = { state: previous, basis: state as State, update: transition.update.slice() };
++      spare = {
++        state: previous,
++        basis: state as State,
++        update: transition.update.slice(),
++        ...watchRetired(previous),
++      };
+       retired = previous;
+     } else dispose(previous);
+     transferred.add(state);
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index 9206b2bc..933fec1e 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -736,14 +736,16 @@ export const createSelectionHistory = () => {
+       return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+     },
+     /** A retired predecessor catches up only across an owner-proven text transition.
+-     * Applying a native delta normalizes new content; text does not create redone links. */
++     * The workspace must supply its untouched exact predecessor and retained accepted delta.
++     * This is not a general catch-up validator. Native text replay preserves the guarded
++     * normalization domain and inherited redone links; complete stack copying follows.
++     * Existing post-admission canonical verification remains in the preparation owner. */
+     catchUpText(target: YUndoManager, source: YUndoManager, update: Uint8Array): void {
+       check(target);
+       check(source);
+       if (target === source) throw Error('Text buffer aliases accepted history');
+       applyUpdate(target.doc, update, 'text-buffer-catch-up');
+       copyHistoryStacks(source, target, (meta) => snapshots.fork(meta));
+-      if (!sameDocState(target.doc, source.doc)) throw Error('Text buffer catch-up mismatch');
+     },
+     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+       check(history);
+diff --git a/test/historyReplay.test.ts b/test/historyReplay.test.ts
+new file mode 100644
+index 00000000..17cf468f
+--- /dev/null
++++ b/test/historyReplay.test.ts
+@@ -0,0 +1,159 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import fc from 'fast-check';
++import {
++  Y,
++  createHistoryDoc,
++  createSelectionHistory,
++  isTextBufferBasis,
++  sameDocState,
++  encodeState,
++  applyUpdate,
++  type YDoc,
++  type YUndoManager,
++} from '../src/crdt/yjs';
++const links = (doc: YDoc) => {
++  const out: [string, string][] = [];
++  for (const structs of doc.store.clients.values())
++    for (const item of structs)
++      if (item instanceof Y.Item && item.redone)
++        for (let i = 0; i < item.length; i++)
++          out.push([
++            `${item.id.client}:${item.id.clock + i}`,
++            `${item.redone.client}:${item.redone.clock + i}`,
++          ]);
++  return out.sort(([a], [b]) => a.localeCompare(b));
++};
++const dispose = (h: YUndoManager) => {
++  h.destroy();
++  h.doc.destroy();
++};
++const equal = (a: YUndoManager, b: YUndoManager) => {
++  expect(sameDocState(a.doc, b.doc)).toBe(true);
++  expect(links(a.doc)).toEqual(links(b.doc));
++  expect(a.undoStack).toEqual(b.undoStack);
++  expect(a.redoStack).toEqual(b.redoStack);
++  expect(a.doc.getText('master').toString()).toBe(b.doc.getText('master').toString());
++};
++
++it('generated native text replay equals fresh history including old redone chains, split deletions and both stacks', () => {
++  const steps = fc.array(
++    fc.record({
++      at: fc.nat(80),
++      len: fc.integer({ min: 1, max: 5 }),
++      insert: fc.boolean(),
++      group: fc.boolean(),
++      text: fc.constantFrom('é', '\u0000', '中', 'abc', '\ufffd', '\u2028'),
++    }),
++    { minLength: 20, maxLength: 50 },
++  );
++  fc.assert(
++    fc.property(steps, (actions) => {
++      const owner = createSelectionHistory(),
++        human = {},
++        source = owner.create(createHistoryDoc(), human);
++      let target: YUndoManager | undefined, fresh: YUndoManager | undefined;
++      try {
++        source.doc.clientID = 80001;
++        source.doc
++          .getMap('meta')
++          .set('nested', {
++            values: [undefined, null, -0, Number.MIN_VALUE, Number.MAX_VALUE, 'naïve'],
++            nested: { é: '中' },
++          });
++        source.doc.transact(() => source.doc.getText('master').insert(0, 'abcdef ghijkl'), human);
++        source.undo();
++        source.redo();
++        source.undo();
++        source.redo(); // Existing multi-hop links before any buffer replay.
++        expect(links(source.doc).length).toBeGreaterThan(0);
++        target = owner.fork(source, human);
++        expect(isTextBufferBasis(source.doc)).toBe(true);
++        let writer = 81000;
++        for (const step of actions) {
++          const updates: Uint8Array[] = [];
++          const capture = (b: Uint8Array) => updates.push(b.slice());
++          source.doc.clientID = ++writer;
++          if (step.group) source.stopCapturing();
++          source.doc.on('update', capture);
++          const text = source.doc.getText('master'),
++            at = Math.min(step.at, text.length);
++          source.doc.transact(() => {
++            if (step.insert) text.insert(at, step.text);
++            else if (at < text.length) text.delete(at, Math.min(step.len, text.length - at));
++          }, human);
++          source.doc.off('update', capture);
++          const update = updates.length ? Y.mergeUpdates(updates) : new Uint8Array([0, 0]);
++          owner.catchUpText(target, source, update);
++          fresh = owner.fork(source, human);
++          equal(target, fresh);
++          equal(target, source);
++          expect(isTextBufferBasis(target.doc)).toBe(true);
++          expect(target.doc.getMap('meta').get('nested')).toEqual(
++            source.doc.getMap('meta').get('nested'),
++          );
++          expect(target.doc.getMap('meta').get('nested')).not.toBe(
++            source.doc.getMap('meta').get('nested'),
++          );
++          const replay = createHistoryDoc();
++          try {
++            applyUpdate(replay, encodeState(target.doc));
++            expect(sameDocState(replay, source.doc)).toBe(true);
++          } finally {
++            replay.destroy();
++          }
++          dispose(fresh);
++          fresh = undefined;
++          update.fill(0);
++          for (const b of updates) b.fill(0);
++        }
++        fresh = owner.fork(source, human);
++        const undos = fresh.undoStack.length;
++        for (let i = 0; i < undos; i++) {
++          fresh.doc.clientID = target.doc.clientID = ++writer;
++          fresh.undo();
++          target.undo();
++          equal(target, fresh);
++        }
++        const redos = fresh.redoStack.length;
++        for (let i = 0; i < redos; i++) {
++          fresh.doc.clientID = target.doc.clientID = ++writer;
++          fresh.redo();
++          target.redo();
++          equal(target, fresh);
++        }
++      } finally {
++        if (fresh) dispose(fresh);
++        if (target) dispose(target);
++        dispose(source);
++        owner.close();
++      }
++    }),
++    { seed: 171511, numRuns: 100 },
++  );
++}, 30000);
++
++it('documents the trusted replay boundary: raw same-clock private-field mutation is not validated by replay', () => {
++  const owner = createSelectionHistory(),
++    human = {},
++    source = owner.create(createHistoryDoc(), human);
++  source.doc.getText('master').insert(0, 'A');
++  const target = owner.fork(source, human),
++    updates: Uint8Array[] = [];
++  try {
++    const item = target.doc.getText('master')._start!;
++    expect(item.content).toBeInstanceOf(Y.ContentString);
++    (item.content as Y.ContentString).str = 'X'; // Deliberately outside Yjs transactions and owner APIs.
++    source.doc.on('update', (b) => updates.push(b.slice()));
++    source.doc.getText('master').insert(1, 'B');
++    owner.catchUpText(target, source, updates[0]!);
++    expect(target.doc.getText('master').toString()).toBe('XB');
++    expect(source.doc.getText('master').toString()).toBe('AB');
++    expect(sameDocState(target.doc, source.doc)).toBe(false);
++  } finally {
++    dispose(target);
++    dispose(source);
++    owner.close();
++    for (const b of updates) b.fill(0);
++  }
++});
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index 6dda17c9..7a73b23f 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -1346,7 +1346,7 @@ describe('persistent text buffers', () => {
+     }
+   });
+ 
+-  it('full catch-up comparison refuses corrupted retired content before another append', async () => {
++  it('idle transaction fence refuses corrupted retired content before another append', async () => {
+     const f = await makeFixture(undefined, 'local-snapshots');
+     try {
+       await master(f.doc).input(insert('A')).accepted;
+@@ -1365,6 +1365,30 @@ describe('persistent text buffers', () => {
+     }
+   });
+ 
++  it('idle no-op transactions refuse before append and release watchers on discard and reset', async () => {
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      await master(f.doc).input(insert('A')).accepted;
++      const old = f.retired.at(-1)!,
++        writes = f.writeReferences.length;
++      old.history.doc.transact(() => {});
++      const ticket = master(f.doc).input(insert('B'));
++      await until(() => f.doc.status.state === 'blocked');
++      expect(f.writeReferences).toHaveLength(writes);
++      expect(f.doc.read().master).toBe('A');
++      f.doc.discardPending();
++      await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
++      expect(old.history.doc.isDestroyed).toBe(true);
++      await master(f.doc).input(insert('C')).accepted;
++      const next = f.retired.at(-1)!;
++      await f.doc.receive(remote(f.doc, (d) => d.getText('master').insert(0, 'R'))).accepted;
++      expect(next.history.doc.isDestroyed).toBe(true);
++      expect(f.doc.read().master).toBe('RAC');
++    } finally {
++      await f.doc.close();
++    }
++  });
++
+   it('generated buffer histories match fresh forks through deletion, grouping, reset and refusal', async () => {
+     const actions = fc.array(
+       fc.record({
+diff --git a/test/textBufferNormalizationProbe.test.ts b/test/textBufferNormalizationProbe.test.ts
+index 3f991821..83c0082b 100644
+--- a/test/textBufferNormalizationProbe.test.ts
++++ b/test/textBufferNormalizationProbe.test.ts
+@@ -42,5 +42,8 @@ it('records native fork behavior for negative zero and unsupported object shapes
+       owner.close();
+     }
+   }
+-  writeFileSync('/private/tmp/done-f17-buffers-r1/normalization-values.json', JSON.stringify(rows, null, 2) + '\n');
++  writeFileSync(
++    '/private/tmp/done-f17-replay-r1/normalization-values.json',
++    JSON.stringify(rows, null, 2) + '\n',
++  );
+ });

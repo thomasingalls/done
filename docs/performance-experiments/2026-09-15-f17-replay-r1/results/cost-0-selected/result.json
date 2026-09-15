@@ -1,0 +1,1123 @@
+{
+  "name": "selected",
+  "session": "cost-0",
+  "corpus": {
+    "days": 20,
+    "cardsPerDay": 15,
+    "masterLines": 400
+  },
+  "started": "2026-09-15T12:02:42.766Z",
+  "profiling": false,
+  "unicode": false,
+  "rows": [
+    {
+      "block": "shallow",
+      "samples": [
+        45.60000038146973,
+        19.199999809265137,
+        69.19999980926514,
+        45.89999961853027,
+        46.10000038146973,
+        47,
+        46.10000038146973,
+        48.39999961853027,
+        10.100000381469727,
+        39.60000038146973,
+        46.19999980926514,
+        49.70000076293945,
+        46.89999961853027,
+        45,
+        45.10000038146973,
+        44.69999980926514,
+        46.80000019073486,
+        45,
+        45.29999923706055,
+        44.59999942779541,
+        43.19999980926514,
+        44.5,
+        43.5,
+        50.10000038146973,
+        41.5,
+        45.69999980926514,
+        44.89999961853027,
+        45.69999980926514,
+        44.30000019073486,
+        45.39999961853027,
+        44.40000057220459,
+        43.19999980926514,
+        44.59999942779541,
+        44.39999961853027,
+        45.39999961853027,
+        43.5,
+        46.20000076293945,
+        45.30000019073486,
+        47.39999961853027,
+        45.69999980926514
+      ],
+      "p50": 45.29999923706055,
+      "p95": 49.70000076293945
+    },
+    {
+      "block": "deeper",
+      "samples": [
+        44.80000019073486,
+        44.89999961853027,
+        44.80000019073486,
+        43.59999942779541,
+        46.29999923706055,
+        44.60000038146973,
+        45.30000019073486,
+        45.20000076293945,
+        43,
+        43.5,
+        47,
+        41.20000076293945,
+        44.39999961853027,
+        44.29999923706055,
+        44.30000019073486,
+        40.90000057220459,
+        44.69999980926514,
+        43.20000076293945,
+        50.79999923706055,
+        43.90000057220459,
+        44.80000019073486,
+        43.59999942779541,
+        43.90000057220459,
+        44.10000038146973,
+        42,
+        42.80000019073486,
+        45.80000019073486,
+        48.70000076293945,
+        43.69999980926514,
+        42.79999923706055,
+        44,
+        43.89999961853027,
+        41.29999923706055,
+        44.5,
+        45.29999923706055,
+        43.40000057220459,
+        43.19999980926514,
+        43.69999980926514,
+        44.19999980926514,
+        40.19999980926514
+      ],
+      "p50": 44,
+      "p95": 47
+    }
+  ],
+  "checks": [
+    "exact text after every block",
+    "undo/redo exact roundtrip",
+    "cold reopen exact text"
+  ],
+  "errors": [],
+  "browser": "151.0.7922.34",
+  "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "setupMarkerPresent": true,
+  "setupEmojiPresent": false,
+  "costs": [
+    {
+      "block": "shallow",
+      "calls": [
+        {
+          "name": "fresh-doc",
+          "ms": 10
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.399999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 10.100000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.100000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.90000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.90000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.300000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.100000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.40000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 11.199999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 12.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 5.09999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 10
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.800000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.100000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.59999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.800000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.09999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.399999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.399999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.399999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 10.100000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.799999237060547
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.200000762939453
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.90000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.799999237060547
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.90000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.3000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        }
+      ]
+    },
+    {
+      "block": "deeper",
+      "calls": [
+        {
+          "name": "fresh-doc",
+          "ms": 8.800000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.6999998092651367
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.59999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.100000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.399999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.100000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.800000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.8999996185302734
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.600000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.7000007629394531
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.59999942779541
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.3000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.59999942779541
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.9000005722045898
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.100000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.90000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.9000005722045898
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.800000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.7999992370605469
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.59999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.199999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 10.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 11.600000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.59999942779541
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.40000057220458984
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.699999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.09999942779541
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.399999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.09999942779541
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.09999942779541016
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.199999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 1.1999998092651367
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.399999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.300000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.399999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.39999961853027344
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 7.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.3000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 8.5
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 1.1000003814697266
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 1
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.899999618530273
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.100000381469727
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.100000381469727
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.899999618530273
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.40000057220458984
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.800000190734863
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.300000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.19999980926513672
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.90000057220459
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.59999942779541
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.5
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.8000001907348633
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10.40000057220459
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 9.300000190734863
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.5
+        },
+        {
+          "name": "fresh-total",
+          "ms": 10
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.699999809265137
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9.199999809265137
+        },
+        {
+          "name": "fresh-doc",
+          "ms": 8.799999237060547
+        },
+        {
+          "name": "fresh-stacks",
+          "ms": 0.10000038146972656
+        },
+        {
+          "name": "fresh-total",
+          "ms": 9
+        }
+      ]
+    }
+  ],
+  "bufferReceipts": [
+    {
+      "block": "shallow",
+      "before": {
+        "prepares": 11,
+        "reuses": 0
+      },
+      "after": {
+        "prepares": 51,
+        "reuses": 0
+      },
+      "reused": 0
+    },
+    {
+      "block": "deeper",
+      "before": {
+        "prepares": 147,
+        "reuses": 0
+      },
+      "after": {
+        "prepares": 187,
+        "reuses": 0
+      },
+      "reused": 0
+    }
+  ],
+  "undoImmediateUnchanged": false,
+  "undoSettledMs": 123.2054169999974,
+  "redoImmediateUnchanged": false,
+  "redoSettledMs": 114.58750000000146,
+  "status": "passed",
+  "finished": "2026-09-15T12:03:23.701Z",
+  "closed": true
+}

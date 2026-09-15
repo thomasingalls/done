@@ -1,0 +1,190 @@
+{
+  "rows": [
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "variant": "selected",
+      "block": "shallow",
+      "p50": 45.80000019073486,
+      "p95": 51.69999980926514,
+      "reuses": 0
+    },
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "variant": "selected",
+      "block": "deeper",
+      "p50": 46,
+      "p95": 48.19999980926514,
+      "reuses": 0
+    },
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "variant": "candidate",
+      "block": "shallow",
+      "p50": 36.89999961853027,
+      "p95": 41.60000038146973,
+      "reuses": 40
+    },
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "variant": "candidate",
+      "block": "deeper",
+      "p50": 36.89999961853027,
+      "p95": 39.30000019073486,
+      "reuses": 40
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "variant": "selected",
+      "block": "shallow",
+      "p50": 46,
+      "p95": 49.10000038146973,
+      "reuses": 0
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "variant": "selected",
+      "block": "deeper",
+      "p50": 45.30000019073486,
+      "p95": 47.69999980926514,
+      "reuses": 0
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "variant": "candidate",
+      "block": "shallow",
+      "p50": 35.5,
+      "p95": 37.59999942779541,
+      "reuses": 40
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "variant": "candidate",
+      "block": "deeper",
+      "p50": 35.69999980926514,
+      "p95": 37.60000038146973,
+      "reuses": 40
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "variant": "selected",
+      "block": "shallow",
+      "p50": 46,
+      "p95": 52.80000019073486,
+      "reuses": 0
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "variant": "selected",
+      "block": "deeper",
+      "p50": 44.10000038146973,
+      "p95": 47.30000019073486,
+      "reuses": 0
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "variant": "candidate",
+      "block": "shallow",
+      "p50": 44.80000019073486,
+      "p95": 47.90000057220459,
+      "reuses": 0
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "variant": "candidate",
+      "block": "deeper",
+      "p50": 44.39999961853027,
+      "p95": 46.60000038146973,
+      "reuses": 0
+    }
+  ],
+  "pairs": [
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "block": "shallow",
+      "p50Ratio": 0.8056768442109086,
+      "p95Ratio": 0.8046421766913547
+    },
+    {
+      "condition": "ordinary",
+      "pair": 0,
+      "block": "deeper",
+      "p50Ratio": 0.8021739047506581,
+      "p95Ratio": 0.8153527042790675
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "block": "shallow",
+      "p50Ratio": 0.7717391304347826,
+      "p95Ratio": 0.7657840964495307
+    },
+    {
+      "condition": "ordinary",
+      "pair": 1,
+      "block": "deeper",
+      "p50Ratio": 0.788079462669998,
+      "p95Ratio": 0.7882599692205112
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "block": "shallow",
+      "p50Ratio": 0.9739130476246709,
+      "p95Ratio": 0.907196977257017
+    },
+    {
+      "condition": "unicode",
+      "pair": 0,
+      "block": "deeper",
+      "p50Ratio": 1.006802703729377,
+      "p95Ratio": 0.9852008497580883
+    }
+  ],
+  "summary": [
+    {
+      "condition": "ordinary",
+      "block": "shallow",
+      "selectedMedianOfP50Ms": 45.90000009536743,
+      "candidateMedianOfP50Ms": 36.19999980926514,
+      "medianPairedP50ImprovementPercent": 21.129201267715448,
+      "medianPairedP95ImprovementPercent": 21.478686342955733
+    },
+    {
+      "condition": "ordinary",
+      "block": "deeper",
+      "selectedMedianOfP50Ms": 45.65000009536743,
+      "candidateMedianOfP50Ms": 36.299999713897705,
+      "medianPairedP50ImprovementPercent": 20.487331628967198,
+      "medianPairedP95ImprovementPercent": 19.819366325021058
+    },
+    {
+      "condition": "unicode",
+      "block": "shallow",
+      "selectedMedianOfP50Ms": 46,
+      "candidateMedianOfP50Ms": 44.80000019073486,
+      "medianPairedP50ImprovementPercent": 2.6086952375329098,
+      "medianPairedP95ImprovementPercent": 9.280302274298302
+    },
+    {
+      "condition": "unicode",
+      "block": "deeper",
+      "selectedMedianOfP50Ms": 44.10000038146973,
+      "candidateMedianOfP50Ms": 44.39999961853027,
+      "medianPairedP50ImprovementPercent": -0.6802703729376969,
+      "medianPairedP95ImprovementPercent": 1.4799150241911696
+    }
+  ]
+}

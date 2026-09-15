@@ -101,3 +101,6 @@ the last actual gate remains 12.2/75.1 ms desktop/CPU4 card p95 and 54.2 ms Andr
 receipt or budget relaxation is added. Prior packet, 52 personal/package/vector pins, root perspective,
 signed append-only prefixes and L-2 verify unchanged. Personal app/server, phone, relay and deployment
 remain untouched. This new phase is uncommitted.
+
+
+**Subsequent checkpoint.** This phase is now signed and signature-verified as `aa54be31`. Its next cost-accounting/replay step is complete in [the replay assessment](./f17-replay-r1.md); the original guarded measurements and archived packet remain unchanged.
