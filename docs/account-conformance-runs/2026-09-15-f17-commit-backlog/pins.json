@@ -1,0 +1,2214 @@
+{
+  "originalWorkingTree": [
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-cases.json.gz",
+      "sha256": "119132d3c10966f4888f6408099828b6888587b4a768b0e91a963ef9a4f9ba5a",
+      "bytes": 2166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-output.log.gz",
+      "sha256": "69ffac071aeaaa07e758a74e1a671628439586021e4f14b837afff2e91efb255",
+      "bytes": 3461
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-cases.json.gz",
+      "sha256": "ee4d7ce92a52ab270c4734483f6b7a1c46975aac1a7dccaf875597aafac63c97",
+      "bytes": 1434
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-output.log.gz",
+      "sha256": "6bdd56fd8ff4e4d5760205318579fa0cbc0fb6ccf848e0378e601a90482a262f",
+      "bytes": 1407
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/README.md",
+      "sha256": "c00f13672b6a70b5e4980e973f1dbd4b1f16e6120857e7fda4a659ede437fcf9",
+      "bytes": 4807
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-cases.json.gz",
+      "sha256": "1634811fa1e2d96d8822306ea19b6d4c89c30bdf5f32099a81dd624def3e2063",
+      "bytes": 902
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-output.log.gz",
+      "sha256": "64116d9f6109e09936d7b5d9ae5ed5b2172273ae490ccfd3a228844ee89bc26d",
+      "bytes": 1183
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/artifacts.json",
+      "sha256": "a676e4cdf96da6cd58c66aaf16673a2d93eac7a462b799ecaf4a649c9e59ce38",
+      "bytes": 34770
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/authority.log.gz",
+      "sha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "bytes": 447
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-cases.json.gz",
+      "sha256": "6595c4314f952efcb6e4e81bf2f4ed84d8ee6e34b137292dbdbe22e90ea216b6",
+      "bytes": 1757
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-output.log.gz",
+      "sha256": "ae7a35efe652fd2e3d481db39d94a42e54ad387fa9203b83e1905945a0bbab5d",
+      "bytes": 1790
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-cases.json.gz",
+      "sha256": "939feaf5bb2478a750d676d6765bd32a2bdce86c01e7926ac9aa272a2d7c215e",
+      "bytes": 577
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-output.log.gz",
+      "sha256": "8803bd2a4c8bb59b20aaa9451b5f49be88244b15e5615d84c589b2c5e7ba221a",
+      "bytes": 531
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/checks.log.gz",
+      "sha256": "96f059aef4b671201f51251b95da9af4a860fbed4b4514d712cfce93f149ea59",
+      "bytes": 56
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/control-erase-leased-write.log.gz",
+      "sha256": "7fa9d25edb5d3ca060fc74984b86d5f9fae7ab254877cb4f9bb13e5a63d0c678",
+      "bytes": 707
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/control-skip-adoption-comparison.log.gz",
+      "sha256": "6e859ee213811593b1cbbf82513895b26a5f1e7655f18e0d888905d160047ebb",
+      "bytes": 649
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/crypto-record.log.gz",
+      "sha256": "1090856b3dae51355ca7022ab587da786c8cb9c93b2f9aee0ccacc2a9df5a3c9",
+      "bytes": 229
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-cases.json.gz",
+      "sha256": "59cdafd0c036a959d17473187ba4e16fcc29fe6fdf021160873de8535eb8001f",
+      "bytes": 1442
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-output.log.gz",
+      "sha256": "855178001b6f0191395d4489c8e975072487fbaaaeb0ef35c10b8028f80b7890",
+      "bytes": 1465
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/delivery-native.log.gz",
+      "sha256": "4a51e91127e4cdcfbcf3168e4e5a311df16192f8d3d62727f136b7f40f3224da",
+      "bytes": 298
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-cases.json.gz",
+      "sha256": "59db6706c5bbc9ec179e2d14d99a1a0b96da47ceb99f980da96571760a1dfbee",
+      "bytes": 1133
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-output.log.gz",
+      "sha256": "3029af649219d5a0c2c78cecab4e6ec36351380a8fa5519f9da150f80553ec55",
+      "bytes": 1149
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/exclusions.json.gz",
+      "sha256": "4061079ecb1ca1b4130eda7f51aa5ec502aedd90d593bb9a16c5b56531429c00",
+      "bytes": 436
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-cases.json.gz",
+      "sha256": "e2b9e4b4649f397f8cd95664518515313fa34f2998614cb65be83babcf59ae66",
+      "bytes": 715
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-output.log.gz",
+      "sha256": "6abcfc6e669239a844fd8c695f5672c72deb446aeb5d06bbb54ea98bd2b99915",
+      "bytes": 668
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/focused-final.log.gz",
+      "sha256": "89f7223c650efa49f5f406b10543787c0a27268542b5e1dda2f0a08ec0aa2e9d",
+      "bytes": 166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/focused-unit.log.gz",
+      "sha256": "5464b02138286f29b0d127f2ea5b46d17b448f191957ed5f00c14b1e862d7d0a",
+      "bytes": 166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/format.log.gz",
+      "sha256": "ce02b751eeb13beeec35939ef90eab3703e5e018451f8bdb981f11b8cf4f4192",
+      "bytes": 109
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/gates.json",
+      "sha256": "f210d50773cf722eb106033cbd714ff360056639a495ecbe19d60e3c3a1ae291",
+      "bytes": 1741
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/generated-initial.log.gz",
+      "sha256": "ab49daa4eed922220446f48bc4e998d6d62f708d2774c443ea24571078e34dc7",
+      "bytes": 937
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/generated-repaired-fixture.log.gz",
+      "sha256": "4e0b381bb335b05b95a8ee937b957b9c6d7d7bba2d62fd38701e6aedd2db880c",
+      "bytes": 167
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/initial-unit.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/initialization-repair.log.gz",
+      "sha256": "345c7ffc6195a3a2b30693f0214f43363fc21c9cae9ba0a23ebd771d245608d0",
+      "bytes": 177
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-configure-controls.py.gz",
+      "sha256": "c585333b235630067f4b14545cba76a98140ea190c559e0fa98c7d906c1d9e73",
+      "bytes": 862
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-control-results.json.gz",
+      "sha256": "b089b0d6c3f17e1777f36477a45a27b8f273a5e6eaacd231149d1ef3a7143c9c",
+      "bytes": 376
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-controls.json.gz",
+      "sha256": "7822b5c66a95689cdb8632622b76a7b704743ae6594c21d57e92cee8b0251a72",
+      "bytes": 228
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-erase-leased-write.config.mts.gz",
+      "sha256": "478e77ebfdedc5c854f8dda9c8f1e7786a01c9c6c37a49dfdfe844142c0968aa",
+      "bytes": 369
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-erase-leased-write.patch.gz",
+      "sha256": "4c491ff6e5fe9fd442a98a403d119e1943adff721b7be6dddf6ec4093f5f9098",
+      "bytes": 250
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-browser-inputs.json.gz",
+      "sha256": "8efd23050b4e7d6ef693e66bfb5c81f765015757eb4f7c312e5c9455f030a468",
+      "bytes": 259
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-final-browser-inputs.json.gz",
+      "sha256": "d25563da978abed4bdab072e10863c8dcc5bac8b0bf7fa2320e18bc620aa2263",
+      "bytes": 9300
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-final-workspace-input-reference.json.gz",
+      "sha256": "cef93449844ee314747121c5e7edde77e624ee78444061404b930bbac7fca2f0",
+      "bytes": 519
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-workspace-input-reference.json.gz",
+      "sha256": "577f388fb5b87ad095652fd75699ceb9b23d470c1007d9e0163d38e8f9e6e6fa",
+      "bytes": 1090
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-owned-tests.mjs.gz",
+      "sha256": "dafb7ebabdc35c6b2947f397dcec6ddf1bd94766c6bb56d58b0430b425c16363",
+      "bytes": 581
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-registration-review.json.gz",
+      "sha256": "c0148eacc7cdf013882f6106207b51ca5c45a2c4626910615f3bc9598260fcb5",
+      "bytes": 181
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-run-controls.py.gz",
+      "sha256": "b2ba17792f09298fbb1f35cd38e11eea2dbc265053f3bd86f85803fc9d63e7f3",
+      "bytes": 487
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-skip-adoption-comparison.config.mts.gz",
+      "sha256": "97e4c0f52cdfe61b37014f4950557ab3dad2055df6d7b816bc92fbfe86a8c9c9",
+      "bytes": 366
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-skip-adoption-comparison.patch.gz",
+      "sha256": "11612a1eca45743e2ece886882cb008b46afd95adfea098c8b8f8b092e2711b6",
+      "bytes": 227
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-docs-account-crypto-census.json.gz",
+      "sha256": "2c22ab86b2d06ab7cc3049f0dd350e741cd064cf5ed4be3f78bb0bd279ad5e5d",
+      "bytes": 9919
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-docs-f17-local-handoff.md.gz",
+      "sha256": "00746e87ff2f6f344ae26dc68c394a710d65f671e61cd587c92bd4afe1399dc7",
+      "bytes": 2454
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-delivery-report.json.gz",
+      "sha256": "1250c19d9641b5cd6b960d941c272492305a182aa85f12c4563e890b49f9e0bd",
+      "bytes": 24376
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-pending-final-report.json.gz",
+      "sha256": "1c69132a73268f0c632c7bc42afa6e2ae8ca458c301a2714a10832b3b5fff0b1",
+      "bytes": 21949
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-pending-report.json.gz",
+      "sha256": "5f3e2333973dd99cd5b19e58077ccb6fa88a4b3c9734cb1061e6ec36062b8ffb",
+      "bytes": 1189
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-publication-source-control-report.json.gz",
+      "sha256": "cdb7d4ab99fa8e4a21b3438d9009860b00ee7e04423934874ace4a73d764481e",
+      "bytes": 879
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-repaired-initialization-report.json.gz",
+      "sha256": "2796f9004aa6490f8e649d2b6ae8abf53d7ddddf3a34b6e48e604196b1a2d7f3",
+      "bytes": 743
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-browser.json.gz",
+      "sha256": "d9f3b15a9f2c0a9a07cf9f96852a42679ecbc9b5b64fbc432648722585036cf1",
+      "bytes": 673
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-browser.log.gz",
+      "sha256": "02b6911b9f63e9cd8b175769719b5df2c6cde038fbcd47298b3a08ce01002b29",
+      "bytes": 730
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-cases.json.gz",
+      "sha256": "8a5d7f04ce7b5a7595a963938e16b942e3630e7d7ceb2eb228297264bb7e4d44",
+      "bytes": 13930
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-output.log.gz",
+      "sha256": "c09cdc6be6dc7fbc82037a12e24b2eb7d107aed3b2ca1f1fe95ec6aeeb3e003c",
+      "bytes": 352
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-receipt.json.gz",
+      "sha256": "fa6b69174fbdd1d1c963078dff8445ef9242086a347640b1c0d420f0b8a70400",
+      "bytes": 2497
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-summary.json.gz",
+      "sha256": "86b39ee583bee96a055688dbaa0b06c07e606d1db543f65e3a25b75971471d3c",
+      "bytes": 380
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-browser.json.gz",
+      "sha256": "56b0c4dd00ce92149e6178a1615e0a396f6fdea070fdf8e0618f330eb8b34935",
+      "bytes": 669
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-browser.log.gz",
+      "sha256": "b197678da6b653c77c888060afc58739c186fe7fcdaaa347e92604ea9dd3bab2",
+      "bytes": 702
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-cases.json.gz",
+      "sha256": "e906e13897b2b1da7815e85ce856693b773278d8d4e6f4d66e8a7f53d491b24c",
+      "bytes": 13919
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-output.log.gz",
+      "sha256": "0190a8320355d866df0ca20818a768fe69e52594db73cde34429c22193b289d2",
+      "bytes": 354
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-receipt.json.gz",
+      "sha256": "ff5f594011f25f5cd642616ff304ea436d2d27fe11a4a16da041d6ebbd0cb88d",
+      "bytes": 2494
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-summary.json.gz",
+      "sha256": "f1efa1738b3b15f87fbe8cf42c940ee285041c7dcdf85648cdc30fa0575e0a62",
+      "bytes": 381
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/inventory-record.log.gz",
+      "sha256": "2f4a1456b239b9f2a657ea5e445bf88ae9f051dfd524ae9a3ba92347bdc1be4e",
+      "bytes": 238
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/inventory.log.gz",
+      "sha256": "23d68510783081c4d9af69b3407957d1ccb6eb41ed8561a6ee8e987ad48b653c",
+      "bytes": 239
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/lint.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/manifest-record.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/manifest.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/observations.json.gz",
+      "sha256": "d02490634bda4ec4fecb7ff7cf499f6660106e866c7f94ccbebdb88a4a786fad",
+      "bytes": 1585
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/owned-unit.log.gz",
+      "sha256": "321fccf8eb19f92e8c3cda8281ad61ed1d2136380135fa0d2a5a7f80b22d870d",
+      "bytes": 247
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pending-native-final.log.gz",
+      "sha256": "abfd495409b6ad9d5482574ebe19ad65b8b7ae9d689196a225e8d244818baa4a",
+      "bytes": 327
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pending-native.log.gz",
+      "sha256": "fd6d2eb503457dfe8a7eebba117643d1345fb59cd3df8e08a525c0eee1b45a2c",
+      "bytes": 332
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/preservation.json",
+      "sha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+      "bytes": 40
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/prior-general-contract-reference.json.gz",
+      "sha256": "9be214ef59fbde77f528d3cfb0def9019fc6525a9d3510a733c9046c90ce18ea",
+      "bytes": 429
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-repair-pins.json.gz",
+      "sha256": "6cf377370a72aef521499d3202ee891dd91c141492a33bbaa8962fb9e4ba2bbe",
+      "bytes": 379
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-repair.diff.gz",
+      "sha256": "f15f6248dbdad3ecfde23b5e64bff2ad79a11fd02abd3dcca0b2cfe21c4c0ff9",
+      "bytes": 926
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-source-control.log.gz",
+      "sha256": "8b3064bd358450fb1b39be30f37e8d0588056a087c3e7dbe3f1490b8d22c32eb",
+      "bytes": 180
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pure.log.gz",
+      "sha256": "fb9c61693957c890a90c46abe6047ff65e198745056c5be4b3a6251cb828967c",
+      "bytes": 4107
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/receipts.json.gz",
+      "sha256": "82ae6470fd3f77f4cbabf72da4a1d8f75a225d4d1e50e18d5b1c01acc23c7aab",
+      "bytes": 12755
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/release-blocked.log.gz",
+      "sha256": "f05aabfbdb19d4523eea7559e9f9bb5944034c35ba12f7cb1e69c12ebf461ebf",
+      "bytes": 562
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/signature.log.gz",
+      "sha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/source-patch.diff.gz",
+      "sha256": "78194b8e8ce596a650f500cf154ca0deedc9d304e2918f7baf17cc419b81a5be",
+      "bytes": 15970
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/source-pins.json.gz",
+      "sha256": "48ccba614b620a2b8c2ebf0bb62a74e43796df89873ad1859ddac75abd72bdfc",
+      "bytes": 1017
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/summary.json",
+      "sha256": "d81b7dff232e0ff51fcd2ac401fada514c5a6d8016104e33bc9c6f491edd24ea",
+      "bytes": 6763
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/typecheck.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/unit.log.gz",
+      "sha256": "890d64b0fcd9a75fdbf8b30ba89f11213cbd3afd9e4e1a906cee8366886141a8",
+      "bytes": 175
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/verify.py",
+      "sha256": "0885aab7dad5437b0a9edbd06b52663e0f7f852283355c768dde9af6766e6382",
+      "bytes": 3308
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/whitespace.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/workspace-native-final.log.gz",
+      "sha256": "b59764f483c355293345c1fadf728af71fd924474aabeade918537356474d947",
+      "bytes": 204
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/workspace-native.log.gz",
+      "sha256": "cc8079b9d35189bb48f673e459c574bfe0c05d1fceb4550e3230cfb090e763f4",
+      "bytes": 200
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/README.md",
+      "sha256": "41a789871ae8a0ea0eaa391c726a4c318f94ef7ae1d988edb6432c42031b041b",
+      "bytes": 4684
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/activation.patch.gz",
+      "sha256": "ba8cba9ae2c89f2777290da657a335ef852c21f0f9fbbbfd66912bc38949fb5e",
+      "bytes": 179
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/analysis.json.gz",
+      "sha256": "6dcf8678f092e1b1ba2cbeb6c21012679041004bc19539c089df987c138ea23a",
+      "bytes": 3632
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/analyze.mjs.gz",
+      "sha256": "6d7c8f4290cb3e9f85147b7229adba1bedd14c8ea7b38cbd1617217887b50f6a",
+      "bytes": 879
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-browser.json.gz",
+      "sha256": "b760fa6f902db70c012908737f7171f36cf3e099423330b370751fbcc0ac91aa",
+      "bytes": 688
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-browser.log.gz",
+      "sha256": "25318c64e6f6cc3485ac640db32124fc5dc5e2aaa59a8d2ed65ad99376148c02",
+      "bytes": 561
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-cases.json.gz",
+      "sha256": "2eaafe564891e1750f345a8a1637bf9671e184d0d62d6cce3baacddb8b69ec5d",
+      "bytes": 8902
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-measurements.jsonl.gz",
+      "sha256": "dc34cbd35cfb7f76e0e85c2dfe542d4827cc669e8adca749b6762832807abd0e",
+      "bytes": 1279
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-output.log.gz",
+      "sha256": "2a28d240cd160bf8d0ed2ac8d1b5fee4818c2e7995e69945a7c77b9aa22ce0a1",
+      "bytes": 752
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-receipt.json.gz",
+      "sha256": "3fbc3d9b9d7830ec70d7db8339790b8882e41aaa9aaf4fc302ae824e7e7ff0b6",
+      "bytes": 2444
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-summary.json.gz",
+      "sha256": "9e2dfc35f40f5325b906a9d39eaafdce40c3d3e64320023f0932fcbfac227372",
+      "bytes": 516
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-variant.json.gz",
+      "sha256": "b363f21bbca804a48b651dd21ddb8f47c8f1c3fb7b87bc35891564e85db5366a",
+      "bytes": 1130
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application.log.gz",
+      "sha256": "ca146ee109d48cc116dfdb957ab80976a585ec13ede457c42014502bd1a4097a",
+      "bytes": 238
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application.mjs.gz",
+      "sha256": "b2afcdb9332c238339d6d03e7485356abcb58cb51f784ebb798f44ce9841e20b",
+      "bytes": 1393
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/artifacts.json",
+      "sha256": "e942b8f6098c25f8b510e3e7b6f72d9f5c30fa4b1ecece7537dd9ddfaab271fc",
+      "bytes": 9514
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/browser-inputs.json.gz",
+      "sha256": "d25563da978abed4bdab072e10863c8dcc5bac8b0bf7fa2320e18bc620aa2263",
+      "bytes": 9300
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-final.log.gz",
+      "sha256": "9cd471b57bca77379e6d113736f9513863bde008efdc35724cfcf3c50c6b790b",
+      "bytes": 526
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-pass.log.gz",
+      "sha256": "deaf12afcfba27c7759056cefe57897e343ef2782f2308ea896aedcbacd93a36",
+      "bytes": 76
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-ready.log.gz",
+      "sha256": "690006da211fa3761d17b674087bad06a412e086f484b6b1c82fdd4016cc0101",
+      "bytes": 494
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build.log.gz",
+      "sha256": "3793017617b5422dcd17cdf6d4680a9e0f93ebb685e0c2b0de06a74bd6cf7150",
+      "bytes": 682
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build.mjs.gz",
+      "sha256": "a0cfd116890fb6d6891b501eaf23eaf362db1038eb7880ee3079fedca224fc69",
+      "bytes": 1549
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/comparison.log.gz",
+      "sha256": "32f0c4351a30fd21ecd4f32181c8d43346ef634de261318597abb2b87bb96541",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/format.log.gz",
+      "sha256": "63bd60731027bd2425f7b2066d473e42283cf76d2ef0cf92fe199bb6f68f47c1",
+      "bytes": 114
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/frozen.json.gz",
+      "sha256": "91add319caff1561b5bd7e58a11c9a8c6367bbc089dcf78cdacf692f0b838ae3",
+      "bytes": 353
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/functional-packet.log.gz",
+      "sha256": "0160a0140f9fe3dc6825803617fe2c6e21c53e7cfec4f6e2711afeb20f1e98b8",
+      "bytes": 91
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/input-reference.json.gz",
+      "sha256": "8fb7c073522a5c6d981cacbf8220ed3a687955276883287a8a5cb9b3c934b63e",
+      "bytes": 11620
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/inventory.log.gz",
+      "sha256": "23d68510783081c4d9af69b3407957d1ccb6eb41ed8561a6ee8e987ad48b653c",
+      "bytes": 239
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/manifest.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/node-observations.json.gz",
+      "sha256": "8c2725cd1efa02d74a6124d7317b43e11a16b3099f0a34dd67b20d0b8a7b9a97",
+      "bytes": 47314
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/node-output.json.gz",
+      "sha256": "13d63553d4b3de634b2ef1e1ee8578f39709631b3d871ad155ea7abe4c8fc3b6",
+      "bytes": 1901
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/preservation.json.gz",
+      "sha256": "e52cefde01dc188d10d5582c0773d61e040fff0f0dbda05a90bd4180807a1515",
+      "bytes": 7992
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/protocol.md.gz",
+      "sha256": "ee89625f93a510933b848e6a765e385576ba25833882cf1649e1065fd272217f",
+      "bytes": 2866
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/raw-artifacts.json.gz",
+      "sha256": "2e0fd9d838c60e1dc95cb2ce18d134349607b284d6e74f51690e1bad94dcf0fe",
+      "bytes": 7628
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/run.json.gz",
+      "sha256": "e37db4a5b8bbceaec253c5bc2359318162cebacef7791793ac473467e2aa1fdc",
+      "bytes": 974
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/run.mjs.gz",
+      "sha256": "0426284ed5b930519955c9d463a13a27259b67ad146c039b07917f3d8801d179",
+      "bytes": 1004
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/signature.log.gz",
+      "sha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/summary.json",
+      "sha256": "aa41fafb3ca1364d703a9b4026e1246f6c5c1e2f121e2267be10e7f63501ae20",
+      "bytes": 1894
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/untimed-checks.json.gz",
+      "sha256": "d4582df840d3dc0a7b92c00c689227e054f2dbb4a4de1582bf641cdb9738ee40",
+      "bytes": 541
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/verify.py",
+      "sha256": "2d391735aca6d6c260cf9b4953830c0c7e3caec35eaf195123c60dbded3c390f",
+      "bytes": 6370
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/whitespace.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/worker.mjs.gz",
+      "sha256": "92f0aa608efec5957aa7657e04efbd3e32ea008ca08cbd3c3cd07d2146cff958",
+      "bytes": 1809
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/README.md",
+      "sha256": "b7260a5b419e4b4b40bd7b878bf1ea825f9bce6d80b90cc64c73b5af4a235ecd",
+      "bytes": 3226
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/artifacts.json.gz",
+      "sha256": "17ecef3a501f48893336cdf58458efca01f9f519aea2d1b1ce8a5698254680e9",
+      "bytes": 197207
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/raw-artifacts.json",
+      "sha256": "508cd5c02a7e0a64b6a4ce8ae5973ae2da1601d611d598c7efeff03425320f21",
+      "bytes": 990
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/summary.json",
+      "sha256": "f3da17bf359d23b7ab2405379a35d47e9a0725e03a75525431ad5c72cb01823b",
+      "bytes": 5328
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/verify.py",
+      "sha256": "f30255b3d6fec4691b69996dd9fc9574c9240c67419578b1c9b5221db7599393",
+      "bytes": 6816
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/README.md",
+      "sha256": "2ebbc56e0a38d7120b82422aa9e8818fb783ced087d918a59fcce1d2fee4e6c8",
+      "bytes": 3352
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/analysis.json",
+      "sha256": "e878a6f1bd27dcbd195a6ec516d096308bced01399384d1eeeaad2ce63369eef",
+      "bytes": 10150
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/artifacts.json.gz",
+      "sha256": "362864ae14b10096c88a60a7c27c82a0f808da46f87af468c43a329924f47fce",
+      "bytes": 166697
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/qualification-checks.json",
+      "sha256": "9bded68919290b82bbd64a2b4f7a097f45c1779c13b3dfa35a67afdfb2f6e7f9",
+      "bytes": 416
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/raw-artifacts.json",
+      "sha256": "b187243fb615486adb017767efbc610ed9942a777e4a9e0a05b9fc62fd7b485d",
+      "bytes": 3615
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/summary.json",
+      "sha256": "82dfde385d9f164660c66ac896b72b29ca78a6d70594a2e8e9012bd7d560ee32",
+      "bytes": 1051
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/verify.py",
+      "sha256": "802750d6397cdb69df8d0af65696ea517c2ff7b982c9d2338d89838b089deb96",
+      "bytes": 6659
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/README.md",
+      "sha256": "921bd9f0af4fd7eb0fb89268778bef157e8a079640f7ddabac6a650d0e9a2455",
+      "bytes": 3046
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/artifacts.json.gz",
+      "sha256": "21a1a0a3f8e719fa9acb05354f5f57c9efe13c477e1f281db37c74ff69203157",
+      "bytes": 97836
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/raw-artifacts.json",
+      "sha256": "78ad518659a6b9a88588681e9e8e30ee424967643f770b9256ba91ebe75b5a38",
+      "bytes": 656
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/summary.json",
+      "sha256": "6a3fd275e82496324040ca445cd8a443dfec6ec7a1f4e09e344824abc63bfd80",
+      "bytes": 6650
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/verify.py",
+      "sha256": "9a94d7dcfd9d9e31a9810c650f4f8ae438a05abedd47aa99815e0ea8de428cf5",
+      "bytes": 6381
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/README.md",
+      "sha256": "d04705eecece5b0ce9148f800a3a146a72a3d010ba9c924ec38c334b206cf895",
+      "bytes": 4981
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/artifacts.json.gz",
+      "sha256": "bacf43ff8d18f457de75a6437267b65c454dacab49bc4fe15b9044d138b35942",
+      "bytes": 277583
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/raw-artifacts.json",
+      "sha256": "e2d8eebc20d19745ed4edcb7c8dad98568fb15145e0cc1e5b48c824e6bc3a91d",
+      "bytes": 2100
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/summary.json",
+      "sha256": "a6700e2d7a623e22adfd43059fd007b86269a042ccaa0f265ac388c86b3774eb",
+      "bytes": 22224
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/verify.py",
+      "sha256": "4b4c92dfc730cf7ac1083368999187c7d91f8f4505d37ca3641d45767aa7a968",
+      "bytes": 13311
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/README.md",
+      "sha256": "645a57f7240119b6b5c9d81119e4ac40bc3950d371e63eedf88a67c6cc645530",
+      "bytes": 3607
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/artifacts.json.gz",
+      "sha256": "2dd8d493c8c0047ae988ab9d570120328d04d57a16c3759c6491b019dd390d44",
+      "bytes": 91179
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/raw-artifacts.json",
+      "sha256": "c63e1747c402cd3d31612991e4b179608c0ce00ac155347b056145751da82e2d",
+      "bytes": 1064
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/summary.json",
+      "sha256": "7e9a877d38a8911a3c229faf276f625063f5e8c1a231b2dd18bf3ab5a6ddbbda",
+      "bytes": 9556
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/verify.py",
+      "sha256": "f7fcc1a1d42e2b1a7365bd1cec251be529c3ece50fe209f5856870879cb3f28f",
+      "bytes": 7813
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/README.md",
+      "sha256": "803e62af4e455b6f970c17ef301942350228272f302bb9c09b60728ce73dd231",
+      "bytes": 5914
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/artifacts.json.gz",
+      "sha256": "c0a6b28dff530a3814d2ef04626072e6372ef283c89ec98b80c78f7e6e172bcd",
+      "bytes": 225663
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/raw-artifacts.json",
+      "sha256": "847c5c86f7eaef2d0c9074bb29be31448377927f3dbecf44942da1cec1c3f18b",
+      "bytes": 36568
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/summary.json",
+      "sha256": "b8e7fa88bcd9f17ac507888014afefcc0b1b5aa490ae6869b5cf30c4868c25f9",
+      "bytes": 26027
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/verify.py",
+      "sha256": "b97b0213abe703d5d5dac7e0817729d6e0091d67ae2979a4e3d86b36fe879b95",
+      "bytes": 11626
+    },
+    {
+      "path": "docs/account-crypto/census.json",
+      "sha256": "97beb278e7d1e6dd2119379a0fe3daf1746e1bc258baf764d56f657e3a5b7398",
+      "bytes": 43516
+    },
+    {
+      "path": "docs/completed.md",
+      "sha256": "21eacf157eab66011f60772c0728953444ac1ae2ddf142c310a7a775a8e87cb9",
+      "bytes": 630607
+    },
+    {
+      "path": "docs/decisions.md",
+      "sha256": "282f34a2454411132715db32630c2cb2ceb06499317cd2a6bb9714c8684acc82",
+      "bytes": 274387
+    },
+    {
+      "path": "docs/f17-handoff.md",
+      "sha256": "5c27ebee301b059b4ba8af908181ab18dc21be4a151001b3e4b39723bd22e58c",
+      "bytes": 8569
+    },
+    {
+      "path": "docs/f17-local-handoff.md",
+      "sha256": "7e70b45cd1f01a8c5b864c71a832b98b657d43c85c206b833ace5f461ef9c931",
+      "bytes": 6714
+    },
+    {
+      "path": "docs/f17-local-performance.md",
+      "sha256": "c7e78f15aa5e0a21dc0221525569fff452ad849098b620f371dfc6578f2712ab",
+      "bytes": 10054
+    },
+    {
+      "path": "docs/f17-local-profile.md",
+      "sha256": "5a33a67a23ce379734ed99f6bb12034db463410ffde1b97b9909fcc8220963ef",
+      "bytes": 9195
+    },
+    {
+      "path": "docs/f17-pixel9a.md",
+      "sha256": "1fafa613952f91a67144931b9189d42284f475b8581095ed6a917d87c090867a",
+      "bytes": 15279
+    },
+    {
+      "path": "docs/f17-preparation-contract.md",
+      "sha256": "fc1b6c9a1295b37daf96a0e83c667b35d3e5a8ee53ab56a5b2bbda8e8a53836e",
+      "bytes": 10363
+    },
+    {
+      "path": "docs/f17-selection-integration.md",
+      "sha256": "53e8a5b3733626e2dfb64114d5d3d12a1d0d173aa714fcb7335f25fbcece6fda",
+      "bytes": 7934
+    },
+    {
+      "path": "docs/f17-selection-owner.md",
+      "sha256": "1ea15e98de5cf1599da96a305d19b004638a999b6721e06b15f78ba98e2a933e",
+      "bytes": 7284
+    },
+    {
+      "path": "docs/f17-selection-performance.md",
+      "sha256": "4a6917e201fd852cc4b2b86ad556f479cb9827bf3bbe18b90b428e9f9eabc91d",
+      "bytes": 11168
+    },
+    {
+      "path": "docs/f17-selection-snapshots.md",
+      "sha256": "b6fac58d566dad13a5fac826c49793616fb6e72f905f309de6b1c6ea17a9bfb4",
+      "bytes": 11128
+    },
+    {
+      "path": "docs/performance.md",
+      "sha256": "91ec1f39337c3b8740245f95dbd5d6bd9eb0ed3d806311baae4f703582122e30",
+      "bytes": 82574
+    },
+    {
+      "path": "docs/private-release-validation-prep.md",
+      "sha256": "c1caa170190b36c85e543aa53adc590659b83c1c416460d66f46e1eaf47b3ba7",
+      "bytes": 13998
+    },
+    {
+      "path": "docs/progress.md",
+      "sha256": "97ff67fd902f61e258cc1f16cd81232ce53eaac6b15df8b8571a51293a94337f",
+      "bytes": 16530
+    },
+    {
+      "path": "docs/release-validation-execution.md",
+      "sha256": "11977d89a836afe875ba583609d1caf6730c89f82498300f06259b35b35a12cf",
+      "bytes": 349336
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "3f947bf046757a95b1e9db438742141d7ded68795a896f15395a57056e98205c",
+      "bytes": 455579
+    },
+    {
+      "path": "docs/release-validation-manifest.json",
+      "sha256": "36c7a3fa715c5f6ef1aa2f19e934b76cc81dad583ee0b7360df084249a0e312d",
+      "bytes": 787158
+    },
+    {
+      "path": "docs/review/implementation/findings.md",
+      "sha256": "a988a2f0ce7847014479c4aae2f1e03096db483900bcb92eccd8d6cf7421caa8",
+      "bytes": 40093
+    },
+    {
+      "path": "scripts/core-reproductions/browser.mjs",
+      "sha256": "d3ad6d370695f514efe6fef5b0ee6126e58bcbbb55ec09db604082297f42e360",
+      "bytes": 17163
+    },
+    {
+      "path": "scripts/journal-contention/run.mjs",
+      "sha256": "996d4b5c051aa1c6fa5db7e4f159f8bccce9312de12cd086a84bfc3de3a3b40c",
+      "bytes": 20771
+    },
+    {
+      "path": "scripts/pending-projection/run.mjs",
+      "sha256": "462ecc74ff4a02b57542a9a8613d6a5a688640bff4e1f4dd768bb6722846cd5b",
+      "bytes": 24100
+    },
+    {
+      "path": "scripts/release-validation/general-tests.json",
+      "sha256": "df95707dc72f50bba40dab4c2ccccae253abad13e078f2954db84123b7cd95e3",
+      "bytes": 3319
+    },
+    {
+      "path": "scripts/workspace-admission/catalog.mjs",
+      "sha256": "1f4b20a9c0cc966a9c762cd74e0b2b618019fe5d4616f60788eed39d5dbc60a3",
+      "bytes": 2093
+    },
+    {
+      "path": "scripts/workspace-admission/worker.mjs",
+      "sha256": "9169de964ad214e3de6059431004b8d1431f63fc19c550730685b144b84fc98e",
+      "bytes": 9638
+    },
+    {
+      "path": "scripts/yjs-delivery/run.mjs",
+      "sha256": "11f9f42bd82e32570c4156eacd9d8ad8e7607807fb6ae9cd8a57c14fe0d31534",
+      "bytes": 24009
+    },
+    {
+      "path": "src/crdt/admission.ts",
+      "sha256": "9cdedad44a27e60e0a0e9321f8a88da2a1b3c2e98cbf1d9564008ae5e5508f3f",
+      "bytes": 1881
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "7aa8aea592b8d622adacc84ce3061ab556611ec72a2c517fc03c07d05f0e05b2",
+      "bytes": 30000
+    },
+    {
+      "path": "src/crdt/admittedWorkspace.ts",
+      "sha256": "e31888918b9f1898d2faeab1962f56a2d19e937eb9f186c998f394a688847e82",
+      "bytes": 23926
+    },
+    {
+      "path": "src/crdt/selectionSnapshots.ts",
+      "sha256": "e47b12b2797ac1df4f5c7bc06395a64d6ad09729b35ebadac57b97dbcebc9042",
+      "bytes": 4242
+    },
+    {
+      "path": "src/crdt/workspacePreparation.ts",
+      "sha256": "f95fedd40f5e5b44b4e45477b2ddac9bf52d9a0b8910871f0c68cd4fb40b1437",
+      "bytes": 12973
+    },
+    {
+      "path": "src/crdt/yjs.ts",
+      "sha256": "21ce99552212474e96982c9d1e53ff53ce29c28e3766a66cd62825f1f6e9bbcf",
+      "bytes": 23112
+    },
+    {
+      "path": "test/pending-projection/browser.mjs",
+      "sha256": "7c3e9515bd735c04a1b133a14305c679e6c5aebf89ac84675b21e5a3f8d0da68",
+      "bytes": 6864
+    },
+    {
+      "path": "test/pendingProjection.test.ts",
+      "sha256": "07233d4b8d9f88611acd330f293e015769592bc1a7811278d8b4439bf9cadc8e",
+      "bytes": 32738
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "sha256": "5098b8d5482832b34a80c9ece447b91c3a3c01121f80dc7e8ad9a90727478d89",
+      "bytes": 13410
+    },
+    {
+      "path": "test/release-validation/generated-tests.test.mjs",
+      "sha256": "b72a16546e688e9e9380b84d202c86d7d9a9b8907b52b2be89ab66fbdaf0a927",
+      "bytes": 18744
+    },
+    {
+      "path": "test/selectionHistory.test.ts",
+      "sha256": "557f417b83161d7f8756a4d0bbac09b3dfab7e6f52159a325a813e6840a02aec",
+      "bytes": 9740
+    },
+    {
+      "path": "test/selectionSnapshots.test.ts",
+      "sha256": "086b17479ddb08a48ddfe0c16e2906c9ddde55da9a0bf030cb22474a8ca57340",
+      "bytes": 16322
+    },
+    {
+      "path": "test/workspace-admission/browser.mjs",
+      "sha256": "6b0ef3947daea3d9f9168d270455c1132ddc2913850080dca58e2c8fef5f8c5a",
+      "bytes": 5412
+    },
+    {
+      "path": "test/workspaceAdmission.test.ts",
+      "sha256": "4d1fd276512fb7e4a7c757293ee4a9e472fe16a0711e65ba1a0e598984d4946f",
+      "bytes": 44623
+    },
+    {
+      "path": "test/yjs-delivery/browser.mjs",
+      "sha256": "a17ca6963a622af03fa9c728349980ec24c6a6441e967a6de2ecd3d2c40cfee6",
+      "bytes": 5988
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-cases.json.gz",
+      "sha256": "119132d3c10966f4888f6408099828b6888587b4a768b0e91a963ef9a4f9ba5a",
+      "bytes": 2166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-output.log.gz",
+      "sha256": "69ffac071aeaaa07e758a74e1a671628439586021e4f14b837afff2e91efb255",
+      "bytes": 3461
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-cases.json.gz",
+      "sha256": "ee4d7ce92a52ab270c4734483f6b7a1c46975aac1a7dccaf875597aafac63c97",
+      "bytes": 1434
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-output.log.gz",
+      "sha256": "6bdd56fd8ff4e4d5760205318579fa0cbc0fb6ccf848e0378e601a90482a262f",
+      "bytes": 1407
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/README.md",
+      "sha256": "c00f13672b6a70b5e4980e973f1dbd4b1f16e6120857e7fda4a659ede437fcf9",
+      "bytes": 4807
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-cases.json.gz",
+      "sha256": "1634811fa1e2d96d8822306ea19b6d4c89c30bdf5f32099a81dd624def3e2063",
+      "bytes": 902
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-output.log.gz",
+      "sha256": "64116d9f6109e09936d7b5d9ae5ed5b2172273ae490ccfd3a228844ee89bc26d",
+      "bytes": 1183
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/artifacts.json",
+      "sha256": "a676e4cdf96da6cd58c66aaf16673a2d93eac7a462b799ecaf4a649c9e59ce38",
+      "bytes": 34770
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/authority.log.gz",
+      "sha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "bytes": 447
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-cases.json.gz",
+      "sha256": "6595c4314f952efcb6e4e81bf2f4ed84d8ee6e34b137292dbdbe22e90ea216b6",
+      "bytes": 1757
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-output.log.gz",
+      "sha256": "ae7a35efe652fd2e3d481db39d94a42e54ad387fa9203b83e1905945a0bbab5d",
+      "bytes": 1790
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-cases.json.gz",
+      "sha256": "939feaf5bb2478a750d676d6765bd32a2bdce86c01e7926ac9aa272a2d7c215e",
+      "bytes": 577
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-output.log.gz",
+      "sha256": "8803bd2a4c8bb59b20aaa9451b5f49be88244b15e5615d84c589b2c5e7ba221a",
+      "bytes": 531
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/checks.log.gz",
+      "sha256": "96f059aef4b671201f51251b95da9af4a860fbed4b4514d712cfce93f149ea59",
+      "bytes": 56
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/control-erase-leased-write.log.gz",
+      "sha256": "7fa9d25edb5d3ca060fc74984b86d5f9fae7ab254877cb4f9bb13e5a63d0c678",
+      "bytes": 707
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/control-skip-adoption-comparison.log.gz",
+      "sha256": "6e859ee213811593b1cbbf82513895b26a5f1e7655f18e0d888905d160047ebb",
+      "bytes": 649
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/crypto-record.log.gz",
+      "sha256": "1090856b3dae51355ca7022ab587da786c8cb9c93b2f9aee0ccacc2a9df5a3c9",
+      "bytes": 229
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-cases.json.gz",
+      "sha256": "59cdafd0c036a959d17473187ba4e16fcc29fe6fdf021160873de8535eb8001f",
+      "bytes": 1442
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-output.log.gz",
+      "sha256": "855178001b6f0191395d4489c8e975072487fbaaaeb0ef35c10b8028f80b7890",
+      "bytes": 1465
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/delivery-native.log.gz",
+      "sha256": "4a51e91127e4cdcfbcf3168e4e5a311df16192f8d3d62727f136b7f40f3224da",
+      "bytes": 298
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-cases.json.gz",
+      "sha256": "59db6706c5bbc9ec179e2d14d99a1a0b96da47ceb99f980da96571760a1dfbee",
+      "bytes": 1133
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-output.log.gz",
+      "sha256": "3029af649219d5a0c2c78cecab4e6ec36351380a8fa5519f9da150f80553ec55",
+      "bytes": 1149
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/exclusions.json.gz",
+      "sha256": "4061079ecb1ca1b4130eda7f51aa5ec502aedd90d593bb9a16c5b56531429c00",
+      "bytes": 436
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-cases.json.gz",
+      "sha256": "e2b9e4b4649f397f8cd95664518515313fa34f2998614cb65be83babcf59ae66",
+      "bytes": 715
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-output.log.gz",
+      "sha256": "6abcfc6e669239a844fd8c695f5672c72deb446aeb5d06bbb54ea98bd2b99915",
+      "bytes": 668
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/focused-final.log.gz",
+      "sha256": "89f7223c650efa49f5f406b10543787c0a27268542b5e1dda2f0a08ec0aa2e9d",
+      "bytes": 166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/focused-unit.log.gz",
+      "sha256": "5464b02138286f29b0d127f2ea5b46d17b448f191957ed5f00c14b1e862d7d0a",
+      "bytes": 166
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/format.log.gz",
+      "sha256": "ce02b751eeb13beeec35939ef90eab3703e5e018451f8bdb981f11b8cf4f4192",
+      "bytes": 109
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/gates.json",
+      "sha256": "f210d50773cf722eb106033cbd714ff360056639a495ecbe19d60e3c3a1ae291",
+      "bytes": 1741
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/generated-initial.log.gz",
+      "sha256": "ab49daa4eed922220446f48bc4e998d6d62f708d2774c443ea24571078e34dc7",
+      "bytes": 937
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/generated-repaired-fixture.log.gz",
+      "sha256": "4e0b381bb335b05b95a8ee937b957b9c6d7d7bba2d62fd38701e6aedd2db880c",
+      "bytes": 167
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/initial-unit.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/initialization-repair.log.gz",
+      "sha256": "345c7ffc6195a3a2b30693f0214f43363fc21c9cae9ba0a23ebd771d245608d0",
+      "bytes": 177
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-configure-controls.py.gz",
+      "sha256": "c585333b235630067f4b14545cba76a98140ea190c559e0fa98c7d906c1d9e73",
+      "bytes": 862
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-control-results.json.gz",
+      "sha256": "b089b0d6c3f17e1777f36477a45a27b8f273a5e6eaacd231149d1ef3a7143c9c",
+      "bytes": 376
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-controls.json.gz",
+      "sha256": "7822b5c66a95689cdb8632622b76a7b704743ae6594c21d57e92cee8b0251a72",
+      "bytes": 228
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-erase-leased-write.config.mts.gz",
+      "sha256": "478e77ebfdedc5c854f8dda9c8f1e7786a01c9c6c37a49dfdfe844142c0968aa",
+      "bytes": 369
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-erase-leased-write.patch.gz",
+      "sha256": "4c491ff6e5fe9fd442a98a403d119e1943adff721b7be6dddf6ec4093f5f9098",
+      "bytes": 250
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-browser-inputs.json.gz",
+      "sha256": "8efd23050b4e7d6ef693e66bfb5c81f765015757eb4f7c312e5c9455f030a468",
+      "bytes": 259
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-final-browser-inputs.json.gz",
+      "sha256": "d25563da978abed4bdab072e10863c8dcc5bac8b0bf7fa2320e18bc620aa2263",
+      "bytes": 9300
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-final-workspace-input-reference.json.gz",
+      "sha256": "cef93449844ee314747121c5e7edde77e624ee78444061404b930bbac7fca2f0",
+      "bytes": 519
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-f17-local-handoff-workspace-input-reference.json.gz",
+      "sha256": "577f388fb5b87ad095652fd75699ceb9b23d470c1007d9e0163d38e8f9e6e6fa",
+      "bytes": 1090
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-owned-tests.mjs.gz",
+      "sha256": "dafb7ebabdc35c6b2947f397dcec6ddf1bd94766c6bb56d58b0430b425c16363",
+      "bytes": 581
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-registration-review.json.gz",
+      "sha256": "c0148eacc7cdf013882f6106207b51ca5c45a2c4626910615f3bc9598260fcb5",
+      "bytes": 181
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-run-controls.py.gz",
+      "sha256": "b2ba17792f09298fbb1f35cd38e11eea2dbc265053f3bd86f85803fc9d63e7f3",
+      "bytes": 487
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-skip-adoption-comparison.config.mts.gz",
+      "sha256": "97e4c0f52cdfe61b37014f4950557ab3dad2055df6d7b816bc92fbfe86a8c9c9",
+      "bytes": 366
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input--private-tmp-done-f17-local-handoff-skip-adoption-comparison.patch.gz",
+      "sha256": "11612a1eca45743e2ece886882cb008b46afd95adfea098c8b8f8b092e2711b6",
+      "bytes": 227
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-docs-account-crypto-census.json.gz",
+      "sha256": "2c22ab86b2d06ab7cc3049f0dd350e741cd064cf5ed4be3f78bb0bd279ad5e5d",
+      "bytes": 9919
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-docs-f17-local-handoff.md.gz",
+      "sha256": "00746e87ff2f6f344ae26dc68c394a710d65f671e61cd587c92bd4afe1399dc7",
+      "bytes": 2454
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-delivery-report.json.gz",
+      "sha256": "1250c19d9641b5cd6b960d941c272492305a182aa85f12c4563e890b49f9e0bd",
+      "bytes": 24376
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-pending-final-report.json.gz",
+      "sha256": "1c69132a73268f0c632c7bc42afa6e2ae8ca458c301a2714a10832b3b5fff0b1",
+      "bytes": 21949
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-native-pending-report.json.gz",
+      "sha256": "5f3e2333973dd99cd5b19e58077ccb6fa88a4b3c9734cb1061e6ec36062b8ffb",
+      "bytes": 1189
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-publication-source-control-report.json.gz",
+      "sha256": "cdb7d4ab99fa8e4a21b3438d9009860b00ee7e04423934874ace4a73d764481e",
+      "bytes": 879
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-f17-local-handoff-repaired-initialization-report.json.gz",
+      "sha256": "2796f9004aa6490f8e649d2b6ae8abf53d7ddddf3a34b6e48e604196b1a2d7f3",
+      "bytes": 743
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-browser.json.gz",
+      "sha256": "d9f3b15a9f2c0a9a07cf9f96852a42679ecbc9b5b64fbc432648722585036cf1",
+      "bytes": 673
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-browser.log.gz",
+      "sha256": "02b6911b9f63e9cd8b175769719b5df2c6cde038fbcd47298b3a08ce01002b29",
+      "bytes": 730
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-cases.json.gz",
+      "sha256": "8a5d7f04ce7b5a7595a963938e16b942e3630e7d7ceb2eb228297264bb7e4d44",
+      "bytes": 13930
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-output.log.gz",
+      "sha256": "c09cdc6be6dc7fbc82037a12e24b2eb7d107aed3b2ca1f1fe95ec6aeeb3e003c",
+      "bytes": 352
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-stages-a9c82456b4f17255d317d640400cf5cff3c3b4f4b3fa297ef38930da3cf81d93-receipt.json.gz",
+      "sha256": "fa6b69174fbdd1d1c963078dff8445ef9242086a347640b1c0d420f0b8a70400",
+      "bytes": 2497
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-final-summary.json.gz",
+      "sha256": "86b39ee583bee96a055688dbaa0b06c07e606d1db543f65e3a25b75971471d3c",
+      "bytes": 380
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-browser.json.gz",
+      "sha256": "56b0c4dd00ce92149e6178a1615e0a396f6fdea070fdf8e0618f330eb8b34935",
+      "bytes": 669
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-browser.log.gz",
+      "sha256": "b197678da6b653c77c888060afc58739c186fe7fcdaaa347e92604ea9dd3bab2",
+      "bytes": 702
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-cases.json.gz",
+      "sha256": "e906e13897b2b1da7815e85ce856693b773278d8d4e6f4d66e8a7f53d491b24c",
+      "bytes": 13919
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-output.log.gz",
+      "sha256": "0190a8320355d866df0ca20818a768fe69e52594db73cde34429c22193b289d2",
+      "bytes": 354
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-stages-ecf6a40e4033b585290997f6c707dc7227669aaaa1f8c81cf72af4fd7e960fd2-receipt.json.gz",
+      "sha256": "ff5f594011f25f5cd642616ff304ea436d2d27fe11a4a16da041d6ebbd0cb88d",
+      "bytes": 2494
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/input-test-results-workspace-admission-f17-local-handoff-summary.json.gz",
+      "sha256": "f1efa1738b3b15f87fbe8cf42c940ee285041c7dcdf85648cdc30fa0575e0a62",
+      "bytes": 381
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/inventory-record.log.gz",
+      "sha256": "2f4a1456b239b9f2a657ea5e445bf88ae9f051dfd524ae9a3ba92347bdc1be4e",
+      "bytes": 238
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/inventory.log.gz",
+      "sha256": "23d68510783081c4d9af69b3407957d1ccb6eb41ed8561a6ee8e987ad48b653c",
+      "bytes": 239
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/lint.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/manifest-record.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/manifest.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/observations.json.gz",
+      "sha256": "d02490634bda4ec4fecb7ff7cf499f6660106e866c7f94ccbebdb88a4a786fad",
+      "bytes": 1585
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/owned-unit.log.gz",
+      "sha256": "321fccf8eb19f92e8c3cda8281ad61ed1d2136380135fa0d2a5a7f80b22d870d",
+      "bytes": 247
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pending-native-final.log.gz",
+      "sha256": "abfd495409b6ad9d5482574ebe19ad65b8b7ae9d689196a225e8d244818baa4a",
+      "bytes": 327
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pending-native.log.gz",
+      "sha256": "fd6d2eb503457dfe8a7eebba117643d1345fb59cd3df8e08a525c0eee1b45a2c",
+      "bytes": 332
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/preservation.json",
+      "sha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+      "bytes": 40
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/prior-general-contract-reference.json.gz",
+      "sha256": "9be214ef59fbde77f528d3cfb0def9019fc6525a9d3510a733c9046c90ce18ea",
+      "bytes": 429
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-repair-pins.json.gz",
+      "sha256": "6cf377370a72aef521499d3202ee891dd91c141492a33bbaa8962fb9e4ba2bbe",
+      "bytes": 379
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-repair.diff.gz",
+      "sha256": "f15f6248dbdad3ecfde23b5e64bff2ad79a11fd02abd3dcca0b2cfe21c4c0ff9",
+      "bytes": 926
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/publication-source-control.log.gz",
+      "sha256": "8b3064bd358450fb1b39be30f37e8d0588056a087c3e7dbe3f1490b8d22c32eb",
+      "bytes": 180
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/pure.log.gz",
+      "sha256": "fb9c61693957c890a90c46abe6047ff65e198745056c5be4b3a6251cb828967c",
+      "bytes": 4107
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/receipts.json.gz",
+      "sha256": "82ae6470fd3f77f4cbabf72da4a1d8f75a225d4d1e50e18d5b1c01acc23c7aab",
+      "bytes": 12755
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/release-blocked.log.gz",
+      "sha256": "f05aabfbdb19d4523eea7559e9f9bb5944034c35ba12f7cb1e69c12ebf461ebf",
+      "bytes": 562
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/signature.log.gz",
+      "sha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/source-patch.diff.gz",
+      "sha256": "78194b8e8ce596a650f500cf154ca0deedc9d304e2918f7baf17cc419b81a5be",
+      "bytes": 15970
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/source-pins.json.gz",
+      "sha256": "48ccba614b620a2b8c2ebf0bb62a74e43796df89873ad1859ddac75abd72bdfc",
+      "bytes": 1017
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/summary.json",
+      "sha256": "d81b7dff232e0ff51fcd2ac401fada514c5a6d8016104e33bc9c6f491edd24ea",
+      "bytes": 6763
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/typecheck.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/unit.log.gz",
+      "sha256": "890d64b0fcd9a75fdbf8b30ba89f11213cbd3afd9e4e1a906cee8366886141a8",
+      "bytes": 175
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/verify.py",
+      "sha256": "0885aab7dad5437b0a9edbd06b52663e0f7f852283355c768dde9af6766e6382",
+      "bytes": 3308
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/whitespace.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/workspace-native-final.log.gz",
+      "sha256": "b59764f483c355293345c1fadf728af71fd924474aabeade918537356474d947",
+      "bytes": 204
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-handoff/workspace-native.log.gz",
+      "sha256": "cc8079b9d35189bb48f673e459c574bfe0c05d1fceb4550e3230cfb090e763f4",
+      "bytes": 200
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/README.md",
+      "sha256": "41a789871ae8a0ea0eaa391c726a4c318f94ef7ae1d988edb6432c42031b041b",
+      "bytes": 4684
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/activation.patch.gz",
+      "sha256": "ba8cba9ae2c89f2777290da657a335ef852c21f0f9fbbbfd66912bc38949fb5e",
+      "bytes": 179
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/analysis.json.gz",
+      "sha256": "6dcf8678f092e1b1ba2cbeb6c21012679041004bc19539c089df987c138ea23a",
+      "bytes": 3632
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/analyze.mjs.gz",
+      "sha256": "6d7c8f4290cb3e9f85147b7229adba1bedd14c8ea7b38cbd1617217887b50f6a",
+      "bytes": 879
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-browser.json.gz",
+      "sha256": "b760fa6f902db70c012908737f7171f36cf3e099423330b370751fbcc0ac91aa",
+      "bytes": 688
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-browser.log.gz",
+      "sha256": "25318c64e6f6cc3485ac640db32124fc5dc5e2aaa59a8d2ed65ad99376148c02",
+      "bytes": 561
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-cases.json.gz",
+      "sha256": "2eaafe564891e1750f345a8a1637bf9671e184d0d62d6cce3baacddb8b69ec5d",
+      "bytes": 8902
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-measurements.jsonl.gz",
+      "sha256": "dc34cbd35cfb7f76e0e85c2dfe542d4827cc669e8adca749b6762832807abd0e",
+      "bytes": 1279
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-output.log.gz",
+      "sha256": "2a28d240cd160bf8d0ed2ac8d1b5fee4818c2e7995e69945a7c77b9aa22ce0a1",
+      "bytes": 752
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-ownership.jsonl.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-receipt.json.gz",
+      "sha256": "3fbc3d9b9d7830ec70d7db8339790b8882e41aaa9aaf4fc302ae824e7e7ff0b6",
+      "bytes": 2444
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-summary.json.gz",
+      "sha256": "9e2dfc35f40f5325b906a9d39eaafdce40c3d3e64320023f0932fcbfac227372",
+      "bytes": 516
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application-variant.json.gz",
+      "sha256": "b363f21bbca804a48b651dd21ddb8f47c8f1c3fb7b87bc35891564e85db5366a",
+      "bytes": 1130
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application.log.gz",
+      "sha256": "ca146ee109d48cc116dfdb957ab80976a585ec13ede457c42014502bd1a4097a",
+      "bytes": 238
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/application.mjs.gz",
+      "sha256": "b2afcdb9332c238339d6d03e7485356abcb58cb51f784ebb798f44ce9841e20b",
+      "bytes": 1393
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/artifacts.json",
+      "sha256": "e942b8f6098c25f8b510e3e7b6f72d9f5c30fa4b1ecece7537dd9ddfaab271fc",
+      "bytes": 9514
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/browser-inputs.json.gz",
+      "sha256": "d25563da978abed4bdab072e10863c8dcc5bac8b0bf7fa2320e18bc620aa2263",
+      "bytes": 9300
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-final.log.gz",
+      "sha256": "9cd471b57bca77379e6d113736f9513863bde008efdc35724cfcf3c50c6b790b",
+      "bytes": 526
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-pass.log.gz",
+      "sha256": "deaf12afcfba27c7759056cefe57897e343ef2782f2308ea896aedcbacd93a36",
+      "bytes": 76
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build-ready.log.gz",
+      "sha256": "690006da211fa3761d17b674087bad06a412e086f484b6b1c82fdd4016cc0101",
+      "bytes": 494
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build.log.gz",
+      "sha256": "3793017617b5422dcd17cdf6d4680a9e0f93ebb685e0c2b0de06a74bd6cf7150",
+      "bytes": 682
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/build.mjs.gz",
+      "sha256": "a0cfd116890fb6d6891b501eaf23eaf362db1038eb7880ee3079fedca224fc69",
+      "bytes": 1549
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/comparison.log.gz",
+      "sha256": "32f0c4351a30fd21ecd4f32181c8d43346ef634de261318597abb2b87bb96541",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/format.log.gz",
+      "sha256": "63bd60731027bd2425f7b2066d473e42283cf76d2ef0cf92fe199bb6f68f47c1",
+      "bytes": 114
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/frozen.json.gz",
+      "sha256": "91add319caff1561b5bd7e58a11c9a8c6367bbc089dcf78cdacf692f0b838ae3",
+      "bytes": 353
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/functional-packet.log.gz",
+      "sha256": "0160a0140f9fe3dc6825803617fe2c6e21c53e7cfec4f6e2711afeb20f1e98b8",
+      "bytes": 91
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/input-reference.json.gz",
+      "sha256": "8fb7c073522a5c6d981cacbf8220ed3a687955276883287a8a5cb9b3c934b63e",
+      "bytes": 11620
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/inventory.log.gz",
+      "sha256": "23d68510783081c4d9af69b3407957d1ccb6eb41ed8561a6ee8e987ad48b653c",
+      "bytes": 239
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/manifest.log.gz",
+      "sha256": "3d91a6daff175ac7a6977a07f764ad1a18bfa22daac3552150993ec929c9b943",
+      "bytes": 106
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/node-observations.json.gz",
+      "sha256": "8c2725cd1efa02d74a6124d7317b43e11a16b3099f0a34dd67b20d0b8a7b9a97",
+      "bytes": 47314
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/node-output.json.gz",
+      "sha256": "13d63553d4b3de634b2ef1e1ee8578f39709631b3d871ad155ea7abe4c8fc3b6",
+      "bytes": 1901
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/preservation.json.gz",
+      "sha256": "e52cefde01dc188d10d5582c0773d61e040fff0f0dbda05a90bd4180807a1515",
+      "bytes": 7992
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/protocol.md.gz",
+      "sha256": "ee89625f93a510933b848e6a765e385576ba25833882cf1649e1065fd272217f",
+      "bytes": 2866
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/raw-artifacts.json.gz",
+      "sha256": "2e0fd9d838c60e1dc95cb2ce18d134349607b284d6e74f51690e1bad94dcf0fe",
+      "bytes": 7628
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/run.json.gz",
+      "sha256": "e37db4a5b8bbceaec253c5bc2359318162cebacef7791793ac473467e2aa1fdc",
+      "bytes": 974
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/run.mjs.gz",
+      "sha256": "0426284ed5b930519955c9d463a13a27259b67ad146c039b07917f3d8801d179",
+      "bytes": 1004
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/signature.log.gz",
+      "sha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "bytes": 134
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/summary.json",
+      "sha256": "aa41fafb3ca1364d703a9b4026e1246f6c5c1e2f121e2267be10e7f63501ae20",
+      "bytes": 1894
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/untimed-checks.json.gz",
+      "sha256": "d4582df840d3dc0a7b92c00c689227e054f2dbb4a4de1582bf641cdb9738ee40",
+      "bytes": 541
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/verify.py",
+      "sha256": "2d391735aca6d6c260cf9b4953830c0c7e3caec35eaf195123c60dbded3c390f",
+      "bytes": 6370
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/whitespace.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 20
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-14-f17-local-performance/worker.mjs.gz",
+      "sha256": "92f0aa608efec5957aa7657e04efbd3e32ea008ca08cbd3c3cd07d2146cff958",
+      "bytes": 1809
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/README.md",
+      "sha256": "b7260a5b419e4b4b40bd7b878bf1ea825f9bce6d80b90cc64c73b5af4a235ecd",
+      "bytes": 3226
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/artifacts.json.gz",
+      "sha256": "17ecef3a501f48893336cdf58458efca01f9f519aea2d1b1ce8a5698254680e9",
+      "bytes": 197207
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/raw-artifacts.json",
+      "sha256": "508cd5c02a7e0a64b6a4ce8ae5973ae2da1601d611d598c7efeff03425320f21",
+      "bytes": 990
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/summary.json",
+      "sha256": "f3da17bf359d23b7ab2405379a35d47e9a0725e03a75525431ad5c72cb01823b",
+      "bytes": 5328
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-local-profile/verify.py",
+      "sha256": "f30255b3d6fec4691b69996dd9fc9574c9240c67419578b1c9b5221db7599393",
+      "bytes": 6816
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/README.md",
+      "sha256": "2ebbc56e0a38d7120b82422aa9e8818fb783ced087d918a59fcce1d2fee4e6c8",
+      "bytes": 3352
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/analysis.json",
+      "sha256": "e878a6f1bd27dcbd195a6ec516d096308bced01399384d1eeeaad2ce63369eef",
+      "bytes": 10150
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/artifacts.json.gz",
+      "sha256": "362864ae14b10096c88a60a7c27c82a0f808da46f87af468c43a329924f47fce",
+      "bytes": 166697
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/qualification-checks.json",
+      "sha256": "9bded68919290b82bbd64a2b4f7a097f45c1779c13b3dfa35a67afdfb2f6e7f9",
+      "bytes": 416
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/raw-artifacts.json",
+      "sha256": "b187243fb615486adb017767efbc610ed9942a777e4a9e0a05b9fc62fd7b485d",
+      "bytes": 3615
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/summary.json",
+      "sha256": "82dfde385d9f164660c66ac896b72b29ca78a6d70594a2e8e9012bd7d560ee32",
+      "bytes": 1051
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-pixel9a/verify.py",
+      "sha256": "802750d6397cdb69df8d0af65696ea517c2ff7b982c9d2338d89838b089deb96",
+      "bytes": 6659
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/README.md",
+      "sha256": "921bd9f0af4fd7eb0fb89268778bef157e8a079640f7ddabac6a650d0e9a2455",
+      "bytes": 3046
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/artifacts.json.gz",
+      "sha256": "21a1a0a3f8e719fa9acb05354f5f57c9efe13c477e1f281db37c74ff69203157",
+      "bytes": 97836
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/raw-artifacts.json",
+      "sha256": "78ad518659a6b9a88588681e9e8e30ee424967643f770b9256ba91ebe75b5a38",
+      "bytes": 656
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/summary.json",
+      "sha256": "6a3fd275e82496324040ca445cd8a443dfec6ec7a1f4e09e344824abc63bfd80",
+      "bytes": 6650
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-contract/verify.py",
+      "sha256": "9a94d7dcfd9d9e31a9810c650f4f8ae438a05abedd47aa99815e0ea8de428cf5",
+      "bytes": 6381
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/README.md",
+      "sha256": "d04705eecece5b0ce9148f800a3a146a72a3d010ba9c924ec38c334b206cf895",
+      "bytes": 4981
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/artifacts.json.gz",
+      "sha256": "bacf43ff8d18f457de75a6437267b65c454dacab49bc4fe15b9044d138b35942",
+      "bytes": 277583
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/raw-artifacts.json",
+      "sha256": "e2d8eebc20d19745ed4edcb7c8dad98568fb15145e0cc1e5b48c824e6bc3a91d",
+      "bytes": 2100
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/summary.json",
+      "sha256": "a6700e2d7a623e22adfd43059fd007b86269a042ccaa0f265ac388c86b3774eb",
+      "bytes": 22224
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-integration/verify.py",
+      "sha256": "4b4c92dfc730cf7ac1083368999187c7d91f8f4505d37ca3641d45767aa7a968",
+      "bytes": 13311
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/README.md",
+      "sha256": "645a57f7240119b6b5c9d81119e4ac40bc3950d371e63eedf88a67c6cc645530",
+      "bytes": 3607
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/artifacts.json.gz",
+      "sha256": "2dd8d493c8c0047ae988ab9d570120328d04d57a16c3759c6491b019dd390d44",
+      "bytes": 91179
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/raw-artifacts.json",
+      "sha256": "c63e1747c402cd3d31612991e4b179608c0ce00ac155347b056145751da82e2d",
+      "bytes": 1064
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/summary.json",
+      "sha256": "7e9a877d38a8911a3c229faf276f625063f5e8c1a231b2dd18bf3ab5a6ddbbda",
+      "bytes": 9556
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-owner/verify.py",
+      "sha256": "f7fcc1a1d42e2b1a7365bd1cec251be529c3ece50fe209f5856870879cb3f28f",
+      "bytes": 7813
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/README.md",
+      "sha256": "803e62af4e455b6f970c17ef301942350228272f302bb9c09b60728ce73dd231",
+      "bytes": 5914
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/artifacts.json.gz",
+      "sha256": "c0a6b28dff530a3814d2ef04626072e6372ef283c89ec98b80c78f7e6e172bcd",
+      "bytes": 225663
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/raw-artifacts.json",
+      "sha256": "847c5c86f7eaef2d0c9074bb29be31448377927f3dbecf44942da1cec1c3f18b",
+      "bytes": 36568
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/summary.json",
+      "sha256": "b8e7fa88bcd9f17ac507888014afefcc0b1b5aa490ae6869b5cf30c4868c25f9",
+      "bytes": 26027
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-15-f17-selection-performance/verify.py",
+      "sha256": "b97b0213abe703d5d5dac7e0817729d6e0091d67ae2979a4e3d86b36fe879b95",
+      "bytes": 11626
+    }
+  ],
+  "personalAndVectorFiles": [
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js",
+      "sha256": "3ac59f06a8feecd324d551ce7b64bac42f2bd4334aa6e11989582f7630d25b77"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js.map",
+      "sha256": "22c4b0b24e48ccda6b6741e8c726a69b29b65bb85bd1bbffbf63f4a68dfa1cff"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/index.html",
+      "sha256": "b1c40d390f76787eb8f386b047d3412b0ee319a6e35a5b38974b70174f0ad244"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/local.html",
+      "sha256": "58f9fb240a2ca48aff5715341e4d4748502e2c7a28ae29b3762c64bcefc186b2"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/sw.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-QtGIH--m.js",
+      "sha256": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/index.html",
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/local.html",
+      "sha256": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/sw.js",
+      "sha256": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a"
+    },
+    {
+      "path": "test/vectors/account-checkpoint.json",
+      "sha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03"
+    },
+    {
+      "path": "test/vectors/account-counter.json",
+      "sha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
+    },
+    {
+      "path": "test/vectors/account-credential.json",
+      "sha256": "ca891a46e3739dac529893bd687b7436f15b0044c2477253104a6e26b8827e5b"
+    },
+    {
+      "path": "test/vectors/account-ledger.json",
+      "sha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c"
+    },
+    {
+      "path": "test/vectors/account-local-custody.json",
+      "sha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27"
+    },
+    {
+      "path": "test/vectors/account-local-provenance.json",
+      "sha256": "a15f93629a0657756159db942e959ec9dc594b1b225b64082d9d030d2e08231d"
+    },
+    {
+      "path": "test/vectors/account-promotion.json",
+      "sha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34"
+    },
+    {
+      "path": "test/vectors/account-recovery.json",
+      "sha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a"
+    },
+    {
+      "path": "test/vectors/account-service-custody.json",
+      "sha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c"
+    },
+    {
+      "path": "test/vectors/account-store.json",
+      "sha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
+    },
+    {
+      "path": "test/vectors/account-transport.json",
+      "sha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41"
+    },
+    {
+      "path": "test/vectors/admission-coverage.json",
+      "sha256": "1e20a41ed2dd7330833090d1fa033a4e84c764a7bbd3de891edcf49fb8690712"
+    },
+    {
+      "path": "test/vectors/algorithm-suite.json",
+      "sha256": "a844647ff43a851016742f25fed41e4fd513ab467452d85e40d39375f2e7fd22"
+    },
+    {
+      "path": "test/vectors/antireplay.json",
+      "sha256": "58c00dc33f0db2fcbb8de7e6826c0c35afe61662b22bcea4210c9b5b832e37b7"
+    },
+    {
+      "path": "test/vectors/attribution.json",
+      "sha256": "cf9f8c33898588e204e93436307e62f130576784b08db7e1af9d166f2e15182b"
+    },
+    {
+      "path": "test/vectors/checkpoint.json",
+      "sha256": "803d8c3a2532dd70a0c2dd76fe6dbeb855e4a43bb764f150ef4c490ff1259893"
+    },
+    {
+      "path": "test/vectors/device-lock.json",
+      "sha256": "8e56b26b79389995d4e1d308728ab6160087dff0ea147c908334ea4759973862"
+    },
+    {
+      "path": "test/vectors/enrollment-ceremony.json",
+      "sha256": "d7f7184a427f1ebbf178c2e8fa410d0436254790a239c3dc4e0a6b37ff20ef84"
+    },
+    {
+      "path": "test/vectors/envelope.json",
+      "sha256": "12953a7382ef7005ec50d6ed64449e3a9ecfd0161f2b06b33b2621e550905029"
+    },
+    {
+      "path": "test/vectors/finalization.json",
+      "sha256": "4aefdafcc053f1b45ca9535d60db34a069614c0436d96c0aae7e17a6351e13f1"
+    },
+    {
+      "path": "test/vectors/first-authority.json",
+      "sha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9"
+    },
+    {
+      "path": "test/vectors/head-discovery.json",
+      "sha256": "dd348ad5e0abb92f83e2c794ab7c3bfe4967b23026e1cff908b2f1da12db10ae"
+    },
+    {
+      "path": "test/vectors/historical/README.md",
+      "sha256": "6110e2aac28fc30682160aa763a6db9fc4e8903646b32b507afaf8ee89c50ea9"
+    },
+    {
+      "path": "test/vectors/historical/recovery-code.scalar-only.json",
+      "sha256": "08900f54013d8211462f3e38af161a163423c2d62d6925eebc439bc9da972a19"
+    },
+    {
+      "path": "test/vectors/journal-aead.json",
+      "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
+    },
+    {
+      "path": "test/vectors/package.json",
+      "sha256": "c625ce1d70ad65e58c8b803879a39ddfc2984003ccf7f746ef0db3e34241e610"
+    },
+    {
+      "path": "test/vectors/private-envelope.json",
+      "sha256": "81a753a0aaf2e8ffb354a699340b294638f9fdb0cdbfdcbbf97cc7fc5e6b3dd5"
+    },
+    {
+      "path": "test/vectors/record-format.json",
+      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+    },
+    {
+      "path": "test/vectors/recovery-code.json",
+      "sha256": "49b741f2a0970ea91084d0c90e3fb9e430db886e88633e0b3df8263feb24f6b8"
+    },
+    {
+      "path": "test/vectors/transition.json",
+      "sha256": "7569daf02c789ac47bb2070d3afdf3b5ec0dcf9255ef74b434c682cde6e91a66"
+    },
+    {
+      "path": "test/vectors/web-security-baseline.json",
+      "sha256": "1c7981b9043a50cf2705f21ac9cd53d7af4ce175ea77d1141c255e8e179ef797"
+    }
+  ],
+  "appendOnlyPrefixes": [
+    {
+      "path": "docs/completed.md",
+      "prefixBytes": 630607,
+      "prefixSha256": "21eacf157eab66011f60772c0728953444ac1ae2ddf142c310a7a775a8e87cb9"
+    },
+    {
+      "path": "docs/decisions.md",
+      "prefixBytes": 274387,
+      "prefixSha256": "282f34a2454411132715db32630c2cb2ceb06499317cd2a6bb9714c8684acc82"
+    },
+    {
+      "path": "docs/performance.md",
+      "prefixBytes": 82574,
+      "prefixSha256": "91ec1f39337c3b8740245f95dbd5d6bd9eb0ed3d806311baae4f703582122e30"
+    }
+  ],
+  "L2SuffixSha256": "447a086b85b1168047add2d02833e31b10d9cfaee961bab270e5f712f5b612bc"
+}

@@ -1,0 +1,238 @@
+{
+  "schema": 1,
+  "date": "2026-09-15T06:32:46.731277+00:00",
+  "base": "0c84e5cce1149d2c163dae3a9fc7fc84dba35eeb",
+  "contentTip": "e2d42fac654bd46b2166fd9ff9c5c691bb2f3734",
+  "sourceScope": "All non-document repository files, including runtime, test, runner and configuration inputs; plus reviewed registry snapshots.",
+  "scope": "Eight completed bounded phases grouped into five newly signed descendant commits, followed by a separate documentation-only reconciliation commit. No historical commit rewritten; no old receipt relabeled as validation at a new revision.",
+  "commits": [
+    {
+      "key": "01-handoff",
+      "commit": "67d31c758109a85cec00603c95a25bfbaf431020",
+      "parent": "0c84e5cce1149d2c163dae3a9fc7fc84dba35eeb",
+      "tree": "a2a409deed827291457ed5a90cba56b1908388d6",
+      "title": "Integrate private Local preparation handoff",
+      "signature": "G",
+      "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n",
+      "fileCount": 130,
+      "committedAt": "2026-09-15T06:29:28.097897+00:00",
+      "evidencePackets": [
+        "docs/account-conformance-runs/2026-09-14-f17-local-handoff"
+      ],
+      "reconstruction": {
+        "label": "01-handoff",
+        "nonDocumentFiles": 1059,
+        "matched": true
+      },
+      "frozenInputReference": 0,
+      "registrySnapshots": {
+        "docs/account-crypto/census.json": "f17e05d9258ee9eccc5d64282bce4c0a88787216ca0b45292bf7890c6a96d345",
+        "docs/release-validation-graph.json": "e4c0e19bc96c85ad64c4d903572d19edf3f17c42617b9d4252352962ab37bee6",
+        "docs/release-validation-manifest.json": "c5461c533020cdc285d6b0486509ddf1def266a248834e4387ce8049dbd2ef10"
+      }
+    },
+    {
+      "key": "02-handoff-evidence",
+      "commit": "a245fb7f185b9cbbb63ba0c1f88981ddb037caf3",
+      "parent": "67d31c758109a85cec00603c95a25bfbaf431020",
+      "tree": "f97ccec99450b30185e9a43ef913c194efa04e1e",
+      "title": "Preserve Local handoff performance and device evidence",
+      "signature": "G",
+      "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n",
+      "fileCount": 61,
+      "committedAt": "2026-09-15T06:29:50.431568+00:00",
+      "evidencePackets": [
+        "docs/account-conformance-runs/2026-09-14-f17-local-performance",
+        "docs/account-conformance-runs/2026-09-15-f17-pixel9a",
+        "docs/account-conformance-runs/2026-09-15-f17-local-profile"
+      ],
+      "reconstruction": {
+        "label": "02-handoff-evidence",
+        "nonDocumentFiles": 1059,
+        "matched": true
+      },
+      "frozenInputReference": 0,
+      "registrySnapshots": {
+        "docs/account-crypto/census.json": "f17e05d9258ee9eccc5d64282bce4c0a88787216ca0b45292bf7890c6a96d345",
+        "docs/release-validation-graph.json": "e4c0e19bc96c85ad64c4d903572d19edf3f17c42617b9d4252352962ab37bee6",
+        "docs/release-validation-manifest.json": "c5461c533020cdc285d6b0486509ddf1def266a248834e4387ce8049dbd2ef10"
+      }
+    },
+    {
+      "key": "03-selection-owner",
+      "commit": "ffc0d370c213d482be0fbd94e9524309e1c8f4a8",
+      "parent": "a245fb7f185b9cbbb63ba0c1f88981ddb037caf3",
+      "tree": "c32b4d6352caf159f30959dff22368396d0f04aa",
+      "title": "Add private selection snapshots and baseline controls",
+      "signature": "G",
+      "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n",
+      "fileCount": 25,
+      "committedAt": "2026-09-15T06:30:13.160474+00:00",
+      "evidencePackets": [
+        "docs/account-conformance-runs/2026-09-15-f17-selection-contract",
+        "docs/account-conformance-runs/2026-09-15-f17-selection-owner"
+      ],
+      "reconstruction": {
+        "label": "03-selection-owner",
+        "runtimeFiles": 150,
+        "matched": true,
+        "nonDocumentFiles": 1061,
+        "matchedFrozenInput": "test-results/f17-selection-owner/owned/inputs.json.gz"
+      },
+      "frozenInputReference": 1,
+      "registrySnapshots": {
+        "docs/account-crypto/census.json": "c828b8c9c4a953f46e3ba99759a83ff9ecf73aabda94d31c37e2dbe211ec3605",
+        "docs/release-validation-graph.json": "ed21f835e5c500605af15961225da0f68d567063f51a458ad17a73a0cf9c75f8",
+        "docs/release-validation-manifest.json": "0cc88d59ca5b1d0b691b7249aafd2968994b33193c23aa4fad58eaaf230fd09b"
+      }
+    },
+    {
+      "key": "04-selection-integration",
+      "commit": "15eb389c4d6d7cd2dc84954733275b8afeb77734",
+      "parent": "ffc0d370c213d482be0fbd94e9524309e1c8f4a8",
+      "tree": "e799c17a26306adb6c1ebf09b995be08e3d6e58c",
+      "title": "Integrate private Local selection history ownership",
+      "signature": "G",
+      "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n",
+      "fileCount": 31,
+      "committedAt": "2026-09-15T06:30:37.702551+00:00",
+      "evidencePackets": [
+        "docs/account-conformance-runs/2026-09-15-f17-selection-integration"
+      ],
+      "reconstruction": {
+        "label": "04-selection-integration",
+        "nonDocumentFiles": 1062,
+        "matched": true
+      },
+      "frozenInputReference": 2,
+      "registrySnapshots": {
+        "docs/account-crypto/census.json": "97beb278e7d1e6dd2119379a0fe3daf1746e1bc258baf764d56f657e3a5b7398",
+        "docs/release-validation-graph.json": "3f947bf046757a95b1e9db438742141d7ded68795a896f15395a57056e98205c",
+        "docs/release-validation-manifest.json": "36c7a3fa715c5f6ef1aa2f19e934b76cc81dad583ee0b7360df084249a0e312d"
+      }
+    },
+    {
+      "key": "05-selection-performance",
+      "commit": "e2d42fac654bd46b2166fd9ff9c5c691bb2f3734",
+      "parent": "15eb389c4d6d7cd2dc84954733275b8afeb77734",
+      "tree": "4e47af0a5ba9639fbd1e65b5a3e2c44a4b19f530",
+      "title": "Record selection snapshot performance decision",
+      "signature": "G",
+      "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n",
+      "fileCount": 14,
+      "committedAt": "2026-09-15T06:31:18.786505+00:00",
+      "evidencePackets": [
+        "docs/account-conformance-runs/2026-09-15-f17-selection-performance"
+      ],
+      "reconstruction": {
+        "label": "05-selection-performance",
+        "nonDocumentFiles": 1062,
+        "matched": true
+      },
+      "frozenInputReference": 2,
+      "registrySnapshots": {
+        "docs/account-crypto/census.json": "97beb278e7d1e6dd2119379a0fe3daf1746e1bc258baf764d56f657e3a5b7398",
+        "docs/release-validation-graph.json": "3f947bf046757a95b1e9db438742141d7ded68795a896f15395a57056e98205c",
+        "docs/release-validation-manifest.json": "36c7a3fa715c5f6ef1aa2f19e934b76cc81dad583ee0b7360df084249a0e312d"
+      }
+    }
+  ],
+  "frozenInputReferences": [
+    {
+      "path": "test-results/f17-local-performance/comparison/inputs.json.gz",
+      "sha256": "4575602e20f517d5dda450019bb47055c73be4b70366df2a646e4f8be00dc098",
+      "sourcesKey": "sourcePins"
+    },
+    {
+      "path": "test-results/f17-selection-owner/owned/inputs.json.gz",
+      "sha256": "5c5f59e5d7a7790a9c0c92f26f5a9c9cc0ba627c8ba93d6c9d73cc1615c1a058",
+      "sourcesKey": "sources"
+    },
+    {
+      "path": "test-results/f17-selection-performance/comparison/inputs.json.gz",
+      "sha256": "a4d58d88aae930bfbaafa19bd637beddca1773b80815fcd1c233d93f865b9e69",
+      "sourcesKey": "sourcePins"
+    }
+  ],
+  "pinsSha256": "899a7c3bfe3ec646d486408acdacb27a8e50536a8b2998a40d4e66e02d68de7c",
+  "originalPendingFiles": 219,
+  "evidencePackets": 8,
+  "totalEvidenceFiles": 177,
+  "counts": {
+    "obligations": 618,
+    "requiredTestFiles": 282,
+    "generalFiles": 263,
+    "generalDispositions": 2121,
+    "notApplicable": 11,
+    "unresolvedTestFiles": 0,
+    "command": 96,
+    "campaign": 63
+  },
+  "qualification": "Original bounded phase results only. The failed application gate, timing uncertainty and immutable aggregate remain open.",
+  "verificationChecks": [
+    {
+      "id": "commit-map",
+      "argv": [
+        "python3",
+        "docs/account-conformance-runs/2026-09-15-f17-commit-backlog/verify.py",
+        "--raw"
+      ],
+      "exitCode": 0,
+      "log": "commit-map.check.log",
+      "sha256": "ccf1fa3fbbcf59e35b004b250ec593dbe9307ab84f0696519fe9b74789cbaf15"
+    },
+    {
+      "id": "functional-packet",
+      "argv": [
+        "python3",
+        "docs/account-conformance-runs/2026-09-15-f17-selection-integration/verify.py",
+        "--raw"
+      ],
+      "exitCode": 0,
+      "log": "functional-packet.check.log",
+      "sha256": "a830ea123fa2a36ce588739f88f9dd294b0da2aa904d7b883a78bbf9900a4b71"
+    },
+    {
+      "id": "performance-packet",
+      "argv": [
+        "python3",
+        "docs/account-conformance-runs/2026-09-15-f17-selection-performance/verify.py",
+        "--raw"
+      ],
+      "exitCode": 0,
+      "log": "performance-packet.check.log",
+      "sha256": "6b448cd50fb5c8934cf1f34a154abe47c9e20eb6068d8f57f562165eacee808c"
+    },
+    {
+      "id": "inventory",
+      "argv": [
+        "node",
+        "scripts/release-validation/check.mjs"
+      ],
+      "exitCode": 0,
+      "log": "inventory.check.log",
+      "sha256": "b6860ce92cdcab1a0b53cf8f68bfc2718b890be37e52979c1ea3bbec4423790d"
+    },
+    {
+      "id": "manifest",
+      "argv": [
+        "node",
+        "scripts/release-validation/plan.mjs"
+      ],
+      "exitCode": 0,
+      "log": "manifest.check.log",
+      "sha256": "d02ee0650dd32eb416308d5ab1e4ab713fa267e254d92081809d0c4e8aadaa0b"
+    },
+    {
+      "id": "whitespace",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "whitespace.check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

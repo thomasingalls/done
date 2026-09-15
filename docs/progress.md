@@ -59,7 +59,7 @@ updated: 2026-09-15
 addresses the failing application-latency gate. The comparison is complete and default activation
 is refused; F-17 remains open. The 96 command / 63 campaign wrapper obligations and remaining
 qualification repairs also precede the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
-The record audit is committed with a verified signature as `0c84e5cc`.
+The record audit is signed `0c84e5cc`; the subsequent F-17 backlog is now signed through `e2d42fac`.
 
 **Just completed.** The [private Local snapshot comparison](./f17-selection-performance.md)
 completes 64 fresh sessions / 5,248 warmups / 4,096 measurements with all semantic checks passing.
@@ -134,13 +134,17 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Current bounded phase.** Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
-Eight completed bounded phases remain uncommitted above verified signed `0c84e5cc`; these are
-working-tree changes, not unsigned commit replacements. No commit is made in this performance
-phase. The latest user asked about the backlog; signing/grouping should precede immutable
-qualification. Remaining phone/manual work is cancelled; all test servers and the dedicated ADB
-server are stopped. Emulation remains the reference, with the earlier rough 1.5× phone planning
-estimate. F-17 and the 96 command / 63 campaign obligations remain open.
+**Current bounded phase.** Profile the snapshot application variant to separate remaining
+document/history fork, full comparison and publication costs before choosing another repair.
+Retain the unchanged budgets and failed measurements.
+
+The eight-phase commit backlog is closed in five verified signed commits through `e2d42fac`;
+`15eb389c` is the latest runtime/test integration checkpoint. The following documentation commit
+records the [grouping, original evidence identities and reproducible checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md).
+No historical commit or receipt is rewritten. There is no remaining F-17 commit backlog through
+the final comparison. Remaining phone/manual work is cancelled; test servers and the dedicated
+ADB server are stopped. Emulation remains the reference, with the earlier rough 1.5× phone
+planning estimate. F-17 and the 96 command / 63 campaign obligations remain open.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

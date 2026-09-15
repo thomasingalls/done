@@ -104,4 +104,14 @@ semantic checks, but fails the incremental useful-gain rule: 2.9% shallow and 10
 improvement over the existing handoff, with >=10% required in both. All regression guardrails pass.
 The single unchanged application gate records 12.2/75.1 ms desktop/CPU-4x Android card p95;
 Android still exceeds <16 ms, and its 54.2 ms focus observation exceeds <50 ms. The functional evidence above remains intact. Default Local/Account
-retain the reference; F-17 remains partial. Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+retain the reference; F-17 remains partial. The accumulated phases are signed through `e2d42fac`. Next profile the snapshot application
+variant to separate remaining document/history fork, full comparison and publication costs before
+choosing another repair. Retain the unchanged budgets and failed measurements.
+
+
+## Commit checkpoint
+
+The [signed backlog map](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md) connects
+the original evidence to the grouped descendant commits. Runtime/test integration is `15eb389c`;
+the final comparison is `e2d42fac`. Original receipts and archived backlog statements remain
+unchanged historical records. Signing does not supply a new measurement or release pass.

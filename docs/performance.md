@@ -1102,3 +1102,32 @@ Next: Review and sign the accumulated bounded phases, then profile the snapshot 
 
 Values are medians of four session medians, in milliseconds. Decisions use the retained paired
 ratios, not ratios of this summary table. Raw within-session timings are dependent.
+
+
+## 2026-09-15 — Reconcile the F-17 signed commit backlog
+
+Eight completed bounded phases are grouped into five newly signed descendant commits above
+`0c84e5cc`: `67d31c75` Local handoff; `a245fb7f` its performance/Pixel/profile evidence;
+`ffc0d370` selection contract and unmounted owner; `15eb389c` private Local snapshot integration;
+and `e2d42fac` the final performance decision. All five signatures verify. A following documentation
+commit carries this reconciliation. No existing commit or historical receipt identity is rewritten.
+
+The final content commit contains all 219 original pending files byte-for-byte. The handoff,
+component and integration checkpoints match respectively 1,059, 1,061 and 1,062 non-document
+files of their retained frozen phase inputs, including tests/runners/configuration; corresponding
+registry/census snapshots also match. The grouping uses exact saved versions where available,
+combines related phases where useful, and recovers append-only records by verified byte prefixes.
+Unavailable intermediate mutable summaries are not invented; the current checkpoint is reconciled
+here. All 177 files across eight original evidence packets, 52 personal/vector pins and L-2 remain
+unchanged. Three unrelated root files are left untracked and untouched.
+
+[Commit map and reproducible checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md).
+The original phase results are not reruns at the new commit IDs. F-17 remains partial, defaults
+remain reference, and the latest application gate remains failed at 12.2/75.1 ms desktop/CPU-4x
+card p95, with Android focus 54.2 ms. Counts remain 263 files / 2,121 dispositions (11 not applicable),
+with 0 test-file / 96 command / 63 campaign obligations unresolved. No runtime or test changes,
+measurement campaign, personal app operation or deployment occur during this bookkeeping turn.
+
+The backlog through this performance phase is closed. Next profile the snapshot application's
+remaining document/history fork, complete comparison and publication costs before another repair;
+retain the unchanged budgets, failed observations and loaded-host uncertainty.

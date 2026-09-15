@@ -142,7 +142,9 @@ and L-2 are preserved. The packet embeds all command observations, helper/protoc
 application measurements/receipts and preservation data; large pinned inputs and bundles remain
 under ignored local test-results with hashes. No personal app, phone, relay or deployment changes.
 
-Next: Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+The accumulated phases are signed through `e2d42fac`. Next profile the snapshot application
+variant to separate remaining document/history fork, full comparison and publication costs before
+choosing another repair. Retain the unchanged budgets and failed measurements.
 [Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-performance/README.md).
 
 | Seed items / history | Signed B | Current R | Handoff H | Snapshots S |
@@ -154,3 +156,11 @@ Next: Review and sign the accumulated bounded phases, then profile the snapshot 
 
 Values are medians of four session medians, in milliseconds. Decisions use the retained paired
 ratios, not ratios of this summary table. Raw within-session timings are dependent.
+
+
+## Commit checkpoint
+
+The [signed backlog map](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md) connects
+the original evidence to the grouped descendant commits. Runtime/test integration is `15eb389c`;
+the final comparison is `e2d42fac`. Original receipts and archived backlog statements remain
+unchanged historical records. Signing does not supply a new measurement or release pass.
