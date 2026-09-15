@@ -3792,3 +3792,13 @@ Node async-resource exhaustion without skipping observations. The finite checked
 gets a four-MiB cap as explicit child contracts grow; exact round-trip/overflow checks cover it. Native,
 process-report and archive limits are separate and unchanged.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).
+
+
+## 2026-09-15 — Ordered editor reports preserve first source observations
+
+Retain original ordered-editor commands, case counts and bounds. Reconcile full source identities and
+bytes against their first observation throughout generated actions and cold reopen, instead of relying
+only on source counts. Require measured normal/crash and compiled-mutation observations to discriminate
+early publication from durable recovery and remote relabeling from local authorship. Empty successful
+typecheck output is permitted while command identity, completion and log presence remain required.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-editor/README.md).

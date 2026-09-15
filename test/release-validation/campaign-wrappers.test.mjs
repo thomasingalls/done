@@ -1,3 +1,11 @@
+import {
+  receiveEditorCampaign,
+  receiveEditorCampaignStage,
+  receiveEditorSteps,
+  receiveEditorReports,
+  reconcileReceiveEditorReports,
+  reconcileReceiveEditorEvidence,
+} from '../../scripts/release-validation/account-receive-editor-wrapper.mjs';
 import { manifestSnapshot } from '../../scripts/release-validation/manifest-snapshot.mjs';
 import {
   receiveCampaign,
@@ -1314,5 +1322,290 @@ test('160 generated receive control and unit-ledger corruptions reject ineffecti
       assert.throws(() => reconcileReceiveEvidence(bad));
     }),
     { seed: 150964, numRuns: 160 },
+  );
+});
+
+// Synthetic observations test the independent report checker, not product execution.
+function receiveEditorEvidence() {
+  const capsule = (id, bytes = [0, 0]) => ({
+    id,
+    sources: [{ actor: '11'.repeat(16), kind: 'human', bytes }],
+  });
+  const before = [capsule('startup')],
+    original = [1, 2, 3],
+    extra = capsule('local', original);
+  const status = (n) => ({
+    state: 'ready',
+    receivedThrough: n,
+    observedThrough: n,
+    link: (n ? 'ab' : '00').repeat(32),
+  });
+  const observe = (visible, n, captures) => ({
+    visible,
+    status: status(n),
+    captures: structuredClone(captures),
+  });
+  const r = {};
+  for (const side of ['before', 'after'])
+    r['baseline-' + side + '.json'] = {
+      side,
+      initial: 'base',
+      before,
+      held: { visible: 'base', queuedVisible: 'base', resultPending: true },
+      recovered: observe(
+        side === 'after' ? 'REMOTE base' : 'base',
+        side === 'after' ? 1 : 0,
+        before,
+      ),
+      result: {
+        kind: side === 'before' ? 'received' : 'duplicate',
+        recorded: side === 'before',
+        status: status(1),
+      },
+      final: observe('REMOTE base', 1, before),
+    };
+  r['control-early.json'] = {
+    initial: 'base',
+    before,
+    held: { visible: 'REMOTE base', resultPending: true },
+    recovered: observe('base', 0, before),
+  };
+  r['control-relabel.json'] = {
+    initial: 'base',
+    original,
+    before,
+    after: [...before, extra],
+    observed: observe('REMOTE base', 1, [...before, extra]),
+  };
+  const actions = ['receive', 'local', 'duplicate', 'invalid', 'compact', 'restart'];
+  const observations = actions.map((action, i) => ({
+    action,
+    ...observe(i ? 'R0 baseL' : 'R0 base', 1, i ? [...before, extra] : before),
+    outcome:
+      i === 0
+        ? { kind: 'received', recorded: true, status: status(1) }
+        : i === 2
+          ? { kind: 'duplicate', recorded: false, status: status(1) }
+          : i === 3
+            ? 'receive-refused'
+            : null,
+  }));
+  r['generated-editor.json'] = {
+    status: 'passed',
+    seed: 9202026,
+    runs: 10,
+    histories: Array.from({ length: 10 }, () =>
+      structuredClone({
+        initial: 'base',
+        before,
+        actions,
+        observations,
+        final: observe('R0 baseL', 1, [...before, extra]),
+      }),
+    ),
+  };
+  return r;
+}
+test('receive-editor wrapper preserves three original commands, 151 cases and disposable browser without unused history', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-receive-editor');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 151);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [30000, 60000, 480000],
+  );
+  assert.equal(s.deadlineMs, 570000);
+  assert.equal(s.expect.historyInputs, undefined);
+  assert.equal(s.expect.dataInputs, undefined);
+  assert.equal(s.expect.steps[0].expect.kind, 'exit');
+  assert.equal(s.fixture.kind, 'chromium-cdp');
+  assert.deepEqual(s.fileOutputs.required, receiveEditorReports);
+  assert.equal(receiveEditorReports.length, 13);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 570001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: [] } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'receive-editor-filter',
+    argv: ['node', receiveEditorCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find(
+      (r) => r.id === 'command:receive-editor-filter:0',
+    ).blocked,
+  );
+});
+test('receive-editor trace requires typecheck exit and distinct exact property/native censuses', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-editor-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = receiveEditorCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    },
+    v = s.expect.steps[1].expect,
+    n = s.expect.steps[2].expect;
+  const reports = [
+    {
+      schema: 1,
+      adapter: 'vitest-v1',
+      nonce: 'fresh:properties',
+      reason: 'passed',
+      modules: v.files.map((file) => ({ file, state: 'passed' })),
+      errors: [],
+      cases: v.cases.map((c) => ({
+        ...c,
+        durationMs: 0,
+        retryCount: 0,
+        repeatCount: 0,
+        expectedFailure: false,
+        mode: 'run',
+        errors: [],
+      })),
+    },
+    {
+      schema: 1,
+      nonce: 'fresh:native',
+      phase: 'complete',
+      cases: n.cases,
+      errors: [],
+      summary: {
+        success: true,
+        counts: { tests: n.cases.length, failed: 0, cancelled: 0, skipped: 0, todo: 0 },
+      },
+    },
+  ];
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i + 1].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    (v) => v.reports[0].cases.pop(),
+    (v) => v.reports[1].cases.pop(),
+    (v) => (v.reports[0].nonce = 'fresh:native'),
+    (v) => (v.reports[1].phase = 'running'),
+    (v) => v.trace.steps[0].argv.pop(),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.trace.steps[1].timedOut = true),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+
+test('receive-editor reports require complete observations and permit an empty successful typecheck log', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-receive-editor-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: receiveEditorCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...receiveEditorEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: receiveEditorSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = ['results.xml', 'types.log', 'properties.log', 'native.log'];
+  const save = (r) => {
+    for (const [file, v] of Object.entries(r)) writeFileSync(join(dir, file), JSON.stringify(v));
+    for (const file of aux) writeFileSync(join(dir, file), file === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileReceiveEditorReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['generated-editor.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileReceiveEditorReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileReceiveEditorReports(dir, sources));
+  }
+});
+test('160 generated receive-editor corruptions reject lost text, false receipt progress and changing source identities/bytes', () => {
+  const r = receiveEditorEvidence();
+  reconcileReceiveEditorEvidence(r);
+  const alters = [
+    (h) => h.observations.pop(),
+    (h) => (h.observations[0].visible += 'L'),
+    (h) => (h.observations[1].status.receivedThrough = 0),
+    (h) => (h.observations[3].outcome = 'accepted'),
+    (h) => (h.observations[2].outcome.kind = 'received'),
+    (h) => (h.observations[4].captures[0].sources[0].bytes = [99]),
+    (h) =>
+      h.observations[5].captures.push({
+        id: 'remote',
+        sources: [{ actor: '11', kind: 'human', bytes: [0, 0] }],
+      }),
+    (h) => h.final.captures.pop(),
+    (h) => (h.final.visible += 'L'),
+    (h) => (h.observations[3].status.link = 'cc'.repeat(32)),
+  ];
+  fc.assert(
+    fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      alters[k](bad['generated-editor.json'].histories[i]);
+      assert.throws(() => reconcileReceiveEditorEvidence(bad));
+    }),
+    { seed: 150965, numRuns: 160 },
+  );
+});
+test('160 generated receive-editor control corruptions reject ineffective early-publication and relabel discriminators', () => {
+  const r = receiveEditorEvidence();
+  reconcileReceiveEditorEvidence(r);
+  const alters = [
+    (r) => (r['baseline-before.json'].held.visible = 'REMOTE base'),
+    (r) => (r['baseline-after.json'].recovered.visible = 'base'),
+    (r) => (r['baseline-after.json'].result.recorded = true),
+    (r) => (r['control-early.json'].held.resultPending = false),
+    (r) => (r['control-early.json'].held.visible = 'base'),
+    (r) => (r['control-early.json'].recovered.visible = 'REMOTE base'),
+    (r) => r['control-relabel.json'].after.pop(),
+    (r) => (r['control-relabel.json'].original = [99]),
+    (r) => (r['generated-editor.json'].status = 'running'),
+  ];
+  fc.assert(
+    fc.property(fc.nat(alters.length - 1), (k) => {
+      const bad = structuredClone(r);
+      alters[k](bad);
+      assert.throws(() => reconcileReceiveEditorEvidence(bad));
+    }),
+    { seed: 150966, numRuns: 160 },
   );
 });

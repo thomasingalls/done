@@ -55,38 +55,33 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Inbound codecs is signed and verified as `70788d4e`. All catalogue/test-file
-adapters are integrated; retired transport/driver whole campaigns remain excluded. Inventory stays
-**629 obligations /292 required files** and **272 general files /2,198 dispositions (11 not applicable)**.
-Receive resolves one command and campaign: **zero test-file /77 command /45 campaign** remain unresolved,
-down from 124 to 122. These are integration counts, not a passing aggregate.
+**Roadmap checkpoint.** Receive is signed and verified as `ccffd280`. All catalogue/test-file adapters are
+integrated; retired transport/driver whole campaigns remain excluded. Inventory stays **629 obligations
+/292 required files** and **272 general files /2,198 dispositions (11 not applicable)**. Receive-editor
+resolves one command and campaign: **zero test-file /76 command /44 campaign** remain unresolved, down
+from 122 to 120. These are integration counts, not a passing aggregate.
 
-**Just completed.** Receive preserves both original commands/62 cases, child concurrency/reporters and
-60/300-second limits. Owned execution adds a 360-second aggregate, disposable browser, pinned old marker
-reader and 24 retained reports. Native controls now preserve actual refusal/mutated progress. Twelve
-histories retain commit-cut/retry status, the request/page actually stored, original wire, final events
-and content rows. Independent event/framing/plaintext coverage checks include pending data. Two hundred
-unit ledger histories and all codec evidence remain required; signature/AEAD/native owner verification
-remains the responsibility of actual tests.
+**Just completed.** Receive-editor preserves typecheck, four-file Vitest (139 cases) and native (12 cases)
+commands, original reporters/concurrency and 30/60/480-second child limits. Owned execution adds a
+570-second aggregate, disposable browser and 13 retained reports. Ten generated histories retain actual
+text/status/outcomes and complete source identities/bytes through actions and cold reopen. Independent
+text/position and first-observation source checks reject relabeling, byte changes and incomplete histories.
+Normal commit cuts and actual compiled mutation controls now retain measured publication/recovery/source
+observations. Original native owners retain crypto/CRDT verification authority; typecheck remains exit-only.
 
-The epoch passes **287 cases in seven executions**: 111 planning, 62 receive and 114 codec regression,
-then exact receive reuse. Receive takes **145.872s /360s**. Every group drains and 24 files survive
-checkout removal. Five infrastructure cases include two 160-run corruptions; eight synthetic runs and
-two omitted checks discriminate. The unchanged manifest suite passes in 53.706s /60s.
-This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).
+The epoch passes **329 cases in seven executions**: 116 planning, 151 receive-editor and 62 receive regression,
+then exact reuse. Receive-editor takes **149.702s /570s**. Every group drains and 13 files survive
+checkout removal. Five infrastructure cases include two 160-run corruptions; eight synthetic runs and two
+omitted hooks discriminate. The unchanged manifest suite passes in 57.578s /60s. This phase is ready
+for signed commit. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-receive-editor/README.md).
 
-**Preserved observations.** Focused controls exposed Node async-resource exhaustion from repeated identical
-Yjs replay; exact per-report tuple caching fixes it without dropping observations. The planning manifest
-crossed its old one-million-byte cap; prospective four-MiB capacity and round-trip/overflow controls preserve
-the complete plan. A missed duplicate cap assertion stopped the first owned epoch in planning; it is
-aligned and the complete epoch rerun. Original logs/source/receipts remain. Runtime report/deadline/archive
-limits, prior failures and
-headroom observations remain. No loaded-host reliability or immutable aggregate claim is added.
+**Scope and retained limits.** No historical branch is invoked here. Property-generated assertions remain
+in their original cases; only the native histories claim new per-action reports. Runtime/report/deadline/
+archive bounds, prior failures and headroom observations remain. No loaded-host or immutable aggregate
+claim is added. Report custody remains cooperative bounded polling, not a disk quota or sandbox.
 
-**Next bounded phase.** Account receive-editor wrapper integration, then further families, serially.
+**Next bounded phase.** Account receive-transport wrapper integration, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
-Report custody remains cooperative bounded polling, not a disk quota or sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

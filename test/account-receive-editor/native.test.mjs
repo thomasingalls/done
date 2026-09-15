@@ -30,6 +30,11 @@ const artifact = (name, value) => {
       JSON.stringify(value, null, 2) + '\n',
     );
 };
+const observe = async (page) => ({
+  visible: await view(page),
+  status: await status(page),
+  captures: await captures(page),
+});
 const frames = (basis, edits) => {
   const doc = new Y.Doc({ gc: false });
   Y.applyUpdate(doc, new Uint8Array(basis));
@@ -131,9 +136,14 @@ for (const side of ['before', 'after'])
       await receiveBoundary(f.page, side);
       await startReceive(f.page, a.bytes);
       await waitPredicate(f.page, () => !!window.hit);
-      assert.equal(await view(f.page), initial);
+      const held = {
+        visible: await view(f.page),
+        resultPending: await f.page.evaluate(() => result === undefined),
+      };
+      assert.equal(held.visible, initial);
       await queueLocal(f.page, 'LATER');
-      assert.equal(await view(f.page), initial);
+      held.queuedVisible = await view(f.page);
+      assert.equal(held.queuedVisible, initial);
       if (side === 'before') await waitPredicate(f.page, () => editor.status.state === 'blocked');
       await crash(f);
       await cold(f);
@@ -141,8 +151,19 @@ for (const side of ['before', 'after'])
       assert.equal(await view(f.page), (side === 'after' ? 'REMOTE ' : '') + initial);
       assert.deepEqual(await captures(f.page), before);
       assert.equal((await status(f.page)).receivedThrough, side === 'after' ? 1 : 0);
+      const recovered = await observe(f.page);
       const retry = answer(f, item, await request(f.page, 0), wire);
-      assert.equal((await receive(f.page, retry.bytes)).recorded, side === 'before');
+      const result = await receive(f.page, retry.bytes);
+      artifact('baseline-' + side + '.json', {
+        side,
+        initial,
+        before,
+        held,
+        recovered,
+        result,
+        final: await observe(f.page),
+      });
+      assert.equal(result.recorded, side === 'before');
       assert.equal(await view(f.page), 'REMOTE ' + initial);
       await close(f.page);
     },
@@ -355,7 +376,8 @@ for (const control of ['early', 'relabel'])
     { timeout: 45000 },
     async (t) => {
       const { f, item, initial, snapshot } = await ready(t, 'ordered-control-' + control),
-        wire = await envelope(f.page, item, 1, [prefix(snapshot)]);
+        original = prefix(snapshot),
+        wire = await envelope(f.page, item, 1, [original]);
       await f.page.evaluate(await editorBundle(control));
       await configure(f.page);
       await open(f.page, item);
@@ -367,22 +389,30 @@ for (const control of ['early', 'relabel'])
         await waitPredicate(f.page, () => !!window.hit);
         assert.equal(await view(f.page), 'REMOTE ' + initial);
         assert.equal(await f.page.evaluate(() => result), undefined);
-        artifact('control-early.json', {
-          observed:
-            'Editor contains remote input despite native receive transaction abort. The baseline remains at the prior text.',
-          initial,
+        const held = {
           visible: await view(f.page),
-        });
+          resultPending: await f.page.evaluate(() => result === undefined),
+        };
+        // Reopen using the normal fixture bundle after killing the mutated owner.
         await crash(f);
+        await cold(f);
+        await open(f.page, item);
+        const recovered = await observe(f.page);
+        artifact('control-early.json', { initial, before, held, recovered });
+        assert.equal(recovered.visible, initial);
+        assert.equal(recovered.status.receivedThrough, 0);
+        assert.deepEqual(recovered.captures, before);
+        await close(f.page);
       } else {
         await receive(f.page, a.bytes);
         const after = await captures(f.page);
         assert.equal(after.length, before.length + 1);
         artifact('control-relabel.json', {
-          observed:
-            'Recapturing the original remote bytes as a local human creates an extra source capsule; baseline source count remains unchanged.',
-          before: before.length,
-          after: after.length,
+          initial,
+          original,
+          before,
+          after,
+          observed: await observe(f.page),
         });
         await close(f.page);
       }
@@ -402,8 +432,11 @@ test(
         ),
         async (actions) => {
           const index = histories.length;
-          histories.push(actions);
-          artifact('generated-editor.json', { seed, histories });
+          const history = { actions, observations: [] };
+          histories.push(history);
+          const save = () =>
+            artifact('generated-editor.json', { seed, runs: 10, status: 'running', histories });
+          save();
           const { f, item, initial, snapshot } = await ready(t, 'ordered-generated-' + index);
           const edits = actions
             .filter((x) => x === 'receive')
@@ -413,16 +446,20 @@ test(
           for (let i = 0; i < originals.length; i++)
             wires.push(await envelope(f.page, item, i + 1, [originals[i]]));
           await open(f.page, item);
-          const originalCaptures = (await captures(f.page)).length;
+          history.initial = initial;
+          history.before = await captures(f.page);
+          const originalCaptures = history.before.length;
+          save();
           let expected = initial,
             position = 0,
             previous = '00'.repeat(32),
             localCount = 0,
             prior = '00'.repeat(32);
           for (const action of actions) {
+            let outcome = null;
             if (action === 'receive') {
               const a = answer(f, item, await request(f.page), wires[position], previous);
-              await receive(f.page, a.bytes);
+              outcome = await receive(f.page, a.bytes);
               expected = `R${position} ` + expected;
               prior = previous;
               previous = a.link;
@@ -438,17 +475,15 @@ test(
               await open(f.page, item);
             } else if (action === 'compact') await f.page.evaluate(() => opened.compactContent());
             else if (action === 'invalid') {
-              assert.equal(
-                await f.page.evaluate(async () => {
-                  try {
-                    await opened.receivePage(new TextEncoder().encode('not a signed page'));
-                    return 'accepted';
-                  } catch (cause) {
-                    return cause.code;
-                  }
-                }),
-                'receive-refused',
-              );
+              outcome = await f.page.evaluate(async () => {
+                try {
+                  await opened.receivePage(new TextEncoder().encode('not a signed page'));
+                  return 'accepted';
+                } catch (cause) {
+                  return cause.code;
+                }
+              });
+              assert.equal(outcome, 'receive-refused');
             } else if (position) {
               const a = answer(
                 f,
@@ -458,8 +493,11 @@ test(
                 prior,
                 position,
               );
-              assert.equal((await receive(f.page, a.bytes)).kind, 'duplicate');
+              outcome = await receive(f.page, a.bytes);
+              assert.equal(outcome.kind, 'duplicate');
             }
+            history.observations.push({ action, outcome, ...(await observe(f.page)) });
+            save();
             assert.equal(await view(f.page), expected);
             assert.equal((await status(f.page)).receivedThrough, position);
             assert.equal((await captures(f.page)).length, originalCaptures + localCount);
@@ -468,6 +506,8 @@ test(
           await close(f.page);
           await cold(f);
           await open(f.page, item);
+          history.final = await observe(f.page);
+          save();
           assert.equal(await view(f.page), expected);
           assert.equal((await captures(f.page)).length, originalCaptures + localCount);
           await close(f.page);
@@ -477,6 +517,7 @@ test(
       ),
       { seed, numRuns: 10, endOnFailure: true },
     );
+    artifact('generated-editor.json', { seed, runs: 10, status: 'passed', histories });
   },
 );
 test(
