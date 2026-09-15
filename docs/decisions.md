@@ -3731,3 +3731,12 @@ exact final id/index coverage, with bounded allocation for malformed numeric fie
 control needs both the actual incomplete-ledger refusal and same-position changed-wire mutant. These
 checks corroborate existing native/codec assertions; they are not independent decryption or storage replay.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-spool/README.md).
+
+
+## 2026-09-15 — Decision controls pair normal and mutated verification on the same bytes
+
+Retain actual normal-verifier unknown/rejection and mutated usable evidence/acceptance for each proof
+control. Bind the recorded response/submission fields to the bytes used, require the specific intended
+proof change and preserve observation/storage histories. Report checks corroborate native assertions;
+structural framing and predecessor hashing do not independently verify signatures or replay storage.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).

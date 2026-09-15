@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "d107f244",
+  "payloads": 241,
+  "compressedBytes": 642695,
+  "artifactsSha256": "11157918978f67bbde8dbf19ba668a82f665de36d2fbe32f5627866294a4de01",
+  "rawIndexSha256": "754004580c4b5b8826491cb0058c6660a0b43db45d16a0dc227b6629fb14308e",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-decisions-with-planning-spool-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "2d95010cab3603266e4cbeba591f79726b444c1df926631e566925d82d547877",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 50629,
+        "cases": 65,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "b22c727b73b08d60dbb46643af3ea6bb0d1f98c03d95a6472797346e0fae5c4c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6414,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "7f64100ae88301dd15c9f031f41da53a4aff8352a47eeaac83d4995a6eb6d66c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4892,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "e4a32d853e4e785d127afb8744024a96ddee784e39bff7f6ce9a6627a5ccf439",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5749,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-decisions/run.mjs",
+        "key": "0e8ff2c8e22b248e41a6079d2a6ea0cec95f665a5a4669baedd28e3b6439e1e2",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 75266,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-spool/run.mjs",
+        "key": "3c70956addd06e359698bc2e2b43cd3c23334d9233efdb7bb09c90c6fdeb82f8",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 230171,
+        "cases": 30,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:decisions-reuse",
+        "key": "0e8ff2c8e22b248e41a6079d2a6ea0cec95f665a5a4669baedd28e3b6439e1e2",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 75266,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T19:45:20.725Z",
+    "input": "9f90dcc7508efed788d99a5b4ac1b4b5b2d67bfd57723c1f3714514dee855e64",
+    "completedAt": "2026-09-15T19:52:19.120Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 82,
+    "campaign": 50
+  },
+  "claim": "Bounded Account decisions wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

@@ -34,7 +34,7 @@ import {
   reconcileAuthorityReports,
   reconcileAuthorityControls,
 } from '../../scripts/release-validation/account-authority-wrapper.mjs';
-import { generateKeyPairSync, sign } from 'node:crypto';
+import { generateKeyPairSync, sign, createHash } from 'node:crypto';
 
 function authorityEvidence(
   serviceId = 'ab'.repeat(16),
@@ -280,6 +280,353 @@ function admissionHistories(commands = ['offer', 'finish']) {
     },
   };
 }
+
+import {
+  decisionsCampaign,
+  decisionsCampaignStage,
+  decisionsSteps,
+  decisionsReports,
+  reconcileDecisionsReports,
+  reconcileDecisionsEvidence,
+} from '../../scripts/release-validation/account-decisions-wrapper.mjs';
+function decisionEvidenceFixture() {
+  const expected = {
+      workspace: 'ws',
+      credential: 'cred',
+      position: 3,
+      digest: '33'.repeat(32),
+      epoch: 8,
+      parent: '00'.repeat(32),
+      previous: '00'.repeat(32),
+    },
+    authority = {
+      workspace: 'ws',
+      lineage: '11'.repeat(32),
+      tip: 9,
+      head: '22'.repeat(32),
+      acceptanceKey: '44'.repeat(32),
+    };
+  const refusal = (reason = 'stale-epoch', position = 3, signature = '55'.repeat(64)) => ({
+    workspace: 'ws',
+    credential: 'cred',
+    position,
+    digest: '33'.repeat(32),
+    epoch: 8,
+    parent: '00'.repeat(32),
+    reason,
+    signature,
+  });
+  const refusedWire = (p) =>
+    Buffer.from(
+      JSON.stringify([
+        'done/position-response/v1',
+        1,
+        'refused',
+        p.workspace,
+        p.credential,
+        p.position,
+        p.digest,
+        p.epoch,
+        p.reason,
+        p.parent,
+        p.signature,
+      ]),
+    );
+  const controls = ['signature', 'epoch', 'link'].map((control) => {
+    const response =
+      control === 'link'
+        ? {
+            kind: 'accepted',
+            head: {
+              workspace: 'ws',
+              credential: 'cred',
+              position: 3,
+              link: 'ff'.repeat(32),
+              epoch: 9,
+              final: false,
+              signature: '55'.repeat(64),
+            },
+            leaf: {
+              workspace: 'ws',
+              credential: 'cred',
+              position: 3,
+              digest: '33'.repeat(32),
+              epoch: 8,
+            },
+          }
+        : { kind: 'refused', refusal: { ...refusal(), epoch: control === 'epoch' ? 7 : 8 } };
+    const bytes =
+      response.kind === 'refused'
+        ? [...refusedWire(response.refusal)]
+        : [
+            ...Buffer.from(
+              JSON.stringify([
+                'done/position-response/v1',
+                1,
+                'accepted',
+                'ws',
+                'cred',
+                3,
+                'ff'.repeat(32),
+                9,
+                false,
+                8,
+                '33'.repeat(32),
+                '55'.repeat(64),
+              ]),
+            ),
+          ];
+    return {
+      control,
+      baseline: 'unknown',
+      badEvidence: control === 'link' ? 'accepted' : 'refused',
+      response,
+      bytes,
+      expected,
+      authority,
+    };
+  });
+  for (const control of ['parent', 'position']) {
+    const original = {
+        lineage: authority.lineage,
+        envelope: [1, 2, 3],
+        signature: Array(64).fill(7),
+        parent: refusal('stale-epoch', control === 'parent' ? 3 : 4),
+      },
+      accepted = structuredClone(original);
+    if (control === 'parent') accepted.parent = refusal('retired-generation', 3, '66'.repeat(64));
+    // A separate incremental buffer writer builds the fixture's submission frame.
+    const parts = [];
+    for (const text of ['done/envelope-submission-wire/v1', '1', original.lineage]) {
+      const b = Buffer.from(text),
+        size = Buffer.alloc(2);
+      size.writeUInt16BE(b.length);
+      parts.push(size, b);
+    }
+    for (const b of [Buffer.from(accepted.envelope), refusedWire(accepted.parent)]) {
+      const size = Buffer.alloc(4);
+      size.writeUInt32BE(b.length);
+      parts.push(size, b);
+    }
+    parts.push(Buffer.from(accepted.signature));
+    controls.push({
+      control,
+      baseline: {
+        accepted: false,
+        reason:
+          control === 'parent' ? 'Submission signature mismatch' : 'Successor subject mismatch',
+      },
+      badSubmissionAccepted: true,
+      original,
+      accepted,
+      bytes: [...Buffer.concat(parts)],
+      publicKey: '44'.repeat(32),
+      route: { v: 2, workspace_id: 'ws', credential_id: 'cred', epoch: 8, gen: 1 },
+      authority: { ...authority, tip: 8 },
+      envelopePosition: 3,
+    });
+  }
+  const before = {
+    inventoryHash: 'ab'.repeat(32),
+    wire: [{ position: 1, bytes: [1, 2, 3] }],
+    budget: { attempts: 1, positions: [1] },
+    sources: [{ id: 'a', sources: [{ bytes: [1, 2, 3], actor: 'person' }] }],
+  };
+  return {
+    'controls.json': controls,
+    'generated.json': {
+      status: 'passed',
+      seed: 9622026,
+      histories: Array.from({ length: 8 }, () => ({
+        commands: ['accepted', 'foreign-key', 'conflict'],
+        observations: ['accepted', 'unknown', 'conflict'].map((kind) => ({
+          kind,
+          inventoryHash: before.inventoryHash,
+        })),
+        before: structuredClone(before),
+        after: { budget: structuredClone(before.budget), sources: structuredClone(before.sources) },
+        recovered: { wire: structuredClone(before.wire), sources: structuredClone(before.sources) },
+      })),
+    },
+  };
+}
+
+test('decisions wrapper binds all property/native cases without claiming unused historical readers', () => {
+  const m = compileManifest(
+      process.cwd(),
+      JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    ),
+    [s, ...rest] = selectStages(m, 'wrapper-account-decisions');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 18);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.expect.cases.length),
+    [12, 6],
+  );
+  assert.equal(s.expect.historyInputs, undefined);
+  assert.deepEqual(s.fileOutputs.required, decisionsReports);
+  assert.equal(s.deadlineMs, 150000);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const changes of [
+    { argv: [...s.argv, '--case', 'native'] },
+    { env: { MODE: 'other' } },
+    { variant: 'current' },
+    { deadlineMs: 150001 },
+    { fixture: undefined },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, historyInputs: [] } },
+    { expect: { ...s.expect, steps: s.expect.steps.toReversed() } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...changes }));
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  graph.extraRoots.push({
+    id: 'decisions-filter',
+    argv: ['node', decisionsCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:decisions-filter:0')
+      .blocked,
+  );
+});
+
+test('decisions reports retain complete separate case domains and reject successful-looking omissions', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-decisions-trace-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const f = outboundTraceFixture(directory, decisionsCampaignStage(process.cwd()));
+  const run = (trace) =>
+    reconcileCampaignTrace(f.stage.expect.steps, trace, 'fresh', directory, reconcileCampaignNode);
+  assert.deepEqual(run(f.trace).cases, f.stage.expect.cases);
+  for (const alter of [
+    (v) => v.reports.properties.cases.pop(),
+    (v) => v.reports.native.cases.pop(),
+    (v) => (v.reports.native.nonce = 'old'),
+    (v) => (v.trace.steps[1].timedOut = true),
+    (v) => v.trace.steps.reverse(),
+  ]) {
+    const v = structuredClone({ trace: f.trace, reports: f.reports });
+    alter(v);
+    f.save(v.reports);
+    assert.throws(() => run(v.trace));
+  }
+});
+
+test('decisions wrapper requires successful summary, exact source pins and all semantic outputs', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-decisions-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const sources = [{ path: decisionsCampaign, sha256: 'a'.repeat(64) }],
+    reports = {
+      ...decisionEvidenceFixture(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: decisionsSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const save = (r) => {
+    for (const [file, value] of Object.entries(r))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'properties.log', 'native.log'])
+      writeFileSync(join(directory, file), 'observed');
+  };
+  save(reports);
+  reconcileDecisionsReports(directory, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => r['summary.json'].stages.pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+  ]) {
+    const bad = structuredClone(reports);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileDecisionsReports(directory, sources));
+  }
+  for (const file of [...Object.keys(reports), 'results.xml', 'properties.log', 'native.log']) {
+    save(reports);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileDecisionsReports(directory, sources));
+  }
+});
+
+test('160 generated decision control faults reject ineffective baselines and unrelated proof changes', () => {
+  const reports = decisionEvidenceFixture();
+  reconcileDecisionsEvidence(reports);
+  const correct = structuredClone(reports),
+    c = correct['controls.json'][2],
+    e = c.expected;
+  const parts = [];
+  for (const value of [
+    'done/accept/v1',
+    e.workspace,
+    e.credential,
+    e.position,
+    e.epoch,
+    e.digest,
+    e.previous,
+  ]) {
+    const b = Buffer.from(String(value)),
+      n = Buffer.alloc(2);
+    n.writeUInt16BE(b.length);
+    parts.push(n, b);
+  }
+  c.response.head.link = createHash('sha256').update(Buffer.concat(parts)).digest('hex');
+  const wire = JSON.parse(Buffer.from(c.bytes));
+  wire[6] = c.response.head.link;
+  c.bytes = [...Buffer.from(JSON.stringify(wire))];
+  assert.throws(() => reconcileDecisionsEvidence(correct), /correct predecessor/);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 2 }), (index) => {
+      for (const alter of [
+        (r) => (r[index].baseline = 'accepted'),
+        (r) => (r[index].badEvidence = 'unknown'),
+        (r) => (r[index].bytes[0] ^= 1),
+        (r) => r[1].response.refusal.epoch++,
+        (r) => r[2].response.head.position++,
+        (r) => (r[3].baseline.accepted = true),
+        (r) => (r[3].accepted = r[3].original),
+        (r) => r[3].accepted.signature[0]++,
+        (r) => r[3].bytes.pop(),
+        (r) => r[4].accepted.parent.position--,
+        (r) => (r[4].badSubmissionAccepted = false),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad['controls.json']);
+        assert.throws(() => reconcileDecisionsEvidence(bad));
+      }
+    }),
+    { seed: 150953, numRuns: 160 },
+  );
+});
+
+test('160 generated decision histories reject lost observations and mutations to inventory, budget, sources or wire', () => {
+  const reports = decisionEvidenceFixture();
+  reconcileDecisionsEvidence(reports);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 7 }), (index) => {
+      for (const alter of [
+        (r) => (r.status = 'running'),
+        (r) => r.histories.pop(),
+        (r) => r.histories[index].observations.pop(),
+        (r) => (r.histories[index].observations[1].kind = 'refused'),
+        (r) => (r.histories[index].observations[0].inventoryHash = 'cd'.repeat(32)),
+        (r) => r.histories[index].after.budget.attempts++,
+        (r) => r.histories[index].after.sources[0].sources[0].bytes.pop(),
+        (r) => r.histories[index].recovered.wire[0].bytes.pop(),
+        (r) => (r.histories[index].recovered.sources = []),
+        (r) => (r.histories[index].recovered.sources[0].sources[0].actor = 'other'),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad['generated.json']);
+        assert.throws(() => reconcileDecisionsEvidence(bad));
+      }
+    }),
+    { seed: 150954, numRuns: 160 },
+  );
+});
 
 import {
   spoolCampaign,
@@ -2983,7 +3330,7 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').stage.expect.kind,
     'account-outbound',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-decisions/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-delivery/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

@@ -1,13 +1,21 @@
+import { createCampaignReporting } from '../release-validation/campaign-reporting.mjs';
+import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const output = resolve(
-  'test-results/account-decisions',
-  new Date().toISOString().replaceAll(':', '-'),
-);
+const owned = Boolean(process.env.RELEASE_PROCESS_GUARD);
+if (owned)
+  assert(
+    process.env.ACCOUNT_REPORT_DIR && process.env.RELEASE_BROWSER_ENDPOINT,
+    'Owned decisions campaign requires reports and browser',
+  );
+const output = owned
+  ? resolve(process.env.ACCOUNT_REPORT_DIR)
+  : resolve('test-results/account-decisions', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
+const reporting = createCampaignReporting(output);
 console.log(`Account decision evidence: ${output}`);
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
@@ -63,9 +71,10 @@ save();
 async function run(name, args, timeoutMs) {
   console.log(`Starting ${name}`);
   const log = createWriteStream(join(output, name + '.log'));
-  const child = spawn(process.execPath, args, {
+  const step = reporting?.begin(name, args, timeoutMs);
+  const child = spawn(process.execPath, step?.args ?? args, {
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
+    env: { ...process.env, ACCOUNT_REPORT_DIR: output, ...step?.env },
   });
   let timedOut = false,
     forced,
@@ -93,6 +102,7 @@ async function run(name, args, timeoutMs) {
   clearInterval(heartbeat);
   await new Promise((resolve) => log.end(resolve));
   const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
+  reporting?.end(result);
   summary.stages.push(result);
   save();
   return code === 0 && !timedOut;
@@ -131,6 +141,7 @@ try {
   summary.error = String(e);
   process.exitCode = 1;
 } finally {
+  reporting?.finish();
   summary.completedAt = new Date().toISOString();
   save();
   console.log(`${summary.status}: ${output}`);

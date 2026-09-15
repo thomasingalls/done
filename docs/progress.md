@@ -55,31 +55,31 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Capture wrapper integration is signed and verified as `652fd13f`.
+**Roadmap checkpoint.** Spool wrapper integration is signed and verified as `d107f244`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Spool resolves one command and one campaign:
-**zero test-file /83 command /51 campaign** remain unresolved, down from 136 to 134. These are integration
+272 general files/2,198 dispositions (11 not applicable)**. Decisions resolves one command and campaign:
+**zero test-file /82 command /50 campaign** remain unresolved, down from 134 to 132. These are integration
 counts, not a passing aggregate.
 
-**Just completed.** Spool preserves its exact property/native invocations and 30/240-second child bounds.
-Owned execution adds a 270-second aggregate bound, historical reader pin, disposable browser, completion
-trace and distinct child reports. Eleven retained files bind observed early-return/grant-reuse controls,
-missing-tail refusal/mutant, and eight histories' ledgers, invocation counts, persisted wires, reopened
-text and final source references. Reconcile complete grants, contiguous immutable positions, exact wire
-continuity and source coverage. Evidence resource bounds are fixture-specific, not new product limits.
-Native/codec assertions remain authority; no independent storage/decryption or seed replay is claimed.
+**Just completed.** Decisions preserves exact property/native invocations and 30/120-second child bounds.
+Owned execution adds a 150-second aggregate bound, disposable browser, ordered trace, distinct child
+reports and nine retained files. All five proof controls pair normal and mutated verification on the
+same bytes. Require actual baseline outcomes, intended proof differences and byte/field agreement;
+predecessor hashing rejects ineffective link controls. Eight generated histories retain observed
+classifications, storage digests, source/counter snapshots and exact reopened wire. These corroborate
+native/codec assertions, not independent signature verification or storage/seed replay.
 
-The epoch passes **134 cases in six executions**: 81 planning, 30 spool and 23 capture regression,
-followed by exact spool receipt reuse. Spool takes **228.836s /270s**. Every group drains and eleven
-reports survive checkout removal. Five new infrastructure cases include two 160-run generated campaigns.
-Eight synthetic process runs and two deliberately omitted checks discriminate. This phase is ready for
-signed commit. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-spool/README.md).
+The epoch passes **134 cases in six executions**: 86 planning, 18 decisions and 30 spool regression,
+followed by exact decisions receipt reuse. Decisions takes **75.266s /150s**. Every group drains
+and nine reports survive checkout removal. Five new infrastructure cases include two 160-run generated
+campaigns. Eight synthetic process runs and two omitted checks discriminate. This phase is ready for
+signed commit. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).
 
 **Preserved observations.** No new planning or native failure occurs. Earlier capture-oracle failures,
 planning ceilings, startup SIGABRT, owner/headroom, cancellation/latency and reporter observations remain
-in their original evidence. Capture comparison-map/byte-length repairs remain exercised by the regression.
+in their original evidence. Existing capture and spool repairs remain in the exercised dependency chain.
 
-**Next bounded phase.** Account decisions wrapper integration, then further wrapper families, serially.
+**Next bounded phase.** Account delivery wrapper integration, then further wrapper families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
 File custody uses cooperative bounded polling, not a disk quota or hostile-code sandbox.
 

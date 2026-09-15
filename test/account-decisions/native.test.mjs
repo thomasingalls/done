@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fc from 'fast-check';
@@ -178,7 +179,8 @@ test(
           { minLength: 2, maxLength: 5 },
         ),
         async (history) => {
-          histories.push(history);
+          const evidence = { commands: history, observations: [] };
+          histories.push(evidence);
           artifact('generated.json', { seed, histories, status: 'running' });
           console.log(`decision history ${histories.length}/8: ${JSON.stringify(history)}`);
           const item = await selected(f, 'generated-proof-' + histories.length);
@@ -189,7 +191,14 @@ test(
             s = (await subjects(f.page))[0],
             wire = await envelopes(f.page),
             before = await inventory(f.page),
-            budget = await status(f.page);
+            budget = await status(f.page),
+            sources = await captures(f.page);
+          evidence.before = {
+            inventoryHash: createHash('sha256').update(before).digest('hex'),
+            wire,
+            budget,
+            sources,
+          };
           for (const kind of history) {
             let b,
               expected = kind;
@@ -214,14 +223,30 @@ test(
               b = new Uint8Array([255]);
               expected = 'unknown';
             }
-            assert.equal((await inspect(f.page, s.position, b)).kind, expected);
-            assert.equal(await inventory(f.page), before);
+            const observed = (await inspect(f.page, s.position, b)).kind,
+              stored = await inventory(f.page);
+            evidence.observations.push({
+              kind: observed,
+              inventoryHash: createHash('sha256').update(stored).digest('hex'),
+            });
+            artifact('generated.json', { seed, histories, status: 'running' });
+            assert.equal(observed, expected);
+            assert.equal(stored, before);
           }
-          assert.deepEqual(await status(f.page), budget);
+          evidence.after = { budget: await status(f.page), sources: await captures(f.page) };
+          assert.deepEqual(evidence.after.budget, budget);
+          assert.deepEqual(evidence.after.sources, sources);
           await close(f.page);
           await cold(f);
           await open(f.page, item);
-          assert.deepEqual(await envelopes(f.page), wire);
+          evidence.recovered = { wire: await envelopes(f.page), sources: await captures(f.page) };
+          assert.deepEqual(evidence.recovered.wire, wire);
+          for (const source of sources)
+            assert.deepEqual(
+              evidence.recovered.sources.find((c) => c.id === source.id),
+              source,
+            );
+          artifact('generated.json', { seed, histories, status: 'running' });
           await close(f.page);
         },
       ),
@@ -280,18 +305,33 @@ test(
       },
       expected = { ...s, parent: ZERO, previous: ZERO };
     for (const control of ['signature', 'epoch', 'link']) {
-      await f.page.evaluate(await decisionBundle(control));
       let r;
       if (control === 'signature') r = { kind: 'refused', refusal: refusal(s, retired) };
       else if (control === 'epoch')
         r = { kind: 'refused', refusal: refusal({ ...s, epoch: 7 }, current) };
       else r = { kind: 'accepted', head: head(s, 'ff'.repeat(32), 9, current), leaf: s };
-      const got = await f.page.evaluate(
-        ({ b, e, a }) => Harness.verifyPositionResponse(new Uint8Array(b), e, a),
-        { b: [...response(r)], e: expected, a },
-      );
+      const bytes = [...response(r)];
+      const check = () =>
+        f.page.evaluate(({ b, e, a }) => Harness.verifyPositionResponse(new Uint8Array(b), e, a), {
+          b: bytes,
+          e: expected,
+          a,
+        });
+      await f.page.evaluate(await decisionBundle());
+      const baseline = await check();
+      assert.equal(baseline.kind, 'unknown');
+      await f.page.evaluate(await decisionBundle(control));
+      const got = await check();
       assert.equal(got.kind, control === 'link' ? 'accepted' : 'refused');
-      results.push({ control, badEvidence: got.kind });
+      results.push({
+        control,
+        baseline: baseline.kind,
+        badEvidence: got.kind,
+        response: r,
+        bytes,
+        expected,
+        authority: a,
+      });
     }
     const vectors = JSON.parse(readFileSync('test/vectors/private-envelope.json')),
       v = vectors.vectors[0];
@@ -324,7 +364,7 @@ test(
           ZERO,
           'retired-generation',
         );
-      const accepted = await f.page.evaluate(
+      const result = await f.page.evaluate(
         async ({ v, keys, p, other, control, a }) => {
           const unhex = (s) => Uint8Array.from(s.match(/../g), (x) => parseInt(x, 16));
           const signer = await crypto.subtle.importKey(
@@ -342,26 +382,51 @@ test(
               signer,
             ),
             decoded = Harness.decodeSubmission(wire);
+          const record = (s) => ({ ...s, envelope: [...s.envelope], signature: [...s.signature] });
+          const original = record(decoded);
           if (control === 'parent') decoded.parent = other;
           const e = Harness.decodeNetworkEnvelope(decoded.envelope);
-          await Harness.verifySubmission(
-            Harness.encodeSubmission(decoded),
-            {
-              v: 2,
-              workspace_id: e.workspace_id,
-              credential_id: e.credential_id,
-              epoch: e.epoch,
-              gen: e.gen,
-            },
-            pub,
-            { ...a, workspace: e.workspace_id, tip: e.epoch },
-          );
-          return true;
+          const route = {
+            v: 2,
+            workspace_id: e.workspace_id,
+            credential_id: e.credential_id,
+            epoch: e.epoch,
+            gen: e.gen,
+          };
+          const authority = { ...a, workspace: e.workspace_id, tip: e.epoch };
+          const bytes = Harness.encodeSubmission(decoded);
+          await Harness.verifySubmission(bytes, route, pub, authority);
+          return {
+            original,
+            accepted: record(Harness.decodeSubmission(bytes)),
+            bytes: [...bytes],
+            route,
+            authority,
+            envelopePosition: e.seq,
+            publicKey: keys.public_key,
+            badSubmissionAccepted: true,
+          };
         },
         { v, keys: vectors.keys.device, p, other, control, a },
       );
-      assert.equal(accepted, true);
-      results.push({ control, badSubmissionAccepted: true });
+      assert.equal(result.badSubmissionAccepted, true);
+      await f.page.evaluate(await decisionBundle());
+      const baseline = await f.page.evaluate(async ({ bytes, route, authority, publicKey }) => {
+        const raw = Uint8Array.from(publicKey.match(/../g), (x) => parseInt(x, 16));
+        const pub = await crypto.subtle.importKey('raw', raw, 'Ed25519', false, ['verify']);
+        try {
+          await Harness.verifySubmission(new Uint8Array(bytes), route, pub, authority);
+          return { accepted: true };
+        } catch (error) {
+          return { accepted: false, reason: String(error) };
+        }
+      }, result);
+      assert.equal(baseline.accepted, false);
+      assert.match(
+        baseline.reason,
+        control === 'parent' ? /Submission signature mismatch/ : /Successor subject mismatch/,
+      );
+      results.push({ control, ...result, baseline });
     }
     artifact('controls.json', results);
   },
