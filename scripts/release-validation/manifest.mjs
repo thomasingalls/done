@@ -1,3 +1,4 @@
+import { outboundCampaign, outboundCampaignStage } from './account-outbound-wrapper.mjs';
 import { editingCampaign, editingCampaignStage } from './account-editing-wrapper.mjs';
 import { handoffCampaign, handoffCampaignStage } from './account-handoff-wrapper.mjs';
 import assert from 'node:assert/strict';
@@ -370,6 +371,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['campaign:' + promotionCampaign];
     else if (exactCommand(command, ['node', genesisCampaign]))
       row.requires = ['campaign:' + genesisCampaign];
+    else if (exactCommand(command, ['node', outboundCampaign]))
+      row.requires = ['campaign:' + outboundCampaign];
     else if (exactCommand(command, ['node', editingCampaign]))
       row.requires = ['campaign:' + editingCampaign];
     else if (exactCommand(command, ['node', handoffCampaign]))
@@ -435,26 +438,30 @@ export function compileManifest(root, inventory) {
                       ? { stage: handoffCampaignStage(root) }
                       : c.path === editingCampaign
                         ? { stage: editingCampaignStage(root) }
-                        : [
-                              'scripts/content/run.mjs',
-                              'scripts/journal/run.mjs',
-                              'scripts/admission/run.mjs',
-                              'scripts/editor-admission/run.mjs',
-                              'scripts/workspace-admission/run.mjs',
-                              'scripts/owned-startup/run.mjs',
-                              'scripts/local-genesis/run.mjs',
-                              'scripts/write-session/run.mjs',
-                              'scripts/custody/run.mjs',
-                              'scripts/content-trim/run.mjs',
-                              'scripts/local-clear/run.mjs',
-                            ].includes(c.path)
-                          ? {
-                              requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')],
-                            }
-                          : {
-                              blocked:
-                                'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-                            }),
+                        : c.path === outboundCampaign
+                          ? { stage: outboundCampaignStage(root) }
+                          : [
+                                'scripts/content/run.mjs',
+                                'scripts/journal/run.mjs',
+                                'scripts/admission/run.mjs',
+                                'scripts/editor-admission/run.mjs',
+                                'scripts/workspace-admission/run.mjs',
+                                'scripts/owned-startup/run.mjs',
+                                'scripts/local-genesis/run.mjs',
+                                'scripts/write-session/run.mjs',
+                                'scripts/custody/run.mjs',
+                                'scripts/content-trim/run.mjs',
+                                'scripts/local-clear/run.mjs',
+                              ].includes(c.path)
+                            ? {
+                                requires: [
+                                  'catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs'),
+                                ],
+                              }
+                            : {
+                                blocked:
+                                  'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                              }),
     });
   }
   for (const c of inventory.constructions) {
@@ -566,6 +573,13 @@ export function compileManifest(root, inventory) {
           (r) =>
             r.id === 'campaign:' + editingCampaign ||
             (r.kind === 'command' && exactCommand(r, ['node', editingCampaign])),
+        )
+        .map((r) => r.id),
+      'wrapper-account-outbound': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + outboundCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', outboundCampaign])),
         )
         .map((r) => r.id),
       'wrapper-account-recovery': rows

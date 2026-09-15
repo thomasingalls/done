@@ -1,4 +1,10 @@
 import {
+  outboundCampaign,
+  validateOutboundCampaign,
+  reconcileOutboundReports,
+} from './account-outbound-wrapper.mjs';
+import { reconcileCampaignTrace } from './campaign-reporting.mjs';
+import {
   editingCampaign,
   validateEditingCampaign,
   reconcileEditingReports,
@@ -124,6 +130,7 @@ export function validateStage(stage) {
       'account-admission',
       'account-handoff',
       'account-editing',
+      'account-outbound',
       'vitest',
       'playwright',
       'content',
@@ -159,6 +166,7 @@ export function validateStage(stage) {
       'account-admission',
       'account-handoff',
       'account-editing',
+      'account-outbound',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -230,13 +238,22 @@ export function validateStage(stage) {
     stage.variant === 'account-editing-campaign-v1'
   )
     validateEditingCampaign(stage);
+  if (
+    stage.expect.kind === 'account-outbound' ||
+    stage.argv[1] === outboundCampaign ||
+    stage.variant === 'account-outbound-campaign-v1'
+  )
+    validateOutboundCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
       stage.variant === 'node-account-fixture-file-v1' &&
       stage.argv.includes('--test') &&
       registrationModulePath(stage.argv.at(-1));
-    assert(stage.expect.kind === 'vitest' || module, 'Unreviewed registration data adapter');
+    assert(
+      ['vitest', 'account-outbound'].includes(stage.expect.kind) || module,
+      'Unreviewed registration data adapter',
+    );
     const inputs = stage.expect.dataInputs;
     assert(Array.isArray(inputs) && inputs.length, 'Invalid registration data inputs');
     assert.equal(
@@ -748,6 +765,19 @@ export function createStageRunner({
             custodyOutput: env.RELEASE_CUSTODY_OUTPUT,
           });
           actual = { cases };
+        } else if (stage.expect.kind === 'account-outbound') {
+          assert(
+            groupDrained && fileOutputs?.complete,
+            'Outbound report producers or inventory incomplete',
+          );
+          actual = reconcileCampaignTrace(
+            stage.expect.steps,
+            reported,
+            nonce,
+            fileDirectory,
+            reconcileCases,
+          );
+          reconcileOutboundReports(fileDirectory, before.sources);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -764,6 +794,7 @@ export function createStageRunner({
               'account-admission',
               'account-handoff',
               'account-editing',
+              'account-outbound',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

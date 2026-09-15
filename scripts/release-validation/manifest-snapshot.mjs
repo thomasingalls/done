@@ -15,8 +15,8 @@ export function manifestSnapshot(manifest) {
       )
       .join(',\n') +
     '\n}\n';
-  // Reviewed F-17 integration adds six files and 55 cases (802,108 bytes before this
-  // writer change). Keep bounded planning-file headroom; runtime report limits are separate.
-  assert(Buffer.byteLength(code) <= 850000, 'Manifest size budget failed');
+  // Reviewed wrapper contracts now include ordered child invocations and separate case domains.
+  // Keep bounded planning-file headroom; runtime report limits are separate.
+  assert(Buffer.byteLength(code) <= 1000000, 'Manifest size budget failed');
   return code;
 }

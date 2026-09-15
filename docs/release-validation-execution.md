@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**140 obligations remain blocked: 86 command and 54 campaign rows; no test-file rows remain.**
+**138 obligations remain blocked: 85 command and 53 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 140 missing product tests. The compiler still refuses whole-release execution before
+they are not 138 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4187,3 +4187,55 @@ F-17 debt bytes, earlier archives and L-2 checkpoint are unchanged. No personal 
 device or deployment operation occurs. This phase is uncommitted. Next: Account outbound wrapper integration,
 remaining wrapper/qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).
+
+
+## 2026-09-15 — Account outbound wrapper integration
+
+Editing is signed and signature-verified as `61e53cdb`. Outbound preserves its five ordered children:
+legacy/current vector checks (15 seconds each), preparation Node tests (30 seconds), envelope Vitest
+(30 seconds, original maxWorkers=2), and native tests (60 seconds). Owned execution adds a 150-second
+aggregate bound, five-second grace, disposable CDP browser, a completion trace and distinct nonce-bound
+Node/Vitest case reports. Original argv, order, child deadlines, spec/verbose/JUnit output and standalone
+invocation remain. Exact command aliases the campaign. Two vector commands remain exit-only checks;
+the three terminal test reports supply the actual 29-case census. No historical-reader input is invoked
+by outbound; the editing regression retains its reviewed historical reader pin.
+
+The new shared campaign-reporting helper records start/completion around each child and refuses overlap,
+repetition and work after completion. After all producers drain, reconcile exact trace order, argv, bounds,
+exit status, completion and every child's complete case report. A zero wrapper exit cannot substitute for
+missing, failed, stale, reordered or incomplete child results. This is cooperative instrumentation, not
+hostile-code isolation. Require 18 files (19 inventory entries including their subdirectory) within
+4 MiB /40-entry /two-level limits. Require successful summary and exact wrapper source hashes, the model
+budget/key-domain counterexamples, three model faults, three actual codec mutations, 1,000 preparation
+histories (seed 9312026), 100 codec histories (seed 9302026), and journal-only crash recovery after an
+outgoing observer throws. Codec controls now retain original/accepted envelopes and expected routes;
+require the intended signature, ciphertext or route difference. Recovery evidence records actual accepted
+and reopened text and observer count. No production runtime or crypto construction changes.
+
+Model counterexamples remain preparation evidence, not newly discovered defects in the current writer.
+The key-budget example is arithmetic plus key derivation, not billions of actual encryptions. Report
+reconciliation checks recorded mutations, bounds and completeness; it does not independently replay the
+model/Yjs or regenerate schedules. Existing native/codec assertions remain the execution authority.
+
+The owned epoch passes **116 cases in six executions**: 71 planning cases in four full suites, 29 outbound
+and 16 editing regression cases. Outbound takes **12.483s /150s**; editing takes
+207.146s /300s. Every group drains. A seventh request reuses the exact outbound receipt after
+editing; all 18 files survive checkout removal. Five new infrastructure cases cover instrumentation,
+contract identity, missing reports, semantic controls and two 160-history corruption campaigns (seeds
+150947/150948). Eight synthetic process runs accept valid evidence and reject zero-exit failed summary,
+wrong step order, missing Node case, ineffective codec fault and missing Vitest report. Deliberately
+omitting the semantic hook or child census admits the corresponding invalid evidence: both controls
+discriminate. Synthetic claims are not additional Account test executions.
+
+Two planning failures exposed the 850 kB manifest limit, first in its writer then its independent test.
+The complete contract snapshot measures 857,891 bytes; retain the same lossless row representation and
+raise only the prospective planning ceiling to 1,000,000 bytes. Runtime report/log/file limits do not change.
+Both failed logs are retained. The final owned planning suites and native campaigns pass. Existing reporter
+and experimental API diagnostics remain recorded without a repair claim.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not applicable)**.
+Unresolved integration falls from 140 to **138: zero test-file /85 command /53 campaign**. Runtime,
+package/dependency, crypto census/vectors, F-17 debt, prior archives and L-2 checkpoint are unchanged.
+No personal browser, server, relay, device or deployment operation occurs. Next: Account capture wrapper
+integration, remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).

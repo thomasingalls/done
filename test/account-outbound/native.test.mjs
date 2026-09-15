@@ -88,6 +88,13 @@ test(
     };
     const baseline = await codec();
     const cases = [];
+    const recorded = (value) => ({
+      ...value,
+      nonce: Buffer.from(value.nonce).toString('hex'),
+      ct: Buffer.from(value.ct).toString('hex'),
+      digest: Buffer.from(value.digest).toString('hex'),
+      sig: Buffer.from(value.sig).toString('hex'),
+    });
     for (const control of ['signature', 'digest', 'route']) {
       const mutated = await codec(control),
         bad = structuredClone(e),
@@ -104,6 +111,9 @@ test(
       assert.deepEqual(accepted, bad);
       cases.push({
         control,
+        original: recorded(e),
+        expected,
+        accepted: recorded(accepted),
         baseline: 'refused',
         mutant: 'bad content-blind acceptance observed',
         limit:
@@ -134,9 +144,11 @@ test(
       });
     });
     const before = JSON.parse(await inventory(f.page));
-    assert.equal(await edit(f.page, 4, 0, ' retained'), 'base retained original');
+    const acceptedText = await edit(f.page, 4, 0, ' retained');
+    assert.equal(acceptedText, 'base retained original');
     const after = JSON.parse(await inventory(f.page));
-    assert.equal(await f.page.evaluate(() => observed), 1);
+    const observerCalls = await f.page.evaluate(() => observed);
+    assert.equal(observerCalls, 1);
     assert.ok(
       Object.keys(after[1]).length > Object.keys(before[1]).length,
       'new synchronous journal entry exists',
@@ -147,7 +159,8 @@ test(
     void cdp.send('Page.crash').catch(() => {});
     await crashed;
     await cold(f);
-    assert.equal((await open(f.page, item)).master, 'base retained original');
+    const recoveredText = (await open(f.page, item)).master;
+    assert.equal(recoveredText, 'base retained original');
     await f.page.evaluate(() => {
       window.replayed = 0;
       editor.outgoing(() => window.replayed++);
@@ -181,11 +194,11 @@ test(
     assert.ok(recovery.kinds.includes('state'));
     assert.ok(!recovery.kinds.includes('outbound'));
     artifact('counterexample-listener-gap.json', {
-      acceptedText: 'base retained original',
-      observerCalls: 1,
+      acceptedText,
+      observerCalls,
       observerFailed: true,
       journalOnlyBeforeRendererCrash: true,
-      recoveredText: 'base retained original',
+      recoveredText,
       replayedOutgoingCallbacks: 0,
       recovery,
       persistedStoresAfterCompaction: compacted[0].map((db) => db[0]),

@@ -281,6 +281,414 @@ function admissionHistories(commands = ['offer', 'finish']) {
   };
 }
 
+import {
+  outboundCampaign,
+  outboundCampaignStage,
+  outboundSteps,
+  outboundReports,
+  reconcileOutboundReports,
+  reconcileOutboundEvidence,
+} from '../../scripts/release-validation/account-outbound-wrapper.mjs';
+import {
+  createCampaignReporting,
+  reconcileCampaignTrace,
+} from '../../scripts/release-validation/campaign-reporting.mjs';
+import { reconcileCases as reconcileCampaignNode } from '../../scripts/release-validation/stage.mjs';
+
+function outboundTraceFixture(directory, stage = outboundCampaignStage(process.cwd())) {
+  mkdirSync(join(directory, 'case-reports'), { recursive: true });
+  const trace = {
+    schema: 1,
+    adapter: 'campaign-v1',
+    nonce: 'fresh',
+    phase: 'complete',
+    steps: stage.expect.steps.map(({ name, kind, argv, deadlineMs }) => ({
+      name,
+      kind,
+      argv,
+      deadlineMs,
+      phase: 'complete',
+      code: 0,
+      timedOut: false,
+    })),
+  };
+  const reports = {};
+  for (const s of stage.expect.steps) {
+    if (s.kind === 'exit') continue;
+    const base = { schema: 1, nonce: 'fresh:' + s.name, cases: s.expect.cases, errors: [] };
+    reports[s.name] =
+      s.kind === 'node'
+        ? {
+            ...base,
+            phase: 'complete',
+            summary: {
+              success: true,
+              counts: {
+                tests: s.expect.cases.length,
+                failed: 0,
+                cancelled: 0,
+                skipped: 0,
+                todo: 0,
+              },
+            },
+          }
+        : {
+            ...base,
+            adapter: 'vitest-v1',
+            reason: 'passed',
+            modules: s.expect.files.map((file) => ({ file, state: 'passed' })),
+            cases: s.expect.cases.map((c) => ({
+              ...c,
+              retryCount: 0,
+              repeatCount: 0,
+              expectedFailure: false,
+              mode: 'run',
+              durationMs: 1,
+              errors: [],
+            })),
+          };
+  }
+  const save = (values) => {
+    for (const [name, value] of Object.entries(values))
+      writeFileSync(join(directory, 'case-reports', name + '.json'), JSON.stringify(value));
+  };
+  save(reports);
+  return { trace, reports, save, stage };
+}
+
+test('outbound wrapper binds all five exact child invocations, separate case domains and vector inputs', () => {
+  const plan = compileManifest(
+      process.cwd(),
+      JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    ),
+    [s, ...rest] = selectStages(plan, 'wrapper-account-outbound');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 29);
+  assert.deepEqual(
+    s.expect.steps.map((c) => [c.name, c.kind, c.deadlineMs]),
+    [
+      ['legacy-vectors', 'exit', 15000],
+      ['vectors', 'exit', 15000],
+      ['preparation', 'node', 30000],
+      ['codec', 'vitest', 30000],
+      ['native', 'node', 60000],
+    ],
+  );
+  assert.equal(s.expect.steps[3].expect.cases.length, 22);
+  assert.deepEqual(s.fileOutputs.required, outboundReports);
+  assert.equal(s.deadlineMs, 150000);
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...s.argv, '--case', 'native'] },
+    { env: { MODE: 'other' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { deadlineMs: 150001 },
+    { graceMs: 5001 },
+    { expect: { ...s.expect, dataInputs: [] } },
+    { expect: { ...s.expect, steps: s.expect.steps.toReversed() } },
+    {
+      expect: {
+        ...s.expect,
+        steps: s.expect.steps.map((c) => ({ ...c, deadlineMs: c.deadlineMs + 1 })),
+      },
+    },
+  ])
+    assert.throws(() => validateStage({ ...s, ...extra }));
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  graph.extraRoots.push({
+    id: 'outbound-filter',
+    argv: ['node', outboundCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:outbound-filter:0')
+      .blocked,
+  );
+});
+
+test('campaign instrumentation isolates child reports, preserves arguments and refuses overlap or repeats', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-campaign-instrument-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const keys = [
+      'RELEASE_PROCESS_GUARD',
+      'ACCOUNT_REPORT_DIR',
+      'RELEASE_CASE_REPORT',
+      'RELEASE_RUN_NONCE',
+    ],
+    old = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
+  try {
+    Object.assign(process.env, {
+      RELEASE_PROCESS_GUARD: 'synthetic',
+      ACCOUNT_REPORT_DIR: directory,
+      RELEASE_CASE_REPORT: join(directory, 'trace.json'),
+      RELEASE_RUN_NONCE: 'fresh',
+    });
+    const reporter = createCampaignReporting(directory),
+      args = ['--test', '--test-reporter=spec', 'test/example.test.mjs'];
+    const first = reporter.begin('first', args, 1000);
+    assert.deepEqual(args, ['--test', '--test-reporter=spec', 'test/example.test.mjs']);
+    assert.equal(first.args.at(-1), 'test/example.test.mjs');
+    assert(first.args.includes('--test-reporter=./scripts/release-validation/node-reporter.mjs'));
+    assert.equal(first.env.RELEASE_RUN_NONCE, 'fresh:first');
+    assert.equal(first.env.RELEASE_CASE_REPORT, join(directory, 'case-reports/first.json'));
+    assert.throws(() => reporter.begin('second', args, 1000));
+    assert.throws(() => reporter.finish());
+    assert.throws(() => reporter.end({ name: 'other', code: 0, timedOut: false }));
+    reporter.end({ name: 'first', code: 0, timedOut: false });
+    assert.throws(() => reporter.begin('first', args, 1000));
+    const second = reporter.begin(
+      'codec',
+      [
+        'node_modules/vitest/vitest.mjs',
+        'run',
+        'test/a.test.ts',
+        '--maxWorkers=2',
+        '--reporter=verbose',
+      ],
+      2000,
+    );
+    assert(second.args.includes('--maxWorkers=2'));
+    assert(second.args.includes('--reporter=verbose'));
+    assert(second.args.includes('--reporter=./scripts/release-validation/vitest-reporter.mjs'));
+    assert.equal(second.env.RELEASE_RUN_NONCE, 'fresh:codec');
+    reporter.end({ name: 'codec', code: 0, timedOut: false });
+    reporter.finish();
+    assert.throws(() => reporter.finish());
+    assert.throws(() => reporter.begin('third', args, 1000));
+    const trace = JSON.parse(readFileSync(join(directory, 'trace.json')));
+    assert.equal(trace.phase, 'complete');
+    assert.deepEqual(
+      trace.steps.map((s) => s.name),
+      ['first', 'codec'],
+    );
+  } finally {
+    for (const key of keys)
+      if (old[key] === undefined) delete process.env[key];
+      else process.env[key] = old[key];
+  }
+});
+
+test('160 generated mixed campaign faults reject missing, stale, reordered and incomplete child evidence', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-campaign-reconcile-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const f = outboundTraceFixture(directory),
+    run = (trace) =>
+      reconcileCampaignTrace(
+        f.stage.expect.steps,
+        trace,
+        'fresh',
+        directory,
+        reconcileCampaignNode,
+      );
+  assert.deepEqual(run(f.trace).cases, f.stage.expect.cases);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 4 }), (index) => {
+      for (const change of [
+        (v) => (v.trace.nonce = 'old'),
+        (v) => (v.trace.phase = 'running'),
+        (v) => v.trace.steps.splice(index, 1),
+        (v) => v.trace.steps.reverse(),
+        (v) => v.trace.steps[index].argv.push('--filter'),
+        (v) => (v.trace.steps[index].code = 1),
+        (v) => (v.trace.steps[index].timedOut = true),
+        (v) => v.trace.steps[index].deadlineMs++,
+        (v) => (v.reports.preparation.phase = 'running'),
+        (v) => delete v.reports.native.summary,
+        (v) => (v.reports.preparation.nonce = 'fresh:native'),
+        (v) => v.reports.native.cases.pop(),
+        (v) => (v.reports.codec.reason = 'failed'),
+        (v) => (v.reports.codec.cases[0].retryCount = 1),
+        (v) => (v.reports.codec.modules[0].state = 'failed'),
+        (v) => (v.reports.codec.cases[0].outcome = 'skipped'),
+      ]) {
+        const v = structuredClone({ trace: f.trace, reports: f.reports });
+        change(v);
+        f.save(v.reports);
+        assert.throws(() => run(v.trace));
+      }
+    }),
+    { seed: 150947, numRuns: 160 },
+  );
+  for (const name of ['preparation', 'codec', 'native']) {
+    f.save(f.reports);
+    rmSync(join(directory, 'case-reports', name + '.json'));
+    assert.throws(() => run(f.trace));
+  }
+});
+
+function outboundEvidenceFixture() {
+  const sources = [{ path: 'test/outboundSpool.test.ts', sha256: 'a'.repeat(64) }];
+  const original = {
+    v: 2,
+    workspace_id: 'workspace',
+    credential_id: 'device',
+    epoch: 1,
+    gen: 0,
+    seq: 1,
+    nonce: '11'.repeat(12),
+    ct: 'abcd',
+    digest: '22'.repeat(32),
+    sig: '33'.repeat(64),
+  };
+  const codec = ['signature', 'digest', 'route'].map((control) => {
+    const accepted = structuredClone(original);
+    const expected = Object.fromEntries(
+      ['v', 'workspace_id', 'credential_id', 'epoch', 'gen'].map((k) => [k, original[k]]),
+    );
+    if (control === 'signature') accepted.sig = '00'.repeat(64);
+    if (control === 'digest') accepted.ct = 'aacd';
+    if (control === 'route') expected.workspace_id = 'wrong-workspace';
+    return {
+      control,
+      baseline: 'refused',
+      mutant: 'bad content-blind acceptance observed',
+      original,
+      expected,
+      accepted,
+    };
+  });
+  return {
+    sources,
+    reports: {
+      'counterexample-model-budget.json': {
+        source: sources[0].path,
+        sha256: sources[0].sha256,
+        actualInvocations: 3,
+        durableCount: 1,
+        successorActualInvocations: 2,
+        successorDurableCount: 1,
+        crashTrace: [
+          'reserve once',
+          'mint; lose promote',
+          'mint; lose promote',
+          'mint; lose promote',
+        ],
+        successorTrace: ['reserve once', 'mint', 'verified refusal', 'mint successor'],
+      },
+      'counterexample-key-domain.json': {
+        credentials: ['device-A', 'device-B'],
+        sameKg: true,
+        sameInfo: true,
+        equalDerivedKeys: true,
+        countEach: 2 ** 31,
+        sumUnderOneKey: 2 ** 32,
+        firstDisallowed: 2 ** 32,
+      },
+      'model-controls.json': [
+        ['listenerGap', 'lost-admission'],
+        ['counterOnly', 'position-gap'],
+        ['sendEarly', 'changed-retry'],
+      ].map(([fault, expected]) => ({ fault, expected, observed: [expected] })),
+      'codec-controls.json': codec,
+      'preparation-generated.json': {
+        seed: 9312026,
+        runs: 1000,
+        inputs: Array.from({ length: 1000 }, () => ['accept', 'crash']),
+      },
+      'codec-generated.json': {
+        seed: 9302026,
+        runs: 100,
+        inputs: Array.from({ length: 100 }, () => ({ mutation: 2, updates: ['abcd'] })),
+      },
+      'counterexample-listener-gap.json': {
+        acceptedText: 'base retained original',
+        recoveredText: 'base retained original',
+        observerCalls: 1,
+        observerFailed: true,
+        journalOnlyBeforeRendererCrash: true,
+        replayedOutgoingCallbacks: 0,
+        recovery: { kinds: ['state'], journal: 0, fields: [[]] },
+        persistedStoresAfterCompaction: ['content'],
+      },
+    },
+  };
+}
+
+test('outbound reports require complete successful stages, exact source pins and every semantic artifact', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-outbound-reports-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const { sources, reports } = outboundEvidenceFixture();
+  const files = {
+    ...reports,
+    'sources.json': sources,
+    'summary.json': {
+      status: 'passed',
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+      stages: outboundSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+    },
+  };
+  const save = (data) => {
+    for (const [name, value] of Object.entries(data))
+      writeFileSync(join(directory, name), JSON.stringify(value));
+    for (const name of ['results.xml', ...outboundSteps.map((s) => s.name + '.log')])
+      writeFileSync(join(directory, name), 'observed output');
+  };
+  save(files);
+  reconcileOutboundReports(directory, sources);
+  for (const alter of [
+    (f) => (f['summary.json'].status = 'failed'),
+    (f) => f['summary.json'].stages.pop(),
+    (f) => (f['summary.json'].stages[2].code = 1),
+    (f) => f['summary.json'].stages.reverse(),
+    (f) => (f['summary.json'].completedAt = '2026-09-14T00:00:01.000Z'),
+    (f) => (f['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (f) => f['sources.json'].push({ path: 'unexpected.ts', sha256: 'a'.repeat(64) }),
+  ]) {
+    const bad = structuredClone(files);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileOutboundReports(directory, sources));
+  }
+  for (const file of [
+    ...Object.keys(files),
+    'results.xml',
+    ...outboundSteps.map((s) => s.name + '.log'),
+  ]) {
+    save(files);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileOutboundReports(directory, sources));
+  }
+});
+
+test('160 generated outbound evidence faults reject ineffective mutations, lost recovery and incomplete histories', () => {
+  const { sources, reports } = outboundEvidenceFixture();
+  reconcileOutboundEvidence(reports, sources);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 99 }), (index) => {
+      for (const alter of [
+        (r) => (r['counterexample-model-budget.json'].sha256 = 'b'.repeat(64)),
+        (r) => (r['counterexample-model-budget.json'].actualInvocations = 1),
+        (r) => (r['counterexample-key-domain.json'].equalDerivedKeys = false),
+        (r) => r['counterexample-key-domain.json'].sumUnderOneKey--,
+        (r) => (r['model-controls.json'][index % 3].observed = []),
+        (r) =>
+          (r['codec-controls.json'][index % 2].accepted =
+            r['codec-controls.json'][index % 2].original),
+        (r) => (r['codec-controls.json'][2].expected.workspace_id = 'workspace'),
+        (r) => r['codec-controls.json'][index % 3].accepted.seq++,
+        (r) => r['preparation-generated.json'].inputs.splice(index, 1),
+        (r) => r['preparation-generated.json'].inputs[index].push('unknown-command'),
+        (r) => (r['codec-generated.json'].inputs[index].updates = []),
+        (r) => (r['codec-generated.json'].inputs[index].updates[0] = 'not-hex'),
+        (r) => (r['counterexample-listener-gap.json'].recoveredText = 'base'),
+        (r) => (r['counterexample-listener-gap.json'].journalOnlyBeforeRendererCrash = false),
+        (r) => (r['counterexample-listener-gap.json'].replayedOutgoingCallbacks = 1),
+        (r) => r['counterexample-listener-gap.json'].recovery.kinds.push('outbound'),
+      ]) {
+        const bad = structuredClone(reports);
+        alter(bad);
+        assert.throws(() => reconcileOutboundEvidence(bad, sources));
+      }
+    }),
+    { seed: 150948, numRuns: 160 },
+  );
+});
+
 test('editing wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -2064,7 +2472,11 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-editing/run.mjs').stage.expect.kind,
     'account-editing',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').blocked);
+  assert.equal(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-outbound/run.mjs').stage.expect.kind,
+    'account-outbound',
+  );
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-capture/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

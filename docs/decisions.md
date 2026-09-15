@@ -3699,3 +3699,13 @@ Reconstruct every generated editing/undo observation, not only the final result.
 provenance and storage assertions as execution authority; a matching report is not independent ancestry
 or browser/database verification.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).
+
+
+## 2026-09-15 — Multi-stage wrapper evidence keeps distinct child case domains
+
+Use a completion trace for exact serial child invocations and nonce-bound reports for each Node/Vitest
+child. Reconcile both only after producer drain and bounded output inventory. Retain exit-only vector
+checks as such; a successful wrapper summary cannot stand in for terminal test outcomes. Preserve
+standalone invocation and original concurrency, arguments and child deadlines. The complete planning
+snapshot needs a 1,000,000-byte ceiling; runtime artifact bounds remain separate and unchanged.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).

@@ -55,35 +55,33 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Handoff wrapper integration is signed and verified as `9b7f02ea`.
+**Roadmap checkpoint.** Editing wrapper integration is signed and verified as `61e53cdb`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Editing resolves one command and one campaign:
-**zero test-file /86 command /54 campaign** remain unresolved, down from 142 to 140. These are integration
+272 general files/2,198 dispositions (11 not applicable)**. Outbound resolves one command and one campaign:
+**zero test-file /85 command /53 campaign** remain unresolved, down from 140 to 138. These are integration
 counts, not a passing aggregate.
 
-**Just completed.** Editing preserves the complete native invocation, 300-second bound and five-second
-grace. Owned execution adds terminal reporting, disposable browser and eight retained reports, with the
-historical reader pinned before/after execution and reuse. Check all 16 outcomes, summary/source hashes,
-observed ancestry/passkey controls and actual unauthorized writing. Generated ancestry evidence records
-observed text, acceptance/refusal and source hashes; require 200 complete histories. A string model checks
-every edit/undo and reopened observation in 24 native histories. Reports corroborate native assertions,
-not independent Yjs ancestry or browser/database replay; no seed-regeneration claim is made.
+**Just completed.** Outbound preserves all five ordered vector/Node/Vitest/native children and their
+original arguments, concurrency and per-child bounds. Owned execution adds a 150-second aggregate bound,
+disposable browser, completion trace and three distinct nonce-bound case reports. Reconcile 29 terminal
+outcomes plus complete stages, summary/source pins, actual codec corruptions, model controls, 1,000
+preparation histories, 100 codec histories and journal-only crash recovery. Retain 18 files in a bounded
+19-entry inventory. Model and report checks do not independently replay Yjs or regenerate schedules.
 
-The epoch passes **103 cases in six executions**: 66 planning, 16 editing and 21 handoff regression,
-followed by exact editing receipt reuse. Editing takes **207.660s /300s**. All process/browser
-groups drain and eight reports survive checkout removal. Five new infrastructure cases include generated
-control, ancestry and per-command recovery corruptions. Six synthetic process runs and two deliberate
-faults discriminate; their case claims are not Account tests. New code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).
+The epoch passes **116 cases in six executions**: 71 planning, 29 outbound and 16 editing regression,
+followed by exact outbound receipt reuse. Outbound takes **12.483s /150s**. All groups drain
+and reports survive checkout removal. Five new infrastructure cases include two generated corruption
+campaigns. Eight synthetic process runs and two deliberate omitted-check faults discriminate; their
+claims are not Account executions. The complete manifest grows to 857,891 bytes under a reviewed
+1,000,000-byte planning ceiling, without changing runtime limits. New phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).
 
-**Preserved observations.** No new planning or owned campaign failure occurs. Prior duplicate-import and
-stale-wrapper planning failures, core startup SIGABRT, orphan/headroom observations, cancellation/latency
-receipts and reporter diagnostics retain their evidence.
+**Preserved observations.** Both planning ceiling failures and their passing owned rerun are retained.
+Prior startup SIGABRT, owner/headroom, cancellation/latency and reporter observations retain their evidence.
 
-**Next bounded phase.** Account outbound wrapper integration with exact selected invocation, owned
-reports and semantic postconditions, then further wrapper families. Optional outputs in unintegrated
-locations still need explicit treatment. File custody uses cooperative bounded polling, not a disk quota
-or hostile-code sandbox.
+**Next bounded phase.** Account capture wrapper integration, then further wrapper families, serially.
+Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
+File custody uses cooperative bounded polling, not a disk quota or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
