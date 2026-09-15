@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 287,
-    "requiredTestFiles": 281,
+    "testFiles": 288,
+    "requiredTestFiles": 282,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -9151,6 +9151,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/selectionHistory.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/selectionHistory.test.ts"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [
+        {
+          "line": 198,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/selectionSnapshots.test.ts",
       "status": "required",
       "invocation": {
@@ -9545,14 +9560,14 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 31,
+      "declarations": 34,
       "propertyFamilies": [
         {
-          "line": 688,
+          "line": 689,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 791,
+          "line": 792,
           "form": "fc.asyncProperty"
         }
       ],
@@ -11907,7 +11922,7 @@
     },
     {
       "path": "scripts/pending-projection/run.mjs",
-      "sha256": "e83581b6c0ea016e4768fa281943f6d5e2f84abacd62a665295ee221f5edd931"
+      "sha256": "462ecc74ff4a02b57542a9a8613d6a5a688640bff4e1f4dd768bb6722846cd5b"
     },
     {
       "path": "scripts/private-release/profile-editor.mjs",
@@ -11975,7 +11990,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "3962b88ef284ee987d2eae4900bbf5ec570eb75a6d8bb7c1b2868e896bc163d6"
+      "sha256": "df95707dc72f50bba40dab4c2ccccae253abad13e078f2954db84123b7cd95e3"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -12175,7 +12190,7 @@
     },
     {
       "path": "scripts/workspace-admission/catalog.mjs",
-      "sha256": "cf6ca7fe9250e8efecd2055855d0ffe9ad636a975a232264c8acdb5abdfb29fb"
+      "sha256": "1f4b20a9c0cc966a9c762cd74e0b2b618019fe5d4616f60788eed39d5dbc60a3"
     },
     {
       "path": "scripts/workspace-admission/run.mjs",
@@ -12187,7 +12202,7 @@
     },
     {
       "path": "scripts/workspace-admission/worker.mjs",
-      "sha256": "e4507209e6af286e2104f014048f0cf192b9d8b1c9e979d5210ee9f2e767d204"
+      "sha256": "9169de964ad214e3de6059431004b8d1431f63fc19c550730685b144b84fc98e"
     },
     {
       "path": "scripts/write-session/catalog.mjs",
@@ -12211,7 +12226,7 @@
     },
     {
       "path": "scripts/yjs-delivery/run.mjs",
-      "sha256": "63d60e08e2555d0a6f1d50a8a0cb6a524c59bed0ec1d6ee4e4b4c677899f0983"
+      "sha256": "11f9f42bd82e32570c4156eacd9d8ad8e7607807fb6ae9cd8a57c14fe0d31534"
     },
     {
       "path": "test/account-activation/controls.test.mjs",
@@ -13843,7 +13858,7 @@
     },
     {
       "path": "test/pending-projection/browser.mjs",
-      "sha256": "86f778bd99d46090f1dab3aa581e89fee5cd67eba79e6e229478c905a2410076"
+      "sha256": "7c3e9515bd735c04a1b133a14305c679e6c5aebf89ac84675b21e5a3f8d0da68"
     },
     {
       "path": "test/pendingProjection.test.ts",
@@ -13919,11 +13934,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "c3386a555ce9ba1fd0905d0fcf6f6169d7c7e2a25d4dfd4631d35372eb037bfb"
+      "sha256": "5098b8d5482832b34a80c9ece447b91c3a3c01121f80dc7e8ad9a90727478d89"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "2e05907d509a9ed4c262bfbe0adb76423811f65339dc994d54fe5327c0b6fc25"
+      "sha256": "b72a16546e688e9e9380b84d202c86d7d9a9b8907b52b2be89ab66fbdaf0a927"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14004,6 +14019,10 @@
     {
       "path": "test/sections.test.ts",
       "sha256": "6f96ce6cbae06451fa48ba56bc550da8f9bb2c1571dac97982fd3b3f55038982"
+    },
+    {
+      "path": "test/selectionHistory.test.ts",
+      "sha256": "557f417b83161d7f8756a4d0bbac09b3dfab7e6f52159a325a813e6840a02aec"
     },
     {
       "path": "test/selectionSnapshots.test.ts",
@@ -14295,7 +14314,7 @@
     },
     {
       "path": "test/workspace-admission/browser.mjs",
-      "sha256": "f29a815a11ef361be5b64b8f319f796c93da74323398bcdacdde64bd71468e09"
+      "sha256": "6b0ef3947daea3d9f9168d270455c1132ddc2913850080dca58e2c8fef5f8c5a"
     },
     {
       "path": "test/workspace.ts",
@@ -14303,7 +14322,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "2670c9cbbbe8a02d9677ba8c90b32b57213a607b6b6f11dcc9feef317dacf168"
+      "sha256": "4d1fd276512fb7e4a7c757293ee4a9e472fe16a0711e65ba1a0e598984d4946f"
     },
     {
       "path": "test/workspacePreparation.test.ts",
@@ -14331,7 +14350,7 @@
     },
     {
       "path": "test/yjs-delivery/browser.mjs",
-      "sha256": "78cf09cfe70a86194f4397743307fa38de5dfac260ceda544f7010ee951d9713"
+      "sha256": "a17ca6963a622af03fa9c728349980ec24c6a6441e967a6de2ecd3d2c40cfee6"
     },
     {
       "path": "test/yjs-delivery/model.d.mts",

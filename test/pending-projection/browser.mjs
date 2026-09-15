@@ -164,7 +164,7 @@ window.projection = {
                 validateReceive: () => {},
                 today: () => '2026-09-08',
               },
-              'local-handoff',
+              new URLSearchParams(location.search).get('preparation') ?? 'local-handoff',
             )
           : await createAdmittedText(open, () => {});
       workspace.subscribe(() => {

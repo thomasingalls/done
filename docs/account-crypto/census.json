@@ -217,7 +217,7 @@
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "7b41d8a2518a1de93d8d5e28a99345df2b1272b734463c2d407e94f3771f0198"
+      "sha256": "e31888918b9f1898d2faeab1962f56a2d19e937eb9f186c998f394a688847e82"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -421,7 +421,7 @@
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
-      "sha256": "1c8236906b653c0a50e00323d04e7d6ffa64b8dcc7a6a40b4334794aa698b21d"
+      "sha256": "e47b12b2797ac1df4f5c7bc06395a64d6ad09729b35ebadac57b97dbcebc9042"
     },
     {
       "path": "src/crdt/serialize.ts",
@@ -489,7 +489,7 @@
     },
     {
       "path": "src/crdt/yjs.ts",
-      "sha256": "1c6590f2bfe33daea74d64f2e94b97cc04b12d7e5cbb118e297ab8c7a172fe09"
+      "sha256": "21ce99552212474e96982c9d1e53ff53ce29c28e3766a66cd62825f1f6e9bbcf"
     },
     {
       "path": "src/editor/admittedCommands.ts",

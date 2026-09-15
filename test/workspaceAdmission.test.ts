@@ -11,6 +11,7 @@ import type { JournalSession } from '../src/crdt/custody';
 import { Y, createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
 import { targetText } from '../src/crdt/workspaceCommands';
 import { serializeCollections } from '../src/crdt/serialize';
+import * as historySeam from '../src/crdt/yjs';
 const identity = {
   id: 'human-one',
   actor: { kind: 'human' as const, name: 'Alice', color: '#3f8fd6' },
@@ -44,7 +45,7 @@ const until = async (condition: () => boolean) => {
 };
 const makeFixture = async (
   seed?: Uint8Array,
-  preparation: 'reference' | 'local-handoff' = 'reference',
+  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
 ) => {
   let date = '2026-09-08';
   let refuse = false,
@@ -157,7 +158,7 @@ const makeFixture = async (
     },
   };
 };
-describe.each(['reference', 'local-handoff'] as const)(
+describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
   'workspace preparation %s',
   (preparation) => {
     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
@@ -964,5 +965,143 @@ it('Local post-promotion mismatch closes before publication and cannot be retrie
     expect(cold.getText('uncovered').toString()).toBe('');
   } finally {
     cold.destroy();
+  }
+});
+
+it('Selection snapshot post-promotion mismatch closes before publication and cannot be retried', async () => {
+  const f = await makeFixture(undefined, 'local-snapshots');
+  let publications = 0;
+  f.doc.subscribe(() => {
+    try {
+      f.doc.read();
+      publications++;
+    } catch {}
+  });
+  f.corrupt();
+  const ticket = master(f.doc).input(insert('durable'));
+  await expect(ticket.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+  await f.doc.close();
+  expect(publications, 'unverified candidate must never be published').toBe(0);
+  expect(() => f.doc.read()).toThrow('Prepared workspace adoption failed.');
+  expect(f.emitted).toEqual([]);
+  expect(() => f.doc.retry()).toThrow();
+  const cold = createDoc();
+  try {
+    for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+    expect(cold.getText('master').toString()).toBe('durable');
+    expect(cold.getText('uncovered').toString()).toBe('');
+  } finally {
+    cold.destroy();
+  }
+});
+
+it('selection history activates only by explicit Local selection and closes on failed startup', async () => {
+  const original = historySeam.createSelectionHistory;
+  let creates = 0,
+    closes = 0,
+    opens = 0;
+  const spy = vi.spyOn(historySeam, 'createSelectionHistory').mockImplementation(() => {
+    creates++;
+    const owner = original();
+    return Object.freeze({
+      ...owner,
+      close() {
+        closes++;
+        owner.close();
+      },
+    });
+  });
+  const options = { identity, validateReceive: () => {} };
+  const open = async () => {
+    opens++;
+    throw Error('startup fault');
+  };
+  try {
+    await expect(createAdmittedWorkspace(open, options)).rejects.toThrow('startup fault');
+    await expect(createAdmittedWorkspace(open, options, 'local-handoff')).rejects.toThrow(
+      'startup fault',
+    );
+    expect(creates, 'default and existing Local path must keep the reference metadata').toBe(0);
+    await expect(
+      createAdmittedWorkspace(open, { ...options, captureSources: true }, 'local-snapshots'),
+    ).rejects.toThrow('Local preparation cannot capture Account sources');
+    expect(opens).toBe(2);
+    expect(creates).toBe(0);
+    await expect(createAdmittedWorkspace(open, options, 'local-snapshots')).rejects.toThrow(
+      'startup fault',
+    );
+    expect(creates).toBe(1);
+    expect(closes, 'failed startup must close its selection owner').toBe(1);
+    await expect(
+      createAdmittedWorkspace(
+        () => {
+          throw Error('synchronous startup fault');
+        },
+        options,
+        'local-snapshots',
+      ),
+    ).rejects.toThrow('synchronous startup fault');
+    expect(closes, 'synchronous startup failure must close its selection owner').toBe(2);
+  } finally {
+    spy.mockRestore();
+  }
+});
+
+it('selection owner outlives its retained write and closes only after all workspace histories are disposed', async () => {
+  const original = historySeam.createSelectionHistory;
+  const histories: historySeam.YUndoManager[] = [],
+    closures: boolean[] = [];
+  let owner: ReturnType<typeof original> | undefined;
+  const spy = vi.spyOn(historySeam, 'createSelectionHistory').mockImplementation(() => {
+    owner = original();
+    const current = owner;
+    return Object.freeze({
+      ...current,
+      create(...args: Parameters<typeof current.create>) {
+        const h = current.create(...args);
+        histories.push(h);
+        return h;
+      },
+      fork(...args: Parameters<typeof current.fork>) {
+        const h = current.fork(...args);
+        histories.push(h);
+        return h;
+      },
+      close() {
+        closures.push(histories.every((h) => h.doc.isDestroyed));
+        current.close();
+      },
+    });
+  });
+  let f: Awaited<ReturnType<typeof makeFixture>> | undefined;
+  try {
+    f = await makeFixture(undefined, 'local-snapshots');
+    await master(f.doc).input(insert('kept')).accepted;
+    f.refuse();
+    f.pause();
+    const pending = master(f.doc).input(insert('late'));
+    await until(() => f!.writeReferences.length > 0);
+    const bytes = f.writeReferences.at(-1)!,
+      expected = bytes.slice(),
+      emitted = f.emitted.length;
+    const history = histories.at(-1)!,
+      token = history.undoStack.at(-1)!.meta.get('after');
+    expect(owner!.restore(history, token).size).toBe(1);
+    const closing = f.doc.close();
+    expect(closures, 'selection owner must remain live while its write drains').toEqual([]);
+    await closing;
+    await expect(pending.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+    expect(closures.length).toBeGreaterThan(0);
+    expect(
+      closures.every(Boolean),
+      'workspace histories must be disposed before snapshot owner close',
+    ).toBe(true);
+    expect(() => owner!.restore(history, token)).toThrow('Selection history owner is closed');
+    expect(f.disk.at(-1), 'write must not observe erased handoff bytes').toEqual(expected);
+    expect(bytes.every((b) => b === 0)).toBe(true);
+    expect(f.emitted.length).toBe(emitted);
+  } finally {
+    await f?.doc.close();
+    spy.mockRestore();
   }
 });

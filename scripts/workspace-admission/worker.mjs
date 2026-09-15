@@ -99,7 +99,7 @@ const result = {
   limits: [
     'Real workspace command adapter, Goals/card CodeMirror surfaces, shared runtime history, export, BroadcastChannel handshake and encrypted carriers. Default application startup, full storage classification, migration, trimming and release gates remain outside this checkpoint.',
     'Synthetic enrollment identity and receive authority checker. Same-origin channel scoping is not an Account envelope verifier.',
-    'One Chromium/macOS host; no native IME or low-end interaction budget pass. Private history retains deleted runtime content and adds a second whole-document clone.',
+    'One Chromium/macOS host; no native IME or low-end interaction budget pass. The explicit private Local snapshot variant retains deleted runtime history and reuses owner-recognized selection tokens.',
     'Page loss only; no OS/power-loss, raw clone/rollback, old-writer cutover or release-gate claim.',
   ],
 };
@@ -176,7 +176,7 @@ async function run(mutation = null) {
       const row = await runCase(definition, {
         browser,
         origin,
-        url: origin + '/test/workspace-admission/index.html',
+        url: origin + '/test/workspace-admission/index.html?preparation=local-snapshots',
       });
       report.cases.push(row);
       save();

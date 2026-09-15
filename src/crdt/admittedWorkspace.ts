@@ -1,6 +1,13 @@
 /** One admission owner and one human undo history for every workspace mutation surface. */
 import { EditorSelection } from '@codemirror/state';
-import { Y, applyUpdate, workspaceUndo, forkWorkspaceHistory, type YUndoManager } from './yjs';
+import {
+  Y,
+  applyUpdate,
+  workspaceUndo,
+  forkWorkspaceHistory,
+  createSelectionHistory,
+  type YUndoManager,
+} from './yjs';
 import {
   openAdmissionSession,
   AdmissionError,
@@ -134,10 +141,14 @@ const dispose = (s: State | undefined) => {
 export const createAdmittedWorkspace = async (
   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
   options: WorkspaceOptions,
-  preparation: 'reference' | 'local-handoff' = 'reference',
+  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
 ): Promise<AdmittedWorkspace> => {
-  if (preparation === 'local-handoff' && options.captureSources)
+  if (!['reference', 'local-handoff', 'local-snapshots'].includes(preparation))
+    throw Error('Unknown workspace preparation');
+  const localHandoff = preparation !== 'reference';
+  if (localHandoff && options.captureSources)
     throw Error('Local preparation cannot capture Account sources');
+  const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
   const archiveProjection = createArchiveProjection();
   const identity = structuredClone(options.identity);
   const human: Origin = Object.freeze({
@@ -178,7 +189,9 @@ export const createAdmittedWorkspace = async (
     const intent = JSON.parse(
       new TextDecoder('utf-8', { fatal: true }).decode(input),
     ) as WorkspaceIntent;
-    const history = forkWorkspaceHistory(accepted.history, human),
+    const history = selectionHistory
+        ? selectionHistory.fork(accepted.history, human)
+        : forkWorkspaceHistory(accepted.history, human),
       doc = history.doc;
     doc.clientID = writer;
     const state: State = { history, selections: new Map(), group: intent.group, value: false };
@@ -225,19 +238,37 @@ export const createAdmittedWorkspace = async (
       );
       if (humanItem) {
         if (!humanItem.meta.has('before'))
-          humanItem.meta.set('before', structuredClone(accepted.selections));
-        humanItem.meta.set('after', structuredClone(selections));
+          humanItem.meta.set(
+            'before',
+            selectionHistory
+              ? selectionHistory.capture(history, accepted.selections)
+              : structuredClone(accepted.selections),
+          );
+        humanItem.meta.set(
+          'after',
+          selectionHistory
+            ? selectionHistory.capture(history, selections)
+            : structuredClone(selections),
+        );
       }
       if (popped) {
         const undoing = intent.command.kind === 'undo';
         const target = (undoing ? history.redoStack : history.undoStack).at(-1);
-        if (target) target.meta = structuredClone(popped.meta);
-        const restore = popped.meta.get(undoing ? 'before' : 'after') as
-          | Map<string, RelativeSelection>
-          | undefined;
+        const metadata = selectionHistory
+          ? selectionHistory.copyMetadata(history, popped.meta)
+          : popped.meta;
+        if (target) target.meta = selectionHistory ? metadata : structuredClone(popped.meta);
+        const stored = metadata.get(undoing ? 'before' : 'after');
+        const restore =
+          stored === undefined
+            ? undefined
+            : selectionHistory
+              ? selectionHistory.restore(history, stored)
+              : (stored as Map<string, RelativeSelection>);
         if (restore) {
           selections.clear();
-          for (const [key, value] of restore) selections.set(key, structuredClone(value));
+          for (const [key, value] of restore)
+            selections.set(key, selectionHistory ? value : structuredClone(value));
         }
       }
       state.value = result.value;
@@ -276,43 +307,49 @@ export const createAdmittedWorkspace = async (
     dispose(previous);
     outcomes.set(state.group, state.value);
   };
-  const session = await open({
-    validateReceive: options.validateReceive,
-    ...(preparation === 'local-handoff'
-      ? ({
-          [localWorkspacePreparation]: {
-            verifiedRevision: () => verifiedRevision,
-            command: (context, input, scope) => prepareWorkspace(input, context.writer, scope),
-            accept,
-            fail: (cause) => {
-              failure = cause;
+  let session: AdmissionSession;
+  try {
+    session = await open({
+      validateReceive: options.validateReceive,
+      ...(localHandoff
+        ? ({
+            [localWorkspacePreparation]: {
+              verifiedRevision: () => verifiedRevision,
+              command: (context, input, scope) => prepareWorkspace(input, context.writer, scope),
+              accept,
+              fail: (cause) => {
+                failure = cause;
+              },
             },
-          },
-        } satisfies Partial<AdmissionOptions>)
-      : {}),
-    prepare(draft, input) {
-      dispose(pending);
-      pending = undefined;
-      const result = prepareWorkspace(input, draft.clientID);
-      try {
-        applyUpdate(draft, result.update);
-        pending = result.state;
-        return result.remaining || options.captureSources
-          ? {
-              ...(result.remaining ? { remaining: result.remaining } : {}),
-              ...(result.sources ? { sources: result.sources } : {}),
-            }
-          : undefined;
-      } catch (error) {
-        dispose(result.state);
-        result.remaining?.fill(0);
-        for (const source of result.sources ?? []) source.bytes.fill(0);
-        throw error;
-      } finally {
-        result.update.fill(0);
-      }
-    },
-  });
+          } satisfies Partial<AdmissionOptions>)
+        : {}),
+      prepare(draft, input) {
+        dispose(pending);
+        pending = undefined;
+        const result = prepareWorkspace(input, draft.clientID);
+        try {
+          applyUpdate(draft, result.update);
+          pending = result.state;
+          return result.remaining || options.captureSources
+            ? {
+                ...(result.remaining ? { remaining: result.remaining } : {}),
+                ...(result.sources ? { sources: result.sources } : {}),
+              }
+            : undefined;
+        } catch (error) {
+          dispose(result.state);
+          result.remaining?.fill(0);
+          for (const source of result.sources ?? []) source.bytes.fill(0);
+          throw error;
+        } finally {
+          result.update.fill(0);
+        }
+      },
+    });
+  } catch (error) {
+    selectionHistory?.close();
+    throw error;
+  }
   const live = () => {
     if (failure) throw failure;
     if (closed || !['active', 'blocked'].includes(session.status.state))
@@ -336,6 +373,7 @@ export const createAdmittedWorkspace = async (
     dispose(pending);
     dispose(accepted);
     pending = accepted = undefined;
+    selectionHistory?.close();
     outcomes.clear();
     listeners.clear();
     senders.clear();
@@ -398,7 +436,7 @@ export const createAdmittedWorkspace = async (
       )
         throw new ContentError('repair-required', 'Unsupported persisted workspace schema.');
       accepted = {
-        history: workspaceUndo(doc, human),
+        history: selectionHistory ? selectionHistory.create(doc, human) : workspaceUndo(doc, human),
         selections: new Map(),
         group: 0,
         value: false,
@@ -419,16 +457,12 @@ export const createAdmittedWorkspace = async (
     session.subscribe((event) => {
       try {
         live();
-        if (
-          preparation === 'local-handoff' &&
-          adoptedRevision === event.revision &&
-          event.source !== 'local'
-        )
+        if (localHandoff && adoptedRevision === event.revision && event.source !== 'local')
           throw new AdmissionError(
             'projection-mismatch',
             'Prepared Local publication has the wrong source.',
           );
-        if (event.source === 'local' && preparation === 'local-handoff') {
+        if (event.source === 'local' && localHandoff) {
           if (adoptedRevision !== event.revision || verifiedRevision !== event.revision)
             throw new AdmissionError(
               'projection-mismatch',
@@ -443,7 +477,7 @@ export const createAdmittedWorkspace = async (
           outcomes.set(accepted.group, accepted.value);
         } else applyUpdate(accepted!.history.doc, event.update, 'received');
         // Check every accepted transition, including later remote dependencies, before exposure.
-        if (preparation !== 'local-handoff' || event.source === 'remote') verifyProjection();
+        if (!localHandoff || event.source === 'remote') verifyProjection();
         verifiedRevision = event.revision;
         emit();
         if (

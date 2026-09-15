@@ -7077,3 +7077,50 @@ metadata producers/consumers converted together. Retain the generic reference an
 handoff for comparison. Generated/native retry, discard, grouping, slicing, remote, reentrancy and
 close checks precede a new prospective performance comparison and the unchanged application gate.
 [Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-owner/README.md).
+
+
+## 2026-09-15 — Explicit private Local selection-snapshot integration
+
+Integrate [owner-bound selection history](./f17-selection-integration.md) through the explicit
+internal `local-snapshots` variant. Default Local/Account and the existing reference/Local-handoff
+paths remain available. A workspace capability binds even empty histories to its live owner;
+generic forks refuse owned histories. Group before/after capture, history fork, undo/redo metadata
+transfer and detached restore now use recognized opaque tokens together. History documents, stacks,
+ranges and restored selections stay detached. No token or history handle is exposed to the UI.
+Private admission retains its complete comparison, revision/job/slice/writer binding, byte leases,
+retry and source guards. Teardown disposes histories after write/preparation drain, then closes the
+snapshot owner. A targeted startup check found a new cleanup gap: synchronous opener throws escaped
+the initial Promise.catch. A surrounding try/catch repairs it; original source/test and red/green
+runs are preserved. The defect preceded history allocation and is not evidence of content loss.
+
+All **86 workspace cases** pass, including the same 27 shared cases under three variants, existing
+Local controls, and new activation/startup/close checks. The new seam suite passes five cases,
+including 120 generated retained-branch/cursor histories (seed 150906). Existing accepted-state
+and independent master/card selection ledgers run 80 histories per variant (140925/150902).
+Thirteen affected and timing-follow-up owned suites pass **215 cases** with no skips/retries and
+process groups drained. Five deliberate faults fail their intended assertions: missing history
+binding, cloned tokens, stale after capture, omitted undo transfer and premature owner close.
+
+Native pending-state and original-order delivery campaigns each pass directed cases plus **100
+generated histories** (seed 8941), explicitly selecting the new variant in disposable Chromium
+profiles. The owned workspace catalogue passes **10 cases and all four mutations**, with browser
+and process drain. The first native run passed all ten cases but its whole-state pending-history
+mutation destroyed the active candidate and timed out before reaching the privacy assertion. The
+replacement fault exposes the candidate undo stack without replacing the accepted document; the
+original error run and both catalogue definitions remain, with the same assertion and limits. Full units initially pass 99 files / 1,141 tests before startup repair; the next
+run times out in the same two unchanged five-second Account-liveness/position-decision cases noted
+previously. Both pass in isolation, and one unchanged full repeat after repair passes **99 files /
+1,141 tests**. All runs remain; the cause is not established and loaded-host qualification stays open.
+
+All 21 selected runner checks, types, scoped source style, inventory/manifest, census and authority
+checks pass. Registration adds five seam cases and thirty workspace cases while retaining every
+previous case and contract except the denominator-title update and the reviewed pending-history
+mutation target repair. General integration is **263 files /
+2,121 dispositions (11 not applicable)**, with 0 test-file / 96 command / 63 campaign obligations
+remaining. Only the Yjs seam, admitted workspace and the snapshot owner's descriptive comment change
+runtime source bytes in this phase. Crypto classifications, six prior packets, 52 personal/vector
+pins, append-only prefixes and L-2 remain intact. No performance measurement or default activation
+occurs. F-17 remains partial and the application gate remains 12.9/63.5 ms desktop/CPU-4x Android
+card p95, with Android failing <16 ms. Next specify and run a balanced comparison with the reference,
+existing Local handoff and appropriate signed baseline before the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).

@@ -14,7 +14,7 @@ runner foundation and every native/wrapper adapter together; inspection showed t
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
 Following signed `0c84e5cc` and the private Local integration checkpoint, the current [manifest](./release-validation-manifest.json) contains
-616 obligations, including all 280 current
+618 obligations, including all 282 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
@@ -32,21 +32,34 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 ## Checkpoint and remaining sequence
 
 All eleven catalogue adapters (163 cases / 54 mutations) and all general test-file
-adapters are integrated. After private Local handoff validation, the current set is
-**261 files / 2,073 dispositions, including 11 explicitly not applicable**.
+adapters are integrated. After private Local selection-snapshot integration, the current set is
+**263 files / 2,121 dispositions, including 11 explicitly not applicable**.
 That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
 and browser application files. The 19 infrastructure test files account for the other required files.
 These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
 they are not a passing full aggregate at the current head.
 
-The application-latency adapter exposed the current blocking F-17 result: last desktop/CPU-4x Android
-card typing is 15.2/69.4 ms against <16 ms. Complete-comparison and detached-fork repairs were retained;
-both metadata optimizations were rejected. The [private Local handoff](./f17-local-handoff.md) now
-passes reference, generated and native integration checks. Default Local and Account factories retain
-the reference. Next measure the candidate and reference, retaining the signed baseline as a comparison,
-under a prospective protocol and unchanged application budgets before deciding default activation.
+The application-latency adapter exposed F-17: the last reference card-typing observation is
+15.2/69.4 ms desktop/CPU-4x Android against <16 ms. The private Local handoff passes functional gates
+and the [prospective command comparison](./f17-local-performance.md) against current reference and
+signed baseline. Its unchanged application gate still fails: **12.9/63.5 ms** on the disposable
+candidate variant. Other budgeted metrics pass; all twelve cases execute and processes drain.
+The physical Pixel 9a companion subsequently completes R/C/C/R with card p95 of
+107.9/87.1/86.9/108.3 ms: C improves both paired comparisons but every card budget still fails.
+All 960 trusted-key samples and exact edited-card cold-reopen checks survive; other measured budgets
+pass. Default Local and Account retain the reference; F-17 remains partial. The operator cancels remaining phone/manual work. Keep emulation as the reference, with a rough
+1.5× phone card-latency estimate for planning. The [candidate profile](./f17-local-profile.md) passes all four cases, retaining 1,440 timings
+and four profiles. History copying, complete comparison and publication remain substantial.
+The [selection-snapshot contract and baseline controls](./f17-selection-snapshots.md) now pass
+118 owned cases and three fault controls. The subsequent [unmounted owner](./f17-selection-owner.md)
+passes nine component cases, 127 affected owned cases and four fault controls. A generated sparse
+input found and fixed an initial validator defect. The subsequent [explicit private Local integration](./f17-selection-integration.md) passes 86 workspace
+cases, 215 owned cases, both 100-history native campaigns and the ten-case/four-mutation workspace
+catalogue. Five new unit faults are detected; a synchronous startup cleanup gap is repaired. The
+final full repeat passes 99 files / 1,141 tests, with an intervening two-case timeout run retained.
+Next prospectively compare performance before the unchanged application gate. Wrapper counts remain unchanged. [Phone evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
 
-After that gate, resume command/campaign wrapper certification, including exact dependency/vector
+Once the application gate has an acceptable disposition, resume command/campaign wrapper certification, including exact dependency/vector
 reuse and complete output retention. Resolve the host-Python input binding, recorded timeout/owner/
 oracle observations, whole-tree style scope (R-04) and remaining construction prose (P-06), then run
 the complete selected graph at one immutable revision for the declared workload/platform scope.
@@ -3415,4 +3428,117 @@ General integration now covers 261 files / 2,073 case dispositions (11 not appli
 
 ## Next bounded integration
 
-prospectively specify and run balanced candidate/reference whole-command measurements, retaining the signed baseline as a comparison, and the unchanged application latency gate before deciding default Local activation; Account source/capture activation remains separately gated. 0 test-file, 96 command and 63 campaign obligations remain.
+Specify and run a balanced comparison of the explicit private selection-snapshot variant with the
+current reference, existing Local handoff and appropriate signed baseline. Pin the useful-gain
+rule before execution and retain the unchanged application gate before default activation.
+[Functional integration checkpoint](./f17-selection-integration.md). Account activation remains
+separately gated; 0 test-file, 96 command and 63 campaign obligations remain.
+
+
+## 2026-09-15 — Selection-snapshot ownership contract and baseline controls
+
+Define the [private selection-snapshot contract](./f17-selection-snapshots.md): capture a detached
+payload once behind an owner-issued opaque token, reuse only same-owner tokens in explicitly owned
+metadata, restore detached selections, and invalidate on owner close without erasing snapshots a
+live sibling history still needs. Generic metadata forks remain fully detached. Weak-key lifetime
+must not be replaced by a strong global registry; shallow freezing does not establish immutability.
+The component and its owner/forgery/closed-token controls are the next phase, not implemented here.
+
+Six owned suites pass 118 cases with no skips/retries and process drain. Four new registrations
+cover 96 generated retained-branch histories, frozen/lookalike generic metadata, and 80 generated
+master/card ledger histories under each current preparation strategy. The independent ledger
+checks text, selections, undo/redo, revision, failed-write retry/discard, remote prefixes and cold
+replay. Three faults are detected: shallow nested sharing, empty before capture and stale after
+capture. The first sharing attempt failed earlier at prototype normalization; production-shaped
+cloned fixture metadata makes the corrected control reach the intended alias assertion. Both
+attempts remain. No production defect was identified and all runtime bytes remain unchanged.
+
+All 17 selected runner/registration checks, TypeScript, scoped source style, inventory/manifest and
+authority checks pass. Exactly four cases and one denominator-title update are reviewed; all other
+contracts, deadlines and exclusions remain. General integration is 261 files / 2,077 dispositions
+(11 not applicable). Wrapper obligations remain 0 test-file / 96 command / 63 campaign. Full unit,
+native and timing aggregates are not rerun in this baseline-only phase. F-17 remains partial, the
+application gate remains failed, and the rough 1.5× Pixel card estimate remains planning context.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-contract/README.md).
+
+
+## 2026-09-15 — Unmounted private selection-snapshot owner
+
+Implement [the private selection owner](./f17-selection-owner.md) without connecting it to the
+editor. Capture detaches and validates a complete selection Map behind a fresh opaque token;
+restore returns a fresh graph; metadata fork reuses recognized tokens in a new outer Map. Foreign,
+forged, cloned and closed-owner tokens refuse. A private WeakMap supplies identity and lifetime,
+with no strong inventory or per-branch revocation. Reentrant close during capture prevents issuance.
+History-to-owner binding and workspace shutdown ordering remain explicit integration obligations.
+
+Seven owned suites pass **127 cases**, including nine new component cases and the unchanged
+adjacent history/admission/delivery regressions, with no skips/retries and process groups drained.
+The component runs 200 generated graph/isolation examples (seed 150903), 160 independent branch/
+group lifetime histories (150904), and 80 malformed sparse-array examples (150905). The last
+property exposed a defect in the initial unmounted validator: extra properties could disguise
+holes from a key-count/Array.every check. Requiring consecutive array indexes fixes the retained
+minimal counterexample. Original source/test, failed run and repaired pass survive. Four deliberate
+faults are detected: borrowed input, lent restore payload, shared owner registry and invalidation
+of a token retained by a sibling branch. GC timing and forensic erasure are not claimed.
+
+All 17 selected runner checks, TypeScript, scoped source format/lint, inventory/manifest, crypto
+census and authority checks pass. One reviewed source and one nine-case adapter are added; prior
+runtime files, contracts, deadlines, exclusions and crypto classifications are preserved apart from
+the exact denominator-test title update. General integration is **262 files / 2,086 dispositions
+(11 not applicable)**. The 96 command / 63 campaign obligations remain. Five prior phase packets,
+52 personal/vector pins, append-only record prefixes and L-2 are preserved. No full unit, native
+or performance aggregate is run in this unmounted phase; the application gate remains failed at
+12.9/63.5 ms desktop/CPU-4x Android card p95. No default activation or speedup is claimed.
+
+Next integrate an explicit private Local variant with workspace/history owner binding and all
+metadata producers/consumers converted together. Retain the generic reference and current Local
+handoff for comparison. Generated/native retry, discard, grouping, slicing, remote, reentrancy and
+close checks precede a new prospective performance comparison and the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-owner/README.md).
+
+
+## 2026-09-15 — Explicit private Local selection-snapshot integration
+
+Integrate [owner-bound selection history](./f17-selection-integration.md) through the explicit
+internal `local-snapshots` variant. Default Local/Account and the existing reference/Local-handoff
+paths remain available. A workspace capability binds even empty histories to its live owner;
+generic forks refuse owned histories. Group before/after capture, history fork, undo/redo metadata
+transfer and detached restore now use recognized opaque tokens together. History documents, stacks,
+ranges and restored selections stay detached. No token or history handle is exposed to the UI.
+Private admission retains its complete comparison, revision/job/slice/writer binding, byte leases,
+retry and source guards. Teardown disposes histories after write/preparation drain, then closes the
+snapshot owner. A targeted startup check found a new cleanup gap: synchronous opener throws escaped
+the initial Promise.catch. A surrounding try/catch repairs it; original source/test and red/green
+runs are preserved. The defect preceded history allocation and is not evidence of content loss.
+
+All **86 workspace cases** pass, including the same 27 shared cases under three variants, existing
+Local controls, and new activation/startup/close checks. The new seam suite passes five cases,
+including 120 generated retained-branch/cursor histories (seed 150906). Existing accepted-state
+and independent master/card selection ledgers run 80 histories per variant (140925/150902).
+Thirteen affected and timing-follow-up owned suites pass **215 cases** with no skips/retries and
+process groups drained. Five deliberate faults fail their intended assertions: missing history
+binding, cloned tokens, stale after capture, omitted undo transfer and premature owner close.
+
+Native pending-state and original-order delivery campaigns each pass directed cases plus **100
+generated histories** (seed 8941), explicitly selecting the new variant in disposable Chromium
+profiles. The owned workspace catalogue passes **10 cases and all four mutations**, with browser
+and process drain. The first native run passed all ten cases but its whole-state pending-history
+mutation destroyed the active candidate and timed out before reaching the privacy assertion. The
+replacement fault exposes the candidate undo stack without replacing the accepted document; the
+original error run and both catalogue definitions remain, with the same assertion and limits. Full units initially pass 99 files / 1,141 tests before startup repair; the next
+run times out in the same two unchanged five-second Account-liveness/position-decision cases noted
+previously. Both pass in isolation, and one unchanged full repeat after repair passes **99 files /
+1,141 tests**. All runs remain; the cause is not established and loaded-host qualification stays open.
+
+All 21 selected runner checks, types, scoped source style, inventory/manifest, census and authority
+checks pass. Registration adds five seam cases and thirty workspace cases while retaining every
+previous case and contract except the denominator-title update and the reviewed pending-history
+mutation target repair. General integration is **263 files /
+2,121 dispositions (11 not applicable)**, with 0 test-file / 96 command / 63 campaign obligations
+remaining. Only the Yjs seam, admitted workspace and the snapshot owner's descriptive comment change
+runtime source bytes in this phase. Crypto classifications, six prior packets, 52 personal/vector
+pins, append-only prefixes and L-2 remain intact. No performance measurement or default activation
+occurs. F-17 remains partial and the application gate remains 12.9/63.5 ms desktop/CPU-4x Android
+card p95, with Android failing <16 ms. Next specify and run a balanced comparison with the reference,
+existing Local handoff and appropriate signed baseline before the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).

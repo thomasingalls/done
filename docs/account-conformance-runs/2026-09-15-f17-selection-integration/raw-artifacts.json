@@ -1,0 +1,47 @@
+[
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-integration/owned/inputs.json.gz",
+    "bytes": 1180808,
+    "sha256": "152b261b85bf4b5306e8142e3410ff7f91af2ea839e92ef206ddba1ef9db1488"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-integration/workspace-native/inputs.json.gz",
+    "bytes": 1180874,
+    "sha256": "8be64f45452952949b2266b08a5f9a3935af88859cf44c3d855d2d2d625298cd"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-integration/workspace-native/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-integration/workspace-native-final/inputs.json.gz",
+    "bytes": 1180866,
+    "sha256": "72d1470f6638a58e86361ce86e5e505cff8224150519bbd102ef021568d2c81f"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-integration/workspace-native-final/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-integration/before/docs/release-validation-manifest.json",
+    "bytes": 779231,
+    "sha256": "0cc88d59ca5b1d0b691b7249aafd2968994b33193c23aa4fad58eaaf230fd09b"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-integration/before/docs/release-validation-graph.json",
+    "bytes": 454981,
+    "sha256": "ed21f835e5c500605af15961225da0f68d567063f51a458ad17a73a0cf9c75f8"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-integration/before/docs/account-crypto/census.json",
+    "bytes": 43516,
+    "sha256": "c828b8c9c4a953f46e3ba99759a83ff9ecf73aabda94d31c37e2dbe211ec3605"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-integration/before/scripts/release-validation/general-tests.json",
+    "bytes": 3282,
+    "sha256": "3962b88ef284ee987d2eae4900bbf5ec570eb75a6d8bb7c1b2868e896bc163d6"
+  }
+]

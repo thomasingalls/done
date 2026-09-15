@@ -18,6 +18,12 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 import { Awareness } from 'y-protocols/awareness';
 import { yCollab, ySyncFacet, yUndoManagerKeymap } from 'y-codemirror.next';
 import { WebsocketProvider } from 'y-websocket';
+import {
+  createSelectionSnapshots,
+  type SelectionPositions,
+  type SelectionSnapshot,
+  type SelectionMetadata,
+} from './selectionSnapshots';
 
 export { Y, IndexeddbPersistence, Awareness, yCollab, ySyncFacet, yUndoManagerKeymap };
 
@@ -483,7 +489,18 @@ export const workspaceUndo = (doc: YDoc, origin: unknown): YUndoManager =>
  * Item.redone links or UndoManager stacks. Keep this version-sensitive use inside the v13 seam.
  * Metadata is application-owned structured-cloneable selection data, never Yjs types/callbacks.
  */
+type HistoryMetadata = YUndoManager['undoStack'][number]['meta'];
+// Marks only the mode of a history. Snapshot payloads and recognition remain per-owner.
+const selectionHistories = new WeakSet<YUndoManager>();
 export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUndoManager => {
+  if (selectionHistories.has(source)) throw Error('Selection history requires its owning fork');
+  return forkHistory(source, origin, (meta) => structuredClone(meta));
+};
+const forkHistory = (
+  source: YUndoManager,
+  origin: unknown,
+  copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
+): YUndoManager => {
   const doc = forkDoc(source.doc, false);
   try {
     doc.transact((tr) => {
@@ -515,7 +532,7 @@ export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUn
       stack.map((item) => ({
         insertions: copySet(item.insertions),
         deletions: copySet(item.deletions),
-        meta: structuredClone(item.meta),
+        meta: copyMetadata(item.meta),
       }));
     manager.undoStack = copyStack(source.undoStack);
     manager.redoStack = copyStack(source.redoStack);
@@ -525,6 +542,52 @@ export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUn
     doc.destroy();
     throw error;
   }
+};
+
+/** Explicit private Local history mode. Never infer it from a metadata shape or token lookalike. */
+export const createSelectionHistory = () => {
+  const snapshots = createSelectionSnapshots();
+  let histories: WeakSet<YUndoManager> | undefined = new WeakSet();
+  const live = () => {
+    if (!histories) throw Error('Selection history owner is closed');
+  };
+  const check = (history: YUndoManager) => {
+    live();
+    if (!histories!.has(history) || history.doc.isDestroyed || !history.trackedOrigins.has(history))
+      throw Error('Unknown, foreign or disposed selection history');
+  };
+  const bind = (history: YUndoManager) => {
+    histories!.add(history);
+    selectionHistories.add(history);
+    return history;
+  };
+  return Object.freeze({
+    create(doc: YDoc, origin: unknown): YUndoManager {
+      live();
+      if (doc.isDestroyed) throw Error('Cannot own a destroyed history document');
+      return bind(workspaceUndo(doc, origin));
+    },
+    fork(history: YUndoManager, origin: unknown): YUndoManager {
+      check(history);
+      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta)));
+    },
+    capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+      check(history);
+      return snapshots.capture(positions);
+    },
+    copyMetadata(history: YUndoManager, meta: HistoryMetadata): SelectionMetadata {
+      check(history);
+      return snapshots.fork(meta);
+    },
+    restore(history: YUndoManager, token: SelectionSnapshot): SelectionPositions {
+      check(history);
+      return snapshots.restore(token);
+    },
+    close(): void {
+      histories = undefined;
+      snapshots.close();
+    },
+  });
 };
 
 /** Row-7 separately bound descriptors. DS uses snapshot-v1 with an empty SV suffix. */

@@ -92,6 +92,7 @@ window.delivery = {
           validateReceive: () => {},
           today: () => '2026-09-09',
         },
+        new URLSearchParams(location.search).get('preparation') ?? 'reference',
       );
       workspace.outgoing((bytes) => outgoing.push([...bytes]));
       editor = createAdmittedEditor({

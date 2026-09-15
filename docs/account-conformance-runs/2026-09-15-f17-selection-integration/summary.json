@@ -1,0 +1,555 @@
+{
+  "status": "private Local selection integration functional gates passed; performance pending",
+  "privateVariant": "local-snapshots",
+  "defaultActivation": false,
+  "accountActivation": false,
+  "artifactsSha256": "bacf43ff8d18f457de75a6437267b65c454dacab49bc4fe15b9044d138b35942",
+  "rawIndexSha256": "e2d8eebc20d19745ed4edcb7c8dad98568fb15145e0cc1e5b48c824e6bc3a91d",
+  "files": 182,
+  "uniqueBlobs": 149,
+  "owned": {
+    "stages": [
+      {
+        "id": "test:test/accountLiveness.test.ts",
+        "key": "acd8b7df0ff574280c88ff47583e72edb469f44d7ad30af45dc444bd8dfe3eaa",
+        "status": "passed",
+        "elapsedMs": 8177,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/admissionQueue.test.ts",
+        "key": "c7f90c2a07472808c0800db5db4dd21a9679f6e2ce24e473d2a97e1131a0db34",
+        "status": "passed",
+        "elapsedMs": 7109,
+        "cases": 26,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/admittedText.test.ts",
+        "key": "332914d18b586a33de8d4c15edbc16b17b506dac626a1d6428aae50909442b8d",
+        "status": "passed",
+        "elapsedMs": 4800,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/ownedReceiveQueue.test.ts",
+        "key": "07c569110ce3447d657cc618b94c68b22b4a8046636d72670a8372cc8702c28c",
+        "status": "passed",
+        "elapsedMs": 4888,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "b091368aa3334072aae880dbaf422effe194785743e5789180c7ec3a039e29c3",
+        "status": "passed",
+        "elapsedMs": 8468,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/positionDecision.test.ts",
+        "key": "b700a32acda73e6d0694da77abb09f2b397bb075d912dd5943fa5804dcbb0b66",
+        "status": "passed",
+        "elapsedMs": 5948,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/seam.test.ts",
+        "key": "058cfb9a74c51001be92e327f123923e50da2ce685f4ccbe803e852eb7e43520",
+        "status": "passed",
+        "elapsedMs": 5045,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/selectionHistory.test.ts",
+        "key": "22accdead03c062474d3b890c44003cabc8ee3afb7dd5151d4b1eca5ae34c204",
+        "status": "passed",
+        "elapsedMs": 4855,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/selectionSnapshots.test.ts",
+        "key": "ff554ed6de115c2a6105689ad6623092014a0bfcf786d8b7620e02230e0b6a0a",
+        "status": "passed",
+        "elapsedMs": 5140,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sourceCapture.test.ts",
+        "key": "a1441e5495a32aca655124a5368c79cedef5ca0d1b655662d0c8d34381f2b5f6",
+        "status": "passed",
+        "elapsedMs": 6108,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "5471d68ec9cc7b532e03736c00872e0831b9d906c82b47d0161dbdd13a5ddeb8",
+        "status": "passed",
+        "elapsedMs": 10529,
+        "cases": 86,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspacePreparation.test.ts",
+        "key": "a09ccc0da30d226c4ccac95e788e6ba3b4bfffab0ff689df8d04b0c11c836a29",
+        "status": "passed",
+        "elapsedMs": 4924,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/yjsDelivery.test.ts",
+        "key": "5dd9e4bd8448383175209baaea45cb54cb2c0560fa1e7e2f299cd3658fcf0986",
+        "status": "passed",
+        "elapsedMs": 10917,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "cases": 215,
+    "input": "f1a1dadf7e5f5323e46960e5340ac4c9e3af1e5cdd97ee742e4ff82d28419d0d",
+    "startedAt": "2026-09-15T00:06:53.989Z",
+    "completedAt": "2026-09-15T00:09:17.183Z"
+  },
+  "workspaceNative": {
+    "stages": [
+      {
+        "id": "workspace-admission:full",
+        "key": "d440a302e20c5a349be47b95ac8a80d5e4074614b33d3ea757063a99b203296b",
+        "status": "passed",
+        "elapsedMs": 53783,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "input": "9621683cfab9cea6ff58beb679638a48858508d7a9f4260058668a562fc4e793"
+  },
+  "nativeControlRepair": {
+    "earlierRun": "workspace-native/summary.json",
+    "originalCatalog": "phase/catalog-before.mjs",
+    "cause": "Old whole-state assignment destroyed the active candidate before W02 reached its privacy assertion",
+    "repair": "Expose the candidate undo stack without replacing the accepted document; retain assertion and bounds"
+  },
+  "native": {
+    "pending-native": {
+      "status": "passed",
+      "cases": 12,
+      "generated": {
+        "name": "generated-workspace-histories",
+        "properties": {
+          "seed": 8941,
+          "runs": 100,
+          "failed": false,
+          "path": null
+        },
+        "histories": 100
+      }
+    },
+    "delivery-native": {
+      "status": "passed",
+      "cases": 8,
+      "generated": {
+        "name": "generated-channel-handoffs",
+        "properties": {
+          "seed": 8941,
+          "runs": 100,
+          "failed": false,
+          "path": null
+        },
+        "histories": 100
+      }
+    }
+  },
+  "properties": [
+    {
+      "seed": 150906,
+      "runs": 120,
+      "scope": "retained owned history forks with independent cursor ledger"
+    },
+    {
+      "seed": 140925,
+      "runsPerStrategy": 80,
+      "strategies": [
+        "reference",
+        "local-handoff",
+        "local-snapshots"
+      ],
+      "scope": "accepted text revision and recovery histories"
+    },
+    {
+      "seed": 150902,
+      "runsPerStrategy": 80,
+      "strategies": [
+        "reference",
+        "local-handoff",
+        "local-snapshots"
+      ],
+      "scope": "master and card selection ledger with retry/discard remote and undo/redo"
+    }
+  ],
+  "defect": {
+    "scope": "initial integration startup cleanup",
+    "trigger": "synchronous opener throw escaped Promise.catch",
+    "repair": "try/catch covers synchronous and asynchronous opener failure",
+    "originalSource": "phase/startup-before.ts",
+    "originalTest": "phase/startup-reproduction.test.ts",
+    "failedRun": "phase/startup-before.log",
+    "repairedRun": "phase/startup-repaired.log"
+  },
+  "controls": [
+    {
+      "name": "skip-history-binding",
+      "path": "src/crdt/yjs.ts",
+      "test": "test/selectionHistory.test.ts",
+      "title": "binds even empty histories",
+      "marker": "foreign empty history must refuse",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-integration/skip-history-binding.config.mts",
+        "-t",
+        "binds even empty histories"
+      ],
+      "exit": 1,
+      "elapsedMs": 823,
+      "intendedFailure": true
+    },
+    {
+      "name": "clone-tokens",
+      "path": "src/crdt/yjs.ts",
+      "test": "test/selectionHistory.test.ts",
+      "title": "reuses opaque tokens in detached history",
+      "marker": "history fork must reuse the recognized before token",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-integration/clone-tokens.config.mts",
+        "-t",
+        "reuses opaque tokens in detached history"
+      ],
+      "exit": 1,
+      "elapsedMs": 670,
+      "intendedFailure": true
+    },
+    {
+      "name": "stale-after",
+      "path": "src/crdt/admittedWorkspace.ts",
+      "test": "test/workspaceAdmission.test.ts",
+      "title": "workspace preparation local-snapshots.*generated master and card selection",
+      "marker": "selection snapshot restore must match the independent ledger",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-integration/stale-after.config.mts",
+        "-t",
+        "workspace preparation local-snapshots.*generated master and card selection"
+      ],
+      "exit": 1,
+      "elapsedMs": 2179,
+      "intendedFailure": true
+    },
+    {
+      "name": "omit-undo-transfer",
+      "path": "src/crdt/admittedWorkspace.ts",
+      "test": "test/workspaceAdmission.test.ts",
+      "title": "workspace preparation local-snapshots.*generated master and card selection",
+      "marker": "selection snapshot restore must match the independent ledger",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-integration/omit-undo-transfer.config.mts",
+        "-t",
+        "workspace preparation local-snapshots.*generated master and card selection"
+      ],
+      "exit": 1,
+      "elapsedMs": 1149,
+      "intendedFailure": true
+    },
+    {
+      "name": "close-owner-early",
+      "path": "src/crdt/admittedWorkspace.ts",
+      "test": "test/workspaceAdmission.test.ts",
+      "title": "selection owner outlives its retained write",
+      "marker": "selection owner must remain live while its write drains",
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/private/tmp/done-f17-selection-integration/close-owner-early.config.mts",
+        "-t",
+        "selection owner outlives its retained write"
+      ],
+      "exit": 1,
+      "elapsedMs": 802,
+      "intendedFailure": true
+    }
+  ],
+  "runnerChecks": 21,
+  "registration": {
+    "added": {
+      "id": "test:test/selectionHistory.test.ts",
+      "kind": "test",
+      "path": "test/selectionHistory.test.ts",
+      "stage": {
+        "id": "test:test/selectionHistory.test.ts",
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--config=vite.config.ts",
+          "--pool=forks",
+          "--maxWorkers=1",
+          "--no-file-parallelism",
+          "--retry=0",
+          "--bail=0",
+          "--reporter=./scripts/release-validation/vitest-reporter.mjs",
+          "test/selectionHistory.test.ts"
+        ],
+        "env": {},
+        "variant": "vitest-single-file-v1",
+        "expect": {
+          "kind": "vitest",
+          "files": [
+            "test/selectionHistory.test.ts"
+          ],
+          "cases": [
+            {
+              "id": "test/selectionHistory.test.ts::[\"binds even empty histories and refuses foreign or generic ownership before forking\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionHistory.test.ts::[\"reuses opaque tokens in detached history and metadata while restores stay independently mutable\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionHistory.test.ts::[\"refuses malformed or foreign metadata and destroys only the failed history fork\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionHistory.test.ts::[\"terminal history owners reject retained histories and tokens without reviving or destroying another owner\"]",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/selectionHistory.test.ts::[\"generated retained history forks preserve token identity and an independent position ledger\"]",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 180000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    "changes": [
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "change": "Only denominator title 2086 -> 2121"
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "before": 56,
+        "after": 86,
+        "added": [
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"projects retained legacy archives as read-only bodies without creating live cards\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"archive projection refreshes content and membership without lending cached arrays to callers\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"admits device display labels into encrypted content and recovers them without changing identity\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"preserves null business results without treating them as a storage failure\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"refuses a future schema during initialization without modifying the source\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"keeps returned projections and submitted commands detached from the owner\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"follows local redone links when undoing an edit inside a restored parent\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"durably initializes the actor and schema without adding human undo\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"shares human history across Goals, cards and movement\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"retains repeated undo/redo links through private history forks\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"restores a deleted nested card and its text through undo, redo, and undo\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"does not publish a failed move or advance its undo stack before forced retry\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"retries refused undo without making its history authoritative\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"evaluates Next capacity at the head after earlier accepted commands\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"excludes bulk, settings and actor housekeeping from human content undo\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"keeps the day container and a remote card when undoing the first human card\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"does not undo a remote text insertion or remote location change\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"splits and merges through existing card rules and export\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"rechecks freeze while preserving Goals editing\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"slices Unicode text and groups the accepted paste in workspace history\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"discards an entire refused suffix and starts a fresh private candidate\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"drains close without late publication and does not persist runtime history\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"private prepared histories remain unpublished under pressure and are disposed on discard and drained close\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"no-op and remote writer collisions renew the verified preparation basis\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"reentrant observers enqueue against the next verified state after the current slice finishes\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"generated histories retain command results, retry bytes, selections and cold replay\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"generated master and card selection snapshots follow an independent undo and recovery ledger\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"Selection snapshot post-promotion mismatch closes before publication and cannot be retried\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"selection history activates only by explicit Local selection and closes on failed startup\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"selection owner outlives its retained write and closes only after all workspace histories are disposed\"]",
+            "outcome": "pass"
+          }
+        ]
+      },
+      {
+        "id": "catalogue:scripts/workspace-admission/catalog.mjs",
+        "change": "Retarget pending history fault to the undo stack; old fault hit disposed-history refusal before its assertion",
+        "beforeTo": "state.value = result.value; accepted = state;",
+        "afterTo": "state.value = result.value; accepted!.history.undoStack = history.undoStack;",
+        "beforeVariant": "workspace-admission-fecb3516df0f8faed0d61abf12276802a1c95379d4e0ab3600c80e871aa461cc",
+        "afterVariant": "workspace-admission-64f662a3d98330ac0dd81701791f143f0fce357f40f64c36573f180e3f84626f"
+      }
+    ],
+    "priorContractsPreserved": 614,
+    "changedSources": [
+      {
+        "path": "src/crdt/admittedWorkspace.ts",
+        "sha256": "e31888918b9f1898d2faeab1962f56a2d19e937eb9f186c998f394a688847e82"
+      },
+      {
+        "path": "src/crdt/selectionSnapshots.ts",
+        "sha256": "e47b12b2797ac1df4f5c7bc06395a64d6ad09729b35ebadac57b97dbcebc9042"
+      },
+      {
+        "path": "src/crdt/yjs.ts",
+        "sha256": "21ce99552212474e96982c9d1e53ff53ce29c28e3766a66cd62825f1f6e9bbcf"
+      }
+    ],
+    "totalRows": 618,
+    "unresolved": 159,
+    "generalFiles": 263,
+    "generalDispositions": 2121,
+    "policyAdded": "test/selectionHistory.test.ts",
+    "cryptoDomainsUnchanged": true
+  },
+  "fullUnit": {
+    "files": 99,
+    "cases": 1141,
+    "first": "phase/full-unit.log",
+    "second": "phase/full-unit-final.log",
+    "third": "phase/full-unit-recheck.log",
+    "note": "First pass precedes startup cleanup repair. Second run timed out in unchanged Account-liveness and position-decision five-second cases. Both are retained; individual owned passes and final repeat do not close loaded-host qualification."
+  },
+  "noPerformanceMeasurement": true,
+  "next": "Specify and run a balanced comparison against reference, current Local handoff and appropriate signed baseline; unchanged application gate precedes any default activation.",
+  "obligations": {
+    "testFile": 0,
+    "command": 96,
+    "campaign": 63
+  }
+}

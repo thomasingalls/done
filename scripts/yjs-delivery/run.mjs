@@ -227,7 +227,7 @@ try {
       const p = await context.newPage();
       p.setDefaultTimeout(20000);
       p.on('pageerror', (e) => errors.push(e.message));
-      await p.goto(origin + '/test/yjs-delivery/index.html');
+      await p.goto(origin + '/test/yjs-delivery/index.html?preparation=local-snapshots');
       await p.waitForFunction(() => Boolean(window.delivery));
       return p;
     };
@@ -367,7 +367,7 @@ try {
     isolated.on('page', (p) => p.on('pageerror', (e) => isolatedErrors.push(e.message)));
     try {
       const b = await isolated.newPage();
-      await b.goto(origin + '/test/yjs-delivery/index.html');
+      await b.goto(origin + '/test/yjs-delivery/index.html?preparation=local-snapshots');
       await b.waitForFunction(() => Boolean(window.delivery));
       const code2 = await seedBase(b);
       await open(b, code2, 'receiver');
@@ -383,7 +383,7 @@ try {
       await b.close();
       row.rendererDeaths = 1;
       const c = await isolated.newPage();
-      await c.goto(origin + '/test/yjs-delivery/index.html');
+      await c.goto(origin + '/test/yjs-delivery/index.html?preparation=local-snapshots');
       await c.waitForFunction(() => Boolean(window.delivery));
       await probe(c, 'recover', code2);
       const recovered = await success(c, 'recover');
@@ -471,7 +471,7 @@ try {
           const pages = await Promise.all([context.newPage(), context.newPage()]);
           for (const p of pages) {
             p.setDefaultTimeout(20000);
-            await p.goto(origin + '/test/yjs-delivery/index.html');
+            await p.goto(origin + '/test/yjs-delivery/index.html?preparation=local-snapshots');
             await p.waitForFunction(() => Boolean(window.delivery));
           }
           const [a, b] = pages,

@@ -233,7 +233,7 @@ try {
       const p = await context.newPage();
       p.setDefaultTimeout(20000);
       p.on('pageerror', (e) => errors.push(e.message));
-      await p.goto(origin + '/test/pending-projection/index.html');
+      await p.goto(origin + '/test/pending-projection/index.html?preparation=local-snapshots');
       await p.waitForFunction(() => Boolean(window.projection));
       return p;
     };
@@ -492,7 +492,9 @@ try {
             );
             const a = await context.newPage();
             a.setDefaultTimeout(20000);
-            await a.goto(origin + '/test/pending-projection/index.html');
+            await a.goto(
+              origin + '/test/pending-projection/index.html?preparation=local-snapshots',
+            );
             await a.waitForFunction(() => Boolean(window.projection));
             await setup(a);
             for (const id of order) {

@@ -52,41 +52,44 @@ branch: codex/encrypted-store-contract-corrections
 status: in flight
 blocks_on: application latency repair and budget disposition; remaining command/campaign and immutable qualification work
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-14
+updated: 2026-09-15
 ```
 
 **Roadmap checkpoint.** All catalogue and test-file adapters are integrated. This F-17 work
-addresses the failing application-latency gate. After its performance/default-activation disposition,
-resume the 96 command / 63 campaign wrapper obligations and remaining qualification repairs before
-the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
+addresses the failing application-latency gate. The comparison is complete and default activation
+is refused; F-17 remains open. The 96 command / 63 campaign wrapper obligations and remaining
+qualification repairs also precede the immutable aggregate. [Execution overview](./release-validation-execution.md#checkpoint-and-remaining-sequence).
 The record audit is committed with a verified signature as `0c84e5cc`.
 
-**Just completed.** Private Local preparation integration now passes its functional gates. An
-explicit internal constructor selection uses the handoff; the default Local opener and all Account
-factories retain the generic reference path. The candidate removes the first canonical-derived draft,
-retains the same prepared state through retry, leases write buffers until storage settles, and
-verifies complete canonical state plus matching job/slice/revision/writer before adoption. Workspace
-publication must match the verified revision and source. No performance measurement or default
-activation occurs in this phase.
+**Just completed.** The [explicit private Local snapshot integration](./f17-selection-integration.md)
+passes 86 workspace cases, five history-owner cases and 215 affected/timing-follow-up owned cases.
+Both native pending/delivery campaigns pass directed cases plus 100 histories each; the owned
+workspace catalogue passes ten cases and four mutations. Five additional unit faults are detected.
+A synchronous-startup cleanup gap was reproduced and fixed. The final full repeat passes 99 files /
+1,141 tests; an intervening run hit the two previously recorded five-second Account-liveness/
+position-decision timeouts. All runs remain, with timing uncertainty still open. Twenty-one runner
+checks and type/style/inventory/census/authority checks pass. Default Local and Account retain the
+reference; no performance measurement or activation occurs.
 
-The native initialization control found a new integration gap: a Local event relabeled remote passed
-after candidate adoption. The source-binding repair passes that counterexample and a mutation that
-removes it fails as intended. Before/after source and reports remain. Terminal adoption failures also
-retain their projection-mismatch cause. Two unit mutations detect omitted comparison and premature
-byte erasure.
+The physical Pixel 9a companion completes all four fresh R/C/C/R sessions.
+All 960 trusted-key samples survive, with full-corpus and exact edited-card cold-reopen checks passing.
+Card p95 is **107.9/87.1/86.9/108.3 ms**: candidate reductions are 19.3% and 19.8% in the two
+opposite-order pairs, but every card budget still fails <16 ms. Compose, focus, startup and replay
+budgets pass. Setup races and every diagnostic observation are retained separately. Actual delivered
+key cadence and temperature vary; this is one-phone automated-input evidence, not ordinary keyboard
+or fleet qualification. [Protocol](./f17-pixel9a.md);
+[evidence](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
 
-The 23 original workspace cases run against both strategies. Additional writer/no-op, reentrant,
-close/adoption and identical 80-history generated checks yield 54 workspace cases. The owned runner
-passes 155 cases in eight affected files; full units pass alone at unchanged limits (97 files /
-1,093 tests). Native pending-state and delivery each pass their directed cases and 100 generated
-histories; the final owned workspace catalogue passes 10 cases and 4 mutations with drain. All 99
-runner checks, type/style/authority gates, 52 personal/vector pins and L-2 checks pass.
+The preceding prospective B/R/C command comparison passes (54 sessions / 3,456 measured insertions),
+but the unchanged candidate application gate still fails at 12.9/63.5 ms desktop/CPU-4x Android card
+p95. Default Local and Account retain the reference; the candidate stays private and F-17 partial.
+[Prior comparison and gate](./f17-local-performance.md).
 
-The reviewed general set is **261 files / 2,073 dispositions (11 not applicable)**. All 260 other
-general contracts and original reference assertions remain. There are **zero blocked test-file
-rows, 96 command rows and 63 campaign rows**. These are integration obligations, not defect counts.
-[Implementation and scope](./f17-local-handoff.md);
-[evidence](./account-conformance-runs/2026-09-14-f17-local-handoff/README.md).
+The preceding functional integration remains verified: 54 workspace cases, 155 affected owned cases,
+97 files / 1,093 full unit tests, native pending/delivery campaigns and 10 workspace cases / 4 mutations.
+The general set is now **263 files / 2,121 dispositions (11 not applicable)**. There are still
+**zero blocked test-file rows, 96 command rows and 63 campaign rows**. These count adapter obligations,
+not passed release tests or remaining product defects.
 
 **Open validation observations.** Both metadata-copy candidates pass focused semantic checks but
 miss the prospective performance rule. At 1,000 undo groups the recursive candidate improves one/100
@@ -95,9 +98,11 @@ both strata. All 720 timings, source variants and sharing controls survive. Prod
 exactly, while new graph/isolation, fallback and undo/selection regression tests remain. The ownership/verification contract and baseline controls are recorded. The private handoff
 now passes the explicit Local integration/reference gates. Default activation and Account source
 activation remain separate. Full verification and queue/capture bounds are retained.
-The last residual profile still shows substantial costs for each draft, full comparison and
-publication. The independent application gate remains failed at its last 15.2/69.4 ms desktop/CPU-4x
-typing observation; focus was 7.4/35.7 ms and other recorded budgets passed. No application timing was added by Local integration; its native semantic campaigns now pass. Preserve the earlier focus failure,
+The last reference residual profile shows substantial costs for each draft, full comparison and
+publication. Its application observation is 15.2/69.4 ms desktop/CPU-4x typing, with focus 7.4/35.7 ms.
+The subsequent private candidate observation is 12.9/63.5 ms typing and 7.5/43.2 ms focus. Android
+typing fails in both runs; other budgeted measurements pass. Neither run is physical-device
+qualification, and the old reference profile cannot attribute candidate costs. Preserve the earlier focus failure,
 recorder/scheduler uncertainty and all negative fork controls. These host observations do not
 establish handset or immutable qualification. [Rejected metadata assessment](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
 [Preparation contract and controls](./f17-preparation-contract.md).
@@ -108,7 +113,7 @@ fingerprinting/execution, timed out at five seconds in unchanged Account-livenes
 cases. The same default full command passed alone at unchanged limits. Both runs survive; concurrency
 as the cause is not established. Keep this at loaded-host qualification instead of relaxing deadlines.
 [Residual profile](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
-[Last application gate](./account-conformance-runs/2026-09-14-f17-forks/README.md).
+[Last reference application gate](./account-conformance-runs/2026-09-14-f17-forks/README.md).
 
  The residue ZIP controls use host Python: 58 observed file pins match before/after, but external-tool binding is still required in the general frozen-input contract before immutable qualification. The general Node reporter suppresses per-test stdout and removes optional default reports with its disposable checkout; complete wrapper/output retention remains separate. Core receive previously used 297.025 of its 300-second Node bound;
 its 301.462-second stage included preparation/drain. Narrow headroom stays at the loaded-host gate.
@@ -124,7 +129,13 @@ Handoff's original timeout and passing allowance repair remain preserved in its 
 6.905 seconds of headroom. Its 117.760-second stage includes setup/drain. Keep this observation
 at the loaded-host aggregate gate; the allowance is unchanged.
 
-**Next bounded phase.** prospectively specify and run balanced candidate/reference whole-command measurements, retaining the signed baseline as a comparison, and the unchanged application latency gate before deciding default Local activation; Account source/capture activation remains separately gated. All declared suite adapters are integrated. After the F-17 disposition, resume wrapper certification and remaining qualification repairs. Stop if signing blocks.
+**Current bounded phase.** Specify and run a balanced performance comparison of the private
+selection-snapshot variant against the current reference, existing Local handoff and appropriate
+signed baseline. Pin workloads, order, measurements and the useful-gain rule before execution;
+the unchanged application gate follows. [Functional checkpoint and next gate](./f17-selection-integration.md).
+Default activation remains conditional on the evidence. Remaining phone/manual work is cancelled;
+test servers and the dedicated ADB server are stopped. Emulation remains the reference, with a
+rough 1.5× card-latency planning estimate. F-17 and the 96 command / 63 campaign obligations remain open.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

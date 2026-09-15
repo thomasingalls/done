@@ -76,7 +76,7 @@ window.integration = {
           validateReceive: () => {},
           today: () => date,
         },
-        'local-handoff',
+        new URLSearchParams(location.search).get('preparation') ?? 'local-handoff',
       );
       workspace.outgoing((b) => outgoing.push(Array.from(b)));
       workspace.subscribe(() => {

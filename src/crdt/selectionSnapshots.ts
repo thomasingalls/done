@@ -1,4 +1,4 @@
-/** Private, unmounted selection metadata owner. Tokens carry no document or admission authority. */
+/** Private selection metadata owner. Tokens carry no document or admission authority. */
 import type { RelativeSelection } from './workspaceCommands';
 
 declare const snapshotBrand: unique symbol;

@@ -17,7 +17,7 @@ export const mutants = [
     case: 'W02.pressure',
     assertion: 'pending-history-private',
     from: 'state.value = result.value;',
-    to: 'state.value = result.value; accepted = state;',
+    to: 'state.value = result.value; accepted!.history.undoStack = history.undoStack;',
   },
   {
     id: 'system-bulk-in-human-history',
