@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-genesis/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-genesis/owned/inputs.json.gz",
+    "bytes": 1221392,
+    "sha256": "2f4064c184be3f94179c1795606b277ed7727498b7fc39512b8edda160a1c3ff"
+  }
+]

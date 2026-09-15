@@ -130,6 +130,296 @@ function promotionEvidence(originalId = 'ab'.repeat(16), substitutedId = 'cd'.re
   };
 }
 
+import {
+  genesisCampaign,
+  genesisCampaignStage,
+  genesisFiles,
+  genesisReports,
+  reconcileGenesisReports,
+  reconcileGenesisControls,
+  reconcileGenesisHistories,
+} from '../../scripts/release-validation/account-genesis-wrapper.mjs';
+import { assertHistoricalInputs } from '../../scripts/release-validation/historical-inputs.mjs';
+
+// Synthetic report observations exercise reconciliation, not native cryptographic validity.
+function genesisEvidence(digest = '01'.repeat(32), changedDigest = '02'.repeat(32)) {
+  const original = {
+    v: 1,
+    kind: 'promotion-genesis-candidate',
+    generation: 1,
+    proposedEpoch: 1,
+    checkpoint: { v: 1, salt: '00'.repeat(16), nonce: '00'.repeat(12), ct: '01'.repeat(32) },
+    wraps: [
+      { recipient: 'device', id: 'device' },
+      { recipient: 'recovery', id: 'recovery', enc: '01'.repeat(32), ct: '02'.repeat(48) },
+    ],
+    signature: '01'.repeat(64),
+  };
+  const report = (control) => ({
+    control,
+    baseline: 'refused',
+    observed: 'forged artifact accepted with semantic refusal disabled',
+    original: structuredClone(original),
+    candidate: { ...structuredClone(original), signature: '02'.repeat(64) },
+  });
+  const snapshot = report('snapshot'),
+    wrap = report('wrap');
+  snapshot.candidate.checkpoint.ct = '02'.repeat(32);
+  snapshot.semantic = { expectedSha256: digest, actualSha256: changedDigest };
+  wrap.candidate.wraps[1].ct = '03'.repeat(48);
+  wrap.semantic = { oracle: 'refused' };
+  return { snapshot, wrap };
+}
+function genesisHistories() {
+  return {
+    seed: 9222026,
+    numRuns: 40,
+    histories: Array.from({ length: 40 }, (_, i) => ({
+      ops: [{ at: i, remove: i % 7, insert: 'text' + i, disk: i % 2 === 0 }],
+      reverse: i % 2 === 0,
+      abort: i % 3 === 0,
+      restart: i % 4 === 0,
+      forgery: ['snapshot', 'wrap', 'coverage', 'recipient', 'actor'][i % 5],
+      status: 'passed',
+    })),
+  };
+}
+
+test('genesis wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-genesis');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', genesisCampaign]);
+  assert.equal(stage.expect.cases.length, 17);
+  assert.deepEqual([...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))], genesisFiles);
+  assert.deepEqual(stage.fileOutputs.required, genesisReports);
+  assert.deepEqual(
+    stage.expect.historyInputs.map(({ reference, path }) => [reference, path]),
+    [['a4e1c15', 'src/crdt/promotionRecord.ts']],
+  );
+  assertHistoricalInputs(process.cwd(), stage.expect.historyInputs);
+  assert.throws(
+    () =>
+      assertHistoricalInputs(
+        process.cwd(),
+        stage.expect.historyInputs.map((p) => ({ ...p, sha256: '0'.repeat(64) })),
+      ),
+    /Historical source changed/,
+  );
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'genesis-filter',
+    argv: ['node', genesisCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:genesis-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('genesis wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = genesisCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 180001 },
+    { graceMs: 5001 },
+    { expect: { ...stage.expect, historyInputs: undefined } },
+    { expect: { ...stage.expect, historyInputs: [] } },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: [...stage.expect.historyInputs, ...stage.expect.historyInputs],
+      },
+    },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: stage.expect.historyInputs.map((p) => ({ ...p, reference: p.revision })),
+      },
+    },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('genesis reports require complete successful output and exact wrapper source pins', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-genesis-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = genesisEvidence();
+  const sources = [
+    { path: 'package.json', sha256: 'a'.repeat(64) },
+    { path: 'src/crdt/example.ts', sha256: 'b'.repeat(64) },
+    { path: 'wasm/journal-seal/seal.generated.ts', sha256: 'c'.repeat(64) },
+    ...[
+      'src/account/recoveryOwner.ts',
+      'test/account-authority/browser.ts',
+      'test/account-core/fixtures.mjs',
+      'test/account-core/worker.mjs',
+      'test/account-recovery/fixtures.mjs',
+      'test/account-promotion/fixtures.mjs',
+      'test/account-promotion/browser.ts',
+      'src/account/generationWrap.ts',
+      'test/vectors/package.json',
+      'src/lib/example.tsx',
+    ].map((path) => ({ path, sha256: 'e'.repeat(64) })),
+  ];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-snapshot.json': controls.snapshot,
+    'control-wrap.json': controls.wrap,
+    'generated.json': genesisHistories(),
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcileGenesisReports(directory, sources);
+  const faults = [
+    (r) => {
+      r['summary.json'].status = 'failed';
+    },
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'error';
+    },
+    (r) => {
+      r['summary.json'].completedAt = 'invalid';
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'].pop();
+    },
+    (r) => {
+      r['sources.json'][1].sha256 = 'd'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-snapshot.json'].baseline = 'accepted';
+    },
+    (r) => {
+      r['control-wrap.json'].semantic.oracle = 'opened';
+    },
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcileGenesisReports(directory, sources));
+  }
+  for (const file of genesisReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileGenesisReports(directory, sources));
+  }
+});
+
+test('100 generated genesis control pairs reject missing semantic differences and unrelated changes', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 32, maxLength: 32 }), (bytes) => {
+      const changed = Buffer.from(bytes);
+      changed[0] ^= 1;
+      const good = genesisEvidence(Buffer.from(bytes).toString('hex'), changed.toString('hex'));
+      reconcileGenesisControls(good.snapshot, good.wrap);
+      const faults = [
+        (r) => {
+          r.snapshot.baseline = 'accepted';
+        },
+        (r) => {
+          r.snapshot.semantic.actualSha256 = r.snapshot.semantic.expectedSha256;
+        },
+        (r) => {
+          r.snapshot.candidate.checkpoint = r.snapshot.original.checkpoint;
+        },
+        (r) => {
+          r.snapshot.candidate.generation = 2;
+        },
+        (r) => {
+          r.snapshot.candidate.wraps[0].id = 'other';
+        },
+        (r) => {
+          r.wrap.candidate.wraps[1].ct = r.wrap.original.wraps[1].ct;
+        },
+        (r) => {
+          r.wrap.candidate.wraps[1].id = 'other';
+        },
+        (r) => {
+          r.wrap.candidate.checkpoint.ct = '00';
+        },
+        (r) => {
+          r.wrap.semantic.oracle = 'opened';
+        },
+        (r) => {
+          r.wrap.candidate.signature = r.wrap.original.signature;
+        },
+        (r) => {
+          r.wrap.control = 'snapshot';
+        },
+        (r) => {
+          delete r.wrap.original;
+        },
+      ];
+      for (const fault of faults) {
+        const bad = structuredClone(good);
+        fault(bad);
+        assert.throws(() => reconcileGenesisControls(bad.snapshot, bad.wrap));
+      }
+    }),
+    { seed: 150937, numRuns: 100 },
+  );
+});
+
+test('160 generated genesis history omissions and corruptions refuse complete-campaign credit', () => {
+  const good = genesisHistories();
+  reconcileGenesisHistories(good);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 39 }), fc.integer({ min: 0, max: 9 }), (i, fault) => {
+      const bad = structuredClone(good),
+        h = bad.histories[i];
+      if (fault === 0) bad.histories.splice(i, 1);
+      if (fault === 1) h.status = 'failed';
+      if (fault === 2) h.ops[0].at = 101;
+      if (fault === 3) h.ops[0].remove = -1;
+      if (fault === 4) h.ops[0].insert = '';
+      if (fault === 5) h.restart = 'false';
+      if (fault === 6) h.forgery = 'unknown';
+      if (fault === 7) bad.seed++;
+      if (fault === 8) bad.numRuns--;
+      if (fault === 9) h.ops = [];
+      assert.throws(() => reconcileGenesisHistories(bad));
+    }),
+    { seed: 150938, numRuns: 160 },
+  );
+});
+
 test('promotion wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -757,7 +1047,7 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-genesis/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-admission/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

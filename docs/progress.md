@@ -55,32 +55,34 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Authority wrapper integration is signed and verified as `e18a77df`.
+**Roadmap checkpoint.** Promotion wrapper integration is signed and verified as `b31be6c0`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Promotion resolves one command and one
-campaign: **zero test-file /90 command /58 campaign** remain unresolved, down from 150 to 148.
+272 general files/2,198 dispositions (11 not applicable)**. Genesis resolves one command and one
+campaign: **zero test-file /89 command /57 campaign** remain unresolved, down from 148 to 146.
 These are integration counts, not a passing aggregate.
 
-**Just completed.** Promotion preserves the actual two-file grouped selection, default concurrency,
-120-second bound and five-second grace. Owned execution adds terminal reporting, a disposable browser
-and six retained reports. Check all 18 cases, successful summary and owned source hashes; require the
-observed eligible service mutant and actual acceptance of the substituted intent. Enriched reports
-retain flags/status and original/substituted/accepted IDs. These corroborate existing assertions;
-they do not independently replay service state or browser authentication. JUnit/logs are auxiliary.
+**Just completed.** Genesis preserves the actual crypto/native grouping, default concurrency,
+180-second bound and five-second grace. Owned execution adds terminal reporting, disposable browser
+and seven reports. Its historical reader is explicitly pinned and checked before/after execution and
+reuse. Check all 17 outcomes, summary/source hashes and actual changed checkpoint/wrap fields, the
+reported state mismatch and oracle refusal. Require 40 complete passing history records and operation
+bounds. These corroborate native assertions; they do not independently verify/decrypt candidates or
+regenerate the seeded schedule. The existing Node/OpenSSL oracle is unchanged; JUnit/logs are auxiliary.
 
-The epoch passes **78 cases in six executions**: 46 planning, 18 promotion and 14 authority regression
-cases, followed by exact promotion receipt reuse. Promotion takes **56.497s /120s**, including
-120 generated service and 45 native histories. Every group drains; six reports survive checkout
-removal. Four new infrastructure cases include 100 generated control pairs with eight invalid
-variants each, directed corruptions and missing files. Six synthetic process runs and two deliberate
-faults discriminate; their case claims are not real Account tests. New code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
+The epoch passes **86 cases in six executions**: 51 planning, 17 genesis and 18 promotion regression
+cases, followed by exact genesis receipt reuse. Genesis takes **80.249s /180s**, including
+100 generated HPKE seals and 40 native delivery/interruption histories. Every group drains; seven
+reports survive checkout removal. Five new infrastructure cases include historical-pin refusals,
+100 generated control pairs with twelve invalid variants each and 160 generated history corruptions.
+Six synthetic process runs and two deliberate faults discriminate; their case claims are not Account
+tests. New code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).
 
 **Preserved observations.** No new campaign/test failure occurs. Earlier stale wrapper assertions,
 core browser-startup SIGABRT, orphan/headroom observations and failure/cancellation/latency receipts
-retain their evidence. Promotion's blocked assertion advances to an explicit positive disposition.
+retain their evidence. Genesis's blocked assertion advances to an explicit positive disposition.
 
-**Next bounded phase.** Account genesis wrapper integration with exact grouped selection, owned
+**Next bounded phase.** Account admission wrapper integration with exact grouped selection, owned
 reports and semantic postconditions, then further wrapper families. Optional outputs in unintegrated
 locations still need explicit treatment. File custody uses cooperative bounded polling, not a disk
 quota or hostile-code sandbox.

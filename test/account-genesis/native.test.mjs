@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fc from 'fast-check';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import {
   native,
   prepare,
@@ -160,7 +161,7 @@ for (const kind of ['snapshot', 'wrap', 'coverage', 'recipient', 'actor'])
       item = await f.ready('forged-' + kind);
     const expected = await seed(f.page, item, ops);
     await prepare(f.page, item);
-    await genesis(f.page, item);
+    const original = await genesis(f.page, item);
     await poison(f.page, item, kind, expected.initial);
     const before = await inventory(f.page);
     await assert.rejects(genesis(f.page, item));
@@ -169,10 +170,21 @@ for (const kind of ['snapshot', 'wrap', 'coverage', 'recipient', 'actor'])
       await f.page.evaluate(await genesisBundle(kind));
       const accepted = await genesis(f.page, item);
       assert.deepEqual(accepted, (await snapshot(f.page, item)).marker.genesis);
-      if (kind === 'snapshot') assert.notDeepEqual(await decode(f, item, accepted), expected.state);
-      else assert.throws(() => openCandidate(accepted, item.draft, item.recoveryCode));
+      let semantic;
+      if (kind === 'snapshot') {
+        const actual = await decode(f, item, accepted);
+        assert.notDeepEqual(actual, expected.state);
+        const digest = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+        semantic = { expectedSha256: digest(expected.state), actualSha256: digest(actual) };
+      } else {
+        assert.throws(() => openCandidate(accepted, item.draft, item.recoveryCode));
+        semantic = { oracle: 'refused' };
+      }
       artifact('control-' + kind, {
         control: kind,
+        baseline: 'refused',
+        original,
+        semantic,
         observed: 'forged artifact accepted with semantic refusal disabled',
         candidate: accepted,
       });

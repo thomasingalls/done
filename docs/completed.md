@@ -7792,3 +7792,57 @@ personal browser, server, relay, device or deployment operation occurs. This pha
 Next: Account genesis wrapper integration, then remaining wrappers/qualification repairs, immutable
 aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
+
+
+## 2026-09-15 — Account genesis wrapper integration
+
+Promotion wrapper integration is signed and signature-verified as `b31be6c0`. Integrate the actual
+genesis crypto/native grouping, order, default Node concurrency, 180-second bound and five-second
+grace. Owned execution adds the terminal reporter, disposable CDP browser and retained reports;
+standalone invocation and spec/JUnit output remain. Exact argv with empty user environment aliases
+the campaign. Preserve the historical reader at `a4e1c15:src/crdt/promotionRecord.ts`: the contract
+binds reference, full revision and byte hash, and the existing owner checks it before/after execution
+and receipt reuse. Missing, substituted or changed history metadata refuses. This is the first
+Account wrapper using the existing historical-input mechanism; generic case adapters retain their
+previous requirements.
+
+Require seven reports under 4 MiB /32-entry /one-level limits: source hashes, summary, JUnit, log,
+snapshot control, wrap control and generated histories. Reconcile all 17 terminal outcomes,
+successful summary/code/no timeout and exact wrapper source hashes, including the published vector,
+src/lib and cross-family fixtures. Both semantic controls now retain original and accepted candidates.
+Snapshot requires a changed checkpoint and different expected/decoded state hashes; wrap requires
+changed recovery ciphertext and the recorded independent-oracle refusal. Require baseline refusal,
+a changed signature and unchanged unrelated candidate fields. These checks corroborate actual native
+assertions; they do not independently verify signatures, decrypt candidates or recover omitted state.
+No recovery factors are exported. Require seed 9222026, 40 passing history records and the declared
+operation bounds, without claiming independent regeneration of the seeded schedule or semantic replay.
+The owned Node census remains the case authority; JUnit/logs are auxiliary. Optional diagnostics remain
+in the bounded output tree. Production runtime/protocol and the existing oracle are unchanged.
+
+The owned epoch passes **86 cases in six executions**: 51 planning cases across four complete suites,
+17 genesis cases and 18 promotion regression cases. Genesis takes **80.249s /180s**; promotion
+regression takes 51.509s /120s. Genesis includes 100 generated HPKE seals through the
+independent Node/OpenSSL oracle and 40 generated native delivery/interruption histories, journal-inclusive
+state and attribution, before/after IDB/renderer boundaries, five signed forgery kinds, retained
+artifacts, cancellation exclusion and the historical reader. Every process/browser group drains.
+A seventh request reuses the exact genesis receipt after promotion regression. Seven reports survive
+copied-checkout removal, and the historical blob is included in the lossless evidence archive.
+
+Five new infrastructure cases cover grouped selection/historical pins, weaker contracts, eleven
+directed report corruptions, seven missing reports, 100 generated semantic-control pairs with twelve
+invalid variants each and 160 generated history omissions/corruptions. Five synthetic process runs
+accept valid reports and refuse zero-exit failed summary, indistinguishable snapshot state, unchanged
+wrap ciphertext and missing history. A sixth run omits the semantic hook and admits the bad summary.
+An isolated adapter fault omits the snapshot-state difference check and admits equal hashes. Both
+faults discriminate. Synthetic case claims are instrumentation controls, not Account tests. Planning,
+scoped lint/format, inventory/manifest and whitespace checks pass. No new campaign/test failure occurs;
+prior failures remain preserved. Genesis's blocked assertion advances to a positive exact contract.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not
+applicable)**. Five additional cases belong to an existing infrastructure file. Unresolved wrappers
+fall from 148 to **146: zero test-file /89 command /57 campaign**. Runtime, package/dependency,
+crypto-census/vector and F-17 debt bytes, previous archives and L-2's checkpoint are unchanged.
+No personal browser, server, relay, device or deployment operation occurs. This phase is uncommitted.
+Next: Account admission wrapper integration, remaining wrapper/qualification repairs, immutable
+aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).

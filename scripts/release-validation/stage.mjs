@@ -42,6 +42,11 @@ import {
   validatePromotionCampaign,
   reconcilePromotionReports,
 } from './account-promotion-wrapper.mjs';
+import {
+  genesisCampaign,
+  validateGenesisCampaign,
+  reconcileGenesisReports,
+} from './account-genesis-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -100,6 +105,7 @@ export function validateStage(stage) {
       'account-recovery',
       'account-authority',
       'account-promotion',
+      'account-genesis',
       'vitest',
       'playwright',
       'content',
@@ -131,6 +137,7 @@ export function validateStage(stage) {
       'account-recovery',
       'account-authority',
       'account-promotion',
+      'account-genesis',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -178,6 +185,12 @@ export function validateStage(stage) {
     stage.variant === 'account-promotion-campaign-v1'
   )
     validatePromotionCampaign(stage);
+  if (
+    stage.expect.kind === 'account-genesis' ||
+    stage.argv[1] === genesisCampaign ||
+    stage.variant === 'account-genesis-campaign-v1'
+  )
+    validateGenesisCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -206,8 +219,13 @@ export function validateStage(stage) {
     }
   }
   if (Object.hasOwn(stage.expect, 'historyInputs')) {
-    assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
-    assert(stage.argv.includes('--test'), 'Historical source metadata requires the Node reporter');
+    if (stage.expect.kind !== 'account-genesis') {
+      assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
+      assert(
+        stage.argv.includes('--test'),
+        'Historical source metadata requires the Node reporter',
+      );
+    }
     validateHistoricalInputs(stage.expect.historyInputs);
   }
   if (stage.expect.kind === 'playwright') validatePlaywrightStage(stage);
@@ -694,9 +712,13 @@ export function createStageRunner({
         } else {
           if (
             stage.argv.includes('--test') ||
-            ['account-core', 'account-recovery', 'account-authority', 'account-promotion'].includes(
-              stage.expect.kind,
-            )
+            [
+              'account-core',
+              'account-recovery',
+              'account-authority',
+              'account-promotion',
+              'account-genesis',
+            ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
             assert(reported.summary, 'Missing terminal Node summary');
@@ -722,6 +744,13 @@ export function createStageRunner({
               'Promotion report producers or inventory incomplete',
             );
             reconcilePromotionReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-genesis') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Genesis report producers or inventory incomplete',
+            );
+            reconcileGenesisReports(fileDirectory, before.sources);
           }
           if (stage.expect.kind === 'account-recovery') {
             assert(

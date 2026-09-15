@@ -3655,3 +3655,14 @@ substituted intent, complete grouped test outcomes and bound source reports. Rep
 cannot establish that the mutation changed anything or that the mutant accepted that change.
 These postconditions corroborate the existing native/service assertions; they are not independent
 service or cryptographic replays. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
+
+
+## 2026-09-15 — Genesis wrapper credit includes historical inputs and semantic differences
+
+A current source fingerprint does not replace explicit pins for the historical reader invoked by
+the genesis fixture. Bind its actual Git expression and bytes through the existing before/after
+history checks, including reuse. Retained controls must distinguish lost checkpoint state and a
+wrong generation wrap while preserving unrelated candidate fields; recorded generated histories
+must be complete and within their declared bounds. These checks corroborate the existing native
+assertions and independent Node/OpenSSL oracle. They do not independently decrypt candidates or
+regenerate the seeded schedule. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).
