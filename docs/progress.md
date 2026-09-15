@@ -55,38 +55,35 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Recovery wrapper integration is signed and verified as `4e8a8f3a`.
+**Roadmap checkpoint.** Authority wrapper integration is signed and verified as `e18a77df`.
 All catalogue/test-file adapters are integrated. Counts remain **628 obligations, 291 required files,
-272 general files/2,198 dispositions (11 not applicable)**. Authority resolves one command and one
-campaign row: **zero test-file /91 command /59 campaign** remain unresolved, down from 152 to 150.
+272 general files/2,198 dispositions (11 not applicable)**. Promotion resolves one command and one
+campaign: **zero test-file /90 command /58 campaign** remain unresolved, down from 150 to 148.
 These are integration counts, not a passing aggregate.
 
-**Just completed.** The actual authority wrapper preserves five-file order, default Node concurrency,
+**Just completed.** Promotion preserves the actual two-file grouped selection, default concurrency,
 120-second bound and five-second grace. Owned execution adds terminal reporting, a disposable browser
-and six retained reports. The adapter checks all 14 outcomes, successful summary, owned source hashes
-and the actual substituted-root/replayed-nonce distinctions. Archived proof signatures are checked
-independently with Node crypto; self-signatures establish neither trusted roots nor fresh challenges.
-The owned Node census is the case authority, with JUnit/logs as auxiliary evidence. Standalone behavior
-and the production protocol are unchanged.
+and six retained reports. Check all 18 cases, successful summary and owned source hashes; require the
+observed eligible service mutant and actual acceptance of the substituted intent. Enriched reports
+retain flags/status and original/substituted/accepted IDs. These corroborate existing assertions;
+they do not independently replay service state or browser authentication. JUnit/logs are auxiliary.
 
-The final epoch passes **81 cases in six executions**: 42 planning, 14 authority and 25 recovery
-regression cases, followed by exact authority receipt reuse. Authority takes **30.635s /120s**,
-including 160 generated service and 40 generated native preflight histories. Every group drains and
-all six authority reports survive checkout deletion. Four new infrastructure cases include 100
-signed-report pairs with ten invalid variants each, directed corruptions and missing files. Six
-synthetic process runs and two deliberate faults discriminate; their case claims are not real tests.
-The new code and evidence are uncommitted.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
+The epoch passes **78 cases in six executions**: 46 planning, 18 promotion and 14 authority regression
+cases, followed by exact promotion receipt reuse. Promotion takes **56.497s /120s**, including
+120 generated service and 45 native histories. Every group drains; six reports survive checkout
+removal. Four new infrastructure cases include 100 generated control pairs with eight invalid
+variants each, directed corruptions and missing files. Six synthetic process runs and two deliberate
+faults discriminate; their case claims are not real Account tests. New code and evidence are uncommitted.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
 
-**Preserved observations.** No new validation failure occurs. The previous stale wrapper assertion,
-core browser-startup SIGABRT, older orphan/headroom observations, report setup failures and all
-failure/cancellation/latency receipts retain their evidence. Resolved authority assertions replace
-its previous blocked disposition while checks for unintegrated wrappers remain.
+**Preserved observations.** No new campaign/test failure occurs. Earlier stale wrapper assertions,
+core browser-startup SIGABRT, orphan/headroom observations and failure/cancellation/latency receipts
+retain their evidence. Promotion's blocked assertion advances to an explicit positive disposition.
 
-**Next bounded phase.** Account promotion wrapper integration with exact grouped selection, owned
-reports and semantic postconditions, then further bounded wrapper families. Optional outputs in
-unintegrated locations still need explicit treatment. File custody is cooperative bounded polling,
-not a disk quota or hostile-code sandbox.
+**Next bounded phase.** Account genesis wrapper integration with exact grouped selection, owned
+reports and semantic postconditions, then further wrapper families. Optional outputs in unintegrated
+locations still need explicit treatment. File custody uses cooperative bounded polling, not a disk
+quota or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

@@ -3645,3 +3645,13 @@ mutant acceptance of the supplied pin and independently valid signatures over th
 bytes. A self-signature alone supplies neither the expected trust anchor nor a fresh challenge.
 Preserve actual grouped execution and its exact case census; report labels and exit zero are
 insufficient. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
+
+
+## 2026-09-15 — Promotion controls retain actual mutation and acceptance observations
+
+The promotion wrapper must retain the observed service eligibility result and all three intent
+identities from its MAC control. Require baseline refusal, mutant acceptance of an actually
+substituted intent, complete grouped test outcomes and bound source reports. Report labels alone
+cannot establish that the mutation changed anything or that the mutant accepted that change.
+These postconditions corroborate the existing native/service assertions; they are not independent
+service or cryptographic replays. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).

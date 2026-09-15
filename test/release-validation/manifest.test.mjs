@@ -102,6 +102,204 @@ function authorityEvidence(
   };
 }
 
+import {
+  promotionCampaign,
+  promotionCampaignStage,
+  promotionFiles,
+  promotionReports,
+  reconcilePromotionReports,
+  reconcilePromotionControls,
+} from '../../scripts/release-validation/account-promotion-wrapper.mjs';
+
+function promotionEvidence(originalId = 'ab'.repeat(16), substitutedId = 'cd'.repeat(16)) {
+  return {
+    current: {
+      baseline: 'refused',
+      mutant: 'accepted-abandoned-account',
+      baselineOk: false,
+      mutantOk: true,
+      acceptedStatus: 'eligible',
+    },
+    mac: {
+      baseline: 'refused',
+      mutant: 'accepted-substituted-intent',
+      originalId,
+      substitutedId,
+      acceptedId: substitutedId,
+    },
+  };
+}
+
+test('promotion wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-promotion');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', promotionCampaign]);
+  assert.equal(stage.expect.cases.length, 18);
+  assert.deepEqual(
+    [...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))],
+    promotionFiles,
+  );
+  assert.deepEqual(stage.fileOutputs.required, promotionReports);
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'promotion-filter',
+    argv: ['node', promotionCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:promotion-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('promotion wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = promotionCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 120001 },
+    { graceMs: 5001 },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('promotion reports require complete successful output and exact wrapper source pins', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-promotion-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = promotionEvidence();
+  const sources = [
+    { path: 'package.json', sha256: 'a'.repeat(64) },
+    { path: 'src/crdt/example.ts', sha256: 'b'.repeat(64) },
+    { path: 'wasm/journal-seal/seal.generated.ts', sha256: 'c'.repeat(64) },
+    ...[
+      'src/account/recoveryOwner.ts',
+      'test/account-authority/browser.ts',
+      'test/account-core/fixtures.mjs',
+      'test/account-core/worker.mjs',
+      'test/account-recovery/fixtures.mjs',
+    ].map((path) => ({ path, sha256: 'e'.repeat(64) })),
+  ];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-current-state.json': controls.current,
+    'control-mac.json': controls.mac,
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcilePromotionReports(directory, sources);
+  const faults = [
+    (r) => {
+      r['summary.json'].status = 'failed';
+    },
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'error';
+    },
+    (r) => {
+      r['summary.json'].completedAt = 'invalid';
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'].pop();
+    },
+    (r) => {
+      r['sources.json'][1].sha256 = 'd'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-current-state.json'].baseline = 'accepted';
+    },
+    (r) => {
+      r['control-mac.json'].acceptedId = r['control-mac.json'].originalId;
+    },
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcilePromotionReports(directory, sources));
+  }
+  for (const file of promotionReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcilePromotionReports(directory, sources));
+  }
+});
+
+test('100 generated promotion control pairs reject ineffective mutations and inconsistent acceptance', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 16, maxLength: 16 }), (bytes) => {
+      const changed = Buffer.from(bytes);
+      changed[0] ^= 1;
+      const good = promotionEvidence(Buffer.from(bytes).toString('hex'), changed.toString('hex'));
+      reconcilePromotionControls(good.current, good.mac);
+      const faults = [
+        (r) => {
+          r.current.baselineOk = true;
+        },
+        (r) => {
+          r.current.mutantOk = false;
+        },
+        (r) => {
+          r.current.acceptedStatus = 'abandoned';
+        },
+        (r) => {
+          r.mac.baseline = 'accepted';
+        },
+        (r) => {
+          r.mac.originalId = r.mac.substitutedId;
+        },
+        (r) => {
+          r.mac.acceptedId = r.mac.originalId;
+        },
+        (r) => {
+          delete r.mac.originalId;
+        },
+        (r) => {
+          r.mac.acceptedId += '00';
+        },
+      ];
+      for (const fault of faults) {
+        const bad = structuredClone(good);
+        fault(bad);
+        assert.throws(() => reconcilePromotionControls(bad.current, bad.mac));
+      }
+    }),
+    { seed: 150936, numRuns: 100 },
+  );
+});
+
 test('authority wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -559,7 +757,7 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-promotion/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-genesis/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

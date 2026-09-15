@@ -211,12 +211,13 @@ test(
     const f = await native(t),
       item = await f.ready('control'),
       original = await prepare(f.page, item);
-    await f.page.evaluate(async (slot) => {
+    const substitutedId = await f.page.evaluate(async (slot) => {
       const row = (await Harness.rows()).find(
         (r) => r.key[0] === slot && r.key[1] === 'application-upgrade',
       );
       row.value.id = 'ef'.repeat(16);
       await Harness.put(row.key, row.value);
+      return row.value.id;
     }, item.slotId);
     await assert.rejects(prepare(f.page, item), /authentication/);
     await f.page.evaluate(await bundle(true));
@@ -227,7 +228,13 @@ test(
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-mac.json'),
         JSON.stringify(
-          { baseline: 'refused', mutant: 'accepted-substituted-intent', acceptedId: accepted.id },
+          {
+            baseline: 'refused',
+            mutant: 'accepted-substituted-intent',
+            originalId: original.id,
+            substitutedId,
+            acceptedId: accepted.id,
+          },
           null,
           2,
         ),

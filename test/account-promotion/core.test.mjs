@@ -215,7 +215,8 @@ test('current-eligibility fault control accepts an abandoned account only when l
   await x.f.core.finishRecovery(x.proof);
   const input = { retryKey: x.account.retryKey, accountId: x.account.result.accountId };
   x.f.core.abandonPreparation(input);
-  assert.equal(x.f.core.pendingPreparation(input).ok, false);
+  const baseline = x.f.core.pendingPreparation(input);
+  assert.equal(baseline.ok, false);
   const bad = new AccountCore(x.f.path, policy);
   try {
     const accepted = bad.pendingPreparation(input);
@@ -224,7 +225,17 @@ test('current-eligibility fault control accepts an abandoned account only when l
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-current-state.json'),
-        JSON.stringify({ baseline: 'refused', mutant: 'accepted-abandoned-account' }, null, 2),
+        JSON.stringify(
+          {
+            baseline: 'refused',
+            mutant: 'accepted-abandoned-account',
+            baselineOk: baseline.ok,
+            mutantOk: accepted.ok,
+            acceptedStatus: accepted.state.status,
+          },
+          null,
+          2,
+        ),
       );
   } finally {
     bad.close();

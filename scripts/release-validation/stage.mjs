@@ -37,6 +37,11 @@ import {
   validateAuthorityCampaign,
   reconcileAuthorityReports,
 } from './account-authority-wrapper.mjs';
+import {
+  promotionCampaign,
+  validatePromotionCampaign,
+  reconcilePromotionReports,
+} from './account-promotion-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -94,6 +99,7 @@ export function validateStage(stage) {
       'account-core',
       'account-recovery',
       'account-authority',
+      'account-promotion',
       'vitest',
       'playwright',
       'content',
@@ -124,6 +130,7 @@ export function validateStage(stage) {
       'account-core',
       'account-recovery',
       'account-authority',
+      'account-promotion',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -165,6 +172,12 @@ export function validateStage(stage) {
     stage.variant === 'account-authority-campaign-v1'
   )
     validateAuthorityCampaign(stage);
+  if (
+    stage.expect.kind === 'account-promotion' ||
+    stage.argv[1] === promotionCampaign ||
+    stage.variant === 'account-promotion-campaign-v1'
+  )
+    validatePromotionCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -681,7 +694,9 @@ export function createStageRunner({
         } else {
           if (
             stage.argv.includes('--test') ||
-            ['account-core', 'account-recovery', 'account-authority'].includes(stage.expect.kind)
+            ['account-core', 'account-recovery', 'account-authority', 'account-promotion'].includes(
+              stage.expect.kind,
+            )
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
             assert(reported.summary, 'Missing terminal Node summary');
@@ -700,6 +715,13 @@ export function createStageRunner({
               'Authority report producers or inventory incomplete',
             );
             reconcileAuthorityReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-promotion') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Promotion report producers or inventory incomplete',
+            );
+            reconcilePromotionReports(fileDirectory, before.sources);
           }
           if (stage.expect.kind === 'account-recovery') {
             assert(

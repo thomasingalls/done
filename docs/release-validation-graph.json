@@ -3480,7 +3480,7 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 49,
+          "line": 59,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -9032,26 +9032,30 @@
           "test/release-validation/manifest.test.mjs"
         ]
       },
-      "declarations": 21,
+      "declarations": 25,
       "propertyFamilies": [
         {
-          "line": 227,
+          "line": 262,
           "form": "fc.property"
         },
         {
-          "line": 451,
+          "line": 425,
           "form": "fc.property"
         },
         {
-          "line": 537,
+          "line": 649,
           "form": "fc.property"
         },
         {
-          "line": 636,
+          "line": 735,
           "form": "fc.property"
         },
         {
-          "line": 849,
+          "line": 834,
+          "form": "fc.property"
+        },
+        {
+          "line": 1047,
           "form": "fc.property"
         }
       ],
@@ -11526,7 +11530,7 @@
     },
     {
       "path": "scripts/account-promotion/run.mjs",
-      "sha256": "059d20b7fc1b19748d76426989549473d7c5b97bca3dbb3fc34716b57952b5d6"
+      "sha256": "c1aae8f1b46df26ede6addbd1e3bc2b40f6b9f5db5abf05884538f3de5a7e39e"
     },
     {
       "path": "scripts/account-receive-driver/run.mjs",
@@ -12113,6 +12117,10 @@
       "sha256": "82bc55b87c3a14fd9c3cba9f4872868edff2674a659f2c88a54e71e39017f0ce"
     },
     {
+      "path": "scripts/release-validation/account-promotion-wrapper.mjs",
+      "sha256": "634d9e4fedb27af6f2abe03c52641a4599b1fd551dae18f282f559fc7e01dc10"
+    },
+    {
       "path": "scripts/release-validation/account-recovery-wrapper.mjs",
       "sha256": "5f894255c68fb78bc89fe9fd34912960c9412a2e43a8c69570ed3086df608543"
     },
@@ -12162,7 +12170,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "cf959701717a7d79a6940a0e8f2a3b34b7b5c5973f919635ed4f06b50522c309"
+      "sha256": "340966c14f756489a18ebeffafc9e99978586c47009bfc3239bf090c1b15d919"
     },
     {
       "path": "scripts/release-validation/file-outputs.mjs",
@@ -12210,7 +12218,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "c4c86384bf6a291b9a9c1f00d5a0dfdc6ee5b2bc81523a2e5ee3ddb4f8523ebc"
+      "sha256": "8f488041acbaafa78f17dfa3affd3b9c5a0403b5d8be426c03023d80e4122a5f"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -12282,7 +12290,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "c23ac7ab48c973bad86dba65f039b72de26739e2c585a8fe2583b97661f881ec"
+      "sha256": "e97e63aeb4bdd0455724294a321bb5729c966afe4e31c216a39f5fb8081120f9"
     },
     {
       "path": "scripts/release-validation/static-fixture.mjs",
@@ -13082,7 +13090,7 @@
     },
     {
       "path": "test/account-promotion/core.test.mjs",
-      "sha256": "5e3c7eee8177fdd329f6f97b52712eb01154176c5221ba2c3c43371ce85e1a2b"
+      "sha256": "8289a6ca99ea15a0bf9e5583056594e0a4a3fbdddcf71272a84171fd23996f86"
     },
     {
       "path": "test/account-promotion/fixtures.mjs",
@@ -13090,7 +13098,7 @@
     },
     {
       "path": "test/account-promotion/native.test.mjs",
-      "sha256": "fe5897b3475afc375b6a4dd92dbdad1b7a26020f4790d4edb1a82719104c78cc"
+      "sha256": "cfc009f231271d1a5226593e3faebeba5d6b341efa4a86046bf9f05c55f0ae29"
     },
     {
       "path": "test/account-receive-driver/browser.ts",
@@ -14090,7 +14098,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "57f9255dee469b213648cc803b34c9db9b60562e734f1fea3e4e2e7f8d8e369c"
+      "sha256": "01db8c2383fdcbc4f62412d9ae091adc55952856d25bec8d32a67eaa8764ec56"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -14162,7 +14170,7 @@
     },
     {
       "path": "test/release-validation/manifest.test.mjs",
-      "sha256": "9c3a055d09db724e16af6275a369087176e5cc50780d675dfa6f793becb1ef89"
+      "sha256": "dcb5b94d13d43d1bd485a3e69b220f653798f79a6ea327aad422cbbf321d2a91"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",

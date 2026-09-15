@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**150 obligations remain blocked: 91 command and 59 campaign rows; no test-file rows remain.**
+**148 obligations remain blocked: 90 command and 58 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 150 missing product tests. The compiler still refuses whole-release execution before
+they are not 148 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -3923,3 +3923,51 @@ browser, server, relay, device or deployment operation occurs. This phase is unc
 Account promotion wrapper integration with its own selected tests and report postconditions, then
 remaining wrappers/qualification repairs, immutable aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
+
+
+## 2026-09-15 — Account promotion wrapper integration
+
+Authority wrapper integration is signed and signature-verified as `e18a77df`. Integrate the actual
+promotion wrapper's core/native selection, order, default Node concurrency, 120-second bound and
+five-second grace. Owned execution adds the terminal reporter, disposable CDP browser and retained
+report directory; spec/JUnit output and standalone invocation remain. Exact argv with empty user
+environment aliases the campaign. Weaker result/report/browser contracts and altered invocation
+refuse; other wrappers retain their dispositions.
+
+Require six reports within 4 MiB /32 entries /one-level bounds: sources, summary, JUnit, log,
+current-state control and MAC control. Reconcile all 18 terminal cases, successful summary/code/no
+timeout and exact wrapper source hashes against complete owned inputs, including cross-family
+fixtures. The service control retains baseline/mutant success flags and observed eligible status.
+The MAC control now retains original, substituted and accepted intent IDs: a changed intent must
+actually be accepted by the mutant while the baseline refuses. Report checks corroborate the real
+assertions; they do not independently replay service state or browser authentication. The owned
+Node census is the case authority, with JUnit/log as auxiliary evidence. Failure diagnostics remain
+in the bounded tree. Production runtime and protocol checks are unchanged.
+
+The owned epoch passes **78 cases in six executions**: 46 planning cases in four complete suites,
+18 promotion cases and 14 authority regression cases. Promotion takes **56.497s /120s**;
+authority takes 33.131s /120s. Promotion includes the existing 120 generated service and
+45 generated native histories, before/after commit SIGKILL or renderer crashes, exact preparation
+resume, journal/content/identity preservation, abandonment retries, custody counter bounds,
+competing preparers and cancellation exclusion. Every process/browser group drains. A seventh
+request reuses the exact promotion receipt after the authority regression; all six reports remain
+after copied-checkout removal.
+
+Four new infrastructure cases cover exact invocation/ownership, eleven directed report corruptions,
+six missing files and 100 generated control pairs with eight invalid variants each. Five synthetic
+process controls distinguish valid reports from zero-exit failed summary, ineligible mutant result,
+unchanged intent and acceptance of the wrong intent. A sixth execution omits semantic reconciliation
+and accepts the invalid summary; an isolated adapter fault omits the actual-substitution check and
+accepts an unchanged intent. Both faults discriminate. Synthetic case claims are instrumentation,
+not Account executions. Planning, scoped lint/format, inventory/manifest and whitespace checks pass.
+No new campaign or test failure occurs; earlier failures remain preserved. The previous blocked
+promotion assertion advances to a positive exact-contract check.
+
+Counts remain **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not
+applicable)**. Four additional cases belong to an existing infrastructure file. Unresolved wrappers
+fall from 150 to **148: zero test-file /90 command /58 campaign**. Runtime, package/dependency,
+crypto-census/vector and F-17 debt bytes, prior archives and L-2's checkpoint remain unchanged. No
+personal browser, server, relay, device or deployment operation occurs. This phase is uncommitted.
+Next: Account genesis wrapper integration, then remaining wrappers/qualification repairs, immutable
+aggregate and private Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
