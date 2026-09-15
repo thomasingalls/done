@@ -1,4 +1,9 @@
 import {
+  inboundPrepCampaign,
+  validateInboundPrepCampaign,
+  reconcileInboundPrepReports,
+} from './account-inbound-prep-wrapper.mjs';
+import {
   serviceDeliveryCampaign,
   validateServiceDeliveryCampaign,
   reconcileServiceDeliveryReports,
@@ -161,6 +166,7 @@ export function validateStage(stage) {
       'account-decisions',
       'account-delivery',
       'account-service-delivery',
+      'account-inbound-prep',
       'vitest',
       'playwright',
       'content',
@@ -202,6 +208,7 @@ export function validateStage(stage) {
       'account-decisions',
       'account-delivery',
       'account-service-delivery',
+      'account-inbound-prep',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -309,6 +316,12 @@ export function validateStage(stage) {
     stage.variant === 'account-service-delivery-campaign-v1'
   )
     validateServiceDeliveryCampaign(stage);
+  if (
+    stage.expect.kind === 'account-inbound-prep' ||
+    stage.argv[1] === inboundPrepCampaign ||
+    stage.variant === 'account-inbound-prep-campaign-v1'
+  )
+    validateInboundPrepCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -316,7 +329,7 @@ export function validateStage(stage) {
       stage.argv.includes('--test') &&
       registrationModulePath(stage.argv.at(-1));
     assert(
-      ['vitest', 'account-outbound'].includes(stage.expect.kind) || module,
+      ['vitest', 'account-outbound', 'account-inbound-prep'].includes(stage.expect.kind) || module,
       'Unreviewed registration data adapter',
     );
     const inputs = stage.expect.dataInputs;
@@ -351,6 +364,7 @@ export function validateStage(stage) {
         'account-decisions',
         'account-delivery',
         'account-service-delivery',
+        'account-inbound-prep',
       ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
@@ -846,6 +860,7 @@ export function createStageRunner({
             'account-decisions',
             'account-delivery',
             'account-service-delivery',
+            'account-inbound-prep',
           ].includes(stage.expect.kind)
         ) {
           assert(
@@ -869,7 +884,9 @@ export function createStageRunner({
             reconcileDecisionsReports(fileDirectory, before.sources);
           else if (stage.expect.kind === 'account-delivery')
             reconcileDeliveryReports(fileDirectory, before.sources);
-          else reconcileServiceDeliveryReports(fileDirectory, before.sources);
+          else if (stage.expect.kind === 'account-service-delivery')
+            reconcileServiceDeliveryReports(fileDirectory, before.sources);
+          else reconcileInboundPrepReports(fileDirectory, before.sources);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -892,6 +909,7 @@ export function createStageRunner({
               'account-decisions',
               'account-delivery',
               'account-service-delivery',
+              'account-inbound-prep',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');

@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**128 obligations remain blocked: 80 command and 48 campaign rows; no test-file rows remain.**
+**126 obligations remain blocked: 79 command and 47 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 128 missing product tests. The compiler still refuses whole-release execution before
+they are not 126 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -42,7 +42,7 @@ All eleven catalogue adapters (163 cases / 54 mutations) and all general test-fi
 adapters are integrated. After selected F-17 combination integration, the current set is
 **272 files / 2,198 dispositions, including 11 explicitly not applicable**.
 That includes the complete 123-file / 678-case Account group, other Node suites, runner self-tests
-and browser application files. The 19 infrastructure test files account for the other required files.
+and browser application files. The 20 infrastructure test files account for the other required files.
 These are reviewed execution contracts backed by bounded phase receipts at their recorded revisions;
 they are not a passing full aggregate at the current head.
 
@@ -4512,3 +4512,45 @@ to **128: zero test-file /80 command /48 campaign**. Runtime, dependencies, cryp
 previous archives and L-2 remain unchanged. No personal browser/server/relay/device/deployment work occurs.
 Next: transport wrapper disposition/integration, then remaining wrapper families and qualification repairs,
 immutable aggregate and private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).
+
+
+## 2026-09-15 — Account inbound preparation wrapper integration
+
+Service-delivery is signed and verified as `9234a706`. The intervening transport/driver disposition was
+already complete: both whole campaigns are excluded, with shared tests still required. Do not revive
+those retired wrappers. Inbound preparation now preserves two original Vitest invocations, maxWorkers=2,
+verbose/JUnit output, 60-second child limits and all 72 cases (25 preparation, 47 primitives). Owned
+execution adds ordered child reports, a 120-second aggregate/five-second grace, two pinned JSON vector
+registration inputs and sixteen required report files within 4 MiB /40 entries /two levels. No browser or
+historical source read is required. Multi-file Vitest module reconciliation compares the exact unordered
+census so scheduling order cannot cause false refusal; duplicates, missing/failed modules and retries fail.
+
+The existing 300 generated histories (seed 9142026, 4–24 actions) retain actual post-action cursor, visible
+text, pending flag, capture count and exact ordered wire/proof ledger hash, plus final drain observations.
+Reports save after each complete history and on caught failures; process death can lose the active history.
+An independent event-accounting oracle applies gap/duplicate/close/before/after rules and replays the
+fixture's plaintext Yjs baseline/updates without importing the candidate receiver. It corroborates text,
+pending dependencies, original wire/proof identity and no recapture. This report check does not independently
+bind plaintext to encrypted envelopes/signatures or reproduce native storage. Existing test assertions
+still perform crypto verification and full sameDocState comparison. Seven counterexamples now retain actual
+observations, including accepted versus held-baseline refusal, lost genesis, missing split-commit content,
+pending deletion, early promotion, global cursor and relabelled bytes.
+
+The epoch passes **205 cases in seven executions**: 101 planning cases in five suites, 72 inbound preparation
+and 32 unchanged service-delivery regression cases. Inbound preparation takes **17.409s /120s**;
+service regression takes 23.721s /95s. All groups drain; an eighth request reuses the exact inbound
+receipt and all sixteen files survive checkout removal. The unchanged 70-case manifest suite passes in
+54.783s /60s, with no loaded-host headroom claim. Five new infrastructure cases include two 160-run
+corruption campaigns (150959/150960). Eight synthetic process runs and two omitted-check mutations reject
+incomplete zero-exit evidence and discriminate omitted semantic/child-Vitest reconciliation. These are not
+additional receiver executions. An initial focused test used a campaign-row ID instead of the existing
+retired command exclusion's argv; its failure log remains. The first synthetic control root omitted the
+mandatory vector inputs and was refused before child launch; copying those unchanged inputs fixes setup.
+Both setup logs remain. No product failure or limit relaxation occurs.
+
+Totals stay **629 obligations /292 required files** and 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 128 to **126: zero test-file /79 command /47 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives and L-2 remain unchanged.
+Next: inbound-codecs wrapper integration, then remaining families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).

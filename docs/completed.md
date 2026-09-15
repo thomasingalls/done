@@ -8333,3 +8333,45 @@ to **128: zero test-file /80 command /48 campaign**. Runtime, dependencies, cryp
 previous archives and L-2 remain unchanged. No personal browser/server/relay/device/deployment work occurs.
 Next: transport wrapper disposition/integration, then remaining wrapper families and qualification repairs,
 immutable aggregate and private human rehearsal. [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).
+
+
+## 2026-09-15 — Account inbound preparation wrapper integration
+
+Service-delivery is signed and verified as `9234a706`. The intervening transport/driver disposition was
+already complete: both whole campaigns are excluded, with shared tests still required. Do not revive
+those retired wrappers. Inbound preparation now preserves two original Vitest invocations, maxWorkers=2,
+verbose/JUnit output, 60-second child limits and all 72 cases (25 preparation, 47 primitives). Owned
+execution adds ordered child reports, a 120-second aggregate/five-second grace, two pinned JSON vector
+registration inputs and sixteen required report files within 4 MiB /40 entries /two levels. No browser or
+historical source read is required. Multi-file Vitest module reconciliation compares the exact unordered
+census so scheduling order cannot cause false refusal; duplicates, missing/failed modules and retries fail.
+
+The existing 300 generated histories (seed 9142026, 4–24 actions) retain actual post-action cursor, visible
+text, pending flag, capture count and exact ordered wire/proof ledger hash, plus final drain observations.
+Reports save after each complete history and on caught failures; process death can lose the active history.
+An independent event-accounting oracle applies gap/duplicate/close/before/after rules and replays the
+fixture's plaintext Yjs baseline/updates without importing the candidate receiver. It corroborates text,
+pending dependencies, original wire/proof identity and no recapture. This report check does not independently
+bind plaintext to encrypted envelopes/signatures or reproduce native storage. Existing test assertions
+still perform crypto verification and full sameDocState comparison. Seven counterexamples now retain actual
+observations, including accepted versus held-baseline refusal, lost genesis, missing split-commit content,
+pending deletion, early promotion, global cursor and relabelled bytes.
+
+The epoch passes **205 cases in seven executions**: 101 planning cases in five suites, 72 inbound preparation
+and 32 unchanged service-delivery regression cases. Inbound preparation takes **17.409s /120s**;
+service regression takes 23.721s /95s. All groups drain; an eighth request reuses the exact inbound
+receipt and all sixteen files survive checkout removal. The unchanged 70-case manifest suite passes in
+54.783s /60s, with no loaded-host headroom claim. Five new infrastructure cases include two 160-run
+corruption campaigns (150959/150960). Eight synthetic process runs and two omitted-check mutations reject
+incomplete zero-exit evidence and discriminate omitted semantic/child-Vitest reconciliation. These are not
+additional receiver executions. An initial focused test used a campaign-row ID instead of the existing
+retired command exclusion's argv; its failure log remains. The first synthetic control root omitted the
+mandatory vector inputs and was refused before child launch; copying those unchanged inputs fixes setup.
+Both setup logs remain. No product failure or limit relaxation occurs.
+
+Totals stay **629 obligations /292 required files** and 272 general files /2,198 dispositions (11 not
+applicable). Unresolved integration falls from 128 to **126: zero test-file /79 command /47 campaign**.
+Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives and L-2 remain unchanged.
+Next: inbound-codecs wrapper integration, then remaining families/qualification repairs, immutable
+aggregate and private human rehearsal. No personal browser/server/relay/device/deployment work occurs.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).

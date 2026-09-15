@@ -58,8 +58,12 @@ export function reconcileVitest(expected, actual, nonce) {
   assert.equal(actual.reason, 'passed', 'Missing or failed terminal Vitest run');
   assert.deepEqual(actual.errors, [], 'Vitest reported errors');
   assert.deepEqual(
-    actual.modules.map((m) => ({ file: m.file, state: m.state })),
-    expected.files.map((file) => ({ file, state: 'passed' })),
+    actual.modules
+      .map((m) => ({ file: m.file, state: m.state }))
+      .sort((a, b) => a.file.localeCompare(b.file)),
+    expected.files
+      .map((file) => ({ file, state: 'passed' }))
+      .sort((a, b) => a.file.localeCompare(b.file)),
     'Vitest module census differs',
   );
   assert(Array.isArray(actual.cases) && actual.cases.length, 'Empty Vitest report');

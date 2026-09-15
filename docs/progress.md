@@ -55,34 +55,36 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-15
 ```
 
-**Roadmap checkpoint.** Delivery wrapper integration is signed and verified as `6ca643f5`.
-All catalogue/test-file adapters are integrated. A new resolved infrastructure file changes the inventory
-to **629 obligations /292 required files**; general coverage stays **272 files /2,198 dispositions
-(11 not applicable)**. Service-delivery resolves one command and campaign: **zero test-file /80 command
-/48 campaign** remain unresolved, down from 130 to 128. These are integration counts, not a passing aggregate.
+**Roadmap checkpoint.** Service-delivery integration is signed and verified as `9234a706`.
+Transport/driver whole campaigns were already excluded; shared tests remain required. All catalogue/test-file
+adapters are integrated. Inventory stays **629 obligations /292 required files** and **272 general files
+/2,198 dispositions (11 not applicable)**. Inbound preparation resolves one command and campaign:
+**zero test-file /79 command /47 campaign** remain unresolved, down from 128 to 126. These are integration
+counts, not a passing aggregate.
 
-**Just completed.** Service-delivery preserves all four required service files/32 cases, original Node
-file concurrency/reporters and 90-second child bound. Its retired v8 browser child is removed; six existing
-exclusions and required v9 interoperability remain. Owned execution adds a 95-second aggregate bound,
-ordered trace and ten required files, without a browser. Normal/mutant outcomes and 80 complete generated
-command histories support ledger, response and cold-retry reconciliation; signatures/database replay
-remain outside that report oracle. Invoked old-reader bytes are pinned and their Git read is bounded.
+**Just completed.** Inbound preparation preserves both original Vitest invocations/72 cases, maxWorkers=2,
+reporters and 60-second child bounds. Owned execution adds 120-second aggregate/five-second grace, pinned
+vector registration inputs and sixteen required reports. Exact multi-file module census now tolerates
+scheduling order while rejecting duplicate/missing/failed modules. An independent event-accounting and
+plaintext Yjs replay oracle checks 300 histories' actual cursor/text/pending/capture/ledger and final drain.
+Seven controls retain observed failures. Crypto binding, full-state comparison and native storage remain
+outside this report oracle; actual test assertions and separate native suites keep those responsibilities.
 
-The epoch passes **159 cases in seven executions**: 96 planning, 32 service and 31 delivery regression,
-followed by exact service receipt reuse. Service takes **23.776s /95s**. Every group drains and ten
-reports survive checkout removal. Five new infrastructure cases include two 160-run corruption campaigns;
-eight synthetic runs and two omitted checks discriminate. The manifest suite remains at 70 cases and
-60 seconds, passing in 56.718s. This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).
+The epoch passes **205 cases in seven executions**: 101 planning, 72 inbound and 32 service-delivery
+regression, then exact inbound reuse. Inbound takes **17.409s /120s**; all groups drain and sixteen
+files survive checkout removal. Five new infrastructure cases include two 160-run corruption campaigns;
+eight synthetic runs and two omitted checks discriminate. The unchanged manifest suite passes in
+54.783s /60s. This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).
 
-**Preserved observations.** No new campaign failure occurs. The initial archive-budget refusal is
-retained; XZ preserves the complete evidence under the same ceiling. The prior delivery missing-unit-report and registration
-failures, capture-oracle failures, planning ceilings, startup SIGABRT, owner/headroom and reporter
-observations remain in their archives. No loaded-host reliability or immutable aggregate claim is added.
+**Preserved observations.** The focused retired-exclusion identifier assertion failure is retained and
+corrected before the owned epoch. The first synthetic root omitted mandatory vector files; pre-launch
+validation refused it, and the setup was corrected without changing the adapter. Prior delivery/capture, registration, planning ceilings, startup SIGABRT,
+owner/headroom and reporter observations remain in their archives. No loaded-host reliability or immutable
+aggregate claim is added. File custody uses cooperative bounded polling, not a disk quota or sandbox.
 
-**Next bounded phase.** Transport wrapper disposition/integration, then further families, serially.
+**Next bounded phase.** Inbound-codecs wrapper integration, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
-File custody uses cooperative bounded polling, not a disk quota or hostile-code sandbox.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

@@ -3760,3 +3760,14 @@ in another bounded infrastructure file; the existing manifest suite retains its 
 Retain observed baseline/mutant results and each generated command's ledger/response/recovery evidence.
 Report reconciliation corroborates execution without claiming independent signature or database replay.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).
+
+
+## 2026-09-15 — Inbound preparation preserves model scope and unordered module census
+
+Transport and driver whole-wrapper exclusions already exist; retain their required shared tests rather
+than reintegrating retired browser paths. Inbound preparation keeps original child commands/concurrency
+and bounds. Reconcile exact multi-file Vitest census independently of scheduling order, preserving duplicate,
+omission, mode and retry checks. Independently replay plaintext fixture updates and account for delivery
+history while retaining crypto/full-state assertions in the actual tests. Atomic model evidence does not
+establish IndexedDB safety or production receiver behavior.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).

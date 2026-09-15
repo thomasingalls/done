@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -21,6 +22,18 @@ import {
 } from './account-inbound/fixtures';
 
 const hex = (b: Uint8Array) => Buffer.from(b).toString('hex');
+const observedReceiver = (r: CandidateReceiver) => ({
+  cursor: { ...r.cursor },
+  text: r.doc.getText('master').toString(),
+  pending: hasPendingUpdates(r.doc),
+  captures: r.captures.length,
+  ledgerHash: createHash('sha256')
+    .update(
+      JSON.stringify(r.disk.events.map((e) => [e.kind, e.publisher, e.position, e.wire, e.proof])),
+    )
+    .digest('hex'),
+});
+
 const save = (name: string, value: unknown) => {
   if (process.env['ACCOUNT_REPORT_DIR']) {
     mkdirSync(process.env['ACCOUNT_REPORT_DIR'], { recursive: true });
@@ -339,7 +352,13 @@ describe('inbound candidate contract — synthetic authority and atomic model on
     await fc.assert(
       fc.asyncProperty(fc.array(action, { minLength: 4, maxLength: 24 }), async (history) => {
         const { f, r } = setup(),
-          accepted: FixtureEntry[] = [];
+          accepted: FixtureEntry[] = [],
+          evidence = {
+            history,
+            observations: [] as ReturnType<typeof observedReceiver>[],
+            final: null as ReturnType<typeof observedReceiver> | null,
+          };
+        histories.push(evidence);
         try {
           for (const [n, op] of history.entries()) {
             const e = f.entries[op.index]!,
@@ -366,6 +385,7 @@ describe('inbound candidate contract — synthetic authority and atomic model on
               r.compact();
               r.restart();
             }
+            evidence.observations.push(observedReceiver(r));
             checkOracle(r, f, accepted);
           }
           for (const e of f.entries) {
@@ -375,17 +395,26 @@ describe('inbound candidate contract — synthetic authority and atomic model on
           }
           r.compact();
           r.restart();
+          evidence.final = observedReceiver(r);
           checkOracle(r, f, accepted);
           expect(r.doc.getText('master').toString()).toBe(f.expected);
           expect(hasPendingUpdates(r.doc)).toBe(false);
-          histories.push(history);
+          save('generated', {
+            seed: 9142026,
+            status: 'running',
+            runs: histories.length,
+            histories,
+          });
+        } catch (error) {
+          save('generated', { seed: 9142026, status: 'failed', runs: histories.length, histories });
+          throw error;
         } finally {
           r.dispose();
         }
       }),
       { seed: 9142026, numRuns: 300 },
     );
-    save('generated', { seed: 9142026, runs: histories.length, histories });
+    save('generated', { seed: 9142026, status: 'passed', runs: histories.length, histories });
   }, 60_000);
 });
 
@@ -398,10 +427,15 @@ describe('effective counterexamples to tempting receive shortcuts', () => {
       Y.applyUpdate(complete, f.baseline);
       Y.applyUpdate(omittedDelete, f.baseline);
       complete.getText('master').delete(0, 1);
-      expect(Y.encodeStateVector(complete)).toEqual(Y.encodeStateVector(omittedDelete));
-      expect(Y.equalSnapshots(Y.snapshot(complete), Y.snapshot(omittedDelete))).toBe(false);
+      const sameStateVector = Buffer.from(Y.encodeStateVector(complete)).equals(
+          Buffer.from(Y.encodeStateVector(omittedDelete)),
+        ),
+        sameSnapshot = Y.equalSnapshots(Y.snapshot(complete), Y.snapshot(omittedDelete));
+      expect(sameStateVector).toBe(true);
+      expect(sameSnapshot).toBe(false);
       save('control-deletion-coverage', {
-        sameStateVector: true,
+        sameStateVector,
+        sameSnapshot,
         complete: complete.getText('master').toString(),
         omittedDeletion: omittedDelete.getText('master').toString(),
       });
@@ -423,27 +457,33 @@ describe('effective counterexamples to tempting receive shortcuts', () => {
           epoch: 1,
           parent: ZERO_REFUSAL,
         };
-      expect(
-        (await verifyPositionResponse(e.proof, { ...subject, previous: forgedBase }, r.authority))
-          .kind,
-      ).toBe('accepted');
-      expect(
-        (await verifyPositionResponse(e.proof, { ...subject, previous: ZERO_REFUSAL }, r.authority))
-          .kind,
-      ).toBe('unknown');
+      const attackerKind = (
+          await verifyPositionResponse(e.proof, { ...subject, previous: forgedBase }, r.authority)
+        ).kind,
+        heldKind = (
+          await verifyPositionResponse(e.proof, { ...subject, previous: ZERO_REFUSAL }, r.authority)
+        ).kind;
+      expect(attackerKind).toBe('accepted');
+      expect(heldKind).toBe('unknown');
       await expect(deliver(r, e)).rejects.toThrow('Unproved');
       const empty = new Y.Doc();
+      let missingGenesis;
       try {
         for (const v of f.entries) for (const u of v.updates) Y.applyUpdate(empty, u);
-        expect(hasPendingUpdates(empty)).toBe(true);
+        missingGenesis = {
+          pending: hasPendingUpdates(empty),
+          text: empty.getText('master').toString(),
+          expected: f.expected,
+        };
+        expect(missingGenesis.pending).toBe(true);
         expect(empty.getText('master').toString()).not.toBe(f.expected);
       } finally {
         empty.destroy();
       }
       save('control-baseline', {
-        signatureWithAttackerBaseline: 'accepted',
-        heldBaseline: 'unknown',
-        missingGenesis: 'suffix stays pending',
+        signatureWithAttackerBaseline: attackerKind,
+        heldBaseline: heldKind,
+        missingGenesis,
       });
     } finally {
       r.dispose();
@@ -455,12 +495,16 @@ describe('effective counterexamples to tempting receive shortcuts', () => {
       await deliver(r, f.entries[0]!);
       r.disk.content = [];
       expect(r.cursor[A]).toBe(1);
-      expect(() => r.restart()).toThrow('Content does not cover');
-      save('control-split', {
-        received: 1,
-        contentRecords: 0,
-        oracle: 'cold replay rejects uncovered progress',
-      });
+      const received = r.cursor[A],
+        contentRecords = r.disk.content.length;
+      let error;
+      try {
+        r.restart();
+      } catch (e) {
+        error = String(e);
+      }
+      expect(error).toContain('Content does not cover');
+      save('control-split', { received, contentRecords, error });
     } finally {
       r.dispose();
     }
@@ -503,6 +547,7 @@ describe('effective counterexamples to tempting receive shortcuts', () => {
       save('control-early-promotion', {
         beforeKill: live.getText('master').toString(),
         coldWithoutRemoteCommit: cold.getText('master').toString(),
+        pending: hasPendingUpdates(cold),
       });
     } finally {
       live.destroy();
@@ -570,8 +615,8 @@ describe('effective counterexamples to tempting receive shortcuts', () => {
       save('control-relabel', {
         originalPublisher: A,
         newCapsulePublisher: relabeled.credential,
-        sameUpdate: true,
-        correctReceiverCapsules: 0,
+        sameUpdate: Buffer.from(relabeled.sources[0]!.bytes).equals(Buffer.from(e.updates[0]!)),
+        correctReceiverCapsules: r.captures.length,
       });
     } finally {
       r.dispose();

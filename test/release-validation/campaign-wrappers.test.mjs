@@ -1,3 +1,13 @@
+import { createHash } from 'node:crypto';
+import * as Y from 'yjs';
+import {
+  inboundPrepCampaign,
+  inboundPrepCampaignStage,
+  inboundPrepSteps,
+  inboundPrepReports,
+  reconcileInboundPrepReports,
+  reconcileInboundPrepEvidence,
+} from '../../scripts/release-validation/account-inbound-prep-wrapper.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fc from 'fast-check';
@@ -301,5 +311,314 @@ test('160 generated service history corruptions reject lost observations, change
       }
     }),
     { seed: 150958, numRuns: 160 },
+  );
+});
+
+// Deliberately synthetic report oracle control. No model, receiver or crypto encoder
+// is imported; these tiny plaintext updates only exercise report reconciliation.
+function inboundEvidence() {
+  const docs = [new Y.Doc({ gc: false }), new Y.Doc({ gc: false }), new Y.Doc({ gc: false })];
+  docs.forEach((d, i) => (d.clientID = 700 + i));
+  const [base, a, b] = docs,
+    hex = (bytes) => Buffer.from(bytes).toString('hex');
+  const update = (doc, f) => {
+    const sv = Y.encodeStateVector(doc);
+    f();
+    return hex(Y.encodeStateAsUpdate(doc, sv));
+  };
+  try {
+    base.getText('master').insert(0, 'base');
+    const baseline = hex(Y.encodeStateAsUpdate(base));
+    Y.applyUpdate(a, Buffer.from(baseline, 'hex'));
+    Y.applyUpdate(b, Buffer.from(baseline, 'hex'));
+    const a1 = update(a, () => a.getText('master').insert(4, 'X'));
+    Y.applyUpdate(b, Buffer.from(a1, 'hex'));
+    const b1 = update(b, () => b.getText('master').insert(5, 'Y')),
+      b2 = update(b, () => b.getText('master').delete(4, 1)),
+      a2 = update(a, () => a.getText('master').insert(5, 'Z'));
+    const entries = [a1, a2, b1, b2].map((u, i) => ({
+      publisher: (i < 2 ? '11' : '22').repeat(16),
+      position: (i % 2) + 1,
+      envelope: 'aa' + i + '0',
+      proof: 'bb' + i + '0',
+      request: 'cc',
+      page: 'dd',
+      previous: '00'.repeat(32),
+      link: 'ee'.repeat(32),
+      updates: [u],
+    }));
+    const observe = (indices) => {
+      const doc = new Y.Doc({ gc: false }),
+        cursor = {};
+      try {
+        Y.applyUpdate(doc, Buffer.from(baseline, 'hex'));
+        for (const i of indices) {
+          const e = entries[i];
+          cursor[e.publisher] = e.position;
+          Y.applyUpdate(doc, Buffer.from(e.updates[0], 'hex'));
+        }
+        return {
+          cursor,
+          text: doc.getText('master').toString(),
+          pending: doc.store.pendingStructs !== null || doc.store.pendingDs !== null,
+          captures: 0,
+          ledgerHash: createHash('sha256')
+            .update(
+              JSON.stringify(
+                indices.map((i) => [
+                  'received',
+                  entries[i].publisher,
+                  entries[i].position,
+                  entries[i].envelope,
+                  entries[i].proof,
+                ]),
+              ),
+            )
+            .digest('hex'),
+        };
+      } finally {
+        doc.destroy();
+      }
+    };
+    // Gap, pre-commit cut, pending dependency, duplicate, close, accepted cut-after,
+    // second publisher continuation and final dependency drain are all represented.
+    const actions = [
+        [1, 'none', false],
+        [0, 'before', false],
+        [2, 'none', false],
+        [2, 'none', false],
+        [0, 'none', true],
+        [3, 'after', false],
+        [0, 'none', false],
+      ],
+      accepted = [[], [], [2], [2], [2], [2, 3], [2, 3, 0]],
+      final = observe([2, 3, 0, 1]);
+    const h = {
+      history: actions.map(([index, cut, close]) => ({ index, cut, close, compact: true })),
+      observations: accepted.map(observe),
+      final,
+    };
+    return {
+      'fixtures.json': {
+        baseline,
+        baselineId: '00'.repeat(32),
+        authority: { reader: '33'.repeat(16) },
+        expected: final.text,
+        entries,
+      },
+      'generated.json': {
+        status: 'passed',
+        seed: 9142026,
+        runs: 300,
+        histories: Array.from({ length: 300 }, () => structuredClone(h)),
+      },
+      'control-deletion-coverage.json': {
+        sameStateVector: true,
+        sameSnapshot: false,
+        complete: 'ase',
+        omittedDeletion: 'base',
+      },
+      'control-baseline.json': {
+        signatureWithAttackerBaseline: 'accepted',
+        heldBaseline: 'unknown',
+        missingGenesis: { pending: true, text: '', expected: final.text },
+      },
+      'control-split.json': {
+        received: 1,
+        contentRecords: 0,
+        error: 'Error: Content does not cover',
+      },
+      'control-pending.json': { expected: final.text, afterDroppingPendingDeletion: 'baseX' },
+      'control-early-promotion.json': {
+        beforeKill: 'baseXlocal',
+        coldWithoutRemoteCommit: 'base',
+        pending: true,
+      },
+      'control-global-cursor.json': { expected: final.text, actual: 'baseXZ', cursor: 2 },
+      'control-relabel.json': {
+        originalPublisher: '11'.repeat(16),
+        newCapsulePublisher: '33'.repeat(16),
+        sameUpdate: true,
+        correctReceiverCapsules: 0,
+      },
+    };
+  } finally {
+    docs.forEach((d) => d.destroy());
+  }
+}
+test('inbound preparation wrapper binds two exact invocations, 72 cases and both vector inputs', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-inbound-prep');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 72);
+  assert.equal(s.deadlineMs, 120000);
+  assert.equal(s.fixture, undefined);
+  assert.deepEqual(s.fileOutputs.required, inboundPrepReports);
+  assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: { kind: 'chromium-cdp', startupMs: 15000 } },
+    { deadlineMs: 120001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, dataInputs: s.expect.dataInputs.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({
+    id: 'inbound-prep-filter',
+    argv: ['node', inboundPrepCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:inbound-prep-filter:0')
+      .blocked,
+  );
+  for (const retired of ['transport', 'driver'])
+    assert(m.exclusions.some((r) => r.argv?.[1] === 'scripts/account-' + retired + '/run.mjs'));
+});
+test('inbound preparation accepts module scheduling order but rejects missing, duplicate, retried or stale child reports', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-inbound-prep-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = inboundPrepCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const reports = s.expect.steps.map((step) => ({
+    schema: 1,
+    adapter: 'vitest-v1',
+    nonce: 'fresh:' + step.name,
+    reason: 'passed',
+    modules: [...step.expect.files].reverse().map((file) => ({ file, state: 'passed' })),
+    errors: [],
+    cases: step.expect.cases.map((c) => ({
+      ...c,
+      durationMs: 0,
+      retryCount: 0,
+      repeatCount: 0,
+      expectedFailure: false,
+      mode: 'run',
+      errors: [],
+    })),
+  }));
+  const run = (v) => {
+    v.reports.forEach((report, i) =>
+      writeFileSync(
+        join(dir, 'case-reports/' + s.expect.steps[i].name + '.json'),
+        JSON.stringify(report),
+      ),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    (v) => v.reports[1].modules.pop(),
+    (v) => v.reports[1].modules.push(v.reports[1].modules[0]),
+    (v) => v.reports[1].cases.pop(),
+    (v) => v.reports[1].cases[0].retryCount++,
+    (v) => (v.reports[0].nonce = 'stale'),
+    (v) => v.trace.steps[1].argv.pop(),
+    (v) => (v.trace.steps[0].timedOut = true),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+test('inbound preparation requires every report, terminal summary and exact source inventory', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-inbound-prep-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: inboundPrepCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...inboundEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-15T00:00:00.000Z',
+        completedAt: '2026-09-15T00:00:01.000Z',
+        stages: inboundPrepSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(dir, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'preparation.log', 'primitives.log'])
+      writeFileSync(join(dir, file), 'observed');
+  };
+  save(r);
+  reconcileInboundPrepReports(dir, sources);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => r['summary.json'].stages.pop(),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileInboundPrepReports(dir, sources));
+  }
+  for (const file of [...Object.keys(r), 'results.xml', 'preparation.log', 'primitives.log']) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileInboundPrepReports(dir, sources));
+  }
+});
+test('160 generated inbound history corruptions reject cursor, pending, text, ledger, capture and final-drain changes', () => {
+  const r = inboundEvidence();
+  reconcileInboundPrepEvidence(r);
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: 299 }), (index) => {
+      for (const alter of [
+        (h) => h.observations.pop(),
+        (h) => (h.observations[0].cursor['11'.repeat(16)] = 1),
+        (h) => (h.observations[2].pending = false),
+        (h) => (h.observations[2].text += 'lost'),
+        (h) => (h.observations[4].ledgerHash = '00'.repeat(32)),
+        (h) => h.observations[5].captures++,
+        (h) => (h.final.pending = true),
+        (h) => (h.final.cursor['11'.repeat(16)] = 1),
+        (h) => (h.history[2].close = true),
+      ]) {
+        const bad = structuredClone(r);
+        alter(bad['generated.json'].histories[index]);
+        assert.throws(() => reconcileInboundPrepEvidence(bad));
+      }
+    }),
+    { seed: 150959, numRuns: 160 },
+  );
+});
+test('160 generated inbound control corruptions reject counterexamples that no longer demonstrate their failure', () => {
+  const r = inboundEvidence();
+  reconcileInboundPrepEvidence(r);
+  const alterations = [
+    ['deletion-coverage', (c) => (c.sameSnapshot = true)],
+    ['baseline', (c) => (c.heldBaseline = 'accepted')],
+    ['baseline', (c) => (c.missingGenesis.pending = false)],
+    ['split', (c) => (c.contentRecords = 1)],
+    ['pending', (c) => (c.afterDroppingPendingDeletion = c.expected)],
+    ['early-promotion', (c) => (c.pending = false)],
+    ['global-cursor', (c) => (c.actual = c.expected)],
+    ['relabel', (c) => (c.sameUpdate = false)],
+  ];
+  fc.assert(
+    fc.property(fc.integer({ min: 0, max: alterations.length - 1 }), (index) => {
+      const bad = structuredClone(r),
+        [name, alter] = alterations[index];
+      alter(bad['control-' + name + '.json']);
+      assert.throws(() => reconcileInboundPrepEvidence(bad));
+    }),
+    { seed: 150960, numRuns: 160 },
   );
 });
