@@ -180,7 +180,8 @@ test(
       });
     await alter();
     await assert.rejects(admit(f.page, item), /signature/);
-    assert.equal((await snapshot(f.page, item)).marker.stage, 'admission-offered');
+    const beforeStage = (await snapshot(f.page, item)).marker.stage;
+    assert.equal(beforeStage, 'admission-offered');
     // The service is committed: force retry through finish using its identical retained offer.
     await f.page.evaluate(() => {
       const call = admissionTransport.begin;
@@ -194,14 +195,22 @@ test(
     await f.page.evaluate(await admissionBundle('receipt'));
     const accepted = await admit(f.page, item);
     assert.equal(accepted.signature, '00'.repeat(64));
-    assert.equal((await snapshot(f.page, item)).marker.stage, 'admission-receipted');
+    const retained = (await snapshot(f.page, item)).marker;
+    assert.equal(retained.stage, 'admission-receipted');
     const { writeFileSync } = await import('node:fs');
     const { join } = await import('node:path');
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-receipt.json'),
         JSON.stringify(
-          { observed: 'invalid service receipt retained with verification disabled', accepted },
+          {
+            observed: 'invalid service receipt retained with verification disabled',
+            baseline: 'refused',
+            beforeStage,
+            afterStage: retained.stage,
+            retained: retained.admission.receipt,
+            accepted,
+          },
           null,
           2,
         ),

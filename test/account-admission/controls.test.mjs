@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { prepared } from './core-fixtures.mjs';
+import { prepared, hash } from './core-fixtures.mjs';
 async function mutant(t, needle, replacement) {
   const parent = resolve('test-results/account-admission-controls');
   mkdirSync(parent, { recursive: true });
@@ -50,11 +50,11 @@ for (const gate of ['origin', 'certification'])
           ).toString('hex'),
       );
     }
-    assert.equal(
-      (await x.authority.owner.beginPromotion(x.f.core, { retryKey: x.account.retryKey, request }))
-        .ok,
-      false,
-    );
+    const baseline = await x.authority.owner.beginPromotion(x.f.core, {
+      retryKey: x.account.retryKey,
+      request,
+    });
+    assert.equal(baseline.ok, false);
     const { Core, Authority } = await mutant(t, needle, 'void 0;'),
       core = new Core(x.f.path, { rpId: x.authority.pin.rpId, origin: x.authority.pin.origin }),
       owner = Authority.open(x.authority.path, x.authority.pin, x.authority.key);
@@ -71,7 +71,8 @@ for (const gate of ['origin', 'certification'])
       await x.activationInput(offer, completion, owner, core),
     );
     assert.equal(result.kind, 'promotion-receipt');
-    assert.equal(x.f.rows('accounts')[0].state, 'active');
+    const accountState = x.f.rows('accounts')[0].state;
+    assert.equal(accountState, 'active');
     if (process.env.ACCOUNT_REPORT_DIR)
       writeFileSync(
         join(process.env.ACCOUNT_REPORT_DIR, 'control-' + gate + '.json'),
@@ -79,6 +80,14 @@ for (const gate of ['origin', 'certification'])
           {
             gate,
             baseline: 'refused',
+            baselineOk: baseline.ok,
+            accountState,
+            expectedAccountId: x.account.result.accountId,
+            requestDigest: hash(JSON.stringify(request)),
+            originalSignature:
+              gate === 'origin' ? x.request.originSignature : x.request.certification.signature,
+            approvalSignature:
+              gate === 'origin' ? request.originSignature : request.certification.signature,
             observed: 'account activated after approval verification removed',
             result,
           },

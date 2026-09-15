@@ -47,6 +47,11 @@ import {
   validateGenesisCampaign,
   reconcileGenesisReports,
 } from './account-genesis-wrapper.mjs';
+import {
+  admissionCampaign,
+  validateAdmissionCampaign,
+  reconcileAdmissionReports,
+} from './account-admission-wrapper.mjs';
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -106,6 +111,7 @@ export function validateStage(stage) {
       'account-authority',
       'account-promotion',
       'account-genesis',
+      'account-admission',
       'vitest',
       'playwright',
       'content',
@@ -138,6 +144,7 @@ export function validateStage(stage) {
       'account-authority',
       'account-promotion',
       'account-genesis',
+      'account-admission',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -191,6 +198,12 @@ export function validateStage(stage) {
     stage.variant === 'account-genesis-campaign-v1'
   )
     validateGenesisCampaign(stage);
+  if (
+    stage.expect.kind === 'account-admission' ||
+    stage.argv[1] === admissionCampaign ||
+    stage.variant === 'account-admission-campaign-v1'
+  )
+    validateAdmissionCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -219,7 +232,7 @@ export function validateStage(stage) {
     }
   }
   if (Object.hasOwn(stage.expect, 'historyInputs')) {
-    if (stage.expect.kind !== 'account-genesis') {
+    if (!['account-genesis', 'account-admission'].includes(stage.expect.kind)) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
       assert(
         stage.argv.includes('--test'),
@@ -718,6 +731,7 @@ export function createStageRunner({
               'account-authority',
               'account-promotion',
               'account-genesis',
+              'account-admission',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
@@ -751,6 +765,13 @@ export function createStageRunner({
               'Genesis report producers or inventory incomplete',
             );
             reconcileGenesisReports(fileDirectory, before.sources);
+          }
+          if (stage.expect.kind === 'account-admission') {
+            assert(
+              groupDrained && fileOutputs?.complete,
+              'Admission report producers or inventory incomplete',
+            );
+            reconcileAdmissionReports(fileDirectory, before.sources);
           }
           if (stage.expect.kind === 'account-recovery') {
             assert(

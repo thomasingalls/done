@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**146 obligations remain blocked: 89 command and 57 campaign rows; no test-file rows remain.**
+**144 obligations remain blocked: 88 command and 56 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 146 missing product tests. The compiler still refuses whole-release execution before
+they are not 144 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is uncommitted. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4025,3 +4025,59 @@ No personal browser, server, relay, device or deployment operation occurs. This 
 Next: Account admission wrapper integration, remaining wrapper/qualification repairs, immutable
 aggregate and private Account/human rehearsal.
 [Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).
+
+
+## 2026-09-15 — Account admission wrapper integration
+
+Genesis wrapper integration is signed and signature-verified as `d38a0ab0`. Integrate the actual
+core/restart/controls/native grouping, preserving order, default Node concurrency, 180-second bound
+and five-second grace. Owned execution adds terminal reporting, a disposable CDP browser and retained
+reports; standalone invocation and spec/JUnit output remain. Exact argv and empty user environment
+alias the campaign. Bind `280f616:src/crdt/promotionRecord.ts` through the existing historical-input
+checks before/after execution and reuse. Unknown or weakened invocation, history, result, output and
+browser contracts refuse.
+
+Require nine reports within 4 MiB /32-entry /one-level limits: sources, summary, JUnit, log, origin/
+certification/receipt controls and generated service/native histories. Reconcile all 34 terminal
+outcomes, successful summary/code/no timeout and exact wrapper source hashes against owned inputs.
+Enriched approval reports retain actual baseline result, active account state, original/corrupted
+signature and expected account/request digest. Require receipt/activation target agreement and the
+intended zero signature. The receipt control retains its before/after marker stages and actual stored
+receipt; require offered baseline refusal, receipted mutant state and exact retention of the invalid
+receipt. These report checks corroborate actual service/native assertions; they do not independently
+verify signatures or passkey assertions. The existing Node/OpenSSL and plaintext-replay oracles are
+unchanged. No secret factors are added to reports.
+
+Require all 80 service histories with seed 9232026; replay their recorded commands to compare the
+reported pending/offered/active/cancelled final state. Require 30 passing native histories with seed
+9242026 and the declared operation/fault/retry bounds. This does not independently regenerate the
+seeded schedule or re-execute browser/database semantics. The owned terminal census remains the case
+authority; JUnit/logs are auxiliary. Optional failure diagnostics stay in the bounded tree.
+
+The owned epoch passes **107 cases in six executions**: 56 planning cases across four complete suites,
+34 admission cases and 17 genesis regression cases. Admission takes **121.704s /180s**;
+genesis regression takes 83.453s /180s. Admission includes the existing 80 service and 30
+native histories, SQLite SIGKILL boundaries and competing processes, lost replies, IDB/renderer
+interruptions, retained Local state, independent receipt/coverage checks and the historical reader.
+Every process/browser group drains. A seventh request reuses the exact admission receipt after the
+genesis regression; all nine reports survive copied-checkout removal. Historical reader bytes are
+included in the lossless archive.
+
+Five new infrastructure cases cover exact invocation/history contracts, eleven directed report
+corruptions, nine missing files, 100 generated control sets with twelve invalid variants each and
+160 generated service histories compared with an independent event-order formula plus ten corrupted
+report variants each. Five synthetic process runs accept valid reports and refuse zero-exit failed
+summary, inactive approval result, unretained receipt and inconsistent service ledger. A sixth run
+omits reconciliation and admits the invalid summary; an isolated adapter fault omits the ledger
+comparison and admits the wrong final state. Both faults discriminate. Synthetic case claims are
+instrumentation controls, not Account tests. Planning, scoped lint/format, inventory/manifest and
+whitespace checks pass. No new campaign/test failure occurs; prior failures remain preserved.
+
+Counts stay **628 obligations, 291 required files, 272 general files/2,198 dispositions (11 not
+applicable)**. Five added cases belong to an existing infrastructure file. Unresolved wrappers fall
+from 146 to **144: zero test-file /88 command /56 campaign**. Runtime, package/dependency, crypto-census/
+vector and F-17 debt bytes, previous archives and L-2's checkpoint are unchanged. No personal browser,
+server, relay, device or deployment operation occurs. This phase is uncommitted. Next: Account handoff
+wrapper integration, remaining wrapper/qualification repairs, immutable aggregate and private
+Account/human rehearsal.
+[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).

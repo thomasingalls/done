@@ -97,6 +97,7 @@ import { recoveryCampaign, recoveryCampaignStage } from './account-recovery-wrap
 import { authorityCampaign, authorityCampaignStage } from './account-authority-wrapper.mjs';
 import { promotionCampaign, promotionCampaignStage } from './account-promotion-wrapper.mjs';
 import { genesisCampaign, genesisCampaignStage } from './account-genesis-wrapper.mjs';
+import { admissionCampaign, admissionCampaignStage } from './account-admission-wrapper.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -367,6 +368,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['campaign:' + promotionCampaign];
     else if (exactCommand(command, ['node', genesisCampaign]))
       row.requires = ['campaign:' + genesisCampaign];
+    else if (exactCommand(command, ['node', admissionCampaign]))
+      row.requires = ['campaign:' + admissionCampaign];
     else if (vector) row.requires = ['vector:' + vector.path];
     else if (exactCommand(command, ['node', 'scripts/content/run.mjs']))
       row.requires = ['catalogue:scripts/content/catalog.mjs'];
@@ -420,24 +423,26 @@ export function compileManifest(root, inventory) {
                 ? { stage: promotionCampaignStage(root) }
                 : c.path === genesisCampaign
                   ? { stage: genesisCampaignStage(root) }
-                  : [
-                        'scripts/content/run.mjs',
-                        'scripts/journal/run.mjs',
-                        'scripts/admission/run.mjs',
-                        'scripts/editor-admission/run.mjs',
-                        'scripts/workspace-admission/run.mjs',
-                        'scripts/owned-startup/run.mjs',
-                        'scripts/local-genesis/run.mjs',
-                        'scripts/write-session/run.mjs',
-                        'scripts/custody/run.mjs',
-                        'scripts/content-trim/run.mjs',
-                        'scripts/local-clear/run.mjs',
-                      ].includes(c.path)
-                    ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
-                    : {
-                        blocked:
-                          'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-                      }),
+                  : c.path === admissionCampaign
+                    ? { stage: admissionCampaignStage(root) }
+                    : [
+                          'scripts/content/run.mjs',
+                          'scripts/journal/run.mjs',
+                          'scripts/admission/run.mjs',
+                          'scripts/editor-admission/run.mjs',
+                          'scripts/workspace-admission/run.mjs',
+                          'scripts/owned-startup/run.mjs',
+                          'scripts/local-genesis/run.mjs',
+                          'scripts/write-session/run.mjs',
+                          'scripts/custody/run.mjs',
+                          'scripts/content-trim/run.mjs',
+                          'scripts/local-clear/run.mjs',
+                        ].includes(c.path)
+                      ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
+                      : {
+                          blocked:
+                            'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                        }),
     });
   }
   for (const c of inventory.constructions) {
@@ -528,6 +533,13 @@ export function compileManifest(root, inventory) {
           (r) =>
             r.id === 'campaign:' + genesisCampaign ||
             (r.kind === 'command' && exactCommand(r, ['node', genesisCampaign])),
+        )
+        .map((r) => r.id),
+      'wrapper-account-admission': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + admissionCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', admissionCampaign])),
         )
         .map((r) => r.id),
       'wrapper-account-recovery': rows

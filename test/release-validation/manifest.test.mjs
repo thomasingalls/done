@@ -185,6 +185,378 @@ function genesisHistories() {
   };
 }
 
+import {
+  admissionCampaign,
+  admissionCampaignStage,
+  admissionFiles,
+  admissionReports,
+  reconcileAdmissionReports,
+  reconcileAdmissionControls,
+  reconcileAdmissionHistories,
+} from '../../scripts/release-validation/account-admission-wrapper.mjs';
+
+// Synthetic report observations; cryptographic and database validity belong to the native/service tests.
+function admissionEvidence(digest = '01'.repeat(32), accountId = 'A'.repeat(43)) {
+  const result = {
+    v: 2,
+    kind: 'promotion-receipt',
+    signature: '01'.repeat(64),
+    offer: {
+      kind: 'promotion-offer',
+      head: '02'.repeat(32),
+      epoch: {
+        kind: 'first-authorization-epoch',
+        epoch: 1,
+        generation: 1,
+        accountId,
+        requestDigest: digest,
+      },
+    },
+    activation: { context: { accountId, requestDigest: digest, offerHead: '02'.repeat(32) } },
+  };
+  const gate = (name) => ({
+    gate: name,
+    baseline: 'refused',
+    baselineOk: false,
+    accountState: 'active',
+    observed: 'account activated after approval verification removed',
+    expectedAccountId: accountId,
+    requestDigest: digest,
+    originalSignature: '01'.repeat(64),
+    approvalSignature: '00'.repeat(64),
+    result: structuredClone(result),
+  });
+  const accepted = { ...structuredClone(result), signature: '00'.repeat(64) };
+  return {
+    origin: gate('origin'),
+    certification: gate('certification'),
+    receipt: {
+      baseline: 'refused',
+      beforeStage: 'admission-offered',
+      afterStage: 'admission-receipted',
+      observed: 'invalid service receipt retained with verification disabled',
+      accepted,
+      retained: structuredClone(accepted),
+    },
+  };
+}
+function admissionHistories(commands = ['offer', 'finish']) {
+  // Independent closed-form event ordering; the adapter uses a transition fold.
+  const firstOffer = commands.indexOf('offer'),
+    abandon = commands.indexOf('abandon');
+  const activation = commands.findIndex(
+    (c, i) => c === 'finish' && firstOffer >= 0 && i > firstOffer,
+  );
+  const state =
+    activation >= 0 && (abandon < 0 || activation < abandon)
+      ? 'active'
+      : abandon >= 0
+        ? 'cancelled'
+        : firstOffer >= 0
+          ? 'offered'
+          : 'pending';
+  return {
+    service: {
+      seed: 9232026,
+      histories: Array.from({ length: 80 }, () => ({ commands: [...commands], state })),
+    },
+    native: {
+      seed: 9242026,
+      histories: Array.from({ length: 30 }, (_, i) => ({
+        ops: [{ at: i, remove: i % 6, insert: 'text' + i, disk: i % 2 === 0 }],
+        reverse: i % 2 === 0,
+        fault: [
+          'none',
+          'lost-begin',
+          'lost-finish',
+          'admission-requested',
+          'admission-offered',
+          'admission-receipted',
+          'changed-offer',
+        ][i % 7],
+        retries: 1 + (i % 3),
+        status: 'passed',
+      })),
+    },
+  };
+}
+
+test('admission wrapper preserves grouped cases and aliases only its exact command', () => {
+  const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
+  const plan = compileManifest(process.cwd(), inventory);
+  const [stage, ...rest] = selectStages(plan, 'wrapper-account-admission');
+  assert.deepEqual(rest, []);
+  assert.deepEqual(stage.argv, ['node', admissionCampaign]);
+  assert.equal(stage.expect.cases.length, 34);
+  assert.deepEqual(
+    [...new Set(stage.expect.cases.map((c) => c.id.split('::')[0]))],
+    admissionFiles,
+  );
+  assert.deepEqual(stage.fileOutputs.required, admissionReports);
+  assert.deepEqual(
+    stage.expect.historyInputs.map(({ reference, path }) => [reference, path]),
+    [['280f616', 'src/crdt/promotionRecord.ts']],
+  );
+  assertHistoricalInputs(process.cwd(), stage.expect.historyInputs);
+  assert.throws(
+    () =>
+      assertHistoricalInputs(
+        process.cwd(),
+        stage.expect.historyInputs.map((p) => ({ ...p, sha256: '0'.repeat(64) })),
+      ),
+    /Historical source changed/,
+  );
+  assert(plan.rows.some((r) => r.kind === 'command' && r.requires?.includes(stage.id)));
+  const changed = structuredClone(inventory);
+  changed.extraRoots.push({
+    id: 'admission-filter',
+    argv: ['node', admissionCampaign, '--case', 'native'],
+  });
+  assert(
+    compileManifest(process.cwd(), changed).rows.find((r) => r.id === 'command:admission-filter:0')
+      .blocked,
+  );
+  assert.throws(() => selectStages(plan, 'release'), /Unresolved/);
+});
+
+test('admission wrapper refuses weaker result, output and browser contracts', () => {
+  const stage = admissionCampaignStage(process.cwd());
+  validateStage(stage);
+  for (const extra of [
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...stage.expect, kind: 'cases' } },
+    { variant: 'current' },
+    { argv: [...stage.argv, '--changed'] },
+    { env: { MODE: 'changed' } },
+    { fileOutputs: undefined },
+    { fixture: undefined },
+    { fixture: { kind: 'chromium-inherited-profiles', startupMs: 15000 } },
+    { deadlineMs: 180001 },
+    { graceMs: 5001 },
+    { expect: { ...stage.expect, historyInputs: undefined } },
+    { expect: { ...stage.expect, historyInputs: [] } },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: [...stage.expect.historyInputs, ...stage.expect.historyInputs],
+      },
+    },
+    {
+      expect: {
+        ...stage.expect,
+        historyInputs: stage.expect.historyInputs.map((p) => ({ ...p, reference: p.revision })),
+      },
+    },
+  ])
+    assert.throws(() => validateStage({ ...stage, ...extra }));
+});
+
+test('admission reports require complete successful output and exact wrapper source pins', (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-admission-report-control-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const controls = admissionEvidence();
+  const sources = [
+    { path: 'package.json', sha256: 'a'.repeat(64) },
+    { path: 'src/crdt/example.ts', sha256: 'b'.repeat(64) },
+    { path: 'wasm/journal-seal/seal.generated.ts', sha256: 'c'.repeat(64) },
+    ...[
+      'src/account/recoveryOwner.ts',
+      'test/account-authority/browser.ts',
+      'test/account-core/fixtures.mjs',
+      'test/account-core/worker.mjs',
+      'test/account-recovery/fixtures.mjs',
+      'test/account-promotion/fixtures.mjs',
+      'test/account-promotion/browser.ts',
+      'src/account/generationWrap.ts',
+      'test/vectors/package.json',
+      'src/lib/example.tsx',
+      'docs/account-admission.md',
+      'test/account-authority/fixtures.mjs',
+      'test/account-genesis/oracle.mjs',
+    ].map((path) => ({ path, sha256: 'e'.repeat(64) })),
+  ];
+  const good = {
+    'summary.json': {
+      status: 'passed',
+      code: 0,
+      timedOut: false,
+      startedAt: '2026-09-15T00:00:00.000Z',
+      completedAt: '2026-09-15T00:00:01.000Z',
+    },
+    'sources.json': sources,
+    'control-origin.json': controls.origin,
+    'control-certification.json': controls.certification,
+    'control-receipt.json': controls.receipt,
+    'generated-service.json': admissionHistories().service,
+    'generated-native.json': admissionHistories().native,
+  };
+  const save = (reports) => {
+    for (const [file, value] of Object.entries(reports))
+      writeFileSync(join(directory, file), JSON.stringify(value));
+    for (const file of ['results.xml', 'run.log'])
+      writeFileSync(join(directory, file), 'auxiliary evidence');
+  };
+  save(good);
+  reconcileAdmissionReports(directory, sources);
+  const faults = [
+    (r) => {
+      r['summary.json'].status = 'failed';
+    },
+    (r) => {
+      r['summary.json'].code = 1;
+    },
+    (r) => {
+      r['summary.json'].timedOut = true;
+    },
+    (r) => {
+      r['summary.json'].launchError = 'error';
+    },
+    (r) => {
+      r['summary.json'].completedAt = 'invalid';
+    },
+    (r) => {
+      r['sources.json'] = [];
+    },
+    (r) => {
+      r['sources.json'].pop();
+    },
+    (r) => {
+      r['sources.json'][1].sha256 = 'd'.repeat(64);
+    },
+    (r) => {
+      r['sources.json'].push(r['sources.json'][0]);
+    },
+    (r) => {
+      r['control-origin.json'].baseline = 'accepted';
+    },
+    (r) => {
+      r['control-receipt.json'].afterStage = 'admission-offered';
+    },
+  ];
+  for (const fault of faults) {
+    const bad = structuredClone(good);
+    fault(bad);
+    save(bad);
+    assert.throws(() => reconcileAdmissionReports(directory, sources));
+  }
+  for (const file of admissionReports) {
+    save(good);
+    rmSync(join(directory, file));
+    assert.throws(() => reconcileAdmissionReports(directory, sources));
+  }
+});
+
+test('100 generated admission control sets reject ineffective approval and receipt faults', () => {
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 32, maxLength: 32 }), (bytes) => {
+      const good = admissionEvidence(
+        Buffer.from(bytes).toString('hex'),
+        Buffer.from(bytes).toString('base64url'),
+      );
+      reconcileAdmissionControls(good.origin, good.certification, good.receipt);
+      const faults = [
+        (r) => {
+          r.origin.baselineOk = true;
+        },
+        (r) => {
+          r.certification.accountState = 'pending';
+        },
+        (r) => {
+          r.origin.approvalSignature = r.origin.originalSignature;
+        },
+        (r) => {
+          r.certification.originalSignature = '00'.repeat(64);
+        },
+        (r) => {
+          r.origin.expectedAccountId += 'A';
+        },
+        (r) => {
+          r.certification.requestDigest = 'ab';
+        },
+        (r) => {
+          r.origin.result.activation.context.requestDigest = 'ab'.repeat(32) + 'cd';
+        },
+        (r) => {
+          r.certification.result.activation.context.offerHead = '00';
+        },
+        (r) => {
+          r.receipt.accepted.signature = '01'.repeat(64);
+        },
+        (r) => {
+          r.receipt.beforeStage = 'admission-receipted';
+        },
+        (r) => {
+          r.receipt.afterStage = 'admission-offered';
+        },
+        (r) => {
+          r.receipt.retained.signature = '01'.repeat(64);
+        },
+      ];
+      for (const fault of faults) {
+        const bad = structuredClone(good);
+        fault(bad);
+        assert.throws(() => reconcileAdmissionControls(bad.origin, bad.certification, bad.receipt));
+      }
+    }),
+    { seed: 150939, numRuns: 100 },
+  );
+});
+
+test('160 generated admission histories match event ordering and reject incomplete or inconsistent reports', () => {
+  fc.assert(
+    fc.property(
+      fc.array(fc.constantFrom('offer', 'finish', 'restart', 'abandon', 'wrong'), {
+        minLength: 2,
+        maxLength: 15,
+      }),
+      fc.integer({ min: 0, max: 29 }),
+      (commands, i) => {
+        const good = admissionHistories(commands);
+        reconcileAdmissionHistories(good.service, good.native);
+        const faults = [
+          (r) => {
+            r.service.histories.pop();
+          },
+          (r) => {
+            r.service.histories[i].state =
+              r.service.histories[i].state === 'active' ? 'pending' : 'active';
+          },
+          (r) => {
+            r.service.histories[i].commands[0] = 'unknown';
+          },
+          (r) => {
+            r.native.histories.splice(i, 1);
+          },
+          (r) => {
+            r.native.histories[i].status = 'failed';
+          },
+          (r) => {
+            r.native.histories[i].ops[0].at = 81;
+          },
+          (r) => {
+            r.native.histories[i].ops[0].remove = 6;
+          },
+          (r) => {
+            r.native.histories[i].ops[0].insert = '';
+          },
+          (r) => {
+            r.native.histories[i].retries = 0;
+          },
+          (r) => {
+            r.native.histories[i].fault = 'unknown';
+          },
+        ];
+        for (const fault of faults) {
+          const bad = structuredClone(good);
+          fault(bad);
+          assert.throws(() => reconcileAdmissionHistories(bad.service, bad.native));
+        }
+      },
+    ),
+    { seed: 150940, numRuns: 160 },
+  );
+});
+
 test('genesis wrapper preserves grouped cases and aliases only its exact command', () => {
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
@@ -1047,7 +1419,7 @@ test('report-writing preparation remains a separate variant with required retain
     ordinary.every((s) => !s.fileOutputs),
     'Do not silently add an environment variant to the package command',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-admission/run.mjs').blocked);
+  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-handoff/run.mjs').blocked);
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

@@ -1038,7 +1038,6 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     assert(!m.selections['account-fixtures'].includes('test:' + f));
   }
   for (const runner of [
-    'account-admission',
     'account-activation',
     'account-handoff',
     'account-service-delivery',
@@ -1075,6 +1074,7 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     ['account-authority', 'account-authority'],
     ['account-promotion', 'account-promotion'],
     ['account-genesis', 'account-genesis'],
+    ['account-admission', 'account-admission'],
     ['account-crypto-prep', 'exit'],
   ]) {
     const row = m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`);

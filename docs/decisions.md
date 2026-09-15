@@ -3666,3 +3666,14 @@ wrong generation wrap while preserving unrelated candidate fields; recorded gene
 must be complete and within their declared bounds. These checks corroborate the existing native
 assertions and independent Node/OpenSSL oracle. They do not independently decrypt candidates or
 regenerate the seeded schedule. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).
+
+
+## 2026-09-15 — Admission controls bind observed activation and retained receipts
+
+Require the approval controls' recorded active account and receipt target to match the exact account
+and request subjected to the corrupted signature. Require the native receipt control to show offered
+baseline refusal and exact retention of the invalid receipt after disabling verification. Replay
+recorded service-history commands to check their final ledger state; preserve the separate native
+receipt/coverage oracle. These report postconditions corroborate actual execution and do not replace
+cryptographic verification, passkey checks or browser/database replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).
