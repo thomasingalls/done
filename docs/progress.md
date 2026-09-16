@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor client installation complete (`L-1`)
+## Product checkpoint: successor service HTTP complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: private successor consumption/discovery HTTP integration (phase two, chunk D)
+scope: lifecycle-owned client reconnect discovery (phase two, chunk D2)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -94,7 +94,7 @@ omission controls; the final focused totals are 32 Node cases, 74 unit cases and
 browser regressions. Static checks and crypto inventory pass.
 [Replay evidence](./account-conformance-runs/2026-09-16-successor-replay/README.md).
 
-**Chunk C2b is complete.** The private composed v9 owner installs the authenticated successor and
+**Chunk C2b is signed as `f5a3399c`.** The private composed v9 owner installs the authenticated successor and
 local ledger cut before switching live requests/captures. Original receipt/slot custody, pending journal
 sources and exact old submissions survive. Native tests cover both commit sides, an acknowledged journal
 edit during the held completion, zero-prefix installation, lost acceptance, late receive, compaction,
@@ -102,9 +102,15 @@ cold reopen, sibling refusal and effective prefix/cut omission controls. 13 new 
 first-epoch native regressions, 32 Node and 74 unit cases pass, plus static checks and inventory.
 [Installation evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
 
-**Next bounded implementation: D.** Integrate private preparation consumption and signed discovery
-HTTP, then exercise reconnect/adoption through those actual adapters. New-device content remains a
-later gate. No ordinary Account activation exists yet.
+**Chunk D1 is complete.** Private consumption/discovery endpoints enforce their account/device
+proofs and 4 KiB ingress bounds. Discovery verifies the complete ledger and rechecks authority,
+expiry and custody before its signed response. 43 Node, three HTTP, 12 registry and two diagnostic
+cases pass, including 30 generated histories and an effective final-comparison control.
+[Service HTTP evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
+
+**Next bounded implementation: D2.** Attach discovery to the client reconnect owner and exercise
+adoption through the actual private adapters. New-device content remains a later gate.
+No ordinary Account activation exists yet.
 [Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
@@ -115,7 +121,7 @@ without importing its old writing. Ordinary Account entry and deployment remain 
 
 **Qualification remains open.** Preparation and successor/discovery are two open construction groups.
 Their focused evidence supplies no aggregate release credit. First-authority bytes and historical
-qualification stay intact; private HTTP integration and qualification of the new constructions are still owed.
+qualification stay intact; client reconnect integration and qualification of the new constructions are still owed.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

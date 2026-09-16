@@ -1,3 +1,4 @@
+import { discoverAuthority, type DiscoveryIssuer } from './discovery.ts';
 import { admitPrepared, type SuccessorIssuer } from './successor.ts';
 import {
   EnrollmentPreparation,
@@ -239,6 +240,18 @@ export class AccountCore {
       this.#db.close();
       throw error;
     }
+  }
+
+  discoverAuthority(input: unknown, issuer: DiscoveryIssuer) {
+    return discoverAuthority(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+      this.#diagnostics.record,
+    );
   }
 
   admitPrepared(input: unknown, issuer: SuccessorIssuer) {

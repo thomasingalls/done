@@ -1,7 +1,7 @@
 # Private admission-only successor and discovery bytes
 
 2026-09-16. Phase two, chunks A/B/C complete. **Pure protocol, private service owner and client
-installation implemented; private HTTP integration remains.** [Phase plan](../account-successor-admission-prep.md).
+installation and private service HTTP implemented; client reconnect discovery remains.** [Phase plan](../account-successor-admission-prep.md).
 
 ## 1. Construction boundary
 
@@ -240,3 +240,21 @@ installation, pending journal edits, old submissions, lost acceptance, late rece
 cold reopen. Effective prefix/cut omission controls establish why both checks matter. This is private
 client installation; consumption/discovery HTTP and automatic reconnect discovery are chunk D.
 Complete-profile rollback still requires a surviving newer client anchor to detect it.
+
+## 9. Private service HTTP integration (chunk D1)
+
+The private adapter exposes JSON POST `/account/enrollment/admit` and `/account/authority/discover`.
+Both inherit exact Host/Origin/content-type and private token gates and reject ingress over 4 KiB
+before JSON parsing. Admission consumes the existing exact retry-key/attempt/receipt capability;
+receipts or operator tokens alone cannot consume it. Exact committed retries return the same artifact.
+
+Discovery requires the certified creator's signed request from either the original or installed head.
+It verifies the original authority, optional child, complete retained delivery census and request scope
+before issuing the existing root-signed response. It then compares a fresh complete snapshot, rechecks
+request expiry and acceptance custody, and returns without changing account state. At most four changed
+snapshots are retried. Unavailable, ineligible, damaged or expired state yields a finite unsigned refusal;
+it cannot be used by the client as replacement authority. No new signed message or key domain is added.
+
+Candidate discovery/read/publication remain refused, and no content-key endpoint is introduced.
+The client must still own its request, verify the signed response and install under C2b before current
+dispatch. That reconnect integration is D2. [Evidence](../account-conformance-runs/2026-09-16-successor-discovery/README.md).

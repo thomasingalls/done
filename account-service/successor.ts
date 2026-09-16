@@ -1,4 +1,4 @@
-/** Private atomic preparation consumption. The HTTP/application entry point remains disabled. */
+/** Private atomic preparation consumption. Ordinary application entry remains disabled. */
 import type { DatabaseSync } from 'node:sqlite';
 import { closed, accountIdentifier } from '../account-protocol/preparation.ts';
 import { parseEnrollmentRetry } from '../account-protocol/enrollment.ts';
@@ -30,6 +30,7 @@ import {
   type DiagnosticSink,
 } from '../account-protocol/diagnostics.ts';
 
+export const ADMIT_PREPARED_LIMIT = 4096;
 export interface SuccessorIssuer extends DeliveryIssuer, EnrollmentIssuer {
   successor(epoch: AdmissionSuccessorEpoch): Promise<AdmissionSuccessor>;
 }
@@ -58,7 +59,8 @@ export async function admitPrepared(
 ): Promise<SuccessorResult> {
   let request: { retryKey: string; attemptId: string; receiptId: string };
   try {
-    if (Buffer.byteLength(JSON.stringify(input)) > 4096) return refused('malformed');
+    if (Buffer.byteLength(JSON.stringify(input)) > ADMIT_PREPARED_LIMIT)
+      return refused('malformed');
     const r = closed(input, ['retryKey', 'attemptId', 'receiptId']);
     request = {
       ...parseEnrollmentRetry({ retryKey: r['retryKey'] }),

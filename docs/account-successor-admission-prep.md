@@ -1,6 +1,6 @@
 # Backend phase two: successor admission without interrupting the existing writer
 
-2026-09-16. Defined against signed `d015210e`. **Chunks A/B/C1/C2a/C2b complete; D remains.**
+2026-09-16. Defined against signed `d015210e`. **Chunks A/B/C1/C2a/C2b/D1 complete; D2 remains.**
 Release validation remains paused. This is the next phase after
 [authenticated enrollment preparation](./account-enrollment-prep.md), not the complete second-device flow.
 
@@ -195,7 +195,8 @@ report sync blocked rather than reporting enrollment/sync completion.
 | C1 — complete | Read-only verified history, historical proof issuance and exact prefix verifier; no browser installation. | Immutable exact contexts; independent signed envelopes/proofs; generated boundaries; effective issuance/prefix omission controls. |
 | C2a — complete | Opt-in mixed capture/spool/delivery/inbound replay; no installed browser head. | Independent encrypted Yjs fixtures, generated mixed histories, exact pending bytes/burned grants and actual-receiver omission controls; first-epoch native regressions. |
 | C2b — complete | Supported v9 owner adopts/reopens the successor and resumes both delivery lanes. | Native tests with local edits, an exact retained outbound, a lost accepted reply, in-flight receive and a cold restart on each side of installation. Source content, counters and prefixes agree after convergence. |
-| D | Enable private preparation consumption/discovery only with both owners integrated; retain focused evidence and checkpoint. | Through the real private adapter, prepare/admit/reconnect the creating client, continue writing and refuse the candidate's read/write/key requests. No ordinary application activation. |
+| D1 — complete | Private preparation consumption and signed-discovery service HTTP. | Bound and authorize both endpoints; exact retries, current signed locators, eligibility/expiry/custody races and pending-candidate read/write refusal. |
+| D2 | Client reconnect discovery through its existing lifetime and complete private HTTP path. | Through the real private adapter, prepare/admit/reconnect the creating client, continue writing and refuse the candidate's read/write/key requests. No ordinary application activation. |
 
 Do not describe B alone as completing the phase or expose admission in the ordinary product before C.
 Each chunk gets focused checks and a reviewable commit; no wrapper campaign or frozen release-manifest

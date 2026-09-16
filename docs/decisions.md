@@ -4027,3 +4027,20 @@ Invalid adoption or precommit storage refusal cannot be reported as successful a
 close a valid editor. Complete-profile rollback still requires a surviving newer anchor; the marker MAC
 and native transaction do not establish external freshness. HTTP discovery and qualification remain
 separate obligations; no release-validation work resumes through this product phase.
+
+
+## 2026-09-16 — separate discovery transport from authority installation
+
+Split the remaining private integration into D1 service endpoints and D2 client reconnect ownership.
+`/account/enrollment/admit` consumes the retained preparation capability and exact attempt/receipt;
+`/account/authority/discover` requires an original certified member signature and binds the pinned
+service, workspace, lineage, held head, nonce and deadline. Both have 4 KiB ingress bounds in addition
+to the private same-origin/token gates. No operator-only enrollment or uncertified-device discovery
+fallback is introduced.
+
+Discovery validates the complete retained delivery census and rechecks the current snapshot, expiry
+and custody after asynchronous verification/signing. It retries at most four snapshot changes and
+otherwise refuses; signed locator bytes are not content/key/publication authority. A concurrent
+transition after the final read remains an ordinary later state; the response and client anchor do
+not provide an external freshness oracle. Automatic client adoption remains D2, under its existing
+storage lifetime and the authenticated local prefix/ledger-cut checks.

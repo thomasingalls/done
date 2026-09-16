@@ -1,7 +1,15 @@
 import { pathToFileURL } from 'node:url';
 import { join, resolve } from 'node:path';
-const [path, authorityPath, pinJSON, keyHex, point = '', mode = 'kill', root = process.cwd()] =
-  process.argv.slice(2);
+const [
+  path,
+  authorityPath,
+  pinJSON,
+  keyHex,
+  point = '',
+  mode = 'kill',
+  root = process.cwd(),
+  hookOperation = 'admit-prepared',
+] = process.argv.slice(2);
 const { AccountCore } = await import(pathToFileURL(join(resolve(root), 'account-service/core.ts')));
 const { PrivateAuthority } = await import(
   pathToFileURL(join(resolve(root), 'account-service/authority.ts'))
@@ -13,7 +21,7 @@ const core = new AccountCore(
   { origin: pin.origin, rpId: pin.rpId },
   {
     hook(at, op) {
-      if (!armed || at !== point || op !== 'admit-prepared') return;
+      if (!armed || at !== point || op !== hookOperation) return;
       armed = false;
       if (mode === 'pause') {
         process.send({ paused: true });
@@ -32,11 +40,13 @@ process.on('message', async (m) => {
   }
   try {
     const result =
-      m.operation === 'admit'
-        ? await owner.admitPrepared(core, m.input)
-        : m.operation === 'submit'
-          ? await owner.decideSubmission(core, m.input)
-          : await owner.enrollment(core, m.operation, m.input);
+      m.operation === 'discover'
+        ? await owner.discoverAuthority(core, m.input)
+        : m.operation === 'admit'
+          ? await owner.admitPrepared(core, m.input)
+          : m.operation === 'submit'
+            ? await owner.decideSubmission(core, m.input)
+            : await owner.enrollment(core, m.operation, m.input);
     process.send({ result });
   } catch (e) {
     process.send({ error: String(e) });

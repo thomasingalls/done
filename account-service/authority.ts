@@ -1,3 +1,4 @@
+import { discoveryResponseMessage, parseDiscoveryResponse } from '../account-protocol/successor.ts';
 import { successorMessage, parseSuccessorEpoch } from '../account-protocol/successor.ts';
 import { digest } from '../account-protocol/recovery.ts';
 import {
@@ -345,6 +346,17 @@ export class PrivateAuthority {
   }
   enrollment(core: AccountCore, operation: EnrollmentOperation, input: unknown) {
     return core.enrollment(operation, input, this.#enrollmentIssuer());
+  }
+  discoverAuthority(core: AccountCore, input: unknown) {
+    return core.discoverAuthority(input, {
+      ...this.#deliveryIssuer(),
+      discovery: async (value) => {
+        const body = parseDiscoveryResponse({ ...value, signature: '00'.repeat(64) });
+        const message = await discoveryResponseMessage(body);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...body, signature: sign(null, message, this.#key).toString('hex') };
+      },
+    });
   }
   admitPrepared(core: AccountCore, input: unknown) {
     return core.admitPrepared(input, {

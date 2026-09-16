@@ -6,7 +6,14 @@ export const deadline = (p) =>
     const timer = setTimeout(() => reject(Error('Successor worker deadline')), 5000);
     p.then(resolve, reject).finally(() => clearTimeout(timer));
   });
-export async function worker(t, x, point = '', mode = 'kill', root = process.cwd()) {
+export async function worker(
+  t,
+  x,
+  point = '',
+  mode = 'kill',
+  root = process.cwd(),
+  hookOperation = 'admit-prepared',
+) {
   const child = fork(
     new URL('./worker.mjs', import.meta.url),
     [
@@ -17,6 +24,7 @@ export async function worker(t, x, point = '', mode = 'kill', root = process.cwd
       point,
       mode,
       root,
+      hookOperation,
     ],
     { stdio: ['ignore', 'ignore', 'pipe', 'ipc'], serialization: 'advanced' },
   );

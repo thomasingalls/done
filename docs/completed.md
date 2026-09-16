@@ -9192,3 +9192,21 @@ and sibling rejection. Effective omitted-prefix and omitted-cut controls admit t
 constructed forbidden state. [Evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
 Private consumption/discovery HTTP remains D; Account activation, deployment and release validation
 remain paused. Existing vectors and frozen release inventories are unchanged.
+
+
+## 2026-09-16 — private consumption and signed-discovery service endpoints (D1)
+
+After signed client installation `f5a3399c`, the private service exposes prepared admission consumption
+and original-member signed authority discovery. The operator token alone supplies neither account
+consumption capability nor the certified-device discovery signature. Discovery checks full authority
+and delivery history, signs an exact nonce-bound response, then rechecks the snapshot, expiry and
+custody before returning. Changed snapshots retry finitely; discovery writes no account state. Pending
+candidates remain unable to discover authority, read ciphertext, publish or obtain a content key.
+
+43 focused Node cases, three real HTTP cases, 12 registry cases and two diagnostics unit cases pass,
+with static checks and reviewed runtime inventory. New coverage includes 30 generated histories,
+cross-process admission during discovery, corruption/expiry/custody refusal and an effective final-
+comparison omission control. A bad-Host test needed raw HTTP because fetch normalized the override;
+the corrected case passes. [Evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
+D2 still attaches signed discovery to the client reconnect owner and completes the private browser
+HTTP path. Ordinary application entry, deployment and release validation remain paused.

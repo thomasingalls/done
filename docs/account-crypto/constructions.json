@@ -856,7 +856,7 @@
       "sourceSites": [
         {
           "path": "account-service/authority.ts",
-          "line": 60,
+          "line": 61,
           "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
@@ -5070,6 +5070,10 @@
         {
           "path": "src/crdt/accountReceive.ts",
           "name": "openOwnedSyncingAccountWorkspace"
+        },
+        {
+          "path": "account-service/discovery.ts",
+          "name": "discoverAuthority"
         }
       ],
       "homePins": [],
@@ -5087,7 +5091,10 @@
         "test/account-successor/client-replay.test.mjs",
         "test/account-successor/client-replay-controls.test.mjs",
         "test/account-successor/owner.test.mjs",
-        "test/account-successor/owner-controls.test.mjs"
+        "test/account-successor/owner-controls.test.mjs",
+        "test/account-successor/discovery.test.mjs",
+        "test/account-successor/discovery-controls.test.mjs",
+        "test/account-successor/http.test.mjs"
       ],
       "requirements": [
         "closed-bounded-wire",
@@ -5106,10 +5113,12 @@
         "authenticated-client-install-cut",
         "owned-adoption-before-dispatch",
         "mixed-history-cold-reopen",
-        "late-reply-continuity"
+        "late-reply-continuity",
+        "signed-discovery-current-eligibility",
+        "private-http-adapter-bounds"
       ],
-      "blocker": "Pure protocol, service owner, replay and lifecycle-owned browser installation have focused evidence; private HTTP integration and authority-map qualification remain open.",
-      "next": "Integrate private consumption/discovery HTTP; qualify new domains before release."
+      "blocker": "Protocol, both owners and private service HTTP have focused evidence; client reconnect discovery and authority-map qualification remain open.",
+      "next": "Integrate client reconnect discovery and complete the private end-to-end boundary; qualify new domains before release."
     }
   ],
   "additionalCorpora": [
