@@ -55,29 +55,34 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Roadmap checkpoint.** Service-inbound is signed and verified as `a55ae626`. All catalogue/test-file
-adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals remain **629
-obligations /292 required files**. Three new runner controls raise the general disposition count to
-**272 files /2,201 dispositions (11 not applicable)**. Integration remains **zero test-file /72 command
-/40 campaign** unresolved: 112 obligations. This repair does not resolve another wrapper.
+**Roadmap checkpoint.** Manifest headroom repair is signed and verified as `cfd1ec8d`. All catalogue/
+test-file adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay
+**629 obligations /292 required files** and **272 general files /2,201 dispositions (11 not applicable)**.
+Activation resolves one command and campaign: **zero test-file /71 command /39 campaign** remain
+unresolved, down from 112 to 110. These are integration counts, not a passing aggregate.
 
-**Just completed.** Historical reads are shared only within one synchronous manifest compilation.
-Absolute root, exact reference and path form the key; callers get defensive pin copies. Nested scopes
-and errors unwind, while launch/reuse/post-run checks always read current Git bytes. Same-input manifests
-match the signed implementation exactly; Git launches fall from 70 to 42 per compilation.
+**Just completed.** Activation retains six commands/25 cases and original child deadlines. Owned
+execution adds a 450-second aggregate, inherited groups, disposable browser and 31 reports. All 26
+historical reproduction files are pinned; a changed historical population refuses before import.
+Baseline/mutant reports, 120 generated clock/consumption/retry histories, shrinking controls and actual
+SIGKILL/cancellation/renderer recovery observations corroborate the original fixture oracles.
 
-The final owned epoch passes **172 cases in six executions**, then exact manifest reuse. The unchanged
-70-case manifest suite takes **38.171s /60s**, versus the prior 59.108-second observation;
-45 wrapper controls take 39.798s /60s. All 36 runner-stage cases pass, including historical drift
-and reuse checks; two deliberate faults are detected. The first owned failure from stale census totals
-is preserved and the reviewed counts are corrected. All groups drain. This phase is ready for signed
-commit. [Evidence and verifier](./account-conformance-runs/2026-09-16-manifest-headroom/README.md).
+The repaired epoch passes **223 cases in eight executions**, then exact activation reuse. Activation
+takes 39.517s /450s; every group drains and all 31 files survive checkout removal. Five new
+infrastructure cases, two 160-run corruption campaigns, eight synthetic runs/two omitted hooks, all 26
+historical replacement controls and an expanded-tree refusal discriminate. Both planning timeouts (manifest and wrapper infrastructure) are preserved. Compilation-local revision sharing reduces Git calls from 94 to 62 with identical
+manifest output and fresh execution checks. Manifest test-process time is **57.029s /60s**, with 61.929s total stage wall time
+(including runner work outside the child watchdog); loaded-host
+headroom remains a qualification consideration. This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-16-wrapper-account-activation/README.md).
 
-**Scope and retained limits.** Earlier near-deadline observations remain. This is observed single-host
-headroom with unchanged deadlines, not loaded-host reliability or an immutable aggregate pass. Planning
-snapshots authorize no execution; existing fresh input checks remain mandatory.
+**Scope and retained limits.** Observed signing keys establish internal report consistency, not external
+trust. Inventory hashes corroborate the original row assertions, not a whole-profile residue census.
+Report custody is cooperative bounded polling, not a disk quota or sandbox. Original deadlines, prior
+failures and F-17 debt remain. No immutable aggregate claim.
 
-**Next bounded phase.** Account activation wrapper integration, then further families, serially.
+**Next bounded phase.** Restore planning headroom at the unchanged bounds before adding the Account
+admission-bounds wrapper, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local

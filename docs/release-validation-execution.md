@@ -21,9 +21,9 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**112 obligations remain blocked: 72 command and 40 campaign rows; no test-file rows remain.**
+**110 obligations remain blocked: 71 command and 39 campaign rows; no test-file rows remain.**
 These require certification of the complete wrappers and their selected prerequisites/postconditions;
-they are not 112 missing product tests. The compiler still refuses whole-release execution before
+they are not 110 missing product tests. The compiler still refuses whole-release execution before
 making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,7 +34,7 @@ Catalogue data is resolved through a finite AST interpreter; unknown syntax refu
 The earlier F-17 backlog was recorded in five verified signed commits through `e2d42fac`,
 including runtime/test checkpoint `15eb389c`. Subsequent integration, lifetime and headroom work
 is signed through `e38be54c`; Local activation is signed as `83b5f157`, preparation wrappers as
-`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is signed as `9937b8b7`. Inbound codecs is signed as `70788d4e`. Receive is signed as `ccffd280`. Receive-editor is signed as `d178d349`. Receive-transport is signed as `a05369a1`. Receive-driver is signed as `50bb2d2c`. Composition is signed as `21278b15`. Service-inbound is signed as `a55ae626`. Manifest headroom repair is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
+`5cbad3fa` and report-file retention as `9e4a1d9e`. Account core wrapper integration is signed as `d41a0a56`; recovery wrapper integration is signed as `4e8a8f3a`. Authority wrapper integration is signed as `e18a77df`. Promotion wrapper integration is signed as `b31be6c0`. Genesis wrapper integration is signed as `d38a0ab0`. Admission wrapper integration is signed as `b9d4efa2`. Handoff wrapper integration is signed as `9b7f02ea`. Editing wrapper integration is signed as `61e53cdb`. Outbound is signed as `49cbb1e2`. Capture is signed as `652fd13f`. Spool is signed as `d107f244`. Decisions is signed as `21198b4f`. Delivery is signed as `6ca643f5`. Service-delivery is signed as `9234a706`. Inbound preparation is signed as `9937b8b7`. Inbound codecs is signed as `70788d4e`. Receive is signed as `ccffd280`. Receive-editor is signed as `d178d349`. Receive-transport is signed as `a05369a1`. Receive-driver is signed as `50bb2d2c`. Composition is signed as `21278b15`. Service-inbound is signed as `a55ae626`. Manifest headroom repair is signed as `cfd1ec8d`. Activation is ready for signed commit. [Commit map and identity checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md)
 connect these commits to the original phase receipts without changing those receipts' revision IDs.
 This is bookkeeping, not a new immutable aggregate result.
 
@@ -4918,3 +4918,68 @@ vectors/crypto census, F-17 debt, prior archives and L-2 remain unchanged. Next:
 wrapper integration, remaining wrappers/qualification repairs, immutable aggregate and private human
 rehearsal. No personal browser/server/relay/device/deployment operation occurs.
 [Evidence and verifier](./account-conformance-runs/2026-09-16-manifest-headroom/README.md).
+
+
+## 2026-09-16 — Account activation wrapper integration
+
+Manifest headroom repair is signed and verified as `cfd1ec8d`. Activation retains six original commands:
+`tsc -b --noEmit` (60 seconds), the historical no-fresh-assertion reproduction (30 seconds), and separate
+core/controls/restart/native Node commands (120/30/30/180 seconds), each with its original concurrency,
+spec and JUnit arguments. The four Node children retain **25 cases**. Owned execution adds a 450-second
+aggregate/five-second grace, disposable CDP fixture, separate child reports and 31 required files.
+Owned children inherit the supervising group; standalone groups remain detached. The two non-Node
+commands are exit-only; neither is counted as a test case.
+
+The reproduction's **26 exact historical files at `4f71bac`** are pinned by reference/revision/path/hash.
+The larger input set is permitted only as that complete reviewed population; ordinary sets retain their
+eight-input ceiling. The actual reproduction refuses an altered tree population before import and emits
+the bytes it read, original v1 receipt, observed account state and assertion-call count. Source pinning,
+launch/reuse/post-run freshness and report reconciliation jointly bind this historical execution.
+In a separate local clone, all 26 file replacement controls refuse, and an added historical path makes
+the actual reproduction refuse before import. The clone is restored; repository Git objects/refs are
+not mutated by these controls.
+
+Actual baseline and mutant outcomes replace service/client success labels. The 120 generated histories
+(seed 9110401) retain every command, clock, before/after inventory hash, account/consumption state,
+challenge selection and retained result. Exact response objects are deduplicated by hash, with complete
+coverage and no unaccounted objects. Independent reconciliation replays expiry, renewal, abandonment,
+consumption and retry results. Signed challenges/receipts are verified against observed keys as internal
+report consistency; the original context/WebAuthn/service/native oracles remain mandatory and external
+trust is not inferred. The generated omission control retains every shrinking attempt and its observed
+forbidden receipt. SIGKILL, pre-prompt guards, cancellation ordering and renderer cold-recovery reports
+retain actual outcomes, including byte-identical lost-finish recovery without another prompt.
+
+The first owned epoch times out at the unchanged 60-second manifest deadline before any activation test.
+The 26-file set exposed duplicate revision subprocesses. Extend compilation-local sharing to the exact
+root/reference revision while still hashing each file; execution checks bypass this sharing. A
+same-input differential gives identical manifests with **94 to 62 Git subprocesses**. Preserve the
+failed source, logs, incomplete report and epoch; raise no deadline or report budget. The second epoch passes manifest but times out in the 50-case wrapper infrastructure suite.
+Verify each content-addressed signed response once per reconciliation call; every generated history,
+transition, byte binding and corruption check remains. Preserve that second epoch too. The final
+manifest test process reports **57.029s /60s**, with 61.929s total stage wall time;
+50 wrapper-infrastructure cases report 59.924s /60s, with 64.575s total stage wall time.
+Total receipt elapsed time includes setup, report reconciliation and closure outside the child watchdog;
+it is not itself the execution deadline. The runner records no timeout in these passing stages.
+These are observed single-host bounds, not loaded-host reliability guarantees. The final wrapper process
+has only 76 milliseconds of reported margin; headroom prep must precede another wrapper.
+The next epoch passes planning but stops in reproduction because the clean owned checkout has no
+`test-results` parent: standalone reporting used to create it incidentally. Make reproduction own that
+scratch-parent creation; the subsequent owned activation-only smoke passes. Preserve the failed epoch
+and exact pre-repair source. No activation Node case ran in that failed epoch.
+
+The final owned epoch passes **223 cases in eight executions**, then exact activation receipt reuse:
+141 planning cases, 25 activation, 21 service-inbound regression and 36 runner-stage cases. Activation
+takes **39.517s /450s** and service-inbound 64.971s /270s. Every group drains; all 31 files survive
+checkout removal in 32 inventory entries within 4 MiB /40 entries /two levels. Five new infrastructure
+cases include two 160-run corruptions (150975/150976); eight synthetic zero-exit runs and two omitted
+semantic/census hooks discriminate. Twenty focused service cases and all 120 histories also pass.
+A preliminary lint failure from a browser/global name collision is fixed and retained. These controls
+are not additional Account executions. Scoped lint/format, inventory/manifest and whitespace checks pass.
+
+Totals remain **629 obligations /292 required files** and **272 general files /2,201 dispositions
+(11 not applicable)**. Unresolved integration falls from 112 to **110: zero test-file /71 command
+/39 campaign**. Runtime, package/dependencies, vectors/crypto census, F-17 debt, prior archives and L-2
+remain unchanged. Next: bounded planning-headroom prep, then Account admission-bounds wrapper integration, then remaining families and
+qualification repairs, immutable aggregate and private human rehearsal. No personal browser/server,
+relay, device or deployment operation occurs.
+[Evidence and verifier](./account-conformance-runs/2026-09-16-wrapper-account-activation/README.md).

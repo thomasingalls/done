@@ -1,3 +1,6 @@
+import { AccountCore } from '../../account-service/core.ts';
+import { createHash } from 'node:crypto';
+import { canonical } from './oracle.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
@@ -42,28 +45,56 @@ async function mutant(t, gate) {
 for (const gate of ['assertion', 'expiry', 'target'])
   test(`omitting ${gate} admits a forbidden first activation`, async (t) => {
     const Core = await mutant(t, gate);
-    let now = 1000,
-      armed = false;
-    const options = {
-      now: () => now,
-      hook(p, op) {
-        if (armed && gate === 'expiry' && p === 'after-verify' && op === 'admit-promotion')
-          now += 600000;
-      },
-    };
-    const x = await ready(t, { fixture: fixture(t, options, Core) }),
-      c = await x.challenge();
-    let p = prove(x, x.input, c);
-    if (gate === 'assertion') p.activation.response = {};
-    if (gate === 'target') p.completion = changedCompletion(x);
-    armed = true;
-    const r = await x.submit(p);
-    assert.equal(r.kind, 'promotion-receipt');
-    assert.equal(x.f.rows('accounts')[0].state, 'active');
-    evidence('control-' + gate, { observed: 'forbidden activation succeeded', receipt: r });
+    const observations = [];
+    for (const [variant, Implementation] of [
+      ['baseline', AccountCore],
+      ['mutant', Core],
+    ]) {
+      let now = 1000,
+        armed = false;
+      const options = {
+        now: () => now,
+        hook(p, op) {
+          if (armed && gate === 'expiry' && p === 'after-verify' && op === 'admit-promotion')
+            now += 600000;
+        },
+      };
+      const x = await ready(t, { fixture: fixture(t, options, Implementation) }),
+        c = await x.challenge();
+      const p = prove(x, x.input, c);
+      if (gate === 'assertion') p.activation.response = {};
+      if (gate === 'target') p.completion = changedCompletion(x);
+      const inventory = () =>
+        canonical(['accounts', 'promotions', 'credentials'].map((n) => x.f.rows(n)));
+      const before = inventory();
+      armed = true;
+      const result = await x.submit(p),
+        after = inventory();
+      const hash = (v) => createHash('sha256').update(v).digest('hex');
+      observations.push({
+        variant,
+        challenge: c,
+        result,
+        before: hash(before),
+        after: hash(after),
+        assertion: p.activation.response,
+        completionDigest: hash(JSON.stringify(p.completion)),
+        now,
+        accountState: x.f.rows('accounts')[0].state,
+      });
+      if (variant === 'baseline') {
+        assert.equal(result.ok, false);
+        assert.equal(after, before);
+      } else {
+        assert.equal(result.kind, 'promotion-receipt');
+        assert.equal(x.f.rows('accounts')[0].state, 'active');
+      }
+    }
+    evidence('control-' + gate, { gate, observations });
   });
 test('generated stale-proof invariant fails and shrinks when assertion verification is omitted', async (t) => {
   const Core = await mutant(t, 'assertion');
+  const attempts = [];
   const result = await fc.check(
     fc.asyncProperty(
       fc.array(fc.integer({ min: 1, max: 600000 }), { minLength: 1, maxLength: 8 }),
@@ -77,7 +108,9 @@ test('generated stale-proof invariant fails and shrinks when assertion verificat
         const p = prove(x, x.input, old);
         p.activation.nonce = fresh.context.nonce;
         // Relabelling an old signed proof with a fresh nonce must never activate.
-        assert.equal((await x.submit(p)).ok, false);
+        const result = await x.submit(p);
+        attempts.push({ delays, old, fresh, assertion: p.activation.response, result });
+        assert.equal(result.ok, false);
       },
     ),
     { seed: 9110402, numRuns: 12 },
@@ -87,6 +120,8 @@ test('generated stale-proof invariant fails and shrinks when assertion verificat
   evidence('control-generated', {
     seed: 9110402,
     numShrinks: result.numShrinks,
+    failed: result.failed,
+    attempts,
     counterexample: result.counterexample,
     path: result.counterexamplePath,
   });

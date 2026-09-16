@@ -1038,7 +1038,6 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     assert(!m.selections['account-fixtures'].includes('test:' + f));
   }
   for (const runner of [
-    'account-activation',
     'account-isolation',
     'account-ledger-contract',
     'account-recovery-contract',

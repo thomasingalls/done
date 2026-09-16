@@ -1,9 +1,12 @@
+import { activationReference, activationHistoricalFiles } from './historical-inputs.mjs';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
-const commit = '4f71bac',
+mkdirSync(resolve('test-results'), { recursive: true });
+const commit = activationReference,
   root = mkdtempSync(resolve('test-results/activation-before-'));
 const cleanup = [];
 try {
@@ -22,16 +25,22 @@ try {
           'test/account-genesis/oracle.mjs',
         ].includes(p),
     );
+  assert.deepEqual(files, activationHistoricalFiles, 'Historical reproduction file set changed');
+  const sources = [];
   for (const p of files) {
     mkdirSync(dirname(join(root, p)), { recursive: true });
-    writeFileSync(join(root, p), execFileSync('git', ['show', commit + ':' + p]));
+    const bytes = execFileSync('git', ['show', commit + ':' + p]);
+    sources.push({ path: p, sha256: createHash('sha256').update(bytes).digest('hex') });
+    writeFileSync(join(root, p), bytes);
   }
   const { prepared } = await import(
     pathToFileURL(join(root, 'test/account-admission/core-fixtures.mjs')).href
   );
   const x = await prepared({ after: (f) => cleanup.push(f) }),
     offer = await x.begin();
+  let assertionCalls = 0;
   x.account.key.assert = () => {
+    assertionCalls++;
     throw Error('No new assertion available');
   };
   const result = await x.finish(offer);
@@ -41,6 +50,10 @@ try {
   assert.throws(() => parseReceipt(result));
   const evidence = {
     commit,
+    sources,
+    assertionCalls,
+    receipt: result,
+    accountState: x.f.rows('accounts')[0].state,
     receiptVersion: result.v,
     activatedWithoutFreshAssertion: true,
     newReaderRefusesActualOldReceipt: true,

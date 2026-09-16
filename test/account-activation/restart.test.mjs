@@ -1,3 +1,5 @@
+import { evidence } from './fixtures.mjs';
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fork } from 'node:child_process';
@@ -71,7 +73,19 @@ for (const operation of ['challenge-promotion'])
           result = await cold.call(action, input);
         assert.equal(result.kind, 'promotion-activation-challenge');
         if (side === 'after-commit') assert.deepEqual(x.f.rows('promotions'), before);
-        assert.deepEqual(await cold.call(action, input), result);
+        const retry = await cold.call(action, input);
+        assert.deepEqual(retry, result);
+        const hash = (v) => createHash('sha256').update(JSON.stringify(v)).digest('hex');
+        evidence('restart-' + side, {
+          side,
+          operation,
+          code,
+          signal,
+          before: hash(before),
+          after: hash(x.f.rows('promotions')),
+          result,
+          retry,
+        });
         await cold.close();
       },
     );

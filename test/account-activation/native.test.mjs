@@ -88,12 +88,19 @@ for (const gate of ['signature', 'target'])
         { captured, gate },
       );
       await assert.rejects(admit(f.page, item), gate === 'target' ? /target changed/ : /signature/);
-      assert.equal(await f.page.evaluate(() => prompted), 0);
+      const baselinePrompts = await f.page.evaluate(() => prompted);
+      assert.equal(baselinePrompts, 0);
       await f.page.evaluate(await control(gate));
       await assert.rejects(admit(f.page, item), /prompt reached/);
-      assert.equal(await f.page.evaluate(() => prompted), 1);
+      const mutantPrompts = await f.page.evaluate(() => prompted);
+      assert.equal(mutantPrompts, 1);
       assert.equal((await snapshot(f.page, item)).marker.stage, 'admission-offered');
-      evidence('control-client-' + gate, { baselinePrompts: 0, mutantPrompts: 1 });
+      evidence('control-client-' + gate, {
+        gate,
+        baselinePrompts,
+        mutantPrompts,
+        marker: (await snapshot(f.page, item)).marker.stage,
+      });
     },
   );
 test(
@@ -139,7 +146,8 @@ test(
     }, args(item));
     await f.page.waitForFunction(() => !!window.release);
     await f.page.evaluate(() => abort.abort());
-    assert.equal(await f.page.evaluate(() => seenAbort), true);
+    const seenAbort = await f.page.evaluate(() => window.seenAbort);
+    assert.equal(seenAbort, true);
     await other.evaluate((item) => {
       window.done = false;
       window.work = Harness.admitLocalPromotion({
@@ -155,12 +163,20 @@ test(
       });
     }, args(item));
     await other.waitForFunction(async () => (await navigator.locks.query()).pending.length > 0);
-    assert.equal(await f.page.evaluate(() => settled), false);
-    assert.equal(await other.evaluate(() => done), false);
+    const beforeRelease = {
+      settled: await f.page.evaluate(() => settled),
+      otherDone: await other.evaluate(() => done),
+      pending: (await other.evaluate(() => navigator.locks.query())).pending.length,
+    };
+    assert.equal(beforeRelease.settled, false);
+    assert.equal(beforeRelease.otherDone, false);
     await f.page.evaluate(() => release());
     await f.page.evaluate(() => work);
-    assert.equal(await f.page.evaluate(() => finishes), 0);
-    assert.equal((await other.evaluate(() => work)).kind, 'promotion-receipt');
+    const finishCalls = await f.page.evaluate(() => window.finishes),
+      result = await other.evaluate(() => work);
+    assert.equal(finishCalls, 0);
+    assert.equal(result.kind, 'promotion-receipt');
+    evidence('native-cancel', { seenAbort, beforeRelease, finishes: finishCalls, result });
   },
 );
 for (const stage of ['prompt', 'lost-finish'])
@@ -216,8 +232,14 @@ for (const stage of ['prompt', 'lost-finish'])
       });
       const result = await admit(f.page, item);
       assert.equal(result.kind, 'promotion-receipt');
-      assert.equal(await f.page.evaluate(() => prompts), stage === 'prompt' ? 1 : 0);
+      const coldPrompts = await f.page.evaluate(() => prompts);
+      assert.equal(coldPrompts, stage === 'prompt' ? 1 : 0);
       if (receipt) assert.deepEqual(result, receipt);
-      evidence('native-' + stage, { coldPrompts: stage === 'prompt' ? 1 : 0, receipt: result });
+      evidence('native-' + stage, {
+        stage,
+        coldPrompts,
+        beforeCrash: receipt ?? null,
+        receipt: result,
+      });
     },
   );

@@ -3671,7 +3671,13 @@ test('report-writing preparation remains a separate variant with required retain
       .kind,
     'account-service-inbound',
   );
-  assert(plan.rows.find((r) => r.id === 'campaign:scripts/account-activation/run.mjs').blocked);
+  assert.equal(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-activation/run.mjs').stage.expect.kind,
+    'account-activation',
+  );
+  assert(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-admission-bounds/run.mjs').blocked,
+  );
 });
 
 test('core wrapper executes the actual grouped campaign and aliases only its exact commands', () => {

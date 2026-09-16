@@ -41,7 +41,13 @@ for (const alg of [-8, -7])
       'proof-conflict',
     );
     assert.equal(inventory(x), saved);
-    evidence('activation-' + alg, { challenge, receipt: r, assertionHash: r.activation.proofHash });
+    evidence('activation-' + alg, {
+      challenge,
+      receipt: r,
+      assertion: p.activation.response,
+      assertionHash: r.activation.proofHash,
+      counter: x.f.rows('credentials')[0].counter,
+    });
   });
 test('real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption', async (t) => {
   const x = await ready(t),
@@ -210,7 +216,14 @@ test(
   '120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine',
   { timeout: 60000 },
   async (t) => {
-    const histories = [];
+    const histories = [],
+      values = {};
+    const remember = (v) => {
+      const key = hash(JSON.stringify(v));
+      if (values[key]) assert.deepEqual(values[key], v);
+      else values[key] = structuredClone(v);
+      return key;
+    };
     const result = await fc.check(
       fc.asyncProperty(
         fc.array(
@@ -225,7 +238,22 @@ test(
             previous,
             receipt;
           const issued = [];
+          const observe = () => {
+            const row = x.f.rows('promotions')[0],
+              activation = JSON.parse(row.activation);
+            return {
+              inventory: hash(inventory(x)),
+              accountState: x.f.rows('accounts')[0].state,
+              challengeNonce: activation?.challenge.context.nonce ?? null,
+              proofHash: activation?.proofHash ?? null,
+              receipt: row.result ? remember(JSON.parse(row.result)) : null,
+            };
+          };
+          const history = { commands, initial: observe(), observations: [], completed: false };
+          histories.push(history);
           for (const cmd of commands) {
+            const observation = { cmd, nowBefore: now, before: observe(), result: null };
+            history.observations.push(observation);
             if (cmd === 'advance') now += 600000;
             if (cmd === 'restart') {
               x.f.restart();
@@ -233,6 +261,7 @@ test(
             }
             if (cmd === 'challenge') {
               const c = await x.challenge();
+              observation.result = remember(c);
               if (state === 'cancelled') assert.equal(c.ok, false);
               else if (state === 'active') assert.deepEqual(c, receipt);
               else {
@@ -248,7 +277,11 @@ test(
             }
             if ((cmd === 'finish' || cmd === 'old') && current) {
               const chosen = cmd === 'old' ? (previous ?? current) : current;
-              const r = await x.submit(prove(x, x.input, chosen));
+              const proof = prove(x, x.input, chosen);
+              const r = await x.submit(proof);
+              observation.chosenNonce = chosen.context.nonce;
+              observation.proofHash = hash(canonical(proof.activation.response));
+              observation.result = remember(r);
               const valid =
                 state !== 'cancelled' &&
                 chosen.context.nonce === current.context.nonce &&
@@ -261,21 +294,19 @@ test(
               } else assert.equal(r.ok, false);
             }
             if (cmd === 'changed' && current) {
-              assert.equal(
-                (
-                  await x.submit({
-                    ...prove(x, x.input, current),
-                    completion: changedCompletion(x),
-                  })
-                ).ok,
-                false,
-              );
+              const changed = await x.submit({
+                ...prove(x, x.input, current),
+                completion: changedCompletion(x),
+              });
+              observation.result = remember(changed);
+              assert.equal(changed.ok, false);
             }
             if (cmd === 'abandon') {
               const r = x.f.core.abandonPreparation({
                 retryKey: x.account.retryKey,
                 accountId: x.account.result.accountId,
               });
+              observation.result = remember(r);
               if (state === 'active') assert.equal(r.ok, false);
               else {
                 assert.equal(r.ok, true);
@@ -286,8 +317,11 @@ test(
             const retained = JSON.parse(x.f.rows('promotions')[0].activation);
             assert.equal(!!retained?.proofHash, state === 'active');
             if (receipt) assert.deepEqual(JSON.parse(x.f.rows('promotions')[0].result), receipt);
+            observation.nowAfter = now;
+            observation.after = observe();
           }
-          histories.push({ commands, state, issued: issued.length });
+          Object.assign(history, { state, issued: issued.length, completed: true });
+          evidence('generated-activation', { seed: 9110401, status: 'running', histories, values });
         },
       ),
       { seed: 9110401, numRuns: 120 },
@@ -300,6 +334,8 @@ test(
       counterexample: result.counterexample,
       counterexamplePath: result.counterexamplePath,
       histories,
+      values,
+      status: result.failed ? 'failed' : 'passed',
     });
     assert.equal(result.failed, false, String(result.errorInstance));
   },

@@ -3852,3 +3852,14 @@ The identical-manifest differential and real replacement/drift controls distingu
 from trusting a long-lived cache. Three new runner tests raise the reviewed disposition total to 2,201;
 refresh the explicit census rather than suppressing them. Single-host timing headroom does not close
 aggregate or loaded-host qualification.
+
+
+## 2026-09-16 — Activation wrapper binds both historical and current evidence
+
+Treat the older no-proof activation reproduction as an exact historical execution input, with 26 pinned
+files and a closed population checked by the reproduction itself. Permit larger historical metadata
+only for that complete reviewed set. Share revision reads only within one synchronous compilation;
+execution checks remain fresh. Retain generated clocks, signed responses, observed state and actual
+mutation/process/browser outcomes rather than replacing independent fixture assertions with labels.
+Observed-key signature consistency is corroboration, not external authority. Keep the original child
+commands, deadlines and counterexamples, including the manifest timeout that exposed duplicated work.

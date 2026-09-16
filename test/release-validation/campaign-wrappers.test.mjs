@@ -1,4 +1,17 @@
 import {
+  activationCampaign,
+  activationCampaignStage,
+  activationSteps,
+  activationReports,
+  reconcileActivationReports,
+  reconcileActivationEvidence,
+} from '../../scripts/release-validation/account-activation-wrapper.mjs';
+import {
+  activationReference,
+  activationHistoricalFiles,
+} from '../../scripts/account-activation/historical-inputs.mjs';
+import { validateHistoricalInputs } from '../../scripts/release-validation/historical-inputs.mjs';
+import {
   serviceInboundCampaign,
   serviceInboundCampaignStage,
   serviceInboundSteps,
@@ -3119,5 +3132,424 @@ test('160 generated service-inbound control corruptions reject missing refusal, 
       assert.throws(() => reconcileServiceInboundEvidence(bad));
     }),
     { seed: 150974, numRuns: 160 },
+  );
+});
+
+function activationEvidence() {
+  const hash = (v) => createHash('sha256').update(v).digest('hex'),
+    keys = generateKeyPairSync('ed25519');
+  const lp = (...vs) =>
+    Buffer.concat(
+      vs.map((v) => {
+        const b = Buffer.from(v),
+          n = Buffer.alloc(2);
+        n.writeUInt16BE(b.length);
+        return Buffer.concat([n, b]);
+      }),
+    );
+  const signed = (domain, body) =>
+    sign(null, lp(domain, hash(JSON.stringify(body))), keys.privateKey).toString('hex');
+  const pin = {
+    v: 1,
+    serviceId: 'ab'.repeat(16),
+    origin: 'https://fixture.invalid',
+    rpId: 'fixture.invalid',
+    authRoot: keys.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex'),
+  };
+  const context = (nonce, expiresAt) => ({
+    v: 1,
+    pin,
+    accountId: 'a'.repeat(43),
+    requestDigest: '12'.repeat(32),
+    offerHead: '23'.repeat(32),
+    completionDigest: hash('{}'),
+    credentialId: 'AQ',
+    nonce: nonce.repeat(32),
+    expiresAt,
+  });
+  const challenge = (nonce, expiry) => {
+    const c = context(nonce, expiry);
+    return {
+      v: 1,
+      kind: 'promotion-activation-challenge',
+      context: c,
+      signature: signed('done/promotion-activation-challenge/v1', c),
+    };
+  };
+  const c1 = challenge('34', 601000),
+    c2 = challenge('45', 1201000);
+  const assertion = (c) => ({
+    response: {
+      clientDataJSON: Buffer.from(
+        JSON.stringify({
+          type: 'webauthn.get',
+          origin: pin.origin,
+          challenge: Buffer.from(
+            hash(lp('done/promotion-activation/v1', hash(JSON.stringify(c.context)))),
+            'hex',
+          ).toString('base64url'),
+        }),
+      ).toString('base64url'),
+    },
+  });
+  const response = assertion(c2),
+    oldResponse = assertion(c1),
+    proof = hash(JSON.stringify(response));
+  const receipt = (c = c2, asserted = response) => {
+    const body = {
+      v: 2,
+      kind: 'promotion-receipt',
+      offer: {
+        epoch: { accountId: c.context.accountId, requestDigest: c.context.requestDigest },
+        head: c.context.offerHead,
+      },
+      completion: {},
+      epochSignature: '00'.repeat(64),
+      activation: { context: c.context, proofHash: hash(JSON.stringify(asserted)) },
+    };
+    return { ...body, signature: signed('done/promotion-receipt/v2', body) };
+  };
+  const accepted = receipt(),
+    refused = { ok: false, refusal: 'fixture' },
+    values = {};
+  const remember = (v) => {
+    const h = hash(JSON.stringify(v));
+    values[h] = v;
+    return h;
+  };
+  const first = remember(c1),
+    second = remember(c2),
+    rec = remember(accepted),
+    bad = remember(refused);
+  const initial = {
+    inventory: '00'.repeat(32),
+    accountState: 'pending',
+    challengeNonce: null,
+    proofHash: null,
+    receipt: null,
+  };
+  let last = initial,
+    now = 1000;
+  const observations = [];
+  const step = (cmd, result, change = {}, extras = {}) => {
+    const before = structuredClone(last),
+      nowBefore = now;
+    if (cmd === 'advance') now += 600000;
+    last = { ...last, ...change };
+    observations.push({
+      cmd,
+      nowBefore,
+      nowAfter: now,
+      before,
+      after: structuredClone(last),
+      result,
+      ...extras,
+    });
+  };
+  step('challenge', first, { inventory: '01'.repeat(32), challengeNonce: c1.context.nonce });
+  step('advance', null);
+  step('challenge', second, { inventory: '02'.repeat(32), challengeNonce: c2.context.nonce });
+  step(
+    'old',
+    bad,
+    {},
+    { chosenNonce: c1.context.nonce, proofHash: hash(JSON.stringify(oldResponse)) },
+  );
+  step(
+    'finish',
+    rec,
+    { inventory: '03'.repeat(32), accountState: 'active', proofHash: proof, receipt: rec },
+    { chosenNonce: c2.context.nonce, proofHash: proof },
+  );
+  step('restart', null);
+  step('changed', bad);
+  step('abandon', bad);
+  const history = {
+    commands: observations.map((o) => o.cmd),
+    initial,
+    observations,
+    state: 'active',
+    issued: 2,
+    completed: true,
+  };
+  const r = {
+    'before.json': {
+      commit: '4f71bac',
+      sources: [],
+      assertionCalls: 0,
+      receiptVersion: 1,
+      receipt: { v: 1, kind: 'promotion-receipt' },
+      accountState: 'active',
+      activatedWithoutFreshAssertion: true,
+      newReaderRefusesActualOldReceipt: true,
+      finishFields: ['retryKey', 'requestDigest', 'completion'],
+    },
+    'generated-activation.json': {
+      seed: 9110401,
+      status: 'passed',
+      numRuns: 120,
+      numShrinks: 0,
+      failed: false,
+      counterexample: null,
+      counterexamplePath: null,
+      histories: Array.from({ length: 120 }, () => structuredClone(history)),
+      values,
+    },
+    'control-generated.json': {
+      seed: 9110402,
+      failed: true,
+      numShrinks: 1,
+      path: '0:0',
+      counterexample: [[1]],
+      attempts: [2, 1].map((n) => ({
+        delays: [n],
+        old: c1,
+        fresh: c2,
+        assertion: oldResponse,
+        result: receipt(c2, oldResponse),
+      })),
+    },
+    'native-cancel.json': {
+      seenAbort: true,
+      beforeRelease: { settled: false, otherDone: false, pending: 1 },
+      finishes: 0,
+      result: accepted,
+    },
+  };
+  for (const alg of [-8, -7])
+    r['activation-' + alg + '.json'] = {
+      challenge: c2,
+      receipt: accepted,
+      assertion: response,
+      assertionHash: proof,
+      counter: 17,
+    };
+  for (const gate of ['assertion', 'expiry', 'target'])
+    r['control-' + gate + '.json'] = {
+      gate,
+      observations: ['baseline', 'mutant'].map((variant) => ({
+        variant,
+        challenge: c2,
+        result: variant === 'baseline' ? refused : accepted,
+        before: '11'.repeat(32),
+        after: (variant === 'baseline' ? '11' : '22').repeat(32),
+        assertion: gate === 'assertion' ? {} : response,
+        completionDigest: gate === 'target' ? '66'.repeat(32) : c2.context.completionDigest,
+        now: 1201000,
+        accountState: variant === 'baseline' ? 'pending' : 'active',
+      })),
+    };
+  for (const side of ['before-commit', 'after-commit'])
+    r['restart-' + side + '.json'] = {
+      side,
+      operation: 'challenge-promotion',
+      code: null,
+      signal: 'SIGKILL',
+      before: '00'.repeat(32),
+      after: (side === 'before-commit' ? '11' : '00').repeat(32),
+      result: c2,
+      retry: c2,
+    };
+  for (const gate of ['signature', 'target'])
+    r['control-client-' + gate + '.json'] = {
+      gate,
+      baselinePrompts: 0,
+      mutantPrompts: 1,
+      marker: 'admission-offered',
+    };
+  for (const stage of ['prompt', 'lost-finish'])
+    r['native-' + stage + '.json'] = {
+      stage,
+      coldPrompts: stage === 'prompt' ? 1 : 0,
+      beforeCrash: stage === 'prompt' ? null : accepted,
+      receipt: accepted,
+    };
+  return r;
+}
+
+test('activation wrapper binds six commands, 25 cases and the complete 26-file historical reproduction', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-activation');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 25);
+  assert.deepEqual(
+    s.expect.steps.map((s) => s.deadlineMs),
+    [60000, 30000, 120000, 30000, 30000, 180000],
+  );
+  assert.equal(s.deadlineMs, 450000);
+  assert.equal(s.expect.historyInputs.length, 26);
+  assert.equal(s.fileOutputs.required.length, 31);
+  assert.deepEqual(
+    s.expect.historyInputs.map((p) => p.path),
+    activationHistoricalFiles,
+  );
+  assert(s.expect.historyInputs.every((p) => p.reference === activationReference));
+  for (const change of [
+    { env: { MODE: 'other' } },
+    { argv: [...s.argv, '--case', 'one'] },
+    { fixture: undefined },
+    { deadlineMs: 450001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: s.expect.historyInputs.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  assert.throws(() => validateHistoricalInputs(s.expect.historyInputs.slice(0, 9)));
+  assert.throws(() =>
+    validateHistoricalInputs(s.expect.historyInputs.map((p) => ({ ...p, reference: p.revision }))),
+  );
+  graph.extraRoots.push({
+    id: 'activation-filter',
+    argv: ['node', activationCampaign, '--case', 'one'],
+  });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:activation-filter:0')
+      .blocked,
+  );
+});
+
+test('activation trace requires both exit steps and exact nonce-bound cases from all four children', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-activation-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = activationCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const children = s.expect.steps.filter((s) => s.kind === 'node');
+  const reports = children.map((s) => ({
+    schema: 1,
+    nonce: 'fresh:' + s.name,
+    phase: 'complete',
+    cases: s.expect.cases,
+    errors: [],
+    summary: {
+      success: true,
+      counts: { tests: s.expect.cases.length, failed: 0, cancelled: 0, skipped: 0, todo: 0 },
+    },
+  }));
+  const run = (v) => {
+    v.reports.forEach((r, i) =>
+      writeFileSync(join(dir, 'case-reports/' + children[i].name + '.json'), JSON.stringify(r)),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...reports.map((_, i) => (v) => v.reports[i].cases.pop()),
+    (v) => (v.trace.steps[0].code = 1),
+    (v) => (v.trace.steps[1].code = 1),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[2].nonce = 'stale'),
+    (v) => (v.trace.phase = 'running'),
+  ]) {
+    const v = structuredClone({ trace, reports });
+    alter(v);
+    assert.throws(() => run(v));
+  }
+});
+
+test('activation reports bind historical bytes and refuse incomplete summaries, sources and observations', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-activation-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: activationCampaign, sha256: 'a'.repeat(64) }],
+    r = {
+      ...activationEvidence(),
+      'sources.json': sources,
+      'summary.json': {
+        status: 'passed',
+        startedAt: '2026-09-16T00:00:00.000Z',
+        completedAt: '2026-09-16T00:00:01.000Z',
+        stages: activationSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+      },
+    };
+  const aux = activationReports.filter((f) => f.endsWith('.log') || f.endsWith('.xml'));
+  const save = (v) => {
+    for (const [f, b] of Object.entries(v)) writeFileSync(join(dir, f), JSON.stringify(b));
+    for (const f of aux) writeFileSync(join(dir, f), f === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileActivationReports(dir, sources, []);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => r['before.json'].sources.push({ path: 'extra', sha256: '00' }),
+    (r) => r['generated-activation.json'].histories[0].observations.pop(),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileActivationReports(dir, sources, []));
+  }
+  for (const f of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, f));
+    assert.throws(() => reconcileActivationReports(dir, sources, []));
+  }
+});
+
+test('160 generated activation histories reject clock, consumption, inventory, retained-result and signature corruption', () => {
+  const r = activationEvidence();
+  reconcileActivationEvidence(r);
+  const changes = [
+    (h) => h.observations.pop(),
+    (h) => h.observations[0].nowAfter++,
+    (h) => (h.observations[3].chosenNonce = '00'.repeat(32)),
+    (h) => (h.observations[4].proofHash = '00'.repeat(32)),
+    (h) => (h.observations[5].after.inventory = '77'.repeat(32)),
+    (h) => (h.observations[4].after.receipt = null),
+    (h) => (h.completed = false),
+    (h) => h.issued++,
+    (h) => (h.state = 'cancelled'),
+  ];
+  fc.assert(
+    fc.property(fc.nat(119), fc.nat(changes.length - 1), (i, k) => {
+      const bad = structuredClone(r);
+      changes[k](bad['generated-activation.json'].histories[i]);
+      assert.throws(() => reconcileActivationEvidence(bad));
+    }),
+    { seed: 150975, numRuns: 160 },
+  );
+  const bad = structuredClone(r),
+    g = bad['generated-activation.json'];
+  Object.values(g.values).find((v) => v.kind === 'promotion-receipt').signature = '00'.repeat(64);
+  assert.throws(() => reconcileActivationEvidence(bad));
+});
+
+test('160 generated activation controls reject absent baseline, false mutation, historical proof, SIGKILL and browser recovery claims', () => {
+  const r = activationEvidence();
+  reconcileActivationEvidence(r);
+  const changes = [
+    (r) => (r['before.json'].assertionCalls = 1),
+    (r) => (r['control-assertion.json'].observations[0].result.ok = true),
+    (r) => (r['control-target.json'].observations[1].accountState = 'pending'),
+    (r) => (r['control-expiry.json'].observations[0].now = 0),
+    (r) => (r['control-generated.json'].numShrinks = 0),
+    (r) => (r['restart-after-commit.json'].after = '88'.repeat(32)),
+    (r) => (r['restart-before-commit.json'].signal = 'SIGTERM'),
+    (r) => (r['control-client-signature.json'].baselinePrompts = 1),
+    (r) => (r['native-cancel.json'].beforeRelease.otherDone = true),
+    (r) => (r['native-lost-finish.json'].coldPrompts = 1),
+    (r) => (r['activation--7.json'].assertionHash = '00'.repeat(32)),
+  ];
+  fc.assert(
+    fc.property(fc.nat(changes.length - 1), (k) => {
+      const bad = structuredClone(r);
+      changes[k](bad);
+      assert.throws(() => reconcileActivationEvidence(bad));
+    }),
+    { seed: 150976, numRuns: 160 },
   );
 });

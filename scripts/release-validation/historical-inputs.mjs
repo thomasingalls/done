@@ -1,3 +1,7 @@
+import {
+  activationReference,
+  activationHistoricalFiles,
+} from '../account-activation/historical-inputs.mjs';
 /** Pin the Git bytes explicitly used by reviewed historical fixture builders. */
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -24,7 +28,8 @@ function validateLocator(reference, path) {
     typeof reference === 'string' &&
       /^[a-f0-9]{7,40}$/.test(reference) &&
       typeof path === 'string' &&
-      (/^account-service\/[a-z-]+\.ts$/.test(path) ||
+      ((reference === activationReference && activationHistoricalFiles.includes(path)) ||
+        /^account-service\/[a-z-]+\.ts$/.test(path) ||
         path === 'src/crdt/spoolRecord.ts' ||
         path === 'src/crdt/accountEnvelopePreparation.ts' ||
         path === 'src/crdt/accountDelivery.ts' ||
@@ -40,9 +45,15 @@ function validateLocator(reference, path) {
 
 export function validateHistoricalInputs(inputs) {
   assert(
-    Array.isArray(inputs) && inputs.length > 0 && inputs.length <= 8,
+    Array.isArray(inputs) && inputs.length > 0 && inputs.length <= 26,
     'Invalid historical source inputs',
   );
+  // Larger sets are allowed only for the complete reviewed activation reproduction.
+  if (inputs.length > 8)
+    assert.deepEqual(
+      inputs.map((i) => [i.reference, i.path]),
+      activationHistoricalFiles.map((path) => [activationReference, path]),
+    );
   for (const i of inputs) {
     assert(i && typeof i === 'object', 'Invalid historical source input');
     assert.deepEqual(Object.keys(i).sort(), ['path', 'reference', 'revision', 'sha256']);
@@ -69,12 +80,12 @@ export function historicalInput(root, reference, path) {
   if (!planningSnapshot) return readHistoricalInput(location, reference, path);
   const key = JSON.stringify([location, reference, path]);
   if (!planningSnapshot.has(key))
-    planningSnapshot.set(key, readHistoricalInput(location, reference, path));
+    planningSnapshot.set(key, readHistoricalInput(location, reference, path, planningSnapshot));
   // Stage builders may modify their returned metadata; never expose the shared pin.
   return { ...planningSnapshot.get(key) };
 }
 
-function readHistoricalInput(root, reference, path) {
+function readHistoricalInput(root, reference, path, revisions) {
   validateLocator(reference, path);
   const git = (args) =>
     execFileSync('git', args, {
@@ -83,9 +94,16 @@ function readHistoricalInput(root, reference, path) {
       maxBuffer: 2 * 1024 * 1024,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
-  const revision = git(['rev-parse', '--verify', reference + '^{commit}'])
-    .toString('utf8')
-    .trim();
+  // A two-part key is distinct from every three-part file-pin key. Sharing the
+  // revision avoids one subprocess per file in the fixed reproduction set.
+  // Execution callers omit this compilation-local map and always re-read Git.
+  const revisionKey = JSON.stringify([root, reference]);
+  const revision =
+    revisions?.get(revisionKey) ??
+    git(['rev-parse', '--verify', reference + '^{commit}'])
+      .toString('utf8')
+      .trim();
+  revisions?.set(revisionKey, revision);
   // Read exactly the expression the fixture uses, including replacement-object semantics.
   const sha256 = hash(git(['show', reference + ':' + path]));
   const pin = { reference, revision, path, sha256 };
