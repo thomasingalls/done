@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor service complete (`L-1`)
+## Product checkpoint: successor client history foundation complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-scope: supported v9 successor adoption and cold reopen (phase two, chunk C)
+status: in flight
+scope: supported v9 successor adoption and cold reopen (phase two, chunk C2)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -70,7 +70,7 @@ narrow transition. Historical evidence, current eligibility and client adoption 
 The outcome/decision are recorded in [completed.md](./completed.md) and [decisions.md](./decisions.md).
 
 **Chunks A/B are complete.** Pure successor/discovery bytes and verification are signed as `08d5a6e5`.
-The private service now consumes exact preparation atomically with one successor/current pointer and
+The private service, signed as `7bf78813`, consumes exact preparation atomically with one successor/current pointer and
 the delivery witness transition. Historical proofs, old queued bytes and refusal successors remain
 usable. The complete old witness pins the transition boundary, including refusal history; the original
 certified member remains the only reader/publisher. Schema 7 requires an explicit older-schema upgrade.
@@ -82,10 +82,17 @@ certified member remains the only reader/publisher. Schema 7 requires an explici
 include 60 shrinking histories, four SIGKILL boundaries, three cross-process races and two effective
 omission controls. This is service evidence, not browser/Yjs convergence or release qualification.
 
-**Next bounded implementation: chunk C.** Supported v9 adoption, current request construction and
-cold reopen must preserve pending journal/capture/spool work and recheck late replies. Then D integrates
-private consumption/discovery HTTP and the complete focused path. No successor HTTP route or ordinary
-Account activation exists yet. [Full phase definition](./account-successor-admission-prep.md).
+**Chunk C1 is complete.** Read-only client history now separates exact current authority from proof
+issuance and verifies the successor's complete accepted-envelope prefix. 39 focused cases pass,
+including 80 generated cases and two effective omission controls; typecheck, scoped lint/format and
+runtime inventory pass. No live client owner has changed yet.
+[History evidence](./account-conformance-runs/2026-09-16-successor-history/README.md).
+
+**Next bounded implementation: C2.** Integrate historical/current replay into the supported v9 owner,
+then lifecycle-owned installation and cold reopen. Preserve pending journal/capture/spool work and
+recheck late replies. D then integrates private consumption/discovery HTTP and the complete focused
+path. No successor HTTP route or ordinary Account activation exists yet.
+[Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
 key, ciphertext read or accepted publication. Ceremony, delivery/install/certification and multiple-

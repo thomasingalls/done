@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
+  "status": "A/B/C/D1\u2013D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -5022,6 +5022,18 @@
         {
           "path": "account-service/successor.ts",
           "name": "admitPrepared"
+        },
+        {
+          "path": "account-protocol/admissionHistory.ts",
+          "name": "verifyAdmissionHistory"
+        },
+        {
+          "path": "account-protocol/admissionHistory.ts",
+          "name": "verifyHistoryDecision"
+        },
+        {
+          "path": "account-protocol/admissionHistory.ts",
+          "name": "createAdmissionPrefixVerifier"
         }
       ],
       "homePins": [],
@@ -5033,7 +5045,9 @@
         "test/account-successor/service.test.mjs",
         "test/account-successor/restart.test.mjs",
         "test/account-successor/generated.test.mjs",
-        "test/account-successor/service-controls.test.mjs"
+        "test/account-successor/service-controls.test.mjs",
+        "test/account-successor/history.test.mjs",
+        "test/account-successor/history-controls.test.mjs"
       ],
       "requirements": [
         "closed-bounded-wire",
@@ -5044,7 +5058,9 @@
         "atomic-preparation-consumption",
         "complete-delivery-boundary",
         "cross-process-races",
-        "crash-recovery"
+        "crash-recovery",
+        "client-proof-issuance-boundary",
+        "client-exact-accepted-prefix"
       ],
       "blocker": "Pure protocol and private service owner have focused evidence; authority-map qualification and owned browser adoption remain open.",
       "next": "Implement supported v9 adoption and private HTTP integration; qualify new domains before release."

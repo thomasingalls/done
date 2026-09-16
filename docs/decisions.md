@@ -3987,3 +3987,14 @@ record, so the original preparation receipt remains immutable and subsequent vie
 Schema-6 upgrades preserve the original genesis preparation token shape. This private service result
 does not enable the HTTP path before supported client adoption exists.
 [Contract](./account-crypto/admission-successor.md#5-durable-service-consumption-and-delivery-chunk-b).
+
+
+## 2026-09-16 — split successor client adoption at the historical replay boundary
+
+Chunk C first supplies a read-only verified-history foundation (C1), then integrates ledger replay and
+owned installation (C2). The current v9 owner assumes one head in captures, delivery rows and received
+pages; installing a pointer before repairing that assumption would make retained writing unreadable.
+Historical acceptance issuance is bounded by the signed successor prefix; refusal history cannot be
+classified by that accepted-position vector. Complete signed-envelope prefix matching is necessary
+but does not replace custody/content coverage or the eventual atomic lifecycle commit. Neither C1's
+focused tests nor its runtime inventory qualify the new construction or resume release validation.

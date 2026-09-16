@@ -149,3 +149,28 @@ v9 clients cannot use the new head; until chunk D, there is no private HTTP acti
 Service tests use disposable SQLite databases and synthetic encrypted envelopes, not a browser/Yjs
 convergence claim. A self-consistent rollback of all service state still needs a surviving client anchor
 to detect it. Process SIGKILL evidence is not a claim about whole-machine power loss.
+
+
+## 6. Client history foundation (chunk C1)
+
+`account-protocol/admissionHistory.ts` derives an immutable, process-local history only after the pure
+successor verifier authenticates its full first authority, inherited certification and retained anchor.
+Copies or caller-fabricated history objects are refused. It binds exact first/current heads, unchanged
+acceptance key, original creating publisher and the signed accepted-prefix boundary. It adds no wire
+format or signature domain and confers no durable installation or dispatch capability.
+
+A historical accepted head must name epoch 1 at or below the boundary; a new head must name epoch 2
+above it, even if its envelope was sealed under epoch 1. At the exact boundary, the accepted link must
+match the successor. Both still pass the existing signature/subject/link verifier. A current epoch-1
+context cannot accept future epoch-2 evidence. Old permanent refusals can occur beyond the accepted
+boundary and remain refusals; the accepted-position vector cannot classify their issue time.
+
+The incremental prefix verifier consumes each epoch-1 envelope in order through the boundary and
+checks its creator signature, ciphertext digest, route and acceptance link. Missing, duplicate,
+reordered or changed history fails; zero position requires the zero link. It retains constant running
+state and at most one codec-bounded envelope, captures input before awaiting and invalidates itself
+on failure or overlapping operations. It does not decrypt or establish source/content coverage.
+The future custody owner must establish that coverage and commit authority before dispatch.
+
+[Focused evidence](../account-conformance-runs/2026-09-16-successor-history/README.md). Existing live v9
+owners are unchanged at this checkpoint; their ledger adapters and native installation remain open.

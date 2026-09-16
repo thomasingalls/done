@@ -9140,3 +9140,18 @@ Runtime crypto inventory and the two open construction groups reflect the owner;
 release snapshots are unchanged. Next is chunk C, supported v9 authority adoption and crash recovery,
 then private HTTP integration. No personal operations or release campaign occurred.
 [Evidence](./account-conformance-runs/2026-09-16-successor-service/README.md).
+
+
+## 2026-09-16 — successor client history foundation (C1)
+
+After signed service admission `7bf78813`, added read-only, immutable verified admission history with
+exact historical/current context binding. Old acceptance is limited to the successor's accepted prefix;
+new acceptance names epoch 2 even for unchanged queued epoch-1 envelopes. Old refusals remain permanent.
+An incremental creator-signature/digest/route verifier checks the complete signed prefix without
+retaining its full ciphertext history. It does not install authority or claim content coverage.
+
+39 focused Node cases pass, including 80 generated history cases and two effective omitted-check
+controls; typecheck, scoped lint/format and reviewed crypto census pass. First-authority and successor
+vectors are unchanged. [Evidence](./account-conformance-runs/2026-09-16-successor-history/README.md).
+C remains in flight: ledger adapters, lifecycle installation, cold replay and late replies remain;
+D adds private HTTP only afterward. Release validation and ordinary Account activation remain paused.

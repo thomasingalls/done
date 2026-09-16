@@ -24,6 +24,10 @@
       "sha256": "c7301adbe5f2f19d7031daba22bfb9b3add10cb7f1617be60850bbc10c52ae00"
     },
     {
+      "path": "account-protocol/admissionHistory.ts",
+      "sha256": "47ed9901048d69fc0e369f00f28d20a4f6f590099c73ece1de7a54067c65c8fe"
+    },
+    {
       "path": "account-protocol/authority.ts",
       "sha256": "2520519072ab0765ef8cc3ea82393fd1f03c8c3a8605736d52597a833d10e011"
     },

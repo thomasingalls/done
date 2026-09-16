@@ -414,6 +414,10 @@
     {
       "path": "account-service/successor.ts",
       "review": "Atomic preparation consumption and delivery-boundary ownership. Full row/authority/delivery comparison and current eligibility precede commit; signed historical artifacts alone cannot consume an operation."
+    },
+    {
+      "path": "account-protocol/admissionHistory.ts",
+      "review": "Read-only verified admission history: exact first/current authority, compatible creator routes, historical proof issuance bounds and incremental signed-envelope prefix comparison. No durable head installation or content-coverage authority."
     }
   ]
 }
