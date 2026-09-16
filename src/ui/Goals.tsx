@@ -30,6 +30,7 @@ import {
 } from '../editor/breadcrumbs';
 import type { ISODate } from '../lib/date';
 import { GoalsOutline } from './GoalsOutline';
+import { GoalsActionsMenu, type GoalsMenuAction } from './GoalsActionsMenu';
 
 export interface GoalsProps {
   /** Copies land on the day in view, which is the one the user is looking at. */
@@ -153,6 +154,26 @@ export const Goals = ({
     void removeMasterLines(selection.lines, { feedback: 'local' })
       .then((removed) => {
         if (!removed) setTransferError('Nothing removed. Try again.');
+      })
+      .finally(() => {
+        transferring.current = false;
+        setPending(false);
+      });
+  };
+
+  const menuAction = (action: GoalsMenuAction) => {
+    if (action === 'remove') {
+      removeSelected();
+      return;
+    }
+    if (transferring.current || unavailable || !snapshot[action]) return;
+    transferring.current = true;
+    setPending(true);
+    setTransferError('');
+    void execute({ kind: action }, { feedback: 'local' })
+      .then((result) => {
+        if (result === false || result === null)
+          setTransferError(`Could not ${action}. Try again.`);
       })
       .finally(() => {
         transferring.current = false;
@@ -336,6 +357,12 @@ export const Goals = ({
               </label>
             ))}
           </fieldset>
+          <GoalsActionsMenu
+            undoDisabled={unavailable || !snapshot.undo}
+            redoDisabled={unavailable || !snapshot.redo}
+            removeDisabled={removeDisabled}
+            onAction={menuAction}
+          />
           <div className="goals-destinations">
             <button
               type="button"
@@ -365,16 +392,6 @@ export const Goals = ({
               Done
             </button>
           </div>
-          {/* Remove always acts independently of the selected transfer mode. */}
-          <button
-            type="button"
-            className="card-action card-action-danger"
-            disabled={removeDisabled}
-            title="Delete the selected lines from the master list"
-            onClick={removeSelected}
-          >
-            Remove
-          </button>
         </div>
         {transferError && (
           <p className="goals-transfer-error" role="status" aria-label="Transfer result">

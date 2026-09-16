@@ -425,8 +425,9 @@ remove from it. Clearing completed items from the master list is **manual only**
 buttons and returns to Copy after a successful transfer. Move removes only lines that become cards,
 and refuses the entire transfer when the destination cannot accept them all or the selected source
 has changed before admission. One Undo restores the source and removes the destination cards together.
-In either mode, Next is disabled unless every selected item fits on the focused day. Remove stays
-separate from the destination buttons.
+In either mode, Next is disabled unless every selected item fits on the focused day. A “…” menu beside
+the Copy / Move selector contains workspace Undo, Redo, and Remove selected lines. The menu opens above
+the footer so the destination buttons stay in place and the footer stays at two rows on mobile.
 
 **TRD.** TRD §4.7 (movement operations).
 

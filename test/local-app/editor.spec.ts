@@ -97,9 +97,11 @@ test('Goals copy and separate line removal preserve suffix boundaries and worksp
   await expect(day(page).locator('.collection[data-section="next"] .card')).toHaveCount(2);
   await expect(page.locator('.goals-hint')).toHaveCount(0);
   await expect(content).toHaveText('keepremove oneremove two');
-  await page.locator('.goals').getByRole('button', { name: 'Remove', exact: true }).click();
+  await page.getByRole('button', { name: 'More Goals actions' }).click();
+  await page.getByRole('menuitem', { name: 'Remove selected lines' }).click();
   await expect(content).toHaveText('keep');
-  await page.getByRole('button', { name: 'Undo', exact: true }).click();
+  await page.getByRole('button', { name: 'More Goals actions' }).click();
+  await page.getByRole('menuitem', { name: 'Undo', exact: true }).click();
   await expect(content).toHaveText('keepremove oneremove two');
   await reloadApp(page);
   await expect(day(page).locator('.collection[data-section="next"] .card')).toHaveCount(2);
@@ -179,11 +181,12 @@ test('Goals destinations require room for the whole selection in either mode on 
   await expect(toNext).toBeDisabled();
   await page.getByLabel('Go to date', { exact: true }).fill(addDays(today, -3));
   for (const button of await destinations.all()) await expect(button).toBeDisabled();
-  await expect(goals.getByRole('button', { name: 'Remove', exact: true })).toBeEnabled();
+  await goals.getByRole('button', { name: 'More Goals actions' }).click();
+  await expect(goals.getByRole('menuitem', { name: 'Remove selected lines' })).toBeEnabled();
 });
 
 const actionBoxes = (page: Page) =>
-  page.locator('.goals-action-buttons button').evaluateAll((buttons) =>
+  page.locator('.goals-destinations button').evaluateAll((buttons) =>
     buttons.map((button) => {
       const { x, y, width, height } = button.getBoundingClientRect();
       return { x, y, width, height };
@@ -211,11 +214,6 @@ for (const width of [320, 420, 1280]) {
     );
     await page.setViewportSize({ width, height: 900 });
     await expect.poll(() => actionBoxes(page)).toEqual(before);
-    const done = before[2]!;
-    const remove = before[3]!;
-    expect(
-      Math.max(remove.x - (done.x + done.width), remove.y - (done.y + done.height)),
-    ).toBeGreaterThanOrEqual(16);
     const footer = (await goals.locator('.goals-actions').boundingBox())!;
     for (const box of before) {
       expect(box.x).toBeGreaterThanOrEqual(footer.x);
@@ -224,6 +222,22 @@ for (const width of [320, 420, 1280]) {
     const mode = (await goals.locator('.goals-transfer-mode').boundingBox())!;
     expect(mode.x).toBe(before[0]!.x);
     expect(mode.y + mode.height).toBeLessThan(before[0]!.y);
+    const more = goals.getByRole('button', { name: 'More Goals actions' });
+    const moreBox = (await more.boundingBox())!;
+    expect(moreBox.y).toBe(mode.y);
+    expect(moreBox.x).toBeGreaterThanOrEqual(mode.x + mode.width + 16);
+    expect(new Set(before.map((box) => box.y)).size).toBe(1);
+    expect(footer.y + footer.height - (before[0]!.y + before[0]!.height)).toBeLessThan(16);
+    await more.click();
+    const menu = goals.getByRole('menu', { name: 'Goals actions' });
+    await expect(menu).toBeVisible();
+    expect(await actionBoxes(page)).toEqual(before);
+    expect(await goals.locator('.goals-actions').boundingBox()).toEqual(footer);
+    const menuBox = (await menu.boundingBox())!;
+    expect(menuBox.y + menuBox.height).toBeLessThanOrEqual(moreBox.y);
+    expect(menuBox.x).toBeGreaterThanOrEqual(footer.x);
+    await page.keyboard.press('Escape');
+    await expect(more).toBeFocused();
     await goals.getByRole('radio', { name: 'Move to', exact: true }).check();
     expect(await goals.locator('.goals-transfer-mode').boundingBox()).toEqual(mode);
     expect(await actionBoxes(page)).toEqual(before);
@@ -233,6 +247,54 @@ for (const width of [320, 420, 1280]) {
     expect(await actionBoxes(page)).toEqual(before);
   });
 }
+
+test('Goals mobile menu removes the current line, undoes, redoes and dismisses accessibly', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await openApp(page);
+  await page.getByRole('button', { name: 'Open Goals', exact: true }).click();
+  const goals = page.locator('.goals');
+  const content = goals.locator('.cm-content');
+  const more = goals.getByRole('button', { name: 'More Goals actions' });
+  const menu = goals.getByRole('menu', { name: 'Goals actions' });
+  await more.click();
+  for (const item of await menu.getByRole('menuitem').all()) await expect(item).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+  await expect(more).toBeFocused();
+  await expect(page.locator('.shell')).toHaveAttribute('data-goals', 'open');
+  await content.click();
+  await page.keyboard.insertText('keep\nremove me');
+  await more.click();
+  await expect(menu.getByRole('menuitem', { name: 'Undo', exact: true })).toBeEnabled();
+  await expect(menu.getByRole('menuitem', { name: 'Redo', exact: true })).toBeDisabled();
+  await menu.getByRole('menuitem', { name: 'Remove selected lines' }).click();
+  await expect(content).toHaveText('keep');
+  await expect(menu).toHaveCount(0);
+  await expect(more).toBeFocused();
+  await more.click();
+  await menu.getByRole('menuitem', { name: 'Undo', exact: true }).click();
+  await expect(content).toHaveText('keepremove me');
+  await more.click();
+  await menu.getByRole('menuitem', { name: 'Redo', exact: true }).click();
+  await expect(content).toHaveText('keep');
+  await more.press('ArrowDown');
+  await expect(menu.getByRole('menuitem', { name: 'Undo', exact: true })).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(menu.getByRole('menuitem', { name: 'Remove selected lines' })).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(menu.getByRole('menuitem', { name: 'Undo', exact: true })).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(menu.getByRole('menuitem', { name: 'Remove selected lines' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(menu).toHaveCount(0);
+  await expect(goals.getByRole('button', { name: 'Next', exact: true })).toBeFocused();
+  await more.click();
+  await content.click();
+  await expect(menu).toHaveCount(0);
+  await expect(content).toHaveText('keep');
+});
 
 test('Goals failures appear once above the fixed bar and dismiss themselves', async ({ page }) => {
   await openApp(page);
