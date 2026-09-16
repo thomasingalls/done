@@ -3884,3 +3884,47 @@ actual retained lifecycle states rather than convenience labels. Deduplicate onl
 signature work for exact byte triples within one reconciliation call. Before broader composed campaigns,
 review child invocation identity, report namespaces, explicit retirements and prerequisite adapters;
 source mentions and overlapping filenames cannot substitute for execution evidence.
+
+
+## 2026-09-16 — Composed Account campaign preparation
+
+Admission-bounds is signed and verified as `3af765d3`. Read-only inspection selects Account isolation
+as the first composed pilot: 44 commands, 32 required Node files /205 cases, nine Node groups and
+30 vector commands. Preserve exact order, grouping, 300-second child bounds and existing child report
+namespaces. Its remaining retired v8 service-delivery browser child must be removed under the existing
+exclusion; the four live service files and separate v9 interoperability remain required. Five invoked
+historical blobs are identified from the selected leaf contracts. Standalone reproduction commands
+absent from this wrapper do not acquire invented obligations or credit.
+
+Four preserved generated reports alone total 5,932,919 bytes, exceeding the existing 4 MiB single-set
+limit. This is a historical sample, not composed-run qualification. The next bounded phase is opt-in
+namespaced report custody: independently bounded children and root metadata, a finite parent cap,
+unchanged legacy single-set limits, complete retention and identity/reuse binding. The pilot will then
+add the exact cooperative trace, semantic observations and owned qualification. Reservation-durability
+remains separate: 50 commands, 15 direct Node files /133 cases plus three nested Local components and
+full Vitest, whose postconditions cannot be replaced by successful exit codes.
+
+A finite AST reader reproduces both frozen inventories without importing tests or campaigns. Its two
+unknown-call probes refuse. The first draft counted a test filename supplied to lint/format; retain
+that incorrect inventory, restrict cases to actual Node test invocations, and verify identical current
+and signed-baseline output. No product tests or campaigns run in this documentation/preparation phase.
+No manifest, runtime, package/dependency, vector, crypto-census, F-17 debt or prior archive changes.
+The append-only records and L-2 checkpoint remain preserved. Counts stay **629 obligations /292 required
+files /272 general files /2,203 dispositions (11 not applicable)**; **108 unresolved: zero test-file
+/70 command /38 campaign**. Preparation does not resolve a wrapper. No personal operations occur.
+[Plan](./release-validation-composed-campaigns.md);
+[static evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
+
+
+## 2026-09-16 — Pause the release-validation campaign
+
+The operator has paused the campaign: release validation was started prematurely, and the product
+is not close to releasable. Preserve the completed runner work, composed-campaign preparation and
+all existing evidence as a checkpoint. Do not start namespaced report custody, another wrapper
+integration phase or an aggregate campaign under the previous standing instruction to continue.
+
+The unresolved integration count remains 108 (70 commands /38 campaigns); this is bookkeeping,
+not an estimate of product readiness or a mandate to finish validation before further product work.
+The previously proposed validation-first sequence is deferred. Choose the next product work and any
+resumption of this campaign explicitly with the operator. No gate is waived, no failure is relabelled
+and no release claim is made.

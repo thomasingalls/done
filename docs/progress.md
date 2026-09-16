@@ -42,59 +42,34 @@ that is no longer active.
 
 ---
 
-
-## Active slice: General validation-runner integration — command/campaign wrappers (`L-1`)
+## Paused checkpoint: validation-runner integration (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-blocks_on: remaining command/campaign adapters and immutable qualification; explicit F-17 RC latency debt
+status: blocked
+blocks_on: operator paused premature release validation; product is not close to releasable
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Roadmap checkpoint.** Planning batch headroom is signed and verified as `9b90337f`. All catalogue/
-test-file adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay
-**629 obligations /292 required files /272 general files /2,203 dispositions (11 not applicable)**.
-Bounds resolves one command and campaign: **zero test-file /70 command /38 campaign (108)** remain.
-These are integration counts, not a passing aggregate.
+**Campaign paused by the operator.** Release validation began prematurely. Preserve the completed
+runner work and evidence, but do not continue wrapper integration, namespaced report custody or
+aggregate execution under the prior instruction to proceed. The next product phase and any eventual
+resumption of validation require a new direction; validation completion is not the presumed next step.
 
-**Just completed.** Admission-bounds retains five original commands/11 cases and child deadlines.
-Owned execution adds a 420-second aggregate, three historical source pins and 23 retained reports.
-Actual boundary/omission/refusal observations and complete plaintext replay updates corroborate original
-crypto/decryption/browser oracles. Five new infrastructure cases, two 160-run corruption campaigns,
-three historical substitutions, eight synthetic runs and two omitted-check faults discriminate.
-The failed smoke reconciliation and lifecycle-name diagnostic remain preserved.
+**Preserved checkpoint.** Admission-bounds is signed as `3af765d3`. Composed-campaign preparation
+records isolation's 44 commands /205 live cases and the need for separately bounded report namespaces.
+That implementation has not started. [Deferred plan](./release-validation-composed-campaigns.md);
+[preparation evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
 
-The final owned epoch passes **220 cases in eight executions**, then exact bounds reuse. Bounds takes
-**78.557s /420s**; all groups drain and all 23 files survive checkout removal. Manifest process
-is **45.746s /60s** and wrapper-infrastructure process **54.126s /60s**. Loaded-host and
-immutable qualification remain open. This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-16-wrapper-account-admission-bounds/README.md).
-
-**Next bounded phase.** Prepare composed Account campaign integration: exact child contracts, report
-namespaces, explicit retired-child handling and prerequisite mapping before integrating a broad wrapper.
-Continue serially with signed commits between phases; if signing fails, finish and stage, then pause.
-
-**RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
-repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization
-exploration is closed. The unchanged application gate remains **failed**: Android card p95 38.7ms
-(<16), settled navigation 113.6ms (<100). Desktop card is 9.0ms, Android focus 35.4ms. The explicit
-post-measurement product disposition accepts both misses for the RC; it is not an automated waiver
-or passing receipt. [RC decision](./f17-rc-activation.md);
-[open F-17 debt](./review/implementation/f17-rc-latency-debt.json).
-No runtime, package/dependency, vector, crypto-census or F-17 debt changes occur in this phase.
-No personal app/server, relay, deployment or device operation occurs.
-
-**Remaining qualification.** Keep host-Python input binding, historical owner/orphan observations,
-delivery-oracle headroom, R-04 whole-tree style scope,
-P-06 construction prose and Q-08 artifact budgets explicit. Core-receive headroom is repaired at its
-unchanged bound, with older timeouts retained. After remaining wrappers/qualification repairs, run
-the immutable aggregate with failed F-17 budgets visible, then private Account rehearsal and the
-human recovery/adoption milestones. [Execution roadmap](./release-validation-execution.md);
-[release plan](./private-release-validation-prep.md#what-follows-validation).
+Integration totals remain **629 obligations /292 required files /272 general files /2,203 dispositions
+(11 not applicable)**; **108 unresolved: zero test-file /70 command /38 campaign**. These counts
+describe validation infrastructure coverage, not product readiness. Historical results and the failed
+F-17 application gate remain unchanged; no release qualification is claimed.
+[Pause decision](./decisions.md#2026-09-16--pause-the-release-validation-campaign);
+[execution history](./release-validation-execution.md).
 
 ---
 
