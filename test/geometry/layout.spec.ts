@@ -209,7 +209,7 @@ test.describe('layout', () => {
     const master = page.locator('.goals .cm-content');
     await master.click();
     await page.keyboard.insertText('a scheduled thing');
-    await page.locator('.goals').getByRole('button', { name: 'To Scheduled' }).click();
+    await page.locator('.goals').getByRole('button', { name: 'Scheduled' }).click();
 
     await expect(day.locator('.collection')).toHaveCount(3);
     expect(

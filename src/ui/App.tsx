@@ -483,6 +483,7 @@ export const App = (): React.ReactElement => {
       <Goals
         ref={goals}
         date={date}
+        today={today}
         onEditorReady={onGoalsEditorReady}
         onClose={goalsOverlay ? closeGoals : undefined}
       />

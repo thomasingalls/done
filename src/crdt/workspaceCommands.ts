@@ -19,6 +19,7 @@ import {
   splitCard,
   mergeCardBackwards,
   copyFromMaster,
+  moveFromMaster,
   fileCardTo,
   fileCardToGoals,
   removeUnfiledCard,
@@ -43,6 +44,11 @@ export type WorkspaceCommand =
   | { readonly kind: 'split'; readonly id: string; readonly at: number; readonly tailFrom?: number }
   | { readonly kind: 'merge'; readonly id: string }
   | { readonly kind: 'copy'; readonly to: Ref; readonly lines: readonly string[] }
+  | {
+      readonly kind: 'move-from-master';
+      readonly to: Ref;
+      readonly lines: readonly { readonly line: number; readonly text: string }[];
+    }
   | { readonly kind: 'file'; readonly id: string; readonly to: Ref | 'master' }
   | { readonly kind: 'bulk'; readonly from: ISODate; readonly to: Ref | 'master' }
   | { readonly kind: 'settings'; readonly rolloverHour: number }
@@ -60,6 +66,7 @@ export type WorkspaceIntent = {
     | { kind: 'initialize' }
     | { kind: 'text'; target: TextTarget; action: TextAction; selection?: RelativeSelection };
   readonly split?: { at: Y.RelativePosition; tail: Y.RelativePosition };
+  readonly masterMove?: RelativeSelection;
 };
 export type CommandValue = boolean | number | string | null | { readonly id: string };
 export interface CommandContext {
@@ -282,6 +289,34 @@ const executeWorkspaceCommand = (
     case 'copy':
       value = copyFromMaster(workspace, command.to, command.lines);
       break;
+    case 'move-from-master': {
+      if (!intent.masterMove) break;
+      const master = doc.getText('master');
+      const selected = resolveSelection(doc, master, intent.masterMove);
+      if (selected.ranges.length !== command.lines.length) break;
+      const source = EditorState.create({ doc: master.toString() }).doc;
+      const lines = selected.ranges.map((range) => source.lineAt(range.from));
+      // A queued move follows its original lines. Any edit inside them refuses
+      // the entire move instead of deleting different or newly written text.
+      if (
+        lines.some((line, index) => {
+          const range = selected.ranges[index]!;
+          return (
+            range.from !== line.from ||
+            range.to !== line.to ||
+            line.text !== command.lines[index]!.text
+          );
+        })
+      )
+        break;
+      value = moveFromMaster(
+        workspace,
+        master,
+        command.to,
+        lines.map((line) => line.number - 1),
+      );
+      break;
+    }
     case 'file':
       value =
         command.to === 'master'

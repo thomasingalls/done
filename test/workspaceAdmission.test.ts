@@ -175,6 +175,123 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
     const insert = (text: string) => ({ name: 'insert' as const, text });
     describe('admitted workspace commands and history', () => {
+      it.each(['next', 'scheduled', 'done'] as const)(
+        'moves noncontiguous Goals lines to %s with one undo and durable replay',
+        async (section) => {
+          const f = await fixture();
+          try {
+            const text = '- first\nkeep\n- last';
+            await master(f.doc).input(insert(text)).accepted;
+            const before = f.doc.read().undo;
+            const observed: { master: string; count: number }[] = [];
+            const unsubscribe = f.doc.subscribe(() => {
+              const view = f.doc.read();
+              observed.push({ master: view.master, count: view.cards.length });
+            });
+            const moved = await f.doc.command({
+              kind: 'move-from-master',
+              to: { ...next, section },
+              lines: [
+                { line: 0, text: '- first' },
+                { line: 2, text: '- last' },
+              ],
+            }).accepted;
+            unsubscribe();
+            expect(moved.value).toBe(2);
+            expect(observed).toEqual([{ master: 'keep', count: 2 }]);
+            expect(f.doc.read().undo).toBe(before + 1);
+            const ids = f.doc.read().days.find((day) => day.date === next.date)![section];
+            expect(
+              ids.map((id) => f.doc.read().cards.find((card) => card.id === id)!.text),
+            ).toEqual(section === 'done' ? ['last', 'first'] : ['first', 'last']);
+            await f.doc.command({ kind: 'undo' }).accepted;
+            expect(f.doc.read().master).toBe(text);
+            expect(f.doc.read().cards).toHaveLength(0);
+            await f.doc.command({ kind: 'redo' }).accepted;
+            expect(f.doc.read().master).toBe('keep');
+            expect(f.doc.read().cards).toHaveLength(2);
+            const reopened = await fixture(f.doc.snapshot());
+            try {
+              expect(reopened.doc.read().master).toBe('keep');
+              expect(reopened.doc.read().cards).toHaveLength(2);
+            } finally {
+              await reopened.doc.close();
+            }
+          } finally {
+            await f.doc.close();
+          }
+        },
+      );
+      it('refuses an entire Goals move when Next has insufficient room or the day is frozen', async () => {
+        const f = await fixture();
+        try {
+          await create(f.doc, 'existing one');
+          await create(f.doc, 'existing two');
+          await master(f.doc).input(insert('one\ntwo')).accepted;
+          const lines = [
+            { line: 0, text: 'one' },
+            { line: 1, text: 'two' },
+          ];
+          const before = f.doc.read();
+          for (const to of [next, { date: '2026-09-01', section: 'done' as const }]) {
+            expect(
+              (await f.doc.command({ kind: 'move-from-master', to, lines }).accepted).value,
+            ).toBe(0);
+            expect(f.doc.read()).toEqual(before);
+          }
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it('retains blank and markup-only Goals lines that do not become cards', async () => {
+        const f = await fixture();
+        try {
+          const rows = ['- [ ] ', '- item', '', 'keep'];
+          await master(f.doc).input(insert(rows.join('\n'))).accepted;
+          expect(
+            (
+              await f.doc.command({
+                kind: 'move-from-master',
+                to: done,
+                lines: rows.slice(0, 3).map((text, line) => ({ line, text })),
+              }).accepted
+            ).value,
+          ).toBe(1);
+          expect(f.doc.read().master).toBe('- [ ] \n\nkeep');
+          expect(f.doc.read().cards.map((card) => card.text)).toEqual(['item']);
+        } finally {
+          await f.doc.close();
+        }
+      });
+      it.each([false, true])(
+        'a queued Goals move handles edits inside its source: %s',
+        async (inside) => {
+          const f = await fixture();
+          try {
+            await master(f.doc).input(insert('keep\nmove')).accepted;
+            f.pause();
+            f.refuse();
+            const editing = master(f.doc).input(
+              insert(inside ? 'changed ' : 'prefix\n'),
+              selection(inside ? 5 : 0),
+            );
+            const moving = f.doc.command({
+              kind: 'move-from-master',
+              to: done,
+              lines: [{ line: 1, text: 'move' }],
+            });
+            f.resume();
+            await editing.accepted;
+            const result = await moving.accepted;
+            expect(result.value).toBe(inside ? false : 1);
+            expect(f.doc.read().master).toBe(inside ? 'keep\nchanged move' : 'prefix\nkeep');
+            expect(f.doc.read().cards).toHaveLength(inside ? 0 : 1);
+          } finally {
+            f.resume();
+            await f.doc.close();
+          }
+        },
+      );
       it('projects retained legacy archives as read-only bodies without creating live cards', async () => {
         const seed = createDoc();
         const day = newMap();

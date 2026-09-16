@@ -350,6 +350,6 @@ const scheduleOneCard = async (target: Page): Promise<void> => {
   await expect(master).toBeVisible();
   await master.click();
   await target.keyboard.insertText('a card to open and type into');
-  await target.locator('.goals').getByRole('button', { name: 'To Scheduled' }).click();
+  await target.locator('.goals').getByRole('button', { name: 'Scheduled' }).click();
   await expect(target.locator('.card[data-section="scheduled"]').first()).toBeVisible();
 };

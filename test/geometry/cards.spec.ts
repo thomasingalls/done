@@ -149,7 +149,7 @@ test.describe('the three-item cap', () => {
     for (let index = 0; index < 3; index++) await page.keyboard.press('ArrowUp');
     await page.keyboard.up('Shift');
 
-    await page.locator('.goals').getByRole('button', { name: 'To Next' }).click();
+    await page.locator('.goals').getByRole('button', { name: 'Next' }).click();
 
     await expect(count).toHaveText('3/3');
     await expect(
