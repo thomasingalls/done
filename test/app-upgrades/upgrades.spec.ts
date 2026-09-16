@@ -34,7 +34,7 @@ const update = (page: Page) =>
   });
 const create = async (page: Page, controlled = true, expectedVersion = 'upgrade-a') => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Create Local workspace' }).click();
+  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const code = (await page.getByLabel('Generated device-lock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
   await page.getByLabel('Device-lock code', { exact: true }).fill(code);

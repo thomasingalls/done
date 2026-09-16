@@ -41,7 +41,7 @@ for (const entry of ['/', '/local.html']) {
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(entry);
     await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'fresh');
-    await page.getByRole('button', { name: 'Create Local workspace' }).click();
+    await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
     const code = (await page.getByLabel('Generated device-lock code').textContent())!;
     await page.getByRole('button', { name: 'I saved my code' }).click();
     await page.getByLabel('Device-lock code', { exact: true }).fill(code);

@@ -37,6 +37,7 @@ export interface GoalsProps {
   ref?: React.Ref<HTMLElement>;
   /** Lets the shell coordinate focus with the narrow panel's snap animation. */
   onEditorReady?: (view: EditorView | null) => void;
+  onClose?: (() => void) | undefined;
 }
 
 interface Selection {
@@ -65,7 +66,7 @@ export const selectedLines = (state: EditorState): Selection => {
   };
 };
 
-export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElement => {
+export const Goals = ({ date, ref, onEditorReady, onClose }: GoalsProps): React.ReactElement => {
   const { execute, mountEditor, removeMasterLines } = useWorkspaceUi();
   const host = useRef<HTMLDivElement>(null);
   const editor = useRef<EditorView | null>(null);
@@ -180,7 +181,13 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
   }, [activeHeading, outlineOpen]);
 
   return (
-    <aside className="goals" aria-label="Goals" ref={ref} onKeyDownCapture={closeOutlineOnEscape}>
+    <aside
+      className="goals"
+      id="goals"
+      aria-label="Goals"
+      ref={ref}
+      onKeyDownCapture={closeOutlineOnEscape}
+    >
       <header className="panel-header">
         <h2 className="panel-title">
           <button
@@ -207,6 +214,11 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
             </span>
           </button>
         </h2>
+        {onClose && (
+          <button type="button" className="panel-action" aria-label="Close Goals" onClick={onClose}>
+            Close
+          </button>
+        )}
       </header>
 
       {outlineOpen ? (

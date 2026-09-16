@@ -5,16 +5,13 @@ import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { AppUpdateNotice } from './AppUpdateNotice';
 import { LocalRecovery } from './LocalRecovery';
+import { Welcome } from './Welcome';
 
-const messages: Record<StartupKind, { title: string; detail: string }> = {
+const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: string }> = {
   'app-update-required': {
     title: 'This workspace needs a compatible app',
     detail:
       'Saved storage uses an unsupported format or has an unfinished upgrade. Reopen with the app that supports it. Your saved data has been kept.',
-  },
-  fresh: {
-    title: 'Your Local workspace',
-    detail: 'Keep your writing encrypted in this browser. A device-lock code unlocks it.',
   },
   'unlock-required': {
     title: 'Unlock your workspace',
@@ -200,6 +197,8 @@ export const LocalApp = (): React.ReactElement => {
         <App />
       </WorkspaceUiProvider>
     );
+  } else if (state.kind === 'fresh') {
+    return <Welcome onCreateLocal={() => owner?.begin()} />;
   } else {
     if (state.kind === 'ready') return <div className="boot" aria-busy="true" />;
     const message = messages[state.kind];
@@ -210,9 +209,7 @@ export const LocalApp = (): React.ReactElement => {
         {['repair-required', 'unlock-failed', 'unavailable'].includes(state.kind) && (
           <LocalRecovery />
         )}
-        {state.kind === 'fresh' ? (
-          <button onClick={() => owner?.begin()}>Create Local workspace</button>
-        ) : ['unlock-required', 'creation-pending', 'unlock-failed'].includes(state.kind) ? (
+        {['unlock-required', 'creation-pending', 'unlock-failed'].includes(state.kind) ? (
           <CodeForm
             confirm={false}
             onSubmit={(code) => {

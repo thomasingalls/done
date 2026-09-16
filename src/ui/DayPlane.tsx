@@ -26,6 +26,9 @@ export interface DayPlaneProps {
   settling: boolean;
   showMenuTrigger: boolean;
   menuOpen: boolean;
+  showGoalsTrigger: boolean;
+  goalsOpen: boolean;
+  onOpenGoals: () => void;
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
   unfiledCount: number;
@@ -40,6 +43,9 @@ export const DayPlane = ({
   settling,
   showMenuTrigger,
   menuOpen,
+  showGoalsTrigger,
+  goalsOpen,
+  onOpenGoals,
   onOpenMenu,
   onGoTo,
   unfiledCount,
@@ -154,6 +160,9 @@ export const DayPlane = ({
             // thing to keep in step for no gain.
             showMenuTrigger={showMenuTrigger && index === 1}
             menuOpen={menuOpen}
+            showGoalsTrigger={showGoalsTrigger && index === 1}
+            goalsOpen={goalsOpen}
+            onOpenGoals={onOpenGoals}
             onOpenMenu={onOpenMenu}
             onGoTo={onGoTo}
             unfiledCount={unfiledCount}

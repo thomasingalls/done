@@ -233,7 +233,7 @@ export const unlockLocal = async (page: Page): Promise<number> => {
   await expect(page.locator(LOCAL_PROMPT)).toBeVisible();
   const fresh = (await page.locator('.local-startup').getAttribute('data-state')) === 'fresh';
   if (fresh) {
-    await page.getByRole('button', { name: 'Create Local workspace' }).click();
+    await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
     const code = await page.getByLabel('Generated device-lock code').textContent();
     if (!code) throw Error('Missing generated factor.');
     factors.set(page, code);

@@ -184,6 +184,11 @@ export const App = (): React.ReactElement => {
     setLateral(null);
   }, []);
 
+  const closeGoals = useCallback(() => {
+    closeLateral();
+    plane.current?.querySelector<HTMLButtonElement>('.goals-trigger')?.focus();
+  }, [closeLateral]);
+
   const canNavigate = useCallback(
     (direction: Direction): boolean => {
       if (direction === 'right') return menuOverlay || menuOpen;
@@ -457,6 +462,12 @@ export const App = (): React.ReactElement => {
           settling={settling}
           showMenuTrigger={menuOverlay}
           menuOpen={menuOpen}
+          showGoalsTrigger={goalsOverlay}
+          goalsOpen={goalsOpen}
+          onOpenGoals={() => {
+            closeLateral();
+            setGoalsOpen(true);
+          }}
           onOpenMenu={() => setMenuOpen((open) => !open)}
           onGoTo={goTo}
           unfiledCount={unfiled.length}
@@ -468,7 +479,12 @@ export const App = (): React.ReactElement => {
         />
       </div>
 
-      <Goals ref={goals} date={date} onEditorReady={onGoalsEditorReady} />
+      <Goals
+        ref={goals}
+        date={date}
+        onEditorReady={onGoalsEditorReady}
+        onClose={goalsOverlay ? closeGoals : undefined}
+      />
     </div>
   );
 };
