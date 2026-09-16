@@ -4044,3 +4044,19 @@ otherwise refuses; signed locator bytes are not content/key/publication authorit
 transition after the final read remains an ordinary later state; the response and client anchor do
 not provide an external freshness oracle. Automatic client adoption remains D2, under its existing
 storage lifetime and the authenticated local prefix/ledger-cut checks.
+
+
+## 2026-09-16 — reconnect discovery belongs to the existing sync lifetime
+
+Run admission-only discovery in the composed owner's receive lane, retaining one automatic network
+pass and existing offline/storage gates. Successful unchanged replies use a five-second monotonic
+cadence, invalidated by reconnect; unavailable replies use the existing backoff. Stop discovery after
+the single supported successor is installed instead of implying a general epoch-chain implementation.
+Explicit refreshes share in-flight discovery and cannot create another storage or authority owner.
+
+The exact creator-signed request remains owned until its root-signed reply verifies or the lifetime
+ends. Expiry is checked again at the native marker comparison; a verified reply may expire while
+waiting for asynchronous custody work. That online freshness condition is separate from the historical
+successor signature and local prefix proof. A late empty reply cannot regress an already-installed
+child, and an invalid locator cannot close a valid editor merely for being untrusted. No change to
+ordinary Account entry, deployment or the paused release-validation decision follows from this result.

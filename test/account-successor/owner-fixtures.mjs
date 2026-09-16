@@ -27,6 +27,11 @@ export async function ownerBundle(control) {
             enforce: 'pre',
             transform(code, id) {
               const targets = {
+                'discovery-expiry': [
+                  '/src/crdt/promotionRecord.ts',
+                  'checkCommit?.();',
+                  'void checkCommit;',
+                ],
                 prefix: ['/src/crdt/accountSuccessor.ts', 'prefix.finish();', 'void prefix;'],
                 cut: [
                   '/src/crdt/accountSuccessor.ts',
@@ -58,7 +63,7 @@ export async function ownerBundle(control) {
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await ownerBundle();
-export async function nativeOwner(t, control) {
+export async function nativeOwner(t, control, throughHttp = false) {
   const f = await base(t),
     setup = f.setup,
     source = control ? await ownerBundle(control) : script;
@@ -84,6 +89,23 @@ export async function nativeOwner(t, control) {
       db.close();
     }
   };
+  const post = async (path, input) => {
+    const response = await fetch(f.server.origin + path, {
+      method: 'POST',
+      headers: {
+        Origin: f.server.origin,
+        Authorization: 'Bearer ' + f.testOperatorToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+    });
+    assert.equal(response.status, 200);
+    return response.json();
+  };
+  const enrollment = (op, input) =>
+    throughHttp
+      ? post('/account/enrollment/' + op, input)
+      : authority.enrollment(f.server.core, op, input);
   f.successor = async (item) => {
     const { receipt } = admission(item),
       s = generateKeyPairSync('ed25519'),
@@ -99,10 +121,10 @@ export async function nativeOwner(t, control) {
         sPub: pub(s.publicKey),
         wPub: pub(w.publicKey),
       };
-    const challenge = await authority.enrollment(f.server.core, 'begin', { retryKey, candidate });
+    const challenge = await enrollment('begin', { retryKey, candidate });
     assert.equal(challenge.stage, 'challenge', JSON.stringify(challenge));
     const context = challenge.challenge.context;
-    const prepared = await authority.enrollment(f.server.core, 'finish', {
+    const prepared = await enrollment('finish', {
       retryKey,
       attemptId: context.attemptId,
       response: item.key.assert(
@@ -112,7 +134,11 @@ export async function nativeOwner(t, control) {
       possession: sign(null, possessionMessage(context), s.privateKey).toString('hex'),
     });
     assert.equal(prepared.stage, 'prepared', JSON.stringify(prepared));
-    const artifact = await authority.admitPrepared(f.server.core, {
+    const consume = (input) =>
+      throughHttp
+        ? post('/account/enrollment/admit', input)
+        : authority.admitPrepared(f.server.core, input);
+    const artifact = await consume({
       retryKey,
       attemptId: context.attemptId,
       receiptId: prepared.receipt.receiptId,

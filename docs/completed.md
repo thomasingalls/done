@@ -9210,3 +9210,25 @@ comparison omission control. A bad-Host test needed raw HTTP because fetch norma
 the corrected case passes. [Evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
 D2 still attaches signed discovery to the client reconnect owner and completes the private browser
 HTTP path. Ordinary application entry, deployment and release validation remain paused.
+
+
+## 2026-09-16 — owned reconnect discovery completes bounded successor admission (D2)
+
+After signed service HTTP `e5e77a05`, the private composed v9 owner discovers authority within its
+existing sync/lifecycle ownership. It signs and retains the exact nonce/deadline, checks the pinned
+root response, and rechecks locator expiry at the native install comparison. A five-second monotonic
+cadence is reset on reconnect; the automatic flow serializes network work, and discovery stops after
+the one supported child is installed. Failed, expired or superseded responses cannot erase pending
+writing or replace a newer head. Successful adoption expedites ordinary send/read continuation.
+
+21 distinct native owner/reconnect/control cases, two first-epoch native regressions, 39 unit cases and
+32 Node history/replay/registry cases pass, with static checks and runtime inventory. Actual HTTP
+preparation/admission while the writer is offline converges automatically after reconnect and survives
+cold reopen. Negative cases cover modified/oversized replies, closing during discovery, a late empty
+response, and native commit expiry. Omitting the final expiry callback admits the expired locator;
+the baseline preserves the old head. Sixty generated transport partitions check UTF-8 and size bounds.
+[Evidence](./account-conformance-runs/2026-09-16-successor-reconnect/README.md).
+
+The defined admission-only phase is complete. The new credential still has no certified content access
+or key; content approval, delivery/install/certification, bootstrap and multiple-publisher delivery
+follow. Ordinary Account activation, deployment and release validation remain paused.

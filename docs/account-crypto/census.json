@@ -152,6 +152,10 @@
       "sha256": "8329ef781adef7759b9d625fae67d03fec736649884aab0cc3eb745b4e4a055b"
     },
     {
+      "path": "src/account/privateDiscoveryHttp.ts",
+      "sha256": "b39d2d4ee642a02b1267ad8e30a506190b44d21cf4212f38017a46c8e70e77b9"
+    },
+    {
       "path": "src/account/recovery.ts",
       "sha256": "62b288238e64db88b8da1a784bac10856e803c142992a07ee46a7d93ed04e67f"
     },
@@ -197,7 +201,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "0ced735f0ee11bf4464c784bc3706c0909ccc835bfb557de21936c2662ebd417"
+      "sha256": "f140e137bd4355a24e9ef994b750aec6ae5fabe820e9b7725a717a2f3a63d142"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -445,7 +449,7 @@
     },
     {
       "path": "src/crdt/promotionRecord.ts",
-      "sha256": "fbeaddcdfadeca2ec9a88b08cb28a17bb1a297d3f69a2050f6affa2a9f5c8be6"
+      "sha256": "c2a5d3791762d1f8f532beef471d86d25b704fb068c75562168352097efab899"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",

@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor service HTTP complete (`L-1`)
+## Product checkpoint: bounded successor admission complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: lifecycle-owned client reconnect discovery (phase two, chunk D2)
+scope: content-approval ceremony preparation with explicit competing-epoch restart
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -102,15 +102,22 @@ cold reopen, sibling refusal and effective prefix/cut omission controls. 13 new 
 first-epoch native regressions, 32 Node and 74 unit cases pass, plus static checks and inventory.
 [Installation evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
 
-**Chunk D1 is complete.** Private consumption/discovery endpoints enforce their account/device
+**Chunk D1 is signed as `e5e77a05`.** Private consumption/discovery endpoints enforce their account/device
 proofs and 4 KiB ingress bounds. Discovery verifies the complete ledger and rechecks authority,
 expiry and custody before its signed response. 43 Node, three HTTP, 12 registry and two diagnostic
 cases pass, including 30 generated histories and an effective final-comparison control.
 [Service HTTP evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
 
-**Next bounded implementation: D2.** Attach discovery to the client reconnect owner and exercise
-adoption through the actual private adapters. New-device content remains a later gate.
-No ordinary Account activation exists yet.
+**Chunk D2 is complete.** The private v9 writer discovers the signed child automatically on
+reconnect, installs it under its existing lifetime, and resumes send/read. The HTTP path preserves
+offline edits, pending bytes and cold reopen. 21 distinct native cases/controls, two first-epoch
+native regressions, 39 unit and 32 Node cases pass, plus static checks and runtime inventory.
+[Reconnect evidence](./account-conformance-runs/2026-09-16-successor-reconnect/README.md).
+
+**The bounded admission-only phase is complete.** Next is content-approval ceremony preparation.
+The operator chose explicit restart on a competing epoch change, with a fresh transcript and code
+entry. The next prep must apply that ruling to durable attempt budgets and post-delivery pending
+state; the ceremony implementation is not yet present. No ordinary Account activation exists yet.
 [Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
@@ -121,7 +128,7 @@ without importing its old writing. Ordinary Account entry and deployment remain 
 
 **Qualification remains open.** Preparation and successor/discovery are two open construction groups.
 Their focused evidence supplies no aggregate release credit. First-authority bytes and historical
-qualification stay intact; client reconnect integration and qualification of the new constructions are still owed.
+qualification stay intact; qualification of the new constructions is still owed.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

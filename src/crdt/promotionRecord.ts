@@ -453,6 +453,7 @@ export async function writePromotion(
   next: CustodyRecord,
   expected: PromotionRecord | null,
   marker: PromotionRecord | null,
+  checkCommit?: () => void,
 ) {
   const stored = marker ? task.step(() => storePromotion(marker)) : null;
   const found = await probeDatabase(task, 'done.custody', (db) =>
@@ -485,6 +486,7 @@ export async function writePromotion(
                   : !!cursor)
               )
                 throw Error('Promotion compare changed');
+              checkCommit?.();
               if (!recordEqual(old, next)) store.put(next, recordKey(claimScope(claim)));
               if (stored) store.put(stored, storageUpgradeKey(old.slot_id));
               else store.delete(storageUpgradeKey(old.slot_id));

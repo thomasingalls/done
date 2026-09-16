@@ -5074,6 +5074,10 @@
         {
           "path": "account-service/discovery.ts",
           "name": "discoverAuthority"
+        },
+        {
+          "path": "src/account/privateDiscoveryHttp.ts",
+          "name": "privateDiscoveryPost"
         }
       ],
       "homePins": [],
@@ -5094,7 +5098,9 @@
         "test/account-successor/owner-controls.test.mjs",
         "test/account-successor/discovery.test.mjs",
         "test/account-successor/discovery-controls.test.mjs",
-        "test/account-successor/http.test.mjs"
+        "test/account-successor/http.test.mjs",
+        "test/account-successor/reconnect.test.mjs",
+        "test/privateDiscoveryHttp.test.ts"
       ],
       "requirements": [
         "closed-bounded-wire",
@@ -5115,10 +5121,13 @@
         "mixed-history-cold-reopen",
         "late-reply-continuity",
         "signed-discovery-current-eligibility",
-        "private-http-adapter-bounds"
+        "private-http-adapter-bounds",
+        "owned-discovery-nonce-and-expiry",
+        "discovery-stream-bounds",
+        "automatic-reconnect-adoption"
       ],
-      "blocker": "Protocol, both owners and private service HTTP have focused evidence; client reconnect discovery and authority-map qualification remain open.",
-      "next": "Integrate client reconnect discovery and complete the private end-to-end boundary; qualify new domains before release."
+      "blocker": "The bounded private admission-only path has focused end-to-end evidence. Full published-vector and authority-map qualification remains open; this is not second-device content certification.",
+      "next": "Qualify new domains before release; separately implement the content-approval ceremony and certified key delivery."
     }
   ],
   "additionalCorpora": [

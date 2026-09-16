@@ -1,4 +1,10 @@
-import { parseSuccessor } from '../../account-protocol/successor';
+import { privateDiscoveryPost } from '../account/privateDiscoveryHttp';
+import {
+  parseSuccessor,
+  parseDiscoveryRequest,
+  discoveryRequestMessage,
+  verifyDiscoveryResponse,
+} from '../../account-protocol/successor';
 import { verifyAdmissionHistory } from '../../account-protocol/admissionHistory';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { createVerifiedRecords } from './verifiedRecords';
@@ -424,7 +430,7 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
-  const adoptSuccessor = (input: unknown) => {
+  const adoptSuccessor = (input: unknown, checkCommit?: () => void) => {
     // Closed, bounded copy before enqueueing; no caller-owned data crosses crypto or storage awaits.
     const artifact = parseSuccessor(input);
     if (!composed)
@@ -433,6 +439,7 @@ async function openAccountReceiveOwner(
       await assertCurrent(task);
       const current = await readPromotion(task, options.slotId, options.code),
         marker = current.marker!;
+      task.step(() => checkCommit?.());
       if (marker.successor) {
         if (!same(marker.successor.artifact, artifact))
           throw Error('Installed successor cannot be replaced');
@@ -494,7 +501,15 @@ async function openAccountReceiveOwner(
           options.code,
           async (root, subtle) => {
             const next = await signPromotion(root, { ...marker, successor }, subtle);
-            await writePromotion(task, current.claim, current.record, current.record, marker, next);
+            await writePromotion(
+              task,
+              current.claim,
+              current.record,
+              current.record,
+              marker,
+              next,
+              checkCommit,
+            );
             committed = true;
             task.step(() => {
               // No await between installing the route and publishing its verification context.
@@ -521,6 +536,101 @@ async function openAccountReceiveOwner(
         for (const r of records) r.bytes.fill(0);
       }
     });
+  };
+  let discoveryDue = 0,
+    discoveryRevision = 0;
+  let discoveryFlight:
+    | Promise<{ kind: 'adopted' | 'unchanged' | 'unknown' | 'paused' }>
+    | undefined;
+  const refreshAuthority = (token: string, force = false) => {
+    if (discoveryFlight) return discoveryFlight;
+    const work = runNetworkTask(async (network) => {
+      if (!composed) throw Error('Discovery requires the composed owner');
+      if (base.history || (!force && performance.now() < discoveryDue))
+        return { kind: 'unchanged' as const };
+      if (!canReceive()) return { kind: 'paused' as const };
+      const revision = discoveryRevision;
+      const prepared = await runCaptureTask(async (task) => {
+        await assertCurrent(task);
+        const { marker } = await readPromotion(task, options.slotId, options.code);
+        const request = parseDiscoveryRequest({
+          v: 1,
+          kind: 'authority-discovery-request',
+          pin: options.pin,
+          workspaceId: base.authority.workspace,
+          lineageId: base.authority.lineage,
+          credentialId: base.reader.id,
+          epoch: base.authority.tip,
+          head: base.authority.head,
+          nonce: hex(task.step(() => random(32))),
+          expiresAt: Date.now() + 30000,
+          signature: '00'.repeat(64),
+        });
+        request.signature = hex(
+          new Uint8Array(
+            await task.wait(async () =>
+              subtleFor(task).sign('Ed25519', signer!, await discoveryRequestMessage(request)),
+            ),
+          ),
+        );
+        await assertCurrent(task);
+        return {
+          request,
+          first: {
+            pin: options.pin,
+            request: marker!.admission!.request,
+            receipt: marker!.admission!.receipt!,
+          },
+        };
+      });
+      if (!canReceive()) return { kind: 'paused' as const };
+      const response = await network.wait(() =>
+        privateDiscoveryPost(options.pin, token, prepared.request, network.signal),
+      );
+      if (!response) return { kind: 'unknown' as const };
+      try {
+        const answer = await network.wait(() =>
+          verifyDiscoveryResponse(response, prepared.request, prepared.first, Date.now()),
+        );
+        const checkCommit = () => {
+          network.step(() => {});
+          if (prepared.request.expiresAt <= Date.now())
+            throw new AdmissionError(
+              'receive-refused',
+              'Authority discovery expired before installation',
+            );
+        };
+        if (answer.successor) {
+          await adoptSuccessor(answer.successor, checkCommit);
+          return { kind: 'adopted' as const };
+        }
+        await runCaptureTask(async (task) => {
+          await assertCurrent(task);
+          task.step(() => {
+            checkCommit();
+            // Another owned adoption may have won while the HTTP call was in flight. Never regress it.
+            if (!base.history && base.authority.head !== prepared.request.head)
+              throw Error('Discovery anchor changed');
+            discoveryDue = revision === discoveryRevision ? performance.now() + 5000 : 0;
+          });
+        });
+        return { kind: 'unchanged' as const };
+      } catch {
+        network.step(() => {});
+        recordPrivateTransportDiagnostic({
+          operation: 'discovery',
+          phase: 'verify',
+          code: 'response-invalid',
+        });
+        return { kind: 'unknown' as const };
+      }
+    });
+    discoveryFlight = work;
+    const settled = () => {
+      if (discoveryFlight === work) discoveryFlight = undefined;
+    };
+    void work.then(settled, settled);
+    return work;
   };
   const createOutbound = (whenDurable: () => Promise<unknown>) => {
     if (!composed) throw Error('Outbound composition was not opened');
@@ -609,7 +719,20 @@ async function openAccountReceiveOwner(
         }),
     };
   };
-  return { api, account, carrier, listCaptures, fetchPage, createOutbound, adoptSuccessor };
+  return {
+    api,
+    account,
+    carrier,
+    listCaptures,
+    fetchPage,
+    createOutbound,
+    adoptSuccessor,
+    refreshAuthority,
+    resetDiscovery: () => {
+      discoveryRevision++;
+      discoveryDue = 0;
+    },
+  };
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -632,13 +755,22 @@ async function openReceivingWorkspace(
     identity: structuredClone(input.identity),
     today: input.today,
   };
-  const { api, account, carrier, listCaptures, fetchPage, createOutbound, adoptSuccessor } =
-    await openAccountReceiveOwner(
-      options,
-      options.identity.id,
-      () => !driven || gate() === 'ready',
-      composed,
-    );
+  const {
+    api,
+    account,
+    carrier,
+    listCaptures,
+    fetchPage,
+    createOutbound,
+    adoptSuccessor,
+    refreshAuthority,
+    resetDiscovery,
+  } = await openAccountReceiveOwner(
+    options,
+    options.identity.id,
+    () => !driven || gate() === 'ready',
+    composed,
+  );
   let enqueue!: OwnedReceiveQueue;
   try {
     const workspace = await createAdmittedWorkspace(
@@ -761,13 +893,24 @@ async function openReceivingWorkspace(
     if (composed) {
       const outbound = createOutbound(() => workspace.whenDurable());
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
-      const online = () => scheduler.wake('online'),
+      const online = () => {
+          resetDiscovery();
+          scheduler.wake('online');
+        },
         offline = () => scheduler.wake('gate');
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
         gate,
         send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
-        receive: () => driveReceiveStep(result, operatorToken ?? '', gate),
+        receive: async () => {
+          const authority = await refreshAuthority(operatorToken ?? '');
+          if (authority.kind === 'adopted') scheduler.wake('online');
+          if (authority.kind === 'unknown' || authority.kind === 'paused') {
+            const state = await api.status();
+            return { kind: authority.kind, receivedThrough: state.receivedThrough };
+          }
+          return driveReceiveStep(result, operatorToken ?? '', gate);
+        },
         detach() {
           operatorToken = undefined;
           unsubscribe?.();
@@ -803,6 +946,11 @@ async function openReceivingWorkspace(
         outbound,
         sync: scheduler.runtime,
         receiver: undefined,
+        refreshAuthority: async () => {
+          const result = await refreshAuthority(operatorToken ?? '', true);
+          if (result.kind === 'adopted') scheduler.wake('online');
+          return result;
+        },
         adoptSuccessor: async (input: unknown) => {
           const result = await adoptSuccessor(input);
           scheduler.runtime.retry('send');

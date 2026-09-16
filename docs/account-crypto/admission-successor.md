@@ -1,7 +1,7 @@
 # Private admission-only successor and discovery bytes
 
-2026-09-16. Phase two, chunks A/B/C complete. **Pure protocol, private service owner and client
-installation and private service HTTP implemented; client reconnect discovery remains.** [Phase plan](../account-successor-admission-prep.md).
+2026-09-16. Phase two, chunks A/B/C/D complete. **The bounded private admission-only path now includes both
+owners, private HTTP, automatic reconnect discovery and cold reopen.** [Phase plan](../account-successor-admission-prep.md).
 
 ## 1. Construction boundary
 
@@ -258,3 +258,29 @@ it cannot be used by the client as replacement authority. No new signed message 
 Candidate discovery/read/publication remain refused, and no content-key endpoint is introduced.
 The client must still own its request, verify the signed response and install under C2b before current
 dispatch. That reconnect integration is D2. [Evidence](../account-conformance-runs/2026-09-16-successor-discovery/README.md).
+
+## 10. Owned reconnect discovery (chunk D2)
+
+The private composed v9 owner's receive lane now performs discovery before its current read when due.
+While still at epoch 1, successful unchanged discovery uses a five-second monotonic cadence; reconnect
+invalidates that deadline. Concurrent refresh requests share one in-flight operation. The automatic
+scheduler serializes discovery with send/read, retains offline/storage gates and uses existing retry
+backoff for an unavailable reply. Once the one supported child is installed, this discovery stops.
+
+The creator signs a fresh 32-byte nonce and 30-second wall-clock deadline inside its storage lifetime.
+The bounded JSON adapter posts only to the pinned discovery endpoint, omits credentials/caches,
+forbids redirects and limits declared/streamed replies to 32 KiB before strict UTF-8/JSON parsing.
+Close aborts transport and drains cancellation. The owner verifies response root signature, complete
+request hash, held anchor and full successor under the original first authority. It rechecks expiry
+inside the native marker comparison transaction as well as after asynchronous verification. The
+successor signature itself remains historical evidence; this deadline is for the online locator.
+
+Only C2b installation may change current authority. Invalid/unavailable/expired replies leave pending
+writing and the old durable state intact. Successful adoption expedites both sync lanes. A delayed
+signed empty reply cannot erase a newer locally installed head; it supplies no replacement authority.
+No custody key, ciphertext or certified-recipient status is returned to the admitted candidate.
+
+[Focused end-to-end evidence](../account-conformance-runs/2026-09-16-successor-reconnect/README.md).
+The defined admission-only phase is complete. The next gate is the committed-nonce/code-comparison
+ceremony, followed by durable delivery/certification, new-device custody and encrypted bootstrap.
+Full cryptographic qualification and production deployment remain separate work.
