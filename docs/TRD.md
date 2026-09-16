@@ -1181,6 +1181,15 @@ second, different link at a position the service may already have accepted, whic
 under §7.5 and reads as a compromised credential. **A definite refusal is the only thing that licenses a
 re-mint; silence is not one**, and a timeout is silence.
 
+**Admission-only continuity does not require re-minting** (2026-09-16 private successor scope).
+When the verified successor only adds an uncertified device, preserving an existing publisher's
+identity, signing key, rights, generation and acceptance key, its already-sealed parent-epoch envelope
+may still be accepted at the next unresolved position. Preserve the original signed bytes and issue
+new acceptance under current authority. Newly minted envelopes use the adopted epoch. This rule does
+not extend through revocation, rotation or arbitrary ancestor epochs, and permanent refusals still
+hold. [The successor-admission plan](./account-successor-admission-prep.md) requires historical-evidence
+verification and owned client adoption before this path is enabled.
+
 **And a definite refusal has to be authenticated, or forging one is the attack** (§15 row 15). This rule licenses
 a client to act on a refusal, so anything that can withhold an answer can manufacture one; §13.7 makes the same
 point where the consequence is larger — there the client discards a live content key. **Everything that is not an
@@ -2640,6 +2649,16 @@ epoch therefore additionally carries a **certified recipient set**, which the se
 > `recovery_state_digest = SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) )`
 >
 > `approval = Ed25519( the named approver's signing credential ; LP("done/certified-set-approval/v1") || LP(approver_credential_id) || CertifiedSet )`
+
+**Admission alone carries the existing certification forward unchanged** (2026-09-16 clarification).
+An authorization successor that only admits an uncertified device does not activate a new recipient set.
+It binds the complete existing certified object's digest and preserves that object's original approval
+context, including its original epoch pair. Verify the approval at its origin and equality with the
+parent's effective certified set; do not reinterpret the signature as approval of a new pair or add the
+pending device to recipients. Otherwise §13.6's first gate would require an existing client online, or
+the service would acquire power to author recipient approvals. Changes to recipients, certified keys
+or recovery state still require their specified client/factor authorization. The bounded private
+[successor-admission plan](./account-successor-admission-prep.md) implements neither of those changes.
 
 **The binding is credential-to-exact-wrapping-key, not credential-to-boolean**, because the roster was never the
 thing that was missing — the service does enumerate credentials. What was missing is an approval of the exact key

@@ -183,3 +183,7 @@ campaign has run. No real account, device ceremony, personal server or applicati
 Next, define actual successor admission and compatible delivery together. Content delivery and
 certified recipient activation remain later gates; no caller can consume a prepared receipt for those
 operations in the present runtime.
+
+The subsequent [phase-two definition](./account-successor-admission-prep.md) now specifies that
+coordinated boundary. Its first implementation chunk freezes the admission-only successor and verifier;
+service delivery and supported v9 client adoption must follow before exposing preparation consumption.

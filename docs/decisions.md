@@ -3950,3 +3950,28 @@ its consumers unchanged. Account authorization and client-certified content reci
 This bounds implementation rather than weakening the full enrollment contract. No backend implementation
 or release-validation resumption is included in this definition.
 [Phase contract](./account-enrollment-prep.md).
+
+
+## 2026-09-16 — Coordinate successor admission with delivery and client adoption
+
+Define the next backend phase against signed `d015210e` as one private epoch-1-to-2 admission of an
+uncertified device. Preserve generation, acceptance key, principal, existing writer rights and the
+effective certified recipients/recovery state. Admission alone carries the original client-approved
+certification unchanged, including its original epoch context; the service cannot re-sign or reinterpret
+that approval. Record this clarification in TRD §13.5.
+
+Permit the creating publisher's exact already-sealed parent-epoch envelope across this explicitly
+compatible transition, subject to the existing position/refusal rules. Newly issued acceptance names
+the current epoch; the source envelope remains unchanged. Record the narrow rule in §7.4 rather than
+treating an unsupported-epoch error as permission to re-mint. Historical proof verification and current
+eligibility must become separate authenticated contexts, with ancestry and accepted-prefix checks.
+
+The complete phase includes an atomic service current-head owner, delivery continuity and supported
+v9 client adoption/cold reopen before enabling private consumption. First implement the distinct
+successor bytes and pure verifier; retain unchanged first-epoch artifacts. Do not revive retired v8,
+enable ordinary Account entry, generalize to multiple publishers or resume release validation.
+The new device stays ineligible for content reads, publication and key delivery until later gates.
+
+The later content-approval phase must settle SAS epoch restart versus installed-sibling certificate
+rebasing with transcript-aware checks; the current state model omits that question. Do not silently
+extend its assurance. [Definition, chunk boundaries and falsifiers](./account-successor-admission-prep.md).

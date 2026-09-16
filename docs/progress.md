@@ -42,42 +42,50 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: enrollment preparation complete (`L-1`)
+## Product checkpoint: successor admission defined (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: private authenticated enrollment preparation
+status: not started
+scope: admission-only successor bytes and pure verification (phase two, chunk A)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Product integrations are signed.** Goals keyboard fixes are merged as `3fefdae0` and
-`codex/start-endtoend-product-work` (`16e6e205`) as `d942cd1c`. The latter includes welcome/Local
-onboarding, Goals Copy/Move and actions, and panel fixes. Focused unit, browser, type, lint/format
-and isolated build checks are recorded in [completed.md](./completed.md).
-
-**The first backend phase is complete.** The private service can authenticate and retain an exact
-second-device request, recover it after restart/lost replies, and cancel or expire its eligibility.
-It checks fresh account and candidate proofs and current authority before committing. The result
-is `prepared`; the creating device remains the only admitted/certified member.
-[Contract](./account-enrollment-prep.md);
+**Product integrations and backend phase one are signed.** Goals keyboard fixes are merged as
+`3fefdae0`, welcome/Local and Goals UX as `d942cd1c`, and authenticated enrollment preparation as
+`d015210e`. Preparation durably binds a fresh account assertion and candidate possession to exact
+keys and authority. Its result is `prepared`; the creating device is still the only admitted/certified
+member. [Phase-one contract](./account-enrollment-prep.md);
 [evidence](./account-conformance-runs/2026-09-16-enrollment-preparation/README.md).
 
-**Focused checks pass.** 39 enrollment tests (including generated histories, process death, a
-cross-process race and private HTTP), 108 affected account/delivery regressions, 12 registry checks,
-typecheck, lint/format and runtime crypto inventory. The new construction inventory entry remains
-open for published-vector/authority-map qualification; earlier closure is historical.
+**The successor-admission boundary is defined.** One private epoch-1-to-2 transition admits a pending
+credential while preserving generation, acceptance key, current writer rights and certified recipients.
+The TRD now states unchanged certification carry-forward and exact parent-envelope continuity for this
+narrow transition. Historical evidence, current eligibility and client adoption need separate owners.
+The outcome/decision are recorded in [completed.md](./completed.md) and [decisions.md](./decisions.md).
 
-**Next bounded work.** Define actual successor admission and the current-authority owner together
-with compatible delivery behavior. Advancing the head must not strand the original device's sync.
-Content approval/certification, new-device installation and multiple-publisher sync follow. The author's
-actual old second device adopts the first device's workspace without importing its old writing.
-No ordinary-account activation, personal device ceremony or deployment occurred in this phase.
+**Next bounded implementation: chunk A.** Freeze the distinct successor and discovery bytes, parsers,
+finite bounds and pure continuity verifier with independent fixtures and effective negatives. Preserve
+first-epoch bytes. [Full phase definition](./account-successor-admission-prep.md).
+Then build B: atomic service/current-authority and delivery continuity; C: supported v9 adoption and
+cold reopen; D: private consumption/discovery integration and focused evidence. Do not expose a head
+advance without compatible service and client consumers. Implementation has not started.
+
+**Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
+key, ciphertext read or accepted publication. Ceremony, delivery/install/certification and multiple-
+publisher sync follow. The ceremony phase must resolve transcript-safe sibling rebasing versus the
+SAS epoch-restart rule. The author's actual old second device adopts the first device's workspace
+without importing its old writing. Ordinary Account entry and deployment remain disabled.
+
+**Qualification remains open.** Phase one's 39 enrollment, 108 affected account/delivery and 12 registry
+checks pass, with type/lint/format and runtime inventory checks. Its new construction still needs
+published-vector/authority-map qualification. This definition ran documentation consistency checks;
+it supplies no new runtime or release-test credit.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

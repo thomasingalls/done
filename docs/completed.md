@@ -9065,3 +9065,27 @@ successor admission and compatible delivery together, then build it as a bounded
 [Contract](./account-enrollment-prep.md);
 [bytes](./account-crypto/enrollment-preparation.md);
 [evidence](./account-conformance-runs/2026-09-16-enrollment-preparation/README.md).
+
+
+## 2026-09-16 — Successor-admission phase defined
+
+Signed enrollment-preparation implementation `d015210e` is the baseline. Inspect the authorization
+lineage, recipient approval and enrollment contracts alongside service delivery, position evidence,
+supported client startup/receive ownership and the enrollment state model. Current consumers are
+first-epoch-bound; replacing their tip alone would break historical ledger verification and ongoing
+delivery. The model's admission action does not model that head change.
+
+Define one private admission-only successor in
+[account-successor-admission-prep.md](./account-successor-admission-prep.md). Clarify unchanged certified
+set carry-forward and exact parent-envelope compatibility in the TRD. Require separate historical
+evidence and current eligibility, transactional accepted-head capture, permanent refusal preservation,
+explicit preparation consumption/retry semantics and v9-owned adoption/reopen. The new credential is
+admitted but receives neither certified eligibility nor a key. Record the later SAS-restart/sibling-
+rebase seam as an obligation for content approval rather than claiming the current model resolves it.
+
+Split implementation into successor bytes/verifier, durable service and delivery continuity, supported
+client adoption, then private endpoint integration and evidence. The first of those is next. Specify
+generated histories, cross-process/crash boundaries, native client recovery and effective omission
+controls. This is a documentation/preparation outcome; no runtime implementation or product test run
+is claimed. Documentation links, append-only record prefixes, whitespace and the unchanged L-2 suffix
+are checked. Release validation, frozen inventories and personal devices/services remain untouched.
