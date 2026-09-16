@@ -1,3 +1,7 @@
+import {
+  historyEnvelopeRoute,
+  type AdmissionHistory,
+} from '../../account-protocol/admissionHistory';
 /** Private Account capture payload. Its enclosing journal/StoredRecord authenticates these bytes. */
 import { hex, random, utf8, type Bytes } from './custodyCrypto';
 import { ContentError, MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
@@ -16,6 +20,8 @@ export interface CaptureRoute {
   principal: string;
   epoch: number;
   generation: number;
+  /** Process-local verified continuity; never serialized in a capsule. */
+  history?: AdmissionHistory;
 }
 export interface SourceCapsule extends CaptureRoute {
   v: 1;
@@ -34,6 +40,26 @@ export const captureRoute = (marker: PromotionRecord): CaptureRoute => ({
   epoch: marker.admission!.receipt!.offer.epoch.epoch,
   generation: marker.source.generation,
 });
+/** Resolve only the exact admission-compatible historical route; an unverified epoch hint is refused. */
+export function captureRouteAt(route: CaptureRoute, epoch: number): CaptureRoute {
+  if (!route.history) {
+    if (epoch !== route.epoch) captureError('Capture epoch changed without verified history');
+  } else {
+    historyEnvelopeRoute(
+      route.history,
+      {
+        v: 2,
+        workspace_id: route.workspace,
+        credential_id: route.credential,
+        epoch: route.epoch,
+        gen: route.generation,
+      },
+      epoch,
+    );
+    if (route.principal !== route.history.principal) captureError('Capture principal changed');
+  }
+  return epoch === route.epoch ? route : { ...route, epoch };
+}
 const validId = (value: unknown): value is string =>
   typeof value === 'string' && /^[0-9a-f]{32}$/.test(value);
 export function encodeSourceCapsule(c: SourceCapsule): Bytes {
@@ -121,8 +147,9 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
       generation: v[7],
       sources,
     };
+    const historical = captureRouteAt(route, result.epoch);
     for (const key of ['workspace', 'credential', 'principal', 'epoch', 'generation'] as const)
-      if (result[key] !== route[key]) throw Error('route');
+      if (result[key] !== historical[key]) throw Error('route');
     const encoded = encodeSourceCapsule(result);
     try {
       if (hex(encoded) !== hex(bytes)) throw Error('noncanonical');

@@ -1,3 +1,9 @@
+import {
+  historyAuthority,
+  historyEnvelopeRoute,
+  verifyHistoryDecision,
+  type AdmissionHistory,
+} from '../../account-protocol/admissionHistory';
 /** Low-level first-epoch evidence verification, not a receive owner or an authority installer.
  * Context MUST come from authenticated custody/lineage/baseline and retained prefix ownership.
  * Successful values are detached evidence. A future commit must independently recheck current authority.
@@ -42,6 +48,8 @@ export interface InboundContext {
   baseline: { kind: 'promotion-genesis'; id: string };
   service: { id: string; origin: string };
   authority: DecisionAuthority;
+  /** Verified admission-only lineage, supplied by the custody owner. */
+  history?: AdmissionHistory;
   creatingCredential: string;
   reader: { id: string; publicKey: string; active: boolean };
   publisher: { id: string; publicKey: string; principal: string; system: boolean; active: boolean };
@@ -117,12 +125,25 @@ function captureContext(input: InboundContext): InboundContext {
   inboundHex(input.creatingCredential, 16);
   if (
     baseline.kind !== 'promotion-genesis' ||
-    a.tip !== 1 ||
+    (!input.history && a.tip !== 1) ||
     input.generation !== 1 ||
     publisher.id !== input.creatingCredential ||
     typeof publisher.system !== 'boolean'
   )
     fail('unsupported');
+  if (input.history) {
+    const h = input.history;
+    historyAuthority(h, a);
+    if (
+      input.creatingCredential !== h.credential ||
+      reader.id !== h.credential ||
+      publisher.id !== h.credential ||
+      reader.publicKey !== h.signingKey ||
+      publisher.publicKey !== h.signingKey ||
+      publisher.principal !== h.principal
+    )
+      fail('authority');
+  }
   if (typeof service.origin !== 'string' || new URL(service.origin).origin !== service.origin)
     fail('authority');
   inboundInteger(prefix.position);
@@ -146,6 +167,7 @@ function captureContext(input: InboundContext): InboundContext {
     baseline,
     service,
     authority: a,
+    ...(input.history ? { history: input.history } : {}),
     reader,
     publisher,
     creatingCredential: input.creatingCredential,
@@ -246,6 +268,13 @@ async function verify(
     );
     if (!pageVerified) fail('unverified');
     if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
+    if (
+      c.history &&
+      (a.tip === 1
+        ? p.through > c.history.boundary.position
+        : p.through < c.history.boundary.position)
+    )
+      fail('prefix');
     if (!p.entries.length) {
       if (r.after !== c.prefix.position || expectedRecord) fail('record');
       current();
@@ -256,14 +285,17 @@ async function verify(
       old = position <= c.prefix.position;
     if (entry.envelope.length > INBOUND_ENVELOPE_LIMIT) fail('size');
     const e = decodeNetworkEnvelope(entry.envelope),
-      route = {
+      currentRoute = {
         v: 2 as const,
         workspace_id: a.workspace,
         credential_id: c.publisher.id,
-        epoch: 1,
+        epoch: a.tip,
         gen: 1,
       };
-    if (e.v !== 2 || e.epoch !== 1 || e.gen !== 1) fail('unsupported');
+    const routeFor = (epoch: number) =>
+      c.history ? historyEnvelopeRoute(c.history, currentRoute, epoch) : currentRoute;
+    if (e.v !== 2 || (!c.history && e.epoch !== 1) || e.gen !== 1) fail('unsupported');
+    const route = routeFor(e.epoch);
     if (e.workspace_id !== a.workspace || e.credential_id !== c.publisher.id || e.seq !== position)
       fail('scope');
     const previous = old ? c.retained?.previous : c.prefix.link;
@@ -287,17 +319,16 @@ async function verify(
         previous,
       };
     };
+    const decision = (wire: Bytes, expected: ReturnType<typeof subject>) =>
+      c.history
+        ? verifyHistoryDecision(wire, expected, a, c.history, subtle)
+        : verifyPositionResponse(wire, expected, a, subtle);
     // A stale duplicate/conflict requires its independently retained ORIGINAL acceptance, too.
     if (old) {
       if (!c.retained) fail('prefix');
       const original = decodeNetworkEnvelope(c.retained.envelope);
       if (original.seq !== position) fail('prefix');
-      const evidence = await verifyPositionResponse(
-        c.retained.proof,
-        subject(c.retained.envelope),
-        a,
-        subtle,
-      );
+      const evidence = await decision(c.retained.proof, subject(c.retained.envelope));
       guard();
       if (
         evidence.kind !== 'accepted' ||
@@ -307,7 +338,7 @@ async function verify(
         fail('prefix');
       const held = await openNetworkEnvelope(
         c.retained.envelope,
-        route,
+        routeFor(original.epoch),
         publicKey,
         c.generationKey,
         subtle,
@@ -318,7 +349,7 @@ async function verify(
         for (const update of held.updates) update.fill(0);
       }
     }
-    const proof = await verifyPositionResponse(entry.proof, subject(entry.envelope), a, subtle);
+    const proof = await decision(entry.proof, subject(entry.envelope));
     guard();
     if (proof.kind !== 'accepted') fail('unverified');
     if (proof.head.final) fail('unsupported');

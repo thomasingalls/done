@@ -9155,3 +9155,19 @@ controls; typecheck, scoped lint/format and reviewed crypto census pass. First-a
 vectors are unchanged. [Evidence](./account-conformance-runs/2026-09-16-successor-history/README.md).
 C remains in flight: ledger adapters, lifecycle installation, cold replay and late replies remain;
 D adds private HTTP only afterward. Release validation and ordinary Account activation remain paused.
+
+
+## 2026-09-16 — mixed-epoch client replay adapters (C2a)
+
+After signed C1 `6ba5336b`, added opt-in verified-history replay for source capsules, spool allocation,
+delivery and inbound records. Exact old bytes and historical proof context survive; new batches stop
+at capture-epoch boundaries and burned grants resume with fresh invocation counts. Current receives
+bind original certified identity/keys and preserve signature, decryption, prefix and Yjs coverage.
+No production owner installs/enables the successor yet; lifecycle-owned installation is C2b.
+
+32 focused Node cases, 74 unit cases and two named first-epoch browser regressions pass, plus typecheck,
+scoped lint/format and runtime census. New coverage includes 40 shrinking mixed histories and two
+effective actual-receiver omission controls. Early test-anchor/predicate/fixture errors are preserved
+and corrected. Updated the same stale mutation anchor in its existing paused command wrapper without
+running that campaign or refreshing frozen qualification. [Evidence](./account-conformance-runs/2026-09-16-successor-replay/README.md).
+Release validation and ordinary Account activation remain paused.

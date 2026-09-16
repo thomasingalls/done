@@ -11,6 +11,7 @@ import {
 } from './contentRecord';
 import {
   captureCatalog,
+  captureRouteAt,
   decodeSourceCapsule,
   eraseCapsule,
   captureError,
@@ -62,13 +63,16 @@ const hexValue = (v: unknown, max: number): Bytes => {
   for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(v.slice(i * 2, i * 2 + 2), 16);
   return bytes;
 };
-export const networkRoute = (r: CaptureRoute): EnvelopeRoute => ({
-  v: 2,
-  workspace_id: r.workspace,
-  credential_id: r.credential,
-  epoch: r.epoch,
-  gen: r.generation,
-});
+export const networkRoute = (r: CaptureRoute, epoch = r.epoch): EnvelopeRoute => {
+  const context = captureRouteAt(r, epoch);
+  return {
+    v: 2,
+    workspace_id: context.workspace,
+    credential_id: context.credential,
+    epoch: context.epoch,
+    gen: context.generation,
+  };
+};
 export function encodeSpoolEntry(entry: SpoolEntry, route: CaptureRoute): Bytes {
   if (
     !id(route.workspace) ||
@@ -154,10 +158,10 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
       v[2] !== route.workspace ||
       v[3] !== route.credential ||
       v[4] !== route.principal ||
-      v[5] !== route.epoch ||
       v[6] !== route.generation
     )
       throw Error('route');
+    const historical = captureRouteAt(route, v[5]);
     let result: SpoolEntry;
     if (v[7] === 'position' && Array.isArray(v[9]) && v[9].length === 3)
       result = {
@@ -186,7 +190,7 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
         wire: hexValue(v[9][1], MAX_BATCH_BYTES / 2),
       };
     else throw Error('shape');
-    const canonical = encodeSpoolEntry(result, route);
+    const canonical = encodeSpoolEntry(result, historical);
     try {
       if (hex(canonical) !== hex(bytes)) throw Error('canonical');
     } finally {
@@ -199,7 +203,7 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
 }
 export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRoute): SpoolState {
   const sourceRecords: OpenedRecord[] = [],
-    events: { record: OpenedRecord; entry: SpoolEntry }[] = [];
+    events: { record: OpenedRecord; entry: SpoolEntry; epoch: number }[] = [];
   for (const record of records) {
     if (record.kind !== 'heads' && record.kind !== 'outbound') {
       sourceRecords.push(record);
@@ -216,7 +220,11 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
       const entry = decodeSpoolEntry(record.bytes, route);
       if ((entry.type === 'envelope') !== (record.kind === 'outbound'))
         captureError('Spool record misplaced');
-      events.push({ record, entry });
+      events.push({
+        record,
+        entry,
+        epoch: route.history ? JSON.parse(new TextDecoder().decode(record.bytes))[5] : route.epoch,
+      });
     }
   }
   sourceRecords.sort((a, b) => a.seq - b.seq);
@@ -230,8 +238,11 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
       sourceSequences.set(c.id, Math.min(sourceSequences.get(c.id) ?? Infinity, r.seq));
       eraseCapsule(c);
     }
-  let attempts = 0;
-  for (const { record, entry: e } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+  let attempts = 0,
+    previousEpoch = 1;
+  for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+    if (epoch < previousEpoch) captureError('Spool authority regressed');
+    previousEpoch = epoch;
     const last = positions.at(-1);
     if (e.type === 'position' || e.type === 'position-batch') {
       if (e.position !== positions.length + 1 || (last && !last.wire))
@@ -241,7 +252,8 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
         previousIndex = -1,
         total = 0,
         actor = '',
-        kind = '';
+        kind = '',
+        sourceEpoch = 0;
       for (const ref of refs) {
         const bytes = sources.get(ref.id),
           key = ref.id + ':' + ref.index,
@@ -255,6 +267,9 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
           captureError('Source batch order changed');
         const c = decodeSourceCapsule(bytes!, route);
         try {
+          if (sourceEpoch && c.epoch !== sourceEpoch)
+            captureError('Source batch crosses authority');
+          sourceEpoch = c.epoch;
           const source = c.sources[ref.index];
           if (!source) captureError('Missing source index');
           if (actor && (actor !== source!.actor || kind !== source!.kind))
@@ -320,7 +335,13 @@ export async function verifySpool(
           }
         }
         if (!p.wire) return;
-        body = await openNetworkEnvelope(p.wire, networkRoute(route), signer, kg, subtle);
+        body = await openNetworkEnvelope(
+          p.wire,
+          networkRoute(route, decodeNetworkEnvelope(p.wire).epoch),
+          signer,
+          kg,
+          subtle,
+        );
         if (
           body.updates.length !== originals.length ||
           originals.some(

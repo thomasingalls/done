@@ -3998,3 +3998,14 @@ Historical acceptance issuance is bounded by the signed successor prefix; refusa
 classified by that accepted-position vector. Complete signed-envelope prefix matching is necessary
 but does not replace custody/content coverage or the eventual atomic lifecycle commit. Neither C1's
 focused tests nor its runtime inventory qualify the new construction or resume release validation.
+
+
+## 2026-09-16 — preserve capsule, mint, record and proof epochs separately
+
+Successor client replay (C2a) resolves compatible historical bytes only through verified admission
+history. A capsule's capture epoch, envelope's mint epoch, record owner's current context and signed
+proof's issuance epoch can legitimately differ; rewriting them would change retained evidence or
+lose pending work. Batch selection respects capture-epoch boundaries, while old unsealed captures
+and interrupted allocations may use fresh current-epoch seals. Legacy readers remain strict without
+that verified context. Current owner installation/dispatch stays disabled until C2b pays atomic
+persistence, exact local boundary, cold reopen and late-response obligations.

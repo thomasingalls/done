@@ -181,11 +181,11 @@
     },
     {
       "path": "src/crdt/accountEnvelopePreparation.ts",
-      "sha256": "47522695a2557e48a92b0d12ec7ca331f75318a1069757f1d55191f41e491882"
+      "sha256": "0e57b1ae4c5bff6c1f2522851bfe565fad6393f8d0c5f29fbb7d4b06ba013c2a"
     },
     {
       "path": "src/crdt/accountInbound.ts",
-      "sha256": "7d9e082ce9bcac257eeb88c3c55ce8223088ca48f48e09330039d27a8ee73920"
+      "sha256": "8db5cbef3b20a8e8373a2dd4a8adb1e90cb0394c40481de57a75d81ed1490909"
     },
     {
       "path": "src/crdt/accountJournal.ts",
@@ -281,7 +281,7 @@
     },
     {
       "path": "src/crdt/deliveryRecord.ts",
-      "sha256": "ba8e83c7604d287328009a40333dfd87c32722576f0d0da12a0180b38bca2449"
+      "sha256": "a0e71d45d31fa29dfce4ed947c9d0a25108514d77c6ccc44b4023b0a73f9a85b"
     },
     {
       "path": "src/crdt/doc.ts",
@@ -301,7 +301,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "c5a14c7c9db94f078f60c005b34f76af297fa28c8722b2500e74618ff1a31144"
+      "sha256": "7286eeb39b650c26469411ada9755d4a7b7cbf357d69df21c3af12254f4f06d9"
     },
     {
       "path": "src/crdt/inboundRecord.ts",
@@ -453,11 +453,11 @@
     },
     {
       "path": "src/crdt/sourceCapture.ts",
-      "sha256": "74224ca301f2879359c1d98452aedd1712d47816245f3ae858cd9bb884c461e2"
+      "sha256": "e0461b768a4becf5e0fe3e131caceb6f500906603953ab90a130a50e79e52fcb"
     },
     {
       "path": "src/crdt/spoolRecord.ts",
-      "sha256": "de111717ec3ab5492eac0dcfb340962735431a455d3a79af1cb96a0686786019"
+      "sha256": "bc438c6d8da7863a70adc1ae3fde9f571491dbfdd36ac2a4c7d338d6721ffc69"
     },
     {
       "path": "src/crdt/startupClassification.ts",
@@ -787,15 +787,15 @@
       "sites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 95
+          "line": 96
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 122
+          "line": 123
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 158
+          "line": 161
         }
       ]
     },
@@ -805,7 +805,11 @@
       "sites": [
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 77
+          "line": 78
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 93
         },
         {
           "path": "src/crdt/inboundRecord.ts",
@@ -843,7 +847,7 @@
       "sites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 361
+          "line": 382
         }
       ]
     },
@@ -853,15 +857,15 @@
       "sites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 166
+          "line": 173
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 127
+          "line": 131
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 152
+          "line": 156
         }
       ]
     },
@@ -1741,15 +1745,15 @@
       "sites": [
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 71
+          "line": 97
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 96
+          "line": 122
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 214
+          "line": 218
         }
       ]
     },

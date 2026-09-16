@@ -1,3 +1,4 @@
+import { historyAuthority } from '../../account-protocol/admissionHistory';
 /** Internal v9 census. Authority is supplied only after admission verification under the factor permit. */
 import { parseReceipt } from '../../account-protocol/admission';
 import { decodeInboundPage, decodeInboundRequest } from '../../account-protocol/inboundTransport';
@@ -84,6 +85,18 @@ export function inspectInbound(
   const ledger = [...delivery.ledger, ...entries.map((e) => e.record)].sort(
     (a, b) => a.seq - b.seq,
   );
+  if (context.history) {
+    let epoch = 1;
+    for (const row of ledger) {
+      const v = JSON.parse(new TextDecoder().decode(row.bytes));
+      const at =
+        v[0] === 'done/account-inbound/v1'
+          ? decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch
+          : v[5];
+      if (at < epoch) captureError('Account ledger authority regressed');
+      epoch = at;
+    }
+  }
   delivery.spool.events = ledger.map((r) => r.bytes);
   return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq) };
 }
@@ -194,7 +207,17 @@ export async function verifyInboundLedger(
   for (const { record, event } of census.entries) {
     if (state.conflict) captureError('Inbound event after stream conflict');
     const request = decodeInboundRequest(event.request);
-    const context = contextAt(base, state, request.after),
+    const historical = base.history
+      ? {
+          ...base,
+          authority: historyAuthority(base.history, {
+            ...base.authority,
+            tip: request.epoch,
+            head: event.head,
+          }),
+        }
+      : base;
+    const context = contextAt(historical, state, request.after),
       check = () => verifyStoredInbound(context, record.bytes, lifetime),
       result = reuse
         ? await reuse.memo.check(

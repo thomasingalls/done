@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1\u2013D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
+  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -2425,19 +2425,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 71,
+          "line": 97,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 96,
+          "line": 122,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 214,
+          "line": 218,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2502,19 +2502,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 166,
+          "line": 173,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 127,
+          "line": 131,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 152,
+          "line": 156,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2599,19 +2599,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 95,
+          "line": 96,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 122,
+          "line": 123,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 158,
+          "line": 161,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -2685,7 +2685,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 77,
+          "line": 78,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 93,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
@@ -2776,7 +2782,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 361,
+          "line": 382,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
@@ -5034,6 +5040,18 @@
         {
           "path": "account-protocol/admissionHistory.ts",
           "name": "createAdmissionPrefixVerifier"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "captureRouteAt"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "verifyDeliveryDecision"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "verifyInboundLedger"
         }
       ],
       "homePins": [],
@@ -5047,7 +5065,9 @@
         "test/account-successor/generated.test.mjs",
         "test/account-successor/service-controls.test.mjs",
         "test/account-successor/history.test.mjs",
-        "test/account-successor/history-controls.test.mjs"
+        "test/account-successor/history-controls.test.mjs",
+        "test/account-successor/client-replay.test.mjs",
+        "test/account-successor/client-replay-controls.test.mjs"
       ],
       "requirements": [
         "closed-bounded-wire",
@@ -5060,9 +5080,11 @@
         "cross-process-races",
         "crash-recovery",
         "client-proof-issuance-boundary",
-        "client-exact-accepted-prefix"
+        "client-exact-accepted-prefix",
+        "mixed-epoch-original-replay",
+        "current-receiver-historical-proofs"
       ],
-      "blocker": "Pure protocol and private service owner have focused evidence; authority-map qualification and owned browser adoption remain open.",
+      "blocker": "Pure protocol, service owner and opt-in client replay adapters have focused evidence; authority-map qualification and lifecycle-owned browser adoption remain open.",
       "next": "Implement supported v9 adoption and private HTTP integration; qualify new domains before release."
     }
   ],

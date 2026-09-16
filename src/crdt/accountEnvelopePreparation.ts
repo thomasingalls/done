@@ -56,6 +56,7 @@ export async function selectEnvelopeSources(
   const selected: SourceRef[] = [];
   let actor = '',
     kind = '',
+    epoch = 0,
     total = 0;
   for (const [id, bytes] of state.sources) {
     const c = decodeSourceCapsule(bytes, route);
@@ -69,11 +70,13 @@ export async function selectEnvelopeSources(
             selected.length >= MAX_POSITION_SOURCES ||
             source.actor !== actor ||
             source.kind !== kind ||
+            c.epoch !== epoch ||
             total + source.bytes.length > MAX_POSITION_BYTES)
         )
           return selected;
         hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
         selected.push({ id, index, hash });
+        epoch = c.epoch;
         actor = source.actor;
         kind = source.kind;
         total += source.bytes.length;

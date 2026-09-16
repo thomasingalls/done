@@ -18,7 +18,7 @@ const changes: Record<string, [string, string][]> = {
   ],
   'prefix-proof': [
     [
-      'const proof = await verifyPositionResponse(entry.proof, subject(entry.envelope), a, subtle);',
+      'const proof = await decision(entry.proof, subject(entry.envelope));',
       'const proof = decodePositionResponse(entry.proof);',
     ],
   ],

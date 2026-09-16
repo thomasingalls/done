@@ -174,3 +174,31 @@ The future custody owner must establish that coverage and commit authority befor
 
 [Focused evidence](../account-conformance-runs/2026-09-16-successor-history/README.md). Existing live v9
 owners are unchanged at this checkpoint; their ledger adapters and native installation remain open.
+
+
+## 7. Mixed-epoch replay adapters (chunk C2a)
+
+A `CaptureRoute` may carry the immutable process-local `AdmissionHistory` returned by C1. It is never
+serialized into a source capsule or accepted from stored data. Without it, the existing exact-epoch
+readers remain strict. With it, old/current routes must retain the original workspace, credential,
+principal and generation. Capsules keep their original epoch and bytes. New allocation groups do
+not combine different capture epochs; a still-unsealed old capture can be sealed under epoch 2.
+An interrupted old allocation can consume a new epoch-2 invocation; positions/attempts never reset.
+
+Spool records retain their actual epoch and verify each envelope against that route plus its exact
+original source bytes. Delivery records retain the epoch/head under which the owner recorded them;
+this must be an exact known first/current context. Submission mint epoch and proof issuance are
+resolved separately. A new current-context record may contain an unchanged old envelope or proof.
+No ancestor-epoch permission is inferred without the verified admission-only history.
+
+Stored inbound pages replay using their exact signed request head/epoch; current pages can contain
+historical acceptance proofs. The receiver binds the creating publisher/reader keys and principal
+to the verified history, checks issuance against the boundary, and preserves decryption, actor,
+prefix, signature and content-coverage checks. A historical page cannot claim availability beyond
+the old accepted boundary; a current page cannot claim less than that boundary. Once a retained
+ledger event uses epoch 2, later events cannot regress to an old context. Old journal source capsules
+are not ledger authority events and may still flush after adoption.
+
+These are opt-in adapters, with no live owner enabling them yet. Lifecycle installation must bind
+the exact existing ledger boundary, persist its new authority, invalidate old asynchronous contexts
+and establish source coverage before dispatch. [Evidence](../account-conformance-runs/2026-09-16-successor-replay/README.md).

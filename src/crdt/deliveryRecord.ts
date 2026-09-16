@@ -1,8 +1,9 @@
+import { historyAuthority, verifyHistoryDecision } from '../../account-protocol/admissionHistory';
 /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
 import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
-import { captureError, type CaptureRoute } from './sourceCapture';
+import { captureError, captureRouteAt, type CaptureRoute } from './sourceCapture';
 import { inspectSpool, networkRoute, type SpoolState } from './spoolRecord';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import { decodeSubmission, verifySubmission } from '../../account-protocol/submission';
@@ -22,7 +23,7 @@ export interface DeliveryEntry {
 }
 export interface DeliveryCensus {
   spool: SpoolState;
-  entries: { record: OpenedRecord; entry: DeliveryEntry }[];
+  entries: { record: OpenedRecord; entry: DeliveryEntry; epoch: number }[];
   ledger: OpenedRecord[];
 }
 export interface DeliveryState {
@@ -124,18 +125,20 @@ export function decodeDeliveryEntry(
     v[2] !== r.workspace ||
     v[3] !== r.credential ||
     v[4] !== r.principal ||
-    v[5] !== r.epoch ||
     v[6] !== r.generation ||
-    v[7] !== a.lineage ||
-    v[8] !== a.head
+    v[7] !== a.lineage
   )
     captureError('Delivery authority changed');
+  const historical = captureRouteAt(r, v[5]);
+  const issuance = r.history ? historyAuthority(r.history, { ...a, tip: v[5], head: v[8] }) : a;
+  if (v[8] !== issuance.head) captureError('Delivery head changed');
   const e: DeliveryEntry = {
     type: v[9],
     position: v[10],
     wire: bytes(v[11], v[9] === 'response' ? RESPONSE_LIMIT : MAX_BATCH_BYTES / 2),
   };
-  if (hex(encodeDeliveryEntry(e, r, a)) !== hex(b)) captureError('Noncanonical delivery record');
+  if (hex(encodeDeliveryEntry(e, historical, issuance)) !== hex(b))
+    captureError('Noncanonical delivery record');
   return e;
 }
 export function inspectDelivery(
@@ -159,7 +162,11 @@ export function inspectDelivery(
       const entry = decodeDeliveryEntry(r.bytes, route, authority);
       if ((entry.type === 'submission') !== (r.kind === 'outbound'))
         captureError('Delivery record misplaced');
-      entries.push({ record: r, entry });
+      entries.push({
+        record: r,
+        entry,
+        epoch: route.history ? JSON.parse(new TextDecoder().decode(r.bytes))[5] : route.epoch,
+      });
       ledger.push(r);
     } else {
       prior.push(r);
@@ -197,7 +204,7 @@ export async function verifyDelivery(
   reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<DeliveryState> {
   const state = emptyDelivery(),
-    entries = new Map(c.entries.map((e) => [e.record.seq, e.entry])),
+    entries = new Map(c.entries.map((e) => [e.record.seq, e])),
     envelopes = new Map<number, number>();
   const expectedPositions = new Map<
     number,
@@ -227,7 +234,8 @@ export async function verifyDelivery(
     }
   }
   for (const row of c.ledger) {
-    const entry = entries.get(row.seq);
+    const retained = entries.get(row.seq),
+      entry = retained?.entry;
     if (!entry) {
       if (publicationState(state) !== 'ready') captureError('Allocation after delivery halt');
       const v = JSON.parse(new TextDecoder().decode(row.bytes));
@@ -237,6 +245,10 @@ export async function verifyDelivery(
     if (!envelopes.has(entry.position) || envelopes.get(entry.position)! >= row.seq)
       captureError('Delivery precedes its envelope');
     const p = c.spool.positions.find((p) => p.position === entry.position)!;
+    const authority = r.history
+      ? historyAuthority(r.history, retained!.epoch === 1 ? r.history.first : a)
+      : a;
+
     if (entry.type === 'submission') {
       if (
         publicationState(state) !== 'ready' ||
@@ -244,11 +256,14 @@ export async function verifyDelivery(
         state.submissions.has(entry.position)
       )
         captureError('Submission order or eligibility changed');
-      const check = () => verifySubmission(entry.wire, networkRoute(r), publicKey, a, subtle),
+      const epoch = decodeNetworkEnvelope(p.wire!).epoch;
+      if (epoch > retained!.epoch) captureError('Submission precedes envelope authority');
+      const check = () =>
+          verifySubmission(entry.wire, networkRoute(r, epoch), publicKey, authority, subtle),
         opened = reuse
           ? await reuse.memo.check(
               'delivery:' + row.seq,
-              JSON.stringify([r, a, 'submission']),
+              JSON.stringify([r, authority, 'submission']),
               [entry.wire],
               check,
               reuse.current,
@@ -263,11 +278,11 @@ export async function verifyDelivery(
         ? expectedPositions.get(entry.position)
         : await expectedPosition(c.spool, entry.position, subtle);
       if (!expected) captureError('Response without envelope');
-      const check = () => verifyPositionResponse(entry.wire, expected!, a, subtle),
+      const check = () => verifyDeliveryDecision(entry.wire, expected!, authority, r, subtle),
         evidence = reuse
           ? await reuse.memo.check(
               'delivery:' + row.seq,
-              JSON.stringify([expected, a, 'response']),
+              JSON.stringify([expected, authority, r.history, 'response']),
               [entry.wire],
               check,
               reuse.current,
@@ -284,3 +299,15 @@ export async function verifyDelivery(
   }
   return state;
 }
+
+/** Owner-resolved continuity only; legacy callers retain their exact-tip verifier. */
+export const verifyDeliveryDecision = (
+  bytes: Bytes,
+  expected: Parameters<typeof verifyPositionResponse>[1],
+  authority: DecisionAuthority,
+  route: CaptureRoute,
+  subtle: SubtleCrypto,
+) =>
+  route.history
+    ? verifyHistoryDecision(bytes, expected, authority, route.history, subtle)
+    : verifyPositionResponse(bytes, expected, authority, subtle);
