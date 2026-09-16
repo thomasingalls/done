@@ -74,7 +74,13 @@ F-17 application gate remain unchanged; no release qualification is claimed.
 **Subsequent product integration.** `codex/goals-keyboard-fixes` (`f884ad69`) is integrated locally
 with focused editor and keyboard checks. The source/test population now differs from the frozen
 validation snapshots; those snapshots have not been refreshed. See the completion record for results.
-`codex/start-endtoend-product-work` remains deferred and unmerged. Validation stays paused.
+`codex/start-endtoend-product-work` (`16e6e205`) is now integrated locally as well, with focused
+onboarding, Goals transfer/menu and layout checks. The first backend product phase is next to be
+defined against the combined tree. Validation stays paused.
+
+**Post–first-RC scope.** Platform-specific UX, including native keyboard conventions and their
+platform-specific checks, is deferred until after the first release candidate.
+[Decision](./decisions.md#2026-09-16--platform-specific-ux-follows-the-first-rc).
 
 
 ---

@@ -3928,3 +3928,13 @@ not an estimate of product readiness or a mandate to finish validation before fu
 The previously proposed validation-first sequence is deferred. Choose the next product work and any
 resumption of this campaign explicitly with the operator. No gate is waived, no failure is relabelled
 and no release claim is made.
+
+
+## 2026-09-16 — Platform-specific UX follows the first RC
+
+Per operator direction, platform-specific UX is work for after the first release candidate. This
+includes native keyboard conventions and their platform-specific browser coverage. Keep the current
+Goals keyboard integration; extending its Mac shortcut checks to genuine Windows/Linux and Android
+behavior is deferred, not a prerequisite for the first RC. Describe existing coverage accurately:
+the Mac shortcut suite does not establish other platforms' keyboard behavior. The release-validation
+campaign remains paused.

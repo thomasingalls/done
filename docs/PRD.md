@@ -414,12 +414,20 @@ purpose.
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                            |
 | Next → Scheduled                 | Easy                         | One gesture on the card. Also the only way back under the cap once sync has expanded Next (§4.1).       |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                            |
-| Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action.   |
+| Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
 | Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.           |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
+
+**Product trial, 2026-09-16.** Goals defaults to Copy. A Copy / Move selector shares the three destination
+buttons and returns to Copy after a successful transfer. Move removes only lines that become cards,
+and refuses the entire transfer when the destination cannot accept them all or the selected source
+has changed before admission. One Undo restores the source and removes the destination cards together.
+In either mode, Next is disabled unless every selected item fits on the focused day. A “…” menu beside
+the Copy / Move selector contains workspace Undo, Redo, and Remove selected lines. The menu opens above
+the footer so the destination buttons stay in place and the footer stays at two rows on mobile.
 
 **TRD.** TRD §4.7 (movement operations).
 

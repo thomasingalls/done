@@ -4,7 +4,7 @@ export const unlockApp = async (page: Page) => {
   const startup = page.locator('.local-startup');
   await expect(startup).toHaveAttribute('data-state', /fresh|unlock-required/);
   if ((await startup.getAttribute('data-state')) === 'fresh') {
-    await page.getByRole('button', { name: 'Create Local workspace' }).click();
+    await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
     const code = (await page.getByLabel('Generated device-lock code').textContent())!;
     factors.set(page, code);
     await page.getByRole('button', { name: 'I saved my code' }).click();

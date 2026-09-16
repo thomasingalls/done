@@ -8985,3 +8985,34 @@ Build, server and browser state are disposable; the personal packaged app is unc
 `codex/start-endtoend-product-work` is explicitly deferred and remains unmerged. The release-validation
 campaign remains paused. Do not refresh the frozen release inventories or resume wrapper integration
 for this product merge; reconcile the changed source/test population if that campaign is resumed.
+
+
+## 2026-09-16 — Local integration of end-to-end product UX
+
+Integrate `codex/start-endtoend-product-work` at `16e6e205` after the signed keyboard merge
+`3fefdae0`. Preserve all six incoming commits: the welcome preview and Local entry, explicit Goals
+Copy/Move, accessible actions menu, stable transfer footer, and mutually exclusive lateral panels.
+Account creation and existing-workspace entry remain disabled until their flows exist. The incoming
+PRD records the explicit Move trial and whole-selection capacity rule for the Next button.
+
+`App.tsx` merges cleanly and retains the keyboard event guards. Resolve the only conflict in
+`test/workspaceAdmission.test.ts` by keeping both branches' added cases. One older geometry test
+expects an oversized Goals selection to copy only the first three items; the new Next button correctly
+refuses it. Update that test to assert the four-item refusal, then select three, copy successfully,
+retain the source and observe the full destination. No incoming production behavior is changed during
+integration.
+
+Focused verification: 191 unit tests across six admission/preparation/movement/selection/editor files;
+TypeScript; scoped lint/format; isolated production build. Of 59 browser cases, 57 pass initially and
+the obsolete capacity expectation fails in both configured contexts. Both corrected cases then pass.
+Coverage includes welcome/genesis/unlock, persistence and refusal, generated compose/history cold
+reopen, Goals Move/Undo/menu/layout, card geometry and the previous Mac keyboard regressions.
+The Android project is layout emulation; the keyboard cases still deliberately model Mac semantics.
+The build emits the existing large-chunk warning; this is not a bundle-budget or release qualification.
+Logs, initial failures, JSON reports and disposable build remain under
+`/private/tmp/done-product-ux-integration`.
+
+The personal server, packaged app and browser are untouched. Platform-specific UX remains post–first-RC.
+Release-validation infrastructure and its frozen snapshots remain paused, with 108 unresolved wrappers
+(70 command /38 campaign). Define the next bounded backend product phase against this integrated tree;
+do not resume the old validation sequence or begin backend implementation as part of this merge.

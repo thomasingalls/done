@@ -53,8 +53,10 @@ export const App = (): React.ReactElement => {
   const today = useToday(settings.rolloverHour);
 
   const [date, setDate] = useState<ISODate>(currentDate);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [goalsOpen, setGoalsOpen] = useState(false);
+  // Overlay navigation has one destination; opening either panel replaces the other.
+  const [openPanel, setOpenPanel] = useState<Lateral | null>(null);
+  const menuOpen = openPanel === 'menu';
+  const goalsOpen = openPanel === 'goals';
   const [unfiledOpen, setUnfiledOpen] = useState(false);
 
   const placed = new Set(
@@ -177,12 +179,16 @@ export const App = (): React.ReactElement => {
   }, []);
 
   const closeLateral = useCallback(() => {
-    setMenuOpen(false);
-    setGoalsOpen(false);
+    setOpenPanel(null);
     setMenuProgress(0);
     setGoalsProgress(0);
     setLateral(null);
   }, []);
+
+  const closeGoals = useCallback(() => {
+    closeLateral();
+    plane.current?.querySelector<HTMLButtonElement>('.goals-trigger')?.focus();
+  }, [closeLateral]);
 
   const canNavigate = useCallback(
     (direction: Direction): boolean => {
@@ -262,11 +268,10 @@ export const App = (): React.ReactElement => {
         const open =
           shouldCommit(delta, velocity, width) && towardsOpen !== wasOpen ? !wasOpen : wasOpen;
 
+        setOpenPanel(open ? (toGoals ? 'goals' : 'menu') : null);
         if (toGoals) {
-          setGoalsOpen(open);
           setGoalsProgress(open ? 1 : 0);
         } else {
-          setMenuOpen(open);
           setMenuProgress(open ? 1 : 0);
         }
         dragTarget.current = null;
@@ -328,10 +333,10 @@ export const App = (): React.ReactElement => {
         k: () => step(-1),
         ArrowDown: () => step(1),
         j: () => step(1),
-        ArrowLeft: () => setMenuOpen(menuOverlay),
-        h: () => setMenuOpen(menuOverlay),
-        ArrowRight: () => setGoalsOpen(goalsOverlay),
-        l: () => setGoalsOpen(goalsOverlay),
+        ArrowLeft: () => setOpenPanel(menuOverlay ? 'menu' : null),
+        h: () => setOpenPanel(menuOverlay ? 'menu' : null),
+        ArrowRight: () => setOpenPanel(goalsOverlay ? 'goals' : null),
+        l: () => setOpenPanel(goalsOverlay ? 'goals' : null),
       };
 
       const move = moves[event.key];
@@ -361,8 +366,9 @@ export const App = (): React.ReactElement => {
   }, [today]);
 
   useEffect(() => {
-    if (!menuOverlay) setMenuOpen(false);
-    if (!goalsOverlay) setGoalsOpen(false);
+    setOpenPanel((open) =>
+      (open === 'menu' && !menuOverlay) || (open === 'goals' && !goalsOverlay) ? null : open,
+    );
   }, [goalsOverlay, menuOverlay]);
 
   useEffect(() => {
@@ -462,7 +468,13 @@ export const App = (): React.ReactElement => {
           settling={settling}
           showMenuTrigger={menuOverlay}
           menuOpen={menuOpen}
-          onOpenMenu={() => setMenuOpen((open) => !open)}
+          showGoalsTrigger={goalsOverlay}
+          goalsOpen={goalsOpen}
+          onOpenGoals={() => {
+            closeLateral();
+            setOpenPanel('goals');
+          }}
+          onOpenMenu={() => setOpenPanel((open) => (open === 'menu' ? null : 'menu'))}
           onGoTo={goTo}
           unfiledCount={unfiled.length}
           unfiledOpen={unfiledOpen}
@@ -473,7 +485,13 @@ export const App = (): React.ReactElement => {
         />
       </div>
 
-      <Goals ref={goals} date={date} onEditorReady={onGoalsEditorReady} />
+      <Goals
+        ref={goals}
+        date={date}
+        today={today}
+        onEditorReady={onGoalsEditorReady}
+        onClose={goalsOverlay ? closeGoals : undefined}
+      />
     </div>
   );
 };

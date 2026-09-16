@@ -27,6 +27,9 @@ export interface DayPanelProps {
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
   menuOpen: boolean;
+  showGoalsTrigger: boolean;
+  goalsOpen: boolean;
+  onOpenGoals: () => void;
   unfiledCount: number;
   unfiledOpen: boolean;
   onOpenUnfiled: () => void;
@@ -42,6 +45,9 @@ export const DayPanel = ({
   onOpenMenu,
   onGoTo,
   menuOpen,
+  showGoalsTrigger,
+  goalsOpen,
+  onOpenGoals,
   unfiledCount,
   unfiledOpen,
   onOpenUnfiled,
@@ -146,6 +152,19 @@ export const DayPanel = ({
           <span className="panel-badge" title="Three days past. Collections are read-only.">
             Frozen
           </span>
+        )}
+        {showGoalsTrigger && (
+          <button
+            type="button"
+            className="panel-action goals-trigger"
+            aria-label="Open Goals"
+            aria-expanded={goalsOpen}
+            aria-controls="goals"
+            title="Open Goals (Alt + →)"
+            onClick={onOpenGoals}
+          >
+            Goals <span aria-hidden="true">→</span>
+          </button>
         )}
       </header>
 

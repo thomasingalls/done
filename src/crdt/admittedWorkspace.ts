@@ -519,10 +519,16 @@ export const createAdmittedWorkspace = async (
   const submit = (
     command: WorkspaceIntent['command'],
     split?: WorkspaceIntent['split'],
+    masterMove?: WorkspaceIntent['masterMove'],
   ): WorkspaceTicket => {
     live();
     const group = ++nextGroup,
-      bytes = encode({ command, group, ...(split ? { split } : {}) });
+      bytes = encode({
+        command,
+        group,
+        ...(split ? { split } : {}),
+        ...(masterMove ? { masterMove } : {}),
+      });
     try {
       const ticket = session.submit(bytes);
       const completed = ticket.accepted
@@ -719,6 +725,33 @@ export const createAdmittedWorkspace = async (
     command(command) {
       live();
       const captured = structuredClone(command);
+      if (captured.kind === 'move-from-master') {
+        const master = accepted!.history.doc.getText('master');
+        const lines = master.toString().split('\n');
+        let offset = 0;
+        const starts = lines.map((line) => {
+          const start = offset;
+          offset += line.length + 1;
+          return start;
+        });
+        const selected = [...captured.lines].sort((a, b) => a.line - b.line);
+        if (
+          selected.length === 0 ||
+          new Set(selected.map(({ line }) => line)).size !== selected.length ||
+          selected.some(
+            ({ line, text }) => !Number.isInteger(line) || line < 0 || lines[line] !== text,
+          )
+        )
+          throw Error('The selected Goals lines changed. Select them again.');
+        const anchors = relativeSelection(master, {
+          ranges: selected.map(({ line, text }) => ({
+            anchor: starts[line]!,
+            head: starts[line]! + text.length,
+          })),
+          main: 0,
+        });
+        return submit({ ...captured, lines: selected }, undefined, anchors);
+      }
       if (captured.kind === 'split') {
         const text = targetText(accepted!.history.doc, { kind: 'card', id: captured.id });
         const range = relativeSelection(

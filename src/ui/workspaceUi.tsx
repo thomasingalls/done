@@ -18,6 +18,11 @@ import type {
   WorkspaceSnapshot,
 } from '../crdt/admittedWorkspace';
 
+interface CommandFeedback {
+  /** The caller owns any completed-action error message instead of the workspace banner. */
+  feedback?: 'local';
+}
+
 export interface WorkspaceUi {
   workspace: AdmittedWorkspace;
   snapshot: WorkspaceSnapshot;
@@ -25,8 +30,8 @@ export interface WorkspaceUi {
   status: AdmittedWorkspace['status'];
   error: string;
   storage: string;
-  execute(command: WorkspaceCommand): Promise<unknown>;
-  removeMasterLines(lines: readonly number[]): void;
+  execute(command: WorkspaceCommand, options?: CommandFeedback): Promise<unknown>;
+  removeMasterLines(lines: readonly number[], options?: CommandFeedback): Promise<boolean>;
   mountEditor(
     parent: HTMLElement,
     target: TextTarget,
@@ -99,30 +104,33 @@ export const WorkspaceUiProvider = ({
   }, [workspace]);
   const actions = useMemo(
     () => ({
-      removeMasterLines(lines: readonly number[]) {
+      async removeMasterLines(lines: readonly number[], options?: CommandFeedback) {
         try {
+          if (options?.feedback !== 'local') setError('');
           const surface = workspace.text({ kind: 'master' });
           const selection = masterLineSelection(surface.read().text, lines);
-          if (selection)
-            void surface.input({ name: 'insert', text: '' }, selection).accepted.catch(() => {
-              setError('The selected lines were not removed. Check storage and try again.');
-            });
+          if (!selection) return false;
+          await surface.input({ name: 'insert', text: '' }, selection).accepted;
+          return true;
         } catch {
-          setError('The selected lines could not be removed. Reopen the workspace and try again.');
+          if (options?.feedback !== 'local')
+            setError('The selected lines were not removed. Check storage and try again.');
+          return false;
         }
       },
-      async execute(command: WorkspaceCommand) {
+      async execute(command: WorkspaceCommand, options?: CommandFeedback) {
         try {
-          setError('');
+          if (options?.feedback !== 'local') setError('');
           const result = await workspace.command(command).accepted;
-          if (result.value === false || result.value === null) {
+          if (options?.feedback !== 'local' && (result.value === false || result.value === null)) {
             setError(
               'That action could not be applied. Check the destination and whether the day is frozen.',
             );
           }
           return result.value;
         } catch {
-          setError('That action was not saved. Check storage and try again.');
+          if (options?.feedback !== 'local')
+            setError('That action was not saved. Check storage and try again.');
           return false;
         }
       },

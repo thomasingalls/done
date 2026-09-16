@@ -60,7 +60,7 @@ test.beforeAll(async ({ browser }, info) => {
   await expect(app.locator(COMPOSE)).toBeVisible();
   await app.locator('.goals .cm-content').click();
   await app.keyboard.insertText('a card to open and type into');
-  await app.locator('.goals').getByRole('button', { name: 'To Scheduled' }).click();
+  await app.locator('.goals').getByRole('button', { name: 'Scheduled' }).click();
   await app.locator('.card[data-section="scheduled"] .card-surface').first().click();
   await expect(app.locator(CARD_EDITOR)).toBeVisible();
   await control.goto('/diagnostic-control/test/latency/control.html');

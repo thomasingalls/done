@@ -14,7 +14,7 @@ const census = (page: Page) =>
   }));
 const enroll = async (page: Page) => {
   await state(page, 'fresh');
-  await page.getByRole('button', { name: 'Create Local workspace' }).click();
+  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const code = (await page.getByLabel('Generated device-lock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
   await expect(page.getByLabel('Generated device-lock code')).toHaveCount(0);
@@ -41,7 +41,7 @@ test('confirmation is required; reload and offline unlock use the same identity'
   await page.goto('/local.html');
   await state(page, 'fresh');
   expect((await census(page)).databases).toEqual([]);
-  await page.getByRole('button', { name: 'Create Local workspace' }).click();
+  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const cancelled = await page.getByLabel('Generated device-lock code').textContent();
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await state(page, 'fresh');
@@ -90,7 +90,7 @@ test('existing legacy data refuses creation without touching its carriers', asyn
   const before = await census(page);
   await page.reload();
   await state(page, 'migration-required');
-  await expect(page.getByRole('button', { name: 'Create Local workspace' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Create a local-only workspace' })).toHaveCount(0);
   expect(await census(page)).toEqual(before);
   const value = await page.evaluate(
     () =>
@@ -179,7 +179,7 @@ test('interrupted creation reopens with the saved factor and original identity',
       return request;
     };
   });
-  await page.getByRole('button', { name: 'Create Local workspace' }).click();
+  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const code = (await page.getByLabel('Generated device-lock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
   await page.getByLabel('Device-lock code', { exact: true }).fill(code);

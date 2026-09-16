@@ -137,23 +137,31 @@ test.describe('the three-item cap', () => {
     );
     await expect(count).toHaveText('0/3');
 
-    // Master → Next is the deliberate two-step flow; it is also the only way in
-    // from the keyboard, which makes it the one to drive here.
+    // Goals transfers require the whole selection to fit. Copy retains the
+    // source; an oversized selection must not silently copy only a prefix.
     await page.setViewportSize({ width: 1280, height: 900 });
     const master = page.locator('.goals .cm-content');
     await expect(master).toBeVisible();
     await master.click();
     await page.keyboard.insertText('one\ntwo\nthree\nfour');
 
-    await page.keyboard.down('Shift');
-    for (let index = 0; index < 3; index++) await page.keyboard.press('ArrowUp');
-    await page.keyboard.up('Shift');
+    await master.press('ControlOrMeta+a');
+    const toNext = page.locator('.goals').getByRole('button', { name: 'Next', exact: true });
+    await expect(toNext).toBeDisabled();
+    await expect(count).toHaveText('0/3');
 
-    await page.locator('.goals').getByRole('button', { name: 'To Next' }).click();
+    await master.press('ArrowLeft');
+    await master.press('Shift+ArrowDown');
+    await master.press('Shift+ArrowDown');
+    await master.press('Shift+End');
+    await expect(toNext).toBeEnabled();
+    await toNext.click();
 
     await expect(count).toHaveText('3/3');
     await expect(
       page.locator('.day-panel[data-active="true"] .collection[data-section="next"] .card'),
     ).toHaveCount(3);
+    await expect(master).toHaveText('onetwothreefour');
+    await expect(toNext).toBeDisabled();
   });
 });

@@ -46,7 +46,7 @@ test(
       ns = [marker('fresh-writing')];
     let page = await f.context.newPage();
     await page.goto(f.origin);
-    await page.getByRole('button', { name: 'Create Local workspace' }).click();
+    await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
     const code = await page.getByLabel('Generated device-lock code').textContent();
     ns.push(factor(code));
     await page.getByRole('button', { name: 'I saved my code' }).click();

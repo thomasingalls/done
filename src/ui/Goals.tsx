@@ -5,10 +5,8 @@
  * (PRD §6). Everything lives here: tasks, projects, someday-maybes, notes to
  * self. Nesting is allowed and never required.
  *
- * The one flow out of it is deliberately two steps (PRD §4): **copy to** places
- * a copy in a day's collection and leaves master alone; **remove** is a separate
- * action that deletes the lines. They are never one action, and the shape of
- * this footer is that rule made visible.
+ * Copy leaves the original in Goals. Explicit Move transfers the selected lines
+ * as one undoable action; Remove remains an independent action.
  */
 
 import {
@@ -22,6 +20,8 @@ import {
 import { type EditorState, type Extension } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { NEXT_CAP, type Section } from '../crdt/days';
+import { isFrozen } from '../crdt/freeze';
+import { masterLineBody } from '../lib/masterLineBody';
 import { useWorkspaceUi } from './workspaceUi';
 import {
   documentHeadings,
@@ -30,13 +30,16 @@ import {
 } from '../editor/breadcrumbs';
 import type { ISODate } from '../lib/date';
 import { GoalsOutline } from './GoalsOutline';
+import { GoalsActionsMenu, type GoalsMenuAction } from './GoalsActionsMenu';
 
 export interface GoalsProps {
   /** Copies land on the day in view, which is the one the user is looking at. */
   date: ISODate;
+  today: ISODate;
   ref?: React.Ref<HTMLElement>;
   /** Lets the shell coordinate focus with the narrow panel's snap animation. */
   onEditorReady?: (view: EditorView | null) => void;
+  onClose?: (() => void) | undefined;
 }
 
 interface Selection {
@@ -65,8 +68,14 @@ export const selectedLines = (state: EditorState): Selection => {
   };
 };
 
-export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElement => {
-  const { execute, mountEditor, removeMasterLines } = useWorkspaceUi();
+export const Goals = ({
+  date,
+  today,
+  ref,
+  onEditorReady,
+  onClose,
+}: GoalsProps): React.ReactElement => {
+  const { execute, mountEditor, removeMasterLines, snapshot, status } = useWorkspaceUi();
   const host = useRef<HTMLDivElement>(null);
   const editor = useRef<EditorView | null>(null);
   const outlineTrigger = useRef<HTMLButtonElement>(null);
@@ -75,11 +84,102 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
   const [headingPath, setHeadingPath] = useState<readonly DocumentHeading[]>([]);
   const [headingOutline, setHeadingOutline] = useState<readonly DocumentHeading[]>([]);
   const [outlineOpen, setOutlineOpen] = useState(false);
+  const [mode, setMode] = useState<'copy' | 'move'>('copy');
+  const [pending, setPending] = useState(false);
+  const [transferError, setTransferError] = useState('');
+  const transferring = useRef(false);
+  const nextSpace = Math.max(
+    0,
+    NEXT_CAP - (snapshot.days.find((day) => day.date === date)?.next.length ?? 0),
+  );
+  const unavailable = pending || status.state !== 'active';
+  const removeDisabled = unavailable || !selection.text.some((line) => line.length > 0);
+  const transferDisabled = (section: Section, selected = selection): boolean => {
+    const items = selected.text.filter((line) => masterLineBody(line).length > 0).length;
+    return (
+      unavailable ||
+      isFrozen(date, today) ||
+      items === 0 ||
+      (section === 'next' && items > nextSpace)
+    );
+  };
+
+  useEffect(() => {
+    if (!transferError) return;
+    const timer = window.setTimeout(() => setTransferError(''), 4000);
+    return () => window.clearTimeout(timer);
+  }, [transferError]);
+
+  useEffect(() => setTransferError(''), [date]);
 
   // A ref because the editor is built once and the binding inside it must not
   // capture the props of the render that happened to build it.
-  const copyTo = useRef<(section: Section, lines: readonly string[]) => void>(() => {});
-  copyTo.current = (section, lines) => void execute({ kind: 'copy', to: { date, section }, lines });
+  const transferTo = useRef<
+    (section: Section, selected: Selection, action: 'copy' | 'move') => void
+  >(() => {});
+  transferTo.current = (section, selected, action) => {
+    if (transferring.current || transferDisabled(section, selected)) return;
+    transferring.current = true;
+    setMode(action);
+    setPending(true);
+    setTransferError('');
+    void execute(
+      action === 'copy'
+        ? { kind: 'copy', to: { date, section }, lines: selected.text }
+        : {
+            kind: 'move-from-master',
+            to: { date, section },
+            lines: selected.lines.map((line, index) => ({ line, text: selected.text[index]! })),
+          },
+      { feedback: 'local' },
+    )
+      .then((result) => {
+        if (typeof result === 'number' && result > 0) setMode('copy');
+        else if (result === 0 || result === false)
+          setTransferError(
+            action === 'move' ? 'Nothing moved. Try again.' : 'Nothing copied. Try again.',
+          );
+      })
+      .finally(() => {
+        transferring.current = false;
+        setPending(false);
+      });
+  };
+
+  const removeSelected = () => {
+    if (transferring.current || removeDisabled) return;
+    transferring.current = true;
+    setPending(true);
+    setTransferError('');
+    void removeMasterLines(selection.lines, { feedback: 'local' })
+      .then((removed) => {
+        if (!removed) setTransferError('Nothing removed. Try again.');
+      })
+      .finally(() => {
+        transferring.current = false;
+        setPending(false);
+      });
+  };
+
+  const menuAction = (action: GoalsMenuAction) => {
+    if (action === 'remove') {
+      removeSelected();
+      return;
+    }
+    if (transferring.current || unavailable || !snapshot[action]) return;
+    transferring.current = true;
+    setPending(true);
+    setTransferError('');
+    void execute({ kind: action }, { feedback: 'local' })
+      .then((result) => {
+        if (result === false || result === null)
+          setTransferError(`Could not ${action}. Try again.`);
+      })
+      .finally(() => {
+        transferring.current = false;
+        setPending(false);
+      });
+  };
 
   useEffect(() => {
     const parent = host.current;
@@ -100,7 +200,7 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
             key: 'Mod-Shift-c',
             preventDefault: true,
             run: (view) => {
-              copyTo.current('next', selectedLines(view.state).text);
+              transferTo.current('next', selectedLines(view.state), 'copy');
               return true;
             },
           },
@@ -164,8 +264,7 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
     [outlineOpen],
   );
 
-  const count = selection.text.filter((line) => line.trim().length > 0).length;
-  const disabled = count === 0;
+  const actionLabel = mode === 'copy' ? 'Copy' : 'Move';
   const breadcrumb = ['Goals', ...headingPath.map((heading) => heading.title)].join(' › ');
   const activeHeading = headingPath.at(-1)?.from;
 
@@ -180,7 +279,13 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
   }, [activeHeading, outlineOpen]);
 
   return (
-    <aside className="goals" aria-label="Goals" ref={ref} onKeyDownCapture={closeOutlineOnEscape}>
+    <aside
+      className="goals"
+      id="goals"
+      aria-label="Goals"
+      ref={ref}
+      onKeyDownCapture={closeOutlineOnEscape}
+    >
       <header className="panel-header">
         <h2 className="panel-title">
           <button
@@ -207,6 +312,11 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
             </span>
           </button>
         </h2>
+        {onClose && (
+          <button type="button" className="panel-action" aria-label="Close Goals" onClick={onClose}>
+            Close
+          </button>
+        )}
       </header>
 
       {outlineOpen ? (
@@ -223,49 +333,73 @@ export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElem
       </div>
 
       <footer className="goals-actions">
-        <span className="goals-hint">
-          {disabled ? 'Put the cursor on a line to copy it out.' : `${count} selected`}
-        </span>
-        <button
-          type="button"
-          className="card-action"
-          disabled={disabled}
-          title={`Copy to Next — at most ${NEXT_CAP}`}
-          onClick={() => copyTo.current('next', selection.text)}
+        <div
+          className="goals-action-buttons"
+          role="group"
+          aria-label="Selected lines"
+          aria-busy={pending}
         >
-          To Next
-        </button>
-        <button
-          type="button"
-          className="card-action"
-          disabled={disabled}
-          title="Copy to Scheduled on the day in view"
-          onClick={() => copyTo.current('scheduled', selection.text)}
-        >
-          To Scheduled
-        </button>
-        <button
-          type="button"
-          className="card-action"
-          disabled={disabled}
-          title="Copy to Done"
-          onClick={() => copyTo.current('done', selection.text)}
-        >
-          To Done
-        </button>
-        {/*
-         * Separate, and never bundled with a copy (PRD §4). Clearing completed
-         * items from the master list is manual only — there is no auto-archive.
-         */}
-        <button
-          type="button"
-          className="card-action card-action-danger"
-          disabled={disabled}
-          title="Delete the selected lines from the master list"
-          onClick={() => removeMasterLines(selection.lines)}
-        >
-          Remove
-        </button>
+          <div className="goals-meta">
+            <fieldset className="goals-transfer-mode" disabled={pending}>
+              <legend>Transfer selected lines</legend>
+              {(['copy', 'move'] as const).map((value) => (
+                <label key={value}>
+                  <input
+                    type="radio"
+                    name="goals-transfer-mode"
+                    value={value}
+                    checked={mode === value}
+                    onChange={() => {
+                      setMode(value);
+                      setTransferError('');
+                    }}
+                  />
+                  <span>{value === 'copy' ? 'Copy to' : 'Move to'}</span>
+                </label>
+              ))}
+            </fieldset>
+            <GoalsActionsMenu
+              undoDisabled={unavailable || !snapshot.undo}
+              redoDisabled={unavailable || !snapshot.redo}
+              removeDisabled={removeDisabled}
+              onAction={menuAction}
+            />
+          </div>
+          <div className="goals-destinations">
+            <button
+              type="button"
+              className="card-action"
+              disabled={transferDisabled('next')}
+              title={`${actionLabel} to Next — at most ${NEXT_CAP}`}
+              onClick={() => transferTo.current('next', selection, mode)}
+            >
+              Next
+            </button>
+            <button
+              type="button"
+              className="card-action"
+              disabled={transferDisabled('scheduled')}
+              title={`${actionLabel} to Scheduled on the day in view`}
+              onClick={() => transferTo.current('scheduled', selection, mode)}
+            >
+              Scheduled
+            </button>
+            <button
+              type="button"
+              className="card-action"
+              disabled={transferDisabled('done')}
+              title={`${actionLabel} to Done`}
+              onClick={() => transferTo.current('done', selection, mode)}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+        {transferError && (
+          <p className="goals-transfer-error" role="status" aria-label="Transfer result">
+            {transferError}
+          </p>
+        )}
       </footer>
     </aside>
   );
