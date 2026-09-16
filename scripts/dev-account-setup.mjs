@@ -2,21 +2,21 @@
 import { createServer } from 'vite';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { join } from 'node:path';
 import { AccountCore } from '../account-service/core.ts';
 import { PrivateAuthority } from '../account-service/authority.ts';
 import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
+import { lockPreviewState, previewConfig } from './account-setup-state.mjs';
 
-const port = Number(process.env.ACCOUNT_SETUP_PORT ?? 53210);
-if (!Number.isInteger(port) || port < 1024 || port > 65535) throw Error('Invalid development port');
-const origin = `http://localhost:${port}`;
-const directory = resolve(process.env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup');
+const { port, directory, policy } = previewConfig();
+const { origin } = policy;
 mkdirSync(directory, { recursive: true, mode: 0o700 });
+const release = lockPreviewState(directory);
+process.once('exit', release);
 const keyPath = join(directory, 'operator.key');
 const pinPath = join(directory, 'pin.json');
 if (!existsSync(keyPath)) writeFileSync(keyPath, randomBytes(32), { flag: 'wx', mode: 0o600 });
 const key = readFileSync(keyPath);
-const policy = { rpId: 'localhost', origin };
 const pin = existsSync(pinPath)
   ? JSON.parse(readFileSync(pinPath, 'utf8'))
   : PrivateAuthority.initialize(join(directory, 'authority.sqlite'), policy, key);
@@ -24,7 +24,18 @@ if (pin.origin !== origin) throw Error('Reuse the original port for this develop
 if (!existsSync(pinPath)) writeFileSync(pinPath, JSON.stringify(pin), { flag: 'wx', mode: 0o600 });
 const authority = PrivateAuthority.open(join(directory, 'authority.sqlite'), pin, key);
 key.fill(0);
-const core = new AccountCore(join(directory, 'account.sqlite'), policy);
+let core;
+try {
+  core = new AccountCore(join(directory, 'account.sqlite'), policy);
+} catch (cause) {
+  authority.close();
+  if (cause.message.includes('Unsupported account schema'))
+    throw Error(
+      'Preview database needs an explicit offline upgrade. Stop the preview, run node scripts/upgrade-account-setup.mjs with the same ACCOUNT_SETUP_STATE and ACCOUNT_SETUP_PORT, then restart.',
+      { cause },
+    );
+  throw cause;
+}
 const token = randomBytes(32).toString('base64url');
 const routes = new Map([
   ['begin', (input) => core.begin(input)],
@@ -131,6 +142,7 @@ async function close() {
   await server.close();
   authority.close();
   core.close();
+  release();
 }
 process.once('SIGINT', () => void close());
 process.once('SIGTERM', () => void close());

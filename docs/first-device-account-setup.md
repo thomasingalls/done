@@ -55,6 +55,61 @@ that directory or SQLite/key files. These are local development credentials, not
 provisioning or account-session infrastructure. Keep the same port and state directory on restart.
 `ACCOUNT_SETUP_PORT` and `ACCOUNT_SETUP_STATE` allow separate disposable test services.
 
+## Upgrade an existing preview after integrating the backend
+
+The first-device preview creates service schema 5. The enrollment/successor backend at
+`192d2a12` creates schema 7 and requires explicit offline migration of an existing database.
+Normal preview startup never opts into migration; it reports the upgrade command instead.
+
+1. Stop the running account preview before starting the merged code.
+2. In the merged checkout, set the **original absolute state directory** and original port.
+   `.dev` is ignored by Git, so changing worktrees does not carry that state along.
+3. Run the upgrade once, then start the preview with those same settings:
+
+   ```sh
+   export ACCOUNT_SETUP_STATE=/absolute/path/to/original/checkout/.dev/account-setup
+   export ACCOUNT_SETUP_PORT=53210
+   node scripts/upgrade-account-setup.mjs
+   node scripts/dev-account-setup.mjs
+   ```
+
+The upgrade validates the existing authority/key/pin and refuses missing state, changed origins,
+newer schemas, or a running preview. It takes a SQLite-consistent backup of both databases,
+including committed WAL pages, plus the unchanged operator key and pin, under
+`$ACCOUNT_SETUP_STATE/backups/schema-<old-version>-<suffix>/`. The directory is private (0700),
+its snapshot files are private (0600), and the preview's existing file-serving deny rule covers it.
+A `manifest.json` marks a complete pre-upgrade backup. Migration then uses AccountCore's existing
+transactional upgrade; a failure leaves that backup available. It does not regenerate authority,
+re-register the passkey, or touch browser storage. Keep the same browser profile and localhost URL.
+
+The target version comes from the running checkout's AccountCore. Running this command before
+the backend merge, or again after a successful upgrade, reports that the schema is already current.
+The runner and upgrader share a state-directory lock; the upgrader also reserves the pinned port
+to detect the older runner. After a forcibly killed process, a stale `maintenance.lock` must only
+be removed after verifying that its recorded process and the preview have stopped.
+
+For an immediate rollback before resuming use, keep the failed/upgraded directory for diagnosis,
+copy the four state files from a complete backup into a **new empty private directory**, and run
+the old checkout against that directory at the original port. Do not overlay old SQLite files onto
+a directory containing newer WAL/SHM files. Browser storage is separate from this service backup;
+it remains necessary for the original local writing and device factor.
+
+`pnpm test:account-setup-upgrade` checks backups, WAL preservation, idempotence, offline exclusion,
+invalid-state refusal and transactional failure. After combining the two branches, the browser
+upgrade test uses a separate schema-five checkout with dependencies installed:
+
+```sh
+ACCOUNT_SETUP_UPGRADE_BASE=/absolute/path/to/schema-five-checkout \
+  pnpm test:account-setup-upgrade-browser
+```
+
+Use `7dab01cc` for that baseline. The test creates a disposable account and writing with a virtual
+passkey, stops the old service, checks that ordinary new startup refuses schema 5, upgrades to 7,
+and verifies every pre-existing database column/row and the authority identity are unchanged.
+It then unlocks the retained browser workspace with the original code/passkey/name and verifies
+that same account online through the upgraded service. This is a focused integration check,
+not a resumption of the release-validation campaign or a physical-authenticator test.
+
 ## Evidence and limits
 
 `pnpm test:account-setup` runs focused Chromium browser tests with disposable contexts and virtual

@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "vite",
     "dev:account-setup": "node scripts/dev-account-setup.mjs",
+    "upgrade:account-setup": "node scripts/upgrade-account-setup.mjs",
+    "test:account-setup-upgrade": "node --test test/first-device-upgrade/state.test.mjs",
+    "test:account-setup-upgrade-browser": "playwright test --config playwright.account-upgrade.config.ts",
     "test:account-setup": "playwright test --config playwright.account-setup.config.ts",
     "dev:tailscale": "node scripts/dev-tailscale.mjs",
     "build": "node scripts/check-yjs-patch.mjs && tsc -b && vite build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs",
