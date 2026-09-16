@@ -4096,3 +4096,13 @@ folding and invisible separators without changing the existing recovery-code par
 runtime still supports one admitted child; a generic positive safe epoch in this byte helper merely
 permits reproduction of the historical epoch-9 vector. Record the new runtime construction as open
 qualification, not inherited closure or release credit.
+
+
+## 2026-09-16 — first-device UI joins the private enrollment backend
+
+Integrate `ea3a3ffb` locally alongside the ceremony work. Keep the first-device product preview's
+existing owners and its explicit no-sync boundary. Account selection/verification supplies no
+second-device content authority; committed exchange, durable approval and delivery/install/
+certification remain required. Preview schema upgrades are explicit offline operations with backups,
+not a side effect of normal startup or this source merge. The integration check uses disposable
+schema-five service state and virtual authenticators, never the author's running installation.

@@ -9268,3 +9268,21 @@ open qualification group alongside preparation and successor admission.
 Next is chunk B's authenticated commitment/reveal exchange and transcript-aware state model.
 Durable attempt ownership and private device integration remain C/D; key delivery follows their
 separate continuation. No release campaign or deployment was resumed.
+
+
+## 2026-09-16 — integrate first-device Account UI and preview upgrade
+
+Ceremony primitives are signed as `0e7a88f8`. Locally integrated requested branch
+`codex/first-device-account-setup` at `ea3a3ffb` (three commits from `d942cd1c`) without conflicts.
+It adds private first-device setup, names/account chooser and offline daily unlock, optional per-slot
+recovery progress, and explicit backed-up service-schema maintenance. The preview still starts no
+sync driver and cannot open an account created elsewhere merely from account verification.
+
+All 12 distinct setup browser cases, one actual schema-5-to-7 browser preservation case, five
+maintenance tests, one native recovery regression, two Local startup regressions and 41 ceremony/
+registry cases pass. The private-file case needed its original expected fixture directory after the
+first isolated override relocated state; both results are retained. Typecheck and scoped static
+checks pass. Added the upgrade Playwright config to node typechecking; refreshed only current
+crypto census (186 sources, unchanged 100 labels/templates, 25 groups, 14 manual entrypoints).
+[Evidence](./account-conformance-runs/2026-09-16-account-ui-integration/README.md). Personal state
+and deployment were untouched. Next is content-approval chunk B; release validation stays paused.

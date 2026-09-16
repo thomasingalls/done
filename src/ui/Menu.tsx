@@ -5,6 +5,7 @@ import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
 import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
 import { useWorkspaceUi } from './workspaceUi';
 import { AppUpdateNotice } from './AppUpdateNotice';
+import { AccountIdentity } from './AccountIdentity';
 
 export interface MenuProps {
   today: ISODate;
@@ -15,7 +16,18 @@ export interface MenuProps {
 }
 const NEARBY = [-7, -2, -1, 0, 1, 2, 7];
 export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
-  const { workspace, snapshot, actorId, execute, lock, storage } = useWorkspaceUi();
+  const {
+    workspace,
+    snapshot,
+    actorId,
+    execute,
+    lock,
+    storage,
+    connectAccount,
+    accountWorkspace,
+    accountId,
+    switchAccount,
+  } = useWorkspaceUi();
   const installState = useSyncExternalStore(
     subscribeToInstallState,
     readInstallState,
@@ -141,8 +153,29 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
         </div>
       </section>
       <section className="menu-section">
-        <h2 className="menu-heading">Sync</h2>
-        <p className="menu-note">Off. This Local workspace is not connected to a relay.</p>
+        <h2 className="menu-heading">{accountWorkspace ? 'Account' : 'Sync'}</h2>
+        {accountWorkspace && (
+          <div className="menu-row">
+            <span>Name</span>
+            <span className="menu-value">{actor.name}</span>
+          </div>
+        )}
+        {accountId && <AccountIdentity id={accountId} />}
+        {switchAccount && (
+          <button className="menu-button" onClick={switchAccount}>
+            Use another account
+          </button>
+        )}
+        <p className="menu-note">
+          {accountWorkspace
+            ? 'Account connected. Device sync is not enabled in this preview.'
+            : 'Off. This Local workspace is not connected to a relay.'}
+        </p>
+        {connectAccount && (
+          <button className="menu-button" onClick={connectAccount}>
+            Connect this workspace
+          </button>
+        )}
       </section>
       <section className="menu-section">
         <h2 className="menu-heading">Identity and preferences</h2>

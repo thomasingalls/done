@@ -144,8 +144,20 @@
       "sha256": "f394fa5bcd13f539dc3234367cab2026e4ac32c31435366a21bdc068bdb93797"
     },
     {
+      "path": "src/account/accountIdentity.ts",
+      "sha256": "7ff0faf9a4f260affef40beca3d01c264d7d694ad4580613391f882e0840ff13"
+    },
+    {
+      "path": "src/account/accountSignIn.ts",
+      "sha256": "4137678440361a75186837d370fd5a6b7871733bead725bdb87546d5ebd6b203"
+    },
+    {
       "path": "src/account/es256Signature.ts",
       "sha256": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b"
+    },
+    {
+      "path": "src/account/firstDeviceSetup.ts",
+      "sha256": "d86aa9719f371025b80c6adea161e0bf1678ecb228ba85fed6e48556ec221dcd"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -165,7 +177,7 @@
     },
     {
       "path": "src/account/recoveryOwner.ts",
-      "sha256": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65"
+      "sha256": "c71d73c9828d4f54291ee23ad8496a923d83e61a7cd5324d5f8e0d2872539dd4"
     },
     {
       "path": "src/account/slotUnlock.ts",
@@ -628,6 +640,18 @@
       "sha256": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587"
     },
     {
+      "path": "src/ui/AccountIdentity.tsx",
+      "sha256": "d5d8d83f5ca9d352650a7af4745b80a340f2f377f291b54dc0eba41cd6b32cc1"
+    },
+    {
+      "path": "src/ui/AccountSetupApp.tsx",
+      "sha256": "c8fac866be11a93a59aca40019a5f2f5ff8dcfb992332c641f1737bdc0188ad9"
+    },
+    {
+      "path": "src/ui/AccountSignIn.tsx",
+      "sha256": "5b87365916ce142f332169648d810089da530042d8398a982d49ba0b85dffb0b"
+    },
+    {
       "path": "src/ui/App.tsx",
       "sha256": "3d7ebab7da2294a1e88fe480efb801aaed6a3e198e6528cd3d54a7aafcd5f360"
     },
@@ -669,7 +693,7 @@
     },
     {
       "path": "src/ui/LocalApp.tsx",
-      "sha256": "345b8bbef342436fbe72a82ac79391885ad7d4b2cb296a90de0971da280cefb2"
+      "sha256": "92c2ba8bd4ff751daf4239572c64c10751d2dca6ceb17a07b150fa5c200c8d3b"
     },
     {
       "path": "src/ui/LocalRecovery.tsx",
@@ -677,7 +701,7 @@
     },
     {
       "path": "src/ui/Menu.tsx",
-      "sha256": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8"
+      "sha256": "8c66c9548650c4c1bedba31763b8da4dd282c2f4dc519ad4b63897ef742be8aa"
     },
     {
       "path": "src/ui/PrivateMigrationApp.tsx",
@@ -693,7 +717,11 @@
     },
     {
       "path": "src/ui/Welcome.tsx",
-      "sha256": "c38b0c562a3c5bf6fd71cfc72aba6ab9c063fb2d76cc83f5c63fa10fd4a3cd8c"
+      "sha256": "276715fc8ffcd23c7643be171654015b32e12eee9852196999cee1b8f48ad3c7"
+    },
+    {
+      "path": "src/ui/WorkspaceBackdrop.tsx",
+      "sha256": "590ed1c4da1bbc98ab2cf439b27ab51acfb3499915e8f7b778c1f89d71c9d7e3"
     },
     {
       "path": "src/ui/localStartup.ts",
@@ -729,7 +757,7 @@
     },
     {
       "path": "src/ui/workspaceUi.tsx",
-      "sha256": "fdd3b3574b804a15ee023d323387a0dae102d6d3cc8e5413cd039afcfffe7cb8"
+      "sha256": "1ec78c95b1282d203192cf728ffce35e93abe5873ec2a5ac8c53aa824b1b5dc4"
     }
   ],
   "domains": [

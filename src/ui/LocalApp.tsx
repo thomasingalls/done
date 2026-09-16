@@ -6,6 +6,7 @@ import { App } from './App';
 import { AppUpdateNotice } from './AppUpdateNotice';
 import { LocalRecovery } from './LocalRecovery';
 import { Welcome } from './Welcome';
+import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
 const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: string }> = {
   'app-update-required': {
@@ -103,7 +104,13 @@ const CodeForm = ({
 };
 
 /** Factor-gated startup and lifecycle-owned handoff to the admitted editor. */
-export const LocalApp = (): React.ReactElement => {
+export const LocalApp = ({
+  onConnectAccount,
+  onChooseAccount,
+}: {
+  onConnectAccount?: (name: string) => void;
+  onChooseAccount?: () => void;
+} = {}): React.ReactElement => {
   const [epoch, setEpoch] = useState(0);
   const [owner, setOwner] = useState<LocalStartup | null>(null);
   const [state, setState] = useState<LocalStartupState>({ kind: 'checking' });
@@ -193,12 +200,40 @@ export const LocalApp = (): React.ReactElement => {
         actorId={state.actorId}
         registerEditor={owner.registerEditor}
         onLock={restart}
+        {...(onConnectAccount
+          ? {
+              onConnectAccount: () => {
+                const name = state.workspace
+                  .read()
+                  .actors.find((actor) => actor.id === state.actorId)?.name;
+                void owner.close().then(
+                  () => onConnectAccount(name === 'You' ? '' : (name ?? '')),
+                  () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+                );
+              },
+            }
+          : {})}
       >
         <App />
       </WorkspaceUiProvider>
     );
   } else if (state.kind === 'fresh') {
-    return <Welcome onCreateLocal={() => owner?.begin()} />;
+    return (
+      <Welcome
+        onCreateLocal={() => owner?.begin()}
+        {...(onChooseAccount
+          ? {
+              onChooseAccount: () => {
+                void owner
+                  ?.close()
+                  .then(onChooseAccount, () =>
+                    setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+                  );
+              },
+            }
+          : {})}
+      />
+    );
   } else {
     if (state.kind === 'ready') return <div className="boot" aria-busy="true" />;
     const message = messages[state.kind];
@@ -223,8 +258,9 @@ export const LocalApp = (): React.ReactElement => {
     );
   }
   return (
-    <main className="local-startup" data-state={state.kind}>
-      <div className="local-startup-panel">
+    <main className="local-startup workspace-gate" data-state={state.kind}>
+      <WorkspaceBackdrop />
+      <div className="local-startup-panel workspace-gate-panel">
         <AppUpdateNotice />
         <span className="local-brand">done</span>
         {content}

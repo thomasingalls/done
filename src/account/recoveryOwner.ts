@@ -51,6 +51,8 @@ export async function withRecoveryOwner<T>(
     context: RecoveryContext;
     pin?: AuthorityPin;
     local?: { slotId: string; code: string };
+    /** Opt in for newly allocated slots; existing callers keep their retained `pending` record. */
+    perSlotProgress?: true;
     accountId: string;
     retryKey: string;
     transport: RecoveryTransport;
@@ -72,6 +74,8 @@ export async function withRecoveryOwner<T>(
   identifier(accountId);
   identifier(retryKey);
   const local = options.local ? { ...options.local } : undefined;
+  if (options.perSlotProgress && !local) throw Error('Local recovery slot required');
+  const progressKey = options.perSlotProgress ? `slot:${local!.slotId}` : 'pending';
   const transport = options.transport,
     signal = options.signal;
   return navigator.locks.request(
@@ -104,10 +108,10 @@ export async function withRecoveryOwner<T>(
           const store = tx.objectStore('progress'),
             request =
               value === null
-                ? store.delete('pending')
+                ? store.delete(progressKey)
                 : value
-                  ? store.put(value, 'pending')
-                  : store.get('pending');
+                  ? store.put(value, progressKey)
+                  : store.get(progressKey);
           tx.oncomplete = () => resolve(request.result);
           tx.onabort = () => reject(tx.error ?? Error('Recovery progress write aborted'));
           tx.onerror = () => {};
