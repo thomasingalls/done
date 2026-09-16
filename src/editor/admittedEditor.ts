@@ -65,6 +65,29 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
       bind('Mod-y', 'redo'),
       bind('Backspace', 'backspace'),
       bind('Delete', 'delete'),
+      bind('Alt-ArrowUp', 'moveLineUp'),
+      bind('Alt-ArrowDown', 'moveLineDown'),
+      {
+        mac: 'Mod-Backspace',
+        preventDefault: true,
+        run: (view) => {
+          // Only the view knows soft-wrap boundaries. Capture the native Mac
+          // deletion as a selection replacement so admission owns text/history.
+          const current = view.state.selection;
+          const ranges = current.ranges.map((range) => {
+            if (!range.empty) return range;
+            const start = view.moveToLineBoundary(range, false).head;
+            return EditorSelection.range(
+              range.head,
+              range.head > start ? start : Math.max(0, range.head - 1),
+            );
+          });
+          return input(
+            { name: 'insert', text: '' },
+            EditorSelection.create(ranges, current.mainIndex).toJSON(),
+          );
+        },
+      },
       bind('Enter', 'enter'),
       bind('Tab', 'indent'),
       bind('Shift-Tab', 'outdent'),

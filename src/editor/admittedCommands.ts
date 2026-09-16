@@ -1,6 +1,14 @@
 /** Synchronous semantic text commands shared by the text and workspace adapters. */
 import { EditorSelection, findClusterBreak, type StateCommand } from '@codemirror/state';
-import { undo, redo, indentMore, indentLess, insertNewline } from '@codemirror/commands';
+import {
+  undo,
+  redo,
+  indentMore,
+  indentLess,
+  insertNewline,
+  moveLineUp,
+  moveLineDown,
+} from '@codemirror/commands';
 import { deleteMarkupBackward } from '@codemirror/lang-markdown';
 import { continueList } from './keymap';
 import {
@@ -37,6 +45,8 @@ const deleteCluster =
 export const textCommands: Record<Exclude<TextAction['name'], 'insert'>, StateCommand> = {
   backspace: (target) => deleteMarkupBackward(target) || deleteCluster(false)(target),
   delete: deleteCluster(true),
+  moveLineUp,
+  moveLineDown,
   enter: (target) => continueList(target) || insertNewline(target),
   indent: indentMore,
   outdent: indentLess,

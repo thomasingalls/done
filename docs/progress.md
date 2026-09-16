@@ -64,12 +64,18 @@ records isolation's 44 commands /205 live cases and the need for separately boun
 That implementation has not started. [Deferred plan](./release-validation-composed-campaigns.md);
 [preparation evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
 
-Integration totals remain **629 obligations /292 required files /272 general files /2,203 dispositions
+Frozen integration totals at the validation pause are **629 obligations /292 required files /272 general files /2,203 dispositions
 (11 not applicable)**; **108 unresolved: zero test-file /70 command /38 campaign**. These counts
 describe validation infrastructure coverage, not product readiness. Historical results and the failed
 F-17 application gate remain unchanged; no release qualification is claimed.
 [Pause decision](./decisions.md#2026-09-16--pause-the-release-validation-campaign);
 [execution history](./release-validation-execution.md).
+
+**Subsequent product integration.** `codex/goals-keyboard-fixes` (`f884ad69`) is integrated locally
+with focused editor and keyboard checks. The source/test population now differs from the frozen
+validation snapshots; those snapshots have not been refreshed. See the completion record for results.
+`codex/start-endtoend-product-work` remains deferred and unmerged. Validation stays paused.
+
 
 ---
 

@@ -297,8 +297,11 @@ export const App = (): React.ReactElement => {
    */
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
-      const target = event.target as HTMLElement | null;
-      const typing = target?.closest('.cm-editor, input, textarea') != null;
+      if (event.defaultPrevented || event.isComposing) return;
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const typing =
+        target?.closest('.cm-editor, input, textarea, select') != null ||
+        target?.isContentEditable === true;
 
       if (unfiledOpen) {
         if (event.key === 'Escape') setUnfiledOpen(false);
@@ -310,8 +313,10 @@ export const App = (): React.ReactElement => {
         return;
       }
 
+      if (typing || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
       if (!event.altKey) {
-        if (!typing && event.key === 't') {
+        if (event.key === 't') {
           event.preventDefault();
           goTo(today);
         }

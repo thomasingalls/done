@@ -8962,3 +8962,26 @@ not an estimate of product readiness or a mandate to finish validation before fu
 The previously proposed validation-first sequence is deferred. Choose the next product work and any
 resumption of this campaign explicitly with the operator. No gate is waived, no failure is relabelled
 and no release claim is made.
+
+
+## 2026-09-16 — Local integration of Goals keyboard fixes
+
+Integrate `codex/goals-keyboard-fixes` at `f884ad69b781c249352dad896cbd451924043786` into
+`codex/encrypted-store-contract-corrections` with a local merge, preserving its commit. The merge is
+conflict-free. Option-Up/Down line movement and Mac backward line deletion use admitted commands;
+app navigation yields to editor/text-field input, consumed events, composition and extra modifiers.
+The incoming production changes are retained without modification.
+
+Focused checks pass: 127 tests across workspace admission, admitted text and editor projection;
+typecheck; scoped lint/format; a temporary production build; and all 12 keyboard browser cases.
+The first browser attempt could not bind localhost inside the sandbox. With local-server permission,
+11 cases passed and Mac Cmd-Enter failed in the Android project: the test forced Mac platform detection
+while retaining an Android user agent, activating CodeMirror's Android Enter handling. A controlled
+user-agent probe passed; make that Mac test environment consistent, then all 12 cases pass. These are
+Mac hardware-shortcut checks in the two configured browser contexts, not real Android keyboard
+qualification. Initial failure and focused logs remain in `/private/tmp/done-goals-keyboard-integration`.
+Build, server and browser state are disposable; the personal packaged app is unchanged.
+
+`codex/start-endtoend-product-work` is explicitly deferred and remains unmerged. The release-validation
+campaign remains paused. Do not refresh the frozen release inventories or resume wrapper integration
+for this product merge; reconcile the changed source/test population if that campaign is resumed.
