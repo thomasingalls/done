@@ -5133,13 +5133,16 @@
       "id": "enrollment-ceremony",
       "phase": "Enrollment",
       "status": "open",
-      "roles": ["digest", "kdf", "carrier"],
+      "roles": ["digest", "kdf", "carrier", "signature"],
       "signer": null,
       "labels": [
         "done/enroll-commit/v1",
         "done/enroll/v1",
         "done/enroll-sas/v1",
-        "done/enroll-wrap/v1"
+        "done/enroll-wrap/v1",
+        "done/enrollment-ceremony-context/v1",
+        "done/enrollment-ceremony-commitment/v1",
+        "done/enrollment-ceremony-reveal/v1"
       ],
       "sourceSites": [
         {
@@ -5165,6 +5168,24 @@
           "line": 88,
           "label": "done/enroll/v1",
           "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 243,
+          "label": "done/enrollment-ceremony-commitment/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 238,
+          "label": "done/enrollment-ceremony-context/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 247,
+          "label": "done/enrollment-ceremony-reveal/v1",
+          "kind": "literal"
         }
       ],
       "entryPoints": [
@@ -5187,6 +5208,38 @@
         {
           "path": "account-protocol/ceremony.ts",
           "name": "normalizeCeremonyCode"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "verifyCeremonyContext"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "ceremonyContextMessage"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "ceremonyCommitMessage"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "ceremonyRevealMessage"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "verifyCeremonyPair"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "prepareCeremonyReveal"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "verifyCeremonyReveal"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "name": "deriveCeremonyExchange"
         }
       ],
       "homePins": [],
@@ -5194,7 +5247,10 @@
       "vectorCases": [],
       "tests": [
         "test/account-ceremony/protocol.test.mjs",
-        "test/account-ceremony/controls.test.mjs"
+        "test/account-ceremony/controls.test.mjs",
+        "test/account-ceremony/exchange.test.mjs",
+        "test/account-ceremony/exchange-model.test.mjs",
+        "test/account-ceremony/exchange-controls.test.mjs"
       ],
       "requirements": [
         "closed-bounded-inputs",
@@ -5203,10 +5259,14 @@
         "input-mutations",
         "encoded-field-omissions",
         "committed-exchange-order",
-        "durable-single-comparison"
+        "durable-single-comparison",
+        "peer-key-resolution",
+        "exact-signed-pair",
+        "restart-ordering-model",
+        "native-durable-attempt"
       ],
-      "blocker": "Primitive chunk A has focused evidence; authenticated exchange, durable owner and complete construction/authority-map qualification remain open.",
-      "next": "Implement chunks B\u2013D under the content-approval plan before key-delivery continuation; no aggregate release credit."
+      "blocker": "Primitive/exchange chunks A/B have focused evidence and a specification ordering model; real durable owners, private relay and complete construction/authority-map qualification remain open.",
+      "next": "Implement C/D and validate the modeled native save/attempt predicates before key-delivery continuation; no aggregate release credit."
     }
   ],
   "additionalCorpora": [

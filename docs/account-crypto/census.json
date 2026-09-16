@@ -36,6 +36,10 @@
       "sha256": "4a90a2bd5575dd0643ac2d023e1cc50ad2c0bd165c8c4fcb5a54d581cca0ece4"
     },
     {
+      "path": "account-protocol/ceremonyExchange.ts",
+      "sha256": "edb48e234f599a1cdbf108691c93b8b9b8b0646217fd08bb358f0b2b3642118e"
+    },
+    {
       "path": "account-protocol/deliveryTransport.ts",
       "sha256": "408cdbf44daf186131108849308e6e1886bd143b92531fa375c6e0b63c81141b"
     },
@@ -1166,6 +1170,36 @@
         {
           "path": "account-protocol/ceremony.ts",
           "line": 88
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-ceremony-commitment/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 243
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-ceremony-context/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 238
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-ceremony-reveal/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 247
         }
       ]
     },

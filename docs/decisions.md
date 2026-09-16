@@ -4106,3 +4106,20 @@ second-device content authority; committed exchange, durable approval and delive
 certification remain required. Preview schema upgrades are explicit offline operations with backups,
 not a side effect of normal startup or this source merge. The integration check uses disposable
 schema-five service state and virtual authenticators, never the author's running installation.
+
+
+## 2026-09-16 — bind nonce reveals to both signed commitments and a fixed attempt
+
+Use separate fixed-purpose exchange domains around the unchanged row-11 primitives. Each
+commitment signs the complete authority/participant/attempt/deadline context. Each reveal signs
+that context identity and the hashes of both complete signed commitments, then opens its own
+role-bound nonce. Resolve approver keys from original certification, candidate keys from verified
+admission, and compare the caller's owned tuple. Service signatures cannot replace participant
+signatures. A fixed ten-minute content-ceremony lifetime starts independently of account preparation.
+
+Pure verified context/pair handles are private brands, not serializable persistence or approval
+capabilities. C/D must retain exact signed records and reverify them after restart, enforce one
+attempt/comparison per credential, and compare head/deadline/cancellation at native saves and
+before disclosure. Model crash/resume and generated interleaving results are explicitly conditional
+on those storage predicates. Competing authority terminates the attempt without erasing its record;
+unsigned stale/error responses cannot establish that authority change.
