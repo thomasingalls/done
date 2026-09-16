@@ -33,7 +33,11 @@
     },
     {
       "path": "account-protocol/diagnostics.ts",
-      "sha256": "cf979d491e84d7f878b91f23e9b9712f854ae6f807db1f884ca191dc40cbbb76"
+      "sha256": "bd16e39c08b32ca4d21d2bfc7d75a93903c23451c810aa7a479059533badd2b8"
+    },
+    {
+      "path": "account-protocol/enrollment.ts",
+      "sha256": "542f20036703a1ae64c3f19e77d0fe724d630b7104913102a4f59c878c24b033"
     },
     {
       "path": "account-protocol/envelope.ts",
@@ -73,15 +77,15 @@
     },
     {
       "path": "account-service/authority.ts",
-      "sha256": "5dec866aec8030f1dcc195cf73fb65b3f127248acbef56efb1177dcf79827def"
+      "sha256": "acc7a444c48e0102983bc88feb5fa8f13a4679242d66d28288606d8f8c4aa3d8"
     },
     {
       "path": "account-service/core.ts",
-      "sha256": "94e0258186e0653f35ec3052fb598c57045428d495d04e0fce2432ac09c17c87"
+      "sha256": "454be1ab1c673ac0b86cfe2c8036ef840c46ad2d387c99168ce9c8f519839818"
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "0ff77afe6d3923b4f204000564f8fdd80cd9b0456730c8eb6704b161c29f4791"
+      "sha256": "31ffcf62abe9e4029dadd63a2cbfc2ba70cfe5a78138e034b67f5056b8a8e51c"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -92,12 +96,16 @@
       "sha256": "6845df5169041b6766ff0d3680abce505ed28a06c93092a305452ad02fbe68d8"
     },
     {
+      "path": "account-service/enrollment.ts",
+      "sha256": "b988408349be7922538be63a7b06e40b12cac60e1f8e2f688ff80d291b84660f"
+    },
+    {
       "path": "account-service/keyEncoding.ts",
       "sha256": "c226cbea9e72e38e9059541fbf17b8263cd6710daae4501f86986ae347303b4e"
     },
     {
       "path": "account-service/private-server.ts",
-      "sha256": "b62c10ef0103a94653873395355cf132a71674945a46d6a2ff58de987e420cce"
+      "sha256": "ebfe3890cbfb4c167b10f9a8b7bc16f5161b8d50c396e4c258adad0f048895ef"
     },
     {
       "path": "account-service/promotion.ts",
@@ -217,7 +225,7 @@
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "5512e4071018b32a8c211cfbd354f8b9a5bd3cc643c2591fbad4a18a3b37bf9e"
+      "sha256": "c75f154d1c0207db40ccfa5c95fc10b623fe393663c45fbc8d8e2780aa5dbf4b"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -385,7 +393,7 @@
     },
     {
       "path": "src/crdt/moves.ts",
-      "sha256": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d"
+      "sha256": "ecb713a4cbe3f49d0f204c3d04e868e9250b96f6dbd09cee9f6f05a5dba4e19f"
     },
     {
       "path": "src/crdt/ownedStartup.ts",
@@ -477,7 +485,7 @@
     },
     {
       "path": "src/crdt/workspaceCommands.ts",
-      "sha256": "d04615dc731b769437473185f81b3ff2bb38d7b15ff35872ff005b30a1af767e"
+      "sha256": "6afaea82c3c79b4aa7d726b5da95e59fd98742eba06a6f5835b624c99f9f318e"
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
@@ -493,15 +501,15 @@
     },
     {
       "path": "src/editor/admittedCommands.ts",
-      "sha256": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477"
+      "sha256": "201dc882060b8499dd0d8b4f40872ae7a7f155981e1985e39669f28067aa2f69"
     },
     {
       "path": "src/editor/admittedEditor.ts",
-      "sha256": "0dd3c5836c594ea909df76fc143edc87f8ce3c02ef3437ea02b1a68e1d1b8de5"
+      "sha256": "f3b0e5e3f691d0baa28358c7d3be8149fe09896726310d81ca5417efd9bdb9c0"
     },
     {
       "path": "src/editor/admittedText.ts",
-      "sha256": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc"
+      "sha256": "d69cb1d9bcecb27a0077975669754b0b221f3b5a3eb59fbf1237e9ee499b0ab8"
     },
     {
       "path": "src/editor/breadcrumbs.ts",
@@ -568,6 +576,10 @@
       "sha256": "2f0f6ddc945a78cbf49048058de529097ff225ce275a7ba8740082f6b0f24484"
     },
     {
+      "path": "src/lib/masterLineBody.ts",
+      "sha256": "8cf1987dcda4154e988159e9a15315675b5b7088806a421f09dbc06fa6f4d82c"
+    },
+    {
       "path": "src/lib/temporal.ts",
       "sha256": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d"
     },
@@ -589,7 +601,7 @@
     },
     {
       "path": "src/ui/App.tsx",
-      "sha256": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a"
+      "sha256": "3d7ebab7da2294a1e88fe480efb801aaed6a3e198e6528cd3d54a7aafcd5f360"
     },
     {
       "path": "src/ui/AppUpdateNotice.tsx",
@@ -609,15 +621,19 @@
     },
     {
       "path": "src/ui/DayPanel.tsx",
-      "sha256": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7"
+      "sha256": "97c84f611e65b45af6bee521a1c661faf23a377210af92513a2e286a82dd9496"
     },
     {
       "path": "src/ui/DayPlane.tsx",
-      "sha256": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f"
+      "sha256": "5742bab894efaace9906fb311c9c538d5a41f4e90a5ec90b49df9501d575ef93"
     },
     {
       "path": "src/ui/Goals.tsx",
-      "sha256": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3"
+      "sha256": "ad284c69620349543fede61084105db51f6ac159f89f4fb03eba7640a66dfec6"
+    },
+    {
+      "path": "src/ui/GoalsActionsMenu.tsx",
+      "sha256": "46c46b6fe8d3abda1f58e202cf6a2fe28e1ca0df7b99b9d7bbec9341ad8c7b05"
     },
     {
       "path": "src/ui/GoalsOutline.tsx",
@@ -625,7 +641,7 @@
     },
     {
       "path": "src/ui/LocalApp.tsx",
-      "sha256": "47e6c55bfc37eb22f587624444b6b7d2ca689ad4eb8e379195985bd732f2c6c5"
+      "sha256": "345b8bbef342436fbe72a82ac79391885ad7d4b2cb296a90de0971da280cefb2"
     },
     {
       "path": "src/ui/LocalRecovery.tsx",
@@ -646,6 +662,10 @@
     {
       "path": "src/ui/UnfiledPanel.tsx",
       "sha256": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601"
+    },
+    {
+      "path": "src/ui/Welcome.tsx",
+      "sha256": "c38b0c562a3c5bf6fd71cfc72aba6ab9c063fb2d76cc83f5c63fa10fd4a3cd8c"
     },
     {
       "path": "src/ui/localStartup.ts",
@@ -681,7 +701,7 @@
     },
     {
       "path": "src/ui/workspaceUi.tsx",
-      "sha256": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34"
+      "sha256": "fdd3b3574b804a15ee023d323387a0dae102d6d3cc8e5413cd039afcfffe7cb8"
     }
   ],
   "domains": [
@@ -1012,6 +1032,46 @@
         {
           "path": "src/crdt/custodyCrypto.ts",
           "line": 110
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-preparation-assertion/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 198
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-preparation-challenge/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 189
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-preparation-possession/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 191
+        }
+      ]
+    },
+    {
+      "label": "done/enrollment-preparation-receipt/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 194
         }
       ]
     },
@@ -1575,7 +1635,7 @@
       "sites": [
         {
           "path": "account-service/authority.ts",
-          "line": 53
+          "line": 58
         }
       ]
     },
@@ -1585,7 +1645,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 307
+          "line": 323
         }
       ]
     },

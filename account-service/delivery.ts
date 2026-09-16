@@ -118,15 +118,21 @@ interface Promotion {
   delivery_witness: string | null;
   activation: string | null;
 }
-interface Snapshot {
+export interface WorkspaceAuthoritySnapshot {
   promotion: Promotion;
   account: { id: string; state: string };
   credential: { id: string; state: string };
   recovery: { attempt_id: string; state: string; draft: string; result: string | null };
   attempt: { id: string; account_id: string; mode: string; state: string; result: string | null };
+}
+interface Snapshot extends WorkspaceAuthoritySnapshot {
   rows: DecisionRow[];
 }
-function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+/** Caller owns a read or write transaction for a coherent authority snapshot. */
+export function snapshotWorkspaceAuthority(
+  db: DatabaseSync,
+  workspace: string,
+): WorkspaceAuthoritySnapshot | null {
   const promotion = db
     .prepare("SELECT * FROM promotions WHERE workspace_id=? AND state!='cancelled'")
     .get(workspace) as unknown as Promotion | undefined;
@@ -175,10 +181,15 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
     registration['credentialId'] !== credential.id
   )
     return null;
+  return { promotion, account, credential, recovery, attempt };
+}
+function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+  const base = snapshotWorkspaceAuthority(db, workspace);
+  if (!base) return null;
   const rows = db
     .prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY ordinal')
-    .all(account.id) as unknown as DecisionRow[];
-  return { promotion, account, credential, recovery, attempt, rows };
+    .all(base.account.id) as unknown as DecisionRow[];
+  return { ...base, rows };
 }
 function snapshotBytes(s: Snapshot | null): string {
   if (!s) return 'null';
@@ -201,7 +212,10 @@ function read(db: DatabaseSync, workspace: string) {
     if (db.isTransaction) db.exec('ROLLBACK');
   }
 }
-async function authority(s: Snapshot, issuer: DeliveryIssuer) {
+export async function verifyWorkspaceAuthority(
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+) {
   const p = s.promotion,
     request = parseAdmissionRequest(JSON.parse(p.request)),
     receipt = parseReceipt(JSON.parse(p.result!));
@@ -267,8 +281,10 @@ async function authority(s: Snapshot, issuer: DeliveryIssuer) {
     generation: epoch.generation,
     credential: member.id,
     members: [{ id: member.id, key }],
+    certification: request.certification,
   };
 }
+const authority = verifyWorkspaceAuthority;
 type Authority = Awaited<ReturnType<typeof authority>>;
 async function verifyWire(bytes: Bytes, auth: Authority) {
   const decoded = decodeSubmission(bytes),

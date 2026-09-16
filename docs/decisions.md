@@ -3938,3 +3938,15 @@ Goals keyboard integration; extending its Mac shortcut checks to genuine Windows
 behavior is deferred, not a prerequisite for the first RC. Describe existing coverage accurately:
 the Mac shortcut suite does not establish other platforms' keyboard behavior. The release-validation
 campaign remains paused.
+
+
+## 2026-09-16 — Prepare second-device enrollment before advancing authority
+
+Define the next backend product slice as a durable, freshly authenticated enrollment request, with an
+explicit `prepared` result. The present service's delivery owner derives membership from the original
+first-epoch promotion receipt. Therefore actual service admission must wait for a coordinated successor
+format, current-authority owner and compatible delivery behavior; do not advance the head while leaving
+its consumers unchanged. Account authorization and client-certified content recipients remain separate.
+This bounds implementation rather than weakening the full enrollment contract. No backend implementation
+or release-validation resumption is included in this definition.
+[Phase contract](./account-enrollment-prep.md).

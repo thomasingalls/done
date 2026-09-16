@@ -42,44 +42,57 @@ that is no longer active.
 
 ---
 
-## Paused checkpoint: validation-runner integration (`L-1`)
+## Product checkpoint: enrollment preparation complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: blocked
-blocks_on: operator paused premature release validation; product is not close to releasable
+status: done
+scope: private authenticated enrollment preparation
+blocks_on: none
+release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Campaign paused by the operator.** Release validation began prematurely. Preserve the completed
-runner work and evidence, but do not continue wrapper integration, namespaced report custody or
-aggregate execution under the prior instruction to proceed. The next product phase and any eventual
-resumption of validation require a new direction; validation completion is not the presumed next step.
+**Product integrations are signed.** Goals keyboard fixes are merged as `3fefdae0` and
+`codex/start-endtoend-product-work` (`16e6e205`) as `d942cd1c`. The latter includes welcome/Local
+onboarding, Goals Copy/Move and actions, and panel fixes. Focused unit, browser, type, lint/format
+and isolated build checks are recorded in [completed.md](./completed.md).
 
-**Preserved checkpoint.** Admission-bounds is signed as `3af765d3`. Composed-campaign preparation
-records isolation's 44 commands /205 live cases and the need for separately bounded report namespaces.
-That implementation has not started. [Deferred plan](./release-validation-composed-campaigns.md);
+**The first backend phase is complete.** The private service can authenticate and retain an exact
+second-device request, recover it after restart/lost replies, and cancel or expire its eligibility.
+It checks fresh account and candidate proofs and current authority before committing. The result
+is `prepared`; the creating device remains the only admitted/certified member.
+[Contract](./account-enrollment-prep.md);
+[evidence](./account-conformance-runs/2026-09-16-enrollment-preparation/README.md).
+
+**Focused checks pass.** 39 enrollment tests (including generated histories, process death, a
+cross-process race and private HTTP), 108 affected account/delivery regressions, 12 registry checks,
+typecheck, lint/format and runtime crypto inventory. The new construction inventory entry remains
+open for published-vector/authority-map qualification; earlier closure is historical.
+
+**Next bounded work.** Define actual successor admission and the current-authority owner together
+with compatible delivery behavior. Advancing the head must not strand the original device's sync.
+Content approval/certification, new-device installation and multiple-publisher sync follow. The author's
+actual old second device adopts the first device's workspace without importing its old writing.
+No ordinary-account activation, personal device ceremony or deployment occurred in this phase.
+
+**Release validation remains paused.** It began prematurely; do not continue wrapper integration,
+namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds
+is signed as `3af765d3`; composed Account isolation preparation remains a deferred checkpoint.
+[Deferred plan](./release-validation-composed-campaigns.md);
 [preparation evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
 
-Frozen integration totals at the validation pause are **629 obligations /292 required files /272 general files /2,203 dispositions
-(11 not applicable)**; **108 unresolved: zero test-file /70 command /38 campaign**. These counts
-describe validation infrastructure coverage, not product readiness. Historical results and the failed
-F-17 application gate remain unchanged; no release qualification is claimed.
-[Pause decision](./decisions.md#2026-09-16--pause-the-release-validation-campaign);
+Frozen totals at the pause are **629 obligations /292 required files /272 general files /2,203 dispositions
+(11 not applicable)**; **108 unresolved: zero test-file /70 command /38 campaign**. These describe
+validation infrastructure, not product readiness. Product changes now differ from those frozen snapshots;
+reconcile them only if the campaign resumes. Historical results and the failed F-17 application gate
+are unchanged. [Pause decision](./decisions.md#2026-09-16--pause-the-release-validation-campaign);
 [execution history](./release-validation-execution.md).
 
-**Subsequent product integration.** `codex/goals-keyboard-fixes` (`f884ad69`) is integrated locally
-with focused editor and keyboard checks. The source/test population now differs from the frozen
-validation snapshots; those snapshots have not been refreshed. See the completion record for results.
-`codex/start-endtoend-product-work` (`16e6e205`) is now integrated locally as well, with focused
-onboarding, Goals transfer/menu and layout checks. The first backend product phase is next to be
-defined against the combined tree. Validation stays paused.
-
-**Post–first-RC scope.** Platform-specific UX, including native keyboard conventions and their
-platform-specific checks, is deferred until after the first release candidate.
+**Post–first-RC scope.** Platform-specific UX and native keyboard conventions/coverage are deferred.
 [Decision](./decisions.md#2026-09-16--platform-specific-ux-follows-the-first-rc).
 
 

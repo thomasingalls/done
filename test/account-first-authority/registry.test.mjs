@@ -291,7 +291,13 @@ test('registered Account source sites, exact homes and evidence join the existin
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
   assert.equal(result.specified, 78);
-  assert.equal(result.open, 0);
+  assert.equal(result.open, 1);
+  assert.deepEqual(
+    baseline()
+      .document.constructions.filter((r) => r.status === 'open')
+      .map((r) => r.id),
+    ['enrollment-preparation'],
+  );
   assert.equal(result.excluded, 1);
   assert.equal(result.inherited, 4);
 });

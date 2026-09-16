@@ -1,3 +1,5 @@
+import { ENROLLMENT_REQUEST_LIMIT } from '../account-protocol/enrollment.ts';
+import type { EnrollmentOperation } from './enrollment.ts';
 import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import {
   decodeSubmit,
@@ -80,13 +82,15 @@ export async function createPrivateAccountServer(options: {
             ? request.url === '/account/delivery/submit'
               ? SUBMIT_BODY_LIMIT
               : READ_REQUEST_LIMIT
-            : [
-                  '/account/promotion/begin',
-                  '/account/promotion/finish',
-                  '/account/promotion/challenge',
-                ].includes(request.url ?? '')
-              ? ADMISSION_LIMIT
-              : 131072)
+            : request.url?.startsWith('/account/enrollment/')
+              ? ENROLLMENT_REQUEST_LIMIT
+              : [
+                    '/account/promotion/begin',
+                    '/account/promotion/finish',
+                    '/account/promotion/challenge',
+                  ].includes(request.url ?? '')
+                ? ADMISSION_LIMIT
+                : 131072)
         ) {
           send(413, refuse('malformed'));
           return;
@@ -126,38 +130,46 @@ export async function createPrivateAccountServer(options: {
         return;
       }
       const route = request.url;
+      const enrollmentRoutes: Record<string, EnrollmentOperation> = {
+        '/account/enrollment/begin': 'begin',
+        '/account/enrollment/finish': 'finish',
+        '/account/enrollment/resume': 'resume',
+        '/account/enrollment/cancel': 'cancel',
+      };
       const result =
-        route === '/account/promotion/binding'
-          ? ((await authority?.promotionBinding(core, input)) ?? null)
-          : route === '/account/promotion/begin'
-            ? ((await authority?.beginPromotion(core, input)) ?? null)
-            : route === '/account/promotion/challenge'
-              ? ((await authority?.challengePromotion(core, input)) ?? null)
-              : route === '/account/promotion/finish'
-                ? ((await authority?.finishPromotion(core, input)) ?? null)
-                : route === '/account/preparation/inspect'
-                  ? (authority?.pending(core, input) ?? null)
-                  : route === '/account/preparation/abandon'
-                    ? (authority?.pending(core, input, true) ?? null)
-                    : route === '/account/authority/prove'
-                      ? (authority?.prove(input) ?? null)
-                      : route === '/account/recovery/begin'
-                        ? await core.beginRecovery(input)
-                        : route === '/account/recovery/resume'
-                          ? core.resumeRecovery(input)
-                          : route === '/account/recovery/cancel'
-                            ? core.cancelRecovery(input)
-                            : route === '/account/recovery/finish'
-                              ? await core.finishRecovery(input)
-                              : route === '/account/begin'
-                                ? core.begin(input)
-                                : route === '/account/resume'
-                                  ? core.resume(input)
-                                  : route === '/account/cancel'
-                                    ? core.cancel(input)
-                                    : route === '/account/finish'
-                                      ? await core.finish(input)
-                                      : null;
+        route && Object.hasOwn(enrollmentRoutes, route)
+          ? ((await authority?.enrollment(core, enrollmentRoutes[route]!, input)) ?? null)
+          : route === '/account/promotion/binding'
+            ? ((await authority?.promotionBinding(core, input)) ?? null)
+            : route === '/account/promotion/begin'
+              ? ((await authority?.beginPromotion(core, input)) ?? null)
+              : route === '/account/promotion/challenge'
+                ? ((await authority?.challengePromotion(core, input)) ?? null)
+                : route === '/account/promotion/finish'
+                  ? ((await authority?.finishPromotion(core, input)) ?? null)
+                  : route === '/account/preparation/inspect'
+                    ? (authority?.pending(core, input) ?? null)
+                    : route === '/account/preparation/abandon'
+                      ? (authority?.pending(core, input, true) ?? null)
+                      : route === '/account/authority/prove'
+                        ? (authority?.prove(input) ?? null)
+                        : route === '/account/recovery/begin'
+                          ? await core.beginRecovery(input)
+                          : route === '/account/recovery/resume'
+                            ? core.resumeRecovery(input)
+                            : route === '/account/recovery/cancel'
+                              ? core.cancelRecovery(input)
+                              : route === '/account/recovery/finish'
+                                ? await core.finishRecovery(input)
+                                : route === '/account/begin'
+                                  ? core.begin(input)
+                                  : route === '/account/resume'
+                                    ? core.resume(input)
+                                    : route === '/account/cancel'
+                                      ? core.cancel(input)
+                                      : route === '/account/finish'
+                                        ? await core.finish(input)
+                                        : null;
       if (!result) {
         send(404, refuse('malformed'));
         return;

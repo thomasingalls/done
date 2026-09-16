@@ -1,3 +1,8 @@
+import {
+  enrollmentChallengeMessage,
+  enrollmentReceiptMessage,
+} from '../account-protocol/enrollment.ts';
+import type { EnrollmentIssuer, EnrollmentOperation } from './enrollment.ts';
 import { activationMessage } from '../account-protocol/activation.ts';
 import type { ReadIssuer, InboundReadIssuer } from './delivery.ts';
 import type { ReadPage } from '../account-protocol/deliveryTransport.ts';
@@ -318,6 +323,26 @@ export class PrivateAuthority {
   }
   promotionBinding(core: AccountCore, input: unknown) {
     return core.promotionBinding(input, this.#issuer());
+  }
+  #enrollmentIssuer(): EnrollmentIssuer {
+    const signature = (message: Uint8Array) => {
+      if (!this.#key) throw Error('Authority closed');
+      return sign(null, message, this.#key).toString('hex');
+    };
+    return {
+      pin: { ...this.#pin },
+      check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+      challenge: (context) => ({
+        v: 1,
+        kind: 'enrollment-preparation-challenge',
+        context,
+        signature: signature(enrollmentChallengeMessage(context)),
+      }),
+      receipt: (value) => ({ ...value, signature: signature(enrollmentReceiptMessage(value)) }),
+    };
+  }
+  enrollment(core: AccountCore, operation: EnrollmentOperation, input: unknown) {
+    return core.enrollment(operation, input, this.#enrollmentIssuer());
   }
   #deliveryIssuer(): ReadIssuer & InboundReadIssuer {
     if (!this.#key) throw Error('Authority closed');

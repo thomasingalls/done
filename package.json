@@ -79,6 +79,7 @@
     "storage:private-cleanup:prepare": "node scripts/build-private-cleanup.mjs",
     "storage:private-migration": "playwright test --config playwright.private-migration.config.ts",
     "storage:compatibility": "playwright test --config playwright.storage-compatibility.config.ts",
+    "account:enrollment": "node --test --test-timeout=30000 test/account-enrollment/*.test.mjs",
     "account:core": "node scripts/account-core/run.mjs",
     "account:recovery": "node scripts/account-recovery/run.mjs",
     "account:authority": "node scripts/account-authority/run.mjs",

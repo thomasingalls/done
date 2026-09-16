@@ -292,6 +292,20 @@
         "done/accepted-text/v1/"
       ],
       "note": ""
+    },
+    {
+      "id": "enrollment-preparation",
+      "kind": "Ed25519 signatures and purpose-bound WebAuthn challenge hash",
+      "authority": "pinned service root, confirmed account passkey and exact candidate signer are independent; preparation grants no membership or content",
+      "home": "docs/account-crypto/enrollment-preparation.md",
+      "next": "Publish the enrollment authority-map/vector extension before release qualification; private preparation only.",
+      "labels": [
+        "done/enrollment-preparation-assertion/v1",
+        "done/enrollment-preparation-challenge/v1",
+        "done/enrollment-preparation-possession/v1",
+        "done/enrollment-preparation-receipt/v1"
+      ],
+      "note": "Focused backend tests are separate from the paused aggregate campaign."
     }
   ],
   "templates": [
@@ -375,6 +389,10 @@
     {
       "path": "src/crdt/localRecovery.ts",
       "review": "Explicit read-only partial Local salvage through factor-authenticated claim/custody and inherited record/journal openers. No allocation, seal, content write, admission or cleanup authority. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "account-service/enrollment.ts",
+      "review": "Bounded retry/request/proof hashes and authority snapshot comparison. Equality checks grant no authority; two verified proofs and a current transactional snapshot precede preparation."
     }
   ]
 }

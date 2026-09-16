@@ -93,6 +93,7 @@ export function checkConstructionRegistry(root, options = {}) {
         'D6',
         'D7',
         'D8',
+        'Enrollment',
         'Local',
         'non-crypto',
       ].includes(r.phase)

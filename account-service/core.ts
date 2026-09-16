@@ -1,3 +1,9 @@
+import {
+  EnrollmentPreparation,
+  ENROLLMENT_SCHEMA,
+  type EnrollmentIssuer,
+  type EnrollmentOperation,
+} from './enrollment.ts';
 import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import { createDeliveryVerification } from './deliveryVerification.ts';
 import { randomBytes } from 'node:crypto';
@@ -132,6 +138,7 @@ export class AccountCore {
       upgradeFromV2?: boolean;
       upgradeFromV3?: boolean;
       upgradeFromV4?: boolean;
+      upgradeFromV5?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -167,7 +174,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 5 &&
+        version !== 6 &&
+        !(version === 5 && instrumentation.upgradeFromV5) &&
         !(version === 4 && instrumentation.upgradeFromV4) &&
         !(version === 3 && instrumentation.upgradeFromV3) &&
         !(version === 2 && instrumentation.upgradeFromV2) &&
@@ -206,6 +214,10 @@ export class AccountCore {
       }
       if (version < 5)
         this.#db.exec('ALTER TABLE promotions ADD COLUMN activation TEXT; PRAGMA user_version=5;');
+      if (version < 6) {
+        this.#db.exec(ENROLLMENT_SCHEMA);
+        this.#db.exec('PRAGMA user_version=6;');
+      }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
         canonical(this.#policy)
@@ -217,6 +229,17 @@ export class AccountCore {
       this.#db.close();
       throw error;
     }
+  }
+
+  enrollment(operation: EnrollmentOperation, input: unknown, issuer: EnrollmentIssuer) {
+    return new EnrollmentPreparation(
+      this.#db,
+      this.#policy,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#diagnostics.record,
+    ).run(operation, input);
   }
 
   /** Private service composition; transport cannot supply an issuer or authenticated membership. */

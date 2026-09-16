@@ -9016,3 +9016,52 @@ The personal server, packaged app and browser are untouched. Platform-specific U
 Release-validation infrastructure and its frozen snapshots remain paused, with 108 unresolved wrappers
 (70 command /38 campaign). Define the next bounded backend product phase against this integrated tree;
 do not resume the old validation sequence or begin backend implementation as part of this merge.
+
+
+## 2026-09-16 — First backend product phase defined
+
+The local product merge is signed and verified as `d942cd1c`, preserving incoming tip `16e6e205`
+and the earlier keyboard merge. Define the next bounded phase in
+[account-enrollment-prep.md](./account-enrollment-prep.md): an authenticated, durable second-device
+request bound to exact public keys and current authority, with retry, cancellation and restart.
+Its outcome is explicitly `prepared`; it does not advance the authorization head, admit a member or
+certify a content recipient. Current delivery still resolves the original creating member, so actual
+successor admission requires a later coordinated authority/delivery phase.
+
+The definition identifies reuse, persistence rules, three implementation chunks and focused exit checks.
+It preserves the distinction between an account passkey and device signing/wrapping keys, requires a
+fresh operation-bound assertion, and keeps the author's old second device on the adoption path.
+No backend code or backend tests change or run in this preparation. Implementation is not started.
+Release validation stays paused; prior evidence, frozen counts and the separate L-2 document remain intact.
+
+
+## 2026-09-16 — Private authenticated enrollment preparation
+
+Implement the first backend product phase after signed product merge `d942cd1c`. Fresh account
+assertion and candidate signing-key possession bind the exact new signing/wrapping keys, account,
+workspace, first-epoch head, certified set and recovery digest. The private owner provides durable
+begin/finish/resume/cancel with exact retries, expiry, terminal receipts and candidate reservations.
+Schema 6 adds bounded retained preparation; current private schema 5 upgrades only explicitly.
+
+The shared original-authority verifier preserves creating-device delivery behavior. Enrollment
+comparison excludes ciphertext appends and observed passkey counters. The final SQLite transaction
+rechecks current authority, challenge lifetime and cancellation before consuming both proofs. A
+prepared result changes no membership, content keys, slots, acceptance keys or delivery positions.
+No second-device admission/content ceremony, production session, ordinary account UI or deployment
+is enabled.
+
+Checks pass: 39 focused enrollment tests, including 60 shrinking state histories and 100 generated
+key substitutions, six real SIGKILL boundaries, a two-process cancellation race, private HTTP and two
+effective omission controls; 108 affected account/delivery regressions; 12 registry checks; typecheck,
+scoped lint/format and census consistency. Final review adds an explicit refusal for a prepared
+marker without its committed receipt. The evidence distinguishes synthetic authority damage from an
+implemented successor transition and app restart from power-loss/rollback protection.
+
+Register the four new purposes as one open construction-qualification entry. Exact private byte
+contracts and focused tests are present; published-vector/authority-map qualification remains open.
+The runtime crypto census also reflects the preceding product integrations, while release-validation
+snapshots and the paused aggregate stay unchanged. No personal operations occurred. Next define
+successor admission and compatible delivery together, then build it as a bounded phase.
+[Contract](./account-enrollment-prep.md);
+[bytes](./account-crypto/enrollment-preparation.md);
+[evidence](./account-conformance-runs/2026-09-16-enrollment-preparation/README.md).

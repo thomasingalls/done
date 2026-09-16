@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md.",
+  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -856,7 +856,7 @@
       "sourceSites": [
         {
           "path": "account-service/authority.ts",
-          "line": 53,
+          "line": 58,
           "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
@@ -2323,7 +2323,7 @@
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 307,
+          "line": 323,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -4900,6 +4900,80 @@
         "encoded-field-omissions"
       ],
       "blocker": null
+    },
+    {
+      "id": "enrollment-preparation",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": ["signature", "digest"],
+      "signer": null,
+      "labels": [
+        "done/enrollment-preparation-assertion/v1",
+        "done/enrollment-preparation-challenge/v1",
+        "done/enrollment-preparation-possession/v1",
+        "done/enrollment-preparation-receipt/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 198,
+          "label": "done/enrollment-preparation-assertion/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 189,
+          "label": "done/enrollment-preparation-challenge/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 191,
+          "label": "done/enrollment-preparation-possession/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 194,
+          "label": "done/enrollment-preparation-receipt/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/enrollment.ts",
+          "name": "enrollmentChallengeMessage"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "name": "enrollmentNonce"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "name": "enrollmentPossessionMessage"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "name": "enrollmentReceiptMessage"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-enrollment/protocol.test.mjs",
+        "test/account-enrollment/controls.test.mjs"
+      ],
+      "requirements": [
+        "closed-bounded-wire",
+        "independent-runtime-bytes",
+        "fresh-account-proof",
+        "candidate-possession",
+        "current-authority",
+        "durable-single-use"
+      ],
+      "blocker": "Private product implementation has focused evidence; full published vector/authority-map qualification for these new domains is not yet complete.",
+      "next": "Qualify these enrollment domains alongside the successor-admission contract before a release campaign resumes."
     }
   ],
   "additionalCorpora": [
