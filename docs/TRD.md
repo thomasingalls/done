@@ -2793,12 +2793,20 @@ reader-eligible. A crash resumes the same transcript or restarts with a fresh cr
 credential. **Key delivery and set activation either commit together or leave a resumable pending certificate**
 (`P-1` criterion 11): the releasing device durably stages the signed successor with the delivery, so every crash
 point between delivery and activation is recoverable from that record rather than from anyone's memory.
-**Two enrollments racing at one `parent_epoch` serialize, and the loser resumes.** The service serializes set
-successors exactly as it serializes epochs, so of two siblings differing only in `members_digest` exactly one
-activates; the loser's pending certificate is refused as stale-parent, its existing device rebuilds the
-successor against the winner — the same members plus its own new entry — and re-activates, so a device a person
-authenticated by typing five symbols reaches `certified` rather than stranding at installed-and-countersigned
-(`S0-2` return, `test/enrollmentStates.test.ts`).
+**A competing epoch change requires a fresh ceremony** (operator ruling, 2026-09-16).
+The service still serializes successors at one parent, but the loser must not rebase an old
+human approval onto the winner's head. Restart requires a fresh credential, admission, transcript
+and typed code; the same credential cannot gain another guess. Exact crash resumption keeps the
+original transcript and durable decision. The ceremony's own verified, exact certification successor
+is completion, not a competing change. Authenticate changed authority before treating an untrusted
+stale-parent response as a restart instruction.
+
+Keep any already-staged delivery/pending certificate as durable evidence, including after key release;
+restart cannot take back a disclosed key or activate that certificate against another parent. The
+candidate remains uncertified. This replaces the former automatic sibling-rebuild liveness rule:
+`test/enrollmentStates.test.ts` models that historical rule without transcript binding and does not
+establish the new behavior. The bounded [content-approval plan](./account-content-approval-prep.md)
+defines the implementation sequence, explicit restart availability boundary and later delivery gates.
 
 **The ceremony that discharges the second gate is selected** (§15 row 11): a **short authentication string over
 an in-band agreement**, with both nonces **committed before either is revealed**, derived from a transcript
@@ -2818,7 +2826,9 @@ bits mean 25 bits: whoever reveals second and is uncommitted can grind its nonce
 it likes, and §15 row 5's companion record demonstrates the search rather than asserting it. **A mismatch spends
 the credential** — refusal reaches the authorization service, re-enrolling mints a new credential and a new
 transcript, and there is no retry of the same ceremony — which is what makes the strength per admitted
-credential rather than per attempt. **And QR is an accelerator, not an alternative**: where `BarcodeDetector`
+credential rather than per attempt. The existing client durably retains the consumed comparison too;
+a service-reported reset cannot grant another guess. Missing local attempt state does not authorize
+resumption. **And QR is an accelerator, not an alternative**: where `BarcodeDetector`
 exists the same transcript may be read by camera instead of by person, with the same bits and the same failure
 mode. It cannot be the root — a decoder does not fit §12's bundle headroom, and camera availability is a matrix
 of browser, OS, permission and hardware, which is §13.3's finding about PRF applied a third time.

@@ -9232,3 +9232,18 @@ the baseline preserves the old head. Sixty generated transport partitions check 
 The defined admission-only phase is complete. The new credential still has no certified content access
 or key; content approval, delivery/install/certification, bootstrap and multiple-publisher delivery
 follow. Ordinary Account activation, deployment and release validation remain paused.
+
+
+## 2026-09-16 — content-approval preparation and restart disposition
+
+Admission-only reconnect is signed as `ca828c5f`. Defined the next private phase in
+[account-content-approval-prep.md](./account-content-approval-prep.md), including its four bounded
+chunks, exact commit/reveal ownership, durable one-comparison budget and later key-delivery gates.
+Applied the operator's competing-epoch restart choice to TRD §13.6 and the row-11 selection.
+Distinguished exact resumption, own certification completion, untrusted refusal and already-disclosed
+keys. Marked the old sibling-rebase model's evidentiary limit without changing its historical behavior.
+
+This is a contract/preparation result, not an implemented ceremony or content grant. Documentation
+consistency, append-only records, other-seat preservation and unchanged vectors/frozen inventories
+were checked. Next is chunk A: pure selected primitive bytes with independent focused conformance.
+Release validation, ordinary Account entry and deployment remain paused.

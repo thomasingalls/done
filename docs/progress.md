@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: bounded successor admission complete (`L-1`)
+## Product checkpoint: content-approval preparation complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: content-approval ceremony preparation with explicit competing-epoch restart
+scope: content-approval chunk A — selected primitive bytes
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -108,23 +108,24 @@ expiry and custody before its signed response. 43 Node, three HTTP, 12 registry 
 cases pass, including 30 generated histories and an effective final-comparison control.
 [Service HTTP evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
 
-**Chunk D2 is complete.** The private v9 writer discovers the signed child automatically on
+**Chunk D2 is signed as `ca828c5f`.** The private v9 writer discovers the signed child automatically on
 reconnect, installs it under its existing lifetime, and resumes send/read. The HTTP path preserves
 offline edits, pending bytes and cold reopen. 21 distinct native cases/controls, two first-epoch
 native regressions, 39 unit and 32 Node cases pass, plus static checks and runtime inventory.
 [Reconnect evidence](./account-conformance-runs/2026-09-16-successor-reconnect/README.md).
 
-**The bounded admission-only phase is complete.** Next is content-approval ceremony preparation.
-The operator chose explicit restart on a competing epoch change, with a fresh transcript and code
-entry. The next prep must apply that ruling to durable attempt budgets and post-delivery pending
-state; the ceremony implementation is not yet present. No ordinary Account activation exists yet.
-[Full phase definition](./account-successor-admission-prep.md).
+**Content-approval preparation is complete.** The operator chose restart on a competing epoch
+change. TRD and row 11 now require fresh credentials/admission and code entry, distinguish exact
+resumption and the ceremony's own completion, and retain evidence of already-delivered keys.
+The initial one-child runtime may stop with restart-required; replacement admission is not yet
+implemented. [Phase-three plan](./account-content-approval-prep.md) defines chunks A–D through
+private durable approval, followed by separately bounded delivery/install/certification work.
 
-**Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
-key, ciphertext read or accepted publication. Ceremony, delivery/install/certification and multiple-
-publisher sync follow. The ceremony phase must resolve transcript-safe sibling rebasing versus the
-SAS epoch-restart rule. The author's actual old second device adopts the first device's workspace
-without importing its old writing. Ordinary Account entry and deployment remain disabled.
+**Next is chunk A: selected primitive bytes.** Reproduce the published commitments, transcript,
+SAS and wrap info with closed bounded inputs and independent focused conformance. This supplies
+no durable ceremony, content key, reader eligibility or ordinary Account activation. Bootstrap and
+multiple-publisher sync follow certification. The author's actual old second device adopts the first
+workspace without importing its old writing. Deployment and release validation remain paused.
 
 **Qualification remains open.** Preparation and successor/discovery are two open construction groups.
 Their focused evidence supplies no aggregate release credit. First-authority bytes and historical

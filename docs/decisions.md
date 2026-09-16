@@ -4060,3 +4060,24 @@ waiting for asynchronous custody work. That online freshness condition is separa
 successor signature and local prefix proof. A late empty reply cannot regress an already-installed
 child, and an invalid locator cannot close a valid editor merely for being untrusted. No change to
 ordinary Account entry, deployment or the paused release-validation decision follows from this result.
+
+
+## 2026-09-16 — content approval restarts on a competing epoch
+
+The operator selected restart rather than rebasing a typed-code approval onto a new epoch head.
+Restart uses fresh credential identity/keys, admission, nonces, transcript and code entry; exact
+resumption keeps the original transcript and durable decision. The ceremony's own exact verified
+certification successor is completion. An untrusted stale-parent response cannot itself establish
+a competing transition. The existing client retains the one-comparison budget under authenticated
+custody as well as reporting terminal refusal to the service.
+
+Already-delivered keys cannot be taken back by restarting. Retain pending delivery/certificate
+evidence and refuse activation against another parent; do not claim erasure or revocation. The
+current one-child admission runtime cannot offer fresh replacement admission, so the first private
+ceremony may stop with restart-required. General admission/history and the delivery/install/
+certification contract must precede a supported retry and second content reader.
+
+TRD §13.6 and row 11 §7 now agree. The old enrollment state model is explicitly historical where it
+asserts sibling-rebase liveness. [Phase-three preparation](./account-content-approval-prep.md) orders
+primitive bytes, authenticated exchange, durable attempt/relay and two private owners before key
+release. Existing cryptographic vectors and frozen release evidence are unchanged.
