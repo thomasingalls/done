@@ -23,6 +23,8 @@ import {
 } from '../../scripts/release-validation/stage.mjs';
 import {
   historicalInput,
+  assertHistoricalInputs,
+  withHistoricalInputSnapshot,
   validateHistoricalInputs,
 } from '../../scripts/release-validation/historical-inputs.mjs';
 import {
@@ -247,6 +249,101 @@ function historicalFixture(t, path = 'account-service/core.ts', during = false) 
     reset: () => git('replace', '-d', oldBlob),
   };
 }
+
+test('historical planning snapshots share defensive pins while execution checks bypass the snapshot', (t) => {
+  const f = historicalFixture(t),
+    pin = f.stage.expect.historyInputs[0],
+    read = () => historicalInput(f.root, pin.reference, pin.path);
+  withHistoricalInputSnapshot(() => {
+    const first = read();
+    first.sha256 = '0'.repeat(64);
+    assert.deepEqual(read(), pin, 'Caller mutation must not change the snapshot');
+    f.replace();
+    assert.deepEqual(read(), pin, 'One compilation consistently uses its first observation');
+    assert.throws(() => assertHistoricalInputs(f.root, [pin]), /Historical source changed/);
+  });
+  const current = read();
+  assert.notDeepEqual(current, pin);
+  withHistoricalInputSnapshot(() => assert.deepEqual(read(), current));
+  f.reset();
+  assert.deepEqual(read(), pin, 'Unscoped reads must remain fresh');
+});
+
+test('historical planning snapshots separate roots, references and paths', (t) => {
+  const f = historicalFixture(t),
+    pin = f.stage.expect.historyInputs[0],
+    otherRoot = join(f.base, 'other-checkout');
+  cpSync(f.root, otherRoot, { recursive: true });
+  const newer = f.git('rev-parse', 'HEAD');
+  f.write('account-service/delivery.ts', 'export const different = true;');
+  f.git('add', 'account-service/delivery.ts');
+  f.git(
+    '-c',
+    'user.name=Fixture',
+    '-c',
+    'user.email=fixture@example.invalid',
+    '-c',
+    'core.hooksPath=/dev/null',
+    'commit',
+    '--no-gpg-sign',
+    '--quiet',
+    '-m',
+    'another path',
+  );
+  const latest = f.git('rev-parse', 'HEAD');
+  f.replace();
+  withHistoricalInputSnapshot(() => {
+    const replaced = historicalInput(f.root, pin.reference, pin.path);
+    assert.notEqual(replaced.sha256, pin.sha256);
+    assert.deepEqual(historicalInput(otherRoot, pin.reference, pin.path), pin);
+    assert.equal(historicalInput(f.root, newer, pin.path).revision, newer);
+    const core = historicalInput(f.root, latest, pin.path),
+      delivery = historicalInput(f.root, latest, 'account-service/delivery.ts');
+    assert.notEqual(core.sha256, delivery.sha256);
+    assert.equal(core.revision, delivery.revision);
+    assert.deepEqual(historicalInput(f.root, pin.reference, pin.path), replaced);
+  });
+});
+
+test('historical planning snapshots restore outer state and expire after errors or asynchronous callbacks', (t) => {
+  const f = historicalFixture(t),
+    pin = f.stage.expect.historyInputs[0],
+    read = () => historicalInput(f.root, pin.reference, pin.path);
+  withHistoricalInputSnapshot(() => {
+    assert.deepEqual(read(), pin);
+    f.replace();
+    assert.throws(
+      () =>
+        withHistoricalInputSnapshot(() => {
+          assert.notDeepEqual(read(), pin, 'Nested plans start with a fresh snapshot');
+          throw Error('aborted planning');
+        }),
+      /aborted planning/,
+    );
+    assert.deepEqual(read(), pin, 'Nested failure restores the enclosing snapshot');
+  });
+  assert.notDeepEqual(read(), pin, 'Outer snapshot must expire');
+  assert.throws(
+    () =>
+      withHistoricalInputSnapshot(() => {
+        read();
+        return Promise.resolve();
+      }),
+    /must be synchronous/,
+  );
+  f.reset();
+  assert.deepEqual(read(), pin);
+  assert.throws(
+    () =>
+      withHistoricalInputSnapshot(() => {
+        read();
+        throw Error('outer failure');
+      }),
+    /outer failure/,
+  );
+  f.replace();
+  assert.notDeepEqual(read(), pin, 'Failed planning must not retain stale inputs');
+});
 
 test('historical Git bytes are checked before launch and reuse and enter the receipt contract', async (t) => {
   for (const path of [

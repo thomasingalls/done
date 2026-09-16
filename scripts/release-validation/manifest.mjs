@@ -38,6 +38,7 @@ import { join } from 'node:path';
 import { flattenPackages } from './inventory.mjs';
 import { catalogueCensus, directNodeCensus } from './census.mjs';
 import { digest } from './identity.mjs';
+import { withHistoricalInputSnapshot } from './historical-inputs.mjs';
 import { validateStage } from './stage.mjs';
 import { contentStage } from './content-adapter.mjs';
 import { journalStage } from './journal-adapter.mjs';
@@ -196,6 +197,10 @@ export function assertManifestCoverage(manifest, inventory) {
  * Wrapper variants remain whole obligations: naming the same file never discharges one.
  */
 export function compileManifest(root, inventory) {
+  return withHistoricalInputSnapshot(() => compileManifestSnapshot(root, inventory));
+}
+
+function compileManifestSnapshot(root, inventory) {
   const rows = [],
     exclusions = [];
   const add = (row) => {

@@ -3841,3 +3841,14 @@ process-death outcomes and HTTP/cold receipts. Verify signatures against observe
 consistency, while retaining the independent fixture's authentication/authority assertions. Update planning
 expectations when a wrapper becomes concrete without allowing unintegrated wrappers to borrow its receipt.
 [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-inbound/README.md).
+
+
+## 2026-09-16 — Historical planning reuse is scoped; execution authority stays fresh
+
+Deduplicate historical source reads only within one synchronous manifest compilation, keyed by root,
+exact reference and path. Return independent pin objects, release the snapshot on every exit and make
+all execution-time checks bypass it. Keep Git replacement semantics and existing deadlines unchanged.
+The identical-manifest differential and real replacement/drift controls distinguish this optimization
+from trusting a long-lived cache. Three new runner tests raise the reviewed disposition total to 2,201;
+refresh the explicit census rather than suppressing them. Single-host timing headroom does not close
+aggregate or loaded-host qualification.

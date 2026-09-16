@@ -52,39 +52,32 @@ branch: codex/encrypted-store-contract-corrections
 status: in flight
 blocks_on: remaining command/campaign adapters and immutable qualification; explicit F-17 RC latency debt
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-15
+updated: 2026-09-16
 ```
 
-**Roadmap checkpoint.** Composition is signed and verified as `21278b15`. All catalogue/test-file
-adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay **629
-obligations /292 required files** and **272 general files /2,198 dispositions (11 not applicable)**.
-Service-inbound resolves one command and campaign: **zero test-file /72 command /40 campaign** remain
-unresolved, down from 114 to 112. These are integration counts, not a passing aggregate.
+**Roadmap checkpoint.** Service-inbound is signed and verified as `a55ae626`. All catalogue/test-file
+adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals remain **629
+obligations /292 required files**. Three new runner controls raise the general disposition count to
+**272 files /2,201 dispositions (11 not applicable)**. Integration remains **zero test-file /72 command
+/40 campaign** unresolved: 112 obligations. This repair does not resolve another wrapper.
 
-**Just completed.** Service-inbound retains three commands/21 cases and 60/120/90-second bounds.
-Owned execution adds a 270-second aggregate, disposable browser, inherited groups and 20 files. The
-invoked historical decision implementation is pinned. Eight actual omission controls retain baseline/
-mutated results; 60 generated histories retain signed originals, queries, pages, inventory fingerprints
-and complete prefix replay. SIGKILL and native HTTP reports retain actual outcomes and cold progress.
-Internal signature consistency against observed keys corroborates the original independent oracles.
+**Just completed.** Historical reads are shared only within one synchronous manifest compilation.
+Absolute root, exact reference and path form the key; callers get defensive pin copies. Nested scopes
+and errors unwind, while launch/reuse/post-run checks always read current Git bytes. Same-input manifests
+match the signed implementation exactly; Git launches fall from 70 to 42 per compilation.
 
-The repaired epoch passes **189 cases in seven executions**: 136 planning, 21 service-inbound and 32
-service-delivery regression, then exact reuse. Service-inbound takes **63.507s /270s**; every group
-drains and all 20 files survive checkout removal. Two scaffold errors and the first owned 69/70 manifest
-failure are preserved; that failure was a stale unresolved-wrapper assertion, fixed while keeping
-activation blocked. Two 160-run corruptions, eight synthetic runs and two omitted hooks discriminate.
-Manifest passes in 59.108s /60s; earlier 58.674-second evidence and loaded-host headroom debt remain.
-This phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-15-wrapper-account-service-inbound/README.md).
+The final owned epoch passes **172 cases in six executions**, then exact manifest reuse. The unchanged
+70-case manifest suite takes **38.171s /60s**, versus the prior 59.108-second observation;
+45 wrapper controls take 39.798s /60s. All 36 runner-stage cases pass, including historical drift
+and reuse checks; two deliberate faults are detected. The first owned failure from stale census totals
+is preserved and the reviewed counts are corrected. All groups drain. This phase is ready for signed
+commit. [Evidence and verifier](./account-conformance-runs/2026-09-16-manifest-headroom/README.md).
 
-**Scope and retained limits.** Observed keys do not establish external trust; existing service/receiver
-oracles remain mandatory. Inventory hashes corroborate full fixture assertions, not whole-profile residue
-coverage. HTTP report checks do not replace cryptographic admission. Original deadlines, report/archive
-bounds and earlier failures remain. Report custody uses cooperative bounded polling, not a disk quota or
-sandbox. No immutable aggregate claim.
+**Scope and retained limits.** Earlier near-deadline observations remain. This is observed single-host
+headroom with unchanged deadlines, not loaded-host reliability or an immutable aggregate pass. Planning
+snapshots authorize no execution; existing fresh input checks remain mandatory.
 
-**Next bounded phase.** Reduce repeated manifest planning work within the unchanged deadline, then
-Account activation wrapper integration and further families, serially.
+**Next bounded phase.** Account activation wrapper integration, then further families, serially.
 Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local

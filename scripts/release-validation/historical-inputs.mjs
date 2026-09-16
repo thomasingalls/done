@@ -1,7 +1,23 @@
 /** Pin the Git bytes explicitly used by reviewed historical fixture builders. */
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { resolve } from 'node:path';
 import { hash } from './identity.mjs';
+
+let planningSnapshot;
+
+/** Share pins only within one synchronous plan. Execution always checks fresh Git bytes. */
+export function withHistoricalInputSnapshot(plan) {
+  const previous = planningSnapshot;
+  planningSnapshot = new Map();
+  try {
+    const result = plan();
+    assert(typeof result?.then !== 'function', 'Historical input planning must be synchronous');
+    return result;
+  } finally {
+    planningSnapshot = previous;
+  }
+}
 
 function validateLocator(reference, path) {
   assert(
@@ -49,6 +65,17 @@ export function validateHistoricalInputs(inputs) {
 
 export function historicalInput(root, reference, path) {
   validateLocator(reference, path);
+  const location = resolve(root);
+  if (!planningSnapshot) return readHistoricalInput(location, reference, path);
+  const key = JSON.stringify([location, reference, path]);
+  if (!planningSnapshot.has(key))
+    planningSnapshot.set(key, readHistoricalInput(location, reference, path));
+  // Stage builders may modify their returned metadata; never expose the shared pin.
+  return { ...planningSnapshot.get(key) };
+}
+
+function readHistoricalInput(root, reference, path) {
+  validateLocator(reference, path);
   const git = (args) =>
     execFileSync('git', args, {
       cwd: root,
@@ -69,7 +96,7 @@ export function historicalInput(root, reference, path) {
 export function assertHistoricalInputs(root, inputs = []) {
   for (const i of inputs)
     assert.deepEqual(
-      historicalInput(root, i.reference, i.path),
+      readHistoricalInput(root, i.reference, i.path),
       i,
       'Historical source changed after planning: ' + i.reference + ':' + i.path,
     );
