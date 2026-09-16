@@ -10,6 +10,7 @@ import {
 } from '../../account-protocol/deliveryTransport';
 import {
   verifyNetworkEnvelope,
+  decodeNetworkEnvelope,
   assertAdmittedEnvelopeWireSize,
   EnvelopeSizeError,
 } from '../../account-protocol/envelope';
@@ -21,15 +22,12 @@ import {
 import { networkRoute } from './spoolRecord';
 /** Internal persistence operations attached to the spool's existing exclusive task queue. */
 import { signSubmission } from '../../account-protocol/submission';
-import {
-  verifyPositionResponse,
-  RESPONSE_LIMIT,
-  type DecisionAuthority,
-} from '../../account-protocol/positionDecision';
+import { RESPONSE_LIMIT, type DecisionAuthority } from '../../account-protocol/positionDecision';
 import { guardedSubtle, hex, type Bytes } from './custodyCrypto';
 import {
   inspectDelivery,
   verifyDelivery,
+  verifyDeliveryDecision,
   expectedPosition,
   encodeDeliveryEntry,
   publicationState,
@@ -184,7 +182,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
     const expected = await task.wait(() => expectedPosition(c.spool, position, subtleFor(task)));
     if (!expected) return { kind: 'unknown' as const, recorded: false };
     const evidence = await task.wait(() =>
-      verifyPositionResponse(bytes, expected, context.authority(), subtleFor(task)),
+      verifyDeliveryDecision(bytes, expected, context.authority(), route, subtleFor(task)),
     );
     task.step(() => {});
     if (evidence.kind === 'unknown') return { kind: 'unknown' as const, recorded: false };
@@ -375,14 +373,14 @@ export function createDeliveryOperations(context: DeliveryContext) {
             const envelope = await task.wait(() =>
               verifyNetworkEnvelope(
                 entry.envelope,
-                networkRoute(route),
+                networkRoute(route, decodeNetworkEnvelope(entry.envelope).epoch),
                 context.publicKey(),
                 subtleFor(task),
               ),
             );
             if (envelope.seq !== position) throw Error('Read sequence');
             const proof = await task.wait(() =>
-              verifyPositionResponse(entry.proof, expected, a, subtleFor(task)),
+              verifyDeliveryDecision(entry.proof, expected, a, route, subtleFor(task)),
             );
             if (proof.kind !== 'accepted' || proof.head.final) throw Error('Read acceptance');
           }

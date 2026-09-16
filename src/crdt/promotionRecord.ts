@@ -1,3 +1,4 @@
+import { parseInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { parseHandoff, type HandoffState } from './handoffRecord';
 import { parseRetainedAdmission, type RetainedAdmission } from '../../account-protocol/admission';
 /** Internal authenticated inventory of the single promotion carrier, retained at the stable interlock. */
@@ -75,6 +76,7 @@ export interface PromotionRecord {
     | 'account-spooling'
     | 'account-delivering'
     | 'account-receiving';
+  successor?: InstalledSuccessor;
   handoff?: HandoffState;
   admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
@@ -101,6 +103,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
+    ...((input as { v?: number })?.v === 9 && Object.hasOwn(input as object, 'successor')
+      ? ['successor']
+      : []),
     ...([2, 3, 4, 5, 6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
     ...([3, 4, 5, 6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) ? ['admission'] : []),
     ...([4, 5, 6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) ? ['handoff'] : []),
@@ -205,6 +210,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
           ),
         }
       : {}),
+    ...(Object.hasOwn(r, 'successor')
+      ? { successor: parseInstalledSuccessor(r['successor']) }
+      : {}),
     kind: 'local-promotion',
     id: id(r['id']),
     source,
@@ -257,6 +265,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
         ? [parseRetainedAdmission(r.admission, r.v >= 4 ? 'admission-receipted' : r.stage)]
         : []),
       ...(r.v >= 4 ? [parseHandoff(r.handoff)] : []),
+      ...(r.successor ? [parseInstalledSuccessor(r.successor)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

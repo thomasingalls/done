@@ -1,3 +1,4 @@
+import { heldCaptureRoute } from './accountSuccessor';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
 /** Internal v9 census. Authority is supplied only after admission verification under the factor permit. */
 import { parseReceipt } from '../../account-protocol/admission';
@@ -6,7 +7,7 @@ import { ZERO_REFUSAL } from '../../account-protocol/positionDecision';
 import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { PromotionRecord } from './promotionRecord';
 import type { OpenedRecord } from './contentRecord';
-import { captureError, captureRoute, type CaptureRoute } from './sourceCapture';
+import { captureError, type CaptureRoute } from './sourceCapture';
 import { inspectDelivery } from './deliveryRecord';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
@@ -18,10 +19,11 @@ export async function heldInboundContext(
   marker: PromotionRecord,
   key: Bytes,
   subtle: SubtleCrypto,
+  heldRoute?: CaptureRoute,
 ): Promise<InboundContext> {
   const receipt = parseReceipt(marker.admission!.receipt),
     offer = receipt.offer,
-    route = captureRoute(marker),
+    route = heldRoute ?? (await heldCaptureRoute(marker)),
     member = marker.admission!.request.certification.members[0];
   if (
     offer.epoch.epoch !== 1 ||
@@ -36,7 +38,8 @@ export async function heldInboundContext(
       id: hex(new Uint8Array(await subtle.digest('SHA-256', utf8(JSON.stringify(receipt))))),
     },
     service: { id: marker.pin.serviceId, origin: marker.pin.origin },
-    authority: {
+    ...(route.history ? { history: route.history } : {}),
+    authority: route.history?.current ?? {
       workspace: route.workspace,
       lineage: offer.epoch.lineageId,
       tip: 1,

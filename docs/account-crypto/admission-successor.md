@@ -1,7 +1,7 @@
 # Private admission-only successor and discovery bytes
 
-2026-09-16. Phase two, chunks A/B. **Pure protocol and private service owner implemented; client
-installation and HTTP integration remain.** [Phase plan](../account-successor-admission-prep.md).
+2026-09-16. Phase two, chunks A/B/C complete. **Pure protocol, private service owner and client
+installation implemented; private HTTP integration remains.** [Phase plan](../account-successor-admission-prep.md).
 
 ## 1. Construction boundary
 
@@ -144,8 +144,8 @@ acceptance. Epoch-1 pending bytes, including an already-sealed refusal successor
 acceptances name epoch 2; old decision retries retain their original bytes. Both read transports use
 the current head and return mixed historical proofs unchanged. Candidate read/write attempts refuse.
 
-None of this installs current authority in a browser. Until chunk C owns adoption and recovery, existing
-v9 clients cannot use the new head; until chunk D, there is no private HTTP activation path either.
+Chunk B alone did not install current authority in a browser. Chunk C2b below now owns adoption and
+recovery; until chunk D, there is no private HTTP activation path.
 Service tests use disposable SQLite databases and synthetic encrypted envelopes, not a browser/Yjs
 convergence claim. A self-consistent rollback of all service state still needs a surviving client anchor
 to detect it. Process SIGKILL evidence is not a claim about whole-machine power loss.
@@ -199,6 +199,44 @@ the old accepted boundary; a current page cannot claim less than that boundary. 
 ledger event uses epoch 2, later events cannot regress to an old context. Old journal source capsules
 are not ledger authority events and may still flush after adoption.
 
-These are opt-in adapters, with no live owner enabling them yet. Lifecycle installation must bind
-the exact existing ledger boundary, persist its new authority, invalidate old asynchronous contexts
-and establish source coverage before dispatch. [Evidence](../account-conformance-runs/2026-09-16-successor-replay/README.md).
+At the C2a checkpoint these were opt-in adapters without a live owner. C2b below binds
+the exact existing ledger boundary, persists its new authority, invalidates old asynchronous contexts
+and establishes source coverage before dispatch. [Evidence](../account-conformance-runs/2026-09-16-successor-replay/README.md).
+
+## 8. Lifecycle-owned installation (chunk C2b)
+
+The private composed v9 owner now exposes bounded `adoptSuccessor`. It captures the artifact before
+queueing, rereads the authenticated promotion under its exclusive lifetime, and verifies ancestry
+against the actually held head. Before writing, it checks the complete signed accepted prefix against
+retained spool envelopes, decrypts and checks their original sources, and replays delivery/inbound
+coverage in the proposed context. Missing history refuses adoption; it does not close an otherwise
+valid editor or erase its pending writing. A different child cannot replace an installed child.
+
+A v9 promotion may have the closed optional field `successor: {artifact, before: {events, hash}}`.
+`artifact` is the complete parsed successor; `before` is the complete local spool/delivery/inbound
+witness immediately before installation. Append this parsed object to the existing ordered promotion
+MAC tuple **only when present**. Existing promotion payloads, original genesis/receipt/certification,
+slot binding, custody, content and invocation counters are unchanged. Other promotion versions refuse
+the field; old closed v9 parsers refuse it too. Removing the field without its MAC fails authentication.
+No new domain is introduced. Compact retained encoding preserves the original genesis reference.
+
+Installation uses the existing strict IndexedDB marker transaction, comparing the original marker,
+claim and custody record. Only after that commit does the owner switch the capture route/current
+request context, invalidate outstanding reads and clear verification caches. A failed precommit write
+retains epoch 1; a successful commit followed by a failed publication/readback closes for cold replay.
+The durable artifact and local witness cut are checked again on reopen before an editing owner escapes.
+Ledger events before the cut must use epoch 1 and hash to the saved witness; events afterward use epoch 2.
+Old journal source capsules may still flush afterward because they are sources, not authority events.
+The full signed accepted prefix is rechecked; cache reuse is bound to its exact input bytes and head.
+
+New captures, envelope seals and read requests use epoch 2. Already-sealed submissions keep their exact
+bytes and positions. A late epoch-1 acceptance reply is verified against historical issuance and may
+be persisted as evidence under the current context. A receive reply for the superseded owned request
+is discarded as transient, and polling resumes under the new head. Current authority never comes from
+an unsigned transport response. The owner retains the same lifecycle permit throughout adoption.
+
+[Native evidence](../account-conformance-runs/2026-09-16-successor-owner/README.md) includes interrupted
+installation, pending journal edits, old submissions, lost acceptance, late receive, compaction and
+cold reopen. Effective prefix/cut omission controls establish why both checks matter. This is private
+client installation; consumption/discovery HTTP and automatic reconnect discovery are chunk D.
+Complete-profile rollback still requires a surviving newer client anchor to detect it.

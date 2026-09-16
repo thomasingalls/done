@@ -9171,3 +9171,24 @@ effective actual-receiver omission controls. Early test-anchor/predicate/fixture
 and corrected. Updated the same stale mutation anchor in its existing paused command wrapper without
 running that campaign or refreshing frozen qualification. [Evidence](./account-conformance-runs/2026-09-16-successor-replay/README.md).
 Release validation and ordinary Account activation remain paused.
+
+
+## 2026-09-16 — lifecycle-owned successor installation and cold replay (C2b)
+
+After signed mixed-history replay `cf371bd0`, the private composed v9 owner can adopt the one verified
+admission-only successor without replacing its original promotion receipt or slot binding. The marker
+MAC covers the full successor and exact pre-install ledger witness. Installation verifies the accepted
+prefix and source/delivery/inbound coverage before committing; only then do current requests/captures
+switch to epoch 2 and caches clear. Cold reopen authenticates that head and its ledger cut again.
+Exact old outbound bytes, late historical decisions and pending journal sources remain usable; an old
+in-flight receive response is discarded without halting the editor. Candidate refusal or an aborted
+install retains the old durable state and editing capability.
+
+13 new native cases/controls, two first-epoch native regressions, 32 focused Node cases and 74 unit cases
+pass, with typecheck, scoped lint/format and reviewed runtime inventory. Native evidence covers both
+commit sides, an acknowledged journal edit while completion is held, zero accepted history, a lost
+old acceptance, later acceptance of old bytes, a late receive, compaction, cold reopen, marker tampering
+and sibling rejection. Effective omitted-prefix and omitted-cut controls admit the independently
+constructed forbidden state. [Evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
+Private consumption/discovery HTTP remains D; Account activation, deployment and release validation
+remain paused. Existing vectors and frozen release inventories are unchanged.

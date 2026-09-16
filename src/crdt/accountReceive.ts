@@ -1,3 +1,6 @@
+import { parseSuccessor } from '../../account-protocol/successor';
+import { verifyAdmissionHistory } from '../../account-protocol/admissionHistory';
+import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { createVerifiedRecords } from './verifiedRecords';
 import { createVerificationMemo } from './verificationMemo';
 import { createInboundCoverage } from './inboundLedger';
@@ -13,7 +16,13 @@ import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
 import { captureAccountOptions, type AccountStartupOptions } from './accountStartup';
-import { readPromotion, promotionPayload, withPromotionRoot } from './promotionRecord';
+import {
+  readPromotion,
+  promotionPayload,
+  withPromotionRoot,
+  signPromotion,
+  writePromotion,
+} from './promotionRecord';
 import { claimScope } from './localGenesisRecord';
 import { same } from '../../account-protocol/admission';
 import {
@@ -57,6 +66,11 @@ import {
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
+class ReceiveAuthorityChanged extends AdmissionError {
+  constructor() {
+    super('receive-refused', 'Receive authority was superseded');
+  }
+}
 class ReceiveRequestExpired extends AdmissionError {
   constructor() {
     super('receive-refused', 'Receive request expired before commit');
@@ -74,13 +88,14 @@ async function openAccountReceiveOwner(
     inbound: InboundState;
     census: ReturnType<typeof inspectInbound>;
   }>();
-  // Keys and authority are fixed for this owner. No memo crosses a close/replacement boundary.
+  // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
     coverage = createInboundCoverage();
   const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
     verified.matches(records)
       ? verified.read(records, (v) => v.census)
       : inspectInbound(records, route, base);
+  let installed: InstalledSuccessor | undefined;
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
     expectedRecord: unknown,
@@ -102,10 +117,11 @@ async function openAccountReceiveOwner(
     async initialize(task, v) {
       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
       expectedRecord = v.record;
+      installed = v.marker.successor;
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
         const kg = await openEnvelope(claimScope(v.claim), root, v.record.envelope!, subtle);
         try {
-          base = await heldInboundContext(v.marker, kg, subtle);
+          base = await heldInboundContext(v.marker, kg, subtle, v.route);
           signer = await openCredential(
             claimScope(v.claim),
             root,
@@ -136,6 +152,7 @@ async function openAccountReceiveOwner(
               subtle = subtleFor(task),
               reuse = { memo, current: () => task.step(() => {}) };
             await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+            await verifyInstalledSuccessor(census.delivery.spool, route, installed, subtle, reuse);
             await verifySpool(
               census.delivery.spool,
               route,
@@ -159,6 +176,7 @@ async function openAccountReceiveOwner(
             if (composed) verifySyncState(census.delivery, delivery, inbound);
             memo.retain(
               new Set([
+                'admission-prefix',
                 ...census.delivery.spool.positions.flatMap((p) => [
                   'spool:' + p.position,
                   'link:' + p.position,
@@ -190,7 +208,7 @@ async function openAccountReceiveOwner(
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
   // openAccountCaptureOwner's exclusive permit; the source principal is checked by its startup verifier.
-  const { account, carrier, runCaptureTask, runNetworkTask, listCaptures } =
+  const { account, carrier, runCaptureTask, runNetworkTask, listCaptures, installRoute } =
     await openAccountCaptureOwner(options, principalId, extension);
   const state = async (
     task: SessionTask,
@@ -231,7 +249,7 @@ async function openAccountReceiveOwner(
       publisher: base.publisher.id,
       lineage: base.authority.lineage,
       head: base.authority.head,
-      epoch: 1,
+      epoch: base.authority.tip,
       after: cursor,
       limit: 1,
       nonce: hex(task.step(() => random(32))),
@@ -304,6 +322,8 @@ async function openAccountReceiveOwner(
       return runCaptureTask(async (task, owner, route) => {
         const s = await state(task, owner, route);
         if (s.conflict) throw new AdmissionError('receive-refused', 'Inbound stream is conflicted');
+        if (expectedRequest && decodeInboundRequest(expectedRequest).epoch < base.authority.tip)
+          throw new ReceiveAuthorityChanged();
         if (!outstanding)
           throw new AdmissionError('receive-refused', 'No outstanding receive request');
         if (expectedRequest && hex(expectedRequest) !== hex(outstanding))
@@ -404,6 +424,104 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
+  const adoptSuccessor = (input: unknown) => {
+    // Closed, bounded copy before enqueueing; no caller-owned data crosses crypto or storage awaits.
+    const artifact = parseSuccessor(input);
+    if (!composed)
+      return Promise.reject(Error('Successor installation requires the composed owner'));
+    return runCaptureTask(async (task, owner, route) => {
+      await assertCurrent(task);
+      const current = await readPromotion(task, options.slotId, options.code),
+        marker = current.marker!;
+      if (marker.successor) {
+        if (!same(marker.successor.artifact, artifact))
+          throw Error('Installed successor cannot be replaced');
+        return { epoch: 2 as const, head: artifact.head };
+      }
+      const records = await owner.carrier.load(task);
+      let committed = false;
+      try {
+        const nextHistory = await task.wait(() =>
+          verifyAdmissionHistory(
+            artifact,
+            {
+              pin: marker.pin,
+              request: marker.admission!.request,
+              receipt: marker.admission!.receipt!,
+            },
+            { epoch: 1, head: base.authority.head },
+          ),
+        );
+        const nextRoute: CaptureRoute = { ...route, epoch: 2, history: nextHistory },
+          nextBase: InboundContext = {
+            ...base,
+            authority: nextHistory.current,
+            history: nextHistory,
+          },
+          before = await owner.carrier.spoolWitness(task),
+          successor = { artifact, before };
+        // The existing view has already authenticated source coverage. Verify the proposed context
+        // against the same retained bytes too, including any lost accepted response at the boundary.
+        const census = inspectInbound(records, nextRoute, nextBase),
+          subtle = subtleFor(task);
+        try {
+          await verifyInstalledSuccessor(census.delivery.spool, nextRoute, successor, subtle);
+          await verifySpool(
+            census.delivery.spool,
+            nextRoute,
+            base.generationKey,
+            publicKey,
+            subtle,
+          );
+          const delivery = await verifyDelivery(
+            census.delivery,
+            nextRoute,
+            nextBase.authority,
+            publicKey,
+            subtle,
+          );
+          const inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+          verifySyncState(census.delivery, delivery, inbound);
+        } catch (cause) {
+          throw new AdmissionError('receive-refused', 'Successor does not match retained history', {
+            cause,
+          });
+        }
+        await withPromotionRoot(
+          task,
+          current.claim,
+          current.record,
+          options.code,
+          async (root, subtle) => {
+            const next = await signPromotion(root, { ...marker, successor }, subtle);
+            await writePromotion(task, current.claim, current.record, current.record, marker, next);
+            committed = true;
+            task.step(() => {
+              // No await between installing the route and publishing its verification context.
+              installRoute(task, nextRoute);
+              base = nextBase;
+              installed = successor;
+              expectedPayload = hex(promotionPayload(next));
+              verified.clear();
+              memo.clear();
+              coverage.clear();
+              outstanding?.fill(0);
+              outstanding = undefined;
+            });
+          },
+        );
+        await assertCurrent(task);
+        const readback = await owner.carrier.load(task);
+        for (const r of readback) r.bytes.fill(0);
+        return task.step(() => ({ epoch: 2 as const, head: artifact.head }));
+      } catch (cause) {
+        if (committed) void carrier.close().catch(() => {});
+        throw cause;
+      } finally {
+        for (const r of records) r.bytes.fill(0);
+      }
+    });
+  };
   const createOutbound = (whenDurable: () => Promise<unknown>) => {
     if (!composed) throw Error('Outbound composition was not opened');
     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
@@ -491,7 +609,7 @@ async function openAccountReceiveOwner(
         }),
     };
   };
-  return { api, account, carrier, listCaptures, fetchPage, createOutbound };
+  return { api, account, carrier, listCaptures, fetchPage, createOutbound, adoptSuccessor };
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -514,7 +632,7 @@ async function openReceivingWorkspace(
     identity: structuredClone(input.identity),
     today: input.today,
   };
-  const { api, account, carrier, listCaptures, fetchPage, createOutbound } =
+  const { api, account, carrier, listCaptures, fetchPage, createOutbound, adoptSuccessor } =
     await openAccountReceiveOwner(
       options,
       options.identity.id,
@@ -581,7 +699,9 @@ async function openReceivingWorkspace(
           try {
             return await receivePage(page, request);
           } catch (cause) {
-            // Only an explicit expiry is transient. Invalid signatures, scope, prefix, or owner
+            if (cause instanceof ReceiveAuthorityChanged)
+              return { kind: 'unknown' as const, recorded: false };
+            // An expiry is transient too. Invalid signatures, scope, prefix, or owner
             // still reject and preserve the scheduler's diagnostic halt.
             if (
               cause instanceof ReceiveRequestExpired ||
@@ -678,7 +798,18 @@ async function openReceivingWorkspace(
         await scheduler.dispose();
         throw cause;
       }
-      return Object.freeze({ ...result, outbound, sync: scheduler.runtime, receiver: undefined });
+      return Object.freeze({
+        ...result,
+        outbound,
+        sync: scheduler.runtime,
+        receiver: undefined,
+        adoptSuccessor: async (input: unknown) => {
+          const result = await adoptSuccessor(input);
+          scheduler.runtime.retry('send');
+          scheduler.runtime.retry('receive');
+          return result;
+        },
+      });
     }
     if (!driven)
       return Object.freeze({

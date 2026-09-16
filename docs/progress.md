@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor client replay complete (`L-1`)
+## Product checkpoint: successor client installation complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: supported v9 successor adoption and cold reopen (phase two, chunk C2b)
+scope: private successor consumption/discovery HTTP integration (phase two, chunk D)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -85,19 +85,26 @@ omission controls. This is service evidence, not browser/Yjs convergence or rele
 **Chunk C1 is signed as `6ba5336b`.** Read-only client history now separates exact current authority from proof
 issuance and verifies the successor's complete accepted-envelope prefix. 39 focused cases pass,
 including 80 generated cases and two effective omission controls; typecheck, scoped lint/format and
-runtime inventory pass. No live client owner has changed yet.
+runtime inventory pass. This checkpoint supplied read-only history.
 [History evidence](./account-conformance-runs/2026-09-16-successor-history/README.md).
 
-**Chunk C2a is complete.** Opt-in replay preserves mixed-epoch captures, spools, delivery proofs and
+**Chunk C2a is signed as `cf371bd0`.** Opt-in replay preserves mixed-epoch captures, spools, delivery proofs and
 signed receive records. Nine new cases include 40 generated histories and two effective receiver
 omission controls; the final focused totals are 32 Node cases, 74 unit cases and two first-epoch
 browser regressions. Static checks and crypto inventory pass.
 [Replay evidence](./account-conformance-runs/2026-09-16-successor-replay/README.md).
 
-**Next bounded implementation: C2b.** Add lifecycle-owned installation and current request construction,
-then native crash/reopen and late-reply cases. Preserve original slot/receipt custody evidence and
-pending journal/capture/spool work. The current production owner still has no installed successor.
-D then integrates private consumption/discovery HTTP. No ordinary Account activation exists yet.
+**Chunk C2b is complete.** The private composed v9 owner installs the authenticated successor and
+local ledger cut before switching live requests/captures. Original receipt/slot custody, pending journal
+sources and exact old submissions survive. Native tests cover both commit sides, an acknowledged journal
+edit during the held completion, zero-prefix installation, lost acceptance, late receive, compaction,
+cold reopen, sibling refusal and effective prefix/cut omission controls. 13 new native cases, two
+first-epoch native regressions, 32 Node and 74 unit cases pass, plus static checks and inventory.
+[Installation evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
+
+**Next bounded implementation: D.** Integrate private preparation consumption and signed discovery
+HTTP, then exercise reconnect/adoption through those actual adapters. New-device content remains a
+later gate. No ordinary Account activation exists yet.
 [Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
@@ -108,7 +115,7 @@ without importing its old writing. Ordinary Account entry and deployment remain 
 
 **Qualification remains open.** Preparation and successor/discovery are two open construction groups.
 Their focused evidence supplies no aggregate release credit. First-authority bytes and historical
-qualification stay intact; native adoption and qualification of the new constructions are still owed.
+qualification stay intact; private HTTP integration and qualification of the new constructions are still owed.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

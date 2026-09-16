@@ -13,7 +13,6 @@ import {
 } from './accountStartup';
 import { signPromotion, withPromotionRoot, writePromotion } from './promotionRecord';
 import {
-  captureRoute,
   captureCatalog,
   capturedRecovery,
   decodeSourceCapsule,
@@ -85,7 +84,7 @@ export async function openAccountCaptureOwner(
         principalId === undefined ? extension?.version !== 9 : v.account.principalId !== principalId
       )
         throw Error('Account actor identity changed');
-      route = captureRoute(v.marker);
+      route = v.route;
       account = v.account;
       const certified = v.marker.genesis!.actors;
       if (
@@ -362,6 +361,23 @@ export async function openAccountCaptureOwner(
   return {
     account,
     carrier,
+    // Internal composition only: caller persists and verifies authority before this synchronous swap.
+    installRoute(task: SessionTask, next: CaptureRoute) {
+      task.step(() => {
+        if (
+          extension?.version !== 9 ||
+          !next.history ||
+          next.epoch !== 2 ||
+          route.epoch !== 1 ||
+          next.workspace !== route.workspace ||
+          next.principal !== route.principal ||
+          next.credential !== route.credential ||
+          next.generation !== route.generation
+        )
+          throw Error('Invalid owned authority transition');
+        route = next;
+      });
+    },
     // HTTP work keeps the same lifetime/permit without holding the serialized storage tail.
     runNetworkTask: <T>(operation: (task: SessionTask) => Promise<T>) => live.run(operation),
     // Only the composed private owner receives task authority; wrappers below omit this capability.

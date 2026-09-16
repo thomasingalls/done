@@ -169,11 +169,11 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "b83ed135376ce357232afca397de85ad97f4a042b1d601ad5af562eac6963a31"
+      "sha256": "f7951e477c6d0d18f8a3b7723988dc3dc73f12b21076b4331d4dd3868e0670a8"
     },
     {
       "path": "src/crdt/accountDelivery.ts",
-      "sha256": "6f2f35454cfd0d1ad9c0617c452d161022304dd589d488bedb743a5286145add"
+      "sha256": "a1560fed87521b28590ad22756b45d53c85fd9d307eb0ed6cf4a2d27cd25c23d"
     },
     {
       "path": "src/crdt/accountDriver.ts",
@@ -193,7 +193,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "f34823fd7aeda773e9d117218391c81b4653b48fc65c31368269d6433b9f970a"
+      "sha256": "0ced735f0ee11bf4464c784bc3706c0909ccc835bfb557de21936c2662ebd417"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -205,7 +205,11 @@
     },
     {
       "path": "src/crdt/accountStartup.ts",
-      "sha256": "8f6c2e3ccc24ecd13f158413c14cb0266beb31d2ec38a18c00dc16354b1b0136"
+      "sha256": "85664e21da4a3807d4c249743624499dd1b2e25e51d79874e4795271c2eb44a2"
+    },
+    {
+      "path": "src/crdt/accountSuccessor.ts",
+      "sha256": "685031010dae1a6354b68d0dd8445979c0faf19725f5843117916f7e68dc1348"
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
@@ -301,7 +305,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "7286eeb39b650c26469411ada9755d4a7b7cbf357d69df21c3af12254f4f06d9"
+      "sha256": "fc1fafe46d5c0c8076d0767b5f397c9240352c79689ed8f487d2f6185767759b"
     },
     {
       "path": "src/crdt/inboundRecord.ts",
@@ -437,7 +441,7 @@
     },
     {
       "path": "src/crdt/promotionRecord.ts",
-      "sha256": "2645e99185eedfafcdbe4297ab88f8f43f5879ad22a7034ef3d992825e0caa03"
+      "sha256": "fbeaddcdfadeca2ec9a88b08cb28a17bb1a297d3f69a2050f6affa2a9f5c8be6"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
@@ -804,12 +808,16 @@
       "kind": "literal",
       "sites": [
         {
-          "path": "src/crdt/inboundLedger.ts",
-          "line": 78
+          "path": "src/crdt/accountSuccessor.ts",
+          "line": 67
         },
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 93
+          "line": 81
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 96
         },
         {
           "path": "src/crdt/inboundRecord.ts",
@@ -955,7 +963,7 @@
       "sites": [
         {
           "path": "src/crdt/accountStartup.ts",
-          "line": 114
+          "line": 116
         },
         {
           "path": "src/crdt/promotionGenesis.ts",
@@ -1415,11 +1423,11 @@
       "sites": [
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 226
+          "line": 234
         },
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 267
+          "line": 276
         }
       ]
     },

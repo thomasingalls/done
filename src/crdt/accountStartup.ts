@@ -1,8 +1,9 @@
+import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
 import { heldInboundContext, inspectInbound, verifyInboundLedger } from './inboundLedger';
 /** Private Account classification. No writer, network token or retained plaintext escapes this permit. */
 import { inspectDelivery, verifyDelivery } from './deliveryRecord';
 import { inspectSpool, verifySpool, verifySpoolWitness } from './spoolRecord';
-import { capturedRecovery, captureRoute } from './sourceCapture';
+import { capturedRecovery } from './sourceCapture';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import { verifyReceipt, same } from '../../account-protocol/admission';
 import { verifyBindingProof } from '../../account-protocol/slot';
@@ -82,6 +83,7 @@ export async function verifyAccountUnderPermit(
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
   const census = await localCensus(task, claim, options.code);
   if (!same(census.slot, destination)) throw Error('Account index missing or changed');
+  const route = await task.wait(() => heldCaptureRoute(marker));
   await withPromotionRoot(task, claim, record, options.code, async (root, subtle) => {
     const device = await openCredential(scope, root, marker.credentials![0], subtle);
     const key = await openEnvelope(scope, root, record.envelope!, subtle);
@@ -128,8 +130,7 @@ export async function verifyAccountUnderPermit(
         ),
       );
       try {
-        const route = captureRoute(marker);
-        const authority = {
+        const authority = route.history?.current ?? {
           workspace: route.workspace,
           lineage: receipt.offer.epoch.lineageId,
           tip: receipt.offer.epoch.epoch,
@@ -142,7 +143,8 @@ export async function verifyAccountUnderPermit(
                 'verify',
               ])
             : undefined;
-        const inbound = marker.v === 9 ? await heldInboundContext(marker, key, subtle) : undefined;
+        const inbound =
+          marker.v === 9 ? await heldInboundContext(marker, key, subtle, route) : undefined;
         await withRecoveryUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
@@ -151,7 +153,6 @@ export async function verifyAccountUnderPermit(
             const doc = new Y.Doc({ gc: false }),
               checkpoint = new Y.Doc({ gc: false });
             try {
-              const route = captureRoute(marker);
               const spool =
                 marker.v === 9
                   ? inspectInbound(recovered.records, route, inbound!).delivery.spool
@@ -201,6 +202,7 @@ export async function verifyAccountUnderPermit(
                         ? inspectDelivery(records, route, authority).spool
                         : inspectSpool(records, route);
                   await verifySpoolWitness(state, counter, subtle);
+                  await verifyInstalledSuccessor(state, route, marker.successor, subtle);
                   if (marker.v === 9)
                     await verifyInboundLedger(
                       inspectInbound(records, route, inbound!),
@@ -234,6 +236,7 @@ export async function verifyAccountUnderPermit(
     claim,
     record,
     marker,
+    route,
     account: Object.freeze({ ...handoffResult(destination), kind: 'account' as const }),
   };
 }

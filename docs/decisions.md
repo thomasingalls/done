@@ -4009,3 +4009,21 @@ lose pending work. Batch selection respects capture-epoch boundaries, while old 
 and interrupted allocations may use fresh current-epoch seals. Legacy readers remain strict without
 that verified context. Current owner installation/dispatch stays disabled until C2b pays atomic
 persistence, exact local boundary, cold reopen and late-response obligations.
+
+
+## 2026-09-16 — authenticate the client's adoption boundary without replacing genesis
+
+The supported private v9 promotion gains a closed optional successor field containing the full artifact
+and its pre-install local ledger witness. Only markers containing that field extend the existing MAC
+tuple. This preserves original receipt/slot custody evidence and all old marker bytes, while older
+closed parsers refuse the new field. Installation writes only the marker under the existing exclusive
+lifetime after complete prefix and coverage checks; no new key, content write or nonce reset is needed.
+Cold replay verifies the same prefix and exact ledger cut. Historical source capsules are excluded from
+the authority-event cut so an already-acknowledged old journal edit can flush after adoption.
+
+A late old acceptance remains historical evidence in a current-context local record. A receive reply
+bound to a superseded request is transiently discarded and polling resumes under the installed head.
+Invalid adoption or precommit storage refusal cannot be reported as successful adoption or unnecessarily
+close a valid editor. Complete-profile rollback still requires a surviving newer anchor; the marker MAC
+and native transaction do not establish external freshness. HTTP discovery and qualification remain
+separate obligations; no release-validation work resumes through this product phase.
