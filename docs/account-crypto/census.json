@@ -21,7 +21,7 @@
     },
     {
       "path": "account-protocol/admission.ts",
-      "sha256": "efc0620a9cb8b209addbf6238c02e9e4a768016e71138fc4e4ba3757a681973f"
+      "sha256": "c7301adbe5f2f19d7031daba22bfb9b3add10cb7f1617be60850bbc10c52ae00"
     },
     {
       "path": "account-protocol/authority.ts",
@@ -70,6 +70,10 @@
     {
       "path": "account-protocol/submission.ts",
       "sha256": "c87f6e0b24104382bb14aa9629fb25db50b10d0c2b3038008ed5b6ad64453846"
+    },
+    {
+      "path": "account-protocol/successor.ts",
+      "sha256": "605b83f07f1796b194fa53bc2dc7f61a0f6b9199fd9afcc622c753f16221ecc5"
     },
     {
       "path": "account-service/acceptance.ts",
@@ -870,6 +874,36 @@
         {
           "path": "account-service/recovery.ts",
           "line": 49
+        }
+      ]
+    },
+    {
+      "label": "done/admission-successor/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 207
+        }
+      ]
+    },
+    {
+      "label": "done/authority-discovery-request/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 354
+        }
+      ]
+    },
+    {
+      "label": "done/authority-discovery-response/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 358
         }
       ]
     },

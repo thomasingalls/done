@@ -133,7 +133,7 @@ async function coverageDigests(parts: CoverageParts) {
   const { sv, ds } = coverageParts(parts);
   return { sv: await digest(unhex(sv, sv.length / 2)), ds: await digest(unhex(ds, ds.length / 2)) };
 }
-function certification(input: unknown): Certification {
+export function certification(input: unknown): Certification {
   const c = closed(input, ['members', 'recoveryStateDigest', 'approver', 'signature']);
   if (!Array.isArray(c['members']) || c['members'].length !== 1)
     throw Error('Genesis requires one certified client');

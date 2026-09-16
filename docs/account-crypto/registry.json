@@ -306,6 +306,19 @@
         "done/enrollment-preparation-receipt/v1"
       ],
       "note": "Focused backend tests are separate from the paused aggregate campaign."
+    },
+    {
+      "id": "admission-successor",
+      "kind": "Ed25519 admission-only successor and authenticated discovery",
+      "authority": "pinned service root serializes admission; original certified client approval remains recipient authority",
+      "home": "docs/account-crypto/admission-successor.md",
+      "next": "Integrate durable admission and client adoption; qualify the authority-map extension before release.",
+      "labels": [
+        "done/admission-successor/v1",
+        "done/authority-discovery-request/v1",
+        "done/authority-discovery-response/v1"
+      ],
+      "note": "Pure protocol; no live consumption, content grant or delivery-prefix assertion."
     }
   ],
   "templates": [
@@ -393,6 +406,10 @@
     {
       "path": "account-service/enrollment.ts",
       "review": "Bounded retry/request/proof hashes and authority snapshot comparison. Equality checks grant no authority; two verified proofs and a current transactional snapshot precede preparation."
+    },
+    {
+      "path": "account-protocol/successor.ts",
+      "review": "Ordered full-request and carried-certification hashes are commitments under independently verified signed contexts. Pure continuity does not establish live consumption or ledger coverage."
     }
   ]
 }

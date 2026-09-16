@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor admission defined (`L-1`)
+## Product checkpoint: successor protocol complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-scope: admission-only successor bytes and pure verification (phase two, chunk A)
+scope: durable successor admission and service delivery continuity (phase two, chunk B)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -69,12 +69,18 @@ The TRD now states unchanged certification carry-forward and exact parent-envelo
 narrow transition. Historical evidence, current eligibility and client adoption need separate owners.
 The outcome/decision are recorded in [completed.md](./completed.md) and [decisions.md](./decisions.md).
 
-**Next bounded implementation: chunk A.** Freeze the distinct successor and discovery bytes, parsers,
-finite bounds and pure continuity verifier with independent fixtures and effective negatives. Preserve
-first-epoch bytes. [Full phase definition](./account-successor-admission-prep.md).
-Then build B: atomic service/current-authority and delivery continuity; C: supported v9 adoption and
-cold reopen; D: private consumption/discovery integration and focused evidence. Do not expose a head
-advance without compatible service and client consumers. Implementation has not started.
+**Chunk A is complete.** The distinct successor and discovery bytes, closed parsers and pure verifier
+preserve the original certified recipients and enforce retained-head continuity. The pending member
+has no capabilities. Independent fixed vectors, 100 shrinking cases and effective recipient/fork
+omission controls pass. All 32 focused successor/enrollment/first-authority/registry cases pass, plus
+type/lint/format and runtime census checks. [Bytes](./account-crypto/admission-successor.md);
+[evidence](./account-conformance-runs/2026-09-16-admission-successor/README.md).
+
+**Next bounded implementation: chunk B.** Build the atomic service/current-authority owner and creating-
+publisher delivery continuity. Then C: supported v9 adoption and cold reopen; D: private consumption/
+discovery integration and focused evidence. No endpoint advances the head yet; the pure verifier does
+not establish live preparation eligibility, ledger correspondence or installed client state.
+[Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
 key, ciphertext read or accepted publication. Ceremony, delivery/install/certification and multiple-
@@ -82,10 +88,9 @@ publisher sync follow. The ceremony phase must resolve transcript-safe sibling r
 SAS epoch-restart rule. The author's actual old second device adopts the first device's workspace
 without importing its old writing. Ordinary Account entry and deployment remain disabled.
 
-**Qualification remains open.** Phase one's 39 enrollment, 108 affected account/delivery and 12 registry
-checks pass, with type/lint/format and runtime inventory checks. Its new construction still needs
-published-vector/authority-map qualification. This definition ran documentation consistency checks;
-it supplies no new runtime or release-test credit.
+**Qualification remains open.** Preparation and successor/discovery are two open construction groups.
+Their focused evidence supplies no aggregate release credit. First-authority bytes and historical
+qualification stay intact; native adoption and transactional delivery evidence are still owed.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

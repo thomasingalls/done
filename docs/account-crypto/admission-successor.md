@@ -1,0 +1,106 @@
+# Private admission-only successor and discovery bytes
+
+2026-09-16. Phase two, chunk A. **Pure protocol implemented; service consumption and client installation
+are not implemented by this chunk.** [Phase plan](../account-successor-admission-prep.md).
+
+## 1. Construction boundary
+
+`account-protocol/successor.ts` supports exactly one transition from the authenticated FirstEpoch to
+epoch 2. `verifySuccessor` re-verifies the original request/receipt under the caller's independent pin,
+verifies the historical preparation receipt, verifies the new root signature and checks continuity.
+Its result proves a signed admission-only claim. It does **not** prove a preparation remains live,
+has been transactionally consumed, or that its head vector matches the actual delivery ledger.
+Those are service-owner and client-prefix obligations in chunks B/C.
+
+The effective certified set is the original one-client certification, with its original 0-to-1
+approval context. It is copied unchanged and hashed as ordered JSON, matching preparation's digest.
+Neither the new root signature nor the pending roster entry authorizes a new recipient. The creating
+member retains `read,write,admit,manage`; the pending entry has an empty capability list in this first
+private format. Later certification must explicitly establish its capabilities rather than treating
+the admission response as a latent content grant.
+
+`generation` remains 1 and `acceptancePublicKey` remains the first epoch's key. The creating publisher's
+head can be zero or a positive safe integer with its nonzero link; the pending credential has exactly
+position zero/zero link. Both entries are mandatory even before any delivery. Stream and roster IDs
+are sorted strictly ascending by lowercase hexadecimal ID, rejecting duplicates and permutations.
+The original empty genesis vector and all existing first-authority bytes are unchanged.
+
+## 2. Exact messages and ordering
+
+`J` is compact JSON with property order reconstructed by the closed parsers. Nested properties are
+reconstructed too; array order remains significant. Numbers are nonnegative safe integers; version,
+epoch, generation and certification-context values below are exact literals. Existing canonical
+hex, account base64url IDs, pin and preparation parsers are reused. No extension fields are allowed.
+The exported first-certification parser is the original function, with its behavior unchanged.
+
+`H` is SHA-256, encoded as 32-byte lowercase hex. `LP` is the existing u16-length-prefixed UTF-8
+encoding. Hashing JSON before LP avoids introducing a 65,535-byte signed-body ambiguity.
+
+| Object | Ordered fields |
+| --- | --- |
+| Epoch | `v:1, kind:"device-admission-epoch", pin, requestDigest, accountId, principalId, workspaceId, lineageId, epoch:2, parent, generation:1, acceptancePublicKey, preparation, certified, roster, heads` |
+| Certified carry-forward | `parentEpoch:0, nextEpoch:1, digest, value` — `value` uses the existing first-certification order |
+| Roster entry | `id, wPub, sPub, principalId, state, capabilities` — exactly one `certified` and the exact prepared `pending` candidate |
+| Stream head | `credentialId, position, link` |
+| Successor artifact | `v:1, kind:"device-admission-successor", epoch, head, signature` |
+| Discovery request | `v:1, kind:"authority-discovery-request", pin, workspaceId, lineageId, credentialId, epoch, head, nonce, expiresAt, signature` |
+| Discovery response | `v:1, kind:"authority-discovery-response", requestHash, successor, signature` — `successor` is null or the full artifact |
+
+The epoch's `preparation` is the full recursively parsed
+[preparation receipt](./enrollment-preparation.md), including its signature. The pin, request digest,
+account/principal/workspace/lineage, parent head, unchanged acceptance key, original certification,
+preparation context and exact roster must agree with the verified first authority. The preparation's
+passkey ID must match the original activation; multiple account passkeys are not introduced here.
+
+| Purpose | Message | Signer / commitment |
+| --- | --- | --- |
+| `done/admission-successor/v1` | `LP(purpose, H(J(epoch)))` | Pinned `K_auth`; successor `head = H(message)` |
+| `done/authority-discovery-request/v1` | `LP(purpose, H(J(request without signature)))` | Creating member's certified Ed25519 key |
+| `done/authority-discovery-response/v1` | `LP(purpose, H(J(response without signature)))` | Pinned `K_auth` |
+
+The outer successor kind/version are fixed. Its head is independently recomputed from the signed
+epoch message; its signature is over that message, not the head text. Response `requestHash` hashes
+the **complete** canonical request including its signature. A response cannot choose a request or
+nonce for its verifier. Hashes are commitments within authenticated contexts, not independent grants.
+
+Finite JSON input limits are 24 KiB for an epoch/artifact, 4 KiB for discovery requests and 32 KiB
+for responses. Parsing checks size before walking the closed object. A transport must bound incoming
+bytes before JSON parsing too. No new binary transport encoding is defined in this chunk.
+
+## 3. Historical continuity and discovery
+
+A caller supplies its independently retained `{epoch,head}`. From epoch 1 the successor must extend
+that exact verified genesis head. At epoch 2 only the identical successor is accepted; a signed sibling
+is still a fork. The helper cannot know whether the caller supplied an obsolete local anchor; the
+eventual lifecycle owner must recheck the actual retained head before committing any result.
+
+Discovery proves possession of the creating credential and binds its independently pinned service,
+workspace/lineage, retained epoch/head, fresh 32-byte nonce and expiry. Its lifetime is at most 60 seconds:
+`now < expiresAt <= now + 60000`. This private online read uses the caller's clock; it is not the
+clock-independent lost-device recovery assertion. An empty signed response can preserve epoch 1 but
+cannot roll back a request anchored at epoch 2. A request from epoch 1 may discover epoch 2; a request
+at epoch 2 must match the verified current successor. Pending candidates cannot make these requests.
+
+Both verifiers capture all caller-owned inputs before the first crypto await. Successful outputs are
+detached and recursively frozen. Neither helper owns time after that captured verification instant,
+storage, cancellation or a lifecycle permit. Service/client callers must recheck their live conditions
+after asynchronous verification and at commit. A nonce-bound response supplies no progress through a
+withholding relay and cannot detect an entirely rolled-back server when the client has no newer anchor.
+
+## 4. Evidence and remaining qualification
+
+`test/vectors/account-successor.json` contains public fixed test seeds, the independently generated
+genesis context, preparation, successor, discovery request/response and every new purpose's ordered
+JSON, hash and message bytes. `test/account-successor/oracle.mjs` uses Node crypto and independent
+construction code, without production encoders. The focused command is `pnpm account:successor`.
+
+Tests compare all intermediates and exercise every successor leaf, signed incompatible changes,
+strict parsing/stream bounds, creating-device discovery, nonce/expiry, ancestor and sibling rejection,
+input capture and immutable outputs. One hundred shrinking generated cases vary stream anchors and
+recursive object ordering. Copied-production omission controls positively accept an independently
+root-signed forbidden recipient change or fork only when the corresponding guard is removed.
+
+The construction inventory records this extension as **open**. These fixed vectors and focused checks
+do not close authority-map qualification, service commit races, accepted-prefix correspondence or
+native client adoption. Historical release qualification remains historical; the aggregate campaign
+and its frozen inventories remain paused.

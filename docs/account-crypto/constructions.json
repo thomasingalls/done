@@ -4974,6 +4974,68 @@
       ],
       "blocker": "Private product implementation has focused evidence; full published vector/authority-map qualification for these new domains is not yet complete.",
       "next": "Qualify these enrollment domains alongside the successor-admission contract before a release campaign resumes."
+    },
+    {
+      "id": "admission-successor",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": ["signature", "digest"],
+      "signer": null,
+      "labels": [
+        "done/admission-successor/v1",
+        "done/authority-discovery-request/v1",
+        "done/authority-discovery-response/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 207,
+          "label": "done/admission-successor/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 354,
+          "label": "done/authority-discovery-request/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/successor.ts",
+          "line": 358,
+          "label": "done/authority-discovery-response/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/successor.ts",
+          "name": "successorMessage"
+        },
+        {
+          "path": "account-protocol/successor.ts",
+          "name": "discoveryRequestMessage"
+        },
+        {
+          "path": "account-protocol/successor.ts",
+          "name": "discoveryResponseMessage"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-successor/protocol.test.mjs",
+        "test/account-successor/controls.test.mjs"
+      ],
+      "requirements": [
+        "closed-bounded-wire",
+        "independent-runtime-bytes",
+        "certified-set-carry-forward",
+        "retained-head-continuity",
+        "separate-historical-and-current-authority"
+      ],
+      "blocker": "Pure protocol has fixed independent vectors and focused controls; authority-map qualification and service/client integration remain open.",
+      "next": "Implement atomic consumption, delivery continuity and client adoption; qualify new domains before release."
     }
   ],
   "additionalCorpora": [

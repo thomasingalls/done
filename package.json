@@ -127,7 +127,8 @@
     "account:admission-evidence": "node scripts/account-admission-evidence/run.mjs",
     "account:residue": "node scripts/account-residue/run.mjs",
     "account:liveness": "node scripts/account-liveness/run.mjs",
-    "validation:inventory": "node scripts/release-validation/check.mjs && node --test test/release-validation/inventory.test.mjs"
+    "validation:inventory": "node scripts/release-validation/check.mjs && node --test test/release-validation/inventory.test.mjs",
+    "account:successor": "node --test --test-timeout=30000 test/account-successor/*.test.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

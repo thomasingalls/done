@@ -9089,3 +9089,26 @@ generated histories, cross-process/crash boundaries, native client recovery and 
 controls. This is a documentation/preparation outcome; no runtime implementation or product test run
 is claimed. Documentation links, append-only record prefixes, whitespace and the unchanged L-2 suffix
 are checked. Release validation, frozen inventories and personal devices/services remain untouched.
+
+
+## 2026-09-16 — Admission-only successor protocol, chunk A
+
+After signed definition `be541c3e`, implement the pure epoch-1-to-2 successor and creating-device
+discovery formats/verifiers. Root-signed admission preserves the original certified object and key
+authority, admits one exact prepared candidate with no capabilities, and requires complete sorted
+stream coverage with an explicit empty candidate chain. Retained epoch-two anchors reject signed
+siblings and genesis responses. Independently pinned root, creating signer, preparation signature and
+original client approval remain distinct; caller inputs are captured before awaits and outputs frozen.
+
+Publish independent fixed inputs/intermediates and the exact byte/bounds/API contract. The shared
+first-certification parser only gains an export; old signed first-epoch bytes remain unchanged.
+Pass 32 focused cases: 10 successor, four enrollment protocol, six first-authority formats and 12
+registry. Include 100 shrinking generated cases and effective recipient/fork omission controls.
+An initial control failed to locate its formatted guard; fix the whitespace-sensitive anchor and
+retain the failure. Typecheck, scoped lint/format and runtime inventory checks pass.
+
+Register the three new purposes as a second open qualification group; no inherited closure claim.
+Next is chunk B: atomic current authority, live preparation consumption and delivery continuity.
+No endpoint, application activation, client install, personal device or release campaign is included.
+[Bytes](./account-crypto/admission-successor.md);
+[evidence](./account-conformance-runs/2026-09-16-admission-successor/README.md).
