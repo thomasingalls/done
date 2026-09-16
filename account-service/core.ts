@@ -1,3 +1,4 @@
+import { admitPrepared, type SuccessorIssuer } from './successor.ts';
 import {
   EnrollmentPreparation,
   ENROLLMENT_SCHEMA,
@@ -139,6 +140,7 @@ export class AccountCore {
       upgradeFromV3?: boolean;
       upgradeFromV4?: boolean;
       upgradeFromV5?: boolean;
+      upgradeFromV6?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -174,7 +176,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 6 &&
+        version !== 7 &&
+        !(version === 6 && instrumentation.upgradeFromV6) &&
         !(version === 5 && instrumentation.upgradeFromV5) &&
         !(version === 4 && instrumentation.upgradeFromV4) &&
         !(version === 3 && instrumentation.upgradeFromV3) &&
@@ -218,6 +221,13 @@ export class AccountCore {
         this.#db.exec(ENROLLMENT_SCHEMA);
         this.#db.exec('PRAGMA user_version=6;');
       }
+      if (version < 7) {
+        this.#db.exec(`ALTER TABLE promotions ADD COLUMN successor_head TEXT;
+          CREATE TABLE workspace_successors (
+            workspace_id TEXT PRIMARY KEY, preparation_id TEXT UNIQUE NOT NULL,
+            artifact TEXT NOT NULL, boundary_witness TEXT);
+          PRAGMA user_version=7;`);
+      }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
         canonical(this.#policy)
@@ -229,6 +239,18 @@ export class AccountCore {
       this.#db.close();
       throw error;
     }
+  }
+
+  admitPrepared(input: unknown, issuer: SuccessorIssuer) {
+    return admitPrepared(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+      this.#diagnostics.record,
+    );
   }
 
   enrollment(operation: EnrollmentOperation, input: unknown, issuer: EnrollmentIssuer) {

@@ -410,6 +410,10 @@
     {
       "path": "account-protocol/successor.ts",
       "review": "Ordered full-request and carried-certification hashes are commitments under independently verified signed contexts. Pure continuity does not establish live consumption or ledger coverage."
+    },
+    {
+      "path": "account-service/successor.ts",
+      "review": "Atomic preparation consumption and delivery-boundary ownership. Full row/authority/delivery comparison and current eligibility precede commit; signed historical artifacts alone cannot consume an operation."
     }
   ]
 }

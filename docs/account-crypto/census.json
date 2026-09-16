@@ -33,11 +33,11 @@
     },
     {
       "path": "account-protocol/diagnostics.ts",
-      "sha256": "bd16e39c08b32ca4d21d2bfc7d75a93903c23451c810aa7a479059533badd2b8"
+      "sha256": "a9ef89b856f755eddc3e02166615bc513a26481158c956ac98f93fda7728fa5e"
     },
     {
       "path": "account-protocol/enrollment.ts",
-      "sha256": "542f20036703a1ae64c3f19e77d0fe724d630b7104913102a4f59c878c24b033"
+      "sha256": "1e1927c666b9f00400b90116f3bd8f59dc29f351a23832bd5a3df666782d11ed"
     },
     {
       "path": "account-protocol/envelope.ts",
@@ -81,15 +81,15 @@
     },
     {
       "path": "account-service/authority.ts",
-      "sha256": "acc7a444c48e0102983bc88feb5fa8f13a4679242d66d28288606d8f8c4aa3d8"
+      "sha256": "5a7883441a7b74d3cba7bbdd76b8315b99b9b631d636286fed394525e8b63ff4"
     },
     {
       "path": "account-service/core.ts",
-      "sha256": "454be1ab1c673ac0b86cfe2c8036ef840c46ad2d387c99168ce9c8f519839818"
+      "sha256": "a82e7a0d55ed877f3caee39ea3572546361b605d971b07a3b40d28c1ef69cf2e"
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "31ffcf62abe9e4029dadd63a2cbfc2ba70cfe5a78138e034b67f5056b8a8e51c"
+      "sha256": "ff623fe966136ae6df295ce824ac0bed8605ba61568d282b436cf2372f8d77fc"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -101,7 +101,7 @@
     },
     {
       "path": "account-service/enrollment.ts",
-      "sha256": "b988408349be7922538be63a7b06e40b12cac60e1f8e2f688ff80d291b84660f"
+      "sha256": "a86073df3f93d7eb52fad41a0fe3282067b28405d76147300841ca68c94da830"
     },
     {
       "path": "account-service/keyEncoding.ts",
@@ -122,6 +122,10 @@
     {
       "path": "account-service/recovery.ts",
       "sha256": "73d300d781fcb09f3f15eadd2b58424f8517c171db6c601dff0ac809d33d605e"
+    },
+    {
+      "path": "account-service/successor.ts",
+      "sha256": "3287d5e6acab53f3b9ad986801e92f1b2113ee66a6e1843fed17bbab4a4e94c8"
     },
     {
       "path": "account-service/webauthn.ts",
@@ -1075,7 +1079,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 198
+          "line": 204
         }
       ]
     },
@@ -1085,7 +1089,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 189
+          "line": 195
         }
       ]
     },
@@ -1095,7 +1099,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 191
+          "line": 197
         }
       ]
     },
@@ -1105,7 +1109,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 194
+          "line": 200
         }
       ]
     },
@@ -1669,7 +1673,7 @@
       "sites": [
         {
           "path": "account-service/authority.ts",
-          "line": 58
+          "line": 60
         }
       ]
     },
@@ -1679,7 +1683,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 323
+          "line": 374
         }
       ]
     },

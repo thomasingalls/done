@@ -1,7 +1,7 @@
 # Private admission-only successor and discovery bytes
 
-2026-09-16. Phase two, chunk A. **Pure protocol implemented; service consumption and client installation
-are not implemented by this chunk.** [Phase plan](../account-successor-admission-prep.md).
+2026-09-16. Phase two, chunks A/B. **Pure protocol and private service owner implemented; client
+installation and HTTP integration remain.** [Phase plan](../account-successor-admission-prep.md).
 
 ## 1. Construction boundary
 
@@ -104,3 +104,48 @@ The construction inventory records this extension as **open**. These fixed vecto
 do not close authority-map qualification, service commit races, accepted-prefix correspondence or
 native client adoption. Historical release qualification remains historical; the aggregate campaign
 and its frozen inventories remain paused.
+
+## 5. Durable service consumption and delivery (chunk B)
+
+`PrivateAuthority.admitPrepared(core, {retryKey,attemptId,receiptId})` is an internal, fixed-purpose
+composition method. There is no HTTP route for it yet. Input is closed and bounded to 4 KiB. It returns
+the exact signed successor artifact or a closed `SuccessorRefusal` value; only the signed artifact is
+historical admission evidence. The caller's saved capability is still required for retries.
+
+Schema 7 adds `promotions.successor_head` and `workspace_successors`, with unique workspace and
+preparation identities. A null pointer plus no successor row denotes untouched genesis. Either half
+missing or a mismatched artifact refuses; there is no fallback. The successor row carries its full
+artifact and the prior delivery witness (null only for the empty ledger). Existing schema 6 requires
+explicit `upgradeFromV6`; earlier explicit upgrade paths remain. The genesis preparation comparison
+token preserves its schema-6 shape, so upgrading does not invalidate an otherwise live preparation.
+
+The owner verifies the original and current authority, historical challenge/receipt, exact preparation
+row and full delivery census outside a write transaction. It constructs and signs the successor, then
+rechecks the preparation row, passkey/authority token and complete delivery snapshot in `BEGIN
+IMMEDIATE`. Ordinary delivery forces a fresh snapshot/vector, at most four attempts; it does not
+expire the account proof. Changed parent, cancellation and expiry refuse. Expiry and open custody are
+checked again immediately before commit, after synchronous witness signing and the commit hook.
+
+The same transaction inserts the successor, changes the pointer and re-signs the full current delivery
+witness under the new head scope. The saved old witness authenticates the exact ledger boundary,
+including refusals that do not advance accepted position. Census checks the old witness and the
+successor's accepted position/link at that boundary, verifies earlier accepted heads under epoch 1
+and later heads under epoch 2, and checks the complete current witness. The root-signed stream vector
+alone would not establish refusal-history completeness. Boundary-witness text is limited to 1 KiB.
+
+The successor row is the consumption record. The preparation row remains immutable `prepared` history;
+`resume`, exact `finish`/`begin` retries and post-consumption `cancel` report unsigned stage `admitted`.
+They cannot undo admission. Repeating `admitPrepared` returns the identical artifact after its original
+preparation deadline. A sibling preparation becomes stale and cannot consume the committed parent.
+
+Only the original certified publisher/reader is resolved. Submission checks use the verified envelope's
+mint epoch for its signature/refusal-parent relationship and current compatible eligibility for new
+acceptance. Epoch-1 pending bytes, including an already-sealed refusal successor, remain exact. New
+acceptances name epoch 2; old decision retries retain their original bytes. Both read transports use
+the current head and return mixed historical proofs unchanged. Candidate read/write attempts refuse.
+
+None of this installs current authority in a browser. Until chunk C owns adoption and recovery, existing
+v9 clients cannot use the new head; until chunk D, there is no private HTTP activation path either.
+Service tests use disposable SQLite databases and synthetic encrypted envelopes, not a browser/Yjs
+convergence claim. A self-consistent rollback of all service state still needs a surviving client anchor
+to detect it. Process SIGKILL evidence is not a claim about whole-machine power loss.

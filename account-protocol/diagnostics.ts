@@ -72,6 +72,7 @@ export const DIAGNOSTIC_OPERATIONS = [
   'promotion-finish',
   'account-transaction',
   'enrollment',
+  'successor',
   'http',
 ] as const;
 export const DIAGNOSTIC_PHASES = [

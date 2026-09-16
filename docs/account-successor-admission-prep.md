@@ -1,6 +1,6 @@
 # Backend phase two: successor admission without interrupting the existing writer
 
-2026-09-16. Defined against signed `d015210e`. **Chunk A complete; B/C/D remain.**
+2026-09-16. Defined against signed `d015210e`. **Chunks A/B complete; C/D remain.**
 Release validation remains paused. This is the next phase after
 [authenticated enrollment preparation](./account-enrollment-prep.md), not the complete second-device flow.
 
@@ -191,7 +191,7 @@ report sync blocked rather than reporting enrollment/sync completion.
 | Chunk | Result | Exit evidence |
 | --- | --- | --- |
 | A — complete | Pure admission-only successor types, exact byte contract, carry-forward and ancestry verifier. No endpoint advances a live head. | Independent fixtures; per-field and per-signature substitutions; unchanged first-epoch fixtures; zero/omitted/duplicate stream cases; hostile service adding itself to recipients refused. New crypto constructions remain open until qualified. |
-| B | Durable current-authority service owner and creating-publisher delivery across the transition, initially exercised by disposable fixtures. | Atomic head-vector capture; historical read/retry; exact old-envelope acceptance and new-epoch continuation; concurrent delivery/admission; cancellation, restart and lost replies. No new publisher or content-key delivery. |
+| B — complete | Durable current-authority service owner and creating-publisher delivery across the transition, exercised by disposable fixtures. | Atomic head-vector capture; historical read/retry; exact old-envelope acceptance and new-epoch continuation; concurrent delivery/admission; cancellation, restart and lost replies. No new publisher or content-key delivery. |
 | C | Supported v9 owner adopts/reopens the successor and resumes both delivery lanes. | Native tests with local edits, an exact retained outbound, a lost accepted reply, in-flight receive and a cold restart on each side of installation. Source content, counters and prefixes agree after convergence. |
 | D | Enable private preparation consumption/discovery only with both owners integrated; retain focused evidence and checkpoint. | Through the real private adapter, prepare/admit/reconnect the creating client, continue writing and refuse the candidate's read/write/key requests. No ordinary application activation. |
 
@@ -242,3 +242,17 @@ capabilities. Actual live consumption, ledger correspondence and installation re
 [Exact bytes](./account-crypto/admission-successor.md);
 [32 passing focused tests and evidence](./account-conformance-runs/2026-09-16-admission-successor/README.md).
 Next: chunk B, durable service current authority and creating-publisher delivery continuity.
+
+## Chunk B outcome
+
+The internal service owner consumes exact live preparation, commits one successor/current pointer and
+delivery witness together, and returns the immutable artifact on retry. It retains the prior ledger
+witness at the transition boundary, including refused events, and verifies historical decisions under
+their issuance epochs. Exact old envelopes and refusal successors can continue; only the creating
+publisher/reader is eligible. Schema 7 is explicit; post-consumption preparation views say `admitted`.
+
+Pass 198 focused Node and two diagnostics cases, including 29 new service cases with 60 shrinking
+histories, four SIGKILL boundaries, three cross-process races and two effective omission controls.
+[Service byte/storage contract](./account-crypto/admission-successor.md#5-durable-service-consumption-and-delivery-chunk-b);
+[evidence](./account-conformance-runs/2026-09-16-successor-service/README.md).
+The HTTP route remains disabled. Next: chunk C, supported v9 client adoption and cold reopen.

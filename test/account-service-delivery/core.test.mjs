@@ -153,7 +153,7 @@ test('schema 3 upgrade preserves historical rows but cannot invent fresh activat
       .map(({ delivery_witness: _witness, activation: _activation, ...r }) => r);
   mutate(x, (db) =>
     db.exec(
-      'DROP TABLE delivery_decisions; ALTER TABLE promotions DROP COLUMN delivery_witness; ALTER TABLE promotions DROP COLUMN activation; PRAGMA user_version=3;',
+      'DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; DROP TABLE delivery_decisions; ALTER TABLE promotions DROP COLUMN delivery_witness; ALTER TABLE promotions DROP COLUMN activation; PRAGMA user_version=3;',
     ),
   );
   assert.throws(

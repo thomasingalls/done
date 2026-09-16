@@ -187,7 +187,9 @@ for (const operation of ['offer-promotion', 'admit-promotion'])
 test('schema 2 upgrade is explicit and preserves all prior rows', async (t) => {
   const x = await prepared(t);
   const db = new DatabaseSync(x.f.path);
-  db.exec('DROP TABLE delivery_decisions; DROP TABLE promotions; PRAGMA user_version=2;');
+  db.exec(
+    'DROP TABLE workspace_successors; DROP TABLE delivery_decisions; DROP TABLE promotions; PRAGMA user_version=2;',
+  );
   const before = db.prepare('SELECT * FROM accounts').all();
   db.close();
   assert.throws(

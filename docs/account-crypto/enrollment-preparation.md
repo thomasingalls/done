@@ -68,9 +68,9 @@ The bearer is only the private adapter gate; it cannot replace either proof.
 | `finish` | `{retryKey, attemptId, response, possession}` |
 | `resume` / `cancel` | `{retryKey}` |
 
-Success is `{ok:true, stage, challenge, receipt}`. Stage is `challenge`, `prepared`, `cancelled`,
+Success is `{ok:true, stage, challenge, receipt}`. Stage is `challenge`, `prepared`, `admitted`, `cancelled`,
 `expired` or `stale`; receipt is null until successful preparation, and then retained through terminal
-states. A `challenge` stage cannot carry a receipt; `prepared` requires one; both embedded contexts
+states. A `challenge` stage cannot carry a receipt; `prepared` and `admitted` require one; both embedded contexts
 must agree. Refusal is `{ok:false, refusal}` with the closed vocabulary in `enrollment.ts`.
 
 Request bodies, including direct core calls, are at most 131,072 bytes. Results are at most 16,384 bytes.
@@ -78,6 +78,11 @@ Schema 6 adds `enrollment_preparations` and a unique workspace/candidate index f
 rows. New files create it; an existing schema-5 file requires explicit `upgradeFromV5`. Existing older
 explicit upgrade paths remain unchanged in purpose. No implicit repair, rekey or authority conversion
 is performed. The private additive upgrade creates no preparation history.
+
+The subsequent [successor owner](./admission-successor.md#5-durable-service-consumption-and-delivery-chunk-b)
+uses schema 7 and an explicit `upgradeFromV6`. It preserves live genesis preparation tokens across that
+upgrade. Its unique successor record consumes preparation; post-consumption views report `admitted`
+without changing the immutable preparation receipt or letting cancellation revoke the successor.
 
 There are at most **64 retained requests per workspace and 4,096 globally**, including terminal rows.
 There is no automatic pruning in this phase; capacity returns a typed refusal. These finite bounds are

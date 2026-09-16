@@ -47,7 +47,13 @@ export interface EnrollmentReceipt {
   possessionHash: string;
   signature: string;
 }
-export type EnrollmentStage = 'challenge' | 'prepared' | 'cancelled' | 'expired' | 'stale';
+export type EnrollmentStage =
+  | 'challenge'
+  | 'prepared'
+  | 'admitted'
+  | 'cancelled'
+  | 'expired'
+  | 'stale';
 export type EnrollmentRefusal =
   | 'malformed'
   | 'unknown-attempt'
@@ -306,13 +312,15 @@ export function parseEnrollmentResult(input: unknown): EnrollmentResult {
   const r = closed(input, ['ok', 'stage', 'challenge', 'receipt']);
   if (
     r['ok'] !== true ||
-    !['challenge', 'prepared', 'cancelled', 'expired', 'stale'].includes(r['stage'] as string)
+    !['challenge', 'prepared', 'admitted', 'cancelled', 'expired', 'stale'].includes(
+      r['stage'] as string,
+    )
   )
     throw Error('Unknown enrollment stage');
   const challenge = parseEnrollmentChallenge(r['challenge']),
     receipt = r['receipt'] === null ? null : parseEnrollmentReceipt(r['receipt']);
   if (
-    (r['stage'] === 'prepared' && !receipt) ||
+    (['prepared', 'admitted'].includes(r['stage'] as string) && !receipt) ||
     (r['stage'] === 'challenge' && receipt) ||
     (receipt &&
       enrollmentContextBytes(receipt.context) !== enrollmentContextBytes(challenge.context))

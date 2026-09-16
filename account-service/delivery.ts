@@ -5,6 +5,11 @@ import {
   type DiagnosticSink,
 } from '../account-protocol/diagnostics.ts';
 import type { DeliveryVerification } from './deliveryVerification.ts';
+import {
+  verifySuccessor,
+  SUCCESSOR_LIMIT,
+  type AdmissionSuccessor,
+} from '../account-protocol/successor.ts';
 import { parseRetainedActivation } from '../account-protocol/activation.ts';
 /** Private first-lineage service decisions and authenticated readback. No content decryption. */
 import {
@@ -117,6 +122,13 @@ interface Promotion {
   state: string;
   delivery_witness: string | null;
   activation: string | null;
+  successor_head: string | null;
+}
+export interface SuccessorRow {
+  workspace_id: string;
+  preparation_id: string;
+  artifact: string;
+  boundary_witness: string | null;
 }
 export interface WorkspaceAuthoritySnapshot {
   promotion: Promotion;
@@ -124,8 +136,9 @@ export interface WorkspaceAuthoritySnapshot {
   credential: { id: string; state: string };
   recovery: { attempt_id: string; state: string; draft: string; result: string | null };
   attempt: { id: string; account_id: string; mode: string; state: string; result: string | null };
+  successor: SuccessorRow | null;
 }
-interface Snapshot extends WorkspaceAuthoritySnapshot {
+export interface Snapshot extends WorkspaceAuthoritySnapshot {
   rows: DecisionRow[];
 }
 /** Caller owns a read or write transaction for a coherent authority snapshot. */
@@ -181,9 +194,15 @@ export function snapshotWorkspaceAuthority(
     registration['credentialId'] !== credential.id
   )
     return null;
-  return { promotion, account, credential, recovery, attempt };
+  const successor =
+    (db
+      .prepare('SELECT * FROM workspace_successors WHERE workspace_id=?')
+      .get(workspace) as unknown as SuccessorRow | undefined) ?? null;
+  if ((promotion.successor_head === null) !== (successor === null))
+    throw Error('Incomplete current authority');
+  return { promotion, account, credential, recovery, attempt, successor };
 }
-function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+export function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
   const base = snapshotWorkspaceAuthority(db, workspace);
   if (!base) return null;
   const rows = db
@@ -191,7 +210,7 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
     .all(base.account.id) as unknown as DecisionRow[];
   return { ...base, rows };
 }
-function snapshotBytes(s: Snapshot | null): string {
+export function snapshotBytes(s: Snapshot | null): string {
   if (!s) return 'null';
   return JSON.stringify({
     ...s,
@@ -202,7 +221,7 @@ function snapshotBytes(s: Snapshot | null): string {
     })),
   });
 }
-function read(db: DatabaseSync, workspace: string) {
+export function read(db: DatabaseSync, workspace: string) {
   db.exec('BEGIN');
   try {
     const s = snapshot(db, workspace);
@@ -259,13 +278,35 @@ export async function verifyWorkspaceAuthority(
   const key = await crypto.subtle.importKey('raw', unhex(member.sPub, 32), 'Ed25519', false, [
     'verify',
   ]);
-  const a: DecisionAuthority = {
+  const firstA: DecisionAuthority = {
     workspace: p.workspace_id,
     lineage: p.lineage_id,
     head: receipt.offer.head,
     tip: epoch.epoch,
     acceptanceKey: epoch.acceptancePublicKey,
   };
+  let successor: AdmissionSuccessor | null = null;
+  if (s.successor) {
+    if (Buffer.byteLength(s.successor.artifact) > SUCCESSOR_LIMIT)
+      throw Error('Oversized retained successor');
+    if (
+      s.successor.boundary_witness !== null &&
+      Buffer.byteLength(s.successor.boundary_witness) > 1024
+    )
+      throw Error('Oversized retained boundary witness');
+    successor = await verifySuccessor(
+      JSON.parse(s.successor.artifact),
+      { pin: issuer.pin, request, receipt },
+      { epoch: 1, head: firstA.head },
+    );
+    if (
+      s.successor.workspace_id !== p.workspace_id ||
+      successor.head !== p.successor_head ||
+      successor.epoch.preparation.context.attemptId !== s.successor.preparation_id
+    )
+      throw Error('Current authority pointer changed');
+  }
+  const a = successor ? { ...firstA, tip: 2, head: successor.head } : firstA;
   const scope: WitnessScope = {
     workspace: a.workspace,
     credential: member.id,
@@ -282,14 +323,24 @@ export async function verifyWorkspaceAuthority(
     credential: member.id,
     members: [{ id: member.id, key }],
     certification: request.certification,
+    firstA,
+    successor,
+    boundaryWitness: s.successor?.boundary_witness
+      ? parseWitness(JSON.parse(s.successor.boundary_witness))
+      : null,
+    request,
+    receipt,
   };
 }
 const authority = verifyWorkspaceAuthority;
 type Authority = Awaited<ReturnType<typeof authority>>;
-async function verifyWire(bytes: Bytes, auth: Authority) {
+async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) {
   const decoded = decodeSubmission(bytes),
     e = decodeNetworkEnvelope(decoded.envelope);
-  if (e.epoch !== auth.a.tip) throw Error('Unsupported epoch');
+  if (e.epoch < 1 || e.epoch > maxEpoch) throw Error('Unsupported epoch');
+  // Only this verified admission-only transition preserves old-envelope eligibility.
+  // A refusal successor is checked at its own mint epoch before current eligibility.
+  const mintAuthority = e.epoch === 1 ? auth.firstA : auth.a;
   // The signed declared generation is checked as policy only after signature verification.
   const submission = await verifySubmission(
     bytes,
@@ -297,11 +348,11 @@ async function verifyWire(bytes: Bytes, auth: Authority) {
       v: 2,
       workspace_id: auth.a.workspace,
       credential_id: auth.credential,
-      epoch: auth.a.tip,
+      epoch: e.epoch,
       gen: e.gen,
     },
     auth.key,
-    auth.a,
+    mintAuthority,
   );
   return {
     submission,
@@ -355,7 +406,7 @@ async function verifyLedgerWitness(
   }
   if (commitment !== (witness?.hash ?? ZERO_LEDGER)) throw Error('Delivery ledger commitment');
 }
-async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
+export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
   let count = 0,
     commitment = ZERO_LEDGER,
     through = 0,
@@ -371,23 +422,40 @@ async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification
   // Authority freshly authenticates scope.request (the complete request digest) on every request.
   // Bind generation and predecessor too; SQL columns, ordering, parent issuance and witness replay.
   const scope = JSON.stringify([auth.a, auth.scope, auth.generation]);
+  const boundaryCount = auth.boundaryWitness?.events ?? 0;
+  let checkedBoundary = !auth.successor;
+  const checkBoundary = async () => {
+    if (!auth.successor || count !== boundaryCount) return;
+    const expected = auth.successor.epoch.heads.find((v) => v.credentialId === auth.credential)!;
+    if (expected.position !== through || expected.link !== previous)
+      throw Error('Successor accepted prefix changed');
+    await verifyLedgerWitness(
+      auth.boundaryWitness,
+      { ...auth, a: auth.firstA, scope: { ...auth.scope, head: auth.firstA.head } },
+      count,
+      commitment,
+    );
+    checkedBoundary = true;
+  };
+  await checkBoundary();
   for (const row of s.rows) {
     const bytes = new Uint8Array(row.submission),
       response = new Uint8Array(row.response),
       before = previous;
     const verify = async () => {
-      const opened = await verifyWire(bytes, auth);
+      const issuance = auth.successor && row.ordinal <= boundaryCount ? auth.firstA : auth.a;
+      const opened = await verifyWire(bytes, auth, issuance.tip);
       const proof = await verifyPositionResponse(
         response,
         { ...opened.subject, previous: before, parent: opened.submission.parentId },
-        auth.a,
+        issuance,
       );
       return { ...opened, proof };
     };
     const { e, submission, subject, proof } = reuse
       ? await reuse.check(
           s.account.id + ':' + row.ordinal,
-          scope + ':' + previous,
+          scope + ':' + boundaryCount + ':' + previous,
           [bytes, response],
           verify,
         )
@@ -432,7 +500,9 @@ async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification
     } else throw Error('Unknown service decision');
     count++;
     commitment = extend(commitment, count, bytes, response);
+    await checkBoundary();
   }
+  if (!checkedBoundary) throw Error('Missing successor boundary');
   await verifyLedgerWitness(witness, auth, count, commitment);
   return { count, commitment, through, previous, accepted, refused, issued, closedPositions };
 }
@@ -482,7 +552,7 @@ export async function decideSubmission(
       return unknown('unavailable');
     }
     const envelope = decodeNetworkEnvelope(decodeSubmission(bytes).envelope);
-    if (envelope.epoch !== auth.a.tip) return unknown('unsupported-epoch');
+    if (envelope.epoch < 1 || envelope.epoch > auth.a.tip) return unknown('unsupported-epoch');
     let verified: Awaited<ReturnType<typeof verifyWire>>;
     try {
       verified = await verifyWire(bytes, auth);
@@ -739,7 +809,7 @@ export async function readInbound(
         request.lineage !== auth.a.lineage ||
         request.head !== auth.a.head ||
         request.epoch !== auth.a.tip ||
-        auth.a.tip !== 1 ||
+        ![1, 2].includes(auth.a.tip) ||
         auth.generation !== 1 ||
         !live() ||
         !(await crypto.subtle.verify(

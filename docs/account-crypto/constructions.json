@@ -856,7 +856,7 @@
       "sourceSites": [
         {
           "path": "account-service/authority.ts",
-          "line": 58,
+          "line": 60,
           "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
@@ -2323,7 +2323,7 @@
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 323,
+          "line": 374,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -4916,25 +4916,25 @@
       "sourceSites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 198,
+          "line": 204,
           "label": "done/enrollment-preparation-assertion/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 189,
+          "line": 195,
           "label": "done/enrollment-preparation-challenge/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 191,
+          "line": 197,
           "label": "done/enrollment-preparation-possession/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 194,
+          "line": 200,
           "label": "done/enrollment-preparation-receipt/v1",
           "kind": "literal"
         }
@@ -5018,6 +5018,10 @@
         {
           "path": "account-protocol/successor.ts",
           "name": "discoveryResponseMessage"
+        },
+        {
+          "path": "account-service/successor.ts",
+          "name": "admitPrepared"
         }
       ],
       "homePins": [],
@@ -5025,17 +5029,25 @@
       "vectorCases": [],
       "tests": [
         "test/account-successor/protocol.test.mjs",
-        "test/account-successor/controls.test.mjs"
+        "test/account-successor/controls.test.mjs",
+        "test/account-successor/service.test.mjs",
+        "test/account-successor/restart.test.mjs",
+        "test/account-successor/generated.test.mjs",
+        "test/account-successor/service-controls.test.mjs"
       ],
       "requirements": [
         "closed-bounded-wire",
         "independent-runtime-bytes",
         "certified-set-carry-forward",
         "retained-head-continuity",
-        "separate-historical-and-current-authority"
+        "separate-historical-and-current-authority",
+        "atomic-preparation-consumption",
+        "complete-delivery-boundary",
+        "cross-process-races",
+        "crash-recovery"
       ],
-      "blocker": "Pure protocol has fixed independent vectors and focused controls; authority-map qualification and service/client integration remain open.",
-      "next": "Implement atomic consumption, delivery continuity and client adoption; qualify new domains before release."
+      "blocker": "Pure protocol and private service owner have focused evidence; authority-map qualification and owned browser adoption remain open.",
+      "next": "Implement supported v9 adoption and private HTTP integration; qualify new domains before release."
     }
   ],
   "additionalCorpora": [

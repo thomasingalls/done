@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: successor protocol complete (`L-1`)
+## Product checkpoint: successor service complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-scope: durable successor admission and service delivery continuity (phase two, chunk B)
+scope: supported v9 successor adoption and cold reopen (phase two, chunk C)
 blocks_on: none
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
@@ -69,18 +69,23 @@ The TRD now states unchanged certification carry-forward and exact parent-envelo
 narrow transition. Historical evidence, current eligibility and client adoption need separate owners.
 The outcome/decision are recorded in [completed.md](./completed.md) and [decisions.md](./decisions.md).
 
-**Chunk A is complete.** The distinct successor and discovery bytes, closed parsers and pure verifier
-preserve the original certified recipients and enforce retained-head continuity. The pending member
-has no capabilities. Independent fixed vectors, 100 shrinking cases and effective recipient/fork
-omission controls pass. All 32 focused successor/enrollment/first-authority/registry cases pass, plus
-type/lint/format and runtime census checks. [Bytes](./account-crypto/admission-successor.md);
-[evidence](./account-conformance-runs/2026-09-16-admission-successor/README.md).
+**Chunks A/B are complete.** Pure successor/discovery bytes and verification are signed as `08d5a6e5`.
+The private service now consumes exact preparation atomically with one successor/current pointer and
+the delivery witness transition. Historical proofs, old queued bytes and refusal successors remain
+usable. The complete old witness pins the transition boundary, including refusal history; the original
+certified member remains the only reader/publisher. Schema 7 requires an explicit older-schema upgrade.
+[Contract](./account-crypto/admission-successor.md);
+[service evidence](./account-conformance-runs/2026-09-16-successor-service/README.md).
 
-**Next bounded implementation: chunk B.** Build the atomic service/current-authority owner and creating-
-publisher delivery continuity. Then C: supported v9 adoption and cold reopen; D: private consumption/
-discovery integration and focused evidence. No endpoint advances the head yet; the pure verifier does
-not establish live preparation eligibility, ledger correspondence or installed client state.
-[Full phase definition](./account-successor-admission-prep.md).
+**Focused checks pass.** 198 Node cases (39 successor, 39 enrollment, 108 affected regressions,
+12 registry), two diagnostics tests, typecheck, lint/format and runtime inventory. New service cases
+include 60 shrinking histories, four SIGKILL boundaries, three cross-process races and two effective
+omission controls. This is service evidence, not browser/Yjs convergence or release qualification.
+
+**Next bounded implementation: chunk C.** Supported v9 adoption, current request construction and
+cold reopen must preserve pending journal/capture/spool work and recheck late replies. Then D integrates
+private consumption/discovery HTTP and the complete focused path. No successor HTTP route or ordinary
+Account activation exists yet. [Full phase definition](./account-successor-admission-prep.md).
 
 **Content access remains a later gate.** Admission alone gives the new device no certified eligibility,
 key, ciphertext read or accepted publication. Ceremony, delivery/install/certification and multiple-

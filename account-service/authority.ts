@@ -1,3 +1,5 @@
+import { successorMessage, parseSuccessorEpoch } from '../account-protocol/successor.ts';
+import { digest } from '../account-protocol/recovery.ts';
 import {
   enrollmentChallengeMessage,
   enrollmentReceiptMessage,
@@ -343,6 +345,25 @@ export class PrivateAuthority {
   }
   enrollment(core: AccountCore, operation: EnrollmentOperation, input: unknown) {
     return core.enrollment(operation, input, this.#enrollmentIssuer());
+  }
+  admitPrepared(core: AccountCore, input: unknown) {
+    return core.admitPrepared(input, {
+      ...this.#deliveryIssuer(),
+      ...this.#enrollmentIssuer(),
+      successor: async (input) => {
+        const epoch = parseSuccessorEpoch(input),
+          message = await successorMessage(epoch),
+          head = await digest(message);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 1,
+          kind: 'device-admission-successor',
+          epoch,
+          head,
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
+      },
+    });
   }
   #deliveryIssuer(): ReadIssuer & InboundReadIssuer {
     if (!this.#key) throw Error('Authority closed');

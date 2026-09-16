@@ -3975,3 +3975,15 @@ The new device stays ineligible for content reads, publication and key delivery 
 The later content-approval phase must settle SAS epoch restart versus installed-sibling certificate
 rebasing with transcript-aware checks; the current state model omits that question. Do not silently
 extend its assurance. [Definition, chunk boundaries and falsifiers](./account-successor-admission-prep.md).
+
+
+## 2026-09-16 — Retain complete delivery evidence at successor admission
+
+The admission head vector binds accepted stream positions, but not intervening permanent refusals.
+Retain the original signed full-ledger witness at the transition boundary and re-sign the current
+witness under the new head in the same transaction as the successor/pointer. Verify both complete
+prefixes and the vector; never rewrite historical decisions. Consumption is the unique successor
+record, so the original preparation receipt remains immutable and subsequent views report `admitted`.
+Schema-6 upgrades preserve the original genesis preparation token shape. This private service result
+does not enable the HTTP path before supported client adoption exists.
+[Contract](./account-crypto/admission-successor.md#5-durable-service-consumption-and-delivery-chunk-b).

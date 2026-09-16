@@ -41,7 +41,7 @@ export interface EnrollmentIssuer {
 }
 export type EnrollmentOperation = 'begin' | 'finish' | 'resume' | 'cancel';
 type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation: string) => void;
-interface Row {
+export interface EnrollmentRow {
   id: string;
   retry_hash: string;
   workspace_id: string;
@@ -69,6 +69,57 @@ export const ENROLLMENT_SCHEMA = `
   CREATE UNIQUE INDEX IF NOT EXISTS enrollment_candidate ON enrollment_preparations(workspace_id,credential_id)
     WHERE proof_hash IS NOT NULL;
 `;
+export function enrollmentSnapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+  const base = snapshotWorkspaceAuthority(db, workspace);
+  if (!base) return null;
+  const credential = db
+    .prepare('SELECT * FROM credentials WHERE id=?')
+    .get(base.credential.id) as unknown as StoredCredential;
+  if (!credential || credential.account_id !== base.account.id || credential.state !== 'confirmed')
+    return null;
+  // Ciphertext appends and passkey counter observations are not authority changes.
+  const { delivery_witness: _witness, successor_head: _head, ...promotion } = base.promotion;
+  const { successor, ...original } = base;
+  const { counter: _counter, public_key, ...key } = credential;
+  const token = hash(
+    canonical({
+      ...original,
+      promotion,
+      ...(successor ? { successor } : {}),
+      passkey: { ...key, public_key: Buffer.from(public_key).toString('hex') },
+    }),
+  );
+  return { base, credential, token };
+}
+
+export async function verifyEnrollmentRow(row: EnrollmentRow, issuer: EnrollmentIssuer) {
+  if (
+    (row.proof_hash === null) !== (row.receipt === null) ||
+    (row.stage === 'prepared' && row.receipt === null) ||
+    (row.stage === 'challenge' && row.receipt !== null)
+  )
+    throw Error('Inconsistent retained enrollment state');
+  const challenge = parseEnrollmentChallenge(JSON.parse(row.challenge));
+  const c = challenge.context;
+  if (
+    c.attemptId !== row.id ||
+    c.candidate.workspaceId !== row.workspace_id ||
+    c.candidate.credentialId !== row.credential_id ||
+    JSON.stringify(c.candidate) !== row.candidate
+  )
+    throw Error('Retained enrollment identity changed');
+  // Verify historical challenge bytes; eligibility/expiry is evaluated separately under the transaction.
+  await verifyEnrollmentChallenge(challenge, issuer.pin, c.candidate, c.expiresAt - 1);
+  if (row.receipt) {
+    const r = await verifyEnrollmentReceipt(JSON.parse(row.receipt), issuer.pin, c.candidate);
+    if (
+      JSON.stringify(r.context) !== JSON.stringify(c) ||
+      row.proof_hash !== hash(r.assertionHash + r.possessionHash)
+    )
+      throw Error('Retained enrollment evidence changed');
+  }
+}
+
 /** A short-lived operation object; all durable authority is held by the shared SQLite owner. */
 export class EnrollmentPreparation {
   private db: DatabaseSync;
@@ -108,39 +159,28 @@ export class EnrollmentPreparation {
       return refuse('storage-unavailable');
     }
   }
-  private row(retryKey: string): Row | undefined {
+  private row(retryKey: string): EnrollmentRow | undefined {
     return this.db
       .prepare('SELECT * FROM enrollment_preparations WHERE retry_hash=?')
-      .get(retryHash(retryKey)) as unknown as Row | undefined;
+      .get(retryHash(retryKey)) as unknown as EnrollmentRow | undefined;
   }
   private snapshot(workspace: string): Snapshot | null {
-    const base = snapshotWorkspaceAuthority(this.db, workspace);
-    if (!base) return null;
-    const credential = this.db
-      .prepare('SELECT * FROM credentials WHERE id=?')
-      .get(base.credential.id) as unknown as StoredCredential;
-    if (
-      !credential ||
-      credential.account_id !== base.account.id ||
-      credential.state !== 'confirmed'
-    )
-      return null;
-    // Ciphertext appends and passkey counter observations are not authority changes.
-    const { delivery_witness: _witness, ...promotion } = base.promotion;
-    const { counter: _counter, public_key, ...key } = credential;
-    const token = hash(
-      canonical({
-        ...base,
-        promotion,
-        passkey: { ...key, public_key: Buffer.from(public_key).toString('hex') },
-      }),
-    );
-    return { base, credential, token };
+    return enrollmentSnapshot(this.db, workspace);
   }
-  private view(row: Row, current: Snapshot | null): EnrollmentResult {
+  private view(row: EnrollmentRow, current: Snapshot | null): EnrollmentResult {
     const challenge = parseEnrollmentChallenge(JSON.parse(row.challenge));
     const receipt = row.receipt ? parseEnrollmentReceipt(JSON.parse(row.receipt)) : null;
     let stage = row.stage;
+    if (current?.base.successor?.preparation_id === row.id) {
+      const successor = JSON.parse(current.base.successor.artifact);
+      if (
+        stage !== 'prepared' ||
+        !receipt ||
+        JSON.stringify(successor.epoch.preparation) !== JSON.stringify(receipt)
+      )
+        throw Error('Consumed preparation changed');
+      return { ok: true, stage: 'admitted', challenge, receipt };
+    }
     if (stage === 'challenge' || stage === 'prepared') {
       if (!current || row.authority_hash !== current.token) stage = 'stale';
       else if (this.now() >= (receipt?.expiresAt ?? challenge.context.expiresAt)) stage = 'expired';
@@ -148,37 +188,6 @@ export class EnrollmentPreparation {
         this.db.prepare('UPDATE enrollment_preparations SET stage=? WHERE id=?').run(stage, row.id);
     }
     return { ok: true, stage, challenge, receipt };
-  }
-  private async verifyRow(row: Row) {
-    if (
-      (row.proof_hash === null) !== (row.receipt === null) ||
-      (row.stage === 'prepared' && row.receipt === null) ||
-      (row.stage === 'challenge' && row.receipt !== null)
-    )
-      throw Error('Inconsistent retained enrollment state');
-    const challenge = parseEnrollmentChallenge(JSON.parse(row.challenge));
-    const c = challenge.context;
-    if (
-      c.attemptId !== row.id ||
-      c.candidate.workspaceId !== row.workspace_id ||
-      c.candidate.credentialId !== row.credential_id ||
-      JSON.stringify(c.candidate) !== row.candidate
-    )
-      throw Error('Retained enrollment identity changed');
-    // Verify historical challenge bytes; eligibility/expiry is evaluated separately under the transaction.
-    await verifyEnrollmentChallenge(challenge, this.issuer.pin, c.candidate, c.expiresAt - 1);
-    if (row.receipt) {
-      const r = await verifyEnrollmentReceipt(
-        JSON.parse(row.receipt),
-        this.issuer.pin,
-        c.candidate,
-      );
-      if (
-        JSON.stringify(r.context) !== JSON.stringify(c) ||
-        row.proof_hash !== hash(r.assertionHash + r.possessionHash)
-      )
-        throw Error('Retained enrollment evidence changed');
-    }
   }
   async run(operation: EnrollmentOperation, input: unknown): Promise<EnrollmentResult> {
     let request:
@@ -205,7 +214,7 @@ export class EnrollmentPreparation {
         this.issuer.pin.rpId !== this.policy.rpId
       )
         return refuse('unavailable');
-      let prior: Row | undefined, snapshot: Snapshot | null;
+      let prior: EnrollmentRow | undefined, snapshot: Snapshot | null;
       this.db.exec('BEGIN');
       try {
         prior = this.row(request.retryKey);
@@ -216,20 +225,19 @@ export class EnrollmentPreparation {
           prior.candidate !== JSON.stringify(request.candidate)
         )
           return refuse('request-conflict');
-        snapshot =
-          operation === 'cancel'
-            ? null
-            : this.snapshot(
-                prior?.workspace_id ??
-                  ('candidate' in request ? request.candidate.workspaceId : ''),
-              );
+        snapshot = this.snapshot(
+          prior?.workspace_id ?? ('candidate' in request ? request.candidate.workspaceId : ''),
+        );
       } finally {
         this.db.exec('ROLLBACK');
       }
-      if (prior) await this.verifyRow(prior);
+      if (prior) await verifyEnrollmentRow(prior, this.issuer);
+      const auth = snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null;
       if (operation === 'cancel')
         return this.transaction(op, () => {
           const row = this.row(request.retryKey)!;
+          const current = this.snapshot(row.workspace_id);
+          if (current?.base.successor?.preparation_id === row.id) return this.view(row, current);
           // Preserve terminal reasons and historical receipts. Cancellation never removes a tombstone.
           if (row.stage === 'challenge' || row.stage === 'prepared') {
             row.stage = 'cancelled';
@@ -239,7 +247,6 @@ export class EnrollmentPreparation {
           }
           return this.view(row, null);
         });
-      const auth = snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null;
       if (operation === 'begin' && 'candidate' in request && !prior) {
         const candidate = request.candidate;
         if (

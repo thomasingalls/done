@@ -9112,3 +9112,31 @@ Next is chunk B: atomic current authority, live preparation consumption and deli
 No endpoint, application activation, client install, personal device or release campaign is included.
 [Bytes](./account-crypto/admission-successor.md);
 [evidence](./account-conformance-runs/2026-09-16-admission-successor/README.md).
+
+
+## 2026-09-16 — Atomic successor admission and service delivery, chunk B
+
+Pure protocol is signed and verified as `08d5a6e5`. Implement internal preparation consumption in
+`account-service/successor.ts`: verify exact preparation and current complete delivery, sign outside
+the transaction, then recheck preparation/authority/delivery under `BEGIN IMMEDIATE` before committing
+the successor, current pointer and new delivery witness together. Recheck expiry and custody at the
+far commit boundary. A unique retained successor consumes the operation; exact retries survive expiry
+and lost replies, cancellation cannot revoke committed admission, and a sibling cannot rebase itself.
+
+Schema 7 adds one successor per workspace and preserves schema-6 preparation eligibility through an
+explicit upgrade. Current authority refuses missing/mismatched pointer/history. Delivery verifies the
+old signed witness at the transition boundary and the current witness, distinguishing historical
+issuance from present eligibility. Old queued envelopes, refusal successors and replies retain exact
+bytes; new acceptance names epoch 2. Current readers/publishers remain the original certified device;
+the candidate is refused. No HTTP admission route or browser authority installation is enabled.
+
+Pass 198 focused Node cases (39 successor, 39 enrollment, 108 affected regressions, 12 registry), two
+diagnostics tests, typecheck and scoped lint/format/census. New service coverage includes 60 shrinking
+histories, four SIGKILL boundaries, three cross-process races and two effective final-comparison
+omission controls. Both controls independently verify the forbidden signed outcome. Historical schema
+fixtures remove the new objects when simulating old schemas; row-preservation assertions remain.
+
+Runtime crypto inventory and the two open construction groups reflect the owner; old vectors and
+release snapshots are unchanged. Next is chunk C, supported v9 authority adoption and crash recovery,
+then private HTTP integration. No personal operations or release campaign occurred.
+[Evidence](./account-conformance-runs/2026-09-16-successor-service/README.md).

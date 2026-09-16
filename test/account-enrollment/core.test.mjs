@@ -292,9 +292,13 @@ test('finite retained capacity and request bounds refuse without changing rows',
   assert.equal(x.f.rows('enrollment_preparations').length, 64);
 });
 
-test('schema five requires an explicit additive upgrade and cold-opens as six', async (t) => {
+test('schema five requires an explicit additive upgrade and cold-opens as seven', async (t) => {
   const x = await ready(t);
-  mutate(x, (db) => db.exec('DROP TABLE enrollment_preparations; PRAGMA user_version=5;'));
+  mutate(x, (db) =>
+    db.exec(
+      'DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; DROP TABLE enrollment_preparations; PRAGMA user_version=5;',
+    ),
+  );
   const { AccountCore } = await import('../../account-service/core.ts'),
     policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
   assert.throws(() => new AccountCore(x.f.path, policy), /Unsupported account schema/);
