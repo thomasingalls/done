@@ -39,6 +39,10 @@ export interface WorkspaceUi {
     placeholder?: string,
   ): ReturnType<typeof createAdmittedEditor>;
   lock(): void;
+  connectAccount?: () => void;
+  accountWorkspace: boolean;
+  accountId?: string;
+  switchAccount?: () => void;
 }
 const Context = createContext<WorkspaceUi | null>(null);
 export const useWorkspaceUi = (): WorkspaceUi => {
@@ -52,12 +56,20 @@ export const WorkspaceUiProvider = ({
   actorId,
   registerEditor,
   onLock,
+  onConnectAccount,
+  accountWorkspace = false,
+  accountId,
+  onSwitchAccount,
   children,
 }: {
   workspace: AdmittedWorkspace;
   actorId: string;
   registerEditor: (destroy: () => void) => () => void;
   onLock: () => void;
+  onConnectAccount?: () => void;
+  accountWorkspace?: boolean;
+  accountId?: string;
+  onSwitchAccount?: () => void;
   children: React.ReactNode;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
@@ -184,7 +196,20 @@ export const WorkspaceUiProvider = ({
   };
   return (
     <Context
-      value={{ workspace, snapshot, actorId, status, error, storage, ...actions, lock: onLock }}
+      value={{
+        workspace,
+        snapshot,
+        actorId,
+        status,
+        error,
+        storage,
+        ...actions,
+        lock: onLock,
+        accountWorkspace,
+        ...(accountId ? { accountId } : {}),
+        ...(onSwitchAccount ? { switchAccount: onSwitchAccount } : {}),
+        ...(onConnectAccount ? { connectAccount: onConnectAccount } : {}),
+      }}
     >
       {children}
       {(blocked || error || status.pendingItems > 0) && (

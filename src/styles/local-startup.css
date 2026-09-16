@@ -79,7 +79,7 @@
     overflow-wrap: anywhere;
   }
 
-  .welcome {
+  .workspace-gate {
     position: relative;
     isolation: isolate;
     display: grid;
@@ -179,7 +179,7 @@
     -webkit-backdrop-filter: blur(3px);
     pointer-events: none;
   }
-  .welcome-panel {
+  .workspace-gate-panel {
     position: relative;
     width: min(100%, 38rem);
     max-width: none;
@@ -191,17 +191,20 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.12);
+  }
+  .welcome-panel {
     text-align: center;
   }
-  .welcome .local-brand {
+  .workspace-gate .local-brand {
     color: var(--color-accent);
     font-size: 1.25rem;
     letter-spacing: -0.04em;
   }
-  .welcome h1 {
+  .workspace-gate h1 {
     margin: 1.5rem 0 0.75rem;
     font-size: clamp(1.8rem, 5vw, 2.4rem);
     letter-spacing: -0.04em;
+    overflow-wrap: anywhere;
   }
   .welcome .welcome-tagline {
     color: var(--color-text-dim);

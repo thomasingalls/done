@@ -1,0 +1,150 @@
+.account-development {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.account-development > .shell {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+.account-development > .local-startup {
+  flex: 1;
+  min-height: 0;
+}
+.setup-dev-note {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  padding: 0.45rem 1rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-dim);
+  text-align: center;
+  font-size: 0.75rem;
+}
+.setup-panel {
+  width: min(100%, 38rem);
+}
+.setup-steps {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+}
+.setup-steps li {
+  padding-bottom: 0.45rem;
+  border-bottom: 2px solid var(--color-border);
+}
+.setup-steps [aria-current] {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+.setup-panel h1:focus {
+  outline: none;
+}
+.setup-explanation {
+  margin: 1.5rem 0 2rem;
+}
+.setup-explanation p {
+  margin: 1rem 0;
+}
+.setup-explanation strong,
+.setup-explanation span {
+  display: block;
+}
+.setup-explanation span,
+.setup-note {
+  color: var(--color-text-dim);
+}
+.setup-panel .setup-primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+.setup-panel .setup-error {
+  color: var(--color-danger, #b64234);
+}
+.setup-panel .local-secondary {
+  display: block;
+  margin-top: 0.75rem;
+}
+.setup-panel .local-generated-code {
+  overflow-wrap: anywhere;
+}
+.account-identity {
+  display: block;
+  margin: 0.75rem 0 1.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.75rem;
+}
+.account-identity span,
+.account-identity code {
+  display: block;
+}
+.account-identity code {
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.account-saved {
+  margin: 1.5rem 0;
+}
+.account-saved h2 {
+  font-size: 1rem;
+}
+.account-picker {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.setup-panel .account-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  border-color: var(--color-border);
+}
+.setup-panel .account-picker-row:hover {
+  background: var(--color-surface);
+  border-color: var(--color-text-dim);
+}
+.account-picker-details {
+  flex: 1;
+  min-width: 0;
+}
+.account-picker-name {
+  display: block;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.account-picker-row .account-identity {
+  margin: 0.5rem 0 0;
+}
+.account-picker-action {
+  flex: none;
+  font-size: 0.8rem;
+}
+.account-other,
+.account-new {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+.account-other .setup-note,
+.account-new .setup-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+@media (max-width: 420px) {
+  .setup-steps {
+    gap: 0.65rem;
+    font-size: 0.7rem;
+  }
+}
