@@ -38,8 +38,12 @@ async function fixture(t) {
 function asSchemaFour(path) {
   const db = new DatabaseSync(path);
   const version = db.prepare('PRAGMA user_version').get().user_version;
-  assert.ok(version === 5 || version === 7, 'Update the fixture for a new backend schema');
-  if (version === 7)
+  assert.ok(
+    version === 5 || version === 7 || version === 8,
+    'Update the fixture for a new backend schema',
+  );
+  if (version === 8) db.exec('DROP TABLE content_ceremonies');
+  if (version >= 7)
     db.exec(
       'DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; DROP TABLE enrollment_preparations;',
     );

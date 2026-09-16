@@ -9309,3 +9309,25 @@ The model's atomic saves and retained single-attempt state still need native imp
 evidence in C. No key release, typed decision, relay endpoint or recipient certification exists
 yet. Next is durable attempt ownership/private relay, then the two private device owners. Ordinary
 activation, deployment and the aggregate release campaign remain outside this result.
+
+
+## 2026-09-16 — two-device content approval ready for a development walkthrough
+
+Signed the authenticated exchange checkpoint as `46694766`. The operator redirected C/D from
+qualification to one experiential development flow. Added a signed invitation, fresh authenticated
+bootstrap, passkey-backed candidate admission, factor-owned encrypted attempt state, private relay,
+and two device screens through the existing preview. Both commitments precede durable reveal;
+one comparison result is committed before publication. Lost responses and reopening use exact
+saved messages. Original writing is retained; the new device creates separate custody and imports
+none of its old writing. Approval does not deliver a content key or certify a second reader.
+
+Two focused browser cases, five service cases, five preview maintenance cases, two affected schema
+regressions and six custody-record cases pass, along with typecheck and scoped static checks.
+The browser cases include renderer death, lost decision acknowledgement, an aborted local comparison
+save and a retained mismatch. The candidate comparison's object-order defect was found and fixed.
+No generalized campaign, mutation campaign, release inventory or qualification work was started.
+
+The preview runs at `https://mbp.tail0e0d4.ts.net:8443/` with fresh `.dev/account-enrollment-tailnet`
+state and loopback port 53219. Existing Tailscale routes, including port 443, were checked unchanged.
+Both preview pages respond over HTTPS. The next action is the operator's physical-device trial;
+further implementation is paused for that feedback. [Walkthrough and boundary](./account-device-approval-development.md).

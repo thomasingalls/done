@@ -22,10 +22,18 @@ export function previewConfig(env = process.env) {
   const port = Number(env.ACCOUNT_SETUP_PORT ?? 53210);
   if (!Number.isInteger(port) || port < 1024 || port > 65535)
     throw Error('Invalid development port');
+  const origin = env.ACCOUNT_SETUP_ORIGIN ?? `http://localhost:${port}`;
+  const url = new URL(origin);
+  if (
+    url.origin !== origin ||
+    (origin !== `http://localhost:${port}` &&
+      (url.protocol !== 'https:' || !url.hostname.endsWith('.ts.net')))
+  )
+    throw Error('Preview origin must be loopback or an explicit Tailscale HTTPS origin');
   return {
     port,
     directory: resolve(env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup'),
-    policy: { rpId: 'localhost', origin: `http://localhost:${port}` },
+    policy: { rpId: url.hostname, origin },
   };
 }
 
@@ -98,7 +106,7 @@ export async function upgradePreviewState({ directory, port, policy }) {
         new AccountCore(path, policy).close();
         return { from, to, backup: null };
       }
-      if (from < 1 || from > 6 || from > to)
+      if (from < 1 || from >= to || from > to)
         throw Error(`Unsupported preview upgrade from schema ${from} to ${to}`);
 
       const backups = join(directory, 'backups');

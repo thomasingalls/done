@@ -5,6 +5,8 @@ import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AccountCore } from '../account-service/core.ts';
 import { PrivateAuthority } from '../account-service/authority.ts';
+import { CEREMONY_RELAY_LIMIT } from '../account-protocol/ceremonyRelay.ts';
+import { ENROLLMENT_REQUEST_LIMIT } from '../account-protocol/enrollment.ts';
 import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
 import { lockPreviewState, previewConfig } from './account-setup-state.mjs';
 
@@ -38,6 +40,12 @@ try {
 }
 const token = randomBytes(32).toString('base64url');
 const routes = new Map([
+  ['ceremony/bootstrap', (input) => authority.ceremonyBootstrap(core, input)],
+  ['ceremony/exchange', (input) => authority.relayCeremony(core, input)],
+  ['authority/discover', (input) => authority.discoverAuthority(core, input)],
+  ['enrollment/begin', (input) => authority.enrollment(core, 'begin', input)],
+  ['enrollment/finish', (input) => authority.enrollment(core, 'finish', input)],
+  ['enrollment/admit', (input) => authority.admitPrepared(core, input)],
   ['begin', (input) => core.begin(input)],
   ['resume', (input) => core.resume(input)],
   ['finish', (input) => core.finish(input)],
@@ -60,6 +68,16 @@ const server = await createServer({
     host: '127.0.0.1',
     port,
     strictPort: true,
+    allowedHosts: [new URL(origin).hostname],
+    ...(origin.startsWith('https:')
+      ? {
+          ws: {
+            protocol: 'wss',
+            host: new URL(origin).hostname,
+            clientPort: Number(new URL(origin).port || 443),
+          },
+        }
+      : {}),
     open: false,
     fs: {
       deny: [
@@ -119,7 +137,20 @@ const server = await createServer({
             let size = 0;
             for await (const chunk of request) {
               size += chunk.length;
-              if (size > (route.startsWith('promotion/') ? ADMISSION_LIMIT : 131072)) {
+              if (
+                size >
+                (route.startsWith('promotion/')
+                  ? ADMISSION_LIMIT
+                  : route === 'ceremony/exchange'
+                    ? CEREMONY_RELAY_LIMIT
+                    : route === 'ceremony/bootstrap' ||
+                        route === 'authority/discover' ||
+                        route === 'enrollment/admit'
+                      ? 4096
+                      : route.startsWith('enrollment/')
+                        ? ENROLLMENT_REQUEST_LIMIT
+                        : 131072)
+              ) {
                 send(413, { ok: false, refusal: 'malformed' });
                 return;
               }

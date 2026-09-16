@@ -1,3 +1,4 @@
+import { ceremonyBootstrapMessage } from '../account-protocol/ceremonyRelay.ts';
 import { discoveryResponseMessage, parseDiscoveryResponse } from '../account-protocol/successor.ts';
 import { successorMessage, parseSuccessorEpoch } from '../account-protocol/successor.ts';
 import { digest } from '../account-protocol/recovery.ts';
@@ -346,6 +347,19 @@ export class PrivateAuthority {
   }
   enrollment(core: AccountCore, operation: EnrollmentOperation, input: unknown) {
     return core.enrollment(operation, input, this.#enrollmentIssuer());
+  }
+  ceremonyBootstrap(core: AccountCore, input: unknown) {
+    return core.ceremonyBootstrap(input, {
+      ...this.#deliveryIssuer(),
+      bootstrap: async (body) => {
+        const message = await ceremonyBootstrapMessage(body);
+        if (!this.#key) throw Error('Authority closed');
+        return sign(null, message, this.#key).toString('hex');
+      },
+    });
+  }
+  relayCeremony(core: AccountCore, input: unknown) {
+    return core.relayCeremony(input, this.#deliveryIssuer());
   }
   discoverAuthority(core: AccountCore, input: unknown) {
     return core.discoverAuthority(input, {

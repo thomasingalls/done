@@ -58,6 +58,8 @@ export interface CustodyRecord {
   creation_intent: CreationIntent | null;
   envelope: KeyEnvelope | null;
   credentials: [SealedCredential, SealedCredential] | null;
+  /** Private content-approval state. Absence is covered by the custody MAC too. */
+  approval?: { v: 1; sequence: number; ct: Bytes };
   mac: Bytes;
 }
 export const CUSTODY_DB = 'done.custody';
@@ -150,6 +152,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
+    ...(value && typeof value === 'object' && Object.hasOwn(value, 'approval') ? ['approval'] : []),
   ]);
   if (
     r['v'] !== 2 ||
@@ -203,8 +206,25 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     ];
     if (credentials[0].id === credentials[1].id) return fail();
   }
+  let approval: CustodyRecord['approval'];
+  if ('approval' in r) {
+    const a = object(r['approval'], ['v', 'sequence', 'ct']);
+    if (
+      r['state'] !== 'protected' ||
+      a['v'] !== 1 ||
+      !Number.isSafeInteger(a['sequence']) ||
+      (a['sequence'] as number) < 1 ||
+      (a['sequence'] as number) > (r['seal_reserved'] as number) ||
+      !(a['ct'] instanceof Uint8Array) ||
+      a['ct'].length < 16 ||
+      a['ct'].length > 80 * 1024 * 1024
+    )
+      return fail();
+    approval = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
+  }
   return {
     v: 2,
+    ...(approval ? { approval } : {}),
     state: r['state'] as CustodyRecord['state'],
     slot_id: scope.slotId,
     principal_id: scope.principalId,
@@ -252,6 +272,9 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
         hex(c.publicKey),
         [c.sealed.v, hex(c.sealed.nonce), hex(c.sealed.ct)],
       ]) ?? null,
+      ...(r.approval
+        ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
+        : []),
     ]),
   );
 const macKey = (root: Bytes, r: CustodyRecord, subtle: SubtleCrypto) =>

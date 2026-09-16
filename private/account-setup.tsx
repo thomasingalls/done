@@ -9,5 +9,10 @@ declare const __ACCOUNT_SETUP_CONFIG__: SetupConfig;
 if (!import.meta.env.DEV || typeof __ACCOUNT_SETUP_CONFIG__ === 'undefined')
   throw Error('Run the dedicated account setup development server.');
 createRoot(document.getElementById('root')!).render(
-  <AccountSetupApp config={__ACCOUNT_SETUP_CONFIG__} />,
+  <>
+    <AccountSetupApp config={__ACCOUNT_SETUP_CONFIG__} />
+    <a className="development-device-link" href="/private/account-enrollment.html">
+      Connect another device
+    </a>
+  </>,
 );

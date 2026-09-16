@@ -2,7 +2,7 @@
 
 2026-09-16. Defined against signed `ca828c5f`, which completes the bounded
 [admission-only phase](./account-successor-admission-prep.md). **Preparation and chunks A/B complete;
-durable attempt/approval and private relay remain open.** Release validation remains paused.
+the private experiential C/D path now works; broader qualification remains deferred.** Release validation remains paused.
 
 ## Outcome and first boundary
 
@@ -163,3 +163,13 @@ owners, then establish native save/exclusion/crash behavior. The model's atomic 
 retained attempt are obligations, not an existing persistence implementation. D later connects the
 private device screens. The first-device preview remains without sync; ordinary activation and
 content-key delivery remain separate gates.
+
+
+## Operator scope update and development result
+
+The operator subsequently made the objective explicit: one genuine two-device enrollment/approval
+experience, focused crash/retry and authority checks, then stop for use. Do not execute the broader
+C/D conformance/fault/mutation campaign above as a prerequisite to that trial. The private flow is
+implemented and ready; [walkthrough and exact scope](./account-device-approval-development.md).
+Future delivery/install/certification is still separate. Qualification and inventory reconciliation
+remain deferred, without release credit.

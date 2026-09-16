@@ -42,132 +42,47 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: authenticated ceremony exchange complete (`L-1`)
+## Product checkpoint: two-device approval ready to try (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: durable ceremony attempt/private relay — chunk C preparation
-blocks_on: none
+status: done
+scope: private experiential enrollment/content-approval milestone
+blocks_on: none; waiting for operator walkthrough before more implementation
 release_validation: paused by operator
-debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Product integrations and backend phase one are signed.** Goals keyboard fixes are merged as
-`3fefdae0`, welcome/Local and Goals UX as `d942cd1c`, and authenticated enrollment preparation as
-`d015210e`. Preparation durably binds a fresh account assertion and candidate possession to exact
-keys and authority. Its result is `prepared`; the creating device is still the only admitted/certified
-member. [Phase-one contract](./account-enrollment-prep.md);
-[evidence](./account-conformance-runs/2026-09-16-enrollment-preparation/README.md).
+**The exchange checkpoint is signed as `46694766`.** Earlier first-device UI integration is
+`605cb087`, including requested tip `ea3a3ffb`; ceremony primitives are `0e7a88f8`. Prior backend
+phase outcomes and hashes remain in [completed.md](./completed.md).
 
-**The successor-admission boundary is defined.** One private epoch-1-to-2 transition admits a pending
-credential while preserving generation, acceptance key, current writer rights and certified recipients.
-The TRD now states unchanged certification carry-forward and exact parent-envelope continuity for this
-narrow transition. Historical evidence, current eligibility and client adoption need separate owners.
-The outcome/decision are recorded in [completed.md](./completed.md) and [decisions.md](./decisions.md).
+**One private two-device flow is ready.** Existing-device invitation → fresh pending-device custody
+→ account passkey and device possession → admission → authenticated commitments/reveals → typed
+comparison → durable approval. Crash/retry preserves the transcript and one-comparison budget.
+The existing writing remains; old writing on the pending device is not imported. No content-key
+release, second-reader certification, writing transfer or first-device sync driver is implied.
 
-**Chunks A/B are complete.** Pure successor/discovery bytes and verification are signed as `08d5a6e5`.
-The private service, signed as `7bf78813`, consumes exact preparation atomically with one successor/current pointer and
-the delivery witness transition. Historical proofs, old queued bytes and refusal successors remain
-usable. The complete old witness pins the transition boundary, including refusal history; the original
-certified member remains the only reader/publisher. Schema 7 requires an explicit older-schema upgrade.
-[Contract](./account-crypto/admission-successor.md);
-[service evidence](./account-conformance-runs/2026-09-16-successor-service/README.md).
+**Focused checks pass:** two actual browser-profile flows, five service cases, five maintenance
+cases, two schema regressions and six custody-record regressions; typecheck/scoped static checks.
+The browser cases include renderer death, lost response, aborted local save and retained mismatch.
+No generalized campaign, mutation controls, release inventory or qualification work was run.
 
-**Focused checks pass.** 198 Node cases (39 successor, 39 enrollment, 108 affected regressions,
-12 registry), two diagnostics tests, typecheck, lint/format and runtime inventory. New service cases
-include 60 shrinking histories, four SIGKILL boundaries, three cross-process races and two effective
-omission controls. This is service evidence, not browser/Yjs convergence or release qualification.
+**Operator trial is next; implementation stops here.** The preview is running inside this checkout
+at **https://mbp.tail0e0d4.ts.net:8443/**, on loopback 53219 with fresh development state. Existing
+Tailscale routes (including 443) were preserved. Both entry pages return HTTPS 200. The operator
+will use a physical second device over Tailscale. [Walkthrough](./account-device-approval-development.md).
 
-**Chunk C1 is signed as `6ba5336b`.** Read-only client history now separates exact current authority from proof
-issuance and verifies the successor's complete accepted-envelope prefix. 39 focused cases pass,
-including 80 generated cases and two effective omission controls; typecheck, scoped lint/format and
-runtime inventory pass. This checkpoint supplied read-only history.
-[History evidence](./account-conformance-runs/2026-09-16-successor-history/README.md).
+**After feedback:** address actual flow problems, then define the bounded content-key delivery,
+installation and certification step. Bootstrap of writing and multiple-publisher sync follow.
+Replacement admission/general history remain absent; expired/mismatched attempts stop safely.
 
-**Chunk C2a is signed as `cf371bd0`.** Opt-in replay preserves mixed-epoch captures, spools, delivery proofs and
-signed receive records. Nine new cases include 40 generated histories and two effective receiver
-omission controls; the final focused totals are 32 Node cases, 74 unit cases and two first-epoch
-browser regressions. Static checks and crypto inventory pass.
-[Replay evidence](./account-conformance-runs/2026-09-16-successor-replay/README.md).
-
-**Chunk C2b is signed as `f5a3399c`.** The private composed v9 owner installs the authenticated successor and
-local ledger cut before switching live requests/captures. Original receipt/slot custody, pending journal
-sources and exact old submissions survive. Native tests cover both commit sides, an acknowledged journal
-edit during the held completion, zero-prefix installation, lost acceptance, late receive, compaction,
-cold reopen, sibling refusal and effective prefix/cut omission controls. 13 new native cases, two
-first-epoch native regressions, 32 Node and 74 unit cases pass, plus static checks and inventory.
-[Installation evidence](./account-conformance-runs/2026-09-16-successor-owner/README.md).
-
-**Chunk D1 is signed as `e5e77a05`.** Private consumption/discovery endpoints enforce their account/device
-proofs and 4 KiB ingress bounds. Discovery verifies the complete ledger and rechecks authority,
-expiry and custody before its signed response. 43 Node, three HTTP, 12 registry and two diagnostic
-cases pass, including 30 generated histories and an effective final-comparison control.
-[Service HTTP evidence](./account-conformance-runs/2026-09-16-successor-discovery/README.md).
-
-**Chunk D2 is signed as `ca828c5f`.** The private v9 writer discovers the signed child automatically on
-reconnect, installs it under its existing lifetime, and resumes send/read. The HTTP path preserves
-offline edits, pending bytes and cold reopen. 21 distinct native cases/controls, two first-epoch
-native regressions, 39 unit and 32 Node cases pass, plus static checks and runtime inventory.
-[Reconnect evidence](./account-conformance-runs/2026-09-16-successor-reconnect/README.md).
-
-**Content-approval preparation is complete.** The operator chose restart on a competing epoch
-change. TRD and row 11 now require fresh credentials/admission and code entry, distinguish exact
-resumption and the ceremony's own completion, and retain evidence of already-delivered keys.
-The initial one-child runtime may stop with restart-required; replacement admission is not yet
-implemented. [Phase-three plan](./account-content-approval-prep.md) defines chunks A–D through
-private durable approval, followed by separately bounded delivery/install/certification work.
-
-**Chunk A is signed as `0e7a88f8`.** Pure row-11 commitments, transcript, SAS and wrap info reproduce the
-published bytes unchanged. 29 ceremony cases (100 generated contexts and 12 effective omission
-controls) plus 12 registry checks pass, as do static checks and current inventory. Input capture
-and bounded code syntax are checked. [Evidence](./account-conformance-runs/2026-09-16-ceremony-primitives/README.md).
-
-**First-device Account UI is signed as `605cb087`.** The requested `ea3a3ffb` branch adds setup,
-account naming/selection, offline daily access, per-slot recovery progress and explicit preview
-schema maintenance. It merged cleanly. All 12 distinct setup cases, one schema-5-to-7 browser
-preservation test, five maintenance cases, one native recovery case, two Local startup regressions
-and 41 ceremony/registry cases pass. Static checks pass. The initial relocated-fixture private-file
-failure and its passing rerun are retained. [Integration evidence](./account-conformance-runs/2026-09-16-account-ui-integration/README.md).
-The preview still has no sync driver; ordinary Account activation and deployment remain separate.
-
-**Chunk B is complete.** Signed context/commitment/reveal bytes bind the held epoch-2 authority,
-exact participant keys, fixed attempt/deadline and complete signed pair. The unchanged SAS derives
-only after signature and opening checks. 15 new exchange/model/control cases, 29 primitive and
-12 registry cases pass. New cases include 60 generated byte cases and 80 ordering histories
-(19 complete, 61 stop, 30 disclose), plus effective runtime and explicitly modeled controls.
-[Evidence](./account-conformance-runs/2026-09-16-ceremony-exchange/README.md).
-
-**Next is chunk C: durable attempt ownership and private relay.** Start with record/schema and
-owner attachment, then establish the modeled save/exclusion/crash predicates natively. Enforce
-one retained attempt and one durable comparison per credential. Chunk B has no service endpoint,
-native attempt record, typed approval or key release. D adds private two-device integration;
-delivery/install/certification, bootstrap and multiple-publisher sync follow. The actual old second
-device adopts the first workspace without importing its old writing.
-
-**Qualification remains open.** Preparation, successor/discovery and ceremony are three open groups.
-Current census: 187 sources, 103 labels/templates, 25 groups and 15 manual entrypoints. Their
-focused evidence supplies no aggregate release credit; prior qualification remains historical.
-
-**Release validation remains paused.** It began prematurely; do not continue wrapper integration,
-namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds
-is signed as `3af765d3`; composed Account isolation preparation remains a deferred checkpoint.
-[Deferred plan](./release-validation-composed-campaigns.md);
-[preparation evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
-
-Frozen totals at the pause are **629 obligations /292 required files /272 general files /2,203 dispositions
-(11 not applicable)**; **108 unresolved: zero test-file /70 command /38 campaign**. These describe
-validation infrastructure, not product readiness. Product changes now differ from those frozen snapshots;
-reconcile them only if the campaign resumes. Historical results and the failed F-17 application gate
-are unchanged. [Pause decision](./decisions.md#2026-09-16--pause-the-release-validation-campaign);
-[execution history](./release-validation-execution.md).
-
-**Post–first-RC scope.** Platform-specific UX and native keyboard conventions/coverage are deferred.
-[Decision](./decisions.md#2026-09-16--platform-specific-ux-follows-the-first-rc).
-
+**Qualification remains deferred.** New runtime construction inventory has intentionally not been
+refreshed under the operator's instruction. Frozen release counts and evidence are untouched.
+Future qualification must reconcile the new carriers/domains and broader durability obligations;
+that is not a gate added to this development trial.
 
 ---
 

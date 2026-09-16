@@ -62,7 +62,7 @@ test('schema-five account retains its original passkey, authority, name, code an
   const baseline = process.env['ACCOUNT_SETUP_UPGRADE_BASE'];
   if (!baseline)
     throw Error(
-      'Set ACCOUNT_SETUP_UPGRADE_BASE to a schema-five preview checkout (7dab01cc). Run this test after integrating the schema-seven backend.',
+      'Set ACCOUNT_SETUP_UPGRADE_BASE to a schema-five preview checkout (7dab01cc). Run this test after integrating the schema-eight backend.',
     );
   const state = testInfo.outputPath('service');
   mkdirSync(state, { recursive: true, mode: 0o700 });
@@ -155,7 +155,7 @@ test('schema-five account retains its original passkey, authority, name, code an
       encoding: 'utf8',
       timeout: 30000,
     });
-    expect(output).toContain('schema 5 → 7');
+    expect(output).toContain('schema 5 → 8');
     const snapshot = output.split('Backup: ')[1]!.trim();
     expect(retainedRows(join(snapshot, 'account.sqlite'))).toEqual(before);
     expect(retainedRows(join(snapshot, 'authority.sqlite'))).toEqual(authority);
@@ -170,7 +170,7 @@ test('schema-five account retains its original passkey, authority, name, code an
       encoding: 'utf8',
       timeout: 30000,
     });
-    expect(second).toContain('already uses schema 7');
+    expect(second).toContain('already uses schema 8');
     await start(process.cwd());
     await page.goto(entry);
     await expect(page.getByLabel('Account ID', { exact: true })).toHaveText(id);

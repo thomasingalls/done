@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test:device-enrollment": "playwright test --config playwright.device-enrollment.config.ts",
     "dev:account-setup": "node scripts/dev-account-setup.mjs",
     "upgrade:account-setup": "node scripts/upgrade-account-setup.mjs",
     "test:account-setup-upgrade": "node --test test/first-device-upgrade/state.test.mjs",

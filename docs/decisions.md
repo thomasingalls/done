@@ -4123,3 +4123,23 @@ attempt/comparison per credential, and compare head/deadline/cancellation at nat
 before disclosure. Model crash/resume and generated interleaving results are explicitly conditional
 on those storage predicates. Competing authority terminates the attempt without erasing its record;
 unsigned stale/error responses cannot establish that authority change.
+
+
+## 2026-09-16 — stop at a usable private two-device approval flow
+
+The operator's objective is an experiential milestone, not qualification. Replace the broad C/D
+exit campaign with one real development path and focused crash/retry and authority checks, then
+stop for operator use. Keep release validation paused and do not refresh inventories, run mutation
+controls or invent additional qualification gates. Delivery/install/certification remains a later
+product phase; approval alone must not open writing on the pending device.
+
+Use the existing mandatory-factor custody and exclusive slot lifetime for both participants, with
+a counted encrypted approval carrier and a local durable single-comparison record. The service is
+an additional ordering/budget keeper, not the client's authority for comparison. The existing device
+explicitly signs an invitation before historical account proof, including encrypted genesis, is
+shared. Bootstrap is nonce-bound and root-signed; peer messages and outcome remain device-signed.
+The service's single-child schema stores one immutable attempt per workspace and never resets it.
+
+For the operator's requested physical-device trial, use a separate tailnet HTTPS origin on port
+8443 and fresh development state. Preserve the existing 443 route and other services. The author
+controls both personal browser sessions; automated checks use disposable profiles.

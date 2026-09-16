@@ -17,6 +17,7 @@
     "vite",
     "playwright.config.ts",
     "playwright.account-setup.config.ts",
+    "playwright.device-enrollment.config.ts",
     "playwright.account-upgrade.config.ts",
     "playwright.latency.config.ts",
     "playwright.private-migration.config.ts",
