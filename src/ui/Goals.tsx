@@ -339,30 +339,32 @@ export const Goals = ({
           aria-label="Selected lines"
           aria-busy={pending}
         >
-          <fieldset className="goals-transfer-mode" disabled={pending}>
-            <legend>Transfer selected lines</legend>
-            {(['copy', 'move'] as const).map((value) => (
-              <label key={value}>
-                <input
-                  type="radio"
-                  name="goals-transfer-mode"
-                  value={value}
-                  checked={mode === value}
-                  onChange={() => {
-                    setMode(value);
-                    setTransferError('');
-                  }}
-                />
-                <span>{value === 'copy' ? 'Copy to' : 'Move to'}</span>
-              </label>
-            ))}
-          </fieldset>
-          <GoalsActionsMenu
-            undoDisabled={unavailable || !snapshot.undo}
-            redoDisabled={unavailable || !snapshot.redo}
-            removeDisabled={removeDisabled}
-            onAction={menuAction}
-          />
+          <div className="goals-meta">
+            <fieldset className="goals-transfer-mode" disabled={pending}>
+              <legend>Transfer selected lines</legend>
+              {(['copy', 'move'] as const).map((value) => (
+                <label key={value}>
+                  <input
+                    type="radio"
+                    name="goals-transfer-mode"
+                    value={value}
+                    checked={mode === value}
+                    onChange={() => {
+                      setMode(value);
+                      setTransferError('');
+                    }}
+                  />
+                  <span>{value === 'copy' ? 'Copy to' : 'Move to'}</span>
+                </label>
+              ))}
+            </fieldset>
+            <GoalsActionsMenu
+              undoDisabled={unavailable || !snapshot.undo}
+              redoDisabled={unavailable || !snapshot.redo}
+              removeDisabled={removeDisabled}
+              onAction={menuAction}
+            />
+          </div>
           <div className="goals-destinations">
             <button
               type="button"

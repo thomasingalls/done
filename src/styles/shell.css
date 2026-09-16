@@ -818,15 +818,20 @@
     position: relative;
     flex: 0 0 auto;
     display: grid;
-    gap: var(--space-2);
-    padding: var(--space-3);
     border-block-start: 1px solid var(--color-border);
     background: var(--color-bg);
   }
 
+  .goals-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface);
+  }
+
   .goals-transfer-mode {
-    grid-area: mode;
-    justify-self: start;
     display: flex;
     margin: 0;
     padding: 0;
@@ -909,19 +914,15 @@
 
   .goals-action-buttons {
     display: grid;
-    grid-template-areas:
-      'mode more'
-      'destinations destinations';
-    grid-template-columns: minmax(0, 1fr) max-content;
-    gap: var(--space-2) var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .goals-destinations {
-    grid-area: destinations;
     display: grid;
     grid-template-columns: repeat(3, max-content);
     gap: 0.375rem;
     justify-content: start;
+    padding: var(--space-3);
   }
 
   .goals-action-buttons .card-action {
@@ -948,8 +949,6 @@
   }
 
   .goals-more {
-    grid-area: more;
-    justify-self: end;
     position: relative;
   }
 
@@ -965,7 +964,7 @@
 
   .goals-more-trigger:hover,
   .goals-more-trigger[aria-expanded='true'] {
-    background: var(--color-surface);
+    background: var(--color-bg);
     color: var(--color-text);
   }
 
