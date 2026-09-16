@@ -322,6 +322,66 @@ test(
       ),
       /target changed/,
     );
+    // Newly allocated local slots opt into separate progress without replacing the
+    // original pending record. The storage route never replaces its account binding.
+    const originalProgress = await inspect();
+    await page.evaluate(
+      ({ accountId, retryKey }) => {
+        window.secondOwner = {
+          ...ownerOptions,
+          accountId,
+          retryKey,
+          context: { ...ownerOptions.context, workspaceId: 'second-workspace' },
+          local: { slotId: 'second-account', code: 'unused-by-draft-generation' },
+          perSlotProgress: true,
+        };
+      },
+      { accountId: fresh(), retryKey: fresh() },
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        RecoveryOwner.withRecoveryOwner(secondOwner, (owner) => owner.status()),
+      ),
+      'empty',
+    );
+    await page.evaluate(() =>
+      RecoveryOwner.withRecoveryOwner(secondOwner, (owner) => owner.generate()).then(
+        () => undefined,
+      ),
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        RecoveryOwner.withRecoveryOwner(secondOwner, (owner) => owner.status()),
+      ),
+      'awaiting-code',
+    );
+    assert.deepEqual(await inspect(), originalProgress);
+    assert.deepEqual(await page.evaluate(() => run('resume')), committed);
+    await assert.rejects(
+      page.evaluate(
+        (accountId) =>
+          RecoveryOwner.withRecoveryOwner({ ...secondOwner, accountId }, (owner) => owner.status()),
+        fresh(),
+      ),
+      /owner mismatch/,
+    );
+    await assert.rejects(
+      page.evaluate(() =>
+        RecoveryOwner.withRecoveryOwner(
+          { ...secondOwner, context: { ...secondOwner.context, workspaceId: 'wrong' } },
+          (owner) => owner.status(),
+        ),
+      ),
+      /target changed/,
+    );
+    await assert.rejects(
+      page.evaluate(() =>
+        RecoveryOwner.withRecoveryOwner({ ...secondOwner, local: undefined }, (owner) =>
+          owner.status(),
+        ),
+      ),
+      /Local recovery slot required/,
+    );
     if (profiles) {
       await browser.close();
       assert.equal(records.length, 3);
