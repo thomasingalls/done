@@ -3873,3 +3873,14 @@ reference resolution and replacement semantics, with independent fresh reads at 
 Use equal-manifest comparisons, binary/generated framing tests and real replacement controls to qualify
 this optimization. Preserve unchanged deadlines and prior failures; single-host margin does not prove
 loaded-host reliability. The two additional runner cases must enter both explicit census expectations.
+
+
+## 2026-09-16 — Bounds evidence binds observed bytes and lifecycle states
+
+Keep original command populations, deadlines and the report-custody ceiling. Retain complete long replay
+updates with lossless encoding, and verify decoded descriptors independently alongside the original
+cryptographic and native assertions. Distinguish historical parser and message-builder errors, and use
+actual retained lifecycle states rather than convenience labels. Deduplicate only deterministic
+signature work for exact byte triples within one reconciliation call. Before broader composed campaigns,
+review child invocation identity, report namespaces, explicit retirements and prerequisite adapters;
+source mentions and overlapping filenames cannot substitute for execution evidence.

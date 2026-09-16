@@ -1,3 +1,4 @@
+import { compactCompletion, objectHash, publicKey } from './evidence.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fc from 'fast-check';
@@ -47,7 +48,8 @@ test('v2 binds both decoded descriptors at old boundaries and generated sizes th
   const x = await prepared(t),
     o = await x.begin(),
     sizes = [1, 32766, 32767, 32768, 65536];
-  const generated = [];
+  const generated = [],
+    observations = [];
   const check = async (input) => {
     generated.push(input);
     const b = input.byte.toString(16).padStart(2, '0');
@@ -56,6 +58,16 @@ test('v2 binds both decoded descriptors at old boundaries and generated sizes th
     assert.deepEqual(Buffer.from(await p.manifestMessage(c.manifest)), manifestBytes(c.manifest));
     assert.deepEqual(Buffer.from(await p.semanticMessage(c.admission)), semanticBytes(c.admission));
     await p.verifyCompletion(c, x.request, o, parts);
+    const observation = {
+      input,
+      completion: compactCompletion(c),
+      messages: {
+        manifest: Buffer.from(await p.manifestMessage(c.manifest)).toString('hex'),
+        admission: Buffer.from(await p.semanticMessage(c.admission)).toString('hex'),
+      },
+      mutations: [],
+    };
+    observations.push(observation);
     for (const field of ['sv', 'ds']) {
       const bad = structuredClone(c),
         aField = field === 'sv' ? 'derivedSv' : 'derivedDs';
@@ -81,10 +93,23 @@ test('v2 binds both decoded descriptors at old boundaries and generated sizes th
         ),
         false,
       );
-      await assert.rejects(p.verifyCompletion(bad, x.request, o));
+      let error;
+      await assert.rejects(p.verifyCompletion(bad, x.request, o), (e) => {
+        error = e.message;
+        return true;
+      });
+      observation.mutations.push({
+        field,
+        completion: compactCompletion(bad),
+        messages: {
+          manifest: Buffer.from(await p.manifestMessage(bad.manifest)).toString('hex'),
+          admission: Buffer.from(await p.semanticMessage(bad.admission)).toString('hex'),
+        },
+        error,
+      });
     }
   };
-  await fc.assert(
+  const run = await fc.check(
     fc.asyncProperty(
       fc.record({
         sv: fc.integer({ min: 1, max: 80000 }),
@@ -95,13 +120,22 @@ test('v2 binds both decoded descriptors at old boundaries and generated sizes th
     ),
     { seed: 9112071, numRuns: 80 },
   );
+  assert.equal(run.failed, false);
   for (const bytes of sizes) await check({ sv: bytes, ds: bytes, byte: 17 });
   evidence('generated-codecs', {
     seed: 9112071,
     histories: generated.length,
     oldBoundaries: sizes,
     generatedInputs: generated,
-    shrinking: true,
+    run: {
+      numRuns: run.numRuns,
+      numShrinks: run.numShrinks,
+      failed: run.failed,
+      counterexample: run.counterexample,
+      counterexamplePath: run.counterexamplePath,
+    },
+    publicKey: publicKey(x.s.publicKey),
+    observations,
     independent: 'OpenSSL SHA256 and Ed25519; decoded opaque bytes',
   });
 });
@@ -118,33 +152,66 @@ test('inclusive combined 16 MiB bound fits service limit; malformed/oversize ref
   assert.ok(Buffer.byteLength(JSON.stringify(r)) < p.ADMISSION_LIMIT);
   x.f.restart();
   x.authority.restart();
-  assert.deepEqual(await x.begin(), r);
-  const before = x.f.rows('promotions');
+  const cold = await x.begin();
+  assert.deepEqual(cold, r);
+  const before = x.f.rows('promotions'),
+    oversize = [],
+    malformed = [];
   for (const field of ['sv', 'ds']) {
     const bad = structuredClone(c),
       aField = field === 'sv' ? 'derivedSv' : 'derivedDs';
     bad.manifest[field] += '00';
     bad.admission[aField] += '00';
-    assert.throws(() => p.parseCompletion(bad), /bound/);
-    await assert.rejects(p.manifestMessage(bad.manifest), /bound/);
-    await assert.rejects(p.semanticMessage(bad.admission), /bound/);
-    assert.equal((await finish(x, o, bad)).ok, false);
+    const errors = [];
+    const refused = (e) => {
+      assert.match(e.message, /bound/);
+      errors.push(e.message);
+      return true;
+    };
+    assert.throws(() => p.parseCompletion(bad), refused);
+    await assert.rejects(p.manifestMessage(bad.manifest), refused);
+    await assert.rejects(p.semanticMessage(bad.admission), refused);
+    const result = await finish(x, o, bad);
+    assert.equal(result.ok, false);
+    oversize.push({
+      field,
+      combinedBytes: parts.sv.length / 2 + parts.ds.length / 2 + 1,
+      errors,
+      result,
+    });
   }
   for (const val of ['', 'A0', '0', 'gg', null, [], 42]) {
-    assert.throws(() => p.coverageParts({ sv: val, ds: '0000' }));
-    assert.throws(() => p.coverageParts({ sv: '00', ds: val }));
+    for (const field of ['sv', 'ds']) {
+      let error;
+      assert.throws(
+        () => p.coverageParts({ ...{ sv: '00', ds: '0000' }, [field]: val }),
+        (e) => {
+          error = e.message;
+          return true;
+        },
+      );
+      malformed.push({ field, value: val, error });
+    }
   }
   assert.deepEqual(x.f.rows('promotions'), before);
   evidence('upper-bound', {
     combinedBytes: p.COVERAGE_LIMIT,
     completionJsonBytes: Buffer.byteLength(JSON.stringify(c)),
     receiptJsonBytes: Buffer.byteLength(JSON.stringify(r)),
-    coldService: true,
-    overBoundRefused: true,
+    completion: compactCompletion(c),
+    publicKey: publicKey(x.s.publicKey),
+    receiptHash: objectHash(r),
+    coldReceiptHash: objectHash(cold),
+    rowsBefore: objectHash(before),
+    rowsAfter: objectHash(x.f.rows('promotions')),
+    oversize,
+    malformed,
   });
 });
 
 test('correctly signed independent SV and DS lies pass content-blind service but fail client-derived coverage; omissions are effective', async (t) => {
+  const observations = [],
+    omitted = [];
   const semanticOmission = await variant(t, (s) => {
     const needle = 'parts ?? c.manifest';
     assert.equal(s.split(needle).length, 2);
@@ -172,9 +239,24 @@ test('correctly signed independent SV and DS lies pass content-blind service but
         Buffer.from(c.admission.signature, 'hex'),
       ),
     );
-    await assert.rejects(p.verifyCompletion(c, x.request, o, real), /coverage/);
+    let error;
+    await assert.rejects(p.verifyCompletion(c, x.request, o, real), (e) => {
+      error = e.message;
+      assert.match(error, /coverage/);
+      return true;
+    });
     await semanticOmission.verifyCompletion(c, x.request, o, real);
-    assert.equal((await finish(x, o, c)).kind, 'promotion-receipt');
+    const result = await finish(x, o, c);
+    assert.equal(result.kind, 'promotion-receipt');
+    observations.push({
+      field,
+      real,
+      badParts,
+      completion: structuredClone(c),
+      publicKey: publicKey(x.s.publicKey),
+      error,
+      serviceResult: structuredClone(result),
+    });
     // Removing either bound hash from both messages rescues the respective signature forgery.
     const omission = await variant(t, (s) => {
       const needle = 'hashes.' + field + ',';
@@ -190,9 +272,26 @@ test('correctly signed independent SV and DS lies pass content-blind service but
       if (which === 'admission') c.admission.manifestDigest = base.admission.manifestDigest;
       const changed = await omission[fn](c[which]);
       assert.deepEqual(one, changed, `${fn}:${field}`);
-      assert.ok(
-        verify(null, changed, x.s.publicKey, Buffer.from(signing(x.s.privateKey, one), 'hex')),
+      const signature = signing(x.s.privateKey, one);
+      assert.ok(verify(null, changed, x.s.publicKey, Buffer.from(signature, 'hex')));
+      const baseline = Buffer.from(await p[fn](base[which])),
+        baselineChanged = Buffer.from(await p[fn](c[which]));
+      const baselineSignature = signing(x.s.privateKey, baseline);
+      assert.equal(
+        verify(null, baselineChanged, x.s.publicKey, Buffer.from(baselineSignature, 'hex')),
+        false,
       );
+      omitted.push({
+        field,
+        which,
+        publicKey: publicKey(x.s.publicKey),
+        one: Buffer.from(one).toString('hex'),
+        changed: Buffer.from(changed).toString('hex'),
+        signature,
+        baseline: baseline.toString('hex'),
+        baselineChanged: baselineChanged.toString('hex'),
+        baselineSignature,
+      });
     }
   }
   evidence('controls', {
@@ -203,7 +302,8 @@ test('correctly signed independent SV and DS lies pass content-blind service but
       'admission.derivedSv',
       'admission.derivedDs',
     ],
-    genuineSignatures: true,
+    observations,
+    omitted,
   });
 });
 
@@ -219,7 +319,8 @@ test('v1, mixed, unknown versions and old readers refuse without rewriting compl
     old.semanticMessage,
   );
   await old.verifyCompletion(v1, x.request, o, { sv: '00', ds: '0000' });
-  const before = x.f.rows('promotions');
+  const before = x.f.rows('promotions'),
+    refusals = [];
   for (const versions of [
     [1, 1],
     [1, 2],
@@ -230,12 +331,32 @@ test('v1, mixed, unknown versions and old readers refuse without rewriting compl
     const c = structuredClone(base);
     c.manifest.v = versions[0];
     c.admission.v = versions[1];
-    assert.throws(() => p.parseCompletion(c), /Unsupported/);
-    assert.equal((await finish(x, o, c)).ok, false);
+    let error;
+    assert.throws(
+      () => p.parseCompletion(c),
+      (e) => {
+        error = e.message;
+        assert.match(error, /Unsupported/);
+        return true;
+      },
+    );
+    const result = await finish(x, o, c);
+    assert.equal(result.ok, false);
+    refusals.push({ versions, error, result });
   }
-  assert.equal((await finish(x, o, v1)).ok, false);
+  const genuineRefusal = await finish(x, o, v1);
+  assert.equal(genuineRefusal.ok, false);
   assert.deepEqual(x.f.rows('promotions'), before);
-  assert.throws(() => old.parseCompletion(base), /Unsupported/);
+  let oldError;
+  assert.throws(
+    () => old.parseCompletion(base),
+    (e) => {
+      oldError = e.message;
+      assert.match(oldError, /Unsupported/);
+      return true;
+    },
+  );
+  const afterRefusals = objectHash(x.f.rows('promotions'));
   const authorityDir = mkdtempSync(resolve('account-service/.bounds-old-'));
   t.after(() => rmSync(authorityDir, { recursive: true, force: true }));
   const authoritySource = execFileSync('git', ['show', '6398e33:account-service/authority.ts'], {
@@ -266,11 +387,24 @@ test('v1, mixed, unknown versions and old readers refuse without rewriting compl
   const retained = x.f.rows('promotions');
   x.f.restart();
   x.authority.restart();
-  assert.equal((await x.begin()).ok, false);
-  assert.equal((await finish(x, o, base)).ok, false);
+  const coldBegin = await x.begin(),
+    coldFinish = await finish(x, o, base);
+  assert.equal(coldBegin.ok, false);
+  assert.equal(coldFinish.ok, false);
   assert.deepEqual(x.f.rows('promotions'), retained);
   evidence('versions', {
-    oldCompletionGenuine: true,
+    oldCompletion: v1,
+    publicKey: publicKey(x.s.publicKey),
+    refusals,
+    genuineRefusal,
+    oldError,
+    rowsBefore: objectHash(before),
+    rowsAfterRefusals: afterRefusals,
+    retainedBefore: objectHash(retained),
+    retainedAfter: objectHash(x.f.rows('promotions')),
+    retainedReceipt: receipt,
+    coldBegin,
+    coldFinish,
     pairs: [
       [1, 1],
       [1, 2],
@@ -278,8 +412,6 @@ test('v1, mixed, unknown versions and old readers refuse without rewriting compl
       [3, 2],
       [2, 3],
     ],
-    oldReaderRefused: true,
-    retainedV1Unchanged: true,
   });
 });
 
@@ -299,6 +431,10 @@ test('real generated writer and deletion histories exceed the old limit and reta
         svBytes: h.parts.sv.length / 2,
         dsBytes: h.parts.ds.length / 2,
         checkpointBytes: h.update.length,
+        updateBase64: Buffer.from(h.update).toString('base64'),
+        visible: h.visible,
+        completion: compactCompletion(c),
+        publicKey: publicKey(x.s.publicKey),
       });
     }
   evidence('long-histories', cases);

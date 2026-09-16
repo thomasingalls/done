@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -7,9 +8,10 @@ import { history } from '../../test/account-admission-bounds/histories.mjs';
 // Load the immutable prior parser/builders beside their unchanged dependency imports.
 const dir = mkdtempSync(resolve('account-protocol/.bounds-before-'));
 try {
-  const code = execFileSync('git', ['show', '6398e33:account-protocol/admission.ts'], {
+  const source = execFileSync('git', ['show', '6398e33:account-protocol/admission.ts'], {
     encoding: 'utf8',
-  }).replaceAll("from './", "from '../");
+  });
+  const code = source.replaceAll("from './", "from '../");
   writeFileSync(join(dir, 'admission.ts'), code);
   const old = await import(pathToFileURL(join(dir, 'admission.ts')).href);
   const m = {
@@ -62,11 +64,17 @@ try {
     }
   for (const field of ['sv', 'ds']) {
     const h = history(field);
+    const errors = [];
+    const refused = (e) => {
+      assert.match(e.message, /too long/);
+      errors.push(e.message);
+      return true;
+    };
     assert.ok(h.parts[field].length / 2 > 32767);
-    assert.throws(() => old.manifestMessage({ ...m, ...h.parts }), /too long/);
+    assert.throws(() => old.manifestMessage({ ...m, ...h.parts }), refused);
     assert.throws(
       () => old.semanticMessage({ ...a, derivedSv: h.parts.sv, derivedDs: h.parts.ds }),
-      /too long/,
+      refused,
     );
     cases.push({
       history: field,
@@ -75,6 +83,7 @@ try {
       dsBytes: h.parts.ds.length / 2,
       updateBytes: h.update.length,
       refusedBoth: true,
+      errors,
     });
   }
   const output = resolve(
@@ -83,7 +92,18 @@ try {
   mkdirSync(output, { recursive: true });
   writeFileSync(
     join(output, 'reproduction.json'),
-    JSON.stringify({ commit: '6398e33', cases }, null, 2) + '\n',
+    JSON.stringify(
+      {
+        commit: '6398e33',
+        source: {
+          path: 'account-protocol/admission.ts',
+          sha256: createHash('sha256').update(source).digest('hex'),
+        },
+        cases,
+      },
+      null,
+      2,
+    ) + '\n',
   );
   console.log(
     JSON.stringify({

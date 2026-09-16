@@ -1,3 +1,4 @@
+import { compactCompletion, objectHash } from './evidence.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
@@ -57,30 +58,47 @@ for (const kind of ['sv', 'ds'])
       assert.equal(m.v, 2);
       assert.equal(r.completion.admission.v, 2);
       assert.ok(m[kind].length / 2 > 32767);
-      inspectReceipt(r, retained.admission.request, item, h.visible);
+      const replay = inspectReceipt(r, retained.admission.request, item, h.visible);
       const before = await inventory(f.page),
         marker = structuredClone(retained);
       await f.page.close();
       f.page = await f.context.newPage();
       await f.setup(f.page);
-      assert.deepEqual(await admit(f.page, item), r);
+      const cold = await admit(f.page, item);
+      assert.deepEqual(cold, r);
       assert.deepEqual((await snapshot(f.page, item)).marker, marker);
       assert.equal(await inventory(f.page), before);
       await f.page.evaluate(await bundle('old'));
+      const errors = [];
+      const refused = (e) => {
+        assert.match(e.message, /Unsupported|Malformed/);
+        errors.push(e.message);
+        return true;
+      };
       await assert.rejects(
         f.page.evaluate((item) => Harness.readRetained(item.slotId, item.code), args(item)),
-        /Unsupported|Malformed/,
+        refused,
       );
-      await assert.rejects(admit(f.page, item), /Unsupported|Malformed/);
+      await assert.rejects(admit(f.page, item), refused);
       assert.equal(await inventory(f.page), before);
       evidence('native-long-' + kind, {
         v: 2,
         svBytes: m.sv.length / 2,
         dsBytes: m.ds.length / 2,
         updateBytes: h.update.length,
-        independentReplay: true,
-        coldRetryExact: true,
-        oldReaderRefused: true,
+        kind,
+        count: h.count,
+        updateBase64: Buffer.from(replay).toString('base64'),
+        visible: h.visible,
+        completion: compactCompletion(r.completion),
+        publicKey: retained.admission.request.certification.members[0].sPub,
+        receiptHash: objectHash(r),
+        coldReceiptHash: objectHash(cold),
+        before: objectHash(before),
+        after: objectHash(await inventory(f.page)),
+        markerBefore: objectHash(marker),
+        markerAfter: objectHash((await snapshot(f.page, item)).marker),
+        errors,
       });
     },
   );
@@ -110,15 +128,25 @@ for (const kind of ['sv', 'ds'])
           return previous(i);
         };
       });
-      await assert.rejects(admit(f.page, item), /Retained completion changed/);
+      let error;
+      await assert.rejects(admit(f.page, item), (e) => {
+        error = e.message;
+        assert.match(error, /Retained completion changed/);
+        return true;
+      });
       assert.equal(await f.page.evaluate(() => finishCalls), 0);
       assert.deepEqual(await snapshot(f.page, item), saved);
       assert.equal(await inventory(f.page), before);
       evidence('native-lie-' + kind, {
-        genuineSignatures: true,
-        clientRefused: true,
-        finishCalls: 0,
-        carrierUnchanged: true,
+        kind,
+        completion: saved.marker.admission.completion,
+        publicKey: saved.marker.admission.request.certification.members[0].sPub,
+        error,
+        finishCalls: await f.page.evaluate(() => finishCalls),
+        before: objectHash(before),
+        after: objectHash(await inventory(f.page)),
+        carrierBefore: objectHash(saved),
+        carrierAfter: objectHash(await snapshot(f.page, item)),
       });
     },
   );
@@ -138,15 +166,23 @@ test(
       saved.marker.admission,
     );
     await f.setup(f.page);
-    await assert.rejects(admit(f.page, item), /Unsupported|Malformed/);
+    let error;
+    await assert.rejects(admit(f.page, item), (e) => {
+      error = e.message;
+      assert.match(error, /Unsupported|Malformed/);
+      return true;
+    });
     assert.deepEqual(await snapshot(f.page, item), saved);
     assert.equal(await inventory(f.page), before);
     evidence('native-v1', {
-      stage: 'offered',
-      genuineSignatures: true,
-      rootMacFromOldOwner: true,
-      newOwnerRefuses: true,
-      unchanged: true,
+      stage: saved.marker.stage,
+      completion: saved.marker.admission.completion,
+      publicKey: saved.marker.admission.request.certification.members[0].sPub,
+      error,
+      before: objectHash(before),
+      after: objectHash(await inventory(f.page)),
+      carrierBefore: objectHash(saved),
+      carrierAfter: objectHash(await snapshot(f.page, item)),
     });
   },
 );
@@ -166,15 +202,24 @@ test(
         throw Error('unexpected admission');
       };
     });
-    await assert.rejects(admit(f.page, item), /coverage/);
+    let error;
+    await assert.rejects(admit(f.page, item), (e) => {
+      error = e.message;
+      assert.match(error, /coverage/);
+      return true;
+    });
     assert.equal(await f.page.evaluate(() => admissionCalls), 0);
     assert.deepEqual(await snapshot(f.page, item), saved);
     assert.equal(await inventory(f.page), before);
     evidence('native-preflight', {
       testBound: 32,
-      stage: 'genesis',
-      admissionCalls: 0,
-      carrierUnchanged: true,
+      stage: saved.marker.stage,
+      error,
+      admissionCalls: await f.page.evaluate(() => admissionCalls),
+      before: objectHash(before),
+      after: objectHash(await inventory(f.page)),
+      carrierBefore: objectHash(saved),
+      carrierAfter: objectHash(await snapshot(f.page, item)),
     });
   },
 );

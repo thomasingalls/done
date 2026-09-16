@@ -3675,8 +3675,14 @@ test('report-writing preparation remains a separate variant with required retain
     plan.rows.find((r) => r.id === 'campaign:scripts/account-activation/run.mjs').stage.expect.kind,
     'account-activation',
   );
+  assert.equal(
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-admission-bounds/run.mjs').stage.expect
+      .kind,
+    'account-admission-bounds',
+  );
   assert(
-    plan.rows.find((r) => r.id === 'campaign:scripts/account-admission-bounds/run.mjs').blocked,
+    plan.rows.find((r) => r.id === 'campaign:scripts/account-reservation-durability/run.mjs')
+      .blocked,
   );
 });
 

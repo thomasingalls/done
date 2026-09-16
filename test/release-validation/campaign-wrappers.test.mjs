@@ -1,4 +1,19 @@
 import {
+  boundsCampaign,
+  boundsCampaignStage,
+  boundsSteps,
+  boundsReports,
+  boundsReference,
+  boundsHistoricalFiles,
+  reconcileBoundsReports,
+  reconcileBoundsCodecs,
+  reconcileBoundsUpper,
+  reconcileBoundsControls,
+  reconcileBoundsVersions,
+  reconcileBoundsReplay,
+  reconcileBoundsNativeControls,
+} from '../../scripts/release-validation/account-admission-bounds-wrapper.mjs';
+import {
   activationCampaign,
   activationCampaignStage,
   activationSteps,
@@ -3552,4 +3567,611 @@ test('160 generated activation controls reject absent baseline, false mutation, 
     }),
     { seed: 150976, numRuns: 160 },
   );
+});
+
+function boundsEvidence() {
+  const key = generateKeyPairSync('ed25519'),
+    pub = key.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex');
+  const h = (b) => createHash('sha256').update(b).digest('hex');
+  const lp = (a) =>
+    Buffer.concat(
+      a.map((v) => {
+        const b = Buffer.from(String(v)),
+          n = Buffer.alloc(2);
+        n.writeUInt16BE(b.length);
+        return Buffer.concat([n, b]);
+      }),
+    );
+  const signed = (b) => sign(null, b, key.privateKey).toString('hex');
+  const rawFields = (c) => {
+    const m = c.manifest,
+      a = c.admission,
+      v = m.v,
+      sv = v === 2 ? h(Buffer.from(m.sv, 'hex')) : m.sv,
+      ds = v === 2 ? h(Buffer.from(m.ds, 'hex')) : m.ds;
+    return {
+      manifest: [
+        'done/cp-manifest/v' + v,
+        v,
+        m.workspaceId,
+        m.epoch,
+        m.epochHead,
+        m.generation,
+        m.checkpointDigest,
+        sv,
+        ds,
+        m.headVectorDigest,
+        m.producer,
+      ],
+      admission: [
+        'done/cp-admit/v' + v,
+        v,
+        a.workspaceId,
+        a.checkpointDigest,
+        a.manifestDigest,
+        sv,
+        ds,
+        a.headBaselineDigest,
+        a.derivation,
+        a.admittingCredential,
+        a.selfAdmitted,
+        a.decisionParent,
+      ],
+    };
+  };
+  const make = (sv, ds, v = 2) => {
+    const manifest = {
+      v,
+      workspaceId: '11'.repeat(16),
+      epoch: 1,
+      epochHead: '22'.repeat(32),
+      generation: 1,
+      checkpointDigest: '33'.repeat(32),
+      sv,
+      ds,
+      headVectorDigest: '44'.repeat(32),
+      producer: '55'.repeat(16),
+      signature: '00'.repeat(64),
+    };
+    const admission = {
+      v,
+      workspaceId: manifest.workspaceId,
+      checkpointDigest: manifest.checkpointDigest,
+      manifestDigest: '66'.repeat(32),
+      derivedSv: sv,
+      derivedDs: ds,
+      headBaselineDigest: manifest.headVectorDigest,
+      derivation: 'yjs-13.6.31-sv-ds-v1',
+      admittingCredential: manifest.producer,
+      selfAdmitted: 1,
+      decisionParent: '00'.repeat(32),
+      signature: '00'.repeat(64),
+    };
+    const c = { manifest, admission },
+      mb = lp(rawFields(c).manifest);
+    manifest.signature = signed(mb);
+    admission.manifestDigest = h(mb);
+    admission.signature = signed(lp(rawFields(c).admission));
+    return c;
+  };
+  const pack = (c) => {
+    const { sv, ds, ...manifest } = c.manifest,
+      { derivedSv: _sv, derivedDs: _ds, ...admission } = c.admission;
+    return {
+      manifest,
+      admission,
+      coverage: {
+        sv: { bytes: sv.length / 2, sha256: h(Buffer.from(sv, 'hex')) },
+        ds: { bytes: ds.length / 2, sha256: h(Buffer.from(ds, 'hex')) },
+      },
+    };
+  };
+  const messages = (c) =>
+    Object.fromEntries(Object.entries(rawFields(c)).map(([k, v]) => [k, lp(v).toString('hex')]));
+  const inputs = Array.from({ length: 80 }, () => ({ sv: 5, ds: 2, byte: 7 }));
+  const boundaries = [1, 32766, 32767, 32768, 65536];
+  for (const n of boundaries) inputs.push({ sv: n, ds: n, byte: 17 });
+  const observations = inputs.map((input) => {
+    const c = make(
+      Buffer.alloc(input.sv, input.byte).toString('hex'),
+      Buffer.alloc(input.ds, input.byte).toString('hex'),
+    );
+    const mutations = ['sv', 'ds'].map((field) => {
+      const bad = structuredClone(c),
+        af = field === 'sv' ? 'derivedSv' : 'derivedDs';
+      bad.manifest[field] = (input.byte === 0 ? '01' : '00') + bad.manifest[field].slice(2);
+      bad.admission[af] = bad.manifest[field];
+      bad.admission.manifestDigest = h(lp(rawFields(bad).manifest));
+      return { field, completion: pack(bad), messages: messages(bad), error: 'signature' };
+    });
+    return { input, completion: pack(c), messages: messages(c), mutations };
+  });
+  const r = {
+    'generated-codecs.json': {
+      seed: 9112071,
+      histories: 85,
+      oldBoundaries: boundaries,
+      generatedInputs: inputs,
+      observations,
+      publicKey: pub,
+      run: {
+        numRuns: 80,
+        numShrinks: 0,
+        failed: false,
+        counterexample: null,
+        counterexamplePath: null,
+      },
+    },
+  };
+  const inventory = '77'.repeat(32),
+    refused = { ok: false, refusal: 'fixture' };
+  // The upper fixture describes repeated bytes and never embeds the large raw completion.
+  const upper = {
+    manifest: { ...observations[0].completion.manifest },
+    admission: { ...observations[0].completion.admission },
+    coverage: {
+      sv: { bytes: 16777214, sha256: h(Buffer.alloc(16777214, 1)) },
+      ds: { bytes: 2, sha256: h(Buffer.alloc(2)) },
+    },
+  };
+  const upperFields = {
+    manifest: [
+      'done/cp-manifest/v2',
+      2,
+      upper.manifest.workspaceId,
+      1,
+      upper.manifest.epochHead,
+      1,
+      upper.manifest.checkpointDigest,
+      upper.coverage.sv.sha256,
+      upper.coverage.ds.sha256,
+      upper.manifest.headVectorDigest,
+      upper.manifest.producer,
+    ],
+  };
+  upper.manifest.signature = signed(lp(upperFields.manifest));
+  upper.admission.manifestDigest = h(lp(upperFields.manifest));
+  upper.admission.signature = signed(
+    lp([
+      'done/cp-admit/v2',
+      2,
+      upper.admission.workspaceId,
+      upper.admission.checkpointDigest,
+      upper.admission.manifestDigest,
+      upper.coverage.sv.sha256,
+      upper.coverage.ds.sha256,
+      upper.admission.headBaselineDigest,
+      upper.admission.derivation,
+      upper.admission.admittingCredential,
+      1,
+      upper.admission.decisionParent,
+    ]),
+  );
+  r['upper-bound.json'] = {
+    combinedBytes: 16777216,
+    completionJsonBytes: 67110864,
+    receiptJsonBytes: 67112864,
+    completion: upper,
+    publicKey: pub,
+    receiptHash: inventory,
+    coldReceiptHash: inventory,
+    rowsBefore: inventory,
+    rowsAfter: inventory,
+    oversize: ['sv', 'ds'].map((field) => ({
+      field,
+      combinedBytes: 16777217,
+      errors: ['bound', 'bound', 'bound'],
+      result: refused,
+    })),
+    malformed: ['', 'A0', '0', 'gg', null, [], 42].flatMap((value) =>
+      ['sv', 'ds'].map((field) => ({ field, value, error: 'invalid' })),
+    ),
+  };
+  const control = {
+    semanticRederivation: ['sv', 'ds'],
+    omittedSignatureFields: [
+      'manifest.sv',
+      'manifest.ds',
+      'admission.derivedSv',
+      'admission.derivedDs',
+    ],
+    observations: [],
+    omitted: [],
+  };
+  for (const field of ['sv', 'ds']) {
+    const real = { sv: '00', ds: '0000' },
+      badParts = { ...real, [field]: '0100' },
+      c = make(badParts.sv, badParts.ds),
+      base = make(real.sv, real.ds);
+    control.observations.push({
+      field,
+      real,
+      badParts,
+      completion: structuredClone(c),
+      publicKey: pub,
+      error: 'coverage',
+      serviceResult: { kind: 'promotion-receipt', completion: structuredClone(c) },
+    });
+    for (const which of ['manifest', 'admission']) {
+      if (which === 'admission') c.admission.manifestDigest = base.admission.manifestDigest;
+      const a = rawFields(base)[which],
+        b = rawFields(c)[which],
+        at = which === 'manifest' ? (field === 'sv' ? 7 : 8) : field === 'sv' ? 5 : 6,
+        one = lp(a.filter((_, i) => i !== at)),
+        changed = lp(b.filter((_, i) => i !== at));
+      control.omitted.push({
+        field,
+        which,
+        publicKey: pub,
+        one: one.toString('hex'),
+        changed: changed.toString('hex'),
+        signature: signed(one),
+        baseline: lp(a).toString('hex'),
+        baselineChanged: lp(b).toString('hex'),
+        baselineSignature: signed(lp(a)),
+      });
+    }
+  }
+  r['controls.json'] = control;
+  const v1 = make('00', '0000', 1),
+    pairs = [
+      [1, 1],
+      [1, 2],
+      [2, 1],
+      [3, 2],
+      [2, 3],
+    ];
+  r['versions.json'] = {
+    oldCompletion: v1,
+    publicKey: pub,
+    pairs,
+    refusals: pairs.map((versions) => ({ versions, error: 'Unsupported', result: refused })),
+    genuineRefusal: refused,
+    oldError: 'Unsupported',
+    rowsBefore: inventory,
+    rowsAfterRefusals: inventory,
+    retainedBefore: inventory,
+    retainedAfter: inventory,
+    retainedReceipt: { kind: 'promotion-receipt', completion: v1 },
+    coldBegin: refused,
+    coldFinish: refused,
+  };
+  const histories = [];
+  for (const kind of ['sv', 'ds'])
+    for (const count of [12000, 12317, 13001]) {
+      const doc = new Y.Doc({ gc: false }),
+        text = doc.getText('master');
+      doc.clientID = 10000;
+      doc.transact(() => {
+        if (kind === 'sv') {
+          for (let i = 0; i < count; i++) {
+            doc.clientID = 10000 + i;
+            text.insert(text.length, 'x');
+          }
+        } else {
+          text.insert(0, '.x'.repeat(count));
+          for (let i = count - 1; i >= 0; i--) text.delete(i * 2 + 1, 1);
+        }
+      });
+      const sv = Buffer.from(Y.encodeStateVector(doc)),
+        ds = Buffer.from(Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map()))),
+        update = Buffer.from(Y.encodeStateAsUpdate(doc));
+      histories.push({
+        kind,
+        count,
+        svBytes: sv.length,
+        dsBytes: ds.length,
+        checkpointBytes: update.length,
+        updateBase64: update.toString('base64'),
+        visible: text.toString(),
+        completion: pack(make(sv.toString('hex'), ds.toString('hex'))),
+        publicKey: pub,
+      });
+      doc.destroy();
+    }
+  r['long-histories.json'] = histories;
+  for (const kind of ['sv', 'ds']) {
+    const h = histories.find((x) => x.kind === kind);
+    r['native-long-' + kind + '.json'] = {
+      ...h,
+      v: 2,
+      updateBytes: h.checkpointBytes,
+      receiptHash: inventory,
+      coldReceiptHash: inventory,
+      before: inventory,
+      after: inventory,
+      markerBefore: inventory,
+      markerAfter: inventory,
+      errors: ['Unsupported', 'Malformed'],
+    };
+    const c = control.observations.find((x) => x.field === kind).completion;
+    r['native-lie-' + kind + '.json'] = {
+      kind,
+      completion: c,
+      publicKey: pub,
+      error: 'Retained completion changed',
+      finishCalls: 0,
+      before: inventory,
+      after: inventory,
+      carrierBefore: inventory,
+      carrierAfter: inventory,
+    };
+  }
+  r['native-v1.json'] = {
+    stage: 'admission-offered',
+    completion: v1,
+    publicKey: pub,
+    error: 'Unsupported',
+    before: inventory,
+    after: inventory,
+    carrierBefore: inventory,
+    carrierAfter: inventory,
+  };
+  r['native-preflight.json'] = {
+    testBound: 32,
+    stage: 'genesis-prepared',
+    error: 'coverage',
+    admissionCalls: 0,
+    before: inventory,
+    after: inventory,
+    carrierBefore: inventory,
+    carrierAfter: inventory,
+  };
+  const cases = [];
+  for (const bytes of [32766, 32767, 32768])
+    for (const field of ['sv', 'ds'])
+      for (const name of ['manifest', 'admission', 'parser'])
+        cases.push({
+          bytes,
+          field,
+          name,
+          error:
+            bytes > 32767
+              ? name === 'parser'
+                ? 'Invalid coverage bytes'
+                : 'Protocol field too long'
+              : null,
+        });
+  for (const kind of ['sv', 'ds']) {
+    const h = histories.find((x) => x.kind === kind);
+    cases.push({
+      history: kind,
+      count: 12000,
+      svBytes: h.svBytes,
+      dsBytes: h.dsBytes,
+      updateBytes: h.checkpointBytes,
+      refusedBoth: true,
+      errors: ['Protocol field too long', 'Protocol field too long'],
+    });
+  }
+  r['reproduction.json'] = {
+    commit: '6398e33',
+    source: { path: 'account-protocol/admission.ts', sha256: 'aa'.repeat(32) },
+    cases,
+  };
+  return r;
+}
+
+test('admission-bounds wrapper binds five commands, eleven cases, historical files and unchanged child limits', () => {
+  const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
+    m = compileManifest(process.cwd(), graph),
+    [s, ...rest] = selectStages(m, 'wrapper-account-admission-bounds');
+  assert.deepEqual(rest, []);
+  validateStage(s);
+  assert.equal(s.expect.cases.length, 11);
+  assert.equal(s.deadlineMs, 420000);
+  assert.deepEqual(
+    s.expect.steps.map((v) => v.deadlineMs),
+    [60000, 30000, 30000, 120000, 180000],
+  );
+  assert.deepEqual(
+    s.expect.historyInputs.map((v) => [v.reference, v.path]),
+    boundsHistoricalFiles.map((p) => [boundsReference, p]),
+  );
+  assert.equal(s.fileOutputs.required.length, 23);
+  for (const change of [
+    { argv: [...s.argv, '--case', 'one'] },
+    { env: { MODE: 'other' } },
+    { fixture: undefined },
+    { deadlineMs: 420001 },
+    { fileOutputs: undefined },
+    { expect: { kind: 'exit', exitCodes: [0] } },
+    { expect: { ...s.expect, cases: s.expect.cases.slice(1) } },
+    { expect: { ...s.expect, historyInputs: s.expect.historyInputs.slice(1) } },
+  ])
+    assert.throws(() => validateStage({ ...s, ...change }));
+  graph.extraRoots.push({ id: 'bounds-filter', argv: ['node', boundsCampaign, '--case', 'one'] });
+  assert(
+    compileManifest(process.cwd(), graph).rows.find((r) => r.id === 'command:bounds-filter:0')
+      .blocked,
+  );
+});
+
+test('admission-bounds trace needs all three exit steps and both exact child case domains', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-bounds-trace-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  mkdirSync(join(dir, 'case-reports'));
+  const s = boundsCampaignStage(process.cwd()),
+    trace = {
+      schema: 1,
+      adapter: 'campaign-v1',
+      nonce: 'fresh',
+      phase: 'complete',
+      steps: s.expect.steps.map(({ expect: _e, ...step }) => ({
+        ...step,
+        phase: 'complete',
+        code: 0,
+        timedOut: false,
+      })),
+    };
+  const children = s.expect.steps.filter((s) => s.kind === 'node'),
+    reports = children.map((s) => ({
+      schema: 1,
+      nonce: 'fresh:' + s.name,
+      phase: 'complete',
+      cases: s.expect.cases,
+      errors: [],
+      summary: {
+        success: true,
+        counts: { tests: s.expect.cases.length, failed: 0, cancelled: 0, skipped: 0, todo: 0 },
+      },
+    }));
+  const run = (v) => {
+    v.reports.forEach((r, i) =>
+      writeFileSync(join(dir, 'case-reports/' + children[i].name + '.json'), JSON.stringify(r)),
+    );
+    return reconcileCampaignTrace(s.expect.steps, v.trace, 'fresh', dir, reconcileCases);
+  };
+  assert.deepEqual(run({ trace, reports }).cases, s.expect.cases);
+  for (const alter of [
+    ...[0, 1, 2].map((i) => (v) => (v.trace.steps[i].code = 1)),
+    ...[0, 1].map((i) => (v) => v.reports[i].cases.pop()),
+    (v) => v.trace.steps[2].argv.pop(),
+    (v) => (v.reports[1].nonce = 'stale'),
+    (v) => (v.trace.phase = 'running'),
+  ]) {
+    const bad = structuredClone({ trace, reports });
+    alter(bad);
+    assert.throws(() => run(bad));
+  }
+});
+
+test('admission-bounds reports bind sources and historical reads with all semantic and auxiliary files', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'done-bounds-reports-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const sources = [{ path: boundsCampaign, sha256: 'a'.repeat(64) }],
+    history = [{ path: 'account-protocol/admission.ts', sha256: 'aa'.repeat(32) }];
+  const r = {
+    ...boundsEvidence(),
+    'sources.json': sources,
+    'summary.json': {
+      status: 'passed',
+      startedAt: '2026-09-16T00:00:00.000Z',
+      completedAt: '2026-09-16T00:00:01.000Z',
+      stages: boundsSteps.map(({ name }) => ({ name, code: 0, timedOut: false })),
+    },
+  };
+  const aux = boundsReports.filter((f) => f.endsWith('.log') || f.endsWith('.xml'));
+  const save = (v) => {
+    for (const [f, b] of Object.entries(v)) writeFileSync(join(dir, f), JSON.stringify(b));
+    for (const f of aux) writeFileSync(join(dir, f), f === 'types.log' ? '' : 'observed');
+  };
+  save(r);
+  reconcileBoundsReports(dir, sources, history);
+  for (const alter of [
+    (r) => (r['summary.json'].status = 'failed'),
+    (r) => (r['sources.json'][0].sha256 = 'b'.repeat(64)),
+    (r) => (r['reproduction.json'].source.sha256 = '00'.repeat(32)),
+    (r) => r['long-histories.json'].pop(),
+    (r) => (r['reproduction.json'].cases[14].error = 'Protocol field too long'),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad);
+    save(bad);
+    assert.throws(() => reconcileBoundsReports(dir, sources, history));
+  }
+  for (const file of [...Object.keys(r), ...aux]) {
+    save(r);
+    rmSync(join(dir, file));
+    assert.throws(() => reconcileBoundsReports(dir, sources, history));
+  }
+});
+
+test('160 generated descriptor-report corruptions reject changed decoded bytes, missing cases and invalid signatures', () => {
+  const r = boundsEvidence(),
+    g = r['generated-codecs.json'];
+  reconcileBoundsCodecs(g);
+  const changes = [
+    (o) => (o.input.byte = (o.input.byte + 1) % 256),
+    (o) => (o.completion.coverage.sv.sha256 = '00'.repeat(32)),
+    (o) => (o.completion.manifest.signature = '00'.repeat(64)),
+    (o) => (o.messages.admission = '00'),
+    (o) => o.mutations.pop(),
+    (o) => (o.mutations[0].completion.admission.manifestDigest = '00'.repeat(32)),
+    (o) => (o.mutations[1].error = null),
+  ];
+  fc.assert(
+    fc.property(fc.nat(84), fc.nat(changes.length - 1), (i, k) => {
+      const bad = structuredClone(g);
+      changes[k](bad.observations[i]);
+      assert.throws(() => reconcileBoundsCodecs(bad));
+    }),
+    { seed: 150978, numRuns: 160 },
+  );
+  for (const change of [
+    (v) => v.observations.pop(),
+    (v) => v.generatedInputs.pop(),
+    (v) => (v.run.failed = true),
+  ]) {
+    const bad = structuredClone(g);
+    change(bad);
+    assert.throws(() => reconcileBoundsCodecs(bad));
+  }
+  const u = r['upper-bound.json'];
+  reconcileBoundsUpper(u);
+  for (const change of [
+    (v) => v.combinedBytes++,
+    (v) => v.completion.coverage.sv.bytes++,
+    (v) => (v.rowsAfter = '00'.repeat(32)),
+    (v) => (v.oversize[0].result.ok = true),
+    (v) => v.malformed.pop(),
+  ]) {
+    const bad = structuredClone(u);
+    change(bad);
+    assert.throws(() => reconcileBoundsUpper(bad));
+  }
+});
+
+test('160 generated bounds controls reject rescued signatures, rewritten carriers, network activity and incomplete replay', () => {
+  const r = boundsEvidence();
+  reconcileBoundsControls(r['controls.json']);
+  reconcileBoundsVersions(r['versions.json']);
+  reconcileBoundsNativeControls(r);
+  const controls = [
+    (c) => c.observations.pop(),
+    (c) => (c.observations[0].serviceResult.completion.manifest.signature = '00'.repeat(64)),
+    (c) => (c.omitted[0].baselineChanged = c.omitted[0].baseline),
+    (c) => (c.omitted[3].signature = '00'.repeat(64)),
+  ];
+  const native = [
+    (r) => r['native-lie-sv.json'].finishCalls++,
+    (r) => (r['native-lie-ds.json'].carrierAfter = '00'.repeat(32)),
+    (r) => (r['native-v1.json'].completion.manifest.v = 2),
+    (r) => r['native-preflight.json'].admissionCalls++,
+    (r) => (r['native-preflight.json'].stage = 'genesis'),
+    (r) => (r['native-preflight.json'].after = '00'.repeat(32)),
+  ];
+  fc.assert(
+    fc.property(fc.nat(controls.length - 1), fc.nat(native.length - 1), (a, b) => {
+      const c = structuredClone(r['controls.json']);
+      controls[a](c);
+      assert.throws(() => reconcileBoundsControls(c));
+      const n = structuredClone(r);
+      native[b](n);
+      assert.throws(() => reconcileBoundsNativeControls(n));
+    }),
+    { seed: 150979, numRuns: 160 },
+  );
+  const h = r['long-histories.json'][0];
+  reconcileBoundsReplay(h);
+  for (const change of [
+    (h) => (h.visible += 'lost'),
+    (h) => (h.completion.coverage.ds.sha256 = '00'.repeat(32)),
+    (h) => (h.updateBase64 = Buffer.from([0]).toString('base64')),
+    (h) => h.checkpointBytes++,
+  ]) {
+    const bad = structuredClone(h);
+    change(bad);
+    assert.throws(() => reconcileBoundsReplay(bad));
+  }
+  const doc = new Y.Doc({ gc: false });
+  doc.getText('master').insert(0, 'before');
+  const vector = Y.encodeStateVector(doc);
+  doc.getText('master').insert(6, 'dependent');
+  const suffix = Buffer.from(Y.encodeStateAsUpdate(doc, vector)).toString('base64');
+  doc.destroy();
+  assert.throws(() => reconcileBoundsReplay({ ...h, updateBase64: suffix }), /Incomplete replay/);
+  const bad = structuredClone(r['versions.json']);
+  bad.retainedAfter = '00'.repeat(32);
+  assert.throws(() => reconcileBoundsVersions(bad));
 });

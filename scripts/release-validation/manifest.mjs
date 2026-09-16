@@ -1,3 +1,4 @@
+import { boundsCampaign, boundsCampaignStage } from './account-admission-bounds-wrapper.mjs';
 import { activationCampaign, activationCampaignStage } from './account-activation-wrapper.mjs';
 import {
   serviceInboundCampaign,
@@ -409,6 +410,8 @@ function compileManifestSnapshot(root, inventory) {
       row.requires = ['campaign:' + promotionCampaign];
     else if (exactCommand(command, ['node', genesisCampaign]))
       row.requires = ['campaign:' + genesisCampaign];
+    else if (exactCommand(command, ['node', boundsCampaign]))
+      row.requires = ['campaign:' + boundsCampaign];
     else if (exactCommand(command, ['node', activationCampaign]))
       row.requires = ['campaign:' + activationCampaign];
     else if (exactCommand(command, ['node', serviceInboundCampaign]))
@@ -504,62 +507,64 @@ function compileManifestSnapshot(root, inventory) {
                       ? { stage: handoffCampaignStage(root) }
                       : c.path === editingCampaign
                         ? { stage: editingCampaignStage(root) }
-                        : c.path === activationCampaign
-                          ? { stage: activationCampaignStage(root) }
-                          : c.path === serviceInboundCampaign
-                            ? { stage: serviceInboundCampaignStage(root) }
-                            : c.path === syncCampaign
-                              ? { stage: syncCampaignStage(root) }
-                              : c.path === receiveDriverCampaign
-                                ? { stage: receiveDriverCampaignStage(root) }
-                                : c.path === receiveTransportCampaign
-                                  ? { stage: receiveTransportCampaignStage(root) }
-                                  : c.path === receiveEditorCampaign
-                                    ? { stage: receiveEditorCampaignStage(root) }
-                                    : c.path === receiveCampaign
-                                      ? { stage: receiveCampaignStage(root) }
-                                      : c.path === inboundCodecsCampaign
-                                        ? { stage: inboundCodecsCampaignStage(root) }
-                                        : c.path === inboundPrepCampaign
-                                          ? { stage: inboundPrepCampaignStage(root) }
-                                          : c.path === serviceDeliveryCampaign
-                                            ? { stage: serviceDeliveryCampaignStage(root) }
-                                            : c.path === deliveryCampaign
-                                              ? { stage: deliveryCampaignStage(root) }
-                                              : c.path === decisionsCampaign
-                                                ? { stage: decisionsCampaignStage(root) }
-                                                : c.path === spoolCampaign
-                                                  ? { stage: spoolCampaignStage(root) }
-                                                  : c.path === captureCampaign
-                                                    ? { stage: captureCampaignStage(root) }
-                                                    : c.path === outboundCampaign
-                                                      ? { stage: outboundCampaignStage(root) }
-                                                      : [
-                                                            'scripts/content/run.mjs',
-                                                            'scripts/journal/run.mjs',
-                                                            'scripts/admission/run.mjs',
-                                                            'scripts/editor-admission/run.mjs',
-                                                            'scripts/workspace-admission/run.mjs',
-                                                            'scripts/owned-startup/run.mjs',
-                                                            'scripts/local-genesis/run.mjs',
-                                                            'scripts/write-session/run.mjs',
-                                                            'scripts/custody/run.mjs',
-                                                            'scripts/content-trim/run.mjs',
-                                                            'scripts/local-clear/run.mjs',
-                                                          ].includes(c.path)
-                                                        ? {
-                                                            requires: [
-                                                              'catalogue:' +
-                                                                c.path.replace(
-                                                                  '/run.mjs',
-                                                                  '/catalog.mjs',
-                                                                ),
-                                                            ],
-                                                          }
-                                                        : {
-                                                            blocked:
-                                                              'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
-                                                          }),
+                        : c.path === boundsCampaign
+                          ? { stage: boundsCampaignStage(root) }
+                          : c.path === activationCampaign
+                            ? { stage: activationCampaignStage(root) }
+                            : c.path === serviceInboundCampaign
+                              ? { stage: serviceInboundCampaignStage(root) }
+                              : c.path === syncCampaign
+                                ? { stage: syncCampaignStage(root) }
+                                : c.path === receiveDriverCampaign
+                                  ? { stage: receiveDriverCampaignStage(root) }
+                                  : c.path === receiveTransportCampaign
+                                    ? { stage: receiveTransportCampaignStage(root) }
+                                    : c.path === receiveEditorCampaign
+                                      ? { stage: receiveEditorCampaignStage(root) }
+                                      : c.path === receiveCampaign
+                                        ? { stage: receiveCampaignStage(root) }
+                                        : c.path === inboundCodecsCampaign
+                                          ? { stage: inboundCodecsCampaignStage(root) }
+                                          : c.path === inboundPrepCampaign
+                                            ? { stage: inboundPrepCampaignStage(root) }
+                                            : c.path === serviceDeliveryCampaign
+                                              ? { stage: serviceDeliveryCampaignStage(root) }
+                                              : c.path === deliveryCampaign
+                                                ? { stage: deliveryCampaignStage(root) }
+                                                : c.path === decisionsCampaign
+                                                  ? { stage: decisionsCampaignStage(root) }
+                                                  : c.path === spoolCampaign
+                                                    ? { stage: spoolCampaignStage(root) }
+                                                    : c.path === captureCampaign
+                                                      ? { stage: captureCampaignStage(root) }
+                                                      : c.path === outboundCampaign
+                                                        ? { stage: outboundCampaignStage(root) }
+                                                        : [
+                                                              'scripts/content/run.mjs',
+                                                              'scripts/journal/run.mjs',
+                                                              'scripts/admission/run.mjs',
+                                                              'scripts/editor-admission/run.mjs',
+                                                              'scripts/workspace-admission/run.mjs',
+                                                              'scripts/owned-startup/run.mjs',
+                                                              'scripts/local-genesis/run.mjs',
+                                                              'scripts/write-session/run.mjs',
+                                                              'scripts/custody/run.mjs',
+                                                              'scripts/content-trim/run.mjs',
+                                                              'scripts/local-clear/run.mjs',
+                                                            ].includes(c.path)
+                                                          ? {
+                                                              requires: [
+                                                                'catalogue:' +
+                                                                  c.path.replace(
+                                                                    '/run.mjs',
+                                                                    '/catalog.mjs',
+                                                                  ),
+                                                              ],
+                                                            }
+                                                          : {
+                                                              blocked:
+                                                                'Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit.',
+                                                            }),
     });
   }
   for (const c of inventory.constructions) {
@@ -671,6 +676,13 @@ function compileManifestSnapshot(root, inventory) {
           (r) =>
             r.id === 'campaign:' + editingCampaign ||
             (r.kind === 'command' && exactCommand(r, ['node', editingCampaign])),
+        )
+        .map((r) => r.id),
+      'wrapper-account-admission-bounds': rows
+        .filter(
+          (r) =>
+            r.id === 'campaign:' + boundsCampaign ||
+            (r.kind === 'command' && exactCommand(r, ['node', boundsCampaign])),
         )
         .map((r) => r.id),
       'wrapper-account-activation': rows

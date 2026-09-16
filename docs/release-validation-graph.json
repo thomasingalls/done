@@ -2125,19 +2125,19 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 140,
+          "line": 148,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
       ],
       "processCallSites": [
         {
-          "line": 77,
+          "line": 83,
           "form": "spawn",
           "arguments": [
             "process.execPath",
-            "args",
-            "{\n    detached: true,\n    stdio: ['ignore', 'pipe', 'pipe'],\n    env: { ...process.env, ACCOUNT_REPORT_DIR: output },\n  }"
+            "childReport?.args ?? args",
+            "{\n    detached: !owned,\n    stdio: ['ignore', 'pipe', 'pipe'],\n    env: { ...process.env, ACCOUNT_REPORT_DIR: output, ...childReport?.env },\n  }"
           ]
         }
       ]
@@ -5394,7 +5394,7 @@
       "declarations": 5,
       "propertyFamilies": [
         {
-          "line": 88,
+          "line": 113,
           "form": "fc.asyncProperty"
         }
       ],
@@ -8710,7 +8710,7 @@
       "declarations": 4,
       "propertyFamilies": [
         {
-          "line": 1124,
+          "line": 1123,
           "form": "fc.property"
         }
       ],
@@ -8747,86 +8747,94 @@
           "test/release-validation/campaign-wrappers.test.mjs"
         ]
       },
-      "declarations": 50,
+      "declarations": 55,
       "propertyFamilies": [
         {
-          "line": 344,
+          "line": 359,
           "form": "fc.property"
         },
         {
-          "line": 364,
+          "line": 379,
           "form": "fc.property"
         },
         {
-          "line": 653,
+          "line": 668,
           "form": "fc.property"
         },
         {
-          "line": 687,
+          "line": 702,
           "form": "fc.property"
         },
         {
-          "line": 985,
+          "line": 1000,
           "form": "fc.property"
         },
         {
-          "line": 1009,
+          "line": 1024,
           "form": "fc.property"
         },
         {
-          "line": 1330,
+          "line": 1345,
           "form": "fc.property"
         },
         {
-          "line": 1364,
+          "line": 1379,
           "form": "fc.property"
         },
         {
-          "line": 1626,
+          "line": 1641,
           "form": "fc.property"
         },
         {
-          "line": 1649,
+          "line": 1664,
           "form": "fc.property"
         },
         {
-          "line": 1956,
+          "line": 1971,
           "form": "fc.property"
         },
         {
-          "line": 1978,
+          "line": 1993,
           "form": "fc.property"
         },
         {
-          "line": 2320,
+          "line": 2335,
           "form": "fc.property"
         },
         {
-          "line": 2344,
+          "line": 2359,
           "form": "fc.property"
         },
         {
-          "line": 2744,
+          "line": 2759,
           "form": "fc.property"
         },
         {
-          "line": 2770,
+          "line": 2785,
           "form": "fc.property"
         },
         {
-          "line": 3105,
+          "line": 3120,
           "form": "fc.property"
         },
         {
-          "line": 3129,
+          "line": 3144,
           "form": "fc.property"
         },
         {
-          "line": 3518,
+          "line": 3533,
           "form": "fc.property"
         },
         {
-          "line": 3548,
+          "line": 3563,
+          "form": "fc.property"
+        },
+        {
+          "line": 4094,
+          "form": "fc.property"
+        },
+        {
+          "line": 4145,
           "form": "fc.property"
         }
       ],
@@ -9227,11 +9235,11 @@
           "form": "fc.property"
         },
         {
-          "line": 3754,
+          "line": 3760,
           "form": "fc.property"
         },
         {
-          "line": 3967,
+          "line": 3973,
           "form": "fc.property"
         }
       ],
@@ -11554,11 +11562,11 @@
     },
     {
       "path": "scripts/account-admission-bounds/reproduce.mjs",
-      "sha256": "171c2d1924ff552280bc0c75d82e36d7bc56d749471a525b3629021dc598afb0"
+      "sha256": "fc73c7a8203b8acee550365238dac1f47feda06fa7d89904114fb0aefd1c160b"
     },
     {
       "path": "scripts/account-admission-bounds/run.mjs",
-      "sha256": "b20f9b7d07fcba486687c1813b5c350b273eba59faed21d70030c4ed222043f6"
+      "sha256": "72a553af3ba0daceb7e158e4799864c70990f6628084f041eaf6a3db03be31d8"
     },
     {
       "path": "scripts/account-admission-bounds/vectors.mjs",
@@ -12293,6 +12301,10 @@
       "sha256": "47e57352a20bb76b76283920d9c255a4f5d305a066aaaecda7b18f0ce1c8ceb3"
     },
     {
+      "path": "scripts/release-validation/account-admission-bounds-wrapper.mjs",
+      "sha256": "06960c0319a2697083f41a7975b3eed21ff83fa3f9551d81afb0a67f8d74fe64"
+    },
+    {
       "path": "scripts/release-validation/account-admission-wrapper.mjs",
       "sha256": "3ab577cbf4a1737542de6fb2c0a804fab58c43a31bbe91bd38f1237976d4b8d8"
     },
@@ -12434,7 +12446,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "7719a513accbb71702ce0bc93bdd931285a58d85c4b1bd8476b6a5af8d20b42b"
+      "sha256": "4eefcbab9a9799e00f3290563768b37884f91cc698cea6638143c44d32f62269"
     },
     {
       "path": "scripts/release-validation/file-outputs.mjs",
@@ -12482,7 +12494,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "299dbef78f9c51ecc6024f6f9f9a45dd8b7aa293a1d26af4ae95f1dbbaf604b6"
+      "sha256": "87d5426b9edd520036c404486f771f76614d483c88076a338602f26f9312c6d3"
     },
     {
       "path": "scripts/release-validation/nested-groups.mjs",
@@ -12554,7 +12566,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "45a20dce6c873773e4af83ce44b45f315a4a7df56adc688549fec79f32ca3a06"
+      "sha256": "72e18826b25a3a038f27a87259d24a5f4bd823acc86c479fa3c454be87900fc1"
     },
     {
       "path": "scripts/release-validation/static-fixture.mjs",
@@ -12709,6 +12721,10 @@
       "sha256": "d3e51e99a79c189c0f24740a63c4f99774648264488f2bbf1c42c4e74f219f2b"
     },
     {
+      "path": "test/account-admission-bounds/evidence.mjs",
+      "sha256": "9e1323b1e404c48b1f68a4c8e31e65061662fa145584b373d1d001a92dadb3ad"
+    },
+    {
       "path": "test/account-admission-bounds/fixtures.mjs",
       "sha256": "b3e4682b468697d327e3f920b4f00c17476fb92f8ffdf82da8a03ab2a8d88407"
     },
@@ -12718,11 +12734,11 @@
     },
     {
       "path": "test/account-admission-bounds/native.test.mjs",
-      "sha256": "1bd8aa0eebc3d98efba068532d8874f984bc480ab2490ce3036727470d3711d7"
+      "sha256": "59ff7b148781e12f5c326cbcb8fce5505e21e804438de141a42603da1d2439df"
     },
     {
       "path": "test/account-admission-bounds/protocol.test.mjs",
-      "sha256": "8a3402d0cf01dee87bb497547b6fe29f5fe7d0761ad9d6dbf2d38130e9f48f3f"
+      "sha256": "e28409a950936e7219b2b79cafd97a07449638f83ef075b9ea39cffc35807677"
     },
     {
       "path": "test/account-admission-evidence/browser.ts",
@@ -14366,7 +14382,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "83e8c02352ea3d0786d5c61aaf27eaad7af8d654041f7efcde61e87917b065ad"
+      "sha256": "bc6600a8fb22618e1dd48f8b534a592f8b124b1ae0bb85289ff2a0a4773adb87"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -14378,7 +14394,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "42699108df872ced8d54776b83dd74fce124f4ccb929284c58f3401594bd3454"
+      "sha256": "ccb1a970cdf58a5b15490976fc881c181b0fc9ed4b25e4116cb9655f4954e1b4"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
@@ -14442,7 +14458,7 @@
     },
     {
       "path": "test/release-validation/manifest.test.mjs",
-      "sha256": "14585e3a35171b90a87e511fc71afd1c01ea3901d4a24c8b77bff3c4d74c894f"
+      "sha256": "7f6602bea562987257ce82e1468d6d522b9070c9f2d77f6cd69e7b11ad4737ea"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",

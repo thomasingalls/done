@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-admission-bounds/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-admission-bounds/owned/inputs.json.gz",
+    "bytes": 1227512,
+    "sha256": "87962a33a60f7e0d6ca3701de5e00164b39dd8b4e79fa2853e629729f3c1b9fb"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-admission-bounds/smoke-failed-reconcile/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-admission-bounds/smoke-failed-reconcile/inputs.json.gz",
+    "bytes": 1227516,
+    "sha256": "3ccd43e4a763f5ea7e862758c0f718bf810151ad1966bd6058e63d053cc40846"
+  }
+]

@@ -55,26 +55,28 @@ debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
 ```
 
-**Roadmap checkpoint.** Activation is signed and verified as `f2c3658b`. All catalogue/test-file
-adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay
-**629 obligations /292 required files /272 general files**; two new runner cases raise the reviewed
-census to **2,203 dispositions (11 not applicable)**. Unresolved integration remains
-**zero test-file /71 command /39 campaign (110)**. These are integration counts, not a passing aggregate.
+**Roadmap checkpoint.** Planning batch headroom is signed and verified as `9b90337f`. All catalogue/
+test-file adapters are integrated; retired transport/driver whole campaigns remain excluded. Totals stay
+**629 obligations /292 required files /272 general files /2,203 dispositions (11 not applicable)**.
+Bounds resolves one command and campaign: **zero test-file /70 command /38 campaign (108)** remain.
+These are integration counts, not a passing aggregate.
 
-**Just completed.** Planning batches the 26 exact activation historical expressions with bounded,
-length-delimited blob decoding. Fresh execution checks, replacement semantics, snapshot lifetime,
-original deadlines and all fixture assertions remain. Equal-manifest profiles reduce Git subprocesses
-from **62 to 37**. Two new tests, 160 generated framing histories, all 26 substitution controls and two
-omitted-check faults discriminate. Both stale-census epochs and scratch-launch failures are preserved.
+**Just completed.** Admission-bounds retains five original commands/11 cases and child deadlines.
+Owned execution adds a 420-second aggregate, three historical source pins and 23 retained reports.
+Actual boundary/omission/refusal observations and complete plaintext replay updates corroborate original
+crypto/decryption/browser oracles. Five new infrastructure cases, two 160-run corruption campaigns,
+three historical substitutions, eight synthetic runs and two omitted-check faults discriminate.
+The failed smoke reconciliation and lifecycle-name diagnostic remain preserved.
 
-The final owned epoch passes **225 cases in eight executions**, then exact activation reuse. Manifest
-process time is **42.387s /60s** and wrapper-infrastructure process time is **48.849s /60s**;
-all groups drain and all 31 activation reports survive checkout removal. This restores observed planning
-headroom; loaded-host and immutable qualification remain open. The phase is ready for signed commit.
-[Evidence and verifier](./account-conformance-runs/2026-09-16-planning-batch-headroom/README.md).
+The final owned epoch passes **220 cases in eight executions**, then exact bounds reuse. Bounds takes
+**78.557s /420s**; all groups drain and all 23 files survive checkout removal. Manifest process
+is **45.746s /60s** and wrapper-infrastructure process **54.126s /60s**. Loaded-host and
+immutable qualification remain open. This phase is ready for signed commit.
+[Evidence and verifier](./account-conformance-runs/2026-09-16-wrapper-account-admission-bounds/README.md).
 
-**Next bounded phase.** Account admission-bounds wrapper integration, then further families serially.
-Continue signed commits between phases; if signing fails, finish and stage the phase, then pause.
+**Next bounded phase.** Prepare composed Account campaign integration: exact child contracts, report
+namespaces, explicit retired-child handling and prerequisite mapping before integrating a broad wrapper.
+Continue serially with signed commits between phases; if signing fails, finish and stage, then pause.
 
 **RC selection.** R3 + membership-repair eligibility + restricted replay buffers remains the Local
 repository default, signed in `83b5f157`; Account/internal defaults stay reference. Optimization

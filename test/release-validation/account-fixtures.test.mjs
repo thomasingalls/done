@@ -1043,7 +1043,6 @@ test('Account fixture selection admits exactly 666 Node cases and 12 delivery ca
     'account-recovery-contract',
     'account-transport-contract',
     'account-service-custody',
-    'account-admission-bounds',
     'account-admission-evidence',
     'account-first-authority',
     'account-delivery-oracle',

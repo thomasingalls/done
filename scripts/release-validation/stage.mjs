@@ -1,4 +1,9 @@
 import {
+  boundsCampaign,
+  validateBoundsCampaign,
+  reconcileBoundsReports,
+} from './account-admission-bounds-wrapper.mjs';
+import {
   activationCampaign,
   validateActivationCampaign,
   reconcileActivationReports,
@@ -215,6 +220,7 @@ export function validateStage(stage) {
       'account-sync',
       'account-service-inbound',
       'account-activation',
+      'account-admission-bounds',
       'vitest',
       'playwright',
       'content',
@@ -265,6 +271,7 @@ export function validateStage(stage) {
       'account-sync',
       'account-service-inbound',
       'account-activation',
+      'account-admission-bounds',
     ].includes(stage.expect.kind)
   ) {
     assert(stage.expect.cases?.length, 'Empty expected case set');
@@ -426,6 +433,12 @@ export function validateStage(stage) {
     stage.variant === 'account-activation-campaign-v1'
   )
     validateActivationCampaign(stage);
+  if (
+    stage.expect.kind === 'account-admission-bounds' ||
+    stage.argv[1] === boundsCampaign ||
+    stage.variant === 'account-admission-bounds-campaign-v1'
+  )
+    validateBoundsCampaign(stage);
   if (Object.hasOwn(stage.expect, 'dataInputs')) {
     const module =
       stage.expect.kind === 'cases' &&
@@ -479,6 +492,7 @@ export function validateStage(stage) {
         'account-sync',
         'account-service-inbound',
         'account-activation',
+        'account-admission-bounds',
       ].includes(stage.expect.kind)
     ) {
       assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
@@ -983,6 +997,7 @@ export function createStageRunner({
             'account-sync',
             'account-service-inbound',
             'account-activation',
+            'account-admission-bounds',
           ].includes(stage.expect.kind)
         ) {
           assert(
@@ -1024,8 +1039,9 @@ export function createStageRunner({
             reconcileSyncReports(fileDirectory, before.sources);
           else if (stage.expect.kind === 'account-service-inbound')
             reconcileServiceInboundReports(fileDirectory, before.sources);
-          else
+          else if (stage.expect.kind === 'account-activation')
             reconcileActivationReports(fileDirectory, before.sources, stage.expect.historyInputs);
+          else reconcileBoundsReports(fileDirectory, before.sources, stage.expect.historyInputs);
         } else if (stage.expect.kind === 'playwright') {
           actual = reconcilePlaywright(stage.expect, reported, nonce);
         } else if (stage.expect.kind === 'vitest') {
@@ -1057,6 +1073,7 @@ export function createStageRunner({
               'account-sync',
               'account-service-inbound',
               'account-activation',
+              'account-admission-bounds',
             ].includes(stage.expect.kind)
           ) {
             assert.equal(reported.phase, 'complete', 'Missing terminal Node reporter completion');
