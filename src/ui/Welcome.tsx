@@ -82,7 +82,7 @@ export const Welcome = ({ onCreateLocal }: { onCreateLocal: () => void }): React
       <AppUpdateNotice />
       <span className="local-brand">done</span>
       <h1 id="welcome-title">Your Workspace</h1>
-      <p className="welcome-tagline">Have your brain dump and eat through it too.</p>
+      <p className="welcome-tagline">Everything on your mind. One thing at a time.</p>
       <div className="welcome-actions">
         {/* Account entry points are intentionally inactive until their flows are implemented. */}
         <button type="button" className="welcome-primary" disabled>
@@ -95,10 +95,6 @@ export const Welcome = ({ onCreateLocal }: { onCreateLocal: () => void }): React
       <button type="button" className="local-secondary welcome-existing" disabled>
         I already have a workspace
       </button>
-      <p className="welcome-privacy">
-        Your data stays encrypted inside the browser as well as when it’s being sent to your other
-        devices.
-      </p>
     </section>
   </main>
 );
