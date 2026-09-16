@@ -9298,14 +9298,18 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/release-validation/stage.test.mjs"]
       },
-      "declarations": 36,
+      "declarations": 38,
       "propertyFamilies": [
         {
-          "line": 467,
+          "line": 314,
           "form": "fc.property"
         },
         {
-          "line": 696,
+          "line": 556,
+          "form": "fc.property"
+        },
+        {
+          "line": 785,
           "form": "fc.property"
         }
       ],
@@ -12286,7 +12290,7 @@
     },
     {
       "path": "scripts/release-validation/account-activation-wrapper.mjs",
-      "sha256": "1d3ea3892737a49dbb4194eac907f3538f5cb42651472023bf5215570ca499d2"
+      "sha256": "47e57352a20bb76b76283920d9c255a4f5d305a066aaaecda7b18f0ce1c8ceb3"
     },
     {
       "path": "scripts/release-validation/account-admission-wrapper.mjs",
@@ -12450,7 +12454,7 @@
     },
     {
       "path": "scripts/release-validation/historical-inputs.mjs",
-      "sha256": "0ae6a827a3302c3e8750faa50f4a7ff2def56c2072372f718d16a460c8fa6975"
+      "sha256": "522b8529fd290cc556a5b6190229f0adc9a4ea1baf33bbc61676457145674e41"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -14410,11 +14414,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "f4d1cdefac2879b6ea707099a02d8fb9f422e65ebd0de348c8b6a421e3c8eb3b"
+      "sha256": "817ab719e49754afe730585604425cbc68d57c5a11f57a838639958cac76ecb9"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "cd24c50b46392aae8735fb839e7efda8b922991a08207a25f4a06169059fec1b"
+      "sha256": "c6bcf5d54745ea33954a47e6886008352d5964b5c04f606ef86cff75b4497653"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -14454,7 +14458,7 @@
     },
     {
       "path": "test/release-validation/stage.test.mjs",
-      "sha256": "4f1ee845f842d2abae151ebb121afd6b19cbfcc3932d7ebaddc1b5962bc53b3d"
+      "sha256": "5b8918afc45ee768ed5ff269781016760f8ff8af55514b00dd86435d24202adc"
     },
     {
       "path": "test/release-validation/vitest-process.test.mjs",

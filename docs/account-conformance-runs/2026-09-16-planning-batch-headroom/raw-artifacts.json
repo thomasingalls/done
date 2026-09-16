@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned/inputs.json.gz",
+    "bytes": 1227166,
+    "sha256": "d7d5d9975b614d1a0cf523576b2da20435795116a076f980c8d81bc6137d3453"
+  },
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned-failed-census/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned-failed-census/inputs.json.gz",
+    "bytes": 1227163,
+    "sha256": "2a8e7aacb86d7b4f539fa8a8161d99bd9fbc5927657063b91b5a64d5f55b1c70"
+  },
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned-failed-generated-census/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-planning-batch-headroom/owned-failed-generated-census/inputs.json.gz",
+    "bytes": 1227163,
+    "sha256": "05e158447be598b78b6608357504e1fd92e713e69a9f704284b691d40884eea2"
+  }
+]

@@ -85,30 +85,95 @@ export function historicalInput(root, reference, path) {
   return { ...planningSnapshot.get(key) };
 }
 
-function readHistoricalInput(root, reference, path, revisions) {
-  validateLocator(reference, path);
-  const git = (args) =>
-    execFileSync('git', args, {
-      cwd: root,
-      timeout: 5000,
-      maxBuffer: 2 * 1024 * 1024,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
+const maxBlobBytes = 2 * 1024 * 1024;
+const git = (root, args, options = {}) =>
+  execFileSync('git', args, {
+    cwd: root,
+    timeout: 5000,
+    maxBuffer: maxBlobBytes,
+    stdio: ['pipe', 'pipe', 'pipe'],
+    ...options,
+  });
+
+function historicalRevision(root, reference, revisions) {
   // A two-part key is distinct from every three-part file-pin key. Sharing the
   // revision avoids one subprocess per file in the fixed reproduction set.
   // Execution callers omit this compilation-local map and always re-read Git.
   const revisionKey = JSON.stringify([root, reference]);
   const revision =
     revisions?.get(revisionKey) ??
-    git(['rev-parse', '--verify', reference + '^{commit}'])
+    git(root, ['rev-parse', '--verify', reference + '^{commit}'])
       .toString('utf8')
       .trim();
   revisions?.set(revisionKey, revision);
+  return revision;
+}
+
+function readHistoricalInput(root, reference, path, revisions) {
+  validateLocator(reference, path);
+  const revision = historicalRevision(root, reference, revisions);
   // Read exactly the expression the fixture uses, including replacement-object semantics.
-  const sha256 = hash(git(['show', reference + ':' + path]));
+  const sha256 = hash(git(root, ['show', reference + ':' + path]));
   const pin = { reference, revision, path, sha256 };
   validateHistoricalInputs([pin]);
   return pin;
+}
+
+/** Decode Git's length-delimited blob stream; missing/non-blob/extra output refuses. */
+export function historicalBatchHashes(bytes, count) {
+  assert(Buffer.isBuffer(bytes) && Number.isInteger(count) && count > 0 && count <= 26);
+  const hashes = [];
+  let offset = 0;
+  for (let i = 0; i < count; i++) {
+    const end = bytes.indexOf(10, offset);
+    assert(end >= offset && end - offset <= 80, 'Invalid historical batch header');
+    const header = bytes.subarray(offset, end).toString('utf8');
+    const match = /^([a-f0-9]{40}) blob (0|[1-9][0-9]*)$/.exec(header);
+    assert(match, 'Missing or invalid historical batch blob');
+    const size = Number(match[2]);
+    assert(Number.isSafeInteger(size) && size <= maxBlobBytes, 'Historical blob exceeds bound');
+    offset = end + 1;
+    assert(
+      offset + size < bytes.length && bytes[offset + size] === 10,
+      'Truncated historical blob',
+    );
+    hashes.push(hash(bytes.subarray(offset, offset + size)));
+    offset += size + 1;
+  }
+  assert.equal(offset, bytes.length, 'Extra historical batch output');
+  return hashes;
+}
+
+/** Read one reviewed group with the same expressions and replacement semantics as git show. */
+export function historicalInputs(root, reference, paths) {
+  assert(Array.isArray(paths) && paths.length > 0 && paths.length <= 26);
+  assert.equal(new Set(paths).size, paths.length, 'Duplicate historical source input');
+  for (const path of paths) validateLocator(reference, path);
+  if (paths.length > 8) {
+    assert.equal(reference, activationReference);
+    assert.deepEqual(paths, activationHistoricalFiles);
+  }
+  const location = resolve(root);
+  const key = (path) => JSON.stringify([location, reference, path]);
+  const snapshot = planningSnapshot ?? new Map();
+  const missing = paths.filter((path) => !snapshot.has(key(path)));
+  if (missing.length) {
+    const revision = historicalRevision(location, reference, snapshot);
+    const hashes = historicalBatchHashes(
+      git(location, ['cat-file', '--batch'], {
+        input: missing.map((path) => reference + ':' + path + '\n').join(''),
+        maxBuffer: missing.length * (maxBlobBytes + 128),
+      }),
+      missing.length,
+    );
+    const pins = missing.map((path, i) => ({ reference, revision, path, sha256: hashes[i] }));
+    // Validate all entries before publishing any of this batch into a planning snapshot.
+    for (const pin of pins) validateHistoricalInputs([pin]);
+    for (const pin of pins) snapshot.set(key(pin.path), pin);
+  }
+  const pins = paths.map((path) => ({ ...snapshot.get(key(path)) }));
+  validateHistoricalInputs(pins);
+  return pins;
 }
 
 export function assertHistoricalInputs(root, inputs = []) {

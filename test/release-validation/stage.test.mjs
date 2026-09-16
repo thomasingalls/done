@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import {
   copyFileSync,
   existsSync,
@@ -23,6 +24,8 @@ import {
 } from '../../scripts/release-validation/stage.mjs';
 import {
   historicalInput,
+  historicalInputs,
+  historicalBatchHashes,
   assertHistoricalInputs,
   withHistoricalInputSnapshot,
   validateHistoricalInputs,
@@ -249,6 +252,92 @@ function historicalFixture(t, path = 'account-service/core.ts', during = false) 
     reset: () => git('replace', '-d', oldBlob),
   };
 }
+
+test('historical batches preserve binary bytes, order, replacement semantics and fresh execution checks', (t) => {
+  const f = historicalFixture(t);
+  f.write('account-service/delivery.ts', Buffer.from([0, 10, 255, 13, 0]));
+  f.git('add', 'account-service/delivery.ts');
+  f.git(
+    '-c',
+    'user.name=Fixture',
+    '-c',
+    'user.email=fixture@example.invalid',
+    '-c',
+    'core.hooksPath=/dev/null',
+    'commit',
+    '--no-gpg-sign',
+    '--quiet',
+    '-m',
+    'binary fixture',
+  );
+  const reference = f.git('rev-parse', 'HEAD');
+  const paths = ['account-service/delivery.ts', 'account-service/core.ts'];
+  const pins = paths.map((path) => historicalInput(f.root, reference, path));
+  assert.deepEqual(historicalInputs(f.root, reference, paths), pins);
+  assert.deepEqual(historicalInputs(f.root, reference, [...paths].reverse()), [...pins].reverse());
+  const old = f.stage.expect.historyInputs[0];
+  withHistoricalInputSnapshot(() => {
+    const first = historicalInputs(f.root, old.reference, [old.path]);
+    first[0].sha256 = '0'.repeat(64);
+    f.replace();
+    assert.deepEqual(historicalInputs(f.root, old.reference, [old.path]), [old]);
+    assert.deepEqual(historicalInput(f.root, old.reference, old.path), old);
+    assert.throws(() => assertHistoricalInputs(f.root, [old]), /Historical source changed/);
+    withHistoricalInputSnapshot(() => {
+      const replaced = historicalInputs(f.root, old.reference, [old.path]);
+      assert.notDeepEqual(replaced, [old]);
+      assert.deepEqual(replaced, [historicalInput(f.root, old.reference, old.path)]);
+    });
+    assert.deepEqual(historicalInputs(f.root, old.reference, [old.path]), [old]);
+  });
+  assert.notDeepEqual(historicalInputs(f.root, old.reference, [old.path]), [old]);
+  f.reset();
+  withHistoricalInputSnapshot(() => {
+    // Failure after a valid first blob must not cache that partial batch.
+    assert.throws(() =>
+      historicalInputs(f.root, old.reference, [old.path, 'account-service/missing.ts']),
+    );
+    f.replace();
+    assert.notDeepEqual(historicalInputs(f.root, old.reference, [old.path]), [old]);
+  });
+  f.reset();
+  assert.deepEqual(historicalInputs(f.root, old.reference, [old.path]), [old]);
+  for (const invalid of [[], [old.path, old.path], ['../outside'], Array(27).fill(old.path)])
+    assert.throws(() => historicalInputs(f.root, old.reference, invalid));
+});
+
+test('historical batch framing rejects missing, oversized, non-blob, truncated and extra records', () => {
+  const oid = 'a'.repeat(40);
+  const frame = (bytes) =>
+    Buffer.concat([Buffer.from(`${oid} blob ${bytes.length}\n`), bytes, Buffer.from('\n')]);
+  fc.assert(
+    fc.property(
+      fc.array(fc.uint8Array({ maxLength: 128 }), { minLength: 1, maxLength: 8 }),
+      (values) => {
+        const bytes = Buffer.concat(values.map(frame));
+        assert.deepEqual(
+          historicalBatchHashes(bytes, values.length),
+          values.map((v) => createHash('sha256').update(v).digest('hex')),
+        );
+        assert.throws(() => historicalBatchHashes(bytes.subarray(0, -1), values.length));
+        assert.throws(() =>
+          historicalBatchHashes(Buffer.concat([bytes, Buffer.from('x')]), values.length),
+        );
+      },
+    ),
+    { seed: 150977, numRuns: 160 },
+  );
+  for (const bytes of [
+    Buffer.from('ref:path missing\n'),
+    Buffer.from(`${oid} tree 0\n\n`),
+    Buffer.from(`${oid} blob 2097153\n`),
+    Buffer.from(`${oid} blob 9007199254740992\n`),
+    Buffer.from(`${oid} blob 01\nx\n`),
+    Buffer.from(`${oid} blob 1\nx!`),
+    Buffer.from('x'.repeat(81) + '\n'),
+  ])
+    assert.throws(() => historicalBatchHashes(bytes, 1));
+});
 
 test('historical planning snapshots share defensive pins while execution checks bypass the snapshot', (t) => {
   const f = historicalFixture(t),

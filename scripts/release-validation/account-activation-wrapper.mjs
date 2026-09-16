@@ -2,7 +2,7 @@ import {
   activationReference,
   activationHistoricalFiles,
 } from '../account-activation/historical-inputs.mjs';
-import { historicalInput, validateHistoricalInputs } from './historical-inputs.mjs';
+import { historicalInputs, validateHistoricalInputs } from './historical-inputs.mjs';
 import { createHash, createPublicKey, verify } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -96,9 +96,7 @@ export function activationCampaignStage(root) {
       kind: 'account-activation',
       steps,
       cases: steps.flatMap((s) => s.expect.cases ?? []),
-      historyInputs: activationHistoricalFiles.map((p) =>
-        historicalInput(root, activationReference, p),
-      ),
+      historyInputs: historicalInputs(root, activationReference, activationHistoricalFiles),
     },
     deadlineMs: 450000,
     graceMs: 5000,

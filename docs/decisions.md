@@ -3863,3 +3863,13 @@ execution checks remain fresh. Retain generated clocks, signed responses, observ
 mutation/process/browser outcomes rather than replacing independent fixture assertions with labels.
 Observed-key signature consistency is corroboration, not external authority. Keep the original child
 commands, deadlines and counterexamples, including the manifest timeout that exposed duplicated work.
+
+
+## 2026-09-16 — Batch historical planning reads without caching execution authority
+
+Read the exact reviewed historical expressions in a bounded Git batch and hash the original blob bytes.
+Require complete framing before publishing pins to the compilation-local snapshot. Keep the same
+reference resolution and replacement semantics, with independent fresh reads at execution and reuse.
+Use equal-manifest comparisons, binary/generated framing tests and real replacement controls to qualify
+this optimization. Preserve unchanged deadlines and prior failures; single-host margin does not prove
+loaded-host reliability. The two additional runner cases must enter both explicit census expectations.
