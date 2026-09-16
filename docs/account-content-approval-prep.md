@@ -1,8 +1,8 @@
 # Backend phase three: device-to-device content approval
 
 2026-09-16. Defined against signed `ca828c5f`, which completes the bounded
-[admission-only phase](./account-successor-admission-prep.md). **Preparation complete;
-implementation has not started.** Release validation remains paused.
+[admission-only phase](./account-successor-admission-prep.md). **Preparation and chunk A complete;
+authenticated exchange and durable approval remain open.** Release validation remains paused.
 
 ## Outcome and first boundary
 
@@ -130,7 +130,7 @@ is not evidence of local activation.
 
 | Chunk | Deliverable and focused exit checks |
 | --- | --- |
-| A — selected primitive bytes | Closed, bounded parsers and pure commitment/transcript/SAS/wrap-info functions; reproduce existing honest and negative vectors unchanged. Independent Node oracle, generated input/field perturbations, strict normalization and effective field/role omission controls. No owner or grant. |
+| A — selected primitive bytes (complete) | Closed, bounded parsers and pure commitment/transcript/SAS/wrap-info functions; reproduce existing honest and negative vectors unchanged. Independent Node oracle, generated input/field perturbations, strict normalization and effective field/role omission controls. No owner or grant. |
 | B — authenticated ceremony exchange | Define signed commitment/reveal/context bytes and parsers, peer-key resolution and an explicit attempt identity/deadline. Prove both commitments precede disclosure in a small state model, including malicious relay reordering/equivocation, context substitution, duplicate and cross-role messages. No content key. |
 | C — durable attempt and private relay | Factor-owned client record and serialized service state. Enforce one transcript/comparison, exact resume, cancellation and terminal refusal. Directed and generated histories plus native commit/crash/race tests; omission controls must actually permit another guess or premature disclosure when the guard is removed. |
 | D — two private device owners | New-device display and existing-device typed approval; owned network/storage cancellation, restart-required behavior and cold resumption through real private HTTP. Keep first-writer sync working. No default Account UI, content access or personal device use. |
@@ -140,3 +140,10 @@ Record each chunk's inputs and limits, update current crypto inventory when runt
 are introduced, and leave new groups open for qualification. Preserve historical vectors, release
 campaign evidence, frozen counts and the other seat's progress section. These product checks do not
 restart release validation.
+
+## Chunk A result
+
+Pure primitives and bounded code normalization reproduce the existing vectors. 29 ceremony cases
+(including 100 generated contexts and 12 effective omission controls) and 12 registry checks pass;
+static checks and current crypto inventory pass. [Evidence](./account-conformance-runs/2026-09-16-ceremony-primitives/README.md).
+No exchange owner or approval capability exists yet. Next is chunk B.

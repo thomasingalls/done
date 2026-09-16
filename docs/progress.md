@@ -42,15 +42,15 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: content-approval preparation complete (`L-1`)
+## Product checkpoint: content-approval primitive bytes complete (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: content-approval chunk A — selected primitive bytes
-blocks_on: none
+status: blocked
+scope: completed content-approval chunk A awaiting signed checkpoint
+blocks_on: operator signing; no unsigned fallback
 release_validation: paused by operator
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-16
@@ -121,15 +121,33 @@ The initial one-child runtime may stop with restart-required; replacement admiss
 implemented. [Phase-three plan](./account-content-approval-prep.md) defines chunks A–D through
 private durable approval, followed by separately bounded delivery/install/certification work.
 
-**Next is chunk A: selected primitive bytes.** Reproduce the published commitments, transcript,
-SAS and wrap info with closed bounded inputs and independent focused conformance. This supplies
-no durable ceremony, content key, reader eligibility or ordinary Account activation. Bootstrap and
-multiple-publisher sync follow certification. The author's actual old second device adopts the first
-workspace without importing its old writing. Deployment and release validation remain paused.
+**Chunk A is complete.** Pure row-11 commitments, transcript, SAS and wrap info reproduce the
+published bytes unchanged. 29 ceremony cases (100 generated contexts and 12 effective omission
+controls) plus 12 registry checks pass, as do static checks and current inventory. Input capture
+and bounded code syntax are checked. [Evidence](./account-conformance-runs/2026-09-16-ceremony-primitives/README.md).
 
-**Qualification remains open.** Preparation and successor/discovery are two open construction groups.
-Their focused evidence supplies no aggregate release credit. First-authority bytes and historical
-qualification stay intact; qualification of the new constructions is still owed.
+**Paused for signing.** Preparation is signed as `192d2a12`. Chunk A and its evidence are staged;
+the unanswered Secretive attempt was stopped after about four minutes and no commit was created.
+A second requested signing attempt also went unanswered and was stopped; the checkpoint remains
+staged. Retry signing before integration, per the operator's pause-on-signing instruction.
+
+**Requested integration before B.** The operator selected `ea3a3ffb`, the tip of
+`codex/first-device-account-setup`. Its three commits (`9ba1e5aa`, `7dab01cc`, `ea3a3ffb`), based on
+`d942cd1c`, add private first-device Account setup/chooser UI, per-slot recovery progress and an
+explicit offline preview database upgrade. Inspection found no file overlap with the staged
+ceremony chunk. The merge has not started. After signing, integrate the exact tip locally, run
+focused setup/recovery and schema-5-to-7 checks in disposable profiles/state, refresh only current
+runtime inventory, then continue to B. Do not run the upgrader on personal preview state.
+
+**Next is chunk B: authenticated exchange and ordering.** Define fixed signed context/commitment/
+reveal messages and exercise transcript-aware commit-before-reveal behavior. These primitives
+supply no durable approval or key release. C/D add durable ownership and private device integration;
+delivery/install/certification, bootstrap and multiple-publisher sync follow. The actual old second
+device adopts the first workspace without importing its old writing.
+
+**Qualification remains open.** Preparation, successor/discovery and ceremony are three open groups.
+Current census: 179 sources, 100 labels/templates, 25 groups and 14 manual entrypoints. Their
+focused evidence supplies no aggregate release credit; prior qualification remains historical.
 
 **Release validation remains paused.** It began prematurely; do not continue wrapper integration,
 namespaced report custody or aggregate execution under the old instruction to proceed. Admission-bounds

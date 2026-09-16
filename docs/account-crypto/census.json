@@ -32,6 +32,10 @@
       "sha256": "2520519072ab0765ef8cc3ea82393fd1f03c8c3a8605736d52597a833d10e011"
     },
     {
+      "path": "account-protocol/ceremony.ts",
+      "sha256": "4a90a2bd5575dd0643ac2d023e1cc50ad2c0bd165c8c4fcb5a54d581cca0ece4"
+    },
+    {
       "path": "account-protocol/deliveryTransport.ts",
       "sha256": "408cdbf44daf186131108849308e6e1886bd143b92531fa375c6e0b63c81141b"
     },
@@ -1094,6 +1098,46 @@
         {
           "path": "src/crdt/custodyCrypto.ts",
           "line": 110
+        }
+      ]
+    },
+    {
+      "label": "done/enroll-commit/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 82
+        }
+      ]
+    },
+    {
+      "label": "done/enroll-sas/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 129
+        }
+      ]
+    },
+    {
+      "label": "done/enroll-wrap/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 103
+        }
+      ]
+    },
+    {
+      "label": "done/enroll/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 88
         }
       ]
     },

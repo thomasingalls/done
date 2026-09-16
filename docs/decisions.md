@@ -4081,3 +4081,18 @@ TRD §13.6 and row 11 §7 now agree. The old enrollment state model is explicitl
 asserts sibling-rebase liveness. [Phase-three preparation](./account-content-approval-prep.md) orders
 primitive bytes, authenticated exchange, durable attempt/relay and two private owners before key
 release. Existing cryptographic vectors and frozen release evidence are unchanged.
+
+
+## 2026-09-16 — ceremony primitive agreement is not approval authority
+
+Expose row-11 primitive derivation without a comparison or key-release API. Verifying nonce openings
+after collecting all inputs does not prove both commitments preceded disclosure; that belongs to
+the authenticated exchange and durable owner. Fixed historical vectors stay exact, while generated
+properties compare the full transcript digest and independent HKDF result rather than asserting
+that every mutation must change a 25-bit SAS.
+
+Use bounded ASCII code normalization with O/I/L folding at five symbols; reject non-ASCII case
+folding and invisible separators without changing the existing recovery-code parser. The private
+runtime still supports one admitted child; a generic positive safe epoch in this byte helper merely
+permits reproduction of the historical epoch-9 vector. Record the new runtime construction as open
+qualification, not inherited closure or release credit.

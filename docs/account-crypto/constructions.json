@@ -5128,6 +5128,85 @@
       ],
       "blocker": "The bounded private admission-only path has focused end-to-end evidence. Full published-vector and authority-map qualification remains open; this is not second-device content certification.",
       "next": "Qualify new domains before release; separately implement the content-approval ceremony and certified key delivery."
+    },
+    {
+      "id": "enrollment-ceremony",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": ["digest", "kdf", "carrier"],
+      "signer": null,
+      "labels": [
+        "done/enroll-commit/v1",
+        "done/enroll/v1",
+        "done/enroll-sas/v1",
+        "done/enroll-wrap/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 82,
+          "label": "done/enroll-commit/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 129,
+          "label": "done/enroll-sas/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 103,
+          "label": "done/enroll-wrap/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "line": 88,
+          "label": "done/enroll/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/ceremony.ts",
+          "name": "ceremonyCommitment"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "name": "ceremonyTranscriptBytes"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "name": "ceremonyWrapInfo"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "name": "deriveCeremonyOpening"
+        },
+        {
+          "path": "account-protocol/ceremony.ts",
+          "name": "normalizeCeremonyCode"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-ceremony/protocol.test.mjs",
+        "test/account-ceremony/controls.test.mjs"
+      ],
+      "requirements": [
+        "closed-bounded-inputs",
+        "inherited-byte-agreement",
+        "independent-runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions",
+        "committed-exchange-order",
+        "durable-single-comparison"
+      ],
+      "blocker": "Primitive chunk A has focused evidence; authenticated exchange, durable owner and complete construction/authority-map qualification remain open.",
+      "next": "Implement chunks B\u2013D under the content-approval plan before key-delivery continuation; no aggregate release credit."
     }
   ],
   "additionalCorpora": [

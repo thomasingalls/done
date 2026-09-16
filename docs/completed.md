@@ -9247,3 +9247,24 @@ This is a contract/preparation result, not an implemented ceremony or content gr
 consistency, append-only records, other-seat preservation and unchanged vectors/frozen inventories
 were checked. Next is chunk A: pure selected primitive bytes with independent focused conformance.
 Release validation, ordinary Account entry and deployment remain paused.
+
+
+## 2026-09-16 — content-approval primitive bytes (chunk A)
+
+After signed preparation `192d2a12`, implemented bounded row-11 commitment, transcript, SAS and
+wrap-info functions in `account-protocol/ceremony.ts`. They reproduce the published ceremony
+unchanged, capture inputs before asynchronous crypto and reject invalid nonce openings. Code
+normalization is bounded ASCII with the selected Crockford confusables. These pure functions
+supply no chronology proof, human decision, key release or certified recipient.
+
+41 focused cases pass: 29 ceremony cases including 100 generated contexts and 12 effective runtime
+omission controls, plus 12 registry checks. Typecheck, scoped lint/format, current runtime inventory,
+published enrollment vectors and diff checks pass. The first registry run caught the missing new
+open-group expectation; final count/list is corrected and the initial result is retained.
+[Evidence](./account-conformance-runs/2026-09-16-ceremony-primitives/README.md). Current inventory
+contains 179 sources, 100 labels/templates, 25 groups and 14 manual entrypoints; ceremony is a third
+open qualification group alongside preparation and successor admission.
+
+Next is chunk B's authenticated commitment/reveal exchange and transcript-aware state model.
+Durable attempt ownership and private device integration remain C/D; key delivery follows their
+separate continuation. No release campaign or deployment was resumed.

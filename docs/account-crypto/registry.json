@@ -319,6 +319,20 @@
         "done/authority-discovery-response/v1"
       ],
       "note": "Pure protocol; no live consumption, content grant or delivery-prefix assertion."
+    },
+    {
+      "id": "enrollment-ceremony",
+      "kind": "SHA-256 commitments, transcript digest, HKDF-SHA256 SAS and HPKE info",
+      "authority": "Pure selected bytes only; existing certified approver, committed exchange chronology and durable human decision remain later owner obligations",
+      "home": "docs/account-crypto/enrollment-ceremony.md",
+      "next": "Authenticated exchange and durable one-comparison ownership, followed by construction qualification",
+      "labels": [
+        "done/enroll-commit/v1",
+        "done/enroll/v1",
+        "done/enroll-sas/v1",
+        "done/enroll-wrap/v1"
+      ],
+      "note": "Row-11 historical vectors unchanged; nonce-opening verification does not prove commit-before-reveal."
     }
   ],
   "templates": [
