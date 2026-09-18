@@ -5,6 +5,13 @@ import {
   type DiagnosticSink,
 } from '../account-protocol/diagnostics.ts';
 import type { DeliveryVerification } from './deliveryVerification.ts';
+import type { ContentTransferRow } from './contentTransfer.ts';
+import {
+  CONTENT_DELIVERY_LIMIT,
+  verifyContentDelivery,
+  verifyCertificationSuccessor,
+  type CertificationSuccessor,
+} from '../account-protocol/contentDelivery.ts';
 import {
   verifySuccessor,
   SUCCESSOR_LIMIT,
@@ -137,6 +144,7 @@ export interface WorkspaceAuthoritySnapshot {
   recovery: { attempt_id: string; state: string; draft: string; result: string | null };
   attempt: { id: string; account_id: string; mode: string; state: string; result: string | null };
   successor: SuccessorRow | null;
+  transfer: ContentTransferRow | null;
 }
 export interface Snapshot extends WorkspaceAuthoritySnapshot {
   rows: DecisionRow[];
@@ -200,7 +208,12 @@ export function snapshotWorkspaceAuthority(
       .get(workspace) as unknown as SuccessorRow | undefined) ?? null;
   if ((promotion.successor_head === null) !== (successor === null))
     throw Error('Incomplete current authority');
-  return { promotion, account, credential, recovery, attempt, successor };
+  const transfer =
+    (db
+      .prepare('SELECT * FROM content_transfers WHERE workspace_id=?')
+      .get(workspace) as unknown as ContentTransferRow | undefined) ?? null;
+  if (transfer && !successor) throw Error('Delivery without admission');
+  return { promotion, account, credential, recovery, attempt, successor, transfer };
 }
 export function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
   const base = snapshotWorkspaceAuthority(db, workspace);
@@ -301,12 +314,52 @@ export async function verifyWorkspaceAuthority(
     );
     if (
       s.successor.workspace_id !== p.workspace_id ||
-      successor.head !== p.successor_head ||
+      (!s.transfer?.artifact && successor.head !== p.successor_head) ||
       successor.epoch.preparation.context.attemptId !== s.successor.preparation_id
     )
       throw Error('Current authority pointer changed');
   }
-  const a = successor ? { ...firstA, tip: 2, head: successor.head } : firstA;
+  const secondA = successor ? { ...firstA, tip: 2, head: successor.head } : firstA;
+  let certificationSuccessor: CertificationSuccessor | null = null;
+  if (s.transfer) {
+    const row = s.transfer;
+    if (
+      !successor ||
+      row.workspace_id !== p.workspace_id ||
+      Buffer.byteLength(row.delivery) > CONTENT_DELIVERY_LIMIT ||
+      (row.artifact && Buffer.byteLength(row.artifact) > CONTENT_DELIVERY_LIMIT) ||
+      (row.boundary_witness && Buffer.byteLength(row.boundary_witness) > 1024) ||
+      (!row.artifact && row.boundary_witness)
+    )
+      throw Error('Invalid retained transfer');
+    const base = { pin: issuer.pin, request, receipt };
+    const { delivery } = await verifyContentDelivery(JSON.parse(row.delivery), base, successor);
+    if (row.artifact) {
+      certificationSuccessor = await verifyCertificationSuccessor(
+        JSON.parse(row.artifact),
+        base,
+        successor,
+        delivery,
+      );
+      if (p.successor_head !== certificationSuccessor.head)
+        throw Error('Current certification pointer changed');
+    }
+  }
+  const a = certificationSuccessor
+    ? { ...firstA, tip: 3, head: certificationSuccessor.head }
+    : secondA;
+  const certification = certificationSuccessor?.epoch.delivery.certificate ?? request.certification;
+  const members = await Promise.all(
+    certification.members.map(async (member) => ({
+      id: member.id,
+      key:
+        member.id === request.certification.members[0].id
+          ? key
+          : await crypto.subtle.importKey('raw', unhex(member.sPub, 32), 'Ed25519', false, [
+              'verify',
+            ]),
+    })),
+  );
   const scope: WitnessScope = {
     workspace: a.workspace,
     credential: member.id,
@@ -321,10 +374,15 @@ export async function verifyWorkspaceAuthority(
     seal,
     generation: epoch.generation,
     credential: member.id,
-    members: [{ id: member.id, key }],
-    certification: request.certification,
+    members,
+    certification,
     firstA,
+    secondA,
     successor,
+    certificationSuccessor,
+    certificationBoundary: s.transfer?.boundary_witness
+      ? parseWitness(JSON.parse(s.transfer.boundary_witness))
+      : null,
     boundaryWitness: s.successor?.boundary_witness
       ? parseWitness(JSON.parse(s.successor.boundary_witness))
       : null,
@@ -338,9 +396,9 @@ async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) 
   const decoded = decodeSubmission(bytes),
     e = decodeNetworkEnvelope(decoded.envelope);
   if (e.epoch < 1 || e.epoch > maxEpoch) throw Error('Unsupported epoch');
-  // Only this verified admission-only transition preserves old-envelope eligibility.
+  // These bounded admission/certification transitions preserve the original publisher and key.
   // A refusal successor is checked at its own mint epoch before current eligibility.
-  const mintAuthority = e.epoch === 1 ? auth.firstA : auth.a;
+  const mintAuthority = e.epoch === 1 ? auth.firstA : e.epoch === 2 ? auth.secondA : auth.a;
   // The signed declared generation is checked as policy only after signature verification.
   const submission = await verifySubmission(
     bytes,
@@ -422,20 +480,42 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
   // Authority freshly authenticates scope.request (the complete request digest) on every request.
   // Bind generation and predecessor too; SQL columns, ordering, parent issuance and witness replay.
   const scope = JSON.stringify([auth.a, auth.scope, auth.generation]);
-  const boundaryCount = auth.boundaryWitness?.events ?? 0;
-  let checkedBoundary = !auth.successor;
+  const boundaries = [
+    ...(auth.successor
+      ? [{ successor: auth.successor, witness: auth.boundaryWitness, authority: auth.firstA }]
+      : []),
+    ...(auth.certificationSuccessor
+      ? [
+          {
+            successor: auth.certificationSuccessor,
+            witness: auth.certificationBoundary,
+            authority: auth.secondA,
+          },
+        ]
+      : []),
+  ];
+  if (
+    boundaries.some(
+      (b, i) => i > 0 && (b.witness?.events ?? 0) < (boundaries[i - 1]!.witness?.events ?? 0),
+    )
+  )
+    throw Error('Reversed authority boundaries');
+  const boundaryScope = JSON.stringify(boundaries);
+  const checkedBoundaries = new Set<string>();
   const checkBoundary = async () => {
-    if (!auth.successor || count !== boundaryCount) return;
-    const expected = auth.successor.epoch.heads.find((v) => v.credentialId === auth.credential)!;
-    if (expected.position !== through || expected.link !== previous)
-      throw Error('Successor accepted prefix changed');
-    await verifyLedgerWitness(
-      auth.boundaryWitness,
-      { ...auth, a: auth.firstA, scope: { ...auth.scope, head: auth.firstA.head } },
-      count,
-      commitment,
-    );
-    checkedBoundary = true;
+    for (const b of boundaries) {
+      if (count !== (b.witness?.events ?? 0)) continue;
+      const expected = b.successor.epoch.heads.find((v) => v.credentialId === auth.credential)!;
+      if (!expected || expected.position !== through || expected.link !== previous)
+        throw Error('Successor accepted prefix changed');
+      await verifyLedgerWitness(
+        b.witness,
+        { ...auth, a: b.authority, scope: { ...auth.scope, head: b.authority.head } },
+        count,
+        commitment,
+      );
+      checkedBoundaries.add(b.successor.head);
+    }
   };
   await checkBoundary();
   for (const row of s.rows) {
@@ -443,7 +523,8 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       response = new Uint8Array(row.response),
       before = previous;
     const verify = async () => {
-      const issuance = auth.successor && row.ordinal <= boundaryCount ? auth.firstA : auth.a;
+      const issuance =
+        boundaries.find((b) => row.ordinal <= (b.witness?.events ?? 0))?.authority ?? auth.a;
       const opened = await verifyWire(bytes, auth, issuance.tip);
       const proof = await verifyPositionResponse(
         response,
@@ -455,7 +536,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     const { e, submission, subject, proof } = reuse
       ? await reuse.check(
           s.account.id + ':' + row.ordinal,
-          scope + ':' + boundaryCount + ':' + previous,
+          scope + ':' + boundaryScope + ':' + previous,
           [bytes, response],
           verify,
         )
@@ -502,7 +583,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     commitment = extend(commitment, count, bytes, response);
     await checkBoundary();
   }
-  if (!checkedBoundary) throw Error('Missing successor boundary');
+  if (checkedBoundaries.size !== boundaries.length) throw Error('Missing successor boundary');
   await verifyLedgerWitness(witness, auth, count, commitment);
   return { count, commitment, through, previous, accepted, refused, issued, closedPositions };
 }

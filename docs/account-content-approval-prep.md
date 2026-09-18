@@ -173,3 +173,14 @@ C/D conformance/fault/mutation campaign above as a prerequisite to that trial. T
 implemented and ready; [walkthrough and exact scope](./account-device-approval-development.md).
 Future delivery/install/certification is still separate. Qualification and inventory reconciliation
 remain deferred, without release credit.
+
+
+## Delivery continuation — 2026-09-18
+
+The operator authorized delivery, factor-protected installation and certification next. That
+bounded implementation is documented in [content delivery development](./account-content-delivery-development.md):
+exact pending-certificate/key-wrap persistence before release, durable installation before
+countersignature, one epoch-2-to-3 service transaction and preserved original-publisher history.
+It continues saved approvals without another comparison. Authenticated content bootstrap and
+opening the phone's account editor, then multiple-publisher/offline sync and packaged-app cutover,
+remain separate product phases. The older broad qualification sequence above remains deferred.

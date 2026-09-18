@@ -62,6 +62,8 @@ export async function discoverAuthority(
       phase = 'verify';
       const auth = await verifyWorkspaceAuthority(before, issuer),
         base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
+      // This older locator cannot represent epoch 3. Never advertise epoch 2 as current.
+      if (auth.certificationSuccessor) return refused('unavailable');
       await verifyDiscoveryRequest(request, base, auth.successor, now());
       // A signed pointer alone is insufficient: preserve the same complete-history interlock as reads.
       await census(before, auth, reuse);

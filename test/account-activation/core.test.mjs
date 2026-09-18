@@ -180,7 +180,7 @@ test('schema 4 upgrade preserves pending work; v1 receipts and absent consumed r
     db = new DatabaseSync(x.f.path),
     before = x.f.rows('promotions').map(({ activation: _activation, ...r }) => r);
   db.exec(
-    'DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; ALTER TABLE promotions DROP COLUMN activation; PRAGMA user_version=4;',
+    'DROP TABLE content_transfers; DROP TABLE content_ceremonies; DROP TABLE enrollment_preparations; DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; ALTER TABLE promotions DROP COLUMN activation; PRAGMA user_version=4;',
   );
   db.close();
   assert.throws(

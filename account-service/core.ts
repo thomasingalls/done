@@ -4,6 +4,11 @@ import {
   relayCeremony,
   type CeremonyIssuer,
 } from './ceremony.ts';
+import {
+  CONTENT_TRANSFER_SCHEMA,
+  transferContent,
+  type ContentTransferIssuer,
+} from './contentTransfer.ts';
 import { discoverAuthority, type DiscoveryIssuer } from './discovery.ts';
 import { admitPrepared, type SuccessorIssuer } from './successor.ts';
 import {
@@ -149,6 +154,7 @@ export class AccountCore {
       upgradeFromV5?: boolean;
       upgradeFromV6?: boolean;
       upgradeFromV7?: boolean;
+      upgradeFromV8?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -184,7 +190,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 8 &&
+        version !== 9 &&
+        !(version === 8 && instrumentation.upgradeFromV8) &&
         !(version === 7 && instrumentation.upgradeFromV7) &&
         !(version === 6 && instrumentation.upgradeFromV6) &&
         !(version === 5 && instrumentation.upgradeFromV5) &&
@@ -241,6 +248,10 @@ export class AccountCore {
         this.#db.exec(CEREMONY_SCHEMA);
         this.#db.exec('PRAGMA user_version=8;');
       }
+      if (version < 9) {
+        this.#db.exec(CONTENT_TRANSFER_SCHEMA);
+        this.#db.exec('PRAGMA user_version=9;');
+      }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
         canonical(this.#policy)
@@ -259,6 +270,9 @@ export class AccountCore {
   }
   relayCeremony(input: unknown, issuer: DeliveryIssuer) {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook);
+  }
+  transferContent(input: unknown, issuer: ContentTransferIssuer) {
+    return transferContent(this.#db, input, issuer, this.#hook);
   }
 
   discoverAuthority(input: unknown, issuer: DiscoveryIssuer) {

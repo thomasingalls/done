@@ -186,7 +186,11 @@ export function AccountEnrollmentApp({
   );
   const stateKind = state?.kind;
   useEffect(() => {
-    if (error || !stateKind || !['invite', 'waiting', 'display', 'compare'].includes(stateKind))
+    if (
+      error ||
+      !stateKind ||
+      !['invite', 'waiting', 'display', 'compare', 'approved'].includes(stateKind)
+    )
       return;
     const timer = setInterval(() => {
       void refresh(true);
@@ -394,7 +398,7 @@ export function AccountEnrollmentApp({
         {stage === 'open' && state && (
           <>
             <h2>
-              {state.kind === 'approved'
+              {['approved', 'certified'].includes(state.kind)
                 ? 'Device approved'
                 : state.kind === 'mismatch'
                   ? 'Codes did not match'
@@ -462,7 +466,7 @@ export function AccountEnrollmentApp({
                 <button disabled={busy}>Compare and approve</button>
               </form>
             )}
-            {!['approved', 'mismatch', 'expired', 'restart-required', 'cancelled'].includes(
+            {!['certified', 'mismatch', 'expired', 'restart-required', 'cancelled'].includes(
               state.kind,
             ) && (
               <>

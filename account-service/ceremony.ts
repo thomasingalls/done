@@ -95,6 +95,7 @@ export async function ceremonyBootstrap(db: DatabaseSync, input: unknown, issuer
     nonce,
     base: { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
     successor: auth.successor,
+    certification: auth.certificationSuccessor,
   };
   const signature = await issuer.bootstrap(result);
   db.exec('BEGIN');

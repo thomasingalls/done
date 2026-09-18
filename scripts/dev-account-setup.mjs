@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { AccountCore } from '../account-service/core.ts';
 import { PrivateAuthority } from '../account-service/authority.ts';
 import { CEREMONY_RELAY_LIMIT } from '../account-protocol/ceremonyRelay.ts';
+import { CONTENT_DELIVERY_LIMIT } from '../account-protocol/contentDelivery.ts';
 import { ENROLLMENT_REQUEST_LIMIT } from '../account-protocol/enrollment.ts';
 import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
 import { lockPreviewState, previewConfig } from './account-setup-state.mjs';
@@ -46,6 +47,7 @@ const token = randomBytes(32).toString('base64url');
 const routes = new Map([
   ['ceremony/bootstrap', (input) => authority.ceremonyBootstrap(core, input)],
   ['ceremony/exchange', (input) => authority.relayCeremony(core, input)],
+  ['ceremony/transfer', (input) => authority.transferContent(core, input)],
   ['authority/discover', (input) => authority.discoverAuthority(core, input)],
   ['enrollment/begin', (input) => authority.enrollment(core, 'begin', input)],
   ['enrollment/finish', (input) => authority.enrollment(core, 'finish', input)],
@@ -146,15 +148,17 @@ const server = await createServer({
                 size >
                 (route.startsWith('promotion/')
                   ? ADMISSION_LIMIT
-                  : route === 'ceremony/exchange'
-                    ? CEREMONY_RELAY_LIMIT
-                    : route === 'ceremony/bootstrap' ||
-                        route === 'authority/discover' ||
-                        route === 'enrollment/admit'
-                      ? 4096
-                      : route.startsWith('enrollment/')
-                        ? ENROLLMENT_REQUEST_LIMIT
-                        : 131072)
+                  : route === 'ceremony/transfer'
+                    ? CONTENT_DELIVERY_LIMIT
+                    : route === 'ceremony/exchange'
+                      ? CEREMONY_RELAY_LIMIT
+                      : route === 'ceremony/bootstrap' ||
+                          route === 'authority/discover' ||
+                          route === 'enrollment/admit'
+                        ? 4096
+                        : route.startsWith('enrollment/')
+                          ? ENROLLMENT_REQUEST_LIMIT
+                          : 131072)
               ) {
                 send(413, { ok: false, refusal: 'malformed' });
                 return;

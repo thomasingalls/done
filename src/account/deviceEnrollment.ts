@@ -1,4 +1,9 @@
-/** Private two-device approval coordinator. It grants no content access. */
+/** Private two-device approval and certified key-installation coordinator. */
+import { continueContentHandoff, type ContentHandoffState } from './contentHandoff';
+import {
+  parseCertificationSuccessor,
+  verifyCertificationSuccessor,
+} from '../../account-protocol/contentDelivery';
 import type { SetupConfig } from './firstDeviceSetup';
 import { withCeremonyVault } from './ceremonyVault';
 import { freshEnrollmentChallenge } from './enrollmentChallenge';
@@ -81,6 +86,7 @@ interface Progress {
   peerReveal: CeremonyReveal | null;
   decision: CeremonyRequest | null;
   cancellation: CeremonyRequest | null;
+  content?: ContentHandoffState;
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
 export interface EnrollmentView {
@@ -92,6 +98,7 @@ export interface EnrollmentView {
     | 'compare'
     | 'display'
     | 'approved'
+    | 'certified'
     | 'mismatch'
     | 'expired'
     | 'restart-required'
@@ -122,7 +129,9 @@ const messages: Record<EnrollmentView['kind'], string> = {
   compare:
     'Read the five-character code on the new device and enter it here. You have one comparison.',
   display: 'Type this code on your existing device.',
-  approved: 'Device approved. Writing transfer is not connected in this development step.',
+  approved: 'Device approved. Finishing content access with your other device.',
+  certified:
+    'Content access is installed and certified. Opening your writing is the next development step.',
   mismatch: 'The codes did not match. This device attempt is spent.',
   expired: 'This attempt expired. It cannot be restarted with the same device credential.',
   'restart-required': 'Account authority changed. This attempt cannot continue.',
@@ -172,6 +181,7 @@ export function createDeviceEnrollment(
         'nonce',
         'base',
         'successor',
+        'certification',
         'signature',
       ]);
     const b = closed(raw['base'], ['pin', 'request', 'receipt']);
@@ -181,6 +191,9 @@ export function createDeviceEnrollment(
       receipt: parseReceipt(b['receipt']),
     };
     const successor = raw['successor'] === null ? null : parseSuccessor(raw['successor']);
+    const certification =
+      raw['certification'] === null ? null : parseCertificationSuccessor(raw['certification']);
+    if (certification && !successor) throw Error('Certification without admission');
     if (
       raw['ok'] !== true ||
       raw['nonce'] !== nonce ||
@@ -191,12 +204,13 @@ export function createDeviceEnrollment(
     await verifySignature(
       pin.authRoot,
       raw['signature'] as string,
-      await ceremonyBootstrapMessage({ ok: true, nonce, base, successor }),
+      await ceremonyBootstrapMessage({ ok: true, nonce, base, successor, certification }),
     );
     await verifyReceipt(base.receipt, base.request, pin);
     if (successor) await verifySuccessor(successor, base, { epoch: 2, head: successor.head });
+    if (certification) await verifyCertificationSuccessor(certification, base, successor!);
     guard();
-    return { base, successor };
+    return { base, successor, certification };
   };
   const operate = async (input?: {
     typed?: string;
@@ -458,6 +472,12 @@ export function createDeviceEnrollment(
           { role, ...owner.participant },
           Math.min(Date.now(), context.expiresAt - 1),
         );
+        const finish = async (outcome: 'approved' | 'mismatch') => {
+          if (outcome === 'mismatch') return view('mismatch');
+          return view(
+            await continueContentHandoff(p!, owner, { ...boot, successor }, () => save(), request),
+          );
+        };
         // Relay labels are hints. Only a peer-signed cancellation/decision may be adopted.
         if (remote.cancellation) {
           const r = parseCeremonyRequest(remote.cancellation);
@@ -519,7 +539,7 @@ export function createDeviceEnrollment(
             p.decision = d;
             await save();
           }
-          return view(b.outcome);
+          return finish(b.outcome);
         }
         if (Date.now() >= context.expiresAt && !p.decision) {
           p.terminal = 'expired';
@@ -555,8 +575,10 @@ export function createDeviceEnrollment(
             p.decision.signature,
             await ceremonyRequestMessage(p.decision),
           );
-          if (Date.now() < context.expiresAt) await request('ceremony/exchange', p.decision);
-          return view((p.decision.payload as { outcome: 'approved' | 'mismatch' }).outcome);
+          if (remote.decision && !same(remote.decision, p.decision))
+            throw Error('Service approval differs from the saved decision');
+          if (!remote.decision) await request('ceremony/exchange', p.decision);
+          return finish((p.decision.payload as { outcome: 'approved' | 'mismatch' }).outcome);
         }
         live();
         remote = await send('commit', p.own);
@@ -652,7 +674,7 @@ export function createDeviceEnrollment(
             throw Error('Invalid approval');
           p.decision = d;
           await save(live);
-          return view(b.outcome);
+          return finish(b.outcome);
         }
         if (role === 'existing' && input?.typed !== undefined) {
           const normalized = normalizeCeremonyCode(input.typed);
@@ -665,7 +687,7 @@ export function createDeviceEnrollment(
           });
           await save(live);
           await request('ceremony/exchange', p.decision);
-          return view(outcome);
+          return finish(outcome);
         }
         return role === 'new' ? view('display', { code: opening.sas }) : view('compare');
       });

@@ -4182,3 +4182,23 @@ commands. Direct invitations get an internal parent. Native passkey cancellation
 by the browser/OS. The root splash remains at `/`, and the chooser contains saved accounts and
 connections. Other product decisions still require operator input. Release qualification remains
 paused; this is bounded development usability work.
+
+
+## 2026-09-18 — continue approved enrollment through durable key installation
+
+The operator authorizes the next bounded product phase: delivery, factor-protected installation
+and certification, followed by content bootstrap/opening and later sync integration. Continue the
+already approved attempt without another passkey, code or comparison. Do not import or delete the
+phone's previous writing. Keep the preview designation and release qualification paused.
+
+The concrete continuation retains exact delivery bytes and a signed recipient-set successor
+before releasing the generation key. The recipient durably saves the matching recovery state
+and locally sealed key before signing installation. A service-serialized epoch 3 binds that exact
+installation, certificate and original-writer accepted prefix. Unknown outcomes resume immutable
+records. A competing parent cannot rebase the approval, and pending delivery evidence cannot be
+removed to undo a disclosure. See [the implementation contract](./account-content-delivery-development.md).
+
+The operator confirmed both devices locked and closed for the additive preview schema upgrade.
+Back up the retained state and preserve the pin/origin, accounts and attempts; do not reset the
+preview or change other Tailscale services. Product choices about fewer factors, device naming,
+QR routing or broader enrollment remain separate and still require operator input.

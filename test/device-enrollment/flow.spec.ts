@@ -86,6 +86,185 @@ async function compared(first: Page, second: Page) {
   return (await second.getByLabel('Comparison code').textContent())!;
 }
 
+test('content delivery resumes exact bytes after sender restart and receiver certifies only its saved installation', async ({
+  page,
+  browser,
+}) => {
+  const first = await account(page),
+    other = await browser.newContext(),
+    second = await other.newPage();
+  try {
+    const next = await pending(second, first.link, first.auth),
+      sas = await compared(page, second);
+    const sent: string[] = [];
+    let loseDelivery = true;
+    await page.route('**/ceremony/transfer', async (route) => {
+      const body = route.request().postDataJSON();
+      if (body.action === 'deliver') {
+        sent.push(JSON.stringify(body.payload));
+        if (loseDelivery) {
+          loseDelivery = false;
+          await route.fetch();
+          await route.abort();
+          return;
+        }
+      }
+      await route.continue();
+    });
+    let refuseInstall = true,
+      installationReached = false;
+    await second.route('**/ceremony/transfer', async (route) => {
+      if (route.request().postDataJSON().action === 'install' && refuseInstall) {
+        installationReached = true;
+        await route.abort();
+        return;
+      }
+      await route.continue();
+    });
+    await page.getByLabel('Code on the new device').fill(sas);
+    await page.getByRole('button', { name: 'Compare and approve' }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect.poll(() => installationReached).toBe(true);
+    const workspace = new URL(first.link).searchParams.get('workspace')!;
+    const installed = await second.evaluate(
+      async ({ workspace, code }) => {
+        const path = '/src/account/ceremonyVault.ts';
+        const { withCeremonyVault } = await import(/* @vite-ignore */ path);
+        return withCeremonyVault(
+          localStorage.getItem('done.pending-device.' + workspace)!,
+          code,
+          new AbortController().signal,
+          async (owner: any) => {
+            const p = await owner.load();
+            // Factor-protected sealed key and recovery state precede the installation request.
+            return p.content;
+          },
+        );
+      },
+      { workspace, code: next.code },
+    );
+    expect(installed.key.ct).toMatch(/^[a-f0-9]{96}$/);
+    expect(installed.installation.deliveryHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(installed.certification).toBeNull();
+    await page.reload();
+    await unlock(page, first.code);
+    await expect.poll(() => sent.length).toBeGreaterThan(1);
+    expect(new Set(sent).size).toBe(1);
+    // Close the receiver after durable installation but before the service sees its countersignature.
+    await second.close();
+    const reopened = await other.newPage();
+    refuseInstall = false;
+    let loseCertification = true;
+    const installations: unknown[] = [];
+    await reopened.route('**/ceremony/transfer', async (route) => {
+      const body = route.request().postDataJSON();
+      if (body.action === 'install') {
+        installations.push(body.payload);
+        if (loseCertification) {
+          loseCertification = false;
+          await route.fetch();
+          await route.abort();
+          return;
+        }
+      }
+      await route.continue();
+    });
+    await reopened.goto(first.link);
+    await unlock(reopened, next.code);
+    await expect(reopened.getByRole('alert')).toBeVisible();
+    await reopened.reload();
+    await unlock(reopened, next.code);
+    await expect(reopened.locator('[data-enrollment-state="certified"]')).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.locator('[data-enrollment-state="certified"]')).toBeVisible({
+      timeout: 15000,
+    });
+    await reopened.reload();
+    await unlock(reopened, next.code);
+    await expect(reopened.locator('[data-enrollment-state="certified"]')).toBeVisible();
+    const recovered = await reopened.evaluate(
+      async ({ workspace, code }) => {
+        const path = '/src/account/ceremonyVault.ts';
+        const { withCeremonyVault } = await import(/* @vite-ignore */ path);
+        return withCeremonyVault(
+          localStorage.getItem('done.pending-device.' + workspace)!,
+          code,
+          new AbortController().signal,
+          async (owner: any) => (await owner.load()).content,
+        );
+      },
+      { workspace, code: next.code },
+    );
+    expect(recovered.key).toEqual(installed.key);
+    expect(recovered.installation).toEqual(installed.installation);
+    expect(installations.length).toBeGreaterThan(1);
+    expect(
+      installations.every((i) => JSON.stringify(i) === JSON.stringify(installed.installation)),
+    ).toBe(true);
+    expect(recovered.certification.epoch.epoch).toBe(3);
+    expect(recovered.delivery).toEqual(installed.delivery);
+  } finally {
+    await other.close();
+  }
+});
+
+test('failed local installation save sends no countersignature; a cold retry installs the same delivery', async ({
+  page,
+  browser,
+}) => {
+  const first = await account(page),
+    other = await browser.newContext(),
+    second = await other.newPage();
+  try {
+    const next = await pending(second, first.link, first.auth),
+      sas = await compared(page, second);
+    let installs = 0;
+    second.on('request', (r) => {
+      if (r.url().endsWith('/ceremony/transfer') && r.postDataJSON().action === 'install')
+        installs++;
+    });
+    // Abort the custody transaction after the sealed incoming key has been produced.
+    // This is a real IndexedDB commit failure; reopening removes this process-local injection.
+    await second.evaluate(() => {
+      let incomingSealed = false;
+      const encrypt = SubtleCrypto.prototype.encrypt;
+      SubtleCrypto.prototype.encrypt = async function (algorithm, key, data) {
+        const result = await encrypt.call(this, algorithm, key, data);
+        const aad = (algorithm as AesGcmParams).additionalData;
+        if (aad && new TextDecoder().decode(aad).includes('done/installed-content-key/v1'))
+          incomingSealed = true;
+        return result;
+      };
+      const put = IDBObjectStore.prototype.put;
+      IDBObjectStore.prototype.put = function (value: unknown, ...args: []) {
+        const r = value as { approval?: { sequence: number }; seal_reserved?: number };
+        const request = put.call(this, value, ...args);
+        if (
+          this.transaction.db.name === 'done.custody' &&
+          incomingSealed &&
+          r.approval?.sequence === r.seal_reserved
+        ) {
+          this.transaction.abort();
+        }
+        return request;
+      };
+    });
+    await page.getByLabel('Code on the new device').fill(sas);
+    await page.getByRole('button', { name: 'Compare and approve' }).click();
+    await expect(second.getByRole('alert')).toBeVisible({ timeout: 15000 });
+    expect(installs).toBe(0);
+    await second.reload();
+    await unlock(second, next.code);
+    await expect(second.locator('[data-enrollment-state="certified"]')).toBeVisible({
+      timeout: 15000,
+    });
+    expect(installs).toBe(1);
+  } finally {
+    await other.close();
+  }
+});
+
 test('root chooser resumes pending and approved connections; old attempts learn the invitation once without trusting route hints', async ({
   page,
   browser,

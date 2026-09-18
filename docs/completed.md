@@ -9522,3 +9522,70 @@ module successfully. No server restart, state/schema reset, personal-browser int
 route change was needed. Work remains uncommitted after signed foundation 66da1dcd. Stop for the
 operator's phone walkthrough; delivery/install/certification and actual cross-device writing remain
 later product phases, and release qualification remains paused.
+
+
+## 2026-09-18 — approved-device content delivery, installation and certification
+
+Completed the bounded continuation after the operator's physical two-device approval trial.
+The first device verifies its retained transcript and stages the signed two-recipient certificate,
+recovery state and exact transcript-bound HPKE generation-key wrap before sending. The phone
+independently checks that delivery, seals its content key under the existing mandatory-factor
+root with a burned-before-use counter, and durably saves it before countersigning installation.
+Both clients retain the verified, exact epoch-3 certification successor. Reopening resumes the
+same delivery and installation; it does not repeat the comparison or replace prior Local writing.
+The UI keeps the approval heading and reports the final installed/certified status. Redundant
+approval re-publication during post-approval polling is avoided when the relay already has the
+exact saved decision.
+
+Schema 9 adds one immutable content-transfer row per workspace. Delivery requires the authenticated
+retained approval; installation/certification atomically advances the authority pointer, accepted
+head vector and ledger witness. Original-publisher receipts and queued envelopes remain verifiable
+across epochs 1, 2 and 3. Current certified keys come from the verified recipient set. The older
+1/2-only locator refuses at 3 rather than advertising stale authority; the preview bootstrap now
+includes the complete certification in its fresh nonce-bound signed reply. General sync-client
+adoption, phone content bootstrap/editor and multiple-publisher transport remain subsequent work.
+
+Focused evidence: **42 service/protocol/discovery cases passed**, including five new transfer cases;
+**5 targeted legacy-schema fixture cases** and **5 offline-preview maintenance cases passed**.
+After the final current-certified-member change, the five transfer cases passed again. The affected
+browser file initially passed **8 of 9**: the remaining case timed out at initial splash loading,
+before entering account setup. Its focused rerun passed, alongside the final lost-reply control
+(**2 passed**). All nine affected cases therefore have passing evidence; the initial combined run
+was not all-green. The two new native cases demonstrate sender restart with identical delivery,
+receiver closure after durable installation, lost certification response, exact cold retry and a
+real IndexedDB abort at installed-key save with no outgoing installation proof. Existing mismatch,
+peer cancellation, queued comparison, chooser resumption and history navigation still pass.
+Typecheck, scoped lint/format and git diff checks pass. This was focused development verification,
+not a generalized fault/mutation/conformance campaign or release inventory update.
+
+Logs: /tmp/content-transfer-service-final.log, /tmp/content-transfer-service-recheck.log,
+/tmp/content-transfer-schema-fixtures.log, /tmp/content-transfer-upgrade.log,
+/tmp/content-transfer-browser-final.log and /tmp/content-transfer-browser-recheck.log. The initial
+maintenance checks needed loopback permission and then passed; an affected migration fixture was
+updated to drop the added schema table when constructing an older database. No counterexample
+was dismissed as a passing run.
+
+With the operator's explicit locked-and-closed confirmation, stopped only preview PID 12994 on
+loopback 53219, backed up and upgraded `.dev/account-enrollment-tailnet` from schema 8 to 9.
+Backup: `.dev/account-enrollment-tailnet/backups/schema-8-i5jQ3k/`. Compared every row of the eleven
+existing tables against the backup and verified the operator key and pin unchanged; the new
+transfer table is empty immediately after upgrade. Restarted the same preview with live updates
+disabled at https://mbp.tail0e0d4.ts.net:8443/; root and connection page return HTTP 200. No personal
+browser automation, state reset or proxy change. The new server log is
+/tmp/done-enrollment-preview-content-delivery.log.
+
+Work remains uncommitted alongside the earlier walkthrough/router changes. Stop for the operator
+to resume both saved devices. [Continuation contract and walkthrough](./account-content-delivery-development.md).
+Next: authenticate and bootstrap the first device's writing on the phone, then connect two-way
+sync. The preview banner remains, and release qualification remains paused.
+
+
+## 2026-09-18 — separate signed checkpoints for the walkthrough and key handoff
+
+Signed `f4e250fc` records the accumulated walkthrough repairs, shared-device chooser, TanStack
+navigation, approved recovery redisplay and consistent chooser styling after `66da1dcd`.
+Shared-file changes were separated in the Git index; the running preview's source was not
+rolled back. The isolated first-commit tree passed typecheck and all three challenge-renewal tests.
+The following commit, containing this entry, groups the certified content-key handoff, its focused
+tests, schema upgrade and current checkpoint. Earlier append-only entries saying “uncommitted”
+remain accurate historical records. The three unrelated root notes are outside these commits.

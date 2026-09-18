@@ -24,9 +24,13 @@ It has dedicated development state. Port 443 and the existing service routes are
    record or field; do not overwrite the first device's code. This is the same account with a
    different local unlock code. Existing writing on that device is not imported or replaced.
 4. Keep both pages open. The new device displays five characters. Type them on the existing
-   device and select **Compare and approve**. Both screens report **Device approved**.
-5. Stop there. This checkpoint ends at durable approval. It does not deliver a content key,
-   certify a second reader, open writing on that device, or enable sync in the first-device preview.
+   device and select **Compare and approve**. Both screens report **Device approved**. An existing
+   approved attempt skips this comparison when resumed with its saved device code.
+5. Leave both open until the status says **Content access is installed and certified.** The
+   [2026-09-18 continuation](./account-content-delivery-development.md) saves the exact wrapped key,
+   installs it under the phone's factor, and certifies its recipient keys. No new code is needed.
+6. Stop there. Opening the first device's writing on the phone, two-way sync and ordinary packaged
+   application integration are the next phases. Existing phone writing is not imported or deleted.
 
 Only a connected account can create an invitation. If this browser has only a local-only
 workspace, open it and choose **Connect this workspace**, then finish the passkey and recovery-code
@@ -99,11 +103,15 @@ Stop only this preview process and disable only its proxy with
 `tailscale serve --https=8443 off`. Do not reset all Serve routes. Keep the origin and state
 path when resuming; the service pin and passkey RP are bound to that origin.
 
-Service schema 8 adds one `content_ceremonies` row per workspace for this single admitted child.
-Normal opening refuses older schemas. The existing offline preview upgrader now accepts schema 7
-as well; no existing personal or preview database was upgraded for this walkthrough.
+Service schema 8 introduced `content_ceremonies`; schema 9 adds the immutable content delivery and
+certification record. Normal opening refuses older schemas. With both devices locked and closed,
+this preview was backed up and upgraded from 8 to 9 on 2026-09-18. Existing rows, pin and operator
+key were verified unchanged. See the continuation checkpoint for the backup and results.
 
-## Implementation boundary
+## Original approval implementation boundary
+
+The following records the approval milestone; [delivery/install/certification](./account-content-delivery-development.md)
+is now implemented as its separate bounded continuation.
 
 - The mandatory-factor custody record contains an optional authenticated encrypted approval
   carrier. Removing or replacing it fails the custody MAC. The existing exclusive slot lifetime
@@ -128,8 +136,9 @@ as well; no existing personal or preview database was upgraded for this walkthro
   existing-device outcome. Terminal state and exact retries do not reset the credential's budget.
   Clients independently retain that budget and authenticate peer messages. Unsigned status labels
   do not establish approval or authorize deleting local state.
-- Whole-profile rollback, arbitrary successor chains/replacement admission, concurrent approvers,
-  certification, content-key installation and default-app rollout are outside this checkpoint.
+- Whole-profile rollback, arbitrary successor chains/replacement admission, concurrent approvers
+  and default-app rollout remain outside this checkpoint. Certification and key installation are
+  covered by the later continuation, without adding a second editor or sync activation.
 
 ## Focused checks
 

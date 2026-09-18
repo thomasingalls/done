@@ -1,4 +1,8 @@
 import { ceremonyBootstrapMessage } from '../account-protocol/ceremonyRelay.ts';
+import {
+  parseCertificationEpoch,
+  certificationEpochMessage,
+} from '../account-protocol/contentDelivery.ts';
 import { discoveryResponseMessage, parseDiscoveryResponse } from '../account-protocol/successor.ts';
 import { successorMessage, parseSuccessorEpoch } from '../account-protocol/successor.ts';
 import { digest } from '../account-protocol/recovery.ts';
@@ -360,6 +364,24 @@ export class PrivateAuthority {
   }
   relayCeremony(core: AccountCore, input: unknown) {
     return core.relayCeremony(input, this.#deliveryIssuer());
+  }
+  transferContent(core: AccountCore, input: unknown) {
+    return core.transferContent(input, {
+      ...this.#deliveryIssuer(),
+      certify: async (input) => {
+        const epoch = parseCertificationEpoch(input),
+          message = await certificationEpochMessage(epoch),
+          head = await digest(message);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 1,
+          kind: 'device-certification-successor',
+          epoch,
+          head,
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
+      },
+    });
   }
   discoverAuthority(core: AccountCore, input: unknown) {
     return core.discoverAuthority(input, {
