@@ -144,6 +144,20 @@ export const createLocalStartup = () => {
       };
     },
     getSnapshot: () => state,
+    visit(step: string): boolean {
+      if (
+        closed ||
+        operation ||
+        !ceremony?.displayCode ||
+        !['fresh', 'save-code', 'confirm-code'].includes(state.kind)
+      )
+        return false;
+      if (step === 'fresh') publish({ kind: 'fresh', reason: 'not-created' });
+      else if (step === 'save-code') publish({ kind: 'save-code', code: ceremony.displayCode });
+      else if (step === 'confirm-code') publish({ kind: 'confirm-code', error: null });
+      else return false;
+      return true;
+    },
     subscribe(listener: () => void) {
       listeners.add(listener);
       return () => {
@@ -160,7 +174,7 @@ export const createLocalStartup = () => {
     begin() {
       if (closed || operation || state.kind !== 'fresh') return;
       try {
-        ceremony = beginLocalGenesis(LOCAL_APP_SLOT, options);
+        ceremony ??= beginLocalGenesis(LOCAL_APP_SLOT, options);
         const code = ceremony.displayCode;
         if (!code) throw Error('Local ceremony could not start.');
         publish({ kind: 'save-code', code });

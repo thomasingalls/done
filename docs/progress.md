@@ -42,47 +42,44 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: two-device approval ready to try (`L-1`)
+## Product checkpoint: credential navigation and chooser ready (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: private experiential enrollment/content-approval milestone
-blocks_on: none; waiting for operator walkthrough before more implementation
+scope: walkthrough repairs, shared-device chooser and approved credential Back behavior
+blocks_on: none; ready for the operator's phone walkthrough
 release_validation: paused by operator
-updated: 2026-09-16
+updated: 2026-09-18
 ```
 
-**The exchange checkpoint is signed as `46694766`.** Earlier first-device UI integration is
-`605cb087`, including requested tip `ea3a3ffb`; ceremony primitives are `0e7a88f8`. Prior backend
-phase outcomes and hashes remain in [completed.md](./completed.md).
+The private preview preserves the root splash, exposes saved accounts and retained connections in
+one chooser, and routes **Use another account** into device connection. Invitation creation is an
+explicit button. Quiet polling preserves focus and layout; expired unused passkey challenges can
+renew without discarding device custody. Development live reload is disabled by default so using
+a phone password manager does not reset the ceremony.
 
-**One private two-device flow is ready.** Existing-device invitation → fresh pending-device custody
-→ account passkey and device possession → admission → authenticated commitments/reveals → typed
-comparison → durable approval. Crash/retry preserves the transcript and one-comparison budget.
-The existing writing remains; old writing on the pending device is not imported. No content-key
-release, second-reader certification, writing transfer or first-device sync driver is implied.
+TanStack Router implements the approved credential Back behavior, including redisplay of the
+original unfinished recovery code only within its live owner. Leaving drains the owner; reload
+requires unlocking retained progress. History does not recreate completed protocol actions.
+The chooser's four sections now share spacing and separators, with a muted empty state and a
+button for opening Local writing. [Navigation contract](./account-preview-navigation.md).
 
-**Focused checks pass:** two actual browser-profile flows, five service cases, five maintenance
-cases, two schema regressions and six custody-record regressions; typecheck/scoped static checks.
-The browser cases include renderer death, lost response, aborted local save and retained mismatch.
-No generalized campaign, mutation controls, release inventory or qualification work was run.
+Evidence is recorded in [completed.md](./completed.md): the two affected Chromium browser files
+passed together (25 cases), followed by the legacy entry read-failure case. Typecheck and scoped
+static checks passed. No generalized qualification or inventory work ran.
 
-**Operator trial is next; implementation stops here.** The preview is running inside this checkout
-at **https://mbp.tail0e0d4.ts.net:8443/**, on loopback 53219 with fresh development state. Existing
-Tailscale routes (including 443) were preserved. Both entry pages return HTTPS 200. The operator
-will use a physical second device over Tailscale. [Walkthrough](./account-device-approval-development.md).
+Preview: **https://mbp.tail0e0d4.ts.net:8443/**, loopback 53219 and retained
+`.dev/account-enrollment-tailnet` state. This phase ends at durable device approval. The next
+bounded phase is exact content-key delivery, factor-protected installation and certification;
+content bootstrap and multi-device writing follow. Product choices about fewer factors, device
+names, QR routing and notifications still require operator input.
 
-**After feedback:** address actual flow problems, then define the bounded content-key delivery,
-installation and certification step. Bootstrap of writing and multiple-publisher sync follow.
-Replacement admission/general history remain absent; expired/mismatched attempts stop safely.
-
-**Qualification remains deferred.** New runtime construction inventory has intentionally not been
-refreshed under the operator's instruction. Frozen release counts and evidence are untouched.
-Future qualification must reconcile the new carriers/domains and broader durability obligations;
-that is not a gate added to this development trial.
+This commit groups the walkthrough repairs, shared-device routing, navigation and chooser styling
+that accumulated after signed foundation `66da1dcd`. Detailed outcomes and decisions remain in the
+append-only journals. The later key-handoff implementation is separate.
 
 ---
 

@@ -2,8 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 const entry = '/private/account-setup.html';
 const phase = (page: Page, name: string) =>
   expect(page.locator('.account-setup')).toHaveAttribute('data-setup-state', name);
-async function local(page: Page) {
-  await page.goto(entry);
+async function local(page: Page, path = entry) {
+  await page.goto(path);
   await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const code = (await page.getByLabel('Generated device-lock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code', exact: true }).click();
@@ -100,6 +100,134 @@ async function startNewAccount(page: Page, name: string) {
   return code;
 }
 
+test('a locked local workspace keeps account creation and switching available for another person', async ({
+  page,
+}) => {
+  const localCode = await local(page);
+  const beforeLocal = await slot(page);
+  await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+  await expect(page.locator('[data-state="unlock-required"]')).toBeVisible();
+  await page.reload();
+  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+  await phase(page, 'account-choice');
+  await expect(page.locator('.cm-editor')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Open local-only workspace' })).toBeVisible();
+  const accountCode = await startNewAccount(page, 'Another person');
+  await authenticator(page);
+  const recovery = await recoveryCode(page);
+  await page.getByRole('button', { name: 'I saved my recovery code' }).click();
+  await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
+  await page.getByRole('button', { name: 'Finish account setup', exact: true }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  const id = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(0);
+  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  await compose.fill('Only the other person’s writing');
+  await compose.press('Enter');
+  expect(await slot(page)).toEqual(beforeLocal);
+  await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+  await page.getByRole('button', { name: 'Open local-only workspace' }).click();
+  await expect(page.locator('[data-state="unlock-required"]')).toBeVisible();
+  await page.reload();
+  await expect(page.locator('[data-state="unlock-required"]')).toBeVisible();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(accountCode);
+  await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+  await expect(page.locator('[data-state="unlock-failed"]')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Use another account', exact: true }),
+  ).toBeVisible();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(localCode);
+  await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(1);
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
+    'Writing from before account setup',
+  );
+  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+  await page
+    .getByRole('button', { name: `Unlock Another person, account ${id}`, exact: true })
+    .click();
+  await reopen(page, accountCode);
+  await expect(page.locator('.shell')).toBeVisible();
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(1);
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
+    'Only the other person’s writing',
+  );
+});
+
+test('password-manager app switching preserves code-saving and confirmation steps', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const NativeWebSocket = window.WebSocket;
+    const sockets: WebSocket[] = [];
+    Object.assign(window, {
+      setupPageInstance: crypto.randomUUID(),
+      setupDevelopmentSockets: sockets,
+    });
+    window.WebSocket = class extends NativeWebSocket {
+      constructor(url: string | URL, protocols?: string | string[]) {
+        super(url, protocols);
+        if (protocols === 'vite-hmr') sockets.push(this);
+      }
+    };
+  });
+  await page.goto(entry);
+  const instance = await page.evaluate(() => (window as any).setupPageInstance);
+  const cdp = await page.context().newCDPSession(page);
+  const awayAndBack = async () => {
+    await page.evaluate(() => {
+      window.dispatchEvent(new Event('blur'));
+      Object.defineProperty(document, 'visibilityState', {
+        configurable: true,
+        get: () => 'hidden',
+      });
+      document.dispatchEvent(new Event('visibilitychange'));
+      // The former preview reloads after this socket loss, without any app lock request.
+      for (const socket of (window as any).setupDevelopmentSockets as WebSocket[])
+        if (socket.readyState === WebSocket.OPEN) socket.close();
+    });
+    await page.context().setOffline(true);
+    await cdp.send('Page.setWebLifecycleState', { state: 'frozen' });
+    await cdp.send('Page.setWebLifecycleState', { state: 'active' });
+    await page.context().setOffline(false);
+    await page.evaluate(() => {
+      delete (document as any).visibilityState;
+      document.dispatchEvent(new Event('visibilitychange'));
+      window.dispatchEvent(new Event('focus'));
+    });
+    expect(await page.evaluate(() => (window as any).setupPageInstance)).toBe(instance);
+  };
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
+  await page.getByLabel('Your name', { exact: true }).fill('Mobile setup');
+  await page.getByRole('button', { name: 'Create account', exact: true }).click();
+  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
+  await awayAndBack();
+  await expect(page.getByLabel('Generated device-lock code')).toHaveText(code);
+  await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await awayAndBack();
+  await expect(page.getByLabel('Device-lock code', { exact: true })).toHaveValue(code);
+  await page.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+  await authenticator(page);
+  const recovery = await recoveryCode(page);
+  await awayAndBack();
+  await expect(page.getByLabel('Generated recovery code')).toHaveText(recovery);
+  await page.getByRole('button', { name: 'I saved my recovery code' }).click();
+  await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
+  await awayAndBack();
+  await expect(page.getByLabel('Recovery code', { exact: true })).toHaveValue(recovery);
+  await page.getByRole('button', { name: 'Finish account setup', exact: true }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  expect(await page.evaluate(() => (window as any).setupPageInstance)).toBe(instance);
+  // Explicit lock still ends the open session and requires its factors again.
+  await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+  await phase(page, 'unlock');
+  await expect(page.locator('.cm-editor')).toHaveCount(0);
+});
+
 test('homepage welcome opens account choice and a first account reopens through either entry', async ({
   page,
 }) => {
@@ -108,6 +236,10 @@ test('homepage welcome opens account choice and a first account reopens through 
   await phase(page, 'account-choice');
   await expect(page.getByRole('heading', { name: 'Choose an account', exact: true })).toBeVisible();
   await page.reload();
+  await phase(page, 'account-choice');
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Your Workspace', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
   await phase(page, 'account-choice');
   await authenticator(page);
   const code = await startNewAccount(page, 'Alex');
@@ -119,6 +251,13 @@ test('homepage welcome opens account choice and a first account reopens through 
   const id = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
   for (const url of [entry, '/local.html', '/']) {
     await page.goto(url);
+    if (url === '/') {
+      await expect(
+        page.getByRole('heading', { name: 'Your Workspace', exact: true }),
+      ).toBeVisible();
+      await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+      await page.getByRole('button', { name: `Unlock Alex, account ${id}`, exact: true }).click();
+    }
     await phase(page, 'unlock');
     await expect(page.getByLabel('Account ID', { exact: true })).toHaveText(id);
     await expect(
@@ -127,6 +266,52 @@ test('homepage welcome opens account choice and a first account reopens through 
     await reopen(page, code);
     await expect(page.locator('.shell')).toBeVisible();
   }
+});
+
+test('root splash preserves Local writing and an unfinished account until explicitly selected', async ({
+  page,
+}) => {
+  const code = await local(page, '/');
+  const before = await slot(page);
+  await page.goto('/private/account-enrollment.html');
+  await page.evaluate(() => history.back());
+  await phase(page, 'account-choice');
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Your Workspace', exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Your Workspace', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Create a new account', exact: true }),
+  ).toBeVisible();
+  const selected = await page.evaluate(() =>
+    sessionStorage.getItem('done.account-setup.selected-slot'),
+  );
+  await page.reload();
+  await phase(page, 'intro');
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Your Workspace', exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Create a new account', exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Continue setup for new account', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Create a new account', exact: true }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => sessionStorage.getItem('done.account-setup.selected-slot')),
+  ).toBe(selected);
+  await page.getByRole('button', { name: 'Choose an account', exact: true }).click();
+  await page.getByRole('button', { name: 'Open local-only workspace' }).click();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
+    'Writing from before account setup',
+  );
+  expect(await slot(page)).toEqual(before);
 });
 
 test('create a second account on this device, resume it, and switch between isolated writing and factors', async ({
@@ -152,6 +337,7 @@ test('create a second account on this device, resume it, and switch between isol
   await reopen(page, bCode);
   await phase(page, 'passkey');
   const recovery = await recoveryCode(page);
+  page.once('dialog', (dialog) => dialog.accept());
   await page.reload();
   await reopen(page, bCode);
   await phase(page, 'confirm-recovery');
@@ -256,6 +442,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await start(page, code);
   const recovery = await recoveryCode(page);
   // A reload cannot show the code again or silently replace it.
+  page.once('dialog', (dialog) => dialog.accept());
   await page.reload();
   await phase(page, 'unlock');
   await reopen(page, code);
@@ -491,94 +678,49 @@ test('development service refuses uncredentialed API calls and does not serve it
     expect((await request.get(path)).status()).toBe(403);
 });
 
-test('another account can be chosen despite matching names, without opening or replacing the saved writing', async ({
+test('use another account opens device connection without a passkey or changing saved writing', async ({
   page,
-  browser,
-}, testInfo) => {
+}) => {
   const a = await connectedAccount(page);
   const before = await slot(page);
-  const aCredentials = (
-    await a.auth.cdp.send('WebAuthn.getCredentials', { authenticatorId: a.auth.authenticatorId })
-  ).credentials;
-  const secondContext = await browser.newContext({ baseURL: new URL(page.url()).origin });
-  let bId: string;
-  try {
-    const second = await secondContext.newPage();
-    const b = await connectedAccount(second);
-    bId = b.id;
-    expect(bId).not.toBe(a.id);
-    await expect(second.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
-    const credentials = (
-      await b.auth.cdp.send('WebAuthn.getCredentials', { authenticatorId: b.auth.authenticatorId })
-    ).credentials;
-    expect(credentials[0]!.userName).toBe(bId);
-    expect(aCredentials[0]!.userName).toBe(a.id);
-    // Model selecting B in the authenticator: offer only B for this ceremony.
-    await a.auth.cdp.send('WebAuthn.removeCredential', {
-      authenticatorId: a.auth.authenticatorId,
-      credentialId: aCredentials[0]!.credentialId,
-    });
-    await a.auth.cdp.send('WebAuthn.addCredential', {
-      authenticatorId: a.auth.authenticatorId,
-      credential: credentials[0]!,
-    });
-  } finally {
-    await secondContext.close();
-  }
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await phase(page, 'account-choice');
-  await expect(page.locator('.cm-editor')).toHaveCount(0);
-  await expect(page.getByLabel('Device-lock code', { exact: true })).toHaveCount(0);
-  await page.reload();
-  await phase(page, 'account-choice');
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
     const nativeGet = navigator.credentials.get.bind(navigator.credentials);
-    (window as typeof window & { choicePrompts: number }).choicePrompts = 0;
     navigator.credentials.get = (options) => {
-      if (options?.publicKey?.allowCredentials?.length)
-        throw Error('Account choice must be discoverable');
-      (window as typeof window & { choicePrompts: number }).choicePrompts++;
+      sessionStorage.setItem('connection-passkey-prompted', 'yes');
       return nativeGet(options);
     };
   });
-  let lost = false;
-  await page.route('**/__account-setup/finish', async (route) => {
-    if (lost) return route.continue();
-    lost = true;
-    await route.fetch();
-    await route.abort('failed');
-  });
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await expect(page.getByRole('alert')).toContainText('needs a connection');
-  await page.getByRole('button', { name: 'Retry verification', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Account verified' })).toBeVisible();
-  expect(
-    await page.evaluate(() => (window as typeof window & { choicePrompts: number }).choicePrompts),
-  ).toBe(1);
-  expect(await page.getByLabel('Account ID', { exact: true }).allTextContents()).toEqual([
-    bId!,
-    a.id,
-  ]);
-  await expect(
-    page.getByText(
-      'This account’s writing is not on this device. Device linking is not available in this preview yet.',
-    ),
-  ).toBeVisible();
+  await phase(page, 'account-choice');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
+  await page.reload();
+  await phase(page, 'account-choice');
+  await expect(page.getByRole('link', { name: 'Connect another device' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Connect devices', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Invitation from your other device')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Create invitation for Alex', exact: true }),
+  ).toBeVisible();
+  for (const invalid of [
+    'not an invitation',
+    'https://example.com/private/account-enrollment.html',
+  ]) {
+    await page.getByLabel('Invitation from your other device').fill(invalid);
+    await page.getByRole('button', { name: 'Connect this device', exact: true }).click();
+    await expect(page.getByRole('alert')).toContainText('complete device invitation link');
+    await expect(page.getByRole('heading', { name: 'Connect devices', exact: true })).toBeVisible();
+  }
+  expect(
+    await page.evaluate(() => sessionStorage.getItem('connection-passkey-prompted')),
+  ).toBeNull();
   expect(await slot(page)).toEqual(before);
-  await page.screenshot({ path: testInfo.outputPath('different-account-verified.png') });
-  // Restore A's credential and use its ordinary local unlock after leaving discovery.
-  await a.auth.cdp.send('WebAuthn.addCredential', {
-    authenticatorId: a.auth.authenticatorId,
-    credential: aCredentials[0]!,
-  });
+  await page.getByRole('link', { name: 'Close and return to accounts' }).click();
   await page
     .getByRole('list', { name: 'Saved accounts' })
     .getByRole('button', { name: `Unlock Alex, account ${a.id}`, exact: true })
     .click();
-  await expect(page.getByLabel('Account ID', { exact: true })).toHaveText(a.id);
-  // The discovery-only assertion guard is no longer appropriate for a scoped local unlock.
-  await page.reload();
+  await phase(page, 'unlock');
   await reopen(page, a.code);
   await expect(page.locator('.shell')).toBeVisible();
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
@@ -586,7 +728,7 @@ test('another account can be chosen despite matching names, without opening or r
   );
 });
 
-test('cancelled account choice returns safely, and choosing the saved account still requires local unlock', async ({
+test('saved account choice works by keyboard and still requires local unlock', async ({
   page,
 }, testInfo) => {
   const a = await connectedAccount(page);
@@ -608,22 +750,6 @@ test('cancelled account choice returns safely, and choosing the saved account st
   await savedAccount.press('Enter');
   await phase(page, 'unlock');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await page.evaluate(() => {
-    const nativeGet = navigator.credentials.get.bind(navigator.credentials);
-    navigator.credentials.get = () => {
-      navigator.credentials.get = nativeGet;
-      return Promise.reject(new DOMException('Cancelled', 'NotAllowedError'));
-    };
-  });
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await expect(page.getByRole('alert')).toContainText('selection cancelled');
-  await expect(page.locator('.cm-editor')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Account verified' })).toBeVisible();
-  await expect(page.locator('.cm-editor')).toHaveCount(0);
-  await savedAccount.click();
-  await phase(page, 'unlock');
   await expect(page.getByLabel('Account ID', { exact: true })).toHaveText(a.id);
   await reopen(page, a.code);
   await expect(page.locator('.shell')).toBeVisible();
@@ -673,6 +799,7 @@ test('an unsaved recovery code can be abandoned without changing Local writing',
   await authenticator(page);
   await start(page, code);
   await recoveryCode(page);
+  page.once('dialog', (dialog) => dialog.accept());
   await page.reload();
   await reopen(page, code);
   await phase(page, 'confirm-recovery');
@@ -686,4 +813,188 @@ test('an unsaved recovery code can be abandoned without changing Local writing',
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
+});
+
+// Browser history is driven without waiting for a document load: a blocked POP
+// can intentionally stay in the same document while its owner drains.
+const back = (page: Page) => page.evaluate(() => history.back());
+const forward = (page: Page) => page.evaluate(() => history.forward());
+
+test('browser Back retains unconfirmed device codes and name drafts, then skips committed creation', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
+  const localCode = (await page.getByLabel('Generated device-lock code').textContent())!;
+  await page.getByRole('button', { name: 'I saved my code', exact: true }).click();
+  await back(page);
+  await expect(page.getByLabel('Generated device-lock code')).toHaveText(localCode);
+  await back(page);
+  await expect(page.getByRole('heading', { name: 'Your Workspace' })).toBeVisible();
+  await forward(page);
+  await expect(page.getByLabel('Generated device-lock code')).toHaveText(localCode);
+  await page.getByRole('button', { name: 'I saved my code', exact: true }).click();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(localCode);
+  await page.getByRole('button', { name: 'Confirm and create' }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  const before = await slot(page);
+  await back(page);
+  await phase(page, 'account-choice');
+  await expect(page.locator('.cm-editor')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
+  await page.getByLabel('Your name', { exact: true }).fill('Remember this draft');
+  await back(page);
+  await phase(page, 'account-choice');
+  await page.getByRole('button', { name: 'Continue new account setup', exact: true }).click();
+  await expect(page.getByLabel('Your name', { exact: true })).toHaveValue('Remember this draft');
+  await page.getByRole('button', { name: 'Create account', exact: true }).click();
+  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
+  await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
+  await back(page);
+  await expect(page.getByLabel('Generated device-lock code')).toHaveText(code);
+  await back(page);
+  await phase(page, 'intro');
+  await page.getByRole('button', { name: 'Create account', exact: true }).click();
+  await expect(page.getByLabel('Generated device-lock code')).toHaveText(code);
+  await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByRole('button', { name: 'Confirm device-lock code' }).click();
+  await phase(page, 'passkey');
+  const selected = await page.evaluate(() =>
+    sessionStorage.getItem('done.account-setup.selected-slot'),
+  );
+  const created = await slot(page, selected!);
+  await back(page);
+  await phase(page, 'account-choice');
+  await page.getByRole('button', { name: /^Continue setup for Remember this draft/ }).click();
+  await reopen(page, code);
+  await phase(page, 'passkey');
+  expect(await slot(page, selected!)).toEqual(created);
+  expect(await slot(page)).toEqual(before);
+});
+
+test('browser Back redisplays recovery only within its unfinished ceremony and warns before retiring it', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  const code = await startNewAccount(page, 'Recovery navigation');
+  const auth = await authenticator(page);
+  await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
+  await phase(page, 'confirm-passkey');
+  const credentials = await auth.cdp.send('WebAuthn.getCredentials', {
+    authenticatorId: auth.authenticatorId,
+  });
+  await back(page);
+  await phase(page, 'account-choice');
+  await page.getByRole('button', { name: /^Continue setup for Recovery navigation/ }).click();
+  await reopen(page, code);
+  await phase(page, 'confirm-passkey');
+  const retained = await auth.cdp.send('WebAuthn.getCredentials', {
+    authenticatorId: auth.authenticatorId,
+  });
+  expect(retained.credentials.map((value) => value.credentialId)).toEqual(
+    credentials.credentials.map((value) => value.credentialId),
+  );
+  await page.getByRole('button', { name: 'Use my passkey' }).click();
+  const recovery = (await page.getByLabel('Generated recovery code').textContent())!;
+  await page.getByRole('button', { name: 'I saved my recovery code' }).click();
+  await back(page);
+  await expect(page.getByLabel('Generated recovery code')).toHaveText(recovery);
+  await forward(page);
+  await phase(page, 'confirm-recovery');
+  await back(page);
+  await phase(page, 'save-recovery');
+  const warning = page.waitForEvent('dialog');
+  await back(page);
+  const dialog = await warning;
+  expect(dialog.message()).toContain('discard the recovery code');
+  await dialog.dismiss();
+  await expect(page).toHaveURL(/\/save-recovery$/);
+  await expect(page.getByLabel('Generated recovery code')).toHaveText(recovery);
+  page.once('dialog', async (dialog) => {
+    await dialog.accept();
+  });
+  await page.getByRole('button', { name: 'Choose an account', exact: true }).click();
+  await phase(page, 'account-choice');
+  await page.getByRole('button', { name: /^Continue setup for Recovery navigation/ }).click();
+  await reopen(page, code);
+  await phase(page, 'confirm-recovery');
+  await expect(page.getByLabel('Generated recovery code')).toHaveCount(0);
+  await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
+  await page.getByRole('button', { name: 'Finish account setup', exact: true }).click();
+  await expect(page.locator('.shell')).toBeVisible();
+  await back(page);
+  await phase(page, 'account-choice');
+  await expect(page.getByLabel('Generated recovery code')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Finish account setup', exact: true })).toHaveCount(
+    0,
+  );
+  const retainedState = await page.evaluate(() =>
+    JSON.stringify({
+      history: history.state,
+      session: { ...sessionStorage },
+      local: { ...localStorage },
+    }),
+  );
+  expect(retainedState).not.toContain(code);
+  expect(retainedState).not.toContain(recovery);
+});
+
+test('Back during registration drains the owner and resumes the saved passkey proof after a lost reply', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  const code = await startNewAccount(page, 'Pending registration');
+  const auth = await authenticator(page);
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let committed!: () => void;
+  const received = new Promise<void>((resolve) => {
+    committed = resolve;
+  });
+  await page.route(
+    '**/__account-setup/finish',
+    async (route) => {
+      const response = await route.fetch();
+      committed();
+      await gate;
+      await route.fulfill({ response }).catch(() => {});
+    },
+    { times: 1 },
+  );
+  await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
+  await received;
+  await back(page);
+  await phase(page, 'account-choice');
+  release();
+  await page.getByRole('button', { name: /^Continue setup for Pending registration/ }).click();
+  await reopen(page, code);
+  await phase(page, 'confirm-passkey');
+  const { credentials } = await auth.cdp.send('WebAuthn.getCredentials', {
+    authenticatorId: auth.authenticatorId,
+  });
+  expect(credentials).toHaveLength(1);
+});
+
+test('legacy entry read failure keeps an explicit error instead of guessing a fresh account', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const open = indexedDB.open.bind(indexedDB);
+    indexedDB.open = (...args: Parameters<IDBFactory['open']>) => {
+      if (args[0] === 'done.first-device-setup.v1') throw Error('Focused saved setup read failure');
+      return open(...args);
+    };
+  });
+  await page.goto(entry);
+  await expect(page.getByRole('alert')).toHaveText(
+    'Saved setup could not be read. Your browser data has been kept.',
+  );
+  await expect(page.getByRole('button', { name: 'Create a new account' })).toHaveCount(0);
+  await page.getByRole('link', { name: 'Return to done' }).click();
+  await expect(page.getByRole('heading', { name: 'Your Workspace' })).toBeVisible();
 });

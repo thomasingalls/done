@@ -9331,3 +9331,194 @@ The preview runs at `https://mbp.tail0e0d4.ts.net:8443/` with fresh `.dev/accoun
 state and loopback port 53219. Existing Tailscale routes, including port 443, were checked unchanged.
 Both preview pages respond over HTTPS. The next action is the operator's physical-device trial;
 further implementation is paused for that feedback. [Walkthrough and boundary](./account-device-approval-development.md).
+
+
+## 2026-09-16 — account choice opens device connection
+
+Operator feedback on `66da1dcd`: the account chooser's **Use another account** now opens the
+device connection flow instead of a discoverable passkey prompt. Removed the floating
+**Connect another device** shortcut. The connection screen accepts a same-preview invitation
+link or lets an existing saved account invite another device. Passkey verification remains at
+the target-bound enrollment step. Saved-account selection and local unlock remain available.
+
+Five focused browser checks pass: both enrollment/approval crash/retry cases through the new
+navigation, isolated second-account switching, connection entry without a passkey or saved-slot
+change (including malformed/foreign invitation refusal), and keyboard saved-account selection.
+Typecheck and scoped lint/format pass. Updated the walkthrough; the tailnet preview remains
+running for operator use. Release validation remains paused.
+
+
+## 2026-09-16 — retain shared-computer account access after Local creation
+
+The Local editor and locked/refused startup screens now expose **Use another account** when
+account choice is available in the preview. Navigation drains the Local owner before opening the
+chooser. The chooser retains **Open local-only workspace** alongside separate accounts; selecting
+it opens ordinary Local startup rather than account promotion, and refresh retains that selection.
+
+Three focused browser cases pass: create a separate account from locked Local, preserve both
+sets of writing and require their separate factors, reopen Local after refresh, switch between
+two accounts, and retain the invitation entry without an early passkey prompt. Typecheck and
+scoped lint/format pass. The tailnet preview remains available; release validation is still paused.
+
+
+## 2026-09-16 — make invitation creation explicit
+
+The connected-account actions now read **Create invitation for [name]**, show the full account
+identifier, and lead to **Unlock and get invitation**. Empty state explains that a local-only
+workspace must complete **Connect this workspace**, passkey and recovery setup before it can
+invite a device. Loading and read failures are distinguished from having no connected accounts.
+Updated walkthrough and existing browser selectors. Both affected focused browser cases pass,
+including real invitation/approval and cold retry; typecheck and scoped lint/format pass.
+
+
+## 2026-09-16 — remove automatic development reloads from phone walkthroughs
+
+Investigated the reported password-manager reset. No blur/hidden handler locks these account
+screens. A disposable browser reproduction shows that losing Vite's live-update socket reloads
+the document and returns an unconfirmed account's device-code screen to the intro; ordinary tab
+switching in that probe did not reset it. This establishes a cause, not a trace from the operator's
+physical phone. The preview now defaults to `hmr: false` and `ws: false`, with
+`ACCOUNT_SETUP_LIVE_UPDATES=1` as an explicit coding opt-in. Pagehide/lock retirement is unchanged;
+no factors are persisted to preserve the UI. Applying this to the running tailnet service awaits
+a safe operator restart point.
+
+One focused regression passes through device-code/recovery-code display and filled confirmation
+forms across simulated blur/visibility, native page freeze and offline/online transitions, then
+finishes setup and explicitly locks. The existing two-device crash/lost-reply case passed on an
+isolated rerun; its first run timed out waiting for the harness's response interception. Typecheck
+and scoped lint/format pass. Physical-phone confirmation remains pending.
+
+The operator subsequently confirmed a safe restart point. Restarted only the preview on loopback
+53219 with the same `.dev/account-enrollment-tailnet` state and origin, explicitly setting
+`ACCOUNT_SETUP_LIVE_UPDATES=0`. Startup confirms live updates disabled; setup and enrollment both
+return HTTPS 200 through the existing 8443 route. Physical-phone retesting is next.
+
+
+## 2026-09-16 — renew unused expired enrollment challenges
+
+The operator's preview contained one expired enrollment preparation with no proof or receipt.
+The pending browser retains its retry identity across invitation links, so every begin returned
+the same expired challenge. The client now authenticates that historical challenge and, only
+in the no-proof/no-receipt pre-admission path, saves a fresh retry identity before beginning
+once more. The same custody, candidate keys and comparison state remain; renewal is bounded
+to once per button action. A passkey returned after the challenge deadline is rejected before
+persisting or submitting its proof, allowing another fresh request.
+
+Three focused tests against the real service pass: expiry renewal and lost-reply/cold retry;
+failed local save ordering and tampered expiry; retained receipts and unsigned status refusal.
+Both existing native browser approval/crash/retry cases pass, as do typecheck and scoped static
+checks. No server or protocol expiry policy changed, no stored user state was cleared, and no
+qualification campaign was run. Refresh the phone's same invitation, unlock with its saved
+device-lock code, and use the account passkey again.
+
+
+## 2026-09-16 — operator completes the physical two-device approval walkthrough
+
+The operator reports success after the unused-challenge renewal repair, with a physical second
+device over Tailscale. This closes the experiential enrollment/approval trial, not content-key
+delivery, second-reader certification, writing transfer or synchronization. The preview and its
+retained state remain available; release validation remains paused.
+
+The operator identified visible refresh jitter, a missing warning to save the second device's
+code separately in the password manager, and the overall burden of tracking codes and devices.
+Inspection finds that each 2.5-second poll toggles foreground busy UI and the existing device
+regenerates its signed invitation link. Those are concrete sources of UI churn; no trace of the
+physical device establishes how much each contributed. The disabled WebSocket was Vite's
+development reload channel, separate from the HTTP enrollment relay.
+
+Recorded the feedback and bounded follow-up proposals in the development walkthrough. Credential
+labels, stable background updates and fewer unnecessary navigation/unlock steps can be improved
+without removing protocol checks. Any change to factor roles or the comparison ceremony needs
+its own explicit design assessment. No further runtime implementation or tests started here.
+
+
+## 2026-09-17 — bounded enrollment usability pass
+
+The operator authorized the usability pass with an explicit request to consult them before
+making product decisions. Kept navigation, steps, prompts and factor roles intact. Background
+polls now avoid foreground busy UI and leave unchanged views alone. The existing device retains
+one signed invitation per unlocked owner while every bootstrap still gets a fresh nonce and
+authenticated authority checks. A user action during a poll waits behind it; additional polls
+and clicks cannot overtake the action. Page-close cancellation and owner authority checks remain.
+
+The pending device's save-code screen now asks for a separate password-manager entry named for
+that device, warns against overwriting the other device's code, and distinguishes the temporary
+comparison code. Device naming, QR routing, unlocked-owner navigation handoff, fewer prompts,
+transport changes and factor changes remain proposals requiring operator input.
+
+All five focused browser cases pass: stable invitation/layout/focus/selection and failed-read
+retry; a queued comparison publishing once; peer cancellation defeating a queued comparison;
+renderer crash plus lost decision reply; and aborted comparison plus durable mismatch. Typecheck,
+scoped lint and format pass. No generalized campaign or release-validation work ran. This pass
+and the earlier walkthrough corrections remain uncommitted.
+
+
+## 2026-09-17 — root splash and chooser-based device resumption
+
+Implemented the operator's clarified navigation: the private preview's `/` (and `/index.html`)
+starts at the existing splash on load/refresh and browser restoration, regardless of remembered
+selection. **I already have a workspace** opens the chooser. Saved first-device accounts and setup
+remain there, alongside device-connection routes identified by full workspace ID. Local creation
+from the splash remains an explicit action and never replaces existing Local writing. The private
+setup and Local entry URLs retain their prior direct-resume behavior.
+
+The chooser reads only validated workspace/slot hints; selecting one requires the existing device
+factor and authenticated approval owner. Bootstrap still has a fresh nonce and verifies the same
+authority. The invitation is now retained inside the encrypted approval carrier after its first
+successful verification, using existing counted saves. Older attempts retain their exact state
+and comparison budget; the operator accepted opening the original invitation and unlocking once
+to add this missing resume material. No new service authorization route or database migration.
+
+Ten focused browser cases now pass across the initial run and targeted rerun: root/chooser resume
+of pending and approved devices, old-attempt repair, wrong-factor and altered-route refusal, root
+refresh and Back with Local writing and an unfinished account, existing accounts/shared-computer
+isolation, and the five enrollment usability/crash/retry cases. The initial root draft test
+refreshed before draft creation had completed; waiting for the setup screen fixes that test.
+Both root cases pass on rerun. Typecheck and scoped lint/format pass. Release validation remains
+paused, and this work remains uncommitted.
+
+
+## 2026-09-18 — TanStack routing and approved credential Back behavior
+
+Implemented the operator-approved 22 dispositions in
+[account-preview-navigation.md](./account-preview-navigation.md). The private development entries
+share TanStack Router 1.170.35. Splash, chooser, Local, account setup and connection steps have
+browser-history routes; old HTML links still work and direct invitations get an internal parent.
+A route selects a view, never a protocol action. Cold entries inspect saved state and require the
+existing factors. The root stays a splash; reloading a chooser/ceremony route now retains that route.
+
+Unconfirmed Local/new-account/new-device codes survive Back to their introduction or save screen
+within one owner. Non-secret name drafts survive a chooser visit. Recovery confirmation can go Back
+to the same generation result, with a warning before leaving the ceremony. That display is never
+serialized and retires on close/reload or creation of a signed confirmation, whose reply could be
+lost. Updated account-recovery.md to reflect the operator's explicit contract amendment.
+
+Leaving an unlocked editor, setup or enrollment drains its owner and discards typed inputs. Waiting,
+approved and terminal attempts keep their durable state; Back does not cancel, reset a budget or
+resubmit comparison. A navigation intent during an in-flight registration aborts/drains the owner;
+a committed-but-lost reply resumes from its retained proof without creating another passkey.
+A restored enrollment page returns through the chooser after closing. Legacy entry read failures
+retain the existing explicit error rather than silently choosing fresh setup.
+
+The new controls caught two implementation defects before completion: an outgoing route's view
+synchronizer could overwrite the next destination, and reading mutable recovery-display availability
+in render let React Compiler memoize the leave-warning condition. Synchronization now refuses an
+outgoing parent, and warning availability is evaluated from the owner at navigation time. Blocked
+history redirects wait for the actual restored popstate rather than racing it with a timer.
+
+Evidence: both affected Chromium browser files pass together (25 tests), followed by the added legacy
+read-error control (1 test). This includes the five new navigation/read-error controls plus existing
+shared-computer isolation, wrong-factor/altered-route refusal, native passkey cancellation, quiet
+polling, peer cancellation, renderer interruption, lost replies and durable mismatch. Initial tests
+were corrected where they assumed identical invitation bytes across a new owner, a root URL that no
+longer remains active after client navigation, or account re-selection after reloading a routed
+inviter. The original invitation remains usable after leaving. Logs are
+/tmp/ceremony-navigation-regressions.log and /tmp/ceremony-entry-failure.log; the disposable config and
+artifacts are under test-results/chooser-return/. Typecheck, scoped lint, formatting and diff checks
+pass. No generalized campaign or release inventory work ran.
+
+The existing preview on loopback 53219 serves `/`, `/accounts`, `/connect/choose` and the new router
+module successfully. No server restart, state/schema reset, personal-browser interaction or Tailscale
+route change was needed. Work remains uncommitted after signed foundation 66da1dcd. Stop for the
+operator's phone walkthrough; delivery/install/certification and actual cross-device writing remain
+later product phases, and release qualification remains paused.

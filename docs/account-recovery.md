@@ -49,8 +49,12 @@ It does not return either private key. Owned plaintext byte buffers are overwrit
 JavaScript strings, engine copies and opaque key handles cannot be promised physical erasure.
 
 The recovery code is returned only by generation and never persisted or transmitted by the owner.
-Re-entry proves possession/transcription, not that the user stored it outside this device. The later UI
-must explain external storage and must not retain or redisplay the generation result after leaving it.
+Re-entry proves possession/transcription, not that the user stored it outside this device. The UI must
+explain external storage. As approved on 2026-09-18, moving Back between save and confirmation may
+redisplay the original result within the same unfinished, in-memory ceremony. Leaving that ceremony,
+locking, reloading or creating a signed confirmation retires the display; it must never be persisted
+for redisplay or reconstructed on resume. Leaving while a display remains available warns that the
+browser will discard its copy. See [the navigation contract](./account-preview-navigation.md).
 The current client module uses native WebCrypto; this evidence covers Chromium and Node, not the full
 browser/platform matrix. No new dependency was added.
 

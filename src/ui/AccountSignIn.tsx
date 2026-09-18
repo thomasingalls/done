@@ -1,27 +1,35 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { createAccountSignIn } from '../account/accountSignIn';
+import { useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, type SetupConfig } from '../account/firstDeviceSetup';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
+import {
+  rememberedDeviceConnections,
+  deviceConnectionUrl,
+  type RememberedDeviceConnection,
+} from '../account/deviceConnectionRoutes';
 
 export function AccountSignIn({
   config,
   onSelect,
+  onOpenLocal,
   onCreate,
   onRestore,
+  onConnect,
 }: {
   config: SetupConfig;
   onSelect: (slotId: string) => void;
+  onOpenLocal: () => void;
   onCreate: () => Promise<void>;
   onRestore: () => void;
+  onConnect?: (workspace?: string) => void;
 }) {
-  const [owner] = useState(() => createAccountSignIn(config));
   const [remembered, setRemembered] = useState<RememberedAccount[]>([]);
+  const [connections, setConnections] = useState<RememberedDeviceConnection[]>([]);
+  const [readError, setReadError] = useState('');
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
-  const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     let live = true;
@@ -29,45 +37,41 @@ export function AccountSignIn({
       .then((value) => {
         if (live) {
           setRemembered(value);
+          setConnections(rememberedDeviceConnections());
           setLoading(false);
         }
       })
       .catch(() => {
-        if (live) setLoading(false);
+        if (live) {
+          setReadError(
+            'Saved accounts and device connections could not be read. Reload to try again.',
+          );
+          setLoading(false);
+        }
       });
-    const retire = () => owner.close();
     const restore = (event: PageTransitionEvent) => {
       if (event.persisted) onRestore();
     };
-    window.addEventListener('pagehide', retire);
     window.addEventListener('pageshow', restore);
     return () => {
       live = false;
-      window.removeEventListener('pagehide', retire);
       window.removeEventListener('pageshow', restore);
-      owner.close();
     };
-  }, [config, owner, onRestore]);
+  }, [config, onRestore]);
   useEffect(() => {
     heading.current?.focus();
-  }, [state.kind]);
-  const selectSavedAccount = (slotId: string) => {
-    owner.close();
-    onSelect(slotId);
-  };
-  const same =
-    state.kind === 'verified' && remembered.some((account) => state.accountId === account.id);
+  }, []);
   const savedAccounts = (
-    <section className="account-saved" aria-labelledby="saved-accounts-title">
+    <section className="account-choice-section" aria-labelledby="saved-accounts-title">
       <h2 id="saved-accounts-title">Saved on this device</h2>
-      {remembered.length > 0 ? (
+      {remembered.length > 0 || connections.length > 0 ? (
         <ul className="account-picker" aria-label="Saved accounts">
           {remembered.map((account) => (
             <li key={account.slotId}>
               <button
                 className="account-picker-row"
                 aria-label={`${account.connected ? 'Unlock' : 'Continue setup for'} ${account.name ?? 'new account'}${account.id ? `, account ${account.id}` : ''}`}
-                onClick={() => selectSavedAccount(account.slotId)}
+                onClick={() => onSelect(account.slotId)}
                 disabled={creating}
               >
                 <span className="account-picker-details">
@@ -84,17 +88,40 @@ export function AccountSignIn({
               </button>
             </li>
           ))}
+          {connections.map((connection) => (
+            <li key={connection.workspaceId}>
+              <button
+                className="account-picker-row"
+                aria-label={`Resume device connection, workspace ${connection.workspaceId}`}
+                onClick={() =>
+                  onConnect
+                    ? onConnect(connection.workspaceId)
+                    : location.assign(deviceConnectionUrl(connection.workspaceId))
+                }
+                disabled={creating}
+              >
+                <span className="account-picker-details">
+                  <span className="account-picker-name">Device connection</span>
+                  <span className="account-identity">
+                    <span>Workspace ID</span>
+                    <code>{connection.workspaceId}</code>
+                  </span>
+                </span>
+                <span className="account-picker-action" aria-hidden="true">
+                  Continue →
+                </span>
+              </button>
+            </li>
+          ))}
         </ul>
       ) : loading ? (
-        <p role="status">Loading saved accounts…</p>
-      ) : (
-        <>
-          <p>No saved accounts are available.</p>
-          <button className="local-secondary" onClick={() => selectSavedAccount('local')}>
-            Resume saved workspace
-          </button>
-        </>
+        <p className="setup-note" role="status">
+          Loading saved accounts…
+        </p>
+      ) : readError ? null : (
+        <p className="setup-note account-empty">No saved accounts are available.</p>
       )}
+      {readError && <p role="alert">{readError}</p>}
     </section>
   );
   return (
@@ -106,103 +133,62 @@ export function AccountSignIn({
       >
         <span className="local-brand">done</span>
         <h1 id="account-choice-title" ref={heading} tabIndex={-1}>
-          {state.kind === 'working'
-            ? 'Choose your passkey'
-            : state.kind === 'verified'
-              ? 'Account verified'
-              : 'Choose an account'}
+          Choose an account
         </h1>
-        {state.kind === 'choose' && (
-          <>
-            <p>Select a saved account, sign in, or create a new account.</p>
-            {savedAccounts}
-            <div className="account-other">
-              <button
-                className="setup-primary"
-                disabled={creating}
-                onClick={() => {
-                  void owner.choose();
-                }}
-              >
-                {state.retryProof ? 'Retry verification' : 'Use another account'}
-              </button>
-              <p className="setup-note">
-                Use a passkey for an existing account. Bringing an account from another device still
-                needs device linking, which is not available in this preview.
-              </p>
-              {state.retryProof && (
-                <button className="local-secondary" onClick={owner.reset}>
-                  Choose a different passkey
-                </button>
-              )}
-              {state.error && (
-                <p className="setup-error" role="alert">
-                  {state.error}
-                </p>
-              )}
-            </div>
-          </>
-        )}
-        {state.kind === 'working' && (
-          <p role="status">The saved account stays locked while you choose.</p>
-        )}
-        {state.kind === 'verified' && (
-          <>
-            <AccountIdentity id={state.accountId} />
-            <p>
-              {same
-                ? 'This account is saved on this device. Select it below to unlock your writing.'
-                : 'This account’s writing is not on this device. Device linking is not available in this preview yet.'}
-            </p>
-            {!same && (
-              <p className="setup-note">The saved account has stayed locked and unchanged.</p>
-            )}
-            {!same && (
-              <button
-                className="setup-primary"
-                onClick={() => {
-                  void owner.choose();
-                }}
-              >
-                Choose a different passkey
-              </button>
-            )}
-          </>
-        )}
-        {state.kind !== 'choose' && savedAccounts}
-        {state.kind !== 'working' && (
-          <div className="account-new">
-            <button
-              className="setup-primary"
-              disabled={creating}
-              onClick={() => {
-                if (creating) return;
-                setCreating(true);
-                setCreateError('');
-                void onCreate().catch((cause: unknown) => {
-                  setCreateError(
-                    cause instanceof Error
-                      ? cause.message
-                      : 'Account setup could not start. Try again.',
-                  );
-                  setCreating(false);
-                });
-              }}
-            >
-              {creating
-                ? 'Preparing account setup…'
-                : remembered.some((account) => account.fresh && !account.connected)
-                  ? 'Continue new account setup'
-                  : 'Create a new account'}
+        <p>Select a saved account, connect devices, or create a new account.</p>
+        {savedAccounts}
+        {!loading && !remembered.some((account) => account.slotId === 'local') && (
+          <div className="account-choice-section">
+            <button className="setup-primary" onClick={onOpenLocal} disabled={creating}>
+              Open local-only workspace
             </button>
-            <p className="setup-note">Start with an empty list and a new passkey.</p>
-            {createError && (
-              <p className="setup-error" role="alert">
-                {createError}
-              </p>
-            )}
           </div>
         )}
+        <div className="account-choice-section">
+          <button
+            className="setup-primary"
+            disabled={creating}
+            onClick={() =>
+              onConnect ? onConnect() : location.assign('/private/account-enrollment.html')
+            }
+          >
+            Use another account
+          </button>
+          <p className="setup-note">
+            Connect using an invitation from another device, or invite a device to a saved account.
+          </p>
+        </div>
+        <div className="account-choice-section">
+          <button
+            className="setup-primary"
+            disabled={creating}
+            onClick={() => {
+              if (creating) return;
+              setCreating(true);
+              setCreateError('');
+              void onCreate().catch((cause: unknown) => {
+                setCreateError(
+                  cause instanceof Error
+                    ? cause.message
+                    : 'Account setup could not start. Try again.',
+                );
+                setCreating(false);
+              });
+            }}
+          >
+            {creating
+              ? 'Preparing account setup…'
+              : remembered.some((account) => account.fresh && !account.connected)
+                ? 'Continue new account setup'
+                : 'Create a new account'}
+          </button>
+          <p className="setup-note">Start with an empty list and a new passkey.</p>
+          {createError && (
+            <p className="setup-error" role="alert">
+              {createError}
+            </p>
+          )}
+        </div>
       </section>
     </main>
   );

@@ -222,6 +222,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   let code = '';
   let draftName: string | undefined;
   let deviceEnrollment: LocalGenesisEnrollment | undefined;
+  // Only the live, unfinished ceremony may redisplay this. Never serialize it.
+  let recoveryDisplay: string | undefined;
   let openedPrincipal: string | undefined;
   let context: RecoveryContext | undefined;
   let workspace: AdmittedWorkspace | undefined;
@@ -561,6 +563,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     const status = await recovery((owner) => owner.status());
     if (status === 'empty') {
       const generated = await recovery((owner) => owner.generate());
+      guard();
+      recoveryDisplay = generated.code;
       publish({ kind: 'save-recovery', code: generated.code });
     } else publish({ kind: 'confirm-recovery' });
   };
@@ -668,6 +672,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       /* A retired workspace has no readable name. */
     }
     lifetime.abort();
+    recoveryDisplay = undefined;
     deviceEnrollment?.cancel();
     deviceEnrollment = undefined;
     retireEditors();
@@ -701,6 +706,34 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   };
   return {
     getSnapshot: () => state,
+    hasRecoveryDisplay: () => recoveryDisplay !== undefined,
+    visit(step: string): boolean {
+      if (lifetime.signal.aborted || operation) return false;
+      if (
+        deviceEnrollment?.displayCode &&
+        ['intro', 'save-device-code', 'confirm-device-code'].includes(state.kind)
+      ) {
+        if (step === 'intro' || step === 'confirm-device-code') {
+          publish({ kind: step });
+          return true;
+        }
+        if (step === 'save-device-code') {
+          publish({ kind: step, code: deviceEnrollment.displayCode });
+          return true;
+        }
+      }
+      if (recoveryDisplay && ['save-recovery', 'confirm-recovery'].includes(state.kind)) {
+        if (step === 'save-recovery') {
+          publish({ kind: step, code: recoveryDisplay });
+          return true;
+        }
+        if (step === 'confirm-recovery') {
+          publish({ kind: step });
+          return true;
+        }
+      }
+      return false;
+    },
     subscribe(listener: () => void) {
       listeners.add(listener);
       return () => {
@@ -741,7 +774,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
           guard();
           if (disposition.kind !== 'fresh') return publish({ kind: 'unlock' });
-          deviceEnrollment = beginLocalGenesis(slotId, { signal: lifetime.signal });
+          deviceEnrollment ??= beginLocalGenesis(slotId, { signal: lifetime.signal });
           const generated = deviceEnrollment.displayCode;
           if (!generated) throw Error('Device-lock code could not be generated');
           publish({ kind: 'save-device-code', code: generated });
@@ -863,7 +896,15 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     confirmRecovery: (recoveryCode: string) =>
       run('Confirming your recovery code…', 'confirm-recovery', async () => {
         try {
-          await recovery((owner) => owner.confirm(recoveryCode, assert));
+          await recovery((owner) =>
+            owner.confirm(recoveryCode, async (options) => {
+              const proof = await assert(options);
+              // A signed confirmation may be committed even if its reply is lost.
+              recoveryDisplay = undefined;
+              return proof;
+            }),
+          );
+          recoveryDisplay = undefined;
           const draft = await recovery((owner) => owner.draft());
           const options = { ...baseOptions(), draft, recoveryCode };
           let retained = await marker();
@@ -905,6 +946,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       }),
     restart: () =>
       run('Closing this setup attempt…', 'unlock', async () => {
+        recoveryDisplay = undefined;
         if (!saved || !code) throw new SetupNotice('Enter your device-lock code before restarting');
         if (saved.view?.ok && saved.view.stage === 'credential-confirmed') {
           if (await marker())

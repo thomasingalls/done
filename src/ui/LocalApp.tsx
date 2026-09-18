@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createLocalStartup, type LocalStartup, type LocalStartupState } from './localStartup';
 import type { StartupKind } from '../crdt/startupState';
 import { WorkspaceUiProvider } from './workspaceUi';
@@ -7,6 +7,7 @@ import { AppUpdateNotice } from './AppUpdateNotice';
 import { LocalRecovery } from './LocalRecovery';
 import { Welcome } from './Welcome';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
+import { useCeremonyNavigation } from './ceremonyNavigation';
 
 const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: string }> = {
   'app-update-required': {
@@ -107,19 +108,36 @@ const CodeForm = ({
 export const LocalApp = ({
   onConnectAccount,
   onChooseAccount,
+  beginOnFresh = false,
 }: {
   onConnectAccount?: (name: string) => void;
   onChooseAccount?: () => void;
+  beginOnFresh?: boolean;
 } = {}): React.ReactElement => {
   const [epoch, setEpoch] = useState(0);
   const [owner, setOwner] = useState<LocalStartup | null>(null);
   const [state, setState] = useState<LocalStartupState>({ kind: 'checking' });
+  const beginRequested = useRef(beginOnFresh);
+  const navigation = useCeremonyNavigation({
+    base: '/local',
+    step: ['checking', 'working', 'closing'].includes(state.kind) ? null : state.kind,
+    parent: state.kind === 'fresh' ? '/' : '/accounts',
+    visit: (step) => owner?.visit(step) ?? false,
+    close: async () => {
+      await owner?.close();
+    },
+    preserveEntry: beginOnFresh,
+  });
   useEffect(() => {
     const current = createLocalStartup();
     setOwner(current);
     setState(current.getSnapshot());
     const unsubscribe = current.subscribe(() => setState(current.getSnapshot()));
-    void current.inspect();
+    void current.inspect().then(() => {
+      if (!beginRequested.current) return;
+      beginRequested.current = false;
+      if (current.getSnapshot().kind === 'fresh') void current.begin();
+    });
     const retire = () => {
       void current.close().catch(() => {});
     };
@@ -146,7 +164,19 @@ export const LocalApp = ({
       () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
     );
   };
+  const chooseAccount = () => {
+    if (!owner || !onChooseAccount) return;
+    if (navigation.enabled) {
+      onChooseAccount();
+      return;
+    }
+    void owner
+      .close()
+      .then(onChooseAccount, () => setState({ kind: 'unavailable', reason: 'local-close-failed' }));
+  };
   let content: React.ReactNode;
+  if (navigation.leaving)
+    return <p role="status">{navigation.error || 'Locking and finishing storage operations…'}</p>;
   if (state.kind === 'checking' || state.kind === 'working' || state.kind === 'closing') {
     content = (
       <>
@@ -200,6 +230,7 @@ export const LocalApp = ({
         actorId={state.actorId}
         registerEditor={owner.registerEditor}
         onLock={restart}
+        {...(onChooseAccount ? { onSwitchAccount: chooseAccount } : {})}
         {...(onConnectAccount
           ? {
               onConnectAccount: () => {
@@ -221,17 +252,7 @@ export const LocalApp = ({
     return (
       <Welcome
         onCreateLocal={() => owner?.begin()}
-        {...(onChooseAccount
-          ? {
-              onChooseAccount: () => {
-                void owner
-                  ?.close()
-                  .then(onChooseAccount, () =>
-                    setState({ kind: 'unavailable', reason: 'local-close-failed' }),
-                  );
-              },
-            }
-          : {})}
+        {...(onChooseAccount ? { onChooseAccount: chooseAccount } : {})}
       />
     );
   } else {
@@ -254,6 +275,11 @@ export const LocalApp = ({
         ) : (
           <button onClick={restart}>Check again</button>
         )}
+        {onChooseAccount && (
+          <button className="local-secondary" onClick={chooseAccount}>
+            Use another account
+          </button>
+        )}
       </>
     );
   }
@@ -263,6 +289,11 @@ export const LocalApp = ({
       <div className="local-startup-panel workspace-gate-panel">
         <AppUpdateNotice />
         <span className="local-brand">done</span>
+        {navigation.enabled && (
+          <button className="local-secondary" onClick={navigation.back}>
+            Back
+          </button>
+        )}
         {content}
       </div>
     </main>

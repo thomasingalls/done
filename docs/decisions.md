@@ -4143,3 +4143,42 @@ The service's single-child schema stores one immutable attempt per workspace and
 For the operator's requested physical-device trial, use a separate tailnet HTTPS origin on port
 8443 and fresh development state. Preserve the existing 443 route and other services. The author
 controls both personal browser sessions; automated checks use disposable profiles.
+
+
+## 2026-09-17 — root splash precedes the shared-device chooser
+
+The operator confirms that `/` should always start at the existing splash. **I already have a
+workspace** opens the chooser, which contains saved accounts, device connections and retained
+setup/enrollment progress. A remembered selection must not bypass the root splash. Selecting a
+connection resumes its factor-gated state; an approved device still does not open writing before
+delivery, installation and certification exist. Apply this to the private development entry;
+the existing default-app deployment is not changed by this phase.
+
+The older enrollment retained its approval but not the invitation needed for bootstrap. The
+operator accepts reopening the original invitation and unlocking once on that development phone.
+Retain the verified invitation in encrypted approval state for subsequent chooser-based resumes;
+keep the existing workspace/slot navigation hint untrusted and recheck custody and authority.
+New attempts save the invitation with their first encrypted enrollment progress. No service
+authorization bypass, reset of comparison budget or implicit new-account creation is authorized.
+
+Further product choices, including device names, QR entry, fewer prompts and factor simplification,
+require operator input before implementation.
+
+
+## 2026-09-18 — browser navigation within credential ceremonies
+
+The operator selects TanStack Router and approves the 22 proposed Back dispositions in
+[account-preview-navigation.md](./account-preview-navigation.md). In particular, Back from recovery
+confirmation may redisplay the original generation result during the same unfinished in-memory
+ceremony. This amends the earlier wording that forbade redisplay immediately after leaving the
+save screen. It does not authorize persistence, post-completion redisplay or reconstruction on
+reload. Leaving the ceremony warns before discarding the display; a signed confirmation retires
+it because its outcome may already have committed.
+
+Navigation changes presentation, not authority. Reversible save/confirm views retain one owner;
+leaving an unlocked flow aborts/settles and drains it. Pending, terminal and approved attempts
+resume their authenticated state without cancellation, budget reset or replaying completed
+commands. Direct invitations get an internal parent. Native passkey cancellation remains owned
+by the browser/OS. The root splash remains at `/`, and the chooser contains saved accounts and
+connections. Other product decisions still require operator input. Release qualification remains
+paused; this is bounded development usability work.

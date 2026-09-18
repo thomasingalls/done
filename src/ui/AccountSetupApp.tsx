@@ -1,28 +1,20 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import {
-  createFirstDeviceSetup,
-  hasFirstDeviceSetup,
-  rememberedAccounts,
-  beginNewAccount,
-  isSetupSlot,
-  type SetupConfig,
-} from '../account/firstDeviceSetup';
-import { LocalApp } from './LocalApp';
+import { createFirstDeviceSetup, type SetupConfig } from '../account/firstDeviceSetup';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { AccountIdentity } from './AccountIdentity';
-import { AccountSignIn } from './AccountSignIn';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
-const ACCESS_CHOICE = 'done.account-setup.access-choice';
-const ACCESS_SLOT = 'done.account-setup.selected-slot';
+import { useCeremonyNavigation } from './ceremonyNavigation';
 
 function NameEntry({
   initialName = '',
   button,
   onSubmit,
+  onChange,
 }: {
-  initialName?: string;
+  onChange?: ((name: string) => void) | undefined;
+  initialName?: string | undefined;
   button: string;
   onSubmit: (name: string) => void;
 }) {
@@ -39,7 +31,10 @@ function NameEntry({
       <input
         id="account-name"
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={(event) => {
+          setName(event.target.value);
+          onChange?.(event.target.value);
+        }}
         autoComplete="nickname"
         maxLength={80}
         required
@@ -94,13 +89,14 @@ function CodeEntry({
   );
 }
 
-function Setup({
+export function Setup({
   config,
   onBack,
   onLock,
   initialName,
   onOtherAccount,
   slotId,
+  onName,
 }: {
   config: SetupConfig;
   onBack: () => void;
@@ -108,12 +104,26 @@ function Setup({
   initialName: string;
   onOtherAccount: () => void;
   slotId: string;
+  onName?: (name: string) => void;
 }) {
   const [owner] = useState(() => createFirstDeviceSetup(config, slotId));
   const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
+  const [inspected, setInspected] = useState(false);
+  const navigation = useCeremonyNavigation({
+    base: `/setup/${slotId}`,
+    step: inspected && state.kind !== 'working' ? state.kind : null,
+    parent: state.kind === 'intro' && !state.fresh ? '/local/fresh' : '/accounts',
+    visit: owner.visit,
+    close: owner.close,
+    warnOnLeave: owner.hasRecoveryDisplay,
+  });
+  const leave = (destination: () => void) => {
+    if (navigation.enabled) destination();
+    else void owner.close().then(destination);
+  };
   useEffect(() => {
-    void owner.inspect();
+    void owner.inspect().then(() => setInspected(true));
     const retire = () => {
       void owner.close();
     };
@@ -131,6 +141,8 @@ function Setup({
   useEffect(() => {
     heading.current?.focus();
   }, [state.kind]);
+  if (navigation.leaving)
+    return <p role="status">{navigation.error || 'Locking and finishing storage operations…'}</p>;
   if (state.kind === 'ready')
     return (
       <WorkspaceUiProvider
@@ -140,7 +152,7 @@ function Setup({
         accountWorkspace
         {...(state.accountId ? { accountId: state.accountId } : {})}
         onSwitchAccount={() => {
-          void owner.close().then(onOtherAccount);
+          leave(onOtherAccount);
         }}
         onLock={() => {
           void owner.close().then(onLock);
@@ -189,6 +201,11 @@ function Setup({
         aria-labelledby="setup-title"
       >
         <span className="local-brand">done</span>
+        {navigation.enabled && (
+          <button className="local-secondary" onClick={navigation.back}>
+            Back
+          </button>
+        )}
         {state.kind !== 'unlock' && state.kind !== 'working' && state.kind !== 'name' && (
           <ol className="setup-steps" aria-label="Account setup progress">
             {['Your workspace', 'Passkey', 'Recovery code'].map((name, i) => (
@@ -219,14 +236,15 @@ function Setup({
               </p>
             </div>
             <NameEntry
-              initialName={state.requestedName ?? initialName}
+              initialName={initialName || state.requestedName}
+              onChange={onName}
               button={state.fresh ? 'Create account' : 'Get started'}
               onSubmit={owner.start}
             />
             <button
               className="local-secondary"
               onClick={() => {
-                void owner.close().then(state.fresh ? onOtherAccount : onBack);
+                leave(state.fresh ? onOtherAccount : onBack);
               }}
             >
               {state.fresh ? 'Choose an account' : 'Back to workspace'}
@@ -280,7 +298,7 @@ function Setup({
             <button
               className="local-secondary"
               onClick={() => {
-                void owner.close().then(onOtherAccount);
+                leave(onOtherAccount);
               }}
             >
               Use another account
@@ -374,7 +392,7 @@ function Setup({
           <button
             className="local-secondary"
             onClick={() => {
-              void owner.close().then(onOtherAccount);
+              leave(onOtherAccount);
             }}
           >
             Choose an account
@@ -402,112 +420,5 @@ function Setup({
           )}
       </section>
     </main>
-  );
-}
-
-/** Dedicated development entry; ordinary startup keeps its account entry points inactive. */
-export function AccountSetupApp({ config }: { config: SetupConfig }) {
-  const [mode, setMode] = useState<'checking' | 'local' | 'setup' | 'other-account'>('checking');
-  const [epoch, setEpoch] = useState(0);
-  const [error, setError] = useState('');
-  const [initialName, setInitialName] = useState('');
-  const [slotId, setSlotId] = useState('local');
-  // Stable callbacks keep the active owner alive through parent renders.
-  const [actions] = useState(() => {
-    const selectAccount = (selected: string) => {
-      if (!isSetupSlot(selected)) return;
-      try {
-        sessionStorage.removeItem(ACCESS_CHOICE);
-        sessionStorage.setItem(ACCESS_SLOT, selected);
-      } catch {
-        /* Keep the explicit selection in memory. */
-      }
-      setSlotId(selected);
-      setInitialName('');
-      setMode('setup');
-    };
-    return {
-      lock: () => setEpoch((value) => value + 1),
-      back: () => setMode('local'),
-      connect: (name: string) => {
-        setInitialName(name);
-        setSlotId('local');
-        setMode('setup');
-      },
-      otherAccount: () => {
-        try {
-          sessionStorage.setItem(ACCESS_CHOICE, 'choose');
-        } catch {
-          /* In-memory navigation still works. */
-        }
-        setMode('other-account');
-      },
-      selectAccount,
-      createAccount: async () => selectAccount(await beginNewAccount(config)),
-    };
-  });
-  useEffect(() => {
-    let live = true;
-    let selected: string | null = null;
-    let choosing = false;
-    try {
-      const stored = sessionStorage.getItem(ACCESS_SLOT);
-      if (isSetupSlot(stored)) selected = stored;
-      choosing = sessionStorage.getItem(ACCESS_CHOICE) === 'choose';
-    } catch {
-      /* Use the existing Local route or account chooser. */
-    }
-    const target = selected ?? 'local';
-    void Promise.all([hasFirstDeviceSetup(target), rememberedAccounts(config.pin)]).then(
-      ([pending, accounts]) => {
-        if (!live) return;
-        setSlotId(target);
-        setMode(
-          choosing || (!selected && accounts.length > 1) || (!pending && accounts.length > 0)
-            ? 'other-account'
-            : pending
-              ? 'setup'
-              : 'local',
-        );
-      },
-      () => {
-        if (live) setError('Saved setup could not be read. Your browser data has been kept.');
-      },
-    );
-    return () => {
-      live = false;
-    };
-  }, [config]);
-  return (
-    <div className="account-development">
-      <aside className="setup-dev-note">
-        Account setup preview · separate local workspace · device sync is not enabled
-      </aside>
-      {error ? (
-        <p role="alert">{error}</p>
-      ) : mode === 'checking' ? (
-        <p role="status">Opening…</p>
-      ) : mode === 'local' ? (
-        <LocalApp onConnectAccount={actions.connect} onChooseAccount={actions.otherAccount} />
-      ) : mode === 'other-account' ? (
-        <AccountSignIn
-          key={epoch}
-          config={config}
-          onSelect={actions.selectAccount}
-          onCreate={actions.createAccount}
-          onRestore={actions.lock}
-        />
-      ) : (
-        <Setup
-          key={`${slotId}:${epoch}`}
-          slotId={slotId}
-          config={config}
-          initialName={initialName}
-          onBack={actions.back}
-          onLock={actions.lock}
-          onOtherAccount={actions.otherAccount}
-        />
-      )}
-    </div>
   );
 }

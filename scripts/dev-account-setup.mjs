@@ -12,6 +12,10 @@ import { lockPreviewState, previewConfig } from './account-setup-state.mjs';
 
 const { port, directory, policy } = previewConfig();
 const { origin } = policy;
+// A phone may suspend Vite's socket while its password manager is foregrounded.
+// Vite reloads on reconnection, discarding in-memory code-confirmation steps.
+// Walkthroughs use explicit refresh; live updates are an opt-in coding convenience.
+const liveUpdates = process.env.ACCOUNT_SETUP_LIVE_UPDATES === '1';
 mkdirSync(directory, { recursive: true, mode: 0o700 });
 const release = lockPreviewState(directory);
 process.once('exit', release);
@@ -68,16 +72,17 @@ const server = await createServer({
     host: '127.0.0.1',
     port,
     strictPort: true,
-    allowedHosts: [new URL(origin).hostname],
-    ...(origin.startsWith('https:')
-      ? {
-          ws: {
+    hmr: liveUpdates,
+    ws: liveUpdates
+      ? origin.startsWith('https:')
+        ? {
             protocol: 'wss',
             host: new URL(origin).hostname,
             clientPort: Number(new URL(origin).port || 443),
-          },
-        }
-      : {}),
+          }
+        : {}
+      : false,
+    allowedHosts: [new URL(origin).hostname],
     open: false,
     fs: {
       deny: [
@@ -179,3 +184,6 @@ process.once('SIGINT', () => void close());
 process.once('SIGTERM', () => void close());
 await server.listen();
 console.log(`Account setup development: ${origin}/private/account-setup.html`);
+console.log(
+  `Live updates ${liveUpdates ? 'enabled' : 'disabled; refresh explicitly for code changes'}.`,
+);

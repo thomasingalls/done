@@ -1,6 +1,9 @@
 /** Private two-device approval coordinator. It grants no content access. */
 import type { SetupConfig } from './firstDeviceSetup';
 import { withCeremonyVault } from './ceremonyVault';
+import { freshEnrollmentChallenge } from './enrollmentChallenge';
+import { pendingDeviceSlot, rememberPendingDevice } from './deviceConnectionRoutes';
+export { pendingDeviceSlot } from './deviceConnectionRoutes';
 import { beginLocalGenesis, inspectLocalStartup, resumeLocalGenesis } from '../crdt/localGenesis';
 import { random, hex } from '../crdt/custodyCrypto';
 import { closed } from '../../account-protocol/preparation';
@@ -50,7 +53,6 @@ import {
 } from '../../account-protocol/ceremony';
 import {
   parseEnrollmentCandidate,
-  verifyEnrollmentChallenge,
   enrollmentOptions,
   enrollmentPossessionMessage,
   verifyEnrollmentReceipt,
@@ -62,6 +64,8 @@ interface Progress {
   role: CeremonyRole;
   workspaceId: string;
   baseHash: string;
+  /** Optional for pre-chooser attempts; learned after verifying an original invitation. */
+  invitation?: ReturnType<typeof parseCeremonyInvitation>;
   nonce: string;
   admissionHead: string | null;
   enrollment: {
@@ -101,18 +105,13 @@ const capability = () =>
     .replaceAll('+', '-')
     .replaceAll('/', '_')
     .replaceAll('=', '');
-const slotKey = (workspace: string) => 'done.pending-device.' + workspace;
-export function pendingDeviceSlot(workspace: string) {
-  unhex(workspace, 16);
-  return localStorage.getItem(slotKey(workspace));
-}
 export async function preparePendingDevice(workspace: string, signal: AbortSignal) {
   unhex(workspace, 16);
   const slot = pendingDeviceSlot(workspace) ?? 'enrollment-' + hex(random(16));
   if (!/^enrollment-[a-f0-9]{32}$/.test(slot)) throw Error('Saved enrollment route is invalid');
   if ((await inspectLocalStartup(slot, { signal })).kind !== 'fresh')
     throw Error('Resume the saved device attempt');
-  localStorage.setItem(slotKey(workspace), slot);
+  rememberPendingDevice(workspace, slot);
   return { slot, enrollment: beginLocalGenesis(slot, { signal }) };
 }
 const messages: Record<EnrollmentView['kind'], string> = {
@@ -142,6 +141,9 @@ export function createDeviceEnrollment(
   if (pin.origin !== location.origin) throw Error('Development service differs from this page');
   let running = false,
     last: EnrollmentView = { kind: 'locked', message: messages.locked };
+  // The link is a signed invitation, not a freshness challenge. Keep it stable for
+  // this unlocked owner; bootstrap still uses a fresh nonce and verifies authority.
+  let existingInvitation: ReturnType<typeof parseCeremonyInvitation> | null = null;
   const view = (kind: EnrollmentView['kind'], extra: Partial<EnrollmentView> = {}) =>
     (last = { kind, message: messages[kind], ...extra });
   const guard = () => lifetime.signal.throwIfAborted();
@@ -215,21 +217,35 @@ export function createDeviceEnrollment(
           throw Error('Open an established account on this device first');
         const workspaceId = role === 'existing' ? marker!.source.workspaceId : workspaceInput!;
         unhex(workspaceId, 16);
+        let p = (await owner.load()) as Progress | null;
+        if (p && (p.v !== 1 || p.role !== role || p.workspaceId !== workspaceId))
+          throw Error('Saved approval belongs to a different account');
+        const receivedInvitation = invitationInput ?? p?.invitation;
+        if (role === 'new' && !receivedInvitation)
+          throw Error('Open the original invitation and unlock once to save its resume route.');
         let invitation =
           role === 'new'
-            ? parseCeremonyInvitation(invitationInput)
-            : {
+            ? parseCeremonyInvitation(receivedInvitation)
+            : (existingInvitation ?? {
                 v: 1 as const,
                 workspaceId,
                 credentialId: owner.participant.id,
                 nonce: hex(random(32)),
                 signature: '00'.repeat(64),
-              };
-        if (role === 'existing')
-          invitation = {
-            ...invitation,
-            signature: await owner.sign(await ceremonyInvitationMessage(invitation)),
-          };
+              });
+        if (invitation.workspaceId !== workspaceId) throw Error('Account target changed');
+        if (role === 'existing') {
+          if (
+            invitation.workspaceId !== workspaceId ||
+            invitation.credentialId !== owner.participant.id
+          )
+            throw Error('Account target changed');
+          if (!existingInvitation)
+            existingInvitation = invitation = {
+              ...invitation,
+              signature: await owner.sign(await ceremonyInvitationMessage(invitation)),
+            };
+        }
         const boot = await bootstrap(workspaceId, invitation),
           baseHash = await digest(json(boot.base));
         if (
@@ -239,11 +255,7 @@ export function createDeviceEnrollment(
             !same(marker!.admission!.receipt, boot.base.receipt))
         )
           throw Error('Service returned a different account');
-        let p = (await owner.load()) as Progress | null;
-        if (
-          p &&
-          (p.v !== 1 || p.role !== role || p.workspaceId !== workspaceId || p.baseHash !== baseHash)
-        )
+        if (p && p.baseHash !== baseHash)
           throw Error('Saved approval belongs to a different account');
         const save = async (check?: () => void) => {
           guard();
@@ -261,6 +273,7 @@ export function createDeviceEnrollment(
             role,
             workspaceId,
             baseHash,
+            ...(role === 'new' ? { invitation } : {}),
             nonce: hex(random(32)),
             admissionHead: null,
             enrollment:
@@ -290,6 +303,9 @@ export function createDeviceEnrollment(
             terminal: null,
           };
           await save();
+        } else if (role === 'new' && !p.invitation) {
+          p.invitation = invitation;
+          await save();
         }
         const signed = async (
           action: CeremonyAction,
@@ -318,16 +334,18 @@ export function createDeviceEnrollment(
           if (input?.enroll) {
             if (!en.receipt) {
               if (!en.proof) {
-                const reply = await request('enrollment/begin', {
-                  retryKey: en.retryKey,
-                  candidate: en.candidate,
-                });
-                const challenge = await verifyEnrollmentChallenge(
-                  reply.challenge,
+                const challenge = await freshEnrollmentChallenge({
                   pin,
-                  en.candidate,
-                  Date.now(),
-                );
+                  candidate: en.candidate,
+                  retryKey: en.retryKey,
+                  begin: (retryKey) =>
+                    request('enrollment/begin', { retryKey, candidate: en.candidate }),
+                  renew: async () => {
+                    en.retryKey = capability();
+                    await save();
+                    return en.retryKey;
+                  },
+                });
                 const credential = (await navigator.credentials.get({
                   publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
                     await enrollmentOptions(challenge.context),
@@ -336,6 +354,10 @@ export function createDeviceEnrollment(
                 })) as PublicKeyCredential | null;
                 guard();
                 if (!credential) throw Error('Passkey cancelled');
+                if (Date.now() >= challenge.context.expiresAt)
+                  throw Error(
+                    'The passkey step expired. Use the account passkey again to renew it.',
+                  );
                 en.proof = {
                   retryKey: en.retryKey,
                   attemptId: challenge.context.attemptId,

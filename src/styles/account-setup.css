@@ -89,10 +89,7 @@
   overflow-wrap: anywhere;
   user-select: all;
 }
-.account-saved {
-  margin: 1.5rem 0;
-}
-.account-saved h2 {
+.account-choice-section h2 {
   font-size: 1rem;
 }
 .account-picker {
@@ -101,6 +98,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 .setup-panel .account-picker-row {
   display: flex;
@@ -131,33 +129,29 @@
   flex: none;
   font-size: 0.8rem;
 }
-.account-other,
-.account-new {
+.account-choice-section {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--color-border);
 }
-.account-other .setup-note,
-.account-new .setup-note {
-  margin-top: 1rem;
+.account-choice-section > h2,
+.account-choice-section > p {
+  margin: 0;
+}
+.account-choice-section .setup-note {
   font-size: 0.85rem;
+}
+.account-empty {
+  font-style: italic;
 }
 @media (max-width: 420px) {
   .setup-steps {
     gap: 0.65rem;
     font-size: 0.7rem;
   }
-}
-
-.development-device-link {
-  position: fixed;
-  bottom: 0.5rem;
-  right: 1rem;
-  z-index: 20;
-  font-size: 0.8rem;
-  background: var(--bg, white);
-  padding: 0.4rem;
-  border-radius: 0.4rem;
 }
 
 .enrollment-panel .local-generated-code {
