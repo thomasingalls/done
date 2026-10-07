@@ -346,3 +346,25 @@ test('elapsed access and grant lifetimes renew without a new passkey or new sema
   assert.equal(x.signatures, 2);
   assert.equal(x.calls.filter((c) => c.path.endsWith('/read-v2')).length, 2);
 });
+
+test('notification handshake uses the scoped header grant and keeps its body alive beyond the ordinary deadline', async (t) => {
+  let streamSignal;
+  const x = await client(t, (path, init) => {
+    if (path !== '/account/notifications/v1/subscribe') return;
+    streamSignal = init.signal;
+    assert.equal(init.method, 'POST');
+    assert.match(init.headers.Authorization, /^Bearer /);
+    return new Response(new ReadableStream(), { headers: { 'Content-Type': 'text/event-stream' } });
+  });
+  await x.read();
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const response = await x.scoped.openNotifications(x.stop.signal);
+  assert.equal(response.status, 200);
+  assert.deepEqual(JSON.parse(x.calls.at(-1).body), x.scope);
+  t.mock.timers.tick(10001);
+  assert.equal(streamSignal.aborted, false);
+  x.loginStop.abort();
+  assert.equal(streamSignal.aborted, true);
+  await response.body.cancel();
+  t.mock.timers.reset();
+});

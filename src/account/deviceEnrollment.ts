@@ -15,6 +15,7 @@ import {
 } from '../../account-protocol/contentDelivery';
 import type { SetupConfig } from './firstDeviceSetup';
 import { withCeremonyVault } from './ceremonyVault';
+import type { GrantScope } from '../../account-protocol/scopedGrant';
 import { freshEnrollmentChallenge } from './enrollmentChallenge';
 import { pendingDeviceSlot, rememberPendingDevice } from './deviceConnectionRoutes';
 export { pendingDeviceSlot } from './deviceConnectionRoutes';
@@ -176,6 +177,9 @@ export function createDeviceEnrollment(
   }
   const ceremonyLogin = config.networkSessions ? new NetworkLogin(pin, slotId) : undefined;
   const grants = config.networkSessions ? new ScopedTransport(pin, lifetime.signal) : undefined;
+  let notificationBinding:
+    | { scope: GrantScope; identity: { accountId: string; credentialId: string } }
+    | undefined;
   if (pin.origin !== location.origin) throw Error('Development service differs from this page');
   let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
   const editors = new Set<() => void>();
@@ -312,13 +316,15 @@ export function createDeviceEnrollment(
             boot.successor?.epoch.preparation.context.attemptId ??
             p?.enrollment?.receipt?.context.attemptId;
           if (kind === 'enrollment' && !attemptId) throw Error('Enrollment authority is missing');
+          const scope: GrantScope =
+            kind === 'workspace'
+              ? { kind, workspaceId, credentialId: owner.participant.id }
+              : { kind, workspaceId, credentialId: owner.participant.id, attemptId: attemptId! };
+          notificationBinding = { scope, identity };
           return grants!.bind({
             login: ceremonyLogin!,
             sign: owner.sign,
-            scope:
-              kind === 'workspace'
-                ? { kind, workspaceId, credentialId: owner.participant.id }
-                : { kind, workspaceId, credentialId: owner.participant.id, attemptId: attemptId! },
+            scope,
           });
         };
         const request = async (route: string, body: unknown) => {
@@ -361,6 +367,8 @@ export function createDeviceEnrollment(
           throw Error('Service returned a different account');
         if (p && p.baseHash !== baseHash)
           throw Error('Saved approval belongs to a different account');
+        if (grants && (boot.successor || p?.enrollment?.receipt)) scoped('enrollment');
+        else if (grants && role === 'existing') scoped('workspace');
         if (input?.reconnect && ceremonyLogin)
           await owner.withLogin(ceremonyLogin, identity, () => ceremonyLogin.connect());
         const save = async (check?: () => void) => {
@@ -899,6 +907,7 @@ export function createDeviceEnrollment(
       true,
     );
     guard();
+    notificationBinding = undefined;
     code = '';
     return view('editing', {
       editor: {
@@ -910,6 +919,26 @@ export function createDeviceEnrollment(
     });
   };
   return {
+    openNotifications: async (signal: AbortSignal) => {
+      const binding = notificationBinding;
+      if (!binding || !grants || !ceremonyLogin || !code || opened)
+        throw Error('Notification scope is not ready');
+      // Hold the slot only through authorization/headers, never for the stream lifetime.
+      return withCeremonyVault(
+        slotId,
+        code,
+        AbortSignal.any([signal, lifetime.signal]),
+        async (owner) => {
+          if (owner.participant.id !== binding.scope.credentialId)
+            throw Error('Notification participant changed');
+          return owner.withLogin(ceremonyLogin, binding.identity, () =>
+            grants
+              .bind({ login: ceremonyLogin, scope: binding.scope, sign: owner.sign })
+              .openNotifications(signal),
+          );
+        },
+      );
+    },
     refresh: async () => (await openEditor()) ?? operate(),
     enroll: () => operate({ enroll: true }),
     reconnect: () => operate({ reconnect: true, enroll: true }),
@@ -931,6 +960,7 @@ export function createDeviceEnrollment(
       networkLogin?.close();
       ceremonyLogin?.close();
       grants?.close();
+      notificationBinding = undefined;
       for (const destroy of [...editors]) {
         try {
           destroy();

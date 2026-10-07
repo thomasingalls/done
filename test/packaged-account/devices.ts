@@ -1,6 +1,11 @@
 import { expect, type Browser, type Page } from '@playwright/test';
 import { account, pending, compared, authenticator, unlock } from '../device-enrollment/helpers';
-export async function pairedEditors(page: Page, browser: Browser, sessions = false) {
+export async function pairedEditors(
+  page: Page,
+  browser: Browser,
+  sessions = false,
+  beforeCompare?: (second: Page) => Promise<void>,
+) {
   const first = await account(page);
   const other = await browser.newContext();
   const second = await other.newPage();
@@ -16,7 +21,9 @@ export async function pairedEditors(page: Page, browser: Browser, sessions = fal
         .getByRole('button', { name: 'Reconnect sync', exact: true })
         .click({ timeout: 15000 });
     }
-    await page.getByLabel('Code on the new device').fill(await compared(page, second));
+    const comparison = await compared(page, second);
+    await beforeCompare?.(second);
+    await page.getByLabel('Code on the new device').fill(comparison);
     await page.getByRole('button', { name: 'Compare and approve' }).click();
     for (const p of [page, second])
       await expect(

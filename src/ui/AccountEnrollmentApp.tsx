@@ -1,4 +1,5 @@
 import { NetworkLogin, prewarmSlotLogin } from '../account/networkLogin';
+import { startNotifications } from '../account/notifications';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -52,6 +53,8 @@ export function AccountEnrollmentApp({
     life = useRef(new AbortController()),
     operating = useRef<Promise<void> | null>(null),
     foreground = useRef(false);
+  const pendingRefresh = useRef(false),
+    backgroundRefresh = useRef<(() => void) | undefined>(undefined);
   const login = useRef<NetworkLogin | undefined>(undefined);
   useEffect(() => {
     if (!config.networkSessions || !slot || !workspace) return;
@@ -159,8 +162,11 @@ export function AccountEnrollmentApp({
     );
   }, []);
   const run = useCallback(async (action: () => Promise<void>, background = false) => {
-    if (foreground.current || life.current.signal.aborted) return;
-    if (background && operating.current) return;
+    if (life.current.signal.aborted) return;
+    if (foreground.current || (background && operating.current)) {
+      if (background) pendingRefresh.current = true;
+      return;
+    }
     const previous = operating.current;
     if (!background) {
       foreground.current = true;
@@ -175,6 +181,8 @@ export function AccountEnrollmentApp({
       try {
         await action();
       } catch (cause) {
+        pendingRefresh.current = false;
+        backgroundRefresh.current = undefined;
         if (!life.current.signal.aborted)
           setError(
             cause instanceof Error
@@ -191,6 +199,10 @@ export function AccountEnrollmentApp({
       if (!background) {
         foreground.current = false;
         if (!life.current.signal.aborted) setBusy(false);
+      }
+      if (pendingRefresh.current && !operating.current && !foreground.current) {
+        pendingRefresh.current = false;
+        queueMicrotask(() => backgroundRefresh.current?.());
       }
     }
   }, []);
@@ -209,11 +221,42 @@ export function AccountEnrollmentApp({
       !['invite', 'waiting', 'display', 'compare', 'approved'].includes(stateKind)
     )
       return;
-    const timer = setInterval(() => {
+    let healthy = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const wake = () => {
       void refresh(true);
-    }, 2500);
-    return () => clearInterval(timer);
-  }, [error, stateKind, refresh]);
+    };
+    const poll = () => {
+      clearTimeout(timer);
+      timer = setTimeout(
+        () => {
+          wake();
+          poll();
+        },
+        healthy ? 60000 + Math.random() * 5000 : 2500,
+      );
+    };
+    backgroundRefresh.current = wake;
+    const notifications =
+      config.networkSessions && owner.current
+        ? startNotifications({
+            signal: life.current.signal,
+            open: (signal) => owner.current!.openNotifications(signal),
+            wake,
+            health: (connected) => {
+              healthy = connected;
+              poll();
+            },
+          })
+        : undefined;
+    poll();
+    return () => {
+      notifications?.close();
+      clearTimeout(timer);
+      backgroundRefresh.current = undefined;
+      pendingRefresh.current = false;
+    };
+  }, [config.networkSessions, error, stateKind, refresh]);
   useEffect(() => {
     if (!state?.editor) return;
     return state.editor.workspace.onStatus((status) => {

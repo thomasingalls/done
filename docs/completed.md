@@ -10233,3 +10233,24 @@ Evidence: 115 affected session and application Node tests pass, including five d
 cases covering the real gateway, missed hints with durable catch-up, scope isolation, revocation,
 expiry, capacity and backpressure. TypeScript and scoped lint/format pass. Release validation remains
 paused. Next: owned browser reconnect/catch-up, editor and ceremony integration.
+
+## 2026-10-08 — Owned browser notifications and two-device catch-up (`L-1`)
+
+After server checkpoint `fbf9c856`, the packaged account editor and enrollment coordinator own scoped
+POST/SSE subscriptions. Strict bounded fixed frames only wake authenticated operations. Ready always
+catches up; hints coalesce while busy. Healthy streams use 60-second-plus-jitter repair polling; stream
+failure restores bounded polling. Retry backoff, storage gates and sticky evidence halts remain intact.
+Enrollment holds its actual factor/slot permit only through the handshake, preserves input/focus, and
+never prompts for a passkey from notification work. Editor idle catch-up checks every eligible publisher.
+
+Integration exposed a potential resend/notification feedback loop: ceremony and checkpoint hints now
+require a durable row change observed inside the operation transaction, and emit only after success.
+The first browser idle check measured required ready catch-up; the corrected check settles that catch-up
+then requires zero requests during its idle observation window.
+
+Evidence: 116 affected session/application Node tests, 16 client/scheduler Vitest tests, and the packaged
+session two-device browser scenario pass (35.3 seconds). The browser checks preserved comparison text
+and focus, no idle ceremony polling, both editing directions, no five-second editor polling, API restart,
+and offline cold-open/edit/reconnect. TypeScript, scoped lint/format, build, budget and origin checks pass.
+These are disposable profiles, not the operator's personal devices. Release validation remains paused.
+The retained installation still serves the previous session-host build until the next quiet cutover.

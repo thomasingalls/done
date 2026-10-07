@@ -34,6 +34,7 @@ export interface ScopedAccess {
   readonly pin: AuthorityPin;
   fetch(path: string, init: RequestInit): Promise<Response>;
 }
+const notificationPath = '/account/notifications/v1/subscribe';
 const routes: Record<string, GrantScope['kind']> = {
   '/account/delivery/submit': 'workspace',
   '/account/delivery/read': 'workspace',
@@ -110,7 +111,9 @@ export class ScopedTransport {
     for (const signal of this.#parents) signal.removeEventListener('abort', this.#retire);
     this.#parents.clear();
   }
-  bind(input: GrantBinding): ScopedAccess {
+  bind(
+    input: GrantBinding,
+  ): ScopedAccess & { openNotifications(signal: AbortSignal): Promise<Response> } {
     const binding = { ...input, scope: parseGrantScope(input.scope) };
     if (input.login.networkSignal.aborted) this.close();
     else if (!this.#parents.has(input.login.networkSignal)) {
@@ -121,6 +124,18 @@ export class ScopedTransport {
       kind: 'scoped-account' as const,
       pin: { ...this.#pin },
       fetch: (path: string, init: RequestInit) => this.#request(binding, path, init),
+      openNotifications: (signal: AbortSignal) =>
+        this.#request(
+          binding,
+          notificationPath,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(binding.scope),
+            signal,
+          },
+          true,
+        ),
     });
   }
   async #post(
@@ -212,8 +227,16 @@ export class ScopedTransport {
       throw Error('Invalid grant');
     return { token: accountIdentifier(r['grantToken']), expires: r['expiresAt'] as number };
   }
-  async #request(binding: GrantBinding, path: string, init: RequestInit): Promise<Response> {
-    if (routes[path] !== binding.scope.kind || init.method !== 'POST')
+  async #request(
+    binding: GrantBinding,
+    path: string,
+    init: RequestInit,
+    streaming = false,
+  ): Promise<Response> {
+    if (
+      (streaming ? path !== notificationPath : routes[path] !== binding.scope.kind) ||
+      init.method !== 'POST'
+    )
       throw Error('Wrong grant route');
     // Snapshot before any await: a retry must not observe caller mutation or rebuild a semantic write.
     const body =
@@ -225,11 +248,15 @@ export class ScopedTransport {
     const type = new Headers(init.headers).get('Content-Type');
     if (body === null || !['application/json', 'application/octet-stream'].includes(type ?? ''))
       throw Error('Unsupported grant request');
+    // Streaming has a handshake deadline, not a total lifetime deadline. The caller and
+    // login still own cancellation after headers arrive.
+    const deadline = new AbortController();
+    const handshake = streaming ? setTimeout(() => deadline.abort(), 10000) : undefined;
     const signal = AbortSignal.any([
       this.#stop.signal,
       binding.login.networkSignal,
       ...(init.signal ? [init.signal] : []),
-      AbortSignal.timeout(10000),
+      streaming ? deadline.signal : AbortSignal.timeout(10000),
     ]);
     let renewed = false,
       retried = false;
@@ -268,6 +295,16 @@ export class ScopedTransport {
             this.#cache.set(key, grant);
           }
           const response = await this.#post(path, body, grant.token, type!, signal);
+          if (streaming && response.ok) {
+            if (
+              response.headers.get('Content-Type')?.split(';')[0] !== 'text/event-stream' ||
+              !response.body
+            ) {
+              await response.body?.cancel();
+              throw Error('Invalid notification stream');
+            }
+            return response;
+          }
           if (response.ok || ![401, 403, 409, 429, 503].includes(response.status)) return response;
           const text = await smallBody(response, signal),
             reason = refusal(JSON.parse(text));
@@ -296,6 +333,7 @@ export class ScopedTransport {
         }
       }
     } finally {
+      clearTimeout(handshake);
       if (body instanceof Uint8Array) body.fill(0);
     }
   }

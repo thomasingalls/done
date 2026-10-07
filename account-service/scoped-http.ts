@@ -176,12 +176,32 @@ export function createScopedAccountHandler(
         chunks.push(chunk);
       }
       let target: GrantScope | undefined;
+      let changed = true;
       const authorize = core.grants.authorize(token);
       const authorization: OperationAuthorization = (db, value) => {
         const check = authorize(db, value);
         const { action: _action, ...scope } = value;
         target = scope;
-        return check;
+        // Status catch-up can replay an already committed message. Observe its exact row
+        // inside the domain transaction so a harmless retry cannot cause a hint/read loop.
+        const table = {
+          '/__account-setup/ceremony/exchange': 'content_ceremonies',
+          '/__account-setup/ceremony/transfer': 'content_transfers',
+          '/__account-setup/content/checkpoint': 'content_checkpoints',
+        }[path];
+        if (!table) return check;
+        const row = () =>
+          db.prepare(`SELECT * FROM ${table} WHERE workspace_id=?`).get(scope.workspaceId);
+        const before = row();
+        return () => {
+          check();
+          const after = row();
+          changed =
+            before === undefined
+              ? after !== undefined
+              : after === undefined ||
+                Object.keys(before).some((key) => before[key] !== after[key]);
+        };
       };
       const bytes = Buffer.concat(chunks);
       if (binary) {
@@ -207,6 +227,7 @@ export function createScopedAccountHandler(
         } else {
           if (
             target &&
+            changed &&
             (path === '/__account-setup/enrollment/admit' ||
               (value && typeof value === 'object' && 'action' in value && value.action !== 'read'))
           )

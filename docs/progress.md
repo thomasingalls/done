@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: notification server complete; owned browser notification integration in flight
+scope: browser notifications verified; retained notification cutover next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -66,13 +66,14 @@ scenario pass. The latter covers enrollment/approval, both editing directions, A
 cold reopening/reconnection. It exposed native fetch binding and expected grant-invalidation issues;
 both are repaired. TypeScript, scoped lint/format and build checks pass. Qualification remains paused.
 
-**Notification server:** exact-scope POST/SSE and gateway cancellation implemented; 115 affected Node
-tests pass, including five directed stream checks. Browser composition is next; these changes are not
-yet running at the retained address.
+**Notifications:** server checkpoint `fbf9c856`, then owned browser streams and editor/ceremony
+wakeups. 116 affected Node tests, 16 client/scheduler Vitest tests and the packaged two-device scenario
+pass. Quiet comparison preserves input/focus; editors exchange writing, survive API restart and reopen
+offline. Hints preserve backoff/halts and cannot grant authority. These changes are not yet running at
+the retained address. Next: checkpoint and retained cutover, then the agreed lifecycle sequence.
 
 **Authorized continuation:** unsigned intermediate commits, then one signed checkpoint when the
-sequence is through. Host checkpoint `b17c7700` is unsigned and its retained cutover is complete. Next implement live
-notifications and try the two-device flow. Subsequent lifecycle order is additional devices and
+sequence is through. Host checkpoint `b17c7700` is unsigned and its retained cutover is complete. Notifications and the disposable two-device flow are now verified; next cut over the retained host. Subsequent lifecycle order is additional devices and
 revocation, then lost-device recovery; checkpoint/pruning and operational deployment follow. Product
 choices still require consultation. See [sessions/subscriptions](./account-sessions-subscriptions.md).
 

@@ -46,6 +46,7 @@ export function createSyncScheduler(options: {
   receive(): Promise<ReceiveStep>;
   detach(): void;
   clock?: DriverClock;
+  receiveInterval?(): number;
 }) {
   const clock = options.clock ?? clockDefault;
   const fresh = (): Lane => ({
@@ -197,15 +198,17 @@ export function createSyncScheduler(options: {
             : result.kind === 'progress'
               ? 50
               : name === 'receive'
-                ? 5000
+                ? (options.receiveInterval?.() ?? 5000)
                 : undefined;
           lane.due = lane.expedite
             ? clock.now()
-            : delay !== undefined
-              ? clock.now() + delay
-              : lane.dirty
-                ? clock.now() + 50
-                : undefined;
+            : lane.dirty && !retryable
+              ? clock.now() + 50
+              : delay !== undefined
+                ? clock.now() + delay
+                : lane.dirty
+                  ? clock.now() + 50
+                  : undefined;
           lane.expedite = lane.dirty = false;
         }
         ready();
@@ -224,11 +227,18 @@ export function createSyncScheduler(options: {
         arm();
       });
   };
-  const wake = (cause: 'start' | 'gate' | 'online' | 'local' | 'retry', target?: SyncLane) => {
+  const wake = (
+    cause: 'start' | 'gate' | 'online' | 'local' | 'remote' | 'retry',
+    target?: SyncLane,
+  ) => {
     if (stopped) return;
     for (const name of names) {
       if (cause === 'retry' && name !== target) continue;
       const lane = lanes[name];
+      if (cause === 'remote' && name === 'receive' && !lane.halt) {
+        if (active === name) lane.dirty = true;
+        else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+      }
       if (cause === 'retry') lane.halt = undefined;
       if (cause === 'local' && name === 'send') {
         lane.dirty = true;

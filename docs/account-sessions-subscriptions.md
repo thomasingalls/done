@@ -1,6 +1,6 @@
 # Account sessions and live subscriptions
 
-2026-10-08 · design checkpoint · **phase 3d cutover and notification server complete; browser notifications in flight**.
+2026-10-08 · design checkpoint · **session host and browser notifications implemented; retained notification cutover next**.
 See [phase 3d host composition](./account-session-host.md).
 See [phase 3c browser transport and focused evidence](./account-session-transport.md).
 See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
@@ -329,3 +329,24 @@ The packaged gateway forwards SSE without buffering and explicitly cancels subsc
 The five directed tests in `test/account-sessions/notifications.test.mjs` pass, within 115 affected
 session/application Node tests. Browser reconnect, catch-up and UI scheduling are the next increment.
 No live cutover or release qualification is claimed by these server tests.
+
+## 2026-10-08 — Browser notification composition
+
+`src/account/notifications.ts` owns a strict fixed-ASCII SSE subset (`ready`, `hint`, heartbeat), 4 KiB
+frame/partial bounds, a 25-second inactivity limit and one connection/retry timer. Reconnect backoff
+is capped at 30 seconds plus jitter; immediate ready/close churn does not reset it. Online/foreground
+events wake authenticated reconciliation. Closing the owner cancels active and late streams.
+`ScopedTransport` retains its ten-second handshake deadline without applying it to the stream body.
+
+The editor's distinct `remote` wake preserves backoff and evidence/storage halts, coalesces during work,
+and sweeps all eligible publishers before idle. Enrollment reopens the actual ceremony vault for grant
+proof/headers and releases it for the stream lifetime. Its serialized status reads preserve inputs and
+focus. Neither path treats an event as an approval, content cursor, epoch or revocation proof. Healthy
+streams use a 60–65 second repair interval; disconnected editor/ceremony fallback remains 5/2.5 seconds.
+Idempotent ceremony/transfer/checkpoint resends do not generate more hints without durable row changes.
+
+Focused evidence: 116 affected Node tests; 16 parser/lifetime/scheduler Vitest tests; one real packaged
+two-profile session scenario (35.3 seconds), including stable approval input, quiet idle intervals,
+two-way delivery, API restart and offline cold reopening. Build/type/lint/budget/origin checks pass.
+Source logs: `/tmp/done-notification-composition.log`, `/tmp/done-notification-client.log`,
+`/tmp/done-notification-browser.log`. The retained address has not yet switched to this browser build.

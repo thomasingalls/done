@@ -20,6 +20,7 @@ import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
 import { requireSelfEnvelope, verifySyncState } from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
 import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
@@ -789,6 +790,7 @@ async function openAccountReceiveOwner(
   };
   return {
     access,
+    publisherCount: () => base.history?.readers.length ?? 1,
     api,
     account,
     carrier,
@@ -826,6 +828,7 @@ async function openReceivingWorkspace(
   };
   const {
     access,
+    publisherCount,
     api,
     account,
     carrier,
@@ -964,6 +967,8 @@ async function openReceivingWorkspace(
     });
     if (composed) {
       const outbound = createOutbound(() => workspace.whenDurable());
+      let notifications: ReturnType<typeof startNotifications> | undefined;
+      let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
       const online = () => {
           resetDiscovery();
@@ -973,6 +978,7 @@ async function openReceivingWorkspace(
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
         gate,
+        receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
         send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
         receive: async () => {
           const authority = await refreshAuthority(operatorToken ?? '');
@@ -981,9 +987,15 @@ async function openReceivingWorkspace(
             const state = await api.status();
             return { kind: authority.kind, receivedThrough: state.receivedThrough };
           }
-          return driveReceiveStep(result, operatorToken ?? '', gate);
+          // One hint concerns the workspace, not a particular publisher. Sweep every
+          // eligible stream before choosing the slow idle repair interval.
+          for (let remaining = publisherCount(); ; remaining--) {
+            const step = await driveReceiveStep(result, operatorToken ?? '', gate);
+            if (step.kind !== 'idle' || remaining <= 1) return step;
+          }
         },
         detach() {
+          notifications?.close();
           operatorToken = undefined;
           unsubscribe?.();
           unsubscribeLocal?.();
@@ -1008,6 +1020,21 @@ async function openReceivingWorkspace(
         globalThis.addEventListener?.('offline', offline);
         if (!carrier.beforeRelease) throw Error('Missing composed driver cleanup ownership');
         carrier.beforeRelease(scheduler.dispose);
+        if (access) {
+          notifications = startNotifications({
+            signal: carrier.signal,
+            open: (signal) => access.openNotifications(signal),
+            wake: () => {
+              resetDiscovery();
+              scheduler.wake('remote');
+            },
+            health: (healthy) => {
+              notificationHealthy = healthy;
+              if (!healthy) scheduler.wake('remote');
+            },
+          });
+          carrier.beforeRelease(notifications.dispose);
+        }
         scheduler.wake('start');
       } catch (cause) {
         await scheduler.dispose();
