@@ -189,6 +189,14 @@ The two packaged browser scenarios cover retained invitation/access renewal and 
 writing across independent restarts, offline cold opens, and active editors during service/app outages.
 The frontend build stays 20547876; this phase changes hosting only. No release campaign resumed.
 
-At the implementation checkpoint, the old combined live process remains running. Applying this layout
-to the retained :8443 installation requires a quiet point, an offline backup, then replacing that process
-with the two commands above. No schema, credential or browser-storage migration is involved.
+The live switch is complete. After signing implementation `7c2061ea` and confirmation that both devices
+were locked/closed, stopped the combined process and took an offline snapshot of both databases, operator
+key and pin under `.dev/account-enrollment-tailnet/backups/process-split-7c2061ea-5S5QA3`. The two commands
+above are now running independently in this worktree/session. Logs are
+`/tmp/done-account-service-7c2061ea.log` and `/tmp/done-account-app-7c2061ea.log`.
+
+Live HTTPS verification matches all 21 precache URLs and the exact worker bytes. Config/access return
+200 through the gateway, a fresh nonce-bound authority proof verifies with the original public pin,
+and pin/key match the offline backup. Wrong Origin returns 403; source/operator-key paths return 404.
+Schema remains 11. No credential or browser-storage change was needed, and no personal writing was
+opened. Normal use can resume at the same :8443 address with the same cached application build.

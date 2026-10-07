@@ -9948,3 +9948,26 @@ restricted-network failure. The two-process runbook is in packaged-account-devel
 Live switch is still pending a quiet point at this implementation checkpoint. The existing combined
 process continues serving :8443 from retained build 20547876. Public deployment, production sessions and
 remaining account lifecycle product work stay separate; release validation remains paused.
+
+
+## 2026-10-07 — Live application/account process split
+
+After signed implementation `7c2061ea` and operator confirmation that both devices were locked/closed,
+stopped the original combined process and backed up both SQLite databases, operator key and public pin
+under `.dev/account-enrollment-tailnet/backups/process-split-7c2061ea-5S5QA3`. The exclusive directory lock
+covered the offline snapshot. Started the API-only service on 127.0.0.1:53220 and the immutable app/proxy
+on 127.0.0.1:53219 from this worktree/session. Tailscale still exposes exactly
+`https://mbp.tail0e0d4.ts.net:8443/`; the retained compiled frontend is still 20547876.
+
+Live HTTPS verification matched all 21 precached URLs plus the service worker against the retained
+build. Worker SHA-256 remains `08f34ea579aecd376f5499fe41966af92215ff55bb3cadeb0c7b510d739d5072`.
+Public configuration and private access return 200 through the gateway; the pin/key match the offline
+backup, and a fresh nonce-bound authority proof verifies against that original pin. Wrong Origin is
+refused with 403 and source/operator-key paths with 404. The account schema remains 11. No credential,
+browser-storage or content migration occurred, and no personal writing was opened for these checks.
+
+The backend and application are running independently. Logs are `/tmp/done-account-service-7c2061ea.log`
+and `/tmp/done-account-app-7c2061ea.log`. The runbook records both commands and the requirement to stop
+both for an explicit offline schema upgrade. Separation phase 2 is complete; operator use can resume.
+The private access token remains a development transport capability; production sessions and public
+deployment remain separate, and release qualification stays paused.

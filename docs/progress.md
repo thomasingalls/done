@@ -48,9 +48,9 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
+status: done
 scope: separation phase 2 — independent packaged application and account processes
-blocks_on: quiet point before live serving switch
+blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
@@ -69,11 +69,17 @@ hang. A native reproduction pinned it to keep-alive connections becoming idle af
 shutdown now reaps those connections as responses finish and refuses further polls. TypeScript and
 scoped lint/format pass. No frontend rebuild, dependency change or release campaign was needed.
 
-**Live switch pending:** the previous combined process remains at
-`https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219, using the original state and immutable build
-`.dev/account-enrollment-tailnet/builds/20547876`. Switching at a quiet point will back up retained state,
-run the app on 53219 and the API-only service on loopback 53220, and leave Tailscale/browser URLs unchanged.
-There is no schema, credential or browser-storage migration.
+**Live switch complete:** implementation `7c2061ea` is signed. After both devices were confirmed
+locked/closed, backed up retained state under
+`.dev/account-enrollment-tailnet/backups/process-split-7c2061ea-5S5QA3` and replaced the combined process
+with the app/proxy on 127.0.0.1:53219 and API-only service on 127.0.0.1:53220. The browser address remains
+`https://mbp.tail0e0d4.ts.net:8443/`, serving the exact immutable build
+`.dev/account-enrollment-tailnet/builds/20547876`. Both processes run from this worktree/session.
+
+All 21 precache URLs and the worker match the retained bytes over HTTPS. Config/access return 200,
+a fresh authority proof verifies with the original pin, the operator key is unchanged and schema remains
+11. Origin and private-file refusals still hold. No credential/browser migration or writing access was
+needed. **Next:** normal operator use can resume; process separation is complete.
 
 See [completed work](./completed.md) and the two-process runbook in
 [packaged account integration](./packaged-account-development.md). Production sessions, remaining
