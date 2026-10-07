@@ -49,5 +49,25 @@ The shell indicates offline availability. Service-dependent actions report the c
 without treating a network failure as an incorrect code. Existing unlock factors are unchanged; a
 passkey still has to be available from the user's authenticator/password manager while offline.
 
-Phase 3 will check packaged update continuity. The live preview is not yet switched. Tests use
-disposable service/browser state and tab cold-opens, not a physical-device or process-crash claim.
+Phase 3: two compiled builds retain the same service identity/storage. The new worker waits while
+both account editors remain on the previous build, including a further accepted edit while it waits.
+After locking/closing, both accounts reopen offline into the new build with queued writing intact;
+reconnecting delivers those original updates in both directions. A separate registration interrupted
+after saving its passkey proof resumes after the update, retaining the same slot and credential and
+finishing account creation. Chooser/ceremony routes display the waiting-update notice too.
+
+The registration test first disconnected too early, before service preparation completed. An explicit
+wait for the prepared passkey screen corrected that fixture; the rerun passed. No protocol repair or
+release campaign was needed. The four packaged-account cases have passing focused results across the
+three phases, alongside the three Local-only packaged regressions. Tests use disposable service/browser
+state and tab cold-opens, not a physical-device or process-crash claim.
+
+Run `pnpm build`, then `pnpm test:packaged-account`. The update tests make separate disposable builds;
+they never replace the serving build or touch the operator's accounts. Existing storage/schema owners
+and update activation policy remain unchanged. Only closing all controlled tabs activates a waiting
+build; there is no forced reload or `skipWaiting`.
+
+The live switch retains `https://mbp.tail0e0d4.ts.net:8443/` and internal port 53219. The operator
+confirmed the two devices closed; a final built artifact and state backup precede switching serving.
+Public deployment, production account sessions, additional membership epochs and key rotation/recovery
+product work remain separate.

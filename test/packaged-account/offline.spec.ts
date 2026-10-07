@@ -7,9 +7,10 @@ test('both devices cold-open from the cache, retain offline edits and deliver af
 }, info) => {
   const state = info.outputPath('service');
   let service = await startService(state);
-  const pair = await pairedEditors(page, browser);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   const firstContext = page.context();
   try {
+    pair = await pairedEditors(page, browser);
     const firstCredentials = await credentials(pair.first.auth),
       secondCredentials = await credentials(pair.next.auth);
     for (const p of [page, pair.second])
@@ -64,7 +65,7 @@ test('both devices cold-open from the cache, retain offline edits and deliver af
         await expect(p.locator('.shell')).toContainText(text, { timeout: 20000 });
     expect(errors).toEqual([]);
   } finally {
-    await pair.other.close();
+    await pair?.other.close();
     await stopService(service);
   }
 });

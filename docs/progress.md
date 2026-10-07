@@ -48,7 +48,7 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
+status: implemented; live serving switch pending
 scope: compiled account serving, offline reopening, update continuity
 blocks_on: none
 release_validation: paused by operator
@@ -79,8 +79,19 @@ A remembered Local-only installation also keeps its offline path without an acco
 checks pass; 19 focused HTTP/config tests and TypeScript/build checks pass. Phase 1 signed: `9bb46fde`.
 These are tab cold-opens in isolated browser contexts, not physical-device/full-process-crash claims.
 
-**Next:** packaged update continuity.
-The live Tailscale preview has not yet been switched. Existing Local-only packaging remains supported.
+**Phase 3 complete:** a waiting update leaves both account editors on their current build, permits
+continued writing, and preserves both publishers' queued edits through offline activation of the new
+build. Reconnection delivers the queued updates. Interrupted registration resumes from the original
+saved passkey proof and slot after the update, without creating a replacement credential. Account
+chooser/ceremony screens now show the waiting-update notice with setup-appropriate instructions.
+
+**Additional evidence:** two bounded update browser cases pass; TypeScript, scoped lint/format and
+build/budget/origin checks pass. The registration fixture's first run disconnected before its service
+preparation had completed; waiting for the prepared passkey screen corrected the fixture, and its
+focused rerun passed. Phase 2 signed: `d27dc540`.
+
+**Next:** switch the closed Tailscale preview to this packaged build, retaining the exact `:8443` origin.
+The operator confirmed both devices locked/closed. The live preview has not yet been switched. Existing Local-only packaging remains supported.
 See [packaged account integration](./packaged-account-development.md). Production sessions, lifecycle
 completion and release qualification remain outside this work; the release campaign remains paused.
 

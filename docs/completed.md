@@ -9856,3 +9856,21 @@ Validation: both packaged-account browser cases and three existing packaged Loca
 19 focused HTTP/config tests, TypeScript, build/budget and origin checks pass. This is isolated browser
 context/tab evidence, not a physical-device or full-process-crash claim. Phase 1 is signed as `9bb46fde`.
 Update continuity is next; live serving is unchanged and release validation remains paused.
+
+
+## 2026-10-07 — Packaged account update continuity
+
+A genuine second compiled build waits behind both active account editors. Original unsent updates
+from both publishers, plus an edit accepted while the update waits, survive closing and reopening
+both accounts offline into the new build. Reconnection exchanges the queued writing. A second focused
+case interrupts registration after retaining the passkey proof; reopening after the build update
+resumes the same slot/credential and finishes account setup. The chooser and credential screens now
+surface the waiting-update notice with code-saving guidance; the existing conservative service-worker
+activation policy is unchanged.
+
+Both update cases pass. The registration fixture's initial run disconnected before account preparation
+finished; waiting for the prepared passkey screen fixes the test, and its focused rerun passes.
+TypeScript, scoped lint/format, build, budget and origin scan pass (95.3 KiB gzip initial splash/chooser).
+Test cleanup now stops the disposable service even if initial pairing fails. Phases 1/2 are signed as
+`9bb46fde` / `d27dc540`. The operator confirmed both devices closed and reiterated retaining `:8443`.
+The live compiled switch follows this commit; no release-validation campaign resumed.

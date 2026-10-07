@@ -23,6 +23,7 @@ const AccountEnrollmentApp = lazy(() =>
 import { AccountSignIn } from './AccountSignIn';
 const LocalApp = lazy(() => import('./LocalApp').then((module) => ({ default: module.LocalApp })));
 import { Welcome } from './Welcome';
+import { AppUpdateNotice } from './AppUpdateNotice';
 import { PreviewNavigationContext } from './ceremonyNavigation';
 
 const ACCESS_CHOICE = 'done.account-setup.access-choice';
@@ -184,6 +185,9 @@ export async function createAccountPreview(config: SetupConfig) {
               </span>
             )}
           </aside>
+          {active.pathname !== '/' &&
+            !active.pathname.startsWith('/local') &&
+            !/\/(ready|editing)$/.test(active.pathname) && <AppUpdateNotice setup />}
           <Suspense fallback={<p role="status">Opening…</p>}>
             <Outlet />
           </Suspense>
