@@ -248,3 +248,28 @@ Connect/Reconnect sync path. Browser-confirmed uptake on the operator's devices 
 This pre-session backup is historical recovery material, not a general session-enabled restore recipe.
 Restoring later backups must invalidate restored sessions and change their issuance-custody context;
 that operational restore work is still outstanding. The service remains loopback/Tailscale development.
+
+## Live notification cutover — 2026-10-08
+
+The same confirmed quiet point was used after the disposable packaged two-device checks passed. The
+current immutable frontend is `.dev/account-enrollment-tailnet/builds/a07de792`; use that path in
+`ACCOUNT_SETUP_DIST` in the session-enabled commands above. API and app remain separate, on 53220 and
+53219 respectively. Current processes at cutover: API 81162, app 81163. Logs:
+`/tmp/done-account-service-a07de792.log`, `/tmp/done-account-app-a07de792.log`.
+
+Offline pre-switch backup: `.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`.
+No schema migration was needed (schema 14). All 19 account tables, the public pin and operator key are
+unchanged. Through live HTTPS, configuration and a fresh authority proof pass, shared access is 404,
+wrong Origin is 403 and unauthenticated subscriptions are 401. Source/key paths are absent. All 23
+precache URLs and `sw.js` match the retained build. Worker SHA-256:
+`427981fbf2526c573f1dd8aab3aacd3e34410b363534d59a077aeaeb0e1f1598`.
+
+The authenticated browser flow was exercised with disposable profiles through the packaged loopback
+gateway. The personal Tailscale browsers were not opened; their normal update uptake still needs the
+operator's check. They may now reopen at the unchanged `https://mbp.tail0e0d4.ts.net:8443/` address.
+
+Notifications are hints followed by authenticated reads; they carry neither content nor authority.
+The broker is process-local, with scoped parent checks, cancellation, bounded buffering, heartbeat
+and catch-up after reconnect. Multi-instance fanout and public operations remain later work. The
+snapshot contains session state and is **not** a supported restore recipe: restoring service state
+must invalidate remembered sessions and change issuance-custody context before serving.

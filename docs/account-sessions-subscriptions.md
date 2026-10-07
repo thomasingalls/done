@@ -1,6 +1,6 @@
 # Account sessions and live subscriptions
 
-2026-10-08 · design checkpoint · **session host and browser notifications implemented; retained notification cutover next**.
+2026-10-08 · design checkpoint · **session host, browser notifications and retained cutover complete**.
 See [phase 3d host composition](./account-session-host.md).
 See [phase 3c browser transport and focused evidence](./account-session-transport.md).
 See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
@@ -350,3 +350,9 @@ two-profile session scenario (35.3 seconds), including stable approval input, qu
 two-way delivery, API restart and offline cold reopening. Build/type/lint/budget/origin checks pass.
 Source logs: `/tmp/done-notification-composition.log`, `/tmp/done-notification-client.log`,
 `/tmp/done-notification-browser.log`. The retained address has not yet switched to this browser build.
+
+The retained notification cutover is now complete on frontend `a07de792`, schema 14, with the original
+service identity. [The runbook](./packaged-account-development.md#live-notification-cutover--2026-10-08)
+records the backup and live checks. Personal-device update uptake remains pending. The operator has
+authorized continuing to lifecycle work; the earlier instruction in step 4 to stop for use is therefore
+not a barrier to preparation. Additional devices and removal/revocation come before lost-device recovery.

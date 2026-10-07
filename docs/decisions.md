@@ -4270,3 +4270,13 @@ an explicit combined challenge purpose and commit enrollment/session issuance at
 retry recovery and factor-sealed client retention. An old enrollment receipt or assertion from the
 ordinary enrollment purpose remains insufficient. Approval of this product choice is not an
 implementation or live-cutover claim; it is the next part of sessions/subscriptions phase 3.
+
+### Device lifecycle entry point and ordering
+
+**Date:** 2026-10-08 · **Gate:** L-1
+
+The operator chose additional devices and removal/revocation before lost-device recovery, and approved
+a **Devices** entry in the editor’s Account menu. It opens one verified device list with connection and
+removal actions. Keep the existing invitation/code-comparison ceremony and visibly distinguish pending
+enrollment from approved content access. This is UI/order approval, not permission to weaken the
+revocation/rotation/finalization contract or infer remote custody properties from a display label.

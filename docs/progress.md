@@ -42,47 +42,41 @@ that is no longer active.
 
 ---
 
-## Product integration: authenticated live notifications (`L-1`)
+## Product integration: device lifecycle (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: browser notifications verified; retained notification cutover next
+scope: sessions and notifications served; verified device-list foundation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Implemented:** signed browser-grant checkpoint `3ba2d33c`, followed by session-enabled host and
-packaged-client composition. The new host has no shared bearer/access endpoint. Its public/attempt
-bootstrap routes retain their domain proofs, alongside scoped content/approval APIs. Explicit offline
-upgrade preserves schema-11 identity/state while adding session schema 14. See
-[host implementation and evidence](./account-session-host.md).
+**Completed:** session-enabled host `b17c7700`, retained cutover `7c859dff`, notification server
+`fbf9c856`, and owned browser integration `a07de792` (unsigned intermediate checkpoints after signed
+`3ba2d33c`). Focused evidence: 116 affected Node tests, 16 client/scheduler Vitest tests and one packaged
+two-device browser case, including quiet comparison input/focus, two-way writing, API restart and offline
+cold opening. Type/build/lint/budget/origin checks pass. See [sessions and notifications](./account-sessions-subscriptions.md).
 
-**Evidence:** 115 affected Node tests, 33 client Vitest tests, and the disposable packaged two-device
-scenario pass. The latter covers enrollment/approval, both editing directions, API restart and offline
-cold reopening/reconnection. It exposed native fetch binding and expected grant-invalidation issues;
-both are repaired. TypeScript, scoped lint/format and build checks pass. Qualification remains paused.
+**Current live baseline:** origin `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
+frontend `a07de792`, schema 14 and original service pin. Backup:
+`.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`. All 19 account tables and pin/key
+match the backup; live authority proof, route boundaries and all 23 precache URLs plus worker match.
+No personal browser or writing was opened; operator-device update uptake remains pending.
+[Commands and limits](./packaged-account-development.md#live-notification-cutover--2026-10-08).
 
-**Notifications:** server checkpoint `fbf9c856`, then owned browser streams and editor/ceremony
-wakeups. 116 affected Node tests, 16 client/scheduler Vitest tests and the packaged two-device scenario
-pass. Quiet comparison preserves input/focus; editors exchange writing, survive API restart and reopen
-offline. Hints preserve backoff/halts and cannot grant authority. These changes are not yet running at
-the retained address. Next: checkpoint and retained cutover, then the agreed lifecycle sequence.
+**Active:** [device lifecycle plan](./account-device-lifecycle.md). The operator approved Devices in the
+Account menu, a verified list, connect/removal actions, and the existing comparison ceremony. Start with
+the list and route-backed owner-preserving navigation; then repeated membership/third-device enrollment,
+removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
+without the actual committed transition. Existing code deliberately supports only the first two devices.
 
-**Authorized continuation:** unsigned intermediate commits, then one signed checkpoint when the
-sequence is through. Host checkpoint `b17c7700` is unsigned and its retained cutover is complete. Notifications and the disposable two-device flow are now verified; next cut over the retained host. Subsequent lifecycle order is additional devices and
-revocation, then lost-device recovery; checkpoint/pruning and operational deployment follow. Product
-choices still require consultation. See [sessions/subscriptions](./account-sessions-subscriptions.md).
-
-**Current live baseline:** app/proxy 127.0.0.1:53219, API 127.0.0.1:53220, origin
-`https://mbp.tail0e0d4.ts.net:8443/`, frontend `b17c7700`, schema 14 and the original pin. Session mode
-replaces shared adapter access. Offline backup: `.dev/account-enrollment-tailnet/backups/schema-11-zJ6r9i`.
-Old account rows, pin/key, live authority proof and 23 precache assets are verified. No personal browser
-or writing was opened; operator-device update uptake remains pending. Commands and limits are in the
-[packaged runbook](./packaged-account-development.md).
+**Authorized continuation:** unsigned intermediate commits with phase summaries, one signed checkpoint
+at the end of the agreed sequence. Product decisions still require consultation. Checkpoint/pruning and
+operational deployment/restore follow lifecycle work. Release validation remains paused.
 
 ---
 

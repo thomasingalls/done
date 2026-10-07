@@ -10254,3 +10254,18 @@ and focus, no idle ceremony polling, both editing directions, no five-second edi
 and offline cold-open/edit/reconnect. TypeScript, scoped lint/format, build, budget and origin checks pass.
 These are disposable profiles, not the operator's personal devices. Release validation remains paused.
 The retained installation still serves the previous session-host build until the next quiet cutover.
+
+## 2026-10-08 — Retained notification cutover (`L-1`)
+
+Using the operator-confirmed quiet point, stopped the verified two retained processes, took the offline
+schema-14 snapshot `.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`, retained
+build `a07de792` immutably, and restarted API/app separately at the unchanged Tailscale `:8443` origin.
+All 19 account tables and pin/operator key match the snapshot. The live version-2 session configuration,
+fresh nonce-bound authority proof, missing shared-access endpoint, wrong-Origin refusal, notification
+grant requirement and source/key-path isolation are verified. All 23 precache URLs plus the service
+worker match the retained build. Details and commands: [packaged runbook](./packaged-account-development.md).
+
+No personal writing/browser was opened. Personal-device cached-build uptake remains for the operator.
+This completes implementation and retained serving for the existing session/notification two-device
+path; it does not establish public production readiness, general membership changes, key rotation,
+recovery or a supported session-backup restore process. Release validation remains paused.
