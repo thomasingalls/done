@@ -29,6 +29,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     accountId,
     switchAccount,
     networkLogin,
+    showDevices,
   } = useWorkspaceUi();
   const installState = useSyncExternalStore(
     subscribeToInstallState,
@@ -163,6 +164,11 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           </div>
         )}
         {accountId && <AccountIdentity id={accountId} />}
+        {showDevices && (
+          <button className="menu-button" onClick={showDevices}>
+            Devices
+          </button>
+        )}
         {switchAccount && (
           <button className="menu-button" onClick={switchAccount}>
             Use another account

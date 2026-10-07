@@ -60,7 +60,12 @@ export type SetupState = (
     }
   | { kind: 'save-recovery' | 'save-device-code'; code: string }
   | { kind: 'working'; message: string }
-  | { kind: 'ready'; workspace: AdmittedWorkspace; actorId: string }
+  | {
+      kind: 'ready';
+      workspace: AdmittedWorkspace;
+      actorId: string;
+      devices: import('./deviceRoster').DeviceRoster;
+    }
 ) & {
   returning?: boolean;
   accountName?: string | undefined;

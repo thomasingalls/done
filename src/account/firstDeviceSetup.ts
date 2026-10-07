@@ -71,6 +71,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   let openedPrincipal: string | undefined;
   let context: RecoveryContext | undefined;
   let workspace: AdmittedWorkspace | undefined;
+  let devices: import('./deviceRoster').DeviceRoster | undefined;
   let operation: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
   let unsubscribe: (() => void) | undefined;
@@ -334,7 +335,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     return operation;
   };
   const finishOpening = async () => {
-    if (!workspace || !openedPrincipal || !saved) throw Error('Unlock the account first');
+    if (!workspace || !openedPrincipal || !saved || !devices)
+      throw Error('Unlock the account first');
     const name = displayName(
       workspace.read().actors.find((actor) => actor.id === openedPrincipal)?.name,
     );
@@ -342,7 +344,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     delete saved.requestedName;
     await progress(saved);
     guard();
-    publish({ kind: 'ready', workspace, actorId: openedPrincipal });
+    publish({ kind: 'ready', workspace, actorId: openedPrincipal, devices });
   };
   const openAccount = async (principalId: string) => {
     if (networkLogin?.retired) {
@@ -373,6 +375,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       },
     });
     workspace = opened.workspace;
+    devices = opened.devices;
     openedPrincipal = principalId;
     try {
       guard();

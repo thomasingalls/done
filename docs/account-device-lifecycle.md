@@ -29,7 +29,7 @@ valid historical evidence; no retained workspace, code or account should need re
    admission/certification history, including pending credentials. Open Devices from both creating and
    joining editors, preserve the owner on Back, and clearly label retained state. Editable CRDT device
    labels and chooser hints cannot establish membership or custody assurance. Do not enable a removal
-   action until its actual transition exists. This increment is in flight.
+   action until its actual transition exists. This foundation is implemented and checked; it is not yet served at the retained origin.
 2. **Repeated-membership contract and service.** Define the versioned continuation of the existing
    first-three-epoch anchor, with bounded proof pages and exact parent links. Preserve current readers,
    their keys and recovery recipient at admission. Certification changes the exact approved recipient

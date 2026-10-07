@@ -3,6 +3,7 @@ import { openAccountWriteSession } from './writeSession';
 import { verifyAccountUnderPermit, type AccountStartupOptions } from './accountStartup';
 import { withPromotionRoot, signPromotion, writePromotion } from './promotionRecord';
 import { identity } from './custodyRecord';
+import type { DeviceRoster, DeviceRosterSnapshot } from '../account/deviceRoster';
 /** Private Account composition: verification, activation, carrier and cleanup share one permit. */
 export const openAccountJournalSession = async (
   input: AccountStartupOptions,
@@ -11,6 +12,7 @@ export const openAccountJournalSession = async (
   const options = { ...input, pin: structuredClone(input.pin) };
   identity(principalId);
   let owner: ReturnType<typeof prepareAccountCustody> | undefined;
+  let devices!: DeviceRosterSnapshot;
   const cleanups = new Set<() => void | Promise<void>>();
   let account!: Awaited<
     ReturnType<(typeof import('./accountStartup'))['verifyAccountUnderPermit']>
@@ -23,6 +25,15 @@ export const openAccountJournalSession = async (
       if (verified.account.principalId !== principalId)
         throw Error('Account actor identity changed');
       account = verified.account;
+      devices = Object.freeze({
+        epoch: 1,
+        currentDevice: verified.marker.credentialIds[1],
+        devices: Object.freeze(
+          verified.marker.admission!.request.certification.members.map(({ id }) =>
+            Object.freeze({ id, state: 'certified' as const }),
+          ),
+        ),
+      });
       owner = prepareAccountCustody(
         {
           slotId: options.slotId,
@@ -82,6 +93,9 @@ export const openAccountJournalSession = async (
     });
   return {
     account,
+    devices: Object.freeze({
+      read: () => live.run(async (task) => task.step(() => devices)),
+    }) satisfies DeviceRoster,
     carrier: Object.freeze({
       ...carrier,
       beforeRelease(cleanup: () => void | Promise<void>) {

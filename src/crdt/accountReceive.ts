@@ -8,7 +8,8 @@ import {
   discoveryRequestMessage,
   verifyDiscoveryResponse,
 } from '../../account-protocol/successor';
-import { verifyAdmissionHistory } from '../../account-protocol/admissionHistory';
+import { verifyAdmissionHistory, historyDevices } from '../../account-protocol/admissionHistory';
+import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { createVerifiedRecords } from './verifiedRecords';
 import { createVerificationMemo } from './verificationMemo';
@@ -790,6 +791,23 @@ async function openAccountReceiveOwner(
   };
   return {
     access,
+    devices: Object.freeze({
+      read: () =>
+        runCaptureTask(async (task) => {
+          await assertCurrent(task);
+          return task.step(() =>
+            Object.freeze({
+              epoch: base.authority.tip,
+              currentDevice: base.reader.id,
+              devices: base.history
+                ? historyDevices(base.history)
+                : Object.freeze([
+                    Object.freeze({ id: base.reader.id, state: 'certified' as const }),
+                  ]),
+            }),
+          );
+        }),
+    }) satisfies DeviceRoster,
     publisherCount: () => base.history?.readers.length ?? 1,
     api,
     account,
@@ -828,6 +846,7 @@ async function openReceivingWorkspace(
   };
   const {
     access,
+    devices,
     publisherCount,
     api,
     account,
@@ -954,6 +973,7 @@ async function openReceivingWorkspace(
     const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
+      devices,
       workspace,
       receiveStatus: api.status,
       prepareRead: api.prepareRead,

@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
 import { signed } from './exchange-oracle.mjs';
+import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
 import { decision, mutate, query, read, page } from '../account-successor/service-fixtures.mjs';
 import {
   verifyCertificationHistory,
   historyAuthority,
   historyReader,
+  historyDevices,
   verifyHistoryDecision,
   createAdmissionPrefixVerifier,
   historyPublisher,
@@ -167,6 +169,47 @@ async function checkpointFixture(t, options = {}) {
   return { ...x, certification, checkpoint, admission, exchange };
 }
 
+test('bootstrap retries a certification committed while signing without returning the old authority', async (t) => {
+  const x = await approved(t);
+  await x.call(x.approval);
+  await x.transfer('existing', 'deliver', x.delivery);
+  const invitation = {
+    v: 1,
+    workspaceId: x.workspace,
+    credentialId: x.context.existing.id,
+    nonce: 'c2'.repeat(32),
+    signature: '00'.repeat(64),
+  };
+  invitation.signature = signed(x.keys.existing, await ceremonyInvitationMessage(invitation));
+  const input = { workspaceId: x.workspace, nonce: 'c1'.repeat(32), invitation };
+  let signedCount = 0,
+    certification;
+  const result = await x.authority.owner.ceremonyBootstrap(
+    {
+      ceremonyBootstrap(input, issuer) {
+        return x.f.core.ceremonyBootstrap(input, {
+          ...issuer,
+          async bootstrap(body) {
+            const signature = await issuer.bootstrap(body);
+            if (++signedCount === 1) {
+              assert.equal(body.certification, null);
+              certification = (await x.transfer('new', 'install', x.installation)).certification;
+              assert(certification);
+            }
+            return signature;
+          },
+        });
+      },
+    },
+    input,
+  );
+  assert.equal(result.ok, true, JSON.stringify(result));
+  assert.equal(signedCount, 2);
+  assert.deepEqual(result.certification, certification);
+  assert.equal(result.nonce, input.nonce);
+  assert.deepEqual(result, await x.authority.owner.ceremonyBootstrap(x.f.core, input));
+});
+
 test('certified devices publish independent positions and read each other across lost replies and restart', async (t) => {
   let fault = null;
   const x = await checkpointFixture(t, {
@@ -213,6 +256,9 @@ test('certified devices publish independent positions and read each other across
     head: x.certification.head,
   });
   const peerHistory = historyPublisher(history, x.context.candidate.id);
+  assert.deepEqual(historyDevices(peerHistory), historyDevices(history));
+  assert.equal(historyDevices(history).length, 2);
+  assert(historyDevices(history).every((d) => d.state === 'certified'));
   assert.equal(peerHistory.credential, x.context.candidate.id);
   assert.equal(peerHistory.signingKey, x.context.candidate.sPub);
   assert.throws(() => historyAuthority(peerHistory, history.first));

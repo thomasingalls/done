@@ -73,41 +73,45 @@ export async function ceremonyBootstrap(db: DatabaseSync, input: unknown, issuer
   const invitation = parseCeremonyInvitation(r['invitation']);
   const workspaceId = r['workspaceId'] as string,
     nonce = r['nonce'] as string;
-  db.exec('BEGIN');
-  let snapshot;
-  try {
-    snapshot = snapshotWorkspaceAuthority(db, workspaceId);
-    db.exec('COMMIT');
-  } finally {
-    if (db.isTransaction) db.exec('ROLLBACK');
+  // Signing yields to other requests. Certification can commit in that interval; rebuild
+  // this read from a fresh verified snapshot rather than turning normal progress into an error.
+  for (let retry = 0; retry < 4; retry++) {
+    db.exec('BEGIN');
+    let snapshot;
+    try {
+      snapshot = snapshotWorkspaceAuthority(db, workspaceId);
+      db.exec('COMMIT');
+    } finally {
+      if (db.isTransaction) db.exec('ROLLBACK');
+    }
+    if (!snapshot) return refuse('unavailable');
+    const auth = await verifyWorkspaceAuthority(snapshot, issuer);
+    const member = auth.request.certification.members[0];
+    if (invitation.workspaceId !== workspaceId || invitation.credentialId !== member.id)
+      return refuse('invalid-invitation');
+    await verifySignature(
+      member.sPub,
+      invitation.signature,
+      await ceremonyInvitationMessage(invitation),
+    );
+    const result = {
+      ok: true,
+      nonce,
+      base: { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
+      successor: auth.successor,
+      certification: auth.certificationSuccessor,
+    };
+    const signature = await issuer.bootstrap(result);
+    db.exec('BEGIN');
+    try {
+      if (!same(snapshotWorkspaceAuthority(db, workspaceId), snapshot)) continue;
+      issuer.check(auth.seal, snapshot.promotion.request_digest, auth.a.acceptanceKey);
+      return { ...result, signature };
+    } finally {
+      db.exec('ROLLBACK');
+    }
   }
-  if (!snapshot) return refuse('unavailable');
-  const auth = await verifyWorkspaceAuthority(snapshot, issuer);
-  const member = auth.request.certification.members[0];
-  if (invitation.workspaceId !== workspaceId || invitation.credentialId !== member.id)
-    return refuse('invalid-invitation');
-  await verifySignature(
-    member.sPub,
-    invitation.signature,
-    await ceremonyInvitationMessage(invitation),
-  );
-  const result = {
-    ok: true,
-    nonce,
-    base: { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-    successor: auth.successor,
-    certification: auth.certificationSuccessor,
-  };
-  const signature = await issuer.bootstrap(result);
-  db.exec('BEGIN');
-  try {
-    if (!same(snapshotWorkspaceAuthority(db, workspaceId), snapshot))
-      return refuse('state-changed');
-    issuer.check(auth.seal, snapshot.promotion.request_digest, auth.a.acceptanceKey);
-    return { ...result, signature };
-  } finally {
-    db.exec('ROLLBACK');
-  }
+  return refuse('state-changed');
 }
 export async function relayCeremony(
   db: DatabaseSync,

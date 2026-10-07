@@ -14,7 +14,7 @@ export async function authenticator(page: Page) {
   });
   return { cdp, authenticatorId };
 }
-export async function account(page: Page) {
+export async function account(page: Page, beforeInvite?: () => Promise<'invite' | void>) {
   await page.goto('/private/account-setup.html');
   await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
@@ -35,12 +35,15 @@ export async function account(page: Page) {
   const compose = page.locator('.day-panel[data-active="true"] .compose-field');
   await compose.fill('Keep the first device writing');
   await compose.press('Enter');
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-  await page
-    .getByRole('button', { name: 'Create invitation for Device owner', exact: true })
-    .click();
+  const invitationStarted = await beforeInvite?.();
+  if (invitationStarted !== 'invite') {
+    await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await page
+      .getByRole('button', { name: 'Create invitation for Device owner', exact: true })
+      .click();
+  }
   await unlock(page, code);
   await expect(page.getByLabel('Device invitation link')).toBeVisible();
   return { code, auth, link: await page.getByLabel('Device invitation link').inputValue() };

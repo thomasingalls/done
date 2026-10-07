@@ -45,6 +45,8 @@ export interface WorkspaceUi {
   accountId?: string;
   switchAccount?: () => void;
   networkLogin?: NetworkLogin;
+  devices?: import('../account/deviceRoster').DeviceRoster;
+  showDevices?: () => void;
 }
 const Context = createContext<WorkspaceUi | null>(null);
 export const useWorkspaceUi = (): WorkspaceUi => {
@@ -63,6 +65,8 @@ export const WorkspaceUiProvider = ({
   accountId,
   onSwitchAccount,
   networkLogin,
+  devices,
+  onShowDevices,
   children,
 }: {
   workspace: AdmittedWorkspace;
@@ -74,6 +78,8 @@ export const WorkspaceUiProvider = ({
   accountId?: string;
   onSwitchAccount?: () => void;
   networkLogin?: NetworkLogin;
+  devices?: import('../account/deviceRoster').DeviceRoster;
+  onShowDevices?: () => void;
   children: React.ReactNode;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
@@ -211,6 +217,8 @@ export const WorkspaceUiProvider = ({
         lock: onLock,
         accountWorkspace,
         ...(networkLogin ? { networkLogin } : {}),
+        ...(devices ? { devices } : {}),
+        ...(onShowDevices ? { showDevices: onShowDevices } : {}),
         ...(accountId ? { accountId } : {}),
         ...(onSwitchAccount ? { switchAccount: onSwitchAccount } : {}),
         ...(onConnectAccount ? { connectAccount: onConnectAccount } : {}),

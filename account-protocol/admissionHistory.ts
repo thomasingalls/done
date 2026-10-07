@@ -34,6 +34,10 @@ export interface AdmissionHistory {
 }
 const verified = new WeakSet<AdmissionHistory>();
 const publisherRoots = new WeakMap<AdmissionHistory, AdmissionHistory>();
+const rosters = new WeakMap<
+  AdmissionHistory,
+  readonly Readonly<{ id: string; state: 'certified' | 'pending' }>[]
+>();
 const requireHistory = (history: AdmissionHistory) => {
   if (!verified.has(history)) throw Error('Unverified admission history');
   return history;
@@ -69,6 +73,7 @@ export async function verifyAdmissionHistory(
     readers: Object.freeze([Object.freeze({ id: member.id, publicKey: member.sPub })]),
   });
   verified.add(result);
+  rosters.set(result, Object.freeze(e.roster.map(({ id, state }) => Object.freeze({ id, state }))));
   return result;
 }
 /** Extend the same publisher history only after verifying the exact two-device certification. */
@@ -104,7 +109,18 @@ export async function verifyCertificationHistory(
     ),
   });
   verified.add(result);
+  rosters.set(
+    result,
+    Object.freeze(certification.epoch.roster.map(({ id, state }) => Object.freeze({ id, state }))),
+  );
   return result;
+}
+/** Read the verified authorization roster, including candidates that cannot read content yet. */
+export function historyDevices(history: AdmissionHistory) {
+  const checked = requireHistory(history);
+  const roster = rosters.get(publisherRoots.get(checked) ?? checked);
+  if (!roster) throw Error('Verified device roster is missing');
+  return roster;
 }
 export function historyReader(
   history: AdmissionHistory,

@@ -10269,3 +10269,30 @@ No personal writing/browser was opened. Personal-device cached-build uptake rema
 This completes implementation and retained serving for the existing session/notification two-device
 path; it does not establish public production readiness, general membership changes, key rotation,
 recovery or a supported session-backup restore process. Release validation remains paused.
+
+
+## 2026-10-08 — Verified Devices screen and approval-read race (`L-1`)
+
+Both creating and joining editors now expose Devices in the Account menu. The held account owner
+provides an immutable roster from verified admission/certification evidence; pending credentials remain
+separate from certified readers. Editable device labels cannot establish membership. The page describes
+its retained-state limit and does not guess another device's custody. Back preserves the open owner;
+a cold Devices URL still requires the actual local unlock. Connect reuses the existing invitation path.
+Connections beyond the current two-device boundary and removal remain explicitly unavailable until
+their transitions exist. This is a development increment, not the completed device-lifecycle journey.
+
+The real invitation path exposed a certification/read race: a bootstrap could finish signing its old
+snapshot after the joining device committed certification, then return `state-changed` and stop the
+first device's progress. Bootstrap now rebuilds its verified snapshot at most four times. It never
+rebases a human approval, returns a stale signature after invalidation, or loops without a bound.
+The directed counterexample failed before repair and passes after it.
+
+Evidence: 27 affected service/history tests pass, including pending roster, forged-history refusal,
+certification during bootstrap signing, bounded retries and authority invalidation. Two packaged browser
+scenarios pass (51.1 seconds total): both device lists, actual Connect navigation, Back, two-way delivery,
+cold-route unlock; plus session renewal after API restart, quiet notifications, offline cold-open/edit
+and reconnect. TypeScript, scoped lint/format, packaged build, budget and origin isolation pass.
+Logs: `/tmp/done-device-list-protocol-final.log`, `/tmp/done-device-list-browser-final.log`;
+reproduced pre-fix failure: `/tmp/done-bootstrap-before.log`. No personal workspace was accessed.
+The live retained service still serves `a07de792`; this increment has not been deployed there.
+Release validation remains paused. Next: repeated-membership contract and service.

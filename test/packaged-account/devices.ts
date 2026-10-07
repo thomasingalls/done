@@ -4,9 +4,12 @@ export async function pairedEditors(
   page: Page,
   browser: Browser,
   sessions = false,
-  beforeCompare?: (second: Page) => Promise<void>,
+  hooks: {
+    beforeCompare?: (second: Page) => Promise<void>;
+    beforeInvite?: () => Promise<'invite' | void>;
+  } = {},
 ) {
-  const first = await account(page);
+  const first = await account(page, hooks.beforeInvite);
   const other = await browser.newContext();
   const second = await other.newPage();
   try {
@@ -22,7 +25,7 @@ export async function pairedEditors(
         .click({ timeout: 15000 });
     }
     const comparison = await compared(page, second);
-    await beforeCompare?.(second);
+    await hooks.beforeCompare?.(second);
     await page.getByLabel('Code on the new device').fill(comparison);
     await page.getByRole('button', { name: 'Compare and approve' }).click();
     for (const p of [page, second])

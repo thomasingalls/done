@@ -151,3 +151,59 @@ test('historical bootstrap needs an existing-device invitation and binds the fre
     new Uint8Array(message('done/enrollment-ceremony-bootstrap/v1', unsigned)),
   );
 });
+
+test('bootstrap retries stay bounded and cannot return authority invalidated during signing', async (t) => {
+  const x = await ready(t);
+  const body = {
+    v: 1,
+    workspaceId: x.workspace,
+    credentialId: x.credential,
+    nonce: 'c2'.repeat(32),
+  };
+  const input = {
+    workspaceId: x.workspace,
+    nonce: 'c1'.repeat(32),
+    invitation: {
+      ...body,
+      signature: signed(x.s.privateKey, message('done/enrollment-ceremony-invitation/v1', body)),
+    },
+  };
+  let signedCount = 0;
+  const read = (afterSign) =>
+    x.authority.owner.ceremonyBootstrap(
+      {
+        ceremonyBootstrap(input, issuer) {
+          return x.f.core.ceremonyBootstrap(input, {
+            ...issuer,
+            async bootstrap(body) {
+              const signature = await issuer.bootstrap(body);
+              signedCount++;
+              afterSign();
+              return signature;
+            },
+          });
+        },
+      },
+      input,
+    );
+  // Semantically valid but different retained bytes force every final comparison to fail.
+  assert.deepEqual(
+    await read(() =>
+      mutate(x, (db) => {
+        db.exec("UPDATE recovery SET draft=draft || ' '");
+      }),
+    ),
+    { ok: false, refusal: 'state-changed' },
+  );
+  assert.equal(signedCount, 4);
+  signedCount = 0;
+  assert.deepEqual(
+    await read(() =>
+      mutate(x, (db) => {
+        db.exec("UPDATE accounts SET state='pending'");
+      }),
+    ),
+    { ok: false, refusal: 'unavailable' },
+  );
+  assert.equal(signedCount, 1);
+});

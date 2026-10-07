@@ -4,6 +4,7 @@ import fc from 'fast-check';
 import {
   verifyAdmissionHistory,
   historyAuthority,
+  historyDevices,
   historyEnvelopeRoute,
   verifyHistoryDecision,
   createAdmissionPrefixVerifier,
@@ -38,6 +39,11 @@ test('only verified, immutable exact parent/current contexts resolve historical 
   assert.deepEqual(historyAuthority(h, { ...h.first }), h.first);
   assert.deepEqual(historyAuthority(h, { ...h.current }), h.current);
   assert.throws(() => historyAuthority({ ...h }, h.current), /Unverified/);
+  assert.throws(() => historyDevices({ ...h }), /Unverified/);
+  const devices = historyDevices(h);
+  assert(Object.isFrozen(devices) && devices.every(Object.isFrozen));
+  assert.deepEqual(devices.map((d) => d.state).sort(), ['certified', 'pending']);
+  assert.equal(devices.find((d) => d.state === 'pending').id, f.context.candidate.credentialId);
   for (const field of ['workspace', 'lineage', 'head', 'acceptanceKey'])
     assert.throws(() => historyAuthority(h, { ...h.current, [field]: '88'.repeat(32) }));
   assert.throws(() => historyAuthority(h, { ...h.current, tip: 3 }));

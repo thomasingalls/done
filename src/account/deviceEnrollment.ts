@@ -124,6 +124,7 @@ export interface EnrollmentView {
   message: string;
   editor?: {
     workspace: AdmittedWorkspace;
+    devices: import('./deviceRoster').DeviceRoster;
     actorId: string;
     accountId: string;
     networkLogin?: NetworkLogin;
@@ -912,6 +913,7 @@ export function createDeviceEnrollment(
     return view('editing', {
       editor: {
         workspace: opened.workspace,
+        devices: opened.devices,
         actorId: joined.principalId,
         accountId: opened.accountId,
         ...(networkLogin ? { networkLogin } : {}),

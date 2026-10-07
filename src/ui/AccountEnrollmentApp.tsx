@@ -15,6 +15,7 @@ import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { parseCeremonyInvitation } from '../../account-protocol/ceremonyRelay';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
+import { AccountDevices } from './AccountDevices';
 import { useCeremonyNavigation } from './ceremonyNavigation';
 export function AccountEnrollmentApp({
   config,
@@ -45,6 +46,7 @@ export function AccountEnrollmentApp({
     [code, setCode] = useState(''),
     [typed, setTyped] = useState('');
   const [invitationLink, setInvitationLink] = useState('');
+  const [screen, setScreen] = useState<'editing' | 'devices'>('editing');
   const [state, setState] = useState<EnrollmentView | null>(null),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
@@ -89,7 +91,9 @@ export function AccountEnrollmentApp({
       : stage === 'unlock' && genesis.current
         ? 'confirm-code'
         : stage === 'open'
-          ? (state?.kind ?? 'unlock')
+          ? state?.kind === 'editing'
+            ? screen
+            : (state?.kind ?? 'unlock')
           : stage;
   const navigation = useCeremonyNavigation({
     base: '/connect',
@@ -101,6 +105,10 @@ export function AccountEnrollmentApp({
           ? '/connect/choose'
           : '/accounts',
     visit: (target) => {
+      if (state?.kind === 'editing' && (target === 'editing' || target === 'devices')) {
+        setScreen(target);
+        return true;
+      }
       if (busy || !genesis.current?.displayCode || !['choose', 'save', 'unlock'].includes(stage))
         return false;
       if (target === 'prepare') setStage('choose');
@@ -275,6 +283,8 @@ export function AccountEnrollmentApp({
       <WorkspaceUiProvider
         workspace={state.editor.workspace}
         actorId={state.editor.actorId}
+        devices={state.editor.devices}
+        onShowDevices={() => setScreen('devices')}
         accountWorkspace
         accountId={state.editor.accountId}
         {...(state.editor.networkLogin ? { networkLogin: state.editor.networkLogin } : {})}
@@ -286,7 +296,18 @@ export function AccountEnrollmentApp({
           void close().then(() => onNavigate('/accounts'));
         }}
       >
-        <App />
+        {screen === 'devices' ? (
+          <AccountDevices
+            onBack={() => (navigation.enabled ? navigation.back() : setScreen('editing'))}
+            onConnect={() => {
+              void close().then(() =>
+                onNavigate('/connect/unlock?slot=' + encodeURIComponent(slot)),
+              );
+            }}
+          />
+        ) : (
+          <App />
+        )}
       </WorkspaceUiProvider>
     );
   return (

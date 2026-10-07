@@ -3,6 +3,7 @@ import { createFirstDeviceSetup, type SetupConfig } from '../account/firstDevice
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { AccountIdentity } from './AccountIdentity';
+import { AccountDevices } from './AccountDevices';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
 import { useCeremonyNavigation } from './ceremonyNavigation';
@@ -97,6 +98,7 @@ export function Setup({
   onOtherAccount,
   slotId,
   onName,
+  onConnectDevice,
 }: {
   config: SetupConfig;
   onBack: () => void;
@@ -105,16 +107,25 @@ export function Setup({
   onOtherAccount: () => void;
   slotId: string;
   onName?: (name: string) => void;
+  onConnectDevice: () => void;
 }) {
   const [owner] = useState(() => createFirstDeviceSetup(config, slotId));
   const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
   const [inspected, setInspected] = useState(false);
+  const [screen, setScreen] = useState<'ready' | 'devices'>('ready');
   const navigation = useCeremonyNavigation({
     base: `/setup/${slotId}`,
-    step: inspected && state.kind !== 'working' ? state.kind : null,
+    step:
+      inspected && state.kind !== 'working' ? (state.kind === 'ready' ? screen : state.kind) : null,
     parent: state.kind === 'intro' && !state.fresh ? '/local/fresh' : '/accounts',
-    visit: owner.visit,
+    visit: (step) => {
+      if (state.kind === 'ready' && (step === 'ready' || step === 'devices')) {
+        setScreen(step);
+        return true;
+      }
+      return owner.visit(step);
+    },
     close: owner.close,
     warnOnLeave: owner.hasRecoveryDisplay,
   });
@@ -148,6 +159,8 @@ export function Setup({
       <WorkspaceUiProvider
         workspace={state.workspace}
         actorId={state.actorId}
+        devices={state.devices}
+        onShowDevices={() => setScreen('devices')}
         registerEditor={owner.registerEditor}
         {...(owner.networkLogin ? { networkLogin: owner.networkLogin } : {})}
         accountWorkspace
@@ -159,7 +172,14 @@ export function Setup({
           void owner.close().then(onLock);
         }}
       >
-        <App />
+        {screen === 'devices' ? (
+          <AccountDevices
+            onBack={() => (navigation.enabled ? navigation.back() : setScreen('ready'))}
+            onConnect={() => leave(onConnectDevice)}
+          />
+        ) : (
+          <App />
+        )}
       </WorkspaceUiProvider>
     );
   const stage =

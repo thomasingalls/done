@@ -254,6 +254,9 @@ export async function createAccountPreview(config: SetupConfig) {
         onBack={openLocal}
         onLock={lock}
         onOtherAccount={choose}
+        onConnectDevice={() => {
+          void go('/connect/unlock?slot=' + encodeURIComponent(slotId));
+        }}
       />
     );
   }
