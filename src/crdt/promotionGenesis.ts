@@ -48,7 +48,7 @@ export interface PrepareGenesisOptions extends PreparePromotionOptions {
   recoveryCode: string;
 }
 
-function actors(doc: YDoc, principal: string, signer: string): GenesisCandidate['actors'] {
+export function actors(doc: YDoc, principal: string, signer: string): GenesisCandidate['actors'] {
   const meta = doc.getMap('meta');
   if (meta.get('schemaVersion') !== 4 || meta.has('actors'))
     throw Error('Genesis needs current actor schema');

@@ -9676,3 +9676,57 @@ and require the already-specified catch-up checkpoint before source-capture acti
 also needs a durable Account baseline/slot activation and read-only opening; possessing its saved key
 and obtaining a ciphertext page do not establish either. The continuation document records these
 dependencies. Two-way writing and packaged-app integration remain later work.
+
+## 2026-10-07 — approved second device opens and reopens actual writing
+
+Committed the certified-reader transport foundation as signed `832784ed`, then continued to the
+operator's usable product checkpoint instead of stopping at another internal transport boundary.
+The saved second device now opens the first device's current writing read-only and receives later
+original edits through the same encrypted stream.
+
+- A journal-inclusive, fully replayed content checkpoint preserves the original Yjs state and actor
+  attribution of the old local-only preview. Its exact bytes, epoch-3 authority and capture fence are
+  saved together under the existing exclusive source lifetime. The ordinary editor subsequently uses
+  the existing v9 capture/spool/delivery owner. It does not submit a reattributed snapshot as an edit.
+- The service adds one immutable checkpoint/admission row at schema 10. Producer publication and
+  candidate admission have separate certified signing requirements and exact current-head checks.
+  Commit failure and lost-reply retries preserve bytes; accepted suffix history is retained.
+- The second device verifies the producer, authority, root-signed passkey binding, encrypted snapshot,
+  full SV/DS and original genesis ancestry. Its factor-owned approval carrier retains the checkpoint,
+  admission and ordinary inbound evidence with the corresponding prefix. Admission follows a cold
+  reopen of the committed snapshot. Every reopening independently replays retained evidence before
+  publishing a static read-only view. Other Local stores remain untouched.
+- This is a bounded read-only owner in the saved device connection, not yet a normal selected writable
+  Account slot. The same checkpoint and update proofs are retained for that subsequent activation.
+  Second-device writes, multi-publisher service support, offline reopening/convergence and automatic
+  receive polling are not implemented by this slice. A passkey is currently required for each open
+  or manual update check. Preview/banner wording now reflects the working read-only path.
+
+Focused automated evidence: all 12 tests in `test/device-enrollment/flow.spec.ts`; all nine tests in
+`test/account-ceremony/content-transfer.test.mjs`; 12 selected schema/upgrade cases across the affected
+service fixtures and `test/first-device-upgrade/state.test.mjs`; TypeScript build and scoped lint/format.
+The new browser cases demonstrate actual preexisting writing, later captured edits, cold reopening,
+byte-identical publication retry after a lost reply, refusal of producer-signed false coverage and
+an actual IndexedDB installation abort with no outgoing semantic admission. Service cases cover
+publication/admission commit failures, restart, role/key/head checks and a retained accepted suffix.
+Older-schema fixtures were updated for the new additive table; no generalized campaign was resumed.
+
+Live development evidence: stopped the existing port-53219 preview, used the offline upgrader to back
+up both databases, operator key and pin, then upgraded schema 9→10 and restarted the same retained
+state/origin with live updates disabled. Backup:
+`.dev/account-enrollment-tailnet/backups/schema-9-iRVJk3/`. In the existing isolated Firefox containers
+**Done disposable A/B**, the real saved passkey published and opened the two prior Goals lines. A new
+disposable day card then arrived via **Check for updates**. After closing and restoring the second
+tab, its code and the account passkey reopened both the original and later writing. The operator
+unlocked Bitwarden; computer use handled the remainder. No personal writing was opened or changed,
+and no existing password-manager item was overwritten. This is a live desktop/container check,
+not physical-device, full browser-process crash, offline or release evidence.
+
+The preview is ready for operator use at `https://mbp.tail0e0d4.ts.net:8443/`. The
+[continuation](./account-content-delivery-development.md) records exact entry steps, ownership and
+capacity limits. Stop at this usable read-only checkpoint; next is second-device writable activation
+and two-way delivery. Release qualification remains paused.
+
+Commit handoff: the follow-on signed commit remained waiting on the Secretive-backed SSH signer for
+several minutes. The signing subprocess was cancelled and the complete opening slice left staged;
+no unsigned commit was created. The signed transport foundation remains `832784ed`.

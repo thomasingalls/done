@@ -1,5 +1,8 @@
 /** Private two-device approval and certified key-installation coordinator. */
 import { continueContentHandoff, type ContentHandoffState } from './contentHandoff';
+import { openApprovedWriting, type ContentReaderState } from './contentReader';
+import { assertSlotPasskey } from './assertSlotPasskey';
+import type { ZipEntry } from '../lib/zip';
 import {
   parseCertificationSuccessor,
   verifyCertificationSuccessor,
@@ -87,6 +90,7 @@ interface Progress {
   decision: CeremonyRequest | null;
   cancellation: CeremonyRequest | null;
   content?: ContentHandoffState;
+  reading?: ContentReaderState;
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
 export interface EnrollmentView {
@@ -106,6 +110,7 @@ export interface EnrollmentView {
   link?: string;
   code?: string;
   message: string;
+  writing?: ZipEntry[];
 }
 const capability = () =>
   btoa(String.fromCharCode(...random(32)))
@@ -130,8 +135,7 @@ const messages: Record<EnrollmentView['kind'], string> = {
     'Read the five-character code on the new device and enter it here. You have one comparison.',
   display: 'Type this code on your existing device.',
   approved: 'Device approved. Finishing content access with your other device.',
-  certified:
-    'Content access is installed and certified. Opening your writing is the next development step.',
+  certified: 'Content access is installed and certified.',
   mismatch: 'The codes did not match. This device attempt is spent.',
   expired: 'This attempt expired. It cannot be restarted with the same device credential.',
   'restart-required': 'Account authority changed. This attempt cannot continue.',
@@ -216,6 +220,7 @@ export function createDeviceEnrollment(
     typed?: string;
     enroll?: true;
     cancel?: true;
+    read?: true;
   }): Promise<EnrollmentView> => {
     if (running) return last;
     running = true;
@@ -474,9 +479,42 @@ export function createDeviceEnrollment(
         );
         const finish = async (outcome: 'approved' | 'mismatch') => {
           if (outcome === 'mismatch') return view('mismatch');
-          return view(
-            await continueContentHandoff(p!, owner, { ...boot, successor }, () => save(), request),
+          const kind = await continueContentHandoff(
+            p!,
+            owner,
+            { ...boot, successor },
+            () => save(),
+            request,
           );
+          if (kind !== 'certified' || !input?.read) return view(kind);
+          const certification = p!.content!.certification!;
+          const result = await openApprovedWriting(
+            p!,
+            owner,
+            { base: boot.base, successor, certification },
+            {
+              assert: assertSlotPasskey(lifetime.signal),
+              token: config.token,
+              signal: lifetime.signal,
+              save: () => save(),
+              request,
+            },
+          );
+          guard();
+          if (result.kind === 'published')
+            return view('certified', {
+              message:
+                'Your writing is available to the approved device. Open its writing there. You can return to your account here; further edits will use sync.',
+            });
+          if (result.kind === 'waiting')
+            return view('certified', {
+              message:
+                'On your first device, choose “Make writing available”, then open your writing here.',
+            });
+          return view('certified', {
+            message: 'Read-only for this development phase. Editing on this device comes next.',
+            writing: result.entries,
+          });
         };
         // Relay labels are hints. Only a peer-signed cancellation/decision may be adopted.
         if (remote.cancellation) {
@@ -700,9 +738,11 @@ export function createDeviceEnrollment(
     enroll: () => operate({ enroll: true }),
     compare: (typed: string) => operate({ typed }),
     cancel: () => operate({ cancel: true }),
+    openWriting: () => operate({ read: true }),
     close: () => {
       lifetime.abort();
       code = '';
+      last = { kind: 'locked', message: messages.locked };
     },
     get busy() {
       return running;

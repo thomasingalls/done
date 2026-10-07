@@ -77,7 +77,12 @@ export async function openAccountCaptureOwner(
     initialize: async (task) => {
       const v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
       if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
-      if (extension && v.marker.v !== extension.version - 1 && v.marker.v !== extension.version)
+      if (
+        extension &&
+        !(extension.version === 9 && v.marker.catchup && v.marker.v >= 6) &&
+        v.marker.v !== extension.version - 1 &&
+        v.marker.v !== extension.version
+      )
         throw Error('Spool requires verified source capture');
       if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
       if (
@@ -114,7 +119,7 @@ export async function openAccountCaptureOwner(
       await extension?.initialize(task, v);
       await owner.initialize(task);
       if (extension) {
-        if (v.marker.v === extension.version - 1)
+        if (v.marker.v < extension.version)
           await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
             const next = await signPromotion(
               root,

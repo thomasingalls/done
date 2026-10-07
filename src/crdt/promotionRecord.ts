@@ -1,3 +1,7 @@
+import {
+  parseContentCheckpoint,
+  type ContentCheckpoint,
+} from '../../account-protocol/contentCheckpoint';
 import { parseInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { parseHandoff, type HandoffState } from './handoffRecord';
 import { parseRetainedAdmission, type RetainedAdmission } from '../../account-protocol/admission';
@@ -77,6 +81,7 @@ export interface PromotionRecord {
     | 'account-delivering'
     | 'account-receiving';
   successor?: InstalledSuccessor;
+  catchup?: ContentCheckpoint;
   handoff?: HandoffState;
   admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
@@ -103,7 +108,12 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
-    ...((input as { v?: number })?.v === 9 && Object.hasOwn(input as object, 'successor')
+    ...([6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) &&
+    Object.hasOwn(input as object, 'catchup')
+      ? ['catchup']
+      : []),
+    ...([6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) &&
+    Object.hasOwn(input as object, 'successor')
       ? ['successor']
       : []),
     ...([2, 3, 4, 5, 6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
@@ -210,6 +220,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
           ),
         }
       : {}),
+    ...(Object.hasOwn(r, 'catchup') ? { catchup: parseContentCheckpoint(r['catchup']) } : {}),
     ...(Object.hasOwn(r, 'successor')
       ? { successor: parseInstalledSuccessor(r['successor']) }
       : {}),
@@ -266,6 +277,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
         : []),
       ...(r.v >= 4 ? [parseHandoff(r.handoff)] : []),
       ...(r.successor ? [parseInstalledSuccessor(r.successor)] : []),
+      ...(r.catchup ? [parseContentCheckpoint(r.catchup)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

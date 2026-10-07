@@ -424,7 +424,7 @@ export function parseCompletion(input: unknown): AdmissionCompletion {
     },
   };
 }
-export async function manifestMessage(m: CheckpointManifest) {
+export async function manifestMessage(m: Omit<CheckpointManifest, 'epoch'> & { epoch: number }) {
   if (m.v !== 2) throw Error('Unsupported checkpoint manifest');
   const hashes = await coverageDigests(m);
   return lp(
@@ -441,7 +441,9 @@ export async function manifestMessage(m: CheckpointManifest) {
     m.producer,
   );
 }
-export async function semanticMessage(a: SemanticAdmission) {
+export async function semanticMessage(
+  a: Omit<SemanticAdmission, 'selfAdmitted'> & { selfAdmitted: 0 | 1 },
+) {
   if (a.v !== 2) throw Error('Unsupported semantic admission');
   const hashes = await coverageDigests({ sv: a.derivedSv, ds: a.derivedDs });
   return lp(

@@ -163,7 +163,7 @@ export async function createAccountPreview(config: SetupConfig) {
       <PreviewNavigationContext value={context}>
         <div className="account-development">
           <aside className="setup-dev-note">
-            Account setup preview · separate local workspace · device sync is not enabled
+            Account preview · writing on the second device is read-only
           </aside>
           <Outlet />
         </div>

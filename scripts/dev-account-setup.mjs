@@ -1,3 +1,4 @@
+import { CONTENT_CHECKPOINT_LIMIT } from '../account-protocol/contentCheckpoint.ts';
 /** Loopback-only product development service. Uses the existing owners; never a deployment entry. */
 import { createServer } from 'vite';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
@@ -52,6 +53,7 @@ const token = randomBytes(32).toString('base64url');
 const routes = new Map([
   ['ceremony/bootstrap', (input) => authority.ceremonyBootstrap(core, input)],
   ['ceremony/exchange', (input) => authority.relayCeremony(core, input)],
+  ['content/checkpoint', (input) => authority.exchangeCheckpoint(core, input)],
   ['ceremony/transfer', (input) => authority.transferContent(core, input)],
   ['authority/discover', (input) => authority.discoverAuthority(core, input)],
   ['enrollment/begin', (input) => authority.enrollment(core, 'begin', input)],
@@ -162,19 +164,21 @@ const server = await createServer({
                   ? route === '/account/delivery/submit'
                     ? SUBMIT_BODY_LIMIT
                     : READ_REQUEST_LIMIT
-                  : route.startsWith('promotion/')
-                    ? ADMISSION_LIMIT
-                    : route === 'ceremony/transfer'
-                      ? CONTENT_DELIVERY_LIMIT
-                      : route === 'ceremony/exchange'
-                        ? CEREMONY_RELAY_LIMIT
-                        : route === 'ceremony/bootstrap' ||
-                            route === 'authority/discover' ||
-                            route === 'enrollment/admit'
-                          ? 4096
-                          : route.startsWith('enrollment/')
-                            ? ENROLLMENT_REQUEST_LIMIT
-                            : 131072)
+                  : route === 'content/checkpoint'
+                    ? CONTENT_CHECKPOINT_LIMIT
+                    : route.startsWith('promotion/')
+                      ? ADMISSION_LIMIT
+                      : route === 'ceremony/transfer'
+                        ? CONTENT_DELIVERY_LIMIT
+                        : route === 'ceremony/exchange'
+                          ? CEREMONY_RELAY_LIMIT
+                          : route === 'ceremony/bootstrap' ||
+                              route === 'authority/discover' ||
+                              route === 'enrollment/admit'
+                            ? 4096
+                            : route.startsWith('enrollment/')
+                              ? ENROLLMENT_REQUEST_LIMIT
+                              : 131072)
               ) {
                 send(413, { ok: false, refusal: 'malformed' });
                 return;

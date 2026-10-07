@@ -11,6 +11,7 @@ import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { parseCeremonyInvitation } from '../../account-protocol/ceremonyRelay';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
+import { ApprovedWriting } from './ApprovedWriting';
 import { useCeremonyNavigation } from './ceremonyNavigation';
 export function AccountEnrollmentApp({
   config,
@@ -136,7 +137,8 @@ export function AccountEnrollmentApp({
       previous?.kind === next.kind &&
       previous.message === next.message &&
       previous.link === next.link &&
-      previous.code === next.code
+      previous.code === next.code &&
+      previous.writing === next.writing
         ? previous
         : next,
     );
@@ -212,8 +214,8 @@ export function AccountEnrollmentApp({
         </button>
         <h1>{workspace ? 'Connect this device' : 'Connect devices'}</h1>
         <p>
-          This step enrolls a device and records your code comparison. Writing transfer comes next.
-          Existing writing on either device is kept.
+          Connect devices, approve content access, and open your writing. Existing writing on either
+          device is kept.
         </p>
         {stage === 'choose' &&
           (workspace ? (
@@ -398,23 +400,40 @@ export function AccountEnrollmentApp({
         {stage === 'open' && state && (
           <>
             <h2>
-              {['approved', 'certified'].includes(state.kind)
-                ? 'Device approved'
-                : state.kind === 'mismatch'
-                  ? 'Codes did not match'
-                  : state.kind === 'display'
-                    ? 'Your comparison code'
-                    : state.kind === 'compare'
-                      ? 'Compare the devices'
-                      : state.kind === 'invite'
-                        ? 'Invite your other device'
-                        : state.kind === 'enroll'
-                          ? 'Verify your account'
-                          : state.kind === 'waiting'
-                            ? 'Waiting for the other device'
-                            : 'Attempt stopped'}
+              {state.writing
+                ? 'Your writing'
+                : ['approved', 'certified'].includes(state.kind)
+                  ? 'Device approved'
+                  : state.kind === 'mismatch'
+                    ? 'Codes did not match'
+                    : state.kind === 'display'
+                      ? 'Your comparison code'
+                      : state.kind === 'compare'
+                        ? 'Compare the devices'
+                        : state.kind === 'invite'
+                          ? 'Invite your other device'
+                          : state.kind === 'enroll'
+                            ? 'Verify your account'
+                            : state.kind === 'waiting'
+                              ? 'Waiting for the other device'
+                              : 'Attempt stopped'}
             </h2>
             <p role="status">{state.message}</p>
+            {state.kind === 'certified' && (
+              <button
+                disabled={busy}
+                onClick={() => {
+                  void run(async () => publish(await owner.current!.openWriting()));
+                }}
+              >
+                {workspace
+                  ? state.writing
+                    ? 'Check for updates'
+                    : 'Open your writing'
+                  : 'Make writing available'}
+              </button>
+            )}
+            {state.writing && <ApprovedWriting entries={state.writing} />}
             {state.link && (
               <>
                 <label htmlFor="invitation">Device invitation link</label>

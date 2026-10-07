@@ -99,7 +99,9 @@ test('schema seven requires explicit upgrade; the new table does not replace acc
   const before = x.f.rows('accounts');
   const { DatabaseSync } = await import('node:sqlite');
   const db = new DatabaseSync(x.f.path);
-  db.exec('DROP TABLE content_transfers; DROP TABLE content_ceremonies; PRAGMA user_version=7;');
+  db.exec(
+    'DROP TABLE content_checkpoints; DROP TABLE content_transfers; DROP TABLE content_ceremonies; PRAGMA user_version=7;',
+  );
   db.close();
   const { AccountCore } = await import('../../account-service/core.ts');
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };

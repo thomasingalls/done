@@ -1,9 +1,9 @@
-# Development continuation: deliver, install and certify
+# Development continuation: certify and open writing on the second device
 
 2026-09-18. The operator authorized the next bounded product phase after the real two-device
 approval trial. This implements the continuation in [content-approval prep](./account-content-approval-prep.md).
 Release qualification remains paused. This is one generation, one admitted candidate and one
-certification successor, followed by a stop for use.
+certification successor. The subsequently authorized read-only opening is now available for use.
 
 **2026-10-07 walkthrough:** completed through the real Firefox UI with two isolated, disposable
 containers and a real Bitwarden passkey saved by the operator. Both sides reached the installed
@@ -11,7 +11,7 @@ and certified status, then recovered it after closing both tabs and reopening th
 splash/chooser with their separate device codes. No new invitation, passkey request or comparison
 was needed on reopen. This is desktop development evidence, not a physical-phone or crash/offline
 qualification run. The [completed-work record](./completed.md) includes the exact scope and
-credential/resume usability observations. The content-opening continuation is now in flight below.
+credential/resume usability observations. The content-opening continuation is implemented below, with a second live walkthrough.
 
 ## Resume the existing trial
 
@@ -20,15 +20,19 @@ workspace → Use another account**, then the existing account's invitation acti
 its device-lock code. On the phone, choose **I already have a workspace**, select its saved
 **Device connection**, and unlock with the phone's code. Keep both pages open.
 
-The saved approval continues without another passkey or comparison. **Device approved** remains
-the heading; the status changes from finishing content access to **Content access is installed
-and certified. Opening your writing is the next development step.** A connection error can be
-retried with **Check again**, or by reopening and unlocking the same saved connection.
+The saved approval continues without another comparison. On the first device, choose **Make writing
+available** and use the account passkey. This captures its current writing and enables subsequent
+edits to use the existing encrypted delivery path. Return to the chooser to unlock its ordinary editor.
+On the second device, choose **Open your writing** and use the account passkey. Its Goals and day
+writing appear read-only. **Check for updates** receives later edits from the first device; for this
+bounded owner it also requests the passkey. Closing or reloading locks the view. The saved **Device
+connection** and device code resume it without a new invitation or comparison.
 
-Stop there. The phone does not yet open the account's writing. Its old local writing is not read,
-imported, replaced or deleted. The preview banner remains accurate. Next is authenticated content
-bootstrap and opening the first device's writing, then two-way/offline sync and ordinary packaged
-application integration.
+The second-device view currently needs the preview server available, including on reopen. Its
+checkpoint, semantic admission and exact received update evidence are retained under its local
+factor; this is durable read-only state, not yet a selected editable Account slot. Two-way writing,
+offline opening/convergence, automatic receive polling and ordinary packaged application integration
+remain later work. Its old Local writing is not read, imported, replaced or deleted.
 
 ## Durable boundaries
 
@@ -84,8 +88,7 @@ The original publisher's service history now verifies issuance at epochs 1, 2 an
 already-queued earlier-epoch envelopes and exact old decision retries. There is still one publisher
 ledger. The older epoch-1/2 discovery endpoint refuses at 3 instead of advertising a stale current
 head; the preview's fresh nonce-bound bootstrap includes the complete certification successor.
-General sync-client discovery/adoption, second-reader content bootstrap and multiple-publisher
-transport remain the next integration work. Certification here establishes eligible keys, not a
+General sync-client discovery/adoption and multiple-publisher transport remain later integration work. Certification here establishes eligible keys, not a
 claim that every account capability has a product path.
 
 ## Content opening continuation — 2026-10-07
@@ -103,30 +106,51 @@ eligibility is epoch-specific: later certification does not authorize an earlier
 The development server mounts the existing submit/read/read-v2 routes, preserving binary framing,
 origin/bearer checks and request bounds. This needs no service schema migration.
 
-**Still required before opening writing:**
+**Current-source checkpoint and subsequent updates implemented:**
 
-1. Establish the first device's current baseline. Its preview editor uses v5, whose old edits may
-   already be compacted and have no retained per-transaction source attribution. The explicit
-   [source-capture gate](./account-source-capture.md) therefore refuses automatic v5 activation.
-   Build the verified catch-up checkpoint selected by TRD §7.6, preserving content and attribution,
-   and transition under the same exclusive lifetime so subsequent edits become ordinary captured
-   sources. Do not re-label old snapshot bytes as newly authored network updates.
-2. Connect that publisher to the existing spool/delivery path under its installed certification.
-   Its persisted original envelopes are the suffix to the checkpoint; retries retain the exact
-   same bytes. The checkpoint must be the baseline used by subsequent sync, not a parallel copy.
-3. Install and activate that baseline on the second device through owned Account startup, together
-   with its authenticated heads and unlock binding. The enrollment slot currently retains the
-   installed key and ceremony; it does not yet provide an active Account content store. Apply the
-   existing full snapshot/SV-and-DS checks and staged activation, preserve unrelated Local stores,
-   and require the normal account-bound unlock contract. Then expose the read-only writing view
-   with an explicit editing-not-yet-enabled notice and test close/reopen.
+1. The exclusive source lifetime verifies the account/passkey, flushes the encrypted journal and
+   cold-replays current content. It creates the TRD §7.6 checkpoint under the existing generation key,
+   preserving Yjs state and actor attribution. Full SV and DS, producer signature, certified heads,
+   original genesis ancestry and the root-signed passkey binding are verified. The exact checkpoint,
+   epoch-3 authority and capture activation commit together in the authenticated promotion marker.
+   A publication failure retries the retained bytes. Old local-only owners refuse the newer marker.
+2. The original editor then uses the existing v9 sync owner: new original transactions enter source
+   capture, spool and ordinary v2 encrypted delivery. The checkpoint is a zero-head baseline for that
+   same stream, not an update attributed to a newly invented author. Publication remains safe if
+   accepted suffix updates arrive before its HTTP retry; no accepted rows are deleted.
+3. The service retains one immutable checkpoint and second-client admission in schema 10's
+   `content_checkpoints(workspace_id, checkpoint, admission)`. Signed participant requests at the
+   exact certification head distinguish producer publication from candidate admission. The service
+   checks authority and signatures but cannot claim semantic verification of encrypted content.
+4. The new reader uses its installed key and account-bound passkey proof to decrypt and independently
+   replay the checkpoint, compare full SV/DS and check genesis ancestry. It seals the baseline in its
+   existing factor-owned approval carrier and reopens that committed baseline before signing its
+   semantic admission. The admission is saved before submission; an uncertain response resumes it.
+5. The reader authenticates each ordinary `read-v2` response with its own certified signing key and
+   the original publisher's history. Exact inbound evidence and the resulting prefix are sealed in
+   one save before publication to the view. Reopening replays and verifies all retained evidence,
+   including prefix equality and unresolved Yjs dependencies. The static Markdown projection has
+   no editing controls; it is only an in-memory view, not an export/import transport.
 
-This chunk's browser evidence reaches an authenticated empty stream. Separate Node/client evidence
-decrypts a real Yjs update with a fixture-supplied content key and held baseline. Neither is a claim
-that the preview's current writing has reached the second device. Keep the preview banner and the
-existing terminal message until the remaining owner/UI integration actually works. General checkpoint
-cadence/pruning, additional successors, multi-publisher service support and release qualification are
-not part of this read-only checkpoint.
+**Bounded reader ownership:** the receiver continues to use its exclusive enrollment slot and encrypted
+approval carrier as a read-only content owner. It does not yet create the regular writable Account
+index/selection tuple. Retaining the actual checkpoint and ordinary update proofs gives the next
+activation phase a verifiable input; that transition still needs implementation before enabling edits.
+The initial snapshot uses the existing 16 MiB genesis/checkpoint bound, with a 72 MiB checkpoint HTTP
+limit for hex/coverage framing. The existing 80 MiB approval plaintext limit also bounds the complete
+reader state; it caps history at 4096 retained events and reads at most 32 one-entry pages per action.
+Larger histories retain progress and require another action, or refuse the supported capacity without
+publishing an incomplete new view. General checkpoint replacement/cadence/pruning, additional
+successors and multiple publishers are outside this milestone.
+
+**Live result:** after an explicit offline schema-9-to-10 upgrade, the saved Firefox disposable pair
+opened the first device's existing two Goals lines. A new day card written in its normal editor then
+appeared on the second device through **Check for updates**. Closing and reopening the second tab,
+unlocking and using the same passkey recovered both the Goals lines and the later card. The operator
+unlocked Bitwarden; computer use completed the remaining actions. This proves the desktop product
+path, not physical-phone/offline/crash qualification. The preview remains at
+`https://mbp.tail0e0d4.ts.net:8443/`, with live reload disabled; the pre-upgrade backup is
+`.dev/account-enrollment-tailnet/backups/schema-9-iRVJk3/`. No personal workspace was opened.
 
 ## Focused evidence
 
@@ -142,3 +166,11 @@ Run the affected browser file with `pnpm test:device-enrollment`; focused servic
 `node --test --test-timeout=30000 test/account-ceremony/content-transfer.test.mjs`.
 The completed-work entry records the final results and preview deployment. These are focused
 development checks, not renewed release qualification or a general conformance campaign.
+
+The content-opening additions pass the full affected enrollment file (12 browser tests), nine
+content-transfer/checkpoint service tests, and 12 selected schema/upgrade tests. Focused cases cover
+lost checkpoint replies with byte-identical cold retry, producer-signed false SV coverage, actual
+IndexedDB abort before receiver admission, exact publication/admission retries across service commit
+failures and restart, wrong roles/keys/current heads, preservation of an accepted suffix, and the
+explicit schema-9 upgrade. TypeScript and scoped lint/format checks pass. Release qualification
+remains paused; the next product phase is writable second-device activation and two-way delivery.

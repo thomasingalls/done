@@ -1,4 +1,5 @@
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
+import { openContentCheckpoint } from './contentCheckpoint';
 import { heldInboundContext, inspectInbound, verifyInboundLedger } from './inboundLedger';
 /** Private Account classification. No writer, network token or retained plaintext escapes this permit. */
 import { inspectDelivery, verifyDelivery } from './deliveryRecord';
@@ -174,6 +175,22 @@ export async function verifyAccountUnderPermit(
                 if (marker.v >= 6) for (const r of recovery.journal) r.bytes.fill(0);
               }
               Y.applyUpdate(checkpoint, plaintext);
+              if (marker.catchup) {
+                if (!marker.successor?.certification)
+                  throw Error('Catch-up certification is missing');
+                const catchup = await task.wait(() =>
+                  openContentCheckpoint(marker.catchup, key, {
+                    base: { pin: marker.pin, request, receipt },
+                    successor: marker.successor!.artifact,
+                    certification: marker.successor!.certification!,
+                  }),
+                );
+                try {
+                  if (!coversGenesis(doc, catchup)) throw Error('Account lost checkpoint content');
+                } finally {
+                  catchup.destroy();
+                }
+              }
               if (
                 hex(genesisCoverage(checkpoint)) !== candidate.coverage.snapshot ||
                 (marker.v === 4 ? !sameDocState(doc, checkpoint) : !coversGenesis(doc, checkpoint))

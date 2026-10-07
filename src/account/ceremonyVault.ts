@@ -12,6 +12,13 @@ import { openCredential, openEnvelope, hkdf, fields, utf8, hex } from '../crdt/c
 import { sealGeneration, openGeneration, type GenerationWrap } from './generationWrap';
 import { unhex } from '../../account-protocol/recovery';
 import { SEAL_LIMIT } from '../crdt/custodyRecord';
+import { prepareAccountCatchup } from '../crdt/accountCatchup';
+import { requireAccountAccess, type LocalPasskey } from '../crdt/accountAccess';
+import type { BindingProof } from '../../account-protocol/slot';
+import type {
+  CheckpointAuthority,
+  ContentCheckpoint,
+} from '../../account-protocol/contentCheckpoint';
 export interface InstalledContentKey {
   sequence: number;
   ct: string;
@@ -31,6 +38,20 @@ export interface CeremonyVault {
     deliveryHash: string,
   ): Promise<InstalledContentKey>;
   checkInstalled(seal: InstalledContentKey, deliveryHash: string): Promise<void>;
+  withInstalledKey<T>(
+    seal: InstalledContentKey,
+    deliveryHash: string,
+    work: (key: Uint8Array<ArrayBuffer>) => Promise<T>,
+  ): Promise<T>;
+  authorize(
+    binding: BindingProof,
+    authority: CheckpointAuthority,
+    assert: LocalPasskey,
+  ): Promise<void>;
+  prepareCheckpoint(
+    authority: CheckpointAuthority,
+    assert: LocalPasskey,
+  ): Promise<ContentCheckpoint>;
   participant: { id: string; wPub: string; sPub: string };
   marker: Awaited<ReturnType<typeof readPromotion>>['marker'];
 }
@@ -94,9 +115,48 @@ export async function withCeremonyVault<T>(
           unhex(deliveryHash, 32);
           return fields('done/installed-content-key/v1', slotId, record.root_id, deliveryHash);
         };
+        const withInstalledKey = async <T>(
+          seal: InstalledContentKey,
+          deliveryHash: string,
+          work: (key: Uint8Array<ArrayBuffer>) => Promise<T>,
+        ) => {
+          if (
+            !Number.isSafeInteger(seal.sequence) ||
+            seal.sequence < 1 ||
+            seal.sequence > record.seal_reserved
+          )
+            throw Error('Invalid content key reservation');
+          const content = new Uint8Array(
+            await subtle.decrypt(
+              { name: 'AES-GCM', iv: iv(seal.sequence), additionalData: incomingAad(deliveryHash) },
+              await incomingKey(),
+              unhex(seal.ct, 48),
+            ),
+          );
+          try {
+            if (content.length !== 32) throw Error('Invalid installed key');
+            return await work(content);
+          } finally {
+            content.fill(0);
+          }
+        };
         return work({
           participant,
-          marker,
+          get marker() {
+            return marker;
+          },
+          withInstalledKey,
+          authorize: (binding, a, assert) =>
+            requireAccountAccess(task, binding, a.base.pin, assert),
+          prepareCheckpoint: async (a, assert) => {
+            const checkpoint = await prepareAccountCatchup(
+              task,
+              { slotId, code, pin: a.base.pin, assertPasskey: assert, signal },
+              a,
+            );
+            ({ claim, record, marker } = await readPromotion(task, slotId, code));
+            return checkpoint;
+          },
           wrapContent: async (recipient, info, workspace) => {
             if (
               !marker?.admission?.receipt ||

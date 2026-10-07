@@ -1,7 +1,12 @@
+import {
+  parseCertificationSuccessor,
+  type CertificationSuccessor,
+} from '../../account-protocol/contentDelivery';
 /** Private v9 installed authority. Genesis/slot custody remains bound to the original receipt. */
 import { parseSuccessor, type AdmissionSuccessor } from '../../account-protocol/successor';
 import {
   verifyAdmissionHistory,
+  verifyCertificationHistory,
   createAdmissionPrefixVerifier,
 } from '../../account-protocol/admissionHistory';
 import { closed } from '../../account-protocol/preparation';
@@ -17,9 +22,14 @@ import type { VerificationMemo } from './verificationMemo';
 export interface InstalledSuccessor {
   artifact: AdmissionSuccessor;
   before: SpoolWitness;
+  certification?: CertificationSuccessor;
 }
 export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
-  const r = closed(input, ['artifact', 'before']),
+  const r = closed(input, [
+      'artifact',
+      'before',
+      ...(Object.hasOwn(input as object, 'certification') ? ['certification'] : []),
+    ]),
     w = closed(r['before'], ['events', 'hash']);
   if (!Number.isSafeInteger(w['events']) || (w['events'] as number) < 0)
     throw Error('Invalid successor ledger boundary');
@@ -27,11 +37,32 @@ export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
   const before = { events: w['events'] as number, hash: w['hash'] as string };
   if (!before.events && !sameSpoolWitness(before, emptySpoolWitness()))
     throw Error('Invalid empty successor ledger boundary');
-  return { artifact: parseSuccessor(r['artifact']), before };
+  const certification = Object.hasOwn(r, 'certification')
+    ? parseCertificationSuccessor(r['certification'])
+    : undefined;
+  if (
+    certification &&
+    (before.events !== 0 || certification.epoch.heads.some((h) => h.position !== 0))
+  )
+    throw Error('Initial certification installation requires an empty ledger');
+  return {
+    artifact: parseSuccessor(r['artifact']),
+    before,
+    ...(certification ? { certification } : {}),
+  };
 }
 export async function heldCaptureRoute(marker: PromotionRecord): Promise<CaptureRoute> {
   const route = captureRoute(marker);
   if (!marker.successor) return route;
+  if (marker.successor.certification) {
+    const history = await verifyCertificationHistory(
+      marker.successor.certification,
+      marker.successor.artifact,
+      { pin: marker.pin, request: marker.admission!.request, receipt: marker.admission!.receipt! },
+      { epoch: 3, head: marker.successor.certification.head },
+    );
+    return { ...route, epoch: 3, history };
+  }
   const history = await verifyAdmissionHistory(
     marker.successor.artifact,
     {
@@ -56,7 +87,11 @@ export async function verifyInstalledSuccessor(
     return;
   }
   const history = route.history;
-  if (!history || history.current.head !== installed.artifact.head || route.epoch !== 2)
+  if (
+    !history ||
+    history.current.head !== (installed.certification?.head ?? installed.artifact.head) ||
+    route.epoch !== (installed.certification ? 3 : 2)
+  )
     captureError('Installed authority differs from retained history');
   const cut = installed.before;
   if (cut.events > spool.events.length) captureError('Pre-adoption ledger is incomplete');
@@ -67,7 +102,7 @@ export async function verifyInstalledSuccessor(
       v[0] === 'done/account-inbound/v1'
         ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
         : v[5];
-    if (epoch !== (index < cut.events ? 1 : 2))
+    if (epoch !== (index < cut.events ? 1 : installed.certification ? 3 : 2))
       captureError('Ledger crosses installed authority boundary');
     if (index >= cut.events) continue;
     const before = witness,

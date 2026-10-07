@@ -86,6 +86,168 @@ async function compared(first: Page, second: Page) {
   return (await second.getByLabel('Comparison code').textContent())!;
 }
 
+test('approved writing opens from the current checkpoint, receives later edits, and survives reopening', async ({
+  page,
+  browser,
+}) => {
+  const first = await account(page),
+    other = await browser.newContext(),
+    second = await other.newPage();
+  try {
+    const next = await pending(second, first.link, first.auth);
+    await page.getByLabel('Code on the new device').fill(await compared(page, second));
+    await page.getByRole('button', { name: 'Compare and approve' }).click();
+    for (const p of [page, second])
+      await expect(
+        p.getByText('Content access is installed and certified.', { exact: false }),
+      ).toBeVisible({ timeout: 30000 });
+    await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+    await expect(
+      page.getByText('Your writing is available to the approved device.', { exact: false }),
+    ).toBeVisible();
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.getByLabel('Read-only account writing')).toContainText(
+      'Keep the first device writing',
+    );
+    await page.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await page.getByRole('button', { name: /^Unlock Device owner/ }).click();
+    await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
+    await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+    await expect(page.locator('.shell')).toBeVisible();
+    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+    await compose.fill('Later writing uses the ordinary encrypted stream');
+    await compose.press('Enter');
+    await expect
+      .poll(
+        async () => {
+          await second.getByRole('button', { name: 'Check for updates', exact: true }).click();
+          await expect(
+            second.getByRole('button', { name: 'Check for updates', exact: true }),
+          ).toBeEnabled();
+          return second.getByLabel('Read-only account writing').textContent();
+        },
+        { timeout: 30000 },
+      )
+      .toContain('Later writing uses the ordinary encrypted stream');
+    await second.reload();
+    await unlock(second, next.code);
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.getByLabel('Read-only account writing')).toContainText(
+      'Keep the first device writing',
+    );
+    await expect(second.getByLabel('Read-only account writing')).toContainText(
+      'Later writing uses the ordinary encrypted stream',
+    );
+    await expect(
+      second.getByLabel('Read-only account writing').locator('[contenteditable=true]'),
+    ).toHaveCount(0);
+  } finally {
+    await other.close();
+  }
+});
+
+test('checkpoint retries preserve the source and refuse false coverage or an aborted receiver installation', async ({
+  page,
+  browser,
+}) => {
+  const first = await account(page),
+    other = await browser.newContext(),
+    second = await other.newPage();
+  try {
+    const next = await pending(second, first.link, first.auth);
+    await page.getByLabel('Code on the new device').fill(await compared(page, second));
+    await page.getByRole('button', { name: 'Compare and approve' }).click();
+    for (const p of [page, second])
+      await expect(
+        p.getByText('Content access is installed and certified.', { exact: false }),
+      ).toBeVisible({ timeout: 30000 });
+    const published: string[] = [];
+    let lose = true;
+    await page.route('**/__account-setup/content/checkpoint', async (route) => {
+      if (route.request().postDataJSON().action === 'publish') {
+        published.push(JSON.stringify(route.request().postDataJSON().payload));
+        if (lose) {
+          lose = false;
+          await route.fetch();
+          await route.abort();
+          return;
+        }
+      }
+      await route.continue();
+    });
+    await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await page.reload();
+    await unlock(page, first.code);
+    await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+    await expect(
+      page.getByText('Your writing is available to the approved device.', { exact: false }),
+    ).toBeVisible();
+    expect(published.length).toBe(2);
+    expect(new Set(published).size).toBe(1);
+    const forged = await page.evaluate(async (code) => {
+      const vaultPath = '/src/account/ceremonyVault.ts',
+        protocolPath = '/account-protocol/admission.ts';
+      const { withCeremonyVault } = await import(/* @vite-ignore */ vaultPath);
+      const { manifestMessage } = await import(/* @vite-ignore */ protocolPath);
+      return withCeremonyVault(
+        new URL(location.href).searchParams.get('slot')!,
+        code,
+        new AbortController().signal,
+        async (owner: any) => {
+          const c = structuredClone(owner.marker.catchup);
+          c.manifest.sv += '00';
+          c.manifest.signature = await owner.sign(await manifestMessage(c.manifest));
+          return c;
+        },
+      );
+    }, first.code);
+    let forge = true,
+      admissions = 0;
+    await second.route('**/__account-setup/content/checkpoint', async (route) => {
+      const action = route.request().postDataJSON().action;
+      if (action === 'admit') admissions++;
+      if (forge && action === 'read') {
+        const response = await route.fetch(),
+          body = await response.json();
+        await route.fulfill({ response, json: { ...body, checkpoint: forged } });
+        return;
+      }
+      await route.continue();
+    });
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.getByRole('alert')).toContainText('coverage');
+    await expect(second.getByLabel('Read-only account writing')).toHaveCount(0);
+    expect(admissions).toBe(0);
+    forge = false;
+    await second.evaluate(() => {
+      const put = IDBObjectStore.prototype.put;
+      let armed = true;
+      IDBObjectStore.prototype.put = function (value: any, ...args: any[]) {
+        const r = put.call(this, value, ...args);
+        if (armed && value?.approval?.sequence === value?.seal_reserved) {
+          armed = false;
+          this.transaction.abort();
+        }
+        return r;
+      };
+    });
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.getByRole('alert')).toBeVisible();
+    await expect(second.getByLabel('Read-only account writing')).toHaveCount(0);
+    expect(admissions).toBe(0);
+    await second.reload();
+    await unlock(second, next.code);
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.getByLabel('Read-only account writing')).toContainText(
+      'Keep the first device writing',
+    );
+    expect(admissions).toBe(1);
+  } finally {
+    await other.close();
+  }
+});
+
 test('the approved second device can read through the preview delivery adapter using its own key', async ({
   page,
   browser,

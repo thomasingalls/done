@@ -46,7 +46,7 @@ import { guardedSubtle } from './custodyCrypto';
 import { Y } from './yjs';
 
 export interface InboundContext {
-  baseline: { kind: 'promotion-genesis'; id: string };
+  baseline: { kind: 'promotion-genesis' | 'content-checkpoint'; id: string };
   service: { id: string; origin: string };
   authority: DecisionAuthority;
   /** Verified admission-only lineage, supplied by the custody owner. */
@@ -125,7 +125,8 @@ function captureContext(input: InboundContext): InboundContext {
   inboundHex(publisher.principal, 16);
   inboundHex(input.creatingCredential, 16);
   if (
-    baseline.kind !== 'promotion-genesis' ||
+    !['promotion-genesis', 'content-checkpoint'].includes(baseline.kind) ||
+    (baseline.kind === 'content-checkpoint' && (!input.history || a.tip !== 3)) ||
     (!input.history && a.tip !== 1) ||
     input.generation !== 1 ||
     publisher.id !== input.creatingCredential ||

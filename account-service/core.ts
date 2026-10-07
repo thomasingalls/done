@@ -1,3 +1,4 @@
+import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import {
   CEREMONY_SCHEMA,
   ceremonyBootstrap,
@@ -155,6 +156,7 @@ export class AccountCore {
       upgradeFromV6?: boolean;
       upgradeFromV7?: boolean;
       upgradeFromV8?: boolean;
+      upgradeFromV9?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -190,7 +192,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 9 &&
+        version !== 10 &&
+        !(version === 9 && instrumentation.upgradeFromV9) &&
         !(version === 8 && instrumentation.upgradeFromV8) &&
         !(version === 7 && instrumentation.upgradeFromV7) &&
         !(version === 6 && instrumentation.upgradeFromV6) &&
@@ -251,6 +254,10 @@ export class AccountCore {
       if (version < 9) {
         this.#db.exec(CONTENT_TRANSFER_SCHEMA);
         this.#db.exec('PRAGMA user_version=9;');
+      }
+      if (version < 10) {
+        this.#db.exec(CONTENT_CHECKPOINT_SCHEMA);
+        this.#db.exec('PRAGMA user_version=10;');
       }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
@@ -320,6 +327,9 @@ export class AccountCore {
       this.#deliveryVerification,
       this.#diagnostics.record,
     );
+  }
+  exchangeCheckpoint(input: unknown, issuer: DeliveryIssuer) {
+    return exchangeCheckpoint(this.#db, input, issuer, this.#hook);
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {
     return readInbound(

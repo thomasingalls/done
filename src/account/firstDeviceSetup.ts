@@ -15,6 +15,7 @@ import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
 import { openOwnedAccountWorkspace } from '../crdt/accountWorkspace';
+import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import { withPromotionSlot } from '../crdt/writeSession';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
@@ -496,7 +497,12 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   };
   const openAccount = async (principalId: string) => {
     publish({ kind: 'working', message: 'Opening your workspace…' });
-    const opened = await openOwnedAccountWorkspace({
+    const retained = await marker();
+    const open = retained?.catchup
+      ? (options: Parameters<typeof openOwnedAccountWorkspace>[0]) =>
+          openOwnedSyncingAccountWorkspace(options, token)
+      : openOwnedAccountWorkspace;
+    const opened = await open({
       slotId: slotId,
       code,
       pin,
@@ -549,7 +555,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   };
   const afterRegistration = async () => {
     const retained = await marker();
-    if (retained && (retained.stage === 'handoff-selected' || retained.v === 5))
+    if (retained && (retained.stage === 'handoff-selected' || retained.v === 5 || retained.catchup))
       return openAccount(retained.source.principalId);
     if (retained && retained.v > 5) throw Error('This workspace needs its sync startup owner');
     context = retained

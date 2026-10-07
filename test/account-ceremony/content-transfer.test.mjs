@@ -13,6 +13,13 @@ import {
 import { envelope } from '../account-transport/oracle.mjs';
 import { build } from 'vite';
 import { resolve } from 'node:path';
+import { manifestMessage, semanticMessage } from '../../account-protocol/admission.ts';
+import { digest } from '../../account-protocol/recovery.ts';
+import {
+  checkpointHeadDigest,
+  checkpointRequestMessage,
+  checkpointAdmissionBody,
+} from '../../account-protocol/contentCheckpoint.ts';
 import {
   recipientCertificateMessage,
   contentDeliveryMessage,
@@ -101,6 +108,132 @@ async function approved(t, options = {}) {
     },
   };
 }
+
+// The service deliberately cannot inspect the plaintext. Browser tests independently replay
+// real encrypted snapshots; this fixture tests signed roles, immutable bytes and commit/retry.
+async function checkpointFixture(t, options = {}) {
+  const x = await approved(t, options);
+  await x.call(x.approval);
+  await x.transfer('existing', 'deliver', x.delivery);
+  const { certification } = await x.transfer('new', 'install', x.installation);
+  const binding = await x.authority.owner.promotionBinding(x.f.core, {
+    retryKey: x.account.retryKey,
+    requestDigest: x.receipt.offer.epoch.requestDigest,
+  });
+  assert.equal(binding.kind, 'promotion-slot-binding');
+  const checkpoint = {
+    v: 1,
+    kind: 'content-checkpoint',
+    salt: 'ab'.repeat(16),
+    nonce: 'cd'.repeat(12),
+    ct: 'ef'.repeat(32),
+    manifest: {
+      v: 2,
+      workspaceId: x.workspace,
+      epoch: 3,
+      epochHead: certification.head,
+      generation: 1,
+      checkpointDigest: await digest(new Uint8Array(32).fill(0xef)),
+      sv: '00',
+      ds: '00',
+      headVectorDigest: await checkpointHeadDigest(certification.epoch.heads),
+      producer: x.context.existing.id,
+      signature: '00'.repeat(64),
+    },
+    heads: certification.epoch.heads,
+    binding,
+  };
+  checkpoint.manifest.signature = signed(
+    x.keys.existing,
+    await manifestMessage(checkpoint.manifest),
+  );
+  const admission = await checkpointAdmissionBody(checkpoint, x.context.candidate.id);
+  admission.signature = signed(x.keys.new, await semanticMessage(admission));
+  const exchange = async (role, action, payload = null, overrides = {}, key = x.keys[role]) => {
+    const r = {
+      workspaceId: x.workspace,
+      credentialId: x.context[role === 'new' ? 'candidate' : 'existing'].id,
+      head: certification.head,
+      nonce: 'ac'.repeat(32),
+      action,
+      payload,
+      signature: '00'.repeat(64),
+      ...overrides,
+    };
+    r.signature = signed(key, await checkpointRequestMessage(r));
+    return x.authority.owner.exchangeCheckpoint(x.f.core, r);
+  };
+  return { ...x, certification, checkpoint, admission, exchange };
+}
+
+test('checkpoint publication and second-client admission resume exact bytes across commit failures and restart', async (t) => {
+  let fault = null;
+  const x = await checkpointFixture(t, {
+    hook(at, op) {
+      if (op === 'content-checkpoint' && at === fault) throw Error('interrupted');
+    },
+  });
+  assert.equal((await x.exchange('new', 'admit', x.admission)).refusal, 'checkpoint-required');
+  fault = 'before-commit';
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, false);
+  assert.equal(x.f.rows('content_checkpoints').length, 0);
+  fault = 'after-commit';
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, false);
+  x.f.restart();
+  x.authority.restart();
+  fault = null;
+  assert.deepEqual(
+    (await x.exchange('existing', 'publish', x.checkpoint)).checkpoint,
+    x.checkpoint,
+  );
+  const changed = structuredClone(x.checkpoint);
+  changed.salt = 'aa'.repeat(16);
+  assert.equal((await x.exchange('existing', 'publish', changed)).refusal, 'checkpoint-conflict');
+  fault = 'before-commit';
+  assert.equal((await x.exchange('new', 'admit', x.admission)).ok, false);
+  assert.equal(x.f.rows('content_checkpoints')[0].admission, null);
+  fault = 'after-commit';
+  assert.equal((await x.exchange('new', 'admit', x.admission)).ok, false);
+  x.f.restart();
+  x.authority.restart();
+  fault = null;
+  assert.deepEqual((await x.exchange('new', 'admit', x.admission)).admission, x.admission);
+  assert.deepEqual((await x.exchange('existing', 'read')).admission, x.admission);
+});
+
+test('checkpoint exchange checks participant role, signing key and current authority without losing an accepted suffix', async (t) => {
+  const x = await checkpointFixture(t);
+  assert.equal((await x.exchange('new', 'publish', x.checkpoint)).ok, false);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint, {}, x.keys.new)).ok, false);
+  assert.equal(
+    (await x.exchange('existing', 'publish', x.checkpoint, { head: x.successor.head })).refusal,
+    'stale',
+  );
+  assert.equal(x.f.rows('content_checkpoints').length, 0);
+  // The saved zero-head checkpoint predates this legitimate post-capture delivery.
+  const suffix = x.make(1, 'later captured writing', { epoch: 3 });
+  assert.equal((await x.deliveryCall(suffix)).kind, 'decision');
+  const accepted = x.f.rows('delivery_decisions');
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  assert.equal((await x.exchange('existing', 'admit', x.admission)).ok, false);
+  assert.equal((await x.exchange('new', 'admit', { ...x.admission, selfAdmitted: 1 })).ok, false);
+  assert.equal((await x.exchange('new', 'admit', x.admission)).ok, true);
+  assert.deepEqual(x.f.rows('delivery_decisions'), accepted);
+});
+
+test('schema nine requires explicit upgrade and retains certified content access', async (t) => {
+  const x = await checkpointFixture(t),
+    before = x.f.rows('content_transfers');
+  mutate(x, (db) => db.exec('DROP TABLE content_checkpoints; PRAGMA user_version=9;'));
+  const { AccountCore } = await import('../../account-service/core.ts');
+  const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
+  assert.throws(() => new AccountCore(x.f.path, policy), /explicit offline upgrade/);
+  new AccountCore(x.f.path, policy, { upgradeFromV9: true }).close();
+  x.f.restart();
+  assert.deepEqual(x.f.rows('content_transfers'), before);
+  assert.deepEqual(x.f.rows('content_checkpoints'), []);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+});
 test('approval is required; exact delivery survives lost replies, cannot be replaced, and does not yet certify', async (t) => {
   let lose = false;
   const x = await approved(t, {
@@ -310,7 +443,9 @@ test('schema eight opens only through the explicit offline upgrade, preserving r
   const x = await approved(t);
   await x.call(x.approval);
   const before = x.f.rows('content_ceremonies');
-  mutate(x, (db) => db.exec('DROP TABLE content_transfers; PRAGMA user_version=8;'));
+  mutate(x, (db) =>
+    db.exec('DROP TABLE content_checkpoints; DROP TABLE content_transfers; PRAGMA user_version=8;'),
+  );
   const { AccountCore } = await import('../../account-service/core.ts');
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
   assert.throws(() => new AccountCore(x.f.path, policy), /explicit offline upgrade/);

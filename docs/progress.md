@@ -48,41 +48,36 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: shared account sync integration, with read-only opening as the first product checkpoint
-blocks_on: verified current-source checkpoint, publisher activation and owned receiver baseline/startup
+status: done
+scope: authenticated current writing, later first-device edits and durable read-only reopen on the approved second device
+blocks_on: none for this read-only milestone
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Starting point:** signed `6e080284` implements content-key delivery, factor-protected receiver
-installation and epoch-3 certification. Signed `ea251c53` records the successful two-container
-Firefox walkthrough and cold-tab reopen. The operator approved continuing with a read-only
-checkpoint in the same sync path that will subsequently support writing.
+**Usable result:** the first device publishes a journal-inclusive checkpoint and activates the existing
+capture/spool/delivery owner. The second independently verifies and durably retains its baseline and
+ordinary inbound evidence, then opens a read-only view under its device code and account passkey.
+Later first-device edits arrive through **Check for updates**. Cold reopening preserves both.
 
-**Implemented in this chunk:** the existing service and client now support the certified second
-reader at the exact epoch-3 head, with both historical issuance boundaries and separate
-reader/publisher verification. The preview server mounts the existing binary delivery endpoints.
-No new update transport or publisher ledger was invented. Focused evidence and scope are recorded
-in [completed.md](./completed.md) and the [continuation](./account-content-delivery-development.md).
+**Evidence:** 12 affected browser tests, nine content-transfer/checkpoint service tests and 12 selected
+schema/upgrade tests pass, along with TypeScript and scoped lint/format. The actual saved Firefox
+disposable pair also displayed the original writing, received a later day card and reopened both after
+closing/restoring the receiver tab. See [completed.md](./completed.md) for evidence boundaries and
+[the continuation](./account-content-delivery-development.md) for implementation and use instructions.
 
-**Not yet a readable second-device workspace:** the browser check receives an authenticated empty
-stream because the current preview editor still saves its edits only locally. The existing source
-capture owner deliberately refuses editable v5 histories: compaction may have removed original
-transaction attribution. Its catch-up checkpoint is required before enabling ordinary source
-capture. The receiver's enrollment custody also needs an active Account baseline and unlock
-binding before an editor can open. The terminal UI therefore remains unchanged.
+**Preview:** running at `https://mbp.tail0e0d4.ts.net:8443/`, port 53219, retained state
+`.dev/account-enrollment-tailnet`, live updates disabled. Explicit schema 9→10 upgrade completed after
+backup to `.dev/account-enrollment-tailnet/backups/schema-9-iRVJk3/`. Existing accounts and approvals
+remain intact. Transport foundation is signed `832784ed`; this completed opening slice follows it.
+The opening slice is staged, awaiting a signed commit. Its signing attempt was cancelled after the
+Secretive-backed SSH signer remained pending for several minutes; no unsigned commit was created.
 
-**Next bounded implementation:** journal-inclusive, attribution-preserving catch-up checkpoint and
-source-capture activation under one exclusive lifetime. Connect its suffix to the existing delivery
-owner, then install the baseline/heads on the second device and open it read-only. Verify actual
-post-genesis writing and close/reopen before declaring this product checkpoint complete. Two-way
-writing, offline convergence and ordinary packaged application integration follow.
-
-**Preview and commit state:** the live Tailscale preview was not restarted or migrated in this chunk.
-Its saved real-device setups and disposable Firefox containers remain intact. Development changes
-and this checkpoint are uncommitted on top of `ea251c53`; no personal writing was opened or changed.
-Release qualification remains paused.
+**Next, after operator use:** activate the same baseline/proofs as a regular writable second-device
+Account slot, add its publisher ledger and connect two-way delivery. The bounded reader currently
+uses its existing factor-owned enrollment carrier, requires the service on reopen, and requests a
+passkey for each manual update check. Offline opening/convergence, automatic receiving, general
+checkpoint lifecycle and packaged-app integration remain open. No release campaign has restarted.
 
 ---
 

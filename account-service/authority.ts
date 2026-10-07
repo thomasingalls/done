@@ -433,6 +433,9 @@ export class PrivateAuthority {
   readAccepted(core: AccountCore, input: unknown) {
     return core.readAccepted(input, this.#deliveryIssuer());
   }
+  exchangeCheckpoint(core: AccountCore, input: unknown) {
+    return core.exchangeCheckpoint(input, this.#deliveryIssuer());
+  }
   readInbound(core: AccountCore, input: unknown) {
     return core.readInbound(input, this.#deliveryIssuer());
   }
