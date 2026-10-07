@@ -182,6 +182,7 @@ export async function verifyContentDelivery(
   if (
     d.parent !== admission.head ||
     d.transcriptHash !== opening.transcriptHash ||
+    d.decision.v !== 1 ||
     d.decision.action !== 'decide' ||
     d.decision.workspaceId !== c.workspaceId ||
     d.decision.credentialId !== c.existing.id ||

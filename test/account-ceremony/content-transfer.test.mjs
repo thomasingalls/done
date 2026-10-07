@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
-import { signed } from './exchange-oracle.mjs';
+import { signed, message, hash } from './exchange-oracle.mjs';
+import { commitment, derive } from './oracle.mjs';
+import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
 import { createHash } from 'node:crypto';
 import { authorityFixture } from '../account-authority/fixtures.mjs';
@@ -520,7 +522,355 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
   for (const [name, rows] of before)
     assert.deepEqual(db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(), rows, name);
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 15);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 16);
+  assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
+  db.close();
+  assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
+});
+
+function continuationExchange(x, admission, entry, approving = 'existing') {
+  const c = admission.epoch.preparation.context.candidate;
+  const context = {
+    ...x.context,
+    v: 2,
+    epoch: 4,
+    head: admission.head,
+    certifiedSetDigest: admission.epoch.certifiedSetDigest,
+    existing: approving === 'existing' ? x.context.existing : x.context.candidate,
+    candidate: { id: c.credentialId, wPub: c.wPub, sPub: c.sPub },
+    attemptId: 'b1'.repeat(32),
+  };
+  const keys = { existing: x.keys[approving], new: entry.key };
+  const nonces = { existing: 'b2'.repeat(32), new: 'b3'.repeat(32) };
+  const seal = (label, body, role) => ({
+    ...body,
+    signature: signed(keys[role], message(label, body)),
+  });
+  const commits = Object.fromEntries(
+    ['existing', 'new'].map((role) => [
+      role,
+      seal(
+        'done/enrollment-ceremony-commitment/v2',
+        {
+          v: 2,
+          kind: 'ceremony-commitment',
+          context,
+          role,
+          commitment: commitment(role, nonces[role]),
+        },
+        role,
+      ),
+    ]),
+  );
+  const contextHash = hash(message('done/enrollment-ceremony-context/v2', context));
+  const reveals = Object.fromEntries(
+    ['existing', 'new'].map((role) => [
+      role,
+      seal(
+        'done/enrollment-ceremony-reveal/v2',
+        {
+          v: 2,
+          kind: 'ceremony-reveal',
+          contextHash,
+          role,
+          existingCommitHash: hash(JSON.stringify(commits.existing)),
+          newCommitHash: hash(JSON.stringify(commits.new)),
+          nonce: nonces[role],
+        },
+        role,
+      ),
+    ]),
+  );
+  const request = (role, action, payload = null, patch = {}) =>
+    seal(
+      'done/enrollment-ceremony-relay/v2',
+      {
+        v: 2,
+        kind: 'ceremony-relay',
+        workspaceId: x.workspace,
+        head: admission.head,
+        preparationId: admission.epoch.preparation.context.attemptId,
+        credentialId: role === 'existing' ? context.existing.id : context.candidate.id,
+        action,
+        payload,
+        ...patch,
+      },
+      role,
+    );
+  const open = derive({
+    workspaceId: x.workspace,
+    epoch: 4,
+    head: admission.head,
+    existingCredentialId: context.existing.id,
+    newCredentialId: context.candidate.id,
+    wPub: c.wPub,
+    sPub: c.sPub,
+    recoveryStateDigest: context.recoveryStateDigest,
+    nonceExisting: nonces.existing,
+    nonceNew: nonces.new,
+  });
+  return {
+    context,
+    keys,
+    commits,
+    reveals,
+    request,
+    contextHash,
+    approval: request('existing', 'decide', {
+      contextHash,
+      transcriptHash: open.transcriptHash,
+      outcome: 'approved',
+    }),
+  };
+}
+async function continuationFixture(t, options = {}) {
+  const authority = authorityFixture(t);
+  const x = await checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    membershipContinuation: true,
+    ...options,
+  });
+  const entry = x.candidate();
+  entry.input.candidate.head = x.certification.head;
+  const begun = await x.enroll('begin', entry.input);
+  const proof = nextProof(x, entry, begun.challenge);
+  const prepared = await x.enroll('finish', proof);
+  const admissionInput = {
+    retryKey: entry.input.retryKey,
+    attemptId: prepared.receipt.context.attemptId,
+    receiptId: prepared.receipt.receiptId,
+  };
+  const admission = await authority.owner.admitMembership(x.f.core, admissionInput);
+  assert.equal(admission.kind, 'membership-admission', JSON.stringify(admission));
+  return {
+    ...x,
+    entry,
+    proof,
+    admissionInput,
+    admission,
+    relay: (r, authorize) => authority.owner.relayMembershipCeremony(x.f.core, r, authorize),
+    exchange: (role) => continuationExchange(x, admission, entry, role),
+  };
+}
+
+for (const approving of ['existing', 'new'])
+  test(`continuation relay preserves the original ceremony and binds restart/retry to the ${approving} approver`, async (t) => {
+    const x = await continuationFixture(t),
+      e = x.exchange(approving);
+    const original = x.f.rows('content_ceremonies');
+    assert.equal((await x.relay(e.request('new', 'read'))).stage, 'waiting');
+    assert.equal(
+      (await x.relay({ ...e.request('new', 'read'), signature: '00'.repeat(64) })).ok,
+      false,
+    );
+    assert.equal(
+      (await x.relay(e.request('existing', 'commit', e.commits.existing))).stage,
+      'exchanging',
+    );
+    assert.equal(
+      (await x.relay(e.request('existing', 'reveal', e.reveals.existing))).refusal,
+      'commitments-required',
+    );
+    assert.equal((await x.relay(e.request('new', 'commit', e.commits.new))).ok, true);
+    for (const role of ['existing', 'new'])
+      assert.equal((await x.relay(e.request(role, 'reveal', e.reveals[role]))).ok, true);
+    const result = await x.relay(e.approval);
+    assert.equal(result.stage, 'approved', JSON.stringify(result));
+    x.f.restart();
+    x.authority.restart();
+    assert.deepEqual(await x.relay(e.approval), result);
+    assert.deepEqual(await x.relay(e.request('new', 'read')), result);
+    assert.equal(
+      (await x.relay(e.request('new', 'cancel', { contextHash: e.contextHash }))).ok,
+      false,
+    );
+    assert.deepEqual(x.f.rows('content_ceremonies'), original);
+    assert.equal(
+      (await x.enroll('resume', { retryKey: x.entry.input.retryKey })).stage,
+      'admitted',
+    );
+    assert.equal(
+      (await x.enroll('cancel', { retryKey: x.entry.input.retryKey })).stage,
+      'admitted',
+    );
+    assert.equal((await x.enroll('finish', x.proof)).stage, 'admitted');
+    assert.deepEqual(
+      await x.authority.owner.admitMembership(x.f.core, x.admissionInput),
+      x.admission,
+    );
+    const another = x.candidate();
+    another.input.candidate.head = x.admission.head;
+    assert.equal((await x.enroll('begin', another.input)).refusal, 'connection-in-progress');
+    assert.equal(
+      (await x.relay(e.request('new', 'read', null, { head: 'ff'.repeat(32) }))).ok,
+      false,
+    );
+    assert.equal(
+      (await x.relay(e.request('new', 'read', null, { preparationId: fresh() }))).ok,
+      false,
+    );
+    assert.equal(
+      (await x.authority.owner.relayCeremony(x.f.core, e.request('new', 'read'))).refusal,
+      'malformed',
+    );
+  });
+
+test('continuation commitment/approval aborts, lost replies and final authorization checks retain exact state', async (t) => {
+  let fault = null;
+  const x = await continuationFixture(t, {
+      hook(at, op) {
+        if (op === 'membership-ceremony' && at === fault) {
+          fault = null;
+          throw Error('Interrupted relay');
+        }
+      },
+    }),
+    e = x.exchange('new');
+  const commit = e.request('existing', 'commit', e.commits.existing);
+  fault = 'before-commit';
+  assert.equal((await x.relay(commit)).ok, false);
+  assert.deepEqual(x.f.rows('membership_ceremonies'), []);
+  fault = 'after-commit';
+  assert.equal((await x.relay(commit)).ok, false);
+  x.f.restart();
+  assert.equal((await x.relay(commit)).stage, 'exchanging');
+  assert.equal(x.f.rows('membership_ceremonies').length, 1);
+  const target = {
+    kind: 'enrollment',
+    workspaceId: x.workspace,
+    credentialId: e.context.candidate.id,
+    attemptId: x.admissionInput.attemptId,
+    action: 'ceremony',
+  };
+  const before = x.f.rows('membership_ceremonies');
+  await assert.rejects(
+    x.relay(e.request('new', 'commit', e.commits.new), (db, actual) => {
+      assert.equal(db.isTransaction, true);
+      assert.deepEqual(actual, target);
+      return () => {
+        throw new AuthorizationRefused('session-expired');
+      };
+    }),
+    AuthorizationRefused,
+  );
+  assert.deepEqual(x.f.rows('membership_ceremonies'), before);
+  assert.equal((await x.relay(e.request('new', 'commit', e.commits.new))).ok, true);
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'reveal', e.reveals[role]));
+  fault = 'before-commit';
+  assert.equal((await x.relay(e.approval)).ok, false);
+  assert.equal(x.f.rows('membership_ceremonies')[0].decision, null);
+  fault = 'after-commit';
+  assert.equal((await x.relay(e.approval)).ok, false);
+  x.f.restart();
+  assert.equal(
+    (await x.relay(e.request('new', 'cancel', { contextHash: e.contextHash }))).ok,
+    false,
+  );
+  assert.equal((await x.relay(e.approval)).stage, 'approved');
+});
+
+test('competing certified approvers cannot replace the retained pair; cancellation stays terminal', async (t) => {
+  const x = await continuationFixture(t),
+    a = x.exchange('existing'),
+    b = x.exchange('new');
+  const candidates = [a, b];
+  const outcomes = await Promise.all(
+    candidates.map((e) => x.relay(e.request('existing', 'commit', e.commits.existing))),
+  );
+  assert.equal(outcomes.filter((r) => r.ok).length, 1);
+  const winner = outcomes.findIndex((r) => r.ok),
+    e = candidates[winner],
+    loser = candidates[1 - winner];
+  const original = x.f.rows('membership_ceremonies');
+  assert.equal(
+    (await x.relay(loser.request('existing', 'commit', loser.commits.existing))).ok,
+    false,
+  );
+  assert.deepEqual(x.f.rows('membership_ceremonies'), original);
+  const cancel = e.request('new', 'cancel', { contextHash: e.contextHash });
+  assert.equal((await x.relay(cancel)).stage, 'cancelled');
+  x.f.restart();
+  assert.equal((await x.relay(cancel)).stage, 'cancelled');
+  assert.equal((await x.relay(e.request('new', 'commit', e.commits.new))).ok, false);
+  assert.equal((await x.relay(e.approval)).ok, false);
+  assert.equal(x.f.rows('membership_ceremonies')[0].decision, null);
+});
+
+test('continuation relay refuses authority changes, expiry at commit and tampered retained approval', async (t) => {
+  let clock = 1000,
+    change = false;
+  const x = await continuationFixture(t, {
+      now: () => clock,
+      hook(at, op) {
+        if (op === 'membership-ceremony' && at === 'after-verify' && change) {
+          change = false;
+          mutate(x, (db) =>
+            db.prepare('UPDATE promotions SET successor_head=?').run('ef'.repeat(32)),
+          );
+        }
+      },
+    }),
+    e = x.exchange('existing');
+  change = true;
+  assert.equal((await x.relay(e.request('existing', 'commit', e.commits.existing))).ok, false);
+  assert.deepEqual(x.f.rows('membership_ceremonies'), []);
+  mutate(x, (db) => db.prepare('UPDATE promotions SET successor_head=?').run(x.admission.head));
+  await x.relay(e.request('existing', 'commit', e.commits.existing));
+  const before = x.f.rows('membership_ceremonies');
+  const r = await x.relay(e.request('new', 'commit', e.commits.new), () => {
+    clock = e.context.expiresAt;
+    return () => {};
+  });
+  assert.equal(r.refusal, 'expired');
+  assert.deepEqual(x.f.rows('membership_ceremonies'), before);
+  clock = 1000;
+  await x.relay(e.request('new', 'commit', e.commits.new));
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'reveal', e.reveals[role]));
+  await x.relay(e.approval);
+  const saved = x.f.rows('membership_ceremonies')[0];
+  mutate(x, (db) =>
+    db
+      .prepare('UPDATE membership_ceremonies SET decision=?')
+      .run(JSON.stringify({ ...e.approval, signature: '00'.repeat(64) })),
+  );
+  assert.equal((await x.relay(e.request('new', 'read'))).ok, false);
+  mutate(x, (db) => db.prepare('UPDATE membership_ceremonies SET decision=?').run(saved.decision));
+  clock = e.context.expiresAt + 1;
+  assert.equal((await x.relay(e.approval)).stage, 'approved');
+});
+
+test('private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes', async (t) => {
+  const x = await continuationFixture(t);
+  const path = x.f.path + '.offline-v15';
+  const source = new DatabaseSync(x.f.path);
+  await backup(source, path);
+  source.close();
+  let db = new DatabaseSync(path);
+  db.exec('DROP TABLE membership_ceremonies; PRAGMA user_version=15;');
+  db.close();
+  const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
+  const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /explicit offline upgrade/,
+  );
+  const upgraded = new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV15: true,
+  });
+  upgraded.close();
+  db = new DatabaseSync(path);
+  assert.deepEqual(
+    db.prepare('SELECT * FROM membership_admissions').all(),
+    x.f.rows('membership_admissions'),
+  );
+  assert.deepEqual(
+    db.prepare('SELECT * FROM content_ceremonies').all(),
+    x.f.rows('content_ceremonies'),
+  );
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 16);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -1029,4 +1379,24 @@ test('certified receiver opens original encrypted Yjs updates and rechecks retai
   const damaged = new Uint8Array(retained);
   damaged[damaged.length - 3] ^= 1;
   await assert.rejects(verifyStoredInbound(context, damaged, lifetime));
+});
+
+test('a valid version-2 relay decision cannot replace the original version-1 delivery approval', async (t) => {
+  const x = await approved(t);
+  const body = {
+    v: 2,
+    kind: 'ceremony-relay',
+    workspaceId: x.workspace,
+    head: x.successor.head,
+    preparationId: x.prepared.input.attemptId,
+    credentialId: x.context.existing.id,
+    action: 'decide',
+    payload: x.approval.payload,
+  };
+  const decision = {
+    ...body,
+    signature: signed(x.keys.existing, message('done/enrollment-ceremony-relay/v2', body)),
+  };
+  const mixed = await x.signDelivery({ ...x.delivery, decision });
+  await assert.rejects(verifyContentDelivery(mixed, x.base, x.successor), /approved ceremony/);
 });

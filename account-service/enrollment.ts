@@ -33,6 +33,7 @@ import { canonical, fresh, hash, retryHash } from './protocol.ts';
 import { randomBytes } from 'node:crypto';
 import { causeCode, type DiagnosticSink } from '../account-protocol/diagnostics.ts';
 import { AccountSessions, EnrollmentLoginRefused } from './sessions.ts';
+import { verifyPendingMembership } from './membershipAuthority.ts';
 
 export interface EnrollmentIssuer {
   pin: AuthorityPin;
@@ -196,8 +197,12 @@ export class EnrollmentPreparation {
     const challenge = parseEnrollmentChallenge(JSON.parse(row.challenge));
     const receipt = row.receipt ? parseEnrollmentReceipt(JSON.parse(row.receipt)) : null;
     let stage = row.stage;
-    if (current?.base.successor?.preparation_id === row.id) {
-      const successor = JSON.parse(current.base.successor.artifact);
+    const consumed =
+      current?.base.successor?.preparation_id === row.id
+        ? current.base.successor
+        : current?.base.continuations?.find((r) => r.preparation_id === row.id);
+    if (consumed) {
+      const successor = JSON.parse(consumed.artifact);
       if (
         stage !== 'prepared' ||
         !receipt ||
@@ -270,12 +275,21 @@ export class EnrollmentPreparation {
           return refuse('request-conflict');
         if (request.loginRetryKey && !this.sessions) return refuse('login-unavailable');
       }
-      const auth = snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null;
+      const pending = snapshot?.base.continuations?.length
+        ? await verifyPendingMembership(snapshot.base, this.issuer)
+        : null;
+      const auth =
+        pending?.anchor ??
+        (snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null);
       if (operation === 'cancel')
         return this.transaction(op, () => {
           const row = this.row(request.retryKey)!;
           const current = this.snapshot(row.workspace_id);
-          if (current?.base.successor?.preparation_id === row.id) return this.view(row, current);
+          if (
+            current?.base.successor?.preparation_id === row.id ||
+            current?.base.continuations?.some((r) => r.preparation_id === row.id)
+          )
+            return this.view(row, current);
           // Preserve terminal reasons and historical receipts. Cancellation never removes a tombstone.
           if (row.stage === 'challenge' || row.stage === 'prepared') {
             this.sessions?.cancelEnrollment(this.db, row.id);
@@ -287,6 +301,7 @@ export class EnrollmentPreparation {
           return this.view(row, null);
         });
       if (operation === 'begin' && 'candidate' in request && !prior) {
+        if (pending) return refuse('connection-in-progress');
         const candidate = request.candidate;
         if (
           !snapshot ||

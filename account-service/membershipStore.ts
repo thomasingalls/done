@@ -43,3 +43,12 @@ export function membershipRows(db: DatabaseSync, workspace: string): MembershipR
     .prepare('SELECT * FROM membership_admissions WHERE workspace_id=? ORDER BY epoch')
     .all(workspace) as unknown as MembershipRow[];
 }
+
+/** Each admission owns a separate exchange; completed historical ceremonies remain immutable. */
+export const MEMBERSHIP_CEREMONY_SCHEMA = `CREATE TABLE membership_ceremonies (
+ workspace_id TEXT NOT NULL, preparation_id TEXT NOT NULL, head TEXT NOT NULL,
+ candidate_id TEXT NOT NULL, existing_commit TEXT NOT NULL, new_commit TEXT,
+ existing_reveal TEXT, new_reveal TEXT, decision TEXT, cancellation TEXT,
+ expired INTEGER NOT NULL DEFAULT 0 CHECK(expired IN (0,1)),
+ PRIMARY KEY(workspace_id,preparation_id), UNIQUE(workspace_id,head),
+ FOREIGN KEY(workspace_id,preparation_id) REFERENCES membership_admissions(workspace_id,preparation_id));`;

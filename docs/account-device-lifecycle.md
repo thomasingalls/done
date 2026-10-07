@@ -7,7 +7,7 @@ The operator chose additional devices and removal/revocation before lost-device 
 one **Devices** screen in the editor’s Account menu, with the verified list, connect and removal actions.
 The existing invitation/code-comparison ceremony stays; pending enrollment is distinct from approval.
 
-## What the current implementation actually supports
+## Product boundaries at the start of lifecycle work
 
 | Boundary | Current behavior | Required extension |
 | --- | --- | --- |
@@ -149,3 +149,20 @@ The approved product boundary is **Cancel connection before comparison approval*
 afterward**. Approval can expose the content key before certification. Remove must rotate forward,
 preserve uncertain outcomes as possible access, and explain that existing copies cannot be erased.
 A pending roster is not evidence that the candidate lacks a key.
+
+
+## Durable continuation ceremony checkpoint — 2026-10-08
+
+The private relay now shares the original ordering/terminal-state checks, with version-2 signed requests
+binding workspace, exact admission head and preparation identity. A separate admission-keyed table
+retains the chosen certified approver, commitments, reveals and signed decision/cancellation; the
+original two-device ceremony is preserved. Neither competing approvers nor a late cancellation can
+replace an approved pair. Empty and populated reads use the actual service authorization boundary.
+
+This requires private schema 16 (explicit offline `upgradeFromV15` for private schema 15, or the existing
+explicit schema-14 upgrade). The ordinary host remains schema 14; no continuation route is exposed.
+Consumed continuation preparation resumes as admitted and cannot be cancelled through the preparation
+capability. Completing cancellation of a pending member still needs its own authenticated transition;
+storing a cancelled exchange does not claim to remove that member. Approved/uncertain key access still
+requires removal and forward rotation. Content delivery/certification and complete sync composition
+remain next. Focused evidence is recorded in `completed.md`.

@@ -387,6 +387,9 @@ export class PrivateAuthority {
   relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayCeremony(input, this.#deliveryIssuer(authorize));
   }
+  relayMembershipCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.relayMembershipCeremony(input, this.#deliveryIssuer(authorize));
+  }
   transferContent(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.transferContent(input, {
       ...this.#deliveryIssuer(authorize),

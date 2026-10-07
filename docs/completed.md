@@ -10358,3 +10358,29 @@ budget and origin checks pass. The packaged Devices/two-way-delivery/reopen walk
 17.3 seconds. Logs: `/tmp/done-member-ceremony-regressions-final.log`,
 `/tmp/done-member-ceremony-browser.log`. The private continuation relay, certification and third-device
 editor remain next. Retained serving and release-validation status are unchanged.
+
+
+## 2026-10-08 — Durable private continuation ceremony (`L-1`)
+
+Following `7b6235d7`, version-2 relay requests bind the exact admission head and preparation identity.
+The shared commitment/reveal state machine resolves either certified parent approver and retains the
+chosen pair in a separate, admission-keyed table. Earlier ceremony rows remain unchanged. Exact
+commit/approval retries survive lost responses and restart; competing approvers cannot replace a pair.
+Cancellation cannot overwrite approval, and cancellation is itself terminal for that exchange. This
+is ceremony state, not yet a committed pending-membership cancellation or post-approval removal.
+
+Preparation resume now recognizes a consumed continuation receipt as admitted; revisiting or cancelling
+preparation cannot turn it stale/cancelled and destroy membership retry. The new private relay requires
+schema 16. Private schema 15 requires explicit offline upgrade; the ordinary host still opens schema 14
+and refuses continuation schemas. No new HTTP route, retained-host upgrade or third-device UI activation
+was performed. The ceremony authority reader authenticates the current signed chain; it does not grant
+continuation sync or replace ledger coverage verification.
+
+Evidence: 157 affected protocol, ceremony, enrollment, session/grant and host tests pass. Seven directed
+additions cover either approver, ordering, authenticated scope, restart, lost/aborted commitment and
+approval, final authorization refusal, competing approvers, terminal cancellation, stale authority,
+expiry during commit, retained approval tampering, version separation and explicit schema-15 upgrade.
+The packaged two-device Devices/delivery/reopen walkthrough passes in 17.1 seconds. TypeScript, scoped
+lint/format, build, budget and origin checks pass. Logs: `/tmp/done-membership-relay-regressions.log`,
+`/tmp/done-membership-relay-browser.log`. Next is continuation content-key delivery/certification, then
+general history and owned third-device integration. Release validation remains paused.

@@ -1,12 +1,11 @@
 /** Private development relay requests. A relay view is never a content-access grant. */
-import { closed } from './preparation.ts';
+import { closed, accountIdentifier } from './preparation.ts';
 import { domainMessage, json } from './admission.ts';
 import { unhex } from './recovery.ts';
 import { parseCeremonyCommit, parseCeremonyReveal } from './ceremonyExchange.ts';
 export const CEREMONY_RELAY_LIMIT = 16 * 1024;
 export type CeremonyAction = 'read' | 'commit' | 'reveal' | 'decide' | 'cancel';
-export interface CeremonyRequest {
-  v: 1;
+interface CeremonyRequestBody {
   kind: 'ceremony-relay';
   workspaceId: string;
   credentialId: string;
@@ -14,12 +13,15 @@ export interface CeremonyRequest {
   payload: unknown;
   signature: string;
 }
+export type CeremonyRequest = CeremonyRequestBody &
+  ({ v: 1 } | { v: 2; head: string; preparationId: string });
 const hex = (v: unknown, n = 32) => {
   unhex(v, n);
   return v as string;
 };
 export function parseCeremonyRequest(input: unknown): CeremonyRequest {
   if (json(input).length > CEREMONY_RELAY_LIMIT) throw Error('Relay request too large');
+  const version = (input as { v?: unknown } | null)?.v;
   const r = closed(input, [
     'v',
     'kind',
@@ -28,8 +30,10 @@ export function parseCeremonyRequest(input: unknown): CeremonyRequest {
     'action',
     'payload',
     'signature',
+    ...(version === 2 ? ['head', 'preparationId'] : []),
   ]);
-  if (r['v'] !== 1 || r['kind'] !== 'ceremony-relay') throw Error('Invalid relay request');
+  if ((r['v'] !== 1 && r['v'] !== 2) || r['kind'] !== 'ceremony-relay')
+    throw Error('Invalid relay request');
   const action = r['action'] as CeremonyAction;
   let payload: unknown;
   if (action === 'read') {
@@ -49,19 +53,26 @@ export function parseCeremonyRequest(input: unknown): CeremonyRequest {
       outcome: p['outcome'],
     };
   } else throw Error('Invalid relay action');
-  return {
-    v: 1,
-    kind: 'ceremony-relay',
-    workspaceId: hex(r['workspaceId'], 16),
+  const body = {
     credentialId: hex(r['credentialId'], 16),
     action,
     payload,
     signature: hex(r['signature'], 64),
   };
+  const scope = { kind: 'ceremony-relay' as const, workspaceId: hex(r['workspaceId'], 16) };
+  return version === 2
+    ? {
+        v: 2,
+        ...scope,
+        head: hex(r['head']),
+        preparationId: accountIdentifier(r['preparationId']),
+        ...body,
+      }
+    : { v: 1, ...scope, ...body };
 }
 export const ceremonyRequestMessage = (input: unknown) => {
   const { signature: _signature, ...body } = parseCeremonyRequest(input);
-  return domainMessage('done/enrollment-ceremony-relay/v1', body);
+  return domainMessage(`done/enrollment-ceremony-relay/v${body.v}`, body);
 };
 
 export const ceremonyBootstrapMessage = (body: unknown) =>

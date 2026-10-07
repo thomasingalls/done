@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: continuation comparison proof and single prepared connection complete; durable relay next
+scope: private continuation relay complete; content-key delivery and certification next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -84,7 +84,11 @@ approver. Preparation enforces one authenticated unfinished connection (129 affe
 packaged Devices walkthrough pass). Unproved challenges cannot reserve an account. The operator chose
 Cancel before comparison approval and Remove with rotation afterward, even if certification is pending.
 The pending label now reflects that distinction.
-Next: durable continuation relay and certification, complete membership cancellation/removal, general
+Comparison/reservation is committed as `7b6235d7`. The durable private relay now retains a single
+approver and exact commitment/reveal/decision state under the admission identity. Preparation resume
+recognizes the consumed receipt. Schema 16 is private and unrouted; retained serving remains schema 14.
+157 affected checks and the packaged two-device walkthrough pass.
+Next: continuation content-key delivery and certification, complete membership cancellation/removal, general
 history/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.

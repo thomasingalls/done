@@ -1,5 +1,9 @@
 import { ScopedGrants } from './grants.ts';
-import { MEMBERSHIP_SCHEMA, enableMembershipStore } from './membershipStore.ts';
+import {
+  MEMBERSHIP_SCHEMA,
+  MEMBERSHIP_CEREMONY_SCHEMA,
+  enableMembershipStore,
+} from './membershipStore.ts';
 import { admitMembership, type MembershipIssuer } from './membership.ts';
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import {
@@ -183,6 +187,7 @@ export class AccountCore {
       upgradeFromV12?: boolean;
       upgradeFromV13?: boolean;
       upgradeFromV14?: boolean;
+      upgradeFromV15?: boolean;
       /** Private integration gate; there is no routed continuation endpoint yet. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -224,7 +229,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 15 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 16 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 15 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV15
+        ) &&
         !(
           version === 14 &&
           instrumentation.sessions &&
@@ -323,6 +334,10 @@ export class AccountCore {
             this.#db.exec(MEMBERSHIP_SCHEMA);
             this.#db.exec('PRAGMA user_version=15;');
           }
+          if (version < 16) {
+            this.#db.exec(MEMBERSHIP_CEREMONY_SCHEMA);
+            this.#db.exec('PRAGMA user_version=16;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -370,6 +385,9 @@ export class AccountCore {
   }
   relayCeremony(input: unknown, issuer: DeliveryIssuer) {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook);
+  }
+  relayMembershipCeremony(input: unknown, issuer: DeliveryIssuer) {
+    return relayCeremony(this.#db, input, issuer, this.#now, this.#hook, true);
   }
   transferContent(input: unknown, issuer: ContentTransferIssuer) {
     return transferContent(this.#db, input, issuer, this.#hook);
