@@ -1,4 +1,4 @@
-/** Private second-device preparation. No membership, slot or content grant. */
+/** Versioned private preparation. No membership, slot or content grant. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import { digest, lp, unhex } from './recovery.ts';
@@ -19,12 +19,12 @@ export interface EnrollmentCandidate {
   wPub: string;
 }
 export interface EnrollmentContext {
-  v: 1;
+  v: 1 | 2;
   pin: AuthorityPin;
   accountId: string;
   attemptId: string;
   candidate: EnrollmentCandidate;
-  epoch: 1;
+  epoch: number;
   certifiedSetDigest: string;
   recoveryStateDigest: string;
   passkeyId: string;
@@ -33,13 +33,13 @@ export interface EnrollmentContext {
   login?: { purpose: 'enrollment-and-login-v1'; attemptId: string; retryHash: string };
 }
 export interface EnrollmentChallenge {
-  v: 1;
+  v: 1 | 2;
   kind: 'enrollment-preparation-challenge';
   context: EnrollmentContext;
   signature: string;
 }
 export interface EnrollmentReceipt {
-  v: 1;
+  v: 1 | 2;
   kind: 'enrollment-preparation-receipt';
   context: EnrollmentContext;
   receiptId: string;
@@ -139,7 +139,16 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
     'expiresAt',
     ...(hasLogin ? ['login'] : []),
   ]);
-  if (c['v'] !== 1 || c['epoch'] !== 1) throw Error('Unsupported enrollment authority');
+  if (
+    !(c['v'] === 1 && c['epoch'] === 1) &&
+    !(
+      c['v'] === 2 &&
+      Number.isSafeInteger(c['epoch']) &&
+      (c['epoch'] as number) >= 3 &&
+      (c['epoch'] as number) < Number.MAX_SAFE_INTEGER
+    )
+  )
+    throw Error('Unsupported enrollment authority');
   let login: EnrollmentContext['login'];
   if (hasLogin) {
     const l = closed(c['login'], ['purpose', 'attemptId', 'retryHash']);
@@ -151,12 +160,12 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
     };
   }
   return {
-    v: 1,
+    v: c['v'] as 1 | 2,
     pin: parseAuthorityPin(c['pin']),
     accountId: accountIdentifier(c['accountId']),
     attemptId: accountIdentifier(c['attemptId']),
     candidate: parseEnrollmentCandidate(c['candidate']),
-    epoch: 1,
+    epoch: c['epoch'] as number,
     certifiedSetDigest: h(c['certifiedSetDigest']),
     recoveryStateDigest: h(c['recoveryStateDigest']),
     passkeyId: b64(c['passkeyId'], 1, 1023),
@@ -167,12 +176,13 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
 }
 export function parseEnrollmentChallenge(input: unknown): EnrollmentChallenge {
   const c = closed(input, ['v', 'kind', 'context', 'signature']);
-  if (c['v'] !== 1 || c['kind'] !== 'enrollment-preparation-challenge')
+  const context = parseEnrollmentContext(c['context']);
+  if (c['v'] !== context.v || c['kind'] !== 'enrollment-preparation-challenge')
     throw Error('Invalid enrollment challenge');
   return {
-    v: 1,
+    v: context.v,
     kind: 'enrollment-preparation-challenge',
-    context: parseEnrollmentContext(c['context']),
+    context,
     signature: h(c['signature'], 64),
   };
 }
@@ -188,15 +198,15 @@ export function parseEnrollmentReceipt(input: unknown): EnrollmentReceipt {
     'possessionHash',
     'signature',
   ]);
-  if (r['v'] !== 1 || r['kind'] !== 'enrollment-preparation-receipt')
+  const context = parseEnrollmentContext(r['context']);
+  if (r['v'] !== context.v || r['kind'] !== 'enrollment-preparation-receipt')
     throw Error('Invalid enrollment receipt');
   const preparedAt = timestamp(r['preparedAt']),
-    expiresAt = timestamp(r['expiresAt']),
-    context = parseEnrollmentContext(r['context']);
+    expiresAt = timestamp(r['expiresAt']);
   if (expiresAt !== preparedAt + ENROLLMENT_LIFETIME_MS || preparedAt >= context.expiresAt)
     throw Error('Invalid enrollment lifetime');
   return {
-    v: 1,
+    v: context.v,
     kind: 'enrollment-preparation-receipt',
     context,
     receiptId: accountIdentifier(r['receiptId']),
@@ -210,18 +220,18 @@ export function parseEnrollmentReceipt(input: unknown): EnrollmentReceipt {
 export const enrollmentContextBytes = (c: EnrollmentContext) =>
   JSON.stringify(parseEnrollmentContext(c));
 export const enrollmentChallengeMessage = (c: EnrollmentContext) =>
-  lp('done/enrollment-preparation-challenge/v1', enrollmentContextBytes(c));
+  lp(`done/enrollment-preparation-challenge/v${c.v}`, enrollmentContextBytes(c));
 export const enrollmentPossessionMessage = (c: EnrollmentContext) =>
-  lp('done/enrollment-preparation-possession/v1', enrollmentContextBytes(c));
+  lp(`done/enrollment-preparation-possession/v${c.v}`, enrollmentContextBytes(c));
 export const enrollmentReceiptMessage = (r: EnrollmentReceipt) => {
   const { signature: _signature, ...body } = parseEnrollmentReceipt(r);
-  return lp('done/enrollment-preparation-receipt/v1', JSON.stringify(body));
+  return lp(`done/enrollment-preparation-receipt/v${body.v}`, JSON.stringify(body));
 };
 export const enrollmentAssertionMessage = (c: EnrollmentContext) =>
   lp(
     c.login
-      ? 'done/enrollment-and-session-assertion/v1'
-      : 'done/enrollment-preparation-assertion/v1',
+      ? `done/enrollment-and-session-assertion/v${c.v}`
+      : `done/enrollment-preparation-assertion/v${c.v}`,
     enrollmentContextBytes(c),
   );
 export async function enrollmentNonce(c: EnrollmentContext): Promise<string> {

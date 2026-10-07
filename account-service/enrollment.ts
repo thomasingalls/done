@@ -281,7 +281,7 @@ export class EnrollmentPreparation {
           !auth ||
           auth.a.head !== candidate.head ||
           auth.a.lineage !== candidate.lineageId ||
-          auth.a.tip !== 1
+          (auth.a.tip !== 1 && auth.a.tip !== 3)
         )
           return refuse('unavailable');
         if (auth.members.some((m) => m.id === candidate.credentialId))
@@ -315,12 +315,12 @@ export class EnrollmentPreparation {
             return refuse('capacity');
           const id = fresh(),
             context: EnrollmentContext = {
-              v: 1,
+              v: auth.a.tip === 1 ? 1 : 2,
               pin: this.issuer.pin,
               accountId: snapshot!.base.account.id,
               attemptId: id,
               candidate,
-              epoch: 1,
+              epoch: auth.a.tip,
               certifiedSetDigest: hash(JSON.stringify(auth.certification)),
               recoveryStateDigest: auth.certification.recoveryStateDigest,
               passkeyId: snapshot!.credential.id,
@@ -447,7 +447,7 @@ export class EnrollmentPreparation {
           }
           const receipt = parseEnrollmentReceipt(
             this.issuer.receipt({
-              v: 1,
+              v: context.v,
               kind: 'enrollment-preparation-receipt',
               context,
               receiptId: fresh(),

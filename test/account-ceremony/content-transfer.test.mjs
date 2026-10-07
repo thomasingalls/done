@@ -3,6 +3,15 @@ import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
 import { signed } from './exchange-oracle.mjs';
 import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
+import { createHash } from 'node:crypto';
+import { authorityFixture } from '../account-authority/fixtures.mjs';
+import { fresh, lp } from '../account-enrollment/fixtures.mjs';
+import {
+  parseEnrollmentContext,
+  parseEnrollmentChallenge,
+  verifyEnrollmentChallenge,
+  verifyEnrollmentReceipt,
+} from '../../account-protocol/enrollment.ts';
 import { decision, mutate, query, read, page } from '../account-successor/service-fixtures.mjs';
 import {
   verifyCertificationHistory,
@@ -208,6 +217,140 @@ test('bootstrap retries a certification committed while signing without returnin
   assert.deepEqual(result.certification, certification);
   assert.equal(result.nonce, input.nonce);
   assert.deepEqual(result, await x.authority.owner.ceremonyBootstrap(x.f.core, input));
+});
+
+const nextProof = (x, entry, challenge, version = 2) => {
+  const context = challenge.context;
+  const assertionLabel = context.login
+    ? `done/enrollment-and-session-assertion/v${version}`
+    : `done/enrollment-preparation-assertion/v${version}`;
+  return {
+    retryKey: entry.input.retryKey,
+    attemptId: context.attemptId,
+    response: x.account.key.assert({
+      options: {
+        challenge: createHash('sha256')
+          .update(lp(assertionLabel, JSON.stringify(context)))
+          .digest('base64url'),
+      },
+    }),
+    possession: signed(
+      entry.key,
+      lp(`done/enrollment-preparation-possession/v${version}`, JSON.stringify(context)),
+    ),
+    ...(entry.input.loginRetryKey ? { loginRetryKey: entry.input.loginRetryKey } : {}),
+  };
+};
+
+for (const combined of [false, true])
+  test(`next-device preparation binds the certified parent and survives a lost reply${combined ? ' with one login' : ''}`, async (t) => {
+    const authority = authorityFixture(t);
+    let lose = false;
+    const x = await checkpointFixture(t, {
+      authority,
+      ...(combined ? { sessions: { pin: authority.pin, operatorKey: authority.key } } : {}),
+      hook(at, op) {
+        if (lose && op === 'enrollment-finish' && at === 'after-commit') {
+          lose = false;
+          throw Error('Lost preparation reply');
+        }
+      },
+    });
+    const prior = Object.fromEntries(
+      [
+        'promotions',
+        'workspace_successors',
+        'content_ceremonies',
+        'content_transfers',
+        'content_checkpoints',
+      ].map((table) => [table, x.f.rows(table)]),
+    );
+    const entry = x.candidate();
+    assert.equal((await x.enroll('begin', entry.input)).refusal, 'unavailable');
+    entry.input.candidate.head = x.certification.head;
+    if (combined) entry.input.loginRetryKey = fresh();
+    const begun = await x.enroll('begin', entry.input);
+    assert.equal(begun.stage, 'challenge', JSON.stringify(begun));
+    assert.equal(begun.challenge.v, 2);
+    const c = begun.challenge.context;
+    assert.equal(c.v, 2);
+    assert.equal(c.epoch, 3);
+    assert.equal(c.candidate.head, x.certification.head);
+    assert.equal(
+      c.certifiedSetDigest,
+      createHash('sha256').update(JSON.stringify(x.delivery.certificate)).digest('hex'),
+    );
+    assert.equal(c.recoveryStateDigest, x.context.recoveryStateDigest);
+    assert.deepEqual(
+      await verifyEnrollmentChallenge(begun.challenge, authority.pin, entry.input.candidate, 1000),
+      begun.challenge,
+    );
+    assert.throws(() => parseEnrollmentChallenge({ ...begun.challenge, v: 1 }));
+    assert.throws(() => parseEnrollmentContext({ ...c, v: 1 }));
+    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 2 }));
+    assert.equal(
+      (await x.enroll('finish', nextProof(x, entry, begun.challenge, 1))).refusal,
+      'invalid-proof',
+    );
+    const proof = nextProof(x, entry, begun.challenge);
+    lose = true;
+    assert.equal((await x.enroll('finish', proof)).ok, false);
+    x.f.restart();
+    const prepared = await x.enroll('finish', proof);
+    assert.equal(prepared.stage, 'prepared', JSON.stringify(prepared));
+    assert.equal(prepared.receipt.v, 2);
+    assert.deepEqual(
+      await verifyEnrollmentReceipt(prepared.receipt, authority.pin, entry.input.candidate),
+      prepared.receipt,
+    );
+    assert.deepEqual(await x.enroll('finish', proof), prepared);
+    assert.equal((await x.enroll('resume', { retryKey: entry.input.retryKey })).login, undefined);
+    if (combined) {
+      assert.equal(prepared.login.stage, 'issued');
+      assert.equal(x.f.rows('network_sessions').length, 1);
+    }
+    // Preparation is not membership, and the v1 consumer cannot reinterpret a v2 receipt.
+    assert.equal(
+      (
+        await x.admit({
+          retryKey: entry.input.retryKey,
+          attemptId: c.attemptId,
+          receiptId: prepared.receipt.receiptId,
+        })
+      ).refusal,
+      'stale',
+    );
+    for (const [table, rows] of Object.entries(prior))
+      assert.deepEqual(x.f.rows(table), rows, table);
+  });
+
+test('next-device proof racing account invalidation cannot commit a receipt or login', async (t) => {
+  const authority = authorityFixture(t);
+  let invalidate = false;
+  const x = await checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    hook(at, op) {
+      if (invalidate && op === 'enrollment-finish' && at === 'after-verify') {
+        invalidate = false;
+        mutate(x, (db) => db.exec("UPDATE accounts SET state='pending'"));
+      }
+    },
+  });
+  const entry = x.candidate();
+  entry.input.candidate.head = x.certification.head;
+  entry.input.loginRetryKey = fresh();
+  const begun = await x.enroll('begin', entry.input);
+  assert.equal(begun.stage, 'challenge');
+  invalidate = true;
+  const result = await x.enroll('finish', nextProof(x, entry, begun.challenge));
+  assert.equal(result.stage, 'stale', JSON.stringify(result));
+  assert.equal(
+    x.f.rows('enrollment_preparations').find((r) => r.id === begun.challenge.context.attemptId)
+      .receipt,
+    null,
+  );
+  assert.equal(x.f.rows('network_sessions').length, 0);
 });
 
 test('certified devices publish independent positions and read each other across lost replies and restart', async (t) => {

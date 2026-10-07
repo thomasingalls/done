@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: verified device-list foundation complete; repeated membership contract and service next
+scope: versioned additional-device preparation complete; continuation admission next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -72,7 +72,10 @@ No personal browser or writing was opened; operator-device update uptake remains
 Account menu, a verified list, connect/removal actions, and the existing comparison ceremony. The verified list and route-backed owner-preserving navigation are implemented and checked (27 affected
 service/history cases and two packaged browser scenarios). The real invitation path also exposed and
 now covers a bootstrap/certification race. These changes are not deployed to the retained origin.
-Next: repeated membership/third-device enrollment,
+Verified Devices is committed as `eb8c02c0`. Versioned additional-device preparation now binds the
+verified epoch-3 parent and preserves exact retry/login outcomes; 76 focused regressions pass. It does
+not grant membership or content, and the third-device button remains disabled.
+Next: append-only continuation admission, certification/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.
 

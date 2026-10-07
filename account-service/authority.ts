@@ -342,7 +342,7 @@ export class PrivateAuthority {
       pin: { ...this.#pin },
       check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
       challenge: (context) => ({
-        v: 1,
+        v: context.v,
         kind: 'enrollment-preparation-challenge',
         context,
         signature: signature(enrollmentChallengeMessage(context)),

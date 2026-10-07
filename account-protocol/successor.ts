@@ -253,6 +253,9 @@ async function verifyCapturedSuccessor(
   ];
   expectedRoster.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   if (
+    p.v !== 1 ||
+    c.v !== 1 ||
+    c.epoch !== 1 ||
     !same(e.pin, base.pin) ||
     e.requestDigest !== first.epoch.requestDigest ||
     e.accountId !== first.epoch.accountId ||

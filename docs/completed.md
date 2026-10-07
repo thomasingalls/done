@@ -10296,3 +10296,20 @@ Logs: `/tmp/done-device-list-protocol-final.log`, `/tmp/done-device-list-browser
 reproduced pre-fix failure: `/tmp/done-bootstrap-before.log`. No personal workspace was accessed.
 The live retained service still serves `a07de792`; this increment has not been deployed there.
 Release validation remains paused. Next: repeated-membership contract and service.
+
+
+## 2026-10-08 — Versioned preparation for an additional device (`L-1`)
+
+Following Devices checkpoint `eb8c02c0`, the service can prepare a fresh candidate against its verified
+certified epoch-3 head. Version-2 context, challenge, possession, passkey assertion and receipt bind
+that parent and the unchanged recipient/recovery state. Original version-1 bytes remain valid; the old
+successor consumer cannot reinterpret the new proof. Existing transaction/session owners provide
+crash/retry and combined login, without a schema upgrade or another passkey ceremony.
+
+Evidence: 76 focused enrollment, session, historical-successor and transfer tests pass, including three
+new directed cases: lost preparation reply/restart with and without combined login, old-domain proof
+refusal, unchanged prior membership/delivery/checkpoint records, and account invalidation during proof
+verification producing neither a receipt nor a login. TypeScript and scoped lint/format pass. Log:
+`/tmp/done-member-prep-regressions.log`. This does not admit or open a third device; continuation admission,
+certification, discovery and owned editor integration remain next. The retained installation is unchanged,
+and release validation remains paused.

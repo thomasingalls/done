@@ -68,3 +68,31 @@ The Devices entry point and screen are approved. Device names remain local alias
 product contract; unknown remote custody details must say unknown, not guess from user agent or the
 implementation currently running here. Self-removal/last-device removal placement, recovery UX and any
 new prompt or destructive confirmation must be walked through with the operator before enabling them.
+
+
+## Continuation preparation checkpoint — 2026-10-08
+
+The first extension is versioned preparation against the existing certified epoch-3 head. It uses
+`EnrollmentContext/Challenge/Receipt.v = 2`; v1 still means exactly the original epoch-1 preparation.
+Challenge, possession, account assertion and receipt domains carry the context version. A combined
+login still has the explicitly selected enrollment-and-login purpose, now in the version-2 assertion
+domain. Envelope/context version disagreement is malformed. Original signed v1 bytes are unchanged,
+and the v1 successor verifier explicitly requires a v1, epoch-1 preparation.
+
+The service verifies its retained epoch-3 certification, binds the exact head, complete current
+recipient-certificate digest, recovery commitment, candidate keys, account and passkey, then uses the
+existing durable challenge/proof transaction. A finish retry returns the same receipt and optional
+login. Begin/resume never expose issuance secrets. A competing authority invalidates the challenge;
+there is no automatic rebase. Schema, old receipts, completed ceremonies, delivery and checkpoint
+records remain unchanged. Preparation does not admit a credential or deliver content. The old
+admission consumer refuses the new receipt; the Devices screen therefore remains disabled beyond
+two devices until the continuation consumer and actual editor path exist.
+
+Next service work needs an append-only continuation ledger, keyed by workspace and epoch/head, with
+unique consumed preparation identity. It must retain the existing 1–3 records as the verified anchor,
+compare the exact current parent and accepted heads in the admission transaction, carry recipient
+approval unchanged for pending admission, and answer an exact retry from its immutable committed
+result. Current-head discovery must page proofs without dropping any previously held boundary.
+Certification then requires the existing commitment-before-reveal and human comparison rules adapted
+to that verified parent, an eligible approver from its certified set, exact key delivery and durable
+installation. A service roster, enrollment receipt or network login alone cannot activate recipients.
