@@ -10101,3 +10101,37 @@ returned challenge objects. Both controls pass: the first workspace grant cannot
 workspace's signed operation, and caller mutation cannot change retained pin/challenge authority. The
 final session/core/runtime rerun passes **79 tests**, including **20 new** cases (18 grant/domain and
 two HTTP). The 84 affected domain regressions remain passing; no runtime change followed that run.
+
+
+## 2026-10-07 — Combined enrollment and remembered login (sessions/subscriptions phase 3b)
+
+Committed the preceding owned-login and scoped-grant work signed as `a2060547`. Implemented the
+operator-approved fresh enrollment/login combination. The explicit combined assertion binds the
+signed enrollment context, separate login attempt and retry-capability hash. Fresh passkey and
+candidate-possession proofs remain required. The account database atomically commits preparation,
+network session and exact encrypted issuance after a separately committed nonce reservation;
+rollback burns that nonce. Old receipts, ordinary enrollment proofs and ordinary session finish
+cannot acquire this login. Exact retries retain the original session and absolute expiry.
+
+The actual ceremony owner seals the issued login through the existing factor-derived session vault,
+saves the receipt, then acknowledges the service copy. Failed saves and lost replies remain retryable;
+closure and signed-out state fence late installation. A usable saved login survives a retired server
+copy and is available when the joined editor opens. No additional prompt or user-managed code was
+introduced. Session-enabled schema 14 adds a purpose discriminator and explicit linkage; upgrading
+schema 13 requires a separate opt-in. Missing linkage refuses without converting the attempt's purpose.
+Existing ordinary attempts and service custody survive explicit upgrade.
+
+Evidence: 22 new focused cases (15 service, seven bundled client/vault cases), including Ed25519/ES256,
+concurrent retries, actual SIGKILL before/after commit, aborted commit/nonce burning, account retirement,
+expiry, cancellation, legacy proof refusal, upgrade compatibility, save failures and retained login
+state. The final expanded session/core/runtime group passes 101 tests; 90 affected enrollment,
+successor, discovery, ceremony and content-transfer regressions pass. TypeScript and scoped lint,
+format and diff checks pass. The client checks use WebCrypto and fake IndexedDB with disposable SQLite;
+this is not a new native two-device walkthrough or qualification campaign.
+
+The live :8443 frontend `20547876` and schema 11 service remain unchanged. No upgrade, restart or
+browser interaction occurred. Next is owned browser grant acquisition/renewal and exact-request retry,
+then bootstrap-host composition without the shared bearer and a quiet-point live cutover. The browser
+integration must also expose explicit reconnect when enrollment succeeded but neither the local login
+nor its bounded service retry copy is available. Live notifications and the real two-device trial
+follow. Details and commands: [account-enrollment-session.md](./account-enrollment-session.md).

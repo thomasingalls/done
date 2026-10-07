@@ -1,4 +1,8 @@
 import {
+  enrollmentAssertionMessage,
+  type EnrollmentContext,
+} from '../account-protocol/enrollment.ts';
+import {
   parseSessionUnlock,
   sessionUnlockMessage,
   type SessionUnlockContext,
@@ -14,6 +18,7 @@ import {
   SESSION_REQUEST_LIMIT,
   SESSION_RETRY_MS,
   type SessionIssued,
+  type SessionIssuanceResult,
   type SessionOperation,
   type SessionRefusal,
   type SessionResult,
@@ -36,6 +41,15 @@ export const SESSION_SCHEMA = `
     retry_expires INTEGER NOT NULL, result_seal TEXT);
 `;
 export const SESSION_UNLOCK_SCHEMA = `ALTER TABLE session_attempts ADD COLUMN unlock_context TEXT;`;
+export const SESSION_ENROLLMENT_SCHEMA = `ALTER TABLE session_attempts ADD COLUMN purpose TEXT NOT NULL DEFAULT 'login' CHECK(purpose IN ('login','enrollment'));
+CREATE TABLE enrollment_session_links (
+  enrollment_id TEXT PRIMARY KEY REFERENCES enrollment_preparations(id),
+  session_attempt_id TEXT UNIQUE NOT NULL REFERENCES session_attempts(id) ON DELETE CASCADE);`;
+export class EnrollmentLoginRefused extends Error {
+  constructor() {
+    super('Enrollment login unavailable');
+  }
+}
 export const SESSION_LIMITS = Object.freeze({
   attempts: 4096,
   sessions: 1024,
@@ -54,6 +68,7 @@ interface Attempt {
   state: 'open' | 'issued' | 'cancelled' | 'expired';
   proof_hash: string | null;
   unlock_context: string | null;
+  purpose: 'login' | 'enrollment';
 }
 interface Session {
   id: string;
@@ -307,6 +322,7 @@ export class AccountSessions {
         .prepare('SELECT * FROM session_attempts WHERE retry_hash=?')
         .get(retry) as unknown as Attempt | undefined;
       if (prior) {
+        if (prior.purpose !== 'login') return no('request-conflict');
         const held = prior.unlock_context
           ? (JSON.parse(prior.unlock_context) as SessionUnlockContext)
           : undefined;
@@ -354,7 +370,7 @@ export class AccountSessions {
         'hex',
       ).toString('base64url');
       this.#db
-        .prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL,?)")
+        .prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL,?,'login')")
         .run(
           id,
           retry,
@@ -392,6 +408,7 @@ export class AccountSessions {
     const inspect = (): SessionResult => {
       const a = this.#attempt(request.retryKey);
       if (!a || a.id !== request.attemptId) return no('unknown-attempt');
+      if (a.purpose !== 'login') return no('invalid-proof');
       return this.#view(a, this.#time(), digest);
     };
     const checked = this.#transaction('inspect', () => {
@@ -435,65 +452,202 @@ export class AccountSessions {
       const current = this.#credential(credential!.id);
       if (!current || !this.#eligible(current) || credentialBinding(current) !== token)
         return no('invalid-proof');
-      const now = this.#time();
-      this.#prune(now);
-      const total = Number(this.#db.prepare('SELECT COUNT(*) AS n FROM network_sessions').get()!.n);
-      const count = Number(
-        this.#db
-          .prepare(
-            "SELECT COUNT(*) AS n FROM network_sessions WHERE account_id=? AND state='active'",
-          )
-          .get(current.account_id)!.n,
-      );
-      if (total >= SESSION_LIMITS.sessions || count >= SESSION_LIMITS.perAccount)
-        return no('capacity');
-      const result: SessionIssued = {
-        ok: true,
-        stage: 'issued',
-        sessionId: fresh(),
-        accountId: current.account_id,
-        credentialId: current.id,
-        issuedAt: now,
-        expiresAt: now + SESSION_LIFETIME_MS,
-        renewalToken: fresh(),
-        revokeToken: fresh(),
-      };
-      const s: Session = {
-        id: result.sessionId,
-        attempt_id: request.attemptId,
-        account_id: current.account_id,
-        credential_id: current.id,
-        credential_binding: token,
-        issued_at: now,
-        expires_at: result.expiresAt,
-        state: 'active',
-        renewal_hash: retryHash(result.renewalToken),
-        revoke_hash: retryHash(result.revokeToken),
-        retry_expires: now + SESSION_RETRY_MS,
-        result_seal: null,
-      };
-      const seal = this.#custody.seal(JSON.stringify(result), this.#binding(s), reserved.nonce);
-      this.#db
-        .prepare("INSERT INTO network_sessions VALUES (?,?,?,?,?,?,?,'active',?,?,?,?)")
-        .run(
-          s.id,
-          s.attempt_id,
-          s.account_id,
-          s.credential_id,
-          s.credential_binding,
-          s.issued_at,
-          s.expires_at,
-          s.renewal_hash,
-          s.revoke_hash,
-          s.retry_expires,
-          seal,
-        );
-      this.#db
-        .prepare("UPDATE session_attempts SET state='issued',proof_hash=? WHERE id=?")
-        .run(digest, request.attemptId);
-      this.#db.prepare('UPDATE credentials SET counter=? WHERE id=?').run(counter, current.id);
+      const result = this.#issue(current, token, request.attemptId, digest, reserved.nonce);
+      if (result.ok)
+        this.#db.prepare('UPDATE credentials SET counter=? WHERE id=?').run(counter, current.id);
       return result;
     });
+  }
+  #issue(
+    current: StoredCredential,
+    token: string,
+    attemptId: string,
+    proofHash: string,
+    nonce: number,
+  ): SessionIssuanceResult {
+    const now = this.#time();
+    this.#prune(now);
+    const total = Number(this.#db.prepare('SELECT COUNT(*) AS n FROM network_sessions').get()!.n);
+    const count = Number(
+      this.#db
+        .prepare("SELECT COUNT(*) AS n FROM network_sessions WHERE account_id=? AND state='active'")
+        .get(current.account_id)!.n,
+    );
+    if (total >= SESSION_LIMITS.sessions || count >= SESSION_LIMITS.perAccount)
+      return no('capacity');
+    const result: SessionIssued = {
+      ok: true,
+      stage: 'issued',
+      sessionId: fresh(),
+      accountId: current.account_id,
+      credentialId: current.id,
+      issuedAt: now,
+      expiresAt: now + SESSION_LIFETIME_MS,
+      renewalToken: fresh(),
+      revokeToken: fresh(),
+    };
+    const s: Session = {
+      id: result.sessionId,
+      attempt_id: attemptId,
+      account_id: current.account_id,
+      credential_id: current.id,
+      credential_binding: token,
+      issued_at: now,
+      expires_at: result.expiresAt,
+      state: 'active',
+      renewal_hash: retryHash(result.renewalToken),
+      revoke_hash: retryHash(result.revokeToken),
+      retry_expires: now + SESSION_RETRY_MS,
+      result_seal: null,
+    };
+    const seal = this.#custody.seal(JSON.stringify(result), this.#binding(s), nonce);
+    this.#db
+      .prepare("INSERT INTO network_sessions VALUES (?,?,?,?,?,?,?,'active',?,?,?,?)")
+      .run(
+        s.id,
+        s.attempt_id,
+        s.account_id,
+        s.credential_id,
+        s.credential_binding,
+        s.issued_at,
+        s.expires_at,
+        s.renewal_hash,
+        s.revoke_hash,
+        s.retry_expires,
+        seal,
+      );
+    this.#db
+      .prepare("UPDATE session_attempts SET state='issued',proof_hash=? WHERE id=?")
+      .run(proofHash, attemptId);
+    return result;
+  }
+  #enrollment(attemptId: string): string | undefined {
+    return this.#db
+      .prepare('SELECT enrollment_id FROM enrollment_session_links WHERE session_attempt_id=?')
+      .get(attemptId)?.enrollment_id as string | undefined;
+  }
+  #owned(db: DatabaseSync): void {
+    if (this.#closed || db !== this.#db || !db.isTransaction) throw new EnrollmentLoginRefused();
+  }
+  /** Called after the owning enrollment row is inserted, in that same transaction. */
+  createEnrollment(db: DatabaseSync, context: EnrollmentContext, retryKey: string): void {
+    this.#owned(db);
+    const login = context.login;
+    if (
+      !login ||
+      login.retryHash !== retryHash(retryKey) ||
+      canonical(context.pin) !== canonical(this.#pin)
+    )
+      throw new EnrollmentLoginRefused();
+    this.#prune(this.#time());
+    if (
+      this.#attempt(retryKey) ||
+      Number(db.prepare('SELECT COUNT(*) AS n FROM session_attempts').get()!.n) >=
+        SESSION_LIMITS.attempts
+    )
+      throw new EnrollmentLoginRefused();
+    db.prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL,NULL,'enrollment')").run(
+      login.attemptId,
+      login.retryHash,
+      context.accountId,
+      Buffer.from(hash(enrollmentAssertionMessage(context)), 'hex').toString('base64url'),
+      context.expiresAt,
+    );
+    db.prepare('INSERT INTO enrollment_session_links VALUES (?,?)').run(
+      context.attemptId,
+      login.attemptId,
+    );
+  }
+  enrollmentResult(
+    db: DatabaseSync,
+    context: EnrollmentContext,
+    retryKey: string,
+    proofHash: string,
+  ): SessionResult {
+    this.#owned(db);
+    this.#prune(this.#time());
+    const login = context.login,
+      a = this.#attempt(retryKey);
+    if (
+      !login ||
+      !a ||
+      a.purpose !== 'enrollment' ||
+      a.id !== login.attemptId ||
+      a.retry_hash !== login.retryHash ||
+      a.account_id !== context.accountId ||
+      this.#enrollment(a.id) !== context.attemptId ||
+      a.challenge !==
+        Buffer.from(hash(enrollmentAssertionMessage(context)), 'hex').toString('base64url')
+    )
+      return no('unknown-attempt');
+    return this.#view(a, this.#time(), proofHash);
+  }
+  /** Reserve before the enrollment commit. The one-use closure cannot reuse a nonce after rollback.
+   * Only EnrollmentPreparation calls this, after verifying BOTH fresh proofs. */
+  reserveEnrollment(
+    context: EnrollmentContext,
+    retryKey: string,
+    proofHash: string,
+  ):
+    | SessionResult
+    | { commit: (db: DatabaseSync, credential: StoredCredential) => SessionIssuanceResult } {
+    const reserved = this.#transaction('enrollment-reserve', () => {
+      const v = this.enrollmentResult(this.#db, context, retryKey, proofHash);
+      if (!v.ok || v.stage !== 'challenge') return v;
+      const nonce =
+        Number(
+          this.#db.prepare('SELECT seal_counter FROM session_custody WHERE id=1').get()!
+            .seal_counter,
+        ) + 1;
+      if (nonce > 0xffffffff) return no('capacity');
+      this.#db.prepare('UPDATE session_custody SET seal_counter=? WHERE id=1').run(nonce);
+      return { nonce };
+    });
+    if (!('nonce' in reserved)) return reserved;
+    let used = false;
+    return {
+      commit: (db, credential) => {
+        this.#owned(db);
+        if (used) throw new EnrollmentLoginRefused();
+        used = true;
+        const view = this.enrollmentResult(db, context, retryKey, proofHash);
+        if (!view.ok || view.stage === 'issued') return view;
+        if (view.stage !== 'challenge') return no('invalid-proof');
+        const current = this.#credential(credential.id);
+        if (
+          !current ||
+          current.id !== context.passkeyId ||
+          current.account_id !== context.accountId ||
+          !this.#eligible(current) ||
+          credentialBinding(current) !== credentialBinding(credential)
+        )
+          return no('invalid-proof');
+        return this.#issue(
+          current,
+          credentialBinding(current),
+          context.login!.attemptId,
+          proofHash,
+          reserved.nonce,
+        );
+      },
+    };
+  }
+  cancelEnrollment(db: DatabaseSync, enrollmentId: string): void {
+    this.#owned(db);
+    const link = db
+      .prepare('SELECT session_attempt_id FROM enrollment_session_links WHERE enrollment_id=?')
+      .get(enrollmentId);
+    if (link) this.#cancelAttempt(String(link.session_attempt_id));
+  }
+  #cancelAttempt(attemptId: string): void {
+    this.#db.prepare("UPDATE session_attempts SET state='cancelled' WHERE id=?").run(attemptId);
+    const s = this.#db.prepare('SELECT id FROM network_sessions WHERE attempt_id=?').get(attemptId);
+    if (s) {
+      this.#db
+        .prepare("UPDATE network_sessions SET state='revoked',result_seal=NULL WHERE id=?")
+        .run(s.id);
+      this.#dropAccess(String(s.id));
+    }
   }
   cancel(input: unknown): SessionResult {
     if (!object(input) || !fields(input, ['retryKey', 'attemptId'])) return no('malformed');
@@ -506,14 +660,7 @@ export class AccountSessions {
     return this.#transaction('cancel', () => {
       const a = this.#attempt(input.retryKey);
       if (!a || a.id !== input.attemptId) return no('unknown-attempt');
-      this.#db.prepare("UPDATE session_attempts SET state='cancelled' WHERE id=?").run(a.id);
-      const s = this.#db.prepare('SELECT id FROM network_sessions WHERE attempt_id=?').get(a.id);
-      if (s) {
-        this.#db
-          .prepare("UPDATE network_sessions SET state='revoked',result_seal=NULL WHERE id=?")
-          .run(s.id);
-        this.#dropAccess(String(s.id));
-      }
+      this.#cancelAttempt(a.id);
       return { ok: true, stage: 'cancelled' };
     });
   }

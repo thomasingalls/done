@@ -32,6 +32,7 @@ import { assertion, type Policy, type StoredCredential } from './webauthn.ts';
 import { canonical, fresh, hash, retryHash } from './protocol.ts';
 import { randomBytes } from 'node:crypto';
 import { causeCode, type DiagnosticSink } from '../account-protocol/diagnostics.ts';
+import { AccountSessions, EnrollmentLoginRefused } from './sessions.ts';
 
 export interface EnrollmentIssuer {
   pin: AuthorityPin;
@@ -131,6 +132,7 @@ export class EnrollmentPreparation {
   private now: () => number;
   private hook: Hook;
   private diagnostic: DiagnosticSink;
+  private sessions?: AccountSessions;
   constructor(
     db: DatabaseSync,
     policy: Policy,
@@ -138,6 +140,7 @@ export class EnrollmentPreparation {
     now: () => number,
     hook: Hook,
     diagnostic: DiagnosticSink,
+    sessions?: AccountSessions,
   ) {
     this.db = db;
     this.policy = policy;
@@ -145,19 +148,26 @@ export class EnrollmentPreparation {
     this.now = now;
     this.hook = hook;
     this.diagnostic = diagnostic;
+    this.sessions = sessions;
   }
-  private transaction(op: string, work: () => EnrollmentResult): EnrollmentResult {
+  private transaction(
+    op: string,
+    work: () => EnrollmentResult,
+    finalCheck?: () => void,
+  ): EnrollmentResult {
     try {
       this.db.exec('BEGIN IMMEDIATE');
       const result = parseEnrollmentResult(work());
       if (Buffer.byteLength(JSON.stringify(result)) > ENROLLMENT_RESULT_LIMIT)
         throw Error('Oversized enrollment result');
       this.hook('before-commit', op);
+      finalCheck?.();
       this.db.exec('COMMIT');
       this.hook('after-commit', op);
       return result;
     } catch (cause) {
       if (this.db.isTransaction) this.db.exec('ROLLBACK');
+      if (cause instanceof EnrollmentLoginRefused) return refuse('login-unavailable');
       this.diagnostic({ operation: 'enrollment', phase: 'commit', code: causeCode(cause) });
       return refuse('storage-unavailable');
     }
@@ -235,6 +245,19 @@ export class EnrollmentPreparation {
         this.db.exec('ROLLBACK');
       }
       if (prior) await verifyEnrollmentRow(prior, this.issuer);
+      if (request.operation === 'begin' || request.operation === 'finish') {
+        const login = prior
+          ? parseEnrollmentChallenge(JSON.parse(prior.challenge)).context.login
+          : null;
+        if (
+          prior &&
+          (login
+            ? !request.loginRetryKey || login.retryHash !== retryHash(request.loginRetryKey)
+            : !!request.loginRetryKey)
+        )
+          return refuse('request-conflict');
+        if (request.loginRetryKey && !this.sessions) return refuse('login-unavailable');
+      }
       const auth = snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null;
       if (operation === 'cancel')
         return this.transaction(op, () => {
@@ -243,6 +266,7 @@ export class EnrollmentPreparation {
           if (current?.base.successor?.preparation_id === row.id) return this.view(row, current);
           // Preserve terminal reasons and historical receipts. Cancellation never removes a tombstone.
           if (row.stage === 'challenge' || row.stage === 'prepared') {
+            this.sessions?.cancelEnrollment(this.db, row.id);
             row.stage = 'cancelled';
             this.db
               .prepare("UPDATE enrollment_preparations SET stage='cancelled' WHERE id=?")
@@ -302,6 +326,15 @@ export class EnrollmentPreparation {
               passkeyId: snapshot!.credential.id,
               nonce: randomBytes(32).toString('hex'),
               expiresAt: this.now() + ENROLLMENT_LIFETIME_MS,
+              ...(request.loginRetryKey
+                ? {
+                    login: {
+                      purpose: 'enrollment-and-login-v1' as const,
+                      attemptId: fresh(),
+                      retryHash: retryHash(request.loginRetryKey),
+                    },
+                  }
+                : {}),
             };
           const challenge = parseEnrollmentChallenge(this.issuer.challenge(context));
           this.db
@@ -317,6 +350,8 @@ export class EnrollmentPreparation {
               snapshot!.token,
               JSON.stringify(challenge),
             );
+          if (request.loginRetryKey)
+            this.sessions!.createEnrollment(this.db, context, request.loginRetryKey);
           return this.view(this.row(request.retryKey)!, current);
         });
       }
@@ -334,6 +369,21 @@ export class EnrollmentPreparation {
         if (retained.proof_hash && retained.proof_hash !== proofHash)
           return refuse('proof-conflict');
       }
+      const finishView = (row: EnrollmentRow, current: Snapshot | null): EnrollmentResult => {
+        const view = this.view(row, current);
+        if (request.operation !== 'finish' || !request.loginRetryKey || !view.ok || !view.receipt)
+          return view;
+        // A receipt and its session are created together. Only the original two proofs and both
+        // retry capabilities can retrieve the sealed issuance; begin/resume disclose no secrets.
+        const login = this.sessions!.enrollmentResult(
+          this.db,
+          view.challenge.context,
+          request.loginRetryKey,
+          proofHash,
+        );
+        if (login.ok && login.stage !== 'issued') throw new EnrollmentLoginRefused();
+        return { ...view, login };
+      };
       if (
         operation !== 'finish' ||
         retained.stage !== 'challenge' ||
@@ -342,7 +392,7 @@ export class EnrollmentPreparation {
         this.now() >= JSON.parse(retained.challenge).context.expiresAt
       ) {
         return this.transaction(op, () =>
-          this.view(this.row(request.retryKey)!, this.snapshot(retained.workspace_id)),
+          finishView(this.row(request.retryKey)!, this.snapshot(retained.workspace_id)),
         );
       }
       if (!('response' in request)) return refuse('malformed');
@@ -360,44 +410,78 @@ export class EnrollmentPreparation {
         return refuse('invalid-proof');
       }
       this.hook('after-verify', op);
-      return this.transaction(op, () => {
-        const row = this.row(request.retryKey)!,
-          current = this.snapshot(row.workspace_id);
-        if (row.proof_hash && row.proof_hash !== proofHash) return refuse('proof-conflict');
-        const view = this.view(row, current);
-        if (!view.ok || view.stage !== 'challenge') return view;
-        if (
+      const reservation =
+        context.login && request.loginRetryKey
+          ? this.sessions!.reserveEnrollment(context, request.loginRetryKey, proofHash)
+          : undefined;
+      if (reservation && !('commit' in reservation)) {
+        return this.transaction(op, () => {
+          const row = this.row(request.retryKey)!;
+          return row.receipt
+            ? finishView(row, this.snapshot(row.workspace_id))
+            : refuse('login-unavailable');
+        });
+      }
+      let issuedNow = false;
+      return this.transaction(
+        op,
+        () => {
+          const row = this.row(request.retryKey)!,
+            current = this.snapshot(row.workspace_id);
+          if (row.proof_hash && row.proof_hash !== proofHash) return refuse('proof-conflict');
+          const view = this.view(row, current);
+          if (!view.ok || view.stage !== 'challenge') return finishView(row, current);
+          if (
+            this.db
+              .prepare(
+                'SELECT id FROM enrollment_preparations WHERE workspace_id=? AND credential_id=? AND proof_hash IS NOT NULL',
+              )
+              .get(row.workspace_id, row.credential_id)
+          )
+            return refuse('candidate-in-use');
+          const preparedAt = this.now();
+          if (reservation && 'commit' in reservation) {
+            const login = reservation.commit(this.db, snapshot!.credential);
+            if (!login.ok) throw new EnrollmentLoginRefused();
+            issuedNow = true;
+          }
+          const receipt = parseEnrollmentReceipt(
+            this.issuer.receipt({
+              v: 1,
+              kind: 'enrollment-preparation-receipt',
+              context,
+              receiptId: fresh(),
+              preparedAt,
+              expiresAt: preparedAt + ENROLLMENT_LIFETIME_MS,
+              assertionHash,
+              possessionHash,
+              signature: '00'.repeat(64),
+            }),
+          );
           this.db
             .prepare(
-              'SELECT id FROM enrollment_preparations WHERE workspace_id=? AND credential_id=? AND proof_hash IS NOT NULL',
+              "UPDATE enrollment_preparations SET stage='prepared',proof_hash=?,receipt=? WHERE id=?",
             )
-            .get(row.workspace_id, row.credential_id)
-        )
-          return refuse('candidate-in-use');
-        const preparedAt = this.now();
-        const receipt = parseEnrollmentReceipt(
-          this.issuer.receipt({
-            v: 1,
-            kind: 'enrollment-preparation-receipt',
-            context,
-            receiptId: fresh(),
-            preparedAt,
-            expiresAt: preparedAt + ENROLLMENT_LIFETIME_MS,
-            assertionHash,
-            possessionHash,
-            signature: '00'.repeat(64),
-          }),
-        );
-        this.db
-          .prepare(
-            "UPDATE enrollment_preparations SET stage='prepared',proof_hash=?,receipt=? WHERE id=?",
-          )
-          .run(proofHash, JSON.stringify(receipt), row.id);
-        this.db
-          .prepare('UPDATE credentials SET counter=? WHERE id=?')
-          .run(counter, context.passkeyId);
-        return this.view(this.row(request.retryKey)!, current);
-      });
+            .run(proofHash, JSON.stringify(receipt), row.id);
+          this.db
+            .prepare('UPDATE credentials SET counter=? WHERE id=?')
+            .run(counter, context.passkeyId);
+          return finishView(this.row(request.retryKey)!, current);
+        },
+        () => {
+          if (issuedNow && this.now() >= context.expiresAt) throw new EnrollmentLoginRefused();
+          // Retire a cancelled/closed session owner even if its closure races the final hook.
+          if (issuedNow) {
+            const result = this.sessions!.enrollmentResult(
+              this.db,
+              context,
+              request.loginRetryKey!,
+              proofHash,
+            );
+            if (!result.ok || result.stage !== 'issued') throw new EnrollmentLoginRefused();
+          }
+        },
+      );
     } catch (cause) {
       this.diagnostic({ operation: 'enrollment', phase: 'verify', code: causeCode(cause) });
       return refuse('unavailable');

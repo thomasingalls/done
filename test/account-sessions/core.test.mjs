@@ -300,7 +300,7 @@ test('session schema is opt-in, upgrade is explicit and old adapters refuse the 
   const upgraded = new AccountCore(f.path, policy, { sessions, upgradeFromV11: true });
   upgraded.close();
   db = new DatabaseSync(f.path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 13);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 14);
   db.close();
   assert.throws(() => new AccountCore(f.path, policy), /Unsupported account schema/);
   const reopened = new AccountCore(f.path, policy, { sessions });
@@ -311,7 +311,9 @@ test('schema 12 requires explicit combined-challenge upgrade and keeps the origi
   const x = await ready(t),
     a = x.begin();
   x.mutate((db) =>
-    db.exec('ALTER TABLE session_attempts DROP COLUMN unlock_context; PRAGMA user_version=12;'),
+    db.exec(
+      'DROP TABLE enrollment_session_links; ALTER TABLE session_attempts DROP COLUMN purpose; ALTER TABLE session_attempts DROP COLUMN unlock_context; PRAGMA user_version=12;',
+    ),
   );
   assert.throws(
     () => new AccountCore(x.f.path, policy, { sessions: x.config }),

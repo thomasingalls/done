@@ -3,6 +3,8 @@
 Phase 1 historical construction: schema 12 at signed commit `57bcba5f`.
 [Phase 2](./account-session-client.md) adds explicit combined challenges and schema 13, with a separate
 `upgradeFromV12` opt-in. The ordinary session operations and guarantees below remain in effect.
+[Phase 3b](./account-enrollment-session.md) adds atomic combined enrollment/login and schema 14,
+with an explicit `upgradeFromV13` option. The schema 12 descriptions below record phase 1.
 
 2026-10-07. Implements the first increment of [sessions and subscriptions](./account-sessions-subscriptions.md).
 This is an opt-in service component and separate HTTP handler. The packaged client and running private

@@ -2,6 +2,7 @@
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import { digest, lp, unhex } from './recovery.ts';
+import { parseSessionIssuance, type SessionIssuanceResult } from './session.ts';
 
 export const ENROLLMENT_LIFETIME_MS = 600_000;
 export const ENROLLMENT_REQUEST_LIMIT = 131_072;
@@ -29,6 +30,7 @@ export interface EnrollmentContext {
   passkeyId: string;
   nonce: string;
   expiresAt: number;
+  login?: { purpose: 'enrollment-and-login-v1'; attemptId: string; retryHash: string };
 }
 export interface EnrollmentChallenge {
   v: 1;
@@ -63,6 +65,7 @@ export type EnrollmentRefusal =
   | 'unavailable'
   | 'candidate-in-use'
   | 'capacity'
+  | 'login-unavailable'
   | 'storage-unavailable';
 export type EnrollmentResult =
   | { ok: false; refusal: EnrollmentRefusal }
@@ -71,6 +74,8 @@ export type EnrollmentResult =
       stage: EnrollmentStage;
       challenge: EnrollmentChallenge;
       receipt: EnrollmentReceipt | null;
+      /** Issuance secrets only on exact finish, never on begin/resume or in signed receipts. */
+      login?: SessionIssuanceResult;
     };
 const h = (v: unknown, n = 32): string => {
   unhex(v, n);
@@ -119,6 +124,7 @@ export function parseEnrollmentCandidate(input: unknown): EnrollmentCandidate {
   };
 }
 export function parseEnrollmentContext(input: unknown): EnrollmentContext {
+  const hasLogin = input !== null && typeof input === 'object' && 'login' in input;
   const c = closed(input, [
     'v',
     'pin',
@@ -131,8 +137,19 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
     'passkeyId',
     'nonce',
     'expiresAt',
+    ...(hasLogin ? ['login'] : []),
   ]);
   if (c['v'] !== 1 || c['epoch'] !== 1) throw Error('Unsupported enrollment authority');
+  let login: EnrollmentContext['login'];
+  if (hasLogin) {
+    const l = closed(c['login'], ['purpose', 'attemptId', 'retryHash']);
+    if (l['purpose'] !== 'enrollment-and-login-v1') throw Error('Invalid enrollment login purpose');
+    login = {
+      purpose: 'enrollment-and-login-v1',
+      attemptId: accountIdentifier(l['attemptId']),
+      retryHash: h(l['retryHash']),
+    };
+  }
   return {
     v: 1,
     pin: parseAuthorityPin(c['pin']),
@@ -145,6 +162,7 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
     passkeyId: b64(c['passkeyId'], 1, 1023),
     nonce: h(c['nonce']),
     expiresAt: timestamp(c['expiresAt']),
+    ...(login ? { login } : {}),
   };
 }
 export function parseEnrollmentChallenge(input: unknown): EnrollmentChallenge {
@@ -199,10 +217,15 @@ export const enrollmentReceiptMessage = (r: EnrollmentReceipt) => {
   const { signature: _signature, ...body } = parseEnrollmentReceipt(r);
   return lp('done/enrollment-preparation-receipt/v1', JSON.stringify(body));
 };
-export async function enrollmentNonce(c: EnrollmentContext): Promise<string> {
-  const hash = await digest(
-    lp('done/enrollment-preparation-assertion/v1', enrollmentContextBytes(c)),
+export const enrollmentAssertionMessage = (c: EnrollmentContext) =>
+  lp(
+    c.login
+      ? 'done/enrollment-and-session-assertion/v1'
+      : 'done/enrollment-preparation-assertion/v1',
+    enrollmentContextBytes(c),
   );
+export async function enrollmentNonce(c: EnrollmentContext): Promise<string> {
+  const hash = await digest(enrollmentAssertionMessage(c));
   return btoa(String.fromCharCode(...unhex(hash, 32)))
     .replaceAll('+', '-')
     .replaceAll('/', '_')
@@ -271,19 +294,29 @@ export const parseEnrollmentRetry = (input: unknown) => {
   return { retryKey: b64(r['retryKey'], 32, 32) };
 };
 export const parseEnrollmentBegin = (input: unknown) => {
-  const r = closed(input, ['retryKey', 'candidate']);
+  const combined = input !== null && typeof input === 'object' && 'loginRetryKey' in input;
+  const r = closed(input, ['retryKey', 'candidate', ...(combined ? ['loginRetryKey'] : [])]);
   return {
     retryKey: b64(r['retryKey'], 32, 32),
     candidate: parseEnrollmentCandidate(r['candidate']),
+    ...(combined ? { loginRetryKey: b64(r['loginRetryKey'], 32, 32) } : {}),
   };
 };
 export const parseEnrollmentFinish = (input: unknown) => {
-  const r = closed(input, ['retryKey', 'attemptId', 'response', 'possession']);
+  const combined = input !== null && typeof input === 'object' && 'loginRetryKey' in input;
+  const r = closed(input, [
+    'retryKey',
+    'attemptId',
+    'response',
+    'possession',
+    ...(combined ? ['loginRetryKey'] : []),
+  ]);
   return {
     retryKey: b64(r['retryKey'], 32, 32),
     attemptId: accountIdentifier(r['attemptId']),
     response: r['response'],
     possession: h(r['possession'], 64),
+    ...(combined ? { loginRetryKey: b64(r['loginRetryKey'], 32, 32) } : {}),
   };
 };
 
@@ -303,13 +336,15 @@ export function parseEnrollmentResult(input: unknown): EnrollmentResult {
       'unavailable',
       'candidate-in-use',
       'capacity',
+      'login-unavailable',
       'storage-unavailable',
     ];
     if (!values.includes(r['refusal'] as EnrollmentRefusal))
       throw Error('Unknown enrollment refusal');
     return { ok: false, refusal: r['refusal'] as EnrollmentRefusal };
   }
-  const r = closed(input, ['ok', 'stage', 'challenge', 'receipt']);
+  const hasLogin = input !== null && typeof input === 'object' && 'login' in input;
+  const r = closed(input, ['ok', 'stage', 'challenge', 'receipt', ...(hasLogin ? ['login'] : [])]);
   if (
     r['ok'] !== true ||
     !['challenge', 'prepared', 'admitted', 'cancelled', 'expired', 'stale'].includes(
@@ -326,5 +361,20 @@ export function parseEnrollmentResult(input: unknown): EnrollmentResult {
       enrollmentContextBytes(receipt.context) !== enrollmentContextBytes(challenge.context))
   )
     throw Error('Inconsistent enrollment result');
-  return { ok: true, stage: r['stage'] as EnrollmentStage, challenge, receipt };
+  const login = hasLogin ? parseSessionIssuance(r['login']) : undefined;
+  if (
+    login &&
+    (!receipt?.context.login ||
+      (login.ok &&
+        (login.accountId !== receipt.context.accountId ||
+          login.credentialId !== receipt.context.passkeyId)))
+  )
+    throw Error('Enrollment login identity changed');
+  return {
+    ok: true,
+    stage: r['stage'] as EnrollmentStage,
+    challenge,
+    receipt,
+    ...(login ? { login } : {}),
+  };
 }

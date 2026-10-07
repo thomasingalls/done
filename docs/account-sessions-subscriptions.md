@@ -1,6 +1,7 @@
 # Account sessions and live subscriptions
 
-2026-10-07 · design checkpoint · **phase 3a service grants/transaction guards implemented; browser integration and live cutover pending**.
+2026-10-07 · design checkpoint · **phase 3b combined enrollment/login implemented; browser grants and live cutover pending**.
+See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
 See [phase 3a implementation, route disposition and focused evidence](./account-session-grants.md).
 See [phase 2 implementation and focused evidence](./account-session-client.md).
 See [phase 1 implementation and focused evidence](./account-session-core.md).
@@ -149,6 +150,12 @@ already completed registration proofs to mint sessions. Combining a future sessi
 already necessary online passkey ceremony requires that purpose in the original fresh challenge and
 atomic commit; changing the number or timing of user prompts needs an explicit product walkthrough.
 
+**Approved enrollment consolidation (2026-10-07):** the joining device's fresh enrollment assertion
+also establishes login under an explicit combined challenge purpose. Its candidate-possession proof
+is still required. [Phase 3b](./account-enrollment-session.md) commits the preparation and session
+atomically and seals the login before acknowledging the result. Existing receipts cannot enter this
+path; retained ordinary attempts remain ordinary.
+
 ### Renewal and request failures
 
 The unlocked owner exchanges its renewal credential for bounded access, checking service pin, account,
@@ -292,8 +299,9 @@ not a new generalized conformance or release campaign.
    host. Cover wrong-account/workspace/attempt, pending-vs-certified and revoked grants. Switch the
    retained development installation only after a quiet point and backup, preserving its origin/pin.
    **Service foundation completed:** [phase 3a](./account-session-grants.md). The protected adapter is
-   unmounted. Next implement the approved combined fresh enrollment/login purpose and atomic issuance,
-   factor-sealed client retention, browser grants/exact-request retry and bootstrap-host composition.
+   unmounted. **Combined enrollment/login completed:** [phase 3b](./account-enrollment-session.md),
+   including atomic issuance and factor-sealed client retention. Next implement browser grants and
+   exact-request retry, then bootstrap-host composition without the shared bearer.
    Then switch the retained installation; there is no live cutover claim yet.
 4. **Live notifications and real use.** Add the broker, authenticated stream, gateway lifecycle and
    scheduler/ceremony wakeups. Cover the commit/subscribe race, dropped hints, restart/reconnect,

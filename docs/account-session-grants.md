@@ -1,7 +1,8 @@
 # Scoped network grants and transaction authorization
 
 2026-10-07 · sessions/subscriptions phase **3a** · service foundation implemented;
-browser transport, combined enrollment/login and live cutover remain pending.
+browser transport and live cutover remain pending. Combined enrollment/login is now implemented in
+[phase 3b](./account-enrollment-session.md), which also adds opt-in schema 14.
 Follows [the owned client login](./account-session-client.md) and
 [the session/subscription design](./account-sessions-subscriptions.md). Release validation remains paused.
 
@@ -70,7 +71,7 @@ development handler remains separate until the browser and remaining bootstrap r
 | `begin`, `resume`, `finish`, `cancel` | Fresh account ceremony and attempt retry capabilities; bootstrap-host composition remains pending |
 | `preparation/inspect`, `/abandon`, `recovery/*`, `promotion/*` | Existing retained setup capabilities, passkey/recovery/device proofs; bootstrap-host composition remains pending |
 | `ceremony/bootstrap` | Signed invitation yields bounded historical admission proof, not a live workspace grant; bootstrap-host composition remains pending |
-| `enrollment/begin`, `/finish` | Fresh passkey plus candidate-possession proof; combined login issuance and bootstrap-host composition remain pending |
+| `enrollment/begin`, `/finish` | Fresh passkey plus candidate-possession proof; combined login issuance implemented in phase 3b; bootstrap-host composition remains pending |
 | `access` | Retire in the session-enabled host; never route to the development handler as a fallback |
 
 The protected adapter returns `kind: authorization-refused` separately from a domain refusal.
@@ -105,9 +106,8 @@ been changed. These grants add no persisted schema; the preceding phase's sessio
 
 ## Next bounded work
 
-The operator approved combining the joining device's **fresh** enrollment passkey assertion with
-network login. Implement an explicit combined challenge purpose and atomic enrollment/session
-issuance, exact retry recovery and client factor-sealed retention. An old receipt remains insufficient.
-Then connect the browser's owned grant acquisition/renewal and exact-request retry, compose bootstrap
+The approved combined **fresh** enrollment/login challenge, atomic issuance, exact retry and
+factor-sealed client retention are implemented in [phase 3b](./account-enrollment-session.md).
+An old receipt remains insufficient. Next connect the browser's owned grant acquisition/renewal and exact-request retry, compose bootstrap
 routes without the shared bearer, and perform a quiet-point backup and live cutover. Notifications
 follow that cutover; the eventual two-device walkthrough remains the product milestone.

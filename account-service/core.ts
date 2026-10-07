@@ -22,7 +22,12 @@ import {
 import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import { createDeliveryVerification } from './deliveryVerification.ts';
 import { randomBytes } from 'node:crypto';
-import { AccountSessions, SESSION_SCHEMA, SESSION_UNLOCK_SCHEMA } from './sessions.ts';
+import {
+  AccountSessions,
+  SESSION_SCHEMA,
+  SESSION_UNLOCK_SCHEMA,
+  SESSION_ENROLLMENT_SCHEMA,
+} from './sessions.ts';
 import type { SessionConfiguration } from './session-custody.ts';
 import {
   ACTIVATION_LIFETIME_MS,
@@ -174,6 +179,7 @@ export class AccountCore {
       upgradeFromV10?: boolean;
       upgradeFromV11?: boolean;
       upgradeFromV12?: boolean;
+      upgradeFromV13?: boolean;
       sessions?: SessionConfiguration;
     } = {},
   ) {
@@ -211,7 +217,8 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 13 && instrumentation.sessions) &&
+        !(version === 14 && instrumentation.sessions) &&
+        !(version === 13 && instrumentation.sessions && instrumentation.upgradeFromV13) &&
         !(version === 12 && instrumentation.sessions && instrumentation.upgradeFromV12) &&
         !(version === 10 && instrumentation.upgradeFromV10) &&
         !(version === 9 && instrumentation.upgradeFromV9) &&
@@ -295,6 +302,10 @@ export class AccountCore {
           this.#db.exec(SESSION_UNLOCK_SCHEMA);
           this.#db.exec('PRAGMA user_version=13;');
         }
+        if (version < 14) {
+          this.#db.exec(SESSION_ENROLLMENT_SCHEMA);
+          this.#db.exec('PRAGMA user_version=14;');
+        }
         this.#sessions = new AccountSessions(
           this.#db,
           this.#policy,
@@ -367,6 +378,7 @@ export class AccountCore {
       this.#now,
       this.#hook,
       this.#diagnostics.record,
+      this.#sessions,
     ).run(operation, input);
   }
 

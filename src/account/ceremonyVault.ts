@@ -1,4 +1,8 @@
 import { installJoinedAccount } from '../crdt/joinedAccount';
+import { openSessionVault } from './sessionVault';
+import { rememberEnrollmentLogin } from './enrollmentLogin';
+import type { AuthorityPin } from '../../account-protocol/authority';
+import type { SessionIssued, SessionIssuanceResult } from '../../account-protocol/session';
 import type { ContentReaderState } from './contentReader';
 /** Small exclusive operation on the existing mandatory-factor lifecycle, for the private preview. */
 import { withPromotionSlot } from '../crdt/writeSession';
@@ -26,6 +30,11 @@ export interface InstalledContentKey {
   ct: string;
 }
 export interface CeremonyVault {
+  rememberLogin(
+    pin: AuthorityPin,
+    expected: { accountId: string; credentialId: string },
+    result: SessionIssuanceResult,
+  ): Promise<SessionIssued>;
   load(): Promise<unknown>;
   save(value: unknown, check?: () => void): Promise<void>;
   sign(message: Uint8Array<ArrayBuffer>): Promise<string>;
@@ -148,6 +157,19 @@ export async function withCeremonyVault<T>(
           }
         };
         return work({
+          rememberLogin: async (pin, expected, result) => {
+            const vault = await openSessionVault(task, root, {
+              pin,
+              slotId,
+              rootId: record.root_id,
+              accountId: expected.accountId,
+            });
+            try {
+              return await rememberEnrollmentLogin(vault, task, result, expected);
+            } finally {
+              vault.close();
+            }
+          },
           participant,
           installWriting: (authority, reading, key) =>
             installJoinedAccount(task, slotId, code, { authority, reading, key }),

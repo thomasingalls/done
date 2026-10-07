@@ -1,4 +1,5 @@
-import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
+import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
+import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
 import { privateServiceFetch } from './privateAccess';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
@@ -70,6 +71,7 @@ import {
   verifyEnrollmentReceipt,
   type EnrollmentCandidate,
   type EnrollmentReceipt,
+  type EnrollmentContext,
 } from '../../account-protocol/enrollment';
 interface Progress {
   v: 1;
@@ -85,6 +87,8 @@ interface Progress {
     retryKey: string;
     proof: unknown | null;
     receipt: EnrollmentReceipt | null;
+    loginRetryKey?: string;
+    challenge?: EnrollmentContext;
   } | null;
   context: CeremonyContext | null;
   own: CeremonyCommit | null;
@@ -326,6 +330,7 @@ export function createDeviceEnrollment(
                       sPub: owner.participant.sPub,
                     },
                     retryKey: capability(),
+                    ...(config.networkSessions ? { loginRetryKey: capability() } : {}),
                     proof: null,
                     receipt: null,
                   }
@@ -368,6 +373,10 @@ export function createDeviceEnrollment(
         }
         if (role === 'new' && !p.admissionHead) {
           const en = p.enrollment!;
+          const loginIdentity = {
+            accountId: boot.base.receipt.offer.epoch.accountId,
+            credentialId: boot.base.receipt.activation.context.credentialId,
+          };
           if (input?.enroll) {
             if (!en.receipt) {
               if (!en.proof) {
@@ -376,13 +385,22 @@ export function createDeviceEnrollment(
                   candidate: en.candidate,
                   retryKey: en.retryKey,
                   begin: (retryKey) =>
-                    request('enrollment/begin', { retryKey, candidate: en.candidate }),
+                    request('enrollment/begin', {
+                      retryKey,
+                      candidate: en.candidate,
+                      ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
+                    }),
                   renew: async () => {
                     en.retryKey = capability();
+                    if (en.loginRetryKey) en.loginRetryKey = capability();
+                    delete en.challenge;
                     await save();
                     return en.retryKey;
                   },
                 });
+                if (en.loginRetryKey)
+                  await checkEnrollmentLogin(challenge.context, en.loginRetryKey, loginIdentity);
+                en.challenge = challenge.context;
                 const credential = (await navigator.credentials.get({
                   publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
                     await enrollmentOptions(challenge.context),
@@ -400,12 +418,36 @@ export function createDeviceEnrollment(
                   attemptId: challenge.context.attemptId,
                   response: credential.toJSON(),
                   possession: await owner.sign(enrollmentPossessionMessage(challenge.context)),
+                  ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
                 };
                 await save();
               }
-              const finished = await request('enrollment/finish', en.proof);
-              en.receipt = await verifyEnrollmentReceipt(finished.receipt, pin, en.candidate);
-              await save();
+              if (en.loginRetryKey) {
+                if (!en.challenge) throw Error('The saved enrollment login challenge is missing.');
+                en.receipt = await completeEnrollmentLogin({
+                  pin,
+                  context: en.challenge,
+                  loginRetryKey: en.loginRetryKey,
+                  expected: loginIdentity,
+                  signal: lifetime.signal,
+                  finish: () => request('enrollment/finish', en.proof),
+                  remember: (result) => owner.rememberLogin(pin, loginIdentity, result),
+                  persistReceipt: async (receipt) => {
+                    en.receipt = receipt;
+                    await save();
+                  },
+                  acknowledge: (r) =>
+                    postSession(
+                      'acknowledge',
+                      { sessionId: r.sessionId, renewalToken: r.renewalToken },
+                      lifetime.signal,
+                    ),
+                });
+              } else {
+                const finished = await request('enrollment/finish', en.proof);
+                en.receipt = await verifyEnrollmentReceipt(finished.receipt, pin, en.candidate);
+                await save();
+              }
             }
             const admitted = await request('enrollment/admit', {
               retryKey: en.retryKey,

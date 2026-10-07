@@ -42,46 +42,48 @@ that is no longer active.
 
 ---
 
-## Product integration: scoped account grants (`L-1`)
+## Product integration: combined enrollment and login (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: sessions/subscriptions phase 3a — service grants, transaction guards, protected adapter
+scope: sessions/subscriptions phase 3b — atomic fresh enrollment/login and factor-sealed retention
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Implemented:** after signed session-core checkpoint `57bcba5f` and the opt-in owned client login,
-scoped grants now require a live account session plus fresh device possession. They bind certified
-workspace or exact enrollment-attempt authority. Domain operations check scope and parent eligibility
-inside their transaction and recheck retirement/expiry before commit. Pending grants never become
-workspace grants. Inbound scope follows the reader. Empty ceremony responses use the same boundary.
-The separate protected HTTP adapter has no private shared-token fallback; it remains unmounted.
+**Implemented:** signed checkpoint `a2060547` contains the preceding owned client login and scoped
+service grants. The approved combined enrollment/login path now uses one explicitly purpose-bound
+fresh assertion plus candidate possession. Preparation and session commit atomically after reserving
+the seal nonce. Exact retries recover the original result; old receipts cannot mint a login. The
+ceremony owner saves the factor-sealed login and receipt before acknowledging the service copy.
+The joined editor can open that carrier. Ordinary retained attempts remain ordinary.
 
-**Evidence:** 20 new directed grant/HTTP cases; 79 passing expanded session/core/runtime cases and 84
-passing affected domain regressions. TypeScript and scoped lint/format pass. See
-[phase 3a's implementation/route record](./account-session-grants.md),
-[phase 2's client record](./account-session-client.md) and [completed work](./completed.md).
-These are bounded implementation checks, not a resumed qualification campaign.
+**Evidence:** 22 new focused cases (15 service, seven bundled client/vault cases), including real
+SIGKILL/restart, lost replies, failed saves, retirement, expiry, purpose/linkage refusal and explicit
+upgrade. The expanded session/core/runtime group passes 101 tests; another 90 affected enrollment,
+approval and content-transfer regressions pass. TypeScript and scoped lint/format pass. See
+[phase 3b's implementation record](./account-enrollment-session.md),
+[phase 3a's route disposition](./account-session-grants.md) and [completed work](./completed.md).
+These are bounded implementation checks, not a resumed qualification campaign or browser walkthrough.
 
-**Next bounded phase:** the operator approved combining the joining device's fresh enrollment check
-with network login. Add the explicit combined purpose and atomic enrollment/session issuance, exact
-retry recovery and factor-sealed retention; old receipts remain insufficient. Then wire owned browser
-grant acquisition/renewal and exact-request retry, compose the remaining bootstrap routes, and switch
-the retained installation after a quiet-point backup. Setup subscriptions/live notifications and the
-real two-device walkthrough follow, per [the design](./account-sessions-subscriptions.md).
+**Next bounded phase:** owned browser grant acquisition/renewal and exact-request retry. Include the
+explicit reconnect path for an enrollment whose bounded issuance copy was lost before local storage.
+Then compose bootstrap routes without the shared bearer and switch the retained installation after a
+quiet-point backup. Setup subscriptions/live notifications and the real two-device walkthrough follow,
+per [the design](./account-sessions-subscriptions.md).
 
 **Live baseline remains:** independent app/proxy on 127.0.0.1:53219 and account API on 127.0.0.1:53220,
 running from this worktree/session at `https://mbp.tail0e0d4.ts.net:8443/`. Signed split implementation
 `7c2061ea` and switch checkpoint `b8e71944` retain frontend `20547876`, schema 11 and the original pin.
-The new session schema 13/client hooks/grant adapter are not enabled by those launchers. No live
-upgrade, restart or browser change occurred. Phase 3a adds no persisted schema. The
-[packaged runbook](./packaged-account-development.md) remains current. Broader lifecycle, recovery,
-pruning, deployment/operations and release qualification remain outside this phase.
+The session-enabled code now uses schema 14, with explicit upgrade from schema 13. Those schema/client
+hooks and the protected adapter are not enabled by the live launchers. No live upgrade, restart or
+browser change occurred. The [packaged runbook](./packaged-account-development.md) remains current.
+Broader lifecycle, recovery, pruning, deployment/operations and release qualification remain outside
+this phase.
 
 ---
 

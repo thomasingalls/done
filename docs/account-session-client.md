@@ -2,6 +2,9 @@
 
 2026-10-07. Builds on signed phase 1 commit `57bcba5f` and the
 [session/subscription plan](./account-sessions-subscriptions.md).
+Signed with the scoped grant foundation at `a2060547`. The subsequent
+[combined enrollment/login phase](./account-enrollment-session.md) reuses this client carrier and
+adds service schema 14; schema 13 below describes this phase's historical upgrade.
 
 Implemented as an opt-in application integration. **The running :8443 installation is unchanged.**
 `SetupConfig.networkSessions` is deliberately absent from the packaged configuration loader. Do not
