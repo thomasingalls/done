@@ -71,3 +71,30 @@ The live switch retains `https://mbp.tail0e0d4.ts.net:8443/` and internal port 5
 confirmed the two devices closed; a final built artifact and state backup precede switching serving.
 Public deployment, production account sessions, additional membership epochs and key rotation/recovery
 product work remain separate.
+
+
+## Live serving checkpoint
+
+Implementation commits are signed: `9bb46fde` (compiled serving/access), `d27dc540` (offline startup)
+and `20547876` (update continuity). After the operator confirmed both devices closed, the Vite service
+was stopped and both SQLite databases, operator key and pin were backed up offline under
+`.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`.
+
+The exact compiled build is retained at `.dev/account-enrollment-tailnet/builds/20547876`. It is running
+from this worktree/session with:
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/20547876 \
+node scripts/serve-account.mjs
+```
+
+The live HTTPS check verified all 21 precache URLs against the build and the exact worker bytes
+(SHA-256 `08f34ea579aecd376f5499fe41966af92215ff55bb3cadeb0c7b510d739d5072`). Both runtime config and
+private access return 200, with the original service pin. No database schema change, account reset,
+credential replacement or browser-storage migration was performed. Port `:8443` remains required.
+The account preview label remains deliberate. Open once online on each device to install the complete
+cache; normal reopening can then use the cached application. The backend is still needed for account
+ceremonies and exchanging edits. This serving check did not open personal writing.

@@ -48,7 +48,7 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: implemented; live serving switch pending
+status: done
 scope: compiled account serving, offline reopening, update continuity
 blocks_on: none
 release_validation: paused by operator
@@ -90,8 +90,17 @@ build/budget/origin checks pass. The registration fixture's first run disconnect
 preparation had completed; waiting for the prepared passkey screen corrected the fixture, and its
 focused rerun passed. Phase 2 signed: `d27dc540`.
 
-**Next:** switch the closed Tailscale preview to this packaged build, retaining the exact `:8443` origin.
-The operator confirmed both devices locked/closed. The live preview has not yet been switched. Existing Local-only packaging remains supported.
+**Live switch complete:** signed implementation `20547876` is served at the unchanged
+`https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219, using the original retained service state.
+The operator confirmed both devices locked/closed before restart. The immutable build is retained at
+`.dev/account-enrollment-tailnet/builds/20547876`; the offline pre-switch backup of both databases,
+operator key and pin is `.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`.
+All 21 precached URLs and the worker match the built bytes over the live HTTPS address. Public config
+and private access return 200 with the original pin; no browser data, credential or account was reset.
+
+**Next:** operator use of the packaged app, beginning with one online open to install its cache on each
+device. Tests establish offline tab reopening and update continuity; a physical-phone or full-process
+crash walkthrough is not claimed. Existing Local-only packaging remains supported.
 See [packaged account integration](./packaged-account-development.md). Production sessions, lifecycle
 completion and release qualification remain outside this work; the release campaign remains paused.
 

@@ -9874,3 +9874,19 @@ TypeScript, scoped lint/format, build, budget and origin scan pass (95.3 KiB gzi
 Test cleanup now stops the disposable service even if initial pairing fails. Phases 1/2 are signed as
 `9bb46fde` / `d27dc540`. The operator confirmed both devices closed and reiterated retaining `:8443`.
 The live compiled switch follows this commit; no release-validation campaign resumed.
+
+
+## 2026-10-07 — Same-origin packaged account serving switch
+
+With both devices confirmed locked/closed, switched the existing Tailscale `:8443` preview from Vite
+to signed compiled implementation `20547876`, keeping internal port 53219, the original service identity,
+SQLite state and browser origin. Retained the exact build under
+`.dev/account-enrollment-tailnet/builds/20547876`; backed up both SQLite databases (including WAL),
+operator key and pin before restart under
+`.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`. No schema change or account reset.
+
+Live HTTPS verification matches all 21 precache URLs and the service worker against the retained build.
+Runtime config/access return 200 with the original pin. The server remains running in this worktree/session;
+no personal writing was opened during the serving check. All three authorized integration phases are
+complete, with signed implementation commits `9bb46fde`, `d27dc540`, `20547876`. Next is operator use;
+physical-device/process-crash qualification is unclaimed and release validation remains paused.

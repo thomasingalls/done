@@ -13,6 +13,12 @@ was needed on reopen. This is desktop development evidence, not a physical-phone
 qualification run. The [completed-work record](./completed.md) includes the exact scope and
 credential/resume usability observations. The content-opening continuation is implemented below, with a second live walkthrough.
 
+**Packaged continuation (2026-10-07):** the server-loading limitation below is superseded by
+[packaged account integration](./packaged-account-development.md). The same `:8443` origin now serves
+signed build `20547876`, including the offline shell and all account routes. Both accounts have focused
+cold-offline opening/reconnect and waiting-update evidence; the live service identity/state is retained.
+An initial online open installs the cache. Other protocol/lifecycle limits below remain in force.
+
 ## Resume the existing trial
 
 Use **https://mbp.tail0e0d4.ts.net:8443/** on both devices. On the first, choose **I already have a
