@@ -64,6 +64,7 @@ export type EnrollmentRefusal =
   | 'invalid-proof'
   | 'unavailable'
   | 'candidate-in-use'
+  | 'connection-in-progress'
   | 'capacity'
   | 'login-unavailable'
   | 'storage-unavailable';
@@ -345,6 +346,7 @@ export function parseEnrollmentResult(input: unknown): EnrollmentResult {
       'invalid-proof',
       'unavailable',
       'candidate-in-use',
+      'connection-in-progress',
       'capacity',
       'login-unavailable',
       'storage-unavailable',

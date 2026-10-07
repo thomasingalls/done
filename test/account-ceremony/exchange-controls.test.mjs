@@ -14,7 +14,15 @@ async function mutant(t, from, to) {
   let code = readFileSync('account-protocol/ceremonyExchange.ts', 'utf8');
   assert.equal(code.split(from).length, 2, 'Unique omission anchor');
   code = code.replace(from, to);
-  for (const name of ['preparation', 'authority', 'admission', 'recovery', 'successor', 'ceremony'])
+  for (const name of [
+    'preparation',
+    'authority',
+    'admission',
+    'recovery',
+    'successor',
+    'ceremony',
+    'membership',
+  ])
     code = code.replace(
       `'./${name}.ts'`,
       JSON.stringify(pathToFileURL(resolve(`account-protocol/${name}.ts`)).href),

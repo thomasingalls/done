@@ -180,6 +180,18 @@ export class EnrollmentPreparation {
   private snapshot(workspace: string): Snapshot | null {
     return enrollmentSnapshot(this.db, workspace);
   }
+  private pendingConnection(workspace: string, token: string): boolean {
+    // Unauthenticated challenges must not reserve the account. Reserve only after the passkey
+    // and possession proofs, in the same transaction that creates the preparation receipt.
+    const rows = this.db
+      .prepare("SELECT * FROM enrollment_preparations WHERE workspace_id=? AND stage='prepared'")
+      .all(workspace) as unknown as EnrollmentRow[];
+    return rows.some((row) => {
+      if (row.authority_hash !== token || !row.receipt) return false;
+      const receipt = parseEnrollmentReceipt(JSON.parse(row.receipt));
+      return receipt.v === 2 && this.now() < receipt.expiresAt;
+    });
+  }
   private view(row: EnrollmentRow, current: Snapshot | null): EnrollmentResult {
     const challenge = parseEnrollmentChallenge(JSON.parse(row.challenge));
     const receipt = row.receipt ? parseEnrollmentReceipt(JSON.parse(row.receipt)) : null;
@@ -295,6 +307,8 @@ export class EnrollmentPreparation {
               ? this.view(winner, current)
               : refuse('request-conflict');
           if (current?.token !== snapshot!.token) return refuse('unavailable');
+          if (auth.a.tip === 3 && this.pendingConnection(candidate.workspaceId, current.token))
+            return refuse('connection-in-progress');
           if (
             this.db
               .prepare(
@@ -431,6 +445,8 @@ export class EnrollmentPreparation {
           if (row.proof_hash && row.proof_hash !== proofHash) return refuse('proof-conflict');
           const view = this.view(row, current);
           if (!view.ok || view.stage !== 'challenge') return finishView(row, current);
+          if (context.v === 2 && this.pendingConnection(row.workspace_id, current!.token))
+            return refuse('connection-in-progress');
           if (
             this.db
               .prepare(

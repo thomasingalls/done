@@ -1,5 +1,6 @@
 /** Authenticated exchange bytes for one admitted child. No persistence, comparison or key release. */
 import { closed, accountIdentifier } from './preparation.ts';
+import { membershipState, type VerifiedMembership } from './membership.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import { json, same, domainMessage, verifySignature } from './admission.ts';
 import { digest, unhex } from './recovery.ts';
@@ -16,13 +17,13 @@ export interface CeremonyParticipant {
   sPub: string;
 }
 export interface CeremonyContext {
-  v: 1;
+  v: 1 | 2;
   pin: AuthorityPin;
   accountId: string;
   principalId: string;
   workspaceId: string;
   lineageId: string;
-  epoch: 2;
+  epoch: number;
   head: string;
   certifiedSetDigest: string;
   recoveryStateDigest: string;
@@ -33,7 +34,7 @@ export interface CeremonyContext {
   expiresAt: number;
 }
 export interface CeremonyCommit {
-  v: 1;
+  v: 1 | 2;
   kind: 'ceremony-commitment';
   context: CeremonyContext;
   role: CeremonyRole;
@@ -41,7 +42,7 @@ export interface CeremonyCommit {
   signature: string;
 }
 export interface CeremonyReveal {
-  v: 1;
+  v: 1 | 2;
   kind: 'ceremony-reveal';
   contextHash: string;
   role: CeremonyRole;
@@ -123,7 +124,11 @@ export function parseCeremonyContext(input: unknown): CeremonyContext {
     'createdAt',
     'expiresAt',
   ]);
-  if (c['v'] !== 1 || c['epoch'] !== 2) throw Error('Unsupported ceremony authority');
+  if (
+    !(c['v'] === 1 && c['epoch'] === 2) &&
+    !(c['v'] === 2 && Number.isSafeInteger(c['epoch']) && (c['epoch'] as number) >= 4)
+  )
+    throw Error('Unsupported ceremony authority');
   const existing = participant(c['existing']),
     candidate = participant(c['candidate']);
   if (existing.id === candidate.id) throw Error('Ceremony roles need distinct devices');
@@ -135,13 +140,13 @@ export function parseCeremonyContext(input: unknown): CeremonyContext {
   )
     throw Error('Invalid ceremony lifetime');
   return {
-    v: 1,
+    v: c['v'] as 1 | 2,
     pin: parseAuthorityPin(c['pin']),
     accountId: accountIdentifier(c['accountId']),
     principalId: h(c['principalId'], 16),
     workspaceId: h(c['workspaceId'], 16),
     lineageId: h(c['lineageId']),
-    epoch: 2,
+    epoch: c['epoch'] as number,
     head: h(c['head']),
     certifiedSetDigest: h(c['certifiedSetDigest']),
     recoveryStateDigest: h(c['recoveryStateDigest']),
@@ -196,15 +201,55 @@ export async function verifyCeremonyContext(
   contexts.add(result);
   return result;
 }
+/** A continuation context resolves the approver exclusively through its verified parent certificate. */
+export function verifyMembershipCeremonyContext(
+  input: unknown,
+  parent: VerifiedMembership,
+  localInput: CeremonyParticipant & { role: CeremonyRole },
+  now: number,
+): VerifiedCeremonyContext {
+  const c = parseCeremonyContext(input),
+    p = membershipState(parent);
+  const l = closed(localInput, ['role', 'id', 'wPub', 'sPub']);
+  const localRole = role(l['role']),
+    local = participant({ id: l['id'], wPub: l['wPub'], sPub: l['sPub'] });
+  live(c, now);
+  const approver = p.certificate.members.find((m) => m.id === c.existing.id);
+  const admitted = p.roster.find((m) => m.id === c.candidate.id);
+  if (
+    c.v !== 2 ||
+    c.epoch !== p.epoch ||
+    c.head !== p.head ||
+    !same(c.pin, p.pin) ||
+    c.accountId !== p.accountId ||
+    c.principalId !== p.principalId ||
+    c.workspaceId !== p.workspaceId ||
+    c.lineageId !== p.lineageId ||
+    c.certifiedSetDigest !== p.certifiedSetDigest ||
+    c.recoveryStateDigest !== p.certificate.recoveryStateDigest ||
+    !approver ||
+    !same(c.existing, approver) ||
+    p.roster.find((m) => m.id === approver.id)?.state !== 'certified' ||
+    !admitted ||
+    admitted.state !== 'pending' ||
+    !same(c.candidate, { id: admitted.id, wPub: admitted.wPub, sPub: admitted.sPub }) ||
+    !same(local, localRole === 'existing' ? c.existing : c.candidate)
+  )
+    throw Error('Continuation ceremony authority changed');
+  const result = freeze({ context: c, localRole });
+  contexts.add(result);
+  return result;
+}
 export function parseCeremonyCommit(input: unknown): CeremonyCommit {
   bounded(input, CEREMONY_COMMIT_LIMIT);
   const c = closed(input, ['v', 'kind', 'context', 'role', 'commitment', 'signature']);
-  if (c['v'] !== 1 || c['kind'] !== 'ceremony-commitment')
+  const context = parseCeremonyContext(c['context']);
+  if (c['v'] !== context.v || c['kind'] !== 'ceremony-commitment')
     throw Error('Invalid ceremony commitment');
   return {
-    v: 1,
+    v: context.v,
     kind: 'ceremony-commitment',
-    context: parseCeremonyContext(c['context']),
+    context,
     role: role(c['role']),
     commitment: h(c['commitment']),
     signature: h(c['signature'], 64),
@@ -222,9 +267,10 @@ export function parseCeremonyReveal(input: unknown): CeremonyReveal {
     'nonce',
     'signature',
   ]);
-  if (r['v'] !== 1 || r['kind'] !== 'ceremony-reveal') throw Error('Invalid ceremony reveal');
+  if ((r['v'] !== 1 && r['v'] !== 2) || r['kind'] !== 'ceremony-reveal')
+    throw Error('Invalid ceremony reveal');
   return {
-    v: 1,
+    v: r['v'] as 1 | 2,
     kind: 'ceremony-reveal',
     contextHash: h(r['contextHash']),
     role: role(r['role']),
@@ -234,17 +280,19 @@ export function parseCeremonyReveal(input: unknown): CeremonyReveal {
     signature: h(r['signature'], 64),
   };
 }
-export const ceremonyContextMessage = (input: unknown) =>
-  domainMessage('done/enrollment-ceremony-context/v1', parseCeremonyContext(input));
+export const ceremonyContextMessage = (input: unknown) => {
+  const c = parseCeremonyContext(input);
+  return domainMessage(`done/enrollment-ceremony-context/v${c.v}`, c);
+};
 export const ceremonyContextHash = async (input: unknown) =>
   digest(await ceremonyContextMessage(input));
 export const ceremonyCommitMessage = (input: unknown) => {
   const { signature: _signature, ...c } = parseCeremonyCommit(input);
-  return domainMessage('done/enrollment-ceremony-commitment/v1', c);
+  return domainMessage(`done/enrollment-ceremony-commitment/v${c.v}`, c);
 };
 export const ceremonyRevealMessage = (input: unknown) => {
   const { signature: _signature, ...r } = parseCeremonyReveal(input);
-  return domainMessage('done/enrollment-ceremony-reveal/v1', r);
+  return domainMessage(`done/enrollment-ceremony-reveal/v${r.v}`, r);
 };
 export async function verifyCeremonyCommit(
   authority: VerifiedCeremonyContext,
@@ -301,7 +349,7 @@ export async function prepareCeremonyReveal(
   if ((await ceremonyCommitment(ownRole, nonce)) !== own.commitment)
     throw Error('Local ceremony nonce changed');
   return freeze({
-    v: 1 as const,
+    v: pair.authority.context.v,
     kind: 'ceremony-reveal' as const,
     contextHash: pair.contextHash,
     role: ownRole,
@@ -322,6 +370,7 @@ export async function verifyCeremonyReveal(
     r = parseCeremonyReveal(input),
     ownRole = role(expectedRole);
   if (
+    r.v !== context.v ||
     r.role !== ownRole ||
     r.contextHash !== pair.contextHash ||
     r.existingCommitHash !== pair.existingCommitHash ||

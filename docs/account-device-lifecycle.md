@@ -130,3 +130,22 @@ comparison and installation to the verified continuation parent; generalize acce
 for all eligible publishers before wiring any public/development route. The operator selected one unfinished connection per account, with Resume/Cancel before another
 invitation. Enforce that rule in the service and Devices. Cancellation preserves approved recipients and
 their generation; competing authority changes still require a new comparison.
+
+
+## Continuation comparison and reservation checkpoint — 2026-10-08
+
+Version-2 ceremony contexts resolve either existing approver through the verified parent certificate,
+and bind the exact current admission, pending candidate keys and local role. Commitments and reveals
+use versioned domains; version-1 bytes remain unchanged. The authenticated relay still needs durable
+attempt-keyed storage before this becomes a third-device product flow.
+
+A prepared version-2 enrollment reserves the single connection while live under the same authority.
+The reservation is made only after both passkey and candidate possession proofs, atomically with the
+receipt and optional login. Multiple unproved challenges can exist; they cannot block a legitimate
+connection. Cancellation/expiry of preparation releases that reservation. After admission, the actual
+verified membership/ceremony transition must govern cancellation instead.
+
+The approved product boundary is **Cancel connection before comparison approval**, **Remove device
+afterward**. Approval can expose the content key before certification. Remove must rotate forward,
+preserve uncertain outcomes as possible access, and explain that existing copies cannot be erased.
+A pending roster is not evidence that the candidate lacks a key.

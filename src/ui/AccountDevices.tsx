@@ -56,7 +56,7 @@ export function AccountDevices({ onBack, onConnect }: { onBack(): void; onConnec
                   <p>
                     {device.state === 'certified'
                       ? 'Approved for content and sync'
-                      : 'Enrollment pending · No content access yet'}
+                      : 'Enrollment pending · Not yet certified for sync'}
                   </p>
                   <p className="setup-note">
                     {device.id === roster.currentDevice

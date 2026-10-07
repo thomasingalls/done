@@ -4290,3 +4290,14 @@ same rule at the service boundary, not only in the interface. Preserve pending-v
 cancellation of an unapproved device must not revoke approved readers or rotate their content key. A
 competing authorization change still requires a fresh transcript and human code comparison under the
 existing ruling; serialization of enrollment does not allow rebasing an earlier approval.
+
+
+## 2026-10-08 — Cancel before comparison approval; Remove afterward (`L-1`)
+
+The operator selected **Cancel connection before approval**, then **Remove device after approval**.
+After the human approves the comparison code, the new device may already have received a content key
+even if certification/setup is unfinished. Removal therefore includes forward key rotation and explains
+that existing copies cannot be erased. A pending roster alone cannot establish that no key was delivered.
+Uncertain approval/delivery outcomes preserve the possible-access classification; an unsigned denial or
+missing acknowledgement cannot downgrade removal into cancellation. Resume is offered where the actual
+retained local attempt can be resumed, not by transferring another device's private signing authority.

@@ -386,8 +386,10 @@ test('private continuation admission retains both publisher boundaries, aborts a
       receiptId: result.receipt.receiptId,
     };
   };
-  const request = await prepare(),
-    competitor = await prepare();
+  const request = await prepare();
+  const extra = x.candidate();
+  extra.input.candidate.head = x.certification.head;
+  assert.equal((await x.enroll('begin', extra.input)).refusal, 'connection-in-progress');
   const originalRecords = [
     'workspace_successors',
     'content_ceremonies',
@@ -416,7 +418,7 @@ test('private continuation admission retains both publisher boundaries, aborts a
   const result = await call();
   assert.equal(result.kind, 'membership-admission', JSON.stringify(result));
   assert.deepEqual(await call(), result);
-  assert.equal((await call(competitor)).refusal, 'stale');
+  assert.equal((await call({ ...request, receiptId: fresh() })).refusal, 'request-conflict');
   assert.equal(x.f.rows('membership_admissions').length, 1);
   const parent = await verifyMembershipAnchor(x.base, x.successor, x.certification, {
     epoch: 3,
@@ -444,6 +446,45 @@ test('private continuation admission retains both publisher boundaries, aborts a
     db.prepare('UPDATE membership_admissions SET boundaries=?').run(saved.boundaries),
   );
   assert.deepEqual(await call(), result);
+});
+
+test('only a proved next-device connection reserves the account; concurrent proof, cancellation and retry preserve one login', async (t) => {
+  const authority = authorityFixture(t);
+  const x = await checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+  });
+  const entries = [x.candidate(), x.candidate()];
+  for (const entry of entries) {
+    entry.input.candidate.head = x.certification.head;
+    entry.input.loginRetryKey = fresh();
+  }
+  const begun = await Promise.all(entries.map((entry) => x.enroll('begin', entry.input)));
+  assert(begun.every((r) => r.stage === 'challenge'));
+  const proofs = entries.map((entry, i) => nextProof(x, entry, begun[i].challenge));
+  const results = await Promise.all(proofs.map((proof) => x.enroll('finish', proof)));
+  assert.equal(results.filter((r) => r.stage === 'prepared').length, 1);
+  assert.equal(results.filter((r) => r.refusal === 'connection-in-progress').length, 1);
+  assert.equal(x.f.rows('network_sessions').length, 1);
+  const winner = results.findIndex((r) => r.stage === 'prepared'),
+    loser = 1 - winner;
+  assert.equal(
+    (await x.enroll('cancel', { retryKey: entries[winner].input.retryKey })).stage,
+    'cancelled',
+  );
+  const resumed = await x.enroll('finish', proofs[loser]);
+  assert.equal(resumed.stage, 'prepared', JSON.stringify(resumed));
+  assert.equal(resumed.login.stage, 'issued');
+  assert.equal(
+    (await x.enroll('resume', { retryKey: entries[winner].input.retryKey })).stage,
+    'cancelled',
+  );
+  assert.equal(
+    x.f
+      .rows('enrollment_preparations')
+      .filter((r) => r.stage === 'prepared' && JSON.parse(r.receipt).v === 2).length,
+    1,
+  );
 });
 
 test('continuation schema requires explicit offline opt-in and preserves retained session/account rows', async (t) => {

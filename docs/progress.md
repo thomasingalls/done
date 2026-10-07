@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: private first continuation admission complete; continuation ceremony integration next
+scope: continuation comparison proof and single prepared connection complete; durable relay next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -79,8 +79,12 @@ Preparation is committed as `9f02a88f`. The first private continuation admission
 publisher boundaries and exact retry outcomes; 85 affected regressions pass. It is unrouted and requires
 explicit schema-15 opt-in. The regular host and retained installation stay on schema 14. The legacy
 delivery owner deliberately refuses continuation state until general history is composed.
-The operator selected one unfinished connection per account, with Resume/Cancel before another invite.
-Next: continuation ceremony/certification, service enforcement of that policy, general
+Private admission is committed as `f6b04977`. Version-2 comparison proofs now support either certified
+approver. Preparation enforces one authenticated unfinished connection (129 affected tests and the
+packaged Devices walkthrough pass). Unproved challenges cannot reserve an account. The operator chose
+Cancel before comparison approval and Remove with rotation afterward, even if certification is pending.
+The pending label now reflects that distinction.
+Next: durable continuation relay and certification, complete membership cancellation/removal, general
 history/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.

@@ -10335,3 +10335,26 @@ scoped lint/format, build, budget and origin isolation pass. Logs:
 walkthrough also passes against this build (16.4 seconds; `/tmp/done-membership-browser.log`). The operator
 selected one unfinished connection per account with Resume/Cancel before another invitation.
 Release validation remains paused; continuation ceremony work is next.
+
+
+## 2026-10-08 — Continuation comparison proof and single prepared connection (`L-1`)
+
+Following `f6b04977`, the version-2 commitment/reveal exchange resolves its approver through the
+verified parent certificate. Either certified parent device can approve the pending candidate; the
+exact parent, keys, roles, expiry and signed pair stay bound. Original version-1 signed bytes and
+verification remain unchanged. Preparation now reserves one unfinished connection only after account
+passkey and candidate possession verification, in the receipt/login transaction. Unproved challenges
+cannot reserve an account. Concurrent proofs produce one preparation/login; cancellation allows the
+other valid proof to retry. This covers preparation, not yet the complete membership cancellation path.
+
+The operator chose Cancel before comparison approval and Remove afterward, including forward rotation
+and the existing-copy limitation. The pending roster label now says not yet certified for sync; it no
+longer claims the candidate cannot already hold a content key.
+
+Evidence: 129 affected Node tests pass, including independent version-2 signatures/code agreement from
+either parent device, authority/version substitution refusal and concurrent proof/cancel/retry. The
+existing exchange fixture needed its new dependency included. TypeScript, scoped lint/format, build,
+budget and origin checks pass. The packaged Devices/two-way-delivery/reopen walkthrough passes in
+17.3 seconds. Logs: `/tmp/done-member-ceremony-regressions-final.log`,
+`/tmp/done-member-ceremony-browser.log`. The private continuation relay, certification and third-device
+editor remain next. Retained serving and release-validation status are unchanged.
