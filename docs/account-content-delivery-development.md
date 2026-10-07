@@ -215,9 +215,12 @@ streams in turn.
 Focused evidence: 12 browser cases, 29 service/history/inbound cases, five offline-upgrade cases and
 34 inbound-verification cases; final targeted reruns include a pre-activation accepted suffix and a
 modified activation phase with an invalid MAC. The real Tailscale service is upgraded and running with
-its retained data (backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`). A live repeat in
-the real disposable Firefox containers is pending a quiet browser window. Do not infer that the physical
-phone or the live two-way walkthrough has been checked from the automated browser result.
+its retained data (backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`). The live Firefox
+repeat also passed on `d63634a7`: the saved B connection activated its editor, new day cards arrived in
+both directions without refreshing, and locking/closing/restoring B followed by chooser-based unlock
+reopened the original writing and both new cards. The existing real Bitwarden passkey was reused;
+reopening required one assertion. See the completed-work record for exact actions and limitations.
+This desktop/container result does not claim physical-phone, full-process-crash or offline-PWA evidence.
 
 Remaining work after operator use: general checkpoint/pruning policy, additional device/epoch flows,
 recovery/revocation product paths and packaged-app integration. Release qualification remains paused.

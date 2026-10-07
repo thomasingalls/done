@@ -48,9 +48,9 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
+status: done
 scope: writable activation, per-device publishing and automatic two-way delivery
-blocks_on: quiet Firefox window for the live disposable-pair walkthrough
+blocks_on: none for this bounded development milestone
 release_validation: paused by operator
 updated: 2026-10-07
 ```
@@ -71,12 +71,18 @@ reopening on both devices. See [completed.md](./completed.md) and the updated
 **Preview:** `https://mbp.tail0e0d4.ts.net:8443/`, port 53219, retained state
 `.dev/account-enrollment-tailnet`, live updates disabled. Explicit schema 10→11 upgrade completed with
 backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`. Refresh existing tabs for the new
-client. The preceding read-only phase is signed `684f4f06`; this slice is its writable continuation.
+client. Signed commits: `684f4f06` for durable opening, `d63634a7` for writable activation and two-way
+delivery. The live walkthrough used `d63634a7` on both devices.
 
-**Remaining in this slice:** repeat the two-way editing check in the existing disposable Firefox
-containers, then let the operator use the preview. Firefox switched to unrelated browsing during
-computer use; an unanswered request asks for an uninterrupted window. Do not count live two-way or
-physical-phone evidence as complete. The automated two-profile flow is complete.
+**Live result:** the existing disposable Firefox pair completed the walkthrough. B activated its
+editor from the retained read-only baseline; B→A and A→B day cards arrived automatically without
+refreshing. After locking, closing/restoring B's tab and selecting its saved connection in the chooser,
+one device code and one account passkey assertion reopened the original writing and both new cards.
+No implementation repair was needed. This is desktop/container evidence; physical-phone and
+full-process-crash/offline-PWA qualification remain distinct and unclaimed.
+
+**Next:** operator use and feedback. Stop this implementation slice here; no further integration or
+release-validation work starts automatically.
 
 **Limits / later work:** one generation and the current two-device epoch; activation checkpoints up to
 4 MiB. First activation currently asks for the passkey during both reader admission and editor unlock;

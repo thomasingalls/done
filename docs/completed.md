@@ -9789,3 +9789,35 @@ limit and refuses larger input before installing its interlock. General checkpoi
 pruning, additional devices/epochs, revocation/recovery UX, packaged-app integration and release
 qualification are not part of this milestone. Stop at operator use after the live walkthrough; do not
 resume the paused release campaign.
+
+
+## 2026-10-07 — live two-way editing and second-device reopen
+
+After signed implementation commit `d63634a7`, the operator authorized resuming computer use. The
+existing **Done disposable A/B** Firefox containers completed the live walkthrough against the
+retained Tailscale preview on schema 11. Both displayed build `d63634a7` and the same disposable
+account. No new account, invitation, comparison, passkey or device-lock code was created.
+
+1. Refreshed and unlocked A with its saved device code and existing account passkey. The original
+   Goals text and earlier day card remained present.
+2. Refreshed B's prior read-only page, unlocked the saved connection and chose **Open your writing**.
+   The retained approval/checkpoint activated the ordinary editor. The expected first-activation
+   pair of passkey assertions completed using the existing disposable account credential.
+3. Added **Written on device B — live two-way check 2026-10-07.** as a day card. It appeared on A
+   automatically. Added **Reply from device A — live two-way check 2026-10-07.** on A; it appeared
+   on B automatically. Neither receiving page needed a refresh or manual update check.
+4. Locked B, closed and restored its tab, returned to the chooser and selected its saved device
+   connection. Its own device code and one passkey assertion opened the editor directly. Both new
+   cards, the earlier day card and original Goals text were visible after this reopen.
+
+The operator unlocked Bitwarden; computer use selected the existing disposable passkey where needed.
+The password manager's suggestion to update an existing login was dismissed without overwriting a
+credential. Only disposable writing was edited. The normal editor remains open on both test devices;
+the preview server remains available at `https://mbp.tail0e0d4.ts.net:8443/`.
+
+No implementation repair or further automated campaign was needed. This is real Firefox/container
+and passkey evidence for the development flow, not a physical-phone, full-process-crash or offline-PWA
+qualification result. The existing automated evidence covers the separate offline/reconnect and fault
+cases. The bounded experiential milestone is complete; stop for operator use. Existing transitional
+labels (**Device connection**, **Unlock enrollment**) and the duplicate first-activation passkey prompt
+remain usability follow-ups, not silently changed product decisions. Release qualification stays paused.
