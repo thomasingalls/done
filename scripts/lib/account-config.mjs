@@ -13,7 +13,13 @@ export function previewConfig(env = process.env) {
       (url.protocol !== 'https:' || !url.hostname.endsWith('.ts.net')))
   )
     throw Error('Preview origin must be loopback or an explicit Tailscale HTTPS origin');
+  if (
+    env.ACCOUNT_NETWORK_SESSIONS !== undefined &&
+    !['0', '1'].includes(env.ACCOUNT_NETWORK_SESSIONS)
+  )
+    throw Error('ACCOUNT_NETWORK_SESSIONS must be 0 or 1');
   return {
+    ...(env.ACCOUNT_NETWORK_SESSIONS === '1' ? { networkSessions: true } : {}),
     port,
     directory: resolve(env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup'),
     policy: { rpId: url.hostname, origin },

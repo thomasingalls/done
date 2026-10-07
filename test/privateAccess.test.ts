@@ -23,7 +23,7 @@ it('opens from the retained public pin offline without fetching or retaining ada
   vi.stubGlobal('fetch', fetch);
   await loadPackagedConfig();
   expect(fetch).toHaveBeenCalledTimes(1);
-  expect(localStorage.length).toBe(1);
+  expect(localStorage.length).toBe(2);
   fetch.mockRejectedValue(Error('offline'));
   const config = await loadPackagedConfig();
   expect(config?.pin).toEqual(pin);
@@ -45,14 +45,14 @@ it('renews private access after restart and retries the identical request once',
   vi.stubGlobal('fetch', fetch);
   const config = (await loadPackagedConfig())!;
   const body = new Uint8Array([1, 2, 3]);
-  await privateServiceFetch(pin, config.token, '/account/delivery/submit', {
+  await privateServiceFetch(pin, config.token!, '/account/delivery/submit', {
     method: 'POST',
     body,
   });
   token = 'b'.repeat(43);
   expect(
     (
-      await privateServiceFetch(pin, config.token, '/account/delivery/submit', {
+      await privateServiceFetch(pin, config.token!, '/account/delivery/submit', {
         method: 'POST',
         body,
       })
@@ -69,21 +69,20 @@ it('renews private access after restart and retries the identical request once',
 it('refuses a replacement service pin before sending account bytes', async () => {
   origin();
   localStorage.setItem('done.account-service.pin.v1', JSON.stringify(pin));
+  localStorage.setItem('done.account-service.transport.v1', 'private');
   const config = (await loadPackagedConfig())!;
   const fetch = vi
     .fn()
-    .mockResolvedValue(
-      response({ v: 1, pin: { ...pin, authRoot: '03'.repeat(32) }, token: 'a'.repeat(43) }),
-    );
+    .mockResolvedValue(response({ v: 1, pin: { ...pin, authRoot: '03'.repeat(32) } }));
   vi.stubGlobal('fetch', fetch);
   await expect(
-    privateServiceFetch(pin, config.token, '/account/delivery/submit', {
+    privateServiceFetch(pin, config.token!, '/account/delivery/submit', {
       method: 'POST',
       body: 'private',
     }),
   ).rejects.toThrow('identity changed');
   expect(fetch).toHaveBeenCalledTimes(1);
-  expect(fetch.mock.calls[0]![0]).toBe('/__account-setup/access');
+  expect(fetch.mock.calls[0]![0]).toBe('/__account-setup/config');
   expect(JSON.parse(localStorage.getItem('done.account-service.pin.v1')!)).toEqual(pin);
 });
 it('never refreshes raw fixture tokens or retries uncertain network outcomes', async () => {
@@ -122,4 +121,34 @@ it('explains a network failure without retrying an uncertain mutation', async ()
     }),
   ).rejects.toThrow('needs a connection');
   expect(fetch).toHaveBeenCalledTimes(1);
+});
+it('retains session configuration without a bearer and opens it offline without discovery', async () => {
+  origin();
+  const fetch = vi.fn().mockResolvedValue(response({ v: 2, pin, networkSessions: true }));
+  vi.stubGlobal('fetch', fetch);
+  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  fetch.mockRejectedValue(new TypeError('offline'));
+  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(localStorage.getItem('done.account-service.transport.v1')).toBe('sessions');
+});
+it('upgrades an old pin-only locator offline without acquiring private access', async () => {
+  origin();
+  localStorage.setItem('done.account-service.pin.v1', JSON.stringify(pin));
+  const fetch = vi.fn().mockRejectedValue(new TypeError('offline'));
+  vi.stubGlobal('fetch', fetch);
+  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  expect(fetch).not.toHaveBeenCalled();
+});
+it('a private fixture switching to sessions requires owner reopening instead of falling back', async () => {
+  origin();
+  const fetch = vi.fn().mockResolvedValue(response({ v: 1, pin }));
+  vi.stubGlobal('fetch', fetch);
+  const config = (await loadPackagedConfig())!;
+  fetch.mockResolvedValue(response({ v: 2, pin, networkSessions: true }));
+  await expect(
+    privateServiceFetch(pin, config.token!, '/account/delivery/submit', { method: 'POST' }),
+  ).rejects.toThrow('Lock and reopen');
+  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  expect(fetch.mock.calls.some(([url]) => String(url).endsWith('/access'))).toBe(false);
 });

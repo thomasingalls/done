@@ -1,4 +1,5 @@
-import { isPrivateAccess, privateServiceFetch } from './privateAccess';
+import { isPrivateAccess } from './privateAccess';
+import { bootstrapFetch } from './bootstrapHttp';
 /** Discoverable account verification only. A service receipt never opens local content. */
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import type { SetupConfig } from './firstDeviceSetup';
@@ -25,7 +26,7 @@ const fresh = () =>
 
 export function createAccountSignIn(input: SetupConfig) {
   const pin = parseAuthorityPin(input.pin);
-  if (pin.origin !== location.origin || !isPrivateAccess(input.token))
+  if (pin.origin !== location.origin || (!input.networkSessions && !isPrivateAccess(input.token)))
     throw Error('Sign-in service differs from this page');
   const lifetime = new AbortController();
   const listeners = new Set<() => void>();
@@ -41,7 +42,7 @@ export function createAccountSignIn(input: SetupConfig) {
   const request = async (route: string, body: unknown): Promise<Record<string, unknown>> => {
     let response: Response;
     try {
-      response = await privateServiceFetch(pin, input.token, '/__account-setup/' + route, {
+      response = await bootstrapFetch(input, route, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

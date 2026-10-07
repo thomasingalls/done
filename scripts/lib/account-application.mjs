@@ -11,7 +11,7 @@ export async function startAccountApplication({ config, packaged, liveUpdates = 
     policy: { origin },
   } = config;
   const service = openDevelopmentAccountService(config);
-  const { pin, token } = service.clientConfig;
+  const clientConfig = service.clientConfig;
   const middleware = service.handle;
   let server;
   try {
@@ -39,7 +39,7 @@ export async function startAccountApplication({ config, packaged, liveUpdates = 
       server = await createServer({
         configLoader: 'runner',
         cacheDir: `node_modules/.vite-account-setup-${port}`,
-        define: { __ACCOUNT_SETUP_CONFIG__: JSON.stringify({ pin, token }) },
+        define: { __ACCOUNT_SETUP_CONFIG__: JSON.stringify(clientConfig) },
         server: {
           host: '127.0.0.1',
           port,

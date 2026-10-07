@@ -1,5 +1,6 @@
+import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
-import { isPrivateAccess, privateServiceFetch, PrivateServiceUnavailable } from './privateAccess';
+import { isPrivateAccess, PrivateServiceUnavailable } from './privateAccess';
 /** Private first-device UI coordinator. Retained UI progress is a hint; existing owners grant authority. */
 import { parseAuthorityPin, pinBytes } from '../../account-protocol/authority';
 import { type RecoveryContext } from '../../account-protocol/recovery';
@@ -53,9 +54,9 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   progressKey(slotId);
   const progress = (value?: Retained | null) => setupProgress(value, slotId);
   const pin = parseAuthorityPin(input.pin);
-  if (pin.origin !== location.origin || !isPrivateAccess(input.token))
+  if (pin.origin !== location.origin || (!input.networkSessions && !isPrivateAccess(input.token)))
     throw Error('Development service configuration does not match this page');
-  const token = input.token;
+  const token = legacyAccess(input);
   const lifetime = new AbortController();
   let networkLogin = input.networkSessions ? new NetworkLogin(pin, slotId) : undefined;
   const listeners = new Set<() => void>();
@@ -125,7 +126,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   };
   const request = async (route: string, body: unknown): Promise<unknown> => {
     guard();
-    const response = await privateServiceFetch(pin, token, '/__account-setup/' + route, {
+    const response = await bootstrapFetch(input, route, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

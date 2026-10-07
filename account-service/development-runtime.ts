@@ -1,4 +1,5 @@
 /** Own the retained private account service independently of Vite, assets and process signals. */
+import { createSessionAccountHandler } from './session-host.ts';
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,7 +13,11 @@ import {
   type DevelopmentAccountHandler,
 } from './development-http.ts';
 
-export function openDevelopmentAccountService(options: { directory: string; policy: Policy }) {
+export function openDevelopmentAccountService(options: {
+  directory: string;
+  policy: Policy;
+  networkSessions?: boolean;
+}) {
   const directory = options.directory;
   const policy = { ...options.policy };
   validatePolicy(policy);
@@ -50,11 +55,15 @@ export function openDevelopmentAccountService(options: { directory: string; poli
       if (!existsSync(pinPath))
         writeFileSync(pinPath, JSON.stringify(pin), { flag: 'wx', mode: 0o600 });
       authority = PrivateAuthority.open(join(directory, 'authority.sqlite'), pin, key);
+      if (options.networkSessions)
+        core = new AccountCore(join(directory, 'account.sqlite'), policy, {
+          sessions: { pin, operatorKey: key },
+        });
     } finally {
       key.fill(0);
     }
     try {
-      core = new AccountCore(join(directory, 'account.sqlite'), policy);
+      core ??= new AccountCore(join(directory, 'account.sqlite'), policy);
     } catch (cause) {
       if (cause instanceof Error && cause.message.includes('Unsupported account schema'))
         throw Error(
@@ -63,8 +72,10 @@ export function openDevelopmentAccountService(options: { directory: string; poli
         );
       throw cause;
     }
-    const token = randomBytes(32).toString('base64url');
-    const dispatch = createDevelopmentAccountHandler(core, authority, pin, token);
+    const token = options.networkSessions ? undefined : randomBytes(32).toString('base64url');
+    const dispatch = options.networkSessions
+      ? createSessionAccountHandler(core, authority, pin)
+      : createDevelopmentAccountHandler(core, authority, pin, token!);
     const pending = new Set<Promise<void>>();
     let closing: Promise<void> | undefined;
     const handle: DevelopmentAccountHandler = (request, response, next) => {
@@ -85,7 +96,9 @@ export function openDevelopmentAccountService(options: { directory: string; poli
       return work;
     };
     return Object.freeze({
-      clientConfig: Object.freeze({ pin, token }),
+      clientConfig: Object.freeze(
+        options.networkSessions ? { pin, networkSessions: true as const } : { pin, token: token! },
+      ),
       handle,
       close: () => (closing ??= Promise.allSettled([...pending]).then(dispose)),
     });

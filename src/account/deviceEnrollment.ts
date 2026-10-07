@@ -1,7 +1,7 @@
-import { ScopedTransport, NetworkSignInRequired } from './scopedTransport';
+import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
+import { ScopedTransport, NetworkSignInRequired, NetworkAuthorityChanged } from './scopedTransport';
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
-import { privateServiceFetch } from './privateAccess';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
@@ -203,9 +203,7 @@ export function createDeviceEnrollment(
       cache: 'no-store',
       redirect: 'error',
     };
-    const response = config.networkSessions
-      ? await fetch(new URL('/__account-setup/' + route, pin.origin), init)
-      : await privateServiceFetch(pin, config.token, '/__account-setup/' + route, init);
+    const response = await bootstrapFetch(config, route, init);
     return readResponse(response);
   };
   const readResponse = async (response: Response) => {
@@ -253,7 +251,7 @@ export function createDeviceEnrollment(
     guard();
     return { base, successor, certification };
   };
-  const operate = async (input?: {
+  const runOperation = async (input?: {
     typed?: string;
     enroll?: true;
     cancel?: true;
@@ -345,7 +343,7 @@ export function createDeviceEnrollment(
         // Binary reader calls also reopen the login under this same held ceremony permit.
         const readingAccess = () =>
           !grants
-            ? config.token
+            ? legacyAccess(config)
             : {
                 kind: 'scoped-account' as const,
                 pin,
@@ -865,6 +863,17 @@ export function createDeviceEnrollment(
       running = false;
     }
   };
+  const operate = async (input?: Parameters<typeof runOperation>[0]) => {
+    try {
+      return await runOperation(input);
+    } catch (cause) {
+      if (!(cause instanceof NetworkAuthorityChanged)) throw cause;
+      // An expected admission/certification can invalidate a cached grant. Reopen the actual
+      // permit and authenticate bootstrap against retained progress before retrying once.
+      // runOperation still requires restart for a competing head and reuses saved semantic proofs.
+      return runOperation(input);
+    }
+  };
   const openEditor = async () => {
     if (role !== 'new') return null;
     if (opened) return last;
@@ -886,7 +895,7 @@ export function createDeviceEnrollment(
           device: { id: 'joined:' + slotId, name: 'This device' },
         },
       },
-      config.token,
+      legacyAccess(config),
       true,
     );
     guard();

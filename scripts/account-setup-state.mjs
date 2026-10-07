@@ -30,18 +30,18 @@ export function accountSchema(path) {
 }
 
 // Ask this checkout's core which schema it creates. No duplicated migration SQL or target constant.
-function targetSchema(policy) {
+function targetSchema(policy, sessions) {
   const scratch = mkdtempSync(join(tmpdir(), 'done-account-schema-'));
   try {
     const path = join(scratch, 'account.sqlite');
-    new AccountCore(path, policy).close();
+    new AccountCore(path, policy, { sessions }).close();
     return accountSchema(path);
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
 }
 
-export async function upgradePreviewState({ directory, port, policy }) {
+export async function upgradePreviewState({ directory, port, policy, networkSessions = false }) {
   // Never initialize replacement state when the operator meant to upgrade an existing service.
   for (const file of ['account.sqlite', 'authority.sqlite', 'pin.json', 'operator.key'])
     if (!existsSync(join(directory, file))) throw Error(`Missing preview state: ${file}`);
@@ -66,9 +66,10 @@ export async function upgradePreviewState({ directory, port, policy }) {
       PrivateAuthority.open(join(directory, 'authority.sqlite'), pin, key).close();
       const path = join(directory, 'account.sqlite');
       const from = accountSchema(path);
-      const to = targetSchema(policy);
+      const sessions = networkSessions ? { pin, operatorKey: key } : undefined;
+      const to = targetSchema(policy, sessions);
       if (from === to) {
-        new AccountCore(path, policy).close();
+        new AccountCore(path, policy, { sessions }).close();
         return { from, to, backup: null };
       }
       if (from < 1 || from >= to || from > to)
@@ -103,7 +104,11 @@ export async function upgradePreviewState({ directory, port, policy }) {
         { flag: 'wx', mode: 0o600, flush: true },
       );
       try {
-        new AccountCore(path, policy, { [`upgradeFromV${from}`]: true }).close();
+        new AccountCore(path, policy, {
+          sessions,
+          [`upgradeFromV${from}`]: true,
+          ...(sessions && from < 12 ? { upgradeFromV11: true } : {}),
+        }).close();
         if (accountSchema(path) !== to) throw Error('Account schema did not reach its target');
       } catch (cause) {
         throw Error(`Preview upgrade failed. Pre-upgrade state is saved at ${snapshot}`, { cause });

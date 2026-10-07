@@ -1,11 +1,21 @@
 import { expect, type Browser, type Page } from '@playwright/test';
 import { account, pending, compared, authenticator, unlock } from '../device-enrollment/helpers';
-export async function pairedEditors(page: Page, browser: Browser) {
+export async function pairedEditors(page: Page, browser: Browser, sessions = false) {
   const first = await account(page);
   const other = await browser.newContext();
   const second = await other.newPage();
   try {
     const next = await pending(second, first.link, first.auth);
+    if (sessions) {
+      await expect(second.locator('[data-enrollment-state]')).toHaveAttribute(
+        'data-enrollment-state',
+        /^(waiting|display)$/,
+        { timeout: 15000 },
+      );
+      await page
+        .getByRole('button', { name: 'Reconnect sync', exact: true })
+        .click({ timeout: 15000 });
+    }
     await page.getByLabel('Code on the new device').fill(await compared(page, second));
     await page.getByRole('button', { name: 'Compare and approve' }).click();
     for (const p of [page, second])
@@ -29,6 +39,20 @@ export async function pairedEditors(page: Page, browser: Browser) {
       await p.evaluate(() => navigator.serviceWorker.ready.then(() => true));
     return { first, next, second, other };
   } catch (cause) {
+    console.log(
+      'Joining state:',
+      await second
+        .locator('[data-enrollment-state]')
+        .getAttribute('data-enrollment-state')
+        .catch(() => 'closed'),
+    );
+    console.log(
+      'Joining messages:',
+      await second
+        .locator('[role=alert], [role=status]')
+        .allTextContents()
+        .catch(() => []),
+    );
     await other.close();
     throw cause;
   }

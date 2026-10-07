@@ -4,12 +4,10 @@ import { hex } from '../../account-protocol/recovery';
 import type { PrivateAccess } from './privateAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { isAccountId, type RememberedAccount } from './accountIdentity';
-export interface SetupConfig {
-  pin: AuthorityPin;
-  token: PrivateAccess;
-  /** Integration seam; the shared-token live host must not enable this before scoped route cutover. */
-  networkSessions?: true;
-}
+export type SetupConfig = { pin: AuthorityPin } & (
+  | { networkSessions: true; token?: never }
+  | { networkSessions?: false; token: PrivateAccess }
+);
 export const SETUP_DB = 'done.first-device-setup.v1';
 export const isSetupSlot = (value: unknown): value is string =>
   value === 'local' || (typeof value === 'string' && /^account-[a-f0-9]{32}$/.test(value));

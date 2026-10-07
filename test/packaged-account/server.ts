@@ -9,10 +9,12 @@ async function startProcess(
   ready: string,
   state?: string,
   build = resolve('dist'),
+  networkSessions = false,
 ) {
   const child = spawn(process.execPath, [script], {
     env: {
       ...process.env,
+      ACCOUNT_NETWORK_SESSIONS: networkSessions ? '1' : '0',
       ACCOUNT_SETUP_PORT: port,
       ACCOUNT_SETUP_ORIGIN: origin,
       ACCOUNT_SERVICE_PORT: servicePort,
@@ -67,12 +69,22 @@ export async function stopProcess(child: ChildProcess) {
   });
 }
 
-export const startBackend = (state: string) =>
-  startProcess('scripts/serve-account-service.mjs', 'Account API development:', state);
+export const startBackend = (state: string, networkSessions = false) =>
+  startProcess(
+    'scripts/serve-account-service.mjs',
+    'Account API development:',
+    state,
+    resolve('dist'),
+    networkSessions,
+  );
 export const startApplication = (build = resolve('dist')) =>
   startProcess('scripts/serve-account.mjs', 'Account packaged development:', undefined, build);
-export async function startService(state: string, build = resolve('dist')) {
-  const backend = await startBackend(state);
+export async function startService(
+  state: string,
+  build = resolve('dist'),
+  networkSessions = false,
+) {
+  const backend = await startBackend(state, networkSessions);
   try {
     return { backend, app: await startApplication(build) };
   } catch (cause) {

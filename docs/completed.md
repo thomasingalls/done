@@ -10172,3 +10172,31 @@ Implementation and commands: [account-session-transport.md](./account-session-tr
 schema 14 and remains opt-in. Next is bootstrap/protected-host composition, removal of the shared
 bearer from that configuration and an explicit upgrade path, checked with disposable state before a
 quiet-point backup/cutover. Notifications and the real two-device trial follow.
+
+
+## 2026-10-08 — Session-enabled host and packaged composition (sessions/subscriptions phase 3d)
+
+The preceding browser-grant phase was committed signed as `3ba2d33c`. The operator authorized unsigned
+intermediate checkpoints through the continuing product sequence, with one signed checkpoint at its
+end. Implemented the session-enabled development host: public/attempt-protected setup routes compose
+with the protected session/grant routes, without a shared bearer or `/access` fallback. Configuration
+version 2 carries only the public pin and session-mode flag. `ACCOUNT_NETWORK_SESSIONS=1` selects this
+mode, and the same explicit option enables the offline schema-11-to-14 upgrade after the existing
+exclusive lock, port guard and full state backup. Identity and pending setup survive that upgrade.
+
+The packaged client remembers transport mode without network credentials. An old pin-only locator
+selects sessions in the successor build without delaying offline opening. Explicit private fixtures
+remain separate and require owner reopening if their host switches to sessions. Bootstrap calls use
+their existing operation proofs and capabilities; content calls cannot use that path.
+
+A disposable packaged two-device test passes enrollment, approval, encrypted editing both ways,
+service restart and offline cold reopening/reconnection. It found and repaired native fetch receiver
+binding and expected authority-transition handling: the ceremony owner reopens and authenticates
+bootstrap against retained progress before one retry; competing heads still require restart.
+The affected Node group passes 115 tests and four client Vitest files pass 33. TypeScript, scoped
+lint/format, build, initial-JS budget and built-origin scan pass. No qualification campaign ran.
+
+The retained :8443 installation remains unchanged pending a quiet point and backup. Next is that
+switch, then notifications and the operator's two-device trial. The operator selected additional
+devices and revocation before lost-device recovery for the subsequent lifecycle work. Details:
+[account-session-host.md](./account-session-host.md).

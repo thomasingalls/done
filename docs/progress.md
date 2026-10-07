@@ -42,47 +42,40 @@ that is no longer active.
 
 ---
 
-## Product integration: owned browser grants and reconnect (`L-1`)
+## Product integration: session-enabled host and cutover (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: sessions/subscriptions phase 3c — owned grant transport, bounded exact retries and enrollment reconnect
-blocks_on: none
+status: in flight
+scope: session host implemented; retained cutover then live notifications
+blocks_on: quiet point before changing the retained installation
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Implemented:** preceding combined enrollment/login checkpoint is signed at `a22011af`. Browser
-transport now acquires scoped grants using the actual unlocked login/device owner, reuses them within
-that lifetime, and fences lock/sign-out and late responses. Structured expiry/restart rejections permit
-bounded retries with identical captured bytes; authority changes and ambiguous outcomes return to
-the durable operation owner. The ceremony reuses access across short permits and offers explicit
-Reconnect sync if the enrollment's bounded login copy became unavailable before local retention.
-The verified receipt survives that exception; normal combined enrollment adds no passkey prompt.
+**Implemented:** signed browser-grant checkpoint `3ba2d33c`, followed by session-enabled host and
+packaged-client composition. The new host has no shared bearer/access endpoint. Its public/attempt
+bootstrap routes retain their domain proofs, alongside scoped content/approval APIs. Explicit offline
+upgrade preserves schema-11 identity/state while adding session schema 14. See
+[host implementation and evidence](./account-session-host.md).
 
-**Evidence:** 14 new focused cases; the expanded session/core/runtime group passes 115 tests and the
-affected transport/scheduler Vitest group passes 37. Two selected Chromium regressions pass through
-send/readback and cold reopen using the existing private host. They are not a session-enabled
-application walkthrough. The affected login-owner subset also passes after the final lifetime guard.
-TypeScript and scoped lint/format pass. See [phase 3c's implementation record](./account-session-transport.md)
-and [completed work](./completed.md). Qualification remains paused.
+**Evidence:** 115 affected Node tests, 33 client Vitest tests, and the disposable packaged two-device
+scenario pass. The latter covers enrollment/approval, both editing directions, API restart and offline
+cold reopening/reconnection. It exposed native fetch binding and expected grant-invalidation issues;
+both are repaired. TypeScript, scoped lint/format and build checks pass. Qualification remains paused.
 
-**Next bounded phase (3d):** compose public and attempt-authorized bootstrap routes with the protected
-adapter, remove the shared bearer from the session-enabled host/client configuration, and expose the
-explicit schema upgrade. Check that composition with disposable state, then switch the retained
-installation after backup and a quiet point. Setup subscriptions/live notifications and the actual
-two-device walkthrough follow, per [the design](./account-sessions-subscriptions.md).
+**Authorized continuation:** unsigned intermediate commits, then one signed checkpoint when the
+sequence is through. Next switch the retained service after a quiet point/backup, implement live
+notifications and try the two-device flow. Subsequent lifecycle order is additional devices and
+revocation, then lost-device recovery; checkpoint/pruning and operational deployment follow. Product
+choices still require consultation. See [sessions/subscriptions](./account-sessions-subscriptions.md).
 
-**Live baseline remains:** independent app/proxy on 127.0.0.1:53219 and account API on 127.0.0.1:53220,
-running from this worktree/session at `https://mbp.tail0e0d4.ts.net:8443/`. Signed split implementation
-`7c2061ea` and switch checkpoint `b8e71944` retain frontend `20547876`, schema 11 and the original pin.
-The session-enabled code uses schema 14. Its client opt-in and protected adapter are not enabled by
-the live launchers. No live upgrade, restart or browser change occurred. The
-[packaged runbook](./packaged-account-development.md) remains current. Broader lifecycle, recovery,
-pruning, deployment/operations and release qualification remain outside this phase.
+**Live baseline unchanged:** app/proxy 127.0.0.1:53219, API 127.0.0.1:53220, origin
+`https://mbp.tail0e0d4.ts.net:8443/`, frontend `20547876`, schema 11 and the original pin. Signed split
+implementation `7c2061ea`, switch checkpoint `b8e71944`. No new live upgrade/restart or personal browser
+interaction yet. The [packaged runbook](./packaged-account-development.md) remains current.
 
 ---
 

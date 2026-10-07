@@ -18,6 +18,11 @@ export class NetworkSignInRequired extends Error {
     super(message);
   }
 }
+export class NetworkAuthorityChanged extends Error {
+  constructor() {
+    super('Account authorization refused: authority-changed');
+  }
+}
 type Login = Pick<NetworkLogin, 'authorization' | 'rejectAccess' | 'getSnapshot' | 'networkSignal'>;
 export interface GrantBinding {
   login: Login;
@@ -94,7 +99,7 @@ export class ScopedTransport {
   constructor(pin: AuthorityPin, signal: AbortSignal, transport: typeof fetch = fetch) {
     this.#pin = parseAuthorityPin(pin);
     if (this.#pin.origin !== location.origin) throw Error('Account service origin changed');
-    this.#fetch = transport;
+    this.#fetch = transport.bind(globalThis);
     if (signal.aborted) this.close();
     else signal.addEventListener('abort', () => this.close(), { once: true });
   }
@@ -285,6 +290,8 @@ export class ScopedTransport {
             binding.login.rejectAccess(auth.token, true);
             throw new NetworkSignInRequired();
           }
+          if (cause instanceof GrantDenied && cause.reason === 'authority-changed')
+            throw new NetworkAuthorityChanged();
           throw cause;
         }
       }
