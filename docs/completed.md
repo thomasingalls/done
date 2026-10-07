@@ -9730,3 +9730,62 @@ and two-way delivery. Release qualification remains paused.
 Commit handoff: the follow-on signed commit remained waiting on the Secretive-backed SSH signer for
 several minutes. The signing subprocess was cancelled and the complete opening slice left staged;
 no unsigned commit was created. The signed transport foundation remains `832784ed`.
+
+
+## 2026-10-07 — writable second-device activation and two-way delivery
+
+Committed the preceding content-opening phase as signed `684f4f06`, then continued through the
+operator's requested two-device editing milestone. The second device now opens the ordinary editor
+and automatically sends and receives original encrypted updates. The development product path uses
+the existing capture, synchronous encrypted journal, spool, delivery, ordered receive and admission
+owners. Release qualification remains paused.
+
+- Schema 11 adds separately witnessed decision histories for additional certified publishers. The
+  original creator's ledger and epoch-1/2/3 issuance boundaries remain intact. Both devices can use
+  position 1 independently; publisher identity scopes the rows, witness, verification memo and exact
+  retry. A candidate cannot publish at its earlier pending epoch. Reader and publisher certification
+  are resolved independently for cross-device reads.
+- A dedicated authenticated `certified-account-device` interlock binds the second device's existing
+  physical custody to its logical Account identity, certified authority, admitted checkpoint, retained
+  inbound evidence and sealed shared generation key. Its empty enrollment content store keeps its own
+  local encryption key and scope. An interrupted installation rechecks an exact prefix, resumes native
+  content/evidence writes, selects the scoped Account index, then activates. Old Local/promotion owners
+  refuse this interlock. Existing unrelated Local writing is neither imported nor replaced.
+- Opening independently verifies the baseline and retained update proofs, full content coverage,
+  installed credentials, pinned passkey binding and current local ledger. Native incoming content and
+  evidence commit together before ordered publication to the editor. Receive prefixes and conflicts
+  are per publisher; the single local completeness witness covers all evidence. A remote update is
+  never relabelled as a new local edit. Self-stream consistency checks remain scoped to the local
+  publisher. The existing scheduler polls the certified publishers in turn and sends local captures.
+- The saved device connection opens the editor directly after activation. Lock/navigation retires
+  editor views and closes the owning lifetime. Preview wording describes encrypted two-device sync.
+  The first activation currently performs the reader's passkey check followed by the editor's fresh
+  unlock check; later opens need one account passkey assertion. Polling does not prompt for a passkey.
+
+Focused evidence: all 12 enrollment browser tests passed. Subsequent targeted reruns covered the
+final editor-lifetime changes, preexisting stream evidence during activation and a tampered activation
+phase refusing access. The two-way case covers first-device baseline writing, later writing received
+before activation, a lost second-device submission reply with an identical retry, edits in both
+directions, concurrent offline additions followed by convergence, and cold reopening of both
+editors. A native IndexedDB abort after Account index selection leaves the old writer fenced and
+resumes activation after reload. Existing false-checkpoint-coverage and pre-admission save-abort
+controls remain passing. All 29 focused content-transfer/history/inbound service tests, five offline
+preview-upgrade tests and 34 inbound codec/verification tests passed; TypeScript, scoped lint/format
+and diff whitespace checks passed. This is development evidence, not a generalized campaign or a
+physical-device/offline-PWA qualification claim.
+
+The retained Tailscale preview was stopped, backed up and upgraded from schema 10 to 11 with the
+existing offline upgrader, then restarted on port 53219 with live updates disabled. Backup:
+`.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`. URL remains
+`https://mbp.tail0e0d4.ts.net:8443/`. The saved accounts, checkpoint, original ledger and authority
+were preserved. Browser refresh is required to load the new client. A real Firefox repeat of two-way
+editing is still pending: the active window switched between the disposable test and unrelated
+browsing, so computer use paused and requested a quiet window. The automated two-profile check is
+complete; do not record the live two-way walkthrough as passed without doing it.
+
+Bounded scope remains one generation, two certified devices and the current epoch-3 authority.
+Writable activation presently caps the encoded initial checkpoint at the ordinary 4 MiB native batch
+limit and refuses larger input before installing its interlock. General checkpoint replacement and
+pruning, additional devices/epochs, revocation/recovery UX, packaged-app integration and release
+qualification are not part of this milestone. Stop at operator use after the live walkthrough; do not
+resume the paused release campaign.

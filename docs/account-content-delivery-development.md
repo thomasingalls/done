@@ -1,9 +1,9 @@
-# Development continuation: certify and open writing on the second device
+# Development continuation: two-device encrypted editing
 
 2026-09-18. The operator authorized the next bounded product phase after the real two-device
 approval trial. This implements the continuation in [content-approval prep](./account-content-approval-prep.md).
 Release qualification remains paused. This is one generation, one admitted candidate and one
-certification successor. The subsequently authorized read-only opening is now available for use.
+certification successor. The subsequently authorized writable activation and two-way delivery are now implemented. The earlier read-only slice is retained below as historical context.
 
 **2026-10-07 walkthrough:** completed through the real Firefox UI with two isolated, disposable
 containers and a real Bitwarden passkey saved by the operator. Both sides reached the installed
@@ -23,16 +23,18 @@ its device-lock code. On the phone, choose **I already have a workspace**, selec
 The saved approval continues without another comparison. On the first device, choose **Make writing
 available** and use the account passkey. This captures its current writing and enables subsequent
 edits to use the existing encrypted delivery path. Return to the chooser to unlock its ordinary editor.
-On the second device, choose **Open your writing** and use the account passkey. Its Goals and day
-writing appear read-only. **Check for updates** receives later edits from the first device; for this
-bounded owner it also requests the passkey. Closing or reloading locks the view. The saved **Device
-connection** and device code resume it without a new invitation or comparison.
+On the second device, choose **Open your writing** and use the account passkey. Its saved baseline and
+ordinary update proofs are installed into the durable editor. The first activation currently asks for
+the passkey again when entering the editor; this is a second assertion with the same account passkey,
+not another credential or device-lock code. Both devices can then edit, and updates arrive automatically
+while online. Closing/reloading locks the editor. The chooser's saved **Device connection**, its own
+device code and the account passkey reopen the editor directly after activation.
 
-The second-device view currently needs the preview server available, including on reopen. Its
-checkpoint, semantic admission and exact received update evidence are retained under its local
-factor; this is durable read-only state, not yet a selected editable Account slot. Two-way writing,
-offline opening/convergence, automatic receive polling and ordinary packaged application integration
-remain later work. Its old Local writing is not read, imported, replaced or deleted.
+The development page still needs its preview server to load. Once open, offline edits are durably
+retained and exchange after reconnection; both directions and cold reopening are covered by the
+focused two-profile browser test. This is not a packaged/offline-PWA qualification result. The former
+static read-only display and manual **Check for updates** are no longer the product endpoint. Other
+Local writing remains untouched.
 
 ## Durable boundaries
 
@@ -85,13 +87,16 @@ General successor histories, replacement credentials and rotation are still outs
   and pin before the additive upgrade. No existing attempt or account row is rewritten by upgrade.
 
 The original publisher's service history now verifies issuance at epochs 1, 2 and 3, including
-already-queued earlier-epoch envelopes and exact old decision retries. There is still one publisher
-ledger. The older epoch-1/2 discovery endpoint refuses at 3 instead of advertising a stale current
+already-queued earlier-epoch envelopes and exact old decision retries. At the key-handoff milestone there was still one publisher
+ledger; the writable continuation below adds separately witnessed publisher histories. The older epoch-1/2 discovery endpoint refuses at 3 instead of advertising a stale current
 head; the preview's fresh nonce-bound bootstrap includes the complete certification successor.
-General sync-client discovery/adoption and multiple-publisher transport remain later integration work. Certification here establishes eligible keys, not a
+General successor discovery/adoption remains later integration work. Certification here establishes eligible keys, not a
 claim that every account capability has a product path.
 
 ## Content opening continuation — 2026-10-07
+
+The following records the earlier read-only checkpoint. Its ownership and product limits are
+superseded by the writable continuation below.
 
 The operator approved a read-only checkpoint within the shared sync integration, then enabling the
 second writer. Yjs remains responsible for applying and merging updates in both directions. The
@@ -173,4 +178,46 @@ lost checkpoint replies with byte-identical cold retry, producer-signed false SV
 IndexedDB abort before receiver admission, exact publication/admission retries across service commit
 failures and restart, wrong roles/keys/current heads, preservation of an accepted suffix, and the
 explicit schema-9 upgrade. TypeScript and scoped lint/format checks pass. Release qualification
-remains paused; the next product phase is writable second-device activation and two-way delivery.
+remained paused; the next product phase was writable second-device activation and two-way delivery,
+implemented in the continuation below.
+
+
+## Writable continuation — 2026-10-07
+
+Schema 11 adds `publisher_decisions` and `publisher_witnesses` for the certified joining publisher.
+The original creator's ledger and authority-boundary witnesses remain in place. Exact submission
+retries, stored evidence verification and query signing bind the account and publisher separately;
+each device has its own position 1. A joining credential cannot mint under epochs before certification.
+
+`src/crdt/joinedAccount.ts` owns the second device's authenticated `certified-account-device` interlock.
+It binds the existing Local claim/custody record, certified account authority, admitted checkpoint,
+retained ordinary inbound records and sealed installed generation key. Local content/journal encryption
+continues using the existing empty enrollment store's local key. Shared network envelopes use the
+installed account key. The selected Account index retains the physical store route; the owning startup
+independently authenticates its mapping to the logical account principal/workspace.
+
+Activation verifies and replays the retained reader input before fencing the old owner. It appends the
+baseline and each retained inbound content/evidence batch, checking the exact existing prefix on retry,
+then selects the index and authenticates active progress. Missing or unexpected state refuses. It caps
+the encoded checkpoint at 4 MiB before installing the interlock. Reload after the tested final progress
+abort resumes; no write-capable editor exists until activation and full replay succeed. Later opens
+verify the checkpoint, ancestry/content coverage, all stream evidence, local spool/delivery witnesses,
+recipient keys and account passkey before admitting edits.
+
+`accountCapture` and `accountReceive` reuse the established encrypted journal, source capture, spool,
+network publication and ordered receive path. A process-branded verified history resolves each certified
+publisher. Per-publisher cursors/evidence prevent position collisions; the union of evidence remains
+under the one local completeness witness. Only the device's own stream participates in self-outbound
+consistency checks. Incoming originals commit with their proof before entering the editor; they are
+never recaptured as local outbound edits. Existing scheduler gates handle online/offline and poll both
+streams in turn.
+
+Focused evidence: 12 browser cases, 29 service/history/inbound cases, five offline-upgrade cases and
+34 inbound-verification cases; final targeted reruns include a pre-activation accepted suffix and a
+modified activation phase with an invalid MAC. The real Tailscale service is upgraded and running with
+its retained data (backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`). A live repeat in
+the real disposable Firefox containers is pending a quiet browser window. Do not infer that the physical
+phone or the live two-way walkthrough has been checked from the automated browser result.
+
+Remaining work after operator use: general checkpoint/pruning policy, additional device/epoch flows,
+recovery/revocation product paths and packaged-app integration. Release qualification remains paused.

@@ -4202,3 +4202,19 @@ The operator confirmed both devices locked and closed for the additive preview s
 Back up the retained state and preserve the pin/origin, accounts and attempts; do not reset the
 preview or change other Tailscale services. Product choices about fewer factors, device naming,
 QR routing or broader enrollment remain separate and still require operator input.
+
+
+## 2026-10-07 — activate the certified second device through the existing editor owners
+
+The operator requested continuing through second-device editing and two-way delivery. The second
+client retains its existing factor-protected enrollment custody and physical content scope, while a
+new authenticated interlock explicitly binds them to the logical Account identity and certified
+shared content key. It does not masquerade as an original Local-to-Account promotion or rewrite that
+promotion's provenance. Installation is resumable; ordinary writers refuse its interlock.
+
+Each certified device publishes a separate position sequence with its own completeness witness. The
+original publisher's historical ledger remains unchanged. Receiving keeps per-publisher cursors and
+proofs, and preserves the existing atomic durable receive and ordered admission boundary. The editor,
+local journal, source capture and network spool are reused. This is the bounded two-device development
+path, with focused retry/authority checks; it does not restart release qualification or introduce a
+new generalized migration/sync framework.

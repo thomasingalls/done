@@ -9,6 +9,7 @@ import {
   historyReader,
   verifyHistoryDecision,
   createAdmissionPrefixVerifier,
+  historyPublisher,
 } from '../../account-protocol/admissionHistory.ts';
 import { envelope } from '../account-transport/oracle.mjs';
 import { build } from 'vite';
@@ -166,6 +167,70 @@ async function checkpointFixture(t, options = {}) {
   return { ...x, certification, checkpoint, admission, exchange };
 }
 
+test('certified devices publish independent positions and read each other across lost replies and restart', async (t) => {
+  let fault = null;
+  const x = await checkpointFixture(t, {
+    hook(at, op) {
+      if (op === 'decide-submission' && at === fault) throw Error('interrupted');
+    },
+  });
+  const own = x.make(1, 'first', { epoch: 3 });
+  const peer = x.make(1, 'second', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  const old = x.make(1, 'too early', {
+    epoch: 2,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  assert.equal((await x.deliveryCall(old)).kind, 'unknown');
+  const ownResult = await x.deliveryCall(own);
+  decision(x, ownResult, own, undefined, 3);
+  fault = 'before-commit';
+  assert.equal((await x.deliveryCall(peer)).kind, 'unknown');
+  assert.equal(x.f.rows('publisher_decisions').length, 0);
+  fault = 'after-commit';
+  assert.equal((await x.deliveryCall(peer)).kind, 'unknown');
+  fault = null;
+  x.f.restart();
+  x.authority.restart();
+  const peerResult = await x.deliveryCall(peer);
+  decision(x, peerResult, peer, undefined, 3);
+  assert.equal(x.f.rows('delivery_decisions').length, 1);
+  assert.equal(x.f.rows('publisher_decisions').length, 1);
+  assert.deepEqual(await x.deliveryCall(own), ownResult);
+  for (const [reader, publisher, w, r, key] of [
+    [x.context.candidate.id, x.context.existing.id, own, ownResult, x.keys.new],
+    [x.context.existing.id, x.context.candidate.id, peer, peerResult, x.keys.existing],
+  ]) {
+    const q = query(x, 0, 1, { reader, publisher, head: x.certification.head, epoch: 3 }, key);
+    page(x, await read(x, q), q, [{ w, r, epoch: 3 }]);
+  }
+  const history = await verifyCertificationHistory(x.certification, x.successor, x.base, {
+    epoch: 3,
+    head: x.certification.head,
+  });
+  const peerHistory = historyPublisher(history, x.context.candidate.id);
+  assert.equal(peerHistory.credential, x.context.candidate.id);
+  assert.equal(peerHistory.signingKey, x.context.candidate.sPub);
+  assert.throws(() => historyAuthority(peerHistory, history.first));
+  assert.throws(() => historyPublisher({ ...history }, x.context.candidate.id));
+  assert.throws(() => historyPublisher(history, 'ff'.repeat(16)));
+  const checked = await verifyHistoryDecision(
+    peerResult.bytes,
+    { ...peer.subject, previous: '00'.repeat(32), parent: peer.parent },
+    peerHistory.current,
+    peerHistory,
+  );
+  assert.equal(checked.kind, 'accepted');
+  mutate(x, (db) => db.exec('DELETE FROM publisher_decisions'));
+  // A missing peer row disagrees with its witness; it cannot hide behind the first ledger.
+  assert.equal((await x.deliveryCall(peer)).kind, 'unknown');
+  assert.deepEqual(await x.deliveryCall(own), ownResult);
+});
+
 test('checkpoint publication and second-client admission resume exact bytes across commit failures and restart', async (t) => {
   let fault = null;
   const x = await checkpointFixture(t, {
@@ -221,10 +286,44 @@ test('checkpoint exchange checks participant role, signing key and current autho
   assert.deepEqual(x.f.rows('delivery_decisions'), accepted);
 });
 
+test('schema ten upgrade preserves the checkpoint, admission and original publisher history', async (t) => {
+  const x = await checkpointFixture(t);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  assert.equal((await x.exchange('new', 'admit', x.admission)).ok, true);
+  const own = x.make(1, 'before upgrade', { epoch: 3 }),
+    accepted = await x.deliveryCall(own);
+  decision(x, accepted, own, undefined, 3);
+  const checkpoint = x.f.rows('content_checkpoints'),
+    history = x.f.rows('delivery_decisions');
+  mutate(x, (db) =>
+    db.exec(
+      'DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses; PRAGMA user_version=10;',
+    ),
+  );
+  const { AccountCore } = await import('../../account-service/core.ts');
+  const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
+  assert.throws(() => new AccountCore(x.f.path, policy), /explicit offline upgrade/);
+  new AccountCore(x.f.path, policy, { upgradeFromV10: true }).close();
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual(x.f.rows('content_checkpoints'), checkpoint);
+  assert.deepEqual(x.f.rows('delivery_decisions'), history);
+  assert.deepEqual(await x.deliveryCall(own), accepted);
+  const peer = x.make(1, 'after upgrade', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(peer), peer, undefined, 3);
+});
 test('schema nine requires explicit upgrade and retains certified content access', async (t) => {
   const x = await checkpointFixture(t),
     before = x.f.rows('content_transfers');
-  mutate(x, (db) => db.exec('DROP TABLE content_checkpoints; PRAGMA user_version=9;'));
+  mutate(x, (db) =>
+    db.exec(
+      'DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses; DROP TABLE content_checkpoints; PRAGMA user_version=9;',
+    ),
+  );
   const { AccountCore } = await import('../../account-service/core.ts');
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
   assert.throws(() => new AccountCore(x.f.path, policy), /explicit offline upgrade/);
@@ -444,7 +543,9 @@ test('schema eight opens only through the explicit offline upgrade, preserving r
   await x.call(x.approval);
   const before = x.f.rows('content_ceremonies');
   mutate(x, (db) =>
-    db.exec('DROP TABLE content_checkpoints; DROP TABLE content_transfers; PRAGMA user_version=8;'),
+    db.exec(
+      'DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses; DROP TABLE content_checkpoints; DROP TABLE content_transfers; PRAGMA user_version=8;',
+    ),
   );
   const { AccountCore } = await import('../../account-service/core.ts');
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };

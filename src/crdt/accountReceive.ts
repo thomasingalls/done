@@ -1,3 +1,4 @@
+import { readJoinedAccount, joinedPayload, joinedKeys } from './joinedAccount';
 import { privateDiscoveryPost } from '../account/privateDiscoveryHttp';
 import {
   parseSuccessor,
@@ -57,6 +58,8 @@ import {
   inspectInbound,
   verifyInboundLedger,
   contextAt,
+  publisherContext,
+  publisherState,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery } from './deliveryRecord';
@@ -87,6 +90,7 @@ async function openAccountReceiveOwner(
   principalId?: string,
   canReceive: () => boolean = () => true,
   composed = false,
+  joined = false,
 ) {
   const options = captureAccountOptions(input);
   const verified = createVerifiedRecords<{
@@ -109,6 +113,16 @@ async function openAccountReceiveOwner(
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
+    if (joined) {
+      const current = await readJoinedAccount(task, options.slotId, options.code);
+      if (
+        !current.marker ||
+        hex(joinedPayload(current.marker)) !== expectedPayload ||
+        !same(current.record, expectedRecord)
+      )
+        captureError('Certified device authority changed');
+      return;
+    }
     const current = await readPromotion(task, options.slotId, options.code);
     if (
       !current.marker ||
@@ -147,6 +161,15 @@ async function openAccountReceiveOwner(
         }
       });
     },
+    async initializeJoined(task, v) {
+      expectedPayload = hex(joinedPayload(v.marker!));
+      expectedRecord = v.record;
+      await joinedKeys(task, v, options.code, async (kg, signing, verifying) => {
+        base = { ...v.base, generationKey: kg.slice() };
+        signer = signing;
+        publicKey = verifying;
+      });
+    },
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter, view) {
       try {
@@ -158,7 +181,14 @@ async function openAccountReceiveOwner(
               subtle = subtleFor(task),
               reuse = { memo, current: () => task.step(() => {}) };
             await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
-            await verifyInstalledSuccessor(census.delivery.spool, route, installed, subtle, reuse);
+            if (!joined)
+              await verifyInstalledSuccessor(
+                census.delivery.spool,
+                route,
+                installed,
+                subtle,
+                reuse,
+              );
             await verifySpool(
               census.delivery.spool,
               route,
@@ -215,7 +245,7 @@ async function openAccountReceiveOwner(
   // The actor comes from the authenticated marker, not application identity. This read happens under
   // openAccountCaptureOwner's exclusive permit; the source principal is checked by its startup verifier.
   const { account, carrier, runCaptureTask, runNetworkTask, listCaptures, installRoute } =
-    await openAccountCaptureOwner(options, principalId, extension);
+    await openAccountCaptureOwner(options, principalId, extension, joined);
   const state = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
@@ -229,12 +259,20 @@ async function openAccountReceiveOwner(
       for (const r of records) r.bytes.fill(0);
     }
   };
+  let nextPublisher = 0;
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
     Object.freeze({
-      state: s.conflict ? ('conflict' as const) : ('ready' as const),
-      receivedThrough: s.prefix.position,
+      state:
+        s.conflict || [...(s.peers?.values() ?? [])].some((p) => p.conflict)
+          ? ('conflict' as const)
+          : ('ready' as const),
+      receivedThrough:
+        s.prefix.position +
+        [...(s.peers?.values() ?? [])].reduce((n, p) => n + p.prefix.position, 0),
       link: s.prefix.link,
-      observedThrough: s.prefix.observedThrough,
+      observedThrough:
+        s.prefix.observedThrough +
+        [...(s.peers?.values() ?? [])].reduce((n, p) => n + p.prefix.observedThrough, 0),
     });
   const prepareRead = async (
     task: SessionTask,
@@ -242,7 +280,11 @@ async function openAccountReceiveOwner(
     route: CaptureRoute,
     after?: number,
   ) => {
-    const s = await state(task, owner, route),
+    const all = await state(task, owner, route);
+    const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
+    const publisher =
+      after === undefined ? publishers[nextPublisher++ % publishers.length]! : base.publisher.id;
+    const s = publisherState(all, base, publisher),
       cursor = after ?? s.prefix.position;
     if (s.conflict) throw Error('Inbound stream is conflicted');
     if (!Number.isSafeInteger(cursor) || cursor < 0 || cursor > s.prefix.position)
@@ -252,7 +294,7 @@ async function openAccountReceiveOwner(
       origin: base.service.origin,
       workspace: base.authority.workspace,
       reader: base.reader.id,
-      publisher: base.publisher.id,
+      publisher,
       lineage: base.authority.lineage,
       head: base.authority.head,
       epoch: base.authority.tip,
@@ -339,11 +381,17 @@ async function openAccountReceiveOwner(
         let committed = false;
         try {
           const r = decodeInboundRequest(request);
+          if (publisherState(s, base, r.publisher).conflict)
+            throw new AdmissionError('receive-refused', 'Inbound publisher is conflicted');
           // Own successful plaintext before wait's final lifetime check can reject it.
           try {
             await task.wait(async () => {
               result = await verifyInboundPage(
-                contextAt(base, s, r.after),
+                contextAt(
+                  publisherContext(base, r.publisher),
+                  publisherState(s, base, r.publisher),
+                  r.after,
+                ),
                 request,
                 page,
                 lifetime(task),
@@ -359,7 +407,7 @@ async function openAccountReceiveOwner(
               promote([]);
               return { kind: result!.kind, recorded: false, status: describe(s) };
             });
-          if (composed && result.kind === 'received') {
+          if (composed && r.publisher === base.publisher.id && result.kind === 'received') {
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectInbound(rows, route, base).delivery;
@@ -745,6 +793,7 @@ async function openReceivingWorkspace(
   input: AccountWorkspaceOptions,
   operatorToken?: string,
   composed = false,
+  joined = false,
 ) {
   const driven = operatorToken !== undefined;
   if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
@@ -770,6 +819,7 @@ async function openReceivingWorkspace(
     options.identity.id,
     () => !driven || gate() === 'ready',
     composed,
+    joined,
   );
   let enqueue!: OwnedReceiveQueue;
   try {
@@ -1031,13 +1081,14 @@ export async function openOwnedPollingAccountWorkspace(
   return Object.freeze({ ...owned, receiver: result.receiver });
 }
 
-/** Explicit private single-owner round trip. It cannot enroll or clone another writer. */
+/** One durable owner for this certified publisher and all eligible inbound streams. */
 export async function openOwnedSyncingAccountWorkspace(
   input: AccountWorkspaceOptions,
   operatorToken: string,
+  joined = false,
 ) {
   if (typeof operatorToken !== 'string') throw Error('Private operator token required');
-  const result = await openReceivingWorkspace(input, operatorToken, true);
+  const result = await openReceivingWorkspace(input, operatorToken, true, joined);
   if (!result.sync || !result.outbound) throw Error('Missing outbound composition');
   const {
     prepareRead: _prepare,

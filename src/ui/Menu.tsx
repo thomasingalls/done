@@ -168,7 +168,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
         )}
         <p className="menu-note">
           {accountWorkspace
-            ? 'Account connected. This preview supports read-only access on an approved second device.'
+            ? 'Account connected. Approved devices can sync writing in this preview.'
             : 'Off. This Local workspace is not connected to a relay.'}
         </p>
         {connectAccount && (

@@ -33,6 +33,7 @@ export interface AdmissionHistory {
   readonly readers: readonly Readonly<{ id: string; publicKey: string }>[];
 }
 const verified = new WeakSet<AdmissionHistory>();
+const publisherRoots = new WeakMap<AdmissionHistory, AdmissionHistory>();
 const requireHistory = (history: AdmissionHistory) => {
   if (!verified.has(history)) throw Error('Unverified admission history');
   return history;
@@ -116,6 +117,27 @@ export function historyReader(
   // Certification cannot retroactively authorize a reader in a pending roster.
   if (at.tip < 3) return id === h.credential && publicKey === h.signingKey;
   return h.readers.some((r) => r.id === id && r.publicKey === publicKey);
+}
+/** Derive a publisher route only from already verified certification, never a caller's key hint. */
+export function historyPublisher(history: AdmissionHistory, credential: string): AdmissionHistory {
+  const checked = requireHistory(history);
+  const h = publisherRoots.get(checked) ?? checked;
+  if (credential === h.credential) return h;
+  const member = h.readers.find((r) => r.id === credential);
+  if (h.current.tip !== 3 || !member) throw Error('Uncertified publisher');
+  const empty = Object.freeze({ position: 0, link: ZERO_REFUSAL });
+  const result = Object.freeze({
+    ...h,
+    first: h.current,
+    credential,
+    signingKey: member.publicKey,
+    boundary: empty,
+    authorities: Object.freeze([h.current]),
+    boundaries: Object.freeze([]),
+  });
+  verified.add(result);
+  publisherRoots.set(result, h);
+  return result;
 }
 /** Both historical and current contexts must name an exact authenticated head, never just a tip. */
 export function historyAuthority(

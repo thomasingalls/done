@@ -42,42 +42,47 @@ that is no longer active.
 
 ---
 
-## Product integration: open writing on the approved second device (`L-1`)
+## Product integration: second-device editing and two-way delivery (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: authenticated current writing, later first-device edits and durable read-only reopen on the approved second device
-blocks_on: none for this read-only milestone
+status: in flight
+scope: writable activation, per-device publishing and automatic two-way delivery
+blocks_on: quiet Firefox window for the live disposable-pair walkthrough
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Usable result:** the first device publishes a journal-inclusive checkpoint and activates the existing
-capture/spool/delivery owner. The second independently verifies and durably retains its baseline and
-ordinary inbound evidence, then opens a read-only view under its device code and account passkey.
-Later first-device edits arrive through **Check for updates**. Cold reopening preserves both.
+**Implemented and tested:** the approved second device opens the ordinary durable editor and exchanges
+original encrypted edits with the first device. Its authenticated activation resumes after interruption,
+keeps local custody distinct from account transport keys, and fences older writers. The service keeps
+independent publishing histories; receive evidence/cursors are scoped to their certified publisher.
+Existing encrypted journal, capture, spool, ordered receive and admission machinery owns both editors.
 
-**Evidence:** 12 affected browser tests, nine content-transfer/checkpoint service tests and 12 selected
-schema/upgrade tests pass, along with TypeScript and scoped lint/format. The actual saved Firefox
-disposable pair also displayed the original writing, received a later day card and reopened both after
-closing/restoring the receiver tab. See [completed.md](./completed.md) for evidence boundaries and
-[the continuation](./account-content-delivery-development.md) for implementation and use instructions.
+**Evidence:** 12 enrollment browser tests, 29 focused protocol/service tests, five upgrade tests and
+34 inbound codec tests pass, plus TypeScript and scoped lint/format. Targeted final browser checks
+include retained-history activation, an actual installation abort, old-writer exclusion, tampered
+activation refusal, byte-identical lost-reply retry, concurrent offline additions/reconnect and cold
+reopening on both devices. See [completed.md](./completed.md) and the updated
+[development continuation](./account-content-delivery-development.md). No release campaign ran.
 
-**Preview:** running at `https://mbp.tail0e0d4.ts.net:8443/`, port 53219, retained state
-`.dev/account-enrollment-tailnet`, live updates disabled. Explicit schema 9→10 upgrade completed after
-backup to `.dev/account-enrollment-tailnet/backups/schema-9-iRVJk3/`. Existing accounts and approvals
-remain intact. Transport foundation is signed `832784ed`; this completed opening slice follows it.
-The opening slice is staged, awaiting a signed commit. Its signing attempt was cancelled after the
-Secretive-backed SSH signer remained pending for several minutes; no unsigned commit was created.
+**Preview:** `https://mbp.tail0e0d4.ts.net:8443/`, port 53219, retained state
+`.dev/account-enrollment-tailnet`, live updates disabled. Explicit schema 10→11 upgrade completed with
+backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`. Refresh existing tabs for the new
+client. The preceding read-only phase is signed `684f4f06`; this slice is its writable continuation.
 
-**Next, after operator use:** activate the same baseline/proofs as a regular writable second-device
-Account slot, add its publisher ledger and connect two-way delivery. The bounded reader currently
-uses its existing factor-owned enrollment carrier, requires the service on reopen, and requests a
-passkey for each manual update check. Offline opening/convergence, automatic receiving, general
-checkpoint lifecycle and packaged-app integration remain open. No release campaign has restarted.
+**Remaining in this slice:** repeat the two-way editing check in the existing disposable Firefox
+containers, then let the operator use the preview. Firefox switched to unrelated browsing during
+computer use; an unanswered request asks for an uninterrupted window. Do not count live two-way or
+physical-phone evidence as complete. The automated two-profile flow is complete.
+
+**Limits / later work:** one generation and the current two-device epoch; activation checkpoints up to
+4 MiB. First activation currently asks for the passkey during both reader admission and editor unlock;
+later editor opens ask once. General checkpoint lifecycle, more devices/epochs, account recovery and
+revocation UX, packaged application integration and release qualification remain separate work. Stop
+at this experiential milestone rather than starting another integration or validation phase.
 
 ---
 

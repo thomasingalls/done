@@ -146,7 +146,19 @@ export interface WorkspaceAuthoritySnapshot {
   successor: SuccessorRow | null;
   transfer: ContentTransferRow | null;
 }
+export const PUBLISHER_SCHEMA = `
+  CREATE TABLE publisher_decisions (
+    credential_id TEXT NOT NULL, account_id TEXT NOT NULL REFERENCES accounts(id),
+    ordinal INTEGER NOT NULL CHECK(ordinal>0), position INTEGER NOT NULL CHECK(position>0),
+    digest TEXT NOT NULL, envelope_epoch INTEGER NOT NULL CHECK(envelope_epoch>0),
+    kind TEXT NOT NULL CHECK(kind IN ('accepted','refused')), submission BLOB NOT NULL, response BLOB NOT NULL,
+    PRIMARY KEY(account_id,credential_id,position,digest,envelope_epoch), UNIQUE(account_id,credential_id,ordinal));
+  CREATE UNIQUE INDEX publisher_accepted_position ON publisher_decisions(account_id,credential_id,position) WHERE kind='accepted';
+  CREATE TABLE publisher_witnesses (account_id TEXT NOT NULL REFERENCES accounts(id), credential_id TEXT NOT NULL,
+    witness TEXT NOT NULL, PRIMARY KEY(account_id,credential_id));`;
 export interface Snapshot extends WorkspaceAuthoritySnapshot {
+  publisher?: string;
+  publisherWitness?: string | null;
   rows: DecisionRow[];
 }
 /** Caller owns a read or write transaction for a coherent authority snapshot. */
@@ -215,9 +227,26 @@ export function snapshotWorkspaceAuthority(
   if (transfer && !successor) throw Error('Delivery without admission');
   return { promotion, account, credential, recovery, attempt, successor, transfer };
 }
-export function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+export function snapshot(db: DatabaseSync, workspace: string, publisher?: string): Snapshot | null {
   const base = snapshotWorkspaceAuthority(db, workspace);
   if (!base) return null;
+  const original = JSON.parse(base.promotion.request).candidate.signer;
+  if (publisher && publisher !== original) {
+    const rows = db
+      .prepare(
+        'SELECT account_id,ordinal,position,digest,envelope_epoch,kind,submission,response FROM publisher_decisions WHERE account_id=? AND credential_id=? ORDER BY ordinal',
+      )
+      .all(base.account.id, publisher) as unknown as DecisionRow[];
+    const retained = db
+      .prepare('SELECT witness FROM publisher_witnesses WHERE account_id=? AND credential_id=?')
+      .get(base.account.id, publisher);
+    return {
+      ...base,
+      publisher,
+      publisherWitness: (retained?.['witness'] as string) ?? null,
+      rows,
+    };
+  }
   const rows = db
     .prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY ordinal')
     .all(base.account.id) as unknown as DecisionRow[];
@@ -234,10 +263,10 @@ export function snapshotBytes(s: Snapshot | null): string {
     })),
   });
 }
-export function read(db: DatabaseSync, workspace: string) {
+export function read(db: DatabaseSync, workspace: string, publisher?: string) {
   db.exec('BEGIN');
   try {
-    const s = snapshot(db, workspace);
+    const s = snapshot(db, workspace, publisher);
     db.exec('COMMIT');
     return s;
   } finally {
@@ -391,11 +420,35 @@ export async function verifyWorkspaceAuthority(
   };
 }
 const authority = verifyWorkspaceAuthority;
-type Authority = Awaited<ReturnType<typeof authority>>;
+type Authority = Awaited<ReturnType<typeof authority>> & { joinedPublisher?: boolean };
+/** A candidate may publish only after epoch-3 certification; it has no earlier ledger. */
+function selectPublisher(auth: Authority, publisher?: string): Authority {
+  if (!publisher || publisher === auth.credential) return auth;
+  const member = auth.members.find((m) => m.id === publisher);
+  const boundary = auth.certificationSuccessor?.epoch.heads.find(
+    (h) => h.credentialId === publisher,
+  );
+  if (
+    !member ||
+    !boundary ||
+    boundary.position !== 0 ||
+    boundary.link !== ZERO_REFUSAL ||
+    auth.a.tip !== 3
+  )
+    throw Error('Uncertified publisher');
+  return {
+    ...auth,
+    joinedPublisher: true,
+    credential: member.id,
+    key: member.key,
+    scope: { ...auth.scope, credential: member.id },
+  };
+}
 async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) {
   const decoded = decodeSubmission(bytes),
     e = decodeNetworkEnvelope(decoded.envelope);
-  if (e.epoch < 1 || e.epoch > maxEpoch) throw Error('Unsupported epoch');
+  if (e.epoch < (auth.joinedPublisher ? 3 : 1) || e.epoch > maxEpoch)
+    throw Error('Unsupported epoch');
   // These bounded admission/certification transitions preserve the original publisher and key.
   // A refusal successor is checked at its own mint epoch before current eligibility.
   const mintAuthority = e.epoch === 1 ? auth.firstA : e.epoch === 2 ? auth.secondA : auth.a;
@@ -474,21 +527,23 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     issued = new Map<string, number>(),
     closedPositions = new Set<number>();
   const witness =
-    s.promotion.delivery_witness === null
+    (s.publisher ? s.publisherWitness : s.promotion.delivery_witness) == null
       ? null
-      : parseWitness(JSON.parse(s.promotion.delivery_witness));
+      : parseWitness(
+          JSON.parse((s.publisher ? s.publisherWitness : s.promotion.delivery_witness)!),
+        );
   // Authority freshly authenticates scope.request (the complete request digest) on every request.
   // Bind generation and predecessor too; SQL columns, ordering, parent issuance and witness replay.
   const scope = JSON.stringify([auth.a, auth.scope, auth.generation]);
   const boundaries = [
-    ...(auth.successor
+    ...(!auth.joinedPublisher && auth.successor
       ? [{ successor: auth.successor, witness: auth.boundaryWitness, authority: auth.firstA }]
       : []),
     ...(auth.certificationSuccessor
       ? [
           {
             successor: auth.certificationSuccessor,
-            witness: auth.certificationBoundary,
+            witness: auth.joinedPublisher ? null : auth.certificationBoundary,
             authority: auth.secondA,
           },
         ]
@@ -535,7 +590,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     };
     const { e, submission, subject, proof } = reuse
       ? await reuse.check(
-          s.account.id + ':' + row.ordinal,
+          s.account.id + ':' + auth.credential + ':' + row.ordinal,
           scope + ':' + boundaryScope + ':' + previous,
           [bytes, response],
           verify,
@@ -598,7 +653,7 @@ export async function decideSubmission(
   let phase: Diagnostic['phase'] = 'request';
   const note = (cause: unknown) =>
     reportDiagnostic(diagnostics, { operation: 'submit', phase, code: causeCode(cause) });
-  let workspace: string, bytes: Bytes;
+  let workspace: string, publisher: string, bytes: Bytes;
   try {
     const r = closed(input, ['workspaceId', 'bytes']);
     unhex(r['workspaceId'], 16);
@@ -606,7 +661,7 @@ export async function decideSubmission(
       throw Error('Submission size');
     workspace = r['workspaceId'] as string;
     bytes = new Uint8Array(r['bytes']);
-    decodeSubmission(bytes);
+    publisher = decodeNetworkEnvelope(decodeSubmission(bytes).envelope).credential_id;
   } catch (cause) {
     note(cause);
     return unknown('invalid-request');
@@ -616,7 +671,7 @@ export async function decideSubmission(
     let s: Snapshot | null;
     try {
       phase = 'storage';
-      s = read(db, workspace);
+      s = read(db, workspace, publisher);
     } catch (cause) {
       note(cause);
       return unknown('storage-unavailable');
@@ -625,7 +680,7 @@ export async function decideSubmission(
     let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
     try {
       phase = 'verify';
-      auth = await authority(s, issuer);
+      auth = selectPublisher(await authority(s, issuer), s.publisher);
       ledger = await census(s, auth, reuse);
     } catch (cause) {
       note(cause);
@@ -691,7 +746,7 @@ export async function decideSubmission(
       phase = 'commit';
       hook('after-verify', 'decide-submission');
       db.exec('BEGIN IMMEDIATE');
-      if (snapshotBytes(snapshot(db, workspace)) !== snapshotBytes(s)) {
+      if (snapshotBytes(snapshot(db, workspace, publisher)) !== snapshotBytes(s)) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -712,7 +767,7 @@ export async function decideSubmission(
             auth.scope,
             { events: ordinal, hash: extend(ledger.commitment, ordinal, bytes, response) },
           );
-        db.prepare('INSERT INTO delivery_decisions VALUES (?,?,?,?,?,?,?,?)').run(
+        const values = [
           s.account.id,
           ordinal,
           e.seq,
@@ -721,11 +776,22 @@ export async function decideSubmission(
           proposed.kind,
           bytes,
           response,
-        );
-        db.prepare('UPDATE promotions SET delivery_witness=? WHERE account_id=?').run(
-          JSON.stringify(witness),
-          s.account.id,
-        );
+        ];
+        if (s.publisher) {
+          db.prepare('INSERT INTO publisher_decisions VALUES (?,?,?,?,?,?,?,?,?)').run(
+            s.publisher,
+            ...values,
+          );
+          db.prepare(
+            'INSERT INTO publisher_witnesses VALUES (?,?,?) ON CONFLICT(account_id,credential_id) DO UPDATE SET witness=excluded.witness',
+          ).run(s.account.id, s.publisher, JSON.stringify(witness));
+        } else {
+          db.prepare('INSERT INTO delivery_decisions VALUES (?,?,?,?,?,?,?,?)').run(...values);
+          db.prepare('UPDATE promotions SET delivery_witness=? WHERE account_id=?').run(
+            JSON.stringify(witness),
+            s.account.id,
+          );
+        }
         result = { kind: 'decision', bytes: response };
       }
       phase = 'commit';
@@ -774,10 +840,10 @@ export async function readAccepted(
   for (let retry = 0; retry < 4; retry++) {
     try {
       phase = 'storage';
-      const s = read(db, request.workspace);
+      const s = read(db, request.workspace, request.credential);
       if (!s) return unknown('unavailable');
       phase = 'verify';
-      const auth = await authority(s, issuer);
+      const auth = selectPublisher(await authority(s, issuer), s.publisher);
       if (
         !readScopeMatches(request, issuer.pin, auth.a, auth.credential) ||
         !readTimeValid(request, Date.now()) ||
@@ -819,7 +885,7 @@ export async function readAccepted(
       phase = 'commit';
       hook('after-verify', 'read-accepted');
       db.exec('BEGIN');
-      if (snapshotBytes(s) !== snapshotBytes(snapshot(db, request.workspace))) {
+      if (snapshotBytes(s) !== snapshotBytes(snapshot(db, request.workspace, request.credential))) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -879,9 +945,9 @@ export async function readInbound(
   for (let retry = 0; retry < 4; retry++) {
     try {
       phase = 'storage';
-      const s = read(db, request.workspace);
+      const s = read(db, request.workspace, request.publisher);
       if (!s) return unknown('unavailable');
-      const auth = await authority(s, issuer),
+      const auth = selectPublisher(await authority(s, issuer), s.publisher),
         { reader, publisher } = resolveInboundRoles(auth, request);
       if (
         request.serviceId !== issuer.pin.serviceId ||
@@ -901,8 +967,7 @@ export async function readInbound(
         ))
       )
         return unknown('invalid-request');
-      // The current ledger belongs to exactly one certified publisher. Expanding
-      // membership requires a new ledger scope/schema, not selecting another key.
+      // Each certified publisher has an independently witnessed position sequence.
       if (publisher.id !== auth.scope.credential) return unknown('unavailable');
       const ledger = await census(s, auth, reuse);
       if (request.after > ledger.through) return unknown('out-of-order');
@@ -933,7 +998,8 @@ export async function readInbound(
       phase = 'commit';
       hook('after-verify', 'read-inbound');
       db.exec('BEGIN IMMEDIATE');
-      const current = snapshotBytes(snapshot(db, request.workspace)) === snapshotBytes(s);
+      const current =
+        snapshotBytes(snapshot(db, request.workspace, request.publisher)) === snapshotBytes(s);
       if (!current) {
         db.exec('ROLLBACK');
         continue;

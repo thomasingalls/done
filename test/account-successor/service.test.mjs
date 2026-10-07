@@ -213,7 +213,7 @@ test('explicit schema-six upgrade preserves an already prepared operation and ex
     r = await x.call(w);
   mutate(x, (db) =>
     db.exec(
-      'DROP TABLE content_checkpoints; DROP TABLE content_transfers; DROP TABLE content_ceremonies; DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; PRAGMA user_version=6;',
+      'DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses; DROP TABLE content_checkpoints; DROP TABLE content_transfers; DROP TABLE content_ceremonies; DROP TABLE workspace_successors; ALTER TABLE promotions DROP COLUMN successor_head; PRAGMA user_version=6;',
     ),
   );
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };

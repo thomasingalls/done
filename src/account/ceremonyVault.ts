@@ -1,3 +1,5 @@
+import { installJoinedAccount } from '../crdt/joinedAccount';
+import type { ContentReaderState } from './contentReader';
 /** Small exclusive operation on the existing mandatory-factor lifecycle, for the private preview. */
 import { withPromotionSlot } from '../crdt/writeSession';
 import {
@@ -52,6 +54,11 @@ export interface CeremonyVault {
     authority: CheckpointAuthority,
     assert: LocalPasskey,
   ): Promise<ContentCheckpoint>;
+  installWriting(
+    authority: CheckpointAuthority,
+    reading: ContentReaderState,
+    key: InstalledContentKey,
+  ): Promise<void>;
   participant: { id: string; wPub: string; sPub: string };
   marker: Awaited<ReturnType<typeof readPromotion>>['marker'];
 }
@@ -142,6 +149,8 @@ export async function withCeremonyVault<T>(
         };
         return work({
           participant,
+          installWriting: (authority, reading, key) =>
+            installJoinedAccount(task, slotId, code, { authority, reading, key }),
           get marker() {
             return marker;
           },

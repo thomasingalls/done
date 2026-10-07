@@ -352,3 +352,27 @@ export const openAccountWriteSession = (
     )
       throw Error('Account handoff needs resumption');
   });
+
+/** Private joined-device lifetime. The new interlock refuses every older writer. */
+export const openJoinedWriteSession = (
+  slotId: string,
+  code: string,
+  options: WriteSessionOptions,
+): Promise<WriteSession> =>
+  acquire(slotId, 'exclusive', options, async (task, slot) => {
+    const { readJoinedAccount } = await task.wait(() => import('./joinedAccount'));
+    await readJoinedAccount(task, slot, code);
+  });
+export async function withJoinedSlot<T>(
+  slotId: string,
+  code: string,
+  work: (task: SessionTask) => Promise<T>,
+  signal?: AbortSignal,
+) {
+  const owner = await openJoinedWriteSession(slotId, code, signal ? { signal } : {});
+  try {
+    return await owner.run(work);
+  } finally {
+    await owner.close();
+  }
+}

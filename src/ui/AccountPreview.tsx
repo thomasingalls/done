@@ -162,9 +162,7 @@ export async function createAccountPreview(config: SetupConfig) {
     return (
       <PreviewNavigationContext value={context}>
         <div className="account-development">
-          <aside className="setup-dev-note">
-            Account preview · writing on the second device is read-only
-          </aside>
+          <aside className="setup-dev-note">Account preview · encrypted two-device sync</aside>
           <Outlet />
         </div>
       </PreviewNavigationContext>

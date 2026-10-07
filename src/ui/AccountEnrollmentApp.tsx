@@ -1,3 +1,5 @@
+import { WorkspaceUiProvider } from './workspaceUi';
+import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, isSetupSlot, type SetupConfig } from '../account/firstDeviceSetup';
 import {
@@ -11,7 +13,6 @@ import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { parseCeremonyInvitation } from '../../account-protocol/ceremonyRelay';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
-import { ApprovedWriting } from './ApprovedWriting';
 import { useCeremonyNavigation } from './ceremonyNavigation';
 export function AccountEnrollmentApp({
   config,
@@ -54,7 +55,7 @@ export function AccountEnrollmentApp({
   navigate.current = onNavigate;
   const close = useCallback(async () => {
     life.current.abort();
-    owner.current?.close();
+    const closing = owner.current?.close();
     genesis.current?.cancel();
     genesis.current = null;
     setGenerated('');
@@ -62,6 +63,7 @@ export function AccountEnrollmentApp({
     setTyped('');
     setState(null);
     await operating.current;
+    await closing;
   }, []);
   const step =
     stage === 'choose'
@@ -138,7 +140,7 @@ export function AccountEnrollmentApp({
       previous.message === next.message &&
       previous.link === next.link &&
       previous.code === next.code &&
-      previous.writing === next.writing
+      previous.editor === next.editor
         ? previous
         : next,
     );
@@ -199,8 +201,37 @@ export function AccountEnrollmentApp({
     }, 2500);
     return () => clearInterval(timer);
   }, [error, stateKind, refresh]);
+  useEffect(() => {
+    if (!state?.editor) return;
+    return state.editor.workspace.onStatus((status) => {
+      if (
+        ['active', 'blocked'].includes(status.state) &&
+        status.pressure?.code !== 'repair-required'
+      )
+        return;
+      void close().then(() => navigate.current('/accounts'));
+    });
+  }, [state?.editor, close]);
   if (navigation.leaving)
     return <p role="status">{navigation.error || 'Closing and finishing storage operations…'}</p>;
+  if (state?.kind === 'editing' && state.editor && owner.current)
+    return (
+      <WorkspaceUiProvider
+        workspace={state.editor.workspace}
+        actorId={state.editor.actorId}
+        accountWorkspace
+        accountId={state.editor.accountId}
+        registerEditor={owner.current.registerEditor}
+        onLock={() => {
+          void close().then(() => onNavigate('/accounts'));
+        }}
+        onSwitchAccount={() => {
+          void close().then(() => onNavigate('/accounts'));
+        }}
+      >
+        <App />
+      </WorkspaceUiProvider>
+    );
   return (
     <main
       className="local-startup workspace-gate account-setup"
@@ -369,7 +400,7 @@ export function AccountEnrollmentApp({
                   genesis.current = null;
                   setGenerated('');
                 }
-                owner.current?.close();
+                await owner.current?.close();
                 owner.current = createDeviceEnrollment(
                   config,
                   slot,
@@ -400,23 +431,21 @@ export function AccountEnrollmentApp({
         {stage === 'open' && state && (
           <>
             <h2>
-              {state.writing
-                ? 'Your writing'
-                : ['approved', 'certified'].includes(state.kind)
-                  ? 'Device approved'
-                  : state.kind === 'mismatch'
-                    ? 'Codes did not match'
-                    : state.kind === 'display'
-                      ? 'Your comparison code'
-                      : state.kind === 'compare'
-                        ? 'Compare the devices'
-                        : state.kind === 'invite'
-                          ? 'Invite your other device'
-                          : state.kind === 'enroll'
-                            ? 'Verify your account'
-                            : state.kind === 'waiting'
-                              ? 'Waiting for the other device'
-                              : 'Attempt stopped'}
+              {['approved', 'certified'].includes(state.kind)
+                ? 'Device approved'
+                : state.kind === 'mismatch'
+                  ? 'Codes did not match'
+                  : state.kind === 'display'
+                    ? 'Your comparison code'
+                    : state.kind === 'compare'
+                      ? 'Compare the devices'
+                      : state.kind === 'invite'
+                        ? 'Invite your other device'
+                        : state.kind === 'enroll'
+                          ? 'Verify your account'
+                          : state.kind === 'waiting'
+                            ? 'Waiting for the other device'
+                            : 'Attempt stopped'}
             </h2>
             <p role="status">{state.message}</p>
             {state.kind === 'certified' && (
@@ -426,14 +455,9 @@ export function AccountEnrollmentApp({
                   void run(async () => publish(await owner.current!.openWriting()));
                 }}
               >
-                {workspace
-                  ? state.writing
-                    ? 'Check for updates'
-                    : 'Open your writing'
-                  : 'Make writing available'}
+                {workspace ? 'Open your writing' : 'Make writing available'}
               </button>
             )}
-            {state.writing && <ApprovedWriting entries={state.writing} />}
             {state.link && (
               <>
                 <label htmlFor="invitation">Device invitation link</label>

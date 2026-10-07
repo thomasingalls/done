@@ -86,7 +86,7 @@ async function compared(first: Page, second: Page) {
   return (await second.getByLabel('Comparison code').textContent())!;
 }
 
-test('approved writing opens from the current checkpoint, receives later edits, and survives reopening', async ({
+test('both certified devices edit, exchange concurrent offline writing, and reopen durably', async ({
   page,
   browser,
 }) => {
@@ -105,42 +105,125 @@ test('approved writing opens from the current checkpoint, receives later edits, 
     await expect(
       page.getByText('Your writing is available to the approved device.', { exact: false }),
     ).toBeVisible();
-    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
-    await expect(second.getByLabel('Read-only account writing')).toContainText(
-      'Keep the first device writing',
-    );
     await page.getByRole('link', { name: 'Close and return to accounts' }).click();
     await page.getByRole('button', { name: /^Unlock Device owner/ }).click();
     await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
     await expect(page.locator('.shell')).toBeVisible();
-    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
-    await compose.fill('Later writing uses the ordinary encrypted stream');
-    await compose.press('Enter');
-    await expect
-      .poll(
-        async () => {
-          await second.getByRole('button', { name: 'Check for updates', exact: true }).click();
-          await expect(
-            second.getByRole('button', { name: 'Check for updates', exact: true }),
-          ).toBeEnabled();
-          return second.getByLabel('Read-only account writing').textContent();
-        },
-        { timeout: 30000 },
-      )
-      .toContain('Later writing uses the ordinary encrypted stream');
+    const add = async (p: Page, text: string) => {
+      const compose = p.locator('.day-panel[data-active="true"] .compose-field');
+      await compose.fill(text);
+      await compose.press('Enter');
+      await expect(p.locator('.shell')).toContainText(text);
+    };
+    const acceptedBeforeOpen = page.waitForResponse(
+      (r) => r.url().endsWith('/account/delivery/submit') && r.status() === 200,
+    );
+    await add(page, 'Stream writing before the second editor opens');
+    await acceptedBeforeOpen;
+    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(second.locator('.shell')).toBeVisible({ timeout: 15000 });
+    await expect(second.locator('.shell')).toContainText('Keep the first device writing');
+    await expect(second.locator('.shell')).toContainText(
+      'Stream writing before the second editor opens',
+    );
+    const submissions: string[] = [];
+    let loseReply = true;
+    await second.route('**/account/delivery/submit', async (route) => {
+      submissions.push(route.request().postDataBuffer()!.toString('hex'));
+      if (loseReply) {
+        loseReply = false;
+        await route.fetch();
+        await route.abort();
+      } else await route.continue();
+    });
+    await add(second, 'Second device publishes its own writing');
+    await expect(page.locator('.shell')).toContainText('Second device publishes its own writing', {
+      timeout: 30000,
+    });
+    await expect.poll(() => submissions.length, { timeout: 30000 }).toBeGreaterThan(1);
+    expect(submissions[1]).toBe(submissions[0]);
+    await add(page, 'First device replies through the encrypted stream');
+    await expect(second.locator('.shell')).toContainText(
+      'First device replies through the encrypted stream',
+      { timeout: 30000 },
+    );
+    await page.context().setOffline(true);
+    await other.setOffline(true);
+    await add(page, 'Offline on the first device');
+    await add(second, 'Offline on the second device');
+    await page.context().setOffline(false);
+    await other.setOffline(false);
+    for (const p of [page, second]) {
+      await expect(p.locator('.shell')).toContainText('Offline on the first device', {
+        timeout: 30000,
+      });
+      await expect(p.locator('.shell')).toContainText('Offline on the second device', {
+        timeout: 30000,
+      });
+    }
+    const retainedMarker = await second.evaluate(async () => {
+      const workspace = new URL(location.href).searchParams.get('workspace')!;
+      const slot = localStorage.getItem('done.pending-device.' + workspace)!;
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const r = indexedDB.open('done.custody');
+        r.onsuccess = () => resolve(r.result);
+        r.onerror = () => reject(r.error);
+      });
+      try {
+        return await new Promise<any>((resolve, reject) => {
+          const tx = db.transaction('entries', 'readwrite'),
+            store = tx.objectStore('entries'),
+            key = [slot, 'application-upgrade'],
+            r = store.get(key);
+          let marker: any;
+          r.onsuccess = () => {
+            marker = r.result;
+            store.put({ ...marker, phase: 'installing' }, key);
+          };
+          tx.oncomplete = () => resolve({ key, marker });
+          tx.onabort = () => reject(tx.error);
+        });
+      } finally {
+        db.close();
+      }
+    });
     await second.reload();
     await unlock(second, next.code);
-    await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
-    await expect(second.getByLabel('Read-only account writing')).toContainText(
-      'Keep the first device writing',
-    );
-    await expect(second.getByLabel('Read-only account writing')).toContainText(
-      'Later writing uses the ordinary encrypted stream',
-    );
-    await expect(
-      second.getByLabel('Read-only account writing').locator('[contenteditable=true]'),
-    ).toHaveCount(0);
+    await expect(second.getByRole('alert')).toContainText('authentication failed');
+    await expect(second.locator('.shell')).toHaveCount(0);
+    await second.evaluate(async ({ key, marker }) => {
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const r = indexedDB.open('done.custody');
+        r.onsuccess = () => resolve(r.result);
+        r.onerror = () => reject(r.error);
+      });
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const tx = db.transaction('entries', 'readwrite');
+          tx.objectStore('entries').put(marker, key);
+          tx.oncomplete = () => resolve();
+          tx.onabort = () => reject(tx.error);
+        });
+      } finally {
+        db.close();
+      }
+    }, retainedMarker);
+    await second.reload();
+    await unlock(second, next.code);
+    await expect(second.locator('.shell')).toBeVisible({ timeout: 15000 });
+    await page.reload();
+    await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
+    await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+    for (const p of [page, second])
+      for (const text of [
+        'Keep the first device writing',
+        'Second device publishes its own writing',
+        'First device replies through the encrypted stream',
+        'Offline on the first device',
+        'Offline on the second device',
+      ])
+        await expect(p.locator('.shell')).toContainText(text, { timeout: 15000 });
   } finally {
     await other.close();
   }
@@ -217,7 +300,7 @@ test('checkpoint retries preserve the source and refuse false coverage or an abo
     });
     await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
     await expect(second.getByRole('alert')).toContainText('coverage');
-    await expect(second.getByLabel('Read-only account writing')).toHaveCount(0);
+    await expect(second.locator('.shell')).toHaveCount(0);
     expect(admissions).toBe(0);
     forge = false;
     await second.evaluate(() => {
@@ -234,14 +317,41 @@ test('checkpoint retries preserve the source and refuse false coverage or an abo
     });
     await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
     await expect(second.getByRole('alert')).toBeVisible();
-    await expect(second.getByLabel('Read-only account writing')).toHaveCount(0);
+    await expect(second.locator('.shell')).toHaveCount(0);
     expect(admissions).toBe(0);
     await second.reload();
     await unlock(second, next.code);
+    await second.evaluate(() => {
+      const put = IDBObjectStore.prototype.put;
+      IDBObjectStore.prototype.put = function (value: any, ...args: any[]) {
+        const result = put.call(this, value, ...args);
+        if (value?.kind === 'certified-account-device' && value.phase === 'active')
+          this.transaction.abort();
+        return result;
+      };
+    });
     await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
-    await expect(second.getByLabel('Read-only account writing')).toContainText(
-      'Keep the first device writing',
-    );
+    await expect(second.getByRole('alert')).toBeVisible();
+    await expect(second.locator('.shell')).toHaveCount(0);
+    const fenced = await second.evaluate(async () => {
+      const sessionPath = '/src/crdt/writeSession.ts';
+      const { openWriteSession } = await import(/* @vite-ignore */ sessionPath);
+      const workspace = new URL(location.href).searchParams.get('workspace')!;
+      const slot = localStorage.getItem('done.pending-device.' + workspace)!;
+      try {
+        const s = await openWriteSession(slot);
+        await s.close();
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    expect(fenced).toBe(true);
+    await second.reload();
+    await unlock(second, next.code);
+    await expect(second.locator('.shell')).toContainText('Keep the first device writing', {
+      timeout: 15000,
+    });
     expect(admissions).toBe(1);
   } finally {
     await other.close();
@@ -335,7 +445,7 @@ test('the approved second device can read through the preview delivery adapter u
       cache: 'no-store',
       through: 0,
       entries: 0,
-      otherPublisher: 409,
+      otherPublisher: 200,
       unauthenticated: 403,
       oversized: 413,
     });

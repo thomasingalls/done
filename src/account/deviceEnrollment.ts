@@ -1,8 +1,10 @@
+import { hasJoinedAccount } from '../crdt/joinedAccount';
+import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
+import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 /** Private two-device approval and certified key-installation coordinator. */
 import { continueContentHandoff, type ContentHandoffState } from './contentHandoff';
 import { openApprovedWriting, type ContentReaderState } from './contentReader';
 import { assertSlotPasskey } from './assertSlotPasskey';
-import type { ZipEntry } from '../lib/zip';
 import {
   parseCertificationSuccessor,
   verifyCertificationSuccessor,
@@ -103,6 +105,7 @@ export interface EnrollmentView {
     | 'display'
     | 'approved'
     | 'certified'
+    | 'editing'
     | 'mismatch'
     | 'expired'
     | 'restart-required'
@@ -110,7 +113,7 @@ export interface EnrollmentView {
   link?: string;
   code?: string;
   message: string;
-  writing?: ZipEntry[];
+  editor?: { workspace: AdmittedWorkspace; actorId: string; accountId: string };
 }
 const capability = () =>
   btoa(String.fromCharCode(...random(32)))
@@ -135,6 +138,7 @@ const messages: Record<EnrollmentView['kind'], string> = {
     'Read the five-character code on the new device and enter it here. You have one comparison.',
   display: 'Type this code on your existing device.',
   approved: 'Device approved. Finishing content access with your other device.',
+  editing: 'Your account workspace is open.',
   certified: 'Content access is installed and certified.',
   mismatch: 'The codes did not match. This device attempt is spent.',
   expired: 'This attempt expired. It cannot be restarted with the same device credential.',
@@ -152,6 +156,8 @@ export function createDeviceEnrollment(
   const pin = parseAuthorityPin(config.pin),
     lifetime = new AbortController();
   if (pin.origin !== location.origin) throw Error('Development service differs from this page');
+  let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
+  const editors = new Set<() => void>();
   let running = false,
     last: EnrollmentView = { kind: 'locked', message: messages.locked };
   // The link is a signed invitation, not a freshness challenge. Keep it stable for
@@ -511,10 +517,12 @@ export function createDeviceEnrollment(
               message:
                 'On your first device, choose “Make writing available”, then open your writing here.',
             });
-          return view('certified', {
-            message: 'Read-only for this development phase. Editing on this device comes next.',
-            writing: result.entries,
-          });
+          await owner.installWriting(
+            { base: boot.base, successor, certification },
+            p!.reading!,
+            p!.content!.key!,
+          );
+          return view('certified', { message: 'Opening your writing…' });
         };
         // Relay labels are hints. Only a peer-signed cancellation/decision may be adopted.
         if (remote.cancellation) {
@@ -733,14 +741,67 @@ export function createDeviceEnrollment(
       running = false;
     }
   };
+  const openEditor = async () => {
+    if (role !== 'new') return null;
+    if (opened) return last;
+    const joined = await hasJoinedAccount(slotId, code, lifetime.signal);
+    if (!joined) return null;
+    if (workspaceInput !== joined.workspaceId)
+      throw Error('Saved workspace differs from this connection');
+    opened = await openOwnedSyncingAccountWorkspace(
+      {
+        slotId,
+        code,
+        pin,
+        assertPasskey: assertSlotPasskey(lifetime.signal),
+        signal: lifetime.signal,
+        identity: {
+          id: joined.principalId,
+          actor: { kind: 'human', name: 'You', color: '#e0662f' },
+          device: { id: 'joined:' + slotId, name: 'This device' },
+        },
+      },
+      config.token,
+      true,
+    );
+    guard();
+    code = '';
+    return view('editing', {
+      editor: {
+        workspace: opened.workspace,
+        actorId: joined.principalId,
+        accountId: opened.accountId,
+      },
+    });
+  };
   return {
-    refresh: () => operate(),
+    refresh: async () => (await openEditor()) ?? operate(),
     enroll: () => operate({ enroll: true }),
     compare: (typed: string) => operate({ typed }),
     cancel: () => operate({ cancel: true }),
-    openWriting: () => operate({ read: true }),
-    close: () => {
+    openWriting: async () => {
+      const result = await operate({ read: true });
+      return (await openEditor()) ?? result;
+    },
+    registerEditor(destroy: () => void) {
+      guard();
+      editors.add(destroy);
+      return () => {
+        editors.delete(destroy);
+      };
+    },
+    close: async () => {
       lifetime.abort();
+      for (const destroy of [...editors]) {
+        try {
+          destroy();
+        } catch {
+          /* Continue closing storage if a view fails to retire. */
+        }
+      }
+      editors.clear();
+      await opened?.workspace.close();
+      opened = undefined;
       code = '';
       last = { kind: 'locked', message: messages.locked };
     },

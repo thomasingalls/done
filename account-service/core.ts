@@ -30,6 +30,7 @@ import {
   type ActivationChallenge,
 } from '../account-protocol/activation.ts';
 import {
+  PUBLISHER_SCHEMA,
   decideSubmission,
   readAccepted,
   readInbound,
@@ -157,6 +158,7 @@ export class AccountCore {
       upgradeFromV7?: boolean;
       upgradeFromV8?: boolean;
       upgradeFromV9?: boolean;
+      upgradeFromV10?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -192,7 +194,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 10 &&
+        version !== 11 &&
+        !(version === 10 && instrumentation.upgradeFromV10) &&
         !(version === 9 && instrumentation.upgradeFromV9) &&
         !(version === 8 && instrumentation.upgradeFromV8) &&
         !(version === 7 && instrumentation.upgradeFromV7) &&
@@ -258,6 +261,10 @@ export class AccountCore {
       if (version < 10) {
         this.#db.exec(CONTENT_CHECKPOINT_SCHEMA);
         this.#db.exec('PRAGMA user_version=10;');
+      }
+      if (version < 11) {
+        this.#db.exec(PUBLISHER_SCHEMA);
+        this.#db.exec('PRAGMA user_version=11;');
       }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==

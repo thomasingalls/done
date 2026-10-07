@@ -1,5 +1,5 @@
 import { heldCaptureRoute } from './accountSuccessor';
-import { historyAuthority } from '../../account-protocol/admissionHistory';
+import { historyAuthority, historyPublisher } from '../../account-protocol/admissionHistory';
 /** Internal v9 census. Authority is supplied only after admission verification under the factor permit. */
 import { parseReceipt } from '../../account-protocol/admission';
 import { decodeInboundPage, decodeInboundRequest } from '../../account-protocol/inboundTransport';
@@ -107,12 +107,37 @@ export interface InboundState {
   prefix: InboundContext['prefix'];
   conflict: boolean;
   retained: Map<number, NonNullable<InboundContext['retained']>>;
+  peers?: Map<string, InboundState>;
 }
 export const emptyInbound = (): InboundState => ({
   prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
   conflict: false,
   retained: new Map(),
 });
+/** Resolve a peer only from the verified certified roster. Key hints from the wire grant nothing. */
+export function publisherContext(base: InboundContext, publisher: string): InboundContext {
+  if (publisher === base.publisher.id) return base;
+  if (!base.history) throw Error('Uncertified inbound publisher');
+  const history = historyPublisher(base.history, publisher);
+  return {
+    ...base,
+    history,
+    authority: history.current,
+    creatingCredential: publisher,
+    publisher: {
+      id: publisher,
+      publicKey: history.signingKey,
+      principal: history.principal,
+      system: true,
+      active: true,
+    },
+  };
+}
+export function publisherState(state: InboundState, base: InboundContext, publisher: string) {
+  if (publisher === base.publisher.id) return state;
+  publisherContext(base, publisher);
+  return state.peers?.get(publisher) ?? emptyInbound();
+}
 export function contextAt(
   base: InboundContext,
   state: InboundState,
@@ -206,20 +231,24 @@ export async function verifyInboundLedger(
   lifetime: InboundLifetime,
   reuse?: { memo: VerificationMemo; coverage: ReturnType<typeof createInboundCoverage> },
 ): Promise<InboundState> {
-  const state = emptyInbound();
+  const own = emptyInbound();
+  own.peers = new Map();
   for (const { record, event } of census.entries) {
-    if (state.conflict) captureError('Inbound event after stream conflict');
     const request = decodeInboundRequest(event.request);
-    const historical = base.history
+    const publisher = publisherContext(base, request.publisher);
+    const state = publisherState(own, base, request.publisher);
+    if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
+    if (state.conflict) captureError('Inbound event after stream conflict');
+    const historical = publisher.history
       ? {
-          ...base,
-          authority: historyAuthority(base.history, {
-            ...base.authority,
+          ...publisher,
+          authority: historyAuthority(publisher.history, {
+            ...publisher.authority,
             tip: request.epoch,
             head: event.head,
           }),
         }
-      : base;
+      : publisher;
     const context = contextAt(historical, state, request.after),
       check = () => verifyStoredInbound(context, record.bytes, lifetime),
       result = reuse
@@ -262,5 +291,5 @@ export async function verifyInboundLedger(
     } else captureError('Unexpected stored inbound observation');
   }
   lifetime.assertCurrent();
-  return state;
+  return own;
 }

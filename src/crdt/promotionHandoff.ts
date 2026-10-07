@@ -38,7 +38,7 @@ export const handoffResult = (destination: Slot): HandoffReceipt =>
     dbName: destination.stores[0]!.dbName,
     epochHead: destination.account!.epochHead,
   });
-async function selectIndex(task: SessionTask, local: Slot, destination: Slot) {
+export async function selectIndex(task: SessionTask, local: Slot, destination: Slot) {
   const found = await probeDatabase(task, 'done.slots', async (db) => {
     checkLayout(db, { slots: 'id' });
     await contentTransaction<void>(

@@ -188,7 +188,7 @@ test('schema 2 upgrade is explicit and preserves all prior rows', async (t) => {
   const x = await prepared(t);
   const db = new DatabaseSync(x.f.path);
   db.exec(
-    'DROP TABLE content_checkpoints; DROP TABLE content_transfers; DROP TABLE content_ceremonies; DROP TABLE enrollment_preparations; DROP TABLE workspace_successors; DROP TABLE delivery_decisions; DROP TABLE promotions; PRAGMA user_version=2;',
+    'DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses; DROP TABLE content_checkpoints; DROP TABLE content_transfers; DROP TABLE content_ceremonies; DROP TABLE enrollment_preparations; DROP TABLE workspace_successors; DROP TABLE delivery_decisions; DROP TABLE promotions; PRAGMA user_version=2;',
   );
   const before = db.prepare('SELECT * FROM accounts').all();
   db.close();

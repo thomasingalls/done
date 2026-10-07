@@ -39,9 +39,15 @@ function asSchemaFour(path) {
   const db = new DatabaseSync(path);
   const version = db.prepare('PRAGMA user_version').get().user_version;
   assert.ok(
-    version === 5 || version === 7 || version === 8 || version === 9 || version === 10,
+    version === 5 ||
+      version === 7 ||
+      version === 8 ||
+      version === 9 ||
+      version === 10 ||
+      version === 11,
     'Update the fixture for a new backend schema',
   );
+  if (version >= 11) db.exec('DROP TABLE publisher_decisions; DROP TABLE publisher_witnesses');
   if (version >= 10) db.exec('DROP TABLE content_checkpoints');
   if (version >= 9) db.exec('DROP TABLE content_transfers');
   if (version >= 8) db.exec('DROP TABLE content_ceremonies');

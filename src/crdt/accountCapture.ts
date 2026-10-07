@@ -1,3 +1,5 @@
+import { verifyJoinedAccount } from './joinedAccount';
+import { claimScope } from './localGenesisRecord';
 /** Private v6 source-capturing Account owner. No network position, envelope or send capability. */
 import {
   prepareAccountCustody,
@@ -5,7 +7,7 @@ import {
   type ContentInput,
   type ContentReceipt,
 } from './custody';
-import { openAccountWriteSession, type SessionTask } from './writeSession';
+import { openAccountWriteSession, openJoinedWriteSession, type SessionTask } from './writeSession';
 import {
   verifyAccountUnderPermit,
   captureAccountOptions,
@@ -45,6 +47,10 @@ export interface CaptureExtension {
     task: SessionTask,
     verified: Awaited<ReturnType<typeof verifyAccountUnderPermit>>,
   ): Promise<void>;
+  initializeJoined?(
+    task: SessionTask,
+    verified: Awaited<ReturnType<typeof verifyJoinedAccount>>,
+  ): Promise<void>;
   activate(task: SessionTask, owner: ReturnType<typeof prepareAccountCustody>): Promise<void>;
   validate(
     task: SessionTask,
@@ -59,6 +65,7 @@ export async function openAccountCaptureOwner(
   input: AccountStartupOptions,
   principalId: string | undefined,
   extension?: CaptureExtension,
+  joined = false,
 ) {
   const options = captureAccountOptions(input),
     cleanups = new Set<() => void | Promise<void>>();
@@ -72,115 +79,143 @@ export async function openAccountCaptureOwner(
     ...capturedRecovery({ records: [...sourceRecords(records)], journal }, route),
     records,
   });
-  const live = await openAccountWriteSession(options.slotId, options.code, {
-    ...(options.signal ? { signal: options.signal } : {}),
-    initialize: async (task) => {
-      const v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
-      if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
-      if (
-        extension &&
-        !(extension.version === 9 && v.marker.catchup && v.marker.v >= 6) &&
-        v.marker.v !== extension.version - 1 &&
-        v.marker.v !== extension.version
-      )
-        throw Error('Spool requires verified source capture');
-      if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
-      if (
-        principalId === undefined ? extension?.version !== 9 : v.account.principalId !== principalId
-      )
-        throw Error('Account actor identity changed');
-      route = v.route;
-      account = v.account;
-      const certified = v.marker.genesis!.actors;
-      if (
-        !certified.some(
-          (a) =>
-            a.id === route.principal && a.kind === 'human' && a.credential === route.credential,
-        ) ||
-        !certified.some(
-          (a) => a.id === 'system' && a.kind === 'system' && a.credential === route.credential,
+  const live = await (joined ? openJoinedWriteSession : openAccountWriteSession)(
+    options.slotId,
+    options.code,
+    {
+      ...(options.signal ? { signal: options.signal } : {}),
+      initialize: async (task) => {
+        if (joined) {
+          if (extension?.version !== 9 || !extension.initializeJoined)
+            throw Error('Certified device needs the sync owner');
+          const v = await verifyJoinedAccount(task, options);
+          if (principalId !== undefined && principalId !== v.account.principalId)
+            throw Error('Account actor identity changed');
+          route = v.route;
+          account = v.account;
+          const scope = claimScope(v.claim);
+          owner = prepareAccountCustody(
+            { ...scope, resolvePrincipal: () => scope.principalId },
+            options.code,
+            (records, task, counter, view) =>
+              extension.validate(task, records, route, counter, view),
+            true,
+            true,
+          );
+          await extension.initializeJoined(task, v);
+          await owner.initialize(task);
+          await extension.activate(task, owner);
+          return;
+        }
+        const v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
+        if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
+        if (
+          extension &&
+          !(extension.version === 9 && v.marker.catchup && v.marker.v >= 6) &&
+          v.marker.v !== extension.version - 1 &&
+          v.marker.v !== extension.version
         )
-      )
-        throw Error('Capture needs certified human and system actors');
-      owner = prepareAccountCustody(
-        {
-          slotId: options.slotId,
-          workspaceId: route.workspace,
-          resolvePrincipal: () => route.principal,
-        },
-        options.code,
-        (records, task, counter, view) => {
-          if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
-          return extension?.validate(task, records, route, counter, view);
-        },
-        extension ? true : undefined,
-        extension?.version === 9 ? true : undefined,
-      );
-      await extension?.initialize(task, v);
-      await owner.initialize(task);
-      if (extension) {
-        if (v.marker.v < extension.version)
+          throw Error('Spool requires verified source capture');
+        if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
+        if (
+          principalId === undefined
+            ? extension?.version !== 9
+            : v.account.principalId !== principalId
+        )
+          throw Error('Account actor identity changed');
+        route = v.route;
+        account = v.account;
+        const certified = v.marker.genesis!.actors;
+        if (
+          !certified.some(
+            (a) =>
+              a.id === route.principal && a.kind === 'human' && a.credential === route.credential,
+          ) ||
+          !certified.some(
+            (a) => a.id === 'system' && a.kind === 'system' && a.credential === route.credential,
+          )
+        )
+          throw Error('Capture needs certified human and system actors');
+        owner = prepareAccountCustody(
+          {
+            slotId: options.slotId,
+            workspaceId: route.workspace,
+            resolvePrincipal: () => route.principal,
+          },
+          options.code,
+          (records, task, counter, view) => {
+            if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
+            return extension?.validate(task, records, route, counter, view);
+          },
+          extension ? true : undefined,
+          extension?.version === 9 ? true : undefined,
+        );
+        await extension?.initialize(task, v);
+        await owner.initialize(task);
+        if (extension) {
+          if (v.marker.v < extension.version)
+            await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
+              const next = await signPromotion(
+                root,
+                {
+                  ...v.marker,
+                  v: extension.version,
+                  stage:
+                    extension.version === 9
+                      ? 'account-receiving'
+                      : extension.version === 8
+                        ? 'account-delivering'
+                        : 'account-spooling',
+                },
+                subtle,
+              );
+              await writePromotion(task, v.claim, v.record, v.record, v.marker, next);
+            });
+        }
+        await extension?.activate(task, owner);
+        if (v.marker.v === 4) {
+          const records = await owner.carrier.load(task);
+          try {
+            if (records.some((r) => r.kind === 'outbound' || r.kind === 'heads'))
+              captureError('Frozen genesis has unclassified outbound records');
+          } finally {
+            for (const r of records) r.bytes.fill(0);
+          }
+          // Close the old journal format before installing the authenticated new reader fence.
+          const old = await owner.journal.readSnapshot(task);
+          try {
+            const receipt = await owner.journal.flush(task, old, (task, updates) =>
+              owner!.carrier.append(
+                task,
+                updates.map((bytes) => ({ kind: 'update', bytes })),
+              ),
+            );
+            if (receipt.retained) throw Error('Legacy journal cleanup must finish before capture');
+          } finally {
+            eraseJournalSnapshot(old);
+          }
           await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
             const next = await signPromotion(
               root,
-              {
-                ...v.marker,
-                v: extension.version,
-                stage:
-                  extension.version === 9
-                    ? 'account-receiving'
-                    : extension.version === 8
-                      ? 'account-delivering'
-                      : 'account-spooling',
-              },
+              { ...v.marker, v: 6, stage: 'account-capturing' },
               subtle,
             );
             await writePromotion(task, v.claim, v.record, v.record, v.marker, next);
           });
-      }
-      await extension?.activate(task, owner);
-      if (v.marker.v === 4) {
-        const records = await owner.carrier.load(task);
-        try {
-          if (records.some((r) => r.kind === 'outbound' || r.kind === 'heads'))
-            captureError('Frozen genesis has unclassified outbound records');
-        } finally {
-          for (const r of records) r.bytes.fill(0);
         }
-        // Close the old journal format before installing the authenticated new reader fence.
-        const old = await owner.journal.readSnapshot(task);
+      },
+      dispose: async () => {
         try {
-          const receipt = await owner.journal.flush(task, old, (task, updates) =>
-            owner!.carrier.append(
-              task,
-              updates.map((bytes) => ({ kind: 'update', bytes })),
-            ),
-          );
-          if (receipt.retained) throw Error('Legacy journal cleanup must finish before capture');
+          await tail;
+          for (const cleanup of cleanups) await cleanup();
+          cleanups.clear();
         } finally {
-          eraseJournalSnapshot(old);
+          extension?.dispose();
+          owner?.dispose();
         }
-        await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
-          const next = await signPromotion(
-            root,
-            { ...v.marker, v: 6, stage: 'account-capturing' },
-            subtle,
-          );
-          await writePromotion(task, v.claim, v.record, v.record, v.marker, next);
-        });
-      }
+      },
     },
-    dispose: async () => {
-      try {
-        await tail;
-        for (const cleanup of cleanups) await cleanup();
-        cleanups.clear();
-      } finally {
-        extension?.dispose();
-        owner?.dispose();
-      }
-    },
-  });
+  );
   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
     const previous = tail;
     const result = live.run(async (task) => {
