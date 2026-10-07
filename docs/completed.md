@@ -9921,3 +9921,30 @@ there was no frontend rebuild or update campaign. The live service at :8443 was 
 serving build 20547876 with its existing process and state. Next is separation phase 2: independently
 operated application serving and account service, preserving the same browser origin. Production account
 sessions remain separate, and release validation stays paused.
+
+
+## 2026-10-07 — Independent packaged application and private account processes (phase 2)
+
+`serve:account` now serves immutable compiled assets and a fixed loopback API proxy. The separate
+`serve:account-service` command owns retained keys, databases, directory locking and private adapter
+access. Pure public-origin/port configuration is shared without importing account owners into the app.
+The same browser origin and pin govern both; internal backend ports do not change passkey RP identity.
+The Vite coding entry keeps its existing combined mode. No schema or frontend change is required.
+
+The proxy forwards original bytes and client authority inputs, excludes cookies/forwarding headers,
+does not cache or retry, and reports a missing backend as 503. Graceful shutdown rejects new work and
+reaps keep-alive connections as admitted responses finish. A browser check found an intermittent hang
+under active editor polling; a directed native check reproduced an in-flight response leaving a socket
+open during shutdown. That check passes after the targeted drain repair. A separate fixture cleanup-order
+error was corrected by closing its owner before removing the temporary state directory.
+
+Focused validation: ten native runtime/gateway cases and five existing offline-upgrade cases pass;
+two packaged browser scenarios exercise independent app/API restart, retained invitation, access renewal,
+offline cold-open writing and delivery of edits queued while either server is unavailable. The same
+compiled frontend is used, without a build/update or release-validation campaign. TypeScript and scoped
+lint/format pass. Implementation uses no new dependencies; installed tools bypass the pnpm bootstrap's
+restricted-network failure. The two-process runbook is in packaged-account-development.md.
+
+Live switch is still pending a quiet point at this implementation checkpoint. The existing combined
+process continues serving :8443 from retained build 20547876. Public deployment, production sessions and
+remaining account lifecycle product work stay separate; release validation remains paused.

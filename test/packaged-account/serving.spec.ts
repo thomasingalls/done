@@ -1,12 +1,19 @@
 import { test, expect } from '@playwright/test';
 import { account } from '../device-enrollment/helpers';
-import { startService, stopService, origin } from './server';
-test('compiled account setup renews access after a service restart without refreshing the page', async ({
+import {
+  startService,
+  stopService,
+  startBackend,
+  startApplication,
+  stopProcess,
+  origin,
+} from './server';
+test('compiled setup survives independent API and application restarts without refreshing the page', async ({
   page,
   request,
 }, info) => {
   const state = info.outputPath('service');
-  let service = await startService(state);
+  const service = await startService(state);
   try {
     await page.goto('/');
     await expect(
@@ -14,8 +21,15 @@ test('compiled account setup renews access after a service restart without refre
     ).toBeVisible();
     const first = await account(page);
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
-    await stopService(service);
-    service = await startService(state);
+    await stopProcess(service.backend);
+    expect((await request.get('/')).status()).toBe(200);
+    const unavailable = await request.post('/__account-setup/config', {
+      headers: { Origin: origin, 'Content-Type': 'application/json' },
+      data: {},
+    });
+    expect(unavailable.status()).toBe(503);
+    expect(unavailable.headers()['cache-control']).toBe('no-store');
+    service.backend = await startBackend(state);
     const renewed = page.waitForResponse(
       (r) => r.url().endsWith('/__account-setup/access') && r.status() === 200,
     );
@@ -25,6 +39,24 @@ test('compiled account setup renews access after a service restart without refre
     await page.getByRole('button', { name: 'Check again', exact: true }).click();
     await renewed;
     await resumed;
+    await expect(page.getByLabel('Device invitation link')).toHaveValue(first.link);
+    const before = await request.post('/__account-setup/access', {
+      headers: { Origin: origin, 'Content-Type': 'application/json' },
+      data: {},
+    });
+    const beforeConfig = await before.json();
+    await stopProcess(service.app);
+    service.app = await startApplication();
+    const after = await request.post('/__account-setup/access', {
+      headers: { Origin: origin, 'Content-Type': 'application/json' },
+      data: {},
+    });
+    expect(await after.json()).toEqual(beforeConfig);
+    const afterAppRestart = page.waitForResponse(
+      (r) => r.url().endsWith('/__account-setup/ceremony/bootstrap') && r.status() === 200,
+    );
+    await page.getByRole('button', { name: 'Check again', exact: true }).click();
+    await afterAppRestart;
     await expect(page.getByLabel('Device invitation link')).toHaveValue(first.link);
     const wrongOrigin = await request.post('/__account-setup/access', {
       headers: { Origin: 'https://unrelated.invalid', 'Content-Type': 'application/json' },

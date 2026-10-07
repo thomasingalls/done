@@ -1,6 +1,7 @@
 /** Offline maintenance for the loopback-only account preview, not a deployment migrator. */
 import { lockDevelopmentState as lockPreviewState } from '../account-service/development-state.ts';
 export { lockPreviewState };
+export { previewConfig } from './lib/account-config.mjs';
 import {
   closeSync,
   existsSync,
@@ -14,29 +15,10 @@ import {
 } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { AccountCore } from '../account-service/core.ts';
 import { PrivateAuthority } from '../account-service/authority.ts';
-
-export function previewConfig(env = process.env) {
-  const port = Number(env.ACCOUNT_SETUP_PORT ?? 53210);
-  if (!Number.isInteger(port) || port < 1024 || port > 65535)
-    throw Error('Invalid development port');
-  const origin = env.ACCOUNT_SETUP_ORIGIN ?? `http://localhost:${port}`;
-  const url = new URL(origin);
-  if (
-    url.origin !== origin ||
-    (origin !== `http://localhost:${port}` &&
-      (url.protocol !== 'https:' || !url.hostname.endsWith('.ts.net')))
-  )
-    throw Error('Preview origin must be loopback or an explicit Tailscale HTTPS origin');
-  return {
-    port,
-    directory: resolve(env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup'),
-    policy: { rpId: url.hostname, origin },
-  };
-}
 
 export function accountSchema(path) {
   const db = new DatabaseSync(path, { readOnly: true });

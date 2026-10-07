@@ -48,39 +48,36 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: separation phase 1 — shared service lifecycle and HTTP extraction
-blocks_on: none
+status: in flight
+scope: separation phase 2 — independent packaged application and account processes
+blocks_on: quiet point before live serving switch
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Phase 1 complete:** an explicit private service runtime now owns the retained databases, operator
-key loading, public pin, private transport token, directory lock and bounded HTTP handling. Both Vite
-and packaged launchers compose the same runtime. Application serving remains in the same process for
-this phase; the packaged entry no longer imports the Vite entry. Existing routes and client protocol
-are unchanged. Startup failures unwind service ownership; close refuses new operations and drains
-in-flight work before releasing storage, even if an HTTP client has disconnected.
+**Implementation complete:** `serve:account` owns compiled assets and a fixed loopback proxy;
+`serve:account-service` alone owns account keys, databases, directory locking and private adapter access.
+Both retain the same public Host/Origin and service identity. API forwarding preserves body bytes and
+client authority inputs, does not cache or retry, and returns 503 while the backend is absent. Either
+process can restart independently; Vite's combined coding mode remains available. Phase 1's shared
+runtime extraction is signed as `ff0714a3`.
 
-**Evidence:** five native runtime tests and five existing offline-upgrade tests pass, plus two packaged
-browser checks (access renewal after restart; both-device offline cold opening/editing/reconnect) and
-the existing Vite two-device enrollment/editing/reopen check. TypeScript and scoped lint/format pass.
-The malformed Host check uses native HTTP because fetch replaces that header. These are focused
-lifecycle and browser checks; the packaged checks used the existing compiled frontend and current
-backend source. See [completed work](./completed.md) and
-[packaged account integration](./packaged-account-development.md).
+**Evidence:** ten native runtime/gateway cases and five offline-upgrade cases pass, plus two focused
+packaged browser scenarios for independent restarts, invitation/access continuity, offline cold opening
+and queued writing across server outages. The active-editor scenario found an intermittent shutdown
+hang. A native reproduction pinned it to keep-alive connections becoming idle after close began;
+shutdown now reaps those connections as responses finish and refuses further polls. TypeScript and
+scoped lint/format pass. No frontend rebuild, dependency change or release campaign was needed.
 
-**Live checkpoint unchanged:** the service at `https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219,
-was not restarted during extraction. It still serves the immutable build
-`.dev/account-enrollment-tailnet/builds/20547876` with its original retained service identity and state.
-The previous serving checkpoint is signed as `ce7beb99`; the pre-switch backup is
-`.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`. The packaged integration phases are
-signed as `9bb46fde`, `d27dc540`, `20547876`; offline startup and update continuity are complete.
+**Live switch pending:** the previous combined process remains at
+`https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219, using the original state and immutable build
+`.dev/account-enrollment-tailnet/builds/20547876`. Switching at a quiet point will back up retained state,
+run the app on 53219 and the API-only service on loopback 53220, and leave Tailscale/browser URLs unchanged.
+There is no schema, credential or browser-storage migration.
 
-**Next:** separation phase 2 — independently operated application serving and account service behind
-the same browser origin, preserving `:8443`. Not started in this phase. Production account sessions,
-remaining account lifecycle product work and release qualification remain separate; the release
-campaign stays paused.
+See [completed work](./completed.md) and the two-process runbook in
+[packaged account integration](./packaged-account-development.md). Production sessions, remaining
+account lifecycle product work and release qualification stay separate; the release campaign stays paused.
 
 ---
 

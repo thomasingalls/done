@@ -1,21 +1,34 @@
 import { test, expect } from '@playwright/test';
 import { pairedEditors, credentials, restoreAuthenticator, openSaved, add } from './devices';
-import { startService, stopService, origin } from './server';
-test('both devices cold-open from the cache, retain offline edits and deliver after service restart', async ({
+import {
+  startService,
+  stopService,
+  startBackend,
+  startApplication,
+  stopProcess,
+  origin,
+} from './server';
+test('both devices retain offline edits across independent API and application restarts', async ({
   page,
   browser,
 }, info) => {
   const state = info.outputPath('service');
-  let service = await startService(state);
+  const service = await startService(state);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   const firstContext = page.context();
   try {
     pair = await pairedEditors(page, browser);
     const firstCredentials = await credentials(pair.first.auth),
       secondCredentials = await credentials(pair.next.auth);
+    await stopProcess(service.backend);
+    const serviceUnavailable = page.waitForResponse(
+      (r) => r.url().includes('/account/delivery/') && r.status() === 503,
+    );
+    await add(page, 'Queued on A while account service is down');
+    await add(pair.second, 'Queued on B while account service is down');
+    await serviceUnavailable;
     for (const p of [page, pair.second])
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
-    await stopService(service);
     await firstContext.setOffline(true);
     await pair.other.setOffline(true);
     await page.close();
@@ -57,12 +70,27 @@ test('both devices cold-open from the cache, retain offline edits and deliver af
     await reopenedB.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
     await expect(reopenedA.locator('.shell')).toContainText('Offline after cold start on A');
     await expect(reopenedB.locator('.shell')).toContainText('Offline after cold start on B');
-    service = await startService(state);
+    await stopProcess(service.app);
+    service.app = await startApplication();
+    service.backend = await startBackend(state);
     await firstContext.setOffline(false);
     await pair.other.setOffline(false);
     for (const p of [reopenedA, reopenedB])
-      for (const text of ['Offline after cold start on A', 'Offline after cold start on B'])
+      for (const text of [
+        'Offline after cold start on A',
+        'Offline after cold start on B',
+        'Queued on A while account service is down',
+        'Queued on B while account service is down',
+      ])
         await expect(p.locator('.shell')).toContainText(text, { timeout: 20000 });
+    // The account owner stays alive while only the application/proxy process restarts.
+    await stopProcess(service.app);
+    await add(reopenedA, 'Queued while application server is down');
+    service.app = await startApplication();
+    await expect(reopenedB.locator('.shell')).toContainText(
+      'Queued while application server is down',
+      { timeout: 20000 },
+    );
     expect(errors).toEqual([]);
   } finally {
     await pair?.other.close();

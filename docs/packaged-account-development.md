@@ -5,9 +5,12 @@ continuity, with signed intermediate commits. Release validation remains paused.
 
 ## Serving and access
 
-Build with `pnpm build`, then use `pnpm serve:account` with the existing `ACCOUNT_SETUP_PORT`,
-`ACCOUNT_SETUP_ORIGIN` and `ACCOUNT_SETUP_STATE`. `ACCOUNT_SETUP_DIST` defaults to `dist`; a separate
-build directory may be supplied. Retain the exact origin, authority identity and service state.
+Build with `pnpm build`. Run `pnpm serve:account-service` for the retained account APIs and
+`pnpm serve:account` for the compiled application and same-origin gateway, in separate processes.
+Both use the existing `ACCOUNT_SETUP_PORT` / `ACCOUNT_SETUP_ORIGIN` for public identity and the same
+`ACCOUNT_SERVICE_PORT` for the backend's loopback listener (default 53211, distinct from the app port).
+Only the service needs `ACCOUNT_SETUP_STATE`. The app's `ACCOUNT_SETUP_DIST` defaults to `dist`; a
+separate build directory may be supplied. Retain the exact origin, authority identity and service state.
 The host reads its entire build into memory before listening: a running service never mixes releases.
 It exposes only compiled assets and known app routes, plus the existing bounded account APIs.
 It remains a loopback/Tailscale development service, not a public deployment entry.
@@ -73,15 +76,16 @@ Public deployment, production account sessions, additional membership epochs and
 product work remain separate.
 
 
-## Live serving checkpoint
+## Live serving checkpoint before process separation
 
 Implementation commits are signed: `9bb46fde` (compiled serving/access), `d27dc540` (offline startup)
 and `20547876` (update continuity). After the operator confirmed both devices closed, the Vite service
 was stopped and both SQLite databases, operator key and pin were backed up offline under
 `.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`.
 
-The exact compiled build is retained at `.dev/account-enrollment-tailnet/builds/20547876`. It is running
-from this worktree/session with:
+The exact compiled build is retained at `.dev/account-enrollment-tailnet/builds/20547876`. The original
+combined process was launched from this worktree/session with the following command. This records the
+old launch; after separation, use the two commands below instead:
 
 ```sh
 ACCOUNT_SETUP_PORT=53219 \
@@ -128,3 +132,63 @@ The live process described above has not been restarted to adopt this extraction
 application serving and account service into independently operated processes behind the same browser
 origin. The current shared private token remains development transport access, not an account session.
 Production sessions and public deployment are still separate work.
+
+
+## Service separation — phase 2
+
+Packaged operation now uses two independent processes. `serve:account` opens the immutable build and
+forwards `/__account-setup/…` and `/account/…` requests to the configured fixed loopback port.
+`serve:account-service` opens the retained service runtime and serves APIs only, bound to 127.0.0.1.
+The application process does not import account owners, read their keys or acquire their directory lock.
+The backend pin and passkey RP ID remain those of the public browser origin; the internal port never
+becomes a new service identity. The combined Vite runner remains available for coding.
+
+The gateway streams the original method/body, Host, Origin and Authorization. It drops cookies and
+forwarding headers, adds no credentials, caches no API responses and never retries. Unreachable service
+returns 503, including config discovery: it cannot turn an account installation into a Local-only one.
+A lost reply may follow a committed operation; its durable client owner still controls any exact retry.
+Partial upstream replies terminate the response. The gateway never follows redirects or selects an
+upstream from client input. Both listeners reject new work during graceful shutdown and reap connections
+that become idle while existing responses drain.
+
+For this worktree's Tailscale installation, run the account process in one terminal:
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+node scripts/serve-account-service.mjs
+```
+
+Run the application process in another:
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/20547876 \
+node scripts/serve-account.mjs
+```
+
+Tailscale continues forwarding :8443 to the application on 53219. The API-only port 53220 stays on
+loopback. Either process can start first; application files remain available while the service is down.
+Restarting the app briefly interrupts the proxy but leaves the account owner, identity and token intact.
+Restarting the service keeps the same public pin and durable account state while rotating private access;
+the existing cached client renews it without downloading a new build. Schema upgrades remain explicit:
+stop both processes before using the existing offline upgrade command, whose guard reserves the app port.
+Forced termination can still require verified stale-lock removal; there is no automatic state reset.
+
+Focused evidence: ten native runtime/gateway cases plus five offline-upgrade cases pass. The new proxy
+checks exercise exact binary forwarding, retained Host/Origin/token checks and body limits, isolation
+of static assets, a missing backend, independent restart, no retry after lost/truncated replies and
+shutdown with a response in flight. The browser scenario exposed a keep-alive shutdown hang; a directed
+native check reproduced it before the drain repair and passes afterward. One initial native fixture
+removed its temporary directory before closing the owner; correcting cleanup order fixed that fixture.
+The two packaged browser scenarios cover retained invitation/access renewal and both-device queued
+writing across independent restarts, offline cold opens, and active editors during service/app outages.
+The frontend build stays 20547876; this phase changes hosting only. No release campaign resumed.
+
+At the implementation checkpoint, the old combined live process remains running. Applying this layout
+to the retained :8443 installation requires a quiet point, an offline backup, then replacing that process
+with the two commands above. No schema, credential or browser-storage migration is involved.

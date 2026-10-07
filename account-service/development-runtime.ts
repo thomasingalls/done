@@ -69,7 +69,7 @@ export function openDevelopmentAccountService(options: { directory: string; poli
     let closing: Promise<void> | undefined;
     const handle: DevelopmentAccountHandler = (request, response, next) => {
       if (closing) {
-        response.writeHead(503, { 'Cache-Control': 'no-store' }).end();
+        response.writeHead(503, { 'Cache-Control': 'no-store', Connection: 'close' }).end();
         return Promise.resolve();
       }
       // Retain ownership even if an HTTP client disconnects during an awaited operation.
