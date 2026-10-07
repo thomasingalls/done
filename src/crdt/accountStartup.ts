@@ -1,3 +1,4 @@
+import type { NetworkLogin } from '../account/networkLogin';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
 import { openContentCheckpoint } from './contentCheckpoint';
 import { heldInboundContext, inspectInbound, verifyInboundLedger } from './inboundLedger';
@@ -28,6 +29,8 @@ export interface AccountStartupOptions {
   pin: AuthorityPin;
   assertPasskey: LocalPasskey;
   signal?: AbortSignal;
+  /** Staged session adapter; absent in the private-token host until route cutover. */
+  networkLogin?: NetworkLogin;
 }
 export const captureAccountOptions = (input: AccountStartupOptions): AccountStartupOptions => ({
   ...input,
@@ -79,7 +82,12 @@ export async function verifyAccountUnderPermit(
   };
   if (!same(marker.handoff!.destination, destination)) throw Error('Account destination changed');
   await localCensus(task, claim, options.code);
-  await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
+  if (options.networkLogin) {
+    await withPromotionRoot(task, claim, record, options.code, (root) =>
+      options.networkLogin!.initialize(task, root, record.root_id, proof),
+    );
+    await options.networkLogin.unlock(task, proof, options.assertPasskey);
+  } else await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
   const current = await readPromotion(task, options.slotId, options.code);
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
   const census = await localCensus(task, claim, options.code);

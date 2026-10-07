@@ -1,3 +1,4 @@
+import { ScopedGrants } from './grants.ts';
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import {
   CEREMONY_SCHEMA,
@@ -21,7 +22,7 @@ import {
 import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import { createDeliveryVerification } from './deliveryVerification.ts';
 import { randomBytes } from 'node:crypto';
-import { AccountSessions, SESSION_SCHEMA } from './sessions.ts';
+import { AccountSessions, SESSION_SCHEMA, SESSION_UNLOCK_SCHEMA } from './sessions.ts';
 import type { SessionConfiguration } from './session-custody.ts';
 import {
   ACTIVATION_LIFETIME_MS,
@@ -145,6 +146,11 @@ export class AccountCore {
   #now: () => number;
   #hook: Hook;
   #sessions?: AccountSessions;
+  #grants?: ScopedGrants;
+  get grants(): ScopedGrants {
+    if (!this.#grants) throw Error('Scoped grants are not configured');
+    return this.#grants;
+  }
   get sessions(): AccountSessions {
     if (!this.#sessions) throw Error('Account sessions are not configured');
     return this.#sessions;
@@ -167,6 +173,7 @@ export class AccountCore {
       upgradeFromV9?: boolean;
       upgradeFromV10?: boolean;
       upgradeFromV11?: boolean;
+      upgradeFromV12?: boolean;
       sessions?: SessionConfiguration;
     } = {},
   ) {
@@ -204,7 +211,8 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 12 && instrumentation.sessions) &&
+        !(version === 13 && instrumentation.sessions) &&
+        !(version === 12 && instrumentation.sessions && instrumentation.upgradeFromV12) &&
         !(version === 10 && instrumentation.upgradeFromV10) &&
         !(version === 9 && instrumentation.upgradeFromV9) &&
         !(version === 8 && instrumentation.upgradeFromV8) &&
@@ -283,6 +291,10 @@ export class AccountCore {
           this.#db.exec(SESSION_SCHEMA);
           this.#db.exec('PRAGMA user_version=12;');
         }
+        if (version < 13) {
+          this.#db.exec(SESSION_UNLOCK_SCHEMA);
+          this.#db.exec('PRAGMA user_version=13;');
+        }
         this.#sessions = new AccountSessions(
           this.#db,
           this.#policy,
@@ -290,6 +302,12 @@ export class AccountCore {
           this.#now,
           this.#hook,
           version < 12,
+        );
+        this.#grants = new ScopedGrants(
+          this.#db,
+          this.#sessions,
+          instrumentation.sessions.pin,
+          this.#now,
         );
       }
       if (
@@ -299,6 +317,7 @@ export class AccountCore {
         throw Error('Account origin/RP policy changed');
       this.#db.exec('COMMIT');
     } catch (error) {
+      this.#grants?.close();
       this.#sessions?.close();
       if (this.#db.isTransaction) this.#db.exec('ROLLBACK');
       this.#db.close();
@@ -386,6 +405,7 @@ export class AccountCore {
     );
   }
   close(): void {
+    this.#grants?.close();
     this.#sessions?.close();
     this.#diagnostics.clear();
     this.#deliveryVerification.clear();

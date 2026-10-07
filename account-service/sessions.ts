@@ -1,3 +1,10 @@
+import {
+  parseSessionUnlock,
+  sessionUnlockMessage,
+  type SessionUnlockContext,
+  type SessionUnlockInput,
+} from '../account-protocol/sessionUnlock.ts';
+import type { AuthorityPin } from '../account-protocol/authority.ts';
 import type { DatabaseSync } from 'node:sqlite';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { parseAuthorityPin } from '../account-protocol/authority.ts';
@@ -28,6 +35,7 @@ export const SESSION_SCHEMA = `
     renewal_hash TEXT UNIQUE NOT NULL, revoke_hash TEXT UNIQUE NOT NULL,
     retry_expires INTEGER NOT NULL, result_seal TEXT);
 `;
+export const SESSION_UNLOCK_SCHEMA = `ALTER TABLE session_attempts ADD COLUMN unlock_context TEXT;`;
 export const SESSION_LIMITS = Object.freeze({
   attempts: 4096,
   sessions: 1024,
@@ -45,6 +53,7 @@ interface Attempt {
   expires: number;
   state: 'open' | 'issued' | 'cancelled' | 'expired';
   proof_hash: string | null;
+  unlock_context: string | null;
 }
 interface Session {
   id: string;
@@ -86,6 +95,7 @@ const credentialBinding = (c: StoredCredential) =>
 export class AccountSessions {
   #db: DatabaseSync;
   #policy: Policy;
+  #pin: AuthorityPin;
   #custody: SessionCustody;
   #now: () => number;
   #hook: Hook;
@@ -105,6 +115,7 @@ export class AccountSessions {
     this.#now = now;
     this.#hook = hook;
     const pin = parseAuthorityPin(config.pin);
+    this.#pin = pin;
     if (pin.origin !== policy.origin || pin.rpId !== policy.rpId)
       throw Error('Session service policy changed');
     const row = db.prepare('SELECT * FROM session_custody WHERE id=1').get();
@@ -262,6 +273,7 @@ export class AccountSessions {
       ok: true,
       stage: 'challenge',
       attemptId: a.id,
+      ...(a.unlock_context ? { unlock: JSON.parse(a.unlock_context) as SessionUnlockContext } : {}),
       expiresAt: a.expires,
       options: {
         challenge: a.challenge,
@@ -272,11 +284,19 @@ export class AccountSessions {
     };
   }
   begin(input: unknown): SessionResult {
-    if (!object(input) || !fields(input, ['accountId', 'retryKey'])) return no('malformed');
-    let account: string, retry: string;
+    if (
+      !object(input) ||
+      !fields(
+        input,
+        'unlock' in input ? ['accountId', 'retryKey', 'unlock'] : ['accountId', 'retryKey'],
+      )
+    )
+      return no('malformed');
+    let account: string, retry: string, unlock: SessionUnlockInput | undefined;
     try {
       account = bytes(input.accountId, 32, 32).toString('base64url');
       retry = retryHash(input.retryKey);
+      if ('unlock' in input) unlock = parseSessionUnlock(input.unlock);
     } catch {
       return no('malformed');
     }
@@ -286,30 +306,63 @@ export class AccountSessions {
       const prior = this.#db
         .prepare('SELECT * FROM session_attempts WHERE retry_hash=?')
         .get(retry) as unknown as Attempt | undefined;
-      if (prior)
-        return prior.account_id === account ? this.#view(prior, now) : no('request-conflict');
+      if (prior) {
+        const held = prior.unlock_context
+          ? (JSON.parse(prior.unlock_context) as SessionUnlockContext)
+          : undefined;
+        const sameUnlock = held
+          ? unlock &&
+            held.nonce === unlock.nonce &&
+            held.principalId === unlock.principalId &&
+            held.credentialId === unlock.credentialId
+          : !unlock;
+        return prior.account_id === account && sameUnlock
+          ? this.#view(prior, now)
+          : no('request-conflict');
+      }
       if (
         Number(this.#db.prepare('SELECT COUNT(*) AS n FROM session_attempts').get()!.n) >=
         SESSION_LIMITS.attempts
       )
         return no('capacity');
       const id = fresh();
+      const context: SessionUnlockContext | undefined = unlock
+        ? {
+            v: 1,
+            pin: this.#pin,
+            accountId: account,
+            attemptId: id,
+            retryHash: retry,
+            serverNonce: fresh(),
+            expiresAt: now + SESSION_RETRY_MS,
+            ...unlock,
+          }
+        : undefined;
       const challenge = Buffer.from(
-        hash(
-          canonical([
-            'done/account-session-login/v1',
-            this.#custody.context,
-            id,
-            account,
-            retry,
-            fresh(),
-          ]),
-        ),
+        context
+          ? hash(sessionUnlockMessage(context))
+          : hash(
+              canonical([
+                'done/account-session-login/v1',
+                this.#custody.context,
+                id,
+                account,
+                retry,
+                fresh(),
+              ]),
+            ),
         'hex',
       ).toString('base64url');
       this.#db
-        .prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL)")
-        .run(id, retry, account, challenge, now + SESSION_RETRY_MS);
+        .prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL,?)")
+        .run(
+          id,
+          retry,
+          account,
+          challenge,
+          now + SESSION_RETRY_MS,
+          context ? JSON.stringify(context) : null,
+        );
       return this.#view(this.#attempt(input.retryKey)!, now);
     });
   }
@@ -348,6 +401,7 @@ export class AccountSessions {
       credential = this.#credential(String(request.response.id));
       if (!credential || !this.#eligible(credential) || credential.account_id !== a.account_id)
         return no('invalid-proof');
+      if (v.unlock && v.unlock.credentialId !== credential.id) return no('invalid-proof');
       token = credentialBinding(credential);
       challenge = v.options.challenge;
       return v;
@@ -559,6 +613,24 @@ export class AccountSessions {
         this.#db,
       );
     });
+  }
+  /** For a domain transaction already owned by this same AccountCore connection. This neither
+   * begins nor commits/rolls back the caller's transaction. Session IDs here come only from a
+   * service-held grant; accepting an HTTP sessionId as authority would be a bypass. */
+  checkGrantParent(
+    db: DatabaseSync,
+    sessionId: string,
+    accountId: string,
+  ): { ok: true; identity: SessionIdentity; expiresAt: number } | Denial {
+    if (this.#closed || db !== this.#db || !db.isTransaction) return no('storage-unavailable');
+    const s = this.#session(sessionId);
+    if (!s || !this.#live(s, this.#time())) return no('sign-in-required');
+    if (s.account_id !== accountId) return no('wrong-account');
+    return {
+      ok: true,
+      identity: { accountId, credentialId: s.credential_id, sessionId },
+      expiresAt: s.expires_at,
+    };
   }
   run(operation: SessionOperation, input: unknown): SessionResult | Promise<SessionResult> {
     switch (operation) {

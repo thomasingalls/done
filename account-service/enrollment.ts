@@ -92,7 +92,10 @@ export function enrollmentSnapshot(db: DatabaseSync, workspace: string): Snapsho
   return { base, credential, token };
 }
 
-export async function verifyEnrollmentRow(row: EnrollmentRow, issuer: EnrollmentIssuer) {
+export async function verifyEnrollmentRow(
+  row: EnrollmentRow,
+  issuer: Pick<EnrollmentIssuer, 'pin'>,
+) {
   if (
     (row.proof_hash === null) !== (row.receipt === null) ||
     (row.stage === 'prepared' && row.receipt === null) ||

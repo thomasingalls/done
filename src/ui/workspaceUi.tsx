@@ -1,3 +1,4 @@
+import type { NetworkLogin } from '../account/networkLogin';
 /** Read projections and admitted commands for the application. No Y.Doc or legacy Store crosses this port. */
 import {
   createContext,
@@ -43,6 +44,7 @@ export interface WorkspaceUi {
   accountWorkspace: boolean;
   accountId?: string;
   switchAccount?: () => void;
+  networkLogin?: NetworkLogin;
 }
 const Context = createContext<WorkspaceUi | null>(null);
 export const useWorkspaceUi = (): WorkspaceUi => {
@@ -60,6 +62,7 @@ export const WorkspaceUiProvider = ({
   accountWorkspace = false,
   accountId,
   onSwitchAccount,
+  networkLogin,
   children,
 }: {
   workspace: AdmittedWorkspace;
@@ -70,6 +73,7 @@ export const WorkspaceUiProvider = ({
   accountWorkspace?: boolean;
   accountId?: string;
   onSwitchAccount?: () => void;
+  networkLogin?: NetworkLogin;
   children: React.ReactNode;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
@@ -206,6 +210,7 @@ export const WorkspaceUiProvider = ({
         ...actions,
         lock: onLock,
         accountWorkspace,
+        ...(networkLogin ? { networkLogin } : {}),
         ...(accountId ? { accountId } : {}),
         ...(onSwitchAccount ? { switchAccount: onSwitchAccount } : {}),
         ...(onConnectAccount ? { connectAccount: onConnectAccount } : {}),

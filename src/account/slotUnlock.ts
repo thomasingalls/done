@@ -1,3 +1,8 @@
+import { pinBytes, type AuthorityPin } from '../../account-protocol/authority.ts';
+import {
+  sessionUnlockChallenge,
+  type SessionUnlockContext,
+} from '../../account-protocol/sessionUnlock.ts';
 import { es256Signature } from './es256Signature';
 /**
  * The device-local slot verifier (TRD §13.9, §15 row 12).
@@ -129,6 +134,8 @@ export interface SlotAssertion {
   authenticatorData: Uint8Array;
   clientDataJSON: Uint8Array;
   signature: Uint8Array;
+  /** Optional exact authenticator user handle, used only by the explicit online path. */
+  userHandle?: Uint8Array | null;
 }
 
 export interface SlotUnlockAttempt {
@@ -305,14 +312,44 @@ const verifyEd25519 = async (
  * authenticator data, signature — and the order is the reason the rest may trust
  * a public key that came out of a structured clone.
  */
-export const verifySlotUnlock = async ({
-  binding,
-  bindingSignature,
-  authorizationKey,
-  nonce,
-  origin,
-  assertion,
-}: SlotUnlockAttempt): Promise<SlotUnlockResult> => {
+export const verifySlotUnlock = (attempt: SlotUnlockAttempt): Promise<SlotUnlockResult> =>
+  verifyAttempt(attempt, () =>
+    slotUnlockChallenge({
+      principalId: attempt.binding.principalId,
+      credId: attempt.binding.credId,
+      nonce: attempt.nonce,
+    }),
+  );
+
+/** One assertion, two independent verifiers. The service reply alone cannot open a local slot. */
+export const verifySessionSlotUnlock = async (
+  attempt: SlotUnlockAttempt & { pin: AuthorityPin; context: SessionUnlockContext },
+): Promise<SlotUnlockResult> => {
+  const { context: c, binding: b, pin, nonce } = attempt;
+  try {
+    if (
+      c.nonce !== nonce ||
+      c.accountId !== b.accountId ||
+      c.principalId !== b.principalId ||
+      c.credentialId !== b.credId ||
+      c.pin.rpId !== b.rpId ||
+      pin.origin !== attempt.origin ||
+      hex(attempt.authorizationKey) !== pin.authRoot ||
+      hex(pinBytes(c.pin)) !== hex(pinBytes(pin))
+    )
+      return { opened: false, refusal: 'challenge-is-not-the-one-minted' };
+    // Validate/copy before the first asynchronous verification.
+    const bytes = await sessionUnlockChallenge(structuredClone(c));
+    return verifyAttempt(attempt, async () => bytes);
+  } catch {
+    return { opened: false, refusal: 'challenge-is-not-the-one-minted' };
+  }
+};
+
+const verifyAttempt = async (
+  { binding, bindingSignature, authorizationKey, origin, assertion }: SlotUnlockAttempt,
+  expected: () => Promise<Uint8Array>,
+): Promise<SlotUnlockResult> => {
   const refuse = (refusal: SlotRefusal): SlotUnlockResult => ({ opened: false, refusal });
 
   // 1. The anchor. Without it everything below verifies against whatever key the
@@ -369,11 +406,7 @@ export const verifySlotUnlock = async ({
   if (clientData.crossOrigin === true) return refuse('embedded-ceremony');
   if (clientData.topOrigin !== undefined) return refuse('embedded-ceremony');
 
-  const minted = await slotUnlockChallenge({
-    principalId: binding.principalId,
-    credId: binding.credId,
-    nonce,
-  });
+  const minted = await expected();
   if (clientData.challenge !== b64url(minted)) return refuse('challenge-is-not-the-one-minted');
 
   // 5. Authenticator data. `rpIdHash` and the flags are inside the signature, so

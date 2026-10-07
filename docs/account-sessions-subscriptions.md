@@ -1,6 +1,8 @@
 # Account sessions and live subscriptions
 
-2026-10-07 · design checkpoint · **phase 1 core implemented; application integration pending**.
+2026-10-07 · design checkpoint · **phase 3a service grants/transaction guards implemented; browser integration and live cutover pending**.
+See [phase 3a implementation, route disposition and focused evidence](./account-session-grants.md).
+See [phase 2 implementation and focused evidence](./account-session-client.md).
 See [phase 1 implementation and focused evidence](./account-session-core.md).
 Follows the independent packaged application
 and account service in [packaged-account-development.md](./packaged-account-development.md).
@@ -64,8 +66,9 @@ slot ID is a routing hint, not service proof of identity. Device/attempt scopes 
 possession and authority checks (§5), even after a successful account login.
 
 The client carrier binds service pin/origin, account, local slot, session ID, expiry and local login
-generation. Seal it through the existing custody owner with a new domain and the existing reserved
-nonce/counter discipline; never add a parallel write path to custody. It is additional account state,
+generation. Seal it through the existing custody owner with a new key/counter domain and the existing reserved
+nonce/counter discipline. The auxiliary record is written through the actual slot owner, without
+mutating document records or the content owner’s cached custody MAC. It is additional account state,
 not a content key or recovery factor. It is unavailable to a locked runtime.
 
 An access credential lasts at most **five minutes**, capped by the session's absolute expiry. Its
@@ -133,6 +136,14 @@ slot's live owner and login generation. A late response after lock cannot reopen
 cannot reinstall the old session. A service-side session whose response was never installed grants
 nothing to the browser without its credential.
 
+**Approved prompt consolidation (2026-10-07):** prepare a challenge in the background at the unlock
+screen. When online login is needed and that challenge is ready, one assertion may serve both purposes
+using the explicit combined domain in [the client construction](./account-session-client.md). The
+browser checks its fresh nonce and retained signed binding independently of the service. A slow or
+unavailable challenge takes the existing local-only path immediately; later Connect/Reconnect is an
+explicit action. A signed-out slot never resumes login automatically. This does not reinterpret an
+ordinary offline or historical assertion as an online proof.
+
 Initial registration/enrollment remains usable during staged implementation. Do not reinterpret
 already completed registration proofs to mint sessions. Combining a future session login with an
 already necessary online passkey ceremony requires that purpose in the original fresh challenge and
@@ -165,7 +176,9 @@ For offline sign-out, preserve only a **revoke-only** outbox item outside the cl
 service pin, session ID and its independent random revocation capability. It can end exactly that
 login and cannot read, renew, enroll or impersonate it. The service stores its hash and makes repeated
 revocation idempotent. This limited capability can be sent after restart without unlocking writing.
-It is still excluded from logs and chooser data. A corrupt/missing outbox must not undo the local
+If finish is still unresolved, retain only its attempt cancellation capability instead, without the
+assertion required for issuance/retrieval; cancellation also revokes any session already issued for
+that attempt. Both forms are excluded from logs and chooser data. A corrupt/missing outbox must not undo the local
 signed-out generation; server completion remains unconfirmed. No unsealed renewal secret is retained
 to accomplish “background sign-out.” A later sign-in uses a distinct session and is unaffected by an
 old queued revocation.
@@ -272,10 +285,16 @@ not a new generalized conformance or release campaign.
    background renewal, expiry state, Lock/Sign out integration and revoke-only outbox. Walk through
    prompt placement before changing it. Cover two people on one origin, cooperating tabs, offline
    reopen/sign-out and a late renewal reply after sign-out. Keep local admission independent.
+   **Completed as an opt-in:** [phase 2](./account-session-client.md), including the operator-approved
+   combined prompt. Keep the live shared-token adapter unchanged until phase 3.
 3. **Scoped grants and route cutover.** Bind certified devices and pending participants to their
    permitted operations, classify every current route and remove the shared-token bypass in this
    host. Cover wrong-account/workspace/attempt, pending-vs-certified and revoked grants. Switch the
    retained development installation only after a quiet point and backup, preserving its origin/pin.
+   **Service foundation completed:** [phase 3a](./account-session-grants.md). The protected adapter is
+   unmounted. Next implement the approved combined fresh enrollment/login purpose and atomic issuance,
+   factor-sealed client retention, browser grants/exact-request retry and bootstrap-host composition.
+   Then switch the retained installation; there is no live cutover claim yet.
 4. **Live notifications and real use.** Add the broker, authenticated stream, gateway lifecycle and
    scheduler/ceremony wakeups. Cover the commit/subscribe race, dropped hints, restart/reconnect,
    backpressure and lock/sign-out teardown with focused checks. Then use the existing two-device

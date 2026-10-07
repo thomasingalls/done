@@ -7,6 +7,8 @@ import { isAccountId, type RememberedAccount } from './accountIdentity';
 export interface SetupConfig {
   pin: AuthorityPin;
   token: PrivateAccess;
+  /** Integration seam; the shared-token live host must not enable this before scoped route cutover. */
+  networkSessions?: true;
 }
 export const SETUP_DB = 'done.first-device-setup.v1';
 export const isSetupSlot = (value: unknown): value is string =>

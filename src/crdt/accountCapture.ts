@@ -212,10 +212,12 @@ export async function openAccountCaptureOwner(
         } finally {
           extension?.dispose();
           owner?.dispose();
+          options.networkLogin?.close();
         }
       },
     },
   );
+  options.networkLogin?.activate(live);
   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
     const previous = tail;
     const result = live.run(async (task) => {

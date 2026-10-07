@@ -1,3 +1,4 @@
+import { SessionSignOutNotice } from './NetworkLoginNotice';
 import { useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
 import type { RememberedAccount } from '../account/accountIdentity';
@@ -136,6 +137,7 @@ export function AccountSignIn({
           Choose an account
         </h1>
         <p>Select a saved account, connect devices, or create a new account.</p>
+        {config.networkSessions && <SessionSignOutNotice pin={config.pin} />}
         {savedAccounts}
         {!loading && !remembered.some((account) => account.slotId === 'local') && (
           <div className="account-choice-section">

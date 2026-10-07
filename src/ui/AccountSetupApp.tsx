@@ -149,6 +149,7 @@ export function Setup({
         workspace={state.workspace}
         actorId={state.actorId}
         registerEditor={owner.registerEditor}
+        {...(owner.networkLogin ? { networkLogin: owner.networkLogin } : {})}
         accountWorkspace
         {...(state.accountId ? { accountId: state.accountId } : {})}
         onSwitchAccount={() => {

@@ -1,3 +1,4 @@
+import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
 import { privateServiceFetch } from './privateAccess';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
@@ -114,7 +115,12 @@ export interface EnrollmentView {
   link?: string;
   code?: string;
   message: string;
-  editor?: { workspace: AdmittedWorkspace; actorId: string; accountId: string };
+  editor?: {
+    workspace: AdmittedWorkspace;
+    actorId: string;
+    accountId: string;
+    networkLogin?: NetworkLogin;
+  };
 }
 const capability = () =>
   btoa(String.fromCharCode(...random(32)))
@@ -153,9 +159,14 @@ export function createDeviceEnrollment(
   role: CeremonyRole,
   workspaceInput?: string,
   invitationInput?: unknown,
+  networkLogin?: NetworkLogin,
 ) {
   const pin = parseAuthorityPin(config.pin),
     lifetime = new AbortController();
+  if (config.networkSessions && role === 'new' && (!networkLogin || networkLogin.retired)) {
+    networkLogin = new NetworkLogin(pin, slotId);
+    void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
+  }
   if (pin.origin !== location.origin) throw Error('Development service differs from this page');
   let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
   const editors = new Set<() => void>();
@@ -756,6 +767,7 @@ export function createDeviceEnrollment(
         pin,
         assertPasskey: assertSlotPasskey(lifetime.signal),
         signal: lifetime.signal,
+        ...(networkLogin ? { networkLogin } : {}),
         identity: {
           id: joined.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
@@ -772,6 +784,7 @@ export function createDeviceEnrollment(
         workspace: opened.workspace,
         actorId: joined.principalId,
         accountId: opened.accountId,
+        ...(networkLogin ? { networkLogin } : {}),
       },
     });
   };
@@ -793,6 +806,7 @@ export function createDeviceEnrollment(
     },
     close: async () => {
       lifetime.abort();
+      networkLogin?.close();
       for (const destroy of [...editors]) {
         try {
           destroy();

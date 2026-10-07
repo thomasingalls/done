@@ -4241,3 +4241,32 @@ renewal, in-memory short access, stateful revocation and scoped fetch/SSE wakeup
 catch-up. These are design recommendations, not running-service capabilities. Prompt consolidation,
 broader device/recovery journeys, Redis deployment and public hosting remain separate. Release
 validation stays paused.
+
+
+## 2026-10-07 — opportunistic combined local unlock and network login
+
+The operator approves one fresh passkey assertion serving both local unlock and online login when
+login is needed and an explicit combined challenge is already ready. Prepare the challenge in the
+background while the unlock screen is visible. A valid remembered login keeps the ordinary local
+unlock plus background renewal. Offline/slow service must not delay opening; later Connect/Reconnect
+is explicit. The device-lock code and locally verified service-signed account binding remain required.
+A server result alone cannot open writing, and an ordinary historical/offline assertion cannot mint
+a network login. Sign-out must suppress automatic login even when reopening retained writing.
+
+The implementation uses a separately sealed auxiliary login carrier under the actual slot writer,
+derived from existing mandatory-factor custody with its own random salt, domain and reserved counter.
+This avoids mutating the content owner's authenticated cached custody record. For unknown issuance,
+offline sign-out retains only the attempt cancellation capability; it does not retain the assertion
+or an unsealed renewal secret. The narrower cancellation endpoint can also revoke that attempt's
+already-issued session. See [phase 2](./account-session-client.md). Live activation remains behind
+phase 3's scoped route cutover; this is not a new release-validation campaign.
+
+
+## 2026-10-07 — combine fresh enrollment and network login
+
+The operator approves extending the joining device's already-required online enrollment passkey
+assertion to establish network login, avoiding another prompt before content approval. This must use
+an explicit combined challenge purpose and commit enrollment/session issuance atomically, with exact
+retry recovery and factor-sealed client retention. An old enrollment receipt or assertion from the
+ordinary enrollment purpose remains insufficient. Approval of this product choice is not an
+implementation or live-cutover claim; it is the next part of sessions/subscriptions phase 3.

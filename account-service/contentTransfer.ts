@@ -1,3 +1,4 @@
+import { rethrowAuthorization } from './authorization.ts';
 /** Exact store-and-forward delivery followed by one atomic certification successor. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same, verifySignature } from '../account-protocol/admission.ts';
@@ -152,6 +153,13 @@ export async function transferContent(
         continue;
       }
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'enrollment',
+        workspaceId: request.workspaceId,
+        credentialId: request.credentialId,
+        attemptId: admission.epoch.preparation.context.attemptId,
+        action: 'transfer',
+      });
       if (delivery && !s.transfer)
         db.prepare('INSERT INTO content_transfers VALUES (?,?,NULL,NULL)').run(
           request.workspaceId,
@@ -167,11 +175,13 @@ export async function transferContent(
       }
       hook('before-commit', 'content-transfer');
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      completeAuthorization?.();
       db.exec('COMMIT');
       hook('after-commit', 'content-transfer');
       return { ok: true as const, delivery, certification };
-    } catch {
+    } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return refuse('unavailable');
     }
   }

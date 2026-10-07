@@ -441,12 +441,27 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
   return joinedKeys(task, state, options.code, async (kg, _signer, publicKey) => {
     const b = await baseline(task, state, kg);
     try {
-      await requireAccountAccess(
-        task,
-        marker.reading.checkpoint.binding,
-        options.pin,
-        options.assertPasskey,
-      );
+      if (options.networkLogin) {
+        await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
+          options.networkLogin!.initialize(
+            task,
+            root,
+            state.record.root_id,
+            marker.reading.checkpoint.binding,
+          ),
+        );
+        await options.networkLogin.unlock(
+          task,
+          marker.reading.checkpoint.binding,
+          options.assertPasskey,
+        );
+      } else
+        await requireAccountAccess(
+          task,
+          marker.reading.checkpoint.binding,
+          options.pin,
+          options.assertPasskey,
+        );
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');
       const scope = claimScope(state.claim),

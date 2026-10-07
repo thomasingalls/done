@@ -1,3 +1,4 @@
+import { rethrowAuthorization } from './authorization.ts';
 /** Private atomic preparation consumption. Ordinary application entry remains disabled. */
 import type { DatabaseSync } from 'node:sqlite';
 import { closed, accountIdentifier } from '../account-protocol/preparation.ts';
@@ -188,6 +189,13 @@ export async function admitPrepared(
         return refused('expired');
       }
       issuer.check(auth.seal, delivery.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'enrollment',
+        workspaceId: row.workspace_id,
+        credentialId: row.credential_id,
+        attemptId: row.id,
+        action: 'admit',
+      });
       if (!auth.successor) {
         const oldWitness = delivery.promotion.delivery_witness;
         if (oldWitness) parseWitness(JSON.parse(oldWitness));
@@ -216,11 +224,13 @@ export async function admitPrepared(
         return refused('expired');
       }
       issuer.check(auth.seal, delivery.promotion.request_digest, auth.a.acceptanceKey);
+      completeAuthorization?.();
       db.exec('COMMIT');
       hook('after-commit', 'admit-prepared');
       return result;
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       reuse?.clear();
       reportDiagnostic(diagnostics, { operation: 'successor', phase, code: causeCode(cause) });
       return refused(phase === 'verify' ? 'unavailable' : 'storage-unavailable');

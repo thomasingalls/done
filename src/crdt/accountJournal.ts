@@ -62,9 +62,11 @@ export const openAccountJournalSession = async (
         cleanups.clear();
       } finally {
         owner?.dispose();
+        options.networkLogin?.close();
       }
     },
   });
+  options.networkLogin?.activate(live);
   const carrier = attachJournal(owner!, live);
   // A native generation fence is a lifetime invalidation, not retryable admission pressure.
   const checked = <T>(operation: () => Promise<T>) =>

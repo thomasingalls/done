@@ -1007,8 +1007,8 @@ things follow that are easy to get wrong individually:
 The 2026-10-07 product decision sets a remembered network login's absolute deadline to 30 days from
 sign-in. Lock preserves resumability after local unlock; sign-out disables it. Background renewal cannot
 move that deadline. The [session/subscription design](./account-sessions-subscriptions.md) specifies the
-implementation sequence. The opt-in session core is implemented; application session integration and
-live notifications remain pending.
+implementation sequence. The session core and opt-in client integration are implemented; protected
+route cutover and live notifications remain pending. See the [client construction](./account-session-client.md).
 
 Persistent local reads require factor unlock at cold start. This is a local ceremony, not a network
 wait (§13.3); no account session is required for Local.
@@ -3229,6 +3229,15 @@ assertion being presented to the service as a sign-in; the service's own challen
 single-use is the second and independent refusal. Verification checks the binding first, then the returned
 credential id, then the client data — **parsed, never rebuilt** — then `rpIdHash` and both the UP and UV flags, then
 the assertion signature.
+
+**Optional combined ceremony (operator decision, 2026-10-07).** When an online login is needed and its
+challenge is already ready, the explicit `done/account-session-and-slot-unlock/v1` domain permits one
+assertion for both purposes. It binds the full service pin, selected account/principal/credential,
+attempt and retry hash, service nonce, fresh browser nonce and expiry. Local verification still checks
+the retained signed binding and recomputes that complete challenge; a service response alone cannot
+open the slot. Offline/slow service takes the ordinary construction above immediately, and a later
+online check requires an explicit Connect/Reconnect action. The ordinary verifier does not accept
+arbitrary service challenges. See [the implementation contract](./account-session-client.md).
 
 **The embedding policy is same-origin only, and it is two checks rather than one** (`S0-1`, §15 rows 12 and 14).
 `crossOrigin` must not be `true` and `topOrigin` must be absent. The specification emits `topOrigin` only when

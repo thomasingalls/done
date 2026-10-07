@@ -1,3 +1,4 @@
+import type { SessionUnlockContext } from './sessionUnlock.ts';
 /** Network login only. None of these credentials opens writing or grants device membership. */
 export const SESSION_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
 export const SESSION_ACCESS_MS = 5 * 60 * 1000;
@@ -35,6 +36,7 @@ export type SessionResult =
       ok: true;
       stage: 'challenge';
       attemptId: string;
+      unlock?: SessionUnlockContext;
       expiresAt: number;
       options: {
         challenge: string;

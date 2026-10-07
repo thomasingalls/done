@@ -1,3 +1,4 @@
+import { rethrowAuthorization, type OperationAuthorization } from './authorization.ts';
 import {
   causeCode,
   reportDiagnostic,
@@ -72,6 +73,7 @@ import {
   type DeliveryWitness,
 } from './deliveryWitness.ts';
 export interface DeliveryIssuer {
+  authorize?: OperationAuthorization;
   pin: AuthorityPin;
   check(seal: unknown, id: string, pub: string): void;
   issue(seal: unknown, id: string, pub: string, response: PositionResponse): Bytes;
@@ -750,6 +752,12 @@ export async function decideSubmission(
         db.exec('ROLLBACK');
         continue;
       }
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'workspace',
+        workspaceId: workspace,
+        credentialId: publisher,
+        action: 'submit',
+      });
       // Reopen custody after asynchronous verification and before fixed-purpose signing.
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
       if (proposed) {
@@ -796,6 +804,7 @@ export async function decideSubmission(
       }
       phase = 'commit';
       hook('before-commit', 'decide-submission');
+      completeAuthorization?.();
       db.exec('COMMIT');
       hook('after-commit', 'decide-submission');
       return result;
@@ -803,6 +812,7 @@ export async function decideSubmission(
       note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return unknown('storage-unavailable');
     }
   }
@@ -894,13 +904,21 @@ export async function readAccepted(
         return unknown('invalid-request');
       }
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'workspace',
+        workspaceId: request.workspace,
+        credentialId: request.credential,
+        action: 'read',
+      });
       const answer = issuer.page(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey, page);
+      completeAuthorization?.();
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
     } catch (cause) {
       note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return unknown('unavailable');
     }
   }
@@ -1009,6 +1027,12 @@ export async function readInbound(
         return unknown('invalid-request');
       }
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'workspace',
+        workspaceId: request.workspace,
+        credentialId: request.reader,
+        action: 'read',
+      });
       const answer = issuer.inboundPage(
         auth.seal,
         s.promotion.request_digest,
@@ -1022,12 +1046,14 @@ export async function readInbound(
         db.exec('ROLLBACK');
         return unknown('invalid-request');
       }
+      completeAuthorization?.();
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
     } catch (cause) {
       note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return unknown('unavailable');
     }
   }

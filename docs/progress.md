@@ -42,44 +42,46 @@ that is no longer active.
 
 ---
 
-## Product integration: account session core (`L-1`)
+## Product integration: scoped account grants (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: sessions/subscriptions phase 1 — durable session core and separate HTTP boundary
+scope: sessions/subscriptions phase 3a — service grants, transaction guards, protected adapter
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Implemented:** fresh session-purpose passkey authentication; durable 30-day sessions and exact
-issuance retry; five-minute, memory-only access with fixed parent expiry; acknowledgement, cancellation
-and idempotent revocation. Session custody reserves a nonce before the issuance transaction. Wrong
-account, historical/offline proof, changed custody, expired login and revoked-session reuse refuse.
-The guarded synchronous transaction rechecks session/account/credential eligibility at commit.
+**Implemented:** after signed session-core checkpoint `57bcba5f` and the opt-in owned client login,
+scoped grants now require a live account session plus fresh device possession. They bind certified
+workspace or exact enrollment-attempt authority. Domain operations check scope and parent eligibility
+inside their transaction and recheck retirement/expiry before commit. Pending grants never become
+workspace grants. Inbound scope follows the reader. Empty ceremony responses use the same boundary.
+The separate protected HTTP adapter has no private shared-token fallback; it remains unmounted.
 
-**Evidence:** 25 focused session cases pass, including two real process kills, plus 13 existing
-account-core and five private-runtime cases. TypeScript and scoped lint/format pass. HTTP checks
-required loopback permission; the first approval-review attempt failed due to reviewer capacity and
-its retry succeeded. A nested-transaction rollback hazard found during review is repaired and covered.
-See [the phase 1 record](./account-session-core.md) and [completed work](./completed.md).
+**Evidence:** 20 new directed grant/HTTP cases; 79 passing expanded session/core/runtime cases and 84
+passing affected domain regressions. TypeScript and scoped lint/format pass. See
+[phase 3a's implementation/route record](./account-session-grants.md),
+[phase 2's client record](./account-session-client.md) and [completed work](./completed.md).
+These are bounded implementation checks, not a resumed qualification campaign.
 
-**Next bounded phase:** client-owned sealed login persistence and login generations, background
-renewal, expiry presentation, Lock/Sign out and offline revoke-only outbox. Review online-passkey prompt
-placement with the operator before changing it. Then integrate scoped grants/existing domain routes,
-followed by live notifications and a real two-device trial, per
-[the session/subscription design](./account-sessions-subscriptions.md).
+**Next bounded phase:** the operator approved combining the joining device's fresh enrollment check
+with network login. Add the explicit combined purpose and atomic enrollment/session issuance, exact
+retry recovery and factor-sealed retention; old receipts remain insufficient. Then wire owned browser
+grant acquisition/renewal and exact-request retry, compose the remaining bootstrap routes, and switch
+the retained installation after a quiet-point backup. Setup subscriptions/live notifications and the
+real two-device walkthrough follow, per [the design](./account-sessions-subscriptions.md).
 
 **Live baseline remains:** independent app/proxy on 127.0.0.1:53219 and account API on 127.0.0.1:53220,
 running from this worktree/session at `https://mbp.tail0e0d4.ts.net:8443/`. Signed split implementation
 `7c2061ea` and switch checkpoint `b8e71944` retain frontend `20547876`, schema 11 and the original pin.
-The new session-enabled schema 12 and handler are explicit opt-ins and are not mounted by these
-launchers. No live migration, restart or browser change occurred. The
-[packaged runbook](./packaged-account-development.md) remains current. Release qualification stays
-paused; broader lifecycle, recovery, pruning and deployment/operations remain later work.
+The new session schema 13/client hooks/grant adapter are not enabled by those launchers. No live
+upgrade, restart or browser change occurred. Phase 3a adds no persisted schema. The
+[packaged runbook](./packaged-account-development.md) remains current. Broader lifecycle, recovery,
+pruning, deployment/operations and release qualification remain outside this phase.
 
 ---
 

@@ -13,6 +13,8 @@ export interface LocalPasskeyRequest {
   rpId: string;
   credentialId: string;
   challenge: Uint8Array;
+  /** Cancels an online reconnect ceremony independently of the open editor. */
+  signal?: AbortSignal;
 }
 export type LocalPasskey = (request: LocalPasskeyRequest) => Promise<SlotAssertion>;
 export async function requireAccountAccess(

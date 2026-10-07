@@ -1,5 +1,9 @@
 # Account session core — phase 1
 
+Phase 1 historical construction: schema 12 at signed commit `57bcba5f`.
+[Phase 2](./account-session-client.md) adds explicit combined challenges and schema 13, with a separate
+`upgradeFromV12` opt-in. The ordinary session operations and guarantees below remain in effect.
+
 2026-10-07. Implements the first increment of [sessions and subscriptions](./account-sessions-subscriptions.md).
 This is an opt-in service component and separate HTTP handler. The packaged client and running private
 service still use the existing development adapter. No live database upgrade or restart occurred.

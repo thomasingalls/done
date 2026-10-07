@@ -1,3 +1,4 @@
+import { rethrowAuthorization } from './authorization.ts';
 import type { DatabaseSync } from 'node:sqlite';
 import { same, verifySignature } from '../account-protocol/admission.ts';
 import {
@@ -90,6 +91,12 @@ export async function exchangeCheckpoint(
         continue;
       }
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'workspace',
+        workspaceId: r.workspaceId,
+        credentialId: r.credentialId,
+        action: 'checkpoint',
+      });
       if (checkpoint && !before.row)
         db.prepare('INSERT INTO content_checkpoints VALUES (?,?,?)').run(
           r.workspaceId,
@@ -102,11 +109,13 @@ export async function exchangeCheckpoint(
           r.workspaceId,
         );
       hook('before-commit', 'content-checkpoint');
+      completeAuthorization?.();
       db.exec('COMMIT');
       hook('after-commit', 'content-checkpoint');
       return { ok: true as const, checkpoint, admission };
-    } catch {
+    } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return refuse('unavailable');
     }
   }

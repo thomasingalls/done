@@ -1,3 +1,4 @@
+import { NetworkLoginNotice } from './NetworkLoginNotice';
 /** Local navigation, explicit preferences, recovery export and lock. */
 import { useState, useSyncExternalStore } from 'react';
 import { exportFilename } from '../crdt/export';
@@ -27,6 +28,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     accountWorkspace,
     accountId,
     switchAccount,
+    networkLogin,
   } = useWorkspaceUi();
   const installState = useSyncExternalStore(
     subscribeToInstallState,
@@ -166,11 +168,14 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Use another account
           </button>
         )}
-        <p className="menu-note">
-          {accountWorkspace
-            ? 'Account connected. Approved devices can sync writing in this preview.'
-            : 'Off. This Local workspace is not connected to a relay.'}
-        </p>
+        {networkLogin && <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />}
+        {!networkLogin && (
+          <p className="menu-note">
+            {accountWorkspace
+              ? 'Account connected. Approved devices can sync writing in this preview.'
+              : 'Off. This Local workspace is not connected to a relay.'}
+          </p>
+        )}
         {connectAccount && (
           <button className="menu-button" onClick={connectAccount}>
             Connect this workspace

@@ -1,3 +1,4 @@
+import { rethrowAuthorization } from './authorization.ts';
 /** Private signed locator. No ciphertext, wrapping key or publication capability is returned. */
 import type { DatabaseSync } from 'node:sqlite';
 import {
@@ -83,6 +84,12 @@ export async function discoverAuthority(
         db.exec('ROLLBACK');
         continue;
       }
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'workspace',
+        workspaceId: request.workspaceId,
+        credentialId: request.credentialId,
+        action: 'discover',
+      });
       hook('before-commit', 'discover-authority');
       const at = now();
       if (request.expiresAt <= at || request.expiresAt - at > DISCOVERY_LIFETIME_MS) {
@@ -90,10 +97,12 @@ export async function discoverAuthority(
         return refused('invalid-request');
       }
       issuer.check(auth.seal, before.promotion.request_digest, auth.a.acceptanceKey);
+      completeAuthorization?.();
       db.exec('COMMIT');
       return result;
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       reuse?.clear();
       reportDiagnostic(diagnostics, { operation: 'discovery', phase, code: causeCode(cause) });
       return refused(phase === 'storage' ? 'storage-unavailable' : 'unavailable');

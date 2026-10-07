@@ -1,3 +1,4 @@
+import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
 import { isPrivateAccess, privateServiceFetch, PrivateServiceUnavailable } from './privateAccess';
 /** Private first-device UI coordinator. Retained UI progress is a hint; existing owners grant authority. */
 import { parseAuthorityPin, pinBytes } from '../../account-protocol/authority';
@@ -56,6 +57,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     throw Error('Development service configuration does not match this page');
   const token = input.token;
   const lifetime = new AbortController();
+  let networkLogin = input.networkSessions ? new NetworkLogin(pin, slotId) : undefined;
   const listeners = new Set<() => void>();
   const editors = new Set<() => void>();
   let state: SetupState = { kind: 'intro' };
@@ -159,7 +161,12 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     if (!credential) throw Error('Passkey request cancelled');
     return credential.toJSON();
   };
-  const assertPasskey: LocalPasskey = async ({ rpId, credentialId, challenge }) => {
+  const assertPasskey: LocalPasskey = async ({
+    rpId,
+    credentialId,
+    challenge,
+    signal: ceremonySignal,
+  }) => {
     const credential = (await navigator.credentials.get({
       publicKey: {
         rpId,
@@ -174,7 +181,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           },
         ],
       },
-      signal: lifetime.signal,
+      signal: ceremonySignal ? AbortSignal.any([lifetime.signal, ceremonySignal]) : lifetime.signal,
     })) as PublicKeyCredential | null;
     guard();
     if (!credential) throw Error('Passkey request cancelled');
@@ -184,6 +191,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       authenticatorData: new Uint8Array(response.authenticatorData),
       clientDataJSON: new Uint8Array(response.clientDataJSON),
       signature: new Uint8Array(response.signature),
+      userHandle: response.userHandle ? new Uint8Array(response.userHandle) : null,
     };
   };
   const checkedSaved = (value: Retained | null) => {
@@ -336,6 +344,10 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     publish({ kind: 'ready', workspace, actorId: openedPrincipal });
   };
   const openAccount = async (principalId: string) => {
+    if (networkLogin?.retired) {
+      networkLogin = new NetworkLogin(pin, slotId);
+      void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
+    }
     publish({ kind: 'working', message: 'Opening your workspace…' });
     const retained = await marker();
     const open = retained?.catchup
@@ -347,10 +359,12 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       code,
       pin,
       assertPasskey: (request) => {
-        publish({ kind: 'working', message: 'Use your passkey to unlock' });
+        if (state.kind !== 'ready')
+          publish({ kind: 'working', message: 'Use your passkey to unlock' });
         return assertPasskey(request);
       },
       signal: lifetime.signal,
+      ...(networkLogin ? { networkLogin } : {}),
       identity: {
         id: principalId,
         actor: { kind: 'human', name: 'You', color: '#e0662f' },
@@ -518,6 +532,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       /* A retired workspace has no readable name. */
     }
     lifetime.abort();
+    networkLogin?.close();
     recoveryDisplay = undefined;
     deviceEnrollment?.cancel();
     deviceEnrollment = undefined;
@@ -551,6 +566,9 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     return closing;
   };
   return {
+    get networkLogin() {
+      return networkLogin;
+    },
     getSnapshot: () => state,
     hasRecoveryDisplay: () => recoveryDisplay !== undefined,
     visit(step: string): boolean {
@@ -607,6 +625,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
           if (disposition.kind === 'fresh') return publish({ kind: 'intro' });
         }
+        if (networkLogin && saved) void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
         publish({ kind: saved ? 'unlock' : 'intro' });
       }),
     start: (name: string) => {

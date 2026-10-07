@@ -1324,7 +1324,10 @@ login lasts at most **30 days from sign-in**, with no sliding extension from act
 that, a fresh online passkey check is required for network access, never for continuing otherwise-eligible
 offline reading or editing. Offline sign-out closes the local slot immediately and reports server
 revocation as pending until acknowledged. See the [session design](./account-sessions-subscriptions.md)
-for the proposed construction and its implementation status.
+for the construction and its implementation status. When online login is needed, a ready fresh
+combined challenge may let the existing local passkey prompt also establish it. Otherwise local unlock
+proceeds without waiting for the service; later Connect/Reconnect is explicit. The device-lock code,
+local verification and offline access rules remain unchanged (operator decision, 2026-10-07).
 
 **Six local facts these operations act on**, and the first two are the ones an earlier four-object framing
 omitted:

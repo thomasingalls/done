@@ -1,3 +1,4 @@
+import { NetworkLogin, prewarmSlotLogin } from '../account/networkLogin';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -51,10 +52,22 @@ export function AccountEnrollmentApp({
     life = useRef(new AbortController()),
     operating = useRef<Promise<void> | null>(null),
     foreground = useRef(false);
+  const login = useRef<NetworkLogin | undefined>(undefined);
+  useEffect(() => {
+    if (!config.networkSessions || !slot || !workspace) return;
+    const next = new NetworkLogin(config.pin, slot);
+    login.current = next;
+    void prewarmSlotLogin(next, slot, life.current.signal);
+    return () => {
+      next.close();
+      if (login.current === next) login.current = undefined;
+    };
+  }, [config, slot, workspace]);
   const navigate = useRef(onNavigate);
   navigate.current = onNavigate;
   const close = useCallback(async () => {
     life.current.abort();
+    login.current?.close();
     const closing = owner.current?.close();
     genesis.current?.cancel();
     genesis.current = null;
@@ -221,6 +234,7 @@ export function AccountEnrollmentApp({
         actorId={state.editor.actorId}
         accountWorkspace
         accountId={state.editor.accountId}
+        {...(state.editor.networkLogin ? { networkLogin: state.editor.networkLogin } : {})}
         registerEditor={owner.current.registerEditor}
         onLock={() => {
           void close().then(() => onNavigate('/accounts'));
@@ -408,6 +422,7 @@ export function AccountEnrollmentApp({
                   workspace ? 'new' : 'existing',
                   workspace ?? undefined,
                   workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
+                  login.current,
                 );
                 publish(await owner.current.refresh());
                 if (!life.current.signal.aborted) setStage('open');

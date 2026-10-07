@@ -1,3 +1,4 @@
+import type { OperationAuthorization } from './authorization.ts';
 import { ceremonyBootstrapMessage } from '../account-protocol/ceremonyRelay.ts';
 import {
   parseCertificationEpoch,
@@ -362,12 +363,12 @@ export class PrivateAuthority {
       },
     });
   }
-  relayCeremony(core: AccountCore, input: unknown) {
-    return core.relayCeremony(input, this.#deliveryIssuer());
+  relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.relayCeremony(input, this.#deliveryIssuer(authorize));
   }
-  transferContent(core: AccountCore, input: unknown) {
+  transferContent(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.transferContent(input, {
-      ...this.#deliveryIssuer(),
+      ...this.#deliveryIssuer(authorize),
       certify: async (input) => {
         const epoch = parseCertificationEpoch(input),
           message = await certificationEpochMessage(epoch),
@@ -383,9 +384,9 @@ export class PrivateAuthority {
       },
     });
   }
-  discoverAuthority(core: AccountCore, input: unknown) {
+  discoverAuthority(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.discoverAuthority(input, {
-      ...this.#deliveryIssuer(),
+      ...this.#deliveryIssuer(authorize),
       discovery: async (value) => {
         const body = parseDiscoveryResponse({ ...value, signature: '00'.repeat(64) });
         const message = await discoveryResponseMessage(body);
@@ -394,9 +395,9 @@ export class PrivateAuthority {
       },
     });
   }
-  admitPrepared(core: AccountCore, input: unknown) {
+  admitPrepared(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.admitPrepared(input, {
-      ...this.#deliveryIssuer(),
+      ...this.#deliveryIssuer(authorize),
       ...this.#enrollmentIssuer(),
       successor: async (input) => {
         const epoch = parseSuccessorEpoch(input),
@@ -413,11 +414,15 @@ export class PrivateAuthority {
       },
     });
   }
-  #deliveryIssuer(): ReadIssuer & InboundReadIssuer {
+  beginGrant(core: AccountCore, accessToken: unknown, scope: unknown) {
+    return core.grants.begin(accessToken, scope, this.#deliveryIssuer());
+  }
+  #deliveryIssuer(authorize?: OperationAuthorization): ReadIssuer & InboundReadIssuer {
     if (!this.#key) throw Error('Authority closed');
     return {
       pin: { ...this.#pin },
       check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+      authorize,
       issue: (seal, id, pub, response) => this.#acceptance.issue(seal, id, pub, response),
       witness: (seal, id, pub, scope, value) =>
         this.#acceptance.witness(seal, id, pub, scope, value),
@@ -427,17 +432,17 @@ export class PrivateAuthority {
         this.#acceptance.inboundPage(seal, id, pub, value),
     };
   }
-  decideSubmission(core: AccountCore, input: unknown) {
-    return core.decideSubmission(input, this.#deliveryIssuer());
+  decideSubmission(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.decideSubmission(input, this.#deliveryIssuer(authorize));
   }
-  readAccepted(core: AccountCore, input: unknown) {
-    return core.readAccepted(input, this.#deliveryIssuer());
+  readAccepted(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.readAccepted(input, this.#deliveryIssuer(authorize));
   }
-  exchangeCheckpoint(core: AccountCore, input: unknown) {
-    return core.exchangeCheckpoint(input, this.#deliveryIssuer());
+  exchangeCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.exchangeCheckpoint(input, this.#deliveryIssuer(authorize));
   }
-  readInbound(core: AccountCore, input: unknown) {
-    return core.readInbound(input, this.#deliveryIssuer());
+  readInbound(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.readInbound(input, this.#deliveryIssuer(authorize));
   }
   close(): void {
     this.#key = null;

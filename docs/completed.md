@@ -10030,3 +10030,74 @@ then an approved retry ran all seven HTTP/runtime cases successfully. No live da
 browser UI, dependency update or release campaign was involved. Implementation and run commands are
 in [account-session-core.md](./account-session-core.md). Next is phase 2's client custody, ordinary
 login/expiry and Lock/Sign out integration, with prompt placement reviewed before changing it.
+
+
+## 2026-10-07 — Owned client login and combined unlock (sessions/subscriptions phase 2)
+
+Committed the preceding session-core/design work signed as `57bcba5f`, then implemented the approved
+combined passkey path. The new challenge explicitly binds both purposes, selected identity, full pin,
+client/service nonces, attempt, retry hash and expiry. The local verifier independently checks the
+retained signed binding and assertion. Slow/offline service uses the existing local verifier without
+a network wait; a later online check requires the person's explicit action. Device-lock codes are
+unchanged. Session schema 13 preserves existing plain attempts and requires an explicit schema 12
+upgrade. The live adapter and upgrader remain unchanged.
+
+An auxiliary AES-GCM carrier derives from existing factor custody with a separate salt/domain and
+reserved nonce counter. Both original and joined-device owners attach it to the real slot lifetime.
+Exact proof is sealed before finish; issued credentials are sealed before acknowledgement. Background
+renewal is deduplicated and bounded by the parent deadline. Lock discards live capability while keeping
+the sealed login. Sign-out cancels reconnect prompts, fences late replies and atomically records a
+signed-out generation plus revoke-only (or unresolved-attempt cancel-only) outbox state before the UI
+closes. The chooser can deliver that outbox without unlocking writing. Storage failures remain visible,
+other people's sessions survive, and queued tabs reload the retired generation. Reconnect preserves
+the current editor rather than switching it back into setup.
+
+Evidence: 59 focused Node cases pass (41 session/client cases plus 18 existing core/runtime cases),
+46 existing slot verifier/index tests pass, and one disposable native Chromium test passes with two
+controls: an aborted publication preserves the preceding seal while burning its nonce, and a queued
+exclusive-lock tab observes signed-out state. TypeScript and scoped lint/format pass. Checks caught
+a pending-outbox count bug; review also closed sign-out's race with a reconnect prompt and stopped
+reconnect from replacing the ready editor's UI. The upgrade fixture was corrected to avoid closing
+the same SQLite owner twice. No generalized campaign was started.
+
+Implementation, limits and commands: [account-session-client.md](./account-session-client.md). The
+opt-in client setting is deliberately not returned by packaged configuration. The running :8443 app,
+schema 11 service, saved writing and physical devices are untouched. Next is scoped grants/protected
+route cutover, then live notifications and a real two-device walkthrough. Release qualification stays
+paused; account removal/reset, supported restore and broader lifecycle/operations remain later work.
+
+
+## 2026-10-07 — Scoped grants and domain transaction guards (sessions/subscriptions phase 3a)
+
+Implemented account-session-plus-device-possession grants for certified workspaces and exact retained
+enrollment attempts. A purpose-bound fresh challenge binds pin, account, parent session, device,
+scope, head, actions and expiry. Pending participants cannot obtain workspace grants; certification
+requires fresh acquisition. Grants are short-lived, bounded and ephemeral, while the durable login
+survives restart. Ordinary content appends do not invalidate membership grants.
+
+Delivery, both read protocols, authority discovery, admission, ceremony, content transfer and checkpoint
+exchange now accept explicit trusted authorization guards. The domain supplies its verified target
+inside its actual transaction, checks scope/authority/current session, and rechecks retirement/expiry
+immediately before commit. Empty ceremony replies also pass this boundary. Inbound authorization
+binds the reader, independently of the requested publisher. The separate protected HTTP adapter
+composes sessions/grants and these operations with bounds and structured authorization failures,
+without the private shared-bearer fallback. It is not mounted by the live launcher.
+
+Evidence: 18 new directed cases (16 grant/domain, two HTTP), 77 passing expanded session/core/runtime
+cases in total, and 84 passing affected domain regressions. Controls include wrong account/session/key/
+attempt, pending versus certified membership, a complete approval-to-certification transition,
+revocation during verification, expiry after write/before commit with rollback, restart and capacity.
+TypeScript, scoped lint/format and diff checks pass. No generalized campaign was started.
+
+The operator approved combining the joining device's fresh enrollment check with login. That explicit
+purpose, atomic issuance and client retention are next, followed by owned browser grant transport,
+bootstrap-host composition and a quiet-point live cutover. Setup subscription grants and notifications
+remain later in this sequence. Neither the running :8443 preview nor its schema 11 data changed. The
+new grants require no additional persisted schema beyond phase 2's opt-in schema 13. Implementation,
+route disposition, limits and commands are in [account-session-grants.md](./account-session-grants.md).
+
+Final focused additions cover two independently valid workspaces sharing the service and mutation of
+returned challenge objects. Both controls pass: the first workspace grant cannot authorize the second
+workspace's signed operation, and caller mutation cannot change retained pin/challenge authority. The
+final session/core/runtime rerun passes **79 tests**, including **20 new** cases (18 grant/domain and
+two HTTP). The 84 affected domain regressions remain passing; no runtime change followed that run.

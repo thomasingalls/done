@@ -1,3 +1,4 @@
+import { rethrowAuthorization } from './authorization.ts';
 /** One retained attempt per admitted credential. Client owners independently enforce their budget. */
 import type { DatabaseSync } from 'node:sqlite';
 import {
@@ -154,8 +155,28 @@ export async function relayCeremony(
       );
       const row = before.row ? { ...before.row } : null;
       const incoming = request.action === 'commit' ? parseCeremonyCommit(request.payload) : null;
-      if (!row && !(incoming && role === 'existing'))
-        return request.action === 'read' ? view(null) : refuse('not-started');
+      if (!row && !(incoming && role === 'existing')) {
+        if (request.action !== 'read') return refuse('not-started');
+        // Even an empty progress response belongs to the authenticated participant. Recheck on
+        // the same boundary as populated responses; no early success around the grant guard.
+        hook('after-verify', 'content-ceremony');
+        db.exec('BEGIN IMMEDIATE');
+        if (!same(capture(), before)) {
+          db.exec('ROLLBACK');
+          continue;
+        }
+        const complete = issuer.authorize?.(db, {
+          kind: 'enrollment',
+          workspaceId: request.workspaceId,
+          credentialId: request.credentialId,
+          attemptId: e.preparation.context.attemptId,
+          action: 'ceremony',
+        });
+        hook('before-commit', 'content-ceremony');
+        complete?.();
+        db.exec('COMMIT');
+        return view(null);
+      }
       const first = row ? parseCeremonyCommit(JSON.parse(row.existing_commit)) : incoming!;
       if (first.role !== 'existing' || (row && row.candidate_id !== candidate.id))
         return refuse('unavailable');
@@ -271,6 +292,13 @@ export async function relayCeremony(
         continue;
       }
       issuer.check(auth.seal, before.authority.promotion.request_digest, auth.a.acceptanceKey);
+      const completeAuthorization = issuer.authorize?.(db, {
+        kind: 'enrollment',
+        workspaceId: request.workspaceId,
+        credentialId: request.credentialId,
+        attemptId: auth.successor!.epoch.preparation.context.attemptId,
+        action: 'ceremony',
+      });
       hook('before-commit', 'content-ceremony');
       if (!live() && request.action !== 'read' && !same(next, before.row)) {
         db.exec('ROLLBACK');
@@ -289,11 +317,13 @@ export async function relayCeremony(
         next.cancellation,
         next.expired,
       );
+      completeAuthorization?.();
       db.exec('COMMIT');
       hook('after-commit', 'content-ceremony');
       return view(next);
-    } catch {
+    } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      rethrowAuthorization(cause);
       return refuse('unavailable');
     }
   }

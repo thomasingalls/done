@@ -2,7 +2,7 @@ import type { LocalPasskey } from '../crdt/accountAccess';
 /** Offline account-bound assertion; never substitutes a service sign-in response. */
 export const assertSlotPasskey =
   (signal: AbortSignal): LocalPasskey =>
-  async ({ rpId, credentialId, challenge }) => {
+  async ({ rpId, credentialId, challenge, signal: ceremonySignal }) => {
     const credential = (await navigator.credentials.get({
       publicKey: {
         rpId,
@@ -17,7 +17,7 @@ export const assertSlotPasskey =
           },
         ],
       },
-      signal,
+      signal: ceremonySignal ? AbortSignal.any([signal, ceremonySignal]) : signal,
     })) as PublicKeyCredential | null;
     signal.throwIfAborted();
     if (!credential) throw Error('Passkey request cancelled');
@@ -27,5 +27,6 @@ export const assertSlotPasskey =
       authenticatorData: new Uint8Array(response.authenticatorData),
       clientDataJSON: new Uint8Array(response.clientDataJSON),
       signature: new Uint8Array(response.signature),
+      userHandle: response.userHandle ? new Uint8Array(response.userHandle) : null,
     };
   };

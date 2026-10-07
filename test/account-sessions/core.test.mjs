@@ -300,11 +300,38 @@ test('session schema is opt-in, upgrade is explicit and old adapters refuse the 
   const upgraded = new AccountCore(f.path, policy, { sessions, upgradeFromV11: true });
   upgraded.close();
   db = new DatabaseSync(f.path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 12);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 13);
   db.close();
   assert.throws(() => new AccountCore(f.path, policy), /Unsupported account schema/);
   const reopened = new AccountCore(f.path, policy, { sessions });
   reopened.close();
+});
+
+test('schema 12 requires explicit combined-challenge upgrade and keeps the original login attempt', async (t) => {
+  const x = await ready(t),
+    a = x.begin();
+  x.mutate((db) =>
+    db.exec('ALTER TABLE session_attempts DROP COLUMN unlock_context; PRAGMA user_version=12;'),
+  );
+  assert.throws(
+    () => new AccountCore(x.f.path, policy, { sessions: x.config }),
+    /explicit offline upgrade/,
+  );
+  const upgraded = new AccountCore(x.f.path, policy, {
+    sessions: x.config,
+    upgradeFromV12: true,
+    now: () => 1000,
+  });
+  try {
+    assert.deepEqual(
+      upgraded.sessions.begin({ accountId: a.accountId, retryKey: a.retryKey }),
+      a.view,
+    );
+    assert.equal((await upgraded.sessions.finish(a.proof)).stage, 'issued');
+  } finally {
+    upgraded.close();
+  }
+  x.f.restart();
 });
 
 test('bounded access issuance recovers capacity on expiry; counter exhaustion cannot write a seal', async (t) => {
