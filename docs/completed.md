@@ -10384,3 +10384,22 @@ The packaged two-device Devices/delivery/reopen walkthrough passes in 17.1 secon
 lint/format, build, budget and origin checks pass. Logs: `/tmp/done-membership-relay-regressions.log`,
 `/tmp/done-membership-relay-browser.log`. Next is continuation content-key delivery/certification, then
 general history and owned third-device integration. Release validation remains paused.
+
+
+## 2026-10-08 — Continuation content delivery and certification proofs (`L-1`)
+
+After durable relay checkpoint `0acb8940`, added version-2 delivery, full-recipient certificate, candidate
+installation and membership-certification proof verification. Delivery binds the exact pending
+preparation, parent, comparison transcript, chosen eligible approver, unchanged generation and recovery
+recipient. The signed recipient set must preserve all approved keys and add only the compared candidate.
+Certification requires that candidate's installation signature over the exact delivery hash, preserves
+old membership/accepted coverage, and leaves the new publisher at position zero. The verified state can
+then verify another admission against this new certificate without reinterpreting the old v1 approval.
+
+Evidence: 83 affected membership/ceremony cases pass, including four new directed cases with independent
+Node signing from either existing approver; recipient/key/recovery/version substitutions, service-root
+substitution, missing or transplanted installation, accepted-head coverage and input capture. TypeScript,
+scoped lint/format, build, budget and origin isolation pass. Log:
+`/tmp/done-membership-certification-protocol.log`. These are proof verifiers, not service activation or
+new browser key custody. The service transaction, general sync history and third-device editor remain
+next; retained serving is unchanged and release validation remains paused.

@@ -166,3 +166,16 @@ capability. Completing cancellation of a pending member still needs its own auth
 storing a cancelled exchange does not claim to remove that member. Approved/uncertain key access still
 requires removal and forward rotation. Content delivery/certification and complete sync composition
 remain next. Focused evidence is recorded in `completed.md`.
+
+
+## Continuation delivery proof checkpoint — 2026-10-08
+
+Version-2 recipient certificates explicitly sign workspace, lineage, parent, resulting epoch,
+generation, full recipient keys, recovery digest and approver. Key delivery binds that certificate
+to the exact version-2 comparison and pending preparation. The candidate signs the delivery hash
+after installation; only the resulting verified certification gives it publisher rights. The pure
+verifier preserves all prior recipients and accepted heads and starts the candidate at position zero.
+No service-root signature can replace the device approval or candidate installation proof.
+
+The first implementation verifies these bytes; atomic service retention, actual client key installation
+and the general delivery/history owner remain required before exposing the third-device product path.

@@ -29,6 +29,16 @@ import {
   type RecipientCertificate,
 } from './contentDelivery.ts';
 
+import {
+  parseMembershipDelivery,
+  verifyMembershipDelivery,
+  parseMembershipInstallation,
+  verifyMembershipInstallation,
+  type MembershipDelivery,
+  type MembershipInstallation,
+  type MembershipRecipientCertificate,
+} from './membershipDelivery.ts';
+
 export const MEMBERSHIP_PROOF_LIMIT = 64 * 1024;
 export const MEMBERSHIP_CREDENTIAL_LIMIT = 64;
 export interface MembershipState {
@@ -43,7 +53,8 @@ export interface MembershipState {
   generation: number;
   acceptancePublicKey: string;
   certifiedSetDigest: string;
-  certificate: RecipientCertificate;
+  certificate: RecipientCertificate | MembershipRecipientCertificate;
+  preparations: { credentialId: string; attemptId: string }[];
   roster: AdmissionMember[];
   heads: StreamHead[];
 }
@@ -151,6 +162,7 @@ export async function verifyMembershipAnchor(
     acceptancePublicKey: e.acceptancePublicKey,
     certifiedSetDigest: await digest(json(certificate)),
     certificate,
+    preparations: [],
     roster: certification.epoch.roster,
     heads: certification.epoch.heads,
   });
@@ -298,6 +310,139 @@ export async function verifyMembershipAdmission(
     ...structuredClone(p),
     epoch: e.epoch,
     head: proof.head,
+    preparations: [
+      ...p.preparations,
+      { credentialId: candidate.credentialId, attemptId: c.attemptId },
+    ],
+    roster: e.roster,
+    heads: e.heads,
+  } as MembershipState);
+}
+
+export interface MembershipCertificationEpoch {
+  v: 2;
+  kind: 'membership-certification-epoch';
+  workspaceId: string;
+  lineageId: string;
+  epoch: number;
+  parent: string;
+  generation: number;
+  acceptancePublicKey: string;
+  delivery: MembershipDelivery;
+  installation: MembershipInstallation;
+  roster: AdmissionMember[];
+  heads: StreamHead[];
+}
+export interface MembershipCertification {
+  v: 2;
+  kind: 'membership-certification';
+  epoch: MembershipCertificationEpoch;
+  head: string;
+  signature: string;
+}
+export function parseMembershipCertificationEpoch(input: unknown): MembershipCertificationEpoch {
+  bounded(input);
+  const e = closed(input, [
+    'v',
+    'kind',
+    'workspaceId',
+    'lineageId',
+    'epoch',
+    'parent',
+    'generation',
+    'acceptancePublicKey',
+    'delivery',
+    'installation',
+    'roster',
+    'heads',
+  ]);
+  if (e['v'] !== 2 || e['kind'] !== 'membership-certification-epoch')
+    throw Error('Invalid membership certification');
+  return {
+    v: 2,
+    kind: 'membership-certification-epoch',
+    workspaceId: h(e['workspaceId'], 16),
+    lineageId: h(e['lineageId']),
+    epoch: integer(e['epoch'], 5),
+    parent: h(e['parent']),
+    generation: integer(e['generation'], 1),
+    acceptancePublicKey: h(e['acceptancePublicKey']),
+    delivery: parseMembershipDelivery(e['delivery']),
+    installation: parseMembershipInstallation(e['installation']),
+    roster: entries(e['roster'], parseMember, (m) => m.id),
+    heads: entries(e['heads'], parseHead, (s) => s.credentialId),
+  };
+}
+export function parseMembershipCertification(input: unknown): MembershipCertification {
+  bounded(input);
+  const p = closed(input, ['v', 'kind', 'epoch', 'head', 'signature']);
+  if (p['v'] !== 2 || p['kind'] !== 'membership-certification')
+    throw Error('Invalid membership certification proof');
+  return {
+    v: 2,
+    kind: 'membership-certification',
+    epoch: parseMembershipCertificationEpoch(p['epoch']),
+    head: h(p['head']),
+    signature: h(p['signature'], 64),
+  };
+}
+export const membershipCertificationMessage = (input: unknown) =>
+  domainMessage(
+    'done/device-membership-certification/v2',
+    parseMembershipCertificationEpoch(input),
+  );
+
+export async function verifyMembershipCertification(
+  input: unknown,
+  parent: VerifiedMembership,
+): Promise<VerifiedMembership> {
+  const p = membershipState(parent),
+    proof = parseMembershipCertification(input),
+    e = proof.epoch;
+  if (
+    e.parent !== p.head ||
+    e.epoch !== p.epoch + 1 ||
+    e.workspaceId !== p.workspaceId ||
+    e.lineageId !== p.lineageId ||
+    e.generation !== p.generation ||
+    e.acceptancePublicKey !== p.acceptancePublicKey
+  )
+    throw Error('Membership certification continuity changed');
+  const { delivery } = await verifyMembershipDelivery(e.delivery, parent);
+  await verifyMembershipInstallation(e.installation, delivery);
+  const candidate = delivery.existing.context.candidate.id;
+  const roster = p.roster.map((m) =>
+    m.id === candidate
+      ? { ...m, state: 'certified', capabilities: ['read', 'write', 'admit', 'manage'] }
+      : m,
+  );
+  if (
+    !same(e.roster, roster) ||
+    !same(
+      e.heads.map((h) => h.credentialId),
+      p.heads.map((h) => h.credentialId),
+    )
+  )
+    throw Error('Membership certification coverage changed');
+  for (const head of e.heads) {
+    const before = p.heads.find((h) => h.credentialId === head.credentialId)!;
+    if (
+      head.position < before.position ||
+      (head.position === before.position && head.link !== before.link) ||
+      (p.roster.find((m) => m.id === head.credentialId)!.state === 'pending' && head.position !== 0)
+    )
+      throw Error('Membership certification accepted boundary changed');
+  }
+  const message = await membershipCertificationMessage(e);
+  if (proof.head !== (await digest(message))) throw Error('Membership certification head changed');
+  await verifySignature(p.pin.authRoot, proof.signature, message);
+  return retain({
+    ...structuredClone(p),
+    epoch: e.epoch,
+    head: proof.head,
+    certificate: delivery.certificate,
+    certifiedSetDigest: await digest(json(delivery.certificate)),
+    preparations: p.preparations.filter((entry) => entry.credentialId !== candidate),
     roster: e.roster,
     heads: e.heads,
   } as MembershipState);
