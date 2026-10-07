@@ -9589,3 +9589,52 @@ rolled back. The isolated first-commit tree passed typecheck and all three chall
 The following commit, containing this entry, groups the certified content-key handoff, its focused
 tests, schema upgrade and current checkpoint. Earlier append-only entries saying “uncommitted”
 remain accurate historical records. The three unrelated root notes are outside these commits.
+
+## 2026-10-07 — desktop computer-use walkthrough of certified device handoff
+
+At signed implementation `6e080284`, completed the bounded live UI walkthrough at
+https://mbp.tail0e0d4.ts.net:8443/ with two newly created Firefox containers, **Done disposable A**
+and **Done disposable B**. The operator explicitly chose disposable desktop devices instead of
+the retained physical-phone setup. Browser storage was separate; both containers used the real
+Bitwarden passkey named **Disposable walkthrough 2026-10-07**. The operator unlocked Bitwarden
+and saved that new passkey; subsequent interactions used computer use through visible Firefox UI.
+No virtual authenticator, injected application state, or test-only approval shortcut was used.
+
+The preview initially could not restart because its former process had left a maintenance lock.
+Confirmed that recorded PID 97639 no longer existed and nothing listened on loopback 53219,
+removed only that stale lock, and restarted the same schema-9 preview with live updates disabled.
+No database reset, schema change or Tailscale route change. Restart log:
+`/tmp/done-preview-computer-use-2026-10-07.log`.
+
+Observed outcomes:
+
+- The root splash led to the account chooser; Use another account opened Connect devices, and
+  browser Back returned to the chooser.
+- A fresh disposable account completed device-code custody, actual passkey registration and
+  confirmation, recovery-code confirmation and activation. Its editor opened at version
+  `6e080284`, accepted two lines of explicitly disposable writing, and produced an invitation.
+- The second container prepared independent custody, displayed the separate password-manager
+  entry warning, authenticated with the same account passkey and displayed a five-character
+  comparison code. Entering that observed code on the first device approved the pair.
+- Both pages reached **Device approved** and **Content access is installed and certified.
+  Opening your writing is the next development step.** No manual Check again was needed to
+  reach certification.
+- Closed both ceremony tabs. Reopened new tabs in their respective containers at `/`, then used
+  the chooser and each device's own lock code. The receiver appeared as a saved Device connection;
+  the sender's existing invitation action resumed its retained ceremony. Both returned to the
+  certified status without a new invitation, passkey request or code comparison. The receiver
+  resumed from a workspace-only URL; the invitation did not have to be pasted again.
+
+Usability observations retained for later discussion, without changing product behavior: Finish
+account setup required four consecutive passkey authentications; Bitwarden proposed updating an
+existing login after device-code entry (dismissed, never accepted); and the sender's **Create
+invitation** action also serves as the entry to an already certified ceremony. These observations
+do not invalidate the successful handoff, but the credential and resume wording still deserve work.
+
+This is a successful desktop/container development walkthrough, not physical-device, browser-process
+crash, offline, fault-injection, or release-qualification evidence. It did not demonstrate writing
+transfer or two-way sync: the receiver editor/content bootstrap is still the next implementation
+phase. Existing personal writing and retained device setups were not opened or changed. The test
+containers, disposable passkey and preview state remain available; generated lock/recovery codes
+are not recorded in repository documentation. No application code changed and no new campaign ran.
+Stop here after recording the result. Release qualification remains paused.

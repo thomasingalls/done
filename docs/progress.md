@@ -42,53 +42,47 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: approved-device key handoff ready (`L-1`)
+## Product checkpoint: approved-device key handoff exercised (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: exact delivery, factor-protected installation and one certification successor
-blocks_on: stop for the operator to resume both saved devices
+scope: live desktop walkthrough of delivery, factor-protected installation and certification
+blocks_on: none for this walkthrough; stop before the next product phase
 release_validation: paused by operator
-updated: 2026-09-18
+updated: 2026-10-07
 ```
 
-**Implemented:** the already approved first device stages the exact signed certificate and wrapped
-content key before sending. The phone authenticates and durably installs the key/recovery state
-under its saved device factor before countersigning. The service commits the exact certification
-successor at epoch 3, preserving original-publisher history and queued writes from epochs 1/2.
-Both devices can close/reopen and recover uncertain outcomes without another code comparison.
+**Completed:** signed `6e080284` implements the exact staged content-key delivery, durable
+factor-protected receiver installation and epoch-3 certification successor. The operator-authorized
+computer-use walkthrough now passes with two isolated Firefox containers and a real Bitwarden
+passkey. A fresh disposable account produced an invitation; the second device enrolled, completed
+the five-character comparison, and both pages displayed **Content access is installed and
+certified.** Closing both tabs and reopening through `/` and the chooser recovered that status
+using each device's own code, without another invitation, passkey request or comparison.
 
-**Try now:** open **https://mbp.tail0e0d4.ts.net:8443/**. First device: chooser → **Use another
-account** → the existing account's invitation action, then unlock. Phone: chooser → saved
-**Device connection**, then unlock with its own code. Keep both open until status says **Content
-access is installed and certified.** Existing approval continues automatically. The heading stays
-**Device approved**. [Detailed continuation](./account-content-delivery-development.md).
+**Evidence and limits:** this was a desktop/container UI walkthrough, with the operator saving the
+initial passkey. It substitutes for the pending physical-phone trial only within that scope. No
+browser-process crash, offline or fault campaign ran. Earlier focused service/browser evidence
+remains in [completed.md](./completed.md); the new 2026-10-07 entry records this observation and
+credential/resume usability notes. [Continuation and next boundary](./account-content-delivery-development.md).
 
-**Boundary:** the phone does not yet open writing. Its old Local writing is untouched. Next is
-verified content bootstrap and opening the first device's writing, including the authority/client
-adoption needed for that read path. Then two-way/offline sync and ordinary packaged application
-integration can follow. General successor histories, replacement admission, rotation and further
-UX/factor changes are not part of this phase. The preview banner remains accurate.
+**Next bounded product phase:** authenticate and bootstrap the first device's writing on the
+approved second device, including authority/client adoption for that read path, and open it in the
+editor. That phase has not started. Two-way/offline sync and ordinary packaged application
+integration follow. General successor histories, replacement admission, rotation and further
+UX/factor changes are outside this completed phase. The preview banner remains accurate.
 
-**Evidence:** 42 focused service/protocol/discovery cases, five schema-fixture cases and five
-maintenance cases pass. All nine affected browser cases have passing evidence: eight in the initial
-combined run and the initial-splash timeout on focused rerun alongside final lost-reply coverage.
-The combined run was not all-green. New native checks cover exact retries and an aborted key-save
-that sends no installation proof. Typecheck, scoped lint/format and diff checks pass. Full record:
-[completed.md](./completed.md). No broad qualification campaign or inventory refresh.
+**Preview:** https://mbp.tail0e0d4.ts.net:8443/ is running on loopback 53219 with the same schema-9
+state and live updates disabled. A confirmed stale process lock was cleared after the host restart;
+no data reset or proxy change. The disposable Firefox containers and passkey remain for further
+use. Personal writing and retained real-device setups were not opened or changed.
 
-**Preview maintenance:** with both devices locked/closed, backed up to
-`.dev/account-enrollment-tailnet/backups/schema-8-i5jQ3k/`, upgraded service schema 8 → 9, verified
-all eleven existing tables plus pin/operator key unchanged, and restarted on loopback 53219 with
-live updates disabled. Same origin, retained state and Tailscale routes. No personal-browser control.
-
-**Commit state:** signed `f4e250fc` records the accumulated walkthrough fixes, chooser styling
-and TanStack navigation after `66da1dcd`. The following handoff commit contains this checkpoint,
-the delivery/install/certification implementation and its focused evidence. Earlier journal entries
-that describe the work as uncommitted record its state at that time. Release validation remains paused.
+**Commit state:** implementation is signed in `6e080284`, after signed walkthrough/navigation
+checkpoint `f4e250fc`. This checkpoint records only documentation of the live walkthrough.
+Release qualification remains paused.
 
 ---
 

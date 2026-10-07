@@ -5,6 +5,14 @@ approval trial. This implements the continuation in [content-approval prep](./ac
 Release qualification remains paused. This is one generation, one admitted candidate and one
 certification successor, followed by a stop for use.
 
+**2026-10-07 walkthrough:** completed through the real Firefox UI with two isolated, disposable
+containers and a real Bitwarden passkey saved by the operator. Both sides reached the installed
+and certified status, then recovered it after closing both tabs and reopening through the root
+splash/chooser with their separate device codes. No new invitation, passkey request or comparison
+was needed on reopen. This is desktop development evidence, not a physical-phone or crash/offline
+qualification run. The [completed-work record](./completed.md) includes the exact scope and
+credential/resume usability observations. The next product boundary below is unchanged.
+
 ## Resume the existing trial
 
 Use **https://mbp.tail0e0d4.ts.net:8443/** on both devices. On the first, choose **I already have a
