@@ -96,3 +96,37 @@ result. Current-head discovery must page proofs without dropping any previously 
 Certification then requires the existing commitment-before-reveal and human comparison rules adapted
 to that verified parent, an eligible approver from its certified set, exact key delivery and durable
 installation. A service roster, enrollment receipt or network login alone cannot activate recipients.
+
+
+## First continuation admission checkpoint — 2026-10-08
+
+`account-protocol/membership.ts` verifies the existing signed 1–3 anchor before creating an immutable,
+process-branded parent. The version-2 membership-admission proof names the exact parent/head, next epoch,
+workspace/lineage, generation, acceptance key, prepared candidate, inherited recipient-certificate digest,
+complete roster and complete accepted-head vector. Admission adds only a pending credential with no
+capabilities and position zero. Existing identities/keys, certified recipients and recovery approval remain
+unchanged. The approval is carried in its original context, not re-signed or reinterpreted. The wire bound
+is 64 KiB per proof and 64 credential entries. This is a bounded development protocol, not a device-plan
+entitlement. The pure verifier can follow repeated pending admissions; certification/removal are not yet
+implemented in this continuation format.
+
+The private service method consumes the first v2 preparation at epoch 3, verifies both current publisher
+ledgers, and atomically stores epoch 4, both predecessor witnesses, the current pointer and witnesses
+rebound to the new head. It preserves earlier admission, ceremony, transfer and checkpoint rows. Exact
+retries verify the retained proof/boundaries and return the same result, including after a lost response
+and service restart. Competing prepared parents refuse; they are not rebased. Receipt authority and expiry
+are checked under the commit boundary, along with any supplied scoped authorization.
+
+**Integration fence:** this method has no HTTP route. It requires `membershipContinuation: true` on the
+session-owning `AccountCore`, and schema 15. Retained schema 14 needs explicit `upgradeFromV14` at an offline
+boundary. The ordinary development host still opens schema 14 without this option, and refuses schema 15.
+The old delivery/grant/ceremony authority reader refuses a stored continuation instead of treating epoch 3
+as current. Thus this checkpoint must not be enabled for the retained service: after private admission,
+its ordinary sync path intentionally refuses until general history, ceremony/certification, grants,
+discovery and editor adoption are composed. No runtime/host upgrade was performed.
+
+Next: adapt commitment/reveal,
+comparison and installation to the verified continuation parent; generalize accepted-history resolution
+for all eligible publishers before wiring any public/development route. The operator selected one unfinished connection per account, with Resume/Cancel before another
+invitation. Enforce that rule in the service and Devices. Cancellation preserves approved recipients and
+their generation; competing authority changes still require a new comparison.

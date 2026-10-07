@@ -10313,3 +10313,25 @@ verification producing neither a receipt nor a login. TypeScript and scoped lint
 `/tmp/done-member-prep-regressions.log`. This does not admit or open a third device; continuation admission,
 certification, discovery and owned editor integration remain next. The retained installation is unchanged,
 and release validation remains paused.
+
+
+## 2026-10-08 — Private first continuation admission (`L-1`)
+
+After preparation checkpoint `9f02a88f`, added a verified bridge from the original signed epochs 1–3 to
+a version-2 pending-admission proof. Existing recipients, keys and approval context stay unchanged;
+new credentials remain pending without content rights. The private service transaction retains both
+publishers' actual accepted boundaries and predecessor witnesses, advances the head, and returns its
+immutable result across abort/lost-reply/restart. Its explicit schema-15 opt-in is not enabled or routed
+by the development host. The old epoch-3 reader refuses continuation state. General continuation sync
+and the third-device product path are still unfinished; the retained service is unchanged at schema 14.
+
+Evidence: 85 affected protocol, transfer, core/session, grant and host tests pass. Directed additions
+cover service-signed recipient/key/rights substitutions, parent/coverage changes, forged parent objects,
+input capture, two-publisher boundary retention, atomic abort, exact lost-reply/restart, competing parent,
+missing boundary refusal and explicit upgrade/old-host refusal. An upgrade-fixture teardown initially
+closed its account handle twice; it now upgrades an offline SQLite backup and passes. TypeScript,
+scoped lint/format, build, budget and origin isolation pass. Logs:
+`/tmp/done-membership-regressions-final.log`, `/tmp/done-membership-upgrade.log`. The packaged Devices
+walkthrough also passes against this build (16.4 seconds; `/tmp/done-membership-browser.log`). The operator
+selected one unfinished connection per account with Resume/Cancel before another invitation.
+Release validation remains paused; continuation ceremony work is next.

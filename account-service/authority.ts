@@ -1,4 +1,8 @@
 import type { OperationAuthorization } from './authorization.ts';
+import {
+  parseMembershipAdmissionEpoch,
+  membershipAdmissionMessage,
+} from '../account-protocol/membership.ts';
 import { ceremonyBootstrapMessage } from '../account-protocol/ceremonyRelay.ts';
 import {
   parseCertificationEpoch,
@@ -360,6 +364,23 @@ export class PrivateAuthority {
         const message = await ceremonyBootstrapMessage(body);
         if (!this.#key) throw Error('Authority closed');
         return sign(null, message, this.#key).toString('hex');
+      },
+    });
+  }
+  admitMembership(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.admitMembership(input, {
+      ...this.#deliveryIssuer(authorize),
+      admission: async (input) => {
+        const epoch = parseMembershipAdmissionEpoch(input),
+          message = await membershipAdmissionMessage(epoch);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 2,
+          kind: 'membership-admission',
+          epoch,
+          head: await digest(message),
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
       },
     });
   }

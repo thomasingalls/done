@@ -6,6 +6,13 @@ import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.
 import { createHash } from 'node:crypto';
 import { authorityFixture } from '../account-authority/fixtures.mjs';
 import { fresh, lp } from '../account-enrollment/fixtures.mjs';
+import { AccountCore } from '../../account-service/core.ts';
+import { DatabaseSync, backup } from 'node:sqlite';
+import {
+  verifyMembershipAnchor,
+  verifyMembershipAdmission,
+  membershipState,
+} from '../../account-protocol/membership.ts';
 import {
   parseEnrollmentContext,
   parseEnrollmentChallenge,
@@ -351,6 +358,130 @@ test('next-device proof racing account invalidation cannot commit a receipt or l
     null,
   );
   assert.equal(x.f.rows('network_sessions').length, 0);
+});
+
+test('private continuation admission retains both publisher boundaries, aborts atomically and recovers the exact committed result', async (t) => {
+  const authority = authorityFixture(t);
+  let fault = null;
+  const x = await checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    membershipContinuation: true,
+    hook(at, op) {
+      if (op === 'admit-membership' && at === fault) {
+        fault = null;
+        throw Error('Interrupted membership admission');
+      }
+    },
+  });
+  const prepare = async () => {
+    const entry = x.candidate();
+    entry.input.candidate.head = x.certification.head;
+    const begun = await x.enroll('begin', entry.input);
+    const result = await x.enroll('finish', nextProof(x, entry, begun.challenge));
+    assert.equal(result.stage, 'prepared', JSON.stringify(result));
+    return {
+      retryKey: entry.input.retryKey,
+      attemptId: result.receipt.context.attemptId,
+      receiptId: result.receipt.receiptId,
+    };
+  };
+  const request = await prepare(),
+    competitor = await prepare();
+  const originalRecords = [
+    'workspace_successors',
+    'content_ceremonies',
+    'content_transfers',
+    'content_checkpoints',
+  ].map((table) => [table, x.f.rows(table)]);
+  const first = x.make(1, 'first before third admission', { epoch: 3 });
+  const second = x.make(1, 'second before third admission', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  const a = await x.deliveryCall(first),
+    b = await x.deliveryCall(second);
+  assert.equal(a.kind, 'decision');
+  assert.equal(b.kind, 'decision');
+  const call = (r = request) => authority.owner.admitMembership(x.f.core, r);
+  fault = 'before-commit';
+  assert.equal((await call()).ok, false);
+  assert.deepEqual(x.f.rows('membership_admissions'), []);
+  assert.equal(x.f.rows('promotions')[0].successor_head, x.certification.head);
+  fault = 'after-commit';
+  assert.equal((await call()).ok, false);
+  assert.equal(x.f.rows('membership_admissions').length, 1);
+  x.f.restart();
+  const result = await call();
+  assert.equal(result.kind, 'membership-admission', JSON.stringify(result));
+  assert.deepEqual(await call(), result);
+  assert.equal((await call(competitor)).refusal, 'stale');
+  assert.equal(x.f.rows('membership_admissions').length, 1);
+  const parent = await verifyMembershipAnchor(x.base, x.successor, x.certification, {
+    epoch: 3,
+    head: x.certification.head,
+  });
+  const current = membershipState(await verifyMembershipAdmission(result, parent));
+  assert.deepEqual(current.certificate, x.delivery.certificate);
+  for (const id of [x.context.existing.id, x.context.candidate.id])
+    assert.equal(current.heads.find((h) => h.credentialId === id).position, 1);
+  assert.equal(
+    current.heads.find(
+      (h) => ![x.context.existing.id, x.context.candidate.id].includes(h.credentialId),
+    ).position,
+    0,
+  );
+  for (const [table, rows] of originalRecords) assert.deepEqual(x.f.rows(table), rows, table);
+  // The unfinished continuation is never exposed through the old epoch-3 delivery owner.
+  const count = x.f.rows('delivery_decisions').length;
+  assert.equal((await x.deliveryCall(x.make(2, 'stale writer', { epoch: 3 }))).kind, 'unknown');
+  assert.equal(x.f.rows('delivery_decisions').length, count);
+  const saved = x.f.rows('membership_admissions')[0];
+  mutate(x, (db) => db.prepare('UPDATE membership_admissions SET boundaries=?').run('[]'));
+  assert.equal((await call()).ok, false);
+  mutate(x, (db) =>
+    db.prepare('UPDATE membership_admissions SET boundaries=?').run(saved.boundaries),
+  );
+  assert.deepEqual(await call(), result);
+});
+
+test('continuation schema requires explicit offline opt-in and preserves retained session/account rows', async (t) => {
+  const authority = authorityFixture(t),
+    sessions = { pin: authority.pin, operatorKey: authority.key };
+  const x = await checkpointFixture(t, { authority, sessions });
+  const names = [
+    'accounts',
+    'credentials',
+    'promotions',
+    'workspace_successors',
+    'content_transfers',
+    'session_custody',
+    'network_sessions',
+  ];
+  const before = names.map((name) => [name, x.f.rows(name)]);
+  const policy = { origin: authority.pin.origin, rpId: authority.pin.rpId };
+  const path = x.f.path + '.offline-upgrade';
+  const source = new DatabaseSync(x.f.path);
+  await backup(source, path);
+  source.close();
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /explicit offline upgrade/,
+  );
+  const upgraded = new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV14: true,
+  });
+  upgraded.close();
+  const db = new DatabaseSync(path);
+  for (const [name, rows] of before)
+    assert.deepEqual(db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(), rows, name);
+  assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 15);
+  db.close();
+  assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
 
 test('certified devices publish independent positions and read each other across lost replies and restart', async (t) => {

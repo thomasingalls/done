@@ -4280,3 +4280,13 @@ a **Devices** entry in the editor’s Account menu. It opens one verified device
 removal actions. Keep the existing invitation/code-comparison ceremony and visibly distinguish pending
 enrollment from approved content access. This is UI/order approval, not permission to weaken the
 revocation/rotation/finalization contract or infer remote custody properties from a display label.
+
+
+## 2026-10-08 — Serialize unfinished device connections (`L-1`)
+
+The operator selected **one unfinished connection per account at a time** for the initial additional-device
+flow. Devices offers Resume or Cancel for the pending connection before another invitation. Enforce the
+same rule at the service boundary, not only in the interface. Preserve pending-versus-certified authority:
+cancellation of an unapproved device must not revoke approved readers or rotate their content key. A
+competing authorization change still requires a fresh transcript and human code comparison under the
+existing ruling; serialization of enrollment does not allow rebasing an earlier approval.

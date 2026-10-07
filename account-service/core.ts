@@ -1,4 +1,6 @@
 import { ScopedGrants } from './grants.ts';
+import { MEMBERSHIP_SCHEMA, enableMembershipStore } from './membershipStore.ts';
+import { admitMembership, type MembershipIssuer } from './membership.ts';
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import {
   CEREMONY_SCHEMA,
@@ -180,6 +182,9 @@ export class AccountCore {
       upgradeFromV11?: boolean;
       upgradeFromV12?: boolean;
       upgradeFromV13?: boolean;
+      upgradeFromV14?: boolean;
+      /** Private integration gate; there is no routed continuation endpoint yet. */
+      membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
     } = {},
   ) {
@@ -194,6 +199,8 @@ export class AccountCore {
       );
       this.#db.exec('BEGIN IMMEDIATE');
       const version = this.#db.prepare('PRAGMA user_version').get()!.user_version;
+      if (instrumentation.membershipContinuation && !instrumentation.sessions)
+        throw Error('Membership continuation requires the session owner');
       if (version === 0) {
         if (this.#db.prepare("SELECT name FROM sqlite_master WHERE type='table'").get())
           throw Error('Unclassified account database');
@@ -217,7 +224,12 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 14 && instrumentation.sessions) &&
+        !(version === 15 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 14 &&
+          instrumentation.sessions &&
+          (!instrumentation.membershipContinuation || instrumentation.upgradeFromV14)
+        ) &&
         !(version === 13 && instrumentation.sessions && instrumentation.upgradeFromV13) &&
         !(version === 12 && instrumentation.sessions && instrumentation.upgradeFromV12) &&
         !(version === 10 && instrumentation.upgradeFromV10) &&
@@ -306,6 +318,13 @@ export class AccountCore {
           this.#db.exec(SESSION_ENROLLMENT_SCHEMA);
           this.#db.exec('PRAGMA user_version=14;');
         }
+        if (instrumentation.membershipContinuation) {
+          if (version < 15) {
+            this.#db.exec(MEMBERSHIP_SCHEMA);
+            this.#db.exec('PRAGMA user_version=15;');
+          }
+          enableMembershipStore(this.#db);
+        }
         this.#sessions = new AccountSessions(
           this.#db,
           this.#policy,
@@ -338,6 +357,16 @@ export class AccountCore {
 
   ceremonyBootstrap(input: unknown, issuer: CeremonyIssuer) {
     return ceremonyBootstrap(this.#db, input, issuer);
+  }
+  admitMembership(input: unknown, issuer: MembershipIssuer) {
+    return admitMembership(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#diagnostics.record,
+    );
   }
   relayCeremony(input: unknown, issuer: DeliveryIssuer) {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook);

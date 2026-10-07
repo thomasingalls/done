@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: versioned additional-device preparation complete; continuation admission next
+scope: private first continuation admission complete; continuation ceremony integration next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -75,7 +75,13 @@ now covers a bootstrap/certification race. These changes are not deployed to the
 Verified Devices is committed as `eb8c02c0`. Versioned additional-device preparation now binds the
 verified epoch-3 parent and preserves exact retry/login outcomes; 76 focused regressions pass. It does
 not grant membership or content, and the third-device button remains disabled.
-Next: append-only continuation admission, certification/discovery and third-device editor integration,
+Preparation is committed as `9f02a88f`. The first private continuation admission now preserves both
+publisher boundaries and exact retry outcomes; 85 affected regressions pass. It is unrouted and requires
+explicit schema-15 opt-in. The regular host and retained installation stay on schema 14. The legacy
+delivery owner deliberately refuses continuation state until general history is composed.
+The operator selected one unfinished connection per account, with Resume/Cancel before another invite.
+Next: continuation ceremony/certification, service enforcement of that policy, general
+history/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.
 
