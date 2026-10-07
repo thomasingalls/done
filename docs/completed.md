@@ -10200,3 +10200,23 @@ The retained :8443 installation remains unchanged pending a quiet point and back
 switch, then notifications and the operator's two-device trial. The operator selected additional
 devices and revocation before lost-device recovery for the subsequent lifecycle work. Details:
 [account-session-host.md](./account-session-host.md).
+
+
+## 2026-10-08 — Retained session-host cutover
+
+Committed the session host unsigned as `b17c7700`, then the operator confirmed both devices locked
+and closed. Rebuilt that checkpoint, retained its immutable assets, stopped only the verified API/app
+processes and explicitly upgraded account schema 11 to 14. The upgrader's full offline backup is
+`.dev/account-enrollment-tailnet/backups/schema-11-zJ6r9i`. Restarted separate processes behind the same
+`https://mbp.tail0e0d4.ts.net:8443/`, with session mode on the API and build `b17c7700` on the app.
+
+All rows and old columns in the 15 pre-existing account tables match the backup; pin and operator key
+are unchanged. Live HTTPS configuration returns version 2/session mode, shared `/access` returns 404,
+wrong Origin returns 403, source/key paths return 404, and a fresh authority proof verifies. All 23
+precache assets and worker bytes match the retained build. Corrected a verification-script root-path
+mapping from the build directory to `index.html`; no runtime repair was needed. No personal writing
+or browser was opened. The operator's uptake of the new cached application is not yet confirmed.
+
+Updated [the runbook](./packaged-account-development.md) with commands, logs, worker digest, backup
+and upgrade boundaries. Notifications are next. Broader lifecycle work remains authorized in the order
+additional devices/revocation, then lost-device recovery. Qualification remains paused.

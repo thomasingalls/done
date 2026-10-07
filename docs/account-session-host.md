@@ -1,6 +1,6 @@
 # Session-enabled development host
 
-2026-10-08 · sessions/subscriptions phase 3d · implemented; retained-installation cutover pending.
+2026-10-08 · sessions/subscriptions phase 3d · implemented and activated at the retained development installation.
 
 The host composes the existing public pin/authority proof, fresh authentication and
 attempt-capability setup routes with the session/grant-protected content adapter. Bootstrap has a
@@ -42,5 +42,7 @@ The affected session/runtime/gateway/upgrade group passes 115 Node tests, and fo
 Vitest files pass 33 tests. TypeScript, scoped lint/format, build, initial-JS budget and built-origin
 scan pass. These are focused implementation checks, not release qualification.
 
-The retained `:8443` service is unchanged at this point. Live cutover requires a quiet point and
-backup; notifications and the operator's two-device trial follow. Release qualification remains paused.
+The retained `:8443` service now uses build `b17c7700` and schema 14 after the operator's quiet-point
+confirmation and full backup. See [the cutover record](./packaged-account-development.md#session-enabled-cutover--2026-10-08).
+Live serving/identity/state checks passed; personal-device update uptake is pending. Notifications and
+the two-device trial follow. Release qualification remains paused.

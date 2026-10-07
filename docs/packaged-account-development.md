@@ -3,6 +3,10 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
+**Current retained installation:** session-enabled build `b17c7700`, schema 14, same `:8443` origin.
+Use the session-mode commands in the final section below; the shared-token sections record the
+preceding implementation. Notifications remain the next increment.
+
 ## Serving and access
 
 Build with `pnpm build`. Run `pnpm serve:account-service` for the retained account APIs and
@@ -200,3 +204,47 @@ Live HTTPS verification matches all 21 precache URLs and the exact worker bytes.
 and pin/key match the offline backup. Wrong Origin returns 403; source/operator-key paths return 404.
 Schema remains 11. No credential or browser-storage change was needed, and no personal writing was
 opened. Normal use can resume at the same :8443 address with the same cached application build.
+
+
+## Session-enabled cutover — 2026-10-08
+
+After the operator confirmed both devices locked/closed, stopped the verified API/app processes and
+ran the explicit upgrader with `ACCOUNT_NETWORK_SESSIONS=1`. The complete pre-upgrade snapshot is
+`.dev/account-enrollment-tailnet/backups/schema-11-zJ6r9i` (schema 11). Build `b17c7700` is retained at
+`.dev/account-enrollment-tailnet/builds/b17c7700`. The running commands are now:
+
+```sh
+ACCOUNT_NETWORK_SESSIONS=1 \
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+node scripts/serve-account-service.mjs
+```
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/b17c7700 \
+node scripts/serve-account.mjs
+```
+
+Logs: `/tmp/done-account-service-b17c7700.log`, `/tmp/done-account-app-b17c7700.log`.
+The live public configuration is version 2, with the same pin and session mode. `/access` is absent
+(404); wrong-origin configuration is refused (403), source/key paths remain absent, and a fresh
+nonce-bound authority proof verifies. Every old row/column in all 15 pre-existing account tables is
+identical to the offline backup; pin/key are byte-identical. Account schema is 14.
+All 23 precache URLs and the worker match the retained build. Worker SHA-256:
+`5a5a4a717016d630b4b1208b03ddb8fd7f90194fc1368bb0a80604cd521aed19`.
+
+The first verification script incorrectly mapped `/` to a filesystem directory; fixing that check to
+use `index.html` completed asset verification. No serving defect or data repair was involved.
+No personal browser or writing was opened. Existing cached old builds cannot synchronize through the
+new host; allow the normal update to install/activate before using online sync. Local writing and
+factors remain unchanged. A missing remembered login uses the approved combined unlock or explicit
+Connect/Reconnect sync path. Browser-confirmed uptake on the operator's devices is still pending.
+
+This pre-session backup is historical recovery material, not a general session-enabled restore recipe.
+Restoring later backups must invalidate restored sessions and change their issuance-custody context;
+that operational restore work is still outstanding. The service remains loopback/Tailscale development.

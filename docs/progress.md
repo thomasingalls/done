@@ -42,15 +42,15 @@ that is no longer active.
 
 ---
 
-## Product integration: session-enabled host and cutover (`L-1`)
+## Product integration: authenticated live notifications (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: session host implemented; retained cutover then live notifications
-blocks_on: quiet point before changing the retained installation
+scope: session host and retained cutover complete; live notifications next
+blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
@@ -67,15 +67,17 @@ cold reopening/reconnection. It exposed native fetch binding and expected grant-
 both are repaired. TypeScript, scoped lint/format and build checks pass. Qualification remains paused.
 
 **Authorized continuation:** unsigned intermediate commits, then one signed checkpoint when the
-sequence is through. Next switch the retained service after a quiet point/backup, implement live
+sequence is through. Host checkpoint `b17c7700` is unsigned and its retained cutover is complete. Next implement live
 notifications and try the two-device flow. Subsequent lifecycle order is additional devices and
 revocation, then lost-device recovery; checkpoint/pruning and operational deployment follow. Product
 choices still require consultation. See [sessions/subscriptions](./account-sessions-subscriptions.md).
 
-**Live baseline unchanged:** app/proxy 127.0.0.1:53219, API 127.0.0.1:53220, origin
-`https://mbp.tail0e0d4.ts.net:8443/`, frontend `20547876`, schema 11 and the original pin. Signed split
-implementation `7c2061ea`, switch checkpoint `b8e71944`. No new live upgrade/restart or personal browser
-interaction yet. The [packaged runbook](./packaged-account-development.md) remains current.
+**Current live baseline:** app/proxy 127.0.0.1:53219, API 127.0.0.1:53220, origin
+`https://mbp.tail0e0d4.ts.net:8443/`, frontend `b17c7700`, schema 14 and the original pin. Session mode
+replaces shared adapter access. Offline backup: `.dev/account-enrollment-tailnet/backups/schema-11-zJ6r9i`.
+Old account rows, pin/key, live authority proof and 23 precache assets are verified. No personal browser
+or writing was opened; operator-device update uptake remains pending. Commands and limits are in the
+[packaged runbook](./packaged-account-development.md).
 
 ---
 

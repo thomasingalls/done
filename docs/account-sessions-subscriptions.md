@@ -1,6 +1,6 @@
 # Account sessions and live subscriptions
 
-2026-10-08 · design checkpoint · **phase 3d host composition implemented; live cutover and notifications pending**.
+2026-10-08 · design checkpoint · **phase 3d host composition and retained cutover complete; notifications pending**.
 See [phase 3d host composition](./account-session-host.md).
 See [phase 3c browser transport and focused evidence](./account-session-transport.md).
 See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
@@ -305,7 +305,7 @@ not a new generalized conformance or release campaign.
    including atomic issuance and factor-sealed client retention. **Owned browser grants completed:**
    [phase 3c](./account-session-transport.md), including bounded exact-request retries and explicit
    enrollment reconnect. Host composition is now implemented in [phase 3d](./account-session-host.md).
-   Next switch the retained installation; there is no live cutover claim yet.
+   The retained installation now serves `b17c7700` in session mode on schema 14 after backup and quiet-point confirmation; personal-device uptake remains pending.
 4. **Live notifications and real use.** Add the broker, authenticated stream, gateway lifecycle and
    scheduler/ceremony wakeups. Cover the commit/subscribe race, dropped hints, restart/reconnect,
    backpressure and lock/sign-out teardown with focused checks. Then use the existing two-device
