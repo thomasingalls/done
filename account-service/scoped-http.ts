@@ -14,6 +14,9 @@ import {
   READ_REQUEST_LIMIT,
 } from '../account-protocol/deliveryTransport.ts';
 import type { GrantRefusal } from '../account-protocol/scopedGrant.ts';
+import type { OperationAuthorization } from './authorization.ts';
+import type { GrantScope } from '../account-protocol/scopedGrant.ts';
+import type { AccountNotifications } from './notifications.ts';
 import { AuthorizationRefused } from './authorization.ts';
 import { createSessionHandler } from './session-http.ts';
 
@@ -21,13 +24,17 @@ export function createScopedAccountHandler(
   core: AccountCore,
   authority: PrivateAuthority,
   inputPin: AuthorityPin,
+  notifications?: AccountNotifications,
 ) {
   const pin = parseAuthorityPin(inputPin),
     host = new URL(pin.origin).host;
   const session = createSessionHandler(core.sessions, pin);
   const jsonRoutes = new Map<
     string,
-    { limit: number; run: (value: unknown, token: string) => unknown }
+    {
+      limit: number;
+      run: (value: unknown, token: string, authorization: OperationAuthorization) => unknown;
+    }
   >([
     [
       '/account/grant/v1/begin',
@@ -38,28 +45,28 @@ export function createScopedAccountHandler(
       '/__account-setup/ceremony/exchange',
       {
         limit: CEREMONY_RELAY_LIMIT,
-        run: (v, token) => authority.relayCeremony(core, v, core.grants.authorize(token)),
+        run: (v, _token, authorization) => authority.relayCeremony(core, v, authorization),
       },
     ],
     [
       '/__account-setup/ceremony/transfer',
       {
         limit: CONTENT_DELIVERY_LIMIT,
-        run: (v, token) => authority.transferContent(core, v, core.grants.authorize(token)),
+        run: (v, _token, authorization) => authority.transferContent(core, v, authorization),
       },
     ],
     [
       '/__account-setup/content/checkpoint',
       {
         limit: CONTENT_CHECKPOINT_LIMIT,
-        run: (v, token) => authority.exchangeCheckpoint(core, v, core.grants.authorize(token)),
+        run: (v, _token, authorization) => authority.exchangeCheckpoint(core, v, authorization),
       },
     ],
     [
       '/__account-setup/enrollment/admit',
       {
         limit: 4096,
-        run: (v, token) => authority.admitPrepared(core, v, core.grants.authorize(token)),
+        run: (v, _token, authorization) => authority.admitPrepared(core, v, authorization),
       },
     ],
     ...['/account/authority/discover', '/__account-setup/authority/discover'].map(
@@ -68,8 +75,8 @@ export function createScopedAccountHandler(
           path,
           {
             limit: 4096,
-            run: (v: unknown, token: string) =>
-              authority.discoverAuthority(core, v, core.grants.authorize(token)),
+            run: (v: unknown, _token: string, authorization: OperationAuthorization) =>
+              authority.discoverAuthority(core, v, authorization),
           },
         ] as const,
     ),
@@ -79,24 +86,24 @@ export function createScopedAccountHandler(
       '/account/delivery/submit',
       {
         limit: SUBMIT_BODY_LIMIT,
-        run: (v: Uint8Array<ArrayBuffer>, token: string) =>
-          authority.decideSubmission(core, decodeSubmit(v), core.grants.authorize(token)),
+        run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
+          authority.decideSubmission(core, decodeSubmit(v), authorization),
       },
     ],
     [
       '/account/delivery/read',
       {
         limit: READ_REQUEST_LIMIT,
-        run: (v: Uint8Array<ArrayBuffer>, token: string) =>
-          authority.readAccepted(core, v, core.grants.authorize(token)),
+        run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
+          authority.readAccepted(core, v, authorization),
       },
     ],
     [
       '/account/delivery/read-v2',
       {
         limit: READ_REQUEST_LIMIT,
-        run: (v: Uint8Array<ArrayBuffer>, token: string) =>
-          authority.readInbound(core, v, core.grants.authorize(token)),
+        run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
+          authority.readInbound(core, v, authorization),
       },
     ],
   ]);
@@ -104,7 +111,13 @@ export function createScopedAccountHandler(
     budget = 120,
     last = performance.now();
   return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
-    if (request.url?.startsWith('/account/session/v1/')) return session(request, response);
+    if (request.url?.startsWith('/account/session/v1/')) {
+      try {
+        return await session(request, response);
+      } finally {
+        notifications?.reconcile();
+      }
+    }
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Content-Type', 'application/json');
     response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -162,10 +175,19 @@ export function createScopedAccountHandler(
           return void send(413, { ok: false, refusal: 'malformed' });
         chunks.push(chunk);
       }
+      let target: GrantScope | undefined;
+      const authorize = core.grants.authorize(token);
+      const authorization: OperationAuthorization = (db, value) => {
+        const check = authorize(db, value);
+        const { action: _action, ...scope } = value;
+        target = scope;
+        return check;
+      };
       const bytes = Buffer.concat(chunks);
       if (binary) {
-        const result = await binary.run(new Uint8Array(bytes), token);
+        const result = await binary.run(new Uint8Array(bytes), token, authorization);
         if (result.kind === 'decision') {
+          if (target && path === '/account/delivery/submit') notifications?.committed(target);
           if (!response.destroyed && !response.writableEnded) {
             response.setHeader('Content-Type', 'application/octet-stream');
             response.writeHead(200).end(result.bytes);
@@ -178,11 +200,19 @@ export function createScopedAccountHandler(
         } catch {
           return void send(400, { ok: false, refusal: 'malformed' });
         }
-        const result = await json!.run(value, token);
+        const result = await json!.run(value, token, authorization);
         if (result && typeof result === 'object' && 'ok' in result && result.ok === false) {
           if (isGrant && 'refusal' in result) authFailure(result.refusal as GrantRefusal);
           else send(409, result);
-        } else send(200, result);
+        } else {
+          if (
+            target &&
+            (path === '/__account-setup/enrollment/admit' ||
+              (value && typeof value === 'object' && 'action' in value && value.action !== 'read'))
+          )
+            notifications?.committed(target, path === '/__account-setup/content/checkpoint');
+          send(200, result);
+        }
       }
     } catch (cause) {
       if (cause instanceof AuthorizationRefused) authFailure(cause.refusal);
@@ -190,6 +220,7 @@ export function createScopedAccountHandler(
     } finally {
       clearTimeout(timer);
       active--;
+      notifications?.reconcile();
     }
   };
 }

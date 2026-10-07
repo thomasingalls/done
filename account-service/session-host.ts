@@ -1,4 +1,5 @@
 /** Session-enabled development composition. Bootstrap proofs never bypass scoped content routes. */
+import { NOTIFICATION_PATH, type AccountNotifications } from './notifications.ts';
 import type { AccountCore } from './core.ts';
 import type { PrivateAuthority } from './authority.ts';
 import type { AuthorityPin } from '../account-protocol/authority.ts';
@@ -11,8 +12,9 @@ export function createSessionAccountHandler(
   core: AccountCore,
   authority: PrivateAuthority,
   pin: AuthorityPin,
+  notifications?: AccountNotifications,
 ): DevelopmentAccountHandler {
-  const scoped = createScopedAccountHandler(core, authority, pin);
+  const scoped = createScopedAccountHandler(core, authority, pin, notifications);
   // Every route here verifies its own fresh proof or retained attempt capability in the domain.
   // No protected workspace/enrollment operation may be added as a bootstrap alias.
   const routes = new Map<string, { limit: number; run: (v: unknown) => unknown }>([
@@ -61,6 +63,7 @@ export function createSessionAccountHandler(
       return;
     }
     const path = request.url ?? '';
+    if (notifications && path === NOTIFICATION_PATH) return notifications.handle(request, response);
     if (!path.startsWith('/__account-setup/') && !path.startsWith('/account/')) return next();
     const operation = routes.get(path.slice('/__account-setup/'.length));
     if (!path.startsWith('/__account-setup/') || !operation) return scoped(request, response);

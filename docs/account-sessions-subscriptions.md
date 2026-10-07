@@ -1,6 +1,6 @@
 # Account sessions and live subscriptions
 
-2026-10-08 · design checkpoint · **phase 3d host composition and retained cutover complete; notifications pending**.
+2026-10-08 · design checkpoint · **phase 3d cutover and notification server complete; browser notifications in flight**.
 See [phase 3d host composition](./account-session-host.md).
 See [phase 3c browser transport and focused evidence](./account-session-transport.md).
 See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
@@ -316,3 +316,16 @@ the existing two-device path. It will not imply additional membership epochs, us
 revocation/key-rotation journeys, multi-instance hosting or public production readiness. Those remain
 the next lifecycle/operations work; history pruning and the current activation checkpoint limit remain
 separate. Release qualification resumes only when the intended product exists and the operator asks.
+
+## 2026-10-08 — Notification server implementation checkpoint
+
+`account-service/notifications.ts` implements workspace/enrollment hints through the existing exact
+read/ceremony grant. Setup subscriptions remain unimplemented: the current setup transitions are
+client initiated. No scope or action is broadened. Limits are 128 streams, four per session, 16 pending
+handshakes, 4 KiB request/queued-output bounds and 10-second heartbeats. Each write rechecks authority;
+session operation settlement also reconciles streams. Access/grant expiry closes connections.
+
+The packaged gateway forwards SSE without buffering and explicitly cancels subscriptions on shutdown.
+The five directed tests in `test/account-sessions/notifications.test.mjs` pass, within 115 affected
+session/application Node tests. Browser reconnect, catch-up and UI scheduling are the next increment.
+No live cutover or release qualification is claimed by these server tests.

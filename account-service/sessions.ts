@@ -737,7 +737,7 @@ export class AccountSessions {
   withAccess<T extends { ok: boolean }>(
     accessToken: unknown,
     accountId: string,
-    work: (identity: SessionIdentity, db: DatabaseSync) => T,
+    work: (identity: SessionIdentity & { accessExpiresAt: number }, db: DatabaseSync) => T,
   ): T | Denial {
     if (Object.prototype.toString.call(work) === '[object AsyncFunction]')
       return no('storage-unavailable');
@@ -756,7 +756,12 @@ export class AccountSessions {
       if (!s || !this.#live(s, now)) return no('sign-in-required');
       if (s.account_id !== accountId) return no('wrong-account');
       return work(
-        { accountId: s.account_id, credentialId: s.credential_id, sessionId: s.id },
+        {
+          accountId: s.account_id,
+          credentialId: s.credential_id,
+          sessionId: s.id,
+          accessExpiresAt: access.expires,
+        },
         this.#db,
       );
     });

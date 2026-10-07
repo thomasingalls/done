@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: session host and retained cutover complete; live notifications next
+scope: notification server complete; owned browser notification integration in flight
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -65,6 +65,10 @@ upgrade preserves schema-11 identity/state while adding session schema 14. See
 scenario pass. The latter covers enrollment/approval, both editing directions, API restart and offline
 cold reopening/reconnection. It exposed native fetch binding and expected grant-invalidation issues;
 both are repaired. TypeScript, scoped lint/format and build checks pass. Qualification remains paused.
+
+**Notification server:** exact-scope POST/SSE and gateway cancellation implemented; 115 affected Node
+tests pass, including five directed stream checks. Browser composition is next; these changes are not
+yet running at the retained address.
 
 **Authorized continuation:** unsigned intermediate commits, then one signed checkpoint when the
 sequence is through. Host checkpoint `b17c7700` is unsigned and its retained cutover is complete. Next implement live

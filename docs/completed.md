@@ -10220,3 +10220,16 @@ or browser was opened. The operator's uptake of the new cached application is no
 Updated [the runbook](./packaged-account-development.md) with commands, logs, worker digest, backup
 and upgrade boundaries. Notifications are next. Broader lifecycle work remains authorized in the order
 additional devices/revocation, then lost-device recovery. Qualification remains paused.
+
+## 2026-10-08 — Scoped notification server and packaged gateway (`L-1`)
+
+The session host now exposes a bounded authenticated POST/SSE subscription for one verified workspace
+or enrollment scope. Registration precedes `ready`; post-commit hints contain no identifiers or content.
+Grant expiry is capped by its access parent. Expiry, invalidation and sign-out close derived streams;
+slow clients are dropped. Gateway/service shutdown cancels streams before draining ordinary requests.
+The live retained installation remains on the earlier session-host checkpoint until browser composition.
+
+Evidence: 115 affected session and application Node tests pass, including five directed notification
+cases covering the real gateway, missed hints with durable catch-up, scope isolation, revocation,
+expiry, capacity and backpressure. TypeScript and scoped lint/format pass. Release validation remains
+paused. Next: owned browser reconnect/catch-up, editor and ceremony integration.

@@ -238,7 +238,12 @@ export class ScopedGrants {
             GRANT_LIMITS.perSession
         )
           return no('capacity');
-        const expiresAt = Math.min(now + GRANT_LIFETIME_MS, live.expiresAt, pending.deadline);
+        const expiresAt = Math.min(
+          now + GRANT_LIFETIME_MS,
+          live.expiresAt,
+          pending.deadline,
+          identity.accessExpiresAt,
+        );
         if (expiresAt <= now) return no('expired');
         return {
           ok: true as const,
@@ -262,6 +267,28 @@ export class ScopedGrants {
     } catch (cause) {
       return no(cause instanceof AuthorizationRefused ? cause.refusal : 'storage-unavailable');
     }
+  }
+  /** A read-capable grant may subscribe only to hints for its exact scope. Recheck each emission.
+   * Subscription is ephemeral; nothing here advances a content cursor or authority head. */
+  subscription(grantToken: unknown, input: unknown) {
+    const scope = parseGrantScope(input),
+      digest = retryHash(grantToken);
+    const check = () => {
+      if (this.#closed || this.#db.isTransaction)
+        throw new AuthorizationRefused('storage-unavailable');
+      this.#db.exec('BEGIN');
+      try {
+        this.authorize(grantToken)(this.#db, {
+          ...scope,
+          action: scope.kind === 'workspace' ? 'read' : 'ceremony',
+        })();
+        const grant = this.#grants.get(digest)!;
+        return { sessionId: grant.challenge.sessionId, expiresAt: grant.expiresAt };
+      } finally {
+        this.#db.exec('ROLLBACK');
+      }
+    };
+    return { ...check(), scope, check };
   }
   /** Bind only the bearer here. The domain supplies the verified operation/actor/attempt target. */
   authorize(grantToken: unknown): OperationAuthorization {

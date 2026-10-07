@@ -2,7 +2,7 @@
 import { createServer, request as httpRequest } from 'node:http';
 import { packagedApplication } from './packaged-application.mjs';
 
-function proxyAccountRequest(request, response, servicePort) {
+function proxyAccountRequest(request, response, servicePort, streams) {
   // Forward only framing and the client's authority inputs. Never invent an Origin,
   // Authorization or forwarded-host claim, follow redirects, or retry a lost reply.
   const headers = {};
@@ -27,12 +27,22 @@ function proxyAccountRequest(request, response, servicePort) {
     // The outcome may already be durable. Only the existing operation owner may retry.
     response.end(JSON.stringify({ ok: false, refusal: 'service-unavailable' }));
   };
+  const stopStream = () => {
+    upstream.destroy();
+    response.destroy();
+  };
+  if (request.url === '/account/notifications/v1/subscribe') {
+    streams.add(stopStream);
+    response.once('close', () => streams.delete(stopStream));
+  }
   upstream.setTimeout(15000, unavailable);
   upstream.on('error', unavailable);
   upstream.on('response', (reply) => {
     reply.on('error', unavailable);
     for (const key of ['content-type', 'content-length'])
       if (reply.headers[key] !== undefined) response.setHeader(key, reply.headers[key]);
+    if (reply.headers['content-type'] === 'text/event-stream')
+      response.setHeader('X-Accel-Buffering', 'no');
     response.writeHead(reply.statusCode);
     reply.pipe(response);
   });
@@ -47,6 +57,7 @@ export async function startAccountGateway({ port, origin, servicePort, packaged 
   const host = new URL(origin).host;
   const serve = packagedApplication(packaged);
   let closing;
+  const streams = new Set();
   const server = createServer((request, response) => {
     // closeIdleConnections at shutdown misses responses still in flight. Reap
     // them as they finish, and stop admitting polls on existing keep-alive sockets.
@@ -60,7 +71,7 @@ export async function startAccountGateway({ port, origin, servicePort, packaged 
     if (request.headers.host !== host)
       return void response.writeHead(403, { 'Cache-Control': 'no-store' }).end();
     if (request.url.startsWith('/__account-setup/') || request.url.startsWith('/account/'))
-      return proxyAccountRequest(request, response, servicePort);
+      return proxyAccountRequest(request, response, servicePort, streams);
     serve(request, response);
   });
   await new Promise((accept, reject) => {
@@ -71,6 +82,8 @@ export async function startAccountGateway({ port, origin, servicePort, packaged 
     port: server.address().port,
     close: () =>
       (closing ??= new Promise((accept) => {
+        for (const stop of streams) stop();
+        streams.clear();
         server.close(accept);
         server.closeIdleConnections();
       })),

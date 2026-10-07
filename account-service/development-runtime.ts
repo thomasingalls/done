@@ -1,4 +1,5 @@
 /** Own the retained private account service independently of Vite, assets and process signals. */
+import { AccountNotifications } from './notifications.ts';
 import { createSessionAccountHandler } from './session-host.ts';
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -73,8 +74,11 @@ export function openDevelopmentAccountService(options: {
       throw cause;
     }
     const token = options.networkSessions ? undefined : randomBytes(32).toString('base64url');
+    const notifications = options.networkSessions
+      ? new AccountNotifications(core.grants, pin)
+      : undefined;
     const dispatch = options.networkSessions
-      ? createSessionAccountHandler(core, authority, pin)
+      ? createSessionAccountHandler(core, authority, pin, notifications)
       : createDevelopmentAccountHandler(core, authority, pin, token!);
     const pending = new Set<Promise<void>>();
     let closing: Promise<void> | undefined;
@@ -100,7 +104,13 @@ export function openDevelopmentAccountService(options: {
         options.networkSessions ? { pin, networkSessions: true as const } : { pin, token: token! },
       ),
       handle,
-      close: () => (closing ??= Promise.allSettled([...pending]).then(dispose)),
+      close: () => {
+        if (!closing) {
+          notifications?.close();
+          closing = Promise.allSettled([...pending]).then(dispose);
+        }
+        return closing;
+      },
     });
   } catch (cause) {
     dispose();
