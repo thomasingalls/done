@@ -1,5 +1,6 @@
-/** Verified context for the ONE admission-only successor. No storage, installation or send authority. */
+/** Verified admission/certification history. No storage, installation or send authority. */
 import { verifySuccessor, type SuccessorBase, type AuthorityAnchor } from './successor.ts';
+import { verifyCertificationSuccessor, parseCertificationSuccessor } from './contentDelivery.ts';
 import {
   captureAuthority,
   captureSubject,
@@ -12,7 +13,12 @@ import {
   type DecisionEvidence,
   type PositionSubject,
 } from './positionDecision.ts';
-import { verifyNetworkEnvelope, ENVELOPE_WIRE_LIMIT, type EnvelopeRoute } from './envelope.ts';
+import {
+  decodeNetworkEnvelope,
+  verifyNetworkEnvelope,
+  ENVELOPE_WIRE_LIMIT,
+  type EnvelopeRoute,
+} from './envelope.ts';
 import { hex, unhex } from './recovery.ts';
 
 export interface AdmissionHistory {
@@ -22,6 +28,9 @@ export interface AdmissionHistory {
   readonly principal: string;
   readonly signingKey: string;
   readonly boundary: Readonly<{ position: number; link: string }>;
+  readonly authorities: readonly Readonly<DecisionAuthority>[];
+  readonly boundaries: readonly Readonly<{ position: number; link: string }>[];
+  readonly readers: readonly Readonly<{ id: string; publicKey: string }>[];
 }
 const verified = new WeakSet<AdmissionHistory>();
 const requireHistory = (history: AdmissionHistory) => {
@@ -45,16 +54,68 @@ export async function verifyAdmissionHistory(
     head: e.parent,
     acceptanceKey: e.acceptancePublicKey,
   });
+  const current = captureAuthority({ ...first, tip: 2, head: successor.head });
+  const cut = Object.freeze({ position: boundary.position, link: boundary.link });
   const result = Object.freeze({
     first,
-    current: captureAuthority({ ...first, tip: 2, head: successor.head }),
+    current,
     credential: member.id,
     principal: e.principalId,
     signingKey: member.sPub,
-    boundary: Object.freeze({ position: boundary.position, link: boundary.link }),
+    boundary: cut,
+    authorities: Object.freeze([first, current]),
+    boundaries: Object.freeze([cut]),
+    readers: Object.freeze([Object.freeze({ id: member.id, publicKey: member.sPub })]),
   });
   verified.add(result);
   return result;
+}
+/** Extend the same publisher history only after verifying the exact two-device certification. */
+export async function verifyCertificationHistory(
+  input: unknown,
+  admissionInput: unknown,
+  base: SuccessorBase,
+  held: { epoch: 3; head: string },
+): Promise<AdmissionHistory> {
+  const captured = parseCertificationSuccessor(input);
+  const capturedBase = structuredClone(base);
+  if (held.epoch !== 3 || held.head !== captured.head) throw Error('Certification anchor changed');
+  const admission = await verifySuccessor(admissionInput, capturedBase, {
+    epoch: 2,
+    head: captured.epoch.parent,
+  });
+  const prior = await verifyAdmissionHistory(admission, capturedBase, {
+    epoch: 2,
+    head: admission.head,
+  });
+  const certification = await verifyCertificationSuccessor(captured, capturedBase, admission);
+  const current = captureAuthority({ ...prior.first, tip: 3, head: certification.head });
+  const head = certification.epoch.heads.find((h) => h.credentialId === prior.credential)!;
+  const boundary = Object.freeze({ position: head.position, link: head.link });
+  const result = Object.freeze({
+    ...prior,
+    current,
+    boundary,
+    authorities: Object.freeze([...prior.authorities, current]),
+    boundaries: Object.freeze([...prior.boundaries, boundary]),
+    readers: Object.freeze(
+      certification.epoch.roster.map((m) => Object.freeze({ id: m.id, publicKey: m.sPub })),
+    ),
+  });
+  verified.add(result);
+  return result;
+}
+export function historyReader(
+  history: AdmissionHistory,
+  id: string,
+  publicKey: string,
+  authority: DecisionAuthority = history.current,
+): boolean {
+  const h = requireHistory(history),
+    at = historyAuthority(h, authority);
+  // Certification cannot retroactively authorize a reader in a pending roster.
+  if (at.tip < 3) return id === h.credential && publicKey === h.signingKey;
+  return h.readers.some((r) => r.id === id && r.publicKey === publicKey);
 }
 /** Both historical and current contexts must name an exact authenticated head, never just a tip. */
 export function historyAuthority(
@@ -63,8 +124,9 @@ export function historyAuthority(
 ): Readonly<DecisionAuthority> {
   const h = requireHistory(history),
     a = captureAuthority(input),
-    expected = a.tip === 1 ? h.first : h.current;
+    expected = h.authorities.find((v) => v.tip === a.tip);
   if (
+    !expected ||
     a.workspace !== expected.workspace ||
     a.lineage !== expected.lineage ||
     a.tip !== expected.tip ||
@@ -87,8 +149,8 @@ export function historyEnvelopeRoute(
     r.workspace_id !== h.current.workspace ||
     r.credential_id !== h.credential ||
     r.gen !== 1 ||
-    (r.epoch !== 1 && r.epoch !== 2) ||
-    (epoch !== 1 && epoch !== 2) ||
+    !h.authorities.some((a) => a.tip === r.epoch) ||
+    !h.authorities.some((a) => a.tip === epoch) ||
     epoch > r.epoch
   )
     throw Error('Envelope is outside verified admission history');
@@ -111,14 +173,17 @@ export async function verifyHistoryDecision(
   try {
     const response = decodePositionResponse(input);
     if (response.kind === 'accepted') {
-      const old = response.head.epoch === 1;
+      const index = h.boundaries.findIndex((b) => response.head.position <= b.position);
+      const expected = index < 0 ? h.current : h.authorities[index]!;
       if (
         response.head.epoch > current.tip ||
-        response.head.epoch !== (response.head.position <= h.boundary.position ? 1 : 2) ||
-        (response.head.position === h.boundary.position && response.head.link !== h.boundary.link)
+        response.head.epoch !== expected.tip ||
+        h.boundaries.some(
+          (b) => response.head.position === b.position && response.head.link !== b.link,
+        )
       )
         return { kind: 'unknown' };
-      issuance = old ? h.first : h.current;
+      issuance = expected;
     }
   } catch {
     return { kind: 'unknown' };
@@ -159,7 +224,16 @@ export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle 
           key = await subtle.importKey('raw', unhex(h.signingKey, 32), 'Ed25519', false, [
             'verify',
           ]),
-          e = await verifyNetworkEnvelope(bytes, route, key, subtle);
+          decoded = decodeNetworkEnvelope(bytes),
+          maxEpoch = h.boundaries.findIndex((b) => decoded.seq <= b.position) + 1;
+        if (!maxEpoch || decoded.epoch > maxEpoch)
+          throw Error('Envelope crosses authority boundary');
+        const e = await verifyNetworkEnvelope(
+          bytes,
+          historyEnvelopeRoute(h, { ...route, epoch: maxEpoch }, decoded.epoch),
+          key,
+          subtle,
+        );
         if (e.seq !== position + 1 || failed) throw Error('Admission prefix is incomplete');
         const next = await acceptanceLink(
           {
@@ -175,6 +249,8 @@ export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle 
         if (failed) throw Error('Admission prefix was invalidated');
         link = next;
         position = e.seq;
+        if (h.boundaries.some((b) => position === b.position && link !== b.link))
+          throw Error('Admission prefix boundary changed');
       } catch (cause) {
         failed = true;
         throw cause;

@@ -9,6 +9,11 @@ import { CEREMONY_RELAY_LIMIT } from '../account-protocol/ceremonyRelay.ts';
 import { CONTENT_DELIVERY_LIMIT } from '../account-protocol/contentDelivery.ts';
 import { ENROLLMENT_REQUEST_LIMIT } from '../account-protocol/enrollment.ts';
 import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
+import {
+  decodeSubmit,
+  SUBMIT_BODY_LIMIT,
+  READ_REQUEST_LIMIT,
+} from '../account-protocol/deliveryTransport.ts';
 import { lockPreviewState, previewConfig } from './account-setup-state.mjs';
 
 const { port, directory, policy } = previewConfig();
@@ -66,6 +71,11 @@ const routes = new Map([
   ['promotion/finish', (input) => authority.finishPromotion(core, input)],
   ['promotion/binding', (input) => authority.promotionBinding(core, input)],
 ]);
+const deliveryRoutes = new Map([
+  ['/account/delivery/submit', (body) => authority.decideSubmission(core, decodeSubmit(body))],
+  ['/account/delivery/read', (body) => authority.readAccepted(core, body)],
+  ['/account/delivery/read-v2', (body) => authority.readInbound(core, body)],
+]);
 const server = await createServer({
   configLoader: 'runner',
   cacheDir: `node_modules/.vite-account-setup-${port}`,
@@ -120,7 +130,8 @@ const server = await createServer({
             return;
           }
           const prefix = '/__account-setup/';
-          if (!request.url?.startsWith(prefix)) return next();
+          const delivery = deliveryRoutes.get(request.url);
+          if (!delivery && !request.url?.startsWith(prefix)) return next();
           response.setHeader('Cache-Control', 'no-store');
           response.setHeader('Content-Type', 'application/json');
           response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -129,15 +140,16 @@ const server = await createServer({
           if (
             request.method !== 'POST' ||
             request.headers.origin !== origin ||
-            request.headers['content-type'] !== 'application/json' ||
+            request.headers['content-type'] !==
+              (delivery ? 'application/octet-stream' : 'application/json') ||
             Buffer.byteLength(supplied) !== Buffer.byteLength(token) ||
             !timingSafeEqual(Buffer.from(supplied), Buffer.from(token))
           ) {
             send(403, { ok: false, refusal: 'malformed' });
             return;
           }
-          const route = request.url.slice(prefix.length);
-          const operation = routes.get(route);
+          const route = delivery ? request.url : request.url.slice(prefix.length);
+          const operation = delivery ?? routes.get(route);
           if (!operation) return void send(404, { ok: false, refusal: 'malformed' });
           try {
             const chunks = [];
@@ -146,26 +158,40 @@ const server = await createServer({
               size += chunk.length;
               if (
                 size >
-                (route.startsWith('promotion/')
-                  ? ADMISSION_LIMIT
-                  : route === 'ceremony/transfer'
-                    ? CONTENT_DELIVERY_LIMIT
-                    : route === 'ceremony/exchange'
-                      ? CEREMONY_RELAY_LIMIT
-                      : route === 'ceremony/bootstrap' ||
-                          route === 'authority/discover' ||
-                          route === 'enrollment/admit'
-                        ? 4096
-                        : route.startsWith('enrollment/')
-                          ? ENROLLMENT_REQUEST_LIMIT
-                          : 131072)
+                (delivery
+                  ? route === '/account/delivery/submit'
+                    ? SUBMIT_BODY_LIMIT
+                    : READ_REQUEST_LIMIT
+                  : route.startsWith('promotion/')
+                    ? ADMISSION_LIMIT
+                    : route === 'ceremony/transfer'
+                      ? CONTENT_DELIVERY_LIMIT
+                      : route === 'ceremony/exchange'
+                        ? CEREMONY_RELAY_LIMIT
+                        : route === 'ceremony/bootstrap' ||
+                            route === 'authority/discover' ||
+                            route === 'enrollment/admit'
+                          ? 4096
+                          : route.startsWith('enrollment/')
+                            ? ENROLLMENT_REQUEST_LIMIT
+                            : 131072)
               ) {
                 send(413, { ok: false, refusal: 'malformed' });
                 return;
               }
               chunks.push(chunk);
             }
-            const result = await operation(JSON.parse(Buffer.concat(chunks).toString('utf8')));
+            const bytes = Buffer.concat(chunks);
+            const result = await operation(
+              delivery ? new Uint8Array(bytes) : JSON.parse(bytes.toString('utf8')),
+            );
+            if (delivery) {
+              if (result.kind === 'decision') {
+                response.setHeader('Content-Type', 'application/octet-stream');
+                response.writeHead(200).end(result.bytes);
+              } else send(409, { v: 1, kind: 'unknown', reason: result.reason });
+              return;
+            }
             send(result?.ok === false ? 409 : 200, result);
           } catch {
             send(400, { ok: false, refusal: 'malformed' });

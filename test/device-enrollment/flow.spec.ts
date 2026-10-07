@@ -86,6 +86,102 @@ async function compared(first: Page, second: Page) {
   return (await second.getByLabel('Comparison code').textContent())!;
 }
 
+test('the approved second device can read through the preview delivery adapter using its own key', async ({
+  page,
+  browser,
+}) => {
+  const first = await account(page),
+    other = await browser.newContext(),
+    second = await other.newPage();
+  let authorization = '';
+  second.on('request', (request) => {
+    if (request.url().endsWith('/__account-setup/ceremony/bootstrap'))
+      authorization = request.headers()['authorization'] ?? '';
+  });
+  try {
+    const next = await pending(second, first.link, first.auth);
+    await page.getByLabel('Code on the new device').fill(await compared(page, second));
+    await page.getByRole('button', { name: 'Compare and approve' }).click();
+    await expect(
+      second.getByText('Content access is installed and certified.', { exact: false }),
+    ).toBeVisible({ timeout: 30000 });
+    const workspace = new URL(first.link).searchParams.get('workspace')!;
+    const observed = await second.evaluate(
+      async ({ workspace, code, authorization }) => {
+        const vaultPath = '/src/account/ceremonyVault.ts',
+          protocolPath = '/account-protocol/inboundTransport.ts';
+        const { withCeremonyVault } = await import(/* @vite-ignore */ vaultPath);
+        const { inboundRequestMessage, encodeInboundRequest, decodeInboundPage } = await import(
+          /* @vite-ignore */ protocolPath
+        );
+        return withCeremonyVault(
+          localStorage.getItem('done.pending-device.' + workspace)!,
+          code,
+          new AbortController().signal,
+          async (owner: any) => {
+            const p = await owner.load(),
+              context = p.context;
+            const request = {
+              serviceId: context.pin.serviceId,
+              origin: context.pin.origin,
+              workspace,
+              reader: owner.participant.id,
+              publisher: context.existing.id,
+              lineage: context.lineageId,
+              head: p.content.certification.head,
+              epoch: 3,
+              after: 0,
+              limit: 1,
+              nonce: Array.from(crypto.getRandomValues(new Uint8Array(32)), (b) =>
+                b.toString(16).padStart(2, '0'),
+              ).join(''),
+              expires: Date.now() + 30000,
+              signature: '00'.repeat(64),
+            };
+            request.signature = await owner.sign(inboundRequestMessage(request));
+            const send = (body: Uint8Array<ArrayBuffer>, token = authorization) =>
+              fetch('/account/delivery/read-v2', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/octet-stream', Authorization: token },
+                body,
+              });
+            const response = await send(encodeInboundRequest(request));
+            const result = decodeInboundPage(new Uint8Array(await response.arrayBuffer()));
+            const damaged = { ...request, publisher: owner.participant.id };
+            damaged.signature = await owner.sign(inboundRequestMessage(damaged));
+            const otherPublisher = await send(encodeInboundRequest(damaged));
+            const unauthenticated = await send(encodeInboundRequest(request), '');
+            const oversized = await send(new Uint8Array(4097));
+            return {
+              status: response.status,
+              type: response.headers.get('content-type'),
+              cache: response.headers.get('cache-control'),
+              through: result.through,
+              entries: result.entries.length,
+              otherPublisher: otherPublisher.status,
+              unauthenticated: unauthenticated.status,
+              oversized: oversized.status,
+            };
+          },
+        );
+      },
+      { workspace, code: next.code, authorization },
+    );
+    expect(observed).toEqual({
+      status: 200,
+      type: 'application/octet-stream',
+      cache: 'no-store',
+      through: 0,
+      entries: 0,
+      otherPublisher: 409,
+      unauthenticated: 403,
+      oversized: 413,
+    });
+  } finally {
+    await other.close();
+  }
+});
+
 test('content delivery resumes exact bytes after sender restart and receiver certifies only its saved installation', async ({
   page,
   browser,

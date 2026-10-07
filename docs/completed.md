@@ -9638,3 +9638,41 @@ phase. Existing personal writing and retained device setups were not opened or c
 containers, disposable passkey and preview state remain available; generated lock/recovery codes
 are not recorded in repository documentation. No application code changed and no new campaign ran.
 Stop here after recording the result. Release qualification remains paused.
+
+## 2026-10-07 — certified second-reader transport integration
+
+Continued the operator-authorized product milestone after signed walkthrough record `ea251c53`.
+The operator accepted a read-only checkpoint within one shared sync integration effort; it is not
+a separate export/import feature. This chunk implements authenticated transport and verification,
+not the complete document bootstrap or its editor opening.
+
+- Extended the existing branded, immutable admission history through the verified epoch-3
+  certification. Both historical issuance boundaries remain checked; the original publisher's
+  envelopes and acceptance proofs are preserved across epochs 1, 2 and 3. A certified second
+  reader cannot be retroactively treated as eligible at its pending epoch 2.
+- The existing inbound verifier resolves the reader separately from the creating publisher using
+  that history. Pending members, substituted reader keys, unknown histories, changed ciphertext
+  and incorrect content keys refuse. No new publisher ledger or envelope format is introduced.
+- The service's existing `read-v2` endpoint now serves either certified reader at the exact
+  current epoch-3 head. It still serves only the original publisher's ledger. The preview adapter
+  mounts the existing binary submit/read/read-v2 routes with its origin, bearer and size checks.
+- Focused Node evidence exercises real service certification, historical/current acceptance,
+  exact old submission retries and restart, then decrypts an original encrypted Yjs update with
+  the actual client verifier under the new reader. Retained evidence verifies after request expiry.
+  That fixture supplies the content key and baseline context; it is not an installed-slot bootstrap.
+- A focused Playwright flow creates two disposable devices through the real preview enrollment UI,
+  certifies the second, and uses its factor-owned signer to read through the preview HTTP adapter.
+  The result is an authenticated empty stream; selecting the other publisher refuses, missing bearer
+  refuses, and oversized read input refuses. Existing editor edits are still local-only.
+
+Validation: 24 Node tests across `content-transfer.test.mjs`, `account-successor/history.test.mjs`
+and `account-service-inbound/core.test.mjs`; 34 existing `accountInboundCodec.test.ts` cases;
+the single selected device-enrollment browser test; TypeScript build and scoped lint/format checks.
+No release campaign, inventory or mutation work resumed. No live-preview restart, storage migration,
+personal-data access or account reset was performed.
+
+The remaining product boundary is explicit: preview v5 edits lack captured per-transaction authorship
+and require the already-specified catch-up checkpoint before source-capture activation. The new device
+also needs a durable Account baseline/slot activation and read-only opening; possessing its saved key
+and obtaining a ciphertext page do not establish either. The continuation document records these
+dependencies. Two-way writing and packaged-app integration remain later work.

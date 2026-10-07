@@ -1,5 +1,6 @@
 import {
   historyAuthority,
+  historyReader,
   historyEnvelopeRoute,
   verifyHistoryDecision,
   type AdmissionHistory,
@@ -136,9 +137,8 @@ function captureContext(input: InboundContext): InboundContext {
     historyAuthority(h, a);
     if (
       input.creatingCredential !== h.credential ||
-      reader.id !== h.credential ||
+      !historyReader(h, reader.id, reader.publicKey, a) ||
       publisher.id !== h.credential ||
-      reader.publicKey !== h.signingKey ||
       publisher.publicKey !== h.signingKey ||
       publisher.principal !== h.principal
     )

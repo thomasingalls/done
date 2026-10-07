@@ -890,7 +890,7 @@ export async function readInbound(
         request.lineage !== auth.a.lineage ||
         request.head !== auth.a.head ||
         request.epoch !== auth.a.tip ||
-        ![1, 2].includes(auth.a.tip) ||
+        ![1, 2, 3].includes(auth.a.tip) ||
         auth.generation !== 1 ||
         !live() ||
         !(await crypto.subtle.verify(

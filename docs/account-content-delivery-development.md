@@ -11,7 +11,7 @@ and certified status, then recovered it after closing both tabs and reopening th
 splash/chooser with their separate device codes. No new invitation, passkey request or comparison
 was needed on reopen. This is desktop development evidence, not a physical-phone or crash/offline
 qualification run. The [completed-work record](./completed.md) includes the exact scope and
-credential/resume usability observations. The next product boundary below is unchanged.
+credential/resume usability observations. The content-opening continuation is now in flight below.
 
 ## Resume the existing trial
 
@@ -87,6 +87,46 @@ head; the preview's fresh nonce-bound bootstrap includes the complete certificat
 General sync-client discovery/adoption, second-reader content bootstrap and multiple-publisher
 transport remain the next integration work. Certification here establishes eligible keys, not a
 claim that every account capability has a product path.
+
+## Content opening continuation — 2026-10-07
+
+The operator approved a read-only checkpoint within the shared sync integration, then enabling the
+second writer. Yjs remains responsible for applying and merging updates in both directions. The
+remaining integration owns authority, encrypted transport, source persistence and restart. A separate
+snapshot-transfer feature solely for a read-only demonstration is not the selected approach.
+
+**Transport foundation implemented:** the existing service `read-v2` route now accepts the certified
+second reader at epoch 3, with separate reader/publisher lookup and an unchanged single-publisher
+ledger. The client verifies the exact admission/certification history, each historical issuance
+boundary, original ciphertext, publisher signature, acceptance proof and decrypted update. Reader
+eligibility is epoch-specific: later certification does not authorize an earlier pending reader.
+The development server mounts the existing submit/read/read-v2 routes, preserving binary framing,
+origin/bearer checks and request bounds. This needs no service schema migration.
+
+**Still required before opening writing:**
+
+1. Establish the first device's current baseline. Its preview editor uses v5, whose old edits may
+   already be compacted and have no retained per-transaction source attribution. The explicit
+   [source-capture gate](./account-source-capture.md) therefore refuses automatic v5 activation.
+   Build the verified catch-up checkpoint selected by TRD §7.6, preserving content and attribution,
+   and transition under the same exclusive lifetime so subsequent edits become ordinary captured
+   sources. Do not re-label old snapshot bytes as newly authored network updates.
+2. Connect that publisher to the existing spool/delivery path under its installed certification.
+   Its persisted original envelopes are the suffix to the checkpoint; retries retain the exact
+   same bytes. The checkpoint must be the baseline used by subsequent sync, not a parallel copy.
+3. Install and activate that baseline on the second device through owned Account startup, together
+   with its authenticated heads and unlock binding. The enrollment slot currently retains the
+   installed key and ceremony; it does not yet provide an active Account content store. Apply the
+   existing full snapshot/SV-and-DS checks and staged activation, preserve unrelated Local stores,
+   and require the normal account-bound unlock contract. Then expose the read-only writing view
+   with an explicit editing-not-yet-enabled notice and test close/reopen.
+
+This chunk's browser evidence reaches an authenticated empty stream. Separate Node/client evidence
+decrypts a real Yjs update with a fixture-supplied content key and held baseline. Neither is a claim
+that the preview's current writing has reached the second device. Keep the preview banner and the
+existing terminal message until the remaining owner/UI integration actually works. General checkpoint
+cadence/pruning, additional successors, multi-publisher service support and release qualification are
+not part of this read-only checkpoint.
 
 ## Focused evidence
 

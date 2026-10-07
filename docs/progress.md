@@ -42,46 +42,46 @@ that is no longer active.
 
 ---
 
-## Product checkpoint: approved-device key handoff exercised (`L-1`)
+## Product integration: open writing on the approved second device (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: live desktop walkthrough of delivery, factor-protected installation and certification
-blocks_on: none for this walkthrough; stop before the next product phase
+status: in flight
+scope: shared account sync integration, with read-only opening as the first product checkpoint
+blocks_on: verified current-source checkpoint, publisher activation and owned receiver baseline/startup
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Completed:** signed `6e080284` implements the exact staged content-key delivery, durable
-factor-protected receiver installation and epoch-3 certification successor. The operator-authorized
-computer-use walkthrough now passes with two isolated Firefox containers and a real Bitwarden
-passkey. A fresh disposable account produced an invitation; the second device enrolled, completed
-the five-character comparison, and both pages displayed **Content access is installed and
-certified.** Closing both tabs and reopening through `/` and the chooser recovered that status
-using each device's own code, without another invitation, passkey request or comparison.
+**Starting point:** signed `6e080284` implements content-key delivery, factor-protected receiver
+installation and epoch-3 certification. Signed `ea251c53` records the successful two-container
+Firefox walkthrough and cold-tab reopen. The operator approved continuing with a read-only
+checkpoint in the same sync path that will subsequently support writing.
 
-**Evidence and limits:** this was a desktop/container UI walkthrough, with the operator saving the
-initial passkey. It substitutes for the pending physical-phone trial only within that scope. No
-browser-process crash, offline or fault campaign ran. Earlier focused service/browser evidence
-remains in [completed.md](./completed.md); the new 2026-10-07 entry records this observation and
-credential/resume usability notes. [Continuation and next boundary](./account-content-delivery-development.md).
+**Implemented in this chunk:** the existing service and client now support the certified second
+reader at the exact epoch-3 head, with both historical issuance boundaries and separate
+reader/publisher verification. The preview server mounts the existing binary delivery endpoints.
+No new update transport or publisher ledger was invented. Focused evidence and scope are recorded
+in [completed.md](./completed.md) and the [continuation](./account-content-delivery-development.md).
 
-**Next bounded product phase:** authenticate and bootstrap the first device's writing on the
-approved second device, including authority/client adoption for that read path, and open it in the
-editor. That phase has not started. Two-way/offline sync and ordinary packaged application
-integration follow. General successor histories, replacement admission, rotation and further
-UX/factor changes are outside this completed phase. The preview banner remains accurate.
+**Not yet a readable second-device workspace:** the browser check receives an authenticated empty
+stream because the current preview editor still saves its edits only locally. The existing source
+capture owner deliberately refuses editable v5 histories: compaction may have removed original
+transaction attribution. Its catch-up checkpoint is required before enabling ordinary source
+capture. The receiver's enrollment custody also needs an active Account baseline and unlock
+binding before an editor can open. The terminal UI therefore remains unchanged.
 
-**Preview:** https://mbp.tail0e0d4.ts.net:8443/ is running on loopback 53219 with the same schema-9
-state and live updates disabled. A confirmed stale process lock was cleared after the host restart;
-no data reset or proxy change. The disposable Firefox containers and passkey remain for further
-use. Personal writing and retained real-device setups were not opened or changed.
+**Next bounded implementation:** journal-inclusive, attribution-preserving catch-up checkpoint and
+source-capture activation under one exclusive lifetime. Connect its suffix to the existing delivery
+owner, then install the baseline/heads on the second device and open it read-only. Verify actual
+post-genesis writing and close/reopen before declaring this product checkpoint complete. Two-way
+writing, offline convergence and ordinary packaged application integration follow.
 
-**Commit state:** implementation is signed in `6e080284`, after signed walkthrough/navigation
-checkpoint `f4e250fc`. This checkpoint records only documentation of the live walkthrough.
+**Preview and commit state:** the live Tailscale preview was not restarted or migrated in this chunk.
+Its saved real-device setups and disposable Firefox containers remain intact. Development changes
+and this checkpoint are uncommitted on top of `ea251c53`; no personal writing was opened or changed.
 Release qualification remains paused.
 
 ---

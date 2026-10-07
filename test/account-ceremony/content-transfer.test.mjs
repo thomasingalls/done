@@ -2,7 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
 import { signed } from './exchange-oracle.mjs';
-import { decision, mutate } from '../account-successor/service-fixtures.mjs';
+import { decision, mutate, query, read, page } from '../account-successor/service-fixtures.mjs';
+import {
+  verifyCertificationHistory,
+  historyAuthority,
+  historyReader,
+  verifyHistoryDecision,
+  createAdmissionPrefixVerifier,
+} from '../../account-protocol/admissionHistory.ts';
+import { envelope } from '../account-transport/oracle.mjs';
+import { build } from 'vite';
+import { resolve } from 'node:path';
 import {
   recipientCertificateMessage,
   contentDeliveryMessage,
@@ -166,7 +176,99 @@ test('installation and certification are atomic, restartable after a lost reply,
   assert.deepEqual(await x.deliveryCall(mid), midReply);
   previous = decision(x, await x.deliveryCall(queued), queued, previous, 3).head.link;
   const current = x.make(4, 'epoch three', { epoch: 3 });
-  decision(x, await x.deliveryCall(current), current, previous, 3);
+  const currentReply = await x.deliveryCall(current);
+  decision(x, currentReply, current, previous, 3);
+  const history = await verifyCertificationHistory(c, x.successor, x.base, {
+    epoch: 3,
+    head: c.head,
+  });
+  assert.equal(historyReader(history, x.context.candidate.id, x.context.candidate.sPub), true);
+  assert.equal(historyReader(history, x.context.candidate.id, x.context.existing.sPub), false);
+  assert.equal(
+    historyReader(
+      history,
+      x.context.candidate.id,
+      x.context.candidate.sPub,
+      history.authorities[1],
+    ),
+    false,
+  );
+  assert.throws(() =>
+    historyReader({ ...history }, x.context.candidate.id, x.context.candidate.sPub),
+  );
+  assert.throws(() => historyAuthority(history, { ...history.current, head: x.successor.head }));
+  const prefix = createAdmissionPrefixVerifier(history);
+  for (const w of [pre, mid]) await prefix.append(new Uint8Array(envelope(w)));
+  assert.deepEqual(prefix.finish(), history.boundary);
+  let prior = '00'.repeat(32);
+  const accepted = [];
+  for (const [w, r, epoch] of [
+    [pre, preReply, 1],
+    [mid, midReply, 2],
+    [queued, await x.deliveryCall(queued), 3],
+    [current, currentReply, 3],
+  ]) {
+    const proof = await verifyHistoryDecision(
+      r.bytes,
+      { ...w.subject, previous: prior, parent: '00'.repeat(32) },
+      history.current,
+      history,
+    );
+    assert.equal(proof.kind, 'accepted');
+    prior = proof.head.link;
+    accepted.push({ w, r, epoch });
+  }
+  const q = query(
+    x,
+    0,
+    8,
+    {
+      reader: x.context.candidate.id,
+      head: c.head,
+      epoch: 3,
+    },
+    x.keys.new,
+  );
+  page(x, await read(x, q), q, accepted);
+  assert.equal(
+    (
+      await read(
+        x,
+        query(
+          x,
+          0,
+          8,
+          {
+            reader: x.context.candidate.id,
+            head: c.head,
+            epoch: 3,
+          },
+          x.keys.existing,
+        ),
+      )
+    ).kind,
+    'unknown',
+  );
+  // A valid device signature cannot select an earlier head once certification is current.
+  assert.equal(
+    (
+      await read(
+        x,
+        query(
+          x,
+          0,
+          8,
+          {
+            reader: x.context.candidate.id,
+            head: x.successor.head,
+            epoch: 2,
+          },
+          x.keys.new,
+        ),
+      )
+    ).kind,
+    'unknown',
+  );
   x.f.restart();
   assert.deepEqual((await x.transfer('existing', 'deliver', x.delivery)).certification, c);
   assert.equal(x.f.rows('content_transfers').length, 1);
@@ -217,4 +319,117 @@ test('schema eight opens only through the explicit offline upgrade, preserving r
   x.f.restart();
   assert.deepEqual(x.f.rows('content_ceremonies'), before);
   assert.deepEqual(x.f.rows('content_transfers'), []);
+});
+
+test('certified receiver opens original encrypted Yjs updates and rechecks retained evidence after expiry', async (t) => {
+  const built = await build({
+    configFile: false,
+    logLevel: 'error',
+    build: {
+      write: false,
+      minify: false,
+      lib: { entry: resolve('test/account-ceremony/content-read-entry.ts'), formats: ['es'] },
+    },
+  });
+  const code = (Array.isArray(built) ? built[0] : built).output.find(
+    (v) => v.type === 'chunk',
+  ).code;
+  const { Y, verifyCertificationHistory, verifyInboundPage, verifyStoredInbound } = await import(
+    'data:text/javascript;base64,' + Buffer.from(code).toString('base64')
+  );
+  const x = await approved(t);
+  await x.call(x.approval);
+  await x.transfer('existing', 'deliver', x.delivery);
+  // Membership admission alone must not grant ciphertext reads to the pending candidate.
+  const pending = query(
+    x,
+    0,
+    1,
+    {
+      reader: x.context.candidate.id,
+      head: x.successor.head,
+      epoch: 2,
+    },
+    x.keys.new,
+  );
+  assert.equal((await read(x, pending)).kind, 'unknown');
+  const { certification } = await x.transfer('new', 'install', x.installation);
+  const history = await verifyCertificationHistory(certification, x.successor, x.base, {
+    epoch: 3,
+    head: certification.head,
+  });
+  const source = new Y.Doc({ gc: false }),
+    restored = new Y.Doc({ gc: false });
+  t.after(() => {
+    source.destroy();
+    restored.destroy();
+  });
+  source.getText('master').insert(0, 'Writing from the first device.');
+  const wire = x.make(1, '', { epoch: 3, updates: [Y.encodeStateAsUpdate(source)] });
+  assert.equal((await x.deliveryCall(wire)).kind, 'decision');
+  const request = query(
+    x,
+    0,
+    1,
+    { reader: x.context.candidate.id, head: certification.head, epoch: 3 },
+    x.keys.new,
+  );
+  const response = await read(x, request);
+  assert.equal(response.kind, 'decision');
+  const context = {
+    baseline: { kind: 'promotion-genesis', id: '99'.repeat(32) },
+    service: { id: x.authority.pin.serviceId, origin: x.authority.pin.origin },
+    authority: history.current,
+    history,
+    creatingCredential: history.credential,
+    reader: { id: x.context.candidate.id, publicKey: x.context.candidate.sPub, active: true },
+    publisher: {
+      id: history.credential,
+      publicKey: history.signingKey,
+      principal: history.principal,
+      system: true,
+      active: true,
+    },
+    generation: 1,
+    generationKey: new Uint8Array(x.generationKey),
+    prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+  };
+  const lifetime = { assertCurrent() {} };
+  const result = await verifyInboundPage(context, request, response.bytes, lifetime);
+  assert.equal(result.kind, 'received');
+  for (const u of result.updates) Y.applyUpdate(restored, u);
+  assert.equal(restored.getText('master').toString(), source.getText('master').toString());
+  assert.deepEqual(result.actor, { id: history.principal, kind: 'human' });
+  const retained = new Uint8Array(result.record);
+  await verifyStoredInbound(context, retained, { ...lifetime, now: () => Number.MAX_SAFE_INTEGER });
+  await assert.rejects(
+    verifyInboundPage(
+      {
+        ...context,
+        reader: {
+          ...context.reader,
+          publicKey: history.signingKey,
+        },
+      },
+      request,
+      response.bytes,
+      lifetime,
+    ),
+    /authority/,
+  );
+  await assert.rejects(
+    verifyInboundPage({ ...context, history: { ...history } }, request, response.bytes, lifetime),
+    /Unverified/,
+  );
+  await assert.rejects(
+    verifyInboundPage(
+      { ...context, generationKey: new Uint8Array(32) },
+      request,
+      response.bytes,
+      lifetime,
+    ),
+  );
+  const damaged = new Uint8Array(retained);
+  damaged[damaged.length - 3] ^= 1;
+  await assert.rejects(verifyStoredInbound(context, damaged, lifetime));
 });
