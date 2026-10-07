@@ -69,7 +69,17 @@ scheduler tests; TypeScript; compiled budget and origin checks. Initial splash/c
 94.9 KiB gzip (350 KiB budget); editor and ceremony chunks load on navigation. The browser check also
 checks API access origin, source/state-file refusal and exclusion of API responses from the app cache.
 
-**Next:** cold offline reopening and queued two-way delivery, then packaged update continuity.
+**Phase 2 complete:** both established accounts cold-open through the cached splash/chooser with the
+service stopped, unlock locally, retain edits through another offline close/reopen at their editor URLs,
+and converge after service restart/reconnection. The account shell shows offline availability; a network
+failure during a service-dependent ceremony explains the connection requirement and retains progress.
+A remembered Local-only installation also keeps its offline path without an account service.
+
+**Additional evidence:** two packaged-account browser checks and all three existing packaged Local-only
+checks pass; 19 focused HTTP/config tests and TypeScript/build checks pass. Phase 1 signed: `9bb46fde`.
+These are tab cold-opens in isolated browser contexts, not physical-device/full-process-crash claims.
+
+**Next:** packaged update continuity.
 The live Tailscale preview has not yet been switched. Existing Local-only packaging remains supported.
 See [packaged account integration](./packaged-account-development.md). Production sessions, lifecycle
 completion and release qualification remain outside this work; the release campaign remains paused.

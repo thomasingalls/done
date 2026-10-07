@@ -101,3 +101,25 @@ it('never refreshes raw fixture tokens or retries uncertain network outcomes', a
   ).rejects.toThrow('lost response');
   expect(access).toHaveBeenCalledTimes(1);
 });
+it('preserves an existing Local-only installation offline and discovers a later account service', async () => {
+  origin();
+  const fetch = vi.fn().mockResolvedValue(response({}, 404));
+  vi.stubGlobal('fetch', fetch);
+  expect(await loadPackagedConfig()).toBeNull();
+  fetch.mockRejectedValue(new TypeError('offline'));
+  expect(await loadPackagedConfig()).toBeNull();
+  fetch.mockResolvedValue(response({ v: 1, pin }));
+  expect((await loadPackagedConfig())?.pin).toEqual(pin);
+  expect(localStorage.getItem('done.application.local-only')).toBeNull();
+});
+it('explains a network failure without retrying an uncertain mutation', async () => {
+  const fetch = vi.fn().mockRejectedValue(new TypeError('offline'));
+  vi.stubGlobal('fetch', fetch);
+  await expect(
+    privateServiceFetch(pin, 'a'.repeat(43), '/__account-setup/begin', {
+      method: 'POST',
+      body: '{}',
+    }),
+  ).rejects.toThrow('needs a connection');
+  expect(fetch).toHaveBeenCalledTimes(1);
+});

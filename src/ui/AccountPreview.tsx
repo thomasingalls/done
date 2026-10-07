@@ -161,11 +161,29 @@ export async function createAccountPreview(config: SetupConfig) {
   };
   function Frame() {
     const active = useLocation();
+    const [offline, setOffline] = useState(!navigator.onLine);
+    useEffect(() => {
+      const update = () => setOffline(!navigator.onLine);
+      window.addEventListener('online', update);
+      window.addEventListener('offline', update);
+      return () => {
+        window.removeEventListener('online', update);
+        window.removeEventListener('offline', update);
+      };
+    }, []);
     const context = useMemo(() => ({ history, href: active.href, go }), [active.href]);
     return (
       <PreviewNavigationContext value={context}>
         <div className="account-development">
-          <aside className="setup-dev-note">Account preview · encrypted two-device sync</aside>
+          <aside className="setup-dev-note">
+            Account preview · encrypted two-device sync
+            {offline && (
+              <span role="status">
+                {' '}
+                · Offline. Saved workspaces remain available; sync resumes when connected.
+              </span>
+            )}
+          </aside>
           <Suspense fallback={<p role="status">Opening…</p>}>
             <Outlet />
           </Suspense>

@@ -38,5 +38,16 @@ contents are checked. Four focused access tests cover offline config, exact retr
 and no automatic retry after uncertain results. The existing 45 affected HTTP/scheduler tests pass.
 Build, initial-JS budget, origin scan and TypeScript pass.
 
-Phases 2 and 3 will establish account cold-open/edit/reconnect and update continuity respectively.
-The live preview is not switched by this first phase. Tests use disposable service/browser state.
+Phase 2: the two certified accounts close their tabs while offline and with the backend stopped.
+Fresh pages load the cached splash, chooser and lazy editor modules, verify the original local factors,
+and retain new edits through another offline close/open at both deep editor URLs. Restarting the same
+service and reconnecting converges the two additions. All three existing Local-only packaged tests pass;
+a previously Local-only installation remembers that fallback while offline, and discovers an account
+service when later online. A retained account pin takes precedence over the fallback.
+
+The shell indicates offline availability. Service-dependent actions report the connection requirement
+without treating a network failure as an incorrect code. Existing unlock factors are unchanged; a
+passkey still has to be available from the user's authenticator/password manager while offline.
+
+Phase 3 will check packaged update continuity. The live preview is not yet switched. Tests use
+disposable service/browser state and tab cold-opens, not a physical-device or process-crash claim.

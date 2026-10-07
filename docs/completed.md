@@ -9840,3 +9840,19 @@ launcher could not verify/download the pinned manager under restricted networkin
 already-installed TypeScript/Vite/Vitest/Playwright executables directly. No dependencies changed.
 Cold offline account startup and update continuity follow in separate bounded phases. Live preview
 serving remains unchanged at this checkpoint; no release-validation campaign resumed.
+
+
+## 2026-10-07 — Packaged account cold offline opening and reconnect
+
+Both certified devices now have focused compiled-PWA evidence for fully closed tab → cached splash →
+saved chooser entry → factor/passkey unlock → offline writing. With the backend stopped, a second
+close/reopen at each deep editor URL recovers the newly queued writing; restarting the retained service
+and reconnecting delivers both edits to both devices. The shell reports offline availability, and
+service-dependent network failures explain that a connection is needed while keeping saved progress.
+A previously Local-only packaged installation keeps its offline startup fallback; a retained account
+pin always takes precedence and later online discovery can enable accounts without clearing Local data.
+
+Validation: both packaged-account browser cases and three existing packaged Local-only cases pass;
+19 focused HTTP/config tests, TypeScript, build/budget and origin checks pass. This is isolated browser
+context/tab evidence, not a physical-device or full-process-crash claim. Phase 1 is signed as `9bb46fde`.
+Update continuity is next; live serving is unchanged and release validation remains paused.

@@ -1,4 +1,4 @@
-import { isPrivateAccess, privateServiceFetch } from './privateAccess';
+import { isPrivateAccess, privateServiceFetch, PrivateServiceUnavailable } from './privateAccess';
 /** Private first-device UI coordinator. Retained UI progress is a hint; existing owners grant authority. */
 import { parseAuthorityPin, pinBytes } from '../../account-protocol/authority';
 import { type RecoveryContext } from '../../account-protocol/recovery';
@@ -308,7 +308,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           kind: fallback,
           error: cancelled
             ? 'Passkey request cancelled. You can try again.'
-            : cause instanceof SetupNotice
+            : cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
               ? cause.message
               : fallback === 'unlock'
                 ? 'Could not unlock this workspace. Check your device-lock code and try again.'

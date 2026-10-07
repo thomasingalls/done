@@ -3,6 +3,7 @@ import type { SetupConfig } from './firstDeviceSetup';
 import type { PrivateAccess } from './privateAccess';
 
 const PIN_KEY = 'done.account-service.pin.v1';
+const LOCAL_ONLY_KEY = 'done.application.local-only';
 const LIMIT = 8192;
 const samePin = (a: AuthorityPin, b: AuthorityPin) => String(pinBytes(a)) === String(pinBytes(b));
 
@@ -57,10 +58,22 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
   let pin: AuthorityPin;
   if (retained !== null) pin = parseAuthorityPin(JSON.parse(retained));
   else {
-    const config = await readConfig('config', AbortSignal.timeout(10000));
-    if (!config) return null; // A Local-only static installation has no account service.
+    let config;
+    try {
+      config = await readConfig('config', AbortSignal.timeout(10000));
+    } catch (cause) {
+      // Only an installation previously served without an account service may
+      // take this fallback. A retained account pin always wins above.
+      if (localStorage.getItem(LOCAL_ONLY_KEY) === '1') return null;
+      throw cause;
+    }
+    if (!config) {
+      localStorage.setItem(LOCAL_ONLY_KEY, '1');
+      return null;
+    }
     pin = config.pin;
     localStorage.setItem(PIN_KEY, JSON.stringify(pin));
+    localStorage.removeItem(LOCAL_ONLY_KEY);
   }
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
   let token: string | undefined;
