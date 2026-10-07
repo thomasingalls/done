@@ -1,6 +1,7 @@
 # Account sessions and live subscriptions
 
-2026-10-07 · design checkpoint · **phase 3b combined enrollment/login implemented; browser grants and live cutover pending**.
+2026-10-08 · design checkpoint · **phase 3c owned browser grants/reconnect implemented; bootstrap-host composition and live cutover pending**.
+See [phase 3c browser transport and focused evidence](./account-session-transport.md).
 See [phase 3b combined issuance and client retention](./account-enrollment-session.md).
 See [phase 3a implementation, route disposition and focused evidence](./account-session-grants.md).
 See [phase 2 implementation and focused evidence](./account-session-client.md).
@@ -300,8 +301,9 @@ not a new generalized conformance or release campaign.
    retained development installation only after a quiet point and backup, preserving its origin/pin.
    **Service foundation completed:** [phase 3a](./account-session-grants.md). The protected adapter is
    unmounted. **Combined enrollment/login completed:** [phase 3b](./account-enrollment-session.md),
-   including atomic issuance and factor-sealed client retention. Next implement browser grants and
-   exact-request retry, then bootstrap-host composition without the shared bearer.
+   including atomic issuance and factor-sealed client retention. **Owned browser grants completed:**
+   [phase 3c](./account-session-transport.md), including bounded exact-request retries and explicit
+   enrollment reconnect. Next is bootstrap-host composition without the shared bearer.
    Then switch the retained installation; there is no live cutover claim yet.
 4. **Live notifications and real use.** Add the broker, authenticated stream, gateway lifecycle and
    scheduler/ceremony wakeups. Cover the commit/subscribe race, dropped hints, restart/reconnect,

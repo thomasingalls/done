@@ -27,13 +27,13 @@ export const message = (c) =>
     c.challengeId,
     String(c.expiresAt),
   );
-export async function fixture(t, { ceremony = false, hook = () => {} } = {}) {
+export async function fixture(t, { ceremony = false, hook = () => {}, clock } = {}) {
   const authority = authorityFixture(t);
   let now = 1000;
   const x = await (ceremony ? setup : prepared)(t, {
     authority,
     sessions: { pin: authority.pin, operatorKey: authority.key },
-    now: () => now,
+    now: clock ?? (() => now),
     hook,
   });
   const login = async (account = x.account) => {

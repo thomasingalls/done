@@ -1,7 +1,8 @@
 # Scoped network grants and transaction authorization
 
 2026-10-07 · sessions/subscriptions phase **3a** · service foundation implemented;
-browser transport and live cutover remain pending. Combined enrollment/login is now implemented in
+browser transport is now implemented in [phase 3c](./account-session-transport.md); host composition
+and live cutover remain pending. Combined enrollment/login is implemented in
 [phase 3b](./account-enrollment-session.md), which also adds opt-in schema 14.
 Follows [the owned client login](./account-session-client.md) and
 [the session/subscription design](./account-sessions-subscriptions.md). Release validation remains paused.
@@ -108,6 +109,7 @@ been changed. These grants add no persisted schema; the preceding phase's sessio
 
 The approved combined **fresh** enrollment/login challenge, atomic issuance, exact retry and
 factor-sealed client retention are implemented in [phase 3b](./account-enrollment-session.md).
-An old receipt remains insufficient. Next connect the browser's owned grant acquisition/renewal and exact-request retry, compose bootstrap
-routes without the shared bearer, and perform a quiet-point backup and live cutover. Notifications
+An old receipt remains insufficient. Browser grant acquisition/renewal and exact-request retry are
+implemented in [phase 3c](./account-session-transport.md). Next compose bootstrap routes without the
+shared bearer, and perform a quiet-point backup and live cutover. Notifications
 follow that cutover; the eventual two-device walkthrough remains the product milestone.

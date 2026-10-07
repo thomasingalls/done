@@ -1,3 +1,4 @@
+import { ScopedTransport, NetworkSignInRequired } from './scopedTransport';
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
 import { privateServiceFetch } from './privateAccess';
@@ -103,6 +104,7 @@ interface Progress {
 }
 export interface EnrollmentView {
   kind:
+    | 'reconnect'
     | 'locked'
     | 'invite'
     | 'enroll'
@@ -141,6 +143,7 @@ export async function preparePendingDevice(workspace: string, signal: AbortSigna
   return { slot, enrollment: beginLocalGenesis(slot, { signal }) };
 }
 const messages: Record<EnrollmentView['kind'], string> = {
+  reconnect: 'Reconnect sync with your account passkey to continue. Your progress is saved.',
   locked: 'Unlock this device to continue.',
   invite: 'Open this link on the device you want to connect.',
   enroll: 'Use the account’s passkey to request enrollment.',
@@ -171,6 +174,8 @@ export function createDeviceEnrollment(
     networkLogin = new NetworkLogin(pin, slotId);
     void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
   }
+  const ceremonyLogin = config.networkSessions ? new NetworkLogin(pin, slotId) : undefined;
+  const grants = config.networkSessions ? new ScopedTransport(pin, lifetime.signal) : undefined;
   if (pin.origin !== location.origin) throw Error('Development service differs from this page');
   let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
   const editors = new Set<() => void>();
@@ -182,14 +187,28 @@ export function createDeviceEnrollment(
   const view = (kind: EnrollmentView['kind'], extra: Partial<EnrollmentView> = {}) =>
     (last = { kind, message: messages[kind], ...extra });
   const guard = () => lifetime.signal.throwIfAborted();
-  const request = async (route: string, body: unknown): Promise<any> => {
+  const bootstrapRequest = async (route: string, body: unknown): Promise<any> => {
     guard();
-    const response = await privateServiceFetch(pin, config.token, '/__account-setup/' + route, {
+    if (
+      config.networkSessions &&
+      !['ceremony/bootstrap', 'enrollment/begin', 'enrollment/finish'].includes(route)
+    )
+      throw Error('Unsupported bootstrap route');
+    const init: RequestInit = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: lifetime.signal,
-    });
+      signal: AbortSignal.any([lifetime.signal, AbortSignal.timeout(10000)]),
+      credentials: 'omit',
+      cache: 'no-store',
+      redirect: 'error',
+    };
+    const response = config.networkSessions
+      ? await fetch(new URL('/__account-setup/' + route, pin.origin), init)
+      : await privateServiceFetch(pin, config.token, '/__account-setup/' + route, init);
+    return readResponse(response);
+  };
+  const readResponse = async (response: Response) => {
     if (Number(response.headers.get('content-length')) > 80 * 1024 * 1024)
       throw Error('Service response too large');
     const text = await response.text();
@@ -202,14 +221,10 @@ export function createDeviceEnrollment(
   };
   const bootstrap = async (workspaceId: string, invitation: unknown) => {
     const nonce = hex(random(32)),
-      raw = closed(await request('ceremony/bootstrap', { workspaceId, nonce, invitation }), [
-        'ok',
-        'nonce',
-        'base',
-        'successor',
-        'certification',
-        'signature',
-      ]);
+      raw = closed(
+        await bootstrapRequest('ceremony/bootstrap', { workspaceId, nonce, invitation }),
+        ['ok', 'nonce', 'base', 'successor', 'certification', 'signature'],
+      );
     const b = closed(raw['base'], ['pin', 'request', 'receipt']);
     const base: SuccessorBase = {
       pin: parseAuthorityPin(b['pin']),
@@ -243,6 +258,7 @@ export function createDeviceEnrollment(
     enroll?: true;
     cancel?: true;
     read?: true;
+    reconnect?: true;
   }): Promise<EnrollmentView> => {
     if (running) return last;
     running = true;
@@ -289,6 +305,55 @@ export function createDeviceEnrollment(
         }
         const boot = await bootstrap(workspaceId, invitation),
           baseHash = await digest(json(boot.base));
+        const identity = {
+          accountId: boot.base.receipt.offer.epoch.accountId,
+          credentialId: boot.base.receipt.activation.context.credentialId,
+        };
+        const scoped = (kind: 'workspace' | 'enrollment') => {
+          const attemptId =
+            boot.successor?.epoch.preparation.context.attemptId ??
+            p?.enrollment?.receipt?.context.attemptId;
+          if (kind === 'enrollment' && !attemptId) throw Error('Enrollment authority is missing');
+          return grants!.bind({
+            login: ceremonyLogin!,
+            sign: owner.sign,
+            scope:
+              kind === 'workspace'
+                ? { kind, workspaceId, credentialId: owner.participant.id }
+                : { kind, workspaceId, credentialId: owner.participant.id, attemptId: attemptId! },
+          });
+        };
+        const request = async (route: string, body: unknown) => {
+          if (!grants || ['enrollment/begin', 'enrollment/finish'].includes(route))
+            return bootstrapRequest(route, body);
+          const access = scoped(
+            ['content/checkpoint', 'authority/discover'].includes(route)
+              ? 'workspace'
+              : 'enrollment',
+          );
+          return owner.withLogin(ceremonyLogin!, identity, async () =>
+            readResponse(
+              await access.fetch('/__account-setup/' + route, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+                signal: lifetime.signal,
+              }),
+            ),
+          );
+        };
+        // Binary reader calls also reopen the login under this same held ceremony permit.
+        const readingAccess = () =>
+          !grants
+            ? config.token
+            : {
+                kind: 'scoped-account' as const,
+                pin,
+                fetch: (path: string, init: RequestInit) =>
+                  owner.withLogin(ceremonyLogin!, identity, () =>
+                    scoped('workspace').fetch(path, init),
+                  ),
+              };
         if (
           role === 'existing' &&
           (!same(marker!.pin, pin) ||
@@ -298,6 +363,8 @@ export function createDeviceEnrollment(
           throw Error('Service returned a different account');
         if (p && p.baseHash !== baseHash)
           throw Error('Saved approval belongs to a different account');
+        if (input?.reconnect && ceremonyLogin)
+          await owner.withLogin(ceremonyLogin, identity, () => ceremonyLogin.connect());
         const save = async (check?: () => void) => {
           guard();
           await owner.save(p, check);
@@ -554,7 +621,7 @@ export function createDeviceEnrollment(
             { base: boot.base, successor, certification },
             {
               assert: assertSlotPasskey(lifetime.signal),
-              token: config.token,
+              token: readingAccess(),
               signal: lifetime.signal,
               save: () => save(),
               request,
@@ -791,6 +858,9 @@ export function createDeviceEnrollment(
         }
         return role === 'new' ? view('display', { code: opening.sas }) : view('compare');
       });
+    } catch (cause) {
+      if (cause instanceof NetworkSignInRequired) return view('reconnect');
+      throw cause;
     } finally {
       running = false;
     }
@@ -833,6 +903,7 @@ export function createDeviceEnrollment(
   return {
     refresh: async () => (await openEditor()) ?? operate(),
     enroll: () => operate({ enroll: true }),
+    reconnect: () => operate({ reconnect: true, enroll: true }),
     compare: (typed: string) => operate({ typed }),
     cancel: () => operate({ cancel: true }),
     openWriting: async () => {
@@ -849,6 +920,8 @@ export function createDeviceEnrollment(
     close: async () => {
       lifetime.abort();
       networkLogin?.close();
+      ceremonyLogin?.close();
+      grants?.close();
       for (const destroy of [...editors]) {
         try {
           destroy();

@@ -16,6 +16,7 @@ import {
 import { digest } from '../../account-protocol/recovery';
 import type { SessionTask } from '../crdt/writeSession';
 import type { SessionVault } from './sessionVault';
+import { NetworkSignInRequired } from './scopedTransport';
 
 export async function checkEnrollmentLogin(
   context: EnrollmentContext,
@@ -45,15 +46,20 @@ export async function rememberEnrollmentLogin(
 ) {
   const held = await vault.load(task);
   // Never let an old enrollment proof overwrite sign-out, an unresolved login or another login.
-  if (held === 'signed-out') throw Error('This login was signed out. Reconnect sync explicitly.');
+  if (held === 'signed-out')
+    throw new NetworkSignInRequired('This login was signed out. Reconnect sync explicitly.');
+  if (held && typeof held === 'object' && 'kind' in held && held.kind === 'pending')
+    throw new NetworkSignInRequired();
   const result = parseSessionIssuance(held ?? input);
   if (
-    !result.ok ||
-    result.accountId !== expected.accountId ||
-    result.credentialId !== expected.credentialId ||
-    result.expiresAt <= now()
+    result.ok &&
+    (result.accountId !== expected.accountId || result.credentialId !== expected.credentialId)
   )
-    throw Error('Enrollment is saved, but its network login needs a fresh online check.');
+    throw Error('Remembered login identity changed.');
+  if (!result.ok || result.expiresAt <= now())
+    throw new NetworkSignInRequired(
+      'Enrollment is saved, but its network login needs a fresh online check.',
+    );
   if (held === null) await vault.save(task, result);
   return result;
 }
@@ -90,7 +96,18 @@ export async function completeEnrollmentLogin(options: {
   if (enrollmentContextBytes(receipt.context) !== enrollmentContextBytes(options.context))
     throw Error('The saved enrollment challenge changed.');
   signal.throwIfAborted();
-  const saved = await options.remember(reply.login);
+  let saved: SessionIssued;
+  try {
+    saved = await options.remember(reply.login);
+  } catch (cause) {
+    if (cause instanceof NetworkSignInRequired) {
+      // A terminal login result cannot be retried into new credentials. Preserve the authenticated
+      // preparation so an explicit new login can continue it; storage failures keep the old retry path.
+      signal.throwIfAborted();
+      await options.persistReceipt(receipt);
+    }
+    throw cause;
+  }
   signal.throwIfAborted();
   await options.persistReceipt(receipt);
   signal.throwIfAborted();

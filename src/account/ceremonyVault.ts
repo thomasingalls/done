@@ -1,5 +1,6 @@
 import { installJoinedAccount } from '../crdt/joinedAccount';
 import { openSessionVault } from './sessionVault';
+import type { NetworkLogin } from './networkLogin';
 import { rememberEnrollmentLogin } from './enrollmentLogin';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { SessionIssued, SessionIssuanceResult } from '../../account-protocol/session';
@@ -30,6 +31,11 @@ export interface InstalledContentKey {
   ct: string;
 }
 export interface CeremonyVault {
+  withLogin<T>(
+    login: NetworkLogin,
+    expected: { accountId: string; credentialId: string },
+    work: () => Promise<T>,
+  ): Promise<T>;
   rememberLogin(
     pin: AuthorityPin,
     expected: { accountId: string; credentialId: string },
@@ -157,6 +163,8 @@ export async function withCeremonyVault<T>(
           }
         };
         return work({
+          withLogin: (login, expected, work) =>
+            login.withEnrollmentOwner(task, root, record.root_id, expected, work),
           rememberLogin: async (pin, expected, result) => {
             const vault = await openSessionVault(task, root, {
               pin,

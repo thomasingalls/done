@@ -10135,3 +10135,40 @@ then bootstrap-host composition without the shared bearer and a quiet-point live
 integration must also expose explicit reconnect when enrollment succeeded but neither the local login
 nor its bounded service retry copy is available. Live notifications and the real two-device trial
 follow. Details and commands: [account-enrollment-session.md](./account-enrollment-session.md).
+
+
+## 2026-10-08 — Owned browser grants and reconnect (sessions/subscriptions phase 3c)
+
+Committed combined enrollment/login signed as `a22011af`. Implemented scoped grant acquisition under
+the actual editor or ceremony owner, with a bounded memory-only cache and concurrent acquisition
+deduplication. The client verifies challenge identity, scope, actions and lifetime before using its
+held device signer. Lock and sign-out abort grant work; late responses cannot reinstall capability.
+The editor's submit/read/discovery paths and approval's admission/ceremony/content paths use scoped
+authorization when sessions are enabled, without falling back to the shared private bearer.
+
+Requests capture their bytes before awaiting credentials. A structured grant rejection permits one
+reacquisition and exact resend; an access rejection permits one renewal. Authority/scope refusal,
+ordinary denial, malformed responses, timeouts and lost replies return control to the durable owner.
+Grant/control responses are bounded, and network waits stay outside the editor's storage queue.
+The older delivery readback helper now likewise separates preparation, network and fresh-state
+verification; this does not restore v8 to the supported product.
+
+Approval reopens the sealed login under each short-lived ceremony permit while reusing access for
+the unlocked coordinator lifetime. If a verified enrollment succeeds but its bounded login copy is
+unavailable, the client retains the receipt and offers explicit Reconnect sync. That fresh ordinary
+login seals its proof before finish and its result before acknowledgement. Lost replies reuse the
+proof; closure fences the prompt/result. Ordinary enrollment still requires only its combined check.
+
+Evidence: 14 new focused cases (ten protected-transport and four ceremony-login scenarios). The
+expanded session/core/runtime group passes 115 tests, affected transport/scheduler Vitest files pass
+37 tests, and two selected Chromium regressions pass through delivery/readback and cold reopen.
+Those Chromium checks use the existing private host, not a session-enabled two-device walkthrough.
+The affected login-owner subset also passes after the final lifetime guard. TypeScript and scoped
+lint/format pass. A stale test vault was corrected to reopen after another owner writes, matching
+production. No generalized conformance or release-validation campaign was started.
+
+Implementation and commands: [account-session-transport.md](./account-session-transport.md). The live
+`:8443` frontend `20547876`, schema 11 service, pin and saved writing are untouched. Session code uses
+schema 14 and remains opt-in. Next is bootstrap/protected-host composition, removal of the shared
+bearer from that configuration and an explicit upgrade path, checked with disposable state before a
+quiet-point backup/cutover. Notifications and the real two-device trial follow.

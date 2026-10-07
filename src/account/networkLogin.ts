@@ -97,7 +97,7 @@ export const postSession: Post = async (operation, body, signal) => {
     reader.releaseLock();
   }
 };
-function issued(value: unknown, binding: SlotBinding): SessionIssued {
+function issued(value: unknown, binding: Pick<SlotBinding, 'accountId' | 'credId'>): SessionIssued {
   const x = value as SessionIssued;
   if (
     !x ||
@@ -144,7 +144,14 @@ export class NetworkLogin {
   #vault: SessionVault | undefined;
   #proof: BindingProof | undefined;
   #held: Held = null;
-  #live: WriteSession | undefined;
+  #live: Pick<WriteSession, 'run' | 'signal'> | undefined;
+  #identity: Pick<SlotBinding, 'accountId' | 'credId'> | undefined;
+  #enrollmentAssert:
+    | ((options: PublicKeyCredentialRequestOptionsJSON, signal: AbortSignal) => Promise<unknown>)
+    | undefined;
+  readonly #networkStop = new AbortController();
+  #needsSignIn = false;
+  #ceremonyOwned = false;
   #tail: Promise<unknown> = Promise.resolve();
   #epoch = 0;
   #signingOut = false;
@@ -165,6 +172,33 @@ export class NetworkLogin {
       throw Error('Account origin differs from configured pin');
     this.#slotId = slotId;
     this.#post = post;
+  }
+  get networkSignal() {
+    return this.#networkStop.signal;
+  }
+  async authorization() {
+    const epoch = this.#epoch,
+      token = await this.access();
+    if (
+      !token ||
+      this.#signingOut ||
+      this.retired ||
+      epoch !== this.#epoch ||
+      !this.#held ||
+      this.#held === 'signed-out' ||
+      'kind' in this.#held ||
+      this.#access?.token !== token
+    )
+      return;
+    return { token, accountId: this.#held.accountId, sessionId: this.#held.sessionId };
+  }
+  rejectAccess(token: string, signIn = false) {
+    if (this.#access?.token !== token) return;
+    this.#access = undefined;
+    if (signIn) {
+      this.#needsSignIn = true;
+      this.#publish('reconnect');
+    }
   }
   get retired() {
     return this.#stop.signal.aborted;
@@ -228,12 +262,22 @@ export class NetworkLogin {
     if (this.retired) return;
     this.#vault?.close();
     this.#proof = structuredClone(proof);
+    await this.#initializeCarrier(task, root, rootId, proof.stored.binding);
+  }
+  async #initializeCarrier(
+    task: SessionTask,
+    root: Bytes,
+    rootId: string,
+    identity: Pick<SlotBinding, 'accountId' | 'credId'>,
+  ) {
+    const prior = this.#held;
+    this.#identity = { accountId: identity.accountId, credId: identity.credId };
     try {
       this.#vault = await openSessionVault(task, root, {
         pin: this.#pin,
         slotId: this.#slotId,
         rootId,
-        accountId: proof.stored.binding.accountId,
+        accountId: identity.accountId,
       });
       const value = await this.#vault.load(task);
       if (value === null || value === 'signed-out') this.#held = value;
@@ -247,14 +291,74 @@ export class NetworkLogin {
         )
           throw Error('Invalid pending login');
         this.#held = p;
-      } else this.#held = issued(value, proof.stored.binding);
+      } else this.#held = issued(value, identity);
+      if (
+        !prior ||
+        prior === 'signed-out' ||
+        'kind' in prior ||
+        !this.#held ||
+        this.#held === 'signed-out' ||
+        'kind' in this.#held ||
+        prior.sessionId !== this.#held.sessionId
+      ) {
+        this.#access = undefined;
+        this.#needsSignIn = false;
+      }
       this.#publish(
-        this.#held === 'signed-out' ? 'reconnect' : this.#held ? 'disconnected' : 'connect',
+        this.#held === 'signed-out' || this.#needsSignIn
+          ? 'reconnect'
+          : this.#access
+            ? 'remembered'
+            : this.#held
+              ? 'disconnected'
+              : 'connect',
       );
     } catch {
       this.#vault?.close();
       this.#vault = undefined;
       if (!this.retired) this.#publish('storage-error');
+    }
+  }
+  /** A ceremony holds the actual slot permit only for this callback. Keep access in the
+   * unlocked coordinator, but never retain its task or factor-derived vault between callbacks. */
+  async withEnrollmentOwner<T>(
+    task: SessionTask,
+    root: Bytes,
+    rootId: string,
+    identity: { accountId: string; credentialId: string },
+    work: () => Promise<T>,
+    assert: (
+      options: PublicKeyCredentialRequestOptionsJSON,
+      signal: AbortSignal,
+    ) => Promise<unknown> = async (options, signal) => {
+      const credential = (await navigator.credentials.get({
+        publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options),
+        signal,
+      })) as PublicKeyCredential | null;
+      if (!credential) throw Error('Passkey cancelled');
+      return credential.toJSON();
+    },
+  ) {
+    this.#stop.signal.throwIfAborted();
+    if (this.#live || this.#proof || this.#ceremonyOwned) throw Error('Login already has an owner');
+    this.#ceremonyOwned = true;
+    try {
+      await this.#initializeCarrier(task, root, rootId, {
+        accountId: identity.accountId,
+        credId: identity.credentialId,
+      });
+      this.#stop.signal.throwIfAborted();
+      this.#live = { signal: task.signal, run: (fn) => task.wait(() => fn(task)) };
+      this.#enrollmentAssert = assert;
+      return await work();
+    } finally {
+      await this.#renewing?.catch(() => {});
+      await this.#tail.catch(() => {});
+      this.#ceremonyOwned = false;
+      this.#live = undefined;
+      this.#enrollmentAssert = undefined;
+      this.#vault?.close();
+      this.#vault = undefined;
     }
   }
   async unlock(task: SessionTask, proof: BindingProof, assert: LocalPasskey) {
@@ -354,6 +458,7 @@ export class NetworkLogin {
       };
       await this.#vault!.save(task, pending);
       this.#held = pending;
+      this.#needsSignIn = false;
     } catch {
       if (!this.retired) this.#publish('storage-error');
       this.#vault?.close();
@@ -381,6 +486,7 @@ export class NetworkLogin {
       this.#stop.signal.aborted ||
       !this.#vault ||
       !this.#live ||
+      this.#needsSignIn ||
       !this.#held ||
       this.#held === 'signed-out'
     )
@@ -402,7 +508,7 @@ export class NetworkLogin {
           );
           return;
         }
-        const next = issued(r, this.#proof!.stored.binding);
+        const next = issued(r, this.#identity!);
         await this.#run(async (task) => {
           await this.#vault!.save(task, next);
           this.#held = next;
@@ -417,7 +523,8 @@ export class NetworkLogin {
       this.#current(epoch);
       if (!r.ok) {
         this.#access = undefined;
-        this.#publish(r.refusal === 'sign-in-required' ? 'reconnect' : 'disconnected');
+        this.#needsSignIn = r.refusal === 'sign-in-required';
+        this.#publish(this.#needsSignIn ? 'reconnect' : 'disconnected');
         return;
       }
       if (
@@ -454,20 +561,26 @@ export class NetworkLogin {
     if (
       this.#signingOut ||
       this.#stop.signal.aborted ||
-      !this.#proof ||
+      !this.#identity ||
       !this.#vault ||
-      !this.#assert ||
+      (this.#proof ? !this.#assert : !this.#enrollmentAssert) ||
       this.#connecting
     )
       return;
     this.#connecting = true;
+    const mustSignIn = this.#needsSignIn;
     this.#publish('connecting');
     const epoch = this.#epoch;
     try {
       // Resolve a retained exact attempt first; do not mint a replacement on an unknown finish.
       if (this.#held && this.#held !== 'signed-out') {
         if (await this.access()) return;
-        if (this.#status !== 'reconnect') return;
+        if (!mustSignIn && this.#status !== 'reconnect') return;
+      }
+      if (!this.#proof) {
+        await this.#connectEnrollment();
+        await this.access();
+        return;
       }
       await this.prewarm(this.#proof.stored.binding);
       this.#current(epoch);
@@ -483,9 +596,50 @@ export class NetworkLogin {
       this.#connecting = false;
     }
   }
+  async #connectEnrollment() {
+    const epoch = this.#epoch,
+      retryKey = b64(crypto.getRandomValues(new Uint8Array(32)));
+    const v = await this.#post(
+      'begin',
+      { accountId: this.#identity!.accountId, retryKey },
+      this.#stop.signal,
+    );
+    this.#current(epoch);
+    if (
+      !v.ok ||
+      v.stage !== 'challenge' ||
+      v.unlock ||
+      !secret(v.attemptId) ||
+      !Number.isSafeInteger(v.expiresAt) ||
+      v.expiresAt <= Date.now() ||
+      v.options.rpId !== this.#pin.rpId ||
+      v.options.userVerification !== 'required' ||
+      !secret(v.options.challenge)
+    )
+      throw Error('Login challenge unavailable');
+    const proofStop = new AbortController();
+    this.#proofStop = proofStop;
+    try {
+      const response = await this.#enrollmentAssert!(
+        { ...v.options, allowCredentials: [{ type: 'public-key', id: this.#identity!.credId }] },
+        AbortSignal.any([proofStop.signal, this.#stop.signal, this.#live!.signal]),
+      );
+      this.#current(epoch);
+      await this.#run(async (task) => {
+        const pending: Pending = { kind: 'pending', retryKey, attemptId: v.attemptId, response };
+        await this.#vault!.save(task, pending);
+        this.#held = pending;
+        this.#needsSignIn = false;
+        this.#access = undefined;
+      });
+    } finally {
+      if (this.#proofStop === proofStop) this.#proofStop = undefined;
+    }
+  }
   async signOut(): Promise<void> {
     if (!this.#vault) throw Error('Cannot save sign-out. Lock the workspace and retry.');
     this.#signingOut = true;
+    this.#networkStop.abort();
     this.#proofStop?.abort();
     clearTimeout(this.#expiryTimer);
     ++this.#epoch;
@@ -524,6 +678,7 @@ export class NetworkLogin {
     globalThis.removeEventListener?.('online', this.#online);
     ++this.#epoch;
     this.#stop.abort();
+    this.#networkStop.abort();
     this.#proofStop?.abort();
     this.#proofStop = undefined;
     this.#vault?.close();
@@ -532,6 +687,8 @@ export class NetworkLogin {
     this.#access = undefined;
     this.#prepared = undefined;
     this.#proof = undefined;
+    this.#identity = undefined;
+    this.#enrollmentAssert = undefined;
     this.#assert = undefined;
     this.#live = undefined;
     this.#publish('closed');

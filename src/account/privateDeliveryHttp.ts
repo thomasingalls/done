@@ -1,4 +1,4 @@
-import { isPrivateAccess, privateServiceFetch, type PrivateAccess } from './privateAccess';
+import { isAccountAccess, accountServiceFetch, type AccountAccess } from './accountHttp';
 /** Private same-service HTTP adapter; no device keys or membership decisions. */
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { Bytes } from '../../account-protocol/positionDecision';
@@ -18,7 +18,7 @@ export const recordPrivateReceiveExpiry = (phase: 'verify' | 'commit'): void =>
   reportDiagnostic(diagnostics.record, { operation: 'read-v2', phase, code: 'expired' });
 export async function privateDeliveryPost(
   pin: AuthorityPin,
-  token: PrivateAccess,
+  token: AccountAccess,
   path: 'submit' | 'read' | 'read-v2',
   body: Bytes,
   limit: number,
@@ -27,7 +27,7 @@ export async function privateDeliveryPost(
 ): Promise<Bytes | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
     reportDiagnostic(observe, { operation: path, phase, code });
-  if (!isPrivateAccess(token)) {
+  if (!isAccountAccess(token)) {
     note('request', 'invalid-token');
     return null;
   }
@@ -35,7 +35,7 @@ export async function privateDeliveryPost(
   const interrupted = () => (signal.aborted ? ('aborted' as const) : ('timeout' as const));
   try {
     stopped.throwIfAborted();
-    const response = await privateServiceFetch(pin, token, '/account/delivery/' + path, {
+    const response = await accountServiceFetch(pin, token, '/account/delivery/' + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream' },
       body,

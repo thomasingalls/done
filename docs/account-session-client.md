@@ -9,7 +9,9 @@ adds service schema 14; schema 13 below describes this phase's historical upgrad
 Implemented as an opt-in application integration. **The running :8443 installation is unchanged.**
 `SetupConfig.networkSessions` is deliberately absent from the packaged configuration loader. Do not
 enable it on the shared-token host as a substitute for phase 3's scoped route authorization. The
-client obtains only account-session access; it does not yet obtain relay or subscription grants.
+client in this phase obtains only account-session access. Subsequent
+[phase 3c](./account-session-transport.md) adds owned workspace/enrollment grants and exceptional
+enrollment reconnect; subscription grants and host cutover remain pending.
 
 ## Agreed prompt behavior
 

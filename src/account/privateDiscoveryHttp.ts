@@ -1,4 +1,4 @@
-import { isPrivateAccess, privateServiceFetch, type PrivateAccess } from './privateAccess';
+import { isAccountAccess, accountServiceFetch, type AccountAccess } from './accountHttp';
 /** Bounded private locator transport. Only the owned client may turn a verified reply into authority. */
 import { parseAuthorityPin, type AuthorityPin } from '../../account-protocol/authority';
 import {
@@ -11,7 +11,7 @@ import { type Diagnostic } from '../../account-protocol/diagnostics';
 
 export async function privateDiscoveryPost(
   inputPin: AuthorityPin,
-  token: PrivateAccess,
+  token: AccountAccess,
   input: AuthorityDiscoveryRequest,
   signal: AbortSignal,
 ): Promise<unknown | null> {
@@ -22,12 +22,12 @@ export async function privateDiscoveryPost(
     const pin = parseAuthorityPin(inputPin),
       request = parseDiscoveryRequest(input);
     if (JSON.stringify(request.pin) !== JSON.stringify(pin)) throw Error('Discovery pin changed');
-    if (!isPrivateAccess(token)) {
+    if (!isAccountAccess(token)) {
       note('request', 'invalid-token');
       return null;
     }
     stopped.throwIfAborted();
-    const response = await privateServiceFetch(pin, token, '/account/authority/discover', {
+    const response = await accountServiceFetch(pin, token, '/account/authority/discover', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request),

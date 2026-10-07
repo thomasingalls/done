@@ -458,9 +458,11 @@ export function AccountEnrollmentApp({
                         ? 'Invite your other device'
                         : state.kind === 'enroll'
                           ? 'Verify your account'
-                          : state.kind === 'waiting'
-                            ? 'Waiting for the other device'
-                            : 'Attempt stopped'}
+                          : state.kind === 'reconnect'
+                            ? 'Reconnect sync'
+                            : state.kind === 'waiting'
+                              ? 'Waiting for the other device'
+                              : 'Attempt stopped'}
             </h2>
             <p role="status">{state.message}</p>
             {state.kind === 'certified' && (
@@ -485,6 +487,16 @@ export function AccountEnrollmentApp({
                   Copy link
                 </button>
               </>
+            )}
+            {state.kind === 'reconnect' && (
+              <button
+                disabled={busy}
+                onClick={() => {
+                  void run(async () => publish(await owner.current!.reconnect()));
+                }}
+              >
+                Reconnect sync
+              </button>
             )}
             {state.kind === 'enroll' && (
               <button

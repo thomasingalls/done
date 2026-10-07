@@ -1,4 +1,4 @@
-import { type PrivateAccess } from '../account/privateAccess';
+import { type AccountAccess } from '../account/accountHttp';
 import type { VerificationMemo } from './verificationMemo';
 import type { OpenedRecord } from './contentRecord';
 import {
@@ -42,6 +42,7 @@ import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
 type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface DeliveryContext {
+  access?: AccountAccess;
   authority(): DecisionAuthority;
   /** Internal owner census; v8 stays strict, v9 accounts for the complete receive union. */
   inspect?: typeof inspectDelivery;
@@ -59,7 +60,12 @@ export interface DeliveryContext {
   ): Promise<T>;
 }
 const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
-async function postSubmission(pin: AuthorityPin, token: PrivateAccess, body: Bytes, signal: AbortSignal) {
+async function postSubmission(
+  pin: AuthorityPin,
+  token: AccountAccess,
+  body: Bytes,
+  signal: AbortSignal,
+) {
   let oversized = false;
   const response = await privateDeliveryPost(
     pin,
@@ -206,7 +212,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
       for (const r of rows) r.bytes.fill(0);
     }
   };
-  const submitOwned = (operatorToken: PrivateAccess) =>
+  const submitOwned = (operatorToken: AccountAccess) =>
     context.network!(async (network) => {
       const prepared = await withState(async (task, _owner, _route, _c, s) => {
         if (publicationState(s) !== 'ready')
@@ -224,7 +230,12 @@ export function createDeliveryOperations(context: DeliveryContext) {
         await network.wait(async () => {
           answer = submissionPaused()
             ? null
-            : await postSubmission(context.pin(), operatorToken, payload, network.signal);
+            : await postSubmission(
+                context.pin(),
+                context.access ?? operatorToken,
+                payload,
+                network.signal,
+              );
         });
         if (!answer) return { kind: 'unknown' as const, recorded: false };
         const response = answer;
@@ -298,7 +309,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
           wire.fill(0);
         }
       }),
-    submitPending: (operatorToken: PrivateAccess) =>
+    submitPending: (operatorToken: AccountAccess) =>
       context.network
         ? submitOwned(operatorToken)
         : withState(async (task, owner, route, c, s) => {
@@ -313,7 +324,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
                 ? null
                 : postSubmission(
                     context.pin(),
-                    operatorToken,
+                    context.access ?? operatorToken,
                     encodeSubmit(context.authority().workspace, bytes),
                     task.signal,
                   ),
@@ -322,8 +333,8 @@ export function createDeliveryOperations(context: DeliveryContext) {
             if (!answer) return { kind: 'unknown' as const, recorded: false };
             return record(task, owner, route, c, s, position, answer);
           }),
-    readAcceptedPage: (operatorToken: PrivateAccess, after = 0, limit = 8) =>
-      withState(async (task, _owner, route, c, s) => {
+    readAcceptedPage: async (operatorToken: AccountAccess, after = 0, limit = 8) => {
+      const { a, pin, request, query } = await withState(async (task, _owner, route, _c, s) => {
         if (!Number.isSafeInteger(after) || after < 0 || after > s.acceptedThrough)
           throw Error('Read cursor requires retained accepted prefix');
         const a = context.authority(),
@@ -351,53 +362,76 @@ export function createDeliveryOperations(context: DeliveryContext) {
         );
         const query = encodeReadRequest(request);
         await context.assertCurrent(task);
-        const answer = await task.wait(() =>
-          privateDeliveryPost(pin, operatorToken, 'read', query, READ_PAGE_LIMIT, task.signal),
+        return { a, pin, request, query };
+      });
+      let answer: Bytes | null = null;
+      try {
+        const network =
+          context.network ??
+          (<T>(work: (task: SessionTask) => Promise<T>) => context.run((task) => work(task)));
+        answer = await network((task) =>
+          task.wait(() =>
+            privateDeliveryPost(
+              pin,
+              context.access ?? operatorToken,
+              'read',
+              query,
+              READ_PAGE_LIMIT,
+              task.signal,
+            ),
+          ),
         );
-        await context.assertCurrent(task);
-        if (!answer) return { kind: 'unknown' as const };
-        try {
-          const page = await task.wait(() =>
-            verifyReadPage(answer, query, a.acceptanceKey, subtleFor(task)),
-          );
-          if (page.through < s.acceptedThrough || request.expires <= Date.now())
-            throw Error('Read prefix regressed');
-          for (let i = 0; i < page.entries.length; i++) {
-            const entry = page.entries[i]!,
-              position = after + i + 1;
-            const expected = await task.wait(() =>
-              expectedPosition(c.spool, position, subtleFor(task)),
+        return await withState(async (task, _owner, route, c, s) => {
+          if (JSON.stringify(context.authority()) !== JSON.stringify(a))
+            return { kind: 'unknown' as const };
+          if (!answer) return { kind: 'unknown' as const };
+          try {
+            const page = await task.wait(() =>
+              verifyReadPage(answer!, query, a.acceptanceKey, subtleFor(task)),
             );
-            const own = c.spool.positions.find((p) => p.position === position)?.wire;
-            if (!expected || !own || hex(own) !== hex(entry.envelope))
-              throw Error('Read differs from retained spool');
-            const envelope = await task.wait(() =>
-              verifyNetworkEnvelope(
-                entry.envelope,
-                networkRoute(route, decodeNetworkEnvelope(entry.envelope).epoch),
-                context.publicKey(),
-                subtleFor(task),
-              ),
-            );
-            if (envelope.seq !== position) throw Error('Read sequence');
-            const proof = await task.wait(() =>
-              verifyDeliveryDecision(entry.proof, expected, a, route, subtleFor(task)),
-            );
-            if (proof.kind !== 'accepted' || proof.head.final) throw Error('Read acceptance');
+            if (page.through < s.acceptedThrough || request.expires <= Date.now())
+              throw Error('Read prefix regressed');
+            for (let i = 0; i < page.entries.length; i++) {
+              const entry = page.entries[i]!,
+                position = after + i + 1;
+              const expected = await task.wait(() =>
+                expectedPosition(c.spool, position, subtleFor(task)),
+              );
+              const own = c.spool.positions.find((p) => p.position === position)?.wire;
+              if (!expected || !own || hex(own) !== hex(entry.envelope))
+                throw Error('Read differs from retained spool');
+              const envelope = await task.wait(() =>
+                verifyNetworkEnvelope(
+                  entry.envelope,
+                  networkRoute(route, decodeNetworkEnvelope(entry.envelope).epoch),
+                  context.publicKey(),
+                  subtleFor(task),
+                ),
+              );
+              if (envelope.seq !== position) throw Error('Read sequence');
+              const proof = await task.wait(() =>
+                verifyDeliveryDecision(entry.proof, expected, a, route, subtleFor(task)),
+              );
+              if (proof.kind !== 'accepted' || proof.head.final) throw Error('Read acceptance');
+            }
+            await context.assertCurrent(task);
+            return task.step(() => ({
+              kind: 'page' as const,
+              through: page.through,
+              next: page.next,
+              more: page.next < page.through,
+              entries: page.entries,
+            }));
+          } catch {
+            task.step(() => {});
+            return { kind: 'unknown' as const };
           }
-          await context.assertCurrent(task);
-          return task.step(() => ({
-            kind: 'page' as const,
-            through: page.through,
-            next: page.next,
-            more: page.next < page.through,
-            entries: page.entries,
-          }));
-        } catch {
-          task.step(() => {});
-          return { kind: 'unknown' as const };
-        }
-      }),
+        });
+      } finally {
+        query.fill(0);
+        answer?.fill(0);
+      }
+    },
     recordResponse: async (position: number, answer: Bytes) => {
       if (
         !Number.isSafeInteger(position) ||

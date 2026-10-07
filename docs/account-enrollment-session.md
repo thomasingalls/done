@@ -4,7 +4,8 @@
 Preceding client/grant work is signed at `a2060547`. This follows
 [the session/subscription plan](./account-sessions-subscriptions.md) and
 [scoped grants](./account-session-grants.md). The live `:8443` preview is unchanged;
-browser grant transport and host cutover remain pending. Release validation remains paused.
+browser grant transport is now implemented in [phase 3c](./account-session-transport.md); host cutover
+remains pending. This phase is signed at `a22011af`. Release validation remains paused.
 
 ## One fresh assertion, two explicit purposes
 
@@ -68,9 +69,10 @@ different valid remembered login for the same selected account/passkey is preser
 If the receipt save fails after the login save, retry can use that carrier even if the service's exact
 issuance copy has since been retired. If the login save fails, no acknowledgement is sent. Lost finish
 replies retry the saved proof. An unavailable server copy with no usable local carrier reports that
-a fresh online check is needed; it cannot silently regenerate credentials. Completing that explicit
-reconnect journey before approval is part of the remaining browser grant integration, not a new prompt
-added by this phase. Admission/content approval still enforce their own authority and deadlines.
+a fresh online check is needed; it cannot silently regenerate credentials. Phase 3c now preserves the
+verified receipt for that terminal login condition and offers explicit reconnect before continuing
+approval. Storage failures still retain the original retry path without acknowledging the login.
+Admission/content approval enforce their own authority and deadlines.
 
 ## Focused evidence and limits
 
@@ -93,6 +95,6 @@ node --test --test-timeout=30000 test/account-enrollment/*.test.mjs test/account
 node node_modules/typescript/bin/tsc -b --noEmit
 ```
 
-Next: owned browser grant acquisition/renewal and exact-request retry, then bootstrap-host composition
-without the shared bearer and a quiet-point backup/cutover. Live notifications and the real two-device
+Browser grant acquisition/renewal and exact-request retry are implemented in phase 3c. Next is
+bootstrap-host composition without the shared bearer and a quiet-point backup/cutover. Live notifications and the real two-device
 walkthrough follow. No live upgrade, release campaign or broader lifecycle/recovery work was included.

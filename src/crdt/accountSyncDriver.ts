@@ -1,4 +1,4 @@
-import { type PrivateAccess } from '../account/privateAccess';
+import { type AccountAccess } from '../account/accountHttp';
 /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
 import type { ReceiveStep } from './accountReceiveDriver';
@@ -270,7 +270,7 @@ export function createSyncScheduler(options: {
 /** Private v9 outbound step, retaining v8's byte retry with explicit paused outcomes. */
 export async function driveOutboundStep(
   ops: DriverOperations,
-  token: PrivateAccess,
+  token: AccountAccess,
   gate: () => DriverGate,
 ): Promise<OutboundStep> {
   let status = await ops.deliveryStatus();
