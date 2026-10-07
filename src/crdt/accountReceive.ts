@@ -1,3 +1,4 @@
+import { isPrivateAccess, type PrivateAccess } from '../account/privateAccess';
 import { readJoinedAccount, joinedPayload, joinedKeys } from './joinedAccount';
 import { privateDiscoveryPost } from '../account/privateDiscoveryHttp';
 import {
@@ -318,7 +319,7 @@ async function openAccountReceiveOwner(
   };
   // Prepare in order, wait under the same lifetime outside the storage tail, then let the
   // admission FIFO verify this exact request against fresh authority and prefix before commit.
-  const fetchPage = async (operatorToken: string) => {
+  const fetchPage = async (operatorToken: PrivateAccess) => {
     let request: Bytes | undefined,
       page: Bytes | null = null;
     let oversized = false;
@@ -590,7 +591,7 @@ async function openAccountReceiveOwner(
   let discoveryFlight:
     | Promise<{ kind: 'adopted' | 'unchanged' | 'unknown' | 'paused' }>
     | undefined;
-  const refreshAuthority = (token: string, force = false) => {
+  const refreshAuthority = (token: PrivateAccess, force = false) => {
     if (discoveryFlight) return discoveryFlight;
     const work = runNetworkTask(async (network) => {
       if (!composed) throw Error('Discovery requires the composed owner');
@@ -791,12 +792,12 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
 
 async function openReceivingWorkspace(
   input: AccountWorkspaceOptions,
-  operatorToken?: string,
+  operatorToken?: PrivateAccess,
   composed = false,
   joined = false,
 ) {
   const driven = operatorToken !== undefined;
-  if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
+  if (driven && !isPrivateAccess(operatorToken))
     throw Error('Invalid private operator token');
   let gate: () => DriverGate = () => 'closed';
   const options = {
@@ -861,7 +862,7 @@ async function openReceivingWorkspace(
     carrier.beforeRelease?.(async () => {
       await flight?.catch(() => {});
     });
-    const receiveNext = (operatorToken: string) => {
+    const receiveNext = (operatorToken: PrivateAccess) => {
       if (carrier.signal.aborted)
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
@@ -1072,9 +1073,9 @@ export const openOwnedReceivingAccountWorkspace = (input: AccountWorkspaceOption
 /** Private polling receiver. Raw request/page operations remain internal to this composition. */
 export async function openOwnedPollingAccountWorkspace(
   input: AccountWorkspaceOptions,
-  operatorToken: string,
+  operatorToken: PrivateAccess,
 ) {
-  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  if (!isPrivateAccess(operatorToken)) throw Error('Private operator token required');
   const result = await openReceivingWorkspace(input, operatorToken);
   if (!result.receiver) throw Error('Missing receive polling ownership');
   const { prepareRead: _prepare, receivePage: _receive, receiveNext: _next, ...owned } = result;
@@ -1084,10 +1085,10 @@ export async function openOwnedPollingAccountWorkspace(
 /** One durable owner for this certified publisher and all eligible inbound streams. */
 export async function openOwnedSyncingAccountWorkspace(
   input: AccountWorkspaceOptions,
-  operatorToken: string,
+  operatorToken: PrivateAccess,
   joined = false,
 ) {
-  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  if (!isPrivateAccess(operatorToken)) throw Error('Private operator token required');
   const result = await openReceivingWorkspace(input, operatorToken, true, joined);
   if (!result.sync || !result.outbound) throw Error('Missing outbound composition');
   const {

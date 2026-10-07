@@ -1,6 +1,7 @@
 import { CONTENT_CHECKPOINT_LIMIT } from '../account-protocol/contentCheckpoint.ts';
 /** Loopback-only product development service. Uses the existing owners; never a deployment entry. */
-import { createServer } from 'vite';
+import { createServer as createHttpServer } from 'node:http';
+import { packagedApplication } from './lib/packaged-application.mjs';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -78,133 +79,180 @@ const deliveryRoutes = new Map([
   ['/account/delivery/read', (body) => authority.readAccepted(core, body)],
   ['/account/delivery/read-v2', (body) => authority.readInbound(core, body)],
 ]);
-const server = await createServer({
-  configLoader: 'runner',
-  cacheDir: `node_modules/.vite-account-setup-${port}`,
-  define: { __ACCOUNT_SETUP_CONFIG__: JSON.stringify({ pin, token }) },
-  server: {
-    host: '127.0.0.1',
-    port,
-    strictPort: true,
-    hmr: liveUpdates,
-    ws: liveUpdates
-      ? origin.startsWith('https:')
-        ? {
-            protocol: 'wss',
-            host: new URL(origin).hostname,
-            clientPort: Number(new URL(origin).port || 443),
-          }
-        : {}
-      : false,
-    allowedHosts: [new URL(origin).hostname],
-    open: false,
-    fs: {
-      deny: [
-        '.env',
-        '.env.*',
-        '*.{crt,pem,key,p12,pfx,cer,der}',
-        '.npmrc',
-        '.yarnrc.yml',
-        '**/.git/**',
-        '**/.dev/**',
-        '**/*.sqlite*',
-        directory + '/**',
-      ],
+const middleware = async (request, response, next) => {
+  if (request.headers.host !== new URL(origin).host) {
+    response.writeHead(403).end();
+    return;
+  }
+  const prefix = '/__account-setup/';
+  const delivery = deliveryRoutes.get(request.url);
+  const discovery = request.url === '/account/authority/discover';
+  if (!delivery && !discovery && !request.url?.startsWith(prefix)) return next();
+  response.setHeader('Cache-Control', 'no-store');
+  response.setHeader('Content-Type', 'application/json');
+  response.setHeader('X-Content-Type-Options', 'nosniff');
+  const send = (status, body) => response.writeHead(status).end(JSON.stringify(body));
+  if (['/__account-setup/config', '/__account-setup/access'].includes(request.url)) {
+    // Private adapter bootstrap, not an account session. Like the dev shell, this
+    // is available only at this loopback/Tailscale origin; no cross-origin grant.
+    if (
+      request.method !== 'POST' ||
+      request.headers.origin !== origin ||
+      request.headers['content-type'] !== 'application/json'
+    )
+      return void send(403, { ok: false, refusal: 'malformed' });
+    let length = 0;
+    for await (const chunk of request) {
+      length += chunk.length;
+      if (length > 64) return void send(413, { ok: false, refusal: 'malformed' });
+    }
+    return void send(200, { v: 1, pin, ...(request.url.endsWith('/access') ? { token } : {}) });
+  }
+  const supplied = request.headers.authorization?.replace(/^Bearer /, '') ?? '';
+  if (
+    request.method !== 'POST' ||
+    request.headers.origin !== origin ||
+    request.headers['content-type'] !==
+      (delivery ? 'application/octet-stream' : 'application/json') ||
+    Buffer.byteLength(supplied) !== Buffer.byteLength(token) ||
+    !timingSafeEqual(Buffer.from(supplied), Buffer.from(token))
+  ) {
+    send(403, { ok: false, refusal: 'malformed' });
+    return;
+  }
+  const route = delivery
+    ? request.url
+    : discovery
+      ? 'authority/discover'
+      : request.url.slice(prefix.length);
+  const operation = delivery ?? routes.get(route);
+  if (!operation) return void send(404, { ok: false, refusal: 'malformed' });
+  try {
+    const chunks = [];
+    let size = 0;
+    for await (const chunk of request) {
+      size += chunk.length;
+      if (
+        size >
+        (delivery
+          ? route === '/account/delivery/submit'
+            ? SUBMIT_BODY_LIMIT
+            : READ_REQUEST_LIMIT
+          : route === 'content/checkpoint'
+            ? CONTENT_CHECKPOINT_LIMIT
+            : route.startsWith('promotion/')
+              ? ADMISSION_LIMIT
+              : route === 'ceremony/transfer'
+                ? CONTENT_DELIVERY_LIMIT
+                : route === 'ceremony/exchange'
+                  ? CEREMONY_RELAY_LIMIT
+                  : route === 'ceremony/bootstrap' ||
+                      route === 'authority/discover' ||
+                      route === 'enrollment/admit'
+                    ? 4096
+                    : route.startsWith('enrollment/')
+                      ? ENROLLMENT_REQUEST_LIMIT
+                      : 131072)
+      ) {
+        send(413, { ok: false, refusal: 'malformed' });
+        return;
+      }
+      chunks.push(chunk);
+    }
+    const bytes = Buffer.concat(chunks);
+    const result = await operation(
+      delivery ? new Uint8Array(bytes) : JSON.parse(bytes.toString('utf8')),
+    );
+    if (delivery) {
+      if (result.kind === 'decision') {
+        response.setHeader('Content-Type', 'application/octet-stream');
+        response.writeHead(200).end(result.bytes);
+      } else send(409, { v: 1, kind: 'unknown', reason: result.reason });
+      return;
+    }
+    send(result?.ok === false ? 409 : 200, result);
+  } catch {
+    send(400, { ok: false, refusal: 'malformed' });
+  }
+};
+const packaged = process.env.ACCOUNT_SETUP_DIST;
+let server;
+if (packaged) {
+  const serve = packagedApplication(packaged);
+  const http = createHttpServer((request, response) => {
+    void middleware(request, response, () => serve(request, response)).catch(() => {
+      if (!response.headersSent) response.writeHead(400);
+      response.end();
+    });
+  });
+  await new Promise((resolve, reject) => {
+    http.once('error', reject);
+    http.listen(port, '127.0.0.1', resolve);
+  });
+  server = {
+    close: () =>
+      new Promise((resolve) => {
+        http.close(resolve);
+        http.closeIdleConnections();
+      }),
+  };
+} else {
+  const { createServer } = await import('vite');
+  server = await createServer({
+    configLoader: 'runner',
+    cacheDir: `node_modules/.vite-account-setup-${port}`,
+    define: { __ACCOUNT_SETUP_CONFIG__: JSON.stringify({ pin, token }) },
+    server: {
+      host: '127.0.0.1',
+      port,
+      strictPort: true,
+      hmr: liveUpdates,
+      ws: liveUpdates
+        ? origin.startsWith('https:')
+          ? {
+              protocol: 'wss',
+              host: new URL(origin).hostname,
+              clientPort: Number(new URL(origin).port || 443),
+            }
+          : {}
+        : false,
+      allowedHosts: [new URL(origin).hostname],
+      open: false,
+      fs: {
+        deny: [
+          '.env',
+          '.env.*',
+          '*.{crt,pem,key,p12,pfx,cer,der}',
+          '.npmrc',
+          '.yarnrc.yml',
+          '**/.git/**',
+          '**/.dev/**',
+          '**/*.sqlite*',
+          directory + '/**',
+        ],
+      },
     },
-  },
-  plugins: [
-    {
-      name: 'private-account-setup',
-      transformIndexHtml: {
-        order: 'pre',
-        handler(html, context) {
-          if (!['/index.html', '/local.html'].includes(context.path)) return html;
-          return html.replace(
-            /src="\/src\/(?:main|local)\.tsx"/,
-            'src="/private/account-setup.tsx"',
-          );
+    plugins: [
+      {
+        name: 'private-account-setup',
+        transformIndexHtml: {
+          order: 'pre',
+          handler(html, context) {
+            if (!['/index.html', '/local.html'].includes(context.path)) return html;
+            return html.replace(
+              /src="\/src\/(?:main|local)\.tsx"/,
+              'src="/private/account-setup.tsx"',
+            );
+          },
+        },
+        configureServer(vite) {
+          vite.middlewares.use(middleware);
         },
       },
-      configureServer(vite) {
-        vite.middlewares.use(async (request, response, next) => {
-          if (request.headers.host !== new URL(origin).host) {
-            response.writeHead(403).end();
-            return;
-          }
-          const prefix = '/__account-setup/';
-          const delivery = deliveryRoutes.get(request.url);
-          if (!delivery && !request.url?.startsWith(prefix)) return next();
-          response.setHeader('Cache-Control', 'no-store');
-          response.setHeader('Content-Type', 'application/json');
-          response.setHeader('X-Content-Type-Options', 'nosniff');
-          const send = (status, body) => response.writeHead(status).end(JSON.stringify(body));
-          const supplied = request.headers.authorization?.replace(/^Bearer /, '') ?? '';
-          if (
-            request.method !== 'POST' ||
-            request.headers.origin !== origin ||
-            request.headers['content-type'] !==
-              (delivery ? 'application/octet-stream' : 'application/json') ||
-            Buffer.byteLength(supplied) !== Buffer.byteLength(token) ||
-            !timingSafeEqual(Buffer.from(supplied), Buffer.from(token))
-          ) {
-            send(403, { ok: false, refusal: 'malformed' });
-            return;
-          }
-          const route = delivery ? request.url : request.url.slice(prefix.length);
-          const operation = delivery ?? routes.get(route);
-          if (!operation) return void send(404, { ok: false, refusal: 'malformed' });
-          try {
-            const chunks = [];
-            let size = 0;
-            for await (const chunk of request) {
-              size += chunk.length;
-              if (
-                size >
-                (delivery
-                  ? route === '/account/delivery/submit'
-                    ? SUBMIT_BODY_LIMIT
-                    : READ_REQUEST_LIMIT
-                  : route === 'content/checkpoint'
-                    ? CONTENT_CHECKPOINT_LIMIT
-                    : route.startsWith('promotion/')
-                      ? ADMISSION_LIMIT
-                      : route === 'ceremony/transfer'
-                        ? CONTENT_DELIVERY_LIMIT
-                        : route === 'ceremony/exchange'
-                          ? CEREMONY_RELAY_LIMIT
-                          : route === 'ceremony/bootstrap' ||
-                              route === 'authority/discover' ||
-                              route === 'enrollment/admit'
-                            ? 4096
-                            : route.startsWith('enrollment/')
-                              ? ENROLLMENT_REQUEST_LIMIT
-                              : 131072)
-              ) {
-                send(413, { ok: false, refusal: 'malformed' });
-                return;
-              }
-              chunks.push(chunk);
-            }
-            const bytes = Buffer.concat(chunks);
-            const result = await operation(
-              delivery ? new Uint8Array(bytes) : JSON.parse(bytes.toString('utf8')),
-            );
-            if (delivery) {
-              if (result.kind === 'decision') {
-                response.setHeader('Content-Type', 'application/octet-stream');
-                response.writeHead(200).end(result.bytes);
-              } else send(409, { v: 1, kind: 'unknown', reason: result.reason });
-              return;
-            }
-            send(result?.ok === false ? 409 : 200, result);
-          } catch {
-            send(400, { ok: false, refusal: 'malformed' });
-          }
-        });
-      },
-    },
-  ],
-});
+    ],
+  });
+  await server.listen();
+}
 let closing = false;
 async function close() {
   if (closing) return;
@@ -216,8 +264,7 @@ async function close() {
 }
 process.once('SIGINT', () => void close());
 process.once('SIGTERM', () => void close());
-await server.listen();
-console.log(`Account setup development: ${origin}/private/account-setup.html`);
+console.log(`Account ${packaged ? 'packaged development' : 'setup development'}: ${origin}/`);
 console.log(
   `Live updates ${liveUpdates ? 'enabled' : 'disabled; refresh explicitly for code changes'}.`,
 );

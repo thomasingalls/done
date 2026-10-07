@@ -104,8 +104,10 @@ it('uses the fixed v2 route, no ambient credentials or redirects, and refuses in
     credentials: 'omit',
     redirect: 'error',
     cache: 'no-store',
-    headers: { ...headers, Authorization: 'Bearer ' + token },
   });
+  const sentHeaders = new Headers(fetch.mock.calls[0]![1]?.headers);
+  expect(sentHeaders.get('Authorization')).toBe('Bearer ' + token);
+  expect(sentHeaders.get('Content-Type')).toBe('application/octet-stream');
   const controller = new AbortController();
   controller.abort();
   expect(await send(controller.signal)).toBeNull();

@@ -1,7 +1,7 @@
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { rememberedAccounts, isSetupSlot, type SetupConfig } from '../account/firstDeviceSetup';
+import { rememberedAccounts, isSetupSlot, type SetupConfig } from '../account/setupProgress';
 import {
   createDeviceEnrollment,
   pendingDeviceSlot,

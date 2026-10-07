@@ -1,3 +1,4 @@
+import { type PrivateAccess } from './privateAccess';
 /** Certified checkpoint + ordinary inbound stream, retained as one factor-sealed reader tuple. */
 import { same, semanticMessage } from '../../account-protocol/admission';
 import { contentDeliveryHash } from '../../account-protocol/contentDelivery';
@@ -51,7 +52,7 @@ export async function openApprovedWriting(
   a: CheckpointAuthority,
   input: {
     assert: LocalPasskey;
-    token: string;
+    token: PrivateAccess;
     signal: AbortSignal;
     save(): Promise<void>;
     request(route: string, value: unknown): Promise<any>;

@@ -1,3 +1,4 @@
+import { type PrivateAccess } from '../account/privateAccess';
 /** Private receive polling. Runtime timers and observations never supply receive authority. */
 import type { DriverClock, DriverGate } from './accountDriver';
 export const RECEIVE_POLL_MS = 5000;
@@ -188,12 +189,12 @@ export function createReceiveScheduler(options: {
 }
 export interface ReceiveDriverOperations {
   receiveStatus(): Promise<{ state: 'ready' | 'conflict'; receivedThrough: number }>;
-  receiveNext(token: string): Promise<{ kind: string; reason?: unknown }>;
+  receiveNext(token: PrivateAccess): Promise<{ kind: string; reason?: unknown }>;
 }
 /** A transport return cannot advance progress. Only the current authenticated durable census can. */
 export async function driveReceiveStep(
   ops: ReceiveDriverOperations,
-  token: string,
+  token: PrivateAccess,
   gate: () => DriverGate,
 ): Promise<ReceiveStep> {
   const before = await ops.receiveStatus();

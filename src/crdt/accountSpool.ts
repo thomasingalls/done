@@ -1,3 +1,4 @@
+import { isPrivateAccess, type PrivateAccess } from '../account/privateAccess';
 import { createDeliveryScheduler, driveDeliveryStep, type DriverGate } from './accountDriver';
 /** Private v7 owner: durable allocation, distinct invocation grants, exact persisted v2 wire. No sender. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
@@ -29,10 +30,10 @@ import type { prepareAccountCustody } from './custody';
 async function openSpoolWorkspace(
   input: AccountWorkspaceOptions,
   deliveryMode: boolean,
-  operatorToken?: string,
+  operatorToken?: PrivateAccess,
 ) {
   const driven = operatorToken !== undefined;
-  if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
+  if (driven && !isPrivateAccess(operatorToken))
     throw Error('Invalid private operator token');
   const options = {
     ...captureAccountOptions(input),
@@ -359,9 +360,9 @@ export async function openOwnedAccountDeliveryWorkspace(input: AccountWorkspaceO
 /** Private automatic sender. Mutating publication primitives stay inside this lifecycle composition. */
 export async function openOwnedAccountSendingWorkspace(
   input: AccountWorkspaceOptions,
-  operatorToken: string,
+  operatorToken: PrivateAccess,
 ) {
-  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  if (!isPrivateAccess(operatorToken)) throw Error('Private operator token required');
   const result = await openSpoolWorkspace(input, true, operatorToken);
   if (!result.driver || !result.deliveryStatus) throw Error('Missing sending composition');
   const {

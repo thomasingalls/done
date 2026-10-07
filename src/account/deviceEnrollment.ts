@@ -1,3 +1,4 @@
+import { privateServiceFetch } from './privateAccess';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
@@ -168,9 +169,9 @@ export function createDeviceEnrollment(
   const guard = () => lifetime.signal.throwIfAborted();
   const request = async (route: string, body: unknown): Promise<any> => {
     guard();
-    const response = await fetch('/__account-setup/' + route, {
+    const response = await privateServiceFetch(pin, config.token, '/__account-setup/' + route, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + config.token },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
       signal: lifetime.signal,
     });

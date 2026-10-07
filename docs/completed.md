@@ -9821,3 +9821,22 @@ qualification result. The existing automated evidence covers the separate offlin
 cases. The bounded experiential milestone is complete; stop for operator use. Existing transitional
 labels (**Device connection**, **Unlock enrollment**) and the duplicate first-activation passkey prompt
 remain usability follow-ups, not silently changed product decisions. Release qualification stays paused.
+
+
+## 2026-10-07 — Packaged account serving and renewable private access
+
+The ordinary compiled application now hosts the existing splash/chooser/account router when served
+with the private account backend. `pnpm serve:account` serves the immutable `dist` inventory alongside
+the same retained SQLite owners, with loopback/Tailscale restrictions and no Vite runtime. Existing
+private links remain routable. Route-loaded editor/ceremony chunks are included in the full precache.
+Public pin discovery is retained locally; adapter access remains in memory, renews after a 403, checks
+the same service pin and retries the original prepared bytes once. A pin change refuses before sending
+account bytes. This is private adapter access, not public account-session infrastructure.
+
+Validation: compiled signup/invitation plus real service restart without refreshing the client passes;
+49 focused access/HTTP/scheduler tests pass; TypeScript, build, 350 KiB initial-JS budget and origin scan
+pass. Initial splash/chooser JS is 94.9 KiB gzip. Native checks use disposable state. The system pnpm
+launcher could not verify/download the pinned manager under restricted networking; checks used the
+already-installed TypeScript/Vite/Vitest/Playwright executables directly. No dependencies changed.
+Cold offline account startup and update continuity follow in separate bounded phases. Live preview
+serving remains unchanged at this checkpoint; no release-validation campaign resumed.

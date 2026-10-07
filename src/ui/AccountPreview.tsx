@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import {
   createBrowserHistory,
   createRootRoute,
@@ -14,11 +14,14 @@ import {
   isSetupSlot,
   rememberedAccounts,
   type SetupConfig,
-} from '../account/firstDeviceSetup';
-import { Setup } from './AccountSetupApp';
-import { AccountEnrollmentApp } from './AccountEnrollmentApp';
+} from '../account/setupProgress';
+const Setup = lazy(() => import('./AccountSetupApp').then((module) => ({ default: module.Setup })));
+// Device connection is loaded on that route; its assets are still precached for offline navigation.
+const AccountEnrollmentApp = lazy(() =>
+  import('./AccountEnrollmentApp').then((module) => ({ default: module.AccountEnrollmentApp })),
+);
 import { AccountSignIn } from './AccountSignIn';
-import { LocalApp } from './LocalApp';
+const LocalApp = lazy(() => import('./LocalApp').then((module) => ({ default: module.LocalApp })));
 import { Welcome } from './Welcome';
 import { PreviewNavigationContext } from './ceremonyNavigation';
 
@@ -163,7 +166,9 @@ export async function createAccountPreview(config: SetupConfig) {
       <PreviewNavigationContext value={context}>
         <div className="account-development">
           <aside className="setup-dev-note">Account preview · encrypted two-device sync</aside>
-          <Outlet />
+          <Suspense fallback={<p role="status">Opening…</p>}>
+            <Outlet />
+          </Suspense>
         </div>
       </PreviewNavigationContext>
     );

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { rememberedAccounts, type SetupConfig } from '../account/firstDeviceSetup';
+import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';

@@ -1,3 +1,4 @@
+import { type PrivateAccess } from '../account/privateAccess';
 import type { VerificationMemo } from './verificationMemo';
 import type { OpenedRecord } from './contentRecord';
 import {
@@ -58,7 +59,7 @@ export interface DeliveryContext {
   ): Promise<T>;
 }
 const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
-async function postSubmission(pin: AuthorityPin, token: string, body: Bytes, signal: AbortSignal) {
+async function postSubmission(pin: AuthorityPin, token: PrivateAccess, body: Bytes, signal: AbortSignal) {
   let oversized = false;
   const response = await privateDeliveryPost(
     pin,
@@ -205,7 +206,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
       for (const r of rows) r.bytes.fill(0);
     }
   };
-  const submitOwned = (operatorToken: string) =>
+  const submitOwned = (operatorToken: PrivateAccess) =>
     context.network!(async (network) => {
       const prepared = await withState(async (task, _owner, _route, _c, s) => {
         if (publicationState(s) !== 'ready')
@@ -297,7 +298,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
           wire.fill(0);
         }
       }),
-    submitPending: (operatorToken: string) =>
+    submitPending: (operatorToken: PrivateAccess) =>
       context.network
         ? submitOwned(operatorToken)
         : withState(async (task, owner, route, c, s) => {
@@ -321,7 +322,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
             if (!answer) return { kind: 'unknown' as const, recorded: false };
             return record(task, owner, route, c, s, position, answer);
           }),
-    readAcceptedPage: (operatorToken: string, after = 0, limit = 8) =>
+    readAcceptedPage: (operatorToken: PrivateAccess, after = 0, limit = 8) =>
       withState(async (task, _owner, route, c, s) => {
         if (!Number.isSafeInteger(after) || after < 0 || after > s.acceptedThrough)
           throw Error('Read cursor requires retained accepted prefix');

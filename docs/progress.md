@@ -42,53 +42,37 @@ that is no longer active.
 
 ---
 
-## Product integration: second-device editing and two-way delivery (`L-1`)
+## Product integration: packaged account application (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: writable activation, per-device publishing and automatic two-way delivery
-blocks_on: none for this bounded development milestone
+status: in flight
+scope: compiled account serving, offline reopening, update continuity
+blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Implemented and tested:** the approved second device opens the ordinary durable editor and exchanges
-original encrypted edits with the first device. Its authenticated activation resumes after interruption,
-keeps local custody distinct from account transport keys, and fences older writers. The service keeps
-independent publishing histories; receive evidence/cursors are scoped to their certified publisher.
-Existing encrypted journal, capture, spool, ordered receive and admission machinery owns both editors.
+The live two-device development milestone is complete (`d63634a7`, walkthrough `c3001814`).
+The operator authorized three bounded packaged-application phases, with signed intermediate commits.
 
-**Evidence:** 12 enrollment browser tests, 29 focused protocol/service tests, five upgrade tests and
-34 inbound codec tests pass, plus TypeScript and scoped lint/format. Targeted final browser checks
-include retained-history activation, an actual installation abort, old-writer exclusion, tampered
-activation refusal, byte-identical lost-reply retry, concurrent offline additions/reconnect and cold
-reopening on both devices. See [completed.md](./completed.md) and the updated
-[development continuation](./account-content-delivery-development.md). No release campaign ran.
+**Phase 1 complete:** the ordinary build can run the existing account router against the retained
+private service. Public service configuration is remembered for offline startup; private adapter access
+is acquired in memory and renewed once after an HTTP denial, with unchanged request bytes and an
+unchanged service pin. The Node host serves only an immutable compiled asset inventory; Vite is optional.
+Account setup, device connection and Local editor screens load on their routes and are all precached.
 
-**Preview:** `https://mbp.tail0e0d4.ts.net:8443/`, port 53219, retained state
-`.dev/account-enrollment-tailnet`, live updates disabled. Explicit schema 10→11 upgrade completed with
-backup `.dev/account-enrollment-tailnet/backups/schema-10-sKWBt4/`. Refresh existing tabs for the new
-client. Signed commits: `684f4f06` for durable opening, `d63634a7` for writable activation and two-way
-delivery. The live walkthrough used `d63634a7` on both devices.
+**Evidence:** one compiled-browser signup/invitation/restart check; 49 focused access, transport and
+scheduler tests; TypeScript; compiled budget and origin checks. Initial splash/chooser JavaScript is
+94.9 KiB gzip (350 KiB budget); editor and ceremony chunks load on navigation. The browser check also
+checks API access origin, source/state-file refusal and exclusion of API responses from the app cache.
 
-**Live result:** the existing disposable Firefox pair completed the walkthrough. B activated its
-editor from the retained read-only baseline; B→A and A→B day cards arrived automatically without
-refreshing. After locking, closing/restoring B's tab and selecting its saved connection in the chooser,
-one device code and one account passkey assertion reopened the original writing and both new cards.
-No implementation repair was needed. This is desktop/container evidence; physical-phone and
-full-process-crash/offline-PWA qualification remain distinct and unclaimed.
-
-**Next:** operator use and feedback. Stop this implementation slice here; no further integration or
-release-validation work starts automatically.
-
-**Limits / later work:** one generation and the current two-device epoch; activation checkpoints up to
-4 MiB. First activation currently asks for the passkey during both reader admission and editor unlock;
-later editor opens ask once. General checkpoint lifecycle, more devices/epochs, account recovery and
-revocation UX, packaged application integration and release qualification remain separate work. Stop
-at this experiential milestone rather than starting another integration or validation phase.
+**Next:** cold offline reopening and queued two-way delivery, then packaged update continuity.
+The live Tailscale preview has not yet been switched. Existing Local-only packaging remains supported.
+See [packaged account integration](./packaged-account-development.md). Production sessions, lifecycle
+completion and release qualification remain outside this work; the release campaign remains paused.
 
 ---
 

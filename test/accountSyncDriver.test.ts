@@ -133,6 +133,7 @@ it('outbound progress comes only from durable decisions and pending exact submis
       throw Error('must not sign');
     },
     submitPending: async (token) => {
+      if (typeof token !== 'string') throw Error('Expected fixture token');
       events.push(token);
       return { kind: 'accepted' };
     },

@@ -1,3 +1,4 @@
+import { type PrivateAccess } from '../account/privateAccess';
 /** Internal scheduler and owned-operation composition. Runtime status never authorizes a write. */
 export type DriverGate = 'ready' | 'offline' | 'local-storage' | 'closed';
 export type DriverBlock =
@@ -183,12 +184,12 @@ export interface DriverOperations {
   spoolStatus(): Promise<{ positions: { position: number; persisted: boolean }[] }>;
   prepareNextEnvelope(): Promise<{ position: number; bytes: Uint8Array } | null>;
   prepareSubmission(position: number): Promise<{ kind: string }>;
-  submitPending(token: string): Promise<{ kind: string }>;
+  submitPending(token: PrivateAccess): Promise<{ kind: string }>;
 }
 /** All reads, grants and commits below are the existing exclusive v8 owner methods. */
 export async function driveDeliveryStep(
   ops: DriverOperations,
-  token: string,
+  token: PrivateAccess,
   gate: () => DriverGate,
 ): Promise<DriverStep> {
   let status = await ops.deliveryStatus();
