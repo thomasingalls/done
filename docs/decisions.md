@@ -4218,3 +4218,26 @@ proofs, and preserves the existing atomic durable receive and ordered admission 
 local journal, source capture and network spool are reused. This is the bounded two-device development
 path, with focused retry/authority checks; it does not restart release qualification or introduce a
 new generalized migration/sync framework.
+
+
+## 2026-10-07 — remembered network login across Lock and its absolute lifetime
+
+The operator selects **preserve login when locking**: Lock workspace closes live connections and clears
+unlocked keys/access credentials, while the selected person's encrypted local custody retains the
+credential needed to resume network access after unlock. Sign out instead ends that installation's
+selected login and closes the person's local slot under PRD §6.6; it does not revoke the device or sign
+out another person or another device. Offline sign-out cannot claim server completion before an
+acknowledgement; local closure and disabled resumption do not wait for the service.
+
+The operator selects **30 days from sign-in** as the maximum age of remembered network login before a
+fresh online passkey check. This is an absolute service-side deadline, not an inactivity timeout; use,
+locking, reopening and background renewal cannot extend it. Network expiry leaves otherwise-eligible
+offline opening, reading and durable editing available. Existing local factor/verifier requirements
+remain distinct from online login. No additional idle-expiry policy is introduced in this increment.
+
+The recommended construction and bounded implementation sequence are in
+[account-sessions-subscriptions.md](./account-sessions-subscriptions.md): account-specific factor-sealed
+renewal, in-memory short access, stateful revocation and scoped fetch/SSE wakeups into authenticated
+catch-up. These are design recommendations, not running-service capabilities. Prompt consolidation,
+broader device/recovery journeys, Redis deployment and public hosting remain separate. Release
+validation stays paused.

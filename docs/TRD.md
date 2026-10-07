@@ -1004,6 +1004,12 @@ things follow that are easy to get wrong individually:
   they do not open the local store (§13.4).
 - An expired account session degrades to "sync is offline", never to "the app is locked".
 
+The 2026-10-07 product decision sets a remembered network login's absolute deadline to 30 days from
+sign-in. Lock preserves resumability after local unlock; sign-out disables it. Background renewal cannot
+move that deadline. The [session/subscription design](./account-sessions-subscriptions.md) specifies the
+implementation sequence. The opt-in session core is implemented; application session integration and
+live notifications remain pending.
+
 Persistent local reads require factor unlock at cold start. This is a local ceremony, not a network
 wait (§13.3); no account session is required for Local.
 

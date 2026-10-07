@@ -1,0 +1,579 @@
+import type { DatabaseSync } from 'node:sqlite';
+import { randomBytes, timingSafeEqual } from 'node:crypto';
+import { parseAuthorityPin } from '../account-protocol/authority.ts';
+import {
+  SESSION_ACCESS_MS,
+  SESSION_LIFETIME_MS,
+  SESSION_REQUEST_LIMIT,
+  SESSION_RETRY_MS,
+  type SessionIssued,
+  type SessionOperation,
+  type SessionRefusal,
+  type SessionResult,
+} from '../account-protocol/session.ts';
+import { assertion, type Policy, type StoredCredential } from './webauthn.ts';
+import { bytes, canonical, fields, fresh, hash, object, retryHash } from './protocol.ts';
+import { SessionCustody, type SessionConfiguration } from './session-custody.ts';
+
+export const SESSION_SCHEMA = `
+  CREATE TABLE session_custody (id INTEGER PRIMARY KEY CHECK(id=1), context TEXT NOT NULL,
+    salt TEXT NOT NULL, key_check TEXT NOT NULL, seal_counter INTEGER NOT NULL CHECK(seal_counter>=0 AND seal_counter<=4294967295));
+  CREATE TABLE session_attempts (id TEXT PRIMARY KEY, retry_hash TEXT UNIQUE NOT NULL,
+    account_id TEXT NOT NULL, challenge TEXT UNIQUE NOT NULL, expires INTEGER NOT NULL,
+    state TEXT NOT NULL CHECK(state IN ('open','issued','cancelled','expired')), proof_hash TEXT);
+  CREATE TABLE network_sessions (id TEXT PRIMARY KEY, attempt_id TEXT UNIQUE NOT NULL REFERENCES session_attempts(id),
+    account_id TEXT NOT NULL REFERENCES accounts(id), credential_id TEXT NOT NULL REFERENCES credentials(id),
+    credential_binding TEXT NOT NULL, issued_at INTEGER NOT NULL, expires_at INTEGER NOT NULL,
+    state TEXT NOT NULL CHECK(state IN ('active','revoked','expired')),
+    renewal_hash TEXT UNIQUE NOT NULL, revoke_hash TEXT UNIQUE NOT NULL,
+    retry_expires INTEGER NOT NULL, result_seal TEXT);
+`;
+export const SESSION_LIMITS = Object.freeze({
+  attempts: 4096,
+  sessions: 1024,
+  perAccount: 32,
+  accessPerSession: 8,
+});
+type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation: string) => void;
+type Denial = { ok: false; refusal: SessionRefusal };
+const no = (refusal: SessionRefusal): Denial => ({ ok: false, refusal });
+interface Attempt {
+  id: string;
+  retry_hash: string;
+  account_id: string;
+  challenge: string;
+  expires: number;
+  state: 'open' | 'issued' | 'cancelled' | 'expired';
+  proof_hash: string | null;
+}
+interface Session {
+  id: string;
+  attempt_id: string;
+  account_id: string;
+  credential_id: string;
+  credential_binding: string;
+  issued_at: number;
+  expires_at: number;
+  state: 'active' | 'revoked' | 'expired';
+  renewal_hash: string;
+  revoke_hash: string;
+  retry_expires: number;
+  result_seal: string | null;
+}
+interface Access {
+  sessionId: string;
+  expires: number;
+}
+export interface SessionIdentity {
+  accountId: string;
+  credentialId: string;
+  sessionId: string;
+}
+const sameHash = (a: string, b: string) =>
+  timingSafeEqual(Buffer.from(a, 'hex'), Buffer.from(b, 'hex'));
+const credentialBinding = (c: StoredCredential) =>
+  hash(
+    canonical({
+      id: c.id,
+      accountId: c.account_id,
+      state: c.state,
+      spki: c.spki,
+      publicKey: Buffer.from(c.public_key).toString('base64url'),
+    }),
+  );
+
+/** Owned by AccountCore's connection. Never opened by the current development adapter. */
+export class AccountSessions {
+  #db: DatabaseSync;
+  #policy: Policy;
+  #custody: SessionCustody;
+  #now: () => number;
+  #hook: Hook;
+  #closed = false;
+  #access = new Map<string, Access>();
+  #sweep: ReturnType<typeof setInterval>;
+  constructor(
+    db: DatabaseSync,
+    policy: Policy,
+    config: SessionConfiguration,
+    now: () => number,
+    hook: Hook,
+    initialize = false,
+  ) {
+    this.#db = db;
+    this.#policy = { ...policy };
+    this.#now = now;
+    this.#hook = hook;
+    const pin = parseAuthorityPin(config.pin);
+    if (pin.origin !== policy.origin || pin.rpId !== policy.rpId)
+      throw Error('Session service policy changed');
+    const row = db.prepare('SELECT * FROM session_custody WHERE id=1').get();
+    if (!row && !initialize) throw Error('Missing retained session custody');
+    const salt = row ? String(row.salt) : randomBytes(32).toString('hex');
+    this.#custody = new SessionCustody({ ...config, pin }, salt);
+    try {
+      if (row) {
+        if (row.context !== this.#custody.context) throw Error('Session service identity changed');
+        this.#custody.check(String(row.key_check));
+      } else
+        db.prepare('INSERT INTO session_custody VALUES (1,?,?,?,0)').run(
+          this.#custody.context,
+          salt,
+          this.#custody.tag(),
+        );
+    } catch (cause) {
+      this.#custody.close();
+      throw cause;
+    }
+    this.#sweep = setInterval(() => this.sweep(), 60000);
+    this.#sweep.unref();
+  }
+  close(): void {
+    this.#closed = true;
+    clearInterval(this.#sweep);
+    this.#access.clear();
+    this.#custody.close();
+  }
+  /** Expired retries are unusable immediately; idle processes also retire their database copies. */
+  sweep(): { ok: true } | Denial {
+    return this.#transaction('sweep', () => {
+      this.#prune(this.#time());
+      return { ok: true };
+    });
+  }
+  #time(): number {
+    const now = this.#now();
+    if (
+      !Number.isSafeInteger(now) ||
+      now < 0 ||
+      now > Number.MAX_SAFE_INTEGER - SESSION_LIFETIME_MS - SESSION_RETRY_MS
+    )
+      throw Error('Invalid service clock');
+    return now;
+  }
+  #transaction<T>(op: string, work: () => T): T | Denial {
+    // A nested BEGIN failure must never roll back somebody else's transaction.
+    if (this.#closed || this.#db.isTransaction) return no('storage-unavailable');
+    try {
+      this.#db.exec('BEGIN IMMEDIATE');
+      const result = work();
+      if (result && typeof result === 'object' && 'then' in result)
+        throw Error('Async session transaction');
+      this.#hook('before-commit', 'session-' + op);
+      this.#db.exec('COMMIT');
+      this.#hook('after-commit', 'session-' + op);
+      return result;
+    } catch {
+      if (this.#db.isTransaction) this.#db.exec('ROLLBACK');
+      return no('storage-unavailable');
+    }
+  }
+  #prune(now: number): void {
+    this.#db
+      .prepare(
+        "UPDATE network_sessions SET state='expired',result_seal=NULL WHERE state='active' AND expires_at<=?",
+      )
+      .run(now);
+    this.#db
+      .prepare('UPDATE network_sessions SET result_seal=NULL WHERE retry_expires<=?')
+      .run(now);
+    this.#db
+      .prepare('DELETE FROM network_sessions WHERE expires_at<=?')
+      .run(now - SESSION_RETRY_MS);
+    this.#db
+      .prepare(`DELETE FROM session_attempts WHERE expires<=? AND
+      NOT EXISTS(SELECT 1 FROM network_sessions WHERE attempt_id=session_attempts.id)`)
+      .run(now - SESSION_RETRY_MS);
+    for (const [key, access] of this.#access) if (access.expires <= now) this.#access.delete(key);
+  }
+  #attempt(retry: unknown): Attempt | undefined {
+    return this.#db
+      .prepare('SELECT * FROM session_attempts WHERE retry_hash=?')
+      .get(retryHash(retry)) as unknown as Attempt | undefined;
+  }
+  #session(id: unknown): Session | undefined {
+    return this.#db
+      .prepare('SELECT * FROM network_sessions WHERE id=?')
+      .get(String(id)) as unknown as Session | undefined;
+  }
+  #credential(id: string): StoredCredential | undefined {
+    return this.#db.prepare('SELECT * FROM credentials WHERE id=?').get(id) as unknown as
+      | StoredCredential
+      | undefined;
+  }
+  #eligible(c: StoredCredential): boolean {
+    return (
+      c.state === 'confirmed' &&
+      this.#db.prepare('SELECT state FROM accounts WHERE id=?').get(c.account_id)?.state ===
+        'active'
+    );
+  }
+  #live(s: Session, now: number): boolean {
+    if (s.state !== 'active') return false;
+    const c = this.#credential(s.credential_id);
+    if (
+      s.expires_at <= now ||
+      !c ||
+      !this.#eligible(c) ||
+      credentialBinding(c) !== s.credential_binding
+    ) {
+      this.#db
+        .prepare('UPDATE network_sessions SET state=?,result_seal=NULL WHERE id=?')
+        .run(s.expires_at <= now ? 'expired' : 'revoked', s.id);
+      this.#dropAccess(s.id);
+      return false;
+    }
+    return true;
+  }
+  #dropAccess(id: string): void {
+    for (const [key, access] of this.#access) if (access.sessionId === id) this.#access.delete(key);
+  }
+  #binding(s: Session): string {
+    return canonical([
+      s.id,
+      s.attempt_id,
+      s.account_id,
+      s.credential_id,
+      s.credential_binding,
+      s.issued_at,
+      s.expires_at,
+      s.retry_expires,
+      s.renewal_hash,
+      s.revoke_hash,
+    ]);
+  }
+  #view(a: Attempt, now: number, proof?: string): SessionResult {
+    if (a.state === 'cancelled') return no('cancelled');
+    if (a.state === 'issued') {
+      if (proof === undefined) return no('retry-unavailable'); // begin never discloses issued credentials
+      if (proof !== a.proof_hash) return no('proof-conflict');
+      const s = this.#db
+        .prepare('SELECT * FROM network_sessions WHERE attempt_id=?')
+        .get(a.id) as unknown as Session | undefined;
+      if (!s || !this.#live(s, now)) return no('sign-in-required');
+      if (!s.result_seal || s.retry_expires <= now) return no('retry-unavailable');
+      return JSON.parse(this.#custody.open(s.result_seal, this.#binding(s))) as SessionIssued;
+    }
+    if (a.state === 'expired' || a.expires <= now) {
+      this.#db.prepare("UPDATE session_attempts SET state='expired' WHERE id=?").run(a.id);
+      return no('expired');
+    }
+    return {
+      ok: true,
+      stage: 'challenge',
+      attemptId: a.id,
+      expiresAt: a.expires,
+      options: {
+        challenge: a.challenge,
+        rpId: this.#policy.rpId,
+        timeout: SESSION_RETRY_MS,
+        userVerification: 'required',
+      },
+    };
+  }
+  begin(input: unknown): SessionResult {
+    if (!object(input) || !fields(input, ['accountId', 'retryKey'])) return no('malformed');
+    let account: string, retry: string;
+    try {
+      account = bytes(input.accountId, 32, 32).toString('base64url');
+      retry = retryHash(input.retryKey);
+    } catch {
+      return no('malformed');
+    }
+    return this.#transaction('begin', () => {
+      const now = this.#time();
+      this.#prune(now);
+      const prior = this.#db
+        .prepare('SELECT * FROM session_attempts WHERE retry_hash=?')
+        .get(retry) as unknown as Attempt | undefined;
+      if (prior)
+        return prior.account_id === account ? this.#view(prior, now) : no('request-conflict');
+      if (
+        Number(this.#db.prepare('SELECT COUNT(*) AS n FROM session_attempts').get()!.n) >=
+        SESSION_LIMITS.attempts
+      )
+        return no('capacity');
+      const id = fresh();
+      const challenge = Buffer.from(
+        hash(
+          canonical([
+            'done/account-session-login/v1',
+            this.#custody.context,
+            id,
+            account,
+            retry,
+            fresh(),
+          ]),
+        ),
+        'hex',
+      ).toString('base64url');
+      this.#db
+        .prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL)")
+        .run(id, retry, account, challenge, now + SESSION_RETRY_MS);
+      return this.#view(this.#attempt(input.retryKey)!, now);
+    });
+  }
+  async finish(input: unknown): Promise<SessionResult> {
+    let request: { retryKey: string; attemptId: string; response: Record<string, unknown> },
+      digest: string;
+    try {
+      const serialized = canonical(input);
+      if (Buffer.byteLength(serialized) > SESSION_REQUEST_LIMIT) return no('malformed');
+      const value: unknown = JSON.parse(serialized);
+      if (
+        !object(value) ||
+        !fields(value, ['retryKey', 'attemptId', 'response']) ||
+        !object(value.response)
+      )
+        return no('malformed');
+      bytes(value.attemptId, 32, 32);
+      retryHash(value.retryKey);
+      request = value as typeof request;
+      digest = hash(canonical(request.response));
+    } catch {
+      return no('malformed');
+    }
+    let credential: StoredCredential | undefined,
+      token = '',
+      challenge = '';
+    const inspect = (): SessionResult => {
+      const a = this.#attempt(request.retryKey);
+      if (!a || a.id !== request.attemptId) return no('unknown-attempt');
+      return this.#view(a, this.#time(), digest);
+    };
+    const checked = this.#transaction('inspect', () => {
+      const v = inspect();
+      if (!v.ok || v.stage !== 'challenge') return v;
+      const a = this.#attempt(request.retryKey)!;
+      credential = this.#credential(String(request.response.id));
+      if (!credential || !this.#eligible(credential) || credential.account_id !== a.account_id)
+        return no('invalid-proof');
+      token = credentialBinding(credential);
+      challenge = v.options.challenge;
+      return v;
+    });
+    if (!checked.ok || checked.stage !== 'challenge') return checked;
+    let counter: number;
+    try {
+      counter = await assertion(request.response, challenge, this.#policy, credential!);
+    } catch {
+      return no('invalid-proof');
+    }
+    try {
+      this.#hook('after-verify', 'session-finish');
+    } catch {
+      return no('storage-unavailable');
+    }
+    // Reserve in a separate committed transaction. An aborted issuance burns this nonce.
+    const reserved = this.#transaction('reserve', () => {
+      const v = inspect();
+      if (!v.ok || v.stage !== 'challenge') return v;
+      const row = this.#db.prepare('SELECT seal_counter FROM session_custody WHERE id=1').get()!;
+      const nonce = Number(row.seal_counter) + 1;
+      if (nonce > 0xffffffff) return no('capacity');
+      this.#db.prepare('UPDATE session_custody SET seal_counter=? WHERE id=1').run(nonce);
+      return { nonce };
+    });
+    if (!('nonce' in reserved)) return reserved;
+    return this.#transaction('finish', () => {
+      const v = inspect();
+      if (!v.ok || v.stage !== 'challenge') return v;
+      const current = this.#credential(credential!.id);
+      if (!current || !this.#eligible(current) || credentialBinding(current) !== token)
+        return no('invalid-proof');
+      const now = this.#time();
+      this.#prune(now);
+      const total = Number(this.#db.prepare('SELECT COUNT(*) AS n FROM network_sessions').get()!.n);
+      const count = Number(
+        this.#db
+          .prepare(
+            "SELECT COUNT(*) AS n FROM network_sessions WHERE account_id=? AND state='active'",
+          )
+          .get(current.account_id)!.n,
+      );
+      if (total >= SESSION_LIMITS.sessions || count >= SESSION_LIMITS.perAccount)
+        return no('capacity');
+      const result: SessionIssued = {
+        ok: true,
+        stage: 'issued',
+        sessionId: fresh(),
+        accountId: current.account_id,
+        credentialId: current.id,
+        issuedAt: now,
+        expiresAt: now + SESSION_LIFETIME_MS,
+        renewalToken: fresh(),
+        revokeToken: fresh(),
+      };
+      const s: Session = {
+        id: result.sessionId,
+        attempt_id: request.attemptId,
+        account_id: current.account_id,
+        credential_id: current.id,
+        credential_binding: token,
+        issued_at: now,
+        expires_at: result.expiresAt,
+        state: 'active',
+        renewal_hash: retryHash(result.renewalToken),
+        revoke_hash: retryHash(result.revokeToken),
+        retry_expires: now + SESSION_RETRY_MS,
+        result_seal: null,
+      };
+      const seal = this.#custody.seal(JSON.stringify(result), this.#binding(s), reserved.nonce);
+      this.#db
+        .prepare("INSERT INTO network_sessions VALUES (?,?,?,?,?,?,?,'active',?,?,?,?)")
+        .run(
+          s.id,
+          s.attempt_id,
+          s.account_id,
+          s.credential_id,
+          s.credential_binding,
+          s.issued_at,
+          s.expires_at,
+          s.renewal_hash,
+          s.revoke_hash,
+          s.retry_expires,
+          seal,
+        );
+      this.#db
+        .prepare("UPDATE session_attempts SET state='issued',proof_hash=? WHERE id=?")
+        .run(digest, request.attemptId);
+      this.#db.prepare('UPDATE credentials SET counter=? WHERE id=?').run(counter, current.id);
+      return result;
+    });
+  }
+  cancel(input: unknown): SessionResult {
+    if (!object(input) || !fields(input, ['retryKey', 'attemptId'])) return no('malformed');
+    try {
+      retryHash(input.retryKey);
+      bytes(input.attemptId, 32, 32);
+    } catch {
+      return no('malformed');
+    }
+    return this.#transaction('cancel', () => {
+      const a = this.#attempt(input.retryKey);
+      if (!a || a.id !== input.attemptId) return no('unknown-attempt');
+      this.#db.prepare("UPDATE session_attempts SET state='cancelled' WHERE id=?").run(a.id);
+      const s = this.#db.prepare('SELECT id FROM network_sessions WHERE attempt_id=?').get(a.id);
+      if (s) {
+        this.#db
+          .prepare("UPDATE network_sessions SET state='revoked',result_seal=NULL WHERE id=?")
+          .run(s.id);
+        this.#dropAccess(String(s.id));
+      }
+      return { ok: true, stage: 'cancelled' };
+    });
+  }
+  #secret(
+    input: unknown,
+    field: 'renewalToken' | 'revokeToken',
+  ): { id: string; digest: string } | null {
+    if (!object(input) || !fields(input, ['sessionId', field])) return null;
+    try {
+      return {
+        id: bytes(input.sessionId, 32, 32).toString('base64url'),
+        digest: retryHash(input[field]),
+      };
+    } catch {
+      return null;
+    }
+  }
+  acknowledge(input: unknown): SessionResult {
+    const value = this.#secret(input, 'renewalToken');
+    if (!value) return no('malformed');
+    return this.#transaction('acknowledge', () => {
+      const s = this.#session(value.id);
+      if (!s || !sameHash(value.digest, s.renewal_hash) || !this.#live(s, this.#time()))
+        return no('sign-in-required');
+      this.#db.prepare('UPDATE network_sessions SET result_seal=NULL WHERE id=?').run(s.id);
+      return { ok: true, stage: 'acknowledged' };
+    });
+  }
+  renew(input: unknown): SessionResult {
+    const value = this.#secret(input, 'renewalToken');
+    if (!value) return no('malformed');
+    const result = this.#transaction('renew', () => {
+      const now = this.#time();
+      this.#prune(now);
+      const s = this.#session(value.id);
+      if (!s || !sameHash(value.digest, s.renewal_hash) || !this.#live(s, now))
+        return no('sign-in-required');
+      const count = [...this.#access.values()].filter((a) => a.sessionId === s.id).length;
+      if (count >= SESSION_LIMITS.accessPerSession) return no('capacity');
+      return {
+        ok: true as const,
+        stage: 'access' as const,
+        sessionId: s.id,
+        accountId: s.account_id,
+        accessToken: fresh(),
+        expiresAt: Math.min(now + SESSION_ACCESS_MS, s.expires_at),
+      };
+    });
+    // Do not install a token before its validation transaction has completed.
+    if (result.ok)
+      this.#access.set(retryHash(result.accessToken), {
+        sessionId: result.sessionId,
+        expires: result.expiresAt,
+      });
+    return result;
+  }
+  revoke(input: unknown): SessionResult {
+    const value = this.#secret(input, 'revokeToken');
+    if (!value) return no('malformed');
+    return this.#transaction('revoke', () => {
+      const s = this.#session(value.id);
+      // Random IDs are never reused. A pruned/nonexistent session has no live grants.
+      if (!s) return { ok: true, stage: 'revoked' };
+      if (!sameHash(value.digest, s.revoke_hash)) return no('invalid-proof');
+      this.#db
+        .prepare("UPDATE network_sessions SET state='revoked',result_seal=NULL WHERE id=?")
+        .run(s.id);
+      this.#dropAccess(s.id);
+      return { ok: true, stage: 'revoked' };
+    });
+  }
+  /** Trusted synchronous service composition only. The identity is NOT a device/relay grant.
+   * Run after any async verification, at the actual mutation boundary, never just in middleware. */
+  withAccess<T extends { ok: boolean }>(
+    accessToken: unknown,
+    accountId: string,
+    work: (identity: SessionIdentity, db: DatabaseSync) => T,
+  ): T | Denial {
+    if (Object.prototype.toString.call(work) === '[object AsyncFunction]')
+      return no('storage-unavailable');
+    let token: string;
+    try {
+      token = retryHash(accessToken);
+      bytes(accountId, 32, 32);
+    } catch {
+      return no('access-required');
+    }
+    return this.#transaction('access', () => {
+      const now = this.#time(),
+        access = this.#access.get(token);
+      if (!access || access.expires <= now) return no('access-required');
+      const s = this.#session(access.sessionId);
+      if (!s || !this.#live(s, now)) return no('sign-in-required');
+      if (s.account_id !== accountId) return no('wrong-account');
+      return work(
+        { accountId: s.account_id, credentialId: s.credential_id, sessionId: s.id },
+        this.#db,
+      );
+    });
+  }
+  run(operation: SessionOperation, input: unknown): SessionResult | Promise<SessionResult> {
+    switch (operation) {
+      case 'begin':
+        return this.begin(input);
+      case 'finish':
+        return this.finish(input);
+      case 'cancel':
+        return this.cancel(input);
+      case 'acknowledge':
+        return this.acknowledge(input);
+      case 'renew':
+        return this.renew(input);
+      case 'revoke':
+        return this.revoke(input);
+    }
+  }
+}

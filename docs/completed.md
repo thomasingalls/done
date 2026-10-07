@@ -9971,3 +9971,62 @@ and `/tmp/done-account-app-7c2061ea.log`. The runbook records both commands and 
 both for an explicit offline schema upgrade. Separation phase 2 is complete; operator use can resume.
 The private access token remains a development transport capability; production sessions and public
 deployment remain separate, and release qualification stays paused.
+
+
+## 2026-10-07 — Account session and subscription design checkpoint
+
+Mapped the independent application's private transport renewal to the remaining real-session work.
+The operator chose to preserve resumable login through Lock and require a fresh online passkey after
+30 days from sign-in, without sliding renewal or interference with offline writing. Recorded those
+choices in decisions.md and PRD/TRD; account-sessions-subscriptions.md separates them from the proposed
+engineering construction and the current shared-token implementation.
+
+The design recommends factor-sealed per-slot renewal credentials, short in-memory access, durable
+revocation, purpose-bound fresh authentication and encrypted issuance retry state. It specifies that
+offline sign-out disables local resumption while a revoke-only outbox awaits server acknowledgement;
+late responses cannot revive the login. Scoped participant/device grants remain separate from account
+login and content-key possession. Proposed fetch/SSE hints wake the existing authenticated catch-up,
+with subscribe-before-read, reconnect and periodic reconciliation handling lost notifications. Redis
+is an optional later fan-out adapter, not a source of durable history or authorization.
+
+Implementation is divided into session core, client ownership, scoped route cutover, then notification
+integration and real two-device use. This checkpoint changes documentation only; no sessions, streams,
+new prompts, schema migration, live restart or release campaign were implemented. Current service
+continues at :8443 with build 20547876. Next is the first bounded session-core increment.
+
+Documentation checks pass: relative links in the new design resolve, whitespace is clean, completed/
+decision records are append-only and the L-2 progress document remains byte-for-byte unchanged. No
+runtime tests were run for this documentation-only checkpoint.
+
+
+## 2026-10-07 — Durable account session core (sessions/subscriptions phase 1)
+
+Implemented opt-in schema 12 session ownership within the account database and a separate HTTP handler.
+The current development adapter remains schema 11 and is unchanged. Fresh session-purpose WebAuthn
+challenges bind the service, selected account and retry capability. The existing verifier authenticates
+the assertion; the commit rechecks the account, credential, attempt and deadline. Historical receipts,
+offline challenges and another account's assertion cannot mint a login. Session expiry is fixed at
+30 days from the first successful sign-in commit; five-minute memory-only access is capped by that
+deadline. Renewal and revoke-only secrets are independent, and ordinary session revocation retains
+account/device credentials and other logins.
+
+Exact lost-reply recovery uses an operator-key-derived, domain-separated AES-GCM issuance seal in the
+same transaction as the session. Its nonce counter is reserved in a preceding committed transaction,
+so aborted issuance burns a nonce. Acknowledgement/revocation retires the seal; expiry refuses replay
+immediately and bounded maintenance removes old records. Key/pin changes or missing retained custody
+fail opening. Schema 11 upgrade requires explicit opt-in, and the old adapter refuses schema 12. Live
+upgrade tooling and restore tooling remain later integration/operations work.
+
+The synchronous `withAccess` boundary checks session eligibility in the actual guarded transaction,
+including revocation by another service owner. Review caught that a nested transaction failure could
+otherwise roll back its caller; an entry guard and focused regression now prevent that. Existing
+domain routes still need phase 3 integration with the boundary. The HTTP surface has origin/framing,
+body, time, concurrency and rate bounds, structured refusal statuses and no private-token bypass.
+
+Evidence: 25 new focused native checks pass (21 core, two SIGKILL/reopen, two HTTP), plus 13 existing
+account-core and five existing development-runtime cases. TypeScript and scoped lint/format pass.
+Initial HTTP checks hit sandbox loopback denial; approval review first failed due to reviewer capacity,
+then an approved retry ran all seven HTTP/runtime cases successfully. No live data, server restart,
+browser UI, dependency update or release campaign was involved. Implementation and run commands are
+in [account-session-core.md](./account-session-core.md). Next is phase 2's client custody, ordinary
+login/expiry and Lock/Sign out integration, with prompt placement reviewed before changing it.

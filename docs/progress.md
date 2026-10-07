@@ -42,48 +42,44 @@ that is no longer active.
 
 ---
 
-## Product integration: separate application serving and account service (`L-1`)
+## Product integration: account session core (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: separation phase 2 — independent packaged application and account processes
+scope: sessions/subscriptions phase 1 — durable session core and separate HTTP boundary
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-**Implementation complete:** `serve:account` owns compiled assets and a fixed loopback proxy;
-`serve:account-service` alone owns account keys, databases, directory locking and private adapter access.
-Both retain the same public Host/Origin and service identity. API forwarding preserves body bytes and
-client authority inputs, does not cache or retry, and returns 503 while the backend is absent. Either
-process can restart independently; Vite's combined coding mode remains available. Phase 1's shared
-runtime extraction is signed as `ff0714a3`.
+**Implemented:** fresh session-purpose passkey authentication; durable 30-day sessions and exact
+issuance retry; five-minute, memory-only access with fixed parent expiry; acknowledgement, cancellation
+and idempotent revocation. Session custody reserves a nonce before the issuance transaction. Wrong
+account, historical/offline proof, changed custody, expired login and revoked-session reuse refuse.
+The guarded synchronous transaction rechecks session/account/credential eligibility at commit.
 
-**Evidence:** ten native runtime/gateway cases and five offline-upgrade cases pass, plus two focused
-packaged browser scenarios for independent restarts, invitation/access continuity, offline cold opening
-and queued writing across server outages. The active-editor scenario found an intermittent shutdown
-hang. A native reproduction pinned it to keep-alive connections becoming idle after close began;
-shutdown now reaps those connections as responses finish and refuses further polls. TypeScript and
-scoped lint/format pass. No frontend rebuild, dependency change or release campaign was needed.
+**Evidence:** 25 focused session cases pass, including two real process kills, plus 13 existing
+account-core and five private-runtime cases. TypeScript and scoped lint/format pass. HTTP checks
+required loopback permission; the first approval-review attempt failed due to reviewer capacity and
+its retry succeeded. A nested-transaction rollback hazard found during review is repaired and covered.
+See [the phase 1 record](./account-session-core.md) and [completed work](./completed.md).
 
-**Live switch complete:** implementation `7c2061ea` is signed. After both devices were confirmed
-locked/closed, backed up retained state under
-`.dev/account-enrollment-tailnet/backups/process-split-7c2061ea-5S5QA3` and replaced the combined process
-with the app/proxy on 127.0.0.1:53219 and API-only service on 127.0.0.1:53220. The browser address remains
-`https://mbp.tail0e0d4.ts.net:8443/`, serving the exact immutable build
-`.dev/account-enrollment-tailnet/builds/20547876`. Both processes run from this worktree/session.
+**Next bounded phase:** client-owned sealed login persistence and login generations, background
+renewal, expiry presentation, Lock/Sign out and offline revoke-only outbox. Review online-passkey prompt
+placement with the operator before changing it. Then integrate scoped grants/existing domain routes,
+followed by live notifications and a real two-device trial, per
+[the session/subscription design](./account-sessions-subscriptions.md).
 
-All 21 precache URLs and the worker match the retained bytes over HTTPS. Config/access return 200,
-a fresh authority proof verifies with the original pin, the operator key is unchanged and schema remains
-11. Origin and private-file refusals still hold. No credential/browser migration or writing access was
-needed. **Next:** normal operator use can resume; process separation is complete.
-
-See [completed work](./completed.md) and the two-process runbook in
-[packaged account integration](./packaged-account-development.md). Production sessions, remaining
-account lifecycle product work and release qualification stay separate; the release campaign stays paused.
+**Live baseline remains:** independent app/proxy on 127.0.0.1:53219 and account API on 127.0.0.1:53220,
+running from this worktree/session at `https://mbp.tail0e0d4.ts.net:8443/`. Signed split implementation
+`7c2061ea` and switch checkpoint `b8e71944` retain frontend `20547876`, schema 11 and the original pin.
+The new session-enabled schema 12 and handler are explicit opt-ins and are not mounted by these
+launchers. No live migration, restart or browser change occurred. The
+[packaged runbook](./packaged-account-development.md) remains current. Release qualification stays
+paused; broader lifecycle, recovery, pruning and deployment/operations remain later work.
 
 ---
 

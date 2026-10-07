@@ -1317,6 +1317,15 @@ labels must carry the difference rather than trying to make two buttons converge
   account grants it can identify. It is the honest "there was never anyone here" action.
 - **Remote revocation** withdraws a device grant but cannot promise erasure on the remote device (§6.5).
 
+**Network login lifetime (operator decision, 2026-10-07).** Lock workspace closes live connections and
+clears unlocked capabilities while preserving this slot's resumable network login. Sign out instead
+disables that resumption; it does not sign out other devices or another person's local slot. A remembered
+login lasts at most **30 days from sign-in**, with no sliding extension from activity or renewal. After
+that, a fresh online passkey check is required for network access, never for continuing otherwise-eligible
+offline reading or editing. Offline sign-out closes the local slot immediately and reports server
+revocation as pending until acknowledged. See the [session design](./account-sessions-subscriptions.md)
+for the proposed construction and its implementation status.
+
 **Six local facts these operations act on**, and the first two are the ones an earlier four-object framing
 omitted:
 
