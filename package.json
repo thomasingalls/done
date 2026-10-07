@@ -10,6 +10,7 @@
     "dev:account-setup": "node scripts/dev-account-setup.mjs",
     "serve:account": "node scripts/serve-account.mjs",
     "test:packaged-account": "playwright test --config playwright.packaged-account.config.ts",
+    "test:account-runtime": "node --test --test-timeout=15000 test/account-application/runtime.test.mjs",
     "upgrade:account-setup": "node scripts/upgrade-account-setup.mjs",
     "test:account-setup-upgrade": "node --test test/first-device-upgrade/state.test.mjs",
     "test:account-setup-upgrade-browser": "playwright test --config playwright.account-upgrade.config.ts",

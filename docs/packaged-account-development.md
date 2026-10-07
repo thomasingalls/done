@@ -98,3 +98,33 @@ credential replacement or browser-storage migration was performed. Port `:8443` 
 The account preview label remains deliberate. Open once online on each device to install the complete
 cache; normal reopening can then use the cached application. The backend is still needed for account
 ceremonies and exchanging edits. This serving check did not open personal writing.
+
+
+## Service separation — phase 1
+
+The private account service now has an explicit lifecycle independent of its application host:
+
+- `account-service/development-runtime.ts` opens the existing retained authority/account owners and
+  operator key, provides the public pin and per-open transport token, and owns the directory lock.
+- `account-service/development-http.ts` retains the existing routes, Host/Origin checks, request
+  framing, no-store responses and ingress bounds without listening or installing signal handlers.
+- `scripts/lib/account-application.mjs` composes this runtime with Vite or immutable static serving.
+  The two CLI entries select the serving mode; packaged serving no longer imports the Vite entry.
+- `account-service/development-state.ts` supplies the exclusive lock shared with the offline upgrader.
+
+Closing the runtime refuses new requests and waits for admitted service operations, even after client
+HTTP disconnection, before releasing storage. Closing again returns the same completion. A host startup
+failure closes any opened service owner and releases the directory lock. Forced termination can still
+leave a lock file: retain the existing instruction to verify the process has stopped before removing it.
+
+`pnpm test:account-runtime` runs five focused native checks. They cover exclusive ownership, retained
+identity/pending registration through restart, token renewal, HTTP refusals/bounds, draining after client
+disconnect and failed startup cleanup. All five and the five existing offline-upgrade tests pass. Two
+packaged browser checks pass against the extracted backend with the existing compiled frontend; the
+Vite two-device enrollment/editing/reopen check also passes. TypeScript and scoped lint/format pass.
+No build/update campaign or release-validation work was needed for this backend extraction.
+
+The live process described above has not been restarted to adopt this extraction. Phase 2 will separate
+application serving and account service into independently operated processes behind the same browser
+origin. The current shared private token remains development transport access, not an account session.
+Production sessions and public deployment are still separate work.

@@ -1,4 +1,6 @@
 /** Offline maintenance for the loopback-only account preview, not a deployment migrator. */
+import { lockDevelopmentState as lockPreviewState } from '../account-service/development-state.ts';
+export { lockPreviewState };
 import {
   closeSync,
   existsSync,
@@ -8,7 +10,6 @@ import {
   openSync,
   readFileSync,
   rmSync,
-  unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { createServer } from 'node:net';
@@ -34,24 +35,6 @@ export function previewConfig(env = process.env) {
     port,
     directory: resolve(env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup'),
     policy: { rpId: url.hostname, origin },
-  };
-}
-
-export function lockPreviewState(directory) {
-  const path = join(directory, 'maintenance.lock');
-  try {
-    writeFileSync(path, JSON.stringify({ pid: process.pid }), { flag: 'wx', mode: 0o600 });
-  } catch (error) {
-    if (error.code !== 'EEXIST') throw error;
-    throw Error(
-      `Preview state is in use. Stop its service or upgrade first. If a process crashed, verify it has stopped before removing ${path}.`,
-    );
-  }
-  let released = false;
-  return () => {
-    if (released) return;
-    unlinkSync(path);
-    released = true;
   };
 }
 

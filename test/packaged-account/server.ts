@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 export const port = '53221';
 export const origin = 'http://localhost:' + port;
 export async function startService(state: string, build = resolve('dist')) {
-  const child = spawn(process.execPath, ['scripts/dev-account-setup.mjs'], {
+  const child = spawn(process.execPath, ['scripts/serve-account.mjs'], {
     env: {
       ...process.env,
       ACCOUNT_SETUP_PORT: port,

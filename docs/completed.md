@@ -9890,3 +9890,34 @@ Runtime config/access return 200 with the original pin. The server remains runni
 no personal writing was opened during the serving check. All three authorized integration phases are
 complete, with signed implementation commits `9bb46fde`, `d27dc540`, `20547876`. Next is operator use;
 physical-device/process-crash qualification is unclaimed and release validation remains paused.
+
+
+## 2026-10-07 — Shared private account service lifecycle (separation phase 1)
+
+Extracted the retained development service from the Vite launcher. The explicit runtime owns the
+exclusive state-directory lock, operator key loading, authority/account database owners, public pin,
+per-open private transport token and HTTP dispatch. Both Vite and packaged launchers compose it through
+the same application host; the packaged entry no longer imports the Vite entry. Host/Origin checks,
+route aliases, JSON/binary framing and body bounds retain their existing behavior. The offline upgrader
+uses the same extracted directory-lock primitive. There is no schema or client protocol change.
+
+Closing refuses new requests, drains service operations already in progress (including after a client
+disconnect), then closes storage and releases ownership. Repeated close calls share completion. Startup
+failures release already-opened owners and the directory lock; temporary operator-key bytes are cleared
+on both successful and failed authority opening. The runtime installs no process or signal handlers.
+
+Focused evidence: five native runtime tests and five existing offline-upgrade tests pass. They cover
+exclusive/repeated open and close, retained authority and pending account identity across restart, new
+access token and stale-token refusal, HTTP framing/bounds, draining after disconnect, invalid pin/schema
+startup and missing-build/occupied-port cleanup. An initial wrong-Host test accidentally used fetch,
+which replaced that header; sending it through the native HTTP client exercises the actual refusal and
+passes. Two packaged browser tests pass for signup/restart access renewal and both-device offline cold
+opens/editing/reconnection. The existing Vite two-device enrollment/editing/reopen browser test passes.
+TypeScript and scoped lint/format pass. Checks used installed executables because the pnpm launcher
+could not verify/download the pinned manager in the restricted environment. No dependencies changed.
+
+The packaged browser checks used the existing compiled frontend with the newly extracted backend;
+there was no frontend rebuild or update campaign. The live service at :8443 was not restarted and keeps
+serving build 20547876 with its existing process and state. Next is separation phase 2: independently
+operated application serving and account service, preserving the same browser origin. Production account
+sessions remain separate, and release validation stays paused.

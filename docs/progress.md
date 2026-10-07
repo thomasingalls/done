@@ -42,67 +42,45 @@ that is no longer active.
 
 ---
 
-## Product integration: packaged account application (`L-1`)
+## Product integration: separate application serving and account service (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: done
-scope: compiled account serving, offline reopening, update continuity
+scope: separation phase 1 — shared service lifecycle and HTTP extraction
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-07
 ```
 
-The live two-device development milestone is complete (`d63634a7`, walkthrough `c3001814`).
-The operator authorized three bounded packaged-application phases, with signed intermediate commits.
+**Phase 1 complete:** an explicit private service runtime now owns the retained databases, operator
+key loading, public pin, private transport token, directory lock and bounded HTTP handling. Both Vite
+and packaged launchers compose the same runtime. Application serving remains in the same process for
+this phase; the packaged entry no longer imports the Vite entry. Existing routes and client protocol
+are unchanged. Startup failures unwind service ownership; close refuses new operations and drains
+in-flight work before releasing storage, even if an HTTP client has disconnected.
 
-**Phase 1 complete:** the ordinary build can run the existing account router against the retained
-private service. Public service configuration is remembered for offline startup; private adapter access
-is acquired in memory and renewed once after an HTTP denial, with unchanged request bytes and an
-unchanged service pin. The Node host serves only an immutable compiled asset inventory; Vite is optional.
-Account setup, device connection and Local editor screens load on their routes and are all precached.
+**Evidence:** five native runtime tests and five existing offline-upgrade tests pass, plus two packaged
+browser checks (access renewal after restart; both-device offline cold opening/editing/reconnect) and
+the existing Vite two-device enrollment/editing/reopen check. TypeScript and scoped lint/format pass.
+The malformed Host check uses native HTTP because fetch replaces that header. These are focused
+lifecycle and browser checks; the packaged checks used the existing compiled frontend and current
+backend source. See [completed work](./completed.md) and
+[packaged account integration](./packaged-account-development.md).
 
-**Evidence:** one compiled-browser signup/invitation/restart check; 49 focused access, transport and
-scheduler tests; TypeScript; compiled budget and origin checks. Initial splash/chooser JavaScript is
-94.9 KiB gzip (350 KiB budget); editor and ceremony chunks load on navigation. The browser check also
-checks API access origin, source/state-file refusal and exclusion of API responses from the app cache.
+**Live checkpoint unchanged:** the service at `https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219,
+was not restarted during extraction. It still serves the immutable build
+`.dev/account-enrollment-tailnet/builds/20547876` with its original retained service identity and state.
+The previous serving checkpoint is signed as `ce7beb99`; the pre-switch backup is
+`.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`. The packaged integration phases are
+signed as `9bb46fde`, `d27dc540`, `20547876`; offline startup and update continuity are complete.
 
-**Phase 2 complete:** both established accounts cold-open through the cached splash/chooser with the
-service stopped, unlock locally, retain edits through another offline close/reopen at their editor URLs,
-and converge after service restart/reconnection. The account shell shows offline availability; a network
-failure during a service-dependent ceremony explains the connection requirement and retains progress.
-A remembered Local-only installation also keeps its offline path without an account service.
-
-**Additional evidence:** two packaged-account browser checks and all three existing packaged Local-only
-checks pass; 19 focused HTTP/config tests and TypeScript/build checks pass. Phase 1 signed: `9bb46fde`.
-These are tab cold-opens in isolated browser contexts, not physical-device/full-process-crash claims.
-
-**Phase 3 complete:** a waiting update leaves both account editors on their current build, permits
-continued writing, and preserves both publishers' queued edits through offline activation of the new
-build. Reconnection delivers the queued updates. Interrupted registration resumes from the original
-saved passkey proof and slot after the update, without creating a replacement credential. Account
-chooser/ceremony screens now show the waiting-update notice with setup-appropriate instructions.
-
-**Additional evidence:** two bounded update browser cases pass; TypeScript, scoped lint/format and
-build/budget/origin checks pass. The registration fixture's first run disconnected before its service
-preparation had completed; waiting for the prepared passkey screen corrected the fixture, and its
-focused rerun passed. Phase 2 signed: `d27dc540`.
-
-**Live switch complete:** signed implementation `20547876` is served at the unchanged
-`https://mbp.tail0e0d4.ts.net:8443/`, internal port 53219, using the original retained service state.
-The operator confirmed both devices locked/closed before restart. The immutable build is retained at
-`.dev/account-enrollment-tailnet/builds/20547876`; the offline pre-switch backup of both databases,
-operator key and pin is `.dev/account-enrollment-tailnet/backups/packaged-20547876-5SQTQb`.
-All 21 precached URLs and the worker match the built bytes over the live HTTPS address. Public config
-and private access return 200 with the original pin; no browser data, credential or account was reset.
-
-**Next:** operator use of the packaged app, beginning with one online open to install its cache on each
-device. Tests establish offline tab reopening and update continuity; a physical-phone or full-process
-crash walkthrough is not claimed. Existing Local-only packaging remains supported.
-See [packaged account integration](./packaged-account-development.md). Production sessions, lifecycle
-completion and release qualification remain outside this work; the release campaign remains paused.
+**Next:** separation phase 2 — independently operated application serving and account service behind
+the same browser origin, preserving `:8443`. Not started in this phase. Production account sessions,
+remaining account lifecycle product work and release qualification remain separate; the release
+campaign stays paused.
 
 ---
 
