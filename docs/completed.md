@@ -11597,3 +11597,24 @@ checks pass. [Preserved output](./development-evidence/2026-10-08-replacement-na
 Next: replacement startup must retain the verified account binding, initialize from the admitted
 current-generation snapshot and nonzero receive cuts, then support editing/repeated removal.
 Post-rotation product invitations remain gated. Live service unchanged; release validation paused.
+
+
+## 2026-10-08 — Replacement binding and authenticated receive cuts (`L-1`)
+
+Replacement transfer now retains the independently signed account binding alongside the snapshot.
+Both sides authenticate that binding before retaining handoff progress; the reader can verify it
+offline without receiving the original generation key. A version-3 reading starts each publisher
+stream at the snapshot's signed cutoff and verifies only the current certified publishers. Removed
+publishers' accepted writing remains in the snapshot. Native inbound-ledger replay uses those same
+verified starting positions, including nonzero peer positions.
+
+Ten focused reader/handoff checks, 45 inbound unit checks, and five affected service/browser-reader
+cases pass. Controls cover binding/signature/snapshot/prefix substitution, wrong keys, current-key
+suffix replay and cold reconstruction. One service test requires loopback/Chromium permissions and
+passed with those permissions. TypeScript, scoped lint/format, packaged build, budget (109.5 kB initial
+JS), origin isolation and diff checks pass. [Preserved output](./development-evidence/2026-10-08-replacement-reading.log).
+
+Native replacement installation remains explicitly refused until its physical carrier and custody
+can initialize at the admitted generation. Next: implement that restartable empty-carrier transition,
+then exercise replacement editing and another removal. Post-rotation product invitations remain
+gated; live service unchanged and release validation paused.

@@ -37,6 +37,7 @@ import {
   type ReplacementTransferRequest,
 } from '../../account-protocol/replacementTransfer';
 import { openReplacementCheckpoint } from '../crdt/replacementCheckpoint';
+import { verifyBindingProof, type BindingProof } from '../../account-protocol/slot';
 
 export interface MembershipHandoffState {
   delivery: MembershipDelivery;
@@ -47,6 +48,7 @@ export interface MembershipHandoffState {
 export interface ApprovedMembershipProgress extends Omit<ApprovedProgress, 'content'> {
   content?: MembershipHandoffState;
   replacement?: ReplacementCheckpoint;
+  replacementBinding?: BindingProof;
 }
 type Owner = Pick<
   CeremonyVault,
@@ -110,6 +112,7 @@ export async function continueMembershipHandoff(
       retained.role !== p.role ||
       !same(retained.content, p.content) ||
       !same(retained.replacement, p.replacement) ||
+      !same(retained.replacementBinding, p.replacementBinding) ||
       !same(retained.decision, p.decision)
     )
       throw Error('Content handoff did not persist');
@@ -140,10 +143,19 @@ export async function continueMembershipHandoff(
     const result = closed(await request('/account/membership/v3/checkpoint', body), [
       'ok',
       'checkpoint',
+      'binding',
     ]);
     if (result['ok'] !== true || !result['checkpoint'])
       throw Error('Replacement snapshot unavailable');
-    return checkCheckpoint(result['checkpoint']);
+    const binding = await verifyBindingProof(
+      result['binding'],
+      boot.base.request,
+      boot.base.receipt,
+      boot.base.pin,
+    );
+    if (p.replacementBinding && !same(p.replacementBinding, binding))
+      throw Error('Retained account binding changed');
+    return { checkpoint: await checkCheckpoint(result['checkpoint']), binding };
   };
   const transfer = async (
     action: MembershipTransferRequest['action'],
@@ -177,6 +189,16 @@ export async function continueMembershipHandoff(
     );
   } else if (replacement && ((p.role === 'existing' && p.content) || p.content?.installation))
     throw Error('Saved replacement snapshot is missing');
+  if (p.replacementBinding) {
+    if (!replacement) throw Error('Unexpected replacement binding');
+    await verifyBindingProof(
+      p.replacementBinding,
+      boot.base.request,
+      boot.base.receipt,
+      boot.base.pin,
+    );
+  } else if (replacement && p.content?.installation)
+    throw Error('Saved account binding is missing');
   if (p.role === 'existing' && !p.content) {
     if (certification) throw Error('Saved delivery is missing');
     const transcriptHash = (p.decision.payload as { transcriptHash: string }).transcriptHash;
@@ -222,7 +244,13 @@ export async function continueMembershipHandoff(
       }
       await durableContent();
       const remote = await exchangeCheckpoint('publish');
-      if (!same(remote, p.replacement)) throw Error('Retained replacement snapshot changed');
+      if (!same(remote.checkpoint, p.replacement))
+        throw Error('Retained replacement snapshot changed');
+      if (!p.replacementBinding) {
+        p.replacementBinding = remote.binding;
+        await save();
+        await durableContent();
+      }
       proposal.checkpointHash = await replacementCheckpointHash(p.replacement);
     }
     proposal.wrap = await owner.wrapContent(
@@ -258,11 +286,10 @@ export async function continueMembershipHandoff(
     deliveryHash = await membershipDeliveryHash(delivery);
   if (p.role === 'new') {
     if (delivery.v === 3) {
-      if (!p.replacement) {
-        p.replacement = await checkCheckpoint(
-          await exchangeCheckpoint('read'),
-          delivery.checkpointHash,
-        );
+      if (!p.replacement || !p.replacementBinding) {
+        const remote = await exchangeCheckpoint('read');
+        p.replacement = await checkCheckpoint(remote.checkpoint, delivery.checkpointHash);
+        p.replacementBinding = remote.binding;
         await save();
       }
       await checkCheckpoint(p.replacement, delivery.checkpointHash);

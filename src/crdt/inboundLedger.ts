@@ -113,11 +113,21 @@ export interface InboundState {
   retained: Map<number, NonNullable<InboundContext['retained']>>;
   peers?: Map<string, InboundState>;
 }
-export const emptyInbound = (): InboundState => ({
-  prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
+export const emptyInbound = (
+  prefix: InboundContext['prefix'] = { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
+): InboundState => ({
+  prefix: { ...prefix },
   conflict: false,
   retained: new Map(),
 });
+const baselinePrefix = (base: InboundContext, publisher: string): InboundContext['prefix'] => {
+  const cut = base.baselineHeads?.find((h) => h.credentialId === publisher);
+  return {
+    position: cut?.position ?? 0,
+    link: cut?.link ?? ZERO_REFUSAL,
+    observedThrough: cut?.position ?? 0,
+  };
+};
 /** Resolve a peer only from the verified certified roster. Key hints from the wire grant nothing. */
 export function publisherContext(base: InboundContext, publisher: string): InboundContext {
   if (publisher === base.publisher.id) return base;
@@ -128,6 +138,7 @@ export function publisherContext(base: InboundContext, publisher: string): Inbou
     history,
     authority: history.current,
     creatingCredential: publisher,
+    prefix: baselinePrefix(base, publisher),
     publisher: {
       id: publisher,
       publicKey: history.signingKey,
@@ -140,7 +151,7 @@ export function publisherContext(base: InboundContext, publisher: string): Inbou
 export function publisherState(state: InboundState, base: InboundContext, publisher: string) {
   if (publisher === base.publisher.id) return state;
   publisherContext(base, publisher);
-  return state.peers?.get(publisher) ?? emptyInbound();
+  return state.peers?.get(publisher) ?? emptyInbound(baselinePrefix(base, publisher));
 }
 export function contextAt(
   base: InboundContext,
@@ -235,7 +246,7 @@ export async function verifyInboundLedger(
   lifetime: InboundLifetime,
   reuse?: { memo: VerificationMemo; coverage: ReturnType<typeof createInboundCoverage> },
 ): Promise<InboundState> {
-  const own = emptyInbound();
+  const own = emptyInbound(baselinePrefix(base, base.publisher.id));
   own.peers = new Map();
   for (const { record, event } of census.entries) {
     const request = decodeInboundRequest(event.request);

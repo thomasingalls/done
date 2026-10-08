@@ -5617,6 +5617,18 @@ test('replacement snapshot retention survives commit faults and cannot be swappe
   x.authority.restart();
   assert.deepEqual((await call(publish)).checkpoint, d.checkpoint);
   assert.deepEqual((await call(read)).checkpoint, d.checkpoint);
+  const binding = (await call(read)).binding;
+  assert.deepEqual(binding, x.checkpoint.binding);
+  const originalCheckpoint = x.f.rows('content_checkpoints')[0];
+  mutate(x, (db) => {
+    const bad = JSON.parse(originalCheckpoint.checkpoint);
+    bad.binding.stored.bindingSignature = 'ff'.repeat(64);
+    db.prepare('UPDATE content_checkpoints SET checkpoint=?').run(JSON.stringify(bad));
+  });
+  assert.equal((await call(read)).ok, false, 'a changed original unlock binding is not returned');
+  mutate(x, (db) =>
+    db.prepare('UPDATE content_checkpoints SET checkpoint=?').run(originalCheckpoint.checkpoint),
+  );
   const { replacementCheckpointMessage } =
     await import('../../account-protocol/replacementCheckpoint.ts');
   const changed = { ...d.checkpoint, nonce: 'af'.repeat(12) };

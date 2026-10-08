@@ -13,6 +13,10 @@ import {
   captureMembershipReading,
   replayMembershipReading,
   eraseMembershipReading,
+  verifyReplacementReading,
+  membershipReadingBinding,
+  membershipReadingHash,
+  membershipReadingPrefix,
   type MembershipReading,
 } from './membershipReading';
 import {
@@ -90,6 +94,14 @@ type JoinedRecord = JoinedFields &
     | { v: 1; authority: CheckpointAuthority; reading: ContentReaderState }
     | { v: 2; authority: JoinedAuthority; reading: MembershipReading }
   );
+export const joinedBinding = (marker: JoinedRecord) =>
+  marker.v === 2 ? membershipReadingBinding(marker.reading) : marker.reading.checkpoint.binding;
+export const joinedBaselineHash = (marker: JoinedRecord) =>
+  marker.v === 2
+    ? membershipReadingHash(marker.reading)
+    : contentCheckpointHash(marker.reading.checkpoint);
+export const joinedInitialGeneration = (marker: JoinedRecord) =>
+  marker.reading.checkpoint.manifest.generation;
 export const joinedPayload = (r: JoinedRecord) => {
   const { mac: _mac, ...payload } = r;
   return utf8(JSON.stringify(payload));
@@ -413,7 +425,7 @@ export async function joinedKeys<T>(
 }
 export async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) {
   const marker = state.marker!,
-    { authority: a, reading } = marker;
+    { authority: a } = marker;
   const original = await task.wait(() =>
     marker.v === 2
       ? verifyMembershipChain(
@@ -442,13 +454,25 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
   const history = historyPublisher(original, credential.id);
   if (history.signingKey !== hex(credential.publicKey))
     throw Error('Certified signing key differs from custody');
-  await task.wait(() =>
+  await task.wait<unknown>(() =>
     marker.v === 2
-      ? verifyMembershipCheckpointAdmission(reading.admission, reading.checkpoint, original)
-      : verifyCheckpointAdmission(reading.admission, reading.checkpoint, a),
+      ? marker.reading.v === 3
+        ? verifyReplacementReading(marker.reading, marker.authority, original, {
+            id: credential.id,
+            sPub: history.signingKey,
+          })
+        : verifyMembershipCheckpointAdmission(
+            marker.reading.admission,
+            marker.reading.checkpoint,
+            original,
+          )
+      : verifyCheckpointAdmission(marker.reading.admission, marker.reading.checkpoint, a),
   );
   const base: InboundContext = {
-    baseline: { kind: 'content-checkpoint', id: await contentCheckpointHash(reading.checkpoint) },
+    baseline: { kind: 'content-checkpoint', id: await joinedBaselineHash(marker) },
+    ...(marker.v === 2 && marker.reading.v === 3
+      ? { baselineHeads: marker.reading.checkpoint.heads }
+      : {}),
     service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
     authority: history.current,
     history,
@@ -461,16 +485,19 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
       system: true,
       active: true,
     },
-    generation: 1,
+    generation: joinedInitialGeneration(marker),
     generationKey: key,
-    prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+    prefix:
+      marker.v === 2
+        ? membershipReadingPrefix(marker.reading, credential.id)
+        : { position: 0, link: '00'.repeat(32), observedThrough: 0 },
   };
   const route: CaptureRoute = {
     workspace: history.current.workspace,
     credential: credential.id,
     principal: history.principal,
     epoch: history.current.tip,
-    generation: 1,
+    generation: joinedInitialGeneration(marker),
     history,
   };
   return { base, route, original };
@@ -565,7 +592,7 @@ async function destination(task: SessionTask, state: JoinedState) {
   const slot: Slot = {
     id: local.id,
     status: 'active',
-    unlockBinding: m.reading.checkpoint.binding.stored,
+    unlockBinding: joinedBinding(m).stored,
     account: {
       v: 1,
       promotionId: state.claim.initial.creation_intent!.id,
@@ -591,6 +618,8 @@ export async function installMembershipAccount(
   code: string,
   input: { authority: JoinedAuthority; reading: MembershipReading; key: InstalledContentKey },
 ) {
+  if (input.reading.v === 3)
+    throw Error('Replacement writing is saved. Native generation activation is not available yet.');
   return installCertifiedAccount(task, slotId, code, { ...input, v: 2 });
 }
 async function installCertifiedAccount(
@@ -697,25 +726,11 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       }
       if (options.networkLogin && !detached) {
         await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
-          options.networkLogin!.initialize(
-            task,
-            root,
-            state.record.root_id,
-            marker.reading.checkpoint.binding,
-          ),
+          options.networkLogin!.initialize(task, root, state.record.root_id, joinedBinding(marker)),
         );
-        await options.networkLogin.unlock(
-          task,
-          marker.reading.checkpoint.binding,
-          options.assertPasskey,
-        );
+        await options.networkLogin.unlock(task, joinedBinding(marker), options.assertPasskey);
       } else
-        await requireAccountAccess(
-          task,
-          marker.reading.checkpoint.binding,
-          options.pin,
-          options.assertPasskey,
-        );
+        await requireAccountAccess(task, joinedBinding(marker), options.pin, options.assertPasskey);
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');
       const scope = claimScope(state.claim),

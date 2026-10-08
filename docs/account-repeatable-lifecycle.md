@@ -168,3 +168,15 @@ writing. The journal original remains retained.
 
 The joining device still needs its startup adapter: verified account binding, initial generation and
 receive cuts, then editing and a subsequent removal. Post-rotation product invitations remain gated.
+
+
+## Replacement reading increment
+
+The signed account binding is retained separately from the current-key snapshot. Replacement replay
+verifies its certification and signed acknowledgement and initializes current publishers at the
+snapshot's authenticated receive cuts. Removed publishers need no historical content opener. Focused
+reader, inbound and service/browser-reader checks pass; see the 2026-10-08 completion entry.
+
+Native initial-generation activation remains the next boundary. It must resume an empty-carrier
+transition before ordinary writing opens, then preserve the initial opener through later rotations.
+The product path remains gated until replacement editing and another removal pass.

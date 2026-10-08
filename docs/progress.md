@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source and service retention complete; native replacement handoff complete; replacement startup next
+scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source and service retention complete; native replacement handoff complete; replacement reading complete; native initial-generation activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -95,7 +95,7 @@ survivor missing both rotations, old-generation offline delivery, generation-thr
 and cold reopen. The signed current-key service boundary now passes its five affected cases, including lost committed
 replies. Durable browser retries now pass the focused native case: exact old ciphertext after a lost
 refusal reply, same-position current-key delivery, journal preservation and cold reopen. Four new
-retry cases and affected unit checks pass. The replacement checkpoint format, crypto replay and accepted-source verification now pass 24 focused and affected checks, including finalized publisher writing, restart replay and a replacement preparing the next snapshot without generation-one keys. Service retention and version-3 delivery/acknowledgement binding now pass eleven focused service/upgrade cases and 23 affected protocol/replay checks. Schema 21 is ready for an explicit offline upgrade; live remains schema 20. Browser handoff ordering and semantic acknowledgement now pass seven focused and four affected service-coordinator cases. Native producer/current-key wrapping now passes two packaged-browser cases (original and joined), with stale-grant recovery, lost publication reply, cold replay and journal preservation. Next: verified account binding, initial-generation joining custody, nonzero receive cuts and the full remove/connect/remove flow. Post-rotation connections remain gated. No live
+retry cases and affected unit checks pass. The replacement checkpoint format, crypto replay and accepted-source verification now pass 24 focused and affected checks, including finalized publisher writing, restart replay and a replacement preparing the next snapshot without generation-one keys. Service retention and version-3 delivery/acknowledgement binding now pass eleven focused service/upgrade cases and 23 affected protocol/replay checks. Schema 21 is ready for an explicit offline upgrade; live remains schema 20. Browser handoff ordering and semantic acknowledgement now pass seven focused and four affected service-coordinator cases. Native producer/current-key wrapping now passes two packaged-browser cases (original and joined), with stale-grant recovery, lost publication reply, cold replay and journal preservation. Replacement reading now retains its verified binding and initializes nonzero receive cuts; ten reader/handoff, 45 inbound and five affected service/browser-reader checks pass. Next: restartable initial-generation joining custody and the full remove/connect/remove flow. Post-rotation connections remain gated. No live
 service switch has occurred.
 
 **Further product work:** self/last-device removal, lost-device

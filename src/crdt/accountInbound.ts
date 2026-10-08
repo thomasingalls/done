@@ -49,6 +49,8 @@ import { Y } from './yjs';
 
 export interface InboundContext {
   baseline: { kind: 'promotion-genesis' | 'content-checkpoint'; id: string };
+  /** Exact cuts of a semantically admitted replacement snapshot, supplied only by its native owner. */
+  baselineHeads?: readonly { credentialId: string; position: number; link: string }[];
   service: { id: string; origin: string };
   authority: DecisionAuthority;
   /** Verified admission-only lineage, supplied by the custody owner. */

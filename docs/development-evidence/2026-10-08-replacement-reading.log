@@ -1,0 +1,57 @@
+Focused replacement reading checks; live service unchanged; release validation paused.
+
+
+SOURCE /tmp/done-replacement-reader-focused.log
+(node:45611) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (123.195167ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (66.513208ms)
+✔ key installation and countersignature retry from committed custody after interruptions (93.462625ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (76.241875ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.672458ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (162.307375ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (121.802292ms)
+(node:45612) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ replacement reader starts at certified cuts with its current key, including removed writing but no removed stream (345.917792ms)
+✔ replacement reader verifies a current-key suffix after the admitted cut and cold-replays its saved prefix (429.580542ms)
+✔ replacement reader refuses changed binding, snapshot, candidate acknowledgement and uncovered receive prefix (387.477459ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1492.114875
+
+SOURCE /tmp/done-replacement-inbound-regressions.log
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  3 passed (3)
+      Tests  45 passed (45)
+   Start at  17:04:30
+   Duration  9.62s (transform 521ms, setup 123ms, import 945ms, tests 9.95s, environment 0ms)
+
+
+SOURCE /tmp/done-replacement-reader-service.log
+(node:45775) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45775) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:45775) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves (3722.638584ms)
+✔ later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready (2740.842791ms)
+✔ later native slot resumes activation after index interruption and rejects changed retained reading (5724.544791ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ retained connection loads actual encrypted writing and retries interrupted installation from committed reader state (4230.25ms)
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (4422.984666ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21286.74425

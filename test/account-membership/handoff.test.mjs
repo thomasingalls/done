@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { deliveryFixture } from './delivery-fixtures.mjs';
 import { checkpointFixture } from './replacement-checkpoint-fixture.mjs';
+import { lp, bindingFields } from '../account-first-authority/oracle.mjs';
 import { replacementTransferMessage } from '../../account-protocol/replacementTransfer.ts';
 import { verifyReplacementCheckpoint } from '../../account-protocol/replacementCheckpoint.ts';
 import { signed } from './fixtures.mjs';
@@ -151,7 +152,21 @@ async function fixture(replacement = false) {
         remoteCheckpoint = structuredClone(body.payload);
       }
       await afterRequest?.(body);
-      return { ok: true, checkpoint: structuredClone(remoteCheckpoint) };
+      const fixed = f.f.f;
+      return {
+        ok: true,
+        checkpoint: structuredClone(remoteCheckpoint),
+        binding: {
+          v: 1,
+          kind: 'promotion-slot-binding',
+          requestDigest: fixed.receipt.offer.epoch.requestDigest,
+          epochHead: fixed.receipt.offer.head,
+          stored: {
+            binding: fixed.binding,
+            bindingSignature: signed(fixed.keys.authority, lp(...bindingFields(fixed.binding))),
+          },
+        },
+      };
     }
     assert.equal(path, '/account/membership/v2/transfer');
     await verifySignature(

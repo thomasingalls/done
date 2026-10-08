@@ -23,20 +23,72 @@ import { verifyStoredInbound, type InboundContext, type InboundLifetime } from '
 import { INBOUND_RECORD_LIMIT } from './inboundRecord';
 import { Y, hasPendingUpdates } from './yjs';
 import type { Bytes } from './custodyCrypto';
+import {
+  parseBindingProof,
+  verifyBindingProof,
+  type BindingProof,
+} from '../../account-protocol/slot';
+import {
+  parseReplacementCheckpoint,
+  parseReplacementCheckpointAdmission,
+  replacementCheckpointHash,
+  verifyReplacementCheckpointAdmission,
+  type ReplacementCheckpoint,
+  type ReplacementCheckpointAdmission,
+} from '../../account-protocol/replacementCheckpoint';
+import {
+  verifyMembershipChain,
+  type parseMembershipChain,
+} from '../../account-protocol/membershipLocator';
+import { historyMembership, historyGeneration } from '../../account-protocol/admissionHistory';
+import { openReplacementCheckpoint } from './replacementCheckpoint';
 
 export const MEMBERSHIP_READING_EVENTS = 4096;
-export interface MembershipReading {
-  v: 2;
+interface ReadingFields {
   epoch: number;
   head: string;
-  checkpoint: ContentCheckpoint;
-  admission: CheckpointAdmission | null;
   streams: { publisher: string; events: string[]; prefix: InboundContext['prefix'] }[];
 }
+export type MembershipReading = ReadingFields &
+  (
+    | { v: 2; checkpoint: ContentCheckpoint; admission: CheckpointAdmission | null }
+    | {
+        v: 3;
+        checkpoint: ReplacementCheckpoint;
+        admission: ReplacementCheckpointAdmission;
+        binding: BindingProof;
+      }
+  );
+export const membershipReadingBinding = (reading: MembershipReading) =>
+  reading.v === 3 ? reading.binding : reading.checkpoint.binding;
+export const membershipReadingHash = (reading: MembershipReading) =>
+  reading.v === 3
+    ? replacementCheckpointHash(reading.checkpoint)
+    : contentCheckpointHash(reading.checkpoint);
+export function membershipReadingPrefix(
+  reading: MembershipReading,
+  publisher: string,
+): InboundContext['prefix'] {
+  const cut =
+    reading.v === 3 ? reading.checkpoint.heads.find((h) => h.credentialId === publisher) : null;
+  return {
+    position: cut?.position ?? 0,
+    link: cut?.link ?? '00'.repeat(32),
+    observedThrough: cut?.position ?? 0,
+  };
+}
 export function captureMembershipReading(input: unknown): MembershipReading {
-  const r = closed(input, ['v', 'epoch', 'head', 'checkpoint', 'admission', 'streams']);
+  const r = closed(input, [
+    'v',
+    'epoch',
+    'head',
+    'checkpoint',
+    'admission',
+    'streams',
+    ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
+  ]);
   if (
-    r['v'] !== 2 ||
+    (r['v'] !== 2 && r['v'] !== 3) ||
     !Number.isSafeInteger(r['epoch']) ||
     (r['epoch'] as number) < 5 ||
     !Array.isArray(r['streams']) ||
@@ -88,17 +140,64 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     };
   });
   return {
-    v: 2,
+    ...(r['v'] === 3
+      ? {
+          v: 3 as const,
+          checkpoint: parseReplacementCheckpoint(r['checkpoint']),
+          admission: parseReplacementCheckpointAdmission(r['admission']),
+          binding: parseBindingProof(r['binding']),
+        }
+      : {
+          v: 2 as const,
+          checkpoint: parseContentCheckpoint(r['checkpoint']),
+          admission: structuredClone(r['admission']) as CheckpointAdmission | null,
+        }),
     epoch: r['epoch'] as number,
     head: r['head'] as string,
-    checkpoint: parseContentCheckpoint(r['checkpoint']),
-    admission: structuredClone(r['admission']) as CheckpointAdmission | null,
     streams,
   };
 }
+export async function verifyReplacementReading(
+  reading: Extract<MembershipReading, { v: 3 }>,
+  a: CheckpointAuthority & {
+    continuations?: ReturnType<typeof parseMembershipChain>['continuations'];
+  },
+  history: AdmissionHistory,
+  who: { id: string; sPub: string },
+) {
+  if (!a.continuations) throw Error('Replacement reading needs its full certification history');
+  const verified = await verifyMembershipChain(
+      { successor: a.successor, certification: a.certification, continuations: a.continuations },
+      a.base,
+    ),
+    certificate = verified.proofs.continuations.at(-1);
+  if (
+    verified.history.current.head !== history.current.head ||
+    certificate?.kind !== 'membership-certification' ||
+    certificate.head !== reading.head ||
+    certificate.epoch.delivery.v !== 3 ||
+    certificate.epoch.installation.v !== 3 ||
+    certificate.epoch.delivery.candidate.context.candidate.id !== who.id ||
+    certificate.epoch.delivery.checkpointHash !==
+      (await replacementCheckpointHash(reading.checkpoint)) ||
+    !same(certificate.epoch.installation.checkpoint, reading.admission) ||
+    historyGeneration(history) !== reading.checkpoint.manifest.generation
+  )
+    throw Error('Replacement reading differs from certified installation');
+  const before = await verifyMembershipChain(
+      { ...verified.proofs, continuations: verified.proofs.continuations.slice(0, -1) },
+      a.base,
+    ),
+    parent = historyMembership(before.history);
+  await verifyReplacementCheckpointAdmission(reading.admission, reading.checkpoint, parent);
+  await verifyBindingProof(reading.binding, a.base.request, a.base.receipt, a.base.pin);
+  return parent;
+}
 export async function replayMembershipReading(
   input: unknown,
-  authority: CheckpointAuthority,
+  authority: CheckpointAuthority & {
+    continuations?: ReturnType<typeof parseMembershipChain>['continuations'];
+  },
   history: AdmissionHistory,
   reader: { id: string; sPub: string },
   key: Bytes,
@@ -117,28 +216,35 @@ export async function replayMembershipReading(
     )
   )
     throw Error('Later reader authority or publisher set changed');
-  await verifyMembershipCheckpoint(reading.checkpoint, a, history);
-  if (reading.admission) {
-    const admission = await verifyMembershipCheckpointAdmission(
-      reading.admission,
-      reading.checkpoint,
-      history,
-    );
-    if (admission.admittingCredential !== who.id)
-      throw Error('Another device admitted this baseline');
+  let doc;
+  if (reading.v === 3) {
+    const parent = await verifyReplacementReading(reading, a, history, who);
+    doc = await openReplacementCheckpoint(reading.checkpoint, key, parent);
+  } else {
+    await verifyMembershipCheckpoint(reading.checkpoint, a, history);
+    if (reading.admission) {
+      const admission = await verifyMembershipCheckpointAdmission(
+        reading.admission,
+        reading.checkpoint,
+        history,
+      );
+      if (admission.admittingCredential !== who.id)
+        throw Error('Another device admitted this baseline');
+    }
+    doc = await openContentCheckpoint(reading.checkpoint, key, a);
   }
-  const doc = await openContentCheckpoint(reading.checkpoint, key, a);
   const records: { record: Bytes; updates: readonly Bytes[] }[] = [];
   const contexts: InboundContext[] = [];
   let initial: Bytes | undefined;
   try {
     lifetime.assertCurrent();
     initial = new Uint8Array(Y.encodeStateAsUpdate(doc));
-    const id = await contentCheckpointHash(reading.checkpoint);
+    const id = await membershipReadingHash(reading);
     for (const stream of reading.streams) {
       const publisher = historyPublisher(history, stream.publisher);
       const context: InboundContext = {
         baseline: { kind: 'content-checkpoint', id },
+        ...(reading.v === 3 ? { baselineHeads: reading.checkpoint.heads } : {}),
         service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
         authority: publisher.current,
         history: publisher,
@@ -151,9 +257,9 @@ export async function replayMembershipReading(
           system: true,
           active: true,
         },
-        generation: 1,
+        generation: reading.checkpoint.manifest.generation,
         generationKey: key,
-        prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+        prefix: membershipReadingPrefix(reading, stream.publisher),
       };
       for (const wire of stream.events) {
         lifetime.assertCurrent();

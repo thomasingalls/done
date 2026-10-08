@@ -17,6 +17,8 @@ import { verifyPendingMembership } from './membershipAuthority.ts';
 import { membershipEnabled } from './membershipStore.ts';
 import { requireNoRemoval } from './removalStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
+import { membershipCheckpointRow, retainedCheckpoint } from './membershipCheckpoint.ts';
+import { verifyBindingProof } from '../account-protocol/slot.ts';
 
 export const REPLACEMENT_CHECKPOINT_SCHEMA = `CREATE TABLE replacement_checkpoints (
  workspace_id TEXT NOT NULL, preparation_id TEXT NOT NULL, parent TEXT NOT NULL,
@@ -69,6 +71,7 @@ export async function exchangeReplacementCheckpoint(
   const capture = () => ({
     authority: snapshot(db, request.workspaceId),
     checkpoint: replacementCheckpointRow(db, request.workspaceId, request.preparationId),
+    original: membershipCheckpointRow(db, request.workspaceId),
   });
   for (let retry = 0; retry < 4; retry++) {
     try {
@@ -96,6 +99,13 @@ export async function exchangeReplacementCheckpoint(
         request.signature,
         await replacementTransferMessage(request),
       );
+      // Public, independently signed account/passkey binding. No historical content key is shared.
+      const binding = await verifyBindingProof(
+        retainedCheckpoint(before.original).binding,
+        auth.anchor.request,
+        auth.anchor.receipt,
+        issuer.pin,
+      );
       let checkpoint: ReplacementCheckpoint | null = before.checkpoint
         ? await retainedReplacementCheckpoint(before.checkpoint, auth.membership)
         : null;
@@ -118,7 +128,8 @@ export async function exchangeReplacementCheckpoint(
       const current = capture();
       if (
         snapshotBytes(current.authority) !== snapshotBytes(s) ||
-        !same(current.checkpoint, before.checkpoint)
+        !same(current.checkpoint, before.checkpoint) ||
+        !same(current.original, before.original)
       ) {
         db.exec('ROLLBACK');
         continue;
@@ -143,7 +154,7 @@ export async function exchangeReplacementCheckpoint(
       complete?.();
       db.exec('COMMIT');
       hook('after-commit', 'replacement-checkpoint');
-      return { ok: true as const, checkpoint };
+      return { ok: true as const, checkpoint, binding };
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
       rethrowAuthorization(cause);
