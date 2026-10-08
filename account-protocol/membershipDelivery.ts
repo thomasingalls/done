@@ -248,3 +248,50 @@ export async function verifyMembershipInstallation(input: unknown, delivery: Mem
   await verifySignature(c.sPub, i.signature, await membershipInstallationMessage(i));
   return i;
 }
+
+export interface MembershipTransferRequest {
+  v: 2;
+  workspaceId: string;
+  credentialId: string;
+  parent: string;
+  preparationId: string;
+  action: 'read' | 'deliver' | 'install';
+  payload: MembershipDelivery | MembershipInstallation | null;
+  signature: string;
+}
+export function parseMembershipTransfer(input: unknown): MembershipTransferRequest {
+  bounded(input);
+  const r = closed(input, [
+    'v',
+    'workspaceId',
+    'credentialId',
+    'parent',
+    'preparationId',
+    'action',
+    'payload',
+    'signature',
+  ]);
+  if (r['v'] !== 2 || !['read', 'deliver', 'install'].includes(String(r['action'])))
+    throw Error('Invalid membership transfer');
+  const action = r['action'] as MembershipTransferRequest['action'];
+  if (action === 'read' && r['payload'] !== null) throw Error('Invalid membership read');
+  return {
+    v: 2,
+    workspaceId: h(r['workspaceId'], 16),
+    credentialId: h(r['credentialId'], 16),
+    parent: h(r['parent']),
+    preparationId: accountIdentifier(r['preparationId']),
+    action,
+    payload:
+      action === 'deliver'
+        ? parseMembershipDelivery(r['payload'])
+        : action === 'install'
+          ? parseMembershipInstallation(r['payload'])
+          : null,
+    signature: h(r['signature'], 64),
+  };
+}
+export const membershipTransferMessage = (input: unknown) => {
+  const { signature: _, ...body } = parseMembershipTransfer(input);
+  return domainMessage('done/membership-key-transfer/v2', body);
+};

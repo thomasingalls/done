@@ -26,6 +26,7 @@ import { membershipEnabled } from './membershipStore.ts';
 import { parseWitness, witnessMessage, type DeliveryWitness } from './deliveryWitness.ts';
 import { retryHash } from './protocol.ts';
 import { rethrowAuthorization } from './authorization.ts';
+import { verifyPendingMembership } from './membershipAuthority.ts';
 import {
   causeCode,
   reportDiagnostic,
@@ -104,6 +105,7 @@ export async function admitMembership(
       const original = {
         ...root,
         continuations: [],
+        membershipTransfers: [],
         promotion: { ...root.promotion, successor_head: cert.head },
       };
       const auth = await verifyWorkspaceAuthority(original, issuer);
@@ -180,7 +182,8 @@ export async function admitMembership(
         }
       }
       const current = membershipState(parent);
-      if (root.promotion.successor_head !== current.head)
+      if (root.membershipTransfers?.length && result) await verifyPendingMembership(root, issuer);
+      else if (root.promotion.successor_head !== current.head)
         throw Error('Membership current pointer changed');
       const boundaries: { credentialId: string; witness: DeliveryWitness | null }[] = [];
       const replacements: { credentialId: string; witness: DeliveryWitness | null }[] = [];

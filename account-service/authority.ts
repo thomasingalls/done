@@ -1,3 +1,7 @@
+import {
+  parseMembershipCertificationEpoch,
+  membershipCertificationMessage,
+} from '../account-protocol/membership.ts';
 import type { OperationAuthorization } from './authorization.ts';
 import {
   parseMembershipAdmissionEpoch,
@@ -389,6 +393,23 @@ export class PrivateAuthority {
   }
   relayMembershipCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayMembershipCeremony(input, this.#deliveryIssuer(authorize));
+  }
+  transferMembership(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.transferMembership(input, {
+      ...this.#deliveryIssuer(authorize),
+      certify: async (input) => {
+        const epoch = parseMembershipCertificationEpoch(input),
+          message = await membershipCertificationMessage(epoch);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 2,
+          kind: 'membership-certification',
+          epoch,
+          head: await digest(message),
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
+      },
+    });
   }
   transferContent(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.transferContent(input, {

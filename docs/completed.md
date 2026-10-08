@@ -10403,3 +10403,28 @@ scoped lint/format, build, budget and origin isolation pass. Log:
 `/tmp/done-membership-certification-protocol.log`. These are proof verifiers, not service activation or
 new browser key custody. The service transaction, general sync history and third-device editor remain
 next; retained serving is unchanged and release validation remains paused.
+
+
+## 2026-10-08 — Atomic private continuation key transfer (`L-1`)
+
+After proof checkpoint `abe12337`, the private service retains exact version-2 key delivery, verifies
+the candidate's installation, and atomically commits certification, current head and both existing
+publisher witnesses. The retained comparison must exactly match the delivery approval. Neither another
+delivery nor a conflicting installation can replace the retained result. Reads and retries authenticate
+the complete signed continuation and current pointer; admission/preparation/ceremony retry remains
+available after certification. The original 1–3 records remain unchanged.
+
+This increment explicitly accepts only the frozen 3→4 publisher prefixes, checking their old and current
+witnesses plus exact accepted positions/links. It does not enable ordinary sync at continuation heads.
+General per-epoch history/ledger resolution is the next necessary composition. Schema 17 requires private
+opt-in and explicit offline upgrade from private schema 16; the retained host stays schema 14. No new
+HTTP route, personal-browser action or service restart was performed.
+
+Evidence: 166 affected Node tests pass. Five directed additions cover both approvers with actual writes
+from both prior publishers, aborted/lost delivery and certification replies, restart/exact retry, final
+authorization refusal, conflicting delivery/receipt/parent, missing or tampered ledger witnesses, and
+explicit schema-16 upgrade preserving the pending comparison. TypeScript, scoped lint/format, build,
+budget and origin checks pass. The packaged two-device Devices/delivery/reopen walkthrough passes in
+17.6 seconds. Logs: `/tmp/done-membership-transfer-regressions.log`,
+`/tmp/done-membership-transfer-browser.log`. Third-device browser custody/editor, general history,
+cancellation/removal and rotation remain unfinished. Release validation remains paused.

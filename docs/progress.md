@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: continuation delivery/certification proofs complete; atomic service composition next
+scope: atomic private continuation transfer complete; general publisher history next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -91,7 +91,11 @@ recognizes the consumed receipt. Schema 16 is private and unrouted; retained ser
 The durable relay is committed as `0acb8940`. Continuation delivery/certification proof verifiers now
 preserve the complete recipient set and require candidate installation; 83 affected protocol/ceremony
 cases pass. This does not yet install a key in a third browser or commit its service certification.
-Next: atomic continuation delivery/certification service composition, complete membership cancellation/removal, general
+Proofs are committed as `abe12337`. Atomic private delivery/certification now preserves both actual
+publisher prefixes across abort/lost reply/restart; 166 affected checks and the packaged walkthrough
+pass. Private schema 17 remains unrouted. The implementation still requires frozen epoch-3 ledgers;
+it must not be enabled in the retained host before general history is composed.
+Next: general per-publisher history and service ledger resolution, complete membership cancellation/removal, general
 history/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.

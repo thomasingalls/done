@@ -52,3 +52,38 @@ export const MEMBERSHIP_CEREMONY_SCHEMA = `CREATE TABLE membership_ceremonies (
  expired INTEGER NOT NULL DEFAULT 0 CHECK(expired IN (0,1)),
  PRIMARY KEY(workspace_id,preparation_id), UNIQUE(workspace_id,head),
  FOREIGN KEY(workspace_id,preparation_id) REFERENCES membership_admissions(workspace_id,preparation_id));`;
+
+export const MEMBERSHIP_TRANSFER_SCHEMA = `CREATE TABLE membership_transfers (
+ workspace_id TEXT NOT NULL, preparation_id TEXT NOT NULL, parent TEXT NOT NULL,
+ delivery TEXT NOT NULL, artifact TEXT, boundaries TEXT,
+ PRIMARY KEY(workspace_id,preparation_id), UNIQUE(workspace_id,parent),
+ CHECK((artifact IS NULL) = (boundaries IS NULL)),
+ FOREIGN KEY(workspace_id,preparation_id) REFERENCES membership_admissions(workspace_id,preparation_id));`;
+export interface MembershipTransferRow {
+  workspace_id: string;
+  preparation_id: string;
+  parent: string;
+  delivery: string;
+  artifact: string | null;
+  boundaries: string | null;
+}
+export function membershipTransferRows(
+  db: DatabaseSync,
+  workspace: string,
+): MembershipTransferRow[] {
+  if (!enabled.has(db)) return [];
+  if (!db.isTransaction) throw Error('Membership capture requires a transaction');
+  const sizes = db
+    .prepare(`SELECT length(CAST(delivery AS BLOB)) AS d,
+    length(CAST(artifact AS BLOB)) AS a, length(CAST(boundaries AS BLOB)) AS b
+    FROM membership_transfers WHERE workspace_id=? LIMIT ?`)
+    .all(workspace, MEMBERSHIP_CREDENTIAL_LIMIT + 1);
+  if (
+    sizes.length > MEMBERSHIP_CREDENTIAL_LIMIT ||
+    sizes.some((s) => [s.d, s.a, s.b].some((n) => Number(n) > MEMBERSHIP_PROOF_LIMIT))
+  )
+    throw Error('Oversized retained membership transfer');
+  return db
+    .prepare('SELECT * FROM membership_transfers WHERE workspace_id=? ORDER BY preparation_id')
+    .all(workspace) as unknown as MembershipTransferRow[];
+}

@@ -522,7 +522,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
   for (const [name, rows] of before)
     assert.deepEqual(db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(), rows, name);
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 16);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -631,6 +631,7 @@ async function continuationFixture(t, options = {}) {
     membershipContinuation: true,
     ...options,
   });
+  await options.beforeContinuation?.(x);
   const entry = x.candidate();
   entry.input.candidate.head = x.certification.head;
   const begun = await x.enroll('begin', entry.input);
@@ -847,7 +848,9 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   await backup(source, path);
   source.close();
   let db = new DatabaseSync(path);
-  db.exec('DROP TABLE membership_ceremonies; PRAGMA user_version=15;');
+  db.exec(
+    'DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+  );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
@@ -870,7 +873,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 16);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -1399,4 +1402,309 @@ test('a valid version-2 relay decision cannot replace the original version-1 del
   };
   const mixed = await x.signDelivery({ ...x.delivery, decision });
   await assert.rejects(verifyContentDelivery(mixed, x.base, x.successor), /approved ceremony/);
+});
+
+async function continuationDelivery(x, e) {
+  const sign = (label, body, key) => {
+    const { signature: _, ...value } = body;
+    return { ...value, signature: signed(key, message(label, value)) };
+  };
+  const certificate = sign(
+    'done/membership-recipient-certificate/v2',
+    {
+      v: 2,
+      workspaceId: x.workspace,
+      lineageId: e.context.lineageId,
+      parent: x.admission.head,
+      epoch: 5,
+      generation: 1,
+      members: x.admission.epoch.roster.map(({ id, wPub, sPub }) => ({ id, wPub, sPub })),
+      recoveryStateDigest: e.context.recoveryStateDigest,
+      approver: e.context.existing.id,
+    },
+    e.keys.existing,
+  );
+  const sealDelivery = (body) => sign('done/membership-key-delivery/v2', body, e.keys.existing);
+  const delivery = sealDelivery({
+    v: 2,
+    kind: 'membership-key-delivery',
+    parent: x.admission.head,
+    preparationId: x.admissionInput.attemptId,
+    generation: 1,
+    transcriptHash: e.approval.payload.transcriptHash,
+    existing: e.commits.existing,
+    candidate: e.commits.new,
+    existingReveal: e.reveals.existing,
+    newReveal: e.reveals.new,
+    decision: e.approval,
+    certificate,
+    recovery: x.base.request.recovery,
+    wrap: { enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) },
+  });
+  const installation = sign(
+    'done/membership-key-installed/v2',
+    {
+      v: 2,
+      kind: 'membership-key-installed',
+      deliveryHash: hash(JSON.stringify(delivery)),
+      credentialId: e.context.candidate.id,
+    },
+    e.keys.new,
+  );
+  const request = (role, action, payload = null, patch = {}) =>
+    sign(
+      'done/membership-key-transfer/v2',
+      {
+        v: 2,
+        workspaceId: x.workspace,
+        credentialId: role === 'existing' ? e.context.existing.id : e.context.candidate.id,
+        parent: x.admission.head,
+        preparationId: x.admissionInput.attemptId,
+        action,
+        payload,
+        ...patch,
+      },
+      e.keys[role],
+    );
+  const transfer = (r, authorize) => x.authority.owner.transferMembership(x.f.core, r, authorize);
+  const approve = async () => {
+    for (const role of ['existing', 'new'])
+      assert.equal((await x.relay(e.request(role, 'commit', e.commits[role]))).ok, true);
+    for (const role of ['existing', 'new'])
+      assert.equal((await x.relay(e.request(role, 'reveal', e.reveals[role]))).ok, true);
+    assert.equal((await x.relay(e.approval)).stage, 'approved');
+  };
+  return { certificate, delivery, installation, sealDelivery, request, transfer, approve };
+}
+for (const approver of ['existing', 'new'])
+  test(`private continuation transfer by ${approver} preserves both ledgers across aborted/lost certification and restart`, async (t) => {
+    let fault = null;
+    const x = await continuationFixture(t, {
+        hook(at, op) {
+          if (op === 'membership-transfer' && at === fault) {
+            fault = null;
+            throw Error('Interrupted transfer');
+          }
+        },
+        beforeContinuation: async (x) => {
+          assert.equal(
+            (await x.deliveryCall(x.make(1, 'first before joining', { epoch: 3 }))).kind,
+            'decision',
+          );
+          assert.equal(
+            (
+              await x.deliveryCall(
+                x.make(1, 'second before joining', {
+                  epoch: 3,
+                  credential: x.context.candidate.id,
+                  signer: x.keys.new,
+                }),
+              )
+            ).kind,
+            'decision',
+          );
+        },
+      }),
+      e = x.exchange(approver),
+      d = await continuationDelivery(x, e);
+    const prior = [
+      'workspace_successors',
+      'content_ceremonies',
+      'content_transfers',
+      'content_checkpoints',
+      'membership_admissions',
+    ].map((table) => [table, x.f.rows(table)]);
+    const deliver = d.request('existing', 'deliver', d.delivery),
+      install = d.request('new', 'install', d.installation);
+    assert.equal((await d.transfer(deliver)).refusal, 'approval-required');
+    await d.approve();
+    fault = 'before-commit';
+    assert.equal((await d.transfer(deliver)).ok, false);
+    assert.deepEqual(x.f.rows('membership_transfers'), []);
+    fault = 'after-commit';
+    assert.equal((await d.transfer(deliver)).ok, false);
+    x.f.restart();
+    x.authority.restart();
+    const delivered = await d.transfer(deliver);
+    assert.equal(delivered.ok, true, JSON.stringify(delivered));
+    assert.deepEqual(delivered.delivery, d.delivery);
+    assert.equal(delivered.certification, null);
+    assert.equal(x.f.rows('promotions')[0].successor_head, x.admission.head);
+    const boundaries = [
+      x.f.rows('promotions')[0].delivery_witness,
+      x.f.rows('publisher_witnesses'),
+    ];
+    fault = 'before-commit';
+    assert.equal((await d.transfer(install)).ok, false);
+    assert.equal(x.f.rows('membership_transfers')[0].artifact, null);
+    assert.deepEqual(
+      [x.f.rows('promotions')[0].delivery_witness, x.f.rows('publisher_witnesses')],
+      boundaries,
+    );
+    fault = 'after-commit';
+    assert.equal((await d.transfer(install)).ok, false);
+    x.f.restart();
+    x.authority.restart();
+    const installed = await d.transfer(install);
+    assert.equal(installed.ok, true, JSON.stringify(installed));
+    assert.equal(installed.certification.epoch.epoch, 5);
+    assert.deepEqual(await d.transfer(install), installed);
+    assert.deepEqual(await d.transfer(d.request('new', 'read')), installed);
+    assert.equal(x.f.rows('promotions')[0].successor_head, installed.certification.head);
+    for (const m of x.certification.epoch.roster)
+      assert.equal(
+        installed.certification.epoch.heads.find((h) => h.credentialId === m.id).position,
+        1,
+      );
+    assert.equal(
+      installed.certification.epoch.heads.find((h) => h.credentialId === e.context.candidate.id)
+        .position,
+      0,
+    );
+    for (const [table, rows] of prior) assert.deepEqual(x.f.rows(table), rows, table);
+    assert.deepEqual(
+      await x.authority.owner.admitMembership(x.f.core, x.admissionInput),
+      x.admission,
+    );
+    assert.equal(
+      (await x.enroll('resume', { retryKey: x.entry.input.retryKey })).stage,
+      'admitted',
+    );
+    assert.equal((await x.relay(e.approval)).stage, 'approved');
+    // The private certificate does not silently enable the legacy transport at epoch 3.
+    assert.equal(
+      (await x.deliveryCall(x.make(2, 'fenced publisher', { epoch: 3 }))).kind,
+      'unknown',
+    );
+  });
+
+test('continuation installation cannot cross final authorization, receipt or current-head boundaries', async (t) => {
+  let invalidate = false;
+  const x = await continuationFixture(t, {
+      hook(at, op) {
+        if (invalidate && op === 'membership-transfer' && at === 'after-verify') {
+          invalidate = false;
+          mutate(x, (db) =>
+            db.prepare('UPDATE promotions SET successor_head=?').run('ef'.repeat(32)),
+          );
+        }
+      },
+    }),
+    e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  const install = d.request('new', 'install', d.installation),
+    before = x.f.rows('membership_transfers');
+  await assert.rejects(
+    d.transfer(install, (db, target) => {
+      assert.equal(db.isTransaction, true);
+      assert.equal(target.attemptId, x.admissionInput.attemptId);
+      assert.equal(target.action, 'transfer');
+      return () => {
+        throw new AuthorizationRefused('session-expired');
+      };
+    }),
+    AuthorizationRefused,
+  );
+  assert.deepEqual(x.f.rows('membership_transfers'), before);
+  assert.equal(
+    (await d.transfer(d.request('existing', 'install', d.installation))).refusal,
+    'invalid-proof',
+  );
+  assert.equal(
+    (await d.transfer(d.request('new', 'read', null, { preparationId: fresh() }))).refusal,
+    'stale',
+  );
+  const altered = d.sealDelivery({
+    ...d.delivery,
+    wrap: { ...d.delivery.wrap, ct: 'ef'.repeat(48) },
+  });
+  assert.equal(
+    (await d.transfer(d.request('existing', 'deliver', altered))).refusal,
+    'delivery-conflict',
+  );
+  invalidate = true;
+  assert.equal((await d.transfer(install)).ok, false);
+  assert.deepEqual(x.f.rows('membership_transfers'), before);
+  mutate(x, (db) => db.prepare('UPDATE promotions SET successor_head=?').run(x.admission.head));
+  assert.equal((await d.transfer(install)).ok, true);
+});
+
+test('continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage', async (t) => {
+  const x = await continuationFixture(t, {
+      beforeContinuation: async (x) => {
+        await x.deliveryCall(x.make(1, 'retained first', { epoch: 3 }));
+        await x.deliveryCall(
+          x.make(1, 'retained second', {
+            epoch: 3,
+            credential: x.context.candidate.id,
+            signer: x.keys.new,
+          }),
+        );
+      },
+    }),
+    e = x.exchange('existing'),
+    d = await continuationDelivery(x, e);
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  const install = d.request('new', 'install', d.installation),
+    row = x.f.rows('membership_admissions')[0];
+  mutate(x, (db) => db.prepare('UPDATE membership_admissions SET boundaries=?').run('[]'));
+  assert.equal((await d.transfer(install)).ok, false);
+  assert.equal(x.f.rows('membership_transfers')[0].artifact, null);
+  mutate(x, (db) =>
+    db.prepare('UPDATE membership_admissions SET boundaries=?').run(row.boundaries),
+  );
+  const witness = x.f.rows('publisher_witnesses')[0];
+  mutate(x, (db) => db.exec('DELETE FROM publisher_witnesses'));
+  assert.equal((await d.transfer(install)).ok, false);
+  mutate(x, (db) =>
+    db
+      .prepare('INSERT INTO publisher_witnesses VALUES (?,?,?)')
+      .run(witness.account_id, witness.credential_id, witness.witness),
+  );
+  const result = await d.transfer(install);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  const stored = x.f.rows('membership_transfers')[0];
+  mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run('[]'));
+  assert.equal((await d.transfer(d.request('new', 'read'))).ok, false);
+  mutate(x, (db) =>
+    db.prepare('UPDATE membership_transfers SET boundaries=?').run(stored.boundaries),
+  );
+  assert.deepEqual(await d.transfer(install), result);
+});
+
+test('schema-16 pending comparison upgrades explicitly without replacing its messages', async (t) => {
+  const x = await continuationFixture(t),
+    e = x.exchange('existing');
+  await x.relay(e.request('existing', 'commit', e.commits.existing));
+  const path = x.f.path + '.offline-v16',
+    source = new DatabaseSync(x.f.path);
+  await backup(source, path);
+  source.close();
+  let db = new DatabaseSync(path);
+  db.exec('DROP TABLE membership_transfers; PRAGMA user_version=16;');
+  db.close();
+  const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
+    policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /explicit offline upgrade/,
+  );
+  const upgraded = new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV16: true,
+  });
+  upgraded.close();
+  db = new DatabaseSync(path);
+  assert.deepEqual(
+    db.prepare('SELECT * FROM membership_ceremonies').all(),
+    x.f.rows('membership_ceremonies'),
+  );
+  assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
+  db.close();
+  assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });

@@ -179,3 +179,19 @@ No service-root signature can replace the device approval or candidate installat
 
 The first implementation verifies these bytes; atomic service retention, actual client key installation
 and the general delivery/history owner remain required before exposing the third-device product path.
+
+
+## Atomic private transfer checkpoint — 2026-10-08
+
+An admission-keyed transfer table now preserves the exact approved delivery and resulting installation
+certificate. The certification transaction advances the current head and both existing publisher
+witnesses together; exact retries survive restart and a lost commit reply. Earlier ceremony, delivery,
+checkpoint and admission bytes are retained. The consumed preparation remains resumable as admitted.
+
+This is private schema 17, with explicit offline `upgradeFromV16` for private schema 16; earlier approved
+offline upgrade paths also install the new table. The retained/default development service stays at
+schema 14. The private service still fences ordinary delivery after continuation admission. Its transfer
+verifier requires the exact frozen epoch-3 accepted prefixes, including both old and rebound witnesses.
+General per-publisher issuance history and accepted-boundary replay must replace this temporary fence
+before ongoing writing and the third-device editor are enabled. This is the next implementation step,
+not an operator restriction on the eventual product.

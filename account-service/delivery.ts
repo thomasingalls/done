@@ -1,5 +1,10 @@
 import { rethrowAuthorization, type OperationAuthorization } from './authorization.ts';
-import { membershipRows, type MembershipRow } from './membershipStore.ts';
+import {
+  membershipRows,
+  membershipTransferRows,
+  type MembershipRow,
+  type MembershipTransferRow,
+} from './membershipStore.ts';
 import {
   causeCode,
   reportDiagnostic,
@@ -149,6 +154,7 @@ export interface WorkspaceAuthoritySnapshot {
   successor: SuccessorRow | null;
   transfer: ContentTransferRow | null;
   continuations?: MembershipRow[];
+  membershipTransfers?: MembershipTransferRow[];
 }
 export const PUBLISHER_SCHEMA = `
   CREATE TABLE publisher_decisions (
@@ -230,6 +236,7 @@ export function snapshotWorkspaceAuthority(
       .get(workspace) as unknown as ContentTransferRow | undefined) ?? null;
   if (transfer && !successor) throw Error('Delivery without admission');
   const continuations = membershipRows(db, workspace);
+  const membershipTransfers = membershipTransferRows(db, workspace);
   return {
     promotion,
     account,
@@ -239,6 +246,7 @@ export function snapshotWorkspaceAuthority(
     successor,
     transfer,
     ...(continuations.length ? { continuations } : {}),
+    ...(membershipTransfers.length ? { membershipTransfers } : {}),
   };
 }
 export function snapshot(db: DatabaseSync, workspace: string, publisher?: string): Snapshot | null {
@@ -293,7 +301,7 @@ export async function verifyWorkspaceAuthority(
 ) {
   // Continuation mutation is a private development entry point until general history/transport
   // composition lands. The old 1–3 reader must never silently treat the old anchor as current.
-  if (s.continuations?.length)
+  if (s.continuations?.length || s.membershipTransfers?.length)
     throw Error('Membership continuation requires its owned history path');
   const p = s.promotion,
     request = parseAdmissionRequest(JSON.parse(p.request)),

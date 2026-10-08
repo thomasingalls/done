@@ -1,4 +1,5 @@
 /** Ceremony authority only. Does not resolve delivery ledgers or grant continuation sync. */
+import { verifyMembershipDelivery } from '../account-protocol/membershipDelivery.ts';
 import { same } from '../account-protocol/admission.ts';
 import {
   CONTENT_DELIVERY_LIMIT,
@@ -9,6 +10,8 @@ import {
   parseMembershipAdmission,
   verifyMembershipAnchor,
   verifyMembershipAdmission,
+  parseMembershipCertification,
+  verifyMembershipCertification,
 } from '../account-protocol/membership.ts';
 import {
   verifyWorkspaceAuthority,
@@ -30,6 +33,7 @@ export async function verifyPendingMembership(
     {
       ...snapshot,
       continuations: [],
+      membershipTransfers: [],
       promotion: { ...snapshot.promotion, successor_head: certificate.head },
     },
     issuer,
@@ -56,8 +60,30 @@ export async function verifyPendingMembership(
   )
     throw Error('Retained membership identity changed');
   membership = await verifyMembershipAdmission(proof, membership);
-  const current = membershipState(membership);
+  const transfers = snapshot.membershipTransfers ?? [];
+  if (transfers.length > 1) throw Error('Unsupported continuation transfer history');
+  const transfer = transfers[0] ?? null;
+  let delivery = null,
+    certification = null,
+    currentMembership = membership;
+  if (transfer) {
+    if (
+      transfer.workspace_id !== proof.epoch.workspaceId ||
+      transfer.parent !== proof.head ||
+      transfer.preparation_id !== row.preparation_id ||
+      (transfer.artifact === null) !== (transfer.boundaries === null)
+    )
+      throw Error('Retained membership transfer identity changed');
+    delivery = (await verifyMembershipDelivery(JSON.parse(transfer.delivery), membership)).delivery;
+    if (transfer.artifact) {
+      certification = parseMembershipCertification(JSON.parse(transfer.artifact));
+      if (!same(certification.epoch.delivery, delivery))
+        throw Error('Retained membership delivery changed');
+      currentMembership = await verifyMembershipCertification(certification, membership);
+    }
+  }
+  const current = membershipState(currentMembership);
   if (snapshot.promotion.successor_head !== current.head)
     throw Error('Current membership pointer changed');
-  return { membership, anchor, proof };
+  return { membership, currentMembership, anchor, proof, delivery, certification };
 }
