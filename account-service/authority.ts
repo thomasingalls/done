@@ -1,4 +1,11 @@
 import {
+  membershipBootstrapMessage,
+  parseMembershipBootstrapResponse,
+  membershipDiscoveryResponseMessage,
+  parseMembershipDiscoveryResponse,
+} from '../account-protocol/membershipLocator.ts';
+import type { MembershipLocatorIssuer } from './membershipLocator.ts';
+import {
   parseMembershipCertificationEpoch,
   membershipCertificationMessage,
 } from '../account-protocol/membership.ts';
@@ -360,6 +367,29 @@ export class PrivateAuthority {
   }
   enrollment(core: AccountCore, operation: EnrollmentOperation, input: unknown) {
     return core.enrollment(operation, input, this.#enrollmentIssuer());
+  }
+  #membershipLocatorIssuer(authorize?: OperationAuthorization): MembershipLocatorIssuer {
+    return {
+      ...this.#deliveryIssuer(authorize),
+      bootstrap: async (body) => {
+        const response = parseMembershipBootstrapResponse({ ...body, signature: '00'.repeat(64) });
+        const message = await membershipBootstrapMessage(response);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...response, signature: sign(null, message, this.#key).toString('hex') };
+      },
+      discovery: async (body) => {
+        const response = parseMembershipDiscoveryResponse({ ...body, signature: '00'.repeat(64) });
+        const message = await membershipDiscoveryResponseMessage(response);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...response, signature: sign(null, message, this.#key).toString('hex') };
+      },
+    };
+  }
+  membershipBootstrap(core: AccountCore, input: unknown) {
+    return core.membershipBootstrap(input, this.#membershipLocatorIssuer());
+  }
+  discoverMembership(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.discoverMembership(input, this.#membershipLocatorIssuer(authorize));
   }
   ceremonyBootstrap(core: AccountCore, input: unknown) {
     return core.ceremonyBootstrap(input, {

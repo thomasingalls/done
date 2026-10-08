@@ -1,3 +1,8 @@
+import {
+  membershipBootstrap,
+  discoverMembership,
+  type MembershipLocatorIssuer,
+} from './membershipLocator.ts';
 import { ScopedGrants } from './grants.ts';
 import {
   MEMBERSHIP_SCHEMA,
@@ -383,6 +388,12 @@ export class AccountCore {
     }
   }
 
+  membershipBootstrap(input: unknown, issuer: MembershipLocatorIssuer) {
+    return membershipBootstrap(this.#db, input, issuer);
+  }
+  discoverMembership(input: unknown, issuer: MembershipLocatorIssuer) {
+    return discoverMembership(this.#db, input, issuer, this.#now, this.#hook);
+  }
   ceremonyBootstrap(input: unknown, issuer: CeremonyIssuer) {
     return ceremonyBootstrap(this.#db, input, issuer);
   }

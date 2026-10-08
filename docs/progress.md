@@ -49,69 +49,45 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: scoped continuation grants complete; current-head bootstrap/discovery next
+scope: authenticated continuation locators complete; opt-in HTTP and owned client integration next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Completed:** session-enabled host `b17c7700`, retained cutover `7c859dff`, notification server
-`fbf9c856`, and owned browser integration `a07de792` (unsigned intermediate checkpoints after signed
-`3ba2d33c`). Focused evidence: 116 affected Node tests, 16 client/scheduler Vitest tests and one packaged
-two-device browser case, including quiet comparison input/focus, two-way writing, API restart and offline
-cold opening. Type/build/lint/budget/origin checks pass. See [sessions and notifications](./account-sessions-subscriptions.md).
+**Live baseline:** origin `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
+frontend `a07de792`, schema 14 and original service pin. The session/notification cutover is recorded
+in [the runbook](./packaged-account-development.md#live-notification-cutover--2026-10-08).
+Backup: `.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`.
+No subsequent lifecycle work has been deployed. Obtain a new quiet point before restarting the retained
+installation; the operator was told it could reopen after the previous cutover.
 
-**Current live baseline:** origin `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-frontend `a07de792`, schema 14 and original service pin. Backup:
-`.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`. All 19 account tables and pin/key
-match the backup; live authority proof, route boundaries and all 23 precache URLs plus worker match.
-No personal browser or writing was opened; operator-device update uptake remains pending.
-[Commands and limits](./packaged-account-development.md#live-notification-cutover--2026-10-08).
+**Active:** [device lifecycle plan](./account-device-lifecycle.md). Devices and owner-preserving
+navigation are implemented (`eb8c02c0`). The operator approved one unfinished connection at a time,
+Resume/Cancel before another invitation, and the existing comparison ceremony. Cancel applies before
+comparison approval; afterward, or when key exposure is uncertain, Remove requires forward rotation
+and must explain that existing copies cannot be erased. Competing epochs restart the comparison.
 
-**Active:** [device lifecycle plan](./account-device-lifecycle.md). The operator approved Devices in the
-Account menu, a verified list, connect/removal actions, and the existing comparison ceremony. The verified list and route-backed owner-preserving navigation are implemented and checked (27 affected
-service/history cases and two packaged browser scenarios). The real invitation path also exposed and
-now covers a bootstrap/certification race. These changes are not deployed to the retained origin.
-Verified Devices is committed as `eb8c02c0`. Versioned additional-device preparation now binds the
-verified epoch-3 parent and preserves exact retry/login outcomes; 76 focused regressions pass. It does
-not grant membership or content, and the third-device button remains disabled.
-Preparation is committed as `9f02a88f`. The first private continuation admission now preserves both
-publisher boundaries and exact retry outcomes; 85 affected regressions pass. It is unrouted and requires
-explicit schema-15 opt-in. The regular host and retained installation stay on schema 14. The legacy
-delivery owner deliberately refuses continuation state until general history is composed.
-Private admission is committed as `f6b04977`. Version-2 comparison proofs now support either certified
-approver. Preparation enforces one authenticated unfinished connection (129 affected tests and the
-packaged Devices walkthrough pass). Unproved challenges cannot reserve an account. The operator chose
-Cancel before comparison approval and Remove with rotation afterward, even if certification is pending.
-The pending label now reflects that distinction.
-Comparison/reservation is committed as `7b6235d7`. The durable private relay now retains a single
-approver and exact commitment/reveal/decision state under the admission identity. Preparation resume
-recognizes the consumed receipt. Schema 16 is private and unrouted; retained serving remains schema 14.
-157 affected checks and the packaged two-device walkthrough pass.
-The durable relay is committed as `0acb8940`. Continuation delivery/certification proof verifiers now
-preserve the complete recipient set and require candidate installation; 83 affected protocol/ceremony
-cases pass. This does not yet install a key in a third browser or commit its service certification.
-Proofs are committed as `abe12337`. Atomic private delivery/certification now preserves both actual
-publisher prefixes across abort/lost reply/restart; 166 affected checks and the packaged walkthrough
-pass. Private schema 17 remains unrouted. The implementation still requires frozen epoch-3 ledgers;
-it must not be enabled in the retained host before general history is composed.
-Atomic transfer is committed as `78a07a6f`. Per-publisher continuation history now preserves actual
-entry epochs, reader eligibility and accepted cuts; 49 affected checks and the packaged walkthrough pass.
-History is committed as `2fce72f1`. The private service now composes actual publisher epochs and cuts,
-allowing both existing devices to write during connection and the candidate after certification.
-98 affected checks and the packaged walkthrough pass. This replaces the temporary frozen-prefix
-restriction for delivery/transfer; grants, discovery and client adoption remain fenced.
-Service ledger integration is committed as `b48b25d1`. Scoped grants now resolve current membership
-and distinguish exact-attempt ceremony access from certified workspace access. 80 affected Node checks
-pass, including restart, notification invalidation and authority changes during verification.
-Next: current-head bootstrap/discovery, complete membership cancellation/removal,
-and third-device editor integration,
-removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
-without the actual committed transition. Existing code deliberately supports only the first two devices.
+The private schema-17 implementation now retains version-2 preparation, continuation admission,
+commitment/reveal/approval, key delivery and candidate installation. Both existing publishers can keep
+writing across admission/certification, and a newly certified publisher gets its actual entry epoch.
+Exact accepted cuts and refused-parent evidence survive retries/restart. Key checkpoints:
+`2fce72f1` (publisher history), `b48b25d1` (service ledger composition), `24706589` (scoped grants).
 
-**Authorized continuation:** unsigned intermediate commits with phase summaries, one signed checkpoint
-at the end of the agreed sequence. Product decisions still require consultation. Checkpoint/pruning and
-operational deployment/restore follow lifecycle work. Release validation remains paused.
+Current-head bootstrap/discovery now carries the bounded complete signed chain, with request/pin
+binding, held-head ancestry and reader eligibility. It preserves the requesting publisher's ledger
+interlock and final network/lifetime checks. 92 affected Node cases and type/lint/format/build/budget/
+origin checks pass. All phase evidence is recorded in [completed.md](./completed.md).
+These private methods remain unrouted. The current product still supports only its first two devices.
+
+**Next:** opt-in HTTP composition, owned third-device custody/editor and subsequent authority adoption;
+then complete membership cancellation/removal with forward rotation/finalization, repeated later
+connections and lost-device recovery. A removal control must not claim completion without the committed
+transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.
+
+**Authorization:** continue directly, with unsigned intermediate commits and end-of-phase chat summaries;
+one signed checkpoint at the end of the agreed sequence. Consult the operator on product decisions.
+Release validation remains paused.
 
 ---
 

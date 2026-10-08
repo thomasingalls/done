@@ -10490,3 +10490,28 @@ unknown/historical attempt, tampered retained evidence, changes during challenge
 and login revocation refuse appropriately. TypeScript, scoped lint/format and diff checks pass. Log:
 `/tmp/done-membership-grants-regressions.log`. No new HTTP continuation route, host upgrade or browser
 activation was added. Bootstrap/discovery and client adoption remain next; release validation is paused.
+
+
+## 2026-10-08 — Authenticated continuation bootstrap and discovery (`L-1`)
+
+After scoped-grant checkpoint `24706589`, version-2 locators carry a bounded complete membership
+chain and bind the response to the caller's captured request. Either certified device can sign a
+version-2 invitation tied to its authenticated historical head. The client verifies the service pin,
+fresh request binding, exact ancestry, both original and continuation device approvals, and reader
+eligibility at the claimed head. Discovery can start from an older saved head, but a later reader
+cannot claim earlier rights and a reply cannot move behind that saved head.
+
+The private service rebuilds a bootstrap if certification changes while signing, bounded to four
+attempts. Discovery retains the requesting publisher's complete ledger census and final scoped
+authorization/lifetime checks. Invitation bootstrap exposes historical proof only; it makes no claim
+about current content completeness. No key installation, client authority adoption or HTTP route is
+provided by these locators. Private schema-17 opt-in is still required; retained serving is unchanged.
+
+Evidence: 92 affected Node cases pass. Three independent protocol cases cover captured inputs,
+nonce/pin/anchor substitutions, skipped/reordered history, replaced device approvals, late readers and
+chain bounds. Three directed service cases cover both inviters, certification during signing, bounded
+churn, restart, missing publisher evidence, exact network scope, session retirement and expiry during
+verification. TypeScript, scoped lint/format, build, budget, origin isolation and diff checks pass. Logs:
+`/tmp/done-membership-locator-protocol.log`, `/tmp/done-membership-locator-service.log`,
+`/tmp/done-membership-locator-regressions.log`, `/tmp/done-membership-locator-build.log`. Release validation
+remains paused. Next: opt-in HTTP composition and owned client integration.

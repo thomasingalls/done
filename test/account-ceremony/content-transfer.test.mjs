@@ -1,3 +1,7 @@
+import {
+  verifyMembershipBootstrapResponse,
+  verifyMembershipDiscoveryResponse,
+} from '../../account-protocol/membershipLocator.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
@@ -2079,4 +2083,226 @@ test('continuation grant verification refuses changed pointers, receipts and cha
     (await g.begin({ ...scope, kind: 'enrollment', attemptId: preparation.id })).refusal,
     'storage-unavailable',
   );
+});
+
+function membershipLocatorRequests(x) {
+  const seal = (label, body, key) => ({ ...body, signature: signed(key, message(label, body)) });
+  const invitation = (id = x.context.candidate.id, key = x.keys.new, patch = {}) =>
+    seal(
+      'done/membership-invitation/v2',
+      {
+        v: 2,
+        workspaceId: x.workspace,
+        lineageId: x.context.lineageId,
+        credentialId: id,
+        epoch: 3,
+        head: x.certification.head,
+        nonce: 'd1'.repeat(32),
+        ...patch,
+      },
+      key,
+    );
+  const bootstrap = (invite = invitation()) => ({
+    v: 2,
+    workspaceId: x.workspace,
+    nonce: 'd2'.repeat(32),
+    invitation: invite,
+  });
+  const discovery = (id = x.context.candidate.id, key = x.keys.new, patch = {}) =>
+    seal(
+      'done/membership-discovery-request/v2',
+      {
+        v: 2,
+        kind: 'membership-discovery-request',
+        pin: x.authority.pin,
+        workspaceId: x.workspace,
+        lineageId: x.context.lineageId,
+        credentialId: id,
+        epoch: 3,
+        head: x.certification.head,
+        nonce: 'd3'.repeat(32),
+        expiresAt: 61000,
+        ...patch,
+      },
+      key,
+    );
+  return { invitation, bootstrap, discovery };
+}
+
+test('continuation bootstrap permits either certified inviter and rebuilds after a signing-time certification', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x),
+    e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  const call = (input) => x.authority.owner.membershipBootstrap(x.f.core, input);
+  for (const [id, key] of [
+    [x.context.existing.id, x.keys.existing],
+    [x.context.candidate.id, x.keys.new],
+  ]) {
+    const request = q.bootstrap(q.invitation(id, key)),
+      result = await call(request);
+    assert.equal(
+      (await verifyMembershipBootstrapResponse(result, request, x.authority.pin)).history.current
+        .tip,
+      4,
+    );
+  }
+  const pending = q.bootstrap(
+    q.invitation(e.context.candidate.id, e.keys.new, { epoch: 4, head: x.admission.head }),
+  );
+  assert.equal((await call(pending)).ok, false);
+  const request = q.bootstrap();
+  assert.equal(
+    (await call({ ...request, invitation: { ...request.invitation, signature: '00'.repeat(64) } }))
+      .ok,
+    false,
+  );
+  assert.equal((await call({ ...request, v: 1 })).refusal, 'malformed');
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  let count = 0,
+    installed;
+  const result = await x.authority.owner.membershipBootstrap(
+    {
+      membershipBootstrap(input, issuer) {
+        return x.f.core.membershipBootstrap(input, {
+          ...issuer,
+          async bootstrap(body) {
+            const result = await issuer.bootstrap(body);
+            if (++count === 1)
+              installed = await d.transfer(d.request('new', 'install', d.installation));
+            return result;
+          },
+        });
+      },
+    },
+    request,
+  );
+  assert.equal(count, 2);
+  assert.equal(
+    (await verifyMembershipBootstrapResponse(result, request, x.authority.pin)).history.current
+      .head,
+    installed.certification.head,
+  );
+  assert.deepEqual(await call(request), result);
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual(await call(request), result);
+  let churn = 0;
+  const refused = await x.authority.owner.membershipBootstrap(
+    {
+      membershipBootstrap(input, issuer) {
+        return x.f.core.membershipBootstrap(input, {
+          ...issuer,
+          async bootstrap(body) {
+            const result = await issuer.bootstrap(body);
+            churn++;
+            mutate(x, (db) => db.exec("UPDATE recovery SET draft=draft || ' '"));
+            return result;
+          },
+        });
+      },
+    },
+    request,
+  );
+  assert.deepEqual(refused, { ok: false, refusal: 'state-changed' });
+  assert.equal(churn, 4);
+});
+
+test('continuation discovery keeps publisher coverage and exact network authorization through restart', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x),
+    g = await continuationGrants(x);
+  const scope = {
+    kind: 'workspace',
+    workspaceId: x.workspace,
+    credentialId: x.context.candidate.id,
+  };
+  const grant = await g.grant(scope, x.keys.new);
+  const guard = () => x.f.core.grants.authorize(grant.grantToken);
+  const request = q.discovery();
+  const call = (request, authorization) =>
+    x.authority.owner.discoverMembership(x.f.core, request, authorization);
+  let result = await call(request, guard());
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(result, request, x.base, 1000)).history.current.tip,
+    4,
+  );
+  await assert.rejects(
+    call(q.discovery(x.credential, x.keys.existing, { epoch: 1, head: x.offer.head }), guard()),
+    denial('insufficient-scope'),
+  );
+  const original = q.discovery(x.credential, x.keys.existing, { epoch: 1, head: x.offer.head });
+  const first = await g.grant({ ...scope, credentialId: x.credential }, x.keys.existing);
+  result = await call(original, x.f.core.grants.authorize(first.grantToken));
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(result, original, x.base, 1000)).history.current.tip,
+    4,
+  );
+  const wire = x.make(1, 'discovery coverage', {
+    epoch: 4,
+    credential: scope.credentialId,
+    signer: x.keys.new,
+  });
+  assert.equal((await x.deliveryCall(wire)).kind, 'decision');
+  assert.equal((await call(request, guard())).kind, 'membership-discovery');
+  const witness = x.f.rows('publisher_witnesses')[0];
+  mutate(x, (db) =>
+    db.prepare('DELETE FROM publisher_decisions WHERE credential_id=?').run(scope.credentialId),
+  );
+  assert.equal((await call(request, guard())).ok, false);
+  // Historical proof bootstrap cannot claim live ledger coverage; discovery must refuse it.
+  assert.equal(
+    (await x.authority.owner.membershipBootstrap(x.f.core, q.bootstrap())).kind,
+    'membership-bootstrap',
+  );
+  assert(witness.witness);
+  x.f.restart();
+  g.restart();
+  await assert.rejects(call(original, guard()), denial('grant-required'));
+  const resumed = await g.grant({ ...scope, credentialId: x.credential }, x.keys.existing);
+  assert.equal(
+    (await call(original, x.f.core.grants.authorize(resumed.grantToken))).kind,
+    'membership-discovery',
+  );
+  g.revoke();
+  await assert.rejects(
+    call(original, x.f.core.grants.authorize(resumed.grantToken)),
+    denial('sign-in-required'),
+  );
+});
+
+test('continuation discovery rechecks session and expiry after asynchronous proof and signing work', async (t) => {
+  let at = 1000,
+    revoke,
+    expire = false;
+  const x = await continuationFixture(t, {
+      now: () => at,
+      hook(point, op) {
+        if (point === 'after-verify' && op === 'discover-membership') {
+          revoke?.();
+          if (expire) at = 61000;
+        }
+      },
+    }),
+    q = membershipLocatorRequests(x),
+    g = await continuationGrants(x);
+  const scope = {
+    kind: 'workspace',
+    workspaceId: x.workspace,
+    credentialId: x.context.candidate.id,
+  };
+  const grant = await g.grant(scope, x.keys.new);
+  revoke = () => g.revoke();
+  await assert.rejects(
+    x.authority.owner.discoverMembership(
+      x.f.core,
+      q.discovery(),
+      x.f.core.grants.authorize(grant.grantToken),
+    ),
+    denial('sign-in-required'),
+  );
+  revoke = null;
+  expire = true;
+  assert.equal((await x.authority.owner.discoverMembership(x.f.core, q.discovery())).ok, false);
 });

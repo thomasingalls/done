@@ -232,3 +232,19 @@ not. Scoped authorization still supplements every signed domain operation and it
 
 Next: bounded authenticated bootstrap/discovery of the complete chain, followed by owned client
 adoption and third-device installation. The retained/default host remains unchanged.
+
+
+## Current-head locator checkpoint — 2026-10-08
+
+Version-2 invitation bootstrap and workspace discovery now authenticate the complete original and
+continuation chain. Invitations bind the inviter's certified historical head; bootstrap replies bind
+the full captured request and expected service pin. Discovery uses device proof, a fresh nonce/deadline,
+exact held ancestry and scoped network authorization. Reader eligibility is checked at the claimed
+historical head as well as current membership. A fresh service signature cannot substitute for a
+missing device approval or installation proof.
+
+Chain count and byte limits are explicit. Bootstrap is capped at 80 MiB, matching the existing client
+response ceiling; over-limit results refuse. The service retries normal signing-time authority changes
+at most four times. Discovery preserves the requesting publisher's ledger interlock. The private
+methods remain unrouted; HTTP and owned browser adoption are next. These proof readers do not install
+keys, grant publication authority or complete a cancellation/removal.
