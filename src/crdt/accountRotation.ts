@@ -10,6 +10,8 @@ import {
 import {
   readJoinedAccount,
   joinedKeys,
+  joinedInitialGeneration,
+  joinedBaselineHash,
   writeJoinedApproval,
   writeJoinedRotation,
 } from './joinedAccount';
@@ -32,7 +34,6 @@ import {
   verifyRemovalPreparation,
   removalPreparationMatchesRequest,
 } from '../../account-protocol/rotation';
-import { contentCheckpointHash } from '../../account-protocol/contentCheckpoint';
 import { generationInfo } from '../../account-protocol/genesis';
 import { same } from '../../account-protocol/admission';
 import { digest } from '../../account-protocol/recovery';
@@ -197,9 +198,13 @@ export async function activateAccountRotation(
           : await joinedKeys(task, joined!, code, async (key) => key.slice(), true);
         if (record.active_rotation)
           active = await openActiveRotation(scope, root, record, subtle, progress.parent);
-        if ((active?.generation ?? 1) !== predecessorGeneration)
+        const initialGeneration = joined ? joinedInitialGeneration(joined.marker!) : 1;
+        if ((active?.generation ?? initialGeneration) !== predecessorGeneration)
           throw Error('Active predecessor generation changed');
-        const historicalKeys = new Map<number, Bytes>([[1, network], ...(active?.previous ?? [])]);
+        const historicalKeys = new Map<number, Bytes>([
+          [initialGeneration, network],
+          ...(active?.previous ?? []),
+        ]);
         if (active) historicalKeys.set(active.generation, active.key);
         const route: CaptureRoute = {
           workspace: history.current.workspace,
@@ -217,8 +222,11 @@ export async function activateAccountRotation(
               }
             : {
                 kind: 'content-checkpoint',
-                id: await contentCheckpointHash(joined!.marker!.reading.checkpoint),
+                id: await joinedBaselineHash(joined!.marker!),
               },
+          ...(joined?.marker?.v === 2 && joined.marker.reading.v === 3
+            ? { baselineHeads: joined.marker.reading.checkpoint.heads }
+            : {}),
           service: { id: base.pin.serviceId, origin: base.pin.origin },
           authority: history.current,
           history,

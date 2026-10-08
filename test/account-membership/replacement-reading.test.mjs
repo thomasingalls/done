@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { client } from './replacement-checkpoint-client.mjs';
 import { sourceFixture } from './replacement-source-fixture.mjs';
 import { deliveryFixture } from './delivery-fixtures.mjs';
-import { signed } from './fixtures.mjs';
+import { signed, hash } from './fixtures.mjs';
 import {
   parseMembershipDelivery,
   parseMembershipInstallation,
@@ -208,6 +208,64 @@ test('replacement reader refuses changed binding, snapshot, candidate acknowledg
       await assert.rejects(f.replay(changed));
     }
     await assert.rejects(f.replay(f.reading, new Uint8Array(32).fill(9)));
+  } finally {
+    f.cleanup();
+  }
+});
+
+test('replacement loading persists and cold-replays equivalent parsed field ordering', async () => {
+  const f = await fixture();
+  try {
+    const certification = f.authority.continuations.at(-1);
+    const progress = {
+      role: 'new',
+      content: {
+        delivery: certification.epoch.delivery,
+        installation: certification.epoch.installation,
+        certification,
+        key: { sequence: 1, ct: '00'.repeat(48) },
+      },
+      replacement: f.reading.checkpoint,
+      replacementBinding: f.reading.binding,
+    };
+    let retained = structuredClone(progress);
+    const owner = {
+      participant: f.who,
+      load: async () => structuredClone(retained),
+      sign: async (b) => signed(f.d.keys.new, b),
+      withInstalledKey: async (_k, _h, fn) => fn(f.key2),
+    };
+    const input = {
+      signal: new AbortController().signal,
+      save: async () => {
+        retained = structuredClone(progress);
+      },
+      request: async () => {
+        throw Error('Replacement must not fetch the original checkpoint');
+      },
+      read: async (bytes) => {
+        const request = JSON.parse(Buffer.from(bytes).toString());
+        const body = ['done/private-read-page/v2', 2, hash(bytes), request[10], request[10], []];
+        return new Uint8Array(
+          Buffer.from(
+            JSON.stringify([
+              ...body,
+              signed(f.x.f.f.keys.acceptance, new Uint8Array(Buffer.from(JSON.stringify(body)))),
+            ]),
+          ),
+        );
+      },
+    };
+    const { base, ...proofs } = f.authority;
+    const authority = { base, proofs };
+    assert.equal(
+      (await client.loadMembershipWriting(progress, owner, authority, input)).kind,
+      'reading',
+    );
+    assert.equal(
+      (await client.loadMembershipWriting(progress, owner, authority, input)).kind,
+      'reading',
+    );
   } finally {
     f.cleanup();
   }

@@ -188,7 +188,11 @@ export async function openDeviceRemovalVault(
       !state.certificate.members.some((m) => same(m, owner.participant))
     )
       throw Error('Removal requires another device and a certified owner');
-    if (state.generation !== (previous.at(-1)?.generation ?? 1))
+    if (
+      state.generation !==
+      (previous.at(-1)?.generation ??
+        (source.kind === 'joined' ? (source.initialGeneration ?? 1) : 1))
+    )
       throw Error('Activate the current generation before removal');
     await rotationRecipients(historyMembership(current.history), target, base.request.recovery);
     await save({

@@ -1,4 +1,4 @@
-/** Generation-one later-device loading. Activation remains the slot owner's separate commit. */
+/** Later-device loading. Activation remains the slot owner's separate commit. */
 import { same, semanticMessage } from '../../account-protocol/admission';
 import { closed } from '../../account-protocol/preparation';
 import {
@@ -21,6 +21,7 @@ import { verifyInboundPage } from '../crdt/accountInbound';
 import {
   replayMembershipReading,
   eraseMembershipReading,
+  captureMembershipReading,
   MEMBERSHIP_READING_EVENTS,
   type MembershipReading,
 } from '../crdt/membershipReading';
@@ -85,7 +86,10 @@ export async function loadMembershipWriting(
       !same(retained.content, content) ||
       !same(retained.replacement, p.replacement) ||
       !same(retained.replacementBinding, p.replacementBinding) ||
-      !same(retained.reading, p.reading)
+      !same(
+        retained.reading && captureMembershipReading(retained.reading),
+        p.reading && captureMembershipReading(p.reading),
+      )
     )
       throw Error('Later reader progress did not persist');
     guard();

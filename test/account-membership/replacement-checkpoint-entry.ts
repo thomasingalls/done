@@ -13,3 +13,4 @@ export {
   publisherState,
   publisherContext,
 } from '../../src/crdt/inboundLedger';
+export { loadMembershipWriting } from '../../src/account/membershipReader';

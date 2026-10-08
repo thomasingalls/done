@@ -14,6 +14,7 @@ import { capturedRecovery } from './sourceCapture';
 import { replayRecovery } from './admissionDocument';
 import { openEnvelope, openCredential, hex, random, type Bytes } from './custodyCrypto';
 import { Y } from './yjs';
+import { verifyReplacementReading } from './membershipReading';
 import { openReplacementSource } from './replacementSource';
 import { same } from '../../account-protocol/admission';
 import {
@@ -48,6 +49,7 @@ async function withSource<T>(
     producer: string;
     sign(bytes: Bytes): Promise<string>;
     snapshot: Parameters<typeof openReplacementSource>[0]['checkpoint'];
+    installed?: Parameters<typeof openReplacementSource>[0]['installed'];
     local(): Promise<InstanceType<typeof Y.Doc>>;
     subtle: SubtleCrypto;
   }) => Promise<T>,
@@ -146,6 +148,19 @@ async function withSource<T>(
         producer,
         subtle,
         snapshot: original ? marker!.catchup! : joined!.marker!.reading.checkpoint,
+        ...(joined?.marker?.v === 2 && joined.marker.reading.v === 3
+          ? {
+              installed: {
+                parent: await verifyReplacementReading(
+                  joined.marker.reading,
+                  joined.marker.authority,
+                  initial!.original,
+                  { id: producer, sPub: hex(credentials[1].publicKey) },
+                ),
+                admission: joined.marker.reading.admission,
+              },
+            }
+          : {}),
         sign: async (bytes) => {
           guard();
           const signature = hex(new Uint8Array(await subtle.sign('Ed25519', signing, bytes)));
@@ -241,6 +256,7 @@ export async function prepareNativeReplacement(
         certification: verified.proofs.certification,
       },
       checkpoint: source.snapshot,
+      ...(source.installed ? { installed: source.installed } : {}),
       history: verified.history,
       producer: source.producer,
       candidate,

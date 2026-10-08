@@ -1,3 +1,4 @@
+import { recordEqual, type CustodyRecord } from './custodyRecord';
 import {
   rememberAccountTransition,
   clearAccountTransition,
@@ -14,6 +15,7 @@ import {
   readJoinedAccount,
   joinedPayload,
   joinedKeys,
+  joinedInitialGeneration,
   writeJoinedMembership,
 } from './joinedAccount';
 import {
@@ -149,7 +151,7 @@ async function openAccountReceiveOwner(
   let handoff = false,
     transition = '';
   let expectedPayload = '',
-    expectedRecord: unknown,
+    expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
@@ -160,7 +162,7 @@ async function openAccountReceiveOwner(
       if (
         !current.marker ||
         hex(joinedPayload(current.marker)) !== expectedPayload ||
-        !same(current.record, expectedRecord)
+        !recordEqual(current.record, expectedRecord)
       )
         captureError('Certified device authority changed');
       return;
@@ -169,7 +171,7 @@ async function openAccountReceiveOwner(
     if (
       !current.marker ||
       hex(promotionPayload(current.marker)) !== expectedPayload ||
-      !same(current.record, expectedRecord)
+      !recordEqual(current.record, expectedRecord)
     )
       captureError('Inbound authority changed before commit');
   };
@@ -237,7 +239,9 @@ async function openAccountReceiveOwner(
         base = {
           ...v.base,
           generationKey: active?.key ?? kg.slice(),
-          retainedGenerationKeys: new Map(active ? [[1, kg.slice()], ...active.previous] : []),
+          retainedGenerationKeys: new Map(
+            active ? [[joinedInitialGeneration(v.marker!), kg.slice()], ...active.previous] : [],
+          ),
         };
         signer = signing;
         publicKey = verifying;

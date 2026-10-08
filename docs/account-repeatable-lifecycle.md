@@ -180,3 +180,15 @@ reader, inbound and service/browser-reader checks pass; see the 2026-10-08 compl
 Native initial-generation activation remains the next boundary. It must resume an empty-carrier
 transition before ordinary writing opens, then preserve the initial opener through later rotations.
 The product path remains gated until replacement editing and another removal pass.
+
+
+## Initial-generation activation increment
+
+A replacement can now initialize native custody directly at its admitted generation, resume either
+side of the empty-counter/snapshot transition, edit, deliver in both directions and cold-reopen.
+Original and joined producer cases pass, plus the focused unit/protocol checks recorded in completed.md.
+Initial openers remain retained through later rotation; no historical network key is distributed.
+
+The next product increment removes the invitation gate and exercises a replacement removing its
+remaining peer and inviting another device from its own snapshot baseline. Live service remains
+unchanged and release validation remains paused.

@@ -3,7 +3,7 @@
  * credential. Startup supplies verified identity and the cross-carrier census;
  * completing this component alone does not complete workspace genesis.
  */
-import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
+import { openActiveRotation, openInitialAccount, eraseRotationKeys } from './rotationKeys';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
@@ -268,19 +268,34 @@ const loadKeys = async (
         );
       });
     keys.generation = 1;
-    const active = await task.wait(() =>
-      openActiveRotation(
+    const initial = await task.wait(() =>
+      openInitialAccount(
         scope,
         root,
         record,
         guardedSubtle(() => task.step(() => {})),
       ),
     );
-    if (active) {
-      try {
+    let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
+    try {
+      active = await task.wait(() =>
+        openActiveRotation(
+          scope,
+          root,
+          record,
+          guardedSubtle(() => task.step(() => {})),
+        ),
+      );
+      const selected = active ?? initial;
+      if (selected) {
         keys.previousStores = new Map([[1, keys.store!]]);
         keys.previousJournals = new Map(keys.journal ? [[1, keys.journal]] : []);
-        for (const [generation, key] of active.previous) {
+        for (const [generation, key] of new Map([
+          ...(initial && initial.generation < selected.generation
+            ? [[initial.generation, initial.key] as const]
+            : []),
+          ...(active?.previous ?? []),
+        ])) {
           keys.previousStores.set(
             generation,
             await task.wait(() =>
@@ -308,7 +323,7 @@ const loadKeys = async (
         }
         keys.store = await task.wait(() =>
           hkdf(
-            active.key,
+            selected.key,
             new Uint8Array(),
             fields('done/store/v1', scope.workspaceId, record.store_id),
             { name: 'AES-GCM', length: 256 },
@@ -319,15 +334,16 @@ const loadKeys = async (
         if (journal)
           keys.journal = await task.wait(() =>
             deriveJournalKey(
-              active.key,
+              selected.key,
               scope.workspaceId,
               guardedSubtle(() => task.step(() => {})),
             ),
           );
-        keys.generation = active.generation;
-      } finally {
-        eraseRotationKeys(active);
+        keys.generation = selected.generation;
       }
+    } finally {
+      eraseRotationKeys(active);
+      initial?.key.fill(0);
     }
     await task.wait(async () => {
       keys.wrapping = await openCredential(
@@ -731,7 +747,11 @@ const prepareCustody = (
         return codec.open(key, value).bytes;
       });
     },
-    initialize: async (task: SessionTask, creation?: ContentCreationOptions) => {
+    initialize: async (
+      task: SessionTask,
+      creation?: ContentCreationOptions,
+      initialAccount = false,
+    ) => {
       scope = await resolveScope(task, authority, preactive);
       await task.wait(async () => {
         db = await openCustodyDb();
@@ -793,6 +813,9 @@ const prepareCustody = (
           );
       }
 
+      const nameForInitial = initialAccount
+        ? await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId))
+        : undefined;
       if (content) {
         carrier = createContentOwner(
           { ...scope, storeId: record.store_id, rootId: record.root_id },
@@ -828,7 +851,20 @@ const prepareCustody = (
               task.wait(() => crypto.subtle.verify('HMAC', keys.metadata!, mac, payload)),
           },
         );
-        await carrier.initialize(task, creation);
+        await carrier.initialize(
+          task,
+          creation,
+          initialAccount
+            ? () => {
+                if (!record.initial_account || record.active_rotation || !withJournal || creation)
+                  throw Error('Initial account generation is not selected');
+                const prefix = journalPrefix(nameForInitial!);
+                for (let i = 0; i < localStorage.length; i++)
+                  if (localStorage.key(i)?.startsWith(prefix))
+                    throw Error('Unfinished device installation has journalled edits');
+              }
+            : undefined,
+        );
       }
       if (withJournal) {
         const name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));

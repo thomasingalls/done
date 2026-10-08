@@ -4,6 +4,30 @@ import type { parseMembershipChain } from '../../account-protocol/membershipLoca
 import { parseNativeRemoval } from '../account/deviceRemovalVault';
 import type { CustodyRecord, CustodyScope } from './custodyRecord';
 import type { Bytes } from './custodyCrypto';
+export async function openInitialAccount(
+  scope: CustodyScope,
+  root: Bytes,
+  record: CustodyRecord,
+  subtle: SubtleCrypto,
+) {
+  const initial = record.initial_account;
+  if (!initial) return null;
+  const vault = await createApprovalVault({
+    slotId: scope.slotId,
+    scope,
+    root,
+    subtle,
+    credentials: record.credentials!,
+    record: () => record,
+    commit: async () => {
+      throw Error('Read-only initial account opener');
+    },
+  });
+  return vault.withInstalledKey(initial.key, initial.deliveryHash, async (key) => ({
+    generation: initial.generation,
+    key: key.slice(),
+  }));
+}
 export async function openActiveRotation(
   scope: CustodyScope,
   root: Bytes,

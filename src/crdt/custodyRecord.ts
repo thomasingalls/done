@@ -64,6 +64,12 @@ export interface CustodyRecord {
   rotation?: { v: 1; sequence: number; ct: Bytes };
   /** Local commit pointer; installed atomically with the matching account membership. */
   active_rotation?: string;
+  /** Replacement's first network generation; selected before its empty carrier is initialized. */
+  initial_account?: {
+    generation: number;
+    deliveryHash: string;
+    key: { sequence: number; ct: string };
+  };
   mac: Bytes;
 }
 export const CUSTODY_DB = 'done.custody';
@@ -156,7 +162,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
-    ...['approval', 'rotation', 'active_rotation'].filter(
+    ...['approval', 'rotation', 'active_rotation', 'initial_account'].filter(
       (key) => value && typeof value === 'object' && Object.hasOwn(value, key),
     ),
   ]);
@@ -230,6 +236,30 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     progress[channel] = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
   }
   let activeRotation: string | undefined;
+  let initialAccount: CustodyRecord['initial_account'];
+  if ('initial_account' in r) {
+    const a = object(r['initial_account'], ['generation', 'deliveryHash', 'key']);
+    const k = object(a['key'], ['sequence', 'ct']);
+    if (
+      r['state'] !== 'protected' ||
+      !Number.isSafeInteger(a['generation']) ||
+      (a['generation'] as number) < 2 ||
+      (a['generation'] as number) > 0xffffffff ||
+      typeof a['deliveryHash'] !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(a['deliveryHash']) ||
+      !Number.isSafeInteger(k['sequence']) ||
+      (k['sequence'] as number) < 1 ||
+      (k['sequence'] as number) > (r['seal_reserved'] as number) ||
+      typeof k['ct'] !== 'string' ||
+      !/^[a-f0-9]{96}$/.test(k['ct'])
+    )
+      return fail();
+    initialAccount = {
+      generation: a['generation'] as number,
+      deliveryHash: a['deliveryHash'],
+      key: { sequence: k['sequence'] as number, ct: k['ct'] },
+    };
+  }
   if ('active_rotation' in r) {
     if (
       !progress.rotation ||
@@ -242,6 +272,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
   return {
     v: 2,
     ...(activeRotation ? { active_rotation: activeRotation } : {}),
+    ...(initialAccount ? { initial_account: initialAccount } : {}),
     ...progress,
     state: r['state'] as CustodyRecord['state'],
     slot_id: scope.slotId,
@@ -296,6 +327,17 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
       ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
       ...(r.rotation
         ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
+        : []),
+      ...(r.initial_account
+        ? [
+            [
+              'initial-account',
+              r.initial_account.generation,
+              r.initial_account.deliveryHash,
+              r.initial_account.key.sequence,
+              r.initial_account.key.ct,
+            ],
+          ]
         : []),
     ]),
   );

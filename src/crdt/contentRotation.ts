@@ -30,6 +30,86 @@ export interface ContentRotation {
   /** Synchronous fresh census; must throw unless all journal work is durably covered. */
   checkJournal(): void;
 }
+/** Only the verified replacement installer may call this, after committing its custody opener.
+ * It changes an unused counter, never rewrites content or reuses an allocated invocation. */
+export async function initializeEmptyAccountGeneration(
+  task: SessionTask,
+  owner: {
+    db: IDBDatabase;
+    scope: ContentIdentity;
+    generation: number;
+    intent: string;
+    read(): Promise<DiskState>;
+    crypt: ContentCrypto;
+  },
+  checkJournal: () => void,
+) {
+  const snapshot = await owner.read(),
+    before = snapshot.counter;
+  if (!before || !(await owner.crypt.verify(task, counterPayload(owner.scope, before), before.mac)))
+    return corrupt('Initial account counter authentication failed.');
+  task.step(checkJournal);
+  if (before.active_gen === owner.generation) return; // committed transition, including later install prefixes
+  if (
+    !Number.isSafeInteger(owner.generation) ||
+    owner.generation < 2 ||
+    owner.generation > 0xffffffff ||
+    before.v !== 1 ||
+    before.active_gen !== 1 ||
+    before.next_seq !== 1 ||
+    snapshot.rows.length ||
+    Object.keys(before.reserved).join(',') !== '1' ||
+    before.reserved['1'] !== 0
+  )
+    corrupt('Initial account generation requires an untouched empty carrier.');
+  let next: ContentCounter = {
+    ...before,
+    active_gen: owner.generation,
+    reserved: { 1: 0, [owner.generation]: 0 },
+  };
+  next = { ...next, mac: await owner.crypt.sign(task, counterPayload(owner.scope, next)) };
+  await task.wait(() =>
+    contentTransaction<void>(
+      owner.db,
+      task,
+      [...CONTENT_STORES],
+      'readwrite',
+      (tx, _result, guard) => {
+        let remaining = CONTENT_STORES.length;
+        for (const name of CONTENT_STORES) {
+          let seen = false;
+          const req = tx.objectStore(name).openCursor();
+          req.onsuccess = () =>
+            guard(() => {
+              const row = req.result;
+              if (row) {
+                if (
+                  name !== 'meta' ||
+                  seen ||
+                  row.key !== 'counter' ||
+                  !equalCounter(
+                    owner.scope,
+                    parseCounter(row.value, owner.scope, owner.intent),
+                    before,
+                  )
+                )
+                  corrupt('Carrier changed before initial generation activation.');
+                seen = true;
+                row.continue();
+                return;
+              }
+              if (name === 'meta' && !seen) corrupt('Initial counter disappeared.');
+              if (--remaining === 0) {
+                checkJournal();
+                tx.objectStore('meta').put(next, 'counter');
+              }
+            });
+        }
+      },
+      'strict',
+    ),
+  );
+}
 export async function rotateContent(
   task: SessionTask,
   owner: {

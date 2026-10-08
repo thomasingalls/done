@@ -241,6 +241,19 @@ export async function readJoinedAccount(task: SessionTask, slotId: string, code:
     )
       throw Error('Certified device authentication failed');
   });
+  if (record.initial_account) {
+    if (
+      !marker ||
+      marker.v !== 2 ||
+      marker.reading.v !== 3 ||
+      record.initial_account.generation !== joinedInitialGeneration(marker) ||
+      record.initial_account.deliveryHash !==
+        (await membershipDeliveryHash(laterCertification(marker).epoch.delivery)) ||
+      !same(record.initial_account.key, marker.key)
+    )
+      throw Error('Initial account opener differs from certified installation');
+  } else if (marker?.phase === 'active' && joinedInitialGeneration(marker) > 1)
+    throw Error('Replacement account opener is missing');
   return { claim, record, marker };
 }
 export type JoinedState = Awaited<ReturnType<typeof readJoinedAccount>>;
@@ -618,8 +631,6 @@ export async function installMembershipAccount(
   code: string,
   input: { authority: JoinedAuthority; reading: MembershipReading; key: InstalledContentKey },
 ) {
-  if (input.reading.v === 3)
-    throw Error('Replacement writing is saved. Native generation activation is not available yet.');
   return installCertifiedAccount(task, slotId, code, { ...input, v: 2 });
 }
 async function installCertifiedAccount(
@@ -677,12 +688,42 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
   const detached = await (
     await import('./rotationObservation')
   ).resumeAccountRotation(task, 'joined', options.slotId, options.code, options.networkLogin);
-  const state = await readJoinedAccount(task, options.slotId, options.code),
-    marker = state.marker;
-  if (!marker || !same(marker.authority.base.pin, options.pin))
+  const state = await readJoinedAccount(task, options.slotId, options.code);
+  const savedMarker = state.marker;
+  if (!savedMarker || !same(savedMarker.authority.base.pin, options.pin))
     throw Error('Certified device authority changed');
   return joinedKeys(task, state, options.code, async (kg, _signer, publicKey) => {
+    let marker = savedMarker;
     const b = await baseline(task, state, kg);
+    if (joinedInitialGeneration(marker) > 1 && !state.record.initial_account) {
+      try {
+        if (marker.phase !== 'installing' || marker.v !== 2 || state.record.rotation)
+          throw Error('Replacement initial generation cannot change active custody');
+        const initial = {
+          generation: joinedInitialGeneration(marker),
+          deliveryHash: await membershipDeliveryHash(laterCertification(marker).epoch.delivery),
+          key: marker.key,
+        };
+        const signed = await withPromotionRoot(
+          task,
+          state.claim,
+          state.record,
+          options.code,
+          (root, subtle) => signRecord(root, { ...state.record, initial_account: initial }, subtle),
+        );
+        await writeJoined(
+          task,
+          state,
+          await signJoined(task, state, options.code, { ...marker, custodyMac: hex(signed.mac) }),
+          signed,
+        );
+        marker = state.marker!;
+      } catch (cause) {
+        eraseBaseline(b);
+        throw cause;
+      }
+    }
+    const initialGeneration = joinedInitialGeneration(marker);
     let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
     try {
       active = await withPromotionRoot(
@@ -706,7 +747,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             marker.membership!,
             marker.authority.base,
             b.route.history!,
-            active?.generation ?? 1,
+            active?.generation ?? initialGeneration,
           ),
         );
         b.route = {
@@ -721,7 +762,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           generation: b.route.generation,
           history,
           generationKey: active?.key ?? kg,
-          ...(active ? { retainedGenerationKeys: new Map([[1, kg], ...active.previous]) } : {}),
+          ...(active
+            ? { retainedGenerationKeys: new Map([[initialGeneration, kg], ...active.previous]) }
+            : {}),
         };
       }
       if (options.networkLogin && !detached) {
@@ -752,7 +795,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           true,
         );
         try {
-          await owner.initialize(task);
+          await owner.initialize(task, undefined, initialGeneration > 1);
           const journal = await owner.journal.readSnapshot(task);
           try {
             if (journal.length) throw Error('Unfinished device installation has journalled edits');
@@ -858,7 +901,13 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             await verifySpool(
               census.delivery.spool,
               b.route,
-              active ? new Map([[1, kg], [active.generation, active.key], ...active.previous]) : kg,
+              active
+                ? new Map([
+                    [initialGeneration, kg],
+                    [active.generation, active.key],
+                    ...active.previous,
+                  ])
+                : new Map([[initialGeneration, kg]]),
               publicKey,
               crypto.subtle,
             );

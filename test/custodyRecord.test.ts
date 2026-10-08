@@ -5,6 +5,7 @@ import {
   authenticateRecord,
   parseRecord,
   recordPayload,
+  recordEqual,
   signRecord,
   type CustodyRecord,
 } from '../src/crdt/custodyRecord';
@@ -90,6 +91,59 @@ describe('custody v2 metadata', () => {
         code: 'repair-required',
       });
     }
+  });
+  it('authenticates the replacement initial opener and rejects substitution or invalid framing', async () => {
+    const { root, record } = await make();
+    const credential = (role: 'wrapping' | 'signing', id: string) => ({
+      role,
+      id: id.repeat(16),
+      publicKey: new Uint8Array(32),
+      sealed: { v: 2 as const, nonce: new Uint8Array(12), ct: new Uint8Array(48) },
+    });
+    const protectedRecord: CustodyRecord = {
+      ...record,
+      state: 'protected',
+      creation_intent: null,
+      envelope: { v: 1, gen: 1, nonce: new Uint8Array(12), ct: new Uint8Array(48) },
+      credentials: [credential('wrapping', '44'), credential('signing', '55')],
+      seal_reserved: 5,
+      initial_account: {
+        generation: 3,
+        deliveryHash: 'aa'.repeat(32),
+        key: { sequence: 5, ct: 'bb'.repeat(48) },
+      },
+    };
+    const signed = await signRecord(root, protectedRecord);
+    await authenticateRecord(root, parseRecord(signed, scope));
+    expect(recordEqual(signed, parseRecord(signed, scope))).toBe(true);
+    for (const change of [
+      (r: CustodyRecord) => {
+        delete r.initial_account;
+      },
+      (r: CustodyRecord) => {
+        r.initial_account!.generation = 4;
+      },
+      (r: CustodyRecord) => {
+        r.initial_account!.deliveryHash = 'cc'.repeat(32);
+      },
+      (r: CustodyRecord) => {
+        r.initial_account!.key.ct = 'cc'.repeat(48);
+      },
+      (r: CustodyRecord) => {
+        r.initial_account!.key.sequence = 4;
+      },
+    ]) {
+      const r = structuredClone(signed);
+      change(r);
+      await expect(authenticateRecord(root, parseRecord(r, scope))).rejects.toThrow();
+    }
+    for (const initial of [
+      { ...signed.initial_account!, generation: 1 },
+      { ...signed.initial_account!, generation: 2 ** 32 },
+      { ...signed.initial_account!, deliveryHash: 'wrong' },
+      { ...signed.initial_account!, key: { sequence: 6, ct: 'bb'.repeat(48) } },
+    ])
+      expect(() => parseRecord({ ...signed, initial_account: initial }, scope)).toThrow();
   });
   it('does not authenticate object insertion order or inherited properties', async () => {
     const { root, record } = await make();

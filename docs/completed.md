@@ -11618,3 +11618,31 @@ Native replacement installation remains explicitly refused until its physical ca
 can initialize at the admitted generation. Next: implement that restartable empty-carrier transition,
 then exercise replacement editing and another removal. Post-rotation product invitations remain
 gated; live service unchanged and release validation paused.
+
+
+## 2026-10-08 — Replacement initial generation, editing and cold reopen (`L-1`)
+
+Replacement custody now retains a MAC-covered initial account opener bound to its certified delivery
+and native installation. The verified installer commits that pointer before moving its untouched
+empty content counter directly to the admitted generation. Only this explicit owner may finish the
+transition; normal open still refuses a generation mismatch. Allocation, existing content, journal
+work, changed census or invalid metadata cause refusal. Snapshot installation resumes after the counter
+commit without overwriting existing writing. Later rotations retain the actual initial opener.
+
+Both disposable packaged-browser cases pass, using original and joined producers. The first aborts
+initial counter activation after custody selection; the second aborts snapshot insertion after counter
+activation. Both cold-restart, open the admitted writing, exchange edits in both directions, lock and
+reopen those edits. Earlier snapshot publication loss, stale-grant recovery and journal preservation
+remain in both cases. They caught field-order comparisons in reader persistence and native custody
+checks, plus a generation-one scalar-key assumption in cold outbound replay; all are repaired.
+
+Twenty-three focused unit checks and seventeen source/reader/handoff checks pass. Metadata controls
+include initial-opener substitution; empty-carrier controls cover occupied/allocated stores, late
+journal work, concurrent rows and commit abort/retry. TypeScript, scoped lint/format, packaged build,
+budget (109.5 kB initial JS), origin isolation and diff checks pass.
+[Preserved output](./development-evidence/2026-10-08-replacement-activation.log).
+
+Next: enable the post-rotation invitation action and exercise removal by the replacement, followed by
+another current-generation connection. Native source composition now accepts its own replacement
+baseline, but that further native cycle is not yet established. Live service unchanged; release
+validation paused.

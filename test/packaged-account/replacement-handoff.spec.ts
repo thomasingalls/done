@@ -154,6 +154,7 @@ for (const kind of ['promotion', 'joined'] as const)
         ({ kind, slot, code }) => window.MembershipCustody.replacementWriting(kind, slot, code),
         { kind, slot, code },
       );
+      const resume = replacement.url();
       await replacement.goto('/');
       await replacement.evaluate(chunk.code);
       const retained = await replacement.evaluate(
@@ -171,6 +172,76 @@ for (const kind of ['promotion', 'joined'] as const)
       expect(retained.writing).toContain('Accepted writing from the device that will be removed');
       expect(retained.writing).toContain('Current generation writing for the replacement');
       expect(retained.journal).toBe('Journal-only writing must survive rotation');
+      await replacement.goto(resume);
+      await unlock(replacement, fresh.code);
+      await replacement.evaluate((kind) => {
+        const put = IDBObjectStore.prototype.put,
+          add = IDBObjectStore.prototype.add;
+        let tripped = false;
+        const intercept = (
+          store: IDBObjectStore,
+          value: { active_gen?: number; next_seq?: number; gen?: number; kind?: string },
+          key?: IDBValidKey,
+        ) => {
+          const hit =
+            kind === 'promotion'
+              ? store.name === 'meta' &&
+                key === 'counter' &&
+                value.active_gen === 2 &&
+                value.next_seq === 1
+              : store.name === 'content' && value.gen === 2 && value.kind === 'update';
+          if (!tripped && hit) {
+            tripped = true;
+            sessionStorage.setItem('replacement-initial-abort', kind);
+            store.transaction.abort();
+          }
+        };
+        IDBObjectStore.prototype.put = function (value, key) {
+          intercept(this, value, key);
+          return put.call(this, value, key);
+        };
+        IDBObjectStore.prototype.add = function (value, key) {
+          intercept(this, value, key);
+          return add.call(this, value, key);
+        };
+      }, kind);
+      await replacement.getByRole('button', { name: 'Open your writing', exact: true }).click();
+      await expect
+        .poll(
+          () => replacement.evaluate(() => sessionStorage.getItem('replacement-initial-abort')),
+          { timeout: 15000 },
+        )
+        .toBe(kind);
+      await expect(replacement.getByRole('alert')).toBeVisible();
+      await replacement.reload();
+      await unlock(replacement, fresh.code);
+      await expect(replacement.locator('.shell')).toContainText(
+        'Accepted writing from the device that will be removed',
+        { timeout: 30000 },
+      );
+      await expect(replacement.locator('.shell')).toContainText(
+        'Current generation writing for the replacement',
+      );
+      await openSaved(source, code, kind === 'joined');
+      await add(replacement, 'Replacement writes under its first current key');
+      await expect(source.locator('.shell')).toContainText(
+        'Replacement writes under its first current key',
+        { timeout: 30000 },
+      );
+      await add(source, 'Survivor replies to the replacement');
+      await expect(replacement.locator('.shell')).toContainText(
+        'Survivor replies to the replacement',
+        { timeout: 30000 },
+      );
+      await replacement.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await replacement.goto('/');
+      await openSaved(replacement, fresh.code, true);
+      await expect(replacement.locator('.shell')).toContainText(
+        'Replacement writes under its first current key',
+      );
+      await expect(replacement.locator('.shell')).toContainText(
+        'Survivor replies to the replacement',
+      );
     } finally {
       try {
         await Promise.allSettled([joining.close(), pair?.other.close()]);

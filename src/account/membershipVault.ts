@@ -7,6 +7,7 @@ import {
   readJoinedAccount,
   writeJoinedApproval,
   joinedKeys,
+  joinedInitialGeneration,
   type JoinedAuthority,
 } from '../crdt/joinedAccount';
 import { withPromotionRoot } from '../crdt/promotionRecord';
@@ -44,6 +45,7 @@ export interface MembershipVault extends Pick<
         kind: 'joined';
         authority: CheckpointAuthority | JoinedAuthority;
         proofs: MembershipProofs;
+        initialGeneration?: number;
       };
 }
 export function withMembershipVault<T>(
@@ -136,6 +138,7 @@ export function withMembershipVault<T>(
           ...approvalProgress(approval, 'membership'),
           source: {
             kind: 'joined',
+            initialGeneration: joinedInitialGeneration(marker),
             authority: marker.authority,
             proofs: marker.membership?.proofs ?? {
               successor: marker.authority.successor,

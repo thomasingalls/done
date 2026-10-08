@@ -1,6 +1,10 @@
 import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
-import { rotateContent, type ContentRotation } from './contentRotation';
+import {
+  rotateContent,
+  initializeEmptyAccountGeneration,
+  type ContentRotation,
+} from './contentRotation';
 import { deriveStoreName } from './storeName';
 /** Internal carrier owner. Only custody constructs its crypto callbacks. No key or reservation escapes. */
 import { hex, random, type Bytes } from './custodyCrypto';
@@ -362,7 +366,13 @@ export const createContentOwner = (
       custodyDb?.close();
       custodyDb = undefined;
     },
-    async initialize(task: SessionTask, creation?: ContentCreationOptions) {
+    async initialize(
+      task: SessionTask,
+      creation?: ContentCreationOptions,
+      initialAccount?: () => void,
+    ) {
+      if (creation && initialAccount)
+        corrupt('Account initialization requires an existing empty carrier.');
       await task.wait(async () => {
         custodyDb = await openCustodyDb();
       });
@@ -451,6 +461,19 @@ export const createContentOwner = (
         witness = await writeWitness(task, witness, { ...witness, state: 'ready' });
       } else {
         // No normal-open capability is returned over a partly readable store.
+        if (initialAccount)
+          await initializeEmptyAccountGeneration(
+            task,
+            {
+              db: db!,
+              scope,
+              generation,
+              intent: witness.intent,
+              read: () => read(task, true),
+              crypt,
+            },
+            initialAccount,
+          );
         const validated = await load(task);
         for (const record of validated) record.bytes.fill(0);
       }
