@@ -315,3 +315,19 @@ committed-vault port is simulated in those tests.
 Next: version the native joined-device record to retain this complete authority and multi-publisher
 reading state, attach restartable activation, and then compose current-authority adoption and the
 product ceremony. The original two-device owner must continue to open its existing records unchanged.
+
+
+## Native later-device activation checkpoint — 2026-10-08
+
+Joined-device version 2 stores the full continuation proof chain and multi-publisher reader state.
+Its installed key authenticates the exact continuation delivery, and activation checks the retained
+baseline, reader admission and actual native content before selecting the Account index. Interrupted
+selection can resume after a cold reopen. Version-1 records preserve the first joined-device path.
+The original Local/promotion owner refuses either joined activation marker.
+
+Next: current-authority adoption for already active original and joined devices. Keep the immutable
+installation baseline/key binding separate from later authority: changing a device's current head
+must neither rewrite its activation baseline nor reinterpret its local Account index as a fresh
+installation. Verify retained accepted prefixes and local ledger cuts before adopting a newer signed
+chain, clear verification caches under the owning permit, and recover a committed adoption on reopen.
+Then connect the version-2 ceremony and loader to the product screens.

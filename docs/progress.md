@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: later-device client replay complete; native joined-slot activation next
+scope: native later-device activation complete; existing-device authority adoption next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -95,10 +95,12 @@ read-only version-2 route; pending candidates cannot. 73 affected Node checks an
 Historical access is committed as `fc3be561`. The browser reader now verifies all publisher prefixes
 and retains its own semantic baseline admission under the current certified head. 71 affected checks
 pass, including real encrypted Yjs replay through cross-publisher dependencies and interrupted saves.
-Native activation of this later-reader state remains required.
+Replay is committed as `12e0269c`. Native joined-device record version 2 now activates that state
+through the existing restartable content/index handoff. 61 affected checks, the new native interruption
+case, and the existing packaged two-device reopening/sync check pass.
 
-**Next:** versioned native joined-slot activation of the later-reader state, editor opening and
-subsequent authority adoption;
+**Next:** owned current-authority adoption for existing original/joined devices, followed by
+version-2 product ceremony and editor composition;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.

@@ -20,7 +20,13 @@ import { message as grantMessage, denial } from '../account-sessions/grant-fixtu
 import { registered } from '../account-core/fixtures.mjs';
 import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
-import { createHash, createCipheriv, hkdfSync, randomBytes } from 'node:crypto';
+import {
+  createHash,
+  createCipheriv,
+  hkdfSync,
+  randomBytes,
+  generateKeyPairSync,
+} from 'node:crypto';
 import { authorityFixture } from '../account-authority/fixtures.mjs';
 import { fresh, lp } from '../account-enrollment/fixtures.mjs';
 import { AccountCore } from '../../account-service/core.ts';
@@ -658,7 +664,7 @@ async function continuationFixture(t, options = {}) {
   });
   assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
   await options.beforeContinuation?.(x);
-  const entry = x.candidate();
+  const entry = options.nextCandidate?.(x) ?? x.candidate();
   entry.input.candidate.head = x.certification.head;
   const begun = await x.enroll('begin', entry.input);
   const proof = nextProof(x, entry, begun.challenge);
@@ -1677,7 +1683,7 @@ test('a valid version-2 relay decision cannot replace the original version-1 del
   await assert.rejects(verifyContentDelivery(mixed, x.base, x.successor), /approved ceremony/);
 });
 
-async function continuationDelivery(x, e) {
+async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }) {
   const sign = (label, body, key) => {
     const { signature: _, ...value } = body;
     return { ...value, signature: signed(key, message(label, value)) };
@@ -1712,7 +1718,7 @@ async function continuationDelivery(x, e) {
     decision: e.approval,
     certificate,
     recovery: x.base.request.recovery,
-    wrap: { enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) },
+    wrap,
   });
   const installation = sign(
     'done/membership-key-installed/v2',
@@ -2779,7 +2785,7 @@ async function readingClient() {
     })();
   return membershipReaderClient;
 }
-async function membershipReadingFixture(t) {
+async function membershipReadingFixture(t, options = {}) {
   const client = await readingClient(),
     { Y, genesisCoverage, genesisCoverageParts } = client,
     kg = randomBytes(32),
@@ -2822,6 +2828,7 @@ async function membershipReadingFixture(t) {
   source.getText('master').insert(source.getText('master').length, ' Before sync began.');
   let liveClock = false;
   const x = await continuationFixture(t, {
+    nextCandidate: options.nextCandidate,
     now: () => (liveClock ? Date.now() : 1000),
     genesis,
     generationKey: kg,
@@ -2839,7 +2846,7 @@ async function membershipReadingFixture(t) {
       ),
   });
   const e = x.exchange('new'),
-    d = await continuationDelivery(x, e);
+    d = await continuationDelivery(x, e, await options.createWrap?.(kg, e));
   await d.approve();
   await d.transfer(d.request('existing', 'deliver', d.delivery));
   const installed = await d.transfer(d.request('new', 'install', d.installation));
@@ -3100,4 +3107,184 @@ test('later browser reader refuses substituted custody, publishers, admissions a
   });
   await assert.rejects(f.run());
   assert.deepEqual(f.saved, saved);
+});
+
+test('later native slot resumes activation after index interruption and rejects changed retained reading', async (t) => {
+  const { chromium } = await import('@playwright/test');
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const context = await browser.newContext(),
+    page = await context.newPage();
+  const built = await build({
+    configFile: false,
+    logLevel: 'error',
+    build: {
+      write: false,
+      minify: false,
+      lib: {
+        entry: resolve('test/account-membership/activation-entry.ts'),
+        name: 'MembershipActivation',
+        formats: ['iife'],
+      },
+    },
+  });
+  const script = (Array.isArray(built) ? built[0] : built).output.find(
+    (v) => v.type === 'chunk',
+  ).code;
+  await page.route('http://localhost:4999/**', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: '<!doctype html><title>Disposable native activation</title>',
+    }),
+  );
+  const open = async () => {
+    await page.goto('http://localhost:4999/');
+    await page.evaluate(script);
+  };
+  await open();
+  const signing = generateKeyPairSync('ed25519'),
+    wrapping = generateKeyPairSync('x25519');
+  const material = (p) => ({
+    private: p.privateKey.export({ format: 'der', type: 'pkcs8' }).toString('hex'),
+    public: p.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex'),
+  });
+  const pending = await page.evaluate((keys) => window.MembershipActivation.seed(keys), {
+    signing: material(signing),
+    wrapping: material(wrapping),
+  });
+  const f = await membershipReadingFixture(t, {
+    nextCandidate(x) {
+      const entry = x.candidate();
+      return {
+        ...entry,
+        key: signing.privateKey,
+        input: {
+          ...entry.input,
+          candidate: {
+            ...entry.input.candidate,
+            credentialId: pending.participant.id,
+            sPub: pending.participant.sPub,
+            wPub: pending.participant.wPub,
+          },
+        },
+      };
+    },
+    createWrap: (kg, e) =>
+      page.evaluate(
+        ({ key, recipient, transcript }) =>
+          window.MembershipActivation.wrap(key, recipient, transcript),
+        {
+          key: kg.toString('hex'),
+          recipient: pending.participant.wPub,
+          transcript: e.approval.payload.transcriptHash,
+        },
+      ),
+  });
+  const { x, Y, source } = f;
+  const before = Y.encodeStateVector(source);
+  source
+    .getText('master')
+    .insert(source.getText('master').length, ' A native third device can retain this.');
+  assert.equal(
+    (
+      await x.deliveryCall(
+        x.make(1, '', { epoch: 4, updates: [Y.encodeStateAsUpdate(source, before)] }),
+      )
+    ).kind,
+    'decision',
+  );
+  await page.exposeFunction('fixtureCheckpoint', (body) =>
+    x.authority.owner.readMembershipCheckpoint(x.f.core, body),
+  );
+  await page.exposeFunction('fixtureRead', async (bytes) => {
+    const result = await x.authority.owner.readInbound(x.f.core, new Uint8Array(bytes));
+    assert.equal(result.kind, 'decision');
+    return [...result.bytes];
+  });
+  await page.exposeFunction('fixturePasskey', (challenge) => {
+    const assertion = x.account.key.assert({
+      options: { challenge: Buffer.from(challenge).toString('base64url') },
+    });
+    return {
+      credentialId: assertion.id,
+      ...Object.fromEntries(
+        ['authenticatorData', 'clientDataJSON', 'signature'].map((field) => [
+          field,
+          [...Buffer.from(assertion.response[field], 'base64url')],
+        ]),
+      ),
+    };
+  });
+  await page.evaluate(
+    ({ slotId, code, content }) => window.MembershipActivation.retain(slotId, code, content),
+    {
+      ...pending,
+      content: f.saved.content,
+    },
+  );
+  const authority = { base: f.authority.base, ...f.authority.proofs };
+  const entries = await page.evaluate(
+    ({ slotId, code, authority }) => window.MembershipActivation.install(slotId, code, authority),
+    { ...pending, authority },
+  );
+  assert.match(JSON.stringify(entries), /Before sync began/);
+  assert.match(JSON.stringify(entries), /native third device/);
+  await open();
+  const state = () =>
+    page.evaluate(({ slotId, code }) => window.MembershipActivation.state(slotId, code), pending);
+  assert.deepEqual(await state(), { v: 2, phase: 'installing' });
+  assert.equal(
+    await page.evaluate(
+      ({ slotId, code }) => window.MembershipActivation.oldOwnerRefuses(slotId, code),
+      pending,
+    ),
+    true,
+  );
+  const activate = (interrupt) =>
+    page.evaluate(
+      ({ slotId, code, pin, interrupt }) =>
+        window.MembershipActivation.activate(slotId, code, pin, interrupt),
+      { ...pending, pin: x.authority.pin, interrupt },
+    );
+  assert.deepEqual(await activate(true), { interrupted: true });
+  assert.deepEqual(await state(), { v: 2, phase: 'installing' });
+  await open();
+  const ready = await activate(false);
+  assert.deepEqual(ready, {
+    v: 2,
+    phase: 'active',
+    epoch: 5,
+    credential: pending.participant.id,
+    head: f.authority.proofs.continuations.at(-1).head,
+  });
+  await open();
+  assert.deepEqual(await activate(false), ready);
+  await page.evaluate(
+    ({ slotId, code }) => window.MembershipActivation.saveJoinedProgress(slotId, code),
+    pending,
+  );
+  await open();
+  assert.deepEqual(await activate(false), ready);
+  // A storage change cannot be hidden by the completed index. Authentication precedes opening.
+  await page.evaluate(async (slotId) => {
+    const db = await new Promise((resolve) => {
+      const r = indexedDB.open('done.custody');
+      r.onsuccess = () => resolve(r.result);
+    });
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction('entries', 'readwrite'),
+        store = tx.objectStore('entries'),
+        key = [slotId, 'application-upgrade'],
+        r = store.get(key);
+      r.onsuccess = () => {
+        const row = r.result;
+        row.reading.streams.pop();
+        store.put(row, key);
+      };
+      tx.oncomplete = resolve;
+      tx.onabort = () => reject(tx.error);
+    });
+    db.close();
+  }, pending.slotId);
+  await assert.rejects(activate(false), /authentication failed/);
 });

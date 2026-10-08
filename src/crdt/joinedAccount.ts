@@ -3,6 +3,18 @@ import { same, parseAdmissionRequest, parseReceipt } from '../../account-protoco
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import { parseSuccessor } from '../../account-protocol/successor';
 import {
+  parseMembershipChain,
+  verifyMembershipChain,
+} from '../../account-protocol/membershipLocator';
+import { membershipDeliveryHash } from '../../account-protocol/membershipDelivery';
+import { verifyMembershipCheckpointAdmission } from '../../account-protocol/membershipCheckpoint';
+import {
+  captureMembershipReading,
+  replayMembershipReading,
+  eraseMembershipReading,
+  type MembershipReading,
+} from './membershipReading';
+import {
   parseCertificationSuccessor,
   contentDeliveryHash,
 } from '../../account-protocol/contentDelivery';
@@ -52,18 +64,23 @@ import type { ContentReaderState } from '../account/contentReader';
 import type { InstalledContentKey } from '../account/ceremonyVault';
 import type { Slot } from './slotIndex';
 
-interface JoinedRecord {
-  v: 1;
+interface JoinedFields {
   kind: 'certified-account-device';
   slotId: string;
   claimMac: string;
   custodyMac: string;
   phase: 'installing' | 'active';
-  authority: CheckpointAuthority;
-  reading: ContentReaderState;
   key: InstalledContentKey;
   mac: string;
 }
+export type JoinedAuthority = CheckpointAuthority & {
+  continuations: ReturnType<typeof parseMembershipChain>['continuations'];
+};
+type JoinedRecord = JoinedFields &
+  (
+    | { v: 1; authority: CheckpointAuthority; reading: ContentReaderState }
+    | { v: 2; authority: JoinedAuthority; reading: MembershipReading }
+  );
 export const joinedPayload = (r: JoinedRecord) => {
   const { mac: _mac, ...payload } = r;
   return utf8(JSON.stringify(payload));
@@ -91,15 +108,46 @@ function parseJoined(input: unknown): JoinedRecord {
     'mac',
   ]);
   if (
-    r['v'] !== 1 ||
+    (r['v'] !== 1 && r['v'] !== 2) ||
     r['kind'] !== 'certified-account-device' ||
     typeof r['slotId'] !== 'string' ||
     !['installing', 'active'].includes(String(r['phase']))
   )
     throw Error('Invalid certified device');
   for (const field of ['claimMac', 'custodyMac', 'mac']) unhex(r[field], 32);
-  const a = closed(r['authority'], ['base', 'successor', 'certification']);
+  const a = closed(
+    r['authority'],
+    r['v'] === 2
+      ? ['base', 'successor', 'certification', 'continuations']
+      : ['base', 'successor', 'certification'],
+  );
   const b = closed(a['base'], ['pin', 'request', 'receipt']);
+  const base = {
+    pin: parseAuthorityPin(b['pin']),
+    request: parseAdmissionRequest(b['request']),
+    receipt: parseReceipt(b['receipt']),
+  };
+  const key = closed(r['key'], ['sequence', 'ct']);
+  if (!Number.isSafeInteger(key['sequence']) || (key['sequence'] as number) < 1)
+    throw Error('Invalid installed key');
+  unhex(key['ct'], 48);
+  if (r['v'] === 2) {
+    const proofs = parseMembershipChain({
+        successor: a['successor'],
+        certification: a['certification'],
+        continuations: a['continuations'],
+      }),
+      reading = captureMembershipReading(r['reading']),
+      last = proofs.continuations.at(-1);
+    if (
+      !reading.admission ||
+      last?.kind !== 'membership-certification' ||
+      reading.head !== last.head ||
+      reading.epoch !== last.epoch.epoch
+    )
+      throw Error('Incomplete later device installation');
+    return { ...(r as unknown as JoinedFields), v: 2, authority: { base, ...proofs }, reading };
+  }
   const reading = closed(r['reading'], ['checkpoint', 'admission', 'active', 'events', 'prefix']);
   if (
     reading['active'] !== true ||
@@ -109,18 +157,11 @@ function parseJoined(input: unknown): JoinedRecord {
     reading['events'].some((e) => typeof e !== 'string')
   )
     throw Error('Incomplete retained reader');
-  const key = closed(r['key'], ['sequence', 'ct']);
-  if (!Number.isSafeInteger(key['sequence']) || (key['sequence'] as number) < 1)
-    throw Error('Invalid installed key');
-  unhex(key['ct'], 48);
   return {
-    ...(r as unknown as JoinedRecord),
+    ...(r as unknown as JoinedFields),
+    v: 1,
     authority: {
-      base: {
-        pin: parseAuthorityPin(b['pin']),
-        request: parseAdmissionRequest(b['request']),
-        receipt: parseReceipt(b['receipt']),
-      },
+      base,
       successor: parseSuccessor(a['successor']),
       certification: parseCertificationSuccessor(a['certification']),
     },
@@ -129,6 +170,11 @@ function parseJoined(input: unknown): JoinedRecord {
       checkpoint: parseContentCheckpoint(reading['checkpoint']),
     },
   };
+}
+function laterCertification(marker: Extract<JoinedRecord, { v: 2 }>) {
+  const last = marker.authority.continuations.at(-1);
+  if (last?.kind !== 'membership-certification') throw Error('Later certification is missing');
+  return last;
 }
 export async function readJoinedAccount(task: SessionTask, slotId: string, code: string) {
   const claim = await readLocalClaim(task, slotId);
@@ -278,7 +324,9 @@ export async function joinedKeys<T>(
             'done/installed-content-key/v1',
             marker.slotId,
             state.record.root_id,
-            await contentDeliveryHash(marker.authority.certification.epoch.delivery),
+            marker.v === 2
+              ? await membershipDeliveryHash(laterCertification(marker).epoch.delivery)
+              : await contentDeliveryHash(marker.authority.certification.epoch.delivery),
           ),
         },
         await hkdf(
@@ -306,20 +354,41 @@ export async function joinedKeys<T>(
   });
 }
 async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) {
-  const { authority: a, reading } = state.marker!;
+  const marker = state.marker!,
+    { authority: a, reading } = marker;
   const original = await task.wait(() =>
-    verifyCertificationHistory(a.certification, a.successor, a.base, {
-      epoch: 3,
-      head: a.certification.head,
-    }),
+    marker.v === 2
+      ? verifyMembershipChain(
+          {
+            successor: a.successor,
+            certification: a.certification,
+            continuations: marker.authority.continuations,
+          },
+          a.base,
+        ).then((v) => v.history)
+      : verifyCertificationHistory(a.certification, a.successor, a.base, {
+          epoch: 3,
+          head: a.certification.head,
+        }),
   );
   const credential = state.record.credentials![1];
-  if (credential.id !== a.certification.epoch.delivery.candidate.context.candidate.id)
+  const recipient =
+    marker.v === 2
+      ? laterCertification(marker).epoch.delivery.candidate.context.candidate
+      : a.certification.epoch.delivery.candidate.context.candidate;
+  if (
+    credential.id !== recipient.id ||
+    hex(state.record.credentials![0].publicKey) !== recipient.wPub
+  )
     throw Error('Certified recipient differs from custody');
   const history = historyPublisher(original, credential.id);
   if (history.signingKey !== hex(credential.publicKey))
     throw Error('Certified signing key differs from custody');
-  await task.wait(() => verifyCheckpointAdmission(reading.admission, reading.checkpoint, a));
+  await task.wait(() =>
+    marker.v === 2
+      ? verifyMembershipCheckpointAdmission(reading.admission, reading.checkpoint, original)
+      : verifyCheckpointAdmission(reading.admission, reading.checkpoint, a),
+  );
   const base: InboundContext = {
     baseline: { kind: 'content-checkpoint', id: await contentCheckpointHash(reading.checkpoint) },
     service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
@@ -342,7 +411,7 @@ async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) 
     workspace: history.current.workspace,
     credential: credential.id,
     principal: history.principal,
-    epoch: 3,
+    epoch: history.current.tip,
     generation: 1,
     history,
   };
@@ -351,6 +420,29 @@ async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) 
 async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
   const marker = state.marker!,
     { base, route, original } = await joinedContext(task, state, key);
+  if (marker.v === 2) {
+    const replay = await task.wait(() =>
+      replayMembershipReading(
+        marker.reading,
+        marker.authority,
+        original,
+        { id: base.reader.id, sPub: base.reader.publicKey },
+        key,
+        { assertCurrent: () => task.step(() => {}) },
+      ),
+    );
+    try {
+      if (replay.pending) throw Error('Retained later reader is incomplete');
+      if (replay.initial.length > MAX_BATCH_BYTES)
+        throw Error(
+          'This preview cannot yet activate a checkpoint larger than 4 MiB. Your saved approval and writing are retained.',
+        );
+      return { doc: replay.doc, initial: replay.initial, events: replay.records, base, route };
+    } catch (cause) {
+      eraseMembershipReading(replay);
+      throw cause;
+    }
+  }
   const doc = await task.wait(() =>
     openContentCheckpoint(marker.reading.checkpoint, key, marker.authority),
   );
@@ -420,7 +512,7 @@ async function destination(task: SessionTask, state: JoinedState) {
       v: 1,
       promotionId: state.claim.initial.creation_intent!.id,
       requestDigest: a.base.receipt.offer.epoch.requestDigest,
-      epochHead: a.certification.head,
+      epochHead: m.v === 2 ? laterCertification(m).head : a.certification.head,
     },
     stores: local.stores,
   };
@@ -433,17 +525,38 @@ export async function installJoinedAccount(
   code: string,
   input: { authority: CheckpointAuthority; reading: ContentReaderState; key: InstalledContentKey },
 ) {
+  return installCertifiedAccount(task, slotId, code, { ...input, v: 1 });
+}
+export async function installMembershipAccount(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  input: { authority: JoinedAuthority; reading: MembershipReading; key: InstalledContentKey },
+) {
+  return installCertifiedAccount(task, slotId, code, { ...input, v: 2 });
+}
+async function installCertifiedAccount(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  input:
+    | Pick<Extract<JoinedRecord, { v: 1 }>, 'v' | 'authority' | 'reading' | 'key'>
+    | Pick<Extract<JoinedRecord, { v: 2 }>, 'v' | 'authority' | 'reading' | 'key'>,
+) {
+  input = structuredClone(input);
   const state = await readJoinedAccount(task, slotId, code);
   if (state.marker) throw Error('Certified device already installed');
   await localCensus(task, state.claim);
   const proposed = parseJoined({
-    v: 1,
     kind: 'certified-account-device',
     slotId,
     claimMac: hex(state.claim.mac),
     custodyMac: hex(state.record.mac),
     phase: 'installing',
-    ...structuredClone(input),
+    v: input.v,
+    authority: input.authority,
+    reading: input.reading,
+    key: input.key,
     mac: '00'.repeat(32),
   });
   state.marker = proposed;

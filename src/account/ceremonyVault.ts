@@ -1,7 +1,12 @@
 import { approvalProgress } from './approvalProgress';
 import { createApprovalVault, type InstalledContentKey } from './approvalVault';
 export type { InstalledContentKey } from './approvalVault';
-import { installJoinedAccount } from '../crdt/joinedAccount';
+import {
+  installJoinedAccount,
+  installMembershipAccount,
+  type JoinedAuthority,
+} from '../crdt/joinedAccount';
+import type { MembershipReading } from '../crdt/membershipReading';
 import { openSessionVault } from './sessionVault';
 import type { NetworkLogin } from './networkLogin';
 import { rememberEnrollmentLogin } from './enrollmentLogin';
@@ -29,6 +34,11 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  installMembershipWriting(
+    authority: JoinedAuthority,
+    reading: MembershipReading,
+    key: InstalledContentKey,
+  ): Promise<void>;
   withLogin<T>(
     login: NetworkLogin,
     expected: { accountId: string; credentialId: string },
@@ -132,6 +142,8 @@ export async function withCeremonyVault<T>(
           },
           installWriting: (authority, reading, key) =>
             installJoinedAccount(task, slotId, code, { authority, reading, key }),
+          installMembershipWriting: (authority, reading, key) =>
+            installMembershipAccount(task, slotId, code, { authority, reading, key }),
           get marker() {
             return marker;
           },

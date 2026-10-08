@@ -3,7 +3,12 @@ import { withCeremonyVault, type CeremonyVault } from './ceremonyVault';
 import { createApprovalVault } from './approvalVault';
 import { approvalProgress } from './approvalProgress';
 import { withJoinedSlot } from '../crdt/writeSession';
-import { readJoinedAccount, writeJoinedApproval, joinedKeys } from '../crdt/joinedAccount';
+import {
+  readJoinedAccount,
+  writeJoinedApproval,
+  joinedKeys,
+  type JoinedAuthority,
+} from '../crdt/joinedAccount';
 import { withPromotionRoot } from '../crdt/promotionRecord';
 import { claimScope } from '../crdt/localGenesisRecord';
 import { sealGeneration } from './generationWrap';
@@ -24,11 +29,12 @@ export interface MembershipVault extends Pick<
   | 'withInstalledKey'
   | 'withLogin'
   | 'rememberLogin'
+  | 'installMembershipWriting'
 > {
   source:
     | { kind: 'pending' }
     | { kind: 'original'; base: SuccessorBase }
-    | { kind: 'joined'; authority: CheckpointAuthority };
+    | { kind: 'joined'; authority: CheckpointAuthority | JoinedAuthority };
 }
 export function withMembershipVault<T>(
   ownerKind: 'promotion' | 'joined',
@@ -83,6 +89,9 @@ export function withMembershipVault<T>(
           ...approval,
           ...approvalProgress(approval, 'membership'),
           source: { kind: 'joined', authority: marker.authority },
+          installMembershipWriting: async () => {
+            throw Error('This device already has an installed workspace');
+          },
           withLogin: (login, identity, operation) =>
             login.withEnrollmentOwner(task, root, state.record.root_id, identity, operation),
           rememberLogin: async (pin, identity, result) => {

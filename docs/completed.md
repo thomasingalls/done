@@ -10627,3 +10627,25 @@ native slot activation of the later reader remains next. TypeScript, scoped lint
 origin isolation and diff checks pass. Logs: `/tmp/done-membership-reader-focused.log`,
 `/tmp/done-membership-reader-regressions.log`, `/tmp/done-membership-reader-build.log`. No UI activation
 or retained-service change occurred; release validation is paused.
+
+
+## 2026-10-08 — Native later-device activation (`L-1`)
+
+After replay checkpoint `12e0269c`, joined-device record version 2 retains the complete continuation
+chain, the later reader's semantic baseline admission and every verified publisher prefix. The
+installed key stays bound to the exact continuation delivery. Activation uses the existing native
+content/index handoff, verifies custody keys against the certified recipient, and cold-replays retained
+writing before selecting the Account slot. Version-1 second-device records retain their existing
+interpretation; the older Local/promotion owner refuses the new activation marker.
+
+Evidence: 61 affected membership/transfer checks pass, including a real Chromium/IndexedDB activation
+with synthetic credentials and real encrypted writing. An interrupted index selection leaves the
+version-2 marker installing; cold retry verifies the imported prefix, completes selection, and opens
+at epoch 5. Later joined-custody writes still reopen, while tampered retained reading refuses before
+opening. A separate packaged two-device browser case passes (17.9 seconds), confirming existing
+owners reopen and exchange writing. TypeScript, scoped lint/format, build, budget, origin isolation
+and diff checks pass. Logs: `/tmp/done-membership-activation-regressions.log`,
+`/tmp/done-membership-activation-native-final.log`, `/tmp/done-membership-activation-legacy-browser.log`,
+`/tmp/done-membership-activation-build.log`. This is native activation, not an enabled third-device
+product ceremony or proof that existing editors adopt later membership. Owned authority adoption
+and UI composition remain next. No retained installation was changed; release validation is paused.
