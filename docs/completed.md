@@ -11415,3 +11415,21 @@ and already accepted writing belongs in the replacement snapshot. This changes t
 historical-key upload contract and needs authenticated service evidence plus durable client retry
 before a new device can safely receive only its current key. Implementation is next. No retained
 service or build was switched; unsigned intermediate commits continue and release validation stays paused.
+
+
+## 2026-10-08 — Replacement admission establishes a historical-generation upload floor
+
+Verified membership history now retains the minimum generation for future uploads at each epoch.
+Admission raises it to the joining device's generation; cancellation and later rotation retain it.
+The service verifies every historical decision under its actual issuance boundary. Previously accepted
+bytes and signed refusals remain exactly retryable, including after restart and subsequent membership
+changes. A new below-floor upload receives `retired-generation`; wrong generation for its own declared
+epoch still receives `epoch-generation-mismatch`. A refused position requires its issued refusal as
+the signed parent of the replacement; there is no unsigned permission to remint or skip a position.
+
+Five focused service cases pass: the existing post-rotation survivor rule, replacement after removing
+either publisher, cancellation followed by another admission, and the new floor case with abort before
+commit, lost committed refusal/acceptance replies, exact historic readback, missing-parent refusal and
+persistent floor after cancellation. Logs: `/tmp/done-replacement-generation-service-pass.log`.
+TypeScript, scoped lint/format and diff checks pass. No schema or retained-service change. Browser
+retry ownership and replacement snapshots are still required before enabling the post-rotation flow.

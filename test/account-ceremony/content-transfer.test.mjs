@@ -5385,3 +5385,65 @@ for (const removedOriginal of [false, true])
       y.admission,
     );
   });
+
+test('replacement admission fences new historical-key uploads but retains accepted bytes and signed retry outcomes', async (t) => {
+  let fault;
+  const x = await removalFixture(t, {
+    hook(point, operation) {
+      if (operation === 'decide-submission' && point === fault) {
+        fault = undefined;
+        throw Error('Interrupted generation retry decision');
+      }
+    },
+  });
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const { request } = await rotationRequest(x);
+  const rotation = await x.authority.owner.commitRotation(x.f.core, request);
+  assert.equal(rotation.ok, true, JSON.stringify(rotation));
+  const acceptedOld = x.make(1, 'accepted before replacement', { epoch: 3, gen: 1 });
+  const accepted = await x.deliveryCall(acceptedOld);
+  decision(x, accepted, acceptedOld, undefined, 4);
+  const y = await admitNext(x, rotation.rotation);
+  const old = x.make(2, 'offline writing must survive', { epoch: 3, gen: 1 });
+  const previous = link(acceptedOld.subject, '00'.repeat(32));
+  const before = x.f.rows('delivery_decisions');
+  fault = 'before-commit';
+  assert.equal((await x.deliveryCall(old)).kind, 'unknown');
+  assert.deepEqual(x.f.rows('delivery_decisions'), before);
+  fault = 'after-commit';
+  assert.equal((await x.deliveryCall(old)).kind, 'unknown');
+  x.f.restart();
+  x.authority.restart();
+  const answer = await x.deliveryCall(old);
+  const denied = decision(x, answer, old, previous, 5);
+  assert.equal(denied.kind, 'refused');
+  assert.equal(denied.refusal.reason, 'retired-generation');
+  assert.deepEqual(await x.deliveryCall(acceptedOld), accepted);
+  const withoutParent = x.make(2, 'offline writing must survive', { epoch: 5, gen: 2 });
+  assert.equal((await x.deliveryCall(withoutParent)).kind, 'unknown');
+  const retry = x.make(2, 'offline writing must survive', {
+    epoch: 5,
+    gen: 2,
+    parent: denied.refusal,
+  });
+  fault = 'after-commit';
+  assert.equal((await x.deliveryCall(retry)).kind, 'unknown');
+  x.f.restart();
+  x.authority.restart();
+  const retried = await x.deliveryCall(retry);
+  decision(x, retried, retry, previous, 5);
+  assert.deepEqual(
+    await x.deliveryCall(old),
+    answer,
+    'old refusal remains exact after its successor',
+  );
+  assert.deepEqual(await x.deliveryCall(acceptedOld), accepted);
+  const cancelled = await x.authority.owner.cancelMembership(
+    x.f.core,
+    await cancellationRequest(y),
+  );
+  assert.equal(cancelled.ok, true, JSON.stringify(cancelled));
+  const late = x.make(3, 'cancellation cannot reopen old-key upload', { epoch: 3, gen: 1 });
+  assert.equal(decision(x, await x.deliveryCall(late), late).kind, 'refused');
+  assert.deepEqual(await x.deliveryCall(retry), retried);
+});

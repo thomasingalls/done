@@ -9,6 +9,7 @@ import {
   historyPublisher,
   historyMembership,
   historyGeneration,
+  historyMinimumGeneration,
   type AdmissionHistory,
 } from '../account-protocol/admissionHistory.ts';
 import type { MembershipRecipientCertificate } from '../account-protocol/membershipDelivery.ts';
@@ -572,6 +573,18 @@ export function selectPublisher(auth: Authority, publisher?: string): Authority 
     scope: { ...auth.scope, credential: member.id },
   };
 }
+function generationRefusal(
+  auth: Authority,
+  epoch: number,
+  generation: number,
+  issuance = auth.a.tip,
+) {
+  if (generation !== (auth.history ? historyGeneration(auth.history, epoch) : auth.generation))
+    return mismatch;
+  return auth.history && generation < historyMinimumGeneration(auth.history, issuance)
+    ? 'retired-generation'
+    : null;
+}
 async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) {
   const decoded = decodeSubmission(bytes),
     e = decodeNetworkEnvelope(decoded.envelope);
@@ -721,9 +734,9 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
         { ...opened.subject, previous: before, parent: opened.submission.parentId },
         issuance,
       );
-      return { ...opened, proof };
+      return { ...opened, proof, issuance };
     };
-    const { e, submission, subject, proof } = reuse
+    const { e, submission, subject, proof, issuance } = reuse
       ? await reuse.check(
           s.account.id + ':' + auth.credential + ':' + row.ordinal,
           scope + ':' + boundaryScope + ':' + previous,
@@ -753,7 +766,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
         (auth.history?.finalization &&
           (e.seq > auth.history.finalization.position ||
             e.epoch >= auth.history.finalization.epoch)) ||
-        e.gen !== (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation) ||
+        generationRefusal(auth, e.epoch, e.gen, issuance.tip) !== null ||
         refused.has(subjectKey(subject))
       )
         throw Error('Invalid accepted decision');
@@ -763,8 +776,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     } else if (row.kind === 'refused') {
       if (
         proof.kind !== 'refused' ||
-        proof.refusal.reason !== mismatch ||
-        e.gen === (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation) ||
+        proof.refusal.reason !== generationRefusal(auth, e.epoch, e.gen, issuance.tip) ||
         refused.has(subjectKey(subject))
       )
         throw Error('Invalid closure decision');
@@ -863,12 +875,12 @@ export async function decideSubmission(
       result = unknown('envelope-size');
     } else {
       proposed =
-        e.gen !== (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation)
+        generationRefusal(auth, e.epoch, e.gen) !== null
           ? {
               kind: 'refused',
               refusal: {
                 ...subject,
-                reason: mismatch,
+                reason: generationRefusal(auth, e.epoch, e.gen)!,
                 parent: submission.parentId,
                 signature: '00'.repeat(64),
               },

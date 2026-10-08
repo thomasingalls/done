@@ -61,6 +61,7 @@ interface PublisherTimeline {
 interface ContinuationTimeline {
   membership: VerifiedMembership;
   generations: ReadonlyMap<number, number>;
+  minimumGenerations: ReadonlyMap<number, number>;
   readers: ReadonlyMap<number, AdmissionHistory['readers']>;
   publishers: ReadonlyMap<string, PublisherTimeline>;
 }
@@ -162,6 +163,11 @@ export async function verifyCertificationHistory(
       [2, 1],
       [3, 1],
     ]),
+    minimumGenerations: new Map([
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ]),
     readers: new Map([
       [1, prior.readers],
       [2, prior.readers],
@@ -259,6 +265,15 @@ export async function extendMembershipHistory(
   timelines.set(result, {
     membership,
     generations: new Map([...timeline.generations, [state.epoch, state.generation]]),
+    minimumGenerations: new Map([
+      ...timeline.minimumGenerations,
+      [
+        state.epoch,
+        proof.kind === 'membership-admission'
+          ? state.generation
+          : (timeline.minimumGenerations.get(root.current.tip) ?? 1),
+      ],
+    ]),
     publishers,
     readers: new Map([...timeline.readers, [state.epoch, readers]]),
   });
@@ -342,6 +357,15 @@ export function historyGeneration(history: AdmissionHistory, epoch = history.cur
   const h = requireHistory(history);
   if (!h.authorities.some((a) => a.tip === epoch)) throw Error('Unknown history generation');
   return timelines.get(publisherRoots.get(h) ?? h)?.generations.get(epoch) ?? 1;
+}
+/** Admissions fence future uploads below the joining device's key, without rewriting accepted history. */
+export function historyMinimumGeneration(
+  history: AdmissionHistory,
+  epoch = history.current.tip,
+): number {
+  const h = requireHistory(history);
+  if (!h.authorities.some((a) => a.tip === epoch)) throw Error('Unknown history generation floor');
+  return timelines.get(publisherRoots.get(h) ?? h)?.minimumGenerations.get(epoch) ?? 1;
 }
 /** Callers retain their own current route. This only resolves an old payload's compatible route. */
 export function historyEnvelopeRoute(

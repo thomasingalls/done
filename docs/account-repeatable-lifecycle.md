@@ -89,3 +89,8 @@ establish a durable boundary: already accepted bytes remain exact and enter the 
 unaccepted old-key upload receives signed retry evidence, and the client retains its source edits
 while retrying under the current generation. Implement and test both sides before exposing the
 post-rotation connection button. This is a scoped contract change, not key retirement or pruning.
+
+The service/protocol floor is now implemented. It is derived from signed admissions at each historical
+epoch, persists through cancellation, and is evaluated at the original decision boundary during census.
+Before/after-commit refusal faults and exact accepted retry pass. Browser durable retry is in flight;
+current-generation replacement snapshots remain next. No live service change is implied.

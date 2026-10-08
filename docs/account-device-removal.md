@@ -95,3 +95,13 @@ The retained `:8443` installation now serves implementation `2bea3437` on schema
 confirmed quiet point, complete offline backup and preservation/HTTPS checks. See the
 [cutover runbook](./packaged-account-development.md). Operator browser uptake and writing checks remain
 pending; release validation remains paused.
+
+
+## Repeatable-lifecycle qualification (2026-10-08)
+
+The later operator decision in [repeatable lifecycle](./account-repeatable-lifecycle.md) qualifies the
+historical-key survivor-upload rule above. Rotation alone retains it. A later device admission raises
+the minimum generation for **new** upload decisions to that admission's generation, because the
+replacement receives only its current key. Already accepted history remains exact; future old-key
+attempts require a signed retired-generation refusal and durable re-encryption of the same original
+edits. Cancellation does not lower the floor. This is not old-key retirement or source deletion.
