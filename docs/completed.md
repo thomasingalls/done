@@ -10702,3 +10702,30 @@ encrypted replay are covered by their earlier checkpoints, not re-claimed as a t
 TypeScript, scoped lint/format and diff checks pass. Logs: `/tmp/done-membership-comparison-focused.log`,
 `/tmp/done-membership-comparison-regressions.log`, `/tmp/done-membership-comparison-service.log`.
 Next: invitation/preparation routing and product composition. No live service change or release campaign.
+
+
+## 2026-10-08 — Continuation invitation and enrollment components (`L-1`)
+
+After comparison checkpoint `16d50228`, invitation composition now uses the actual original or joined
+slot's verified current membership separately from its frozen installation authority. Either certified
+owner signs a stable invitation. Bootstrap checks its fresh request binding, pin, full proof chain and
+held ancestry; a correctly signed older chain cannot regress an already advanced owner. Pending custody,
+a substituted wrapping key or another device's retained invitation cannot act as the inviter.
+
+The continuation preparation component saves the combined enrollment/login challenge and exact passkey
+proof before effects. Login retention and the authenticated preparation receipt precede acknowledgment;
+continuation admission is verified and retained before returning. Cold retry after lost finish/admission
+responses uses the saved proof and request. A failed proof save sends nothing; after a successful proof
+save no extra passkey prompt is needed for these retries. Abort, unsaved progress and changed custody
+refuse before network effects. Actual native custody remains behind the existing MembershipVault port.
+
+Evidence: two focused invitation tests and two actual private-service preparation integrations pass.
+The latter include failed proof/receipt saves, lost finish/admission responses and service restarts;
+there is one resulting login and one membership admission. The 11 affected invitation, comparison and
+locator cases also pass (`/tmp/done-membership-invitation-regressions.log`). Simulated client persistence is used here,
+not a claim that the screens or native three-device product flow are wired. TypeScript, scoped lint,
+format and diff checks pass. Logs: `/tmp/done-membership-invitation-tests.log`,
+`/tmp/done-membership-preparation-tests.log`, `/tmp/done-membership-invitation-types.log`.
+Next: compose these components with comparison, key handoff and loading in the product coordinator;
+then cancellation/removal transitions and a disposable three-device walkthrough. No live service change
+or release-validation work.

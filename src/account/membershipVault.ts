@@ -17,6 +17,8 @@ import { openSessionVault } from './sessionVault';
 import { rememberEnrollmentLogin } from './enrollmentLogin';
 import type { SuccessorBase } from '../../account-protocol/successor';
 import type { CheckpointAuthority } from '../../account-protocol/contentCheckpoint';
+import type { parseMembershipChain } from '../../account-protocol/membershipLocator';
+type MembershipProofs = ReturnType<typeof parseMembershipChain>;
 export interface MembershipVault extends Pick<
   CeremonyVault,
   | 'participant'
@@ -33,8 +35,12 @@ export interface MembershipVault extends Pick<
 > {
   source:
     | { kind: 'pending' }
-    | { kind: 'original'; base: SuccessorBase }
-    | { kind: 'joined'; authority: CheckpointAuthority | JoinedAuthority };
+    | { kind: 'original'; base: SuccessorBase; proofs: MembershipProofs | null }
+    | {
+        kind: 'joined';
+        authority: CheckpointAuthority | JoinedAuthority;
+        proofs: MembershipProofs;
+      };
 }
 export function withMembershipVault<T>(
   ownerKind: 'promotion' | 'joined',
@@ -61,6 +67,15 @@ export function withMembershipVault<T>(
                   request: marker.admission.request,
                   receipt: marker.admission.receipt,
                 },
+                proofs:
+                  marker.membership?.proofs ??
+                  (marker.successor?.certification
+                    ? {
+                        successor: marker.successor.artifact,
+                        certification: marker.successor.certification,
+                        continuations: [],
+                      }
+                    : null),
               }
             : { kind: 'pending' },
         });
@@ -88,7 +103,15 @@ export function withMembershipVault<T>(
         return work({
           ...approval,
           ...approvalProgress(approval, 'membership'),
-          source: { kind: 'joined', authority: marker.authority },
+          source: {
+            kind: 'joined',
+            authority: marker.authority,
+            proofs: marker.membership?.proofs ?? {
+              successor: marker.authority.successor,
+              certification: marker.authority.certification,
+              continuations: marker.v === 2 ? marker.authority.continuations : [],
+            },
+          },
           installMembershipWriting: async () => {
             throw Error('This device already has an installed workspace');
           },

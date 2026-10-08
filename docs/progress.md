@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: durable continuation comparison complete; invitation and enrollment routing next
+scope: invitation/enrollment components complete; product coordinator composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -104,9 +104,12 @@ native before/after-commit recovery, old-owner and packaged two-device checks pa
 is opt-in for the continuation host; the retained/default epoch-3 host is unchanged. Adoption is
 committed as `43759e0e`. The durable version-2 comparison component now composes with the actual private
 relay and key-handoff coordinator for either approver, including a lost approval reply and service
-restart. 13 focused Node cases and two service integrations pass; product routing remains unwired.
+restart. 13 focused Node cases and two service integrations pass; committed as `16d50228`.
+Invitation/preparation components now use actual current custody, reject stale bootstrap ancestry, and
+retain exact combined login/enrollment proof before effects. Two invitation and two service retry cases
+pass, including failed saves and service restarts. Product routing remains unwired.
 
-**Next:** version-2 invitation/preparation routing, product ceremony and editor composition, including a real three-device check of
+**Next:** product coordinator, ceremony routes and editor composition, including a real three-device check of
 original/joined authority adoption and delivery;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed

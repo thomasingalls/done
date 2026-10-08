@@ -359,3 +359,14 @@ transcript. Either certified existing participant may approve. Exact retries sur
 and lost approval response; a competing parent spends the attempt, and a mismatch cannot become approval.
 Code redisplay preserves the same retained attempt. The real relay/handoff integration passes for both
 approvers. This component still needs invitation/preparation routing and product-screen integration.
+
+
+## Invitation and enrollment checkpoint — 2026-10-08
+
+Invitations now derive from actual original/joined custody and current verified membership, preserving
+frozen installation records. Existing owners reject a stale bootstrap even when the service signs it;
+new candidates authenticate the invitation and full current chain. Combined enrollment/login retains
+its exact challenge and proof before transmission and survives finish/admission response loss without
+another passkey prompt after the proof is durable. Focused real-service retry checks pass with simulated
+client persistence. Product coordinator and route wiring remain next; continuation is still disabled in
+the default host and has not been served at the retained origin.

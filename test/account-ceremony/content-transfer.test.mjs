@@ -3502,3 +3502,181 @@ for (const approver of ['existing', 'new'])
     assert.equal(x.f.rows('membership_transfers').length, 1);
     assert.equal(certification.epoch.epoch, 5);
   });
+
+async function browserPreparationFixture(t) {
+  const client = await compiledComparison(),
+    authority = authorityFixture(t),
+    x = await checkpointFixture(t, {
+      authority,
+      sessions: { pin: authority.pin, operatorKey: authority.key },
+      membershipContinuation: true,
+    });
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const parent = await client.verifyMembershipAnchor(x.base, x.successor, x.certification, {
+      epoch: 3,
+      head: x.certification.head,
+    }),
+    entry = x.candidate(),
+    c = entry.input.candidate,
+    participant = { id: c.credentialId, wPub: c.wPub, sPub: c.sPub },
+    stop = new AbortController(),
+    calls = [],
+    finishes = [],
+    admissions = [];
+  let p = client.beginMembershipPreparation(participant, parent),
+    durable = structuredClone(p),
+    login = null,
+    prompts = 0,
+    afterRequest,
+    beforeSave;
+  const owner = {
+    participant,
+    load: async () => structuredClone(durable),
+    sign: async (bytes) => signed(entry.key, bytes),
+    rememberLogin: async (pin, identity, result) => {
+      assert.deepEqual(pin, authority.pin);
+      assert.equal(identity.accountId, x.receipt.offer.epoch.accountId);
+      assert.equal(result.ok, true);
+      login ??= structuredClone(result);
+      assert.deepEqual(result, login);
+      return structuredClone(login);
+    },
+  };
+  const io = {
+    signal: stop.signal,
+    now: () => 1000,
+    save: async () => {
+      await beforeSave?.(p);
+      durable = structuredClone(p);
+    },
+    assert: async (context) => {
+      prompts++;
+      assert.deepEqual(durable.challenge, context);
+      return nextProof(
+        x,
+        {
+          ...entry,
+          input: { ...entry.input, retryKey: p.retryKey, loginRetryKey: p.loginRetryKey },
+        },
+        { context },
+      ).response;
+    },
+    acknowledge: async (result) => {
+      assert.deepEqual(result, login);
+      assert(durable.receipt, 'receipt is durable before login acknowledgement');
+    },
+    request: async (path, body) => {
+      assert.deepEqual(p, durable, 'effects require the committed attempt');
+      calls.push(path);
+      let result;
+      if (path === '/account/membership/v2/admit') {
+        admissions.push(structuredClone(body));
+        result = await authority.owner.admitMembership(x.f.core, body);
+      } else {
+        const op = path.split('/').at(-1);
+        if (op === 'finish') finishes.push(structuredClone(body));
+        result = await x.enroll(op, body);
+      }
+      await afterRequest?.(path, result);
+      return result;
+    },
+  };
+  return {
+    client,
+    x,
+    parent,
+    owner,
+    io,
+    stop,
+    calls,
+    finishes,
+    admissions,
+    get p() {
+      return p;
+    },
+    get durable() {
+      return durable;
+    },
+    get prompts() {
+      return prompts;
+    },
+    set beforeSave(v) {
+      beforeSave = v;
+    },
+    set afterRequest(v) {
+      afterRequest = v;
+    },
+    cold() {
+      p = structuredClone(durable);
+    },
+    run: (held = parent) => client.completeMembershipPreparation(p, owner, x.base, held, io),
+  };
+}
+
+test('browser continuation enrollment saves before effects and retries finish and admission after service restart', async (t) => {
+  const h = await browserPreparationFixture(t);
+  h.beforeSave = (p) => {
+    if (p.proof) throw Error('proof save failed');
+  };
+  await assert.rejects(h.run(), /proof save failed/);
+  assert.equal(h.finishes.length, 0);
+  assert.equal(h.durable.proof, null);
+  assert.equal(h.prompts, 1);
+  h.cold();
+  h.beforeSave = null;
+  h.afterRequest = (path) => {
+    if (path.endsWith('/finish')) throw Error('lost finish reply');
+  };
+  await assert.rejects(h.run(), /lost finish reply/);
+  const proof = structuredClone(h.durable.proof);
+  assert(proof);
+  assert.equal(h.durable.receipt, null);
+  assert.equal(h.prompts, 2);
+  h.x.f.restart();
+  h.cold();
+  h.afterRequest = null;
+  h.beforeSave = (p) => {
+    if (p.receipt) throw Error('receipt save failed');
+  };
+  await assert.rejects(h.run(), /receipt save failed/);
+  assert.equal(h.durable.receipt, null);
+  assert.equal(h.admissions.length, 0);
+  h.cold();
+  h.beforeSave = null;
+  h.afterRequest = (path) => {
+    if (path.endsWith('/admit')) throw Error('lost admission reply');
+  };
+  await assert.rejects(h.run(), /lost admission reply/);
+  assert(h.durable.receipt);
+  assert.equal(h.durable.admission, null);
+  h.x.f.restart();
+  h.cold();
+  h.afterRequest = null;
+  await h.run();
+  assert.equal(h.durable.admission.epoch.epoch, 4);
+  assert.equal(h.prompts, 2, 'no repeated passkey check once a proof was saved');
+  for (const sent of h.finishes) assert.deepEqual(sent, proof);
+  assert.deepEqual(h.admissions[0], h.admissions[1]);
+  const calls = h.calls.length;
+  h.cold();
+  await h.run();
+  assert.equal(h.calls.length, calls, 'completed preparation reopens without effects');
+  assert.equal(h.x.f.rows('network_sessions').length, 1);
+  assert.equal(h.x.f.rows('membership_admissions').length, 1);
+});
+
+test('browser continuation preparation rejects unsaved state and changed custody before network effects', async (t) => {
+  const h = await browserPreparationFixture(t);
+  h.p.retryKey = fresh();
+  await assert.rejects(h.run(), /did not persist/);
+  assert.equal(h.calls.length, 0);
+  h.cold();
+  const participant = h.owner.participant;
+  h.owner.participant = { ...participant, id: 'ee'.repeat(16) };
+  await assert.rejects(h.run(), /device or parent changed/);
+  assert.equal(h.calls.length, 0);
+  h.owner.participant = participant;
+  h.stop.abort();
+  await assert.rejects(h.run());
+  assert.equal(h.calls.length, 0);
+});
