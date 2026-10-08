@@ -347,3 +347,48 @@ controls a page. Personal browser uptake is pending; no personal writing was ope
 The snapshot contains sessions: supported restore still requires session invalidation and a changed
 issuance-custody context. The build exposes the first removal/rotation only; later lifecycle and
 maintenance obligations remain open, and release validation stays paused.
+
+
+## Repeatable-lifecycle update prepared — 2026-10-08
+
+Implementation `ea120109` completes the bounded repeated connection/removal product flow, including
+current-key replacement installation and another connection initiated by that replacement.
+`6387d955` repairs obsolete-grant quota exhaustion during the longer cycle. Both clean disposable
+packaged-browser cases pass; the affected grant, transfer and offline-upgrade evidence is recorded in
+[the completion checkpoint](./completed.md) and
+[product output](./development-evidence/2026-10-08-repeatable-product.log).
+
+The committed implementation was rebuilt and preserved at
+`.dev/account-enrollment-tailnet/builds/ea120109`. Its worker SHA-256 is
+`7cf78e59314c5caacf196d401098e0730b9d075d8b73f082f3ec44a3e52362fa`.
+The rebuild's changes from the browser-tested build are the commit/version identity; build, budget
+(109.5 kB initial JS) and origin-isolation checks pass. The immutable directory is local development
+state and is not checked into Git.
+
+**Pending quiet point:** live still serves `2bea3437` on schema 20, with API 29654/app 29655 last
+observed on 53220/53219. Do not reuse an earlier locked/closed confirmation. After the operator gives
+a fresh confirmation, verify those processes, stop both, and run:
+
+```sh
+ACCOUNT_NETWORK_SESSIONS=1 \
+ACCOUNT_MEMBERSHIP_CONTINUATION=1 \
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+node scripts/upgrade-account-setup.mjs
+```
+
+The upgrader holds the retained-state lock, creates an offline backup of both databases plus pin/key,
+and explicitly moves schema 20 to 21. Before starting the API, compare every prior table row/column,
+check both databases' integrity and verify pin/key equality against that backup. Start the API with
+the same environment as above using `scripts/serve-account-service.mjs`; start the application with
+the existing command but `ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/ea120109`.
+The origin, ports, account state and service identity stay the same.
+
+Verify configuration/capabilities, a fresh authority proof and every precached URL/worker through the
+actual HTTPS gateway. Then ask the operator to reopen and check existing writing plus ordinary sync;
+no personal-device removal is required for initial uptake. Preserve the backup and previous immutable
+build. A session-bearing backup is not a supported rollback of acknowledged writing: restore requires
+session invalidation and a changed issuance-custody context. Recovery, pruning/key retirement and
+public operations remain open; the preview label and release-validation pause remain.

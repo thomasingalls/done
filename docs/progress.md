@@ -55,7 +55,7 @@ release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Source checkpoint:** the complete bounded flow now works in disposable packaged browsers:
+**Source checkpoint:** `ea120109` (unsigned; grant repair `6387d955`) completes the bounded flow now works in disposable packaged browsers:
 remove → connect replacement → edit → remove another → connect again. Original and joined producers
 capture accepted/journal writing. Replacements start at the approved current generation, retain
 nonzero receive cuts, edit in both directions and cold-reopen. The generation-two replacement itself
@@ -80,7 +80,11 @@ API 29654 and app 29655 were still listening during read-only preparation. The p
 backup is `.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ`.
 [Previous cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json).
 
-**Next:** preserve an immutable candidate and obtain a fresh locked/closed confirmation. Stop the two
+**Prepared candidate:** `.dev/account-enrollment-tailnet/builds/ea120109`; worker SHA-256
+`7cf78e59314c5caacf196d401098e0730b9d075d8b73f082f3ec44a3e52362fa`.
+Build, budget and origin checks pass.
+
+**Next:** obtain a fresh locked/closed confirmation. Stop the two
 verified processes, use the explicit offline upgrader and its full pre-upgrade backup, compare prior
 rows/columns and pin/key, then serve schema 21 plus the candidate behind the same address. Verify
 configuration, fresh authority proof and cached asset bytes before asking the operator to reopen.
