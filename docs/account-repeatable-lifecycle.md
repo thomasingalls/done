@@ -52,3 +52,19 @@ fixture was updated to prepare enrollment before the removal fence and separatel
 preparation is refused during removal. TypeScript, scoped lint/format and diff checks pass. Logs:
 `/tmp/done-repeatable-service-focused.log`, `/tmp/done-repeatable-service-rerun.log`,
 `/tmp/done-repeatable-protocol.log`. This does not yet establish a replacement-device browser flow.
+
+
+## Native rotation increment
+
+Repeated native removal is implemented and tested through generation three. Encrypted v2 progress
+retains historical sealed openers while v1 progress remains readable; the active custody pointer stays
+on its predecessor until journal-inclusive content conversion and membership installation complete.
+Cold reopen, original/joined lost replies and an interrupted second activation pass. Removed devices
+retain writable detached copies at their last installed generation. A focused regression fixes old
+inbound replies being incorrectly compared with newer membership cutoffs.
+
+The passive observer now retains the next uninstalled rotation plus authenticated later history for
+sequential restart. Its multi-missed-rotation browser check awaits the repeated-connection increment:
+the current Devices screen intentionally disables a fourth connection. Existing three-device and
+second-removal native evidence passes; current-generation replacement handoff is still required.
+See the 2026-10-08 native-custody entry in [completed.md](./completed.md) for checks and logs.

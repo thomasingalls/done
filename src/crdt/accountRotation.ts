@@ -14,6 +14,7 @@ import {
   writeJoinedRotation,
 } from './joinedAccount';
 import { claimScope } from './localGenesisRecord';
+import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { createApprovalVault } from '../account/approvalVault';
 import { parseNativeRemoval } from '../account/deviceRemovalVault';
 import { parseInstalledMembership, verifyInstalledMembership } from './accountMembership';
@@ -114,9 +115,10 @@ export async function activateAccountRotation(
     const proofs = { ...progress.parent, continuations: [...progress.parent.continuations, proof] };
     const verified = await verifyMembershipChain(proofs, base);
     const history = historyPublisher(verified.history, credentials[1].id);
+    const predecessorGeneration = historyGeneration(parent.history),
+      generation = historyGeneration(history);
     if (
-      historyGeneration(parent.history) !== 1 ||
-      historyGeneration(history) !== 2 ||
+      generation !== predecessorGeneration + 1 ||
       history.finalization ||
       progress.recipient !== credentials[1].id ||
       !same(proof.epoch.rotation.payload.excluded, [progress.target])
@@ -145,10 +147,21 @@ export async function activateAccountRotation(
     }
     if (existingMembership) {
       const held = await verifyMembershipChain(existingMembership.proofs, base);
-      historyAuthority(history, held.history.current);
+      if (held.history.current.tip <= history.current.tip)
+        historyAuthority(history, held.history.current);
+      else {
+        historyAuthority(held.history, history.current);
+        if (record.active_rotation !== proof.head || historyGeneration(held.history) !== generation)
+          throw Error('Unactivated rotation precedes installed membership');
+      }
     }
-    if (record.active_rotation && record.active_rotation !== proof.head)
-      throw Error('Another rotation is already active');
+    const completed = record.active_rotation === proof.head;
+    if (
+      !completed &&
+      predecessorGeneration > 1 &&
+      progress.previous?.at(-1)?.head !== record.active_rotation
+    )
+      throw Error('Active predecessor differs from retained openers');
     return vault.withInstalledKey(progress.key, proof.head, async (successor) => {
       const self = proof.epoch.rotation.payload.wraps.find(
         (w) => w.credentialId === credentials[1].id,
@@ -160,7 +173,7 @@ export async function activateAccountRotation(
           workspaceId: history.current.workspace,
           lineageId: history.current.lineage,
           authRoot: base.pin.authRoot,
-          generation: 2,
+          generation,
         }),
       );
       try {
@@ -168,26 +181,32 @@ export async function activateAccountRotation(
       } finally {
         reopened.fill(0);
       }
-      if (record.active_rotation) {
-        if (!existingMembership || !same(existingMembership.proofs, proofs))
-          throw Error('Active membership differs from rotation');
-        return { generation: 2, head: proof.head };
+      if (completed) {
+        if (!existingMembership) throw Error('Active membership differs from rotation');
+        return { generation, head: proof.head };
       }
       const local = await openEnvelope(scope, root, record.envelope!, subtle);
       let network: Bytes | undefined;
       let carrier: ReturnType<typeof createContentOwner> | undefined;
       let journal: ReturnType<typeof createJournalOwner> | undefined;
-      let oldJournal: Bytes | undefined;
+      let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
+      const journalKeys = new Map<number, Bytes>();
       try {
         network = original
           ? local.slice()
           : await joinedKeys(task, joined!, code, async (key) => key.slice(), true);
+        if (record.active_rotation)
+          active = await openActiveRotation(scope, root, record, subtle, progress.parent);
+        if ((active?.generation ?? 1) !== predecessorGeneration)
+          throw Error('Active predecessor generation changed');
+        const historicalKeys = new Map<number, Bytes>([[1, network], ...(active?.previous ?? [])]);
+        if (active) historicalKeys.set(active.generation, active.key);
         const route: CaptureRoute = {
           workspace: history.current.workspace,
           principal: history.principal,
           credential: credentials[1].id,
           epoch: history.current.tip,
-          generation: 2,
+          generation,
           history,
         };
         const context: InboundContext = {
@@ -212,9 +231,9 @@ export async function activateAccountRotation(
             system: true,
             active: true,
           },
-          generation: 2,
+          generation,
           generationKey: successor,
-          retainedGenerationKeys: new Map([[1, network]]),
+          retainedGenerationKeys: historicalKeys,
           prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
         };
         const publicKey = await subtle.importKey(
@@ -228,8 +247,7 @@ export async function activateAccountRotation(
         const stores = new Map(
           await Promise.all(
             [
-              [1, local],
-              [2, successor],
+              ...new Map<number, Bytes>([...historicalKeys, [1, local], [generation, successor]]),
             ].map(
               async ([g, key]) =>
                 [
@@ -298,10 +316,7 @@ export async function activateAccountRotation(
             await verifySpool(
               census.delivery.spool,
               route,
-              new Map([
-                [1, network!],
-                [2, successor],
-              ]),
+              new Map([...historicalKeys, [generation, successor]]),
               publicKey,
               subtle,
             );
@@ -325,12 +340,19 @@ export async function activateAccountRotation(
             r.onsuccess = () => result(r.result?.active_gen);
           }),
         );
-        if (diskGeneration !== 1 && diskGeneration !== 2)
+        if (diskGeneration !== predecessorGeneration && diskGeneration !== generation)
           throw Error('Unknown rotation carrier generation');
         carrier = createContentOwner(identity, diskGeneration, crypt);
         await carrier.initialize(task);
-        oldJournal = await deriveJournalKey(local, scope.workspaceId, subtle);
-        journal = createJournalOwner(identity, name, 1, oldJournal);
+        for (const [g, key] of new Map([...historicalKeys, [1, local]]))
+          journalKeys.set(g, await deriveJournalKey(key, scope.workspaceId, subtle));
+        journal = createJournalOwner(
+          identity,
+          name,
+          predecessorGeneration,
+          journalKeys.get(predecessorGeneration)!,
+          new Map([...journalKeys].filter(([g]) => g !== predecessorGeneration)),
+        );
         const checkJournal = () => {
           const entries = journal!.snapshot();
           try {
@@ -339,7 +361,7 @@ export async function activateAccountRotation(
             eraseJournalSnapshot(entries);
           }
         };
-        if (diskGeneration === 1) {
+        if (diskGeneration === predecessorGeneration) {
           const entries = await journal.readSnapshot(task);
           try {
             await journal.flush(task, entries, (t, values) =>
@@ -381,19 +403,19 @@ export async function activateAccountRotation(
         } finally {
           for (const r of records) r.bytes.fill(0);
         }
-        if (diskGeneration === 1) {
+        if (diskGeneration === predecessorGeneration) {
           await carrier.rotate(task, {
-            generation: 2,
+            generation,
             reserve: vault.reserveSeals,
             seal,
             open,
             checkJournal,
           });
           carrier.dispose();
-          carrier = createContentOwner(identity, 2, crypt);
+          carrier = createContentOwner(identity, generation, crypt);
           await carrier.initialize(task);
         }
-        if (!record.active_rotation) {
+        if (!completed) {
           const next = { ...record, active_rotation: proof.head };
           if (original) {
             const signed = await signRecord(root, next, subtle);
@@ -419,11 +441,12 @@ export async function activateAccountRotation(
           } else await writeJoinedRotation(task, joined!, code, next, membership, checkJournal);
         } else if (!same(existingMembership, membership))
           throw Error('Active rotation membership changed');
-        return { generation: 2, head: proof.head };
+        return { generation, head: proof.head };
       } finally {
         carrier?.dispose();
         journal?.dispose();
-        oldJournal?.fill(0);
+        for (const key of journalKeys.values()) key.fill(0);
+        eraseRotationKeys(active);
         network?.fill(0);
         local.fill(0);
       }

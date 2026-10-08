@@ -289,13 +289,18 @@ async function verify(
     );
     if (!pageVerified) fail('unverified');
     if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
-    if (
-      c.history &&
-      (a.tip === 1
-        ? p.through > c.history.boundary.position
-        : p.through < c.history.boundary.position)
-    )
-      fail('prefix');
+    if (c.history) {
+      // A stored page is bounded by its own authenticated epoch. Later membership cuts cannot
+      // retroactively require an old reply to have observed writing accepted after that reply.
+      const at = c.history.authorities.findIndex((authority) => authority.tip === a.tip);
+      const entering = at > 0 ? c.history.boundaries[at - 1]!.position : 0;
+      const genesisCut = c.history.boundaries[0]?.position;
+      if (
+        p.through < entering ||
+        (a.tip === 1 && genesisCut !== undefined && p.through > genesisCut)
+      )
+        fail('prefix');
+    }
     if (!p.entries.length) {
       if (r.after !== c.prefix.position || expectedRecord) fail('record');
       current();

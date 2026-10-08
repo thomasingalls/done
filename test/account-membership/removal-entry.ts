@@ -11,3 +11,4 @@ export { createDeviceRemovalTransport } from '../../src/account/deviceRemovalHtt
 export { ScopedTransport } from '../../src/account/scopedTransport';
 export { privateDiscoveryPost } from '../../src/account/privateDiscoveryHttp';
 export { verifyRemovalDiscoveryResponse } from '../../account-protocol/removalDiscovery';
+export { parseNativeRemoval, archiveNativeRotation } from '../../src/account/deviceRemovalVault';

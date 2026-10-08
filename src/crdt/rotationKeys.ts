@@ -1,5 +1,6 @@
 /** Open only the retained native successor selected by the authenticated local commit pointer. */
 import { createApprovalVault } from '../account/approvalVault';
+import type { parseMembershipChain } from '../../account-protocol/membershipLocator';
 import { parseNativeRemoval } from '../account/deviceRemovalVault';
 import type { CustodyRecord, CustodyScope } from './custodyRecord';
 import type { Bytes } from './custodyCrypto';
@@ -8,7 +9,7 @@ export async function openActiveRotation(
   root: Bytes,
   record: CustodyRecord,
   subtle: SubtleCrypto,
-  expectedHead?: string,
+  expectedProofs?: ReturnType<typeof parseMembershipChain>,
 ) {
   if (!record.rotation) {
     if (record.active_rotation) throw Error('Active rotation has no retained apply record');
@@ -36,19 +37,48 @@ export async function openActiveRotation(
     state.successor.epoch.rotation.payload.excluded[0] === state.target
   )
     return null;
+  const openers = [...(state.previous ?? [])];
+  if (state.successor && state.key)
+    openers.push({
+      generation: state.successor.epoch.generation,
+      head: state.successor.head,
+      key: state.key,
+    });
+  const selected = openers.find((item) => item.head === record.active_rotation);
   if (
-    !state.key ||
-    !state.successor ||
-    state.successor.head !== record.active_rotation ||
-    (expectedHead !== undefined && expectedHead !== record.active_rotation) ||
-    state.successor.epoch.generation !== 2
+    !selected ||
+    openers.some(
+      (item) => item.generation > selected.generation && item.head !== state.successor?.head,
+    )
   )
     throw Error('Active rotation differs from installed custody');
-  return {
-    generation: 2,
-    head: record.active_rotation,
-    key: await vault.withInstalledKey(state.key, record.active_rotation, async (key) =>
-      key.slice(),
-    ),
-  };
+  if (
+    expectedProofs &&
+    !expectedProofs.continuations.some(
+      (proof) =>
+        proof.kind === 'membership-rotation' &&
+        proof.head === selected.head &&
+        proof.epoch.generation === selected.generation,
+    )
+  )
+    throw Error('Active rotation is outside installed membership');
+  const previous = new Map<number, Bytes>();
+  let key: Bytes | undefined;
+  try {
+    for (const item of openers) {
+      if (item.generation > selected.generation) continue;
+      const opened = await vault.withInstalledKey(item.key, item.head, async (key) => key.slice());
+      if (item.head === selected.head) key = opened;
+      else previous.set(item.generation, opened);
+    }
+    return { generation: selected.generation, head: selected.head, key: key!, previous };
+  } catch (cause) {
+    key?.fill(0);
+    for (const value of previous.values()) value.fill(0);
+    throw cause;
+  }
+}
+export function eraseRotationKeys(active: Awaited<ReturnType<typeof openActiveRotation>>) {
+  active?.key.fill(0);
+  for (const value of active?.previous.values() ?? []) value.fill(0);
 }

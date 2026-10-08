@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle implementation; current-parent service step complete
+scope: repeatable lifecycle; service and repeated native rotation complete; connection composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -86,9 +86,13 @@ needs removal for this initial check.
 **Active development:** [repeatable lifecycle](./account-repeatable-lifecycle.md), authorized with
 unsigned intermediate commits. Current-parent service admission/approval now passes after cancellation
 and rotation, including replacement with only one surviving old device and a second removal.
-Forty-nine affected service cases and fifteen protocol cases pass. Browser gates remain unchanged.
-Next: retained multi-generation native custody and interrupted activation, then current-generation
-replacement snapshots and the actual repeated browser flow. No live service switch has occurred.
+Forty-nine affected service cases and fifteen protocol cases pass. Native custody now retains installed
+generation openers through repeated removal; generation-three activation, second-rotation crash/retry
+and detached generation-two reopen pass. Twenty-one focused node and forty inbound unit checks pass.
+The missed-rotation observer is implemented, but its four-device browser case reaches the existing
+three-device UI gate; it is not yet passing. Next: repeat connection composition at generation one,
+then current-generation replacement snapshots and the full remove/connect/remove flow. No live
+service switch has occurred.
 
 **Further product work:** self/last-device removal, lost-device
 recovery, successor checkpoint replacement/pruning and old-key retirement, then production operations.

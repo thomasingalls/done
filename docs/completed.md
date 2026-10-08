@@ -11358,3 +11358,35 @@ scoped lint/format and diff checks pass. See [the continuation plan and logs](./
 This is an unsigned service checkpoint. Browser enrollment/removal gates are unchanged; native
 generation custody, current-generation replacement snapshots and the actual repeated product
 walkthrough remain. The retained build stays `2bea3437`; release validation remains paused.
+
+
+## 2026-10-08 — Repeatable lifecycle: native multi-generation custody
+
+Retained rotation custody now versions its encrypted progress and preserves sealed historical openers
+when beginning another removal. Only the authenticated active pointer can archive a completed opener;
+pending intent cannot select its successor key. Existing v1 records remain readable. Native activation
+flushes the predecessor journal, converts content to the next generation, and atomically selects the
+new custody pointer with membership; restart accepts the content-before-pointer interruption. Local,
+spool and inbound replay retain all installed generation openers. Metadata remains under its original
+local key, and joined devices preserve the distinction between their initial local and network keys.
+A later membership head at the same generation no longer invalidates the selected rotation opener.
+Passive observation retains the next uninstalled rotation and its authenticated later history for
+bounded sequential restart. Removed devices select their last installed opener, without the new key.
+
+Focused evidence: original/joined lost-reply and interrupted-activation cases pass; the extended
+three-device native case passes a second removal to generation three with a generation-two journal,
+content-before-pointer interruption, cold reopen, and writable detached copies at generations one
+and two. This exposed and repaired an older inbound replay defect: a stored reply must use its own
+epoch's admission floor, not a later cutoff. The focused regression also retains the current-epoch
+floor and allows a historical request to advertise newer accepted work. Twenty-one focused node
+checks and forty affected inbound Vitest checks pass; TypeScript, scoped lint/format, packaged build,
+budget and origin-isolation checks pass. Logs: `/tmp/done-repeatable-rotation-unit.log`,
+`/tmp/done-repeatable-inbound.log`, `/tmp/done-repeatable-native-rerun.log` (two passing custody cases),
+`/tmp/done-repeatable-observation-rerun.log` (passing extended observation case). Earlier failures
+identified the active journal key duplicated in its retained map, and the historical-page floor.
+
+The four-device missed-rotation walkthrough reaches the existing three-device UI limit before its
+rotation steps. Completing that check requires the next repeated-connection composition increment;
+it is not claimed as passing. Post-rotation replacement snapshots and the full
+remove/connect/remove product flow remain open. The retained service/build were not changed.
+Unsigned intermediate commit authorized; release validation remains paused.

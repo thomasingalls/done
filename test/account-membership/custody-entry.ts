@@ -16,7 +16,8 @@ import { createJournalOwner } from '../../src/crdt/journalStore';
 import { deriveStoreName } from '../../src/crdt/storeName';
 import { makeSourceCapsule } from '../../src/crdt/sourceCapture';
 import { verifyMembershipChain } from '../../account-protocol/membershipLocator';
-import { historyPublisher } from '../../account-protocol/admissionHistory';
+import { openActiveRotation, eraseRotationKeys } from '../../src/crdt/rotationKeys';
+import { historyGeneration, historyPublisher } from '../../account-protocol/admissionHistory';
 import { Y } from '../../src/crdt/yjs';
 const signal = () => new AbortController().signal;
 const check = (value: unknown, message: string) => {
@@ -261,11 +262,12 @@ export async function interruptedRotationSave(kind: Kind, slot: string, code: st
 export async function activateRemoval(kind: Kind, slot: string, code: string, interrupt = false) {
   return withMembershipVault(kind, slot, code, signal(), async (owner) => {
     const put = IDBObjectStore.prototype.put;
+    const previousHead = owner.rotation.activeRotation;
     let interrupted = false;
     if (interrupt)
       IDBObjectStore.prototype.put = function (value, ...args) {
         const r = put.call(this, value, ...args);
-        if (value?.active_rotation) {
+        if (value?.active_rotation && value.active_rotation !== previousHead) {
           interrupted = true;
           this.transaction.abort();
         }
@@ -296,6 +298,7 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
     (await verifyMembershipChain(source.source.proofs, base)).history,
     source.id,
   );
+  const proofs = source.source.proofs;
   const doc = new Y.Doc();
   doc.getText('rotation-journal-probe').insert(0, 'Journal-only writing must survive rotation');
   const update = new Uint8Array(Y.encodeStateAsUpdate(doc));
@@ -306,7 +309,7 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
       credential: source.id,
       principal: history.principal,
       epoch: history.current.tip,
-      generation: 1,
+      generation: historyGeneration(history),
       history,
     },
     [{ kind: 'human', actor: history.principal, bytes: update }],
@@ -323,11 +326,12 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
       const scope = claimScope(state.claim);
       return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => {
         const local = await openEnvelope(scope, root, state.record.envelope!, subtle);
-        const key = await deriveJournalKey(local, scope.workspaceId, subtle);
+        const active = await openActiveRotation(scope, root, state.record, subtle, proofs);
+        const key = await deriveJournalKey(active?.key ?? local, scope.workspaceId, subtle);
         const journal = createJournalOwner(
           { ...scope, storeId: state.record.store_id, rootId: state.record.root_id },
           await deriveStoreName(scope.principalId, scope.workspaceId),
-          1,
+          active?.generation ?? 1,
           key,
         );
         try {
@@ -338,6 +342,7 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
           journal.dispose();
           key.fill(0);
           local.fill(0);
+          eraseRotationKeys(active);
           capsule.fill(0);
           update.fill(0);
         }

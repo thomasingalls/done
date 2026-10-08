@@ -1,5 +1,5 @@
 /** Private certified-device activation. Physical Local custody and logical Account identity stay distinct. */
-import { openActiveRotation } from './rotationKeys';
+import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { same, parseAdmissionRequest, parseReceipt } from '../../account-protocol/admission';
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import { parseSuccessor } from '../../account-protocol/successor';
@@ -667,7 +667,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             root,
             state.record,
             subtle,
-            marker.membership?.proofs.continuations.at(-1)?.head,
+            marker.membership?.proofs,
           ),
       );
       const initialEpoch = b.route.epoch;
@@ -692,7 +692,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           generation: b.route.generation,
           history,
           generationKey: active?.key ?? kg,
-          ...(active ? { retainedGenerationKeys: new Map([[1, kg]]) } : {}),
+          ...(active ? { retainedGenerationKeys: new Map([[1, kg], ...active.previous]) } : {}),
         };
       }
       if (options.networkLogin && !detached) {
@@ -843,12 +843,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             await verifySpool(
               census.delivery.spool,
               b.route,
-              active
-                ? new Map([
-                    [1, kg],
-                    [2, active.key],
-                  ])
-                : kg,
+              active ? new Map([[1, kg], [active.generation, active.key], ...active.previous]) : kg,
               publicKey,
               crypto.subtle,
             );
@@ -895,7 +890,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       };
     } finally {
       eraseBaseline(b);
-      active?.key.fill(0);
+      eraseRotationKeys(active);
     }
   });
 }

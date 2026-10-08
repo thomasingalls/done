@@ -3,7 +3,7 @@
  * credential. Startup supplies verified identity and the cross-carrier census;
  * completing this component alone does not complete workspace genesis.
  */
-import { openActiveRotation } from './rotationKeys';
+import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
@@ -194,8 +194,8 @@ const newIntent = (): CreationIntent =>
 interface OwnedKeys {
   store: CryptoKey | null;
   generation?: number;
-  previousStore?: CryptoKey | null;
-  previousJournal?: Bytes | null;
+  previousStores?: Map<number, CryptoKey>;
+  previousJournals?: Map<number, Bytes>;
   metadata?: CryptoKey | null;
   journal?: Bytes | null;
   wrapping: CryptoKey | null;
@@ -203,9 +203,9 @@ interface OwnedKeys {
 }
 const clearKeys = (keys: OwnedKeys) => {
   keys.store = null;
-  keys.previousStore = null;
-  keys.previousJournal?.fill(0);
-  keys.previousJournal = null;
+  keys.previousStores?.clear();
+  for (const key of keys.previousJournals?.values() ?? []) key.fill(0);
+  keys.previousJournals?.clear();
   keys.metadata = null;
   keys.journal?.fill(0);
   keys.journal = null;
@@ -278,8 +278,34 @@ const loadKeys = async (
     );
     if (active) {
       try {
-        keys.previousStore = keys.store;
-        keys.previousJournal = keys.journal ?? null;
+        keys.previousStores = new Map([[1, keys.store!]]);
+        keys.previousJournals = new Map(keys.journal ? [[1, keys.journal]] : []);
+        for (const [generation, key] of active.previous) {
+          keys.previousStores.set(
+            generation,
+            await task.wait(() =>
+              hkdf(
+                key,
+                new Uint8Array(),
+                fields('done/store/v1', scope.workspaceId, record.store_id),
+                { name: 'AES-GCM', length: 256 },
+                content ? ['encrypt', 'decrypt'] : ['decrypt'],
+                guardedSubtle(() => task.step(() => {})),
+              ),
+            ),
+          );
+          if (journal)
+            keys.previousJournals.set(
+              generation,
+              await task.wait(() =>
+                deriveJournalKey(
+                  key,
+                  scope.workspaceId,
+                  guardedSubtle(() => task.step(() => {})),
+                ),
+              ),
+            );
+        }
         keys.store = await task.wait(() =>
           hkdf(
             active.key,
@@ -300,7 +326,7 @@ const loadKeys = async (
           );
         keys.generation = active.generation;
       } finally {
-        active.key.fill(0);
+        eraseRotationKeys(active);
       }
     }
     await task.wait(async () => {
@@ -649,16 +675,12 @@ const prepareCustody = (
   let carrier: ReturnType<typeof createContentOwner> | undefined;
   let journal: ReturnType<typeof createJournalOwner> | undefined;
   let recoveryCodec: ReturnType<typeof createJournalCodec> | undefined;
-  let priorRecoveryCodec: ReturnType<typeof createJournalCodec> | undefined;
+  const priorRecoveryCodecs = new Map<number, ReturnType<typeof createJournalCodec>>();
   let recoveryPrefix = '';
   const openRecord = (task: SessionTask, inputRecord: StoredRecord): Promise<Bytes> => {
     const value = task.step(() => parseStoredRecord(inputRecord));
     const opener =
-      value.gen === (keys.generation ?? 1)
-        ? keys.store
-        : value.gen === 1
-          ? keys.previousStore
-          : null;
+      value.gen === (keys.generation ?? 1) ? keys.store : keys.previousStores?.get(value.gen);
     if (!opener)
       throw new CustodyError('repair-required', 'No opener for this content generation.');
     return task.wait(async () => {
@@ -703,7 +725,7 @@ const prepareCustody = (
         const codec =
           decodeJournal(value).generation === (keys.generation ?? 1)
             ? recoveryCodec
-            : priorRecoveryCodec;
+            : priorRecoveryCodecs.get(decodeJournal(value).generation);
         if (!codec)
           throw new CustodyError('repair-required', 'No opener for this journal generation.');
         return codec.open(key, value).bytes;
@@ -764,9 +786,10 @@ const prepareCustody = (
         recoveryCodec = task.step(() =>
           createJournalCodec(scope.workspaceId, keys.generation ?? 1, keys.journal!),
         );
-        if (keys.previousJournal)
-          priorRecoveryCodec = task.step(() =>
-            createJournalCodec(scope.workspaceId, 1, keys.previousJournal!),
+        for (const [generation, key] of keys.previousJournals ?? [])
+          priorRecoveryCodecs.set(
+            generation,
+            task.step(() => createJournalCodec(scope.workspaceId, generation, key)),
           );
       }
 
@@ -815,7 +838,7 @@ const prepareCustody = (
             name,
             keys.generation ?? 1,
             keys.journal!,
-            keys.previousJournal ? new Map([[1, keys.previousJournal]]) : undefined,
+            keys.previousJournals,
           ),
         );
         // Erasure is cleanup and must also run if cancellation follows the successful read.
@@ -832,7 +855,8 @@ const prepareCustody = (
       carrier?.dispose();
       journal?.dispose();
       recoveryCodec?.dispose();
-      priorRecoveryCodec?.dispose();
+      for (const codec of priorRecoveryCodecs.values()) codec.dispose();
+      priorRecoveryCodecs.clear();
     },
   };
 };

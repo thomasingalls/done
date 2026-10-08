@@ -31,8 +31,22 @@ import type { ScopedAccess } from './scopedTransport';
 import type { MembershipVault } from './membershipVault';
 import type { InstalledContentKey } from './approvalVault';
 
+export interface RotationOpener {
+  generation: number;
+  head: string;
+  key: InstalledContentKey;
+}
+const parseOpener = (input: unknown): InstalledContentKey => {
+  const k = closed(input, ['sequence', 'ct']);
+  if (!Number.isSafeInteger(k['sequence']) || (k['sequence'] as number) < 1)
+    throw Error('Invalid rotation key');
+  unhex(k['ct'], 48);
+  return { sequence: k['sequence'] as number, ct: k['ct'] as string };
+};
 export interface NativeRemoval {
-  v: 1;
+  v: 1 | 2;
+  previous?: RotationOpener[];
+  observed?: ReturnType<typeof parseMembershipChain> | null;
   kind: 'native-device-removal';
   parent: ReturnType<typeof parseMembershipChain>;
   target: string;
@@ -42,7 +56,9 @@ export interface NativeRemoval {
   key: InstalledContentKey | null;
 }
 export function parseNativeRemoval(input: unknown): NativeRemoval {
+  const version = (input as { v?: unknown } | null)?.v;
   const r = closed(input, [
+    ...(version === 2 ? ['previous', 'observed'] : []),
     'v',
     'kind',
     'parent',
@@ -52,27 +68,70 @@ export function parseNativeRemoval(input: unknown): NativeRemoval {
     'successor',
     'key',
   ]);
-  if (r['v'] !== 1 || r['kind'] !== 'native-device-removal') throw Error('Invalid native removal');
+  if ((version !== 1 && version !== 2) || r['kind'] !== 'native-device-removal')
+    throw Error('Invalid native removal');
   unhex(r['target'], 16);
   unhex(r['recipient'], 16);
-  let key: InstalledContentKey | null = null;
-  if (r['key'] !== null) {
-    const k = closed(r['key'], ['sequence', 'ct']);
-    if (!Number.isSafeInteger(k['sequence']) || (k['sequence'] as number) < 1)
-      throw Error('Invalid rotation key');
-    unhex(k['ct'], 48);
-    key = { sequence: k['sequence'] as number, ct: k['ct'] as string };
+  const parent = parseMembershipChain(r['parent']);
+  let previous: RotationOpener[] = [];
+  if (version === 2) {
+    if (!Array.isArray(r['previous']) || r['previous'].length > 64)
+      throw Error('Invalid retained generation history');
+    previous = r['previous'].map((input) => {
+      const item = closed(input, ['generation', 'head', 'key']);
+      unhex(item['head'], 32);
+      const proof = parent.continuations.find((p) => p.head === item['head']);
+      if (
+        !proof ||
+        proof.kind !== 'membership-rotation' ||
+        proof.epoch.generation !== item['generation'] ||
+        !proof.epoch.rotation.payload.wraps.some((w) => w.credentialId === r['recipient'])
+      )
+        throw Error('Historical opener differs from rotation history');
+      return {
+        generation: proof.epoch.generation,
+        head: proof.head,
+        key: parseOpener(item['key']),
+      };
+    });
+    for (let i = 1; i < previous.length; i++)
+      if (previous[i]!.generation !== previous[i - 1]!.generation + 1)
+        throw Error('Retained generations are not consecutive');
   }
   return {
-    v: 1,
+    v: version,
+    ...(version === 2
+      ? { previous, observed: r['observed'] === null ? null : parseMembershipChain(r['observed']) }
+      : {}),
     kind: 'native-device-removal',
-    parent: parseMembershipChain(r['parent']),
+    parent,
     target: r['target'] as string,
     recipient: r['recipient'] as string,
     progress: r['progress'] === null ? null : parseDeviceRemovalProgress(r['progress']),
     successor: r['successor'] === null ? null : parseMembershipRotation(r['successor']),
-    key,
+    key: r['key'] === null ? null : parseOpener(r['key']),
   };
+}
+
+/** Only a completed, locally selected opener may become history for a new intent. */
+export function archiveNativeRotation(
+  input: unknown,
+  activeHead: string | undefined,
+): RotationOpener[] {
+  const value = parseNativeRemoval(input);
+  if (
+    !activeHead ||
+    !value.successor ||
+    !value.key ||
+    value.successor.head !== activeHead ||
+    !value.successor.epoch.rotation.payload.wraps.some((w) => w.credentialId === value.recipient)
+  )
+    throw Error('Finish the retained rotation before starting another');
+  const previous = value.previous ?? [];
+  const generation = value.successor.epoch.generation;
+  if (previous.length && previous.at(-1)!.generation + 1 !== generation)
+    throw Error('Active generation does not follow retained openers');
+  return [...previous, { generation, head: activeHead, key: value.key }];
 }
 
 /** Caller holds the actual slot-wide permit via withMembershipVault throughout this operation. */
@@ -102,7 +161,24 @@ export async function openDeviceRemovalVault(
     retained = cold;
   };
   retained = await read();
-  if (!retained) {
+  if (
+    !retained ||
+    (retained.successor &&
+      retained.successor.head === vault.activeRotation &&
+      retained.target !== target)
+  ) {
+    const previous = retained ? archiveNativeRotation(retained, vault.activeRotation) : [];
+    if (retained) {
+      const installed = await verifyMembershipChain(
+        {
+          ...retained.parent,
+          continuations: [...retained.parent.continuations, retained.successor!],
+        },
+        base,
+      );
+      historyAuthority(current.history, installed.history.current);
+      await vault.checkInstalled(retained.key!, retained.successor!.head);
+    }
     unhex(target, 16);
     // Validate the actor/target before placing even a pending marker in custody.
     const state = membershipState(historyMembership(current.history));
@@ -112,11 +188,13 @@ export async function openDeviceRemovalVault(
       !state.certificate.members.some((m) => same(m, owner.participant))
     )
       throw Error('Removal requires another device and a certified owner');
-    if (state.generation !== 1)
-      throw Error('Further removals after rotation are not available yet');
+    if (state.generation !== (previous.at(-1)?.generation ?? 1))
+      throw Error('Activate the current generation before removal');
     await rotationRecipients(historyMembership(current.history), target, base.request.recovery);
     await save({
-      v: 1,
+      v: 2,
+      previous,
+      observed: null,
       kind: 'native-device-removal',
       parent: current.proofs,
       target,

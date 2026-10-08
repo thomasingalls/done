@@ -9,7 +9,7 @@ import { capturedRecovery } from './sourceCapture';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import { verifyReceipt, same } from '../../account-protocol/admission';
 import { verifyBindingProof } from '../../account-protocol/slot';
-import { openActiveRotation } from './rotationKeys';
+import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { checkpointAAD, generationInfo } from '../../account-protocol/genesis';
 import { unhex } from '../../account-protocol/recovery';
 import { withPromotionSlot, type SessionTask } from './writeSession';
@@ -98,13 +98,14 @@ export async function verifyAccountUnderPermit(
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
   const census = await localCensus(task, claim, options.code);
   if (!same(census.slot, destination)) throw Error('Account index missing or changed');
-  const route = await task.wait(() => heldCaptureRoute(marker, record.active_rotation ? 2 : 1));
+  let route!: Awaited<ReturnType<typeof heldCaptureRoute>>;
   await withPromotionRoot(task, claim, record, options.code, async (root, subtle) => {
     const device = await openCredential(scope, root, marker.credentials![0], subtle);
     const key = await openEnvelope(scope, root, record.envelope!, subtle);
     let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
     try {
-      active = await openActiveRotation(scope, root, record, subtle, route.history?.current.head);
+      active = await openActiveRotation(scope, root, record, subtle, marker.membership?.proofs);
+      route = await task.wait(() => heldCaptureRoute(marker, active?.generation ?? 1));
       const candidate = request.candidate,
         wrap = candidate.wraps[0]!;
       if (
@@ -164,7 +165,8 @@ export async function verifyAccountUnderPermit(
           marker.v === 9
             ? await heldInboundContext(marker, active?.key ?? key, subtle, route)
             : undefined;
-        if (inbound && active) inbound.retainedGenerationKeys = new Map([[1, key]]);
+        if (inbound && active)
+          inbound.retainedGenerationKeys = new Map([[1, key], ...active.previous]);
         await withRecoveryUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
@@ -261,10 +263,7 @@ export async function verifyAccountUnderPermit(
                     state,
                     route,
                     active
-                      ? new Map([
-                          [1, key],
-                          [2, active.key],
-                        ])
+                      ? new Map([[1, key], [active.generation, active.key], ...active.previous])
                       : key,
                     signer!,
                     subtle,
@@ -288,7 +287,7 @@ export async function verifyAccountUnderPermit(
       }
     } finally {
       key.fill(0);
-      active?.key.fill(0);
+      eraseRotationKeys(active);
     }
   });
   return {

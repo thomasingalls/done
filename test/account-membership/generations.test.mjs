@@ -175,8 +175,7 @@ test('retained source, spool and delivery records resolve their own authenticate
   );
   assert.deepEqual(client.decodeDeliveryEntry(delivery, f.route, f.history.current).wire, accepted);
 });
-function packet(f, wire, previous) {
-  const a = f.history.current;
+function packet(f, wire, previous, a = f.history.current, through = wire.subject.position) {
   const requestFields = [
     'done/private-read/v2',
     2,
@@ -187,7 +186,7 @@ function packet(f, wire, previous) {
     f.route.credential,
     a.lineage,
     a.head,
-    4,
+    a.tip,
     wire.subject.position - 1,
     1,
     'af'.repeat(32),
@@ -206,7 +205,7 @@ function packet(f, wire, previous) {
     'done/private-read-page/v2',
     2,
     hash(request),
-    wire.subject.position,
+    through,
     wire.subject.position,
     [[Buffer.from(wire.wire).toString('hex'), Buffer.from(proof).toString('hex')]],
   ];
@@ -276,5 +275,64 @@ test('inbound replay opens old and successor envelopes without accepting a key o
       first.page,
       lifetime,
     ),
+  );
+});
+
+test('cold replay uses the stored page epoch cut, never a later membership cutoff', async () => {
+  const f = await fixture();
+  const secondOld = envelope(f.x, f.next, 1, 3, 2, f.keys.get(1));
+  const laterCut = link(secondOld.subject, f.cut);
+  const rotation = f.x.rotate(
+    undefined,
+    f.x.p.heads.map((h) =>
+      h.credentialId === f.route.credential ? { ...h, position: 2, link: laterCut } : h,
+    ),
+  );
+  const { history } = await client.verifyMembershipChain(
+    { ...f.x.proofs, continuations: [rotation] },
+    f.x.f.f.base,
+  );
+  const authority = history.authorities.find((a) => a.tip === 3);
+  const context = {
+    baseline: { kind: 'promotion-genesis', id: hash('historical page') },
+    service: { id: f.x.p.pin.serviceId, origin: f.x.p.pin.origin },
+    authority,
+    history,
+    creatingCredential: f.route.credential,
+    reader: { id: f.route.credential, publicKey: history.signingKey, active: true },
+    publisher: {
+      id: f.route.credential,
+      publicKey: history.signingKey,
+      principal: history.principal,
+      system: true,
+      active: true,
+    },
+    generation: 2,
+    generationKey: f.keys.get(2),
+    retainedGenerationKeys: new Map([[1, f.keys.get(1)]]),
+    prefix: { position: 0, link: zero, observedThrough: 0 },
+  };
+  const lifetime = { assertCurrent() {}, now: () => 1000 };
+  const first = packet(f, f.one, zero, authority);
+  const received = await client.verifyInboundPage(context, first.request, first.page, lifetime);
+  assert.equal(received.kind, 'received');
+  const cold = await client.verifyStoredInbound(context, received.record, lifetime);
+  assert.equal(cold.kind, 'received');
+  assert.deepEqual(cold.updates, [f.old]);
+  // A historical request may advertise newer accepted work while returning this old envelope.
+  const beyond = packet(f, f.one, zero, authority, 3);
+  assert.equal(
+    (await client.verifyInboundPage(context, beyond.request, beyond.page, lifetime)).kind,
+    'received',
+  );
+  const atCurrent = packet(f, f.one, zero, history.current);
+  await assert.rejects(
+    client.verifyInboundPage(
+      { ...context, authority: history.current },
+      atCurrent.request,
+      atCurrent.page,
+      lifetime,
+    ),
+    /prefix/,
   );
 });

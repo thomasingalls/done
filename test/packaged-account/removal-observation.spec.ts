@@ -9,6 +9,7 @@ test('an offline survivor retains old-generation writing through rotation while 
   page,
   browser,
 }, info) => {
+  test.setTimeout(180000);
   page.setDefaultTimeout(15000);
   const built = await build({
     configFile: false,
@@ -143,6 +144,92 @@ test('an offline survivor retains old-generation writing through rotation while 
       );
       await expect(p.locator('.workspace-status')).toHaveCount(0);
     }
+    // A second removal keeps the generation-two opener while its replacement pointer is pending.
+    await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await third.goto('/');
+    await third.evaluate(chunk.code);
+    const secondTarget = await third.evaluate(
+      async (code) =>
+        window.MembershipCustody.participant(
+          'joined',
+          await window.MembershipCustody.accountSlot(),
+          code,
+        ),
+      next.code,
+    );
+    await openSaved(third, next.code, true);
+    await thirdContext.setOffline(true);
+    await add(third, 'Second removed device keeps its offline generation-two writing');
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await page.goto('/');
+    await page.evaluate(chunk.code);
+    const laterArgs = { slot, code: pair.first.code, target: secondTarget };
+    const laterJournal = await page.evaluate(
+      ({ slot, code }) => window.MembershipCustody.journalOnly('promotion', slot, code),
+      laterArgs,
+    );
+    let later = await page.evaluate(
+      ({ slot, code, target }) =>
+        window.MembershipCustody.removal('promotion', slot, code, target, true),
+      laterArgs,
+    );
+    expect(later.result).toBe('pending');
+    expect(later.after.previous).toHaveLength(1);
+    expect(later.after.previous![0]!.generation).toBe(2);
+    await page.reload();
+    await page.evaluate(chunk.code);
+    await expect
+      .poll(
+        async () => {
+          later = await page.evaluate(
+            ({ slot, code, target }) =>
+              window.MembershipCustody.removal('promotion', slot, code, target),
+            laterArgs,
+          );
+          return later.result;
+        },
+        { timeout: 20000, intervals: [2000] },
+      )
+      .toBe('applying');
+    expect(later.after.successor!.epoch.generation).toBe(3);
+    expect(
+      await page.evaluate(
+        ({ slot, code }) => window.MembershipCustody.activateRemoval('promotion', slot, code, true),
+        laterArgs,
+      ),
+    ).toEqual({ generation: 0, head: 'interrupted' });
+    await page.reload();
+    await page.evaluate(chunk.code);
+    expect(
+      await page.evaluate(
+        ({ slot, code }) => window.MembershipCustody.activateRemoval('promotion', slot, code),
+        laterArgs,
+      ),
+    ).toEqual({ generation: 3, head: later.after.successor!.head });
+    expect(await page.evaluate((key) => localStorage.getItem(key), laterJournal)).toBeNull();
+    await page.goto('/');
+    await openSaved(page, pair.first.code);
+    await add(page, 'Generation three survives two rotations');
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await page.goto('/');
+    await openSaved(page, pair.first.code);
+    await expect(page.locator('.shell')).toContainText('Generation three survives two rotations');
+    await thirdContext.setOffline(false);
+    await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
+    await third.goto('/');
+    await openSaved(third, next.code, true);
+    await expect(third.getByText('Removed from account.', { exact: false })).toBeVisible();
+    await expect(third.locator('.shell')).toContainText(
+      'Second removed device keeps its offline generation-two writing',
+    );
+    await expect(third.locator('.shell')).not.toContainText(
+      'Generation three survives two rotations',
+    );
+    await add(third, 'Detached generation two can still edit');
+    await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await third.goto('/');
+    await openSaved(third, next.code, true);
+    await expect(third.locator('.shell')).toContainText('Detached generation two can still edit');
     const networkWrites: string[] = [];
     pair.second.on('request', (r) => {
       if (r.url().includes('/account/delivery/') || r.url().includes('/notifications/'))

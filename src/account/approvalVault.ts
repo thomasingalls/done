@@ -85,6 +85,9 @@ export async function createApprovalVault(options: {
     }
   };
   return {
+    get activeRotation() {
+      return record().active_rotation;
+    },
     participant: {
       id: credentials[1].id,
       wPub: hex(credentials[0].publicKey),

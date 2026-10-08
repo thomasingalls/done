@@ -1,7 +1,7 @@
 import type { NetworkLogin } from '../account/networkLogin';
 import { ScopedTransport } from '../account/scopedTransport';
 import { RemovalPending } from '../account/accountTransitionNotice';
-import { openDeviceRemovalVault } from '../account/deviceRemovalVault';
+import { archiveNativeRotation, openDeviceRemovalVault } from '../account/deviceRemovalVault';
 /** Retain a verified successor under the actual account permit before releasing the old writer. */
 import {
   readPromotion,
@@ -137,24 +137,26 @@ export async function retainObservedRotation(
       const verified = await verifyMembershipChain(proofs, base),
         held = await verifyMembershipChain(installed, base);
       historyAuthority(verified.history, held.history.current);
-      const successor = proofs.continuations.at(-1);
-      if (
-        !successor ||
-        successor.kind !== 'membership-rotation' ||
-        historyGeneration(verified.history) !== 2
-      )
-        throw Error('Unsupported observed rotation');
-      const parent = { ...proofs, continuations: proofs.continuations.slice(0, -1) };
+      const generation = historyGeneration(held.history) + 1;
+      const index = proofs.continuations.findIndex(
+        (proof) => proof.kind === 'membership-rotation' && proof.epoch.generation === generation,
+      );
+      const successor = proofs.continuations[index];
+      if (!successor || successor.kind !== 'membership-rotation')
+        throw Error('Observation has no next rotation');
+      const parent = { ...proofs, continuations: proofs.continuations.slice(0, index) };
       const before = await verifyMembershipChain(parent, base);
-      if (historyGeneration(before.history) !== 1)
-        throw Error('Unsupported predecessor generation');
+      historyAuthority(before.history, held.history.current);
+      if (historyGeneration(before.history) + 1 !== generation)
+        throw Error('Observed rotation skips a generation');
       const target = successor.epoch.rotation.payload.excluded[0]!;
       if (successor.epoch.rotation.payload.excluded.length !== 1)
         throw Error('Unsupported exclusion set');
       let saved = await vault.load(),
         value: NativeRemoval;
-      if (saved !== null) {
-        value = parseNativeRemoval(saved);
+      const old = saved === null ? null : parseNativeRemoval(saved);
+      if (old && (!old.successor || old.successor.head !== vault.activeRotation)) {
+        value = old;
         if (
           !same(value.parent, parent) ||
           value.target !== target ||
@@ -162,9 +164,20 @@ export async function retainObservedRotation(
           (value.successor && !same(value.successor, successor))
         )
           throw Error('Retained rotation conflicts with observation');
-      } else
+      } else {
+        const previous = old ? archiveNativeRotation(old, vault.activeRotation) : [];
+        if (old) {
+          const completed = await verifyMembershipChain(
+            { ...old.parent, continuations: [...old.parent.continuations, old.successor!] },
+            base,
+          );
+          historyAuthority(before.history, completed.history.current);
+          await vault.checkInstalled(old.key!, old.successor!.head);
+        }
         value = {
-          v: 1,
+          v: 2,
+          previous,
+          observed: null,
           kind: 'native-device-removal',
           parent,
           target,
@@ -173,6 +186,7 @@ export async function retainObservedRotation(
           successor: null,
           key: null,
         };
+      }
       const save = async (next: NativeRemoval) => {
         if (!same(await vault.load(), saved)) throw Error('Rotation custody changed');
         await vault.save(next);
@@ -180,12 +194,21 @@ export async function retainObservedRotation(
         if (!same(saved, next)) throw Error('Rotation observation did not persist');
         value = next;
       };
-      if (!value.successor) await save({ ...value, successor });
+      let observed = proofs;
+      if (value.observed) {
+        const retained = await verifyMembershipChain(value.observed, base);
+        if (retained.history.current.tip > verified.history.current.tip) {
+          historyAuthority(retained.history, verified.history.current);
+          observed = value.observed;
+        } else historyAuthority(verified.history, retained.history.current);
+      }
+      const next = { ...value, v: 2 as const, previous: value.previous ?? [], observed, successor };
+      if (!same(saved, next)) await save(next);
       if (credential === target) {
         if (value.key) throw Error('Removed device has a successor opener');
         return 'removed' as const;
       }
-      const member = membershipState(historyMembership(verified.history)).certificate.members.find(
+      const member = membershipState(historyMembership(before.history)).certificate.members.find(
         (m) => m.id === credential,
       );
       const wrap = successor.epoch.rotation.payload.wraps.find(
@@ -199,7 +222,7 @@ export async function retainObservedRotation(
             workspaceId: verified.history.current.workspace,
             lineageId: verified.history.current.lineage,
             authRoot: base.pin.authRoot,
-            generation: 2,
+            generation,
           }),
           successor.head,
         );
@@ -219,73 +242,98 @@ export async function resumeAccountRotation(
   code: string,
   login?: NetworkLogin,
 ): Promise<import('../../account-protocol/admissionHistory').AdmissionHistory | null> {
-  const state =
-    kind === 'promotion'
-      ? await readPromotion(task, slotId, code)
-      : await readJoinedAccount(task, slotId, code);
-  if (!state.record.rotation || state.record.active_rotation) return null;
-  const pending = await withRotationCustody(task, kind, slotId, code, async ({ vault }) =>
-    parseNativeRemoval(await vault.load()),
-  );
-  if (!pending.successor) {
-    if (!login || globalThis.navigator?.onLine === false) throw new RemovalPending();
-    await withRotationCustody(
+  // The bounded proof chain limits how many interrupted generation transitions can be resumed.
+  for (let step = 0; step < 65; step++) {
+    const state =
+      kind === 'promotion'
+        ? await readPromotion(task, slotId, code)
+        : await readJoinedAccount(task, slotId, code);
+    if (!state.record.rotation) return null;
+    const pending = await withRotationCustody(task, kind, slotId, code, async ({ vault }) =>
+      parseNativeRemoval(await vault.load()),
+    );
+    if (pending.successor && pending.successor.head === state.record.active_rotation) {
+      if (
+        !pending.observed ||
+        !pending.observed.continuations.some(
+          (proof) =>
+            proof.kind === 'membership-rotation' &&
+            proof.epoch.generation > pending.successor!.epoch.generation,
+        )
+      )
+        return null;
+      await retainObservedRotation(task, kind, slotId, code, pending.observed);
+      continue;
+    }
+    if (!pending.successor) {
+      if (!login || globalThis.navigator?.onLine === false) throw new RemovalPending();
+      await withRotationCustody(
+        task,
+        kind,
+        slotId,
+        code,
+        async ({ vault, base, proofs, withLogin }) => {
+          const native = await openDeviceRemovalVault(
+            {
+              source: { kind: 'original', base, proofs },
+              participant: vault.participant,
+              rotation: vault,
+            },
+            pending.target,
+            task.signal,
+          );
+          const transport = new ScopedTransport(base.pin, task.signal);
+          try {
+            const access = transport.bind({
+              login,
+              sign: vault.sign,
+              scope: {
+                kind: 'workspace',
+                workspaceId: base.request.candidate.workspaceId,
+                credentialId: vault.participant.id,
+              },
+            });
+            await withLogin(login, async () => {
+              // This is the user's explicit unlock/resume action; renew a retained login first.
+              await login.access();
+              if (['connect', 'reconnect', 'signed-out'].includes(login.getSnapshot()))
+                await login.connect();
+              if ((await native.advance(access)) === 'pending') throw new RemovalPending();
+            });
+          } finally {
+            transport.close();
+          }
+        },
+      );
+      continue;
+    }
+    const outcome = await retainObservedRotation(
       task,
       kind,
       slotId,
       code,
-      async ({ vault, base, proofs, withLogin }) => {
-        const native = await openDeviceRemovalVault(
-          {
-            source: { kind: 'original', base, proofs },
-            participant: vault.participant,
-            rotation: vault,
-          },
-          pending.target,
-          task.signal,
-        );
-        const transport = new ScopedTransport(base.pin, task.signal);
-        try {
-          const access = transport.bind({
-            login,
-            sign: vault.sign,
-            scope: {
-              kind: 'workspace',
-              workspaceId: base.request.candidate.workspaceId,
-              credentialId: vault.participant.id,
-            },
-          });
-          await withLogin(login, async () => {
-            // This is the user's explicit unlock/resume action; renew a retained login first.
-            await login.access();
-            if (['connect', 'reconnect', 'signed-out'].includes(login.getSnapshot()))
-              await login.connect();
-            if ((await native.advance(access)) === 'pending') throw new RemovalPending();
-          });
-        } finally {
-          transport.close();
-        }
+      pending.observed ?? {
+        ...pending.parent,
+        continuations: [...pending.parent.continuations, pending.successor],
       },
     );
-    return resumeAccountRotation(task, kind, slotId, code, login);
+    if (outcome === 'removed')
+      return withRotationCustody(task, kind, slotId, code, async ({ base, credential }) => {
+        const verified = await verifyMembershipChain(
+          {
+            ...pending.parent,
+            continuations: [...pending.parent.continuations, pending.successor!],
+          },
+          base,
+        );
+        const history = historyPublisher(verified.history, credential);
+        if (!history.finalization || pending.target !== credential)
+          throw Error('Missing self finalization');
+        return history;
+      });
+    await (await import('./accountRotation')).activateAccountRotation(task, kind, slotId, code);
   }
-  const outcome = await retainObservedRotation(task, kind, slotId, code, {
-    ...pending.parent,
-    continuations: [...pending.parent.continuations, pending.successor],
-  });
-  if (outcome === 'removed')
-    return withRotationCustody(task, kind, slotId, code, async ({ base, credential }) => {
-      const verified = await verifyMembershipChain(
-        { ...pending.parent, continuations: [...pending.parent.continuations, pending.successor!] },
-        base,
-      );
-      const history = historyPublisher(verified.history, credential);
-      if (!history.finalization || pending.target !== credential)
-        throw Error('Missing self finalization');
-      return history;
-    });
-  await (await import('./accountRotation')).activateAccountRotation(task, kind, slotId, code);
-  return null;
+  throw Error('Rotation resume exceeds retained history bound');
 }
 
 /** A service signature is not replay evidence: verify the local ciphertext prefix through its cutoff. */

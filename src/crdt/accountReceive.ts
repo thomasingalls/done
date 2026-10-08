@@ -7,7 +7,7 @@ import {
   removalDiscoveryRequestMessage,
   verifyRemovalDiscoveryResponse,
 } from '../../account-protocol/removalDiscovery';
-import { openActiveRotation } from './rotationKeys';
+import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { ScopedTransport } from '../account/scopedTransport';
 import { isAccountAccess, type AccountAccess } from '../account/accountHttp';
 import {
@@ -183,16 +183,17 @@ async function openAccountReceiveOwner(
       membership = v.marker.membership;
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
         const kg = await openEnvelope(claimScope(v.claim), root, v.record.envelope!, subtle);
+        let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
         try {
-          const active = await openActiveRotation(
+          active = await openActiveRotation(
             claimScope(v.claim),
             root,
             v.record,
             subtle,
-            v.route.history?.current.head,
+            v.marker.membership?.proofs,
           );
           base = await heldInboundContext(v.marker, active?.key ?? kg, subtle, v.route);
-          if (active) base.retainedGenerationKeys = new Map([[1, kg]]);
+          if (active) base.retainedGenerationKeys = new Map([[1, kg], ...active.previous]);
           signer = await openCredential(
             claimScope(v.claim),
             root,
@@ -208,6 +209,7 @@ async function openAccountReceiveOwner(
           );
         } catch (e) {
           kg.fill(0);
+          eraseRotationKeys(active);
           throw e;
         }
       });
@@ -229,13 +231,13 @@ async function openAccountReceiveOwner(
               root,
               v.record,
               subtle,
-              v.route.history?.current.head,
+              v.marker!.membership?.proofs,
             ),
         );
         base = {
           ...v.base,
           generationKey: active?.key ?? kg.slice(),
-          retainedGenerationKeys: new Map(active ? [[1, kg.slice()]] : []),
+          retainedGenerationKeys: new Map(active ? [[1, kg.slice()], ...active.previous] : []),
         };
         signer = signing;
         publicKey = verifying;

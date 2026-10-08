@@ -485,3 +485,51 @@ test('a different remaining owner finishes the same preparation while the origin
   assert.equal(await x.run(), 'superseded');
   assert.deepEqual(x.retained.rotation, original.rotation);
 });
+
+test('retained rotation openers require a completed local pointer and exact recipient history', async () => {
+  const { membershipRotationFixture } = await import('./rotation-fixtures.mjs');
+  const x = await membershipRotationFixture(true);
+  const successor = x.rotate();
+  const key = { sequence: 31, ct: 'a1'.repeat(48) };
+  const first = {
+    v: 1,
+    kind: 'native-device-removal',
+    parent: x.proofs,
+    target: x.target,
+    recipient: x.f.context.existing.id,
+    progress: null,
+    successor,
+    key,
+  };
+  assert.deepEqual(client.parseNativeRemoval(first), first, 'existing custody is readable');
+  for (const value of [
+    { ...first, key: null },
+    { ...first, successor: null },
+    { ...first, recipient: x.target },
+  ])
+    assert.throws(() => client.archiveNativeRotation(value, successor.head));
+  assert.throws(() => client.archiveNativeRotation(first, undefined));
+  assert.throws(() => client.archiveNativeRotation(first, 'ff'.repeat(32)));
+  const archived = client.archiveNativeRotation(first, successor.head);
+  const pending = {
+    ...first,
+    v: 2,
+    parent: { ...x.proofs, continuations: [...x.proofs.continuations, successor] },
+    previous: archived,
+    observed: null,
+    successor: null,
+    key: null,
+  };
+  assert.deepEqual(client.parseNativeRemoval(pending).previous, [
+    { generation: 2, head: successor.head, key },
+  ]);
+  for (const previous of [
+    [{ ...archived[0], head: 'ff'.repeat(32) }],
+    [{ ...archived[0], generation: 3 }],
+    [...archived, ...archived],
+    [{ ...archived[0], key: { sequence: 0, ct: key.ct } }],
+  ])
+    assert.throws(() => client.parseNativeRemoval({ ...pending, previous }));
+  assert.throws(() => client.parseNativeRemoval({ ...pending, recipient: x.target }));
+  assert.throws(() => client.parseNativeRemoval({ ...first, previous: archived }));
+});
