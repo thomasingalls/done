@@ -268,6 +268,29 @@ function freeze<T>(v: T): Immutable<T> {
   }
   return v as Immutable<T>;
 }
+/** Resolve encryption recipients before producing any new key material. */
+export async function rotationRecipients(
+  parent: VerifiedMembership,
+  targetId: string,
+  recoveryInput: unknown,
+) {
+  const p = membershipState(parent),
+    recovery = parseDraft(recoveryInput);
+  if (
+    !p.roster.some((m) => m.id === targetId) ||
+    p.roster.some((m) => m.state === 'pending' && m.id !== targetId) ||
+    recovery.principalId !== p.principalId ||
+    recovery.workspaceId !== p.workspaceId ||
+    recovery.lineageId !== p.lineageId ||
+    recovery.authRoot !== p.pin.authRoot ||
+    recovery.rootCommitment !== (await rootCommitment(recovery)) ||
+    (await recoveryStateDigest(recovery)) !== p.certificate.recoveryStateDigest
+  )
+    throw Error('Rotation recipients or parent changed');
+  const members = p.certificate.members.filter((m) => m.id !== targetId);
+  if (!members.length) throw Error('Rotation requires a remaining device');
+  return { members, recovery };
+}
 /** Recovery public authority comes from the parent's certified digest, never a proposed wrap key. */
 export async function verifyRotationRequest(
   input: unknown,
@@ -278,7 +301,11 @@ export async function verifyRotationRequest(
     p = membershipState(parent),
     recovery = parseDraft(recoveryInput);
   await verifyRemovalPreparation(r.preparation, parent);
-  const expected = p.certificate.members.filter((m) => m.id !== r.preparation.request.targetId);
+  const { members: expected } = await rotationRecipients(
+    parent,
+    r.preparation.request.targetId,
+    recovery,
+  );
   const actor = expected.find((m) => m.id === r.actorId);
   if (
     !actor ||
@@ -288,13 +315,7 @@ export async function verifyRotationRequest(
     !same(
       r.payload.wraps.map((w) => w.credentialId),
       expected.map((m) => m.id),
-    ) ||
-    recovery.principalId !== p.principalId ||
-    recovery.workspaceId !== p.workspaceId ||
-    recovery.lineageId !== p.lineageId ||
-    recovery.authRoot !== p.pin.authRoot ||
-    recovery.rootCommitment !== (await rootCommitment(recovery)) ||
-    (await recoveryStateDigest(recovery)) !== p.certificate.recoveryStateDigest
+    )
   )
     throw Error('Rotation recipients or parent changed');
   const message = await rotationIntentMessage(r);

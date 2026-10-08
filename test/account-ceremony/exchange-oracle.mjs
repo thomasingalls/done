@@ -8,8 +8,8 @@ import {
 } from '../account-successor/oracle.mjs';
 import { commitment, derive } from './oracle.mjs';
 export { message, signed, hash, unsigned };
-export function exchangeFixture() {
-  const f = admissionFixture(),
+export function exchangeFixture(options = {}) {
+  const f = admissionFixture(0, '00'.repeat(32), options),
     e = f.epoch,
     admitted = e.preparation.context.candidate;
   const context = {

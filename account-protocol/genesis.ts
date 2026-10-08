@@ -146,8 +146,11 @@ export async function genesisMessage(input: GenesisCandidate, subtle = crypto.su
   return lp('done/promotion-genesis-candidate/v1', digest);
 }
 export const generationInfo = (
-  c: Pick<GenesisCandidate, 'workspaceId' | 'lineageId' | 'authRoot' | 'generation'>,
-) => lp('done/gen-wrap/v1', c.workspaceId, c.lineageId, c.authRoot, String(c.generation));
+  c: Pick<GenesisCandidate, 'workspaceId' | 'lineageId' | 'authRoot'> & { generation: number },
+) => {
+  if (!Number.isSafeInteger(c.generation) || c.generation < 1) throw Error('Invalid generation');
+  return lp('done/gen-wrap/v1', c.workspaceId, c.lineageId, c.authRoot, String(c.generation));
+};
 export const checkpointAAD = (
   c: Pick<GenesisCandidate, 'workspaceId' | 'generation' | 'proposedEpoch'>,
 ) => lp('done/cp/v1', '1', c.workspaceId, String(c.generation), String(c.proposedEpoch));

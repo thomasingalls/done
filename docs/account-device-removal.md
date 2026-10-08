@@ -64,7 +64,8 @@ prefix; a signature over a claimed link is not replay evidence.
 
 ## Remaining bounded implementation steps
 
-- Client key production and retained exact-intent retry, with real HPKE recipient checks.
+- Client key production and retained exact-intent retry are implemented and tested with real HPKE
+  recipient keys and a simulated committed persistence port. Native custody wiring remains.
 - Durable service preparation/fence; atomic successor, wraps, finalization and outcome; authenticated
   retry/restart; history/discovery/session authority composition. Old-generation work from remaining
   authorized offline devices keeps its valid historical admission path.

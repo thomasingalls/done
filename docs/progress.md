@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: other-device removal proof boundary complete; client and service rotation composition next
+scope: retained removal client complete; committed successor and service rotation composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -79,7 +79,11 @@ and authenticated finalization including a zero-write target. Five focused proof
 static checks pass. The plan records a durable target-only acceptance fence before signing a stable
 cutoff; other publishers may continue. No service producer or generation activation is claimed yet.
 
-**Next:** client key production and exact retained intent; service preparation/atomic successor and
+Client key production and retained exact retry now pass real-HPKE recipient checks and focused
+interruption/lost-reply tests through a simulated committed port (19 affected Node cases pass). Native
+custody is still required. Proof checkpoint: `3005f387`.
+
+**Next:** committed successor/history; service preparation/atomic successor and
 outcome, history/discovery and session boundaries; actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.

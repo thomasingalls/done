@@ -4,8 +4,8 @@ import { exchangeFixture, message, signed, hash } from '../account-ceremony/exch
 import { lp } from '../account-ceremony/oracle.mjs';
 import { key, publicHex } from '../account-first-authority/oracle.mjs';
 export { message, signed, hash };
-export function fixture() {
-  const x = exchangeFixture(),
+export function fixture(options = {}) {
+  const x = exchangeFixture(options),
     { f, context: c } = x;
   const sign = (label, body, signer = f.keys.authority) => ({
     ...body,

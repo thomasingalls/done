@@ -429,3 +429,12 @@ connected. Self-removal and the last-device case stay with local clearing/recove
 needed for exact signed retries. The first proof boundary is implemented; service mutation, generation
 activation and product controls remain next. Unsigned intermediate commits and continued work remain
 authorized. The cancellation checkpoints do not establish removal correctness.
+
+
+## Retained removal producer checkpoint — 2026-10-08
+
+Other-device removal proof is `3005f387`. The client now produces actual HPKE wraps for the remaining
+certified devices and recovery, retains its self-wrap and exact signed intent, and survives simulated
+persistence interruptions/lost replies. It proves its retained key can reopen before transmission.
+This is the coordinator boundary; native custody, committed membership/history and service producers
+remain unfinished. No removal button or new live service version is enabled by this checkpoint.

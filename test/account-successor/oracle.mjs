@@ -17,8 +17,8 @@ export const unsigned = (value) => {
   const { signature: _signature, ...body } = value;
   return body;
 };
-export function fixture(position = 0, link = '00'.repeat(32)) {
-  const f = fixedFixture(),
+export function fixture(position = 0, link = '00'.repeat(32), options = {}) {
+  const f = fixedFixture(options),
     nextKey = key('18'.repeat(32));
   const base = { pin: f.pin, request: f.request, receipt: f.receipt };
   const context = {
@@ -33,7 +33,7 @@ export function fixture(position = 0, link = '00'.repeat(32)) {
       head: f.offer.head,
       credentialId: '77'.repeat(16),
       sPub: publicHex(nextKey),
-      wPub: '78'.repeat(32),
+      wPub: options.joiningPublicKey ?? '78'.repeat(32),
     },
     epoch: 1,
     certifiedSetDigest: hash(JSON.stringify(f.request.certification)),

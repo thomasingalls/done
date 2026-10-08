@@ -10913,3 +10913,30 @@ Two initial failures were test-fixture key lookup errors (undefined selected the
 signer); using an explicit unrelated key made those signature negatives effective. TypeScript, scoped
 lint/format and diff checks pass. Release validation remains paused. Next: actual client key production
 and retained intent, then service preparation/commit and generation activation. Live remains unchanged.
+
+
+## 2026-10-08 — Retained removal client and real key production (`L-1`)
+
+The removal coordinator now persists and cold-reads the preparation request before sending it, then
+persists the authenticated preparation before generating the next key. It resolves wrapping keys from
+the verified certified parent and recovery commitment, generates one fresh 32-byte key, and uses the
+existing RFC 9180 implementation for every remaining-device and recovery wrap. The coordinator proves
+its own wrap opens before saving and again from retained bytes before submission. No raw key enters
+the progress record; transient key buffers are wiped. Generation info now accepts validated positive
+integer generations rather than having a generation-one-only TypeScript signature.
+
+Unknown responses retain the exact intent. Authenticated committed/superseded outcomes are saved and
+reopened without another send or automatic remint. Ownership changes, invalid retained state, failed
+self-open and aborted lifetime stop transmission. The persistence port requires an authenticated slot
+and atomic compare-and-replace; **native custody wiring and service producers are still open**. The
+coordinator's `committed` result is service-outcome evidence, not local activation or UI completion.
+
+Five new focused coordinator cases use real HPKE keys, signatures and the production coordinator with
+a simulated committed storage port: exact remaining-device/recovery decryption, excluded-key and wrong-
+generation failures, lost preparation/commit replies, interruption before/after four persistence
+boundaries, changed owner/opener/lifetime, and signed competing outcome. Existing oracle defaults are
+unchanged; optional real wrapping public keys let these cases use an independently signed anchor.
+Together with affected proof/admission/cancellation/delivery cases, 19 Node cases pass
+(`/tmp/done-removal-client.log`). TypeScript, scoped lint/format and diff checks pass. Live and release
+validation remain unchanged. Proof checkpoint: `3005f387`. Next: the committed successor/history boundary
+and actual service preparation/commit, then native generation activation and Devices composition.

@@ -127,7 +127,10 @@ export function recoveryDigests(d) {
     ),
   };
 }
-export function fixedFixture() {
+export function fixedFixture({
+  wrappingPublicKey = '6a'.repeat(32),
+  recoveryPublicKey = '44'.repeat(32),
+} = {}) {
   const seeds = Object.fromEntries(
     ['authority', 'device', 'bootstrap', 'acceptance', 'passkey'].map((name, i) => [
       name,
@@ -152,7 +155,7 @@ export function fixedFixture() {
     authRoot: pin.authRoot,
     v: 1,
     rootCommitment: '',
-    rPub: '44'.repeat(32),
+    rPub: recoveryPublicKey,
     bootstrapSigner: pub.bootstrap,
     envelope: { v: 1, salt: '45'.repeat(16), nonce: '46'.repeat(12), ct: '47'.repeat(112) },
   };
@@ -180,7 +183,7 @@ export function fixedFixture() {
       {
         recipient: 'device',
         id: '69'.repeat(16),
-        publicKey: '6a'.repeat(32),
+        publicKey: wrappingPublicKey,
         enc: '6b'.repeat(32),
         ct: '6c'.repeat(48),
       },
