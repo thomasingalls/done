@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: opt-in continuation HTTP complete; owned client custody and authority integration next
+scope: continuation key-handoff coordinator complete; native slot custody integration next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -82,7 +82,13 @@ Locator checkpoint is `b34440d1`. Opt-in HTTP routes and browser transport bindi
 private methods; 59 affected session/notification/HTTP checks and build checks pass. Default and retained
 hosts keep the routes disabled. The current product still supports only its first two devices.
 
-**Next:** owned third-device custody/editor, checkpoint/loading and subsequent authority adoption;
+HTTP composition is committed as `b9a149e2`. The continuation client key-handoff coordinator now
+re-reads committed state before key-bearing sends and checks the installed seal before countersigning.
+17 focused membership checks pass, including four bundled-client tests with simulated custody. Native
+slot composition and the product walkthrough are still required.
+
+**Next:** native continuation custody for original/joined/pending slots, then third-device checkpoint/
+loading/editor and subsequent authority adoption;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.

@@ -10538,3 +10538,23 @@ fence. Existing notification/session/HTTP regressions pass. TypeScript, scoped l
 budget, origin isolation and diff checks pass. Logs: `/tmp/done-membership-http-regressions.log`,
 `/tmp/done-membership-http-build.log`. No retained-server restart or UI activation occurred. Owned
 client custody, checkpoint/loading and later authority adoption remain next. Release validation is paused.
+
+
+## 2026-10-08 — Continuation client key-handoff coordinator (`L-1`)
+
+After opt-in HTTP checkpoint `b9a149e2`, the additional-device handoff coordinator constructs the full
+recipient certificate from verified membership, rechecks the saved comparison before opening a key,
+and uses the version-2 transfer route. It preserves the exact wrapped delivery and candidate receipt
+through retries. It re-reads committed progress before key-bearing delivery or installation requests,
+so an unsaved in-memory update cannot be sent on a later call. The candidate checks the persisted key
+seal before signing installation; certification must authenticate that exact delivery and receipt.
+This coordinator explicitly supports the currently owned generation one only.
+
+Evidence: 17 focused membership cases pass, including four new tests of the bundled browser coordinator
+with independent signatures and a simulated committed-custody interface. They cover save refusal, lost
+save replies, lost delivery/certification replies, persisted-key checks, missing custody, wrong actor
+and mismatched approval. TypeScript and scoped lint/format/diff checks pass. Logs:
+`/tmp/done-membership-handoff-focused.log`, `/tmp/done-membership-handoff-regressions.log`.
+These tests do not establish native IndexedDB integration for this new coordinator. Attaching the
+actual slot owners, including a previously joined device as approver, is next; no UI activation or
+retained-service change occurred. Release validation remains paused.

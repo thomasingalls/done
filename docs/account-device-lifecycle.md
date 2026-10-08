@@ -261,3 +261,15 @@ route separation. Exact admission-keyed changes drive notifications; terminal re
 Next is the client lifecycle composition: continuation key custody and handoff, complete authority
 adoption, checkpoint/loading and third-device editing. The existing product control remains disabled
 until that path and cancellation/removal are composed. No operator deployment was performed.
+
+
+## Continuation client handoff checkpoint — 2026-10-08
+
+The version-2 client handoff now retains the complete approved recipient certificate, exact wrapped
+key and candidate installation receipt. Before sending delivery or installation, it re-reads the
+committed progress and rejects an unsaved in-memory state. Candidate countersigning requires opening
+the persisted installed-key seal. Certification must verify the same delivery and receipt.
+
+This is a generation-one coordinator with focused simulated-custody interruption tests. It is not yet
+wired to native slot custody or the enrollment UI. Next: connect the actual original/joined/pending
+slot owners while preserving the earlier completed ceremony and its installed key.
