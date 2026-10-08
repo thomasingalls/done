@@ -80,6 +80,7 @@ export function createMembershipEnrollment(
   workspaceId?: string,
   invitation?: unknown,
   networkLogin?: NetworkLogin,
+  begin?: string,
 ) {
   if (!config.networkSessions) throw Error('Additional devices require account sessions');
   const pin = parseAuthorityPin(config.pin),
@@ -213,6 +214,7 @@ export function createMembershipEnrollment(
         },
         {
           ...input,
+          ...(begin ? { begin } : {}),
           ...(workspaceId ? { workspaceId } : {}),
           ...(invitation ? { invitation } : {}),
         },

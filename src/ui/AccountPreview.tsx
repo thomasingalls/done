@@ -1,3 +1,4 @@
+import { newConnectionHref } from '../account/connectionNavigation';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import {
   createBrowserHistory,
@@ -255,7 +256,7 @@ export async function createAccountPreview(config: SetupConfig) {
         onLock={lock}
         onOtherAccount={choose}
         onConnectDevice={() => {
-          void go('/connect/unlock?slot=' + encodeURIComponent(slotId));
+          void go(newConnectionHref(slotId));
         }}
       />
     );
@@ -272,6 +273,7 @@ export async function createAccountPreview(config: SetupConfig) {
         workspace={query.get('workspace')}
         selectedSlot={query.get('slot')}
         invitation={query.get('invitation')}
+        begin={query.get('begin')}
         onNavigate={(href) => {
           void go(href);
         }}

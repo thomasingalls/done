@@ -1176,7 +1176,7 @@ async function openAccountReceiveOwner(
       get transition() {
         return transition;
       },
-      ...(access && !account.detached && base.generation === 1
+      ...(access && !account.detached
         ? {
             remove: (target: string) =>
               runCaptureTask(async (task) => {

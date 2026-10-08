@@ -5,6 +5,7 @@ import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
 import { createAccountEnrollment, isConnectionSlot } from '../account/accountEnrollment';
+import { newConnectionHref } from '../account/connectionNavigation';
 import {
   pendingDeviceSlot,
   preparePendingDevice,
@@ -23,12 +24,14 @@ export function AccountEnrollmentApp({
   workspace,
   selectedSlot,
   invitation,
+  begin,
   onNavigate,
 }: {
   config: SetupConfig;
   workspace: string | null;
   selectedSlot: string | null;
   invitation: string | null;
+  begin?: string | null;
   onNavigate: (href: string) => void;
 }) {
   const [accounts, setAccounts] = useState<RememberedAccount[]>([]);
@@ -309,9 +312,7 @@ export function AccountEnrollmentApp({
             continuationAvailable={config.membershipContinuation === true}
             onBack={() => (navigation.enabled ? navigation.back() : setScreen('editing'))}
             onConnect={() => {
-              void close().then(() =>
-                onNavigate('/connect/unlock?slot=' + encodeURIComponent(slot)),
-              );
+              void close().then(() => onNavigate(newConnectionHref(slot)));
             }}
           />
         ) : (
@@ -499,6 +500,7 @@ export function AccountEnrollmentApp({
                   workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
                   login.current,
                   life.current.signal,
+                  begin ?? undefined,
                 );
                 publish(await owner.current.refresh());
                 if (!life.current.signal.aborted) setStage('open');

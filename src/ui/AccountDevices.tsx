@@ -81,18 +81,15 @@ export function AccountDevices({
                       ? 'Protected here by your device-lock code.'
                       : 'Key-storage details are not recorded for this device.'}
                   </p>
-                  {devices?.remove &&
-                    !roster.detached &&
-                    (roster.generation ?? 1) === 1 &&
-                    device.id !== roster.currentDevice && (
-                      <button
-                        className="local-secondary"
-                        disabled={removing}
-                        onClick={() => setTarget(device.id)}
-                      >
-                        Remove device
-                      </button>
-                    )}
+                  {devices?.remove && !roster.detached && device.id !== roster.currentDevice && (
+                    <button
+                      className="local-secondary"
+                      disabled={removing}
+                      onClick={() => setTarget(device.id)}
+                    >
+                      Remove device
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -139,7 +136,7 @@ export function AccountDevices({
                 removing ||
                 roster.detached ||
                 (roster.generation ?? 1) !== 1 ||
-                (roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4))
+                (roster.epoch > 1 && !continuationAvailable)
               }
             >
               {roster.devices.some((d) => d.state === 'pending')
@@ -148,12 +145,12 @@ export function AccountDevices({
             </button>
             {(roster.detached ||
               (roster.generation ?? 1) !== 1 ||
-              (roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4))) && (
+              (roster.epoch > 1 && !continuationAvailable)) && (
               <p className="setup-note">
                 Additional device connections are not available yet in this preview.
               </p>
             )}
-            {(!devices?.remove || (roster.generation ?? 1) !== 1) && !roster.detached && (
+            {!devices?.remove && !roster.detached && (
               <p className="setup-note">Further device removal is not available in this preview.</p>
             )}
           </>

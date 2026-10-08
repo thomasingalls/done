@@ -34,6 +34,7 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  archiveConnection(expected: unknown, next: unknown, check?: () => void): Promise<void>;
   activateRemoval(): Promise<{ generation: number; head: string }>;
   rotation: Awaited<ReturnType<typeof createApprovalVault>>;
   installMembershipWriting(

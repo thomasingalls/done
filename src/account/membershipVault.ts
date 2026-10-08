@@ -21,6 +21,7 @@ import type { parseMembershipChain } from '../../account-protocol/membershipLoca
 type MembershipProofs = ReturnType<typeof parseMembershipChain>;
 export interface MembershipVault extends Pick<
   CeremonyVault,
+  | 'archiveConnection'
   | 'activateRemoval'
   | 'rotation'
   | 'participant'

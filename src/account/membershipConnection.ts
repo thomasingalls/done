@@ -16,6 +16,7 @@ import {
   parseMembershipCancellation,
   type MembershipCancellationRequest,
 } from '../../account-protocol/membership';
+import { unhex } from '../../account-protocol/recovery';
 import { hex, random } from '../crdt/custodyCrypto';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { SuccessorBase } from '../../account-protocol/successor';
@@ -24,7 +25,11 @@ import type { SessionIssued } from '../../account-protocol/session';
 import type { MembershipVault } from './membershipVault';
 import type { MembershipReading } from '../crdt/membershipReading';
 import type { Bytes } from '../crdt/custodyCrypto';
-import { prepareMembershipInvitation, bootstrapMembershipInvitation } from './membershipInvitation';
+import {
+  prepareMembershipInvitation,
+  bootstrapMembershipInvitation,
+  heldMembershipSource,
+} from './membershipInvitation';
 import {
   beginMembershipPreparation,
   completeMembershipPreparation,
@@ -51,6 +56,8 @@ export interface MembershipConnection {
   comparison: Comparison | null;
   terminal: 'restart-required' | null;
   withdrawal?: MembershipCancellationRequest;
+  /** Stable navigation attempt: not an authorization token. */
+  begin?: string;
 }
 export interface MembershipConnectionIO {
   pin: AuthorityPin;
@@ -96,6 +103,7 @@ function capture(input: unknown): MembershipConnection {
     'preparation',
     'comparison',
     'terminal',
+    ...((input as { begin?: unknown } | null)?.begin !== undefined ? ['begin'] : []),
     ...((input as { withdrawal?: unknown } | null)?.withdrawal !== undefined ? ['withdrawal'] : []),
   ]);
   if (
@@ -106,6 +114,7 @@ function capture(input: unknown): MembershipConnection {
     (p['base'] === null) !== (p['latest'] === null)
   )
     throw Error('Invalid saved connection');
+  if (p['begin'] !== undefined) unhex(p['begin'], 16);
   // The signed authority and component records are authenticated again before their next effect.
   return {
     ...p,
@@ -116,12 +125,39 @@ function capture(input: unknown): MembershipConnection {
   } as unknown as MembershipConnection;
 }
 
+/** Only verified certification, cancellation or exclusion can finish an old connection. */
+async function completedConnection(p: MembershipConnection, owner: MembershipVault) {
+  if (!p.comparison || !p.base || !p.latest) return false;
+  const held = await heldMembershipSource(owner);
+  if (!same(p.base, held.base)) throw Error('Saved connection belongs to another account');
+  const prior = await verifyMembershipChain(p.latest, held.base);
+  if (prior.history.current.tip > held.history.current.tip) {
+    historyAuthority(prior.history, held.history.current);
+    return false; // Local adoption has not yet established a completed attempt.
+  }
+  historyAuthority(held.history, prior.history.current);
+  const index = held.proofs.continuations.findIndex((proof) => proof.head === p.comparison!.parent);
+  const admission = held.proofs.continuations[index];
+  if (!admission || admission.kind !== 'membership-admission') return false;
+  const candidate = admission.epoch.preparation.context.candidate.credentialId;
+  return held.proofs.continuations
+    .slice(index + 1)
+    .some(
+      (proof) =>
+        (proof.kind === 'membership-certification' && proof.epoch.parent === admission.head) ||
+        (proof.kind === 'membership-cancellation' && proof.epoch.parent === admission.head) ||
+        (proof.kind === 'membership-rotation' &&
+          proof.epoch.rotation.payload.excluded.includes(candidate)),
+    );
+}
+
 /** Never holds an unlocked owner between calls; every operation begins by cold-reading its progress. */
 export async function advanceMembershipConnection(
   owner: MembershipVault,
   role: MembershipConnection['role'],
   io: MembershipConnectionIO,
   input: {
+    begin?: string;
     invitation?: unknown;
     workspaceId?: string;
     enroll?: boolean;
@@ -133,7 +169,8 @@ export async function advanceMembershipConnection(
 ): Promise<MembershipConnectionView> {
   const guard = () => io.signal.throwIfAborted();
   guard();
-  const loaded = await owner.load();
+  let loaded = await owner.load();
+  if (input.begin !== undefined) unhex(input.begin, 16);
   guard();
   if ((role === 'existing') === (owner.source.kind === 'pending'))
     throw Error('Connection role differs from held custody');
@@ -147,6 +184,14 @@ export async function advanceMembershipConnection(
     if (!same(await owner.load(), p)) throw Error('Connection progress did not persist');
     guard();
   };
+  const previous = loaded === null ? null : capture(loaded);
+  const archive =
+    role === 'existing' &&
+    input.begin !== undefined &&
+    previous !== null &&
+    previous.begin !== input.begin &&
+    (await completedConnection(previous, owner));
+  if (archive) loaded = null;
   if (loaded === null) {
     const invitation =
       role === 'existing'
@@ -164,9 +209,19 @@ export async function advanceMembershipConnection(
       preparation: null,
       comparison: null,
       terminal: null,
+      ...(input.begin ? { begin: input.begin } : {}),
     };
-    await save();
-  } else p = capture(loaded);
+    if (archive) {
+      await owner.archiveConnection(previous, p, guard);
+      if (!same(await owner.load(), p)) throw Error('Connection archive did not persist');
+    } else await save();
+  } else {
+    p = capture(loaded);
+    if (role === 'existing' && p.role === role && input.begin && p.begin !== input.begin) {
+      p.begin = input.begin; // An explicit revisit resumes unfinished progress.
+      await save();
+    }
+  }
   if (
     p.role !== role ||
     (input.workspaceId && input.workspaceId !== p.invitation.workspaceId) ||

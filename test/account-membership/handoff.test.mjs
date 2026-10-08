@@ -293,6 +293,17 @@ test('continuation progress preserves the first ceremony and refuses an older wr
   await assert.rejects(current.save(undefined), /missing/);
   assert.deepEqual(stored, before);
   assert.deepEqual(await current.load(), { v: 2, stage: 'pending' });
-  stored = { ...stored, v: 3 };
+  const next = { v: 2, stage: 'next' };
+  await current.archiveConnection(await current.load(), next);
+  assert.equal(stored.v, 3);
+  assert.deepEqual(stored.previous, original);
+  assert.deepEqual(stored.archived, [{ v: 2, stage: 'pending' }]);
+  await current.save({ ...next, stage: 'continued' });
+  assert.deepEqual(stored.archived, [{ v: 2, stage: 'pending' }]);
+  const retained = structuredClone(stored);
+  await assert.rejects(current.archiveConnection(next, {}), /changed/);
+  assert.deepEqual(stored, retained);
+  await assert.rejects(legacy.archiveConnection(await current.load(), {}), /Invalid/);
+  stored = { ...stored, v: 4 };
   await assert.rejects(current.load(), /Unsupported/);
 });

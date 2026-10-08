@@ -4310,3 +4310,15 @@ intermediate commits and continued implementation. Keep the requesting device co
 and the last-device case remain local-clear/recovery work. This does not relax forward rotation,
 authenticated finalization, exact retry or the existing-copy limitation. The implementation plan is
 [other-device removal](./account-device-removal.md); no removal control is enabled yet.
+
+
+## 2026-10-08 — Replacement admission uses current-key retries (`L-1`)
+
+The operator chose **Require current-key retries; preserve offline edits** over distributing historical
+content keys to replacement devices. The replacement snapshot must include already accepted writing.
+Surviving devices retain original local edits and old openers, but still-unaccepted old-key uploads
+must be retried under the current key at the replacement boundary, with signed evidence before
+superseding an allocated upload. An unsigned denial, timeout or stale authority hint cannot authorize
+that change. Exact accepted-envelope retry remains exact. This qualifies the earlier allowance for
+late historical-generation survivor uploads; it does not authorize losing offline writing or retiring
+historical keys. See [repeatable lifecycle](./account-repeatable-lifecycle.md).

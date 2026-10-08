@@ -19,7 +19,7 @@ preparation or an admission without space to finish.
 1. **Current-parent service operations.** Enrollment/admission and comparison/key certification follow
    the complete verified history after earlier certification, cancellation or rotation. Preserve
    historical attempts, final publisher witnesses and exact committed outcomes. Do not assume the
-   original publisher remains certified. This service boundary is implemented; browser gates remain.
+   original publisher remains certified. This service boundary is implemented; post-rotation browser gates remain.
 2. **Repeated native rotation custody and activation.** Retain authenticated generation openers across
    later pending intents, choose the active opener through the authenticated pointer, and resume each
    content/custody transition after interruption. Passive observation must handle missed rotations;
@@ -63,8 +63,29 @@ Cold reopen, original/joined lost replies and an interrupted second activation p
 retain writable detached copies at their last installed generation. A focused regression fixes old
 inbound replies being incorrectly compared with newer membership cutoffs.
 
-The passive observer now retains the next uninstalled rotation plus authenticated later history for
-sequential restart. Its multi-missed-rotation browser check awaits the repeated-connection increment:
-the current Devices screen intentionally disables a fourth connection. Existing three-device and
-second-removal native evidence passes; current-generation replacement handoff is still required.
+The passive observer retains the next uninstalled rotation plus authenticated later history for
+sequential restart. The subsequent four-device browser check now passes both missed rotations and
+old-generation offline delivery. Current-generation replacement handoff is still required.
 See the 2026-10-08 native-custody entry in [completed.md](./completed.md) for checks and logs.
+
+
+## Repeated connection composition
+
+Generation-one connections can repeat after installed certification/cancellation or exclusion of the
+previous candidate. The native owner archives completed progress only for a fresh explicit navigation
+attempt; a refresh resumes exact retained progress. Four disposable packaged browsers pass a newly
+joined device inviting the fourth device, two actual UI removals, a survivor missing both rotations,
+old-generation offline delivery, generation-three two-way writing and cold reopen. Five handoff and
+three retained-coordinator cases cover archive/save reply loss and cancellation followed by another
+invitation. See the corresponding 2026-10-08 completion entry for logs.
+
+## Approved replacement delivery policy
+
+The operator chose current-key retries, preserving original offline edits, instead of distributing
+historical keys. The existing service deliberately accepts historical-key work from surviving devices
+after rotation, including after their newer-key uploads. A snapshot of the accepted prefix alone is
+therefore insufficient for a replacement holding only the current key. Replacement admission must
+establish a durable boundary: already accepted bytes remain exact and enter the snapshot; a later
+unaccepted old-key upload receives signed retry evidence, and the client retains its source edits
+while retrying under the current generation. Implement and test both sides before exposing the
+post-rotation connection button. This is a scoped contract change, not key retirement or pruning.

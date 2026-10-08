@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; service and repeated native rotation complete; connection composition next
+scope: repeatable lifecycle; repeated connections and removals complete; replacement retry boundary next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -89,16 +89,18 @@ and rotation, including replacement with only one surviving old device and a sec
 Forty-nine affected service cases and fifteen protocol cases pass. Native custody now retains installed
 generation openers through repeated removal; generation-three activation, second-rotation crash/retry
 and detached generation-two reopen pass. Twenty-one focused node and forty inbound unit checks pass.
-The missed-rotation observer is implemented, but its four-device browser case reaches the existing
-three-device UI gate; it is not yet passing. Next: repeat connection composition at generation one,
-then current-generation replacement snapshots and the full remove/connect/remove flow. No live
+Repeated generation-one connections now archive completed custody exactly; five handoff and three
+retained-coordinator cases pass. The four-device packaged case passes two actual UI removals, a
+survivor missing both rotations, old-generation offline delivery, generation-three two-way writing
+and cold reopen. Next: the operator-approved signed current-key retry boundary, then replacement
+snapshots and the full remove/connect/remove flow. Post-rotation connections remain gated. No live
 service switch has occurred.
 
 **Further product work:** self/last-device removal, lost-device
 recovery, successor checkpoint replacement/pruning and old-key retirement, then production operations.
 See [the lifecycle plan](./account-device-lifecycle.md) and [removal contract](./account-device-removal.md).
-The first generation-one-to-two removal is the current supported boundary; the account-preview label
-stays. Release validation remains paused.
+The retained build still has the first generation-one-to-two removal boundary; current source adds
+repeat connections and removals. The account-preview label stays. Release validation remains paused.
 
 Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
 end of the agreed sequence. Consult the operator on product decisions.

@@ -20,6 +20,7 @@ export async function createAccountEnrollment(
   invitation?: unknown,
   login?: NetworkLogin,
   signal: AbortSignal = new AbortController().signal,
+  begin?: string,
 ) {
   if (!isConnectionSlot(slotId)) throw Error('Unknown device connection');
   signal.throwIfAborted();
@@ -42,6 +43,6 @@ export async function createAccountEnrollment(
   }
   signal.throwIfAborted();
   return continuation
-    ? createMembershipEnrollment(config, slotId, code, role, workspaceId, invitation, login)
+    ? createMembershipEnrollment(config, slotId, code, role, workspaceId, invitation, login, begin)
     : createDeviceEnrollment(config, slotId, code, role, workspaceId, invitation, login);
 }

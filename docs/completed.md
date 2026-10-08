@@ -11390,3 +11390,28 @@ rotation steps. Completing that check requires the next repeated-connection comp
 it is not claimed as passing. Post-rotation replacement snapshots and the full
 remove/connect/remove product flow remain open. The retained service/build were not changed.
 Unsigned intermediate commit authorized; release validation remains paused.
+
+
+## 2026-10-08 — Repeat connections and sequential missed rotations (`L-1`)
+
+The native continuation owner can now begin another connection after authenticated completion,
+cancellation or removal of the previous candidate. An explicit navigation attempt archives the exact
+previous encrypted progress atomically with its successor. Refresh/retry reuses that attempt; an
+unfinished connection keeps its existing invitation and comparison. The original ceremony and earlier
+connections remain retained. A newly joined device can subsequently invite another device. The Devices
+screen permits further generation-one connections and repeated other-device removal; post-rotation
+connections remain disabled until their replacement snapshot and delivery policy are implemented.
+
+Focused evidence: five progress/handoff checks and three retained-coordinator cases pass, including
+lost archive-save reply and cancellation followed by a new invitation. The new four-device packaged
+walkthrough passes through the actual Devices removal UI twice. Its offline survivor misses both
+rotations, resumes them in order, delivers generation-one offline writing, exchanges generation-three
+writing and cold-reopens. Logs: `/tmp/done-repeat-connections-unit-final.log`,
+`/tmp/done-repeat-connections-service-final.log`, `/tmp/done-missed-rotations-ui-final.log`.
+TypeScript, scoped lint/format, packaged build, budget, origin isolation and diff checks pass.
+
+The operator selected current-key retries for replacement admission: original offline edits remain,
+and already accepted writing belongs in the replacement snapshot. This changes the existing late
+historical-key upload contract and needs authenticated service evidence plus durable client retry
+before a new device can safely receive only its current key. Implementation is next. No retained
+service or build was switched; unsigned intermediate commits continue and release validation stays paused.

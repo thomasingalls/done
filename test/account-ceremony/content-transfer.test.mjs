@@ -3798,6 +3798,17 @@ for (const approver of ['existing', 'new'])
         },
         input,
       );
+    const archived = [];
+    let loseArchive = false;
+    owners.existing.archiveConnection = async (expected, next) => {
+      assert.deepEqual(durable.existing, expected);
+      archived.push(structuredClone(expected));
+      durable.existing = structuredClone(next);
+      if (loseArchive) {
+        loseArchive = false;
+        throw Error('Lost archived connection reply');
+      }
+    };
     const invitation = (await run('existing')).invitation;
     assert(invitation);
     assert.equal((await run('new', { invitation, workspaceId: x.workspace })).kind, 'enroll');
@@ -3807,6 +3818,10 @@ for (const approver of ['existing', 'new'])
     assert.equal((await run('existing')).kind, 'compare');
     const display = await run('new');
     assert.equal(display.kind, 'display');
+    const pendingComparison = structuredClone(durable.existing.comparison);
+    assert.equal((await run('existing', { begin: 'a1'.repeat(16) })).kind, 'compare');
+    assert.deepEqual(durable.existing.comparison, pendingComparison);
+    assert.equal(archived.length, 0, 'revisiting unfinished connection must not replace it');
     await assert.rejects(run('existing', { typed: display.code }), /Lost approved/);
     const decision = structuredClone(durable.existing.comparison.decision);
     assert.equal((await run('existing', { cancel: true })).kind, 'removal-required');
@@ -3839,6 +3854,18 @@ for (const approver of ['existing', 'new'])
     assert.equal(x.f.rows('membership_admissions').length, 1);
     assert.equal(x.f.rows('membership_ceremonies').length, 1);
     assert.equal(x.f.rows('membership_transfers').length, 1);
+    owners.existing.source.proofs = structuredClone(durable.existing.latest);
+    const completed = structuredClone(durable.existing);
+    loseArchive = true;
+    await assert.rejects(run('existing', { begin: 'a2'.repeat(16) }), /Lost archived/);
+    const savedInvitation = structuredClone(durable.existing.invitation);
+    x.f.restart();
+    assert.equal((await run('existing', { begin: 'a2'.repeat(16) })).kind, 'invite');
+    assert.deepEqual(durable.existing.invitation, savedInvitation);
+    assert.deepEqual(archived, [completed]);
+    assert.notEqual(savedInvitation.nonce, completed.invitation.nonce);
+    assert.equal(prompts, 1, 'new invitation does not perform an enrollment assertion');
+    assert.equal(x.f.rows('membership_admissions').length, 1);
   });
 
 test('retained connection loads actual encrypted writing and retries interrupted installation from committed reader state', async (t) => {
@@ -4266,6 +4293,18 @@ test('retained client cancellation saves before effects and cold-resolves a lost
   assert.deepEqual(durable.withdrawal, saved);
   assert.equal(sends, 1, 'verified bootstrap resolves the already committed outcome');
   assert.equal(durable.latest.continuations.at(-1).kind, 'membership-cancellation');
+  const cancelled = structuredClone(durable);
+  owner.source.proofs = structuredClone(durable.latest);
+  const archive = [];
+  owner.archiveConnection = async (expected, next) => {
+    assert.deepEqual(durable, expected);
+    archive.push(structuredClone(expected));
+    durable = structuredClone(next);
+  };
+  assert.equal((await run({ begin: 'a3'.repeat(16) })).kind, 'invite');
+  assert.deepEqual(archive, [cancelled]);
+  assert.equal(durable.withdrawal, undefined);
+  assert.equal(sends, 1, 'new invitation cannot replay old cancellation');
 });
 
 async function removalRequest(x, target = x.context.candidate.id, actor = 'existing') {
