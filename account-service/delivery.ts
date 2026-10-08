@@ -468,7 +468,7 @@ export type DeliveryAuthority = Omit<
   ledgerBoundaries?: ReadonlyMap<string, LedgerBoundary[]>;
 };
 type Authority = DeliveryAuthority;
-const authority = (
+export const verifyCurrentWorkspaceAuthority = (
   s: WorkspaceAuthoritySnapshot,
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
 ): Promise<Authority> =>
@@ -752,7 +752,7 @@ export async function decideSubmission(
     let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
     try {
       phase = 'verify';
-      auth = selectPublisher(await authority(s, issuer), s.publisher);
+      auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
       ledger = await census(s, auth, reuse);
     } catch (cause) {
       note(cause);
@@ -923,7 +923,7 @@ export async function readAccepted(
       const s = read(db, request.workspace, request.credential);
       if (!s) return unknown('unavailable');
       phase = 'verify';
-      const auth = selectPublisher(await authority(s, issuer), s.publisher);
+      const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
       if (
         !readScopeMatches(request, issuer.pin, auth.a, auth.credential) ||
         !readTimeValid(request, Date.now()) ||
@@ -1035,7 +1035,7 @@ export async function readInbound(
       phase = 'storage';
       const s = read(db, request.workspace, request.publisher);
       if (!s) return unknown('unavailable');
-      const auth = selectPublisher(await authority(s, issuer), s.publisher),
+      const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher),
         { reader, publisher } = resolveInboundRoles(auth, request);
       if (
         request.serviceId !== issuer.pin.serviceId ||

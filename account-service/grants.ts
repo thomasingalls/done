@@ -15,9 +15,11 @@ import {
 } from '../account-protocol/scopedGrant.ts';
 import {
   snapshotWorkspaceAuthority,
-  verifyWorkspaceAuthority,
+  verifyCurrentWorkspaceAuthority,
   type DeliveryIssuer,
 } from './delivery.ts';
+import { parseEnrollmentReceipt } from '../account-protocol/enrollment.ts';
+import { parseMembershipAdmission } from '../account-protocol/membership.ts';
 import { enrollmentSnapshot, verifyEnrollmentRow, type EnrollmentRow } from './enrollment.ts';
 import type { AccountSessions } from './sessions.ts';
 import { canonical, fresh, hash, retryHash } from './protocol.ts';
@@ -124,22 +126,43 @@ export class ScopedGrants {
         identity,
       }));
       if (!parent.ok) return parent;
-      const auth = await verifyWorkspaceAuthority(captured.authority, issuer);
+      const auth = await verifyCurrentWorkspaceAuthority(captured.authority, issuer);
       let key = auth.members.find((member) => member.id === scope.credentialId)?.key;
       let deadline = Number.MAX_SAFE_INTEGER;
       if (scope.kind === 'enrollment') {
         const row = captured.preparation!;
         if (row.stage !== 'prepared' || !row.receipt) return no('insufficient-scope');
         await verifyEnrollmentRow(row, issuer);
-        const receipt = JSON.parse(row.receipt);
-        if (auth.successor) {
+        const receipt = parseEnrollmentReceipt(JSON.parse(row.receipt));
+        const context = receipt.context;
+        if (
+          context.accountId !== accountId ||
+          context.passkeyId !== captured.authority.credential.id ||
+          context.candidate.lineageId !== auth.a.lineage
+        )
+          return no('insufficient-scope');
+        let consumed = false;
+        if (receipt.v === 2) {
+          // The verified chain authenticates this row; an unrelated or historical attempt cannot
+          // borrow the current ceremony. Retain the latest completed attempt for lost-reply repair.
+          const latest = captured.authority.continuations?.at(-1);
+          if (latest?.preparation_id === scope.attemptId) {
+            const admitted = parseMembershipAdmission(JSON.parse(latest.artifact));
+            if (JSON.stringify(admitted.epoch.preparation) !== row.receipt)
+              return no('insufficient-scope');
+            consumed = true;
+          }
+        } else if (auth.successor) {
           if (
+            auth.history ||
             captured.authority.successor!.preparation_id !== scope.attemptId ||
             JSON.stringify(auth.successor.epoch.preparation) !== row.receipt
           )
             return no('insufficient-scope');
-        } else {
-          // Only an unexpired preparation against the still-current authority can admit a device.
+          consumed = true;
+        }
+        if (!consumed) {
+          // Preparation may authorize admission only while its complete parent remains current.
           this.#db.exec('BEGIN');
           let token;
           try {
@@ -147,17 +170,26 @@ export class ScopedGrants {
           } finally {
             this.#db.exec('ROLLBACK');
           }
-          if (token !== row.authority_hash) return no('authority-changed');
+          if (
+            token !== row.authority_hash ||
+            context.candidate.head !== auth.a.head ||
+            context.epoch !== auth.a.tip ||
+            context.certifiedSetDigest !== hash(JSON.stringify(auth.certification)) ||
+            context.recoveryStateDigest !== auth.certification.recoveryStateDigest
+          )
+            return no('authority-changed');
           deadline = receipt.expiresAt;
           if (deadline <= this.#time()) return no('expired');
         }
-        const candidate = receipt.context.candidate;
+        const candidate = context.candidate;
         if (scope.credentialId === candidate.credentialId)
           key = await crypto.subtle.importKey('raw', unhex(candidate.sPub, 32), 'Ed25519', false, [
             'verify',
           ]);
-        else if (scope.credentialId !== auth.request.candidate.signer)
+        else if (receipt.v === 1 && scope.credentialId !== auth.request.candidate.signer)
           return no('insufficient-scope');
+        // For v2, any current certified member may prove its own key and take the approver role.
+        // The ceremony still fixes one approver and verifies every signed operation separately.
       }
       if (!key) return no('insufficient-scope');
       const verifiedKey = key,

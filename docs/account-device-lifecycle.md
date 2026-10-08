@@ -219,3 +219,16 @@ This remains private schema 17. The ordinary host and retained installation rema
 current-head discovery/bootstrap and client custody/editor adoption must use the same verified history
 before a continuation route or the third-device product action is enabled. Cancellation/removal,
 rotation and repeated later connections remain required.
+
+
+## Scoped continuation authorization checkpoint — 2026-10-08
+
+Network grants now use the verified current continuation chain. Existing certified members and the
+candidate can obtain separate, exact-attempt ceremony grants; only certified members receive
+workspace grants. Unconsumed preparation requires its unchanged parent and live deadline. The latest
+consumed attempt remains available for terminal retry, while unrelated/historical attempts refuse.
+Admission, transfer and certification changes retire earlier grants; ordinary ciphertext appends do
+not. Scoped authorization still supplements every signed domain operation and its commit-time checks.
+
+Next: bounded authenticated bootstrap/discovery of the complete chain, followed by owned client
+adoption and third-device installation. The retained/default host remains unchanged.

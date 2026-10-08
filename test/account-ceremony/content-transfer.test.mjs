@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { setup } from './development-fixtures.mjs';
 import { signed, message, hash } from './exchange-oracle.mjs';
 import { commitment, derive } from './oracle.mjs';
+import { message as grantMessage, denial } from '../account-sessions/grant-fixtures.mjs';
+import { registered } from '../account-core/fixtures.mjs';
 import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
 import { createHash } from 'node:crypto';
@@ -649,7 +651,13 @@ async function continuationFixture(t, options = {}) {
     attemptId: prepared.receipt.context.attemptId,
     receiptId: prepared.receipt.receiptId,
   };
-  const admission = await authority.owner.admitMembership(x.f.core, admissionInput);
+  const authorization = await options.beforeMembershipAdmission?.({
+    ...x,
+    entry,
+    prepared,
+    admissionInput,
+  });
+  const admission = await authority.owner.admitMembership(x.f.core, admissionInput, authorization);
   assert.equal(admission.kind, 'membership-admission', JSON.stringify(admission));
   return {
     ...x,
@@ -1832,4 +1840,243 @@ test('three publisher ledgers preserve queued payloads, refused parents and live
   assert.equal((await read(x, damaged)).kind, 'unknown');
   mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));
   page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));
+});
+
+async function continuationGrants(x, account = x.account) {
+  const retryKey = fresh(),
+    begun = x.f.core.sessions.begin({ accountId: account.result.accountId, retryKey }),
+    session = await x.f.core.sessions.finish({
+      retryKey,
+      attemptId: begun.attemptId,
+      response: account.key.assert(begun),
+    });
+  assert.equal(session.stage, 'issued', JSON.stringify(session));
+  const renew = () =>
+    x.f.core.sessions.renew({
+      sessionId: session.sessionId,
+      renewalToken: session.renewalToken,
+    });
+  let access = renew();
+  const begin = (scope) => x.authority.owner.beginGrant(x.f.core, access.accessToken, scope);
+  const finish = (challenge, key) =>
+    x.f.core.grants.finish(access.accessToken, {
+      challengeId: challenge.challengeId,
+      signature: signed(key, grantMessage(challenge)),
+    });
+  const grant = async (scope, key) => {
+    const b = await begin(scope);
+    assert.equal(b.stage, 'challenge', JSON.stringify(b));
+    const g = await finish(b.challenge, key);
+    assert.equal(g.stage, 'granted', JSON.stringify(g));
+    return g;
+  };
+  return {
+    begin,
+    finish,
+    grant,
+    session,
+    restart: () => {
+      access = renew();
+      assert.equal(access.stage, 'access');
+    },
+    revoke: () =>
+      x.f.core.sessions.revoke({
+        sessionId: session.sessionId,
+        revokeToken: session.revokeToken,
+      }),
+  };
+}
+
+test('continuation grants distinguish both approvers, pending enrollment and certified content through restart', async (t) => {
+  let g, scopes, prior;
+  const x = await continuationFixture(t, {
+    async beforeMembershipAdmission(y) {
+      g = await continuationGrants(y);
+      scopes = Object.fromEntries(
+        [
+          ['first', y.context.existing.id],
+          ['second', y.context.candidate.id],
+          ['candidate', y.entry.input.candidate.credentialId],
+        ].map(([role, credentialId]) => [
+          role,
+          {
+            kind: 'enrollment',
+            workspaceId: y.workspace,
+            credentialId,
+            attemptId: y.admissionInput.attemptId,
+          },
+        ]),
+      );
+      prior = {
+        first: await g.grant(scopes.first, y.keys.existing),
+        second: await g.grant(scopes.second, y.keys.new),
+        candidate: await g.grant(scopes.candidate, y.entry.key),
+      };
+      return y.f.core.grants.authorize(prior.candidate.grantToken);
+    },
+  });
+  const e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  const enrollment = scopes.candidate;
+  const workspace = (scope) => ({
+    kind: 'workspace',
+    workspaceId: scope.workspaceId,
+    credentialId: scope.credentialId,
+  });
+  const guard = (grant) => x.f.core.grants.authorize(grant.grantToken);
+  for (const old of Object.values(prior)) {
+    assert.throws(
+      () => x.f.core.grants.subscription(old.grantToken, old.scope),
+      denial('authority-changed'),
+    );
+  }
+  assert.equal((await g.begin(workspace(enrollment))).refusal, 'insufficient-scope');
+  assert.equal(
+    (await g.begin({ ...enrollment, attemptId: fresh() })).refusal,
+    'insufficient-scope',
+  );
+  assert.equal(
+    (await g.begin({ ...enrollment, credentialId: 'ff'.repeat(16) })).refusal,
+    'insufficient-scope',
+  );
+  assert.equal(
+    (await g.begin({ ...scopes.first, attemptId: x.prepared.input.attemptId })).refusal,
+    'insufficient-scope',
+  );
+  const stranger = await registered(x.f);
+  x.f.seedActive(stranger.result.accountId);
+  const other = await continuationGrants(x, stranger);
+  assert.equal((await other.begin(enrollment)).refusal, 'wrong-account');
+  const proof = await g.begin(enrollment);
+  assert.equal((await g.finish(proof.challenge, x.keys.existing)).refusal, 'invalid-proof');
+  const candidate = await g.grant(enrollment, x.entry.key),
+    second = await g.grant(scopes.second, x.keys.new),
+    writer = await g.grant(workspace(scopes.first), x.keys.existing);
+  await assert.rejects(
+    x.relay(e.request('existing', 'read'), guard(candidate)),
+    denial('insufficient-scope'),
+  );
+  const subscription = x.f.core.grants.subscription(writer.grantToken, writer.scope);
+  const wire = x.make(1, 'grant-governed write', { epoch: 4 });
+  assert.equal(
+    (
+      await x.authority.owner.decideSubmission(
+        x.f.core,
+        {
+          workspaceId: x.workspace,
+          bytes: wire.bytes,
+        },
+        guard(writer),
+      )
+    ).kind,
+    'decision',
+  );
+  subscription.check();
+  for (const [role, grant] of [
+    ['existing', second],
+    ['new', candidate],
+  ])
+    assert.equal(
+      (await x.relay(e.request(role, 'commit', e.commits[role]), guard(grant))).ok,
+      true,
+    );
+  for (const [role, grant] of [
+    ['existing', second],
+    ['new', candidate],
+  ])
+    assert.equal(
+      (await x.relay(e.request(role, 'reveal', e.reveals[role]), guard(grant))).ok,
+      true,
+    );
+  assert.equal((await x.relay(e.approval, guard(second))).stage, 'approved');
+  assert.equal(
+    (await d.transfer(d.request('existing', 'deliver', d.delivery), guard(second))).ok,
+    true,
+  );
+  const installedGrant = await g.grant(enrollment, x.entry.key);
+  const installed = await d.transfer(
+    d.request('new', 'install', d.installation),
+    guard(installedGrant),
+  );
+  assert.equal(installed.certification?.epoch.epoch, 5, JSON.stringify(installed));
+  assert.throws(() => subscription.check(), denial('authority-changed'));
+  await assert.rejects(
+    d.transfer(d.request('new', 'install', d.installation), guard(installedGrant)),
+    denial('authority-changed'),
+  );
+  const retry = await g.grant(enrollment, x.entry.key);
+  assert.deepEqual(
+    await d.transfer(d.request('new', 'install', d.installation), guard(retry)),
+    installed,
+  );
+  const ready = await g.grant(workspace(enrollment), x.entry.key);
+  const request = query(
+    x,
+    0,
+    8,
+    {
+      reader: enrollment.credentialId,
+      publisher: x.credential,
+      epoch: 5,
+      head: installed.certification.head,
+    },
+    x.entry.key,
+  );
+  page(x, await x.authority.owner.readInbound(x.f.core, request, guard(ready)), request, [
+    { w: wire, r: await x.deliveryCall(wire), epoch: 4 },
+  ]);
+  x.f.restart();
+  await assert.rejects(
+    x.authority.owner.readInbound(x.f.core, request, guard(ready)),
+    denial('grant-required'),
+  );
+  g.restart();
+  const resumed = await g.grant(workspace(enrollment), x.entry.key);
+  assert.equal(
+    (await x.authority.owner.readInbound(x.f.core, request, guard(resumed))).kind,
+    'decision',
+  );
+  g.revoke();
+  await assert.rejects(
+    x.authority.owner.readInbound(x.f.core, request, guard(resumed)),
+    denial('sign-in-required'),
+  );
+});
+
+test('continuation grant verification refuses changed pointers, receipts and changes before grant publication', async (t) => {
+  const x = await continuationFixture(t),
+    g = await continuationGrants(x);
+  const scope = {
+    kind: 'workspace',
+    workspaceId: x.workspace,
+    credentialId: x.context.candidate.id,
+  };
+  const saved = x.f.rows('promotions')[0];
+  const begin = g.begin(scope);
+  mutate(x, (db) => db.prepare('UPDATE promotions SET successor_head=?').run('aa'.repeat(32)));
+  assert.equal((await begin).refusal, 'authority-changed');
+  assert.equal((await g.begin(scope)).refusal, 'storage-unavailable');
+  mutate(x, (db) => db.prepare('UPDATE promotions SET successor_head=?').run(saved.successor_head));
+  const pending = await g.begin(scope);
+  const row = x.f.rows('membership_admissions')[0];
+  mutate(x, (db) => db.prepare('UPDATE membership_admissions SET artifact=?').run('{}'));
+  assert.equal((await g.finish(pending.challenge, x.keys.new)).refusal, 'authority-changed');
+  assert.equal((await g.begin(scope)).refusal, 'storage-unavailable');
+  mutate(x, (db) => db.prepare('UPDATE membership_admissions SET artifact=?').run(row.artifact));
+  assert.equal((await g.grant(scope, x.keys.new)).stage, 'granted');
+  const preparation = x.f
+    .rows('enrollment_preparations')
+    .find((r) => r.id === x.admissionInput.attemptId);
+  mutate(x, (db) =>
+    db
+      .prepare('UPDATE enrollment_preparations SET receipt=? WHERE id=?')
+      .run(
+        JSON.stringify({ ...JSON.parse(preparation.receipt), receiptId: fresh() }),
+        preparation.id,
+      ),
+  );
+  assert.equal(
+    (await g.begin({ ...scope, kind: 'enrollment', attemptId: preparation.id })).refusal,
+    'storage-unavailable',
+  );
 });

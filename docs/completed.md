@@ -10471,3 +10471,22 @@ The private frozen-prefix restriction is removed for delivery and transfer. Gran
 and browser adoption still need continuation composition; this is not yet a third-device product flow.
 No continuation HTTP route, host opt-in, personal-browser action or retained-service restart occurred.
 The retained installation remains schema 14 at `a07de792`; release validation remains paused.
+
+
+## 2026-10-08 — Scoped continuation grants (`L-1`)
+
+After ledger checkpoint `b48b25d1`, grants resolve the same verified current authority as delivery.
+Either existing certified member can prove its own key for the exact version-2 enrollment attempt.
+Before admission, that attempt must still be unexpired under its full original parent; after admission,
+only the latest consumed continuation can obtain a grant for completion or lost-reply repair. A pending
+candidate obtains ceremony access only, and certification is required for workspace read/write grants.
+The original version-1 attempt cannot borrow a continuation grant.
+
+Evidence: 80 affected Node cases pass, including existing grants, session ownership, notifications and
+HTTP boundaries. Two directed additions exercise both approvers and the pending candidate from
+preparation through admission, key delivery, certification and restart; ordinary writing preserves a
+workspace subscription, while authority changes invalidate it. Wrong-account login, wrong device key,
+unknown/historical attempt, tampered retained evidence, changes during challenge verification, restart
+and login revocation refuse appropriately. TypeScript, scoped lint/format and diff checks pass. Log:
+`/tmp/done-membership-grants-regressions.log`. No new HTTP continuation route, host upgrade or browser
+activation was added. Bootstrap/discovery and client adoption remain next; release validation is paused.
