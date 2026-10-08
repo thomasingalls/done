@@ -11519,3 +11519,28 @@ retain the exact snapshot and recipient acknowledgement through service/custody 
 hash into approval; install a joining device's initial generation and nonzero verified prefixes; then
 exercise remove/connect-replacement/remove in packaged browsers. The post-rotation connection remains
 gated. No retained-service switch, key retirement, pruning or release-validation campaign.
+
+
+## 2026-10-08 — Retained replacement snapshot and certification binding (`L-1`)
+
+The service retains one immutable, separately transferred replacement checkpoint per admitted
+connection. Enrollment-scoped reads/publication authenticate the exact actor, parent and preparation;
+commit authorization and source state are checked again inside the write transaction. Exact retries
+return the same snapshot and do not send another notification. Post-rotation key delivery now binds
+the snapshot hash in version 3. Certification requires the candidate's signed acknowledgement of the
+same snapshot. Existing version-2 proof bytes retain their historical parser/signature domains.
+
+Schema 21 adds only the replacement checkpoint table. Opening schema 20 requires explicit offline
+upgrade; focused checks preserve every prior row through the upgrade and refuse an older host. The
+live schema-20 installation was not restarted or upgraded.
+
+Eleven focused service/upgrade cases and 23 affected protocol/replay cases pass, including lost
+committed replies, interrupted certification, tampered retained snapshots, substitution, downgrade,
+wrong enrollment grants and notification deduplication. The first HTTP attempt was blocked by sandbox
+loopback permissions; rerunning with loopback access passed. Synthetic ciphertext in the service
+fixture establishes the signed retention contract, not plaintext semantics. TypeScript, scoped lint,
+format and diff checks pass. [Preserved output](./development-evidence/2026-10-08-replacement-service.log).
+
+Next: save the exact snapshot in browser handoff custody, cold-replay it before acknowledgement,
+compose the native producer, then install the replacement's initial generation and receive prefixes.
+Post-rotation product connections remain gated; release validation remains paused.

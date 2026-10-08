@@ -32,6 +32,11 @@ import { membershipEnabled } from './membershipStore.ts';
 import { parseWitness } from './deliveryWitness.ts';
 import { resolveMembershipDeliveryAuthority } from './membershipHistory.ts';
 import { rethrowAuthorization } from './authorization.ts';
+import {
+  replacementCheckpointRow,
+  retainedReplacementCheckpoint,
+} from './replacementCheckpoint.ts';
+import { verifyReplacementCheckpointAdmission } from '../account-protocol/replacementCheckpoint.ts';
 export interface MembershipTransferIssuer extends DeliveryIssuer {
   certify(epoch: MembershipCertificationEpoch): Promise<MembershipCertification>;
 }
@@ -71,10 +76,11 @@ export async function transferMembership(
       db
         .prepare('SELECT * FROM membership_ceremonies WHERE workspace_id=? AND preparation_id=?')
         .get(request.workspaceId, request.preparationId) ?? null;
-    return { s, snapshots, ceremony };
+    const checkpoint = replacementCheckpointRow(db, request.workspaceId, request.preparationId);
+    return { s, snapshots, ceremony, checkpoint };
   };
   const bytes = (c: ReturnType<typeof capture>) =>
-    JSON.stringify([snapshotBytes(c.s), c.snapshots.map(snapshotBytes), c.ceremony]);
+    JSON.stringify([snapshotBytes(c.s), c.snapshots.map(snapshotBytes), c.ceremony, c.checkpoint]);
   for (let retry = 0; retry < 4; retry++) {
     try {
       db.exec('BEGIN');
@@ -129,8 +135,20 @@ export async function transferMembership(
         )
           return refuse('approval-required');
         if (delivery && !same(delivery, proposed)) return refuse('delivery-conflict');
+        if (!delivery && proposed.generation > 1 && proposed.v !== 3)
+          return refuse('checkpoint-required');
         delivery = proposed;
       }
+      const checkpoint =
+        delivery?.v === 3
+          ? await retainedReplacementCheckpoint(
+              before.checkpoint,
+              auth.membership,
+              delivery.checkpointHash,
+            )
+          : null;
+      if (checkpoint && checkpoint.manifest.producer !== delivery!.existing.context.existing.id)
+        return refuse('invalid-proof');
       if (before.snapshots.some((x) => !x)) throw Error('Missing publisher snapshot');
       const composed = await resolveMembershipDeliveryAuthority(s, issuer);
       const ledgers: {
@@ -152,6 +170,12 @@ export async function transferMembership(
       if (request.action === 'install') {
         if (!delivery) return refuse('delivery-required');
         const installation = await verifyMembershipInstallation(request.payload, delivery);
+        if (installation.v === 3)
+          await verifyReplacementCheckpointAdmission(
+            installation.checkpoint,
+            checkpoint,
+            auth.membership,
+          );
         if (certification) {
           if (!same(certification.epoch.installation, installation))
             return refuse('installation-conflict');

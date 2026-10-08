@@ -23,6 +23,11 @@ import {
   ceremonyRequestMessage,
   type CeremonyRequest,
 } from './ceremonyRelay.ts';
+import {
+  parseReplacementCheckpointAdmission,
+  replacementCheckpointAdmissionMessage,
+  type ReplacementCheckpointAdmission,
+} from './replacementAcknowledgement.ts';
 
 export interface MembershipRecipientCertificate {
   v: 2;
@@ -36,8 +41,7 @@ export interface MembershipRecipientCertificate {
   approver: string;
   signature: string;
 }
-export interface MembershipDelivery {
-  v: 2;
+interface MembershipDeliveryFields {
   kind: 'membership-key-delivery';
   parent: string;
   preparationId: string;
@@ -53,13 +57,16 @@ export interface MembershipDelivery {
   wrap: { enc: string; ct: string };
   signature: string;
 }
-export interface MembershipInstallation {
-  v: 2;
+export type MembershipDelivery = MembershipDeliveryFields &
+  ({ v: 2 } | { v: 3; checkpointHash: string });
+interface MembershipInstallationFields {
   kind: 'membership-key-installed';
   deliveryHash: string;
   credentialId: string;
   signature: string;
 }
+export type MembershipInstallation = MembershipInstallationFields &
+  ({ v: 2 } | { v: 3; checkpoint: ReplacementCheckpointAdmission });
 const h = (v: unknown, n = 32) => {
   unhex(v, n);
   return v as string;
@@ -138,12 +145,16 @@ export function parseMembershipDelivery(input: unknown): MembershipDelivery {
     'recovery',
     'wrap',
     'signature',
+    ...((input as { v?: unknown } | null)?.v === 3 ? ['checkpointHash'] : []),
   ]);
-  if (d['v'] !== 2 || d['kind'] !== 'membership-key-delivery')
+  if ((d['v'] !== 2 && d['v'] !== 3) || d['kind'] !== 'membership-key-delivery')
     throw Error('Invalid membership delivery');
+  if (d['v'] === 3 && integer(d['generation'], 2) < 2) throw Error('Invalid replacement delivery');
   const w = closed(d['wrap'], ['enc', 'ct']);
   return {
-    v: 2,
+    ...(d['v'] === 3
+      ? { v: 3 as const, checkpointHash: h(d['checkpointHash']) }
+      : { v: 2 as const }),
     kind: 'membership-key-delivery',
     parent: h(d['parent']),
     preparationId: accountIdentifier(d['preparationId']),
@@ -162,7 +173,7 @@ export function parseMembershipDelivery(input: unknown): MembershipDelivery {
 }
 export const membershipDeliveryMessage = (input: unknown) => {
   const { signature: _, ...body } = parseMembershipDelivery(input);
-  return domainMessage('done/membership-key-delivery/v2', body);
+  return domainMessage(`done/membership-key-delivery/v${body.v}`, body);
 };
 export const membershipDeliveryHash = (input: unknown) =>
   digest(json(parseMembershipDelivery(input)));
@@ -224,11 +235,21 @@ export async function verifyMembershipDelivery(input: unknown, parent: VerifiedM
   return { delivery: d, opening };
 }
 export function parseMembershipInstallation(input: unknown): MembershipInstallation {
-  const i = closed(input, ['v', 'kind', 'deliveryHash', 'credentialId', 'signature']);
-  if (i['v'] !== 2 || i['kind'] !== 'membership-key-installed')
+  bounded(input);
+  const i = closed(input, [
+    'v',
+    'kind',
+    'deliveryHash',
+    'credentialId',
+    'signature',
+    ...((input as { v?: unknown } | null)?.v === 3 ? ['checkpoint'] : []),
+  ]);
+  if ((i['v'] !== 2 && i['v'] !== 3) || i['kind'] !== 'membership-key-installed')
     throw Error('Invalid membership installation');
   return {
-    v: 2,
+    ...(i['v'] === 3
+      ? { v: 3 as const, checkpoint: parseReplacementCheckpointAdmission(i['checkpoint']) }
+      : { v: 2 as const }),
     kind: 'membership-key-installed',
     deliveryHash: h(i['deliveryHash']),
     credentialId: h(i['credentialId'], 16),
@@ -237,14 +258,31 @@ export function parseMembershipInstallation(input: unknown): MembershipInstallat
 }
 export const membershipInstallationMessage = (input: unknown) => {
   const { signature: _, ...body } = parseMembershipInstallation(input);
-  return domainMessage('done/membership-key-installed/v2', body);
+  return domainMessage(`done/membership-key-installed/v${body.v}`, body);
 };
 export async function verifyMembershipInstallation(input: unknown, delivery: MembershipDelivery) {
   const i = parseMembershipInstallation(input),
     d = parseMembershipDelivery(delivery),
     c = d.existing.context.candidate;
-  if (i.credentialId !== c.id || i.deliveryHash !== (await membershipDeliveryHash(d)))
+  if (
+    i.v !== d.v ||
+    i.credentialId !== c.id ||
+    i.deliveryHash !== (await membershipDeliveryHash(d))
+  )
     throw Error('Membership installation target changed');
+  if (i.v === 3 && d.v === 3) {
+    if (
+      i.checkpoint.checkpointHash !== d.checkpointHash ||
+      i.checkpoint.candidate !== c.id ||
+      i.checkpoint.parent !== d.parent
+    )
+      throw Error('Replacement installation checkpoint changed');
+    await verifySignature(
+      c.sPub,
+      i.checkpoint.signature,
+      await replacementCheckpointAdmissionMessage(i.checkpoint),
+    );
+  }
   await verifySignature(c.sPub, i.signature, await membershipInstallationMessage(i));
   return i;
 }

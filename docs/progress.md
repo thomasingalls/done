@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source verification complete; retained handoff next
+scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source and service retention complete; native handoff in flight
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -95,8 +95,7 @@ survivor missing both rotations, old-generation offline delivery, generation-thr
 and cold reopen. The signed current-key service boundary now passes its five affected cases, including lost committed
 replies. Durable browser retries now pass the focused native case: exact old ciphertext after a lost
 refusal reply, same-position current-key delivery, journal preservation and cold reopen. Four new
-retry cases and affected unit checks pass. The replacement checkpoint format, crypto replay and accepted-source verification now pass 24 focused and affected checks, including finalized publisher writing, restart replay and a replacement preparing the next snapshot without generation-one keys. Next: retained publication and recipient acknowledgement, hash binding into approval, native joining custody and
-the full remove/connect/remove flow. Post-rotation connections remain gated. No live
+retry cases and affected unit checks pass. The replacement checkpoint format, crypto replay and accepted-source verification now pass 24 focused and affected checks, including finalized publisher writing, restart replay and a replacement preparing the next snapshot without generation-one keys. Service retention and version-3 delivery/acknowledgement binding now pass eleven focused service/upgrade cases and 23 affected protocol/replay checks. Schema 21 is ready for an explicit offline upgrade; live remains schema 20. Next: native snapshot handoff and semantic acknowledgement, producer composition, joining custody and the full remove/connect/remove flow. Post-rotation connections remain gated. No live
 service switch has occurred.
 
 **Further product work:** self/last-device removal, lost-device

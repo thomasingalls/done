@@ -22,6 +22,10 @@ import { transferMembership, type MembershipTransferIssuer } from './membershipT
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import { readMembershipCheckpoint } from './membershipCheckpoint.ts';
 import {
+  exchangeReplacementCheckpoint,
+  REPLACEMENT_CHECKPOINT_SCHEMA,
+} from './replacementCheckpoint.ts';
+import {
   CEREMONY_SCHEMA,
   ceremonyBootstrap,
   relayCeremony,
@@ -207,6 +211,7 @@ export class AccountCore {
       upgradeFromV17?: boolean;
       upgradeFromV18?: boolean;
       upgradeFromV19?: boolean;
+      upgradeFromV20?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -248,7 +253,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 20 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 21 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 20 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV20
+        ) &&
         !(
           version === 19 &&
           instrumentation.sessions &&
@@ -397,6 +408,10 @@ export class AccountCore {
             this.#db.exec(ROTATION_SCHEMA);
             this.#db.exec('PRAGMA user_version=20;');
           }
+          if (version < 21) {
+            this.#db.exec(REPLACEMENT_CHECKPOINT_SCHEMA);
+            this.#db.exec('PRAGMA user_version=21;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -528,6 +543,9 @@ export class AccountCore {
   }
   readMembershipCheckpoint(input: unknown, issuer: DeliveryIssuer) {
     return readMembershipCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
+  }
+  exchangeReplacementCheckpoint(input: unknown, issuer: DeliveryIssuer) {
+    return exchangeReplacementCheckpoint(this.#db, input, issuer, this.#hook);
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {
     return readInbound(

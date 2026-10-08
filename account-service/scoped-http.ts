@@ -1,6 +1,7 @@
 import { ROTATION_LIMIT } from '../account-protocol/rotation.ts';
 import { MEMBERSHIP_PROOF_LIMIT } from '../account-protocol/membership.ts';
 import { MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT } from '../account-protocol/membershipCheckpoint.ts';
+import { REPLACEMENT_TRANSFER_LIMIT } from '../account-protocol/replacementTransfer.ts';
 /** Session/grant-protected routes. Bootstrap capabilities are composed separately;
  * there is no shared bearer fallback or /access endpoint here. */
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -84,6 +85,10 @@ export function createScopedAccountHandler(
     ),
   ]);
   if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/membership/v3/checkpoint', {
+      limit: REPLACEMENT_TRANSFER_LIMIT,
+      run: (v, _token, auth) => authority.exchangeReplacementCheckpoint(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v2/removal/discover', {
       limit: 4096,
       run: (v, _token, auth) => authority.discoverRemoval(core, v, auth),
@@ -234,9 +239,12 @@ export function createScopedAccountHandler(
           '/account/membership/v2/removal/commit': 'membership_rotations',
           '/account/membership/v2/ceremony': 'membership_ceremonies',
           '/account/membership/v2/transfer': 'membership_transfers',
+          '/account/membership/v3/checkpoint': 'replacement_checkpoints',
         }[path];
         if (!table) return check;
-        const continuation = table.startsWith('membership_') && table !== 'membership_rotations';
+        const continuation =
+          (table.startsWith('membership_') && table !== 'membership_rotations') ||
+          table === 'replacement_checkpoints';
         if (continuation && scope.kind !== 'enrollment')
           throw new AuthorizationRefused('insufficient-scope');
         const row = () =>

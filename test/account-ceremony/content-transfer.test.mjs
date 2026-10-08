@@ -562,7 +562,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1137,7 +1137,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -1161,7 +1161,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -1692,7 +1692,12 @@ test('a valid version-2 relay decision cannot replace the original version-1 del
   await assert.rejects(verifyContentDelivery(mixed, x.base, x.successor), /approved ceremony/);
 });
 
-async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }) {
+async function continuationDelivery(
+  x,
+  e,
+  wrap = { enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) },
+  { publishCheckpoint = true } = {},
+) {
   const sign = (label, body, key) => {
     const { signature: _, ...value } = body;
     return { ...value, signature: signed(key, message(label, value)) };
@@ -1712,9 +1717,96 @@ async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd
     },
     e.keys.existing,
   );
-  const sealDelivery = (body) => sign('done/membership-key-delivery/v2', body, e.keys.existing);
+  const { parseMembershipDelivery, parseMembershipInstallation } =
+    await import('../../account-protocol/membershipDelivery.ts');
+  const {
+    replacementCheckpointHeads,
+    replacementCheckpointMessage,
+    replacementCheckpointHash,
+    replacementCheckpointAdmissionBody,
+    replacementCheckpointAdmissionMessage,
+  } = await import('../../account-protocol/replacementCheckpoint.ts');
+  const { replacementTransferMessage } =
+    await import('../../account-protocol/replacementTransfer.ts');
+  const replacement = x.admission.epoch.generation > 1;
+  let checkpoint = null,
+    checkpointHash = null;
+  const checkpointRequest = async (role, action, payload = null) => {
+    const request = {
+      v: 1,
+      workspaceId: x.workspace,
+      parent: x.admission.head,
+      preparationId: x.admissionInput.attemptId,
+      credentialId: e.context[role === 'existing' ? 'existing' : 'candidate'].id,
+      action,
+      payload,
+      signature: '00'.repeat(64),
+    };
+    request.signature = signed(e.keys[role], await replacementTransferMessage(request));
+    return request;
+  };
+  if (replacement) {
+    const continuations = [
+      'membership_admissions',
+      'membership_transfers',
+      'membership_cancellations',
+      'membership_rotations',
+    ]
+      .flatMap((table) =>
+        x.f
+          .rows(table)
+          .filter((r) => r.artifact)
+          .map((r) => JSON.parse(r.artifact)),
+      )
+      .sort((a, b) => a.epoch.epoch - b.epoch.epoch);
+    const parent = historyMembership(
+      (
+        await verifyMembershipChain(
+          { successor: x.successor, certification: x.certification, continuations },
+          x.base,
+        )
+      ).history,
+    );
+    const heads = replacementCheckpointHeads(parent);
+    checkpoint = {
+      v: 1,
+      kind: 'replacement-checkpoint',
+      salt: 'a1'.repeat(16),
+      nonce: 'a2'.repeat(12),
+      ct: 'a3'.repeat(18),
+      manifest: {
+        workspaceId: x.workspace,
+        lineageId: e.context.lineageId,
+        epoch: x.admission.epoch.epoch,
+        epochHead: x.admission.head,
+        generation: x.admission.epoch.generation,
+        producer: e.context.existing.id,
+        candidate: e.context.candidate.id,
+        preparationId: x.admissionInput.attemptId,
+        checkpointDigest: hash(Buffer.from('a3'.repeat(18), 'hex')),
+        sv: '00',
+        ds: '0000',
+        headVectorDigest: await checkpointHeadDigest(heads),
+      },
+      heads,
+      signature: '00'.repeat(64),
+    };
+    checkpoint.signature = signed(e.keys.existing, await replacementCheckpointMessage(checkpoint));
+    checkpointHash = await replacementCheckpointHash(checkpoint);
+    if (publishCheckpoint) {
+      const r = await x.authority.owner.exchangeReplacementCheckpoint(
+        x.f.core,
+        await checkpointRequest('existing', 'publish', checkpoint),
+      );
+      assert.equal(r.ok, true, JSON.stringify(r));
+    }
+  }
+  const sealDelivery = (body) => {
+    const value = parseMembershipDelivery({ ...body, signature: '00'.repeat(64) });
+    return sign('done/membership-key-delivery/v' + value.v, value, e.keys.existing);
+  };
   const delivery = sealDelivery({
-    v: 2,
+    ...(replacement ? { v: 3, checkpointHash } : { v: 2 }),
     kind: 'membership-key-delivery',
     parent: x.admission.head,
     preparationId: x.admissionInput.attemptId,
@@ -1729,14 +1821,23 @@ async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd
     recovery: x.base.request.recovery,
     wrap,
   });
+  let acknowledgement = null;
+  if (checkpoint) {
+    acknowledgement = await replacementCheckpointAdmissionBody(checkpoint);
+    acknowledgement.signature = signed(
+      e.keys.new,
+      await replacementCheckpointAdmissionMessage(acknowledgement),
+    );
+  }
   const installation = sign(
-    'done/membership-key-installed/v2',
-    {
-      v: 2,
+    'done/membership-key-installed/v' + delivery.v,
+    parseMembershipInstallation({
+      ...(replacement ? { v: 3, checkpoint: acknowledgement } : { v: 2 }),
       kind: 'membership-key-installed',
       deliveryHash: hash(JSON.stringify(delivery)),
       credentialId: e.context.candidate.id,
-    },
+      signature: '00'.repeat(64),
+    }),
     e.keys.new,
   );
   const request = (role, action, payload = null, patch = {}) =>
@@ -1762,7 +1863,17 @@ async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd
       assert.equal((await x.relay(e.request(role, 'reveal', e.reveals[role]))).ok, true);
     assert.equal((await x.relay(e.approval)).stage, 'approved');
   };
-  return { certificate, delivery, installation, sealDelivery, request, transfer, approve };
+  return {
+    certificate,
+    delivery,
+    installation,
+    sealDelivery,
+    request,
+    transfer,
+    approve,
+    checkpoint,
+    checkpointRequest,
+  };
 }
 for (const approver of ['existing', 'new'])
   test(`private continuation transfer by ${approver} preserves both ledgers across aborted/lost certification and restart`, async (t) => {
@@ -1973,7 +2084,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+    'DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -1994,7 +2105,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -4173,7 +4284,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
+    'DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -4189,7 +4300,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4483,7 +4594,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
+    'DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -4499,7 +4610,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -4832,7 +4943,9 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   await backup(db, path);
   db.close();
   db = new DatabaseSync(path);
-  db.exec('DROP TABLE membership_rotations; PRAGMA user_version=19;');
+  db.exec(
+    'DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
+  );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
     sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -4847,7 +4960,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 20);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -5446,4 +5559,188 @@ test('replacement admission fences new historical-key uploads but retains accept
   const late = x.make(3, 'cancellation cannot reopen old-key upload', { epoch: 3, gen: 1 });
   assert.equal(decision(x, await x.deliveryCall(late), late).kind, 'refused');
   assert.deepEqual(await x.deliveryCall(retry), retried);
+});
+
+async function replacementServiceFixture(t, options = {}) {
+  const x = await removalFixture(t, options);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const rotation = await rotationRequest(x, await removalRequest(x, x.context.candidate.id));
+  const committed = await x.authority.owner.commitRotation(x.f.core, rotation.request);
+  assert.equal(committed.ok, true, JSON.stringify(committed));
+  const y = await admitNext(x, committed.rotation),
+    e = continuationExchange(y, y.admission, y.entry);
+  const d = await continuationDelivery(y, e, undefined, { publishCheckpoint: false });
+  await d.approve();
+  return { ...y, d, e };
+}
+
+test('replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification', async (t) => {
+  let fault;
+  const x = await replacementServiceFixture(t, {
+    hook(point, operation) {
+      if (fault === operation + ':' + point) {
+        fault = null;
+        throw Error('Interrupted replacement');
+      }
+    },
+  });
+  const { d } = x;
+  const call = (r, auth) => x.authority.owner.exchangeReplacementCheckpoint(x.f.core, r, auth);
+  const publish = await d.checkpointRequest('existing', 'publish', d.checkpoint),
+    read = await d.checkpointRequest('new', 'read');
+  const deliver = d.request('existing', 'deliver', d.delivery),
+    install = d.request('new', 'install', d.installation);
+  assert.equal(
+    (await d.transfer(deliver)).ok,
+    false,
+    'a hash without the retained snapshot is insufficient',
+  );
+  assert.equal(
+    (await call(await d.checkpointRequest('new', 'publish', d.checkpoint))).refusal,
+    'invalid-proof',
+  );
+  assert.equal((await call({ ...publish, signature: '00'.repeat(64) })).ok, false);
+  await assert.rejects(
+    call(publish, () => () => {
+      throw new AuthorizationRefused('session-expired');
+    }),
+    AuthorizationRefused,
+  );
+  assert.equal(x.f.rows('replacement_checkpoints').length, 0);
+  fault = 'replacement-checkpoint:before-commit';
+  assert.equal((await call(publish)).ok, false);
+  assert.equal(x.f.rows('replacement_checkpoints').length, 0);
+  fault = 'replacement-checkpoint:after-commit';
+  assert.equal((await call(publish)).ok, false);
+  assert.equal(x.f.rows('replacement_checkpoints').length, 1);
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual((await call(publish)).checkpoint, d.checkpoint);
+  assert.deepEqual((await call(read)).checkpoint, d.checkpoint);
+  const { replacementCheckpointMessage } =
+    await import('../../account-protocol/replacementCheckpoint.ts');
+  const changed = { ...d.checkpoint, nonce: 'af'.repeat(12) };
+  changed.signature = signed(x.e.keys.existing, await replacementCheckpointMessage(changed));
+  assert.equal(
+    (await call(await d.checkpointRequest('existing', 'publish', changed))).refusal,
+    'checkpoint-conflict',
+  );
+  const swapped = d.sealDelivery({ ...d.delivery, checkpointHash: 'fe'.repeat(32) });
+  assert.equal((await d.transfer(d.request('existing', 'deliver', swapped))).ok, false);
+  const { checkpointHash: _, ...legacy } = d.delivery;
+  assert.equal(
+    (await d.transfer(d.request('existing', 'deliver', d.sealDelivery({ ...legacy, v: 2 }))))
+      .refusal,
+    'checkpoint-required',
+  );
+  assert.equal((await d.transfer(deliver)).ok, true);
+  const { membershipInstallationMessage } =
+    await import('../../account-protocol/membershipDelivery.ts');
+  const wrong = {
+    ...d.installation,
+    checkpoint: { ...d.installation.checkpoint, checkpointHash: 'ff'.repeat(32) },
+  };
+  wrong.signature = signed(x.e.keys.new, await membershipInstallationMessage(wrong));
+  assert.equal((await d.transfer(d.request('new', 'install', wrong))).ok, false);
+  const downgraded = {
+    v: 2,
+    kind: 'membership-key-installed',
+    deliveryHash: d.installation.deliveryHash,
+    credentialId: x.e.context.candidate.id,
+    signature: '00'.repeat(64),
+  };
+  downgraded.signature = signed(x.e.keys.new, await membershipInstallationMessage(downgraded));
+  assert.equal((await d.transfer(d.request('new', 'install', downgraded))).ok, false);
+  fault = 'membership-transfer:before-commit';
+  assert.equal((await d.transfer(install)).ok, false);
+  assert.equal(x.f.rows('membership_transfers').at(-1).artifact, null);
+  fault = 'membership-transfer:after-commit';
+  assert.equal((await d.transfer(install)).ok, false);
+  x.f.restart();
+  x.authority.restart();
+  const installed = await d.transfer(install);
+  assert.equal(installed.ok, true, JSON.stringify(installed));
+  assert.equal(
+    installed.certification.epoch.installation.checkpoint.checkpointHash,
+    d.delivery.checkpointHash,
+  );
+  assert.deepEqual(await d.transfer(install), installed);
+  const row = x.f.rows('replacement_checkpoints')[0];
+  mutate(x, (db) =>
+    db
+      .prepare('UPDATE replacement_checkpoints SET checkpoint=?')
+      .run(JSON.stringify({ ...d.checkpoint, signature: 'ff'.repeat(64) })),
+  );
+  assert.equal((await call(read)).ok, false);
+  assert.equal((await d.transfer(install)).ok, false);
+  mutate(x, (db) =>
+    db.prepare('UPDATE replacement_checkpoints SET checkpoint=?').run(row.checkpoint),
+  );
+  assert.deepEqual(await d.transfer(install), installed);
+});
+
+test('replacement snapshot HTTP route requires the exact enrollment grant and only hints on its first publication', async (t) => {
+  const x = await replacementServiceFixture(t),
+    api = await membershipHTTP(t, x),
+    g = await continuationGrants(x);
+  const scope = {
+    kind: 'enrollment',
+    workspaceId: x.workspace,
+    credentialId: x.e.context.existing.id,
+    attemptId: x.admissionInput.attemptId,
+  };
+  const existing = await g.grant(scope, x.e.keys.existing),
+    candidate = await g.grant({ ...scope, credentialId: x.e.context.candidate.id }, x.e.keys.new),
+    workspace = await g.grant(
+      { kind: 'workspace', workspaceId: x.workspace, credentialId: x.e.context.existing.id },
+      x.e.keys.existing,
+    );
+  const path = '/account/membership/v3/checkpoint',
+    publish = await x.d.checkpointRequest('existing', 'publish', x.d.checkpoint),
+    read = await x.d.checkpointRequest('new', 'read');
+  assert.equal((await api.post(path, publish)).status, 401);
+  assert.equal((await api.post(path, publish, candidate)).status, 403);
+  assert.equal((await api.post(path, publish, workspace)).status, 403);
+  assert.equal((await api.post(path, read, candidate)).body.checkpoint, null);
+  assert.equal(api.hints.length, 0);
+  assert.equal((await api.post(path, publish, existing)).status, 200);
+  assert.equal(api.hints.length, 1);
+  assert.equal((await api.post(path, publish, existing)).status, 200);
+  assert.equal(api.hints.length, 1);
+  assert.deepEqual((await api.post(path, read, candidate)).body.checkpoint, x.d.checkpoint);
+  assert.equal(api.hints.length, 1);
+});
+
+test('replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows', async (t) => {
+  const x = await removalFixture(t),
+    path = x.f.path + '.schema20';
+  let db = new DatabaseSync(x.f.path);
+  await backup(db, path);
+  db.close();
+  db = new DatabaseSync(path);
+  db.exec('DROP TABLE replacement_checkpoints; PRAGMA user_version=20;');
+  const tables = db
+    .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+    .all()
+    .map((r) => r.name);
+  const rows = tables.map((table) => [table, db.prepare('SELECT * FROM ' + table).all()]);
+  db.close();
+  const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
+    sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /offline upgrade/,
+  );
+  new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV20: true,
+  }).close();
+  db = new DatabaseSync(path);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 21);
+  for (const [table, original] of rows)
+    assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
+  assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);
+  db.close();
+  assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });

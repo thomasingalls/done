@@ -1,3 +1,13 @@
+import {
+  parseReplacementCheckpointAdmission,
+  replacementCheckpointAdmissionMessage,
+  type ReplacementCheckpointAdmission,
+} from './replacementAcknowledgement.ts';
+export {
+  parseReplacementCheckpointAdmission,
+  replacementCheckpointAdmissionMessage,
+  type ReplacementCheckpointAdmission,
+} from './replacementAcknowledgement.ts';
 /** Current-generation replacement baseline. Verification authenticates a producer claim, not plaintext coverage. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { coverageParts, domainMessage, json, same, verifySignature } from './admission.ts';
@@ -177,34 +187,6 @@ export async function verifyReplacementCheckpoint(input: unknown, parent: Verifi
   return c;
 }
 
-export interface ReplacementCheckpointAdmission {
-  v: 1;
-  kind: 'replacement-checkpoint-admission';
-  checkpointHash: string;
-  candidate: string;
-  parent: string;
-  signature: string;
-}
-export function parseReplacementCheckpointAdmission(
-  input: unknown,
-): ReplacementCheckpointAdmission {
-  if (json(input).length > 1024) throw Error('Replacement checkpoint admission too large');
-  const a = closed(input, ['v', 'kind', 'checkpointHash', 'candidate', 'parent', 'signature']);
-  if (a['v'] !== 1 || a['kind'] !== 'replacement-checkpoint-admission')
-    throw Error('Invalid replacement checkpoint admission');
-  return {
-    v: 1,
-    kind: 'replacement-checkpoint-admission',
-    checkpointHash: h(a['checkpointHash']),
-    candidate: h(a['candidate'], 16),
-    parent: h(a['parent']),
-    signature: h(a['signature'], 64),
-  };
-}
-export const replacementCheckpointAdmissionMessage = (input: unknown) => {
-  const { signature: _, ...body } = parseReplacementCheckpointAdmission(input);
-  return domainMessage('done/replacement-checkpoint-admission/v1', body);
-};
 /** Construct only after decrypting and replaying the snapshot; this alone grants no authority. */
 export async function replacementCheckpointAdmissionBody(
   input: unknown,

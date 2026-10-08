@@ -161,6 +161,7 @@ export function createMembershipEnrollment(
               [
                 '/account/membership/v2/ceremony',
                 '/account/membership/v2/transfer',
+                '/account/membership/v3/checkpoint',
                 '/account/membership/v2/cancel',
               ].includes(path)
             )

@@ -134,3 +134,16 @@ The remaining work is composition with durable owners: persist the exact snapsho
 retain its service result and recipient acknowledgement, bind its hash into approval, install the
 joining device's current generation and nonzero receive prefixes, and exercise the complete repeated
 lifecycle. These helpers do not expose that unfinished path or upgrade the retained service.
+
+
+## Service retention increment
+
+Schema 21 retains an immutable replacement snapshot separately from membership proofs. Version-3
+key delivery binds its hash; certification requires the candidate's signed acknowledgement.
+Enrollment grants bind the transfer to its exact preparation and actor. Interrupted commits and exact
+retries preserve the snapshot; substitution and downgrade fail. Eleven focused service/upgrade cases
+and 23 affected protocol/replay checks pass. The live service remains on schema 20.
+
+The next owner increment saves the exact snapshot before publication and cold-replays it with the
+recipient's durably installed key before acknowledgement. Native producer composition and replacement
+activation/receive prefixes remain necessary before enabling the complete product journey.
