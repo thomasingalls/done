@@ -1,0 +1,54 @@
+# Repeatable account device lifecycle
+
+2026-10-08. The operator authorized continuing through repeated connections and removals, with
+unsigned intermediate commits and focused implementation evidence. Release validation remains paused.
+The retained development service still serves immutable build `2bea3437` on schema 20; changing source
+does not restart that process or switch its build.
+
+## Product boundary
+
+Preserve the approved Devices flow, one unfinished connection per account, cancel before key exposure
+and remove afterward, and other-device-only removal. Each competing epoch change restarts comparison.
+The target sequence is remove a device, connect its replacement, then remove another device while
+preserving accepted and offline writing. No self/last-device removal, recovery UX, pruning or predecessor
+key retirement is implied. Existing history-size bounds remain; refusal must precede an irreversible
+preparation or an admission without space to finish.
+
+## Implementation sequence
+
+1. **Current-parent service operations.** Enrollment/admission and comparison/key certification follow
+   the complete verified history after earlier certification, cancellation or rotation. Preserve
+   historical attempts, final publisher witnesses and exact committed outcomes. Do not assume the
+   original publisher remains certified. This service boundary is implemented; browser gates remain.
+2. **Repeated native rotation custody and activation.** Retain authenticated generation openers across
+   later pending intents, choose the active opener through the authenticated pointer, and resume each
+   content/custody transition after interruption. Passive observation must handle missed rotations;
+   removed devices open only their detached copy.
+3. **Current-generation replacement handoff.** Capture and authenticate complete current writing for
+   the joining device, seal it under its approved generation, and retain exact publication/admission
+   across retry. The original generation-one checkpoint alone cannot open a generation-two newcomer.
+   Existing survivors retain their historical keys; joining devices must not need keys they never had.
+4. **Product composition.** Reuse invitation/comparison, expose only complete paths, and exercise the
+   repeated lifecycle in disposable packaged browsers, with offline writing and cold reopen. Obtain a
+   fresh operator quiet point before any later retained-service upgrade.
+
+## Service evidence
+
+Three new directed cases cover admission after cancellation and replacement after removing either the
+original or joined publisher. Both replacement cases lose later admission/certification replies,
+restart, recover the retained outcomes and complete another rotation to generation three. Old
+admission and rotation retries remain exact; removed publisher witnesses are unchanged.
+
+The service now validates all historical publisher ledgers during admission. Approval uses the exact
+latest admission prefix of the verified chain. A later unrelated ceremony cannot borrow an older
+attempt. Recipient certificates allow two members after a removal; verification still requires the
+exact prior certified set plus the candidate. Admission/certification/cancellation preserve the
+original publisher's final witness if it was removed. History capacity checks precede target fencing
+and reserve room for admission completion. No schema change is required in this phase.
+
+Focused checks: 49 affected service/ceremony cases pass across the primary run and five-case rerun;
+15 membership protocol cases pass. Four primary cases required loopback listener permission; one
+fixture was updated to prepare enrollment before the removal fence and separately assert that new
+preparation is refused during removal. TypeScript, scoped lint/format and diff checks pass. Logs:
+`/tmp/done-repeatable-service-focused.log`, `/tmp/done-repeatable-service-rerun.log`,
+`/tmp/done-repeatable-protocol.log`. This does not yet establish a replacement-device browser flow.

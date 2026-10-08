@@ -1,8 +1,9 @@
+import { membershipProofChain } from './membershipLocator.ts';
 /** Persist a stable removal cutoff against actual publisher ledgers. No key rotation yet. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same } from '../account-protocol/admission.ts';
 import { historyMembership } from '../account-protocol/admissionHistory.ts';
-import { membershipState } from '../account-protocol/membership.ts';
+import { MEMBERSHIP_CREDENTIAL_LIMIT, membershipState } from '../account-protocol/membership.ts';
 import {
   removalPreparationMatchesRequest,
   parseRemovalPreparationRequest,
@@ -71,6 +72,11 @@ export async function prepareRemoval(
         }
       }
       const row = root.removalPreparation;
+      if (
+        !row &&
+        membershipProofChain(root).continuations.length >= 2 * MEMBERSHIP_CREDENTIAL_LIMIT
+      )
+        return no('capacity');
       let prepared;
       if (row) {
         prepared = await verifyRemovalPreparation(JSON.parse(row.artifact), parent);

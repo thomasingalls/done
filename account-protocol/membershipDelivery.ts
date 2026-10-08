@@ -93,7 +93,7 @@ export function parseMembershipCertificate(input: unknown): MembershipRecipientC
   if (
     c['v'] !== 2 ||
     !Array.isArray(c['members']) ||
-    c['members'].length < 3 ||
+    c['members'].length < 2 ||
     c['members'].length > MEMBERSHIP_CREDENTIAL_LIMIT
   )
     throw Error('Invalid continuation recipients');

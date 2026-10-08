@@ -1,6 +1,8 @@
+import { membershipProofChain } from './membershipLocator.ts';
+import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 import { requireNoRemoval } from './removalStore.ts';
 import { CONTENT_DELIVERY_LIMIT } from '../account-protocol/contentDelivery.ts';
-/** Private first continuation transfer with exact per-publisher issuance boundaries. */
+/** Private continuation transfer with exact per-publisher issuance boundaries. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same, verifySignature } from '../account-protocol/admission.ts';
 import {
@@ -183,6 +185,11 @@ export async function transferMembership(
             heads,
           } as MembershipCertificationEpoch);
           await verifyMembershipCertification(certification, auth.membership);
+          const chain = membershipProofChain(s);
+          parseMembershipChain({
+            ...chain,
+            continuations: [...chain.continuations, certification],
+          });
           if (
             !same(certification.epoch.heads, heads) ||
             !same(certification.epoch.delivery, delivery) ||
@@ -242,14 +249,20 @@ export async function transferMembership(
           request.workspaceId,
           request.preparationId,
         );
-        const first = replacements.find((r) => r.credentialId === auth.anchor.credential)!;
-        db.prepare(
-          'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
-        ).run(
-          newCertification.head,
-          first.witness ? JSON.stringify(first.witness) : null,
-          s.account.id,
-        );
+        const first = replacements.find((r) => r.credentialId === auth.anchor.credential);
+        if (first)
+          db.prepare(
+            'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
+          ).run(
+            newCertification.head,
+            first.witness ? JSON.stringify(first.witness) : null,
+            s.account.id,
+          );
+        else
+          db.prepare('UPDATE promotions SET successor_head=? WHERE account_id=?').run(
+            newCertification.head,
+            s.account.id,
+          );
         for (const r of replacements)
           if (r.credentialId !== auth.anchor.credential && r.witness)
             db.prepare(

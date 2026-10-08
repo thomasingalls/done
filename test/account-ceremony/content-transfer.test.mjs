@@ -573,7 +573,7 @@ function continuationExchange(x, admission, entry, approving = 'existing') {
   const context = {
     ...x.context,
     v: 2,
-    epoch: 4,
+    epoch: admission.epoch.epoch,
     head: admission.head,
     certifiedSetDigest: admission.epoch.certifiedSetDigest,
     existing: approving === 'existing' ? x.context.existing : x.context.candidate,
@@ -639,7 +639,7 @@ function continuationExchange(x, admission, entry, approving = 'existing') {
     );
   const open = derive({
     workspaceId: x.workspace,
-    epoch: 4,
+    epoch: admission.epoch.epoch,
     head: admission.head,
     existingCredentialId: context.existing.id,
     newCredentialId: context.candidate.id,
@@ -1704,8 +1704,8 @@ async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd
       workspaceId: x.workspace,
       lineageId: e.context.lineageId,
       parent: x.admission.head,
-      epoch: 5,
-      generation: 1,
+      epoch: x.admission.epoch.epoch + 1,
+      generation: x.admission.epoch.generation,
       members: x.admission.epoch.roster.map(({ id, wPub, sPub }) => ({ id, wPub, sPub })),
       recoveryStateDigest: e.context.recoveryStateDigest,
       approver: e.context.existing.id,
@@ -1718,7 +1718,7 @@ async function continuationDelivery(x, e, wrap = { enc: 'ab'.repeat(32), ct: 'cd
     kind: 'membership-key-delivery',
     parent: x.admission.head,
     preparationId: x.admissionInput.attemptId,
-    generation: 1,
+    generation: x.admission.epoch.generation,
     transcriptHash: e.approval.payload.transcriptHash,
     existing: e.commits.existing,
     candidate: e.commits.new,
@@ -4470,6 +4470,10 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
 test('joined owner can prepare original-device removal while a new admission cannot invalidate its parent', async (t) => {
   const x = await removalFixture(t);
   assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const entry = x.candidate();
+  entry.input.candidate.head = x.certification.head;
+  const begun = await x.enroll('begin', entry.input);
+  const enrolled = await x.enroll('finish', nextProof(x, entry, begun.challenge));
   const r = await removalRequest(x, x.context.existing.id, 'new');
   const prepared = await x.authority.owner.prepareRemoval(x.f.core, r);
   assert.equal(prepared.ok, true, JSON.stringify(prepared));
@@ -4483,10 +4487,9 @@ test('joined owner can prepare original-device removal while a new admission can
     (await x.deliveryCall(x.make(1, 'original is fenced', { epoch: 3 }))).reason,
     'removal-pending',
   );
-  const entry = x.candidate();
-  entry.input.candidate.head = x.certification.head;
-  const begun = await x.enroll('begin', entry.input);
-  const enrolled = await x.enroll('finish', nextProof(x, entry, begun.challenge));
+  const another = x.candidate();
+  another.input.candidate.head = x.certification.head;
+  assert.equal((await x.enroll('begin', another.input)).refusal, 'connection-in-progress');
   const admission = await x.authority.owner.admitMembership(x.f.core, {
     retryKey: entry.input.retryKey,
     attemptId: enrolled.receipt.context.attemptId,
@@ -5207,3 +5210,139 @@ test('another remaining device can finish the same prepared removal without repl
   assert.equal((await resolveRotationOutcome(retry.outcome, checked)).kind, 'superseded');
   assert.equal(x.f.rows('membership_rotations').length, 1);
 });
+
+async function admitNext(x, parent, lostReply = false) {
+  const entry = x.candidate();
+  entry.input.candidate.head = parent.head;
+  const begun = await x.enroll('begin', entry.input);
+  assert.equal(begun.stage, 'challenge', JSON.stringify(begun));
+  assert.equal(begun.challenge.context.epoch, parent.epoch.epoch);
+  const proof = nextProof(x, entry, begun.challenge);
+  const prepared = await x.enroll('finish', proof);
+  assert.equal(prepared.stage, 'prepared', JSON.stringify(prepared));
+  const admissionInput = {
+    retryKey: entry.input.retryKey,
+    attemptId: prepared.receipt.context.attemptId,
+    receiptId: prepared.receipt.receiptId,
+  };
+  let admission = await x.authority.owner.admitMembership(x.f.core, admissionInput);
+  if (lostReply) {
+    assert.equal(admission.ok, false);
+    x.f.restart();
+    x.authority.restart();
+    admission = await x.authority.owner.admitMembership(x.f.core, admissionInput);
+  }
+  assert.equal(admission.kind, 'membership-admission', JSON.stringify(admission));
+  return {
+    ...x,
+    entry,
+    proof,
+    admissionInput,
+    admission,
+    relay: (r, auth) => x.authority.owner.relayMembershipCeremony(x.f.core, r, auth),
+  };
+}
+
+test('repeatable admission after cancellation preserves old attempts and refuses old ceremony authority', async (t) => {
+  const x = await continuationFixture(t);
+  const r = await cancellationRequest(x);
+  const cancelled = await x.authority.owner.cancelMembership(x.f.core, r);
+  assert.equal(cancelled.ok, true, JSON.stringify(cancelled));
+  const prior = x.f.rows('membership_admissions');
+  const y = await admitNext(x, cancelled.cancellation);
+  assert.equal(y.admission.epoch.epoch, 6);
+  assert.deepEqual(x.f.rows('membership_admissions').slice(0, 1), prior);
+  assert.deepEqual(
+    await x.authority.owner.admitMembership(x.f.core, x.admissionInput),
+    x.admission,
+  );
+  assert.equal((await x.relay(x.exchange('existing').request('new', 'read'))).ok, false);
+  const d = await continuationDelivery(y, continuationExchange(y, y.admission, y.entry));
+  await d.approve();
+  assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
+  const installed = await d.transfer(d.request('new', 'install', d.installation));
+  assert.equal(installed.ok, true, JSON.stringify(installed));
+  assert.equal(installed.certification.epoch.epoch, 7);
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual(await d.transfer(d.request('new', 'install', d.installation)), installed);
+  assert.equal((await x.enroll('resume', { retryKey: x.entry.input.retryKey })).stage, 'admitted');
+});
+
+for (const removedOriginal of [false, true])
+  test(`replacement after rotation (original removed: ${removedOriginal}) certifies at generation two and permits another rotation`, async (t) => {
+    let fault;
+    const x = await removalFixture(t, {
+      hook(point, operation) {
+        if (point === 'after-commit' && operation === fault) {
+          fault = null;
+          throw Error('Lost later transition reply');
+        }
+      },
+    });
+    assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+    const actor = removedOriginal ? 'new' : 'existing';
+    const target = removedOriginal ? x.context.existing.id : x.context.candidate.id;
+    const oldWrite = x.make(1, 'before removal', {
+      epoch: 3,
+      credential: target,
+      signer: x.keys[removedOriginal ? 'existing' : 'new'],
+    });
+    assert.equal((await x.deliveryCall(oldWrite)).kind, 'decision');
+    const firstRequest = await rotationRequest(x, await removalRequest(x, target, actor));
+    const first = await x.authority.owner.commitRotation(x.f.core, firstRequest.request);
+    assert.equal(first.ok, true, JSON.stringify(first));
+    const frozen = x.f.rows(removedOriginal ? 'promotions' : 'publisher_witnesses');
+    fault = 'admit-membership';
+    const y = await admitNext(x, first.rotation, true);
+    assert.equal(y.admission.epoch.generation, 2);
+    const d = await continuationDelivery(y, continuationExchange(y, y.admission, y.entry, actor));
+    await d.approve();
+    const delivered = await d.transfer(d.request('existing', 'deliver', d.delivery));
+    assert.equal(delivered.ok, true, JSON.stringify(delivered));
+    fault = 'membership-transfer';
+    assert.equal((await d.transfer(d.request('new', 'install', d.installation))).ok, false);
+    x.f.restart();
+    x.authority.restart();
+    const installed = await d.transfer(d.request('new', 'install', d.installation));
+    assert.equal(installed.ok, true, JSON.stringify(installed));
+    assert.equal(installed.certification.epoch.generation, 2);
+    if (removedOriginal)
+      assert.equal(x.f.rows('promotions')[0].delivery_witness, frozen[0].delivery_witness);
+    else
+      assert.deepEqual(
+        x.f.rows('publisher_witnesses').find((r) => r.credential_id === target),
+        frozen.find((r) => r.credential_id === target),
+      );
+    const chain = {
+      successor: x.successor,
+      certification: x.certification,
+      continuations: [first.rotation, y.admission, installed.certification],
+    };
+    const history = (await verifyMembershipChain(chain, x.base)).history;
+    const { removalPreparationRequestMessage } = await import('../../account-protocol/rotation.ts');
+    const prep = {
+      ...firstRequest.request.preparation.request,
+      parent: history.current.head,
+      epoch: history.current.tip,
+      targetId: y.entry.input.candidate.credentialId,
+      nonce: 'e1'.repeat(32),
+    };
+    prep.signature = signed(x.keys[actor], await removalPreparationRequestMessage(prep));
+    const secondRequest = await rotationRequest(x, prep, historyMembership(history));
+    const second = await x.authority.owner.commitRotation(x.f.core, secondRequest.request);
+    assert.equal(second.ok, true, JSON.stringify(second));
+    assert.equal(second.rotation.epoch.generation, 3);
+    x.f.restart();
+    x.authority.restart();
+    assert.deepEqual(
+      await x.authority.owner.commitRotation(x.f.core, secondRequest.request),
+      second,
+    );
+    assert.deepEqual(await x.authority.owner.commitRotation(x.f.core, firstRequest.request), first);
+    assert.equal(x.f.rows('membership_rotations').length, 2);
+    assert.deepEqual(
+      await x.authority.owner.admitMembership(x.f.core, y.admissionInput),
+      y.admission,
+    );
+  });

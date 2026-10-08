@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: bounded lifecycle implemented and served; operator update uptake and writing check pending
+scope: repeatable lifecycle implementation; current-parent service step complete
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -78,12 +78,19 @@ activation, offline survivor delivery, two-way generation-two writing and detach
 [Final product evidence](./development-evidence/2026-10-08-device-removal.json) is `f46978a0`, over
 implementation `2bea3437`. The complete checkpoint history is in [completed.md](./completed.md).
 
-**Next human step:** reopen the unchanged address online, allow the normal application update to
+**Retained installation check:** reopen the unchanged address online, allow the normal application update to
 activate (close/reopen if an old worker remains), then check writing and ordinary sync on both devices.
 No personal browser was opened during the cutover; uptake is not yet confirmed. No personal device
 needs removal for this initial check.
 
-**Further product work:** subsequent admissions/rotations, self/last-device removal, lost-device
+**Active development:** [repeatable lifecycle](./account-repeatable-lifecycle.md), authorized with
+unsigned intermediate commits. Current-parent service admission/approval now passes after cancellation
+and rotation, including replacement with only one surviving old device and a second removal.
+Forty-nine affected service cases and fifteen protocol cases pass. Browser gates remain unchanged.
+Next: retained multi-generation native custody and interrupted activation, then current-generation
+replacement snapshots and the actual repeated browser flow. No live service switch has occurred.
+
+**Further product work:** self/last-device removal, lost-device
 recovery, successor checkpoint replacement/pruning and old-key retirement, then production operations.
 See [the lifecycle plan](./account-device-lifecycle.md) and [removal contract](./account-device-removal.md).
 The first generation-one-to-two removal is the current supported boundary; the account-preview label

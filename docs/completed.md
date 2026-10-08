@@ -11337,3 +11337,24 @@ pending. This completes serving the bounded third-device/cancellation/first-remo
 not repeated rotations, recovery, successor checkpoints/key retirement or production operations.
 This checkpoint is unsigned; release validation remains paused. The session-containing snapshot is
 historical recovery material, not a supported restore recipe without session/issuance invalidation.
+
+
+## 2026-10-08 — Repeatable lifecycle service admission and approval (`L-1`)
+
+Enrollment and continuation admission now derive the current parent from the complete verified
+membership history. Later admission authenticates historical publisher ledgers, preserves immutable
+attempts and exact replies, and retains final witnesses after removing the original publisher.
+Comparison/transfer/cancellation bind the latest admission prefix; recipient certificates accept the
+legitimate two-member replacement case. History bounds are checked before irreversible preparation
+and leave room to complete a new admission. No schema change or live serving change was made.
+
+Three new cases pass: cancellation followed by another connection, and generation-two replacement
+after removing either the original or joined publisher, followed by a second rotation. Later
+admission/certification reply loss and service restart recover exact committed results. All 49 affected
+service/ceremony cases pass across the primary run and a five-case rerun (four listener permission
+failures; one fixture adjusted for earlier removal-fence refusal). Fifteen protocol cases, TypeScript,
+scoped lint/format and diff checks pass. See [the continuation plan and logs](./account-repeatable-lifecycle.md).
+
+This is an unsigned service checkpoint. Browser enrollment/removal gates are unchanged; native
+generation custody, current-generation replacement snapshots and the actual repeated product
+walkthrough remain. The retained build stays `2bea3437`; release validation remains paused.

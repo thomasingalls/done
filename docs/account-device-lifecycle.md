@@ -24,6 +24,10 @@ Later admissions/rotations, self/last-device removal, lost-device recovery, succ
 old-key retirement and public operations remain. The first rotation retains predecessor openers and its
 apply record; completion of the user removal action does not claim those maintenance obligations closed.
 
+The operator has now authorized the [repeatable lifecycle sequence](./account-repeatable-lifecycle.md).
+Its first service increment is implemented; browser generation custody and replacement handoff remain
+in progress, so the currently served product boundary above is unchanged.
+
 ## Product boundaries at the start of lifecycle work
 
 | Boundary | Current behavior | Required extension |

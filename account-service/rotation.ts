@@ -1,3 +1,5 @@
+import { membershipProofChain } from './membershipLocator.ts';
+import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 /** Commit distribution, membership, final cutoff and retry evidence as one service transition. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same } from '../account-protocol/admission.ts';
@@ -149,6 +151,8 @@ export async function commitRotation(
         if (!same(result.epoch.rotation, request) || !same(result.epoch.heads, heads))
           throw Error('Issued rotation changed');
         await verifyMembershipRotation(result, parent);
+        const chain = membershipProofChain(root);
+        parseMembershipChain({ ...chain, continuations: [...chain.continuations, result] });
       }
       const outcome = await resolveRotationOutcome(result.epoch.outcome, verified);
       if (outcome.kind === 'pending') throw Error('Unverified rotation outcome');

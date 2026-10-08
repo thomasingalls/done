@@ -1,3 +1,5 @@
+import { membershipProofChain } from './membershipLocator.ts';
+import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 import { requireNoRemoval } from './removalStore.ts';
 /** Withdraw a pending connection atomically with its publisher boundaries. No content-key change. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -149,6 +151,10 @@ export async function cancelMembership(
           }),
         ));
       await verifyMembershipCancellation(result, auth.membership);
+      if (!saved) {
+        const chain = membershipProofChain(s);
+        parseMembershipChain({ ...chain, continuations: [...chain.continuations, result] });
+      }
       if (!saved && (!same(result.epoch.cancellation, request) || !same(result.epoch.heads, heads)))
         throw Error('Issued cancellation changed');
       const replacements = saved
@@ -193,10 +199,16 @@ export async function cancelMembership(
             })),
           ),
         );
-        const first = replacements.find((r) => r.credentialId === auth.anchor.credential)!;
-        db.prepare(
-          'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
-        ).run(result.head, first.witness ? JSON.stringify(first.witness) : null, s.account.id);
+        const first = replacements.find((r) => r.credentialId === auth.anchor.credential);
+        if (first)
+          db.prepare(
+            'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
+          ).run(result.head, first.witness ? JSON.stringify(first.witness) : null, s.account.id);
+        else
+          db.prepare('UPDATE promotions SET successor_head=? WHERE account_id=?').run(
+            result.head,
+            s.account.id,
+          );
         for (const r of replacements)
           if (r.credentialId !== auth.anchor.credential && r.witness)
             db.prepare(

@@ -1,11 +1,12 @@
 import { requireNoRemoval } from './removalStore.ts';
-/** First continuation admission; private until the general delivery/history owner is composed. */
+/** Serial continuation admission against the full verified current membership and publisher history. */
 import type { DatabaseSync } from 'node:sqlite';
 import { closed, accountIdentifier } from '../account-protocol/preparation.ts';
-import { json, same, verifySignature } from '../account-protocol/admission.ts';
+import { json, same } from '../account-protocol/admission.ts';
 import { parseEnrollmentRetry, parseEnrollmentReceipt } from '../account-protocol/enrollment.ts';
 import { parseCertificationSuccessor } from '../account-protocol/contentDelivery.ts';
 import {
+  MEMBERSHIP_CREDENTIAL_LIMIT,
   membershipState,
   parseMembershipAdmission,
   parseMembershipAdmissionEpoch,
@@ -17,17 +18,20 @@ import {
 import {
   snapshot,
   snapshotBytes,
-  verifyWorkspaceAuthority,
+  verifyCurrentWorkspaceAuthority,
   selectPublisher,
   census,
+  type Snapshot,
   type DeliveryIssuer,
 } from './delivery.ts';
 import { enrollmentSnapshot, verifyEnrollmentRow, type EnrollmentRow } from './enrollment.ts';
 import { membershipEnabled } from './membershipStore.ts';
-import { parseWitness, witnessMessage, type DeliveryWitness } from './deliveryWitness.ts';
+import { parseWitness, type DeliveryWitness } from './deliveryWitness.ts';
 import { retryHash } from './protocol.ts';
 import { rethrowAuthorization } from './authorization.ts';
-import { verifyPendingMembership } from './membershipAuthority.ts';
+import { historyMembership } from '../account-protocol/admissionHistory.ts';
+import { membershipProofChain } from './membershipLocator.ts';
+import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 import { membershipCheckpointRow, retainedCheckpoint } from './membershipCheckpoint.ts';
 import { verifyContentCheckpoint } from '../account-protocol/contentCheckpoint.ts';
 import {
@@ -71,7 +75,20 @@ export async function admitMembership(
       ? parseCertificationSuccessor(JSON.parse(root.transfer.artifact))
       : null;
     const snapshots =
-      cert && row ? cert.epoch.roster.map((m) => snapshot(db, row.workspace_id, m.id)) : [];
+      cert && row
+        ? [
+            ...new Set([
+              ...cert.epoch.roster.map((m) => m.id),
+              ...(root?.continuations ?? []).map(
+                (r) =>
+                  parseMembershipAdmission(JSON.parse(r.artifact)).epoch.preparation.context
+                    .candidate.credentialId,
+              ),
+            ]),
+          ]
+            .sort()
+            .map((id) => snapshot(db, row.workspace_id, id))
+        : [];
     return {
       row,
       root,
@@ -106,18 +123,9 @@ export async function admitMembership(
       if (preparation.receiptId !== request.receiptId) return no('request-conflict');
       if (preparation.v !== 2 || !root || !cert) return no('unavailable');
       const records = root.continuations ?? [];
-      if (records.length > 1) return no('unavailable');
-      const original = {
-        ...root,
-        continuations: [],
-        membershipTransfers: [],
-        membershipCancellations: [],
-        promotion: { ...root.promotion, successor_head: cert.head },
-      };
-      const auth = await verifyWorkspaceAuthority(original, issuer);
+      const auth = await verifyCurrentWorkspaceAuthority(root, issuer);
       const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
-      // The v1 producer can only publish at epoch 3. Preserve its actual catch-up snapshot before
-      // leaving that head; original genesis alone omits pre-sync Local writing.
+      // Keep the original baseline available; replacement-generation snapshots are a separate owner.
       if (!before.checkpoint) return no('checkpoint-required');
       if (!auth.successor) return no('unavailable');
       await verifyContentCheckpoint(retainedCheckpoint(before.checkpoint), {
@@ -125,107 +133,49 @@ export async function admitMembership(
         successor: auth.successor,
         certification: cert,
       });
-      let parent = await verifyMembershipAnchor(base, auth.successor, cert, {
-        epoch: 3,
-        head: cert.head,
-      });
-      let result: MembershipAdmission | undefined;
-      for (const record of records) {
-        const state = membershipState(parent),
-          proof = parseMembershipAdmission(JSON.parse(record.artifact));
-        if (
-          record.workspace_id !== state.workspaceId ||
-          record.epoch !== proof.epoch.epoch ||
-          record.parent !== proof.epoch.parent ||
-          record.head !== proof.head ||
-          record.preparation_id !== proof.epoch.preparation.context.attemptId
-        )
-          throw Error('Retained membership identity changed');
-        // Witnesses authenticate exact old ledger event counts, including refused positions.
-        const boundaries = JSON.parse(record.boundaries) as unknown;
-        if (!Array.isArray(boundaries) || boundaries.length !== state.roster.length)
-          throw Error('Missing membership ledger boundary');
-        for (const [i, value] of boundaries.entries()) {
-          const b = closed(value, ['credentialId', 'witness']);
-          if (b['credentialId'] !== state.roster[i]!.id)
-            throw Error('Membership boundary identity changed');
-          const witness = b['witness'] === null ? null : parseWitness(b['witness']);
-          const head = proof.epoch.heads.find((h) => h.credentialId === b['credentialId']);
-          if (!head || (!witness && head.position !== 0))
-            throw Error('Membership boundary omitted');
-          if (witness)
-            await verifySignature(
-              state.acceptancePublicKey,
-              witness.signature,
-              witnessMessage(
-                {
-                  workspace: state.workspaceId,
-                  credential: state.roster[i]!.id,
-                  lineage: state.lineageId,
-                  head: state.head,
-                  request: root.promotion.request_digest,
-                },
-                witness,
-              ),
-            );
-          const source = snapshots.find(
-            (s) => s && (s.publisher ?? auth.credential) === b['credentialId'],
-          );
-          if (!source) throw Error('Missing membership publisher');
-          const historical = {
-            ...source,
-            rows: source.rows.slice(0, witness?.events ?? 0),
-            continuations: [],
-            promotion: {
-              ...source.promotion,
-              successor_head: state.head,
-              ...(source.publisher
-                ? {}
-                : { delivery_witness: witness ? JSON.stringify(witness) : null }),
-            },
-            ...(source.publisher
-              ? { publisherWitness: witness ? JSON.stringify(witness) : null }
-              : {}),
-          };
-          const ledger = await census(historical, selectPublisher(auth, source.publisher));
-          if (ledger.through !== head.position || ledger.previous !== head.link)
-            throw Error('Membership accepted prefix changed');
-        }
-        parent = await verifyMembershipAdmission(proof, parent);
-        if (record.preparation_id === row.id) {
-          if (!same(proof.epoch.preparation, preparation)) return no('request-conflict');
-          result = proof;
-        }
-      }
+      const parent = auth.history
+        ? historyMembership(auth.history)
+        : await verifyMembershipAnchor(base, auth.successor, cert, { epoch: 3, head: cert.head });
       const current = membershipState(parent);
-      if ((root.membershipTransfers?.length || root.membershipCancellations?.length) && result)
-        await verifyPendingMembership(root, issuer);
-      else if (root.promotion.successor_head !== current.head)
-        throw Error('Membership current pointer changed');
+      const retained = records.find((r) => r.preparation_id === row.id);
+      let result = retained ? parseMembershipAdmission(JSON.parse(retained.artifact)) : undefined;
+      if (result && !same(result.epoch.preparation, preparation)) return no('request-conflict');
+      if (snapshots.some((s) => !s)) throw Error('Missing publisher snapshot');
+      // Authenticate historical as well as current publishers. A removed publisher's final ledger
+      // must not disappear just because the next admission no longer includes it in the roster.
+      const ledgers = [];
+      for (const source of snapshots as Snapshot[]) {
+        const id = source.publisher ?? auth.credential;
+        const known = (auth.historicalMembers ?? auth.members).some((m) => m.id === id);
+        const raw = source.publisher ? source.publisherWitness : source.promotion.delivery_witness;
+        if (!known) {
+          if (source.rows.length || raw) throw Error('Uncertified publisher has a ledger');
+          continue;
+        }
+        const publisher = selectPublisher(auth, source.publisher);
+        const ledger = await census(source, publisher);
+        if (current.roster.some((m) => m.id === id && m.state === 'certified'))
+          ledgers.push({ publisher, ledger, raw });
+      }
       const boundaries: { credentialId: string; witness: DeliveryWitness | null }[] = [];
       const replacements: { credentialId: string; witness: DeliveryWitness | null }[] = [];
       if (!result) {
-        // Transport for later continuation heads is intentionally not exposed in this increment.
+        // Reserve room for this admission and its certification/cancellation before admitting.
+        if (membershipProofChain(root).continuations.length + 2 > 2 * MEMBERSHIP_CREDENTIAL_LIMIT)
+          return no('capacity');
         if (row.authority_hash !== before.authorityToken) return no('stale');
+        if (current.roster.some((m) => m.state === 'pending')) return no('connection-in-progress');
         if (
-          current.epoch !== 3 ||
           preparation.context.candidate.head !== current.head ||
           preparation.context.epoch !== current.epoch
         )
           return no('stale');
         if (now() >= preparation.expiresAt) return no('expired');
-        const ledgers = [];
-        for (const s of snapshots) {
-          if (!s) throw Error('Missing publisher snapshot');
-          const publisher = selectPublisher(auth, s.publisher);
-          const ledger = await census(s, publisher);
-          ledgers.push({ s, publisher, ledger });
-          const raw = s.publisher ? s.publisherWitness : s.promotion.delivery_witness;
+        for (const { publisher, raw } of ledgers)
           boundaries.push({
             credentialId: publisher.credential,
             witness: raw ? parseWitness(JSON.parse(raw)) : null,
           });
-        }
         const c = preparation.context.candidate;
         const roster = [
           ...current.roster,
@@ -253,7 +203,7 @@ export async function admitMembership(
               kind: 'membership-admission-epoch',
               workspaceId: current.workspaceId,
               lineageId: current.lineageId,
-              epoch: 4,
+              epoch: current.epoch + 1,
               parent: current.head,
               generation: current.generation,
               acceptancePublicKey: current.acceptancePublicKey,
@@ -265,6 +215,8 @@ export async function admitMembership(
           ),
         );
         await verifyMembershipAdmission(result, parent);
+        const chain = membershipProofChain(root);
+        parseMembershipChain({ ...chain, continuations: [...chain.continuations, result] });
         for (const { publisher, ledger } of ledgers)
           replacements.push({
             credentialId: publisher.credential,
@@ -310,10 +262,16 @@ export async function admitMembership(
           JSON.stringify(result),
           JSON.stringify(boundaries),
         );
-        const first = replacements.find((r) => r.credentialId === auth.credential)!;
-        db.prepare(
-          'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
-        ).run(result.head, first.witness ? JSON.stringify(first.witness) : null, root.account.id);
+        const first = replacements.find((r) => r.credentialId === auth.credential);
+        if (first)
+          db.prepare(
+            'UPDATE promotions SET successor_head=?,delivery_witness=? WHERE account_id=?',
+          ).run(result.head, first.witness ? JSON.stringify(first.witness) : null, root.account.id);
+        else
+          db.prepare('UPDATE promotions SET successor_head=? WHERE account_id=?').run(
+            result.head,
+            root.account.id,
+          );
         for (const r of replacements)
           if (r.credentialId !== auth.credential && r.witness)
             db.prepare(

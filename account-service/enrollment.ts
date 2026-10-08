@@ -25,7 +25,7 @@ import {
 import type { AuthorityPin } from '../account-protocol/authority.ts';
 import {
   snapshotWorkspaceAuthority,
-  verifyWorkspaceAuthority,
+  verifyCurrentWorkspaceAuthority,
   type WorkspaceAuthoritySnapshot,
 } from './delivery.ts';
 import { assertion, type Policy, type StoredCredential } from './webauthn.ts';
@@ -33,7 +33,8 @@ import { canonical, fresh, hash, retryHash } from './protocol.ts';
 import { randomBytes } from 'node:crypto';
 import { causeCode, type DiagnosticSink } from '../account-protocol/diagnostics.ts';
 import { AccountSessions, EnrollmentLoginRefused } from './sessions.ts';
-import { verifyPendingMembership } from './membershipAuthority.ts';
+import { historyMembership } from '../account-protocol/admissionHistory.ts';
+import { membershipState } from '../account-protocol/membership.ts';
 
 export interface EnrollmentIssuer {
   pin: AuthorityPin;
@@ -275,12 +276,12 @@ export class EnrollmentPreparation {
           return refuse('request-conflict');
         if (request.loginRetryKey && !this.sessions) return refuse('login-unavailable');
       }
-      const pending = snapshot?.base.continuations?.length
-        ? await verifyPendingMembership(snapshot.base, this.issuer)
+      const auth = snapshot
+        ? await verifyCurrentWorkspaceAuthority(snapshot.base, this.issuer)
         : null;
-      const auth =
-        pending?.anchor ??
-        (snapshot ? await verifyWorkspaceAuthority(snapshot.base, this.issuer) : null);
+      const pending = auth?.history
+        ? membershipState(historyMembership(auth.history)).roster.some((m) => m.state === 'pending')
+        : false;
       if (operation === 'cancel')
         return this.transaction(op, () => {
           const row = this.row(request.retryKey)!;
@@ -301,14 +302,14 @@ export class EnrollmentPreparation {
           return this.view(row, null);
         });
       if (operation === 'begin' && 'candidate' in request && !prior) {
-        if (pending) return refuse('connection-in-progress');
+        if (pending || auth?.removal) return refuse('connection-in-progress');
         const candidate = request.candidate;
         if (
           !snapshot ||
           !auth ||
           auth.a.head !== candidate.head ||
           auth.a.lineage !== candidate.lineageId ||
-          (auth.a.tip !== 1 && auth.a.tip !== 3)
+          (auth.a.tip !== 1 && auth.a.tip < 3)
         )
           return refuse('unavailable');
         if (auth.members.some((m) => m.id === candidate.credentialId))
@@ -322,7 +323,7 @@ export class EnrollmentPreparation {
               ? this.view(winner, current)
               : refuse('request-conflict');
           if (current?.token !== snapshot!.token) return refuse('unavailable');
-          if (auth.a.tip === 3 && this.pendingConnection(candidate.workspaceId, current.token))
+          if (auth.a.tip >= 3 && this.pendingConnection(candidate.workspaceId, current.token))
             return refuse('connection-in-progress');
           if (
             this.db
