@@ -105,6 +105,10 @@ survivor's old-generation writing after service removal, subsequent two-way gene
 all-device cold reopen, and detached edits without content/notification traffic. Five offline-upgrade
 checks pass. [Focused evidence](./development-evidence/2026-10-08-device-removal.json) is preserved.
 
+Final walkthrough/evidence checkpoint: `f46978a0`. The exact tested candidate is preserved under
+`.dev/account-enrollment-tailnet/builds/2bea3437`; worker digest is recorded in the runbook.
+Live listener PIDs 81162/81163 were checked read-only and remain unchanged.
+
 **Next:** obtain a fresh quiet point, then back up and upgrade the retained service to schema 20 with
 `ACCOUNT_NETWORK_SESSIONS=1` and `ACCOUNT_MEMBERSHIP_CONTINUATION=1`; serve the immutable lifecycle
 build at the unchanged `:8443` address. No live process/store has been changed by this sequence.

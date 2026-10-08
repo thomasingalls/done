@@ -292,3 +292,10 @@ No live source cleanup, account reset, key replacement or rollback of acknowledg
 This remains development serving. Subsequent admissions/rotations and recovery/checkpoint/retirement
 journeys remain gated or unfinished; the account-preview banner stays. A backup containing sessions
 still requires issuance-context invalidation before any supported restore.
+
+The tested immutable candidate is now preserved at
+`.dev/account-enrollment-tailnet/builds/2bea3437`. Its service worker SHA-256 is
+`744682bac7157313fbfc06b7ed897a18051ec69ffbbae1ebbb909cd52f69edde`. The final evidence
+checkpoint is `f46978a0` (documentation/test extension only after implementation `2bea3437`).
+Read-only listener verification still finds API 81162 and application 81163 on their original loopback
+ports. No quiet point has yet been confirmed for this lifecycle upgrade.
