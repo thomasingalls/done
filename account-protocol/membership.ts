@@ -9,7 +9,17 @@ import {
   parseAdmissionRequest,
   parseReceipt,
 } from './admission.ts';
-import { digest, unhex } from './recovery.ts';
+import { digest, unhex, parseDraft, type RecoveryDraft } from './recovery.ts';
+import {
+  parseRotationRequest,
+  parseRotationOutcome,
+  parseRemovalFinalization,
+  verifyRotationRequest,
+  verifyRemovalFinalization,
+  type RotationRequest,
+  type RotationOutcome,
+} from './rotation.ts';
+import type { AcceptedHead } from './positionDecision.ts';
 import {
   parseEnrollmentReceipt,
   verifyEnrollmentReceipt,
@@ -41,6 +51,14 @@ import {
 
 export const MEMBERSHIP_PROOF_LIMIT = 64 * 1024;
 export const MEMBERSHIP_CREDENTIAL_LIMIT = 64;
+export interface RotatedRecipientCertificate {
+  v: 1;
+  kind: 'rotation-recipient-certificate';
+  members: { id: string; wPub: string; sPub: string }[];
+  recoveryStateDigest: string;
+  approver: string;
+  intentId: string;
+}
 export interface MembershipState {
   pin: AuthorityPin;
   accountId: string;
@@ -53,7 +71,8 @@ export interface MembershipState {
   generation: number;
   acceptancePublicKey: string;
   certifiedSetDigest: string;
-  certificate: RecipientCertificate | MembershipRecipientCertificate;
+  certificate: RecipientCertificate | MembershipRecipientCertificate | RotatedRecipientCertificate;
+  finalized: AcceptedHead[];
   preparations: { credentialId: string; attemptId: string }[];
   roster: AdmissionMember[];
   heads: StreamHead[];
@@ -96,7 +115,7 @@ const bounded = (v: unknown) => {
   if (json(v).length > MEMBERSHIP_PROOF_LIMIT) throw Error('Oversized membership proof');
 };
 function entries<T>(input: unknown, read: (v: unknown) => T, id: (v: T) => string): T[] {
-  if (!Array.isArray(input) || input.length < 2 || input.length > MEMBERSHIP_CREDENTIAL_LIMIT)
+  if (!Array.isArray(input) || input.length < 1 || input.length > MEMBERSHIP_CREDENTIAL_LIMIT)
     throw Error('Invalid membership vector');
   const result = input.map(read);
   for (let i = 1; i < result.length; i++)
@@ -162,6 +181,7 @@ export async function verifyMembershipAnchor(
     acceptancePublicKey: e.acceptancePublicKey,
     certifiedSetDigest: await digest(json(certificate)),
     certificate,
+    finalized: [],
     preparations: [],
     roster: certification.epoch.roster,
     heads: certification.epoch.heads,
@@ -267,7 +287,8 @@ export async function verifyMembershipAdmission(
     candidate.workspaceId !== p.workspaceId ||
     candidate.lineageId !== p.lineageId ||
     candidate.head !== p.head ||
-    p.roster.some((m) => m.id === candidate.credentialId)
+    p.roster.some((m) => m.id === candidate.credentialId) ||
+    p.finalized.some((h) => h.credential === candidate.credentialId)
   )
     throw Error('Membership continuity changed');
   const roster = [
@@ -645,5 +666,142 @@ export async function verifyMembershipCancellation(
     roster: e.roster,
     heads: e.heads,
     preparations: p.preparations.filter((a) => a.credentialId !== candidate),
+  } as MembershipState);
+}
+
+export interface MembershipRotationEpoch {
+  v: 2;
+  kind: 'membership-rotation-epoch';
+  workspaceId: string;
+  lineageId: string;
+  epoch: number;
+  parent: string;
+  generation: number;
+  acceptancePublicKey: string;
+  rotation: RotationRequest;
+  outcome: RotationOutcome;
+  recovery: RecoveryDraft;
+  heads: StreamHead[];
+  finalization: AcceptedHead;
+}
+export interface MembershipRotation {
+  v: 2;
+  kind: 'membership-rotation';
+  epoch: MembershipRotationEpoch;
+  head: string;
+  signature: string;
+}
+export function parseMembershipRotationEpoch(input: unknown): MembershipRotationEpoch {
+  bounded(input);
+  const e = closed(input, [
+    'v',
+    'kind',
+    'workspaceId',
+    'lineageId',
+    'epoch',
+    'parent',
+    'generation',
+    'acceptancePublicKey',
+    'rotation',
+    'outcome',
+    'recovery',
+    'heads',
+    'finalization',
+  ]);
+  if (e['v'] !== 2 || e['kind'] !== 'membership-rotation-epoch')
+    throw Error('Invalid membership rotation epoch');
+  return {
+    v: 2,
+    kind: 'membership-rotation-epoch',
+    workspaceId: h(e['workspaceId'], 16),
+    lineageId: h(e['lineageId']),
+    epoch: integer(e['epoch'], 4),
+    parent: h(e['parent']),
+    generation: integer(e['generation'], 2),
+    acceptancePublicKey: h(e['acceptancePublicKey']),
+    rotation: parseRotationRequest(e['rotation']),
+    outcome: parseRotationOutcome(e['outcome']),
+    recovery: parseDraft(e['recovery']),
+    heads: entries(e['heads'], parseHead, (h) => h.credentialId),
+    finalization: parseRemovalFinalization(e['finalization']),
+  };
+}
+export function parseMembershipRotation(input: unknown): MembershipRotation {
+  bounded(input);
+  const p = closed(input, ['v', 'kind', 'epoch', 'head', 'signature']);
+  if (p['v'] !== 2 || p['kind'] !== 'membership-rotation')
+    throw Error('Invalid membership rotation');
+  return {
+    v: 2,
+    kind: 'membership-rotation',
+    epoch: parseMembershipRotationEpoch(p['epoch']),
+    head: h(p['head']),
+    signature: h(p['signature'], 64),
+  };
+}
+export const membershipRotationMessage = (input: unknown) =>
+  domainMessage('done/device-membership-rotation/v2', parseMembershipRotationEpoch(input));
+/** The one successor binds the client distribution, service outcome and final accepted boundary.
+ * It establishes no local key installation or independent replay of those accepted prefixes. */
+export async function verifyMembershipRotation(
+  input: unknown,
+  parent: VerifiedMembership,
+): Promise<VerifiedMembership> {
+  const p = membershipState(parent),
+    proof = parseMembershipRotation(input),
+    e = proof.epoch;
+  if (
+    e.parent !== p.head ||
+    e.epoch !== p.epoch + 1 ||
+    e.workspaceId !== p.workspaceId ||
+    e.lineageId !== p.lineageId ||
+    e.generation !== p.generation + 1 ||
+    e.acceptancePublicKey !== p.acceptancePublicKey
+  )
+    throw Error('Membership rotation continuity changed');
+  const rotation = await verifyRotationRequest(e.rotation, parent, e.recovery);
+  const finalization = await verifyRemovalFinalization(e.finalization, rotation, e.outcome);
+  if (
+    e.outcome.epoch !== e.epoch ||
+    !same(
+      e.heads.map((h) => h.credentialId),
+      p.heads.map((h) => h.credentialId),
+    )
+  )
+    throw Error('Membership rotation coverage changed');
+  for (const head of e.heads) {
+    const before = e.rotation.preparation.cutoff.find((h) => h.credentialId === head.credentialId)!;
+    if (
+      head.position < before.position ||
+      (head.position === before.position && head.link !== before.link) ||
+      (head.credentialId === finalization.credential &&
+        (head.position !== finalization.position || head.link !== finalization.link))
+    )
+      throw Error('Membership rotation accepted boundary changed');
+  }
+  const message = await membershipRotationMessage(e);
+  if (proof.head !== (await digest(message))) throw Error('Membership rotation head changed');
+  await verifySignature(p.pin.authRoot, proof.signature, message);
+  const certificate: RotatedRecipientCertificate = {
+    v: 1,
+    kind: 'rotation-recipient-certificate',
+    members: p.certificate.members
+      .filter((m) => m.id !== finalization.credential)
+      .map((m) => ({ ...m })),
+    recoveryStateDigest: p.certificate.recoveryStateDigest,
+    approver: e.rotation.actorId,
+    intentId: rotation.id,
+  };
+  return retain({
+    ...structuredClone(p),
+    epoch: e.epoch,
+    head: proof.head,
+    generation: e.generation,
+    certificate,
+    certifiedSetDigest: await digest(json(certificate)),
+    roster: p.roster.filter((m) => m.id !== finalization.credential).map((m) => structuredClone(m)),
+    heads: e.heads.filter((h) => h.credentialId !== finalization.credential),
+    finalized: [...p.finalized, finalization],
+    preparations: p.preparations.filter((a) => a.credentialId !== finalization.credential),
   } as MembershipState);
 }

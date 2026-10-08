@@ -15,6 +15,7 @@ import {
   parseMembershipAdmission,
   parseMembershipCertification,
   parseMembershipCancellation,
+  parseMembershipRotation,
   MEMBERSHIP_CREDENTIAL_LIMIT,
   MEMBERSHIP_PROOF_LIMIT,
 } from './membership.ts';
@@ -64,7 +65,9 @@ export function parseMembershipChain(input: unknown) {
         ? parseMembershipAdmission(proof)
         : proof?.kind === 'membership-cancellation'
           ? parseMembershipCancellation(proof)
-          : parseMembershipCertification(proof),
+          : proof?.kind === 'membership-rotation'
+            ? parseMembershipRotation(proof)
+            : parseMembershipCertification(proof),
     ),
   };
 }

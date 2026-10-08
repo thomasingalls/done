@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: retained removal client complete; committed successor and service rotation composition next
+scope: rotation membership/history complete; durable service producer next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -83,7 +83,12 @@ Client key production and retained exact retry now pass real-HPKE recipient chec
 interruption/lost-reply tests through a simulated committed port (19 affected Node cases pass). Native
 custody is still required. Proof checkpoint: `3005f387`.
 
-**Next:** committed successor/history; service preparation/atomic successor and
+The committed rotation successor and full-chain history now retain prior accepted authorship while
+ending removed-device eligibility and enforcing its exact final cutoff. Generation-one native owners
+explicitly refuse adoption until key/journal activation exists. 27 focused composed cases plus static
+and build checks pass. Retained-client checkpoint: `c313fc27`.
+
+**Next:** service preparation/atomic successor and
 outcome, history/discovery and session boundaries; actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.

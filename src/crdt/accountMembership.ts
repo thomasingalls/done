@@ -7,6 +7,7 @@ import {
 } from '../../account-protocol/membershipLocator';
 import {
   historyAuthority,
+  historyGeneration,
   historyPublisher,
   createAdmissionPrefixVerifier,
   type AdmissionHistory,
@@ -63,6 +64,7 @@ export async function installedMembershipHistory(
   const installed = parseInstalledMembership(input),
     verified = await verifyMembershipChain(installed.proofs, base),
     history = historyPublisher(verified.history, initial.credential);
+  if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
   historyAuthority(history, initial.current);
   if (installed.cuts[0]!.epoch <= initial.current.tip)
     throw Error('Membership adoption precedes installation');

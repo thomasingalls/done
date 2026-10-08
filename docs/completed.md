@@ -10940,3 +10940,32 @@ Together with affected proof/admission/cancellation/delivery cases, 19 Node case
 (`/tmp/done-removal-client.log`). TypeScript, scoped lint/format and diff checks pass. Live and release
 validation remain unchanged. Proof checkpoint: `3005f387`. Next: the committed successor/history boundary
 and actual service preparation/commit, then native generation activation and Devices composition.
+
+
+## 2026-10-08 — Committed rotation membership and historical authorship (`L-1`)
+
+Added the signed membership-rotation successor: it verifies one client-produced distribution, its
+matching authenticated service outcome, the unchanged parent recovery authority and acceptance key,
+and the excluded credential's exact final accepted-write boundary. Remaining publisher heads may
+advance beyond preparation; the excluded head cannot. The resulting recipient certificate is derived
+from the verified parent minus the target and the signed intent, not from a service-proposed roster.
+
+The complete-chain verifier and publisher history now carry generations and finalized streams. Removed
+publishers remain available for accepted-prefix replay and historical decision verification, while
+current reader eligibility is false and writes above the final cut or at/after the removal epoch
+refuse. Later admissions preserve those histories and cannot reuse a finalized credential identity.
+Removing the original publisher also preserves the joined survivor's independent authority and does
+not accidentally copy the original's finalization onto it.
+
+The existing generation-one native installation and adoption paths now explicitly refuse a valid
+rotation. This is a temporary fail-closed integration boundary: parsing the new proof must not advance
+an editor while it still holds only the old generation/journal owner. Actual activation remains open.
+No live service can produce this new successor yet and no UI completion claim is enabled.
+
+Evidence: 27 focused Node cases pass (`/tmp/done-removal-composed.log`), including new atomic-successor
+negative cases, independently framed accepted-envelope replay before removal, an above-cutoff
+service-signed response rejection, original-publisher removal, and valid-rotation refusal by the
+existing installation path. TypeScript, scoped lint/format, build, bundle budget (108.7 kB initial JS)
+and origin checks pass. Build log `/tmp/done-removal-build.log`. Earlier retained-client checkpoint is
+`c313fc27`. Next: durable service preparation/fence and atomic rotation producer, then native key/
+journal activation and Devices composition. Live remains `a07de792` / schema 14; release validation paused.

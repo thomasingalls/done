@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { build } from 'vite';
 import { resolve } from 'node:path';
 import { deliveryFixture } from './delivery-fixtures.mjs';
+import { membershipRotationFixture } from './rotation-fixtures.mjs';
 const result = await build({
   configFile: false,
   logLevel: 'error',
@@ -156,4 +157,20 @@ test('adoption rejects forged ancestry, reordered cuts, incomplete accepted pref
       crypto.subtle,
     ),
   );
+});
+
+test('generation-one installation refuses a valid rotation until the actual generation owner exists', async () => {
+  const f = await membershipRotationFixture(),
+    proof = f.rotate();
+  const initial = (await client.verifyMembershipChain(f.proofs, f.f.f.base)).history;
+  const record = {
+    v: 1,
+    proofs: { ...f.proofs, continuations: [proof] },
+    cuts: [{ epoch: proof.epoch.epoch, head: proof.head, before: client.emptySpoolWitness() }],
+  };
+  for (const id of f.p.certificate.members.map((m) => m.id))
+    await assert.rejects(
+      client.installedMembershipHistory(record, f.f.f.base, client.historyPublisher(initial, id)),
+      /generation activation/,
+    );
 });

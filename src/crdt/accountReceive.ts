@@ -30,6 +30,7 @@ import {
   historyDevices,
   historyPublisher,
   historyAuthority,
+  historyGeneration,
 } from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
@@ -666,6 +667,7 @@ async function openAccountReceiveOwner(
           };
       const verifiedHistory = await task.wait(() => verifyMembershipChain(proofs, anchor)),
         history = historyPublisher(verifiedHistory.history, route.credential);
+      if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
       historyAuthority(history, route.history.current);
       task.step(() => checkCommit?.());
       if (history.current.tip === route.epoch)

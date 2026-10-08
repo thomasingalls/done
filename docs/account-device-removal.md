@@ -12,9 +12,10 @@ client-generated next content key's exact distribution, and the removed credenti
 final accepted-write head together. Existing copies cannot be erased. An offline remaining device can
 still produce old-generation writing until it observes and activates the successor.
 
-The private protocol in `account-protocol/rotation.ts` currently verifies preparation, intent, outcome
-and finalization evidence only. It does not yet perform a service mutation, extend membership history,
-install keys, grant access or enable a product control.
+The private protocol verifies preparation, intent, outcome and finalization evidence. The committed
+rotation successor now extends verified membership/history, retaining historical authorship while
+ending current access. It does not yet perform a service mutation, install keys, grant live access
+or enable a product control. The generation-one native owner explicitly refuses rotation adoption.
 
 ## Stable cutoff before the intent
 

@@ -26,9 +26,11 @@ import {
   parseMembershipAdmission,
   parseMembershipCertification,
   parseMembershipCancellation,
+  parseMembershipRotation,
   verifyMembershipAdmission,
   verifyMembershipCertification,
   verifyMembershipCancellation,
+  verifyMembershipRotation,
   type VerifiedMembership,
 } from './membership.ts';
 
@@ -41,6 +43,7 @@ export interface AdmissionHistory {
   readonly boundary: Readonly<{ position: number; link: string }>;
   readonly authorities: readonly Readonly<DecisionAuthority>[];
   readonly boundaries: readonly Readonly<{ position: number; link: string }>[];
+  readonly finalization?: Readonly<{ position: number; link: string; epoch: number }>;
   readonly readers: readonly Readonly<{ id: string; publicKey: string }>[];
 }
 const verified = new WeakSet<AdmissionHistory>();
@@ -53,9 +56,11 @@ interface PublisherTimeline {
   signingKey: string;
   authorities: AdmissionHistory['authorities'];
   boundaries: AdmissionHistory['boundaries'];
+  finalization?: AdmissionHistory['finalization'];
 }
 interface ContinuationTimeline {
   membership: VerifiedMembership;
+  generations: ReadonlyMap<number, number>;
   readers: ReadonlyMap<number, AdmissionHistory['readers']>;
   publishers: ReadonlyMap<string, PublisherTimeline>;
 }
@@ -152,6 +157,11 @@ export async function verifyCertificationHistory(
     );
   timelines.set(result, {
     membership,
+    generations: new Map([
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ]),
     readers: new Map([
       [1, prior.readers],
       [2, prior.readers],
@@ -180,13 +190,17 @@ export async function extendMembershipHistory(
       ? parseMembershipAdmission(input)
       : (input as { kind?: unknown } | null)?.kind === 'membership-cancellation'
         ? parseMembershipCancellation(input)
-        : parseMembershipCertification(input);
+        : (input as { kind?: unknown } | null)?.kind === 'membership-rotation'
+          ? parseMembershipRotation(input)
+          : parseMembershipCertification(input);
   const membership =
     proof.kind === 'membership-admission'
       ? await verifyMembershipAdmission(proof, timeline.membership)
       : proof.kind === 'membership-cancellation'
         ? await verifyMembershipCancellation(proof, timeline.membership)
-        : await verifyMembershipCertification(proof, timeline.membership);
+        : proof.kind === 'membership-rotation'
+          ? await verifyMembershipRotation(proof, timeline.membership)
+          : await verifyMembershipCertification(proof, timeline.membership);
   const state = membershipState(membership);
   const current = captureAuthority({
     ...root.current,
@@ -196,10 +210,20 @@ export async function extendMembershipHistory(
   });
   const publishers = new Map<string, PublisherTimeline>();
   for (const [id, publisher] of timeline.publishers) {
-    const h = state.heads.find((h) => h.credentialId === id);
+    const finalization = state.finalized.find((h) => h.credential === id);
+    const h = state.heads.find((h) => h.credentialId === id) ?? finalization;
     if (!h) throw Error('Missing publisher transition boundary');
     publishers.set(id, {
       signingKey: publisher.signingKey,
+      ...(finalization
+        ? {
+            finalization: Object.freeze({
+              position: finalization.position,
+              link: finalization.link,
+              epoch: finalization.epoch,
+            }),
+          }
+        : {}),
       authorities: Object.freeze([...publisher.authorities, current]),
       boundaries: Object.freeze([
         ...publisher.boundaries,
@@ -225,6 +249,7 @@ export async function extendMembershipHistory(
     authorities: own.authorities,
     boundaries: own.boundaries,
     boundary: own.boundaries.at(-1)!,
+    ...(own.finalization ? { finalization: own.finalization } : {}),
   });
   verified.add(result);
   rosters.set(
@@ -233,6 +258,7 @@ export async function extendMembershipHistory(
   );
   timelines.set(result, {
     membership,
+    generations: new Map([...timeline.generations, [state.epoch, state.generation]]),
     publishers,
     readers: new Map([...timeline.readers, [state.epoch, readers]]),
   });
@@ -274,12 +300,13 @@ export function historyPublisher(history: AdmissionHistory, credential: string):
   const checked = requireHistory(history);
   const h = publisherRoots.get(checked) ?? checked;
   if (credential === h.credential) return h;
-  const member = h.readers.find((r) => r.id === credential);
   const publisher = timelines.get(h)?.publishers.get(credential);
-  if (!member || !publisher) throw Error('Uncertified publisher');
+  if (!publisher) throw Error('Uncertified publisher');
   const empty = Object.freeze({ position: 0, link: ZERO_REFUSAL });
+  const { finalization: _ownFinalization, ...shared } = h;
   const result = Object.freeze({
-    ...h,
+    ...shared,
+    ...(publisher.finalization ? { finalization: publisher.finalization } : {}),
     first: publisher.authorities[0]!,
     credential,
     signingKey: publisher.signingKey,
@@ -310,6 +337,12 @@ export function historyAuthority(
     throw Error('Authority is outside verified admission history');
   return expected;
 }
+/** Generation at an authenticated epoch; a current route cannot silently reuse its predecessor key. */
+export function historyGeneration(history: AdmissionHistory, epoch = history.current.tip): number {
+  const h = requireHistory(history);
+  if (!h.authorities.some((a) => a.tip === epoch)) throw Error('Unknown history generation');
+  return timelines.get(publisherRoots.get(h) ?? h)?.generations.get(epoch) ?? 1;
+}
 /** Callers retain their own current route. This only resolves an old payload's compatible route. */
 export function historyEnvelopeRoute(
   history: AdmissionHistory,
@@ -322,13 +355,14 @@ export function historyEnvelopeRoute(
     r.v !== 2 ||
     r.workspace_id !== h.current.workspace ||
     r.credential_id !== h.credential ||
-    r.gen !== 1 ||
+    r.gen !== historyGeneration(h, r.epoch) ||
+    (h.finalization && epoch >= h.finalization.epoch) ||
     !h.authorities.some((a) => a.tip === r.epoch) ||
     !h.authorities.some((a) => a.tip === epoch) ||
     epoch > r.epoch
   )
     throw Error('Envelope is outside verified admission history');
-  return { ...r, epoch };
+  return { ...r, epoch, gen: historyGeneration(h, epoch) };
 }
 /** Original proof issuance and current eligibility are separate. Unknown evidence grants nothing. */
 export async function verifyHistoryDecision(
@@ -342,6 +376,11 @@ export async function verifyHistoryDecision(
     current = historyAuthority(h, authority),
     own = { ...captureSubject(expected), parent: expected.parent, previous: expected.previous };
   if (own.credential !== h.credential) throw Error('Unsupported admission publisher');
+  if (
+    h.finalization &&
+    (own.position > h.finalization.position || own.epoch >= h.finalization.epoch)
+  )
+    return { kind: 'unknown' };
   if (!h.authorities.some((a) => a.tip === own.epoch)) return { kind: 'unknown' };
   // Parsing captures the wire before crypto; the existing verifier still checks every signature/link.
   let issuance = current;
@@ -406,7 +445,11 @@ export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle 
           throw Error('Envelope crosses authority boundary');
         const e = await verifyNetworkEnvelope(
           bytes,
-          historyEnvelopeRoute(h, { ...route, epoch: maxEpoch }, decoded.epoch),
+          historyEnvelopeRoute(
+            h,
+            { ...route, epoch: maxEpoch, gen: historyGeneration(h, maxEpoch) },
+            decoded.epoch,
+          ),
           key,
           subtle,
         );

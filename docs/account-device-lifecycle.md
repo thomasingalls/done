@@ -438,3 +438,12 @@ certified devices and recovery, retains its self-wrap and exact signed intent, a
 persistence interruptions/lost replies. It proves its retained key can reopen before transmission.
 This is the coordinator boundary; native custody, committed membership/history and service producers
 remain unfinished. No removal button or new live service version is enabled by this checkpoint.
+
+
+## Rotation membership/history checkpoint — 2026-10-08
+
+Retained client key production is `c313fc27`. The signed rotation successor and full-chain history now
+verify the exact distribution/outcome/finalization together. Historical authorship survives removal;
+current reader rights and post-cutoff writes do not. Generation-one native adoption explicitly refuses
+this proof until actual generation installation is implemented. Focused composed evidence passes;
+service producers, native activation and the product control remain unfinished and undeployed.
