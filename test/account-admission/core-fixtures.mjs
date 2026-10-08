@@ -97,8 +97,12 @@ export async function prepared(t, options = {}) {
     proposedEpoch: 1,
     signer,
     actors: [{ id: scope.principalId, kind: 'human', credential: signer }],
-    coverage: { derivation: 'yjs-13.6.31-snapshot-v1', snapshot: '0000', heads: [] },
-    checkpoint: {
+    coverage: options.genesis?.coverage ?? {
+      derivation: 'yjs-13.6.31-snapshot-v1',
+      snapshot: '0000',
+      heads: [],
+    },
+    checkpoint: options.genesis?.checkpoint ?? {
       v: 1,
       salt: '66'.repeat(16),
       nonce: '77'.repeat(12),
@@ -154,7 +158,11 @@ export async function prepared(t, options = {}) {
   const begin = () =>
     authority.owner.beginPromotion(f.core, { retryKey: account.retryKey, request });
   const completion = async (offer) => {
-    const c = await completionBodies(request, offer, { sv: '00', ds: '0000' });
+    const c = await completionBodies(
+      request,
+      offer,
+      options.genesis?.parts ?? { sv: '00', ds: '0000' },
+    );
     c.manifest.signature = signing(s.privateKey, manifestBytes(c.manifest));
     c.admission.signature = signing(s.privateKey, semanticBytes(c.admission));
     return c;

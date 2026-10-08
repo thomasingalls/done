@@ -20,7 +20,7 @@ import { message as grantMessage, denial } from '../account-sessions/grant-fixtu
 import { registered } from '../account-core/fixtures.mjs';
 import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { ceremonyInvitationMessage } from '../../account-protocol/ceremonyRelay.ts';
-import { createHash } from 'node:crypto';
+import { createHash, createCipheriv, hkdfSync, randomBytes } from 'node:crypto';
 import { authorityFixture } from '../account-authority/fixtures.mjs';
 import { fresh, lp } from '../account-enrollment/fixtures.mjs';
 import { AccountCore } from '../../account-service/core.ts';
@@ -164,7 +164,7 @@ async function checkpointFixture(t, options = {}) {
     requestDigest: x.receipt.offer.epoch.requestDigest,
   });
   assert.equal(binding.kind, 'promotion-slot-binding');
-  const checkpoint = {
+  let checkpoint = {
     v: 1,
     kind: 'content-checkpoint',
     salt: 'ab'.repeat(16),
@@ -190,6 +190,8 @@ async function checkpointFixture(t, options = {}) {
     x.keys.existing,
     await manifestMessage(checkpoint.manifest),
   );
+  if (options.createCheckpoint)
+    checkpoint = await options.createCheckpoint({ ...x, certification }, binding);
   const admission = await checkpointAdmissionBody(checkpoint, x.context.candidate.id);
   admission.signature = signed(x.keys.new, await semanticMessage(admission));
   const exchange = async (role, action, payload = null, overrides = {}, key = x.keys[role]) => {
@@ -2754,4 +2756,348 @@ test('opt-in HTTP continuation uses exact scoped grants and publishes hints only
   assert.equal(expired.body.refusal, 'grant-required');
   const renewed = await g.grant(workspace, x.entry.key);
   assert.equal((await api.post(routes.discover, discovery, renewed)).status, 200);
+});
+
+let membershipReaderClient;
+async function readingClient() {
+  if (!membershipReaderClient)
+    membershipReaderClient = (async () => {
+      const built = await build({
+        configFile: false,
+        logLevel: 'error',
+        build: {
+          write: false,
+          minify: false,
+          lib: { entry: resolve('test/account-membership/reader-entry.ts'), formats: ['es'] },
+          rolldownOptions: { output: { codeSplitting: false } },
+        },
+      });
+      const code = (Array.isArray(built) ? built[0] : built).output.find(
+        (v) => v.type === 'chunk',
+      ).code;
+      return import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'));
+    })();
+  return membershipReaderClient;
+}
+async function membershipReadingFixture(t) {
+  const client = await readingClient(),
+    { Y, genesisCoverage, genesisCoverageParts } = client,
+    kg = randomBytes(32),
+    source = new Y.Doc({ gc: false });
+  t.after(() => {
+    kg.fill(0);
+    source.destroy();
+  });
+  const principal = '11'.repeat(16),
+    workspace = '22'.repeat(16);
+  source.getMap('meta').set('schemaVersion', 4);
+  source
+    .getMap('meta')
+    .set('actor:' + principal, { kind: 'human', name: 'Test writer', color: '#334455' });
+  source.getText('master').insert(0, 'Original genesis.');
+  const salt = randomBytes(16),
+    nonce = randomBytes(12),
+    key = Buffer.from(hkdfSync('sha256', kg, salt, lp('done/checkpoint/v1', workspace), 32)),
+    cipher = createCipheriv('aes-256-gcm', key, nonce);
+  cipher.setAAD(lp('done/cp/v1', '1', workspace, '1', '1'));
+  const original = Y.encodeStateAsUpdate(source);
+  const ct = Buffer.concat([cipher.update(original), cipher.final(), cipher.getAuthTag()]);
+  key.fill(0);
+  const parts = genesisCoverageParts(source);
+  const genesis = {
+    checkpoint: {
+      v: 1,
+      salt: salt.toString('hex'),
+      nonce: nonce.toString('hex'),
+      ct: ct.toString('hex'),
+    },
+    coverage: {
+      derivation: 'yjs-13.6.31-snapshot-v1',
+      snapshot: Buffer.from(genesisCoverage(source)).toString('hex'),
+      heads: [],
+    },
+    parts: { sv: Buffer.from(parts.sv).toString('hex'), ds: Buffer.from(parts.ds).toString('hex') },
+  };
+  // This writing is absent from genesis and from every outbound envelope. Only the catch-up holds it.
+  source.getText('master').insert(source.getText('master').length, ' Before sync began.');
+  let liveClock = false;
+  const x = await continuationFixture(t, {
+    now: () => (liveClock ? Date.now() : 1000),
+    genesis,
+    generationKey: kg,
+    createCheckpoint: (x, binding) =>
+      client.createContentCheckpoint(
+        source,
+        kg,
+        {
+          base: x.base,
+          successor: x.successor,
+          certification: x.certification,
+        },
+        binding,
+        async (bytes) => signed(x.keys.existing, bytes),
+      ),
+  });
+  const e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  const installed = await d.transfer(d.request('new', 'install', d.installation));
+  const authority = {
+    base: x.base,
+    proofs: {
+      successor: x.successor,
+      certification: x.certification,
+      continuations: [x.admission, installed.certification],
+    },
+  };
+  liveClock = true;
+  let saved = {
+      role: 'new',
+      content: {
+        delivery: d.delivery,
+        key: { sequence: 1, ct: 'ef'.repeat(48) },
+        installation: d.installation,
+        certification: installed.certification,
+      },
+    },
+    current = structuredClone(saved);
+  let beforeSave,
+    afterSave,
+    beforeRead,
+    semanticSignatures = 0,
+    opened = 0;
+  const stop = new AbortController();
+  const owner = {
+    participant: e.context.candidate,
+    load: async () => structuredClone(saved),
+    sign: async (bytes) => {
+      if (Buffer.from(bytes).includes(Buffer.from('done/cp-admit/v2'))) semanticSignatures++;
+      return signed(x.entry.key, bytes);
+    },
+    withInstalledKey: async (seal, binding, work) => {
+      assert.deepEqual(seal, saved.content.key);
+      assert.equal(binding, hash(JSON.stringify(saved.content.delivery)));
+      opened++;
+      const copy = new Uint8Array(kg);
+      try {
+        return await work(copy);
+      } finally {
+        copy.fill(0);
+      }
+    },
+  };
+  const io = {
+    signal: stop.signal,
+    save: async () => {
+      beforeSave?.(current);
+      saved = structuredClone(current);
+      afterSave?.(current);
+    },
+    request: async (path, body) => {
+      assert.equal(path, '/account/membership/v2/checkpoint');
+      return x.authority.owner.readMembershipCheckpoint(x.f.core, body);
+    },
+    read: async (bytes) => {
+      await beforeRead?.(bytes);
+      const response = await x.authority.owner.readInbound(x.f.core, bytes);
+      assert.equal(response.kind, 'decision', JSON.stringify(response));
+      return response.bytes;
+    },
+  };
+  return {
+    x,
+    client,
+    source,
+    kg,
+    Y,
+    authority,
+    owner,
+    io,
+    stop,
+    run: () => client.loadMembershipWriting(current, owner, authority, io),
+    restart: () => {
+      current = structuredClone(saved);
+    },
+    setState: (value) => {
+      saved = structuredClone(value);
+      current = structuredClone(value);
+    },
+    hooks: (hooks = {}) => {
+      ({ beforeSave, afterSave, beforeRead } = hooks);
+    },
+    get saved() {
+      return structuredClone(saved);
+    },
+    get semanticSignatures() {
+      return semanticSignatures;
+    },
+    get opened() {
+      return opened;
+    },
+  };
+}
+
+test('later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves', async (t) => {
+  const f = await membershipReadingFixture(t),
+    { x, Y, source } = f;
+  const second = new Y.Doc({ gc: false });
+  t.after(() => second.destroy());
+  Y.applyUpdate(second, Y.encodeStateAsUpdate(source));
+  const initial = Y.encodeStateVector(second);
+  second.getText('master').insert(second.getText('master').length, ' Second device.');
+  const dependency = Y.encodeStateAsUpdate(second, initial);
+  Y.applyUpdate(source, dependency);
+  const beforeFirst = Y.encodeStateVector(source);
+  source.getText('master').insert(source.getText('master').length, ' First device after second.');
+  const dependent = Y.encodeStateAsUpdate(source, beforeFirst);
+  assert.equal(
+    (await x.deliveryCall(x.make(1, '', { epoch: 4, updates: [dependent] }))).kind,
+    'decision',
+  );
+  f.hooks({
+    beforeSave() {
+      throw Error('Interrupted before baseline save');
+    },
+  });
+  await assert.rejects(f.run(), /Interrupted before baseline save/);
+  assert.equal(f.saved.reading, undefined);
+  assert.equal(f.semanticSignatures, 0);
+  f.hooks();
+  await assert.rejects(f.run(), /did not persist/); // In-memory progress cannot stand in for a committed save.
+  f.restart();
+  f.hooks({
+    afterSave(p) {
+      if (p.reading && !p.reading.admission) throw Error('Lost baseline save reply');
+    },
+  });
+  await assert.rejects(f.run(), /Lost baseline save reply/);
+  assert.equal(f.semanticSignatures, 0);
+  f.restart();
+  f.hooks({
+    afterSave(p) {
+      if (p.reading.admission) throw Error('Lost local admission reply');
+    },
+  });
+  await assert.rejects(f.run(), /Lost local admission reply/);
+  assert.equal(f.semanticSignatures, 1);
+  const admission = f.saved.reading.admission;
+  assert.equal(admission.admittingCredential, f.owner.participant.id);
+  assert.equal(admission.decisionParent, f.authority.proofs.continuations.at(-1).head);
+  assert.notEqual(admission.decisionParent, x.certification.head);
+  f.restart();
+  f.hooks({
+    beforeSave(p) {
+      if (p.reading.streams.some((s) => s.events.length)) throw Error('Interrupted event save');
+    },
+  });
+  await assert.rejects(f.run(), /Interrupted event save/);
+  assert.equal(f.saved.reading.streams.flatMap((s) => s.events).length, 0);
+  f.restart();
+  f.hooks();
+  assert.equal((await f.run()).kind, 'loading'); // The first stream's edit is durably pending on the second.
+  assert.equal(f.saved.reading.streams.flatMap((s) => s.events).length, 1);
+  assert.deepEqual(f.saved.reading.admission, admission);
+  assert.equal(f.semanticSignatures, 1);
+  x.f.restart();
+  x.authority.restart();
+  f.restart();
+  assert.equal(
+    (
+      await x.deliveryCall(
+        x.make(1, '', {
+          epoch: 4,
+          credential: x.context.candidate.id,
+          signer: x.keys.new,
+          updates: [dependency],
+        }),
+      )
+    ).kind,
+    'decision',
+  );
+  const ready = await f.run();
+  assert.equal(ready.kind, 'reading');
+  assert.match(JSON.stringify(ready.entries), /Before sync began/);
+  assert.match(JSON.stringify(ready.entries), /Second device/);
+  assert.match(JSON.stringify(ready.entries), /First device after second/);
+  const { history } = await f.client.verifyMembershipChain(f.authority.proofs, f.authority.base);
+  const replay = await f.client.replayMembershipReading(
+    f.saved.reading,
+    {
+      base: x.base,
+      successor: x.successor,
+      certification: x.certification,
+    },
+    history,
+    f.owner.participant,
+    new Uint8Array(f.kg),
+    { assertCurrent() {}, now: () => Number.MAX_SAFE_INTEGER },
+  );
+  try {
+    assert.equal(replay.pending, false);
+    assert.equal(replay.doc.getText('master').toString(), source.getText('master').toString());
+  } finally {
+    f.client.eraseMembershipReading(replay);
+  }
+  f.restart();
+  assert.deepEqual(await f.run(), ready);
+});
+
+test('later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready', async (t) => {
+  const f = await membershipReadingFixture(t),
+    { x, Y } = f;
+  const update = new Y.Doc({ gc: false });
+  t.after(() => update.destroy());
+  update.getText('master').insert(0, 'Remote edit.');
+  assert.equal(
+    (await x.deliveryCall(x.make(1, '', { epoch: 5, updates: [Y.encodeStateAsUpdate(update)] })))
+      .kind,
+    'decision',
+  );
+  assert.equal((await f.run()).kind, 'reading');
+  const saved = f.saved;
+  for (const edit of [
+    (p) => {
+      p.content.installation.signature = '00'.repeat(64);
+    },
+    (p) => {
+      p.reading.head = x.admission.head;
+    },
+    (p) => {
+      p.reading.streams.pop();
+    },
+    (p) => {
+      p.reading.streams.reverse();
+    },
+    (p) => {
+      p.reading.admission = x.admission;
+    },
+    (p) => {
+      p.reading.admission.admittingCredential = x.context.candidate.id;
+    },
+    (p) => {
+      p.reading.admission.decisionParent = x.certification.head;
+    },
+    (p) => {
+      p.reading.streams.find((s) => s.events.length).events.pop();
+    },
+    (p) => {
+      p.reading.streams[0].prefix.link = 'ff'.repeat(32);
+    },
+  ]) {
+    const bad = structuredClone(saved);
+    edit(bad);
+    f.setState(bad);
+    await assert.rejects(f.run());
+  }
+  f.setState(saved);
+  const wrong = { ...f.owner, participant: { ...f.owner.participant, id: x.context.candidate.id } };
+  await assert.rejects(f.client.loadMembershipWriting(saved, wrong, f.authority, f.io));
+  f.hooks({
+    beforeRead() {
+      f.stop.abort();
+    },
+  });
+  await assert.rejects(f.run());
+  assert.deepEqual(f.saved, saved);
 });

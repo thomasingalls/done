@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: historical checkpoint access complete; client replay and owned activation next
+scope: later-device client replay complete; native joined-slot activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -92,9 +92,12 @@ product walkthrough is still required.
 Native custody is committed as `fe4c2893`. Continuation admission now requires the original catch-up
 checkpoint before advancing authority. A current certified member can fetch it through a distinct
 read-only version-2 route; pending candidates cannot. 73 affected Node checks and build checks pass.
-The new device still needs its own replay and semantic admission before activation.
+Historical access is committed as `fc3be561`. The browser reader now verifies all publisher prefixes
+and retains its own semantic baseline admission under the current certified head. 71 affected checks
+pass, including real encrypted Yjs replay through cross-publisher dependencies and interrupted saves.
+Native activation of this later-reader state remains required.
 
-**Next:** third-device replay across publishers, durable local admission, editor activation and
+**Next:** versioned native joined-slot activation of the later-reader state, editor opening and
 subsequent authority adoption;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed

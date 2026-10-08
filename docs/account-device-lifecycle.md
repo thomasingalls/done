@@ -301,3 +301,17 @@ This read provides authenticated historical ciphertext, not a new semantic admis
 all subsequent writing has been fetched. The client must replay every eligible publisher's accepted
 history and retain its own admission before activating a later slot. No new schema or live upgrade
 is needed for this read-only addition; continuation serving remains disabled by default.
+
+
+## Later-device replay checkpoint — 2026-10-08
+
+The client now cold-replays the historical baseline and every current publisher's independently
+authenticated stream. A later reader signs its own semantic baseline admission under the current
+certified parent after reopening committed ciphertext. Save failures cannot be replaced by in-memory
+progress. Missing Yjs dependencies keep the load incomplete, and bounded reads resume from retained
+prefixes. This component is tested with actual encrypted Yjs content and service decisions; its
+committed-vault port is simulated in those tests.
+
+Next: version the native joined-device record to retain this complete authority and multi-publisher
+reading state, attach restartable activation, and then compose current-authority adoption and the
+product ceremony. The original two-device owner must continue to open its existing records unchanged.

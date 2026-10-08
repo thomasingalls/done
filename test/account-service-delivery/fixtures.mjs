@@ -14,7 +14,7 @@ export async function ready(t, options = {}) {
     offer = await x.begin(),
     receipt = await x.finish(offer);
   if (receipt.kind !== 'promotion-receipt') throw Error(JSON.stringify(receipt));
-  const kg = randomBytes(32);
+  const kg = options.generationKey ? Buffer.from(options.generationKey) : randomBytes(32);
   t.after(() => kg.fill(0));
   const workspace = x.request.candidate.workspaceId,
     credential = x.request.candidate.signer;

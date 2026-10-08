@@ -10605,3 +10605,25 @@ isolation and diff checks pass. Logs: `/tmp/done-membership-checkpoint-regressio
 `/tmp/done-membership-checkpoint-focused-final.log`, `/tmp/done-membership-checkpoint-build.log`.
 Next: client replay across all publishers, the new device's own durable semantic admission, and
 activation/current-authority adoption. No retained installation was changed. Release validation is paused.
+
+
+## 2026-10-08 — Later-device authenticated content replay (`L-1`)
+
+After historical-baseline checkpoint `fc3be561`, the browser reader cold-replays the original encrypted
+checkpoint and a separately verified retained prefix for every current publisher. Its own semantic
+admission binds that historical baseline to the new reader and its current certified head; the
+original second-device receipt cannot substitute. The reader rechecks committed custody before opening
+the key and after saves. A missing dependency leaves the retained load incomplete, never ready for
+activation. Bounded batches resume from saved prefixes. Content-checkpoint inbound evidence now accepts
+later epochs only through the existing branded history, reader and publisher checks.
+
+Evidence: 71 affected membership, transfer and inbound-service Node cases pass. Two new cases bundle
+the real browser code and use the real service with independently encrypted genesis, real Yjs catch-up
+content and signed encrypted updates. They preserve writing found only in the catch-up checkpoint,
+retain a cross-publisher dependency until its predecessor arrives, cold-replay after restart/expiry,
+and cover refused/lost baseline, admission and event saves. Substituted custody, publisher sets,
+receipts, head/prefix evidence and cancellation refuse. These tests simulate the committed vault port;
+native slot activation of the later reader remains next. TypeScript, scoped lint/format, build, budget,
+origin isolation and diff checks pass. Logs: `/tmp/done-membership-reader-focused.log`,
+`/tmp/done-membership-reader-regressions.log`, `/tmp/done-membership-reader-build.log`. No UI activation
+or retained-service change occurred; release validation is paused.

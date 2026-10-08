@@ -126,7 +126,7 @@ function captureContext(input: InboundContext): InboundContext {
   inboundHex(input.creatingCredential, 16);
   if (
     !['promotion-genesis', 'content-checkpoint'].includes(baseline.kind) ||
-    (baseline.kind === 'content-checkpoint' && (!input.history || a.tip !== 3)) ||
+    (baseline.kind === 'content-checkpoint' && (!input.history || a.tip < 3)) ||
     (!input.history && a.tip !== 1) ||
     input.generation !== 1 ||
     publisher.id !== input.creatingCredential ||
