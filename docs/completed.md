@@ -11096,3 +11096,34 @@ No live process or store changed. `:8443` stays on `a07de792` / schema 14. Prepa
 native journal-inclusive generation activation, Devices controls and a disposable end-to-end removal
 journey remain open. Transport checkpoint `9242fec0`; this checkpoint is unsigned. Release validation
 remains paused.
+
+
+## 2026-10-08 — Prepared-removal takeover by another remaining owner (`L-1`)
+
+A different currently certified actor may finish an existing preparation for the exact same parent
+and target. The service returns the original signed cutoff without replacing the row or reopening the
+target. Both requests still require their device signatures and workspace authorization. A request for
+a different target conflicts; the original actor with a different nonce also conflicts, so this path
+cannot silently replace its unresolved local intent after losing progress.
+
+Client and HTTP correlation accept this specific takeover after authenticating the preparation and
+both request scopes. The new owner persists its own signed request, fresh exact distribution and
+outcome. The original owner's pending distribution stays intact and resolves to the authenticated
+winner as superseded. No unknown response authorizes key discard or remint.
+
+Six focused service/HTTP cases pass (`/tmp/done-removal-takeover-final.log`) and sixteen focused
+proof/client/history cases pass (`/tmp/done-removal-takeover-protocol.log`). The new retained-client
+case uses real HPKE on both remaining credentials, interrupts the original after its exact intent is
+saved, rejects same-actor nonce replacement, completes through the other actor and cold-resolves the
+original intent without changing its bytes. The service case preserves the exact preparation across
+takeover and restart. An initial service fixture reused identical dummy distributions for both actors;
+its expectation of supersession was wrong because those distributions have the same selected intent
+id. Giving the fixture distinct distributions reproduces the intended competing-intent case and passes.
+TypeScript, scoped lint/format, build, budget and origin checks pass.
+
+Native custody/application remains the next boundary: persist the exact proposal and authenticated
+outcome under exclusive slot ownership, install the successor opener without retiring the predecessor,
+classify/recover synchronous journal and retained outbound work, and atomically activate the new local
+generation. The existing single-generation content/journal owner and native membership adoption guard
+remain unchanged; no Remove control is ready yet. Discovery checkpoint `9946c052`. This checkpoint is
+unsigned. No live process/store was touched and release validation remains paused.

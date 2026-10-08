@@ -9,6 +9,7 @@ import {
   type VerifiedMembership,
 } from '../../account-protocol/membership';
 import {
+  removalPreparationMatchesRequest,
   parseRemovalPreparationRequest,
   verifyRemovalPreparation,
   parseRotationRequest,
@@ -94,7 +95,8 @@ export function createDeviceRemovalTransport(
       ]);
       if (result['ok'] !== true) throw Error('Removal not prepared');
       const preparation = await verifyRemovalPreparation(result['preparation'], parent);
-      if (!same(preparation.request, request)) throw Error('Removal preparation changed');
+      if (!removalPreparationMatchesRequest(request, preparation))
+        throw Error('Removal preparation changed');
       signal.throwIfAborted();
       return preparation;
     },

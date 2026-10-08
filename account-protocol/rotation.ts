@@ -164,6 +164,26 @@ export async function verifyRemovalPreparation(input: unknown, parent: VerifiedM
   return prepared;
 }
 
+/** Structural correlation only; callers must first verify both signatures against the same parent.
+ * A different remaining actor may finish the same fenced target. The original actor cannot replace
+ * its own saved nonce through this path and thereby silently remint an unresolved intent. */
+export function removalPreparationMatchesRequest(
+  requestInput: unknown,
+  preparationInput: unknown,
+): boolean {
+  const request = parseRemovalPreparationRequest(requestInput),
+    preparation = parseRemovalPreparation(preparationInput);
+  const saved = preparation.request;
+  if (same(request, saved)) return true;
+  return (
+    request.actorId !== saved.actorId &&
+    same(
+      [request.workspaceId, request.lineageId, request.parent, request.epoch, request.targetId],
+      [saved.workspaceId, saved.lineageId, saved.parent, saved.epoch, saved.targetId],
+    )
+  );
+}
+
 export interface RotationPayload {
   cutoff: StreamHead[];
   excluded: string[];

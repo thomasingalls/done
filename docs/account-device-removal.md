@@ -36,7 +36,8 @@ The producer therefore needs a durable preparation before generating/submitting 
 3. An exact retry returns that saved preparation. Other certified devices keep writing. Their committed
    successor boundaries may advance monotonically beyond the preparation; the target boundary cannot.
 4. No timer silently reopens the target stream. A service restart retains the fence. Another authorized
-   remaining owner can finish the same prepared removal; this takeover needs service/client composition.
+   remaining owner can finish the same prepared removal; service and retained-client composition now
+   support this exact-parent/target takeover. The original actor cannot replace its own saved nonce.
    A competing membership operation must serialize against the preparation rather than invalidate a
    saved rotation's parent without an authenticated terminal outcome.
 
@@ -74,7 +75,8 @@ prefix; a signature over a claimed link is not replay evidence.
   Old-generation work from remaining authorized offline devices keeps its historical admission path.
   Protected HTTP/client transport and the retained producer compose through lost replies/restart.
   Removed-device terminal discovery now has a separate proof-only grant, including exposed pending
-  targets; it returns no transitions after their removal. Prepared-removal takeover remains next.
+  targets; it returns no transitions after their removal. A different remaining owner can finish the
+  exact prepared target, and the original intent resolves against the authenticated winner.
 - Actual local generation activation under the exclusive writer barrier, including synchronous journal
   and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.

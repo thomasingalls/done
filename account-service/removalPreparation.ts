@@ -4,6 +4,7 @@ import { same } from '../account-protocol/admission.ts';
 import { historyMembership } from '../account-protocol/admissionHistory.ts';
 import { membershipState } from '../account-protocol/membership.ts';
 import {
+  removalPreparationMatchesRequest,
   parseRemovalPreparationRequest,
   verifyRemovalPreparationRequest,
   verifyRemovalPreparation,
@@ -79,7 +80,7 @@ export async function prepareRemoval(
           row.target_id !== prepared.request.targetId
         )
           throw Error('Retained removal scope changed');
-        if (!same(prepared.request, request)) return no('request-conflict');
+        if (!removalPreparationMatchesRequest(request, prepared)) return no('request-conflict');
         for (const h of cutoff) {
           const saved = prepared.cutoff.find((s) => s.credentialId === h.credentialId)!;
           if (

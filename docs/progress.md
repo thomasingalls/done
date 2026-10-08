@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: terminal removal discovery complete; takeover and native activation next
+scope: service/client removal and takeover complete; native custody and generation activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -113,7 +113,12 @@ pending targets can also authenticate. Six focused service/HTTP cases and 48 aff
 along with static/build checks. The browser transport composes; detached local ownership is not yet
 installed. Transport checkpoint: `9242fec0`.
 
-**Next:** prepared-removal takeover;
+Prepared-removal takeover now preserves the original fence/cutoff while a different remaining
+certified actor finishes the transition. Same-actor nonce replacement remains a conflict. Six focused
+service/HTTP and sixteen proof/client/history cases pass, including real HPKE, retained intent
+interruption and authenticated supersession. Terminal discovery checkpoint: `9946c052`.
+
+**Next:** native removal custody and successor opener installation under exclusive slot ownership;
 actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.

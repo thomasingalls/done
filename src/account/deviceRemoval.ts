@@ -6,6 +6,7 @@ import { membershipState, type VerifiedMembership } from '../../account-protocol
 import { generationInfo } from '../../account-protocol/genesis';
 import {
   ROTATION_LIMIT,
+  removalPreparationMatchesRequest,
   parseRemovalPreparationRequest,
   removalPreparationRequestMessage,
   verifyRemovalPreparationRequest,
@@ -154,7 +155,7 @@ export async function continueDeviceRemoval(
     throw Error('Incomplete retained removal');
   if (progress.preparation) {
     await verifyRemovalPreparation(progress.preparation, parent);
-    if (!same(progress.preparation.request, progress.request))
+    if (!removalPreparationMatchesRequest(progress.request, progress.preparation))
       throw Error('Retained preparation changed');
   } else {
     await durable(progress);
@@ -162,7 +163,7 @@ export async function continueDeviceRemoval(
     let preparation;
     try {
       preparation = await verifyRemovalPreparation(response, parent);
-      if (!same(preparation.request, progress.request)) return 'pending';
+      if (!removalPreparationMatchesRequest(progress.request, preparation)) return 'pending';
     } catch {
       return 'pending';
     }

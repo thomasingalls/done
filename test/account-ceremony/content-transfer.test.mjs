@@ -5177,3 +5177,33 @@ test('removed-device discovery stops at its own removal even after another rotat
     false,
   );
 });
+
+test('another remaining device can finish the same prepared removal without replacing its cutoff or original retry evidence', async (t) => {
+  const x = await continuationFixture(t),
+    target = x.entry.input.candidate.credentialId;
+  const first = await removalRequest(x, target),
+    original = await rotationRequest(x, first);
+  const row = x.f.rows('removal_preparations')[0];
+  const second = await removalRequest(x, target, 'new');
+  const takeover = await rotationRequest(x, second);
+  takeover.request.payload.recoveryWrap.ct = 'da'.repeat(48);
+  takeover.request = await takeover.sign(takeover.request);
+  assert.deepEqual(takeover.request.preparation, original.request.preparation);
+  assert.deepEqual(x.f.rows('removal_preparations'), [row]);
+  const result = await x.authority.owner.commitRotation(x.f.core, takeover.request);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  x.f.restart();
+  x.authority.restart();
+  const retry = await x.authority.owner.commitRotation(x.f.core, original.request);
+  assert.equal(retry.ok, true, JSON.stringify(retry));
+  assert.deepEqual(retry.rotation, result.rotation);
+  const { verifyRotationRequest, resolveRotationOutcome } =
+    await import('../../account-protocol/rotation.ts');
+  const checked = await verifyRotationRequest(
+    original.request,
+    original.parent,
+    x.base.request.recovery,
+  );
+  assert.equal((await resolveRotationOutcome(retry.outcome, checked)).kind, 'superseded');
+  assert.equal(x.f.rows('membership_rotations').length, 1);
+});

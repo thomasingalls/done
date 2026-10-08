@@ -405,3 +405,83 @@ test('removal HTTP bounds and cancellation leave the retained intent unchanged',
   assert.equal(cancelled, 2);
   assert.deepEqual(x.retained, retained);
 });
+
+test('a different remaining owner finishes the same preparation while the original retains its superseded intent', async () => {
+  const x = await ready(true);
+  x.fail = (point, next) => {
+    if (point === 'after-save' && next.rotation) throw Error('owner interrupted');
+  };
+  await assert.rejects(x.run(), /owner interrupted/);
+  x.fail = undefined;
+  const original = x.retained;
+  let winner = null;
+  const owner = {
+    participant: x.f.context.candidate,
+    sign: async (bytes) => signed(x.f.keys.new, bytes),
+    openWrap: (w, info) => client.openGeneration(w, x.pairs[1].privateKey, raw(x.publics[1]), info),
+  };
+  let retained = null;
+  const io = {
+    signal: x.controller.signal,
+    load: async () => structuredClone(retained),
+    replace: async (before, next) => {
+      assert.deepEqual(before, retained);
+      retained = structuredClone(next);
+    },
+    prepare: async () => original.preparation,
+    submit: async (r) => {
+      const body = {
+        v: 1,
+        kind: 'rotate',
+        workspaceId: x.p.workspaceId,
+        lineageId: x.p.lineageId,
+        target: 2,
+        epoch: x.p.epoch + 1,
+        committedId: hash(await rotationIntentMessage(r)),
+      };
+      winner = {
+        ...body,
+        signature: signed(
+          x.f.f.keys.authority,
+          lp(
+            'done/transition-out/v1',
+            '1',
+            'rotate',
+            body.workspaceId,
+            body.lineageId,
+            '2',
+            String(body.epoch),
+            body.committedId,
+          ),
+        ),
+      };
+      return winner;
+    },
+  };
+  // Losing local state is not permission for the same actor to choose another key at this target.
+  assert.equal(
+    await client.continueDeviceRemoval(
+      x.parent,
+      x.f.f.base.request.recovery,
+      x.target,
+      x.owner,
+      io,
+    ),
+    'pending',
+  );
+  assert.equal(retained.rotation, null);
+  retained = null;
+  assert.equal(
+    await client.continueDeviceRemoval(x.parent, x.f.f.base.request.recovery, x.target, owner, io),
+    'committed',
+  );
+  assert.deepEqual(retained.preparation, original.preparation);
+  assert.equal(retained.request.actorId, owner.participant.id);
+  assert.notDeepEqual(retained.rotation.payload.wraps, original.rotation.payload.wraps);
+  x.io.submit = async (r) => {
+    assert.deepEqual(r, original.rotation);
+    return winner;
+  };
+  assert.equal(await x.run(), 'superseded');
+  assert.deepEqual(x.retained.rotation, original.rotation);
+});
