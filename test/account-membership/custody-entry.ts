@@ -7,6 +7,9 @@ import { claimScope } from '../../src/crdt/localGenesisRecord';
 import { createApprovalVault } from '../../src/account/approvalVault';
 import { beginLocalGenesis } from '../../src/crdt/localGenesis';
 import { digest } from '../../account-protocol/recovery';
+import { openDeviceRemovalVault } from '../../src/account/deviceRemovalVault';
+import { NetworkLogin } from '../../src/account/networkLogin';
+import { ScopedTransport } from '../../src/account/scopedTransport';
 const signal = () => new AbortController().signal;
 const check = (value: unknown, message: string) => {
   if (!value) throw Error(message);
@@ -160,5 +163,89 @@ export async function install(
     }
     check(rejected, 'Installed key lost its delivery binding');
     return owner.withInstalledKey(seal, hash, (key) => digest(key));
+  });
+}
+
+export async function removal(
+  kind: Kind,
+  slot: string,
+  code: string,
+  target: string,
+  loseReply = false,
+) {
+  return withMembershipVault(kind, slot, code, signal(), async (owner) => {
+    const native = await openDeviceRemovalVault(owner, target, signal());
+    const before = native.snapshot();
+    const login = new NetworkLogin(native.base.pin, slot),
+      grants = new ScopedTransport(native.base.pin, signal());
+    try {
+      const access = grants.bind({
+        login,
+        sign: owner.sign,
+        scope: {
+          kind: 'workspace',
+          workspaceId: native.base.request.candidate.workspaceId,
+          credentialId: owner.participant.id,
+        },
+      });
+      const result = await owner.withLogin(
+        login,
+        {
+          accountId: native.base.receipt.offer.epoch.accountId,
+          credentialId: native.base.receipt.activation.context.credentialId,
+        },
+        () =>
+          native.advance({
+            ...access,
+            fetch: async (path, init) => {
+              const response = await access.fetch(path, init);
+              if (loseReply && path.endsWith('/commit') && response.status === 200) {
+                await response.body?.cancel();
+                throw Error('Lost committed reply');
+              }
+              return response;
+            },
+          }),
+      );
+      const after = native.snapshot();
+      const previous = await owner.load();
+      let keyHash: string | null = null;
+      if (after.key)
+        keyHash = await owner.rotation.withInstalledKey(after.key, after.successor!.head, digest);
+      return {
+        result,
+        before,
+        after,
+        keyHash,
+        previousHash: await digest(new TextEncoder().encode(JSON.stringify(previous))),
+      };
+    } finally {
+      grants.close();
+      login.close();
+    }
+  });
+}
+export async function participant(kind: Kind, slot: string, code: string) {
+  return withMembershipVault(kind, slot, code, signal(), async (owner) => owner.participant.id);
+}
+
+export async function interruptedRotationSave(kind: Kind, slot: string, code: string) {
+  return withMembershipVault(kind, slot, code, signal(), async (owner) => {
+    const before = await owner.rotation.load();
+    let visits = 0;
+    let failed = false;
+    try {
+      await owner.rotation.save(before, () => {
+        if (++visits === 2) throw Error('Interrupted after durable nonce reservation');
+      });
+    } catch {
+      failed = true;
+    }
+    check(failed && visits === 2, 'Missing interrupted rotation save');
+    check(
+      JSON.stringify(await owner.rotation.load()) === JSON.stringify(before),
+      'Interrupted save changed progress',
+    );
+    return true;
   });
 }

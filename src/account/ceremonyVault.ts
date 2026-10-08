@@ -34,6 +34,7 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  rotation: Awaited<ReturnType<typeof createApprovalVault>>;
   installMembershipWriting(
     authority: JoinedAuthority,
     reading: MembershipReading,
@@ -122,7 +123,18 @@ export async function withCeremonyVault<T>(
           record: () => record,
           commit,
         });
+        const rotation = await createApprovalVault({
+          slotId,
+          scope,
+          root,
+          subtle,
+          credentials,
+          record: () => record,
+          commit,
+          channel: 'rotation',
+        });
         return work({
+          rotation,
           ...approval,
           ...approvalProgress(approval, progress),
           withLogin: (login, expected, work) =>

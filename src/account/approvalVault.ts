@@ -16,6 +16,7 @@ export interface InstalledContentKey {
   ct: string;
 }
 export async function createApprovalVault(options: {
+  channel?: 'approval' | 'rotation';
   slotId: string;
   scope: CustodyScope;
   root: Bytes;
@@ -26,16 +27,20 @@ export async function createApprovalVault(options: {
 }) {
   const { slotId, scope, root, subtle, credentials, record, commit } = options;
   const rootId = record().root_id;
+  const channel = options.channel ?? 'approval';
+  const purpose =
+    channel === 'approval' ? 'done/content-approval-state/v1' : 'done/content-rotation-state/v1';
+  const installedPurpose =
+    channel === 'approval' ? 'done/installed-content-key/v1' : 'done/installed-rotation-key/v1';
   const key = await hkdf(
     root,
     new Uint8Array(),
-    fields('done/content-approval-state/v1', slotId, rootId),
+    fields(purpose, slotId, rootId),
     { name: 'AES-GCM', length: 256 },
     ['encrypt', 'decrypt'],
     subtle,
   );
-  const aad = (sequence: number) =>
-    fields('done/content-approval-state/v1', slotId, rootId, String(sequence));
+  const aad = (sequence: number) => fields(purpose, slotId, rootId, String(sequence));
   const iv = (sequence: number) => {
     const b = new Uint8Array(12);
     new DataView(b.buffer).setBigUint64(4, BigInt(sequence));
@@ -45,14 +50,14 @@ export async function createApprovalVault(options: {
     hkdf(
       root,
       new Uint8Array(),
-      fields('done/installed-content-key/v1', slotId, rootId),
+      fields(installedPurpose, slotId, rootId),
       { name: 'AES-GCM', length: 256 },
       ['encrypt', 'decrypt'],
       subtle,
     );
   const incomingAad = (deliveryHash: string) => {
     unhex(deliveryHash, 32);
-    return fields('done/installed-content-key/v1', slotId, rootId, deliveryHash);
+    return fields(installedPurpose, slotId, rootId, deliveryHash);
   };
   const withInstalledKey = async <T>(
     seal: InstalledContentKey,
@@ -85,6 +90,10 @@ export async function createApprovalVault(options: {
       wPub: hex(credentials[0].publicKey),
       sPub: hex(credentials[1].publicKey),
     },
+    openWrap: async (wrap: GenerationWrap, info: Bytes): Promise<Bytes> => {
+      const wrapping = await openCredential(scope, root, credentials[0], subtle);
+      return openGeneration(wrap, wrapping, credentials[0].publicKey, info, subtle);
+    },
     withInstalledKey,
     checkInstalled: (seal: InstalledContentKey, deliveryHash: string) =>
       withInstalledKey(seal, deliveryHash, async () => {}),
@@ -115,7 +124,7 @@ export async function createApprovalVault(options: {
       }
     },
     load: async (): Promise<unknown> => {
-      const approval = record().approval;
+      const approval = record()[channel];
       if (!approval) return null;
       const { sequence, ct } = approval;
       const plain = new Uint8Array(
@@ -134,7 +143,10 @@ export async function createApprovalVault(options: {
     save: async (value: unknown, check?: () => void) => {
       const plain = utf8(JSON.stringify(value));
       try {
-        if (plain.length > 80 * 1024 * 1024 - 16 || record().seal_reserved + 1 >= SEAL_LIMIT)
+        if (
+          plain.length > (channel === 'rotation' ? 16 : 80) * 1024 * 1024 - 16 ||
+          record().seal_reserved + 1 >= SEAL_LIMIT
+        )
           throw Error('Approval storage limit');
         await commit({ ...record(), seal_reserved: record().seal_reserved + 1 }, check);
         const sequence = record().seal_reserved;
@@ -145,7 +157,7 @@ export async function createApprovalVault(options: {
             plain,
           ),
         );
-        await commit({ ...record(), approval: { v: 1, sequence, ct } }, check);
+        await commit({ ...record(), [channel]: { v: 1, sequence, ct } }, check);
       } finally {
         plain.fill(0);
       }

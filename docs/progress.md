@@ -49,82 +49,41 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: service/client removal and takeover complete; native custody and generation activation next
+scope: native removal custody complete; journal-inclusive generation activation in progress
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
 **Live baseline:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-frontend `a07de792`, schema 14 and original service pin. The session/notification cutover is recorded
-in [the runbook](./packaged-account-development.md#live-notification-cutover--2026-10-08).
-Backup: `.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`.
-No subsequent lifecycle work is deployed. Obtain a new quiet point before restarting it.
-
-**Completed product boundaries:** Devices navigation, private opt-in third-device enrollment with either
-existing approver, authenticated historical writing load, three-device writing and cold reopen. Native
-checkpoint `31b19f78`. Pending cancellation now commits exact publisher cuts, fences approval/delivery,
-and survives a discarded committed reply plus reload (`0c893bc3`, private schema 18). Original two-device
-regressions also pass. The rapid three-device test still encounters capacity refusals; bounded retries
-recover, but the associated usability debt remains. Evidence is in [completed.md](./completed.md).
+frontend `a07de792`, schema 14 and original service pin. No lifecycle removal work is deployed.
+Obtain a fresh quiet point before a backed-up upgrade. See [the runbook](./packaged-account-development.md).
 
 **Active:** [other-device removal](./account-device-removal.md), within the
-[device lifecycle plan](./account-device-lifecycle.md). The operator approved other-device-only removal,
-keeping the requesting device connected. Cancel is allowed before approval; after approval or uncertain
-key exposure, Remove requires forward rotation and must explain that existing copies cannot be erased.
-Self-removal and the last-device case stay with local clear/recovery.
+[device lifecycle plan](./account-device-lifecycle.md). Other-device-only removal is approved; the
+requesting device remains connected. Cancel before approval, Remove with forward rotation afterward
+or with uncertain key exposure. Existing copies cannot be erased. Self-removal/recovery remain later.
 
-The proof boundary verifies parent-certified recipients, exact selected row-15 intent/outcome bytes,
-and authenticated finalization including a zero-write target. Five focused proof cases and scoped
-static checks pass. The plan records a durable target-only acceptance fence before signing a stable
-cutoff; other publishers may continue. Atomic rotation commitment and local generation activation remain unfinished.
+Completed boundaries: Devices navigation, private third-device connection from either existing device,
+three-device writing/reopen, pending cancellation; then exact rotation proof/history, durable target-only
+preparation, atomic service commit (private schema 20), protected transport, proof-only terminal discovery
+and takeover by another remaining owner (`a197bb02`). Historical accepted writing remains readable to
+survivors; genuine stale-generation work from authorized offline devices remains admissible.
 
-Client key production and retained exact retry now pass real-HPKE recipient checks and focused
-interruption/lost-reply tests through a simulated committed port (19 affected Node cases pass). Native
-custody is still required. Proof checkpoint: `3005f387`.
+Native custody now retains the exact intent, verified outcome and winning successor, with its sealed
+self opener, under the existing exclusive slot owner. Enrollment state and old openers are preserved.
+Three focused browser cases pass, including both original/joined cold retry after lost committed reply
+and interrupted nonce-reserved writes. Seven client and twelve crypto cases pass. Full evidence and
+prior checkpoints are in [completed.md](./completed.md).
 
-The committed rotation successor and full-chain history now retain prior accepted authorship while
-ending removed-device eligibility and enforcing its exact final cutoff. Generation-one native owners
-explicitly refuse adoption until key/journal activation exists. 27 focused composed cases plus static
-and build checks pass. Retained-client checkpoint: `c313fc27`.
+**Next:** generation-aware content, synchronous journal and retained outbound handling; local activation
+under exclusion; Devices removal/progress; detached local copy; disposable removal/write/reopen check.
+No Remove action is exposed yet. Pending native rotation refuses ordinary generation-one opening until
+its activation owner is implemented. Repeated later admissions, lost-device recovery, checkpoint
+replacement/pruning and operations remain later work.
 
-Private schema 19 now retains the target-only acceptance fence and preparation with a companion
-workspace marker. Exact retries survive restart while other publishers advance. Membership effects
-serialize against the pending parent. Six new service cases, ten affected service regressions, eighteen
-grant cases and four disposable host checks pass; TypeScript/build checks pass. This is still an internal
-service method, with no HTTP or product control. Rotation/history checkpoint: `c2936353`.
-
-Private schema 20 now commits rotation/distribution/finalization/outcome atomically, preserving
-historical writing and surviving old-generation delivery. Exact retry, competing intent, grant loss,
-racing publication and schema-19 upgrade checks pass. The affected service selection passes 29 cases;
-45 protocol/client/history/grant cases and four disposable host checks pass, along with static/build
-checks. No HTTP/product entry point or native activation is enabled yet. Preparation checkpoint:
-`009965c2`.
-
-Protected HTTP and the real browser producer now compose with the service through lost preparation
-and commit replies plus restart, using actual HPKE and scoped grants with a simulated persistence port.
-Four focused HTTP cases, six client/bounds cases and sixteen scoped transport regressions pass. Exact
-retries produce no duplicate hints. No native activation or product control is enabled. Atomic service
-checkpoint: `df0fd467`.
-
-Removed-device discovery now uses an explicit proof-only grant, distinct from content access and
-subscriptions. Responses stop at the caller's own removal, including after a later rotation; exposed
-pending targets can also authenticate. Six focused service/HTTP cases and 48 affected regressions pass,
-along with static/build checks. The browser transport composes; detached local ownership is not yet
-installed. Transport checkpoint: `9242fec0`.
-
-Prepared-removal takeover now preserves the original fence/cutoff while a different remaining
-certified actor finishes the transition. Same-actor nonce replacement remains a conflict. Six focused
-service/HTTP and sixteen proof/client/history cases pass, including real HPKE, retained intent
-interruption and authenticated supersession. Terminal discovery checkpoint: `9946c052`.
-
-**Next:** native removal custody and successor opener installation under exclusive slot ownership;
-actual journal-inclusive generation activation;
-Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
-recovery follow. Checkpoint replacement/pruning and operations remain later work.
-
-Continue unsigned intermediate commits and chat summaries; one signed checkpoint at the end of the
-agreed sequence. Consult the operator on product decisions. Release validation remains paused.
+Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
+end of the agreed sequence. Consult the operator on product decisions. Release validation stays paused.
 
 ---
 

@@ -21,6 +21,7 @@ import type { parseMembershipChain } from '../../account-protocol/membershipLoca
 type MembershipProofs = ReturnType<typeof parseMembershipChain>;
 export interface MembershipVault extends Pick<
   CeremonyVault,
+  | 'rotation'
   | 'participant'
   | 'load'
   | 'save'
@@ -100,7 +101,18 @@ export function withMembershipVault<T>(
           record: () => state.record,
           commit: (next, check) => writeJoinedApproval(task, state, code, next, check),
         });
+        const rotation = await createApprovalVault({
+          slotId,
+          scope: claimScope(state.claim),
+          root,
+          subtle,
+          credentials: state.record.credentials!,
+          record: () => state.record,
+          commit: (next, check) => writeJoinedApproval(task, state, code, next, check, 'rotation'),
+          channel: 'rotation',
+        });
         return work({
+          rotation,
           ...approval,
           ...approvalProgress(approval, 'membership'),
           source: {

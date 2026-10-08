@@ -15,7 +15,7 @@ still produce old-generation writing until it observes and activates the success
 The private protocol verifies preparation, intent, outcome and finalization evidence. The committed
 rotation successor now extends verified membership/history, retaining historical authorship while
 ending current access. The private service now commits the preparation/fence and atomic rotation with historical delivery.
-Protected transport and retained-client composition are implemented; native activation remains.
+Protected transport, native retained custody and successor opener installation are implemented; local activation remains.
 No product control is enabled.
 The generation-one native owner explicitly refuses rotation adoption.
 
@@ -69,7 +69,9 @@ prefix; a signature over a claimed link is not replay evidence.
 ## Remaining bounded implementation steps
 
 - Client key production and retained exact-intent retry are implemented and tested with real HPKE
-  recipient keys and a simulated committed persistence port. Native custody wiring remains.
+  recipient keys. Native original/joined custody now retains the exact proposal and winning proof,
+  installs the authenticated successor self opener, and survives lost commit replies/cold reopen.
+  This remains applying, with old keys retained and ordinary generation-one opening refused.
 - Durable service preparation/fence and atomic successor, wraps, finalization and outcome are implemented
   in private schema 20. History, survivor discovery and scoped authorization compose with the rotation.
   Old-generation work from remaining authorized offline devices keeps its historical admission path.

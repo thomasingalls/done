@@ -213,6 +213,11 @@ const loadKeys = async (
   content = false,
   journal = false,
 ): Promise<void> => {
+  if (record.rotation)
+    throw new CustodyError(
+      'repair-required',
+      'Resume account generation activation before opening this workspace.',
+    );
   let generation: Bytes | undefined;
   try {
     await task.wait(async () => {

@@ -60,6 +60,8 @@ export interface CustodyRecord {
   credentials: [SealedCredential, SealedCredential] | null;
   /** Private content-approval state. Absence is covered by the custody MAC too. */
   approval?: { v: 1; sequence: number; ct: Bytes };
+  /** Separate encrypted rotation/applying state; older readers fail closed on this field. */
+  rotation?: { v: 1; sequence: number; ct: Bytes };
   mac: Bytes;
 }
 export const CUSTODY_DB = 'done.custody';
@@ -152,7 +154,9 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
-    ...(value && typeof value === 'object' && Object.hasOwn(value, 'approval') ? ['approval'] : []),
+    ...['approval', 'rotation'].filter(
+      (key) => value && typeof value === 'object' && Object.hasOwn(value, key),
+    ),
   ]);
   if (
     r['v'] !== 2 ||
@@ -206,9 +210,10 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     ];
     if (credentials[0].id === credentials[1].id) return fail();
   }
-  let approval: CustodyRecord['approval'];
-  if ('approval' in r) {
-    const a = object(r['approval'], ['v', 'sequence', 'ct']);
+  const progress: Pick<CustodyRecord, 'approval' | 'rotation'> = {};
+  for (const channel of ['approval', 'rotation'] as const) {
+    if (!(channel in r)) continue;
+    const a = object(r[channel], ['v', 'sequence', 'ct']);
     if (
       r['state'] !== 'protected' ||
       a['v'] !== 1 ||
@@ -217,14 +222,14 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
       (a['sequence'] as number) > (r['seal_reserved'] as number) ||
       !(a['ct'] instanceof Uint8Array) ||
       a['ct'].length < 16 ||
-      a['ct'].length > 80 * 1024 * 1024
+      a['ct'].length > (channel === 'rotation' ? 16 : 80) * 1024 * 1024
     )
       return fail();
-    approval = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
+    progress[channel] = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
   }
   return {
     v: 2,
-    ...(approval ? { approval } : {}),
+    ...progress,
     state: r['state'] as CustodyRecord['state'],
     slot_id: scope.slotId,
     principal_id: scope.principalId,
@@ -274,6 +279,9 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
       ]) ?? null,
       ...(r.approval
         ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
+        : []),
+      ...(r.rotation
+        ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
         : []),
     ]),
   );

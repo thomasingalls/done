@@ -23,6 +23,7 @@ export function createDeviceRemovalTransport(
   parent: VerifiedMembership,
   access: ScopedAccess,
   signal: AbortSignal,
+  retainSuccessor?: (rotation: ReturnType<typeof parseMembershipRotation>) => Promise<void>,
 ): Pick<DeviceRemovalIO, 'prepare' | 'submit'> {
   const p = membershipState(parent);
   if (access.kind !== 'scoped-account' || !same(access.pin, p.pin))
@@ -119,6 +120,8 @@ export function createDeviceRemovalTransport(
       const verified = await verifyRotationRequest(request, parent, rotation.epoch.recovery);
       const outcome = await resolveRotationOutcome(result['outcome'], verified);
       if (outcome.kind === 'pending') throw Error('Unverified removal outcome');
+      signal.throwIfAborted();
+      await retainSuccessor?.(rotation);
       signal.throwIfAborted();
       return outcome.outcome;
     },

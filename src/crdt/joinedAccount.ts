@@ -291,6 +291,7 @@ export async function writeJoinedApproval(
   code: string,
   input: CustodyRecord,
   check?: () => void,
+  channel: 'approval' | 'rotation' = 'approval',
 ) {
   input = parseRecord(input, claimScope(state.claim));
   if (
@@ -299,7 +300,7 @@ export async function writeJoinedApproval(
     !recordEqual(input, {
       ...state.record,
       seal_reserved: input.seal_reserved,
-      ...(input.approval ? { approval: input.approval } : {}),
+      ...(input[channel] ? { [channel]: input[channel] } : {}),
       mac: input.mac,
     }) ||
     input.seal_reserved < state.record.seal_reserved ||
@@ -337,6 +338,8 @@ export async function joinedKeys<T>(
   code: string,
   work: (key: Bytes, signer: CryptoKey, publicKey: CryptoKey) => Promise<T>,
 ) {
+  if (state.record.rotation)
+    throw Error('Resume account generation activation before opening this workspace');
   const marker = state.marker!;
   return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => {
     if (marker.key.sequence > state.record.seal_reserved)

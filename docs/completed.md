@@ -11127,3 +11127,31 @@ classify/recover synchronous journal and retained outbound work, and atomically 
 generation. The existing single-generation content/journal owner and native membership adoption guard
 remain unchanged; no Remove control is ready yet. Discovery checkpoint `9946c052`. This checkpoint is
 unsigned. No live process/store was touched and release validation remains paused.
+
+
+## 2026-10-08 — Native retained removal and successor opener (`L-1`)
+
+Original and joined account owners now retain removal in a separate, MAC-covered custody field under
+the existing exclusive slot permit. Its encrypted progress and installed-key domains are separate from
+enrollment. Nonce reservations commit before sealing; interrupted writes preserve the preceding record.
+Old readers reject the new field. The current generation-one editing owner also refuses to reopen an
+unfinished native rotation rather than acknowledge old-generation work after observing its outcome.
+
+The native adapter retains and cold-verifies the exact parent chain, actor/target, request, proposal,
+outcome and complete winning successor. Transport persists the verified successor before handing the
+outcome back to the producer. It installs only the authenticated winner's self wrap, including after
+supersession; the old opener and enrollment history remain intact. Applying is not activation: no active
+generation or checkpoint is advanced by this phase and no Devices action is enabled.
+
+Three focused disposable Chromium cases pass: existing membership custody regression, original-device
+removal and joined-device removal. Both removal cases discard the committed HTTP reply, reload, recover
+the exact saved intent, install/cold-open the successor key, and interrupt a later progress save after
+its nonce reservation. The joined test initially exposed its approval-only mutation guard; a distinct
+rotation channel fixes it without broadening ordinary approval writes. Evidence:
+`/tmp/done-native-removal-final.log` (3 pass), `/tmp/done-native-removal-client.log` (7 pass),
+`/tmp/done-native-removal-crypto.log` (12 pass). TypeScript, scoped lint/format, build/budget/origin checks
+pass. Native fixtures operate on disposable localhost state only.
+
+Next is generation-aware retained content/journal/outbound handling and activation, then Devices and
+detached-copy composition. Prior service takeover checkpoint: `a197bb02`. This checkpoint is unsigned;
+no live process or store changed and release validation remains paused.
