@@ -10428,3 +10428,23 @@ budget and origin checks pass. The packaged two-device Devices/delivery/reopen w
 17.6 seconds. Logs: `/tmp/done-membership-transfer-regressions.log`,
 `/tmp/done-membership-transfer-browser.log`. Third-device browser custody/editor, general history,
 cancellation/removal and rotation remain unfinished. Release validation remains paused.
+
+
+## 2026-10-08 — Per-publisher continuation history (`L-1`)
+
+After private transfer checkpoint `78a07a6f`, verified client history can extend through version-2
+admission and certification while retaining each publisher's own starting epoch and accepted cuts.
+Reader eligibility is resolved at the requested authenticated epoch, so later certification cannot
+authorize an earlier request. Publisher projections retain their signing identity and exact authority
+timeline; a third publisher starts only at its certification. The prefix verifier now resolves actual
+authority tips, rather than assuming its array index corresponds to an epoch starting at one.
+
+Evidence: 49 affected membership/history/transfer cases pass. Two directed additions check first, second
+and third publisher histories through a later admission, using independently signed envelope/acceptance
+bytes, queued old payloads accepted later, wrong issuance intervals, pre-certification publisher claims,
+reader eligibility, immutable capture and forged history objects. The packaged two-device
+Devices/delivery/reopen walkthrough passes in 16.0 seconds. TypeScript, scoped lint/format, build, budget
+and origin isolation pass. Logs: `/tmp/done-membership-history-regressions.log`,
+`/tmp/done-membership-history-browser.log`. The private service still fences ordinary continuation sync;
+service ledger integration is next, then discovery/grants and owned third-device client composition.
+Retained serving is unchanged and release validation remains paused.

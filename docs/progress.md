@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: atomic private continuation transfer complete; general publisher history next
+scope: per-publisher continuation history complete; service ledger integration next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -95,7 +95,9 @@ Proofs are committed as `abe12337`. Atomic private delivery/certification now pr
 publisher prefixes across abort/lost reply/restart; 166 affected checks and the packaged walkthrough
 pass. Private schema 17 remains unrouted. The implementation still requires frozen epoch-3 ledgers;
 it must not be enabled in the retained host before general history is composed.
-Next: general per-publisher history and service ledger resolution, complete membership cancellation/removal, general
+Atomic transfer is committed as `78a07a6f`. Per-publisher continuation history now preserves actual
+entry epochs, reader eligibility and accepted cuts; 49 affected checks and the packaged walkthrough pass.
+Next: service ledger resolution, complete membership cancellation/removal, general
 history/discovery and third-device editor integration,
 removal with rotation/finalization, and lost-device recovery. A removal control cannot claim completion
 without the actual committed transition. Existing code deliberately supports only the first two devices.

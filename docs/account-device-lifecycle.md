@@ -195,3 +195,13 @@ verifier requires the exact frozen epoch-3 accepted prefixes, including both old
 General per-publisher issuance history and accepted-boundary replay must replace this temporary fence
 before ongoing writing and the third-device editor are enabled. This is the next implementation step,
 not an operator restriction on the eventual product.
+
+
+## Per-publisher history checkpoint — 2026-10-08
+
+Verified history now extends through continuation admission/certification and keeps each publisher's
+actual starting epoch, every accepted cut and the reader set at each authenticated head. A device
+certified at epoch 5 cannot acquire an epoch-3 publication history. Queued old payloads may still be
+accepted in a later eligible interval, with acceptance issuance checked separately from payload epoch.
+This is client proof composition; the service ledger owner, discovery/grants and client installation
+remain to be connected before removing the private continuation fence.

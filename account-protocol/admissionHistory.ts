@@ -20,6 +20,15 @@ import {
   type EnvelopeRoute,
 } from './envelope.ts';
 import { hex, unhex } from './recovery.ts';
+import {
+  verifyMembershipAnchor,
+  membershipState,
+  parseMembershipAdmission,
+  parseMembershipCertification,
+  verifyMembershipAdmission,
+  verifyMembershipCertification,
+  type VerifiedMembership,
+} from './membership.ts';
 
 export interface AdmissionHistory {
   readonly first: Readonly<DecisionAuthority>;
@@ -38,6 +47,17 @@ const rosters = new WeakMap<
   AdmissionHistory,
   readonly Readonly<{ id: string; state: 'certified' | 'pending' }>[]
 >();
+interface PublisherTimeline {
+  signingKey: string;
+  authorities: AdmissionHistory['authorities'];
+  boundaries: AdmissionHistory['boundaries'];
+}
+interface ContinuationTimeline {
+  membership: VerifiedMembership;
+  readers: ReadonlyMap<number, AdmissionHistory['readers']>;
+  publishers: ReadonlyMap<string, PublisherTimeline>;
+}
+const timelines = new WeakMap<AdmissionHistory, ContinuationTimeline>();
 const requireHistory = (history: AdmissionHistory) => {
   if (!verified.has(history)) throw Error('Unverified admission history');
   return history;
@@ -108,6 +128,35 @@ export async function verifyCertificationHistory(
       certification.epoch.roster.map((m) => Object.freeze({ id: m.id, publicKey: m.sPub })),
     ),
   });
+  const membership = await verifyMembershipAnchor(capturedBase, admission, certification, {
+    epoch: 3,
+    head: certification.head,
+  });
+  const publishers = new Map<string, PublisherTimeline>();
+  for (const m of result.readers)
+    publishers.set(
+      m.id,
+      m.id === result.credential
+        ? {
+            signingKey: m.publicKey,
+            authorities: result.authorities,
+            boundaries: result.boundaries,
+          }
+        : {
+            signingKey: m.publicKey,
+            authorities: Object.freeze([current]),
+            boundaries: Object.freeze([]),
+          },
+    );
+  timelines.set(result, {
+    membership,
+    readers: new Map([
+      [1, prior.readers],
+      [2, prior.readers],
+      [3, result.readers],
+    ]),
+    publishers,
+  });
   verified.add(result);
   rosters.set(
     result,
@@ -115,7 +164,75 @@ export async function verifyCertificationHistory(
   );
   return result;
 }
-/** Read the verified authorization roster, including candidates that cannot read content yet. */
+/** Extend exact signed ancestry; all per-publisher entry epochs and accepted cuts are retained. */
+export async function extendMembershipHistory(
+  input: unknown,
+  prior: AdmissionHistory,
+): Promise<AdmissionHistory> {
+  const held = requireHistory(prior),
+    root = publisherRoots.get(held) ?? held;
+  const timeline = timelines.get(root);
+  if (!timeline) throw Error('Continuation requires the certified anchor');
+  const proof =
+    (input as { kind?: unknown } | null)?.kind === 'membership-admission'
+      ? parseMembershipAdmission(input)
+      : parseMembershipCertification(input);
+  const membership =
+    proof.kind === 'membership-admission'
+      ? await verifyMembershipAdmission(proof, timeline.membership)
+      : await verifyMembershipCertification(proof, timeline.membership);
+  const state = membershipState(membership);
+  const current = captureAuthority({
+    ...root.current,
+    tip: state.epoch,
+    head: state.head,
+    acceptanceKey: state.acceptancePublicKey,
+  });
+  const publishers = new Map<string, PublisherTimeline>();
+  for (const [id, publisher] of timeline.publishers) {
+    const h = state.heads.find((h) => h.credentialId === id);
+    if (!h) throw Error('Missing publisher transition boundary');
+    publishers.set(id, {
+      signingKey: publisher.signingKey,
+      authorities: Object.freeze([...publisher.authorities, current]),
+      boundaries: Object.freeze([
+        ...publisher.boundaries,
+        Object.freeze({ position: h.position, link: h.link }),
+      ]),
+    });
+  }
+  const readers = Object.freeze(
+    state.certificate.members.map((m) => Object.freeze({ id: m.id, publicKey: m.sPub })),
+  );
+  for (const m of readers)
+    if (!publishers.has(m.id))
+      publishers.set(m.id, {
+        signingKey: m.publicKey,
+        authorities: Object.freeze([current]),
+        boundaries: Object.freeze([]),
+      });
+  const own = publishers.get(root.credential)!;
+  const result = Object.freeze({
+    ...root,
+    current,
+    readers,
+    authorities: own.authorities,
+    boundaries: own.boundaries,
+    boundary: own.boundaries.at(-1)!,
+  });
+  verified.add(result);
+  rosters.set(
+    result,
+    Object.freeze(state.roster.map(({ id, state }) => Object.freeze({ id, state }))),
+  );
+  timelines.set(result, {
+    membership,
+    publishers,
+    readers: new Map([...timeline.readers, [state.epoch, readers]]),
+  });
+  return historyPublisher(result, held.credential);
+}
+/** Read the verified roster, including candidates not yet certified for sync. */
 export function historyDevices(history: AdmissionHistory) {
   const checked = requireHistory(history);
   const roster = rosters.get(publisherRoots.get(checked) ?? checked);
@@ -131,6 +248,11 @@ export function historyReader(
   const h = requireHistory(history),
     at = historyAuthority(h, authority);
   // Certification cannot retroactively authorize a reader in a pending roster.
+  const timeline = timelines.get(publisherRoots.get(h) ?? h);
+  if (timeline)
+    return (
+      timeline.readers.get(at.tip)?.some((r) => r.id === id && r.publicKey === publicKey) ?? false
+    );
   if (at.tip < 3) return id === h.credential && publicKey === h.signingKey;
   return h.readers.some((r) => r.id === id && r.publicKey === publicKey);
 }
@@ -140,16 +262,17 @@ export function historyPublisher(history: AdmissionHistory, credential: string):
   const h = publisherRoots.get(checked) ?? checked;
   if (credential === h.credential) return h;
   const member = h.readers.find((r) => r.id === credential);
-  if (h.current.tip !== 3 || !member) throw Error('Uncertified publisher');
+  const publisher = timelines.get(h)?.publishers.get(credential);
+  if (!member || !publisher) throw Error('Uncertified publisher');
   const empty = Object.freeze({ position: 0, link: ZERO_REFUSAL });
   const result = Object.freeze({
     ...h,
-    first: h.current,
+    first: publisher.authorities[0]!,
     credential,
-    signingKey: member.publicKey,
-    boundary: empty,
-    authorities: Object.freeze([h.current]),
-    boundaries: Object.freeze([]),
+    signingKey: publisher.signingKey,
+    boundary: publisher.boundaries.at(-1) ?? empty,
+    authorities: publisher.authorities,
+    boundaries: publisher.boundaries,
   });
   verified.add(result);
   publisherRoots.set(result, h);
@@ -206,6 +329,7 @@ export async function verifyHistoryDecision(
     current = historyAuthority(h, authority),
     own = { ...captureSubject(expected), parent: expected.parent, previous: expected.previous };
   if (own.credential !== h.credential) throw Error('Unsupported admission publisher');
+  if (!h.authorities.some((a) => a.tip === own.epoch)) return { kind: 'unknown' };
   // Parsing captures the wire before crypto; the existing verifier still checks every signature/link.
   let issuance = current;
   try {
@@ -244,7 +368,7 @@ export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle 
     v: 2,
     workspace_id: h.first.workspace,
     credential_id: h.credential,
-    epoch: 1,
+    epoch: h.first.tip,
     gen: 1,
   };
   return Object.freeze({
@@ -263,8 +387,9 @@ export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle 
             'verify',
           ]),
           decoded = decodeNetworkEnvelope(bytes),
-          maxEpoch = h.boundaries.findIndex((b) => decoded.seq <= b.position) + 1;
-        if (!maxEpoch || decoded.epoch > maxEpoch)
+          boundaryIndex = h.boundaries.findIndex((b) => decoded.seq <= b.position),
+          maxEpoch = h.authorities[boundaryIndex]?.tip;
+        if (maxEpoch === undefined || decoded.epoch > maxEpoch)
           throw Error('Envelope crosses authority boundary');
         const e = await verifyNetworkEnvelope(
           bytes,
