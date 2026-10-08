@@ -5,3 +5,7 @@ export {
   verifyMembershipAdmission,
 } from '../../account-protocol/membership';
 export { approvalProgress } from '../../src/account/approvalProgress';
+export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+export { historyMembership } from '../../account-protocol/admissionHistory';
+export { createReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';
+export { Y } from '../../src/crdt/yjs';

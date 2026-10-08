@@ -24,6 +24,19 @@ import {
 import type { SuccessorBase } from '../../account-protocol/successor';
 import type { CeremonyVault, InstalledContentKey } from './ceremonyVault';
 import type { ApprovedProgress } from './contentHandoff';
+import {
+  replacementCheckpointHash,
+  replacementCheckpointAdmissionBody,
+  replacementCheckpointAdmissionMessage,
+  verifyReplacementCheckpoint,
+  verifyReplacementCheckpointAdmission,
+  type ReplacementCheckpoint,
+} from '../../account-protocol/replacementCheckpoint';
+import {
+  replacementTransferMessage,
+  type ReplacementTransferRequest,
+} from '../../account-protocol/replacementTransfer';
+import { openReplacementCheckpoint } from '../crdt/replacementCheckpoint';
 
 export interface MembershipHandoffState {
   delivery: MembershipDelivery;
@@ -33,10 +46,17 @@ export interface MembershipHandoffState {
 }
 export interface ApprovedMembershipProgress extends Omit<ApprovedProgress, 'content'> {
   content?: MembershipHandoffState;
+  replacement?: ReplacementCheckpoint;
 }
 type Owner = Pick<
   CeremonyVault,
-  'participant' | 'load' | 'sign' | 'wrapContent' | 'sealIncoming' | 'checkInstalled'
+  | 'participant'
+  | 'load'
+  | 'sign'
+  | 'wrapContent'
+  | 'sealIncoming'
+  | 'checkInstalled'
+  | 'withInstalledKey'
 >;
 export async function continueMembershipHandoff(
   progress: ApprovedMembershipProgress,
@@ -45,6 +65,8 @@ export async function continueMembershipHandoff(
     base: SuccessorBase;
     membership: VerifiedMembership;
     certification: MembershipCertification | null;
+    /** The native source owner proves accepted coverage and captures journal-inclusive writing. */
+    prepareReplacement?: () => Promise<ReplacementCheckpoint>;
   },
   save: () => Promise<void>,
   request: (path: string, body: unknown) => Promise<unknown>,
@@ -54,9 +76,7 @@ export async function continueMembershipHandoff(
     state = membershipState(parent);
   if (!p.own || !p.peer || !p.reveal || !p.peerReveal || !p.decision)
     throw Error('Saved comparison is incomplete');
-  // The currently installed envelope owner supports generation one. Rotation must extend that
-  // owner explicitly before any later generation can use this handoff.
-  if (state.generation !== 1) throw Error('Unsupported content key generation');
+  const replacement = state.generation > 1;
   const existing = p.role === 'existing' ? p.own : p.peer,
     candidate = p.role === 'new' ? p.own : p.peer,
     existingReveal = p.role === 'existing' ? p.reveal : p.peerReveal,
@@ -73,6 +93,7 @@ export async function continueMembershipHandoff(
   const checkDelivery = async (input: unknown) => {
     const { delivery } = await verifyMembershipDelivery(input, parent);
     if (
+      (replacement ? delivery.v !== 3 : delivery.v !== 2) ||
       !same(delivery.existing, existing) ||
       !same(delivery.candidate, candidate) ||
       !same(delivery.existingReveal, existingReveal) ||
@@ -88,10 +109,41 @@ export async function continueMembershipHandoff(
       !retained ||
       retained.role !== p.role ||
       !same(retained.content, p.content) ||
+      !same(retained.replacement, p.replacement) ||
       !same(retained.decision, p.decision)
     )
       throw Error('Content handoff did not persist');
     return retained.content!;
+  };
+  const checkCheckpoint = async (input: unknown, hash?: string) => {
+    const c = await verifyReplacementCheckpoint(input, parent);
+    if (
+      c.manifest.producer !== context.existing.id ||
+      (hash && (await replacementCheckpointHash(c)) !== hash)
+    )
+      throw Error('Replacement snapshot differs from approved delivery');
+    return c;
+  };
+  const exchangeCheckpoint = async (action: 'publish' | 'read') => {
+    await durableContent();
+    const body: ReplacementTransferRequest = {
+      v: 1,
+      workspaceId: state.workspaceId,
+      parent: state.head,
+      preparationId: preparation.attemptId,
+      credentialId: owner.participant.id,
+      action,
+      payload: action === 'publish' ? p.replacement! : null,
+      signature: '00'.repeat(64),
+    };
+    body.signature = await owner.sign(await replacementTransferMessage(body));
+    const result = closed(await request('/account/membership/v3/checkpoint', body), [
+      'ok',
+      'checkpoint',
+    ]);
+    if (result['ok'] !== true || !result['checkpoint'])
+      throw Error('Replacement snapshot unavailable');
+    return checkCheckpoint(result['checkpoint']);
   };
   const transfer = async (
     action: MembershipTransferRequest['action'],
@@ -117,6 +169,14 @@ export async function continueMembershipHandoff(
   if (p.content?.certification && (!certification || !same(p.content.certification, certification)))
     throw Error('Certified authority changed');
   if (p.content) await checkDelivery(p.content.delivery);
+  if (p.replacement) {
+    if (!replacement) throw Error('Unexpected replacement snapshot');
+    await checkCheckpoint(
+      p.replacement,
+      p.content?.delivery.v === 3 ? p.content.delivery.checkpointHash : undefined,
+    );
+  } else if (replacement && ((p.role === 'existing' && p.content) || p.content?.installation))
+    throw Error('Saved replacement snapshot is missing');
   if (p.role === 'existing' && !p.content) {
     if (certification) throw Error('Saved delivery is missing');
     const transcriptHash = (p.decision.payload as { transcriptHash: string }).transcriptHash;
@@ -136,7 +196,7 @@ export async function continueMembershipHandoff(
     };
     certificate.signature = await owner.sign(await membershipCertificateMessage(certificate));
     const proposal: MembershipDelivery = {
-      v: 2,
+      ...(replacement ? { v: 3 as const, checkpointHash: '00'.repeat(32) } : { v: 2 as const }),
       kind: 'membership-key-delivery',
       parent: state.head,
       preparationId: preparation.attemptId,
@@ -154,10 +214,22 @@ export async function continueMembershipHandoff(
     };
     proposal.signature = await owner.sign(await membershipDeliveryMessage(proposal));
     await checkDelivery(proposal); // Verify approval before opening the content key.
+    if (proposal.v === 3) {
+      if (!p.replacement) {
+        if (!boot.prepareReplacement) throw Error('Replacement source owner is unavailable');
+        p.replacement = await checkCheckpoint(await boot.prepareReplacement());
+        await save();
+      }
+      await durableContent();
+      const remote = await exchangeCheckpoint('publish');
+      if (!same(remote, p.replacement)) throw Error('Retained replacement snapshot changed');
+      proposal.checkpointHash = await replacementCheckpointHash(p.replacement);
+    }
     proposal.wrap = await owner.wrapContent(
       context.candidate.wPub,
       ceremonyWrapInfo(transcriptHash),
       state.workspaceId,
+      parent,
     );
     proposal.signature = await owner.sign(await membershipDeliveryMessage(proposal));
     p.content = { delivery: proposal, key: null, installation: null, certification: null };
@@ -185,6 +257,17 @@ export async function continueMembershipHandoff(
   const content = p.content,
     deliveryHash = await membershipDeliveryHash(delivery);
   if (p.role === 'new') {
+    if (delivery.v === 3) {
+      if (!p.replacement) {
+        p.replacement = await checkCheckpoint(
+          await exchangeCheckpoint('read'),
+          delivery.checkpointHash,
+        );
+        await save();
+      }
+      await checkCheckpoint(p.replacement, delivery.checkpointHash);
+      await durableContent();
+    }
     if (!content.key) {
       if (content.installation) throw Error('Installed content key is missing');
       content.key = await owner.sealIncoming(
@@ -197,9 +280,22 @@ export async function continueMembershipHandoff(
     const retained = await durableContent();
     if (!retained.key) throw Error('Content installation did not persist');
     await owner.checkInstalled(retained.key, deliveryHash);
+    if (delivery.v === 3) {
+      // A saved signature is not a substitute for reopening the durable snapshot and key.
+      await owner.withInstalledKey(retained.key, deliveryHash, async (key) => {
+        const doc = await openReplacementCheckpoint(p.replacement, key, parent);
+        doc.destroy();
+      });
+    }
     if (!content.installation) {
+      const checkpoint =
+        delivery.v === 3 ? await replacementCheckpointAdmissionBody(p.replacement!) : undefined;
+      if (checkpoint)
+        checkpoint.signature = await owner.sign(
+          await replacementCheckpointAdmissionMessage(checkpoint),
+        );
       const installation: MembershipInstallation = {
-        v: 2,
+        ...(checkpoint ? { v: 3 as const, checkpoint } : { v: 2 as const }),
         kind: 'membership-key-installed',
         deliveryHash,
         credentialId: owner.participant.id,
@@ -210,6 +306,12 @@ export async function continueMembershipHandoff(
       await save();
     }
     await verifyMembershipInstallation(content.installation, delivery);
+    if (content.installation.v === 3)
+      await verifyReplacementCheckpointAdmission(
+        content.installation.checkpoint,
+        p.replacement,
+        parent,
+      );
     await durableContent();
     remote = await transfer('install', content.installation);
   }

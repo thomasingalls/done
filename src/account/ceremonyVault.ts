@@ -13,6 +13,7 @@ import { rememberEnrollmentLogin } from './enrollmentLogin';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { SessionIssued, SessionIssuanceResult } from '../../account-protocol/session';
 import type { ContentReaderState } from './contentReader';
+import type { VerifiedMembership } from '../../account-protocol/membership';
 /** Small exclusive operation on the existing mandatory-factor lifecycle, for the private preview. */
 import { withPromotionSlot } from '../crdt/writeSession';
 import {
@@ -59,6 +60,7 @@ export interface CeremonyVault {
     recipient: string,
     info: Uint8Array<ArrayBuffer>,
     workspace: string,
+    membership?: VerifiedMembership,
   ): Promise<GenerationWrap>;
   sealIncoming(
     wrap: GenerationWrap,

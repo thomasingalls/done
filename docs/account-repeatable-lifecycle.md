@@ -147,3 +147,12 @@ and 23 affected protocol/replay checks pass. The live service remains on schema 
 The next owner increment saves the exact snapshot before publication and cold-replays it with the
 recipient's durably installed key before acknowledgement. Native producer composition and replacement
 activation/receive prefixes remain necessary before enabling the complete product journey.
+
+
+## Browser handoff ordering increment
+
+The producer retains its exact snapshot before publication and key release. The recipient saves the
+snapshot and installed key, cold-replays the writing, then retains its signed acknowledgement before
+certification. Interrupted saves and lost replies preserve exact bytes. Seven handoff and four affected
+service-coordinator checks pass. Native source capture/current-key wrapping, replacement custody
+activation and authenticated receive prefixes remain before enabling post-rotation connections.

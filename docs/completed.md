@@ -11544,3 +11544,23 @@ format and diff checks pass. [Preserved output](./development-evidence/2026-10-0
 Next: save the exact snapshot in browser handoff custody, cold-replay it before acknowledgement,
 compose the native producer, then install the replacement's initial generation and receive prefixes.
 Post-rotation product connections remain gated; release validation remains paused.
+
+
+## 2026-10-08 — Durable replacement handoff ordering (`L-1`)
+
+The browser handoff now saves the exact replacement snapshot before publication, confirms that exact
+service value, then binds its hash into the saved key delivery. A joining device saves the snapshot
+and sealed key before cold-decrypting/replaying them. Only successful replay permits a signed snapshot
+acknowledgement; that signature and installation persist before certification. Every retry reopens the
+saved ciphertext/key rather than trusting a saved acknowledgement. Generation-one behavior is retained.
+
+Seven focused handoff checks pass, including lost snapshot-save/publication/acknowledgement/certification
+replies, a refused save, changed snapshot and wrong content key. Four affected real-service coordinator
+checks pass. These tests model committed browser custody while running the actual coordinator and
+snapshot crypto; native producer capture and replacement activation remain separate unfinished work.
+[Preserved output](./development-evidence/2026-10-08-replacement-handoff.log). TypeScript, scoped lint/format,
+packaged build, budget (109.5 kB initial JS), origin isolation and diff checks pass.
+
+Next: compose the native producer with authenticated local content and journal under its actual slot
+permit, and select the installed current-generation key for wrapping. The replacement product route
+remains gated; live service unchanged and release validation paused.
