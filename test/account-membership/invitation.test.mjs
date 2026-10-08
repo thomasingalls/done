@@ -12,6 +12,7 @@ const built = await build({
     write: false,
     minify: false,
     lib: { entry: resolve('test/account-membership/comparison-entry.ts'), formats: ['es'] },
+    rolldownOptions: { output: { codeSplitting: false } },
   },
 });
 const client = await import(

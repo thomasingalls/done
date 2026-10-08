@@ -370,3 +370,13 @@ its exact challenge and proof before transmission and survives finish/admission 
 another passkey prompt after the proof is durable. Focused real-service retry checks pass with simulated
 client persistence. Product coordinator and route wiring remain next; continuation is still disabled in
 the default host and has not been served at the retained origin.
+
+
+## Retained connection coordinator checkpoint — 2026-10-08
+
+One encrypted progress record now composes the continuation components. Reopening authenticates its
+saved invitation, account, latest chain and the parent of each in-flight component. Exact admission
+and certification advances can finish after lost replies; competing membership requires restarting the
+human comparison. Composed real-service tests pass for either approver, and actual encrypted loading
+survives interruption at the installation port. These use simulated custody; native browser/session
+and route composition remains next. Cancellation and removal are still separate unfinished transitions.

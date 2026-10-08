@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: invitation/enrollment components complete; product coordinator composition next
+scope: retained connection coordinator complete; native browser/session and route composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -107,9 +107,12 @@ relay and key-handoff coordinator for either approver, including a lost approval
 restart. 13 focused Node cases and two service integrations pass; committed as `16d50228`.
 Invitation/preparation components now use actual current custody, reject stale bootstrap ancestry, and
 retain exact combined login/enrollment proof before effects. Two invitation and two service retry cases
-pass, including failed saves and service restarts. Product routing remains unwired.
+pass, including failed saves and service restarts; committed as `b53497a7`. The retained connection
+coordinator now composes these components through certification and encrypted loading. Three composed
+service/reader cases, 11 component regressions and four service component cases pass with simulated
+custody/installation ports. Native browser/session and product routing remain unwired.
 
-**Next:** product coordinator, ceremony routes and editor composition, including a real three-device check of
+**Next:** native browser/session adapter, ceremony routes and editor composition, including a real three-device check of
 original/joined authority adoption and delivery;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed

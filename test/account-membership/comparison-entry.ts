@@ -17,3 +17,4 @@ export {
   beginMembershipPreparation,
   completeMembershipPreparation,
 } from '../../src/account/membershipPreparation';
+export { advanceMembershipConnection } from '../../src/account/membershipConnection';

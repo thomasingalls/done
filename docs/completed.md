@@ -10729,3 +10729,29 @@ format and diff checks pass. Logs: `/tmp/done-membership-invitation-tests.log`,
 Next: compose these components with comparison, key handoff and loading in the product coordinator;
 then cancellation/removal transitions and a disposable three-device walkthrough. No live service change
 or release-validation work.
+
+
+## 2026-10-08 — Retained additional-device connection coordinator (`L-1`)
+
+After invitation checkpoint `b53497a7`, one connection record now composes invitation, verified current
+chain, combined enrollment/login, comparison, key handoff and multi-publisher writing load. Each call
+cold-reads progress inside the caller's slot permit. Component saves and readback remain nested in the
+same encrypted owner record. Bootstrap cannot regress retained authority or change the account/route.
+A preparation may advance only into its exact saved candidate admission; a comparison may advance only
+into its own certification. Other competing membership changes require a new comparison.
+
+Both original and joined approvers finish the real private-service path through third-device
+certification, retrying exact saved approval and delivery after response loss and service restart.
+A separate composed test loads actual encrypted Yjs writing, including the pre-sync catch-up content,
+and retries an interrupted installation call from committed reader state. These three tests use
+simulated client persistence/key-wrapping or installation ports; they do not claim native three-device
+UI coverage. Native custody/activation checks are recorded in their preceding phases. Comparison,
+invitation, locator and preparation regressions remain scoped to the changed composition.
+
+Evidence: `/tmp/done-membership-connection-tests.log` (3 passing composed cases),
+`/tmp/done-membership-connection-regressions.log` (11 affected component cases),
+`/tmp/done-membership-connection-components.log` (4 service component cases). TypeScript, scoped lint,
+format and diff checks pass. The test bundle uses a single chunk because the composed reader brings
+in dynamic native-owner imports. Separate test bundles still emit the known duplicate-Yjs warning.
+Next: native browser/session adapter and route integration, then actual cancellation/removal transitions
+and the disposable three-device product check. No retained installation change; validation remains paused.

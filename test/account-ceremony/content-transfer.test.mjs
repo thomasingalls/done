@@ -3412,6 +3412,7 @@ async function compiledComparison() {
         write: false,
         minify: false,
         lib: { entry: resolve('test/account-membership/comparison-entry.ts'), formats: ['es'] },
+        rolldownOptions: { output: { codeSplitting: false } },
       },
     });
     const code = (Array.isArray(built) ? built[0] : built).output.find(
@@ -3679,4 +3680,260 @@ test('browser continuation preparation rejects unsaved state and changed custody
   h.stop.abort();
   await assert.rejects(h.run());
   assert.equal(h.calls.length, 0);
+});
+
+for (const approver of ['existing', 'new'])
+  test(`retained connection coordinates invitation through third-device certification with ${approver} approving`, async (t) => {
+    const client = await compiledComparison(),
+      authority = authorityFixture(t),
+      x = await checkpointFixture(t, {
+        authority,
+        sessions: { pin: authority.pin, operatorKey: authority.key },
+        membershipContinuation: true,
+      });
+    assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+    const entry = x.candidate(),
+      c = entry.input.candidate,
+      proofs = { successor: x.successor, certification: x.certification, continuations: [] },
+      durable = { existing: null, new: null },
+      owners = {},
+      keys = { existing: x.keys[approver], new: entry.key },
+      calls = [];
+    let prompts = 0,
+      loseDecision = true,
+      loseDelivery = true;
+    const participants = {
+      existing: x.context[approver === 'existing' ? 'existing' : 'candidate'],
+      new: { id: c.credentialId, wPub: c.wPub, sPub: c.sPub },
+    };
+    for (const role of ['existing', 'new']) {
+      owners[role] = {
+        participant: participants[role],
+        source:
+          role === 'new'
+            ? { kind: 'pending' }
+            : approver === 'existing'
+              ? { kind: 'original', base: x.base, proofs }
+              : { kind: 'joined', authority: { base: x.base, ...proofs }, proofs },
+        load: async () => structuredClone(durable[role]),
+        save: async (p, check) => {
+          check?.();
+          durable[role] = structuredClone(p);
+        },
+        sign: async (bytes) => signed(keys[role], bytes),
+        rememberLogin: async (_, __, result) => {
+          assert.equal(result.ok, true);
+          return result;
+        },
+        wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
+        sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
+        checkInstalled: async (key) => assert.deepEqual(key, durable[role].comparison.content.key),
+      };
+    }
+    const run = (role, input) =>
+      client.advanceMembershipConnection(
+        owners[role],
+        role,
+        {
+          pin: authority.pin,
+          signal: new AbortController().signal,
+          now: () => 1000,
+          request: async (path, body, base) => {
+            calls.push(path);
+            assert(durable[role]?.invitation, 'save invitation before its first bootstrap');
+            if (path.endsWith('/membership/bootstrap')) {
+              assert.equal(base, null);
+              return authority.owner.membershipBootstrap(x.f.core, body);
+            }
+            assert.deepEqual(base, x.base);
+            if (path.includes('/enrollment/')) return x.enroll(path.split('/').at(-1), body);
+            if (path.endsWith('/admit')) return authority.owner.admitMembership(x.f.core, body);
+            if (path.endsWith('/ceremony')) {
+              const result = await authority.owner.relayMembershipCeremony(x.f.core, body);
+              if (body.action === 'decide' && loseDecision) {
+                loseDecision = false;
+                throw Error('Lost approved comparison reply');
+              }
+              return result;
+            }
+            assert(path.endsWith('/transfer'));
+            const result = await authority.owner.transferMembership(x.f.core, body);
+            if (body.action === 'deliver' && loseDelivery) {
+              loseDelivery = false;
+              throw Error('Lost delivered key reply');
+            }
+            return result;
+          },
+          assert: async (context) => {
+            prompts++;
+            const p = durable.new.preparation.progress;
+            return nextProof(
+              x,
+              {
+                ...entry,
+                input: { ...entry.input, retryKey: p.retryKey, loginRetryKey: p.loginRetryKey },
+              },
+              { context },
+            ).response;
+          },
+          acknowledge: async () => {
+            assert(durable.new.preparation.progress.receipt);
+          },
+          reconnect: async () => {
+            throw Error('Unexpected extra login');
+          },
+          read: async () => {
+            throw Error('Writing load requires an explicit request');
+          },
+        },
+        input,
+      );
+    const invitation = (await run('existing')).invitation;
+    assert(invitation);
+    assert.equal((await run('new', { invitation, workspaceId: x.workspace })).kind, 'enroll');
+    assert.equal((await run('new', { enroll: true })).kind, 'waiting');
+    assert.equal((await run('existing')).kind, 'waiting');
+    assert.equal((await run('new')).kind, 'waiting');
+    assert.equal((await run('existing')).kind, 'compare');
+    const display = await run('new');
+    assert.equal(display.kind, 'display');
+    await assert.rejects(run('existing', { typed: display.code }), /Lost approved/);
+    const decision = structuredClone(durable.existing.comparison.decision);
+    x.f.restart();
+    await assert.rejects(run('existing'), /Lost delivered/);
+    const delivery = structuredClone(durable.existing.comparison.content.delivery);
+    x.f.restart();
+    assert.equal((await run('existing')).kind, 'approved');
+    assert.deepEqual(durable.existing.comparison.decision, decision);
+    assert.deepEqual(durable.existing.comparison.content.delivery, delivery);
+    assert.equal((await run('new')).kind, 'certified');
+    assert.equal((await run('existing')).kind, 'certified');
+    x.f.restart();
+    for (const role of ['existing', 'new']) {
+      assert.equal((await run(role)).kind, 'certified');
+      assert.equal(durable[role].latest.continuations.at(-1).epoch.epoch, 5);
+      assert.equal(
+        durable[role].comparison.content.certification.head,
+        durable[role].latest.continuations.at(-1).head,
+      );
+    }
+    const before = calls.length;
+    await assert.rejects(run('new', { workspaceId: 'ee'.repeat(16) }), /route changed/);
+    assert.equal(calls.length, before);
+    assert.equal(prompts, 1);
+    assert.equal(x.f.rows('membership_admissions').length, 1);
+    assert.equal(x.f.rows('membership_ceremonies').length, 1);
+    assert.equal(x.f.rows('membership_transfers').length, 1);
+  });
+
+test('retained connection loads actual encrypted writing and retries interrupted installation from committed reader state', async (t) => {
+  const client = await compiledComparison(),
+    f = await membershipReadingFixture(t),
+    { x } = f,
+    content = f.saved.content,
+    d = content.delivery,
+    invitationBody = {
+      v: 2,
+      workspaceId: x.workspace,
+      lineageId: x.base.request.candidate.lineageId,
+      credentialId: d.existing.context.existing.id,
+      epoch: 3,
+      head: x.certification.head,
+      nonce: 'ad'.repeat(32),
+    },
+    invitation = {
+      ...invitationBody,
+      signature: signed(x.keys.new, message('done/membership-invitation/v2', invitationBody)),
+    };
+  let saved = {
+      v: 2,
+      kind: 'membership-connection',
+      role: 'new',
+      invitation,
+      base: x.base,
+      latest: f.authority.proofs,
+      preparation: null,
+      terminal: null,
+      comparison: {
+        v: 2,
+        role: 'new',
+        parent: x.admission.head,
+        nonce: d.newReveal.nonce,
+        attemptId: d.candidate.context.attemptId,
+        context: d.candidate.context,
+        own: d.candidate,
+        peer: d.existing,
+        reveal: d.newReveal,
+        peerReveal: d.existingReveal,
+        decision: d.decision,
+        cancellation: null,
+        terminal: null,
+        content,
+      },
+    },
+    fail = true,
+    installs = 0,
+    installed;
+  const owner = {
+    ...f.owner,
+    source: { kind: 'pending' },
+    load: async () => structuredClone(saved),
+    save: async (p, check) => {
+      check?.();
+      saved = structuredClone(p);
+    },
+    checkInstalled: async (key) => assert.deepEqual(key, saved.comparison.content.key),
+    installMembershipWriting: async (authority, reading, key) => {
+      assert.deepEqual(authority, { base: x.base, ...f.authority.proofs });
+      assert.deepEqual(reading, saved.comparison.reading);
+      assert.deepEqual(key, saved.comparison.content.key);
+      assert(reading.admission);
+      installs++;
+      if (fail) {
+        fail = false;
+        throw Error('Interrupted native installation');
+      }
+      installed = structuredClone(reading);
+    },
+  };
+  const run = () =>
+    client.advanceMembershipConnection(
+      owner,
+      'new',
+      {
+        pin: x.authority.pin,
+        signal: f.stop.signal,
+        assert: async () => {
+          throw Error('Saved approval must not prompt again');
+        },
+        reconnect: async () => {
+          throw Error('Unexpected reconnect');
+        },
+        acknowledge: async () => {
+          throw Error('Unexpected enrollment');
+        },
+        request: async (path, body) => {
+          if (path.endsWith('/bootstrap'))
+            return x.authority.owner.membershipBootstrap(x.f.core, body);
+          if (path.endsWith('/ceremony')) return x.relay(body);
+          if (path.endsWith('/transfer'))
+            return x.authority.owner.transferMembership(x.f.core, body);
+          return f.io.request(path, body);
+        },
+        read: f.io.read,
+      },
+      { read: true },
+    );
+  await assert.rejects(run(), /Interrupted native installation/);
+  assert(saved.comparison.reading.admission);
+  assert.equal((await run()).kind, 'installed');
+  assert.equal(installs, 2);
+  assert.deepEqual(installed, saved.comparison.reading);
+  f.setState({ ...f.saved, reading: installed });
+  const reopened = await f.run();
+  assert.equal(reopened.kind, 'reading');
+  assert.equal(
+    reopened.entries.find((e) => e.path === 'master.md').content,
+    'Original genesis. Before sync began.',
+  );
 });
