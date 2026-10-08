@@ -1,0 +1,47 @@
+Focused native producer/handoff checks. Replacement editor activation is still gated.
+
+
+Running 2 tests using 1 worker
+
+(node:44932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/replacement-handoff.spec.ts:9:3 › native promotion producer hands a current-key snapshot to a replacement with removed-device and journal writing (41.9s)
+  ✓  2 test/packaged-account/replacement-handoff.spec.ts:9:3 › native joined producer hands a current-key snapshot to a replacement with removed-device and journal writing (42.5s)
+
+  2 passed (1.4m)
+
+(node:44208) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (144.5215ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (72.229291ms)
+✔ key installation and countersignature retry from committed custody after interruptions (90.456375ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (75.815083ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.673375ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (160.681292ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (117.338041ms)
+(node:44209) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (253.615709ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (461.916583ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (216.841166ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (99.282666ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (161.421916ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (205.509791ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1778.001292
+
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  16:53:29
+   Duration  229ms (transform 44ms, setup 27ms, import 48ms, tests 40ms, environment 0ms)
+

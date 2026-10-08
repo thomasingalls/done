@@ -182,7 +182,16 @@ export function createMembershipEnrollment(
           read: async (bytes, base) => {
             const scoped = access(owner, base);
             const page = await owner.withLogin(ceremonyLogin, identity(base), () =>
-              privateDeliveryPost(pin, scoped, 'read-v2', bytes, READ_PAGE_LIMIT, lifetime.signal),
+              privateDeliveryPost(
+                pin,
+                scoped,
+                'read-v2',
+                bytes,
+                READ_PAGE_LIMIT,
+                lifetime.signal,
+                undefined,
+                true,
+              ),
             );
             guard();
             if (!page) throw Error('Writing could not be fetched. Retry the saved load.');

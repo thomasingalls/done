@@ -11564,3 +11564,36 @@ packaged build, budget (109.5 kB initial JS), origin isolation and diff checks p
 Next: compose the native producer with authenticated local content and journal under its actual slot
 permit, and select the installed current-generation key for wrapping. The replacement product route
 remains gated; live service unchanged and release validation paused.
+
+
+## 2026-10-08 — Native replacement producer and current-key handoff (`L-1`)
+
+The actual original/joined slot owners now prepare replacement snapshots under the exclusive factor
+permit. They authenticate installed membership and generation openers, replay retained spool/delivery/
+inbound evidence, read durable content plus synchronous journal, and fetch every accepted publisher
+through the admission cutoffs. Publication uses the already implemented exact retained snapshot. Key
+wrapping selects the installed current generation and verifies the pending recipient; it cannot fall
+back to the original key after rotation. No caller-provided editor document or key authorizes capture.
+
+Two disposable packaged-browser checks pass: an original producer after removing its joined peer,
+and a joined producer after removing the original device. Each admits a replacement, recovers a forced
+stale-grant refusal, loses a committed snapshot-publication reply, reloads encrypted progress, certifies
+the replacement and cold-decrypts its retained snapshot. Exported writing includes the removed device's
+accepted text and current-generation text; a journal-only update is included while its original journal
+entry remains intact. Snapshot publication retries use identical bytes. These cases stop at retained
+handoff; replacement editor activation is not claimed.
+
+The native check caught selection of local custody credentials instead of the original promotion's
+account credentials; the producer now uses the established account credential owner. A focused red/green
+transport check reproduced swallowed typed authorization outcomes: retained connection reads now allow
+the coordinator to handle authority changes, sign-in and throttling; ordinary byte-only callers retain
+the prior null contract. One initial fixture used the wrong joined unlock route, and another inspected
+Yjs master text instead of exported card content; both checks were corrected.
+
+Thirteen source/handoff checks and ten binary-transport tests pass alongside both native cases.
+TypeScript, scoped lint/format, packaged build, 109.6 kB initial JS budget, origin isolation and diff
+checks pass. [Preserved output](./development-evidence/2026-10-08-replacement-native-handoff.log).
+
+Next: replacement startup must retain the verified account binding, initialize from the admitted
+current-generation snapshot and nonzero receive cuts, then support editing/repeated removal.
+Post-rotation product invitations remain gated. Live service unchanged; release validation paused.

@@ -156,3 +156,15 @@ snapshot and installed key, cold-replays the writing, then retains its signed ac
 certification. Interrupted saves and lost replies preserve exact bytes. Seven handoff and four affected
 service-coordinator checks pass. Native source capture/current-key wrapping, replacement custody
 activation and authenticated receive prefixes remain before enabling post-rotation connections.
+
+
+## Native producer increment
+
+Original and previously joined devices now capture replacement writing from authenticated native
+content/journal plus accepted-prefix replay under their actual slot permit. Current-generation wrapping
+uses installed custody. Two packaged-browser checks pass through stale-grant recovery, lost publication
+reply, cold restart, certification, and decryption of removed-device/current-generation/journal-only
+writing. The journal original remains retained.
+
+The joining device still needs its startup adapter: verified account binding, initial generation and
+receive cuts, then editing and a subsequent removal. Post-rotation product invitations remain gated.

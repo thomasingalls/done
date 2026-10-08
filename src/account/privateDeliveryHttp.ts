@@ -1,4 +1,9 @@
 import { isAccountAccess, accountServiceFetch, type AccountAccess } from './accountHttp';
+import {
+  NetworkAuthorityChanged,
+  NetworkSignInRequired,
+  NetworkThrottled,
+} from './scopedTransport';
 /** Private same-service HTTP adapter; no device keys or membership decisions. */
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { Bytes } from '../../account-protocol/positionDecision';
@@ -24,6 +29,8 @@ export async function privateDeliveryPost(
   limit: number,
   signal: AbortSignal,
   observe: DiagnosticSink = diagnostics.record,
+  /** Retained connection coordinators own rebootstrap/sign-in/backoff; byte-only drivers retain null. */
+  propagateAuthorization = false,
 ): Promise<Bytes | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
     reportDiagnostic(observe, { operation: path, phase, code });
@@ -127,7 +134,14 @@ export async function privateDeliveryPost(
       reader.releaseLock();
       for (const chunk of chunks) chunk.fill(0);
     }
-  } catch {
+  } catch (cause) {
+    if (
+      propagateAuthorization &&
+      (cause instanceof NetworkAuthorityChanged ||
+        cause instanceof NetworkSignInRequired ||
+        cause instanceof NetworkThrottled)
+    )
+      throw cause;
     note('request', stopped.aborted ? interrupted() : 'network-unavailable');
     return null;
   }

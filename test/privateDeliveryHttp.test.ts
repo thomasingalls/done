@@ -8,6 +8,11 @@ import {
   recordPrivateReceiveExpiry,
 } from '../src/account/privateDeliveryHttp';
 import type { AuthorityPin } from '../account-protocol/authority';
+import {
+  NetworkAuthorityChanged,
+  NetworkSignInRequired,
+  NetworkThrottled,
+} from '../src/account/scopedTransport';
 const pin = { origin: 'http://127.0.0.1:12345' } as AuthorityPin;
 const headers = { 'Content-Type': 'application/octet-stream' };
 const token = 'A'.repeat(43);
@@ -16,6 +21,53 @@ const send = (signal = new AbortController().signal, limit = 1024) =>
 afterEach(() => {
   vi.unstubAllGlobals();
   clearPrivateTransportDiagnostics();
+});
+it('a retained connection can receive typed authorization outcomes without treating them as writing', async () => {
+  for (const error of [
+    new NetworkAuthorityChanged(),
+    new NetworkSignInRequired(),
+    new NetworkThrottled(),
+  ]) {
+    const access = {
+      kind: 'scoped-account' as const,
+      pin,
+      fetch: async () => {
+        throw error;
+      },
+    };
+    const call = (propagate = false) =>
+      privateDeliveryPost(
+        pin,
+        access,
+        'read-v2',
+        new Uint8Array([7]),
+        1024,
+        new AbortController().signal,
+        undefined,
+        propagate,
+      );
+    expect(await call()).toBeNull(); // Ordinary byte-only receive owners keep the prior contract.
+    await expect(call(true)).rejects.toBe(error);
+  }
+  const access = {
+    kind: 'scoped-account' as const,
+    pin,
+    fetch: async () => {
+      throw Error('private network details');
+    },
+  };
+  expect(
+    await privateDeliveryPost(
+      pin,
+      access,
+      'read-v2',
+      new Uint8Array([7]),
+      1024,
+      new AbortController().signal,
+      undefined,
+      true,
+    ),
+  ).toBeNull();
 });
 it('preserves bounded service hints without returning authoritative bytes; ignores arbitrary error bodies', async () => {
   for (const reason of ['storage-unavailable', 'state-changed', 'out-of-order']) {

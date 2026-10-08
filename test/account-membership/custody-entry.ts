@@ -351,3 +351,61 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
     signal(),
   );
 }
+
+export async function replacementWriting(kind: Kind, slot: string, code: string) {
+  return withMembershipVault(kind, slot, code, signal(), async (owner) => {
+    const p =
+      (await owner.load()) as import('../../src/account/membershipConnection').MembershipConnection;
+    const c = p.comparison!;
+    check(!!c.replacement && !!c.content, 'Missing retained replacement');
+    const end = p.latest!.continuations.findIndex((proof) => proof.head === c.parent);
+    const { history } = await verifyMembershipChain(
+      { ...p.latest!, continuations: p.latest!.continuations.slice(0, end + 1) },
+      p.base!,
+    );
+    const { historyMembership } = await import('../../account-protocol/admissionHistory');
+    const { replacementCheckpointHash } =
+      await import('../../account-protocol/replacementCheckpoint');
+    const { membershipDeliveryHash } = await import('../../account-protocol/membershipDelivery');
+    const { openReplacementCheckpoint } = await import('../../src/crdt/replacementCheckpoint');
+    const { exportEntries } = await import('../../src/crdt/export');
+    const hash = await replacementCheckpointHash(c.replacement!);
+    if (p.role === 'existing') return { hash, generation: c.replacement!.manifest.generation };
+    return owner.withInstalledKey(
+      c.content!.key!,
+      await membershipDeliveryHash(c.content!.delivery),
+      async (key) => {
+        const doc = await openReplacementCheckpoint(c.replacement, key, historyMembership(history));
+        try {
+          return {
+            hash,
+            generation: c.replacement!.manifest.generation,
+            writing: JSON.stringify(exportEntries(doc, doc.getText('master').toString())),
+            journal: doc.getText('rotation-journal-probe').toString(),
+          };
+        } finally {
+          doc.destroy();
+        }
+      },
+    );
+  });
+}
+export async function pendingSlot() {
+  const db = await new Promise<IDBDatabase>((resolve, reject) => {
+    const r = indexedDB.open('done.slots');
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+  try {
+    return await new Promise<string>((resolve, reject) => {
+      const r = db.transaction('slots').objectStore('slots').getAll();
+      r.onsuccess = () => {
+        if (r.result.length !== 1) reject(Error('Expected one disposable pending slot'));
+        else resolve(r.result[0].id);
+      };
+      r.onerror = () => reject(r.error);
+    });
+  } finally {
+    db.close();
+  }
+}

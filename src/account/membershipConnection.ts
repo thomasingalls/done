@@ -410,7 +410,17 @@ export async function advanceMembershipConnection(
   const handoff = await continueMembershipHandoff(
     comparison,
     childOwner,
-    { base, membership: pending, certification },
+    {
+      base,
+      membership: pending,
+      certification,
+      prepareReplacement: () =>
+        owner.prepareReplacement(
+          { base, proofs: pendingProofs },
+          comparison.own!.context.candidate.id,
+          (bytes) => io.read(bytes, base),
+        ),
+    },
     save,
     request,
   );

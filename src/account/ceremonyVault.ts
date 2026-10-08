@@ -14,6 +14,7 @@ import type { AuthorityPin } from '../../account-protocol/authority';
 import type { SessionIssued, SessionIssuanceResult } from '../../account-protocol/session';
 import type { ContentReaderState } from './contentReader';
 import type { VerifiedMembership } from '../../account-protocol/membership';
+import type { prepareNativeReplacement } from '../crdt/membershipSource';
 /** Small exclusive operation on the existing mandatory-factor lifecycle, for the private preview. */
 import { withPromotionSlot } from '../crdt/writeSession';
 import {
@@ -35,6 +36,11 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  prepareReplacement(
+    authority: Parameters<typeof prepareNativeReplacement>[1],
+    candidate: string,
+    read: Parameters<typeof prepareNativeReplacement>[3],
+  ): ReturnType<typeof prepareNativeReplacement>;
   archiveConnection(expected: unknown, next: unknown, check?: () => void): Promise<void>;
   activateRemoval(): Promise<{ generation: number; head: string }>;
   rotation: Awaited<ReturnType<typeof createApprovalVault>>;
@@ -138,6 +144,15 @@ export async function withCeremonyVault<T>(
           channel: 'rotation',
         });
         return work({
+          prepareReplacement: (authority, candidate, read) =>
+            import('../crdt/membershipSource').then(({ prepareNativeReplacement }) =>
+              prepareNativeReplacement(
+                { task, kind: 'promotion', slotId, code },
+                authority,
+                candidate,
+                read,
+              ),
+            ),
           rotation,
           activateRemoval: async () =>
             (await import('../crdt/accountRotation')).activateAccountRotation(
@@ -181,7 +196,15 @@ export async function withCeremonyVault<T>(
             ({ claim, record, marker } = await readPromotion(task, slotId, code));
             return checkpoint;
           },
-          wrapContent: async (recipient, info, workspace) => {
+          wrapContent: async (recipient, info, workspace, membership) => {
+            if (membership && membership.state.generation > 1)
+              return (await import('../crdt/membershipSource')).wrapMembershipGeneration(
+                { task, kind: 'promotion', slotId, code },
+                recipient,
+                info,
+                workspace,
+                membership,
+              );
             if (record.rotation)
               throw Error('Further enrollment after rotation is not available yet');
             if (

@@ -411,7 +411,7 @@ export async function joinedKeys<T>(
     }
   });
 }
-async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) {
+export async function joinedContext(task: SessionTask, state: JoinedState, key: Bytes) {
   const marker = state.marker!,
     { authority: a, reading } = marker;
   const original = await task.wait(() =>

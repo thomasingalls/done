@@ -22,6 +22,7 @@ type MembershipProofs = ReturnType<typeof parseMembershipChain>;
 export interface MembershipVault extends Pick<
   CeremonyVault,
   | 'archiveConnection'
+  | 'prepareReplacement'
   | 'activateRemoval'
   | 'rotation'
   | 'participant'
@@ -114,6 +115,15 @@ export function withMembershipVault<T>(
           channel: 'rotation',
         });
         return work({
+          prepareReplacement: (authority, candidate, read) =>
+            import('../crdt/membershipSource').then(({ prepareNativeReplacement }) =>
+              prepareNativeReplacement(
+                { task, kind: 'joined', slotId, code },
+                authority,
+                candidate,
+                read,
+              ),
+            ),
           rotation,
           activateRemoval: async () =>
             (await import('../crdt/accountRotation')).activateAccountRotation(
@@ -151,7 +161,15 @@ export function withMembershipVault<T>(
               vault.close();
             }
           },
-          wrapContent: async (recipient, info, workspace) => {
+          wrapContent: async (recipient, info, workspace, membership) => {
+            if (membership && membership.state.generation > 1)
+              return (await import('../crdt/membershipSource')).wrapMembershipGeneration(
+                { task, kind: 'joined', slotId, code },
+                recipient,
+                info,
+                workspace,
+                membership,
+              );
             if (state.record.rotation)
               throw Error('Further enrollment after rotation is not available yet');
             if (
