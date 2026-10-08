@@ -111,3 +111,12 @@ position, journal delivery and cold reopen. See the 2026-10-08 completion entry 
 [passing native output](./development-evidence/2026-10-08-current-key-retry.log). Next: the replacement
 snapshot must cover the admission's accepted cuts, including finalized publishers, and the joining
 device must start its streams at those authenticated cuts with only its approved generation key.
+
+## Replacement checkpoint increment
+
+The separate signed replacement artifact and current-key encrypt/decrypt path are implemented. Its exact
+cutoffs include finalized publishers; local journal additions do not advance them. A candidate signs
+an acknowledgement of the complete artifact hash after semantic replay. Eight focused checks pass.
+The constructor is an internal primitive, not publication authority: source coverage must still be
+proved from an authenticated baseline and each accepted publisher suffix. Service retention, hash
+binding into approval, native joining custody and reader prefixes remain before enabling the product.

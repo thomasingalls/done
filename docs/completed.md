@@ -11466,3 +11466,26 @@ service capacity limits or counting an unfinished removal as success.
 
 No retained-service change, pruning, old-key retirement or release-validation campaign. Next is the
 current-generation replacement snapshot and its native reader/custody integration.
+
+
+## 2026-10-08 — Current-generation replacement checkpoint format and replay (`L-1`)
+
+A separate replacement artifact binds the verified admission parent, current generation, candidate,
+preparation and exact union of current and finalized publisher cutoffs. It keeps large ciphertext out
+of membership proofs. The recipient acknowledgement signs the entire artifact hash; it cannot be reused
+for another snapshot, candidate or parent. Existing generation-one checkpoint bytes are unchanged.
+
+The construction primitive captures accepted replay plus local originals before asynchronous work,
+checks complete Yjs integration and actor schema, encrypts under a separate current-key derivation,
+and cold-replays the result with full document comparison. Local additions do not advance accepted
+cutoffs. Recipients verify signatures, ciphertext, exact coverage metadata, dependencies and actors.
+This authenticates a producer claim: the native producer still needs independent accepted-prefix replay
+before publication. No service endpoint or post-rotation product path is enabled by this increment.
+
+Eight focused protocol/replay cases pass, including finalized publisher cutoffs, producer and recipient
+substitution, captured mutable input, current-key-only opening, deletion and local journal preservation,
+wrong coverage, incomplete dependencies and attribution. A new parser test caught odd-length hex being
+truncated by a shared low-level decoder; this format now rejects it before decoding. Evidence:
+`/tmp/done-replacement-checkpoint-focused.log`. TypeScript, scoped lint/format and diff checks pass.
+Next: prove source coverage from the authenticated baseline and each accepted publisher suffix, then
+retain publication/acknowledgement and integrate joining custody. Live service unchanged; validation paused.

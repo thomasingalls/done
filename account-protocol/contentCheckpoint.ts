@@ -96,7 +96,9 @@ export function parseContentCheckpoint(input: unknown): ContentCheckpoint {
     binding: parseBindingProof(r['binding']),
   };
 }
-export const checkpointHeadDigest = (heads: ContentCheckpoint['heads']) =>
+export const checkpointHeadDigest = (
+  heads: readonly { credentialId: string; position: number; link: string }[],
+) =>
   digest(
     new Uint8Array([
       ...lp('done/headvec/v1'),

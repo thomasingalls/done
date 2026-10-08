@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshots next
+scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source verification in flight
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -95,7 +95,7 @@ survivor missing both rotations, old-generation offline delivery, generation-thr
 and cold reopen. The signed current-key service boundary now passes its five affected cases, including lost committed
 replies. Durable browser retries now pass the focused native case: exact old ciphertext after a lost
 refusal reply, same-position current-key delivery, journal preservation and cold reopen. Four new
-retry cases and affected unit checks pass. Next: replacement snapshots, native joining custody and
+retry cases and affected unit checks pass. The replacement checkpoint format and current-key crypto replay pass eight focused cases, including finalized publisher cuts and semantic replay. Next: authenticated source replay, retained publication, native joining custody and
 the full remove/connect/remove flow. Post-rotation connections remain gated. No live
 service switch has occurred.
 
