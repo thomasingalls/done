@@ -3,9 +3,9 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
-**Current retained installation:** sessions/notifications build `a07de792`, schema 14, same `:8443` origin.
-Use the session-mode commands and notification checkpoint below; shared-token sections are historical.
-The bounded device-lifecycle build is ready but not deployed; see the pending upgrade section at the end.
+**Current retained installation:** lifecycle build `2bea3437`, schema 20, same `:8443` origin and pin.
+Both network sessions and membership continuation are enabled. Use the lifecycle-cutover commands at
+the end; earlier serving checkpoints are historical. Operator browser update uptake remains pending.
 
 ## Serving and access
 
@@ -275,7 +275,7 @@ snapshot contains session state and is **not** a supported restore recipe: resto
 must invalidate remembered sessions and change issuance-custody context before serving.
 
 
-## Pending device-lifecycle upgrade — 2026-10-08
+## Device-lifecycle upgrade preparation — 2026-10-08 (superseded by cutover below)
 
 Implementation `2bea3437` passes the focused five-case removal walkthrough and five offline-upgrade
 checks. The retained installation above has not changed. Obtain a fresh confirmation that its tabs/app
@@ -299,3 +299,51 @@ The tested immutable candidate is now preserved at
 checkpoint is `f46978a0` (documentation/test extension only after implementation `2bea3437`).
 Read-only listener verification still finds API 81162 and application 81163 on their original loopback
 ports. No quiet point has yet been confirmed for this lifecycle upgrade.
+
+
+## Live device-lifecycle cutover — 2026-10-08
+
+A fresh operator confirmation established the quiet point. Stopped the verified old processes, then
+ran the explicit upgrader with both feature flags. The complete offline backup is
+`.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ`. Schema moved from 14 to 20. Before starting
+the API, all 42 prior account rows across 19 tables and all prior columns matched the backup, as did
+the authority table, pin and operator key. Both original snapshots and upgraded databases pass
+SQLite integrity checks. No account reset, source cleanup or key replacement was performed.
+
+Current launch commands (from this worktree):
+
+```sh
+ACCOUNT_NETWORK_SESSIONS=1 \
+ACCOUNT_MEMBERSHIP_CONTINUATION=1 \
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+node scripts/serve-account-service.mjs
+```
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/2bea3437 \
+node scripts/serve-account.mjs
+```
+
+Processes at cutover: API 29654, application 29655. Logs:
+`/tmp/done-account-service-2bea3437.log`, `/tmp/done-account-app-2bea3437.log`.
+The application serves the exact already-tested build, not a rebuild of the later documentation commits.
+Worker SHA-256: `744682bac7157313fbfc06b7ed897a18051ec69ffbbae1ebbb909cd52f69edde`.
+
+Through the public HTTPS address, both capabilities and the unchanged pin are advertised. A fresh
+nonce-bound authority proof verifies. Shared access remains 404, wrong-Origin config is 403,
+unauthenticated subscription is 401, and database/key/source paths are absent. All 28 precache URLs
+and the worker match local immutable bytes. [Cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json)
+preserves these checks separately from the disposable browser walkthrough.
+
+The operator may now reopen the same address online, allow normal update activation, and check their
+writing and ordinary sync on both devices. Close/reopen after update download if the old worker still
+controls a page. Personal browser uptake is pending; no personal writing was opened during this work.
+The snapshot contains sessions: supported restore still requires session invalidation and a changed
+issuance-custody context. The build exposes the first removal/rotation only; later lifecycle and
+maintenance obligations remain open, and release validation stays paused.

@@ -49,74 +49,48 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: bounded removal complete; ready for retained development upgrade at a fresh quiet point
+scope: bounded lifecycle implemented and served; operator update uptake and writing check pending
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
 **Live baseline:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-frontend `a07de792`, schema 14 and original service pin. No lifecycle removal work is deployed.
-Obtain a fresh quiet point before a backed-up upgrade. See [the runbook](./packaged-account-development.md).
+immutable frontend `2bea3437`, schema 20 and original service pin. Both network sessions and membership
+continuation are enabled. After the operator confirmed a fresh quiet point, the explicit upgrader saved
+`.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ` and preserved every prior account/authority
+row and column, pin and operator key. Fresh authority proof and all 28 precache URLs/worker bytes pass
+through the actual HTTPS gateway. See [the runbook](./packaged-account-development.md) and
+[cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json).
 
-**Active:** [other-device removal](./account-device-removal.md), within the
-[device lifecycle plan](./account-device-lifecycle.md). Other-device-only removal is approved; the
-requesting device remains connected. Cancel before approval, Remove with forward rotation afterward
-or with uncertain key exposure. Existing copies cannot be erased. Self-removal/recovery remain later.
+**Completed bounded product work:** Devices navigation, third-device invitation/approval from either
+existing device, three-device writing/reopen, pending cancellation, and first other-device removal with
+forward key rotation. Cancel before approval; Remove after approval or uncertain key exposure. Existing
+copies cannot be erased. The requesting device stays connected; removed devices retain writable,
+exportable detached copies without a network driver or successor key.
 
-Completed boundaries: Devices navigation, private third-device connection from either existing device,
-three-device writing/reopen, pending cancellation; then exact rotation proof/history, durable target-only
-preparation, atomic service commit (private schema 20), protected transport, proof-only terminal discovery
-and takeover by another remaining owner (`a197bb02`). Historical accepted writing remains readable to
-survivors; genuine stale-generation work from authorized offline devices remains admissible.
+The actual native owner retains exact removal intent and verified successor under encrypted custody.
+Journal-inclusive content activation and custody-pointer installation resume across interruption.
+Passive discovery stops the old writer before activation; old-generation writing from a surviving
+offline device remains deliverable. Old openers and apply records remain for future checkpoint/retirement
+work. The five focused final browser cases pass with original/joined lost-reply retries, interrupted
+activation, offline survivor delivery, two-way generation-two writing and detached cold reopen.
+[Final product evidence](./development-evidence/2026-10-08-device-removal.json) is `f46978a0`, over
+implementation `2bea3437`. The complete checkpoint history is in [completed.md](./completed.md).
 
-Native custody now retains the exact intent, verified outcome and winning successor, with its sealed
-self opener, under the existing exclusive slot owner. Enrollment state and old openers are preserved.
-Three focused browser cases pass, including both original/joined cold retry after lost committed reply
-and interrupted nonce-reserved writes. Seven client and twelve crypto cases pass. Full evidence and
-prior checkpoints are in [completed.md](./completed.md).
+**Next human step:** reopen the unchanged address online, allow the normal application update to
+activate (close/reopen if an old worker remains), then check writing and ordinary sync on both devices.
+No personal browser was opened during the cutover; uptake is not yet confirmed. No personal device
+needs removal for this initial check.
 
-Native custody checkpoint: `11092006`. Historical source/spool/delivery and inbound replay now resolve
-keys through authenticated generation history. The journal reads retained older generations and seals
-only with its active key. Two independent-crypto replay cases, eighteen journal cases, 37 inbound
-regressions and seven history/adoption cases pass. These primitives do not activate a generation.
-
-Generation-aware replay checkpoint: `06ba3317`; exact content switch: `edaf7c5d`. Actual original/joined
-activation now persists journal-only source work, converts an authenticated full content census, and
-commits matching custody/membership pointers. Interrupted activation resumes; ordinary generation-two
-editing and cold reopen pass. Three native cases, 71 affected unit cases and twelve protocol cases pass.
-Old keys and the apply record remain for later checkpoint/retirement work.
-
-Native activation checkpoint: `70f13011`. Observed rotation now stops old acknowledgements, retains
-the verified successor and resumes activation on unlock. Removed-device terminal discovery opens a
-writable/exportable detached copy after checking its accepted ciphertext prefix; no successor key or
-network driver is installed. Three native cases include three-device two-way delivery, cold reopen and
-detached editing with no content/notification requests. Seventy-eight affected unit cases and eleven
-protocol/replay cases pass; evidence is recorded in [completed.md](./completed.md).
-
-Observed rotation/detached-copy checkpoint: `7232be40`. Devices now exposes confirmed other-device
-removal, distinguishes pending from committed, and resumes exact native progress on unlock. Original
-and joined UI actors pass lost-success-reply, page restart, byte-identical retry, activation, detached
-opening/editing and cold reopen. The native record explicitly binds the account recipient (different
-from local-storage credentials on the original device). Sixteen client/protocol checks pass.
-
-Product removal checkpoint: `2bea3437`. All five final native cases pass, including an offline
-survivor's old-generation writing after service removal, subsequent two-way generation-two writing,
-all-device cold reopen, and detached edits without content/notification traffic. Five offline-upgrade
-checks pass. [Focused evidence](./development-evidence/2026-10-08-device-removal.json) is preserved.
-
-Final walkthrough/evidence checkpoint: `f46978a0`. The exact tested candidate is preserved under
-`.dev/account-enrollment-tailnet/builds/2bea3437`; worker digest is recorded in the runbook.
-Live listener PIDs 81162/81163 were checked read-only and remain unchanged.
-
-**Next:** obtain a fresh quiet point, then back up and upgrade the retained service to schema 20 with
-`ACCOUNT_NETWORK_SESSIONS=1` and `ACCOUNT_MEMBERSHIP_CONTINUATION=1`; serve the immutable lifecycle
-build at the unchanged `:8443` address. No live process/store has been changed by this sequence.
-Repeated later admissions/rotations, self/last-device removal, lost-device recovery, successor checkpoint
-replacement/pruning and old-key retirement, and production operations remain separate product work.
+**Further product work:** subsequent admissions/rotations, self/last-device removal, lost-device
+recovery, successor checkpoint replacement/pruning and old-key retirement, then production operations.
+See [the lifecycle plan](./account-device-lifecycle.md) and [removal contract](./account-device-removal.md).
+The first generation-one-to-two removal is the current supported boundary; the account-preview label
+stays. Release validation remains paused.
 
 Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
-end of the agreed sequence. Consult the operator on product decisions. Release validation stays paused.
+end of the agreed sequence. Consult the operator on product decisions.
 
 ---
 

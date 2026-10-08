@@ -2,7 +2,7 @@
 
 2026-10-08 · active development plan · release validation remains paused.
 
-Sessions and notifications are implemented and served at the retained `:8443` origin on `a07de792`.
+Sessions, notifications and the bounded lifecycle are served at the retained `:8443` origin on `2bea3437`.
 The operator chose additional devices and removal/revocation before lost-device recovery, and approved
 one **Devices** screen in the editor’s Account menu, with the verified list, connect and removal actions.
 The existing invitation/code-comparison ceremony stays; pending enrollment is distinct from approval.
@@ -17,7 +17,9 @@ offline survivor writing, two-way delivery and cold reopen pass in disposable pa
 See [the removal contract](./account-device-removal.md) and
 [focused final evidence](./development-evidence/2026-10-08-device-removal.json).
 
-The implementation checkpoint is `2bea3437`. These changes are not yet served at the retained origin.
+The implementation checkpoint is `2bea3437`, now served at the retained origin on schema 20 after a
+confirmed quiet point and verified offline backup. Operator browser uptake/writing checks remain pending;
+see the [cutover runbook](./packaged-account-development.md).
 Later admissions/rotations, self/last-device removal, lost-device recovery, successor checkpoints/pruning,
 old-key retirement and public operations remain. The first rotation retains predecessor openers and its
 apply record; completion of the user removal action does not claim those maintenance obligations closed.
@@ -44,7 +46,7 @@ valid historical evidence; no retained workspace, code or account should need re
    admission/certification history, including pending credentials. Open Devices from both creating and
    joining editors, preserve the owner on Back, and clearly label retained state. Editable CRDT device
    labels and chooser hints cannot establish membership or custody assurance. Do not enable a removal
-   action until its actual transition exists. This foundation is implemented and checked; it is not yet served at the retained origin.
+   action until its actual transition exists. This foundation is implemented, checked and served at the retained origin.
 2. **Repeated-membership contract and service.** Define the versioned continuation of the existing
    first-three-epoch anchor, with bounded proof pages and exact parent links. Preserve current readers,
    their keys and recovery recipient at admission. Certification changes the exact approved recipient

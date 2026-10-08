@@ -11312,3 +11312,28 @@ admissions/rotations, lost-device recovery, successor checkpoint replacement/pru
 retirement and production operations remain. Old openers/apply records are deliberately retained.
 The retained service is still `a07de792`, schema 14, at the same `:8443` address. A fresh operator quiet
 point is required before the backed-up schema-20 upgrade. All intermediate checkpoints remain unsigned.
+
+
+## 2026-10-08 — Retained device-lifecycle service upgraded (`L-1`)
+
+After a fresh operator confirmation that both devices were locked/closed, stopped verified API/app
+processes 81162/81163. The explicit upgrader saved the complete offline snapshot at
+`.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ` before migrating schema 14 to 20.
+Pre-start comparison confirmed all 42 existing rows across 19 account tables, the authority table,
+and all their prior columns unchanged; both databases and backups pass SQLite integrity checks.
+The service pin and operator key are byte-identical to the backup.
+
+The API now enables both network sessions and membership continuation on loopback 53220; the separate
+application on 53219 serves immutable tested build `2bea3437` behind the unchanged
+`https://mbp.tail0e0d4.ts.net:8443/` origin. Current cutover PIDs are API 29654 and app 29655. A fresh
+nonce-bound authority proof verifies through HTTPS against the original pin. Config advertises both
+capabilities; wrong Origin is 403, shared access is 404, unauthenticated subscription is 401, and private
+key/database/source paths remain absent. All 28 precache URLs and the worker match the immutable build.
+Preserved evidence: [live cutover](./development-evidence/2026-10-08-device-lifecycle-cutover.json);
+commands, logs and worker digest: [runbook](./packaged-account-development.md).
+
+No personal browser or writing was opened. Operator update uptake and writing verification remain
+pending. This completes serving the bounded third-device/cancellation/first-removal implementation,
+not repeated rotations, recovery, successor checkpoints/key retirement or production operations.
+This checkpoint is unsigned; release validation remains paused. The session-containing snapshot is
+historical recovery material, not a supported restore recipe without session/issuance invalidation.

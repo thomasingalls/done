@@ -91,4 +91,7 @@ prefix; a signature over a claimed link is not replay evidence.
   The encrypted native apply record binds the actual account recipient, separately from local-storage
   credentials. Old keys/apply records remain pending checkpoint and retirement obligations.
 
-The retained `:8443` installation remains unchanged until a new quiet point and backed-up upgrade.
+The retained `:8443` installation now serves implementation `2bea3437` on schema 20, after a fresh
+confirmed quiet point, complete offline backup and preservation/HTTPS checks. See the
+[cutover runbook](./packaged-account-development.md). Operator browser uptake and writing checks remain
+pending; release validation remains paused.
