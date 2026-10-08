@@ -1,5 +1,6 @@
 import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
+import { rotateContent, type ContentRotation } from './contentRotation';
 import { deriveStoreName } from './storeName';
 /** Internal carrier owner. Only custody constructs its crypto callbacks. No key or reservation escapes. */
 import { hex, random, type Bytes } from './custodyCrypto';
@@ -457,6 +458,26 @@ export const createContentOwner = (
       custodyDb = undefined;
     },
     load,
+    /** Internal applying-owner boundary. This predecessor instance must be disposed after success. */
+    async rotate(task: SessionTask, next: ContentRotation) {
+      try {
+        await rotateContent(
+          task,
+          {
+            db: db!,
+            scope,
+            generation,
+            intent: witness.intent,
+            read: () => read(task, true),
+            authenticate: (snapshot) => openSnapshot(task, snapshot),
+            crypt,
+          },
+          next,
+        );
+      } finally {
+        clearView();
+      }
+    },
     /** Internal v7 activation, after its reader fence and before admission. */
     async enableSpool(task: SessionTask) {
       if (!crypt.allowSpoolCounter || !crypt.validate) corrupt('Spool validation is required.');

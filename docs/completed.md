@@ -11182,3 +11182,29 @@ budget and origin checks pass. Native custody checkpoint: `11092006`. This check
 Next remains the actual journal-inclusive local generation activation, followed by Devices and
 detached-copy composition. No product removal control or live upgrade is enabled. Release validation
 is still paused.
+
+
+## 2026-10-08 — Exact-census content generation switch (`L-1`)
+
+The internal content owner now has a rotation operation that authenticates every retained record,
+requires a durable successor invocation reservation before encryption, checks exact plaintext reopening
+under the successor, and replaces the exact observed records plus active counter in one strict native
+transaction. It repeats the full counter/record census and synchronous journal-coverage check inside
+that transaction. It preserves sequence identities, record kinds and all plaintext bytes, including
+embedded exact-retry envelopes and acceptance evidence; it performs no deletion or key retirement.
+The predecessor owner refuses subsequent writes after the counter switches.
+
+A focused disposable Chromium check covers interruption after reservation, transaction abort after
+record writes, a newly appearing journal entry, and a wrong successor opener. Each leaves predecessor
+content readable, consumes its reservation, then succeeds through a fresh owner and supports successor
+reopen/new writing. The first run caught the allocation-sum invariant: successor seal reservations must
+also advance `next_seq`, leaving harmless gaps while preserving existing record identities. The repair
+retains the invariant instead of weakening counter parsing. Evidence:
+`/tmp/done-content-rotation-native.log` (one case with four directed interruptions),
+`/tmp/done-content-rotation-regressions.log` (27 content/compaction cases). TypeScript, scoped lint/format,
+build, budget and origin checks pass.
+
+This is the storage commit primitive, not yet the complete account apply owner: native custody's saved
+successor still needs to supply its key/reservation and persist the matching membership/active pointer
+across the two databases. Devices and detached-copy composition follow. Generation-replay checkpoint:
+`06ba3317`. This checkpoint is unsigned; live state is unchanged and release validation remains paused.
