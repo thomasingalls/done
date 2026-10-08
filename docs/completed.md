@@ -11006,3 +11006,35 @@ Next is the atomic service rotation successor/distribution/finalization/outcome,
 and session/discovery integration, then actual native generation/journal activation and Devices UI.
 Prepared-removal takeover/resolution and repeated later admissions remain unfinished. Live remains
 `a07de792` / schema 14 at `:8443`; release validation remains paused. Intermediate commit is unsigned.
+
+
+## 2026-10-08 — Atomic private service rotation and historical delivery (`L-1`)
+
+Private schema 20 retains a signed rotation successor with its exact client distribution, authenticated
+outcome, removed-device final accepted head, and predecessor publisher witnesses. The transaction
+advances the current pointer and ledger witnesses while discharging the prepared fence. A lost reply
+and cold restart recover the identical result; a valid competing intent receives the authenticated
+winning outcome. Authorization/custody loss before commit rolls back the complete effect. Schema 19
+requires an explicit offline upgrade, retaining a prepared fence; older/default hosts refuse schema 20.
+
+The service history resolver and discovery chain now verify rotations. Current readers and historical
+publishers are distinct: surviving readers can fetch removed publishers' accepted writing, while the
+removed device cannot obtain fresh workspace grants or publish new positions. Accepted/refused exact
+retries remain replayable internally. Generation policy follows the authenticated envelope epoch,
+allowing genuine survivor offline work under an older generation without accepting a wrong-generation
+current-epoch envelope. A finalized publisher's retained witness stays bound to its removal head.
+
+Six new focused service cases cover atomic rollback/lost reply/restart/competing intents, old and new
+generation delivery plus historical reading, removal of the original or a possibly exposed pending
+target, final authorization loss and missing retained proof, publication racing rotation with real
+scoped grants and discovery, and explicit schema-19 upgrade. 29 selected service/affected regression
+cases pass (`/tmp/done-rotation-service-final.log`); 45 protocol/client/history/grant cases pass
+(`/tmp/done-rotation-protocol.log`); four disposable service-host cases pass
+(`/tmp/done-rotation-host.log`). TypeScript, scoped lint/format, build, budget and origin checks pass.
+Build log `/tmp/done-rotation-build.log`; initial JS remains 108.7 kB gzipped.
+
+This remains an internal service entry point. Protected HTTP/client composition, authenticated
+removed-device discovery, prepared-removal takeover, native generation/journal activation and Devices
+controls remain open. No native activation guard was removed. No live store or process changed;
+`:8443` remains `a07de792` / schema 14. Release validation remains paused. Previous checkpoint:
+`009965c2`; this checkpoint is unsigned.

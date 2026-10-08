@@ -17,6 +17,7 @@ import {
 } from '../account-protocol/membershipLocator.ts';
 import {
   parseMembershipAdmission,
+  parseMembershipRotation,
   parseMembershipCertification,
   parseMembershipCancellation,
 } from '../account-protocol/membership.ts';
@@ -61,7 +62,10 @@ function chain(s: WorkspaceAuthoritySnapshot) {
   return parseMembershipChain({
     successor: s.successor ? JSON.parse(s.successor.artifact) : null,
     certification: s.transfer?.artifact ? JSON.parse(s.transfer.artifact) : null,
-    continuations,
+    continuations: [
+      ...continuations,
+      ...(s.rotations ?? []).map((r) => parseMembershipRotation(JSON.parse(r.artifact))),
+    ].sort((a, b) => a.epoch.epoch - b.epoch.epoch),
   });
 }
 export async function membershipBootstrap(

@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: durable removal preparation complete; atomic service rotation next
+scope: atomic service rotation complete; protected transport and native activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -94,8 +94,15 @@ serialize against the pending parent. Six new service cases, ten affected servic
 grant cases and four disposable host checks pass; TypeScript/build checks pass. This is still an internal
 service method, with no HTTP or product control. Rotation/history checkpoint: `c2936353`.
 
-**Next:** atomic service rotation successor/distribution/finalization/outcome and its
-history/discovery/session composition; actual journal-inclusive generation activation;
+Private schema 20 now commits rotation/distribution/finalization/outcome atomically, preserving
+historical writing and surviving old-generation delivery. Exact retry, competing intent, grant loss,
+racing publication and schema-19 upgrade checks pass. The affected service selection passes 29 cases;
+45 protocol/client/history/grant cases and four disposable host checks pass, along with static/build
+checks. No HTTP/product entry point or native activation is enabled yet. Preparation checkpoint:
+`009965c2`.
+
+**Next:** protected HTTP/client composition, removed-device discovery and takeover;
+actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.
 

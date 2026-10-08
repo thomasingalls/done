@@ -1,4 +1,5 @@
-import { REMOVAL_SCHEMA } from './removalStore.ts';
+import { commitRotation, type RotationIssuer } from './rotation.ts';
+import { REMOVAL_SCHEMA, ROTATION_SCHEMA } from './removalStore.ts';
 import { prepareRemoval, type RemovalIssuer } from './removalPreparation.ts';
 import {
   membershipBootstrap,
@@ -204,6 +205,7 @@ export class AccountCore {
       upgradeFromV16?: boolean;
       upgradeFromV17?: boolean;
       upgradeFromV18?: boolean;
+      upgradeFromV19?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -245,7 +247,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 19 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 20 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 19 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV19
+        ) &&
         !(
           version === 18 &&
           instrumentation.sessions &&
@@ -384,6 +392,10 @@ export class AccountCore {
             this.#db.exec(REMOVAL_SCHEMA);
             this.#db.exec('PRAGMA user_version=19;');
           }
+          if (version < 20) {
+            this.#db.exec(ROTATION_SCHEMA);
+            this.#db.exec('PRAGMA user_version=20;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -437,6 +449,9 @@ export class AccountCore {
       this.#hook,
       this.#diagnostics.record,
     );
+  }
+  commitRotation(input: unknown, issuer: RotationIssuer) {
+    return commitRotation(this.#db, input, issuer, this.#hook);
   }
   prepareRemoval(input: unknown, issuer: RemovalIssuer) {
     return prepareRemoval(this.#db, input, issuer, this.#hook);

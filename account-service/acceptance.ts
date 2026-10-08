@@ -1,4 +1,9 @@
 import {
+  parseRemovalFinalization,
+  removalFinalizationMessage,
+} from '../account-protocol/rotation.ts';
+import type { AcceptedHead } from '../account-protocol/positionDecision.ts';
+import {
   encodeReadPage,
   readPageMessage,
   type ReadPage,
@@ -150,6 +155,14 @@ export class AcceptanceCustody {
         },
       });
     });
+  }
+  finalize(input: unknown, id: string, pub: string, value: AcceptedHead): AcceptedHead {
+    const head = parseRemovalFinalization(value),
+      message = removalFinalizationMessage(head);
+    return this.#withKey(input, id, pub, (key) => ({
+      ...head,
+      signature: sign(null, message, key).toString('hex'),
+    }));
   }
   witness(
     input: unknown,

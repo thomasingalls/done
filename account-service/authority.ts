@@ -1,5 +1,7 @@
 import {
   removalPreparationMessage,
+  parseRotationOutcome,
+  rotationOutcomeMessage,
   parseRemovalPreparation,
 } from '../account-protocol/rotation.ts';
 import {
@@ -10,6 +12,8 @@ import {
 } from '../account-protocol/membershipLocator.ts';
 import type { MembershipLocatorIssuer } from './membershipLocator.ts';
 import {
+  parseMembershipRotationEpoch,
+  membershipRotationMessage,
   parseMembershipCertificationEpoch,
   membershipCertificationMessage,
 } from '../account-protocol/membership.ts';
@@ -426,6 +430,30 @@ export class PrivateAuthority {
   }
   relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayCeremony(input, this.#deliveryIssuer(authorize));
+  }
+  commitRotation(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.commitRotation(input, {
+      ...this.#deliveryIssuer(authorize),
+      outcome: async (input) => {
+        const value = parseRotationOutcome({ ...input, signature: '00'.repeat(64) });
+        const message = rotationOutcomeMessage(value);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...value, signature: sign(null, message, this.#key).toString('hex') };
+      },
+      finalize: (seal, id, pub, value) => this.#acceptance.finalize(seal, id, pub, value),
+      rotate: async (input) => {
+        const epoch = parseMembershipRotationEpoch(input),
+          message = await membershipRotationMessage(epoch);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 2,
+          kind: 'membership-rotation',
+          epoch,
+          head: await digest(message),
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
+      },
+    });
   }
   prepareRemoval(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.prepareRemoval(input, {

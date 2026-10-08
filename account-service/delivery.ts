@@ -1,9 +1,14 @@
-import { removalRow, type RemovalRow } from './removalStore.ts';
+import type {
+  VerifiedMembership,
+  RotatedRecipientCertificate,
+} from '../account-protocol/membership.ts';
+import { removalRow, rotationRows, type RotationRow, type RemovalRow } from './removalStore.ts';
 import { verifyRemovalPreparation, type RemovalPreparation } from '../account-protocol/rotation.ts';
 import { resolveMembershipDeliveryAuthority } from './membershipHistory.ts';
 import {
   historyPublisher,
   historyMembership,
+  historyGeneration,
   type AdmissionHistory,
 } from '../account-protocol/admissionHistory.ts';
 import type { MembershipRecipientCertificate } from '../account-protocol/membershipDelivery.ts';
@@ -170,6 +175,7 @@ export interface WorkspaceAuthoritySnapshot {
   membershipTransfers?: MembershipTransferRow[];
   membershipCancellations?: MembershipCancellationRow[];
   removalPreparation?: RemovalRow;
+  rotations?: RotationRow[];
 }
 export const PUBLISHER_SCHEMA = `
   CREATE TABLE publisher_decisions (
@@ -256,6 +262,7 @@ export function snapshotWorkspaceAuthority(
     (removalPreparation && promotion.removal_parent !== removalPreparation.parent)
   )
     throw Error('Incomplete removal preparation');
+  const rotations = rotationRows(db, workspace);
   const continuations = membershipRows(db, workspace);
   const membershipTransfers = membershipTransferRows(db, workspace);
   const membershipCancellations = membershipCancellationRows(db, workspace);
@@ -268,6 +275,7 @@ export function snapshotWorkspaceAuthority(
     successor,
     transfer,
     ...(removalPreparation ? { removalPreparation } : {}),
+    ...(rotations.length ? { rotations } : {}),
     ...(continuations.length ? { continuations } : {}),
     ...(membershipTransfers.length ? { membershipTransfers } : {}),
     ...(membershipCancellations.length ? { membershipCancellations } : {}),
@@ -325,7 +333,12 @@ export async function verifyWorkspaceAuthority(
 ) {
   // Continuation mutation is a private development entry point until general history/transport
   // composition lands. The old 1–3 reader must never silently treat the old anchor as current.
-  if (s.continuations?.length || s.membershipTransfers?.length || s.membershipCancellations?.length)
+  if (
+    s.rotations?.length ||
+    s.continuations?.length ||
+    s.membershipTransfers?.length ||
+    s.membershipCancellations?.length
+  )
     throw Error('Membership continuation requires its owned history path');
   const p = s.promotion,
     request = parseAdmissionRequest(JSON.parse(p.request)),
@@ -479,12 +492,16 @@ export interface LedgerBoundary {
 }
 export type DeliveryAuthority = Omit<
   Awaited<ReturnType<typeof verifyWorkspaceAuthority>>,
-  'certification'
+  'certification' | 'generation'
 > & {
+  generation: number;
   certification:
     | Awaited<ReturnType<typeof verifyWorkspaceAuthority>>['certification']
-    | MembershipRecipientCertificate;
+    | MembershipRecipientCertificate
+    | RotatedRecipientCertificate;
   removal?: RemovalPreparation;
+  rotationParents?: ReadonlyMap<string, VerifiedMembership>;
+  historicalMembers?: readonly { id: string; key: CryptoKey }[];
   joinedPublisher?: boolean;
   history?: AdmissionHistory;
   ledgerBoundaries?: ReadonlyMap<string, LedgerBoundary[]>;
@@ -495,6 +512,7 @@ export const verifyCurrentWorkspaceAuthority = async (
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
 ): Promise<Authority> => {
   const auth: Authority =
+    s.rotations?.length ||
     s.continuations?.length ||
     s.membershipTransfers?.length ||
     s.membershipCancellations?.length ||
@@ -518,19 +536,23 @@ export const verifyCurrentWorkspaceAuthority = async (
 };
 /** A publisher starts at its own verified certification; it has no earlier ledger. */
 export function selectPublisher(auth: Authority, publisher?: string): Authority {
-  if (!publisher || publisher === auth.credential) return auth;
-  const member = auth.members.find((m) => m.id === publisher);
+  const id = publisher ?? auth.credential;
+  const member = (auth.historicalMembers ?? auth.members).find((m) => m.id === id);
   if (auth.history && member) {
-    const history = historyPublisher(auth.history, publisher);
+    const history = historyPublisher(auth.history, id);
+    const finalAuthority = history.finalization
+      ? history.authorities.find((a) => a.tip === history.finalization!.epoch)
+      : undefined;
     return {
       ...auth,
-      joinedPublisher: true,
+      joinedPublisher: id !== auth.request.candidate.signer,
       credential: member.id,
       key: member.key,
       history,
-      scope: { ...auth.scope, credential: member.id },
+      scope: { ...auth.scope, credential: member.id, head: finalAuthority?.head ?? auth.a.head },
     };
   }
+  if (!publisher || publisher === auth.credential) return auth;
   const boundary = auth.certificationSuccessor?.epoch.heads.find(
     (h) => h.credentialId === publisher,
   );
@@ -728,7 +750,10 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       if (
         proof.kind !== 'accepted' ||
         proof.head.final ||
-        e.gen !== auth.generation ||
+        (auth.history?.finalization &&
+          (e.seq > auth.history.finalization.position ||
+            e.epoch >= auth.history.finalization.epoch)) ||
+        e.gen !== (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation) ||
         refused.has(subjectKey(subject))
       )
         throw Error('Invalid accepted decision');
@@ -739,7 +764,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       if (
         proof.kind !== 'refused' ||
         proof.refusal.reason !== mismatch ||
-        e.gen === auth.generation ||
+        e.gen === (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation) ||
         refused.has(subjectKey(subject))
       )
         throw Error('Invalid closure decision');
@@ -822,6 +847,7 @@ export async function decideSubmission(
       result = { kind: 'decision', bytes: ledger.refused.get(subjectKey(subject))!.slice() };
     else if (ledger.accepted.has(e.seq))
       result = { kind: 'decision', bytes: ledger.accepted.get(e.seq)!.slice() };
+    else if (auth.history?.finalization) result = unknown('unavailable');
     else if (auth.removal?.request.targetId === auth.credential)
       result = unknown('removal-pending');
     else if (e.seq !== ledger.through + 1) result = unknown('out-of-order');
@@ -837,7 +863,7 @@ export async function decideSubmission(
       result = unknown('envelope-size');
     } else {
       proposed =
-        e.gen !== auth.generation
+        e.gen !== (auth.history ? historyGeneration(auth.history, e.epoch) : auth.generation)
           ? {
               kind: 'refused',
               refusal: {
@@ -973,6 +999,7 @@ export async function readAccepted(
       phase = 'verify';
       const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
       if (
+        auth.history?.finalization ||
         !readScopeMatches(request, issuer.pin, auth.a, auth.credential) ||
         !readTimeValid(request, Date.now()) ||
         !(await crypto.subtle.verify(
@@ -1047,7 +1074,9 @@ function resolveInboundRoles(auth: Authority, request: InboundReadRequest) {
   // Membership comes only from the verified admission/epoch. These are separate
   // lookups even though the closed first epoch certifies only its creating member.
   const reader = auth.members.find((member) => member.id === request.reader);
-  const publisher = auth.members.find((member) => member.id === request.publisher);
+  const publisher = (auth.historicalMembers ?? auth.members).find(
+    (member) => member.id === request.publisher,
+  );
   if (!reader || !publisher) throw Error('Unsupported inbound member');
   return { reader, publisher };
 }
@@ -1093,7 +1122,6 @@ export async function readInbound(
         request.head !== auth.a.head ||
         request.epoch !== auth.a.tip ||
         (!auth.history && ![1, 2, 3].includes(auth.a.tip)) ||
-        auth.generation !== 1 ||
         !live() ||
         !(await crypto.subtle.verify(
           'Ed25519',

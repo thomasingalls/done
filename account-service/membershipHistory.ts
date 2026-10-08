@@ -8,6 +8,8 @@ import {
 } from '../account-protocol/contentDelivery.ts';
 import {
   parseMembershipAdmission,
+  parseMembershipRotation,
+  type VerifiedMembership,
   parseMembershipCertification,
   parseMembershipCancellation,
   membershipState,
@@ -38,6 +40,7 @@ export async function resolveMembershipDeliveryAuthority(
   const anchor = await verifyWorkspaceAuthority(
     {
       ...s,
+      rotations: [],
       continuations: [],
       membershipTransfers: [],
       membershipCancellations: [],
@@ -79,8 +82,29 @@ export async function resolveMembershipDeliveryAuthority(
       list.push({ successor: proof, witness, authority: parent.current });
     }
   };
+  const rotationParents = new Map<string, VerifiedMembership>();
+  const rotations = [...(s.rotations ?? [])];
+  const applyRotationsBefore = async (epoch: number) => {
+    while (rotations.length && rotations[0]!.epoch < epoch) {
+      const row = rotations.shift()!,
+        proof = parseMembershipRotation(JSON.parse(row.artifact));
+      if (
+        !same(
+          [row.workspace_id, row.epoch, row.parent, row.head],
+          [proof.epoch.workspaceId, proof.epoch.epoch, proof.epoch.parent, proof.head],
+        ) ||
+        rotationParents.has(row.parent)
+      )
+        throw Error('Retained rotation scope changed');
+      const prior = history;
+      rotationParents.set(row.parent, historyMembership(prior));
+      history = await extendMembershipHistory(proof, prior);
+      append(row.boundaries, proof, prior);
+    }
+  };
   const seen = new Set<string>();
   for (const row of s.continuations ?? []) {
+    await applyRotationsBefore(row.epoch);
     const before = history,
       state = membershipState(historyMembership(history));
     if (state.roster.some((m) => m.state === 'pending'))
@@ -141,24 +165,28 @@ export async function resolveMembershipDeliveryAuthority(
     }
     transfers.delete(row.preparation_id);
   }
+  await applyRotationsBefore(Infinity);
   if (transfers.size || cancellations.size || history.current.head !== s.promotion.successor_head)
     throw Error('Current membership pointer changed');
   const state = membershipState(historyMembership(history));
-  if (state.generation !== 1) throw Error('Rotation needs its generation owner');
   for (const member of history.readers) historyPublisher(history, member.id);
-  const members = await Promise.all(
-    history.readers.map(async (m) => ({
-      id: m.id,
-      key: await crypto.subtle.importKey('raw', unhex(m.publicKey, 32), 'Ed25519', false, [
-        'verify',
-      ]),
-    })),
+  const historicalMembers = await Promise.all(
+    [...cuts.keys()]
+      .map((id) => historyPublisher(history, id))
+      .map(async (m) => ({
+        id: m.credential,
+        key: await crypto.subtle.importKey('raw', unhex(m.signingKey, 32), 'Ed25519', false, [
+          'verify',
+        ]),
+      })),
   );
   return {
     ...anchor,
     a: history.current,
     scope: { ...anchor.scope, head: history.current.head },
-    members,
+    members: historicalMembers.filter((m) => history.readers.some((r) => r.id === m.id)),
+    historicalMembers,
+    rotationParents,
     certification: structuredClone(state.certificate) as DeliveryAuthority['certification'],
     generation: state.generation,
     history,
