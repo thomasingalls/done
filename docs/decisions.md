@@ -4301,3 +4301,12 @@ that existing copies cannot be erased. A pending roster alone cannot establish t
 Uncertain approval/delivery outcomes preserve the possible-access classification; an unsigned denial or
 missing acknowledgement cannot downgrade removal into cancellation. Resume is offered where the actual
 retained local attempt can be resumed, not by transferring another device's private signing authority.
+
+
+## 2026-10-08 — First removal flow targets other devices (`L-1`)
+
+The operator selected **other devices only initially** and renewed authorization for unsigned
+intermediate commits and continued implementation. Keep the requesting device connected. Self-removal
+and the last-device case remain local-clear/recovery work. This does not relax forward rotation,
+authenticated finalization, exact retry or the existing-copy limitation. The implementation plan is
+[other-device removal](./account-device-removal.md); no removal control is enabled yet.

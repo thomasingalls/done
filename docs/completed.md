@@ -10888,3 +10888,28 @@ TypeScript, scoped lint/format, build, bundle budget, origin and diff checks pas
 `a07de792` / schema 14 at `:8443`; no user data or running service was changed. Release validation remains
 paused. Next is removal with forward rotation; the operator's scope choice about self/last-device
 removal is pending. All intermediate commits remain unsigned as authorized.
+
+
+## 2026-10-08 — Other-device removal proof boundary (`L-1`)
+
+Implemented bounded parsers/verifiers for signed removal preparation, exact client rotation intent,
+authenticated three-way outcome resolution, and the removed credential's final accepted-write head.
+The intent/outcome use the selected row-15 LP grammar and bind exact encapsulation/ciphertext bytes.
+Recipients are the verified parent certified set minus the one other target; the recovery draft must
+match the parent's certified digest/root. Pending possible-access targets are supported without granting
+them recipient authority. Self-removal, unrelated pending members and recipient substitution refuse.
+
+Preparation addresses a moving-cutoff retry trap: its service producer must durably fence only the
+target's stream while preserving other publishers' progress. That producer is **not implemented by
+this proof checkpoint**. The new plan records atomic preparation, restart and competing-operation
+requirements. Finalization supports a zero-write target, but its proof still requires separate actual
+accepted-prefix replay before content admission. No service mutation, membership activation, key
+retirement, UI control or live cutover is claimed.
+
+Five focused Node cases pass, using independent LP/signature framing: valid certified/pending target,
+authority and cutoff rejection, recipient/recovery/ciphertext substitution, unknown versus authenticated
+competing outcomes and cold exact retry, and finalization binding including empty/nonempty streams.
+Two initial failures were test-fixture key lookup errors (undefined selected the oracle's default
+signer); using an explicit unrelated key made those signature negatives effective. TypeScript, scoped
+lint/format and diff checks pass. Release validation remains paused. Next: actual client key production
+and retained intent, then service preparation/commit and generation activation. Live remains unchanged.

@@ -49,92 +49,43 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: cancellation product path complete; removal/rotation scope pending
+scope: other-device removal proof boundary complete; client and service rotation composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Live baseline:** origin `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
+**Live baseline:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
 frontend `a07de792`, schema 14 and original service pin. The session/notification cutover is recorded
 in [the runbook](./packaged-account-development.md#live-notification-cutover--2026-10-08).
 Backup: `.dev/account-enrollment-tailnet/backups/notifications-a07de792-2FMkcz`.
-No subsequent lifecycle work has been deployed. Obtain a new quiet point before restarting the retained
-installation; the operator was told it could reopen after the previous cutover.
+No subsequent lifecycle work is deployed. Obtain a new quiet point before restarting it.
 
-**Active:** [device lifecycle plan](./account-device-lifecycle.md). Devices and owner-preserving
-navigation are implemented (`eb8c02c0`). The operator approved one unfinished connection at a time,
-Resume/Cancel before another invitation, and the existing comparison ceremony. Cancel applies before
-comparison approval; afterward, or when key exposure is uncertain, Remove requires forward rotation
-and must explain that existing copies cannot be erased. Competing epochs restart the comparison.
+**Completed product boundaries:** Devices navigation, private opt-in third-device enrollment with either
+existing approver, authenticated historical writing load, three-device writing and cold reopen. Native
+checkpoint `31b19f78`. Pending cancellation now commits exact publisher cuts, fences approval/delivery,
+and survives a discarded committed reply plus reload (`0c893bc3`, private schema 18). Original two-device
+regressions also pass. The rapid three-device test still encounters capacity refusals; bounded retries
+recover, but the associated usability debt remains. Evidence is in [completed.md](./completed.md).
 
-The private schema-17 implementation now retains version-2 preparation, continuation admission,
-commitment/reveal/approval, key delivery and candidate installation. Both existing publishers can keep
-writing across admission/certification, and a newly certified publisher gets its actual entry epoch.
-Exact accepted cuts and refused-parent evidence survive retries/restart. Key checkpoints:
-`2fce72f1` (publisher history), `b48b25d1` (service ledger composition), `24706589` (scoped grants).
+**Active:** [other-device removal](./account-device-removal.md), within the
+[device lifecycle plan](./account-device-lifecycle.md). The operator approved other-device-only removal,
+keeping the requesting device connected. Cancel is allowed before approval; after approval or uncertain
+key exposure, Remove requires forward rotation and must explain that existing copies cannot be erased.
+Self-removal and the last-device case stay with local clear/recovery.
 
-Current-head bootstrap/discovery now carries the bounded complete signed chain, with request/pin
-binding, held-head ancestry and reader eligibility. It preserves the requesting publisher's ledger
-interlock and final network/lifetime checks. 92 affected Node cases and type/lint/format/build/budget/
-origin checks pass. All phase evidence is recorded in [completed.md](./completed.md).
-Locator checkpoint is `b34440d1`. Opt-in HTTP routes and browser transport bindings now compose these
-private methods; 59 affected session/notification/HTTP checks and build checks pass. Default and retained
-hosts keep the routes disabled. The current product still supports only its first two devices.
+The proof boundary verifies parent-certified recipients, exact selected row-15 intent/outcome bytes,
+and authenticated finalization including a zero-write target. Five focused proof cases and scoped
+static checks pass. The plan records a durable target-only acceptance fence before signing a stable
+cutoff; other publishers may continue. No service producer or generation activation is claimed yet.
 
-HTTP composition is committed as `b9a149e2`. The continuation client key-handoff coordinator now
-re-reads committed state before key-bearing sends and checks the installed seal before countersigning.
-Native slot composition now preserves prior ceremony progress and binds joined approval writes to
-custody atomically. 18 focused membership checks and one real packaged browser case pass, including
-interrupted saves, cold reopening, equal installed keys and continued two-way writing. The new-device
-product walkthrough is still required.
+**Next:** client key production and exact retained intent; service preparation/atomic successor and
+outcome, history/discovery and session boundaries; actual journal-inclusive generation activation;
+Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
+recovery follow. Checkpoint replacement/pruning and operations remain later work.
 
-Native custody is committed as `fe4c2893`. Continuation admission now requires the original catch-up
-checkpoint before advancing authority. A current certified member can fetch it through a distinct
-read-only version-2 route; pending candidates cannot. 73 affected Node checks and build checks pass.
-Historical access is committed as `fc3be561`. The browser reader now verifies all publisher prefixes
-and retains its own semantic baseline admission under the current certified head. 71 affected checks
-pass, including real encrypted Yjs replay through cross-publisher dependencies and interrupted saves.
-Replay is committed as `12e0269c`. Native joined-device record version 2 now activates that state
-through the existing restartable content/index handoff. 61 affected checks, the new native interruption
-case, and the existing packaged two-device reopening/sync check pass. Native activation is committed
-as `1f615fdf`. Current membership now has a separate authenticated carrier with exact local ledger
-cuts; existing owners verify all retained evidence before committing and changing routes. Focused
-native before/after-commit recovery, old-owner and packaged two-device checks pass. Version-2 discovery
-is opt-in for the continuation host; the retained/default epoch-3 host is unchanged. Adoption is
-committed as `43759e0e`. The durable version-2 comparison component now composes with the actual private
-relay and key-handoff coordinator for either approver, including a lost approval reply and service
-restart. 13 focused Node cases and two service integrations pass; committed as `16d50228`.
-Invitation/preparation components now use actual current custody, reject stale bootstrap ancestry, and
-retain exact combined login/enrollment proof before effects. Two invitation and two service retry cases
-pass, including failed saves and service restarts; committed as `b53497a7`. The retained connection
-coordinator now composes these components through certification and encrypted loading. Three composed
-service/reader cases, 11 component regressions and four service component cases pass with simulated
-custody/installation ports; committed as `b43279e1`. Native browser/session and route composition now
-passes the actual packaged three-device walkthrough: joined invitation, comparison reload, content load,
-writing across all three and cold reopening. Original two-device compatibility also passes. The explicit
-host capability/offline upgrade remains undeployed. Bounded capacity retries recover under the unchanged
-request limits; the passing rapid test still hit those limits. Committed as `31b19f78`.
-Cancellation request/successor verification now preserves approved recipients and full publisher history;
-10 focused protocol cases pass; committed as `7d4df6ee`. The private schema-18 service now commits
-cancellation, publisher boundaries and current head atomically; approval/delivery fences cancellation.
-Four focused service cases, five schema/coordinator regressions and four host cases pass. The cancellation
-service is committed as `ceab6326`. The protected cancellation route and retained client/UI now pass
-a native lost-reply/reload test; existing devices keep syncing without the pending member. The three-device
-flow passes again. An original-ceremony regression exposed and repaired a legacy bearer-route allowlist
-error; session bootstrap remains restricted. Retained service schema 14 is unchanged.
-See the completed checkpoints for evidence.
-
-**Next:** removal with forward rotation/finalization after approval or uncertain key exposure. The operator
-has been asked whether the first journey should remove other devices only (recommended) or also cover
-self/last-device removal. The concrete proposed sequence is in the lifecycle plan; await that product
-scope decision before fixing the next removal journey. Repeated later
-connections and lost-device recovery. A removal control must not claim completion without the committed
-transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.
-
-**Authorization:** continue directly, with unsigned intermediate commits and end-of-phase chat summaries;
-one signed checkpoint at the end of the agreed sequence. Consult the operator on product decisions.
-Release validation remains paused.
+Continue unsigned intermediate commits and chat summaries; one signed checkpoint at the end of the
+agreed sequence. Consult the operator on product decisions. Release validation remains paused.
 
 ---
 
