@@ -10,6 +10,14 @@ import { digest } from '../../account-protocol/recovery';
 import { openDeviceRemovalVault } from '../../src/account/deviceRemovalVault';
 import { NetworkLogin } from '../../src/account/networkLogin';
 import { ScopedTransport } from '../../src/account/scopedTransport';
+import { openEnvelope } from '../../src/crdt/custodyCrypto';
+import { deriveJournalKey } from '../../src/crdt/journalCodec';
+import { createJournalOwner } from '../../src/crdt/journalStore';
+import { deriveStoreName } from '../../src/crdt/storeName';
+import { makeSourceCapsule } from '../../src/crdt/sourceCapture';
+import { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+import { historyPublisher } from '../../account-protocol/admissionHistory';
+import { Y } from '../../src/crdt/yjs';
 const signal = () => new AbortController().signal;
 const check = (value: unknown, message: string) => {
   if (!value) throw Error(message);
@@ -248,4 +256,93 @@ export async function interruptedRotationSave(kind: Kind, slot: string, code: st
     );
     return true;
   });
+}
+
+export async function activateRemoval(kind: Kind, slot: string, code: string, interrupt = false) {
+  return withMembershipVault(kind, slot, code, signal(), async (owner) => {
+    const put = IDBObjectStore.prototype.put;
+    let interrupted = false;
+    if (interrupt)
+      IDBObjectStore.prototype.put = function (value, ...args) {
+        const r = put.call(this, value, ...args);
+        if (value?.active_rotation) {
+          interrupted = true;
+          this.transaction.abort();
+        }
+        return r;
+      };
+    try {
+      const result = await owner.activateRemoval();
+      if (interrupt) throw Error('Missing interrupted activation');
+      return result;
+    } catch (cause) {
+      if (interrupted) return { generation: 0, head: 'interrupted' };
+      throw cause;
+    } finally {
+      IDBObjectStore.prototype.put = put;
+    }
+  });
+}
+
+export async function journalOnly(kind: Kind, slot: string, code: string) {
+  const source = await withMembershipVault(kind, slot, code, signal(), async (owner) => ({
+    source: owner.source,
+    id: owner.participant.id,
+  }));
+  if (source.source.kind === 'pending' || !source.source.proofs) throw Error('Missing source');
+  const base =
+    source.source.kind === 'original' ? source.source.base : source.source.authority.base;
+  const history = historyPublisher(
+    (await verifyMembershipChain(source.source.proofs, base)).history,
+    source.id,
+  );
+  const doc = new Y.Doc();
+  doc.getText('rotation-journal-probe').insert(0, 'Journal-only writing must survive rotation');
+  const update = new Uint8Array(Y.encodeStateAsUpdate(doc));
+  doc.destroy();
+  const capsule = makeSourceCapsule(
+    {
+      workspace: history.current.workspace,
+      credential: source.id,
+      principal: history.principal,
+      epoch: history.current.tip,
+      generation: 1,
+      history,
+    },
+    [{ kind: 'human', actor: history.principal, bytes: update }],
+  );
+  const own = kind === 'promotion' ? withPromotionSlot : withJoinedSlot;
+  return own(
+    slot,
+    code,
+    async (task) => {
+      const state =
+        kind === 'promotion'
+          ? await readPromotion(task, slot, code)
+          : await readJoinedAccount(task, slot, code);
+      const scope = claimScope(state.claim);
+      return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => {
+        const local = await openEnvelope(scope, root, state.record.envelope!, subtle);
+        const key = await deriveJournalKey(local, scope.workspaceId, subtle);
+        const journal = createJournalOwner(
+          { ...scope, storeId: state.record.store_id, rootId: state.record.root_id },
+          await deriveStoreName(scope.principalId, scope.workspaceId),
+          1,
+          key,
+        );
+        try {
+          const receipt = journal.append(capsule);
+          if (receipt.status !== 'journalled') throw Error('Probe journal refused');
+          return receipt.key;
+        } finally {
+          journal.dispose();
+          key.fill(0);
+          local.fill(0);
+          capsule.fill(0);
+          update.fill(0);
+        }
+      });
+    },
+    signal(),
+  );
 }

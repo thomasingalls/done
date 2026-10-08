@@ -94,6 +94,12 @@ export async function createApprovalVault(options: {
       const wrapping = await openCredential(scope, root, credentials[0], subtle);
       return openGeneration(wrap, wrapping, credentials[0].publicKey, info, subtle);
     },
+    reserveSeals: async (count: number) => {
+      if (!Number.isSafeInteger(count) || count < 0 || record().seal_reserved + count >= SEAL_LIMIT)
+        throw Error('Content key storage limit');
+      if (count) await commit({ ...record(), seal_reserved: record().seal_reserved + count });
+      return record().seal_reserved;
+    },
     withInstalledKey,
     checkInstalled: (seal: InstalledContentKey, deliveryHash: string) =>
       withInstalledKey(seal, deliveryHash, async () => {}),

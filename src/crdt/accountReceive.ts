@@ -1,3 +1,4 @@
+import { openActiveRotation } from './rotationKeys';
 import { ScopedTransport } from '../account/scopedTransport';
 import { isAccountAccess, type AccountAccess } from '../account/accountHttp';
 import {
@@ -171,7 +172,15 @@ async function openAccountReceiveOwner(
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
         const kg = await openEnvelope(claimScope(v.claim), root, v.record.envelope!, subtle);
         try {
-          base = await heldInboundContext(v.marker, kg, subtle, v.route);
+          const active = await openActiveRotation(
+            claimScope(v.claim),
+            root,
+            v.record,
+            subtle,
+            v.route.history?.current.head,
+          );
+          base = await heldInboundContext(v.marker, active?.key ?? kg, subtle, v.route);
+          if (active) base.retainedGenerationKeys = new Map([[1, kg]]);
           signer = await openCredential(
             claimScope(v.claim),
             root,
@@ -197,7 +206,25 @@ async function openAccountReceiveOwner(
       membership = v.marker!.membership;
       initialEpoch = v.marker!.v === 2 ? v.marker!.reading.epoch : 3;
       await joinedKeys(task, v, options.code, async (kg, signing, verifying) => {
-        base = { ...v.base, generationKey: kg.slice() };
+        const active = await withPromotionRoot(
+          task,
+          v.claim,
+          v.record,
+          options.code,
+          (root, subtle) =>
+            openActiveRotation(
+              claimScope(v.claim),
+              root,
+              v.record,
+              subtle,
+              v.route.history?.current.head,
+            ),
+        );
+        base = {
+          ...v.base,
+          generationKey: active?.key ?? kg.slice(),
+          retainedGenerationKeys: new Map(active ? [[1, kg.slice()]] : []),
+        };
         signer = signing;
         publicKey = verifying;
       });
@@ -234,7 +261,10 @@ async function openAccountReceiveOwner(
             await verifySpool(
               census.delivery.spool,
               route,
-              base.generationKey,
+              new Map([
+                ...(base.retainedGenerationKeys ?? []),
+                [base.generation, base.generationKey],
+              ]),
               publicKey,
               subtle,
               reuse,
@@ -279,6 +309,7 @@ async function openAccountReceiveOwner(
       memo.clear();
       coverage.clear();
       base?.generationKey.fill(0);
+      for (const key of base?.retainedGenerationKeys?.values() ?? []) key.fill(0);
       signer = undefined;
       outstanding?.fill(0);
       outstanding = undefined;
@@ -583,7 +614,10 @@ async function openAccountReceiveOwner(
           await verifySpool(
             census.delivery.spool,
             nextRoute,
-            base.generationKey,
+            new Map([
+              ...(base.retainedGenerationKeys ?? []),
+              [base.generation, base.generationKey],
+            ]),
             publicKey,
             subtle,
           );
@@ -667,11 +701,11 @@ async function openAccountReceiveOwner(
           };
       const verifiedHistory = await task.wait(() => verifyMembershipChain(proofs, anchor)),
         history = historyPublisher(verifiedHistory.history, route.credential);
-      if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
       historyAuthority(history, route.history.current);
       task.step(() => checkCommit?.());
       if (history.current.tip === route.epoch)
         return { epoch: route.epoch, head: history.current.head };
+      if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
       if (history.current.tip < route.epoch) throw Error('Membership cannot regress');
       const records = await owner.carrier.load(task);
       let committed = false;
@@ -696,7 +730,13 @@ async function openAccountReceiveOwner(
           initialEpoch,
           subtle,
         );
-        await verifySpool(census.delivery.spool, nextRoute, base.generationKey, publicKey, subtle);
+        await verifySpool(
+          census.delivery.spool,
+          nextRoute,
+          new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
+          publicKey,
+          subtle,
+        );
         const delivery = await verifyDelivery(
             census.delivery,
             nextRoute,

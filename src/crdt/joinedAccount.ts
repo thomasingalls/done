@@ -1,4 +1,5 @@
 /** Private certified-device activation. Physical Local custody and logical Account identity stay distinct. */
+import { openActiveRotation } from './rotationKeys';
 import { same, parseAdmissionRequest, parseReceipt } from '../../account-protocol/admission';
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import { parseSuccessor } from '../../account-protocol/successor';
@@ -27,6 +28,7 @@ import {
 import {
   verifyCertificationHistory,
   historyPublisher,
+  historyGeneration,
 } from '../../account-protocol/admissionHistory';
 import { closed } from '../../account-protocol/preparation';
 import { unhex } from '../../account-protocol/recovery';
@@ -303,8 +305,7 @@ export async function writeJoinedApproval(
       ...(input[channel] ? { [channel]: input[channel] } : {}),
       mac: input.mac,
     }) ||
-    input.seal_reserved < state.record.seal_reserved ||
-    input.seal_reserved > state.record.seal_reserved + 1
+    input.seal_reserved < state.record.seal_reserved
   )
     throw Error('Joined approval cannot change content custody');
   const next = await withPromotionRoot(task, state.claim, state.record, code, (root, subtle) =>
@@ -312,6 +313,31 @@ export async function writeJoinedApproval(
   );
   const marker = await signJoined(task, state, code, {
     ...state.marker,
+    custodyMac: hex(next.mac),
+  });
+  await writeJoined(task, state, marker, next, check);
+}
+/** Internal applying owner has verified exact successor coverage before this local commit. */
+export async function writeJoinedRotation(
+  task: SessionTask,
+  state: JoinedState,
+  code: string,
+  record: CustodyRecord,
+  membership: InstalledMembership,
+  check?: () => void,
+) {
+  if (
+    !record.rotation ||
+    !record.active_rotation ||
+    record.active_rotation !== membership.proofs.continuations.at(-1)?.head
+  )
+    throw Error('Rotation pointer differs from membership');
+  const next = await withPromotionRoot(task, state.claim, state.record, code, (root, subtle) =>
+    signRecord(root, record, subtle),
+  );
+  const marker = await signJoined(task, state, code, {
+    ...state.marker!,
+    membership: parseInstalledMembership(membership),
     custodyMac: hex(next.mac),
   });
   await writeJoined(task, state, marker, next, check);
@@ -337,8 +363,9 @@ export async function joinedKeys<T>(
   state: JoinedState,
   code: string,
   work: (key: Bytes, signer: CryptoKey, publicKey: CryptoKey) => Promise<T>,
+  applying = false,
 ) {
-  if (state.record.rotation)
+  if (state.record.rotation && !state.record.active_rotation && !applying)
     throw Error('Resume account generation activation before opening this workspace');
   const marker = state.marker!;
   return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => {
@@ -624,14 +651,46 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
     throw Error('Certified device authority changed');
   return joinedKeys(task, state, options.code, async (kg, _signer, publicKey) => {
     const b = await baseline(task, state, kg);
+    let active: Awaited<ReturnType<typeof openActiveRotation>> = null;
     try {
+      active = await withPromotionRoot(
+        task,
+        state.claim,
+        state.record,
+        options.code,
+        (root, subtle) =>
+          openActiveRotation(
+            claimScope(state.claim),
+            root,
+            state.record,
+            subtle,
+            marker.membership?.proofs.continuations.at(-1)?.head,
+          ),
+      );
       const initialEpoch = b.route.epoch;
       if (marker.membership) {
         const history = await task.wait(() =>
-          installedMembershipHistory(marker.membership!, marker.authority.base, b.route.history!),
+          installedMembershipHistory(
+            marker.membership!,
+            marker.authority.base,
+            b.route.history!,
+            active?.generation ?? 1,
+          ),
         );
-        b.route = { ...b.route, epoch: history.current.tip, history };
-        b.base = { ...b.base, authority: history.current, history };
+        b.route = {
+          ...b.route,
+          epoch: history.current.tip,
+          generation: historyGeneration(history),
+          history,
+        };
+        b.base = {
+          ...b.base,
+          authority: history.current,
+          generation: b.route.generation,
+          history,
+          generationKey: active?.key ?? kg,
+          ...(active ? { retainedGenerationKeys: new Map([[1, kg]]) } : {}),
+        };
       }
       if (options.networkLogin) {
         await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
@@ -778,7 +837,18 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           validate: async (records, _task, counter) => {
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
-            await verifySpool(census.delivery.spool, b.route, kg, publicKey, crypto.subtle);
+            await verifySpool(
+              census.delivery.spool,
+              b.route,
+              active
+                ? new Map([
+                    [1, kg],
+                    [2, active.key],
+                  ])
+                : kg,
+              publicKey,
+              crypto.subtle,
+            );
             if (marker.membership)
               await verifyInstalledMembership(
                 census.delivery.spool,
@@ -804,7 +874,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       return {
         ...state,
         route: b.route,
-        base: { ...b.base, generationKey: new Uint8Array() },
+        base: { ...b.base, generationKey: new Uint8Array(), retainedGenerationKeys: new Map() },
         account: {
           kind: 'account' as const,
           slotId: options.slotId,
@@ -817,6 +887,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       };
     } finally {
       eraseBaseline(b);
+      active?.key.fill(0);
     }
   });
 }

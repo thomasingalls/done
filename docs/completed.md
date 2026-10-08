@@ -11208,3 +11208,25 @@ This is the storage commit primitive, not yet the complete account apply owner: 
 successor still needs to supply its key/reservation and persist the matching membership/active pointer
 across the two databases. Devices and detached-copy composition follow. Generation-replay checkpoint:
 `06ba3317`. This checkpoint is unsigned; live state is unchanged and release validation remains paused.
+
+
+## 2026-10-08 — Native account generation activation (`L-1`)
+
+Original and joined native owners now compose the retained rotation with journal capture, authenticated
+content conversion, full retained network-ledger verification, and an atomic custody/membership pointer.
+A crash after content conversion but before that pointer commits resumes from the authenticated disk
+generation. Journal-only source capsules retain their exact original update and route before conversion.
+The ordinary editor then opens and writes generation two while historical records use retained openers.
+Predecessor keys and the apply record remain: successor checkpoint admission, retirement and discharge
+are separate obligations. The initial boundary is generation one to two.
+
+Three focused Chromium cases pass, including original/joined lost committed replies, interrupted
+activation, journal-only work, a new edit, lock and cold reopen. Evidence:
+`/tmp/done-account-rotation-complete.log` (3 pass),
+`/tmp/done-account-rotation-regressions.log` (71 pass),
+`/tmp/done-account-rotation-protocol.log` (12 pass). TypeScript, scoped lint/format, build/budget,
+origin isolation and diff checks pass. Content switch checkpoint: `edaf7c5d`. This checkpoint is unsigned.
+
+Next: passive discovery must stop the old writer and retain/apply the verified successor; then Devices
+removal/restart and the removed device's detached local copy. No Remove control is exposed yet. No live
+process/store changed; release validation remains paused.

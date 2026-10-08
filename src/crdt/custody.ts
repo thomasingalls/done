@@ -3,6 +3,7 @@
  * credential. Startup supplies verified identity and the cross-carrier census;
  * completing this component alone does not complete workspace genesis.
  */
+import { openActiveRotation } from './rotationKeys';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
@@ -11,6 +12,7 @@ import { deriveStoreName } from './storeName';
 import {
   deriveJournalKey,
   createJournalCodec,
+  decodeJournal,
   journalPrefix,
   type JournalError,
 } from './journalCodec';
@@ -112,7 +114,7 @@ export interface CustodyDescriptor {
   readonly scope: Readonly<CustodyScope>;
   readonly storeId: string;
   readonly rootId: string;
-  readonly generation: 1;
+  readonly generation: number;
   readonly publicCredentials: ReadonlyArray<{
     readonly role: 'wrapping' | 'signing';
     readonly id: string;
@@ -191,6 +193,9 @@ const newIntent = (): CreationIntent =>
 
 interface OwnedKeys {
   store: CryptoKey | null;
+  generation?: number;
+  previousStore?: CryptoKey | null;
+  previousJournal?: Bytes | null;
   metadata?: CryptoKey | null;
   journal?: Bytes | null;
   wrapping: CryptoKey | null;
@@ -198,6 +203,9 @@ interface OwnedKeys {
 }
 const clearKeys = (keys: OwnedKeys) => {
   keys.store = null;
+  keys.previousStore = null;
+  keys.previousJournal?.fill(0);
+  keys.previousJournal = null;
   keys.metadata = null;
   keys.journal?.fill(0);
   keys.journal = null;
@@ -213,11 +221,6 @@ const loadKeys = async (
   content = false,
   journal = false,
 ): Promise<void> => {
-  if (record.rotation)
-    throw new CustodyError(
-      'repair-required',
-      'Resume account generation activation before opening this workspace.',
-    );
   let generation: Bytes | undefined;
   try {
     await task.wait(async () => {
@@ -264,6 +267,42 @@ const loadKeys = async (
           guardedSubtle(() => task.step(() => {})),
         );
       });
+    keys.generation = 1;
+    const active = await task.wait(() =>
+      openActiveRotation(
+        scope,
+        root,
+        record,
+        guardedSubtle(() => task.step(() => {})),
+      ),
+    );
+    if (active) {
+      try {
+        keys.previousStore = keys.store;
+        keys.previousJournal = keys.journal ?? null;
+        keys.store = await task.wait(() =>
+          hkdf(
+            active.key,
+            new Uint8Array(),
+            fields('done/store/v1', scope.workspaceId, record.store_id),
+            { name: 'AES-GCM', length: 256 },
+            content ? ['encrypt', 'decrypt'] : ['decrypt'],
+            guardedSubtle(() => task.step(() => {})),
+          ),
+        );
+        if (journal)
+          keys.journal = await task.wait(() =>
+            deriveJournalKey(
+              active.key,
+              scope.workspaceId,
+              guardedSubtle(() => task.step(() => {})),
+            ),
+          );
+        keys.generation = active.generation;
+      } finally {
+        active.key.fill(0);
+      }
+    }
     await task.wait(async () => {
       keys.wrapping = await openCredential(
         scope,
@@ -610,10 +649,17 @@ const prepareCustody = (
   let carrier: ReturnType<typeof createContentOwner> | undefined;
   let journal: ReturnType<typeof createJournalOwner> | undefined;
   let recoveryCodec: ReturnType<typeof createJournalCodec> | undefined;
+  let priorRecoveryCodec: ReturnType<typeof createJournalCodec> | undefined;
   let recoveryPrefix = '';
   const openRecord = (task: SessionTask, inputRecord: StoredRecord): Promise<Bytes> => {
     const value = task.step(() => parseStoredRecord(inputRecord));
-    if (value.gen !== 1)
+    const opener =
+      value.gen === (keys.generation ?? 1)
+        ? keys.store
+        : value.gen === 1
+          ? keys.previousStore
+          : null;
+    if (!opener)
       throw new CustodyError('repair-required', 'No opener for this content generation.');
     return task.wait(async () => {
       try {
@@ -625,7 +671,7 @@ const prepareCustody = (
               tagLength: 128,
               additionalData: recordAAD({ ...scope, storeId: record.store_id }, value),
             },
-            keys.store!,
+            opener,
             value.ct,
           ),
         );
@@ -639,7 +685,7 @@ const prepareCustody = (
     eraseFactor() {
       factor.fill(0);
     },
-    describe: () => descriptor(scope, record),
+    describe: () => ({ ...descriptor(scope, record), generation: keys.generation ?? 1 }),
     get journal() {
       return journal!;
     },
@@ -654,7 +700,13 @@ const prepareCustody = (
             'invalid-input',
             'Recovery journal is outside this custody scope.',
           );
-        return recoveryCodec.open(key, value).bytes;
+        const codec =
+          decodeJournal(value).generation === (keys.generation ?? 1)
+            ? recoveryCodec
+            : priorRecoveryCodec;
+        if (!codec)
+          throw new CustodyError('repair-required', 'No opener for this journal generation.');
+        return codec.open(key, value).bytes;
       });
     },
     initialize: async (task: SessionTask, creation?: ContentCreationOptions) => {
@@ -709,13 +761,19 @@ const prepareCustody = (
         recoveryPrefix = journalPrefix(
           await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId)),
         );
-        recoveryCodec = task.step(() => createJournalCodec(scope.workspaceId, 1, keys.journal!));
+        recoveryCodec = task.step(() =>
+          createJournalCodec(scope.workspaceId, keys.generation ?? 1, keys.journal!),
+        );
+        if (keys.previousJournal)
+          priorRecoveryCodec = task.step(() =>
+            createJournalCodec(scope.workspaceId, 1, keys.previousJournal!),
+          );
       }
 
       if (content) {
         carrier = createContentOwner(
           { ...scope, storeId: record.store_id, rootId: record.root_id },
-          1,
+          keys.generation ?? 1,
           {
             ...(validateRecords ? { validate: validateRecords } : {}),
             ...(allowSpoolCounter ? { allowSpoolCounter } : {}),
@@ -755,8 +813,9 @@ const prepareCustody = (
           createJournalOwner(
             { ...scope, storeId: record.store_id, rootId: record.root_id },
             name,
-            1,
+            keys.generation ?? 1,
             keys.journal!,
+            keys.previousJournal ? new Map([[1, keys.previousJournal]]) : undefined,
           ),
         );
         // Erasure is cleanup and must also run if cancellation follows the successful read.
@@ -773,6 +832,7 @@ const prepareCustody = (
       carrier?.dispose();
       journal?.dispose();
       recoveryCodec?.dispose();
+      priorRecoveryCodec?.dispose();
     },
   };
 };

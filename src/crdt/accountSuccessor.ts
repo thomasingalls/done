@@ -6,6 +6,7 @@ import {
 import { parseSuccessor, type AdmissionSuccessor } from '../../account-protocol/successor';
 import {
   verifyAdmissionHistory,
+  historyGeneration,
   verifyCertificationHistory,
   createAdmissionPrefixVerifier,
 } from '../../account-protocol/admissionHistory';
@@ -56,7 +57,10 @@ export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
     ...(certification ? { certification } : {}),
   };
 }
-export async function heldCaptureRoute(marker: PromotionRecord): Promise<CaptureRoute> {
+export async function heldCaptureRoute(
+  marker: PromotionRecord,
+  activeGeneration = 1,
+): Promise<CaptureRoute> {
   const route = captureRoute(marker);
   if (marker.membership && (marker.v !== 9 || !marker.successor?.certification))
     throw Error('Membership adoption requires certified receiving custody');
@@ -77,8 +81,14 @@ export async function heldCaptureRoute(marker: PromotionRecord): Promise<Capture
           receipt: marker.admission!.receipt!,
         },
         history,
+        activeGeneration,
       );
-    return { ...route, epoch: history.current.tip, history };
+    return {
+      ...route,
+      epoch: history.current.tip,
+      generation: historyGeneration(history),
+      history,
+    };
   }
   const history = await verifyAdmissionHistory(
     marker.successor.artifact,

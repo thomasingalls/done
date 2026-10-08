@@ -62,6 +62,8 @@ export interface CustodyRecord {
   approval?: { v: 1; sequence: number; ct: Bytes };
   /** Separate encrypted rotation/applying state; older readers fail closed on this field. */
   rotation?: { v: 1; sequence: number; ct: Bytes };
+  /** Local commit pointer; installed atomically with the matching account membership. */
+  active_rotation?: string;
   mac: Bytes;
 }
 export const CUSTODY_DB = 'done.custody';
@@ -154,7 +156,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
-    ...['approval', 'rotation'].filter(
+    ...['approval', 'rotation', 'active_rotation'].filter(
       (key) => value && typeof value === 'object' && Object.hasOwn(value, key),
     ),
   ]);
@@ -227,8 +229,19 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
       return fail();
     progress[channel] = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
   }
+  let activeRotation: string | undefined;
+  if ('active_rotation' in r) {
+    if (
+      !progress.rotation ||
+      typeof r['active_rotation'] !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(r['active_rotation'])
+    )
+      return fail();
+    activeRotation = r['active_rotation'];
+  }
   return {
     v: 2,
+    ...(activeRotation ? { active_rotation: activeRotation } : {}),
     ...progress,
     state: r['state'] as CustodyRecord['state'],
     slot_id: scope.slotId,
@@ -280,6 +293,7 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
       ...(r.approval
         ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
         : []),
+      ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
       ...(r.rotation
         ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
         : []),

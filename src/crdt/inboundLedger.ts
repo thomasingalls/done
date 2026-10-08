@@ -1,5 +1,9 @@
 import { heldCaptureRoute } from './accountSuccessor';
-import { historyAuthority, historyPublisher } from '../../account-protocol/admissionHistory';
+import {
+  historyAuthority,
+  historyPublisher,
+  historyGeneration,
+} from '../../account-protocol/admissionHistory';
 /** Internal v9 census. Authority is supplied only after admission verification under the factor permit. */
 import { parseReceipt } from '../../account-protocol/admission';
 import { decodeInboundPage, decodeInboundRequest } from '../../account-protocol/inboundTransport';
@@ -27,7 +31,7 @@ export async function heldInboundContext(
     member = marker.admission!.request.certification.members[0];
   if (
     offer.epoch.epoch !== 1 ||
-    route.generation !== 1 ||
+    route.generation !== (route.history ? historyGeneration(route.history) : 1) ||
     marker.genesis!.signer !== route.credential ||
     member.sPub !== hex(marker.credentials![1].publicKey)
   )
@@ -57,7 +61,7 @@ export async function heldInboundContext(
       ),
       active: true,
     },
-    generation: 1,
+    generation: route.generation,
     generationKey: key,
     prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
   };

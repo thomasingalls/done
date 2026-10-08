@@ -21,6 +21,7 @@ import type { parseMembershipChain } from '../../account-protocol/membershipLoca
 type MembershipProofs = ReturnType<typeof parseMembershipChain>;
 export interface MembershipVault extends Pick<
   CeremonyVault,
+  | 'activateRemoval'
   | 'rotation'
   | 'participant'
   | 'load'
@@ -113,6 +114,13 @@ export function withMembershipVault<T>(
         });
         return work({
           rotation,
+          activateRemoval: async () =>
+            (await import('../crdt/accountRotation')).activateAccountRotation(
+              task,
+              'joined',
+              slotId,
+              code,
+            ),
           ...approval,
           ...approvalProgress(approval, 'membership'),
           source: {

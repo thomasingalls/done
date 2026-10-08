@@ -1,0 +1,418 @@
+/** Resume a verified removal under the caller's exclusive slot permit. Old openers and the apply
+ * record remain after local activation; checkpoint admission/retirement is a separate obligation. */
+import {
+  readPromotion,
+  withPromotionRoot,
+  signPromotion,
+  writePromotion,
+  signRecord,
+} from './promotionRecord';
+import {
+  readJoinedAccount,
+  joinedKeys,
+  writeJoinedApproval,
+  writeJoinedRotation,
+} from './joinedAccount';
+import { claimScope } from './localGenesisRecord';
+import { createApprovalVault } from '../account/approvalVault';
+import { parseNativeRemoval } from '../account/deviceRemovalVault';
+import { parseInstalledMembership, verifyInstalledMembership } from './accountMembership';
+import { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+import {
+  historyAuthority,
+  historyPublisher,
+  historyMembership,
+  historyGeneration,
+} from '../../account-protocol/admissionHistory';
+import { resolveRotationOutcome, verifyRotationRequest } from '../../account-protocol/rotation';
+import { contentCheckpointHash } from '../../account-protocol/contentCheckpoint';
+import { generationInfo } from '../../account-protocol/genesis';
+import { same } from '../../account-protocol/admission';
+import { digest } from '../../account-protocol/recovery';
+import { fields, hex, hkdf, random, openEnvelope, type Bytes } from './custodyCrypto';
+import { createContentOwner, type ContentCrypto } from './contentStore';
+import { recordAAD, type StoredRecord } from './contentRecord';
+import { inspectInbound, verifyInboundLedger } from './inboundLedger';
+import { verifySpool, verifySpoolWitness } from './spoolRecord';
+import { verifyDelivery } from './deliveryRecord';
+import { verifySyncState } from './accountSyncState';
+import { createJournalOwner, eraseJournalSnapshot } from './journalStore';
+import { deriveJournalKey } from './journalCodec';
+import { persistRotationJournal } from './rotationCapture';
+import { deriveStoreName } from './storeName';
+import { probeDatabase } from './startupStorage';
+import { contentTransaction } from './contentDatabase';
+import type { SessionTask } from './writeSession';
+import type { InboundContext } from './accountInbound';
+import type { CaptureRoute } from './sourceCapture';
+
+export async function activateAccountRotation(
+  task: SessionTask,
+  kind: 'promotion' | 'joined',
+  slotId: string,
+  code: string,
+) {
+  const original = kind === 'promotion' ? await readPromotion(task, slotId, code) : null;
+  const joined = kind === 'joined' ? await readJoinedAccount(task, slotId, code) : null;
+  const state = (original ?? joined)!;
+  let record = state.record;
+  let marker = original?.marker;
+  const scope = claimScope(state.claim);
+  if (
+    !record.rotation ||
+    (original && marker?.v !== 9) ||
+    (joined && joined.marker?.phase !== 'active')
+  )
+    throw Error('Native account rotation is not ready');
+  const base = original
+    ? {
+        pin: marker!.pin,
+        request: marker!.admission!.request,
+        receipt: marker!.admission!.receipt!,
+      }
+    : joined!.marker!.authority.base;
+  const existingMembership = original ? marker!.membership : joined!.marker!.membership;
+  const credentials = original ? marker!.credentials! : record.credentials!;
+  return withPromotionRoot(task, state.claim, record, code, async (root, subtle) => {
+    const commit = async (next: typeof record, check?: () => void) => {
+      if (original) {
+        next = await signRecord(root, next, subtle);
+        const nextMarker = await signPromotion(
+          root,
+          { ...marker!, custodyMac: hex(next.mac), sealReserved: next.seal_reserved },
+          subtle,
+        );
+        await writePromotion(task, state.claim, record, next, marker!, nextMarker, check);
+        marker = nextMarker;
+        record = next;
+      } else {
+        await writeJoinedApproval(task, joined!, code, next, check, 'rotation');
+        record = joined!.record;
+      }
+    };
+    const vault = await createApprovalVault({
+      channel: 'rotation',
+      slotId,
+      scope,
+      root,
+      subtle,
+      credentials,
+      record: () => record,
+      commit,
+    });
+    const progress = parseNativeRemoval(await vault.load());
+    if (
+      !progress.successor ||
+      !progress.key ||
+      !progress.progress?.rotation ||
+      !progress.progress.outcome
+    )
+      throw Error('Removal outcome and opener must be retained before activation');
+    const parent = await verifyMembershipChain(progress.parent, base);
+    const proof = progress.successor;
+    const proofs = { ...progress.parent, continuations: [...progress.parent.continuations, proof] };
+    const verified = await verifyMembershipChain(proofs, base);
+    const history = historyPublisher(verified.history, credentials[1].id);
+    if (
+      historyGeneration(parent.history) !== 1 ||
+      historyGeneration(history) !== 2 ||
+      history.finalization ||
+      progress.progress.request.actorId !== credentials[1].id ||
+      !same(proof.epoch.rotation.payload.excluded, [progress.target]) ||
+      !same(progress.progress.outcome, proof.epoch.outcome)
+    )
+      throw Error('Unsupported local rotation');
+    const intent = await verifyRotationRequest(
+      progress.progress.rotation,
+      historyMembership(parent.history),
+      base.request.recovery,
+    );
+    if ((await resolveRotationOutcome(progress.progress.outcome, intent)).kind === 'pending')
+      throw Error('Unverified rotation outcome');
+    if (existingMembership) {
+      const held = await verifyMembershipChain(existingMembership.proofs, base);
+      historyAuthority(history, held.history.current);
+    }
+    if (record.active_rotation && record.active_rotation !== proof.head)
+      throw Error('Another rotation is already active');
+    return vault.withInstalledKey(progress.key, proof.head, async (successor) => {
+      const self = proof.epoch.rotation.payload.wraps.find(
+        (w) => w.credentialId === credentials[1].id,
+      );
+      if (!self) throw Error('Missing successor self wrap');
+      const reopened = await vault.openWrap(
+        self,
+        generationInfo({
+          workspaceId: history.current.workspace,
+          lineageId: history.current.lineage,
+          authRoot: base.pin.authRoot,
+          generation: 2,
+        }),
+      );
+      try {
+        if (hex(reopened) !== hex(successor)) throw Error('Installed successor key changed');
+      } finally {
+        reopened.fill(0);
+      }
+      if (record.active_rotation) {
+        if (!existingMembership || !same(existingMembership.proofs, proofs))
+          throw Error('Active membership differs from rotation');
+        return { generation: 2, head: proof.head };
+      }
+      const local = await openEnvelope(scope, root, record.envelope!, subtle);
+      let network: Bytes | undefined;
+      let carrier: ReturnType<typeof createContentOwner> | undefined;
+      let journal: ReturnType<typeof createJournalOwner> | undefined;
+      let oldJournal: Bytes | undefined;
+      try {
+        network = original
+          ? local.slice()
+          : await joinedKeys(task, joined!, code, async (key) => key.slice(), true);
+        const route: CaptureRoute = {
+          workspace: history.current.workspace,
+          principal: history.principal,
+          credential: credentials[1].id,
+          epoch: history.current.tip,
+          generation: 2,
+          history,
+        };
+        const context: InboundContext = {
+          baseline: original
+            ? {
+                kind: 'promotion-genesis',
+                id: await digest(new TextEncoder().encode(JSON.stringify(base.receipt))),
+              }
+            : {
+                kind: 'content-checkpoint',
+                id: await contentCheckpointHash(joined!.marker!.reading.checkpoint),
+              },
+          service: { id: base.pin.serviceId, origin: base.pin.origin },
+          authority: history.current,
+          history,
+          creatingCredential: credentials[1].id,
+          reader: { id: credentials[1].id, publicKey: history.signingKey, active: true },
+          publisher: {
+            id: credentials[1].id,
+            publicKey: history.signingKey,
+            principal: history.principal,
+            system: true,
+            active: true,
+          },
+          generation: 2,
+          generationKey: successor,
+          retainedGenerationKeys: new Map([[1, network]]),
+          prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+        };
+        const publicKey = await subtle.importKey(
+          'raw',
+          credentials[1].publicKey,
+          'Ed25519',
+          false,
+          ['verify'],
+        );
+        const identity = { ...scope, storeId: record.store_id, rootId: record.root_id };
+        const stores = new Map(
+          await Promise.all(
+            [
+              [1, local],
+              [2, successor],
+            ].map(
+              async ([g, key]) =>
+                [
+                  g as number,
+                  await hkdf(
+                    key as Bytes,
+                    new Uint8Array(),
+                    fields('done/store/v1', scope.workspaceId, record.store_id),
+                    { name: 'AES-GCM', length: 256 },
+                    ['encrypt', 'decrypt'],
+                    subtle,
+                  ),
+                ] as const,
+            ),
+          ),
+        );
+        // Existing metadata stays independently authenticated by its retained predecessor opener.
+        const metadata = await hkdf(
+          local,
+          new Uint8Array(),
+          fields(
+            'done/content-metadata/v1',
+            slotId,
+            scope.principalId,
+            scope.workspaceId,
+            record.store_id,
+          ),
+          { name: 'HMAC', hash: 'SHA-256', length: 256 },
+          ['sign', 'verify'],
+          subtle,
+        );
+        const open = async (r: StoredRecord) => {
+          const key = stores.get(r.gen);
+          if (!key) throw Error('Unknown local generation');
+          return new Uint8Array(
+            await subtle.decrypt(
+              { name: 'AES-GCM', iv: r.nonce, additionalData: recordAAD(identity, r) },
+              key,
+              r.ct,
+            ),
+          );
+        };
+        const seal = async (h: Omit<StoredRecord, 'nonce' | 'ct'>, bytes: Bytes) => {
+          const nonce = random(12);
+          return {
+            ...h,
+            nonce,
+            ct: new Uint8Array(
+              await subtle.encrypt(
+                { name: 'AES-GCM', iv: nonce, additionalData: recordAAD(identity, h) },
+                stores.get(h.gen)!,
+                bytes,
+              ),
+            ),
+          };
+        };
+        const crypt: ContentCrypto = {
+          allowSpoolCounter: true,
+          open: (_t, r) => open(r),
+          seal: (_t, h, b) => seal(h, b),
+          sign: async (_t, b) => new Uint8Array(await subtle.sign('HMAC', metadata, b)),
+          verify: (_t, b, mac) => subtle.verify('HMAC', metadata, mac, b),
+          validate: async (records, _t, counter) => {
+            const census = inspectInbound(records, route, context);
+            await verifySpoolWitness(census.delivery.spool, counter, subtle);
+            await verifySpool(
+              census.delivery.spool,
+              route,
+              new Map([
+                [1, network!],
+                [2, successor],
+              ]),
+              publicKey,
+              subtle,
+            );
+            const delivery = await verifyDelivery(
+              census.delivery,
+              route,
+              context.authority,
+              publicKey,
+              subtle,
+            );
+            const inbound = await verifyInboundLedger(census, records, context, {
+              assertCurrent: () => task.step(() => {}),
+            });
+            verifySyncState(census.delivery, delivery, inbound);
+          },
+        };
+        const name = await deriveStoreName(scope.principalId, scope.workspaceId);
+        const diskGeneration = await probeDatabase(task, name, (db) =>
+          contentTransaction<number>(db, task, ['meta'], 'readonly', (tx, result) => {
+            const r = tx.objectStore('meta').get('counter');
+            r.onsuccess = () => result(r.result?.active_gen);
+          }),
+        );
+        if (diskGeneration !== 1 && diskGeneration !== 2)
+          throw Error('Unknown rotation carrier generation');
+        carrier = createContentOwner(identity, diskGeneration, crypt);
+        await carrier.initialize(task);
+        oldJournal = await deriveJournalKey(local, scope.workspaceId, subtle);
+        journal = createJournalOwner(identity, name, 1, oldJournal);
+        const checkJournal = () => {
+          const entries = journal!.snapshot();
+          try {
+            if (entries.length) throw Error('Rotation journal coverage is incomplete');
+          } finally {
+            eraseJournalSnapshot(entries);
+          }
+        };
+        if (diskGeneration === 1) {
+          const entries = await journal.readSnapshot(task);
+          try {
+            await journal.flush(task, entries, (t, values) =>
+              persistRotationJournal(
+                t,
+                carrier!,
+                route,
+                record.store_id,
+                (records) => inspectInbound(records, route, context).delivery.spool.sourceRecords,
+                values,
+              ),
+            );
+          } finally {
+            eraseJournalSnapshot(entries);
+          }
+        }
+        checkJournal();
+        const before = await carrier.spoolWitness(task);
+        const membership = parseInstalledMembership({
+          v: 1,
+          proofs,
+          cuts:
+            existingMembership?.proofs.continuations.at(-1)?.head === proof.head
+              ? existingMembership.cuts
+              : [
+                  ...(existingMembership?.cuts ?? []),
+                  { epoch: history.current.tip, head: history.current.head, before },
+                ],
+        });
+        const records = await carrier.load(task);
+        try {
+          await verifyInstalledMembership(
+            inspectInbound(records, route, context).delivery.spool,
+            history,
+            membership,
+            joined?.marker?.v === 2 ? joined.marker.reading.epoch : 3,
+            subtle,
+          );
+        } finally {
+          for (const r of records) r.bytes.fill(0);
+        }
+        if (diskGeneration === 1) {
+          await carrier.rotate(task, {
+            generation: 2,
+            reserve: vault.reserveSeals,
+            seal,
+            open,
+            checkJournal,
+          });
+          carrier.dispose();
+          carrier = createContentOwner(identity, 2, crypt);
+          await carrier.initialize(task);
+        }
+        if (!record.active_rotation) {
+          const next = { ...record, active_rotation: proof.head };
+          if (original) {
+            const signed = await signRecord(root, next, subtle);
+            const nextMarker = await signPromotion(
+              root,
+              {
+                ...marker!,
+                membership,
+                custodyMac: hex(signed.mac),
+                sealReserved: signed.seal_reserved,
+              },
+              subtle,
+            );
+            await writePromotion(
+              task,
+              state.claim,
+              record,
+              signed,
+              marker!,
+              nextMarker,
+              checkJournal,
+            );
+          } else await writeJoinedRotation(task, joined!, code, next, membership, checkJournal);
+        } else if (!same(existingMembership, membership))
+          throw Error('Active rotation membership changed');
+        return { generation: 2, head: proof.head };
+      } finally {
+        carrier?.dispose();
+        journal?.dispose();
+        oldJournal?.fill(0);
+        network?.fill(0);
+        local.fill(0);
+      }
+    });
+  });
+}

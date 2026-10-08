@@ -15,9 +15,9 @@ still produce old-generation writing until it observes and activates the success
 The private protocol verifies preparation, intent, outcome and finalization evidence. The committed
 rotation successor now extends verified membership/history, retaining historical authorship while
 ending current access. The private service now commits the preparation/fence and atomic rotation with historical delivery.
-Protected transport, native retained custody and successor opener installation are implemented; local activation remains.
-No product control is enabled.
-The generation-one native owner explicitly refuses rotation adoption.
+Protected transport, native retained custody, successor opener installation and original/joined local
+activation are implemented. No product control is enabled. Passive discovery still needs to close the
+old writer and hand its verified successor to the activation owner.
 
 ## Stable cutoff before the intent
 
@@ -71,7 +71,8 @@ prefix; a signature over a claimed link is not replay evidence.
 - Client key production and retained exact-intent retry are implemented and tested with real HPKE
   recipient keys. Native original/joined custody now retains the exact proposal and winning proof,
   installs the authenticated successor self opener, and survives lost commit replies/cold reopen.
-  This remains applying, with old keys retained and ordinary generation-one opening refused.
+  Local generation-two activation now resumes across interrupted content/custody commits; journal-only
+  work is retained, and new edits survive cold reopen. Old keys and the apply record remain.
 - Durable service preparation/fence and atomic successor, wraps, finalization and outcome are implemented
   in private schema 20. History, survivor discovery and scoped authorization compose with the rotation.
   Old-generation work from remaining authorized offline devices keeps its historical admission path.
@@ -79,8 +80,8 @@ prefix; a signature over a claimed link is not replay evidence.
   Removed-device terminal discovery now has a separate proof-only grant, including exposed pending
   targets; it returns no transitions after their removal. A different remaining owner can finish the
   exact prepared target, and the original intent resolves against the authenticated winner.
-- Actual local generation activation under the exclusive writer barrier, including synchronous journal
-  and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
+- Passive discovery and activation handoff under the exclusive writer barrier. Native activation now
+  includes synchronous journal and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.
 - Devices action and progress; removed-device detached copy; disposable removal, remaining-device
   writes and cold reopen, including lost replies and interrupted installation.

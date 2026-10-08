@@ -34,6 +34,7 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  activateRemoval(): Promise<{ generation: number; head: string }>;
   rotation: Awaited<ReturnType<typeof createApprovalVault>>;
   installMembershipWriting(
     authority: JoinedAuthority,
@@ -135,6 +136,13 @@ export async function withCeremonyVault<T>(
         });
         return work({
           rotation,
+          activateRemoval: async () =>
+            (await import('../crdt/accountRotation')).activateAccountRotation(
+              task,
+              'promotion',
+              slotId,
+              code,
+            ),
           ...approval,
           ...approvalProgress(approval, progress),
           withLogin: (login, expected, work) =>

@@ -60,11 +60,13 @@ export async function installedMembershipHistory(
   input: InstalledMembership,
   base: SuccessorBase,
   initial: AdmissionHistory,
+  activeGeneration = 1,
 ): Promise<AdmissionHistory> {
   const installed = parseInstalledMembership(input),
     verified = await verifyMembershipChain(installed.proofs, base),
     history = historyPublisher(verified.history, initial.credential);
-  if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
+  if (historyGeneration(history) !== activeGeneration)
+    throw Error('Rotation requires generation activation');
   historyAuthority(history, initial.current);
   if (installed.cuts[0]!.epoch <= initial.current.tip)
     throw Error('Membership adoption precedes installation');
