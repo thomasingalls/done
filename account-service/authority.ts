@@ -1,4 +1,8 @@
 import {
+  parseRemovalDiscoveryResponse,
+  removalDiscoveryResponseMessage,
+} from '../account-protocol/removalDiscovery.ts';
+import {
   removalPreparationMessage,
   parseRotationOutcome,
   rotationOutcomeMessage,
@@ -430,6 +434,17 @@ export class PrivateAuthority {
   }
   relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayCeremony(input, this.#deliveryIssuer(authorize));
+  }
+  discoverRemoval(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.discoverRemoval(input, {
+      ...this.#deliveryIssuer(authorize),
+      discovery: async (input) => {
+        const value = parseRemovalDiscoveryResponse({ ...input, signature: '00'.repeat(64) }),
+          message = await removalDiscoveryResponseMessage(value);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...value, signature: sign(null, message, this.#key).toString('hex') };
+      },
+    });
   }
   commitRotation(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.commitRotation(input, {

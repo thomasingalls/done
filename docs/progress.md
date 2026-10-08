@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: protected removal transport complete; discovery/takeover and native activation next
+scope: terminal removal discovery complete; takeover and native activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -107,7 +107,13 @@ Four focused HTTP cases, six client/bounds cases and sixteen scoped transport re
 retries produce no duplicate hints. No native activation or product control is enabled. Atomic service
 checkpoint: `df0fd467`.
 
-**Next:** removed-device discovery and prepared-removal takeover;
+Removed-device discovery now uses an explicit proof-only grant, distinct from content access and
+subscriptions. Responses stop at the caller's own removal, including after a later rotation; exposed
+pending targets can also authenticate. Six focused service/HTTP cases and 48 affected regressions pass,
+along with static/build checks. The browser transport composes; detached local ownership is not yet
+installed. Transport checkpoint: `9242fec0`.
+
+**Next:** prepared-removal takeover;
 actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.

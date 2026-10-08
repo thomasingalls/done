@@ -47,6 +47,7 @@ const routes: Record<string, GrantScope['kind']> = {
   '/account/authority/discover': 'workspace',
   '/account/membership/v2/discover': 'workspace',
   '/account/membership/v2/checkpoint': 'workspace',
+  '/account/membership/v2/removal/discover': 'removal',
   '/account/membership/v2/removal/prepare': 'workspace',
   '/account/membership/v2/removal/commit': 'workspace',
   '/account/membership/v2/admit': 'enrollment',

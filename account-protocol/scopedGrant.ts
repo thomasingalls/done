@@ -8,6 +8,7 @@ export const GRANT_LIFETIME_MS = 5 * 60 * 1000;
 export const GRANT_CHALLENGE_MS = 60 * 1000;
 export type GrantScope =
   | { kind: 'workspace'; workspaceId: string; credentialId: string }
+  | { kind: 'removal'; workspaceId: string; credentialId: string }
   | { kind: 'enrollment'; workspaceId: string; credentialId: string; attemptId: string };
 export type GrantAction =
   | 'remove'
@@ -51,19 +52,22 @@ export function parseGrantScope(input: unknown): GrantScope {
       ? ['kind', 'workspaceId', 'credentialId', 'attemptId']
       : ['kind', 'workspaceId', 'credentialId'],
   );
-  if (kind !== 'workspace' && kind !== 'enrollment') throw Error('Invalid grant scope');
+  if (kind !== 'workspace' && kind !== 'enrollment' && kind !== 'removal')
+    throw Error('Invalid grant scope');
   const shared = {
     workspaceId: hex(v['workspaceId'], 16),
     credentialId: hex(v['credentialId'], 16),
   };
-  return kind === 'workspace'
+  return kind !== 'enrollment'
     ? { kind, ...shared }
     : { kind, ...shared, attemptId: accountIdentifier(v['attemptId']) };
 }
 export function grantActions(scope: GrantScope): GrantAction[] {
   return scope.kind === 'workspace'
     ? ['submit', 'read', 'checkpoint', 'discover', 'remove']
-    : ['admit', 'ceremony', 'transfer'];
+    : scope.kind === 'removal'
+      ? ['discover']
+      : ['admit', 'ceremony', 'transfer'];
 }
 export function grantMessage(c: GrantChallenge): Uint8Array<ArrayBuffer> {
   const pin = parseAuthorityPin(c.pin),

@@ -84,6 +84,10 @@ export function createScopedAccountHandler(
     ),
   ]);
   if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/membership/v2/removal/discover', {
+      limit: 4096,
+      run: (v, _token, auth) => authority.discoverRemoval(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v2/removal/prepare', {
       limit: 4096,
       run: (v, _token, auth) => authority.prepareRemoval(core, v, auth),

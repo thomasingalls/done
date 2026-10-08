@@ -46,7 +46,7 @@ const no = (refusal: 'malformed' | 'unavailable' | 'state-changed') => ({
   ok: false as const,
   refusal,
 });
-function chain(s: WorkspaceAuthoritySnapshot) {
+export function membershipProofChain(s: WorkspaceAuthoritySnapshot) {
   const continuations = (s.continuations ?? []).flatMap((row) => {
     const admission = parseMembershipAdmission(JSON.parse(row.artifact));
     const transfer = s.membershipTransfers?.find((r) => r.preparation_id === row.preparation_id);
@@ -92,7 +92,7 @@ export async function membershipBootstrap(
       if (!before) return no('unavailable');
       const auth = await verifyCurrentWorkspaceAuthority(before, issuer),
         base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-        { history, proofs } = await verifyMembershipChain(chain(before), base);
+        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);
       if (history.current.head !== auth.a.head) throw Error('Bootstrap current head changed');
       await verifyMembershipInvitation(request.invitation, history);
       const body = {
@@ -148,7 +148,7 @@ export async function discoverMembership(
           request.credentialId,
         ),
         base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-        { history, proofs } = await verifyMembershipChain(chain(before), base);
+        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);
       if (history.current.head !== auth.a.head) throw Error('Discovery current head changed');
       await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now());
       // Keep the requesting publisher's complete-history interlock. Discovery must not hide a

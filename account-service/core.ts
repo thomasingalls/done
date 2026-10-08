@@ -1,3 +1,4 @@
+import { discoverRemoval, type RemovalDiscoveryIssuer } from './removalDiscovery.ts';
 import { commitRotation, type RotationIssuer } from './rotation.ts';
 import { REMOVAL_SCHEMA, ROTATION_SCHEMA } from './removalStore.ts';
 import { prepareRemoval, type RemovalIssuer } from './removalPreparation.ts';
@@ -449,6 +450,9 @@ export class AccountCore {
       this.#hook,
       this.#diagnostics.record,
     );
+  }
+  discoverRemoval(input: unknown, issuer: RemovalDiscoveryIssuer) {
+    return discoverRemoval(this.#db, input, issuer, this.#now, this.#hook);
   }
   commitRotation(input: unknown, issuer: RotationIssuer) {
     return commitRotation(this.#db, input, issuer, this.#hook);

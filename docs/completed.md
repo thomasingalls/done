@@ -11066,3 +11066,33 @@ storage or local generation activation.
 No Devices control is exposed and no live state/server changed. Removed-device discovery, prepared
 removal takeover and actual journal-inclusive activation remain next. Atomic service checkpoint:
 `df0fd467`. This intermediate checkpoint is unsigned; release validation remains paused.
+
+
+## 2026-10-08 — Authenticated terminal discovery without content authority (`L-1`)
+
+A separate `removal` network-grant scope authorizes only terminal discovery, using the excluded
+credential's verified pre-removal signing key and a live account session. It cannot read/write content,
+rotate, invite, or subscribe to hints. The key resolves from the authenticated rotation parent, so an
+exposed pending target can also prove possession without being treated as a certified publisher.
+Its grant head and signed response stop at that credential's own removal; later transitions and key
+distributions are not included. The nonce-bound response authenticates the complete ancestry and
+finalization, with an explicit signing purpose and fresh request lifetime.
+
+The client discovery transport supports this separate route; no automatic UI or local detached-state
+change is claimed. The actual bundled browser/scoped transport fetches and verifies the terminal proof
+after the producer's lost-reply/restart scenario. Native activation and detached-copy ownership remain
+unfinished and their existing guards stay intact.
+
+Six focused service/HTTP cases pass, including formerly certified and exposed pending targets, wrong
+or missing grants, signature/request substitution, sign-out, no subscription privilege, restart, and
+proof truncation after a second real rotation. Evidence `/tmp/done-removal-discovery-final.log`.
+48 affected grant/notification/scoped-transport/locator/client cases pass
+(`/tmp/done-removal-discovery-regressions.log`). TypeScript, scoped lint/format, build, budget and
+origin checks pass (`/tmp/done-removal-discovery-build.log`). A fixture inspection found earlier
+pending-removal checks were calling the transfer helper with the wrong shape; the corrected checks
+assert actual key delivery and still pass (`/tmp/done-removal-discovery-history.log`).
+
+No live process or store changed. `:8443` stays on `a07de792` / schema 14. Prepared-removal takeover,
+native journal-inclusive generation activation, Devices controls and a disposable end-to-end removal
+journey remain open. Transport checkpoint `9242fec0`; this checkpoint is unsigned. Release validation
+remains paused.

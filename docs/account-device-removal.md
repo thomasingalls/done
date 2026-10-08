@@ -73,7 +73,8 @@ prefix; a signature over a claimed link is not replay evidence.
   in private schema 20. History, survivor discovery and scoped authorization compose with the rotation.
   Old-generation work from remaining authorized offline devices keeps its historical admission path.
   Protected HTTP/client transport and the retained producer compose through lost replies/restart.
-  Removed-device discovery and prepared-removal takeover remain next.
+  Removed-device terminal discovery now has a separate proof-only grant, including exposed pending
+  targets; it returns no transitions after their removal. Prepared-removal takeover remains next.
 - Actual local generation activation under the exclusive writer barrier, including synchronous journal
   and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.

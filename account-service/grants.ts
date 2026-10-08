@@ -19,7 +19,11 @@ import {
   type DeliveryIssuer,
 } from './delivery.ts';
 import { parseEnrollmentReceipt } from '../account-protocol/enrollment.ts';
-import { parseMembershipAdmission } from '../account-protocol/membership.ts';
+import {
+  parseMembershipAdmission,
+  parseMembershipRotation,
+  membershipState,
+} from '../account-protocol/membership.ts';
 import { enrollmentSnapshot, verifyEnrollmentRow, type EnrollmentRow } from './enrollment.ts';
 import type { AccountSessions } from './sessions.ts';
 import { canonical, fresh, hash, retryHash } from './protocol.ts';
@@ -129,6 +133,23 @@ export class ScopedGrants {
       const auth = await verifyCurrentWorkspaceAuthority(captured.authority, issuer);
       let key = auth.members.find((member) => member.id === scope.credentialId)?.key;
       let deadline = Number.MAX_SAFE_INTEGER;
+      let grantHead = auth.a.head;
+      if (scope.kind === 'removal') {
+        key = undefined;
+        // Resolve only from the already verified committed chain, including an exposed pending target.
+        const proof = captured.authority.rotations
+          ?.map((r) => parseMembershipRotation(JSON.parse(r.artifact)))
+          .find((p) => p.epoch.finalization.credential === scope.credentialId);
+        const parent = proof && auth.rotationParents?.get(proof.epoch.parent);
+        const removed =
+          parent && membershipState(parent).roster.find((m) => m.id === scope.credentialId);
+        if (proof && removed) {
+          key = await crypto.subtle.importKey('raw', unhex(removed.sPub, 32), 'Ed25519', false, [
+            'verify',
+          ]);
+          grantHead = proof.head;
+        }
+      }
       if (scope.kind === 'enrollment') {
         const row = captured.preparation!;
         if (row.stage !== 'prepared' || !row.receipt) return no('insufficient-scope');
@@ -215,7 +236,7 @@ export class ScopedGrants {
           accountId,
           sessionId: identity.sessionId,
           scope,
-          head: auth.a.head,
+          head: grantHead,
           actions: grantActions(scope),
           challengeId: fresh(),
           expiresAt,
@@ -305,6 +326,7 @@ export class ScopedGrants {
   subscription(grantToken: unknown, input: unknown) {
     const scope = parseGrantScope(input),
       digest = retryHash(grantToken);
+    if (scope.kind === 'removal') throw new AuthorizationRefused('insufficient-scope');
     const check = () => {
       if (this.#closed || this.#db.isTransaction)
         throw new AuthorizationRefused('storage-unavailable');

@@ -2859,7 +2859,7 @@ async function membershipReadingFixture(t, options = {}) {
   const e = x.exchange('new'),
     d = await continuationDelivery(x, e, await options.createWrap?.(kg, e));
   await d.approve();
-  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
   const installed = await d.transfer(d.request('new', 'install', d.installation));
   const authority = {
     base: x.base,
@@ -4380,7 +4380,7 @@ test('pending removal prevents comparison, delivery, certification and cancellat
   const result = await x.authority.owner.prepareRemoval(x.f.core, r);
   assert.equal(result.ok, true, JSON.stringify(result));
   assert.equal((await x.relay(e.approval)).ok, false);
-  assert.equal((await d.transfer('existing', 'deliver', d.delivery)).ok, false);
+  assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, false);
   assert.equal(
     (await x.authority.owner.cancelMembership(x.f.core, await cancellationRequest(x))).ok,
     false,
@@ -4499,16 +4499,18 @@ test('joined owner can prepare original-device removal while a new admission can
   assert.deepEqual(await x.authority.owner.prepareRemoval(x.f.core, r), prepared);
 });
 
-async function rotationRequest(x, preparationRequest = null) {
+async function rotationRequest(x, preparationRequest = null, parentInput = null) {
   const { rotationIntentMessage } = await import('../../account-protocol/rotation.ts');
   const request = preparationRequest ?? (await removalRequest(x));
   const prepared = await x.authority.owner.prepareRemoval(x.f.core, request);
   assert.equal(prepared.ok, true, JSON.stringify(prepared));
-  let parent = await verifyMembershipAnchor(x.base, x.successor, x.certification, {
-    epoch: 3,
-    head: x.certification.head,
-  });
-  if (x.admission?.kind === 'membership-admission')
+  let parent =
+    parentInput ??
+    (await verifyMembershipAnchor(x.base, x.successor, x.certification, {
+      epoch: 3,
+      head: x.certification.head,
+    }));
+  if (!parentInput && x.admission?.kind === 'membership-admission')
     parent = await verifyMembershipAdmission(x.admission, parent);
   const p = membershipState(parent);
   const r = {
@@ -4657,7 +4659,7 @@ test('rotation can remove the original publisher and finalize a never-writing or
     if (pending) {
       const d = await continuationDelivery(x, x.exchange('existing'));
       await d.approve();
-      await d.transfer('existing', 'deliver', d.delivery);
+      assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
     }
     const target = pending ? x.entry.input.candidate.credentialId : x.context.existing.id;
     const prep = await removalRequest(x, target, pending ? 'existing' : 'new');
@@ -5000,4 +5002,178 @@ test('retained browser rotation producer composes with scoped HTTP through lost 
   );
   assert.equal(own.length, 32);
   own.fill(0);
+  const removedAccess = transport.bind({
+    login,
+    scope: { kind: 'removal', workspaceId: x.workspace, credentialId: x.context.candidate.id },
+    sign: async (bytes) => signed(x.keys.new, bytes),
+  });
+  const discovery = await removalDiscoveryRequest(x, x.context.candidate.id, x.keys.new, {
+    expiresAt: Date.now() + 60000,
+  });
+  const terminal = await client.privateDiscoveryPost(
+    x.authority.pin,
+    removedAccess,
+    discovery,
+    stop.signal,
+  );
+  const checked = await client.verifyRemovalDiscoveryResponse(
+    terminal,
+    discovery,
+    x.base,
+    Date.now(),
+  );
+  assert.equal(
+    checked.proofs.continuations.at(-1).epoch.outcome.committedId,
+    retained.outcome.committedId,
+  );
+  await assert.rejects(
+    removedAccess.fetch('/account/delivery/read-v2', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/octet-stream' },
+      body: new Uint8Array([1]),
+    }),
+  );
+});
+
+async function removalDiscoveryRequest(x, id, key, changes = {}) {
+  const { removalDiscoveryRequestMessage } =
+    await import('../../account-protocol/removalDiscovery.ts');
+  const request = {
+    v: 1,
+    kind: 'removal-discovery-request',
+    pin: x.authority.pin,
+    workspaceId: x.workspace,
+    lineageId: x.context.lineageId,
+    credentialId: id,
+    nonce: 'ef'.repeat(32),
+    expiresAt: 61000,
+    signature: '00'.repeat(64),
+    ...changes,
+  };
+  return { ...request, signature: signed(key, await removalDiscoveryRequestMessage(request)) };
+}
+test('removed and exposed pending devices receive only their authenticated terminal proof through a separate grant', async (t) => {
+  const { verifyRemovalDiscoveryResponse } =
+    await import('../../account-protocol/removalDiscovery.ts');
+  for (const pending of [false, true]) {
+    const x = pending ? await continuationFixture(t) : await removalFixture(t),
+      g = await continuationGrants(x),
+      api = await membershipHTTP(t, x);
+    const target = pending ? x.entry.input.candidate.credentialId : x.context.candidate.id,
+      key = pending ? x.entry.key : x.keys.new;
+    const scope = { kind: 'removal', workspaceId: x.workspace, credentialId: target };
+    assert.equal((await g.begin(scope)).ok, false);
+    const prep = await removalRequest(x, target),
+      { request } = await rotationRequest(x, prep);
+    const committed = await x.authority.owner.commitRotation(x.f.core, request);
+    assert.equal(committed.ok, true, JSON.stringify(committed));
+    const query = await removalDiscoveryRequest(x, target, key);
+    const grant = await g.grant(scope, key);
+    assert.throws(
+      () => x.f.core.grants.subscription(grant.grantToken, scope),
+      AuthorizationRefused,
+    );
+    const path = '/account/membership/v2/removal/discover';
+    assert.equal((await api.post(path, query)).status, 401);
+    const response = await api.post(path, query, grant);
+    assert.equal(response.status, 200, JSON.stringify(response));
+    const verified = await verifyRemovalDiscoveryResponse(response.body, query, x.base, 1000);
+    assert.equal(verified.history.current.head, committed.rotation.head);
+    assert.equal(verified.member.state, pending ? 'pending' : 'certified');
+    assert.deepEqual(
+      verified.proofs.continuations.at(-1).epoch.finalization,
+      committed.rotation.epoch.finalization,
+    );
+    assert.equal(api.hints.length, 0);
+    assert.equal((await g.begin({ ...scope, kind: 'workspace' })).ok, false);
+    const owner = await g.grant(
+      { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.existing.id },
+      x.keys.existing,
+    );
+    assert.equal((await api.post(path, query, owner)).status, 403);
+    assert.equal(
+      (await api.post(path, { ...query, signature: '00'.repeat(64) }, grant)).status,
+      409,
+    );
+    assert.equal(
+      (await api.post('/account/membership/v2/removal/commit', request, grant)).status,
+      403,
+    );
+    x.f.restart();
+    x.authority.restart();
+    g.restart();
+    const resumed = await api.post(path, query, await g.grant(scope, key));
+    assert.equal(resumed.status, 200);
+    await assert.rejects(
+      verifyRemovalDiscoveryResponse(
+        resumed.body,
+        { ...query, nonce: 'ab'.repeat(32) },
+        x.base,
+        1000,
+      ),
+    );
+    const after = await g.grant(scope, key);
+    g.revoke();
+    assert.equal((await api.post(path, query, after)).status, 401);
+  }
+});
+
+test('removed-device discovery stops at its own removal even after another rotation', async (t) => {
+  const { verifyRemovalDiscoveryResponse } =
+    await import('../../account-protocol/removalDiscovery.ts');
+  const { removalPreparationRequestMessage } = await import('../../account-protocol/rotation.ts');
+  const x = await continuationFixture(t),
+    d = await continuationDelivery(x, x.exchange('existing'));
+  await d.approve();
+  assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
+  const installed = await d.transfer(d.request('new', 'install', d.installation));
+  const chain = {
+    successor: x.successor,
+    certification: x.certification,
+    continuations: [x.admission, installed.certification],
+  };
+  let parent = historyMembership((await verifyMembershipChain(chain, x.base)).history);
+  const rotate = async (target) => {
+    const p = membershipState(parent),
+      prep = {
+        v: 1,
+        kind: 'removal-preparation-request',
+        workspaceId: x.workspace,
+        lineageId: p.lineageId,
+        parent: p.head,
+        epoch: p.epoch,
+        actorId: x.context.existing.id,
+        targetId: target,
+        nonce: 'ba'.repeat(32),
+        signature: '00'.repeat(64),
+      };
+    prep.signature = signed(x.keys.existing, await removalPreparationRequestMessage(prep));
+    const { request } = await rotationRequest(x, prep, parent);
+    const result = await x.authority.owner.commitRotation(x.f.core, request);
+    assert.equal(result.ok, true, JSON.stringify(result));
+    chain.continuations.push(result.rotation);
+    parent = historyMembership((await verifyMembershipChain(chain, x.base)).history);
+    return result;
+  };
+  const target = x.entry.input.candidate.credentialId,
+    first = await rotate(target);
+  const second = await rotate(x.context.candidate.id);
+  assert.equal(second.rotation.epoch.generation, 3);
+  const g = await continuationGrants(x),
+    scope = { kind: 'removal', workspaceId: x.workspace, credentialId: target };
+  const begun = await g.begin(scope);
+  assert.equal(begun.challenge.head, first.rotation.head);
+  const grant = await g.finish(begun.challenge, x.entry.key);
+  const query = await removalDiscoveryRequest(x, target, x.entry.key);
+  const response = await x.authority.owner.discoverRemoval(
+    x.f.core,
+    query,
+    x.f.core.grants.authorize(grant.grantToken),
+  );
+  const checked = await verifyRemovalDiscoveryResponse(response, query, x.base, 1000);
+  assert.equal(checked.history.current.head, first.rotation.head);
+  assert.equal(
+    checked.proofs.continuations.some((p) => p.head === second.rotation.head),
+    false,
+  );
 });

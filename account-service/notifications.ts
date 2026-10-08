@@ -42,7 +42,7 @@ export class AccountNotifications {
       if (
         s.kind === 'workspace' ||
         checkpoint ||
-        (scope.kind === 'enrollment' && s.attemptId === scope.attemptId)
+        (scope.kind === 'enrollment' && s.kind === 'enrollment' && s.attemptId === scope.attemptId)
       )
         c.hint();
     }

@@ -1,3 +1,4 @@
+import { parseRemovalDiscoveryRequest } from '../../account-protocol/removalDiscovery';
 import { isAccountAccess, accountServiceFetch, type AccountAccess } from './accountHttp';
 /** Bounded private locator transport. Only the owned client may turn a verified reply into authority. */
 import { parseAuthorityPin, type AuthorityPin } from '../../account-protocol/authority';
@@ -16,17 +17,24 @@ import {
 export async function privateDiscoveryPost(
   inputPin: AuthorityPin,
   token: AccountAccess,
-  input: AuthorityDiscoveryRequest | ReturnType<typeof parseMembershipDiscoveryRequest>,
+  input:
+    | AuthorityDiscoveryRequest
+    | ReturnType<typeof parseMembershipDiscoveryRequest>
+    | ReturnType<typeof parseRemovalDiscoveryRequest>,
   signal: AbortSignal,
 ): Promise<unknown | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
     recordPrivateTransportDiagnostic({ operation: 'discovery', phase, code });
   const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
   try {
+    const removal = input.kind === 'removal-discovery-request';
     const pin = parseAuthorityPin(inputPin),
-      request =
-        input.v === 2 ? parseMembershipDiscoveryRequest(input) : parseDiscoveryRequest(input),
-      limit = input.v === 2 ? MEMBERSHIP_CHAIN_LIMIT + 1024 : DISCOVERY_RESPONSE_LIMIT;
+      request = removal
+        ? parseRemovalDiscoveryRequest(input)
+        : input.v === 2
+          ? parseMembershipDiscoveryRequest(input)
+          : parseDiscoveryRequest(input),
+      limit = removal || input.v === 2 ? MEMBERSHIP_CHAIN_LIMIT + 1024 : DISCOVERY_RESPONSE_LIMIT;
     if (JSON.stringify(request.pin) !== JSON.stringify(pin)) throw Error('Discovery pin changed');
     if (!isAccountAccess(token)) {
       note('request', 'invalid-token');
@@ -36,7 +44,11 @@ export async function privateDiscoveryPost(
     const response = await accountServiceFetch(
       pin,
       token,
-      input.v === 2 ? '/account/membership/v2/discover' : '/account/authority/discover',
+      removal
+        ? '/account/membership/v2/removal/discover'
+        : input.v === 2
+          ? '/account/membership/v2/discover'
+          : '/account/authority/discover',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
