@@ -349,3 +349,13 @@ later joined adoption without claiming the service's repeated-admission path is 
 Next: wire continuation invitation/preparation/comparison and the existing handoff/reader into product
 screens, then demonstrate real original/joined adoption and three-device writing. Cancellation before
 approval and removal with rotation afterward still need their actual membership transitions.
+
+
+## Durable comparison checkpoint — 2026-10-08
+
+The continuation comparison component saves and rereads each nonce/context, commitment, reveal and
+decision before sending it. It verifies the approver's signed context, both parties' proof and the exact
+transcript. Either certified existing participant may approve. Exact retries survive a service restart
+and lost approval response; a competing parent spends the attempt, and a mismatch cannot become approval.
+Code redisplay preserves the same retained attempt. The real relay/handoff integration passes for both
+approvers. This component still needs invitation/preparation routing and product-screen integration.

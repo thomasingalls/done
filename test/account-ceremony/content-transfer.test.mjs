@@ -3401,3 +3401,104 @@ test('later native slot resumes activation after index interruption and rejects 
   }, pending.slotId);
   await assert.rejects(activate(false), /authentication failed/);
 });
+
+let comparisonClient;
+async function compiledComparison() {
+  comparisonClient ??= (async () => {
+    const built = await build({
+      configFile: false,
+      logLevel: 'error',
+      build: {
+        write: false,
+        minify: false,
+        lib: { entry: resolve('test/account-membership/comparison-entry.ts'), formats: ['es'] },
+      },
+    });
+    const code = (Array.isArray(built) ? built[0] : built).output.find(
+      (v) => v.type === 'chunk',
+    ).code;
+    return import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'));
+  })();
+  return comparisonClient;
+}
+for (const approver of ['existing', 'new'])
+  test(`browser comparison by ${approver} composes with the real continuation relay and key handoff after restart`, async (t) => {
+    const client = await compiledComparison(),
+      x = await continuationFixture(t),
+      e = x.exchange(approver);
+    const anchor = await client.verifyMembershipAnchor(x.base, x.successor, x.certification, {
+      epoch: 3,
+      head: x.certification.head,
+    });
+    const parent = await client.verifyMembershipAdmission(x.admission, anchor);
+    const current = {},
+      durable = {},
+      owners = {};
+    let lostDecision = true;
+    for (const role of ['existing', 'new']) {
+      current[role] = client.beginMembershipComparison(role, parent);
+      durable[role] = structuredClone(current[role]);
+      owners[role] = {
+        participant: role === 'existing' ? e.context.existing : e.context.candidate,
+        load: async () => structuredClone(durable[role]),
+        sign: async (bytes) => signed(e.keys[role], bytes),
+        wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
+        sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
+        checkInstalled: async (key) => assert.deepEqual(key, durable[role].content.key),
+      };
+    }
+    const save = async (role) => {
+      durable[role] = structuredClone(current[role]);
+    };
+    const request = async (path, body) => {
+      if (path === '/account/membership/v2/transfer')
+        return x.authority.owner.transferMembership(x.f.core, body);
+      assert.equal(path, '/account/membership/v2/ceremony');
+      const result = await x.relay(body);
+      if (body.action === 'decide' && lostDecision) {
+        lostDecision = false;
+        throw Error('Lost committed comparison reply');
+      }
+      return result;
+    };
+    const run = (role, typed) =>
+      client.continueMembershipComparison(
+        current[role],
+        owners[role],
+        parent,
+        { signal: new AbortController().signal, now: () => 1000, save: () => save(role), request },
+        typed,
+      );
+    assert.equal((await run('existing')).kind, 'waiting');
+    assert.equal((await run('new')).kind, 'waiting');
+    assert.equal((await run('existing')).kind, 'compare');
+    const display = await run('new');
+    assert.equal(display.kind, 'display');
+    await assert.rejects(run('existing', display.code), /Lost committed/);
+    const decision = structuredClone(durable.existing.decision);
+    x.f.restart();
+    for (const role of ['existing', 'new']) {
+      current[role] = structuredClone(durable[role]);
+      assert.equal((await run(role)).kind, 'approved');
+      assert.deepEqual(durable[role].decision, decision);
+    }
+    let certification = null;
+    const handoff = async (role) => {
+      const result = await client.continueMembershipHandoff(
+        current[role],
+        owners[role],
+        { base: x.base, membership: parent, certification },
+        () => save(role),
+        request,
+      );
+      certification = current[role].content?.certification ?? certification;
+      return result;
+    };
+    assert.equal(await handoff('existing'), 'approved');
+    assert.equal(await handoff('new'), 'certified');
+    assert.equal(await handoff('existing'), 'certified');
+    assert.deepEqual(durable.existing.content.certification, durable.new.content.certification);
+    assert.equal(x.f.rows('membership_ceremonies').length, 1);
+    assert.equal(x.f.rows('membership_transfers').length, 1);
+    assert.equal(certification.epoch.epoch, 5);
+  });

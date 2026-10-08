@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: owned membership adoption complete; version-2 product ceremony composition next
+scope: durable continuation comparison complete; invitation and enrollment routing next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -101,9 +101,12 @@ case, and the existing packaged two-device reopening/sync check pass. Native act
 as `1f615fdf`. Current membership now has a separate authenticated carrier with exact local ledger
 cuts; existing owners verify all retained evidence before committing and changing routes. Focused
 native before/after-commit recovery, old-owner and packaged two-device checks pass. Version-2 discovery
-is opt-in for the continuation host; the retained/default epoch-3 host is unchanged.
+is opt-in for the continuation host; the retained/default epoch-3 host is unchanged. Adoption is
+committed as `43759e0e`. The durable version-2 comparison component now composes with the actual private
+relay and key-handoff coordinator for either approver, including a lost approval reply and service
+restart. 13 focused Node cases and two service integrations pass; product routing remains unwired.
 
-**Next:** version-2 product ceremony and editor composition, including a real three-device check of
+**Next:** version-2 invitation/preparation routing, product ceremony and editor composition, including a real three-device check of
 original/joined authority adoption and delivery;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed

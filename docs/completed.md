@@ -10677,3 +10677,28 @@ three-device product check remains required. TypeScript, scoped lint/format, bui
 diff checks pass. Logs: `/tmp/done-membership-adoption-{focused,regressions,http,native,original-owner,
 legacy-browser,build}.log` (each name expands separately). Next: version-2 product ceremony and editor
 composition. No retained service restart or personal-data change; release validation stays paused.
+
+
+## 2026-10-08 — Durable continuation comparison component (`L-1`)
+
+Following owned-adoption checkpoint `43759e0e`, the version-2 comparison component now retains its
+nonce/context, commitments, reveals and exact decision before sending them. It verifies saved state
+again before transmission and binds every request to the pending membership head and preparation.
+Either certified parent device may approve. The candidate authenticates the approver's commitment
+before retaining its context. Relay status labels cannot establish approval; the actual signed pair,
+reveals and transcript must agree. A competing head makes the saved comparison terminal.
+
+An interrupted save cannot send a commitment/reveal/decision. Lost commit, reveal and approval replies
+retry exact saved messages; an already-approved exchange can finish after its ceremony deadline.
+Redisplay and repeated completed checks do not reserve another storage nonce. A mismatch remains spent.
+A signed cancellation is reported only as comparison cancellation: removing a pending member still
+requires the separate membership transition, and no post-approval cancel/removal action is enabled here.
+
+Evidence: 13 affected Node comparison/protocol/handoff checks and two real private service integration
+cases pass. Both approvers complete comparison through the actual relay, lose an approval response,
+restart the service, and finish the existing key-handoff coordinator to the same epoch-5 certificate.
+The service cases use simulated vault persistence and synthetic key wraps; native custody and actual
+encrypted replay are covered by their earlier checkpoints, not re-claimed as a three-device UI run.
+TypeScript, scoped lint/format and diff checks pass. Logs: `/tmp/done-membership-comparison-focused.log`,
+`/tmp/done-membership-comparison-regressions.log`, `/tmp/done-membership-comparison-service.log`.
+Next: invitation/preparation routing and product composition. No live service change or release campaign.
