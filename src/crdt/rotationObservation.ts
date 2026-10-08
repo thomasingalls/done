@@ -1,3 +1,4 @@
+import type { MembershipVault } from '../account/membershipVault';
 import type { NetworkLogin } from '../account/networkLogin';
 import { ScopedTransport } from '../account/scopedTransport';
 import { RemovalPending } from '../account/accountTransitionNotice';
@@ -10,7 +11,7 @@ import {
   signPromotion,
   writePromotion,
 } from './promotionRecord';
-import { readJoinedAccount, writeJoinedApproval } from './joinedAccount';
+import { readJoinedAccount, writeJoinedApproval, joinedInitialGeneration } from './joinedAccount';
 import { claimScope } from './localGenesisRecord';
 import { createApprovalVault } from '../account/approvalVault';
 import { parseNativeRemoval, type NativeRemoval } from '../account/deviceRemovalVault';
@@ -42,6 +43,7 @@ export async function withRotationCustody<T>(
       | Awaited<ReturnType<typeof readPromotion>>
       | Awaited<ReturnType<typeof readJoinedAccount>>;
     base: Parameters<typeof verifyMembershipChain>[1];
+    source: Exclude<MembershipVault['source'], { kind: 'pending' }>;
     credential: string;
     withLogin<T>(login: NetworkLogin, work: () => Promise<T>): Promise<T>;
     proofs: ReturnType<typeof parseMembershipChain>;
@@ -103,6 +105,14 @@ export async function withRotationCustody<T>(
       vault,
       state,
       base,
+      source: joined
+        ? {
+            kind: 'joined',
+            authority: joined.marker!.authority,
+            proofs,
+            initialGeneration: joinedInitialGeneration(joined.marker!),
+          }
+        : { kind: 'original', base, proofs },
       credential: credentials[1].id,
       proofs,
       withLogin: (login, run) =>
@@ -272,10 +282,10 @@ export async function resumeAccountRotation(
         kind,
         slotId,
         code,
-        async ({ vault, base, proofs, withLogin }) => {
+        async ({ vault, base, source, withLogin }) => {
           const native = await openDeviceRemovalVault(
             {
-              source: { kind: 'original', base, proofs },
+              source,
               participant: vault.participant,
               rotation: vault,
             },

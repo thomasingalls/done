@@ -2385,7 +2385,8 @@ test('continuation grants distinguish both approvers, pending enrollment and cer
     guard(installedGrant),
   );
   assert.equal(installed.certification?.epoch.epoch, 5, JSON.stringify(installed));
-  assert.throws(() => subscription.check(), denial('authority-changed'));
+  // Key delivery changed authority; acquiring the installation grant reclaimed the old writer grant.
+  assert.throws(() => subscription.check(), denial('grant-required'));
   await assert.rejects(
     d.transfer(d.request('new', 'install', d.installation), guard(installedGrant)),
     denial('authority-changed'),

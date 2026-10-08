@@ -42,70 +42,57 @@ that is no longer active.
 
 ---
 
-## Product integration: device lifecycle (`L-1`)
+## Product integration: repeatable device lifecycle (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshot source and service retention complete; native replacement handoff complete; replacement native activation/editing complete; full repeated product cycle next
-blocks_on: none
+scope: bounded repeatable lifecycle implemented and checked; retained-service update preparation
+blocks_on: fresh operator locked/closed confirmation before live switch
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Live baseline:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-immutable frontend `2bea3437`, schema 20 and original service pin. Both network sessions and membership
-continuation are enabled. After the operator confirmed a fresh quiet point, the explicit upgrader saved
-`.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ` and preserved every prior account/authority
-row and column, pin and operator key. Fresh authority proof and all 28 precache URLs/worker bytes pass
-through the actual HTTPS gateway. See [the runbook](./packaged-account-development.md) and
-[cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json).
+**Source checkpoint:** the complete bounded flow now works in disposable packaged browsers:
+remove → connect replacement → edit → remove another → connect again. Original and joined producers
+capture accepted/journal writing. Replacements start at the approved current generation, retain
+nonzero receive cuts, edit in both directions and cold-reopen. The generation-two replacement itself
+can remove its peer and invite a generation-three device without predecessor content keys. Removed
+peers retain writable/exportable detached copies and receive no successor key. Signed current-key
+retries preserve surviving offline edits; exact replies and interrupted installation remain resumable.
+See [the implementation plan](./account-repeatable-lifecycle.md) and
+[the completion record](./completed.md).
 
-**Completed bounded product work:** Devices navigation, third-device invitation/approval from either
-existing device, three-device writing/reopen, pending cancellation, and first other-device removal with
-forward key rotation. Cancel before approval; Remove after approval or uncertain key exposure. Existing
-copies cannot be erased. The requesting device stays connected; removed devices retain writable,
-exportable detached copies without a network driver or successor key.
+**Latest evidence:** both clean packaged-browser cases pass; the longer case exercises four browser
+contexts and exact removal retry after a lost committed reply. The affected transfer/upgrade run passed
+84 cases and one stale-denial expectation was corrected and passed in a targeted rerun (85 total).
+Twenty-six focused grant/notification/HTTP cases pass. TypeScript, scoped lint/format, build,
+109.5 kB initial JS, origin isolation and diff checks pass.
+[Product evidence](./development-evidence/2026-10-08-repeatable-product.log);
+[grant reclamation](./development-evidence/2026-10-08-lifecycle-grant-reclamation.log).
+These are focused implementation checks, not release qualification.
 
-The actual native owner retains exact removal intent and verified successor under encrypted custody.
-Journal-inclusive content activation and custody-pointer installation resume across interruption.
-Passive discovery stops the old writer before activation; old-generation writing from a surviving
-offline device remains deliverable. Old openers and apply records remain for future checkpoint/retirement
-work. The five focused final browser cases pass with original/joined lost-reply retries, interrupted
-activation, offline survivor delivery, two-way generation-two writing and detached cold reopen.
-[Final product evidence](./development-evidence/2026-10-08-device-removal.json) is `f46978a0`, over
-implementation `2bea3437`. The complete checkpoint history is in [completed.md](./completed.md).
+**Live remains unchanged:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
+immutable frontend `2bea3437`, schema 20, original pin and both feature flags enabled.
+API 29654 and app 29655 were still listening during read-only preparation. The previous offline
+backup is `.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ`.
+[Previous cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json).
 
-**Retained installation check:** reopen the unchanged address online, allow the normal application update to
-activate (close/reopen if an old worker remains), then check writing and ordinary sync on both devices.
-No personal browser was opened during the cutover; uptake is not yet confirmed. No personal device
-needs removal for this initial check.
+**Next:** preserve an immutable candidate and obtain a fresh locked/closed confirmation. Stop the two
+verified processes, use the explicit offline upgrader and its full pre-upgrade backup, compare prior
+rows/columns and pin/key, then serve schema 21 plus the candidate behind the same address. Verify
+configuration, fresh authority proof and cached asset bytes before asking the operator to reopen.
+[Runbook](./packaged-account-development.md). No reset, source cleanup or key replacement is intended.
 
-**Active development:** [repeatable lifecycle](./account-repeatable-lifecycle.md), authorized with
-unsigned intermediate commits. Current-parent service admission/approval now passes after cancellation
-and rotation, including replacement with only one surviving old device and a second removal.
-Forty-nine affected service cases and fifteen protocol cases pass. Native custody now retains installed
-generation openers through repeated removal; generation-three activation, second-rotation crash/retry
-and detached generation-two reopen pass. Twenty-one focused node and forty inbound unit checks pass.
-Repeated generation-one connections now archive completed custody exactly; five handoff and three
-retained-coordinator cases pass. The four-device packaged case passes two actual UI removals, a
-survivor missing both rotations, old-generation offline delivery, generation-three two-way writing
-and cold reopen. The signed current-key service boundary now passes its five affected cases, including lost committed
-replies. Durable browser retries now pass the focused native case: exact old ciphertext after a lost
-refusal reply, same-position current-key delivery, journal preservation and cold reopen. Four new
-retry cases and affected unit checks pass. The replacement checkpoint format, crypto replay and accepted-source verification now pass 24 focused and affected checks, including finalized publisher writing, restart replay and a replacement preparing the next snapshot without generation-one keys. Service retention and version-3 delivery/acknowledgement binding now pass eleven focused service/upgrade cases and 23 affected protocol/replay checks. Schema 21 is ready for an explicit offline upgrade; live remains schema 20. Browser handoff ordering and semantic acknowledgement now pass seven focused and four affected service-coordinator cases. Native producer/current-key wrapping now passes two packaged-browser cases (original and joined), with stale-grant recovery, lost publication reply, cold replay and journal preservation. Replacement reading now retains its verified binding and initializes nonzero receive cuts; ten reader/handoff, 45 inbound and five affected service/browser-reader checks pass. Restartable initial-generation joining custody now passes both packaged-browser producer cases, including counter/snapshot interruption, two-way writing and cold reopen; 23 focused unit and seventeen protocol/source checks pass. The longer native cycle exposed obsolete-grant quota exhaustion; reclaiming changed-authority grants/challenges passes 26 focused session/notification/HTTP checks. The complete native cycle remains in flight. Next: enable post-rotation invitations and exercise replacement removal plus another connection. Post-rotation connections remain gated until that product check. No live
-service switch has occurred.
+**After uptake:** lost-device recovery remains the next separate product journey. Self/last-device
+removal needs an explicit UX decision. Successor checkpoint replacement, history pruning, old-key
+retirement and production operations are unfinished; existing history-size bounds remain. The
+account-preview label stays. Release validation remains paused until explicitly resumed.
 
-**Further product work:** self/last-device removal, lost-device
-recovery, successor checkpoint replacement/pruning and old-key retirement, then production operations.
-See [the lifecycle plan](./account-device-lifecycle.md) and [removal contract](./account-device-removal.md).
-The retained build still has the first generation-one-to-two removal boundary; current source adds
-repeat connections and removals. The account-preview label stays. Release validation remains paused.
-
-Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
-end of the agreed sequence. Consult the operator on product decisions.
+Unsigned intermediate commits remain authorized, with end-of-phase chat summaries. Consult the
+operator on product choices; one signed checkpoint at the end of the agreed broader sequence.
 
 ---
 

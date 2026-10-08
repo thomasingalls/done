@@ -1202,10 +1202,10 @@ async function openAccountReceiveOwner(
                     joined ? 'joined' : 'promotion',
                     options.slotId,
                     options.code,
-                    async ({ vault, base, proofs }) => {
+                    async ({ vault, source }) => {
                       const native = await openDeviceRemovalVault(
                         {
-                          source: { kind: 'original', base, proofs },
+                          source,
                           participant: vault.participant,
                           rotation: vault,
                         },

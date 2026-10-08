@@ -9,24 +9,20 @@ The existing invitation/code-comparison ceremony stays; pending enrollment is di
 
 ## Current development checkpoint
 
-The bounded third-device path, pending cancellation, and first other-device removal/forward rotation
-are implemented. Either original or joined devices may initiate removal. Verified observation stops
-the old writer; surviving devices activate generation two, and removed devices retain writable,
-exportable detached copies without network convergence. Lost replies, interrupted local activation,
-offline survivor writing, two-way delivery and cold reopen pass in disposable packaged browsers.
-See [the removal contract](./account-device-removal.md) and
-[focused final evidence](./development-evidence/2026-10-08-device-removal.json).
+The complete bounded repeatable lifecycle is implemented in source: connect additional devices,
+remove another device with forward rotation, connect a current-key replacement, then remove and
+connect again. Disposable packaged browsers preserve accepted writing, journal work, offline retries,
+detached copies and two-way editing across cold reopen. The replacement needs no predecessor content
+key. See [the repeatable lifecycle checkpoint](./account-repeatable-lifecycle.md) and the dated entries
+in [completed.md](./completed.md) for the focused evidence and limits.
 
-The implementation checkpoint is `2bea3437`, now served at the retained origin on schema 20 after a
-confirmed quiet point and verified offline backup. Operator browser uptake/writing checks remain pending;
-see the [cutover runbook](./packaged-account-development.md).
-Later admissions/rotations, self/last-device removal, lost-device recovery, successor checkpoints/pruning,
-old-key retirement and public operations remain. The first rotation retains predecessor openers and its
-apply record; completion of the user removal action does not claim those maintenance obligations closed.
+The retained installation still serves `2bea3437` on schema 20. Updating it needs a fresh locked/closed
+confirmation, an offline backup and explicit schema-21 upgrade; see the
+[cutover runbook](./packaged-account-development.md). Source changes have not restarted that service.
 
-The operator has now authorized the [repeatable lifecycle sequence](./account-repeatable-lifecycle.md).
-Its first service increment is implemented; browser generation custody and replacement handoff remain
-in progress, so the currently served product boundary above is unchanged.
+Self/last-device removal, lost-device recovery, successor checkpoints/pruning, old-key retirement and
+public operations remain. Existing history-size limits still apply. The account-preview label stays,
+and release validation remains paused.
 
 ## Product boundaries at the start of lifecycle work
 

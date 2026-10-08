@@ -10,7 +10,7 @@ for (const kind of ['promotion', 'joined'] as const)
     page,
     browser,
   }, info) => {
-    test.setTimeout(180000);
+    test.setTimeout(300000);
     page.setDefaultTimeout(15000);
     const built = await build({
       configFile: false,
@@ -33,6 +33,7 @@ for (const kind of ['promotion', 'joined'] as const)
     const joining = await browser.newContext(),
       replacement = await joining.newPage();
     let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+    let fourth: Awaited<ReturnType<typeof browser.newContext>> | undefined;
     try {
       pair = await pairedEditors(page, browser, true);
       pair.second.setDefaultTimeout(15000);
@@ -84,15 +85,13 @@ for (const kind of ['promotion', 'joined'] as const)
       await source.goto('/');
       await openSaved(source, code, kind === 'joined');
       await add(source, 'Current generation writing for the replacement');
-      await source.getByRole('button', { name: 'Lock workspace', exact: true }).click();
-      await source.goto('/');
+      await source.getByRole('button', { name: 'Devices', exact: true }).click();
+      await source.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await source.evaluate(chunk.code);
       const journal = await source.evaluate(
         ({ kind, slot, code }) => window.MembershipCustody.journalOnly(kind, slot, code),
         { kind, slot, code },
       );
-      // The product button remains gated until replacement activation is implemented.
-      await source.goto('/connect/unlock?slot=' + slot + '&begin=' + 'ae'.repeat(16));
       await unlock(source, code);
       const fresh = await pending(
         replacement,
@@ -242,9 +241,107 @@ for (const kind of ['promotion', 'joined'] as const)
       await expect(replacement.locator('.shell')).toContainText(
         'Survivor replies to the replacement',
       );
+      if (kind === 'promotion') {
+        // The replacement has never held generation one. It now owns the next rotation and invitation.
+        await replacement.getByRole('button', { name: 'Devices', exact: true }).click();
+        await expect(
+          replacement.getByRole('button', { name: 'Remove device', exact: true }),
+        ).toHaveCount(1);
+        await replacement.getByRole('button', { name: 'Remove device', exact: true }).click();
+        let lostRemoval = false;
+        const removalBodies: string[] = [];
+        await replacement.route('**/account/membership/v2/removal/commit', async (route) => {
+          removalBodies.push(route.request().postData()!);
+          const reply = await route.fetch();
+          if (!lostRemoval && reply.status() === 200) {
+            lostRemoval = true;
+            await route.abort('failed');
+          } else await route.fulfill({ response: reply });
+        });
+        await replacement.getByRole('button', { name: 'Confirm removal', exact: true }).click();
+        await expect.poll(() => lostRemoval, { timeout: 20000 }).toBe(true);
+        await expect(replacement.locator('.shell')).toHaveCount(0, { timeout: 30000 });
+        await replacement.goto('/');
+        await openSaved(replacement, fresh.code, true);
+        expect(removalBodies.length).toBeGreaterThanOrEqual(2);
+        expect(new Set(removalBodies).size).toBe(1);
+        await add(replacement, 'Replacement writing after the next removal');
+        // Allow the healthy-stream repair poll if the removal hint raced a reconnect.
+        await expect(source.locator('.shell')).toHaveCount(0, { timeout: 70000 });
+        await source.goto('/');
+        await openSaved(source, code);
+        await expect(source.getByText('Removed from account.', { exact: false })).toBeVisible();
+        await expect(source.locator('.shell')).not.toContainText(
+          'Replacement writing after the next removal',
+        );
+        await add(source, 'Detached survivor keeps its own writing');
+        await replacement.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+        await replacement.goto('/');
+        await openSaved(replacement, fresh.code, true);
+        await expect(replacement.locator('.shell')).toContainText(
+          'Replacement writing after the next removal',
+        );
+        await replacement.getByRole('button', { name: 'Devices', exact: true }).click();
+        await expect(replacement.locator('.account-device-list li')).toHaveCount(1);
+        await replacement
+          .getByRole('button', { name: 'Connect another device', exact: true })
+          .click();
+        await unlock(replacement, fresh.code);
+        fourth = await browser.newContext();
+        const newcomer = await fourth.newPage();
+        newcomer.setDefaultTimeout(15000);
+        const last = await pending(
+          newcomer,
+          await replacement.getByLabel('Device invitation link').inputValue(),
+          fresh.auth,
+        );
+        const codeToCompare = await compared(replacement, newcomer);
+        await replacement.getByLabel('Code on the new device').fill(codeToCompare);
+        await replacement.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+        await expect(
+          newcomer.getByRole('button', { name: 'Open your writing', exact: true }),
+        ).toBeVisible({ timeout: 30000 });
+        await newcomer.getByRole('button', { name: 'Open your writing', exact: true }).click();
+        await expect(newcomer.locator('.shell')).toContainText(
+          'Replacement writing after the next removal',
+          { timeout: 30000 },
+        );
+        await expect(newcomer.locator('.shell')).toContainText(
+          'Accepted writing from the device that will be removed',
+        );
+        await expect(newcomer.locator('.shell')).not.toContainText(
+          'Detached survivor keeps its own writing',
+        );
+        await replacement.goto('/');
+        await openSaved(replacement, fresh.code, true);
+        await add(newcomer, 'Fourth device starts directly in generation three');
+        await expect(replacement.locator('.shell')).toContainText(
+          'Fourth device starts directly in generation three',
+          { timeout: 30000 },
+        );
+        await add(replacement, 'Third-generation reply from the replacement');
+        await expect(newcomer.locator('.shell')).toContainText(
+          'Third-generation reply from the replacement',
+          { timeout: 30000 },
+        );
+        for (const [p, code] of [
+          [replacement, fresh.code],
+          [newcomer, last.code],
+        ] as const) {
+          await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+          await p.goto('/');
+          await openSaved(p, code, true);
+          await expect(p.locator('.shell')).toContainText(
+            'Fourth device starts directly in generation three',
+          );
+          await expect(p.locator('.shell')).toContainText(
+            'Third-generation reply from the replacement',
+          );
+        }
+      }
     } finally {
       try {
-        await Promise.allSettled([joining.close(), pair?.other.close()]);
+        await Promise.allSettled([joining.close(), pair?.other.close(), fourth?.close()]);
       } finally {
         await stopService(service);
       }

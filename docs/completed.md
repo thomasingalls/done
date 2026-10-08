@@ -11662,3 +11662,35 @@ scoped-HTTP cases pass, with TypeScript, scoped lint/format and diff checks.
 [Preserved output](./development-evidence/2026-10-08-lifecycle-grant-reclamation.log).
 The complete native repeated product cycle remains in flight; this entry does not claim it passed.
 Live service unchanged; release validation paused.
+
+
+## 2026-10-08 — Repeatable replacement-device product flow (`L-1`)
+
+Post-rotation invitations now open from Devices. The removal/startup adapters carry the actual joined
+owner and its initial generation rather than treating every owner as the original publisher. A
+replacement holding only generation two can remove its surviving peer, activate generation three and
+prepare the next replacement snapshot from its own authenticated baseline.
+
+Both clean packaged-browser cases pass. Original and joined producers use the actual Connect action;
+both retain journal-inclusive writing and recover interrupted initial-generation installation before
+exchanging edits and cold-reopening. The longer original-producer case then makes the replacement
+remove its remaining peer, drops a committed removal reply, and verifies exact-body recovery after
+reload. That removed peer opens a writable detached copy, without the successor's new writing. The
+replacement connects a fourth browser at generation three; both exchange new writing and cold-reopen
+it. Previously accepted writing from removed devices remains present. Detached edits stay separate.
+
+The longer flow exposed the obsolete-grant quota issue repaired in `6387d955`. Temporary diagnostic
+tracing was removed before the final native run. One affected continuation test expected
+`authority-changed` for a grant now reclaimed before that assertion; it now requires `grant-required`,
+while the actual wrong-scope and revoked-session checks remain. The affected transfer/upgrade run passed
+84 of 85 cases; that sole expectation was corrected and its focused rerun passes. This includes the
+explicit schema-20-to-21 preservation check and five offline-upgrader cases. The separate 26 focused
+grant/notification/HTTP checks pass. TypeScript, scoped lint/format, packaged build, 109.5 kB initial-JS
+budget, origin isolation and diff checks pass.
+[Preserved browser and affected-test output](./development-evidence/2026-10-08-repeatable-product.log).
+
+The bounded source implementation is complete. Next is retained-service uptake: freeze the build,
+obtain a fresh locked/closed confirmation, back up and explicitly upgrade schema 20 to 21 behind the
+unchanged `:8443` origin, then check existing writing and sync. No personal browser or live service was
+changed by these tests. Self/last-device removal, lost-device recovery, checkpoint/pruning/key-retirement
+and production operations remain outside this increment. Release validation stays paused.

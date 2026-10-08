@@ -19,7 +19,7 @@ preparation or an admission without space to finish.
 1. **Current-parent service operations.** Enrollment/admission and comparison/key certification follow
    the complete verified history after earlier certification, cancellation or rotation. Preserve
    historical attempts, final publisher witnesses and exact committed outcomes. Do not assume the
-   original publisher remains certified. This service boundary is implemented; post-rotation browser gates remain.
+   original publisher remains certified. This service boundary and its post-rotation browser composition are implemented.
 2. **Repeated native rotation custody and activation.** Retain authenticated generation openers across
    later pending intents, choose the active opener through the authenticated pointer, and resume each
    content/custody transition after interruption. Passive observation must handle missed rotations;
@@ -192,3 +192,25 @@ Initial openers remain retained through later rotation; no historical network ke
 The next product increment removes the invitation gate and exercises a replacement removing its
 remaining peer and inviting another device from its own snapshot baseline. Live service remains
 unchanged and release validation remains paused.
+
+
+## Completed repeated product cycle
+
+The post-rotation Connect action is enabled. Both original and joined producers pass the actual
+Devices-to-invitation path, restartable current-generation installation, two-way editing and cold
+reopen. The generation-two replacement can then remove its surviving peer, resume the same signed
+intent after a lost committed reply, activate generation three and invite a fourth browser from its
+own snapshot baseline. Both current browsers exchange edits and reopen them. The excluded peer
+opens its writable detached copy and cannot receive or contribute successor-generation writing.
+
+The final composition fixed a native adapter that described every removal owner as the original
+publisher; joined replacement owners now carry their verified initial generation. The longer cycle
+also exposed obsolete grants exhausting a remembered login's quota; changed-authority grants and
+challenges are reclaimed without raising the limit or extending the login. These are implementation
+repairs within the existing product decisions.
+
+This completes the bounded repeated lifecycle in disposable packaged browsers. Retained service
+uptake is the next step: preserve an immutable build, obtain a fresh locked/closed confirmation, back
+up and explicitly upgrade schema 20 to 21, then retain the same origin, pin, accounts and ports.
+Self/last-device removal, lost-device recovery, successor snapshot replacement/pruning, key retirement
+and production operations remain separate. Release validation stays paused.

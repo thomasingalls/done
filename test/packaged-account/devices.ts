@@ -103,7 +103,7 @@ export async function openSaved(page: Page, code: string, joining = false) {
     await page.getByLabel('Device-lock code', { exact: true }).fill(code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
   }
-  await expect(page.locator('.shell')).toBeVisible();
+  await expect(page.locator('.shell')).toBeVisible({ timeout: 15000 });
 }
 export async function add(page: Page, text: string) {
   const compose = page.locator('.day-panel[data-active="true"] .compose-field');

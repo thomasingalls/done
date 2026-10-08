@@ -132,20 +132,13 @@ export function AccountDevices({
             <button
               className="setup-primary"
               onClick={onConnect}
-              disabled={
-                removing ||
-                roster.detached ||
-                (roster.generation ?? 1) !== 1 ||
-                (roster.epoch > 1 && !continuationAvailable)
-              }
+              disabled={removing || roster.detached || (roster.epoch > 1 && !continuationAvailable)}
             >
               {roster.devices.some((d) => d.state === 'pending')
                 ? 'Resume connection'
                 : 'Connect another device'}
             </button>
-            {(roster.detached ||
-              (roster.generation ?? 1) !== 1 ||
-              (roster.epoch > 1 && !continuationAvailable)) && (
+            {(roster.detached || (roster.epoch > 1 && !continuationAvailable)) && (
               <p className="setup-note">
                 Additional device connections are not available yet in this preview.
               </p>
