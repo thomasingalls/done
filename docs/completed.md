@@ -11288,3 +11288,27 @@ build/budget, origin and diff checks pass. Prior observed-rotation checkpoint: `
 checkpoint is unsigned. Next is the final three-device walkthrough with offline survivor writing, then
 a fresh quiet point before any backed-up upgrade of the retained service. Release validation remains
 paused; no live process/store changed.
+
+
+## 2026-10-08 — Bounded removal walkthrough complete (`L-1`)
+
+The final packaged Chromium run passes all five focused cases: original/joined product Remove with a
+lost committed reply and exact retry after restart; original/joined native apply interrupted between
+content and custody commits; and three-device passive observation, including a survivor writing offline
+after removal committed elsewhere. That generation-one writing survives activation and reaches the
+other survivor. Subsequent generation-two edits travel both ways and cold-reopen. The removed device
+retains its own new edits through cold reopen and sends no content/notification requests.
+
+Implementation checkpoint: `2bea3437`. Preserved per-case outcomes, durations, command and fixture hashes
+are in [the focused evidence](./development-evidence/2026-10-08-device-removal.json); full local log:
+`/tmp/done-device-removal-final-native.log` (5 pass, 2.7 minutes). Five existing offline-upgrade checks
+also pass (`/tmp/done-device-removal-upgrade.log`), including complete backup and failed-migration rollback.
+TypeScript, scoped format/lint, build, budget, origin scan and diff checks pass. No generalized campaign
+or release qualification was run.
+
+This closes the agreed bounded removal implementation/walkthrough, not the whole lifecycle protocol.
+Only the first generation-one-to-two removal is exposed; self/last-device removal, subsequent
+admissions/rotations, lost-device recovery, successor checkpoint replacement/pruning, predecessor-key
+retirement and production operations remain. Old openers/apply records are deliberately retained.
+The retained service is still `a07de792`, schema 14, at the same `:8443` address. A fresh operator quiet
+point is required before the backed-up schema-20 upgrade. All intermediate checkpoints remain unsigned.

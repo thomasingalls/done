@@ -86,7 +86,8 @@ prefix; a signature over a claimed link is not replay evidence.
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.
 - Devices action and pending-operation/restart UX are implemented. Product original/joined removal
   passes lost committed replies, byte-identical restart, survivor activation and detached-copy editing.
-  The final three-device check adds an offline survivor; subsequent admissions/rotations remain gated.
+  The final three-device check passes with an offline survivor writing after removal committed; that
+  writing survives activation and delivery. Subsequent admissions/rotations remain gated.
   The encrypted native apply record binds the actual account recipient, separately from local-storage
   credentials. Old keys/apply records remain pending checkpoint and retirement obligations.
 

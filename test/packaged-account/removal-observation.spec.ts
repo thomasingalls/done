@@ -5,7 +5,7 @@ import { pairedEditors, openSaved, add } from './devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
 import { startService, stopService } from './server';
 
-test('live survivors retain rotation and removed devices reopen as writable detached copies', async ({
+test('an offline survivor retains old-generation writing through rotation while the removed device becomes a detached copy', async ({
   page,
   browser,
 }, info) => {
@@ -75,6 +75,7 @@ test('live survivors retain rotation and removed devices reopen as writable deta
       pair.next.code,
     );
     await openSaved(pair.second, pair.next.code, true);
+    await thirdContext.setOffline(true);
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -105,14 +106,21 @@ test('live survivors retain rotation and removed devices reopen as writable deta
         { timeout: 20000, intervals: [2000] },
       )
       .toBe('applying');
-    // Both live old writers are retired by authenticated discovery, including proof-only terminal discovery.
-    await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
+    // This device has not observed the successor: its genuine offline generation-one work remains valid.
+    await add(third, 'Offline survivor writing after removal');
     await expect(pair.second.locator('.shell')).toHaveCount(0, { timeout: 25000 });
+    await thirdContext.setOffline(false);
+    // Both old writers retire only after authenticated discovery (terminal proof for the removed one).
+    await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
     console.log('Both observations retired their old editor');
     await page.goto('/');
     await openSaved(page, pair.first.code);
     await third.goto('/');
     await openSaved(third, next.code, true);
+    await expect(third.locator('.shell')).toContainText('Offline survivor writing after removal');
+    await expect(page.locator('.shell')).toContainText('Offline survivor writing after removal', {
+      timeout: 20000,
+    });
     await add(page, 'Survivor generation two travels after passive activation');
     await expect(third.locator('.shell')).toContainText(
       'Survivor generation two travels after passive activation',

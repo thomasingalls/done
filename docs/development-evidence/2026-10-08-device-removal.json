@@ -1,0 +1,85 @@
+{
+  "scope": "Focused development product evidence; release validation remains paused",
+  "implementationCommit": "2bea3437",
+  "command": "node_modules/.bin/playwright test -c playwright.packaged-account.config.ts removal-observation.spec.ts removal-custody.spec.ts device-removal.spec.ts",
+  "stats": {
+    "startTime": "2026-10-08T10:54:51.130Z",
+    "duration": 159632.58899999998,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "fixtures": {
+    "device-removal.spec.ts": "33d7a6b45196f29a3e64aaa8ef9233947f0cfed1952bbfd43a2fa5bb59b79fa7",
+    "removal-custody.spec.ts": "56c2c5a810d8ccfb36c6a39f2895afced7dce78c12ed3e5fe34d862a705ca4b1",
+    "removal-observation.spec.ts": "171411d98bdb7edddb4478a52d2495d7bb970634e2327222038b9d30d50c561f"
+  },
+  "tests": [
+    {
+      "title": "original Devices removal survives a lost committed reply and restarts from saved custody",
+      "file": "device-removal.spec.ts",
+      "line": 6,
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 22871,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "joined Devices removal survives a lost committed reply and restarts from saved custody",
+      "file": "device-removal.spec.ts",
+      "line": 6,
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 27708,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "promotion retains exact removal through a lost commit reply and cold-reopens its successor key",
+      "file": "removal-custody.spec.ts",
+      "line": 8,
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 18261,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "joined retains exact removal through a lost commit reply and cold-reopens its successor key",
+      "file": "removal-custody.spec.ts",
+      "line": 8,
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 18323,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "an offline survivor retains old-generation writing through rotation while the removed device becomes a detached copy",
+      "file": "removal-observation.spec.ts",
+      "line": 8,
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 71734,
+          "retry": 0
+        }
+      ]
+    }
+  ]
+}

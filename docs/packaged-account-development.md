@@ -3,9 +3,9 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
-**Current retained installation:** session-enabled build `b17c7700`, schema 14, same `:8443` origin.
-Use the session-mode commands in the final section below; the shared-token sections record the
-preceding implementation. Notifications remain the next increment.
+**Current retained installation:** sessions/notifications build `a07de792`, schema 14, same `:8443` origin.
+Use the session-mode commands and notification checkpoint below; shared-token sections are historical.
+The bounded device-lifecycle build is ready but not deployed; see the pending upgrade section at the end.
 
 ## Serving and access
 
@@ -273,3 +273,22 @@ The broker is process-local, with scoped parent checks, cancellation, bounded bu
 and catch-up after reconnect. Multi-instance fanout and public operations remain later work. The
 snapshot contains session state and is **not** a supported restore recipe: restoring service state
 must invalidate remembered sessions and change issuance-custody context before serving.
+
+
+## Pending device-lifecycle upgrade — 2026-10-08
+
+Implementation `2bea3437` passes the focused five-case removal walkthrough and five offline-upgrade
+checks. The retained installation above has not changed. Obtain a fresh confirmation that its tabs/app
+windows are locked and closed before stopping either process. Retain the exact origin and service pin.
+
+After stopping both verified processes, run the existing explicit upgrader with both
+`ACCOUNT_NETWORK_SESSIONS=1` and `ACCOUNT_MEMBERSHIP_CONTINUATION=1`, the retained state directory,
+public port 53219, API port 53220 and existing HTTPS origin. It must preserve the complete offline
+backup and migrate schema 14 to 20. Start the API with both flags, then the application against the
+immutable tested build. Verify the original pin/key, existing table rows, new schema, config capability
+and all precached asset bytes through the unchanged gateway before asking the operator to reopen.
+No live source cleanup, account reset, key replacement or rollback of acknowledged writing is intended.
+
+This remains development serving. Subsequent admissions/rotations and recovery/checkpoint/retirement
+journeys remain gated or unfinished; the account-preview banner stays. A backup containing sessions
+still requires issuance-context invalidation before any supported restore.

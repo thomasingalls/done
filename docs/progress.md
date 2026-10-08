@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: Devices removal and restart UI complete; final offline-survivor walkthrough
+scope: bounded removal complete; ready for retained development upgrade at a fresh quiet point
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -100,9 +100,16 @@ and joined UI actors pass lost-success-reply, page restart, byte-identical retry
 opening/editing and cold reopen. The native record explicitly binds the account recipient (different
 from local-storage credentials on the original device). Sixteen client/protocol checks pass.
 
-**Next:** final three-device walkthrough including offline survivor writing, then a fresh quiet point
-before any backed-up retained-service upgrade. Repeated later admissions/rotations, lost-device
-recovery, checkpoint replacement/pruning and operations remain later work.
+Product removal checkpoint: `2bea3437`. All five final native cases pass, including an offline
+survivor's old-generation writing after service removal, subsequent two-way generation-two writing,
+all-device cold reopen, and detached edits without content/notification traffic. Five offline-upgrade
+checks pass. [Focused evidence](./development-evidence/2026-10-08-device-removal.json) is preserved.
+
+**Next:** obtain a fresh quiet point, then back up and upgrade the retained service to schema 20 with
+`ACCOUNT_NETWORK_SESSIONS=1` and `ACCOUNT_MEMBERSHIP_CONTINUATION=1`; serve the immutable lifecycle
+build at the unchanged `:8443` address. No live process/store has been changed by this sequence.
+Repeated later admissions/rotations, self/last-device removal, lost-device recovery, successor checkpoint
+replacement/pruning and old-key retirement, and production operations remain separate product work.
 
 Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
 end of the agreed sequence. Consult the operator on product decisions. Release validation stays paused.

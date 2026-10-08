@@ -7,6 +7,21 @@ The operator chose additional devices and removal/revocation before lost-device 
 one **Devices** screen in the editor’s Account menu, with the verified list, connect and removal actions.
 The existing invitation/code-comparison ceremony stays; pending enrollment is distinct from approval.
 
+## Current development checkpoint
+
+The bounded third-device path, pending cancellation, and first other-device removal/forward rotation
+are implemented. Either original or joined devices may initiate removal. Verified observation stops
+the old writer; surviving devices activate generation two, and removed devices retain writable,
+exportable detached copies without network convergence. Lost replies, interrupted local activation,
+offline survivor writing, two-way delivery and cold reopen pass in disposable packaged browsers.
+See [the removal contract](./account-device-removal.md) and
+[focused final evidence](./development-evidence/2026-10-08-device-removal.json).
+
+The implementation checkpoint is `2bea3437`. These changes are not yet served at the retained origin.
+Later admissions/rotations, self/last-device removal, lost-device recovery, successor checkpoints/pruning,
+old-key retirement and public operations remain. The first rotation retains predecessor openers and its
+apply record; completion of the user removal action does not claim those maintenance obligations closed.
+
 ## Product boundaries at the start of lifecycle work
 
 | Boundary | Current behavior | Required extension |
