@@ -1,3 +1,4 @@
+import { requireNoRemoval } from './removalStore.ts';
 /** Withdraw a pending connection atomically with its publisher boundaries. No content-key change. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same, verifySignature } from '../account-protocol/admission.ts';
@@ -178,6 +179,7 @@ export async function cancelMembership(
         attemptId: request.preparationId,
         action: 'ceremony',
       });
+      if (!saved) requireNoRemoval(db, request.workspaceId);
       if (!saved) {
         db.prepare('INSERT INTO membership_cancellations VALUES (?,?,?,?,?)').run(
           request.workspaceId,

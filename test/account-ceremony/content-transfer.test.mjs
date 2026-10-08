@@ -554,9 +554,15 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
   upgraded.close();
   const db = new DatabaseSync(path);
   for (const [name, rows] of before)
-    assert.deepEqual(db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(), rows, name);
+    assert.deepEqual(
+      db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(),
+      name === 'promotions'
+        ? rows.map((row) => Object.assign(Object.create(null), row, { removal_parent: null }))
+        : rows,
+      name,
+    );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 19);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1131,7 +1137,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -1155,7 +1161,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 19);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -1967,7 +1973,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+    'ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -1988,7 +1994,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 19);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -4139,7 +4145,9 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   await backup(source, path);
   source.close();
   let db = new DatabaseSync(path);
-  db.exec('DROP TABLE membership_cancellations; PRAGMA user_version=17;');
+  db.exec(
+    'ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
+  );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
     policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
@@ -4154,7 +4162,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 19);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4258,4 +4266,235 @@ test('retained client cancellation saves before effects and cold-resolves a lost
   assert.deepEqual(durable.withdrawal, saved);
   assert.equal(sends, 1, 'verified bootstrap resolves the already committed outcome');
   assert.equal(durable.latest.continuations.at(-1).kind, 'membership-cancellation');
+});
+
+async function removalRequest(x, target = x.context.candidate.id, actor = 'existing') {
+  const { removalPreparationRequestMessage } = await import('../../account-protocol/rotation.ts');
+  const current = x.admission?.kind === 'membership-admission' ? x.admission : x.certification;
+  const r = {
+    v: 1,
+    kind: 'removal-preparation-request',
+    workspaceId: x.workspace,
+    lineageId: x.base.request.candidate.lineageId,
+    parent: current.head,
+    epoch: current.epoch.epoch,
+    actorId: x.context[actor === 'existing' ? 'existing' : 'candidate'].id,
+    targetId: target,
+    nonce: 'd1'.repeat(32),
+    signature: '00'.repeat(64),
+  };
+  r.signature = signed(x.keys[actor], await removalPreparationRequestMessage(r));
+  return r;
+}
+async function removalFixture(t, options = {}) {
+  const authority = authorityFixture(t);
+  return checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    membershipContinuation: true,
+    ...options,
+  });
+}
+
+test('removal preparation fences only the target and preserves exact accepted retries through lost response and restart', async (t) => {
+  let fail = false;
+  const x = await removalFixture(t, {
+    hook: (point, operation) => {
+      if (fail && point === 'after-commit' && operation === 'prepare-removal') {
+        fail = false;
+        throw Error('lost reply');
+      }
+    },
+  });
+  const w = x.make(1, 'target writing before fence', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  const answer = await x.deliveryCall(w);
+  decision(x, answer, w, undefined, 3);
+  const r = await removalRequest(x);
+  fail = true;
+  assert.equal((await x.authority.owner.prepareRemoval(x.f.core, r)).ok, false);
+  assert.equal(x.f.rows('removal_preparations').length, 1);
+  x.f.restart();
+  x.authority.restart();
+  const result = await x.authority.owner.prepareRemoval(x.f.core, r);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  assert.equal(result.preparation.cutoff.find((h) => h.credentialId === r.targetId).position, 1);
+  assert.deepEqual(await x.deliveryCall(w), answer);
+  const later = x.make(2, 'target writing after fence', {
+    epoch: 3,
+    credential: r.targetId,
+    signer: x.keys.new,
+  });
+  assert.deepEqual(await x.deliveryCall(later), { kind: 'unknown', reason: 'removal-pending' });
+  const own = x.make(1, 'remaining device continues', { epoch: 3 });
+  decision(x, await x.deliveryCall(own), own, undefined, 3);
+  assert.deepEqual(await x.authority.owner.prepareRemoval(x.f.core, r), result);
+  const changed = await removalRequest(x, x.context.existing.id, 'new');
+  assert.equal(
+    (await x.authority.owner.prepareRemoval(x.f.core, changed)).refusal,
+    'request-conflict',
+  );
+  assert.equal(x.f.rows('publisher_decisions').length, 1);
+  assert.equal(x.f.rows('delivery_decisions').length, 1);
+});
+
+test('removal preparation serializes a racing write and a racing publication cannot bypass its fence', async (t) => {
+  const x = await removalFixture(t);
+  // The producer races the existing delivery path using two genuine async operations, not injected rows.
+  const r = await removalRequest(x),
+    w = x.make(1, 'racing target', {
+      epoch: 3,
+      credential: x.context.candidate.id,
+      signer: x.keys.new,
+    });
+  const [prepared, delivered] = await Promise.all([
+    x.authority.owner.prepareRemoval(x.f.core, r),
+    x.deliveryCall(w),
+  ]);
+  assert.equal(prepared.ok, true, JSON.stringify(prepared));
+  const cut = prepared.preparation.cutoff.find((h) => h.credentialId === r.targetId);
+  if (delivered.kind === 'decision') {
+    decision(x, delivered, w, undefined, 3);
+    assert.equal(cut.position, 1);
+  } else {
+    assert.equal(cut.position, 0);
+    assert.equal(delivered.reason, 'removal-pending');
+  }
+  const next = x.make(cut.position + 1, 'after race', {
+    epoch: 3,
+    credential: r.targetId,
+    signer: x.keys.new,
+  });
+  assert.equal((await x.deliveryCall(next)).reason, 'removal-pending');
+});
+
+test('pending removal prevents comparison, delivery, certification and cancellation from changing the prepared parent', async (t) => {
+  const x = await continuationFixture(t),
+    e = x.exchange('existing'),
+    d = await continuationDelivery(x, e);
+  await d.approve();
+  const r = await removalRequest(x, x.entry.input.candidate.credentialId);
+  const result = await x.authority.owner.prepareRemoval(x.f.core, r);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  assert.equal((await x.relay(e.approval)).ok, false);
+  assert.equal((await d.transfer('existing', 'deliver', d.delivery)).ok, false);
+  assert.equal(
+    (await x.authority.owner.cancelMembership(x.f.core, await cancellationRequest(x))).ok,
+    false,
+  );
+  assert.equal(x.f.rows('membership_transfers').length, 0);
+  assert.equal(x.f.rows('membership_cancellations').length, 0);
+  assert.equal(x.f.rows('promotions')[0].successor_head, x.admission.head);
+});
+
+test('removal preparation refuses lost commit authorization and tampered retained fence without blocking prior rollback writes', async (t) => {
+  const x = await removalFixture(t),
+    r = await removalRequest(x);
+  await assert.rejects(
+    x.authority.owner.prepareRemoval(x.f.core, r, (_db, target) => {
+      assert.deepEqual(target, {
+        kind: 'workspace',
+        workspaceId: x.workspace,
+        credentialId: r.actorId,
+        action: 'remove',
+      });
+      return () => {
+        throw new AuthorizationRefused('signed-out');
+      };
+    }),
+    AuthorizationRefused,
+  );
+  assert.equal(x.f.rows('removal_preparations').length, 0);
+  const w = x.make(1, 'rollback kept target eligible', {
+    epoch: 3,
+    credential: r.targetId,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(w), w, undefined, 3);
+  assert.equal((await x.authority.owner.prepareRemoval(x.f.core, r)).ok, true);
+  const row = x.f.rows('removal_preparations')[0];
+  mutate(x, (db) => db.prepare('UPDATE removal_preparations SET target_id=?').run(r.actorId));
+  const next = x.make(2, 'tampered fence must not reopen target', {
+    epoch: 3,
+    credential: r.targetId,
+    signer: x.keys.new,
+  });
+  assert.equal((await x.deliveryCall(next)).kind, 'unknown');
+  assert.equal((await x.authority.owner.prepareRemoval(x.f.core, r)).ok, false);
+  mutate(x, (db) =>
+    db
+      .prepare('UPDATE removal_preparations SET target_id=?,artifact=?')
+      .run(row.target_id, row.artifact),
+  );
+  assert.equal((await x.deliveryCall(next)).reason, 'removal-pending');
+  mutate(x, (db) => db.prepare('DELETE FROM removal_preparations').run());
+  assert.equal((await x.deliveryCall(next)).kind, 'unknown');
+  assert.equal((await x.authority.owner.prepareRemoval(x.f.core, r)).ok, false);
+  assert.equal(x.f.rows('publisher_decisions').length, 1);
+});
+
+test('removal schema upgrades only offline from 18 and refuses an older host', async (t) => {
+  const x = await removalFixture(t),
+    path = x.f.path + '.schema18';
+  let db = new DatabaseSync(x.f.path);
+  await backup(db, path);
+  db.close();
+  db = new DatabaseSync(path);
+  db.exec(
+    'ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
+  );
+  db.close();
+  const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
+    sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /offline upgrade/,
+  );
+  const upgraded = new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV18: true,
+  });
+  upgraded.close();
+  db = new DatabaseSync(path);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 19);
+  assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
+  assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
+  db.close();
+  assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
+});
+
+test('joined owner can prepare original-device removal while a new admission cannot invalidate its parent', async (t) => {
+  const x = await removalFixture(t);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const r = await removalRequest(x, x.context.existing.id, 'new');
+  const prepared = await x.authority.owner.prepareRemoval(x.f.core, r);
+  assert.equal(prepared.ok, true, JSON.stringify(prepared));
+  const own = x.make(1, 'joined survivor continues', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(own), own, undefined, 3);
+  assert.equal(
+    (await x.deliveryCall(x.make(1, 'original is fenced', { epoch: 3 }))).reason,
+    'removal-pending',
+  );
+  const entry = x.candidate();
+  entry.input.candidate.head = x.certification.head;
+  const begun = await x.enroll('begin', entry.input);
+  const enrolled = await x.enroll('finish', nextProof(x, entry, begun.challenge));
+  const admission = await x.authority.owner.admitMembership(x.f.core, {
+    retryKey: entry.input.retryKey,
+    attemptId: enrolled.receipt.context.attemptId,
+    receiptId: enrolled.receipt.receiptId,
+  });
+  assert.equal(admission.ok, false);
+  assert.equal(x.f.rows('membership_admissions').length, 0);
+  assert.equal(x.f.rows('promotions')[0].successor_head, x.certification.head);
+  x.f.restart();
+  assert.deepEqual(await x.authority.owner.prepareRemoval(x.f.core, r), prepared);
 });

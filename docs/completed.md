@@ -10969,3 +10969,40 @@ existing installation path. TypeScript, scoped lint/format, build, bundle budget
 and origin checks pass. Build log `/tmp/done-removal-build.log`. Earlier retained-client checkpoint is
 `c313fc27`. Next: durable service preparation/fence and atomic rotation producer, then native key/
 journal activation and Devices composition. Live remains `a07de792` / schema 14; release validation paused.
+
+
+## 2026-10-08 — Durable service removal preparation and target fence (`L-1`)
+
+The private service now authenticates a removal request against actual current membership, verifies
+every publisher ledger, and commits the exact preparation with a target-only acceptance fence. It
+returns the same preparation after a lost reply/restart, including after surviving publishers have
+advanced. Existing accepted/refused target decisions remain answerable; new target positions receive
+an unsigned `removal-pending` observation, never a false finalization or remint licence. A racing target
+write either enters the captured cutoff or observes the committed fence. The joined device can prepare
+removal of the original publisher while continuing its own publication.
+
+Admission, comparison, key transfer/certification and pending cancellation serialize against the
+prepared parent, so those transitions cannot silently strand a retained rotation intent. Commit-time
+workspace authorization now has an explicit `remove` action. The service method remains private with
+**no HTTP/product entry point** until the atomic rotation producer and local activation can finish it.
+This checkpoint does not commit a rotation or report a device removed.
+
+Private schema 19 adds the preparation and a companion workspace marker in one transaction. A missing
+or inconsistent preparation fails closed rather than silently reopening the stream. Schema 18 requires
+an explicit offline upgrade; default hosts remain schema 14 and refuse this private store. The existing
+backup/upgrade helper derives the new target automatically. No running retained service was upgraded.
+
+Six new service cases pass: lost reply/restart and exact accepted retries, concurrent target write,
+approval/delivery/cancellation fencing, authorization rollback and tampered/missing preparation,
+explicit schema-18 upgrade, and joined-owner/original-target removal with competing admission. Ten
+affected schema/cancellation/publisher cases also pass. One old upgrade assertion initially failed on
+the new null marker column (then SQLite's null-prototype row shape); the corrected focused rerun passes.
+Evidence: `/tmp/done-removal-service-final.log`, `/tmp/done-removal-schema-final.log`,
+`/tmp/done-removal-service-joined.log`. The 18 scoped-grant cases and 4 disposable host/upgrade cases
+pass (`/tmp/done-removal-grants.log`, `/tmp/done-removal-host.log`). TypeScript, scoped lint/format,
+build, bundle budget and origin checks pass. Previous rotation/history checkpoint: `c2936353`.
+
+Next is the atomic service rotation successor/distribution/finalization/outcome, its current-history
+and session/discovery integration, then actual native generation/journal activation and Devices UI.
+Prepared-removal takeover/resolution and repeated later admissions remain unfinished. Live remains
+`a07de792` / schema 14 at `:8443`; release validation remains paused. Intermediate commit is unsigned.

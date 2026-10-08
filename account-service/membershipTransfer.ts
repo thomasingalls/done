@@ -1,3 +1,4 @@
+import { requireNoRemoval } from './removalStore.ts';
 import { CONTENT_DELIVERY_LIMIT } from '../account-protocol/contentDelivery.ts';
 /** Private first continuation transfer with exact per-publisher issuance boundaries. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -212,6 +213,7 @@ export async function transferMembership(
         continue;
       }
       issuer.check(auth.anchor.seal, s.promotion.request_digest, p.acceptancePublicKey);
+      requireNoRemoval(db, request.workspaceId);
       const complete = issuer.authorize?.(db, {
         kind: 'enrollment',
         workspaceId: request.workspaceId,

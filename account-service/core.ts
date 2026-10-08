@@ -1,3 +1,5 @@
+import { REMOVAL_SCHEMA } from './removalStore.ts';
+import { prepareRemoval, type RemovalIssuer } from './removalPreparation.ts';
 import {
   membershipBootstrap,
   discoverMembership,
@@ -201,6 +203,7 @@ export class AccountCore {
       upgradeFromV15?: boolean;
       upgradeFromV16?: boolean;
       upgradeFromV17?: boolean;
+      upgradeFromV18?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -242,7 +245,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 18 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 19 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 18 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV18
+        ) &&
         !(
           version === 17 &&
           instrumentation.sessions &&
@@ -371,6 +380,10 @@ export class AccountCore {
             this.#db.exec(MEMBERSHIP_CANCELLATION_SCHEMA);
             this.#db.exec('PRAGMA user_version=18;');
           }
+          if (version < 19) {
+            this.#db.exec(REMOVAL_SCHEMA);
+            this.#db.exec('PRAGMA user_version=19;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -424,6 +437,9 @@ export class AccountCore {
       this.#hook,
       this.#diagnostics.record,
     );
+  }
+  prepareRemoval(input: unknown, issuer: RemovalIssuer) {
+    return prepareRemoval(this.#db, input, issuer, this.#hook);
   }
   cancelMembership(input: unknown, issuer: MembershipCancellationIssuer) {
     return cancelMembership(this.#db, input, issuer, this.#hook);

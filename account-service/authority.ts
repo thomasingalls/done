@@ -1,4 +1,8 @@
 import {
+  removalPreparationMessage,
+  parseRemovalPreparation,
+} from '../account-protocol/rotation.ts';
+import {
   membershipBootstrapMessage,
   parseMembershipBootstrapResponse,
   membershipDiscoveryResponseMessage,
@@ -422,6 +426,17 @@ export class PrivateAuthority {
   }
   relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayCeremony(input, this.#deliveryIssuer(authorize));
+  }
+  prepareRemoval(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.prepareRemoval(input, {
+      ...this.#deliveryIssuer(authorize),
+      prepare: async (input) => {
+        const value = parseRemovalPreparation({ ...input, signature: '00'.repeat(64) });
+        const bytes = await removalPreparationMessage(value);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...value, signature: sign(null, bytes, this.#key).toString('hex') };
+      },
+    });
   }
   cancelMembership(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.cancelMembership(input, {

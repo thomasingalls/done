@@ -7,6 +7,7 @@ export const SERVICE_HINTS = [
   'out-of-order',
   'parent-required',
   'unissued-parent',
+  'removal-pending',
   'state-changed',
   'storage-unavailable',
 ] as const;

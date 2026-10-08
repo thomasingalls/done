@@ -1,5 +1,11 @@
+import { removalRow, type RemovalRow } from './removalStore.ts';
+import { verifyRemovalPreparation, type RemovalPreparation } from '../account-protocol/rotation.ts';
 import { resolveMembershipDeliveryAuthority } from './membershipHistory.ts';
-import { historyPublisher, type AdmissionHistory } from '../account-protocol/admissionHistory.ts';
+import {
+  historyPublisher,
+  historyMembership,
+  type AdmissionHistory,
+} from '../account-protocol/admissionHistory.ts';
 import type { MembershipRecipientCertificate } from '../account-protocol/membershipDelivery.ts';
 import { rethrowAuthorization, type OperationAuthorization } from './authorization.ts';
 import {
@@ -108,6 +114,7 @@ export type ServiceDeliveryResult =
         | 'out-of-order'
         | 'parent-required'
         | 'unissued-parent'
+        | 'removal-pending'
         | 'state-changed'
         | 'storage-unavailable';
     };
@@ -143,6 +150,7 @@ interface Promotion {
   delivery_witness: string | null;
   activation: string | null;
   successor_head: string | null;
+  removal_parent?: string | null;
 }
 export interface SuccessorRow {
   workspace_id: string;
@@ -161,6 +169,7 @@ export interface WorkspaceAuthoritySnapshot {
   continuations?: MembershipRow[];
   membershipTransfers?: MembershipTransferRow[];
   membershipCancellations?: MembershipCancellationRow[];
+  removalPreparation?: RemovalRow;
 }
 export const PUBLISHER_SCHEMA = `
   CREATE TABLE publisher_decisions (
@@ -241,6 +250,12 @@ export function snapshotWorkspaceAuthority(
       .prepare('SELECT * FROM content_transfers WHERE workspace_id=?')
       .get(workspace) as unknown as ContentTransferRow | undefined) ?? null;
   if (transfer && !successor) throw Error('Delivery without admission');
+  const removalPreparation = removalRow(db, workspace);
+  if (
+    (promotion.removal_parent == null) !== (removalPreparation === null) ||
+    (removalPreparation && promotion.removal_parent !== removalPreparation.parent)
+  )
+    throw Error('Incomplete removal preparation');
   const continuations = membershipRows(db, workspace);
   const membershipTransfers = membershipTransferRows(db, workspace);
   const membershipCancellations = membershipCancellationRows(db, workspace);
@@ -252,6 +267,7 @@ export function snapshotWorkspaceAuthority(
     attempt,
     successor,
     transfer,
+    ...(removalPreparation ? { removalPreparation } : {}),
     ...(continuations.length ? { continuations } : {}),
     ...(membershipTransfers.length ? { membershipTransfers } : {}),
     ...(membershipCancellations.length ? { membershipCancellations } : {}),
@@ -468,18 +484,38 @@ export type DeliveryAuthority = Omit<
   certification:
     | Awaited<ReturnType<typeof verifyWorkspaceAuthority>>['certification']
     | MembershipRecipientCertificate;
+  removal?: RemovalPreparation;
   joinedPublisher?: boolean;
   history?: AdmissionHistory;
   ledgerBoundaries?: ReadonlyMap<string, LedgerBoundary[]>;
 };
 type Authority = DeliveryAuthority;
-export const verifyCurrentWorkspaceAuthority = (
+export const verifyCurrentWorkspaceAuthority = async (
   s: WorkspaceAuthoritySnapshot,
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
-): Promise<Authority> =>
-  s.continuations?.length || s.membershipTransfers?.length || s.membershipCancellations?.length
-    ? resolveMembershipDeliveryAuthority(s, issuer)
-    : verifyWorkspaceAuthority(s, issuer);
+): Promise<Authority> => {
+  const auth: Authority =
+    s.continuations?.length ||
+    s.membershipTransfers?.length ||
+    s.membershipCancellations?.length ||
+    s.removalPreparation
+      ? await resolveMembershipDeliveryAuthority(s, issuer)
+      : await verifyWorkspaceAuthority(s, issuer);
+  if (!s.removalPreparation) return auth;
+  if (!auth.history) throw Error('Removal needs verified membership');
+  const row = s.removalPreparation;
+  const removal = await verifyRemovalPreparation(
+    JSON.parse(row.artifact),
+    historyMembership(auth.history),
+  );
+  if (
+    row.workspace_id !== auth.a.workspace ||
+    row.parent !== auth.a.head ||
+    row.target_id !== removal.request.targetId
+  )
+    throw Error('Retained removal scope changed');
+  return { ...auth, removal };
+};
 /** A publisher starts at its own verified certification; it has no earlier ledger. */
 export function selectPublisher(auth: Authority, publisher?: string): Authority {
   if (!publisher || publisher === auth.credential) return auth;
@@ -759,6 +795,11 @@ export async function decideSubmission(
       phase = 'verify';
       auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
       ledger = await census(s, auth, reuse);
+      if (auth.removal?.request.targetId === auth.credential) {
+        const cut = auth.removal.cutoff.find((h) => h.credentialId === auth.credential)!;
+        if (ledger.through !== cut.position || ledger.previous !== cut.link)
+          throw Error('Prepared removal cutoff changed');
+      }
     } catch (cause) {
       note(cause);
       reuse?.clear();
@@ -781,6 +822,8 @@ export async function decideSubmission(
       result = { kind: 'decision', bytes: ledger.refused.get(subjectKey(subject))!.slice() };
     else if (ledger.accepted.has(e.seq))
       result = { kind: 'decision', bytes: ledger.accepted.get(e.seq)!.slice() };
+    else if (auth.removal?.request.targetId === auth.credential)
+      result = unknown('removal-pending');
     else if (e.seq !== ledger.through + 1) result = unknown('out-of-order');
     else if (submission.parentId === ZERO_REFUSAL && ledger.closedPositions.has(e.seq))
       result = unknown('parent-required');

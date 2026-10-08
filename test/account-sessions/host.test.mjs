@@ -150,7 +150,7 @@ test('retained schema 11 requires offline opt-in; upgrade preserves pending acco
   );
 });
 
-test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 18', async (t) => {
+test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 19', async (t) => {
   const f = await fixture(t),
     retryKey = fresh();
   const pending = await (
@@ -170,7 +170,7 @@ test('continuation host requires offline opt-in and preserves the account and id
   });
   const upgraded = await upgradePreviewState({ ...f.config, membershipContinuation: true });
   assert.equal(upgraded.from, 14);
-  assert.equal(upgraded.to, 18);
+  assert.equal(upgraded.to, 19);
   assert.equal(accountSchema(join(upgraded.backup, 'account.sqlite')), 14);
   assert.deepEqual(readFileSync(join(f.directory, 'operator.key')), key);
   assert.deepEqual(JSON.parse(readFileSync(join(f.directory, 'pin.json'))), pin);

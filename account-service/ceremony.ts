@@ -1,3 +1,4 @@
+import { requireNoRemoval } from './removalStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
 import { membershipEnabled } from './membershipStore.ts';
 import { verifyPendingMembership } from './membershipAuthority.ts';
@@ -220,6 +221,7 @@ export async function relayCeremony(
           attemptId: preparation.context.attemptId,
           action: 'ceremony',
         });
+        requireNoRemoval(db, request.workspaceId);
         hook('before-commit', operation);
         issuer.check(auth.seal, before.authority.promotion.request_digest, auth.a.acceptanceKey);
         complete?.();
@@ -359,6 +361,7 @@ export async function relayCeremony(
         attemptId: preparation.context.attemptId,
         action: 'ceremony',
       });
+      requireNoRemoval(db, request.workspaceId);
       hook('before-commit', operation);
       if (!live() && request.action !== 'read' && !same(next, before.row)) {
         db.exec('ROLLBACK');

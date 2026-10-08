@@ -1,3 +1,4 @@
+import { requireNoRemoval } from './removalStore.ts';
 /** First continuation admission; private until the general delivery/history owner is composed. */
 import type { DatabaseSync } from 'node:sqlite';
 import { closed, accountIdentifier } from '../account-protocol/preparation.ts';
@@ -298,6 +299,7 @@ export async function admitMembership(
         attemptId: row.id,
         action: 'admit',
       });
+      if (newlyAdmitted) requireNoRemoval(db, row.workspace_id);
       if (newlyAdmitted) {
         db.prepare('INSERT INTO membership_admissions VALUES (?,?,?,?,?,?,?)').run(
           row.workspace_id,

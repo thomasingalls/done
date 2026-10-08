@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: rotation membership/history complete; durable service producer next
+scope: durable removal preparation complete; atomic service rotation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -77,7 +77,7 @@ Self-removal and the last-device case stay with local clear/recovery.
 The proof boundary verifies parent-certified recipients, exact selected row-15 intent/outcome bytes,
 and authenticated finalization including a zero-write target. Five focused proof cases and scoped
 static checks pass. The plan records a durable target-only acceptance fence before signing a stable
-cutoff; other publishers may continue. No service producer or generation activation is claimed yet.
+cutoff; other publishers may continue. Atomic rotation commitment and local generation activation remain unfinished.
 
 Client key production and retained exact retry now pass real-HPKE recipient checks and focused
 interruption/lost-reply tests through a simulated committed port (19 affected Node cases pass). Native
@@ -88,8 +88,14 @@ ending removed-device eligibility and enforcing its exact final cutoff. Generati
 explicitly refuse adoption until key/journal activation exists. 27 focused composed cases plus static
 and build checks pass. Retained-client checkpoint: `c313fc27`.
 
-**Next:** service preparation/atomic successor and
-outcome, history/discovery and session boundaries; actual journal-inclusive generation activation;
+Private schema 19 now retains the target-only acceptance fence and preparation with a companion
+workspace marker. Exact retries survive restart while other publishers advance. Membership effects
+serialize against the pending parent. Six new service cases, ten affected service regressions, eighteen
+grant cases and four disposable host checks pass; TypeScript/build checks pass. This is still an internal
+service method, with no HTTP or product control. Rotation/history checkpoint: `c2936353`.
+
+**Next:** atomic service rotation successor/distribution/finalization/outcome and its
+history/discovery/session composition; actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.
 

@@ -447,3 +447,13 @@ verify the exact distribution/outcome/finalization together. Historical authorsh
 current reader rights and post-cutoff writes do not. Generation-one native adoption explicitly refuses
 this proof until actual generation installation is implemented. Focused composed evidence passes;
 service producers, native activation and the product control remain unfinished and undeployed.
+
+
+## Durable removal preparation checkpoint — 2026-10-08
+
+Rotation membership/history is `c2936353`. Private schema 19 now commits an authenticated stable target
+cutoff and durable acceptance fence from actual publisher ledgers. Exact replies survive restart;
+survivors keep publishing; competing membership effects cannot invalidate the pending parent. Missing
+preparation fails closed through a companion workspace marker. Focused service, grant and host checks
+pass. There is no removal HTTP/UI entry point yet: committing the rotation outcome and native activation
+must be available before exposing a preparation that needs completion. The retained host stays schema 14.

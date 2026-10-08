@@ -10,6 +10,7 @@ export type GrantScope =
   | { kind: 'workspace'; workspaceId: string; credentialId: string }
   | { kind: 'enrollment'; workspaceId: string; credentialId: string; attemptId: string };
 export type GrantAction =
+  | 'remove'
   | 'submit'
   | 'read'
   | 'checkpoint'
@@ -61,7 +62,7 @@ export function parseGrantScope(input: unknown): GrantScope {
 }
 export function grantActions(scope: GrantScope): GrantAction[] {
   return scope.kind === 'workspace'
-    ? ['submit', 'read', 'checkpoint', 'discover']
+    ? ['submit', 'read', 'checkpoint', 'discover', 'remove']
     : ['admit', 'ceremony', 'transfer'];
 }
 export function grantMessage(c: GrantChallenge): Uint8Array<ArrayBuffer> {
