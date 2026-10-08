@@ -1,4 +1,5 @@
 /** Private v7 append-only allocation ledger. Outer StoredRecord authenticates these bytes. */
+import { generationKey, type GenerationKeys } from './generationKeys';
 import { utf8, hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import {
@@ -79,7 +80,8 @@ export function encodeSpoolEntry(entry: SpoolEntry, route: CaptureRoute): Bytes 
     !id(route.credential) ||
     !id(route.principal) ||
     !positive(route.epoch) ||
-    route.generation !== 1 ||
+    !positive(route.generation) ||
+    route.generation > 0xffffffff ||
     !positive(entry.position)
   )
     captureError('Invalid spool route/position');
@@ -157,11 +159,11 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
       v[1] !== 1 ||
       v[2] !== route.workspace ||
       v[3] !== route.credential ||
-      v[4] !== route.principal ||
-      v[6] !== route.generation
+      v[4] !== route.principal
     )
       throw Error('route');
     const historical = captureRouteAt(route, v[5]);
+    if (v[6] !== historical.generation) throw Error('generation');
     let result: SpoolEntry;
     if (v[7] === 'position' && Array.isArray(v[9]) && v[9].length === 3)
       result = {
@@ -311,7 +313,7 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
 export async function verifySpool(
   state: SpoolState,
   route: CaptureRoute,
-  kg: Bytes,
+  kg: GenerationKeys,
   signer: CryptoKey,
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
@@ -339,7 +341,7 @@ export async function verifySpool(
           p.wire,
           networkRoute(route, decodeNetworkEnvelope(p.wire).epoch),
           signer,
-          kg,
+          generationKey(kg, networkRoute(route, decodeNetworkEnvelope(p.wire).epoch).gen),
           subtle,
         );
         if (

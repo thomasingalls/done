@@ -98,6 +98,50 @@ function fixture(changes: number) {
   };
 }
 
+it('a successor journal reads retained generations, writes only its active generation, and preserves unknown entries', async () => {
+  vi.stubGlobal('localStorage', new EnumeratedStorage());
+  const oldKey = new Uint8Array(32).fill(11),
+    nextKey = new Uint8Array(32).fill(22);
+  const old = createJournalOwner(scope, 'rotation-test', 1, oldKey);
+  const next = createJournalOwner(scope, 'rotation-test', 2, nextKey, new Map([[1, oldKey]]));
+  const task = taskFor(new AbortController());
+  try {
+    expect(old.append(Uint8Array.from([0, 0])).status).toBe('journalled');
+    const receipt = next.append(Uint8Array.from([0, 0]));
+    expect(receipt.status).toBe('journalled');
+    if (receipt.status === 'journalled') expect(receipt.generation).toBe(2);
+    // Simulate a previously unobserved old-generation entry, not an authorized overlapping writer.
+    expect(old.append(Uint8Array.from([0, 0])).status).toBe('journalled');
+    const snapshot = await next.readSnapshot(task);
+    expect(snapshot.map((e) => e.generation).sort()).toEqual([1, 1, 2]);
+    const unknown = createJournalOwner(scope, 'rotation-test', 3, new Uint8Array(32).fill(33));
+    try {
+      expect(unknown.append(Uint8Array.from([0, 0])).status).toBe('journalled');
+    } finally {
+      unknown.dispose();
+    }
+    const stored = { ...localStorage };
+    await expect(next.readSnapshot(task)).rejects.toThrow('No retained opener');
+    expect({ ...localStorage }).toEqual(stored);
+    eraseJournalSnapshot(snapshot);
+  } finally {
+    old.dispose();
+    next.dispose();
+  }
+  expect(oldKey.every((b) => b === 11)).toBe(true);
+  expect(nextKey.every((b) => b === 22)).toBe(true);
+});
+
+it('a journal cannot replace its active opener through a retained-key hint', () => {
+  const key = new Uint8Array(32);
+  expect(() => createJournalOwner(scope, 'test', 2, key, new Map([[2, key]]))).toThrow(
+    'Invalid retained',
+  );
+  expect(() => createJournalOwner(scope, 'test', 2, key, new Map([[3, key]]))).toThrow(
+    'Invalid retained',
+  );
+});
+
 describe('bounded read-only journal acquisition', () => {
   it('preserves every immutable entry across generated transient/sustained append schedules', async () => {
     await fc.assert(

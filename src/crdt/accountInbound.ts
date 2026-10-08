@@ -1,5 +1,6 @@
 import {
   historyAuthority,
+  historyGeneration,
   historyReader,
   historyEnvelopeRoute,
   verifyHistoryDecision,
@@ -9,6 +10,7 @@ import {
  * Context MUST come from authenticated custody/lineage/baseline and retained prefix ownership.
  * Successful values are detached evidence. A future commit must independently recheck current authority.
  */
+import { generationKey } from './generationKeys';
 import { hex, unhex } from '../../account-protocol/recovery';
 import {
   decodeNetworkEnvelope,
@@ -56,6 +58,8 @@ export interface InboundContext {
   publisher: { id: string; publicKey: string; principal: string; system: boolean; active: boolean };
   generation: number;
   generationKey: Bytes;
+  /** Authenticated owner-retained historical openers; never learned from a page. */
+  retainedGenerationKeys?: ReadonlyMap<number, Bytes>;
   prefix: { position: number; link: string; observedThrough: number };
   /** Independently retained accepted entry at the queried OLD position, not data from this answer. */
   retained?: { previous: string; envelope: Bytes; proof: Bytes };
@@ -128,7 +132,7 @@ function captureContext(input: InboundContext): InboundContext {
     !['promotion-genesis', 'content-checkpoint'].includes(baseline.kind) ||
     (baseline.kind === 'content-checkpoint' && (!input.history || a.tip < 3)) ||
     (!input.history && a.tip !== 1) ||
-    input.generation !== 1 ||
+    (!input.history && input.generation !== 1) ||
     publisher.id !== input.creatingCredential ||
     typeof publisher.system !== 'boolean'
   )
@@ -136,6 +140,7 @@ function captureContext(input: InboundContext): InboundContext {
   if (input.history) {
     const h = input.history;
     historyAuthority(h, a);
+    if (input.generation !== historyGeneration(h)) fail('authority');
     if (
       input.creatingCredential !== h.credential ||
       !historyReader(h, reader.id, reader.publicKey, a) ||
@@ -164,6 +169,20 @@ function captureContext(input: InboundContext): InboundContext {
     : undefined;
   if (!(input.generationKey instanceof Uint8Array) || input.generationKey.length !== 32)
     fail('authority');
+  const retainedGenerationKeys = new Map<number, Bytes>();
+  const retainedKeys = input.retainedGenerationKeys ?? new Map<number, Bytes>();
+  if (retainedKeys.size > 128) fail('authority');
+  for (const [generation, key] of retainedKeys) {
+    if (
+      !Number.isSafeInteger(generation) ||
+      generation < 1 ||
+      generation >= input.generation ||
+      !(key instanceof Uint8Array) ||
+      key.length !== 32
+    )
+      fail('authority');
+  }
+  for (const [generation, key] of retainedKeys) retainedGenerationKeys.set(generation, key.slice());
   return {
     baseline,
     service,
@@ -172,8 +191,9 @@ function captureContext(input: InboundContext): InboundContext {
     reader,
     publisher,
     creatingCredential: input.creatingCredential,
-    generation: 1,
+    generation: input.generation,
     generationKey: input.generationKey.slice(),
+    retainedGenerationKeys,
     prefix,
     ...(retained ? { retained } : {}),
   };
@@ -291,12 +311,16 @@ async function verify(
         workspace_id: a.workspace,
         credential_id: c.publisher.id,
         epoch: a.tip,
-        gen: 1,
+        gen: c.history ? historyGeneration(c.history, a.tip) : c.generation,
       };
     const routeFor = (epoch: number) =>
       c.history ? historyEnvelopeRoute(c.history, currentRoute, epoch) : currentRoute;
-    if (e.v !== 2 || (!c.history && e.epoch !== 1) || e.gen !== 1) fail('unsupported');
+    if (e.v !== 2 || (!c.history && e.epoch !== 1)) fail('unsupported');
     const route = routeFor(e.epoch);
+    if (e.gen !== route.gen) fail('scope');
+    const keys = new Map(c.retainedGenerationKeys);
+    keys.set(c.generation, c.generationKey);
+    const opener = (generation: number) => generationKey(keys, generation);
     if (e.workspace_id !== a.workspace || e.credential_id !== c.publisher.id || e.seq !== position)
       fail('scope');
     const previous = old ? c.retained?.previous : c.prefix.link;
@@ -341,7 +365,7 @@ async function verify(
         c.retained.envelope,
         routeFor(original.epoch),
         publicKey,
-        c.generationKey,
+        opener(routeFor(decodeNetworkEnvelope(c.retained!.envelope).epoch).gen),
         subtle,
       );
       try {
@@ -354,7 +378,7 @@ async function verify(
     guard();
     if (proof.kind !== 'accepted') fail('unverified');
     if (proof.head.final) fail('unsupported');
-    body = await openNetworkEnvelope(entry.envelope, route, publicKey, c.generationKey, subtle);
+    body = await openNetworkEnvelope(entry.envelope, route, publicKey, opener(route.gen), subtle);
     const updateBytes = validateBody(body, c.publisher);
     if (old && hex(c.retained!.envelope) === hex(entry.envelope)) {
       if (expectedRecord) fail('record');
@@ -394,6 +418,7 @@ async function verify(
     });
   } finally {
     c.generationKey.fill(0);
+    for (const key of c.retainedGenerationKeys?.values() ?? []) key.fill(0);
     if (!transfer) for (const update of body?.updates ?? []) update.fill(0);
   }
 }

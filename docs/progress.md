@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: native removal custody complete; journal-inclusive generation activation in progress
+scope: native removal custody and generation-aware replay complete; local activation in progress
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -76,8 +76,12 @@ Three focused browser cases pass, including both original/joined cold retry afte
 and interrupted nonce-reserved writes. Seven client and twelve crypto cases pass. Full evidence and
 prior checkpoints are in [completed.md](./completed.md).
 
-**Next:** generation-aware content, synchronous journal and retained outbound handling; local activation
-under exclusion; Devices removal/progress; detached local copy; disposable removal/write/reopen check.
+Native custody checkpoint: `11092006`. Historical source/spool/delivery and inbound replay now resolve
+keys through authenticated generation history. The journal reads retained older generations and seals
+only with its active key. Two independent-crypto replay cases, eighteen journal cases, 37 inbound
+regressions and seven history/adoption cases pass. These primitives do not activate a generation.
+
+**Next:** journal-inclusive local coverage and generation activation under exclusion; Devices removal/progress; detached local copy; disposable removal/write/reopen check.
 No Remove action is exposed yet. Pending native rotation refuses ordinary generation-one opening until
 its activation owner is implemented. Repeated later admissions, lost-device recovery, checkpoint
 replacement/pruning and operations remain later work.

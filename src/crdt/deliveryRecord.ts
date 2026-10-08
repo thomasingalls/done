@@ -125,11 +125,11 @@ export function decodeDeliveryEntry(
     v[2] !== r.workspace ||
     v[3] !== r.credential ||
     v[4] !== r.principal ||
-    v[6] !== r.generation ||
     v[7] !== a.lineage
   )
     captureError('Delivery authority changed');
   const historical = captureRouteAt(r, v[5]);
+  if (v[6] !== historical.generation) captureError('Delivery generation changed');
   const issuance = r.history ? historyAuthority(r.history, { ...a, tip: v[5], head: v[8] }) : a;
   if (v[8] !== issuance.head) captureError('Delivery head changed');
   const e: DeliveryEntry = {

@@ -11155,3 +11155,30 @@ pass. Native fixtures operate on disposable localhost state only.
 Next is generation-aware retained content/journal/outbound handling and activation, then Devices and
 detached-copy composition. Prior service takeover checkpoint: `a197bb02`. This checkpoint is unsigned;
 no live process or store changed and release validation remains paused.
+
+
+## 2026-10-08 — Generation-aware retained replay (`L-1`)
+
+Source capsules, spool records and delivery records now resolve their generation from their exact
+authenticated epoch, instead of comparing every old record to the current generation. Spool replay
+selects an owner-retained opener for each verified envelope route. Inbound verification accepts an
+explicit owner-supplied historical key set, snapshots/wipes its own copies, and resolves each envelope
+through verified history before selecting its opener. A scalar legacy key still opens only generation
+one. No key hint from the wire can install or replace an opener.
+
+The synchronous journal supports retained older openers while sealing new entries only under its active
+generation. It takes owned key copies and erases them on disposal. Missing/unknown generation or
+changed ciphertext remains a repair refusal, preserving every journal entry. This is a reader/writer
+primitive, not a writer barrier, generation switch or key retirement decision. Native activation guards
+remain in place.
+
+Two new composed cases use independent Node/OpenSSL encryption with distinct keys before/after a real
+verified rotation; they check historical source/spool/delivery and inbound replay, missing/wrong keys,
+and changed generation claims (`/tmp/done-generation-replay.log`). Eighteen journal cases pass, including
+mixed-generation replay and unknown-entry preservation (`/tmp/done-rotation-journal.log`); 37 affected
+inbound/transport cases and seven history/adoption cases pass. TypeScript, scoped lint/format, build,
+budget and origin checks pass. Native custody checkpoint: `11092006`. This checkpoint is unsigned.
+
+Next remains the actual journal-inclusive local generation activation, followed by Devices and
+detached-copy composition. No product removal control or live upgrade is enabled. Release validation
+is still paused.

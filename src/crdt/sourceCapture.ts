@@ -42,10 +42,11 @@ export const captureRoute = (marker: PromotionRecord): CaptureRoute => ({
 });
 /** Resolve only the exact admission-compatible historical route; an unverified epoch hint is refused. */
 export function captureRouteAt(route: CaptureRoute, epoch: number): CaptureRoute {
+  let generation = route.generation;
   if (!route.history) {
     if (epoch !== route.epoch) captureError('Capture epoch changed without verified history');
   } else {
-    historyEnvelopeRoute(
+    generation = historyEnvelopeRoute(
       route.history,
       {
         v: 2,
@@ -55,10 +56,10 @@ export function captureRouteAt(route: CaptureRoute, epoch: number): CaptureRoute
         gen: route.generation,
       },
       epoch,
-    );
+    ).gen;
     if (route.principal !== route.history.principal) captureError('Capture principal changed');
   }
-  return epoch === route.epoch ? route : { ...route, epoch };
+  return epoch === route.epoch ? route : { ...route, epoch, generation };
 }
 const validId = (value: unknown): value is string =>
   typeof value === 'string' && /^[0-9a-f]{32}$/.test(value);
@@ -71,7 +72,9 @@ export function encodeSourceCapsule(c: SourceCapsule): Bytes {
     !validId(c.principal) ||
     !Number.isSafeInteger(c.epoch) ||
     c.epoch < 1 ||
-    c.generation !== 1 ||
+    !Number.isSafeInteger(c.generation) ||
+    c.generation < 1 ||
+    c.generation > 0xffffffff ||
     !Array.isArray(c.sources) ||
     !c.sources.length ||
     c.sources.length > MAX_CAPTURE_SOURCES

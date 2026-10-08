@@ -1,6 +1,7 @@
 import { hex, random, type Bytes } from './custodyCrypto';
 import {
   createJournalCodec,
+  decodeJournal,
   JournalError,
   journalPrefix,
   MAX_JOURNAL_UPDATE,
@@ -69,10 +70,55 @@ export const createJournalOwner = (
   dbName: string,
   generation: number,
   key: Bytes,
+  retainedKeys: ReadonlyMap<number, Bytes> = new Map(),
 ) => {
   const prefix = journalPrefix(dbName),
     writer = hex(random(16));
-  const codec = createJournalCodec(scope.workspaceId, generation, key);
+  const openers = new Map<number, { key: Bytes; codec: ReturnType<typeof createJournalCodec> }>();
+  if (
+    !Number.isSafeInteger(generation) ||
+    generation < 1 ||
+    generation > 0xffffffff ||
+    retainedKeys.size > 128
+  )
+    throw new JournalError('invalid-input', 'Invalid journal generation set.');
+  for (const [g, k] of retainedKeys) {
+    if (
+      !Number.isSafeInteger(g) ||
+      g < 1 ||
+      g >= generation ||
+      !(k instanceof Uint8Array) ||
+      k.length !== 32
+    )
+      throw new JournalError('invalid-input', 'Invalid retained journal opener.');
+  }
+  if (!(key instanceof Uint8Array) || key.length !== 32)
+    throw new JournalError('invalid-input', 'Invalid active journal opener.');
+  try {
+    for (const [g, k] of [...retainedKeys, [generation, key] as const]) {
+      const copy = k.slice();
+      try {
+        openers.set(g, { key: copy, codec: createJournalCodec(scope.workspaceId, g, copy) });
+      } catch (cause) {
+        copy.fill(0);
+        throw cause;
+      }
+    }
+  } catch (cause) {
+    for (const value of openers.values()) {
+      value.codec.dispose();
+      value.key.fill(0);
+    }
+    throw cause;
+  }
+  const codec = openers.get(generation)!.codec;
+  const open = (storageKey: string, value: string) => {
+    const g = decodeJournal(value).generation;
+    const opener = openers.get(g);
+    if (!opener)
+      throw new JournalError('repair-required', 'No retained opener for this journal generation.');
+    return opener.codec.open(storageKey, value);
+  };
   let ordinal = 0,
     observedCharacters = 0,
     disposed = false;
@@ -129,7 +175,7 @@ export const createJournalOwner = (
       for (const k of scoped) {
         const value = s.getItem(k);
         if (value === null) throw changed();
-        opened.push({ key: k, value, ...codec.open(k, value) });
+        opened.push({ key: k, value, ...open(k, value) });
       }
       const after = Object.keys(s)
         .filter((k) => k.startsWith(prefix))
@@ -263,7 +309,11 @@ export const createJournalOwner = (
     dispose() {
       disposed = true;
       globalThis.removeEventListener?.('storage', onStorage);
-      codec.dispose();
+      for (const value of openers.values()) {
+        value.codec.dispose();
+        value.key.fill(0);
+      }
+      openers.clear();
     },
   };
 };
