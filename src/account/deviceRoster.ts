@@ -8,5 +8,7 @@ export interface DeviceRosterSnapshot {
 }
 export interface DeviceRoster {
   readonly detached?: boolean;
+  readonly transition?: string;
+  remove?(target: string): Promise<'pending' | 'applying'>;
   read(): Promise<DeviceRosterSnapshot>;
 }

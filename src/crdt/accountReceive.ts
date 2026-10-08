@@ -1,4 +1,8 @@
 import {
+  rememberAccountTransition,
+  clearAccountTransition,
+} from '../account/accountTransitionNotice';
+import {
   parseRemovalDiscoveryRequest,
   removalDiscoveryRequestMessage,
   verifyRemovalDiscoveryResponse,
@@ -142,12 +146,15 @@ async function openAccountReceiveOwner(
   let membership: InstalledMembership | undefined,
     initialEpoch = 3;
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
+  let handoff = false,
+    transition = '';
   let expectedPayload = '',
     expectedRecord: unknown,
     outstanding: Bytes | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
+    if (handoff) throw new ReceiveAuthorityChanged();
     if (joined) {
       const current = await readJoinedAccount(task, options.slotId, options.code);
       if (
@@ -733,8 +740,9 @@ async function openAccountReceiveOwner(
       if (historyGeneration(history) !== base.generation) {
         // A fully verified successor stops admission synchronously, before the first custody await.
         suspendCapture();
+        handoff = true;
         try {
-          await (
+          const disposition = await (
             await import('./rotationObservation')
           ).retainObservedRotation(
             task,
@@ -742,6 +750,10 @@ async function openAccountReceiveOwner(
             options.slotId,
             options.code,
             proofs,
+          );
+          transition = rememberAccountTransition(
+            account.accountId,
+            disposition === 'removed' ? 'removed' : 'changed',
           );
           return { epoch: history.current.tip, head: history.current.head };
         } finally {
@@ -1159,6 +1171,55 @@ async function openAccountReceiveOwner(
     access,
     devices: Object.freeze({
       detached: account.detached,
+      get transition() {
+        return transition;
+      },
+      ...(access && !account.detached && base.generation === 1
+        ? {
+            remove: (target: string) =>
+              runCaptureTask(async (task) => {
+                await assertCurrent(task);
+                if (
+                  !base.history ||
+                  target === base.reader.id ||
+                  !historyDevices(base.history).some((d) => d.id === target)
+                )
+                  throw Error('Choose another saved device');
+                suspendCapture();
+                handoff = true;
+                transition = rememberAccountTransition(account.accountId, 'removal-incomplete');
+                try {
+                  const { withRotationCustody } = await import('./rotationObservation');
+                  const { openDeviceRemovalVault } = await import('../account/deviceRemovalVault');
+                  const outcome = await withRotationCustody(
+                    task,
+                    joined ? 'joined' : 'promotion',
+                    options.slotId,
+                    options.code,
+                    async ({ vault, base, proofs }) => {
+                      const native = await openDeviceRemovalVault(
+                        {
+                          source: { kind: 'original', base, proofs },
+                          participant: vault.participant,
+                          rotation: vault,
+                        },
+                        target,
+                        task.signal,
+                      );
+                      return native.advance(access);
+                    },
+                  );
+                  transition = rememberAccountTransition(
+                    account.accountId,
+                    outcome === 'applying' ? 'removal-committed' : 'removal-pending',
+                  );
+                  return outcome;
+                } finally {
+                  void carrier.close().catch(() => {});
+                }
+              }),
+          }
+        : {}),
       read: () =>
         runCaptureTask(async (task) => {
           await assertCurrent(task);
@@ -1541,6 +1602,7 @@ export async function openOwnedSyncingAccountWorkspace(
   const result = await openReceivingWorkspace(input, operatorToken, true, joined);
   if ((!result.sync || !result.outbound) && !result.detached)
     throw Error('Missing outbound composition');
+  clearAccountTransition(result.accountId);
   const {
     prepareRead: _prepare,
     receivePage: _receive,

@@ -1,3 +1,7 @@
+import type { NetworkLogin } from '../account/networkLogin';
+import { ScopedTransport } from '../account/scopedTransport';
+import { RemovalPending } from '../account/accountTransitionNotice';
+import { openDeviceRemovalVault } from '../account/deviceRemovalVault';
 /** Retain a verified successor under the actual account permit before releasing the old writer. */
 import {
   readPromotion,
@@ -39,6 +43,7 @@ export async function withRotationCustody<T>(
       | Awaited<ReturnType<typeof readJoinedAccount>>;
     base: Parameters<typeof verifyMembershipChain>[1];
     credential: string;
+    withLogin<T>(login: NetworkLogin, work: () => Promise<T>): Promise<T>;
     proofs: ReturnType<typeof parseMembershipChain>;
   }) => Promise<T>,
 ) {
@@ -94,7 +99,24 @@ export async function withRotationCustody<T>(
         }
       },
     });
-    return work({ vault, state, base, credential: credentials[1].id, proofs });
+    return work({
+      vault,
+      state,
+      base,
+      credential: credentials[1].id,
+      proofs,
+      withLogin: (login, run) =>
+        login.withEnrollmentOwner(
+          task,
+          root,
+          record.root_id,
+          {
+            accountId: base.receipt.offer.epoch.accountId,
+            credentialId: base.receipt.activation.context.credentialId,
+          },
+          run,
+        ),
+    });
   });
 }
 
@@ -136,6 +158,7 @@ export async function retainObservedRotation(
         if (
           !same(value.parent, parent) ||
           value.target !== target ||
+          value.recipient !== credential ||
           (value.successor && !same(value.successor, successor))
         )
           throw Error('Retained rotation conflicts with observation');
@@ -145,6 +168,7 @@ export async function retainObservedRotation(
           kind: 'native-device-removal',
           parent,
           target,
+          recipient: credential,
           progress: null,
           successor: null,
           key: null,
@@ -193,7 +217,8 @@ export async function resumeAccountRotation(
   kind: Kind,
   slotId: string,
   code: string,
-) {
+  login?: NetworkLogin,
+): Promise<import('../../account-protocol/admissionHistory').AdmissionHistory | null> {
   const state =
     kind === 'promotion'
       ? await readPromotion(task, slotId, code)
@@ -202,8 +227,48 @@ export async function resumeAccountRotation(
   const pending = await withRotationCustody(task, kind, slotId, code, async ({ vault }) =>
     parseNativeRemoval(await vault.load()),
   );
-  if (!pending.successor)
-    throw Error('Resume the saved device removal before opening this workspace');
+  if (!pending.successor) {
+    if (!login || globalThis.navigator?.onLine === false) throw new RemovalPending();
+    await withRotationCustody(
+      task,
+      kind,
+      slotId,
+      code,
+      async ({ vault, base, proofs, withLogin }) => {
+        const native = await openDeviceRemovalVault(
+          {
+            source: { kind: 'original', base, proofs },
+            participant: vault.participant,
+            rotation: vault,
+          },
+          pending.target,
+          task.signal,
+        );
+        const transport = new ScopedTransport(base.pin, task.signal);
+        try {
+          const access = transport.bind({
+            login,
+            sign: vault.sign,
+            scope: {
+              kind: 'workspace',
+              workspaceId: base.request.candidate.workspaceId,
+              credentialId: vault.participant.id,
+            },
+          });
+          await withLogin(login, async () => {
+            // This is the user's explicit unlock/resume action; renew a retained login first.
+            await login.access();
+            if (['connect', 'reconnect', 'signed-out'].includes(login.getSnapshot()))
+              await login.connect();
+            if ((await native.advance(access)) === 'pending') throw new RemovalPending();
+          });
+        } finally {
+          transport.close();
+        }
+      },
+    );
+    return resumeAccountRotation(task, kind, slotId, code, login);
+  }
   const outcome = await retainObservedRotation(task, kind, slotId, code, {
     ...pending.parent,
     continuations: [...pending.parent.continuations, pending.successor],

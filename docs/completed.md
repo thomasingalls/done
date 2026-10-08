@@ -11259,3 +11259,32 @@ admission failure and was removed before the final run.
 Native activation checkpoint: `70f13011`. This checkpoint is unsigned. Next is the Devices removal
 action, pending-operation/restart messages and a product-level removal walkthrough. The retained
 installation remains untouched; release validation stays paused.
+
+
+## 2026-10-08 — Devices removal and restart UI (`L-1`)
+
+Devices now offers Remove for other devices in the supported first generation. Confirmation explains
+that existing copies remain readable/editable/exportable and that this workspace will lock while
+changing keys. Keep device makes no removal request. Self-removal and subsequent rotations remain
+unavailable. The actual authenticated owner suspends admission, retains the exact operation, and closes
+the runtime. Other in-flight work cannot continue using the replaced custody state.
+
+Pending and committed messages are distinct. The chooser's message is presentation only; after a page
+restart, native authenticated custody resumes the exact intent on unlock. A remembered login is renewed
+for retry; an expired login can use the existing online passkey ceremony during explicit resumption.
+No editor opens until the saved successor is verified and activated. Completed opening clears the
+ephemeral transition notice.
+
+The product tests exposed a real distinction previously missed by the detached opener: an original
+device's local-storage credential differs from its account credential. The encrypted removal record
+now binds its actual account recipient explicitly; native verification compares it with the held
+account owner. This private record has not been deployed.
+
+Two disposable native product cases pass (`/tmp/done-device-removal-ui-native2.log`): original and joined
+actors each remove the other, lose a successful commit response, restart, resend byte-identical intent,
+and reopen. Both survivors and removed original/joined copies preserve later edits. Sixteen client and
+protocol cases pass (`/tmp/done-device-removal-ui-protocol.log`); TypeScript, scoped lint/format,
+build/budget, origin and diff checks pass. Prior observed-rotation checkpoint: `7232be40`. This
+checkpoint is unsigned. Next is the final three-device walkthrough with offline survivor writing, then
+a fresh quiet point before any backed-up upgrade of the retained service. Release validation remains
+paused; no live process/store changed.

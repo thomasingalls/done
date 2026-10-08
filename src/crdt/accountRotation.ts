@@ -118,6 +118,7 @@ export async function activateAccountRotation(
       historyGeneration(parent.history) !== 1 ||
       historyGeneration(history) !== 2 ||
       history.finalization ||
+      progress.recipient !== credentials[1].id ||
       !same(proof.epoch.rotation.payload.excluded, [progress.target])
     )
       throw Error('Unsupported local rotation');

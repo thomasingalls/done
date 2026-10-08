@@ -47,7 +47,7 @@ export async function verifyAccountUnderPermit(
 ) {
   const detached = await (
     await import('./rotationObservation')
-  ).resumeAccountRotation(task, 'promotion', options.slotId, options.code);
+  ).resumeAccountRotation(task, 'promotion', options.slotId, options.code, options.networkLogin);
   const { claim, record, marker } = await readPromotion(task, options.slotId, options.code);
   if (
     !marker ||

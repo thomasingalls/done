@@ -14,6 +14,7 @@ import {
 } from '../../account-protocol/membership';
 import { generationInfo } from '../../account-protocol/genesis';
 import {
+  rotationRecipients,
   verifyRemovalPreparationRequest,
   verifyRemovalPreparation,
   removalPreparationMatchesRequest,
@@ -35,14 +36,25 @@ export interface NativeRemoval {
   kind: 'native-device-removal';
   parent: ReturnType<typeof parseMembershipChain>;
   target: string;
+  recipient: string;
   progress: DeviceRemovalProgress | null;
   successor: ReturnType<typeof parseMembershipRotation> | null;
   key: InstalledContentKey | null;
 }
 export function parseNativeRemoval(input: unknown): NativeRemoval {
-  const r = closed(input, ['v', 'kind', 'parent', 'target', 'progress', 'successor', 'key']);
+  const r = closed(input, [
+    'v',
+    'kind',
+    'parent',
+    'target',
+    'recipient',
+    'progress',
+    'successor',
+    'key',
+  ]);
   if (r['v'] !== 1 || r['kind'] !== 'native-device-removal') throw Error('Invalid native removal');
   unhex(r['target'], 16);
+  unhex(r['recipient'], 16);
   let key: InstalledContentKey | null = null;
   if (r['key'] !== null) {
     const k = closed(r['key'], ['sequence', 'ct']);
@@ -56,6 +68,7 @@ export function parseNativeRemoval(input: unknown): NativeRemoval {
     kind: 'native-device-removal',
     parent: parseMembershipChain(r['parent']),
     target: r['target'] as string,
+    recipient: r['recipient'] as string,
     progress: r['progress'] === null ? null : parseDeviceRemovalProgress(r['progress']),
     successor: r['successor'] === null ? null : parseMembershipRotation(r['successor']),
     key,
@@ -64,7 +77,7 @@ export function parseNativeRemoval(input: unknown): NativeRemoval {
 
 /** Caller holds the actual slot-wide permit via withMembershipVault throughout this operation. */
 export async function openDeviceRemovalVault(
-  owner: MembershipVault,
+  owner: Pick<MembershipVault, 'source' | 'participant' | 'rotation'>,
   target: string,
   signal: AbortSignal,
 ) {
@@ -99,17 +112,22 @@ export async function openDeviceRemovalVault(
       !state.certificate.members.some((m) => same(m, owner.participant))
     )
       throw Error('Removal requires another device and a certified owner');
+    if (state.generation !== 1)
+      throw Error('Further removals after rotation are not available yet');
+    await rotationRecipients(historyMembership(current.history), target, base.request.recovery);
     await save({
       v: 1,
       kind: 'native-device-removal',
       parent: current.proofs,
       target,
+      recipient: owner.participant.id,
       progress: null,
       successor: null,
       key: null,
     });
   }
-  if (retained!.target !== target) throw Error('Resume the saved removal first');
+  if (retained!.target !== target || retained!.recipient !== owner.participant.id)
+    throw Error('Resume the saved removal first');
   const held = await verifyMembershipChain(retained!.parent, base);
   // The immutable installation can precede the retained parent; a later installation must extend it.
   if (held.history.current.tip >= current.history.current.tip)

@@ -30,7 +30,7 @@ export async function openActiveRotation(
   if (
     !record.active_rotation &&
     state.successor &&
-    state.target === record.credentials![1].id &&
+    state.target === state.recipient &&
     !state.key &&
     state.successor.epoch.rotation.payload.excluded.length === 1 &&
     state.successor.epoch.rotation.payload.excluded[0] === state.target

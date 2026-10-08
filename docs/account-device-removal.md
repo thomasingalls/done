@@ -16,7 +16,7 @@ The private protocol verifies preparation, intent, outcome and finalization evid
 rotation successor now extends verified membership/history, retaining historical authorship while
 ending current access. The private service now commits the preparation/fence and atomic rotation with historical delivery.
 Protected transport, native retained custody, successor opener installation and original/joined local
-activation are implemented. No product control is enabled. Passive discovery now closes the old
+activation are implemented. Devices now exposes confirmed other-device removal for the first rotation. Passive discovery closes the old
 writer after retaining its verified successor; unlocking resumes activation. Removed devices retain
 a writable detached copy and start no content or notification driver.
 
@@ -84,8 +84,10 @@ prefix; a signature over a claimed link is not replay evidence.
 - Passive discovery and activation handoff are implemented under the exclusive writer barrier. Native activation now
   includes synchronous journal and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.
-- Devices action, pending-operation progress and restart UX remain. Detached-copy opening/editing and
-  a disposable three-device removal/write/reopen flow pass, alongside lost-reply/interrupted-installation
-  regressions. The final walkthrough should exercise the product Remove action.
+- Devices action and pending-operation/restart UX are implemented. Product original/joined removal
+  passes lost committed replies, byte-identical restart, survivor activation and detached-copy editing.
+  The final three-device check adds an offline survivor; subsequent admissions/rotations remain gated.
+  The encrypted native apply record binds the actual account recipient, separately from local-storage
+  credentials. Old keys/apply records remain pending checkpoint and retirement obligations.
 
 The retained `:8443` installation remains unchanged until a new quiet point and backed-up upgrade.

@@ -1,5 +1,10 @@
 import { SessionSignOutNotice } from './NetworkLoginNotice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import {
+  getAccountTransitionNotice,
+  subscribeAccountTransitionNotice,
+  dismissAccountTransitionNotice,
+} from '../account/accountTransitionNotice';
 import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
@@ -25,6 +30,10 @@ export function AccountSignIn({
   onRestore: () => void;
   onConnect?: (workspace?: string) => void;
 }) {
+  const transition = useSyncExternalStore(
+    subscribeAccountTransitionNotice,
+    getAccountTransitionNotice,
+  );
   const [remembered, setRemembered] = useState<RememberedAccount[]>([]);
   const [connections, setConnections] = useState<RememberedDeviceConnection[]>([]);
   const [readError, setReadError] = useState('');
@@ -138,6 +147,15 @@ export function AccountSignIn({
         </h1>
         <p>Select a saved account, connect devices, or create a new account.</p>
         {config.networkSessions && <SessionSignOutNotice pin={config.pin} />}
+        {transition && (
+          <section role="status" className="account-choice-section">
+            <AccountIdentity id={transition.accountId} />
+            <p>{transition.message}</p>
+            <button className="local-secondary" onClick={dismissAccountTransitionNotice}>
+              Dismiss
+            </button>
+          </section>
+        )}
         {savedAccounts}
         {!loading && !remembered.some((account) => account.slotId === 'local') && (
           <div className="account-choice-section">

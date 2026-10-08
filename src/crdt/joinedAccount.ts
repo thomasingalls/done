@@ -647,7 +647,7 @@ async function installCertifiedAccount(
 export async function verifyJoinedAccount(task: SessionTask, options: AccountStartupOptions) {
   const detached = await (
     await import('./rotationObservation')
-  ).resumeAccountRotation(task, 'joined', options.slotId, options.code);
+  ).resumeAccountRotation(task, 'joined', options.slotId, options.code, options.networkLogin);
   const state = await readJoinedAccount(task, options.slotId, options.code),
     marker = state.marker;
   if (!marker || !same(marker.authority.base.pin, options.pin))

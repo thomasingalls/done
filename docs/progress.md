@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: observed rotation and detached copies complete; Devices removal and restart UX next
+scope: Devices removal and restart UI complete; final offline-survivor walkthrough
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -94,9 +94,15 @@ network driver is installed. Three native cases include three-device two-way del
 detached editing with no content/notification requests. Seventy-eight affected unit cases and eleven
 protocol/replay cases pass; evidence is recorded in [completed.md](./completed.md).
 
-**Next:** Devices removal action and pending-operation/restart messages, then the product-level removal
-walkthrough. No Remove action is exposed yet. Repeated later admissions/rotations, lost-device recovery,
-checkpoint replacement/pruning and operations remain later work.
+Observed rotation/detached-copy checkpoint: `7232be40`. Devices now exposes confirmed other-device
+removal, distinguishes pending from committed, and resumes exact native progress on unlock. Original
+and joined UI actors pass lost-success-reply, page restart, byte-identical retry, activation, detached
+opening/editing and cold reopen. The native record explicitly binds the account recipient (different
+from local-storage credentials on the original device). Sixteen client/protocol checks pass.
+
+**Next:** final three-device walkthrough including offline survivor writing, then a fresh quiet point
+before any backed-up retained-service upgrade. Repeated later admissions/rotations, lost-device
+recovery, checkpoint replacement/pruning and operations remain later work.
 
 Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
 end of the agreed sequence. Consult the operator on product decisions. Release validation stays paused.

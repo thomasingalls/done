@@ -1,3 +1,4 @@
+import { RemovalPending } from './accountTransitionNotice';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
 import { isPrivateAccess, PrivateServiceUnavailable } from './privateAccess';
@@ -318,7 +319,9 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           kind: fallback,
           error: cancelled
             ? 'Passkey request cancelled. You can try again.'
-            : cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
+            : cause instanceof SetupNotice ||
+                cause instanceof PrivateServiceUnavailable ||
+                cause instanceof RemovalPending
               ? cause.message
               : fallback === 'unlock'
                 ? 'Could not unlock this workspace. Check your device-lock code and try again.'
@@ -388,7 +391,10 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           return;
         retireEditors();
         code = '';
-        publish({ kind: 'unlock', error: 'Your workspace was locked. Unlock it to continue.' });
+        publish({
+          kind: 'unlock',
+          error: devices?.transition || 'Your workspace was locked. Unlock it to continue.',
+        });
         void workspace?.close().catch(() => {});
       });
       code = '';
