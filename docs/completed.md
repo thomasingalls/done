@@ -10515,3 +10515,26 @@ verification. TypeScript, scoped lint/format, build, budget, origin isolation an
 `/tmp/done-membership-locator-protocol.log`, `/tmp/done-membership-locator-service.log`,
 `/tmp/done-membership-locator-regressions.log`, `/tmp/done-membership-locator-build.log`. Release validation
 remains paused. Next: opt-in HTTP composition and owned client integration.
+
+
+## 2026-10-08 — Opt-in continuation HTTP composition (`L-1`)
+
+After locator checkpoint `b34440d1`, an explicitly continuation-enabled session core exposes version-2
+admission, ceremony, transfer and discovery routes. Invitation bootstrap is a separate capability route.
+The ordinary/default schema-14 host returns 404 for all five routes. Existing origin, framing, byte,
+concurrency and request-time limits apply; no shared bearer or bootstrap alias bypasses scoped grants.
+Browser transport now binds these routes to their correct enrollment/workspace scope.
+
+Notifications compare the exact admission-keyed row inside the domain transaction. New admissions and
+changed exchange/transfer state send hints; exact retries and status reads do not. Authority changes
+still return to the client owner for authenticated adoption or ceremony restart; only lost grants
+permit automatic proof renewal and identical-request retry.
+
+Evidence: 59 affected Node cases pass. The directed HTTP case exercises actual admission, both
+commitments/reveals, approval, delivery, installation, certification and discovery, with wrong/missing
+grants, framing/size refusal, silent retries, restart and renewal. The browser transport case covers
+route isolation, identical retry bodies and cancellation; the default-host check covers the opt-in
+fence. Existing notification/session/HTTP regressions pass. TypeScript, scoped lint/format, build,
+budget, origin isolation and diff checks pass. Logs: `/tmp/done-membership-http-regressions.log`,
+`/tmp/done-membership-http-build.log`. No retained-server restart or UI activation occurred. Owned
+client custody, checkpoint/loading and later authority adoption remain next. Release validation is paused.

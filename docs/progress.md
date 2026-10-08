@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: authenticated continuation locators complete; opt-in HTTP and owned client integration next
+scope: opt-in continuation HTTP complete; owned client custody and authority integration next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -78,9 +78,11 @@ Current-head bootstrap/discovery now carries the bounded complete signed chain, 
 binding, held-head ancestry and reader eligibility. It preserves the requesting publisher's ledger
 interlock and final network/lifetime checks. 92 affected Node cases and type/lint/format/build/budget/
 origin checks pass. All phase evidence is recorded in [completed.md](./completed.md).
-These private methods remain unrouted. The current product still supports only its first two devices.
+Locator checkpoint is `b34440d1`. Opt-in HTTP routes and browser transport bindings now compose these
+private methods; 59 affected session/notification/HTTP checks and build checks pass. Default and retained
+hosts keep the routes disabled. The current product still supports only its first two devices.
 
-**Next:** opt-in HTTP composition, owned third-device custody/editor and subsequent authority adoption;
+**Next:** owned third-device custody/editor, checkpoint/loading and subsequent authority adoption;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.

@@ -368,3 +368,45 @@ test('notification handshake uses the scoped header grant and keeps its body ali
   await response.body.cancel();
   t.mock.timers.reset();
 });
+
+test('browser continuation routes retain workspace/enrollment separation and immutable retry bodies', async (t) => {
+  const seen = [];
+  const x = await client(t, (path, init) => {
+    if (!path.startsWith('/account/membership/v2/')) return;
+    seen.push({ path, body: init.body });
+    return seen.length === 1 ? denied('grant-required') : Response.json({ ok: true });
+  });
+  const init = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: '{"nonce":"retained"}',
+  };
+  assert.equal((await x.scoped.fetch('/account/membership/v2/discover', init)).status, 200);
+  assert.deepEqual(seen[0], seen[1]);
+  const p = await x.prepare();
+  const enrollment = x.owner.bind({
+    ...x.binding,
+    scope: {
+      ...x.scope,
+      kind: 'enrollment',
+      credentialId: p.entry.input.candidate.credentialId,
+      attemptId: p.input.attemptId,
+    },
+    sign: async (body) => sign(null, body, p.entry.key).toString('hex'),
+  });
+  for (const suffix of ['admit', 'ceremony', 'transfer']) {
+    const path = '/account/membership/v2/' + suffix;
+    await assert.rejects(x.scoped.fetch(path, init), /Wrong grant route/);
+    assert.equal((await enrollment.fetch(path, init)).status, 200);
+  }
+  await assert.rejects(
+    enrollment.fetch('/account/membership/v2/discover', init),
+    /Wrong grant route/,
+  );
+  await assert.rejects(
+    enrollment.fetch('/__account-setup/membership/bootstrap', init),
+    /Wrong grant route/,
+  );
+  x.stop.abort();
+  await assert.rejects(enrollment.fetch('/account/membership/v2/ceremony', init));
+});

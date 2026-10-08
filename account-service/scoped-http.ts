@@ -1,6 +1,6 @@
-/** Session/grant-protected routes only. The live development host has not switched to this
- * adapter. Setup/bootstrap capabilities need explicit composition; there is no private bearer
- * fallback and no /access endpoint here. */
+import { MEMBERSHIP_PROOF_LIMIT } from '../account-protocol/membership.ts';
+/** Session/grant-protected routes. Bootstrap capabilities are composed separately;
+ * there is no shared bearer fallback or /access endpoint here. */
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { AccountCore } from './core.ts';
 import type { PrivateAuthority } from './authority.ts';
@@ -81,6 +81,24 @@ export function createScopedAccountHandler(
         ] as const,
     ),
   ]);
+  if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/membership/v2/admit', {
+      limit: 4096,
+      run: (v, _token, auth) => authority.admitMembership(core, v, auth),
+    });
+    jsonRoutes.set('/account/membership/v2/ceremony', {
+      limit: CEREMONY_RELAY_LIMIT,
+      run: (v, _token, auth) => authority.relayMembershipCeremony(core, v, auth),
+    });
+    jsonRoutes.set('/account/membership/v2/transfer', {
+      limit: MEMBERSHIP_PROOF_LIMIT,
+      run: (v, _token, auth) => authority.transferMembership(core, v, auth),
+    });
+    jsonRoutes.set('/account/membership/v2/discover', {
+      limit: 4096,
+      run: (v, _token, auth) => authority.discoverMembership(core, v, auth),
+    });
+  }
   const binaryRoutes = new Map([
     [
       '/account/delivery/submit',
@@ -188,10 +206,20 @@ export function createScopedAccountHandler(
           '/__account-setup/ceremony/exchange': 'content_ceremonies',
           '/__account-setup/ceremony/transfer': 'content_transfers',
           '/__account-setup/content/checkpoint': 'content_checkpoints',
+          '/account/membership/v2/admit': 'membership_admissions',
+          '/account/membership/v2/ceremony': 'membership_ceremonies',
+          '/account/membership/v2/transfer': 'membership_transfers',
         }[path];
         if (!table) return check;
+        const continuation = table.startsWith('membership_');
+        if (continuation && scope.kind !== 'enrollment')
+          throw new AuthorizationRefused('insufficient-scope');
         const row = () =>
-          db.prepare(`SELECT * FROM ${table} WHERE workspace_id=?`).get(scope.workspaceId);
+          continuation && scope.kind === 'enrollment'
+            ? db
+                .prepare(`SELECT * FROM ${table} WHERE workspace_id=? AND preparation_id=?`)
+                .get(scope.workspaceId, scope.attemptId)
+            : db.prepare(`SELECT * FROM ${table} WHERE workspace_id=?`).get(scope.workspaceId);
         const before = row();
         return () => {
           check();
@@ -229,6 +257,7 @@ export function createScopedAccountHandler(
             target &&
             changed &&
             (path === '/__account-setup/enrollment/admit' ||
+              path === '/account/membership/v2/admit' ||
               (value && typeof value === 'object' && 'action' in value && value.action !== 'read'))
           )
             notifications?.committed(target, path === '/__account-setup/content/checkpoint');

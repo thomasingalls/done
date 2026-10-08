@@ -9,6 +9,7 @@ import {
   MEMBERSHIP_CEREMONY_SCHEMA,
   MEMBERSHIP_TRANSFER_SCHEMA,
   enableMembershipStore,
+  membershipEnabled,
 } from './membershipStore.ts';
 import { admitMembership, type MembershipIssuer } from './membership.ts';
 import { transferMembership, type MembershipTransferIssuer } from './membershipTransfer.ts';
@@ -196,7 +197,7 @@ export class AccountCore {
       upgradeFromV14?: boolean;
       upgradeFromV15?: boolean;
       upgradeFromV16?: boolean;
-      /** Private integration gate; there is no routed continuation endpoint yet. */
+      /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
     } = {},
@@ -388,6 +389,9 @@ export class AccountCore {
     }
   }
 
+  get membershipContinuationEnabled(): boolean {
+    return membershipEnabled(this.#db);
+  }
   membershipBootstrap(input: unknown, issuer: MembershipLocatorIssuer) {
     return membershipBootstrap(this.#db, input, issuer);
   }

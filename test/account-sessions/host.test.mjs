@@ -61,7 +61,16 @@ test('session host preserves capability-protected bootstrap through restart with
   f.reopen();
   assert.deepEqual(f.service.clientConfig.pin, pin);
   assert.deepEqual(await (await f.post('/__account-setup/resume', { retryKey })).json(), pending);
-  for (const route of ['/__account-setup/access', '/__account-setup/unknown', '/account/unknown']) {
+  for (const route of [
+    '/__account-setup/access',
+    '/__account-setup/unknown',
+    '/account/unknown',
+    '/__account-setup/membership/bootstrap',
+    '/account/membership/v2/admit',
+    '/account/membership/v2/ceremony',
+    '/account/membership/v2/transfer',
+    '/account/membership/v2/discover',
+  ]) {
     const r = await f.post(route);
     assert.equal(r.status, 404);
     await r.text();

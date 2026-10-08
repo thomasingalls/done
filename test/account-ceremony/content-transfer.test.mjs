@@ -1,3 +1,5 @@
+import { createServer, request as httpRequest } from 'node:http';
+import { createSessionAccountHandler } from '../../account-service/session-host.ts';
 import {
   verifyMembershipBootstrapResponse,
   verifyMembershipDiscoveryResponse,
@@ -2305,4 +2307,190 @@ test('continuation discovery rechecks session and expiry after asynchronous proo
   revoke = null;
   expire = true;
   assert.equal((await x.authority.owner.discoverMembership(x.f.core, q.discovery())).ok, false);
+});
+
+async function membershipHTTP(t, x) {
+  const hints = [];
+  const notifications = {
+    committed: (scope) => hints.push(structuredClone(scope)),
+    reconcile() {},
+  };
+  let core = x.f.core,
+    handler = createSessionAccountHandler(core, x.authority.owner, x.authority.pin, notifications);
+  const server = createServer((req, res) => {
+    if (core !== x.f.core) {
+      core = x.f.core;
+      handler = createSessionAccountHandler(
+        core,
+        x.authority.owner,
+        x.authority.pin,
+        notifications,
+      );
+    }
+    void handler(req, res, () => res.writeHead(404).end());
+  });
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  t.after(async () => {
+    server.closeAllConnections();
+    await new Promise((resolve) => server.close(resolve));
+  });
+  const post = (path, body, grant, headers = {}) =>
+    new Promise((resolve, reject) => {
+      const req = httpRequest(
+        {
+          host: '127.0.0.1',
+          port: server.address().port,
+          path,
+          method: 'POST',
+          headers: {
+            Host: new URL(x.authority.pin.origin).host,
+            Origin: x.authority.pin.origin,
+            'Content-Type': 'application/json',
+            ...(grant ? { Authorization: 'Bearer ' + grant.grantToken } : {}),
+            ...headers,
+          },
+        },
+        (res) => {
+          const chunks = [];
+          res.on('data', (v) => chunks.push(v));
+          res.on('end', () =>
+            resolve({
+              status: res.statusCode,
+              headers: res.headers,
+              body: JSON.parse(Buffer.concat(chunks).toString()),
+            }),
+          );
+        },
+      );
+      req.on('error', reject);
+      req.end(typeof body === 'string' ? body : JSON.stringify(body));
+    });
+  return { post, hints };
+}
+
+test('opt-in HTTP continuation uses exact scoped grants and publishes hints only for committed changes', async (t) => {
+  let api, g, enrollment;
+  const x = await continuationFixture(t, {
+    async beforeMembershipAdmission(y) {
+      api = await membershipHTTP(t, y);
+      g = await continuationGrants(y);
+      enrollment = {
+        kind: 'enrollment',
+        workspaceId: y.workspace,
+        credentialId: y.entry.input.candidate.credentialId,
+        attemptId: y.admissionInput.attemptId,
+      };
+      const grant = await g.grant(enrollment, y.entry.key);
+      const result = await api.post('/account/membership/v2/admit', y.admissionInput, grant);
+      assert.equal(result.status, 200, JSON.stringify(result.body));
+      assert.equal(result.body.kind, 'membership-admission');
+      assert.equal(api.hints.length, 1);
+    },
+  });
+  const q = membershipLocatorRequests(x),
+    e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  const routes = {
+    ceremony: '/account/membership/v2/ceremony',
+    transfer: '/account/membership/v2/transfer',
+    admit: '/account/membership/v2/admit',
+    discover: '/account/membership/v2/discover',
+  };
+  for (const path of Object.values(routes)) {
+    assert.equal((await api.post(path, {})).status, 401);
+    assert.equal(
+      (await api.post(path, {}, { grantToken: fresh() }, { Origin: 'https://other.invalid' }))
+        .status,
+      403,
+    );
+  }
+  const bootstrap = q.bootstrap();
+  const initial = await api.post('/__account-setup/membership/bootstrap', bootstrap);
+  assert.equal(initial.status, 200);
+  assert.equal(initial.headers['cache-control'], 'no-store');
+  assert.equal(
+    (await verifyMembershipBootstrapResponse(initial.body, bootstrap, x.authority.pin)).history
+      .current.tip,
+    4,
+  );
+  const candidate = await g.grant(enrollment, x.entry.key);
+  assert.equal((await api.post(routes.admit, x.admissionInput, candidate)).status, 200);
+  assert.equal(api.hints.length, 1); // The committed admission retry is silent.
+  assert.equal((await api.post(routes.ceremony, e.request('new', 'read'), candidate)).status, 200);
+  assert.equal(api.hints.length, 1);
+  assert.equal(
+    (await api.post(routes.ceremony, e.request('existing', 'read'), candidate)).status,
+    403,
+  );
+  assert.equal((await api.post(routes.ceremony, 'x'.repeat(16385), candidate)).status, 413);
+  assert.equal((await api.post(routes.transfer, 'x'.repeat(65537), candidate)).status, 413);
+  const existingScope = { ...enrollment, credentialId: e.context.existing.id };
+  const existing = await g.grant(existingScope, e.keys.existing);
+  for (const [role, grant] of [
+    ['existing', existing],
+    ['new', candidate],
+  ]) {
+    const request = e.request(role, 'commit', e.commits[role]);
+    assert.equal((await api.post(routes.ceremony, request, grant)).status, 200);
+    const count = api.hints.length;
+    assert.equal((await api.post(routes.ceremony, request, grant)).status, 200);
+    assert.equal(api.hints.length, count);
+  }
+  for (const [role, grant] of [
+    ['existing', existing],
+    ['new', candidate],
+  ])
+    assert.equal(
+      (await api.post(routes.ceremony, e.request(role, 'reveal', e.reveals[role]), grant)).status,
+      200,
+    );
+  assert.equal((await api.post(routes.ceremony, e.approval, existing)).status, 200);
+  assert.equal(
+    (await api.post(routes.transfer, d.request('existing', 'deliver', d.delivery), candidate))
+      .status,
+    403,
+  );
+  const deliver = d.request('existing', 'deliver', d.delivery);
+  assert.equal((await api.post(routes.transfer, deliver, existing)).status, 200);
+  const count = api.hints.length;
+  const deliveryRetry = await g.grant(existingScope, e.keys.existing);
+  assert.equal((await api.post(routes.transfer, deliver, deliveryRetry)).status, 200);
+  assert.equal(api.hints.length, count);
+  const installationGrant = await g.grant(enrollment, x.entry.key);
+  const install = d.request('new', 'install', d.installation);
+  const installed = await api.post(routes.transfer, install, installationGrant);
+  assert.equal(installed.status, 200, JSON.stringify(installed.body));
+  assert.equal(api.hints.length, count + 1);
+  const retry = await g.grant(enrollment, x.entry.key);
+  assert.equal((await api.post(routes.transfer, install, retry)).status, 200);
+  assert.equal(api.hints.length, count + 1);
+  const workspace = {
+    kind: 'workspace',
+    workspaceId: x.workspace,
+    credentialId: enrollment.credentialId,
+  };
+  const reader = await g.grant(workspace, x.entry.key);
+  const discovery = q.discovery(enrollment.credentialId, x.entry.key, {
+    epoch: 5,
+    head: installed.body.certification.head,
+  });
+  assert.equal((await api.post(routes.discover, discovery, retry)).status, 403);
+  const result = await api.post(routes.discover, discovery, reader);
+  assert.equal(result.status, 200);
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(result.body, discovery, x.base, 1000)).history.current
+      .tip,
+    5,
+  );
+  assert.equal(api.hints.length, count + 1);
+  x.f.restart();
+  g.restart();
+  const expired = await api.post(routes.discover, discovery, reader);
+  assert.equal(expired.status, 401);
+  assert.equal(expired.body.refusal, 'grant-required');
+  const renewed = await g.grant(workspace, x.entry.key);
+  assert.equal((await api.post(routes.discover, discovery, renewed)).status, 200);
 });

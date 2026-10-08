@@ -54,6 +54,11 @@ export function createSessionAccountHandler(
       { limit: ENROLLMENT_REQUEST_LIMIT, run: (v) => authority.enrollment(core, 'finish', v) },
     ],
   ]);
+  if (core.membershipContinuationEnabled)
+    routes.set('membership/bootstrap', {
+      limit: 4096,
+      run: (v) => authority.membershipBootstrap(core, v),
+    });
   let active = 0,
     budget = 120,
     last = performance.now();

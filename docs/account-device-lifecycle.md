@@ -248,3 +248,16 @@ response ceiling; over-limit results refuse. The service retries normal signing-
 at most four times. Discovery preserves the requesting publisher's ledger interlock. The private
 methods remain unrouted; HTTP and owned browser adoption are next. These proof readers do not install
 keys, grant publication authority or complete a cancellation/removal.
+
+
+## Opt-in HTTP checkpoint — 2026-10-08
+
+The session handler now exposes `/account/membership/v2/{admit,ceremony,transfer,discover}` only when
+its actual AccountCore owns the explicitly enabled schema-17 continuation store. Bootstrap is separately
+served at `/__account-setup/membership/bootstrap` under its signed invitation. Default/retained serving
+stays schema 14 and returns 404 for these routes. The browser transport preserves enrollment/workspace
+route separation. Exact admission-keyed changes drive notifications; terminal retries stay quiet.
+
+Next is the client lifecycle composition: continuation key custody and handoff, complete authority
+adoption, checkpoint/loading and third-device editing. The existing product control remains disabled
+until that path and cancellation/removal are composed. No operator deployment was performed.
