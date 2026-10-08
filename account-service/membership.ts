@@ -159,6 +159,7 @@ export async function admitMembership(
           if (!source) throw Error('Missing membership publisher');
           const historical = {
             ...source,
+            rows: source.rows.slice(0, witness?.events ?? 0),
             continuations: [],
             promotion: {
               ...source.promotion,

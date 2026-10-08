@@ -21,7 +21,14 @@ import {
   verifyEnrollmentChallenge,
   verifyEnrollmentReceipt,
 } from '../../account-protocol/enrollment.ts';
-import { decision, mutate, query, read, page } from '../account-successor/service-fixtures.mjs';
+import {
+  decision,
+  mutate,
+  query,
+  read,
+  page,
+  link,
+} from '../account-successor/service-fixtures.mjs';
 import {
   verifyCertificationHistory,
   historyAuthority,
@@ -437,10 +444,10 @@ test('private continuation admission retains both publisher boundaries, aborts a
     0,
   );
   for (const [table, rows] of originalRecords) assert.deepEqual(x.f.rows(table), rows, table);
-  // The unfinished continuation is never exposed through the old epoch-3 delivery owner.
+  // Verified continuation history can accept an eligible queued epoch-3 payload at epoch 4.
   const count = x.f.rows('delivery_decisions').length;
-  assert.equal((await x.deliveryCall(x.make(2, 'stale writer', { epoch: 3 }))).kind, 'unknown');
-  assert.equal(x.f.rows('delivery_decisions').length, count);
+  assert.equal((await x.deliveryCall(x.make(2, 'stale writer', { epoch: 3 }))).kind, 'decision');
+  assert.equal(x.f.rows('delivery_decisions').length, count + 1);
   const saved = x.f.rows('membership_admissions')[0];
   mutate(x, (db) => db.prepare('UPDATE membership_admissions SET boundaries=?').run('[]'));
   assert.equal((await call()).ok, false);
@@ -1571,10 +1578,10 @@ for (const approver of ['existing', 'new'])
       'admitted',
     );
     assert.equal((await x.relay(e.approval)).stage, 'approved');
-    // The private certificate does not silently enable the legacy transport at epoch 3.
+    // A queued epoch-3 payload is accepted under the verified current epoch-5 authority.
     assert.equal(
-      (await x.deliveryCall(x.make(2, 'fenced publisher', { epoch: 3 }))).kind,
-      'unknown',
+      (await x.deliveryCall(x.make(2, 'queued publisher', { epoch: 3 }))).kind,
+      'decision',
     );
   });
 
@@ -1707,4 +1714,122 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
+});
+
+test('three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart', async (t) => {
+  const retained = new Map();
+  const x = await continuationFixture(t, {
+      beforeContinuation: async (x) => {
+        for (const [id, signer] of [
+          [x.context.existing.id, x.keys.existing],
+          [x.context.candidate.id, x.keys.new],
+        ]) {
+          const w = x.make(1, 'before third-device admission', {
+              epoch: 3,
+              credential: id,
+              signer,
+            }),
+            r = await x.deliveryCall(w);
+          decision(x, r, w, undefined, 3);
+          retained.set(id, [{ w, r, epoch: 3 }]);
+        }
+      },
+    }),
+    e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  const append = async (id, signer, epoch, position, parent) => {
+    const prior = retained.get(id) ?? [],
+      previous = prior.reduce((h, v) => link(v.w.subject, h), '00'.repeat(32));
+    const w = x.make(position, 'writing across membership', {
+        epoch,
+        credential: id,
+        signer,
+        ...(parent ? { parent } : {}),
+      }),
+      r = await x.deliveryCall(w);
+    const issuance = x.f.rows('membership_transfers')[0]?.artifact ? 5 : 4;
+    decision(x, r, w, previous, issuance);
+    prior.push({ w, r, epoch: issuance });
+    retained.set(id, prior);
+    return { w, r };
+  };
+  await append(x.context.existing.id, x.keys.existing, 3, 2);
+  await append(x.context.candidate.id, x.keys.new, 4, 2);
+  const rejected = x.make(3, 'wrong generation before certification', { epoch: 4, gen: 2 });
+  const refusal = decision(x, await x.deliveryCall(rejected), rejected).refusal;
+  assert(refusal);
+  const tooEarly = x.make(1, 'pending publisher', {
+    epoch: 4,
+    credential: e.context.candidate.id,
+    signer: e.keys.new,
+  });
+  assert.equal((await x.deliveryCall(tooEarly)).kind, 'unknown');
+  const pendingRead = query(
+    x,
+    0,
+    8,
+    {
+      epoch: 4,
+      head: x.admission.head,
+      reader: e.context.candidate.id,
+      publisher: x.context.existing.id,
+    },
+    e.keys.new,
+  );
+  assert.equal((await read(x, pendingRead)).kind, 'unknown');
+  await d.approve();
+  assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
+  const installed = await d.transfer(d.request('new', 'install', d.installation));
+  assert.equal(installed.ok, true, JSON.stringify(installed));
+  for (const m of x.certification.epoch.roster)
+    assert.equal(
+      installed.certification.epoch.heads.find((h) => h.credentialId === m.id).position,
+      2,
+    );
+  await append(x.context.existing.id, x.keys.existing, 4, 3, refusal);
+  await append(x.context.candidate.id, x.keys.new, 3, 3);
+  assert.equal((await x.deliveryCall(tooEarly)).kind, 'unknown');
+  await append(e.context.candidate.id, e.keys.new, 5, 1);
+  x.f.restart();
+  x.authority.restart();
+  for (const values of retained.values())
+    for (const { w, r } of values) assert.deepEqual(await x.deliveryCall(w), r);
+  assert.deepEqual(await d.transfer(d.request('new', 'install', d.installation)), installed);
+  assert.deepEqual(
+    await x.authority.owner.admitMembership(x.f.core, x.admissionInput),
+    x.admission,
+  );
+  for (const [publisher, values] of retained) {
+    const q = query(
+      x,
+      0,
+      8,
+      { epoch: 5, head: installed.certification.head, reader: e.context.candidate.id, publisher },
+      e.keys.new,
+    );
+    page(x, await read(x, q), q, values);
+  }
+  const thirdRead = query(x, 0, 8, {
+    epoch: 5,
+    head: installed.certification.head,
+    publisher: e.context.candidate.id,
+  });
+  page(x, await read(x, thirdRead), thirdRead, retained.get(e.context.candidate.id));
+  const row = x.f.rows('membership_transfers')[0],
+    bounds = JSON.parse(row.boundaries);
+  const first = bounds.find((b) => b.credentialId === x.context.existing.id);
+  assert.equal(first.witness.events, 3); // Includes the refusal beyond the accepted position 2.
+  first.witness.events = 2;
+  mutate(x, (db) =>
+    db.prepare('UPDATE membership_transfers SET boundaries=?').run(JSON.stringify(bounds)),
+  );
+  assert.equal((await read(x, thirdRead)).kind, 'decision'); // Independent third-publisher ledger remains valid.
+  const damaged = query(x, 0, 8, {
+    epoch: 5,
+    head: installed.certification.head,
+    publisher: x.context.existing.id,
+  });
+  assert.equal((await read(x, damaged)).kind, 'unknown');
+  mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));
+  page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));
 });

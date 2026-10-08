@@ -10448,3 +10448,26 @@ and origin isolation pass. Logs: `/tmp/done-membership-history-regressions.log`,
 `/tmp/done-membership-history-browser.log`. The private service still fences ordinary continuation sync;
 service ledger integration is next, then discovery/grants and owned third-device client composition.
 Retained serving is unchanged and release validation remains paused.
+
+
+## 2026-10-08 — Continuation service delivery and publisher cuts (`L-1`)
+
+After history checkpoint `2fce72f1`, the private service resolves the complete signed continuation
+chain and each publisher's actual entry epoch, issuance intervals and retained boundary witnesses.
+Both existing publishers can keep writing during connection; certification captures their current
+accepted cuts atomically and gives the installed candidate its own publication interval. Queued older
+payloads and refused-parent retries retain their distinct evidence through later authority and restart.
+Exact admission retries check the original witnessed prefix, rather than rejecting subsequent writing.
+
+Evidence: 98 affected Node cases pass, including a directed three-publisher history with writes before
+and during admission, certification, old queued payloads, a refused parent, restart/exact retry,
+pre-certification refusal and independently verified inbound pages. Tampering with one publisher's
+boundary refuses that stream without invalidating an independent publisher's evidence. The packaged
+two-device Devices/delivery/reopen walkthrough passes in 17.2 seconds. TypeScript, scoped lint/format,
+build, budget and origin isolation pass. Logs: `/tmp/done-membership-ledger-regressions.log`,
+`/tmp/done-membership-ledger-browser.log`, `/tmp/done-membership-ledger-build.log`.
+
+The private frozen-prefix restriction is removed for delivery and transfer. Grants, bootstrap/discovery
+and browser adoption still need continuation composition; this is not yet a third-device product flow.
+No continuation HTTP route, host opt-in, personal-browser action or retained-service restart occurred.
+The retained installation remains schema 14 at `a07de792`; release validation remains paused.

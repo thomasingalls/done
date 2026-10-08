@@ -205,3 +205,17 @@ certified at epoch 5 cannot acquire an epoch-3 publication history. Queued old p
 accepted in a later eligible interval, with acceptance issuance checked separately from payload epoch.
 This is client proof composition; the service ledger owner, discovery/grants and client installation
 remain to be connected before removing the private continuation fence.
+
+
+## Continuation service ledger checkpoint — 2026-10-08
+
+The private delivery and transfer owners now compose the signed continuation history and per-publisher
+ledger boundaries. This replaces the temporary frozen epoch-3 ledger requirement: existing publishers
+can write through admission and certification, while the candidate can read or publish only after its
+verified installation and certification. Accepted cuts and refused events are replayed under their
+actual issuance authorities; exact historical retries remain valid after subsequent writing.
+
+This remains private schema 17. The ordinary host and retained installation remain schema 14. Grants,
+current-head discovery/bootstrap and client custody/editor adoption must use the same verified history
+before a continuation route or the third-device product action is enabled. Cancellation/removal,
+rotation and repeated later connections remain required.

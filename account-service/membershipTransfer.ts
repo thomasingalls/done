@@ -1,13 +1,10 @@
-import {
-  CONTENT_DELIVERY_LIMIT,
-  parseCertificationSuccessor,
-} from '../account-protocol/contentDelivery.ts';
-/** Private first continuation transfer. Ordinary delivery stays fenced until general history is composed. */
+import { CONTENT_DELIVERY_LIMIT } from '../account-protocol/contentDelivery.ts';
+/** Private first continuation transfer with exact per-publisher issuance boundaries. */
 import type { DatabaseSync } from 'node:sqlite';
-import { closed } from '../account-protocol/preparation.ts';
 import { same, verifySignature } from '../account-protocol/admission.ts';
 import {
   membershipState,
+  parseMembershipAdmission,
   verifyMembershipCertification,
   type MembershipCertification,
   type MembershipCertificationEpoch,
@@ -29,108 +26,13 @@ import {
 } from './delivery.ts';
 import { verifyPendingMembership } from './membershipAuthority.ts';
 import { membershipEnabled } from './membershipStore.ts';
-import { parseWitness, witnessMessage, type DeliveryWitness } from './deliveryWitness.ts';
+import { parseWitness } from './deliveryWitness.ts';
+import { resolveMembershipDeliveryAuthority } from './membershipHistory.ts';
 import { rethrowAuthorization } from './authorization.ts';
 export interface MembershipTransferIssuer extends DeliveryIssuer {
   certify(epoch: MembershipCertificationEpoch): Promise<MembershipCertification>;
 }
 const refuse = (refusal: string) => ({ ok: false as const, refusal });
-const boundaries = (raw: string, ids: readonly string[]) => {
-  const entries = JSON.parse(raw) as unknown;
-  if (!Array.isArray(entries) || entries.length !== ids.length)
-    throw Error('Missing continuation boundaries');
-  return entries.map((value, i) => {
-    const b = closed(value, ['credentialId', 'witness']);
-    if (b['credentialId'] !== ids[i]) throw Error('Continuation boundary identity changed');
-    return {
-      credentialId: ids[i]!,
-      witness: b['witness'] === null ? null : parseWitness(b['witness']),
-    };
-  });
-};
-
-/** This private increment accepts only the frozen 3→4 prefix. Any later ledger event refuses.
- * General delivery integration must replace this boundary with each verified issuance interval. */
-async function frozenLedgers(
-  s: Snapshot,
-  snapshots: Snapshot[],
-  auth: Awaited<ReturnType<typeof verifyPendingMembership>>,
-) {
-  const p = membershipState(auth.membership),
-    current = membershipState(auth.currentMembership);
-  const ids = auth.anchor.certificationSuccessor!.epoch.roster.map((m) => m.id);
-  const prior = boundaries(s.continuations![0]!.boundaries, ids);
-  const certBoundaries = auth.certification
-    ? boundaries(s.membershipTransfers![0]!.boundaries!, ids)
-    : null;
-  const check = async (
-    w: DeliveryWitness | null,
-    head: string,
-    credential: string,
-    count: number,
-    commitment: string,
-  ) => {
-    if (!w) {
-      if (count !== 0) throw Error('Missing continuation witness');
-      return;
-    }
-    if (w.events !== count || w.hash !== commitment)
-      throw Error('Continuation witness coverage changed');
-    await verifySignature(
-      p.acceptancePublicKey,
-      w.signature,
-      witnessMessage(
-        {
-          workspace: p.workspaceId,
-          credential,
-          lineage: p.lineageId,
-          head,
-          request: s.promotion.request_digest,
-        },
-        w,
-      ),
-    );
-  };
-  const ledgers = [];
-  for (const b of prior) {
-    const source = snapshots.find(
-      (x) => (x.publisher ?? auth.anchor.credential) === b.credentialId,
-    );
-    if (!source) throw Error('Missing continuation publisher');
-    const publisher = selectPublisher(auth.anchor, source.publisher);
-    const historical = {
-      ...source,
-      continuations: [],
-      membershipTransfers: [],
-      promotion: {
-        ...source.promotion,
-        successor_head: auth.anchor.a.head,
-        ...(!source.publisher
-          ? { delivery_witness: b.witness ? JSON.stringify(b.witness) : null }
-          : {}),
-      },
-      ...(source.publisher
-        ? { publisherWitness: b.witness ? JSON.stringify(b.witness) : null }
-        : {}),
-    };
-    const ledger = await census(historical, publisher);
-    const expected = p.heads.find((h) => h.credentialId === b.credentialId)!;
-    if (ledger.through !== expected.position || ledger.previous !== expected.link)
-      throw Error('Continuation accepted prefix changed');
-    const raw = source.publisher ? source.publisherWitness : source.promotion.delivery_witness;
-    const witness = raw ? parseWitness(JSON.parse(raw)) : null;
-    await check(witness, current.head, b.credentialId, ledger.count, ledger.commitment);
-    if (certBoundaries) {
-      const before = certBoundaries.find((x) => x.credentialId === b.credentialId)!;
-      await check(before.witness, p.head, b.credentialId, ledger.count, ledger.commitment);
-      const certified = current.heads.find((h) => h.credentialId === b.credentialId)!;
-      if (certified.position !== ledger.through || certified.link !== ledger.previous)
-        throw Error('Certification accepted prefix changed');
-    }
-    ledgers.push({ publisher, ledger, witness });
-  }
-  return ledgers;
-}
 export async function transferMembership(
   db: DatabaseSync,
   input: unknown,
@@ -149,8 +51,9 @@ export async function transferMembership(
     // IDs are only selectors here; verification below resolves the exact certified set.
     if (s?.transfer?.artifact && Buffer.byteLength(s.transfer.artifact) > CONTENT_DELIVERY_LIMIT)
       throw Error('Oversized retained anchor');
-    const snapshots = s?.transfer?.artifact
-      ? parseCertificationSuccessor(JSON.parse(s.transfer.artifact)).epoch.roster.map((m) =>
+    const latest = s?.continuations?.at(-1);
+    const snapshots = latest
+      ? parseMembershipAdmission(JSON.parse(latest.artifact)).epoch.roster.map((m) =>
           snapshot(db, request.workspaceId, m.id),
         )
       : [];
@@ -225,7 +128,23 @@ export async function transferMembership(
         delivery = proposed;
       }
       if (before.snapshots.some((x) => !x)) throw Error('Missing publisher snapshot');
-      const ledgers = await frozenLedgers(s, before.snapshots as Snapshot[], auth);
+      const composed = await resolveMembershipDeliveryAuthority(s, issuer);
+      const ledgers: {
+        publisher: ReturnType<typeof selectPublisher>;
+        ledger: Awaited<ReturnType<typeof census>>;
+        witness: ReturnType<typeof parseWitness> | null;
+      }[] = [];
+      for (const source of before.snapshots as Snapshot[]) {
+        const id = source.publisher ?? composed.credential;
+        const raw = source.publisher ? source.publisherWitness : source.promotion.delivery_witness;
+        if (!composed.members.some((m) => m.id === id)) {
+          if (source.rows.length || raw) throw Error('Pending publisher has a ledger');
+          continue;
+        }
+        const publisher = selectPublisher(composed, source.publisher),
+          ledger = await census(source, publisher);
+        ledgers.push({ publisher, ledger, witness: raw ? parseWitness(JSON.parse(raw)) : null });
+      }
       if (request.action === 'install') {
         if (!delivery) return refuse('delivery-required');
         const installation = await verifyMembershipInstallation(request.payload, delivery);
@@ -233,6 +152,16 @@ export async function transferMembership(
           if (!same(certification.epoch.installation, installation))
             return refuse('installation-conflict');
         } else {
+          const heads = p.heads.map((h) => {
+            const l = ledgers.find((l) => l.publisher.credential === h.credentialId);
+            return l
+              ? {
+                  credentialId: h.credentialId,
+                  position: l.ledger.through,
+                  link: l.ledger.previous,
+                }
+              : structuredClone(h);
+          });
           certification = await issuer.certify({
             v: 2,
             kind: 'membership-certification-epoch',
@@ -249,10 +178,11 @@ export async function transferMembership(
                 ? { ...m, state: 'certified', capabilities: ['read', 'write', 'admit', 'manage'] }
                 : structuredClone(m),
             ),
-            heads: structuredClone(p.heads),
+            heads,
           } as MembershipCertificationEpoch);
           await verifyMembershipCertification(certification, auth.membership);
           if (
+            !same(certification.epoch.heads, heads) ||
             !same(certification.epoch.delivery, delivery) ||
             !same(certification.epoch.installation, installation)
           )

@@ -232,6 +232,13 @@ export async function extendMembershipHistory(
   });
   return historyPublisher(result, held.credential);
 }
+/** The continuation state is the same process-branded state that established this history. */
+export function historyMembership(history: AdmissionHistory): VerifiedMembership {
+  const h = requireHistory(history),
+    state = timelines.get(publisherRoots.get(h) ?? h)?.membership;
+  if (!state) throw Error('History has no certified membership anchor');
+  return state;
+}
 /** Read the verified roster, including candidates not yet certified for sync. */
 export function historyDevices(history: AdmissionHistory) {
   const checked = requireHistory(history);

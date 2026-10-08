@@ -1,3 +1,6 @@
+import { resolveMembershipDeliveryAuthority } from './membershipHistory.ts';
+import { historyPublisher, type AdmissionHistory } from '../account-protocol/admissionHistory.ts';
+import type { MembershipRecipientCertificate } from '../account-protocol/membershipDelivery.ts';
 import { rethrowAuthorization, type OperationAuthorization } from './authorization.ts';
 import {
   membershipRows,
@@ -445,12 +448,48 @@ export async function verifyWorkspaceAuthority(
     receipt,
   };
 }
-const authority = verifyWorkspaceAuthority;
-type Authority = Awaited<ReturnType<typeof authority>> & { joinedPublisher?: boolean };
-/** A candidate may publish only after epoch-3 certification; it has no earlier ledger. */
+export interface LedgerBoundary {
+  successor: {
+    head: string;
+    epoch: { heads: { credentialId: string; position: number; link: string }[] };
+  };
+  witness: DeliveryWitness | null;
+  authority: DecisionAuthority;
+}
+export type DeliveryAuthority = Omit<
+  Awaited<ReturnType<typeof verifyWorkspaceAuthority>>,
+  'certification'
+> & {
+  certification:
+    | Awaited<ReturnType<typeof verifyWorkspaceAuthority>>['certification']
+    | MembershipRecipientCertificate;
+  joinedPublisher?: boolean;
+  history?: AdmissionHistory;
+  ledgerBoundaries?: ReadonlyMap<string, LedgerBoundary[]>;
+};
+type Authority = DeliveryAuthority;
+const authority = (
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+): Promise<Authority> =>
+  s.continuations?.length || s.membershipTransfers?.length
+    ? resolveMembershipDeliveryAuthority(s, issuer)
+    : verifyWorkspaceAuthority(s, issuer);
+/** A publisher starts at its own verified certification; it has no earlier ledger. */
 export function selectPublisher(auth: Authority, publisher?: string): Authority {
   if (!publisher || publisher === auth.credential) return auth;
   const member = auth.members.find((m) => m.id === publisher);
+  if (auth.history && member) {
+    const history = historyPublisher(auth.history, publisher);
+    return {
+      ...auth,
+      joinedPublisher: true,
+      credential: member.id,
+      key: member.key,
+      history,
+      scope: { ...auth.scope, credential: member.id },
+    };
+  }
   const boundary = auth.certificationSuccessor?.epoch.heads.find(
     (h) => h.credentialId === publisher,
   );
@@ -473,11 +512,18 @@ export function selectPublisher(auth: Authority, publisher?: string): Authority 
 async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) {
   const decoded = decodeSubmission(bytes),
     e = decodeNetworkEnvelope(decoded.envelope);
-  if (e.epoch < (auth.joinedPublisher ? 3 : 1) || e.epoch > maxEpoch)
+  if (e.epoch < (auth.history?.first.tip ?? (auth.joinedPublisher ? 3 : 1)) || e.epoch > maxEpoch)
     throw Error('Unsupported epoch');
   // These bounded admission/certification transitions preserve the original publisher and key.
   // A refusal successor is checked at its own mint epoch before current eligibility.
-  const mintAuthority = e.epoch === 1 ? auth.firstA : e.epoch === 2 ? auth.secondA : auth.a;
+  const mintAuthority = auth.history
+    ? auth.history.authorities.find((a) => a.tip === e.epoch)
+    : e.epoch === 1
+      ? auth.firstA
+      : e.epoch === 2
+        ? auth.secondA
+        : auth.a;
+  if (!mintAuthority) throw Error('Unknown envelope issuance authority');
   // The signed declared generation is checked as policy only after signature verification.
   const submission = await verifySubmission(
     bytes,
@@ -561,7 +607,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
   // Authority freshly authenticates scope.request (the complete request digest) on every request.
   // Bind generation and predecessor too; SQL columns, ordering, parent issuance and witness replay.
   const scope = JSON.stringify([auth.a, auth.scope, auth.generation]);
-  const boundaries = [
+  const boundaries = auth.ledgerBoundaries?.get(auth.credential) ?? [
     ...(!auth.joinedPublisher && auth.successor
       ? [{ successor: auth.successor, witness: auth.boundaryWitness, authority: auth.firstA }]
       : []),
@@ -998,7 +1044,7 @@ export async function readInbound(
         request.lineage !== auth.a.lineage ||
         request.head !== auth.a.head ||
         request.epoch !== auth.a.tip ||
-        ![1, 2, 3].includes(auth.a.tip) ||
+        (!auth.history && ![1, 2, 3].includes(auth.a.tip)) ||
         auth.generation !== 1 ||
         !live() ||
         !(await crypto.subtle.verify(
