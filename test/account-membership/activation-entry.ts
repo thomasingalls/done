@@ -14,6 +14,7 @@ import { unhex } from '../../account-protocol/recovery';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { MembershipHandoffState } from '../../src/account/membershipHandoff';
 import type { JoinedAuthority } from '../../src/crdt/joinedAccount';
+import { openOwnedSyncingAccountWorkspace } from '../../src/crdt/accountReceive';
 declare global {
   interface Window {
     fixtureCheckpoint(body: unknown): Promise<unknown>;
@@ -202,4 +203,93 @@ export async function activate(
   } finally {
     IDBObjectStore.prototype.put = put;
   }
+}
+let editor: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
+export async function openEditor(
+  slotId: string,
+  code: string,
+  pin: AuthorityPin,
+  principal: string,
+) {
+  Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false });
+  editor = await openOwnedSyncingAccountWorkspace(
+    {
+      slotId,
+      code,
+      pin,
+      membershipContinuation: true,
+      identity: {
+        id: principal,
+        actor: { kind: 'human', name: 'Test writer', color: '#334455' },
+        device: { id: 'native-membership-probe', name: 'Native probe' },
+      },
+      assertPasskey: async (r) => {
+        const a = await window.fixturePasskey([...r.challenge]);
+        return {
+          credentialId: a.credentialId,
+          authenticatorData: new Uint8Array(a.authenticatorData),
+          clientDataJSON: new Uint8Array(a.clientDataJSON),
+          signature: new Uint8Array(a.signature),
+        };
+      },
+    },
+    'a'.repeat(43),
+    true,
+  );
+  return editor.devices.read();
+}
+export async function adopt(
+  proofs: unknown,
+  fault: 'before-commit' | 'after-commit' | null = null,
+) {
+  const put = IDBObjectStore.prototype.put;
+  const cursor = IDBObjectStore.prototype.openCursor;
+  let wrote = false;
+  IDBObjectStore.prototype.put = function (value, ...args) {
+    if (this.name === 'entries' && value?.kind === 'certified-account-device' && value.membership) {
+      if (fault === 'before-commit') throw Error('Injected membership commit interruption');
+      wrote = true;
+    }
+    return put.call(this, value, ...args);
+  };
+  IDBObjectStore.prototype.openCursor = function (...args) {
+    if (fault === 'after-commit' && wrote && this.name === 'entries')
+      throw Error('Injected membership readback interruption');
+    return cursor.call(this, ...args);
+  };
+  try {
+    return await editor!.adoptMembership(proofs);
+  } finally {
+    IDBObjectStore.prototype.put = put;
+    IDBObjectStore.prototype.openCursor = cursor;
+  }
+}
+export async function edit(text: string) {
+  const workspace = editor!.workspace,
+    n = workspace.read().master.length;
+  await workspace
+    .text({ kind: 'master' })
+    .input({ name: 'insert', text }, { ranges: [{ anchor: n, head: n }], main: 0 }).accepted;
+  await workspace.whenDurable();
+  return workspace.read().master;
+}
+export async function closeEditor() {
+  await editor?.workspace.close();
+  editor = undefined;
+}
+export async function installation(slotId: string, code: string) {
+  return withJoinedSlot(
+    slotId,
+    code,
+    async (task) => {
+      const { marker } = await readJoinedAccount(task, slotId, code);
+      return {
+        key: marker!.key,
+        authority: marker!.authority,
+        reading: marker!.reading,
+        membership: marker!.membership ?? null,
+      };
+    },
+    signal(),
+  );
 }

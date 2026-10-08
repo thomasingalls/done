@@ -18,6 +18,11 @@ import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './conten
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
 import { decodeInboundRecord } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
+import {
+  installedMembershipHistory,
+  verifyInstalledMembership,
+  type InstalledMembership,
+} from './accountMembership';
 
 export interface InstalledSuccessor {
   artifact: AdmissionSuccessor;
@@ -53,15 +58,27 @@ export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
 }
 export async function heldCaptureRoute(marker: PromotionRecord): Promise<CaptureRoute> {
   const route = captureRoute(marker);
+  if (marker.membership && (marker.v !== 9 || !marker.successor?.certification))
+    throw Error('Membership adoption requires certified receiving custody');
   if (!marker.successor) return route;
   if (marker.successor.certification) {
-    const history = await verifyCertificationHistory(
+    let history = await verifyCertificationHistory(
       marker.successor.certification,
       marker.successor.artifact,
       { pin: marker.pin, request: marker.admission!.request, receipt: marker.admission!.receipt! },
       { epoch: 3, head: marker.successor.certification.head },
     );
-    return { ...route, epoch: 3, history };
+    if (marker.membership)
+      history = await installedMembershipHistory(
+        marker.membership,
+        {
+          pin: marker.pin,
+          request: marker.admission!.request,
+          receipt: marker.admission!.receipt!,
+        },
+        history,
+      );
+    return { ...route, epoch: history.current.tip, history };
   }
   const history = await verifyAdmissionHistory(
     marker.successor.artifact,
@@ -81,7 +98,14 @@ export async function verifyInstalledSuccessor(
   installed: InstalledSuccessor | undefined,
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
+  membership?: InstalledMembership,
 ): Promise<void> {
+  if (membership) {
+    if (!installed?.certification || !route.history)
+      throw Error('Membership adoption requires original certification');
+    await verifyInstalledMembership(spool, route.history, membership, 3, subtle, reuse);
+    return;
+  }
   if (!installed) {
     if (route.history) captureError('Successor evidence missing');
     return;

@@ -2,6 +2,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import fc from 'fast-check';
 import { privateDiscoveryPost } from '../src/account/privateDiscoveryHttp';
+import { MEMBERSHIP_CHAIN_LIMIT } from '../account-protocol/membershipLocator';
 import {
   clearPrivateTransportDiagnostics,
   readPrivateTransportDiagnostics,
@@ -37,6 +38,30 @@ const send = (signal = new AbortController().signal) =>
 afterEach(() => {
   vi.unstubAllGlobals();
   clearPrivateTransportDiagnostics();
+});
+it('uses the bounded v2 locator without reusing the original discovery endpoint', async () => {
+  const fetch = vi.fn(async () => new Response('{"reply":2}', { headers }));
+  vi.stubGlobal('fetch', fetch);
+  const input = {
+    ...request,
+    v: 2 as const,
+    kind: 'membership-discovery-request' as const,
+    epoch: 3,
+  };
+  const work = privateDiscoveryPost(pin, token, input, new AbortController().signal);
+  input.head = 'ff'.repeat(32);
+  expect(await work).toEqual({ reply: 2 });
+  const [url, options] = fetch.mock.calls[0] as unknown as [URL, RequestInit];
+  expect(url.href).toBe(pin.origin + '/account/membership/v2/discover');
+  expect(JSON.parse(options.body as string).head).toBe(request.head);
+  fetch.mockImplementation(
+    async () =>
+      new Response('{}', {
+        headers: { ...headers, 'Content-Length': String(MEMBERSHIP_CHAIN_LIMIT + 1025) },
+      }),
+  );
+  expect(await privateDiscoveryPost(pin, token, input, new AbortController().signal)).toBeNull();
+  expect(readPrivateTransportDiagnostics().at(-1)?.code).toBe('response-too-large');
 });
 it('uses the pinned endpoint, owns the request bytes and omits credentials, caches and redirects', async () => {
   const fetch = vi.fn(async () => new Response('{"reply":1}', { headers }));

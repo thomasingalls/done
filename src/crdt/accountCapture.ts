@@ -1,4 +1,5 @@
 import { verifyJoinedAccount } from './joinedAccount';
+import { historyAuthority } from '../../account-protocol/admissionHistory';
 import { claimScope } from './localGenesisRecord';
 /** Private v6 source-capturing Account owner. No network position, envelope or send capability. */
 import {
@@ -409,14 +410,16 @@ export async function openAccountCaptureOwner(
         if (
           extension?.version !== 9 ||
           !next.history ||
-          next.epoch !== 2 ||
-          route.epoch !== 1 ||
+          next.epoch <= route.epoch ||
+          (route.epoch === 1 && next.epoch !== 2) ||
+          (route.epoch !== 1 && route.epoch < 3) ||
           next.workspace !== route.workspace ||
           next.principal !== route.principal ||
           next.credential !== route.credential ||
           next.generation !== route.generation
         )
           throw Error('Invalid owned authority transition');
+        if (route.history) historyAuthority(next.history, route.history.current);
         route = next;
       });
     },

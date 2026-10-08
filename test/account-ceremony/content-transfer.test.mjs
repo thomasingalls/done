@@ -58,6 +58,7 @@ import {
   verifyHistoryDecision,
   createAdmissionPrefixVerifier,
   historyPublisher,
+  historyMembership,
 } from '../../account-protocol/admissionHistory.ts';
 import { envelope } from '../account-transport/oracle.mjs';
 import { build } from 'vite';
@@ -3185,14 +3186,11 @@ test('later native slot resumes activation after index interruption and rejects 
   source
     .getText('master')
     .insert(source.getText('master').length, ' A native third device can retain this.');
-  assert.equal(
-    (
-      await x.deliveryCall(
-        x.make(1, '', { epoch: 4, updates: [Y.encodeStateAsUpdate(source, before)] }),
-      )
-    ).kind,
-    'decision',
+  const nativeAccepted = await x.deliveryCall(
+    x.make(1, '', { epoch: 4, updates: [Y.encodeStateAsUpdate(source, before)] }),
   );
+  assert.equal(nativeAccepted.kind, 'decision');
+  const acceptedHead = JSON.parse(Buffer.from(nativeAccepted.bytes).toString());
   await page.exposeFunction('fixtureCheckpoint', (body) =>
     x.authority.owner.readMembershipCheckpoint(x.f.core, body),
   );
@@ -3265,6 +3263,121 @@ test('later native slot resumes activation after index interruption and rejects 
   );
   await open();
   assert.deepEqual(await activate(false), ready);
+  // Exercise a later authority through the actual joined editor/queue/native marker. The service
+  // remains fenced at its first continuation; this next signed proof is issued by a test-only stub.
+  const parent = membershipState(
+    historyMembership((await verifyMembershipChain(f.authority.proofs, f.authority.base)).history),
+  );
+  const nextPreparation = structuredClone(x.admission.epoch.preparation);
+  nextPreparation.context.epoch = parent.epoch;
+  nextPreparation.context.certifiedSetDigest = parent.certifiedSetDigest;
+  nextPreparation.context.attemptId = randomBytes(32).toString('base64url');
+  nextPreparation.receiptId = randomBytes(32).toString('base64url');
+  nextPreparation.context.candidate = {
+    ...nextPreparation.context.candidate,
+    head: parent.head,
+    credentialId: 'cf'.repeat(16),
+    sPub: material(generateKeyPairSync('ed25519')).public,
+    wPub: material(generateKeyPairSync('x25519')).public,
+  };
+  nextPreparation.signature = '00'.repeat(64);
+  const preparation = x.authority.owner.enrollment(
+    {
+      enrollment(_op, _input, issuer) {
+        return issuer.receipt(nextPreparation);
+      },
+    },
+    'finish',
+    {},
+  );
+  const candidate = preparation.context.candidate;
+  const next = await x.authority.owner.admitMembership(
+    {
+      admitMembership(_input, issuer) {
+        return issuer.admission({
+          v: 2,
+          kind: 'membership-admission-epoch',
+          workspaceId: parent.workspaceId,
+          lineageId: parent.lineageId,
+          epoch: parent.epoch + 1,
+          parent: parent.head,
+          generation: parent.generation,
+          acceptancePublicKey: parent.acceptancePublicKey,
+          preparation,
+          certifiedSetDigest: parent.certifiedSetDigest,
+          roster: [
+            ...parent.roster,
+            {
+              id: candidate.credentialId,
+              wPub: candidate.wPub,
+              sPub: candidate.sPub,
+              principalId: parent.principalId,
+              state: 'pending',
+              capabilities: [],
+            },
+          ].sort((a, b) => a.id.localeCompare(b.id)),
+          heads: [
+            ...parent.heads.map((h) =>
+              h.credentialId === acceptedHead[4]
+                ? { ...h, position: acceptedHead[5], link: acceptedHead[6] }
+                : h,
+            ),
+            { credentialId: candidate.credentialId, position: 0, link: '00'.repeat(32) },
+          ].sort((a, b) => a.credentialId.localeCompare(b.credentialId)),
+        });
+      },
+    },
+    {},
+  );
+  const proofs = {
+    ...f.authority.proofs,
+    continuations: [...f.authority.proofs.continuations, next],
+  };
+  const installation = () =>
+    page.evaluate(
+      ({ slotId, code }) => window.MembershipActivation.installation(slotId, code),
+      pending,
+    );
+  const originalInstallation = await installation();
+  const openEditor = () =>
+    page.evaluate(
+      ({ slotId, code, pin, principal }) =>
+        window.MembershipActivation.openEditor(slotId, code, pin, principal),
+      { ...pending, pin: x.authority.pin, principal: parent.principalId },
+    );
+  const adopt = (fault) =>
+    page.evaluate(({ proofs, fault }) => window.MembershipActivation.adopt(proofs, fault), {
+      proofs,
+      fault,
+    });
+  await openEditor();
+  await page.evaluate(() =>
+    window.MembershipActivation.edit(' Queued before adopting membership.'),
+  );
+  await assert.rejects(adopt('before-commit'), /Injected membership commit/);
+  await page.evaluate(() => window.MembershipActivation.closeEditor());
+  assert.deepEqual(await installation(), originalInstallation);
+  await open();
+  assert.equal((await openEditor()).epoch, 5);
+  await assert.rejects(adopt('after-commit'), /Injected membership readback/);
+  await page.evaluate(() => window.MembershipActivation.closeEditor());
+  const adoptedInstallation = await installation();
+  assert.deepEqual({ ...adoptedInstallation, membership: null }, originalInstallation);
+  assert.equal(adoptedInstallation.membership.cuts.at(-1).epoch, 6);
+  await open();
+  assert.equal((await openEditor()).epoch, 6);
+  assert.deepEqual(await adopt(null), { epoch: 6, head: next.head });
+  await assert.rejects(
+    page.evaluate((proofs) => window.MembershipActivation.adopt(proofs), f.authority.proofs),
+  );
+  const writing = await page.evaluate(() =>
+    window.MembershipActivation.edit(' Writing after membership adoption.'),
+  );
+  assert.match(writing, /Queued before adopting membership/);
+  assert.match(writing, /Writing after membership adoption/);
+  await page.evaluate(() => window.MembershipActivation.closeEditor());
+  await open();
+  assert.equal((await activate(false)).epoch, 6);
   // A storage change cannot be hidden by the completed index. Authentication precedes opening.
   await page.evaluate(async (slotId) => {
     const db = await new Promise((resolve) => {

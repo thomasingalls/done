@@ -331,3 +331,21 @@ must neither rewrite its activation baseline nor reinterpret its local Account i
 installation. Verify retained accepted prefixes and local ledger cuts before adopting a newer signed
 chain, clear verification caches under the owning permit, and recover a committed adoption on reopen.
 Then connect the version-2 ceremony and loader to the product screens.
+
+
+## Owned membership adoption checkpoint — 2026-10-08
+
+Original and joined receiving owners now separate immutable installation from adopted membership.
+The authenticated carrier records a complete verified chain and each exact local ledger cut. Current
+routes advance only after verification and native commit; cold reopening rechecks both the frozen
+baseline and later cuts. Historical received decisions keep their original issuance authority, and
+queued old source updates remain recoverable. The existing owner closes after a committed adoption
+whose readback fails; an exact cold retry resumes the retained head.
+
+Version-2 discovery is attached to the same queue/permit and enabled by the private continuation-host
+option or retained continuation custody. The default epoch-3 packaged host remains compatible.
+Focused native interruption and two-device compatibility checks pass. A test-issued next proof checks
+later joined adoption without claiming the service's repeated-admission path is implemented.
+Next: wire continuation invitation/preparation/comparison and the existing handoff/reader into product
+screens, then demonstrate real original/joined adoption and three-device writing. Cancellation before
+approval and removal with rotation afterward still need their actual membership transitions.

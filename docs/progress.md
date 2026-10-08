@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: native later-device activation complete; existing-device authority adoption next
+scope: owned membership adoption complete; version-2 product ceremony composition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -97,10 +97,14 @@ and retains its own semantic baseline admission under the current certified head
 pass, including real encrypted Yjs replay through cross-publisher dependencies and interrupted saves.
 Replay is committed as `12e0269c`. Native joined-device record version 2 now activates that state
 through the existing restartable content/index handoff. 61 affected checks, the new native interruption
-case, and the existing packaged two-device reopening/sync check pass.
+case, and the existing packaged two-device reopening/sync check pass. Native activation is committed
+as `1f615fdf`. Current membership now has a separate authenticated carrier with exact local ledger
+cuts; existing owners verify all retained evidence before committing and changing routes. Focused
+native before/after-commit recovery, old-owner and packaged two-device checks pass. Version-2 discovery
+is opt-in for the continuation host; the retained/default epoch-3 host is unchanged.
 
-**Next:** owned current-authority adoption for existing original/joined devices, followed by
-version-2 product ceremony and editor composition;
+**Next:** version-2 product ceremony and editor composition, including a real three-device check of
+original/joined authority adoption and delivery;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.

@@ -3,6 +3,7 @@ import {
   type ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 import { parseInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
+import { parseInstalledMembership, type InstalledMembership } from './accountMembership';
 import { parseHandoff, type HandoffState } from './handoffRecord';
 import { parseRetainedAdmission, type RetainedAdmission } from '../../account-protocol/admission';
 /** Internal authenticated inventory of the single promotion carrier, retained at the stable interlock. */
@@ -81,6 +82,7 @@ export interface PromotionRecord {
     | 'account-delivering'
     | 'account-receiving';
   successor?: InstalledSuccessor;
+  membership?: InstalledMembership;
   catchup?: ContentCheckpoint;
   handoff?: HandoffState;
   admission?: RetainedAdmission;
@@ -108,6 +110,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
+    ...((input as { v?: number })?.v === 9 && Object.hasOwn(input as object, 'membership')
+      ? ['membership']
+      : []),
     ...([6, 7, 8, 9].includes((input as { v?: number })?.v ?? 0) &&
     Object.hasOwn(input as object, 'catchup')
       ? ['catchup']
@@ -221,6 +226,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
         }
       : {}),
     ...(Object.hasOwn(r, 'catchup') ? { catchup: parseContentCheckpoint(r['catchup']) } : {}),
+    ...(Object.hasOwn(r, 'membership')
+      ? { membership: parseInstalledMembership(r['membership']) }
+      : {}),
     ...(Object.hasOwn(r, 'successor')
       ? { successor: parseInstalledSuccessor(r['successor']) }
       : {}),
@@ -278,6 +286,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
       ...(r.v >= 4 ? [parseHandoff(r.handoff)] : []),
       ...(r.successor ? [parseInstalledSuccessor(r.successor)] : []),
       ...(r.catchup ? [parseContentCheckpoint(r.catchup)] : []),
+      ...(r.membership ? [parseInstalledMembership(r.membership)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

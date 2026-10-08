@@ -63,6 +63,12 @@ import type { AccountStartupOptions } from './accountStartup';
 import type { ContentReaderState } from '../account/contentReader';
 import type { InstalledContentKey } from '../account/ceremonyVault';
 import type { Slot } from './slotIndex';
+import {
+  parseInstalledMembership,
+  installedMembershipHistory,
+  verifyInstalledMembership,
+  type InstalledMembership,
+} from './accountMembership';
 
 interface JoinedFields {
   kind: 'certified-account-device';
@@ -72,6 +78,7 @@ interface JoinedFields {
   phase: 'installing' | 'active';
   key: InstalledContentKey;
   mac: string;
+  membership?: InstalledMembership;
 }
 export type JoinedAuthority = CheckpointAuthority & {
   continuations: ReturnType<typeof parseMembershipChain>['continuations'];
@@ -106,6 +113,7 @@ function parseJoined(input: unknown): JoinedRecord {
     'reading',
     'key',
     'mac',
+    ...(Object.hasOwn(input as object, 'membership') ? ['membership'] : []),
   ]);
   if (
     (r['v'] !== 1 && r['v'] !== 2) ||
@@ -114,6 +122,10 @@ function parseJoined(input: unknown): JoinedRecord {
     !['installing', 'active'].includes(String(r['phase']))
   )
     throw Error('Invalid certified device');
+  if (Object.hasOwn(r, 'membership')) {
+    if (r['phase'] !== 'active') throw Error('Uninstalled device cannot adopt membership');
+    r['membership'] = parseInstalledMembership(r['membership']);
+  }
   for (const field of ['claimMac', 'custodyMac', 'mac']) unhex(r[field], 32);
   const a = closed(
     r['authority'],
@@ -302,6 +314,22 @@ export async function writeJoinedApproval(
     custodyMac: hex(next.mac),
   });
   await writeJoined(task, state, marker, next, check);
+}
+/** Called only after the composed owner verifies the proposed authority against retained content. */
+export async function writeJoinedMembership(
+  task: SessionTask,
+  state: JoinedState,
+  code: string,
+  input: InstalledMembership,
+  check?: () => void,
+) {
+  if (state.marker?.phase !== 'active') throw Error('Membership needs active joined custody');
+  const next = await signJoined(task, state, code, {
+    ...state.marker,
+    membership: parseInstalledMembership(input),
+  });
+  await writeJoined(task, state, next, state.record, check);
+  return next;
 }
 export async function joinedKeys<T>(
   task: SessionTask,
@@ -594,6 +622,14 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
   return joinedKeys(task, state, options.code, async (kg, _signer, publicKey) => {
     const b = await baseline(task, state, kg);
     try {
+      const initialEpoch = b.route.epoch;
+      if (marker.membership) {
+        const history = await task.wait(() =>
+          installedMembershipHistory(marker.membership!, marker.authority.base, b.route.history!),
+        );
+        b.route = { ...b.route, epoch: history.current.tip, history };
+        b.base = { ...b.base, authority: history.current, history };
+      }
       if (options.networkLogin) {
         await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
           options.networkLogin!.initialize(
@@ -740,6 +776,14 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
             await verifySpool(census.delivery.spool, b.route, kg, publicKey, crypto.subtle);
+            if (marker.membership)
+              await verifyInstalledMembership(
+                census.delivery.spool,
+                b.route.history!,
+                marker.membership,
+                initialEpoch,
+                crypto.subtle,
+              );
             const delivery = await verifyDelivery(
               census.delivery,
               b.route,

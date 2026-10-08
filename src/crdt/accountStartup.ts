@@ -31,6 +31,8 @@ export interface AccountStartupOptions {
   signal?: AbortSignal;
   /** Staged session adapter; absent in the private-token host until route cutover. */
   networkLogin?: NetworkLogin;
+  /** Private continuation host capability; retained continuation custody also enables discovery. */
+  membershipContinuation?: boolean;
 }
 export const captureAccountOptions = (input: AccountStartupOptions): AccountStartupOptions => ({
   ...input,
@@ -227,7 +229,14 @@ export async function verifyAccountUnderPermit(
                         ? inspectDelivery(records, route, authority).spool
                         : inspectSpool(records, route);
                   await verifySpoolWitness(state, counter, subtle);
-                  await verifyInstalledSuccessor(state, route, marker.successor, subtle);
+                  await verifyInstalledSuccessor(
+                    state,
+                    route,
+                    marker.successor,
+                    subtle,
+                    undefined,
+                    marker.membership,
+                  );
                   if (marker.v === 9)
                     await verifyInboundLedger(
                       inspectInbound(records, route, inbound!),

@@ -1,6 +1,23 @@
 import { ScopedTransport } from '../account/scopedTransport';
 import { isAccountAccess, type AccountAccess } from '../account/accountHttp';
-import { readJoinedAccount, joinedPayload, joinedKeys } from './joinedAccount';
+import {
+  readJoinedAccount,
+  joinedPayload,
+  joinedKeys,
+  writeJoinedMembership,
+} from './joinedAccount';
+import {
+  parseInstalledMembership,
+  verifyInstalledMembership,
+  type InstalledMembership,
+} from './accountMembership';
+import {
+  parseMembershipChain,
+  verifyMembershipChain,
+  parseMembershipDiscoveryRequest,
+  membershipDiscoveryRequestMessage,
+  verifyMembershipDiscoveryResponse,
+} from '../../account-protocol/membershipLocator';
 import { privateDiscoveryPost } from '../account/privateDiscoveryHttp';
 import {
   parseSuccessor,
@@ -8,7 +25,12 @@ import {
   discoveryRequestMessage,
   verifyDiscoveryResponse,
 } from '../../account-protocol/successor';
-import { verifyAdmissionHistory, historyDevices } from '../../account-protocol/admissionHistory';
+import {
+  verifyAdmissionHistory,
+  historyDevices,
+  historyPublisher,
+  historyAuthority,
+} from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
 import { createVerifiedRecords } from './verifiedRecords';
@@ -110,6 +132,8 @@ async function openAccountReceiveOwner(
       ? verified.read(records, (v) => v.census)
       : inspectInbound(records, route, base);
   let installed: InstalledSuccessor | undefined;
+  let membership: InstalledMembership | undefined,
+    initialEpoch = 3;
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
     expectedRecord: unknown,
@@ -142,6 +166,7 @@ async function openAccountReceiveOwner(
       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
       expectedRecord = v.record;
       installed = v.marker.successor;
+      membership = v.marker.membership;
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
         const kg = await openEnvelope(claimScope(v.claim), root, v.record.envelope!, subtle);
         try {
@@ -168,6 +193,8 @@ async function openAccountReceiveOwner(
     async initializeJoined(task, v) {
       expectedPayload = hex(joinedPayload(v.marker!));
       expectedRecord = v.record;
+      membership = v.marker!.membership;
+      initialEpoch = v.marker!.v === 2 ? v.marker!.reading.epoch : 3;
       await joinedKeys(task, v, options.code, async (kg, signing, verifying) => {
         base = { ...v.base, generationKey: kg.slice() };
         signer = signing;
@@ -190,6 +217,16 @@ async function openAccountReceiveOwner(
                 census.delivery.spool,
                 route,
                 installed,
+                subtle,
+                reuse,
+                membership,
+              );
+            else if (membership)
+              await verifyInstalledMembership(
+                census.delivery.spool,
+                route.history!,
+                membership,
+                initialEpoch,
                 subtle,
                 reuse,
               );
@@ -606,6 +643,127 @@ async function openAccountReceiveOwner(
       }
     });
   };
+  const adoptMembership = (input: unknown, checkCommit?: () => void) => {
+    const proofs = parseMembershipChain(input);
+    if (!composed)
+      return Promise.reject(Error('Membership installation requires the composed owner'));
+    return runCaptureTask(async (task, owner, route) => {
+      await assertCurrent(task);
+      if (!route.history || route.epoch < 3)
+        throw Error('Membership needs a certified installation');
+      task.step(() => checkCommit?.());
+      const current = joined
+        ? await readJoinedAccount(task, options.slotId, options.code)
+        : await readPromotion(task, options.slotId, options.code);
+      const anchor = joined
+        ? (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!.authority.base
+        : {
+            pin: options.pin,
+            request: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
+              .request,
+            receipt: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
+              .receipt!,
+          };
+      const verifiedHistory = await task.wait(() => verifyMembershipChain(proofs, anchor)),
+        history = historyPublisher(verifiedHistory.history, route.credential);
+      historyAuthority(history, route.history.current);
+      task.step(() => checkCommit?.());
+      if (history.current.tip === route.epoch)
+        return { epoch: route.epoch, head: history.current.head };
+      if (history.current.tip < route.epoch) throw Error('Membership cannot regress');
+      const records = await owner.carrier.load(task);
+      let committed = false;
+      try {
+        const before = await owner.carrier.spoolWitness(task),
+          nextMembership = parseInstalledMembership({
+            v: 1,
+            proofs,
+            cuts: [
+              ...(membership?.cuts ?? []),
+              { epoch: history.current.tip, head: history.current.head, before },
+            ],
+          }),
+          nextRoute = { ...route, epoch: history.current.tip, history },
+          nextBase = { ...base, history, authority: history.current },
+          census = inspectInbound(records, nextRoute, nextBase),
+          subtle = subtleFor(task);
+        await verifyInstalledMembership(
+          census.delivery.spool,
+          history,
+          nextMembership,
+          initialEpoch,
+          subtle,
+        );
+        await verifySpool(census.delivery.spool, nextRoute, base.generationKey, publicKey, subtle);
+        const delivery = await verifyDelivery(
+            census.delivery,
+            nextRoute,
+            nextBase.authority,
+            publicKey,
+            subtle,
+          ),
+          inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+        verifySyncState(census.delivery, delivery, inbound);
+        // Persist only the current-membership carrier. The installation, key, checkpoint and index stay bound.
+        if (joined) {
+          const next = await writeJoinedMembership(
+            task,
+            current as Awaited<ReturnType<typeof readJoinedAccount>>,
+            options.code,
+            nextMembership,
+            checkCommit,
+          );
+          committed = true;
+          expectedPayload = hex(joinedPayload(next));
+        } else {
+          const state = current as Awaited<ReturnType<typeof readPromotion>>;
+          await withPromotionRoot(
+            task,
+            state.claim,
+            state.record,
+            options.code,
+            async (root, subtle) => {
+              const next = await signPromotion(
+                root,
+                { ...state.marker!, membership: nextMembership },
+                subtle,
+              );
+              await writePromotion(
+                task,
+                state.claim,
+                state.record,
+                state.record,
+                state.marker!,
+                next,
+                checkCommit,
+              );
+              committed = true;
+              expectedPayload = hex(promotionPayload(next));
+            },
+          );
+        }
+        task.step(() => {
+          installRoute(task, nextRoute);
+          base = nextBase;
+          membership = nextMembership;
+          verified.clear();
+          memo.clear();
+          coverage.clear();
+          outstanding?.fill(0);
+          outstanding = undefined;
+        });
+        await assertCurrent(task);
+        const readback = await owner.carrier.load(task);
+        for (const r of readback) r.bytes.fill(0);
+        return task.step(() => ({ epoch: history.current.tip, head: history.current.head }));
+      } catch (cause) {
+        if (committed) void carrier.close().catch(() => {});
+        throw cause;
+      } finally {
+        for (const r of records) r.bytes.fill(0);
+      }
+    });
+  };
   let discoveryDue = 0,
     discoveryRevision = 0;
   let discoveryFlight:
@@ -615,10 +773,84 @@ async function openAccountReceiveOwner(
     if (discoveryFlight) return discoveryFlight;
     const work = runNetworkTask(async (network) => {
       if (!composed) throw Error('Discovery requires the composed owner');
-      if (base.history || (!force && performance.now() < discoveryDue))
+      if (
+        base.authority.tip === 2 ||
+        (base.authority.tip === 3 && !options.membershipContinuation) ||
+        (!force && performance.now() < discoveryDue)
+      )
         return { kind: 'unchanged' as const };
       if (!canReceive()) return { kind: 'paused' as const };
       const revision = discoveryRevision;
+      if (base.authority.tip >= 3) {
+        const prepared = await runCaptureTask(async (task) => {
+          await assertCurrent(task);
+          const anchor = joined
+            ? (await readJoinedAccount(task, options.slotId, options.code)).marker!.authority.base
+            : await readPromotion(task, options.slotId, options.code).then(({ marker }) => ({
+                pin: options.pin,
+                request: marker!.admission!.request,
+                receipt: marker!.admission!.receipt!,
+              }));
+          const request = parseMembershipDiscoveryRequest({
+            v: 2,
+            kind: 'membership-discovery-request',
+            pin: options.pin,
+            workspaceId: base.authority.workspace,
+            lineageId: base.authority.lineage,
+            credentialId: base.reader.id,
+            epoch: base.authority.tip,
+            head: base.authority.head,
+            nonce: hex(task.step(() => random(32))),
+            expiresAt: Date.now() + 30000,
+            signature: '00'.repeat(64),
+          });
+          request.signature = hex(
+            new Uint8Array(
+              await task.wait(async () =>
+                subtleFor(task).sign(
+                  'Ed25519',
+                  signer!,
+                  await membershipDiscoveryRequestMessage(request),
+                ),
+              ),
+            ),
+          );
+          await assertCurrent(task);
+          return { request, anchor };
+        });
+        if (!canReceive()) return { kind: 'paused' as const };
+        const response = await network.wait(() =>
+          privateDiscoveryPost(options.pin, access ?? token, prepared.request, network.signal),
+        );
+        if (!response) return { kind: 'unknown' as const };
+        try {
+          const answer = await network.wait(() =>
+            verifyMembershipDiscoveryResponse(
+              response,
+              prepared.request,
+              prepared.anchor,
+              Date.now(),
+            ),
+          );
+          const result = await adoptMembership(answer.response.proofs, () => {
+            network.step(() => {});
+            if (prepared.request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
+          });
+          discoveryDue = revision === discoveryRevision ? performance.now() + 5000 : 0;
+          return {
+            kind:
+              result.head === prepared.request.head ? ('unchanged' as const) : ('adopted' as const),
+          };
+        } catch {
+          network.step(() => {});
+          recordPrivateTransportDiagnostic({
+            operation: 'discovery',
+            phase: 'verify',
+            code: 'response-invalid',
+          });
+          return { kind: 'unknown' as const };
+        }
+      }
       const prepared = await runCaptureTask(async (task) => {
         await assertCurrent(task);
         const { marker } = await readPromotion(task, options.slotId, options.code);
@@ -816,6 +1048,7 @@ async function openAccountReceiveOwner(
     fetchPage,
     createOutbound,
     adoptSuccessor,
+    adoptMembership,
     refreshAuthority,
     resetDiscovery: () => {
       discoveryRevision++;
@@ -855,6 +1088,7 @@ async function openReceivingWorkspace(
     fetchPage,
     createOutbound,
     adoptSuccessor,
+    adoptMembership,
     refreshAuthority,
     resetDiscovery,
   } = await openAccountReceiveOwner(
@@ -1072,6 +1306,12 @@ async function openReceivingWorkspace(
         },
         adoptSuccessor: async (input: unknown) => {
           const result = await adoptSuccessor(input);
+          scheduler.runtime.retry('send');
+          scheduler.runtime.retry('receive');
+          return result;
+        },
+        adoptMembership: async (input: unknown) => {
+          const result = await adoptMembership(input);
           scheduler.runtime.retry('send');
           scheduler.runtime.retry('receive');
           return result;

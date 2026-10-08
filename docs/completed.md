@@ -10649,3 +10649,31 @@ and diff checks pass. Logs: `/tmp/done-membership-activation-regressions.log`,
 `/tmp/done-membership-activation-build.log`. This is native activation, not an enabled third-device
 product ceremony or proof that existing editors adopt later membership. Owned authority adoption
 and UI composition remain next. No retained installation was changed; release validation is paused.
+
+
+## 2026-10-08 — Owned current-membership adoption (`L-1`)
+
+After native activation checkpoint `1f615fdf`, original and joined receiving owners retain a separate
+authenticated membership carrier. The installation proof, wrapped key, checkpoint admission and local
+Account index keep their original meaning. Each adoption records the exact local spool witness and
+new head. The owner verifies ancestry, all service-accepted prefixes, retained ciphertext and inbound
+decisions before the native compare/write; only then does it change the capture route and clear caches.
+Reopening verifies the recorded cuts and resolves historical inbound evidence at its original head.
+
+The composed owner now supports bounded version-2 discovery for an explicitly enabled continuation
+host (or already-retained continuation). The default epoch-3 host keeps its existing behavior. Request
+pin, nonce, lifetime and reader checks precede adoption; an unknown response cannot replace authority.
+An interrupted pre-commit write preserves the old state; post-commit readback failure closes the owner
+and cold reopening resumes the committed state. Exact retries do not create a second cut.
+
+Evidence: 14 affected Node history/replay/locator cases, 5 discovery transport cases, the expanded
+native joined-device activation/adoption test, one original-owner adoption regression, and the packaged
+two-device custody/reopening/sync regression pass. The native continuation case uses a test-issued
+epoch-6 admission, retains actual accepted-write cuts, exercises both sides of the commit boundary,
+rejects regression, and preserves writing before/after adoption and immutable installation fields.
+It does not claim that the service currently admits a fourth device or that the third-device product
+ceremony is wired. Original continuation routing is covered at the protocol/ledger layer; the actual
+three-device product check remains required. TypeScript, scoped lint/format, build, budget, origin and
+diff checks pass. Logs: `/tmp/done-membership-adoption-{focused,regressions,http,native,original-owner,
+legacy-browser,build}.log` (each name expands separately). Next: version-2 product ceremony and editor
+composition. No retained service restart or personal-data change; release validation stays paused.

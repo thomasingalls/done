@@ -8,11 +8,15 @@ import {
 } from '../../account-protocol/successor';
 import { recordPrivateTransportDiagnostic } from './privateDeliveryHttp';
 import { type Diagnostic } from '../../account-protocol/diagnostics';
+import {
+  parseMembershipDiscoveryRequest,
+  MEMBERSHIP_CHAIN_LIMIT,
+} from '../../account-protocol/membershipLocator';
 
 export async function privateDiscoveryPost(
   inputPin: AuthorityPin,
   token: AccountAccess,
-  input: AuthorityDiscoveryRequest,
+  input: AuthorityDiscoveryRequest | ReturnType<typeof parseMembershipDiscoveryRequest>,
   signal: AbortSignal,
 ): Promise<unknown | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
@@ -20,22 +24,29 @@ export async function privateDiscoveryPost(
   const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
   try {
     const pin = parseAuthorityPin(inputPin),
-      request = parseDiscoveryRequest(input);
+      request =
+        input.v === 2 ? parseMembershipDiscoveryRequest(input) : parseDiscoveryRequest(input),
+      limit = input.v === 2 ? MEMBERSHIP_CHAIN_LIMIT + 1024 : DISCOVERY_RESPONSE_LIMIT;
     if (JSON.stringify(request.pin) !== JSON.stringify(pin)) throw Error('Discovery pin changed');
     if (!isAccountAccess(token)) {
       note('request', 'invalid-token');
       return null;
     }
     stopped.throwIfAborted();
-    const response = await accountServiceFetch(pin, token, '/account/authority/discover', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(request),
-      credentials: 'omit',
-      cache: 'no-store',
-      redirect: 'error',
-      signal: stopped,
-    });
+    const response = await accountServiceFetch(
+      pin,
+      token,
+      input.v === 2 ? '/account/membership/v2/discover' : '/account/authority/discover',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+        credentials: 'omit',
+        cache: 'no-store',
+        redirect: 'error',
+        signal: stopped,
+      },
+    );
     if (
       stopped.aborted ||
       response.status !== 200 ||
@@ -47,10 +58,7 @@ export async function privateDiscoveryPost(
       return null;
     }
     const declared = response.headers.get('content-length');
-    if (
-      declared !== null &&
-      (!/^\d+$/.test(declared) || Number(declared) > DISCOVERY_RESPONSE_LIMIT)
-    ) {
+    if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit)) {
       await response.body.cancel();
       note('response', 'response-too-large');
       return null;
@@ -70,7 +78,7 @@ export async function privateDiscoveryPost(
         stopped.throwIfAborted();
         if (done) break;
         length += value.length;
-        if (length > DISCOVERY_RESPONSE_LIMIT) {
+        if (length > limit) {
           cancel();
           note('stream', 'response-too-large');
           return null;
