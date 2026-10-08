@@ -25,8 +25,10 @@ import {
   membershipState,
   parseMembershipAdmission,
   parseMembershipCertification,
+  parseMembershipCancellation,
   verifyMembershipAdmission,
   verifyMembershipCertification,
+  verifyMembershipCancellation,
   type VerifiedMembership,
 } from './membership.ts';
 
@@ -176,11 +178,15 @@ export async function extendMembershipHistory(
   const proof =
     (input as { kind?: unknown } | null)?.kind === 'membership-admission'
       ? parseMembershipAdmission(input)
-      : parseMembershipCertification(input);
+      : (input as { kind?: unknown } | null)?.kind === 'membership-cancellation'
+        ? parseMembershipCancellation(input)
+        : parseMembershipCertification(input);
   const membership =
     proof.kind === 'membership-admission'
       ? await verifyMembershipAdmission(proof, timeline.membership)
-      : await verifyMembershipCertification(proof, timeline.membership);
+      : proof.kind === 'membership-cancellation'
+        ? await verifyMembershipCancellation(proof, timeline.membership)
+        : await verifyMembershipCertification(proof, timeline.membership);
   const state = membershipState(membership);
   const current = captureAuthority({
     ...root.current,

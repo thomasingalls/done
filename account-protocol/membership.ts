@@ -1,5 +1,5 @@
 /** Continuation of the verified private 1–3 anchor. Evidence only, never a live grant. */
-import { closed } from './preparation.ts';
+import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import {
   domainMessage,
@@ -445,5 +445,205 @@ export async function verifyMembershipCertification(
     preparations: p.preparations.filter((entry) => entry.credentialId !== candidate),
     roster: e.roster,
     heads: e.heads,
+  } as MembershipState);
+}
+
+/** A request to withdraw one still-pending connection. It does not attest that no key was exposed.
+ * The service must atomically refuse this transition once approval or delivery exists; uncertain
+ * outcomes require removal/rotation. A relay cancellation alone is not this committed successor. */
+export interface MembershipCancellationRequest {
+  v: 2;
+  kind: 'membership-cancellation-request';
+  workspaceId: string;
+  lineageId: string;
+  parent: string;
+  epoch: number;
+  preparationId: string;
+  candidateId: string;
+  actorId: string;
+  nonce: string;
+  signature: string;
+}
+export function parseMembershipCancellationRequest(input: unknown): MembershipCancellationRequest {
+  if (json(input).length > 4096) throw Error('Oversized membership cancellation request');
+  const r = closed(input, [
+    'v',
+    'kind',
+    'workspaceId',
+    'lineageId',
+    'parent',
+    'epoch',
+    'preparationId',
+    'candidateId',
+    'actorId',
+    'nonce',
+    'signature',
+  ]);
+  if (r['v'] !== 2 || r['kind'] !== 'membership-cancellation-request')
+    throw Error('Invalid membership cancellation request');
+  return {
+    v: 2,
+    kind: 'membership-cancellation-request',
+    workspaceId: h(r['workspaceId'], 16),
+    lineageId: h(r['lineageId']),
+    parent: h(r['parent']),
+    epoch: integer(r['epoch'], 4),
+    preparationId: accountIdentifier(r['preparationId']),
+    candidateId: h(r['candidateId'], 16),
+    actorId: h(r['actorId'], 16),
+    nonce: h(r['nonce']),
+    signature: h(r['signature'], 64),
+  };
+}
+export const membershipCancellationRequestMessage = (input: unknown) => {
+  const { signature: _, ...body } = parseMembershipCancellationRequest(input);
+  return domainMessage('done/membership-cancellation-request/v2', body);
+};
+export async function verifyMembershipCancellationRequest(
+  input: unknown,
+  parent: VerifiedMembership,
+) {
+  const p = membershipState(parent),
+    r = parseMembershipCancellationRequest(input),
+    candidate = p.roster.find((m) => m.id === r.candidateId),
+    actor = p.roster.find((m) => m.id === r.actorId);
+  if (
+    r.workspaceId !== p.workspaceId ||
+    r.lineageId !== p.lineageId ||
+    r.parent !== p.head ||
+    r.epoch !== p.epoch ||
+    candidate?.state !== 'pending' ||
+    !p.preparations.some(
+      (a) => a.credentialId === r.candidateId && a.attemptId === r.preparationId,
+    ) ||
+    !actor ||
+    (actor.id !== candidate.id && actor.state !== 'certified')
+  )
+    throw Error('Membership cancellation authority changed');
+  await verifySignature(actor.sPub, r.signature, await membershipCancellationRequestMessage(r));
+  return r;
+}
+export interface MembershipCancellationEpoch {
+  v: 2;
+  kind: 'membership-cancellation-epoch';
+  workspaceId: string;
+  lineageId: string;
+  epoch: number;
+  parent: string;
+  generation: number;
+  acceptancePublicKey: string;
+  certifiedSetDigest: string;
+  cancellation: MembershipCancellationRequest;
+  roster: AdmissionMember[];
+  heads: StreamHead[];
+}
+export interface MembershipCancellation {
+  v: 2;
+  kind: 'membership-cancellation';
+  epoch: MembershipCancellationEpoch;
+  head: string;
+  signature: string;
+}
+export function parseMembershipCancellationEpoch(input: unknown): MembershipCancellationEpoch {
+  bounded(input);
+  const e = closed(input, [
+    'v',
+    'kind',
+    'workspaceId',
+    'lineageId',
+    'epoch',
+    'parent',
+    'generation',
+    'acceptancePublicKey',
+    'certifiedSetDigest',
+    'cancellation',
+    'roster',
+    'heads',
+  ]);
+  if (e['v'] !== 2 || e['kind'] !== 'membership-cancellation-epoch')
+    throw Error('Invalid membership cancellation epoch');
+  return {
+    v: 2,
+    kind: 'membership-cancellation-epoch',
+    workspaceId: h(e['workspaceId'], 16),
+    lineageId: h(e['lineageId']),
+    epoch: integer(e['epoch'], 5),
+    parent: h(e['parent']),
+    generation: integer(e['generation'], 1),
+    acceptancePublicKey: h(e['acceptancePublicKey']),
+    certifiedSetDigest: h(e['certifiedSetDigest']),
+    cancellation: parseMembershipCancellationRequest(e['cancellation']),
+    roster: entries(e['roster'], parseMember, (m) => m.id),
+    heads: entries(e['heads'], parseHead, (s) => s.credentialId),
+  };
+}
+export function parseMembershipCancellation(input: unknown): MembershipCancellation {
+  bounded(input);
+  const p = closed(input, ['v', 'kind', 'epoch', 'head', 'signature']);
+  if (p['v'] !== 2 || p['kind'] !== 'membership-cancellation')
+    throw Error('Invalid membership cancellation proof');
+  return {
+    v: 2,
+    kind: 'membership-cancellation',
+    epoch: parseMembershipCancellationEpoch(p['epoch']),
+    head: h(p['head']),
+    signature: h(p['signature'], 64),
+  };
+}
+export const membershipCancellationMessage = (input: unknown) =>
+  domainMessage('done/device-membership-cancellation/v2', parseMembershipCancellationEpoch(input));
+
+/** Historical continuity. Approval/delivery absence is enforced by the atomic service producer. */
+export async function verifyMembershipCancellation(
+  input: unknown,
+  parent: VerifiedMembership,
+): Promise<VerifiedMembership> {
+  const p = membershipState(parent),
+    proof = parseMembershipCancellation(input),
+    e = proof.epoch;
+  if (
+    e.parent !== p.head ||
+    e.epoch !== p.epoch + 1 ||
+    e.workspaceId !== p.workspaceId ||
+    e.lineageId !== p.lineageId ||
+    e.generation !== p.generation ||
+    e.acceptancePublicKey !== p.acceptancePublicKey ||
+    e.certifiedSetDigest !== p.certifiedSetDigest
+  )
+    throw Error('Membership cancellation continuity changed');
+  const request = await verifyMembershipCancellationRequest(e.cancellation, parent),
+    candidate = request.candidateId;
+  if (
+    !same(
+      e.roster,
+      p.roster.filter((m) => m.id !== candidate),
+    ) ||
+    !same(
+      e.heads.map((s) => s.credentialId),
+      p.heads.filter((s) => s.credentialId !== candidate).map((s) => s.credentialId),
+    )
+  )
+    throw Error('Membership cancellation coverage changed');
+  const pendingHead = p.heads.find((s) => s.credentialId === candidate);
+  if (!pendingHead || pendingHead.position !== 0 || pendingHead.link !== EMPTY_LINK)
+    throw Error('Pending member has accepted writing');
+  for (const head of e.heads) {
+    const before = p.heads.find((s) => s.credentialId === head.credentialId)!;
+    if (
+      head.position < before.position ||
+      (head.position === before.position && head.link !== before.link)
+    )
+      throw Error('Membership cancellation accepted boundary changed');
+  }
+  const message = await membershipCancellationMessage(e);
+  if (proof.head !== (await digest(message))) throw Error('Membership cancellation head changed');
+  await verifySignature(p.pin.authRoot, proof.signature, message);
+  return retain({
+    ...structuredClone(p),
+    epoch: e.epoch,
+    head: proof.head,
+    roster: e.roster,
+    heads: e.heads,
+    preparations: p.preparations.filter((a) => a.credentialId !== candidate),
   } as MembershipState);
 }

@@ -14,6 +14,7 @@ import { parseCertificationSuccessor } from './contentDelivery.ts';
 import {
   parseMembershipAdmission,
   parseMembershipCertification,
+  parseMembershipCancellation,
   MEMBERSHIP_CREDENTIAL_LIMIT,
   MEMBERSHIP_PROOF_LIMIT,
 } from './membership.ts';
@@ -61,7 +62,9 @@ export function parseMembershipChain(input: unknown) {
     continuations: p['continuations'].map((proof) =>
       proof?.kind === 'membership-admission'
         ? parseMembershipAdmission(proof)
-        : parseMembershipCertification(proof),
+        : proof?.kind === 'membership-cancellation'
+          ? parseMembershipCancellation(proof)
+          : parseMembershipCertification(proof),
     ),
   };
 }

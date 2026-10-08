@@ -394,3 +394,13 @@ Capacity refusals during the rapid test recover through bounded exact-byte retri
 Next is the authenticated cancellation transition before approval, then removal with forward key
 rotation afterward (including uncertain exposure), repeated later admissions and lost-device recovery.
 The existing cancelled-relay record alone does not remove membership. No control may claim otherwise.
+
+
+## Cancellation proof checkpoint — 2026-10-08
+
+A signed pending-connection cancellation intent and successor now preserve all existing content
+recipients and publisher boundaries while withdrawing only the named pending candidate. Full-chain
+verification supports the transition. The service must still atomically fence approval/delivery and
+retain its exact result; the pure proof does not establish absence of an approval. Cancellation must
+refuse once approval/key exposure is possible, and local uncertain outcomes remain removal territory.
+No cancellation control is enabled before that service/client composition exists.

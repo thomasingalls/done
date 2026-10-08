@@ -10795,3 +10795,26 @@ the previously recorded duplicate-Yjs warning. TypeScript, scoped lint/format, b
 budget (108.7 kB gzip initial JS) and origin checks pass. Cancellation/removal controls remain disabled
 until their actual transitions exist. Repeated admissions after this first third-device continuation,
 forward rotation, lost-device recovery and operational work remain open; release validation is paused.
+
+
+## 2026-10-08 — Pending-connection cancellation proof and history (`L-1`)
+
+After native product checkpoint `31b19f78`, a version-2 cancellation request binds the exact workspace,
+lineage, pending parent/epoch, candidate, preparation, actor and nonce. Either a certified member or
+the named candidate may sign; another pending member cannot. The separately service-signed successor
+withdraws only that pending entry, preserves the original recipient certificate/key generation and
+acceptance key, and carries monotonic complete accepted boundaries for every remaining publisher.
+An already certified member cannot be withdrawn through this no-rotation proof.
+
+The bounded chain parser and both publisher histories understand the successor without granting the
+candidate historical or future content rights. A fresh subsequent admission can extend that history.
+This is proof verification only: the service producer must still serialize against approval/delivery,
+refuse cancellation after approval, preserve exact retry results and commit membership plus ledger
+boundaries atomically. A signed request, relay cancellation or this pure verifier alone is not a claim
+that the user-facing cancellation journey exists. No new control, route or schema is enabled here.
+
+Evidence: 10 focused cancellation/admission/history/locator tests pass in
+`/tmp/done-membership-cancellation-protocol.log`, including independently framed signed bytes, forged
+actor and scope, attempts to remove approved recipients or change keys/coverage, input mutation during
+verification, cold full-chain replay and subsequent admission. TypeScript, scoped lint/format and diff
+checks pass. The service commit is next; removal/rotation remains separate. Live service unchanged.

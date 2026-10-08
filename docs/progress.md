@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: native third-device path complete; cancellation and removal transitions next
+scope: cancellation proof complete; atomic service transition next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -114,9 +114,13 @@ custody/installation ports; committed as `b43279e1`. Native browser/session and 
 passes the actual packaged three-device walkthrough: joined invitation, comparison reload, content load,
 writing across all three and cold reopening. Original two-device compatibility also passes. The explicit
 host capability/offline upgrade remains undeployed. Bounded capacity retries recover under the unchanged
-request limits; the passing rapid test still hit those limits. See the new completed checkpoint for evidence.
+request limits; the passing rapid test still hit those limits. Committed as `31b19f78`.
+Cancellation request/successor verification now preserves approved recipients and full publisher history;
+10 focused protocol cases pass. Service serialization against approval/delivery remains unwired.
+See the completed checkpoints for evidence.
 
-**Next:** authenticated pending-membership cancellation before approval, then removal with forward
+**Next:** atomic service retention and client composition for pending-membership cancellation before
+approval, then removal with forward
 rotation/finalization after approval or uncertain key exposure; repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.
