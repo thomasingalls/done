@@ -337,6 +337,25 @@ test('per-session challenge and grant storage is bounded; expiry recovers capaci
   assert.equal((await x.grant(x.scope, x.s.privateKey, x.first.renew())).stage, 'granted');
 });
 
+test('membership changes reclaim unusable grants without expiring the remembered login', async (t) => {
+  const x = await fixture(t),
+    old = [];
+  for (let i = 0; i < GRANT_LIMITS.perSession; i++) old.push(await x.grant());
+  const staleProof = await x.begin();
+  for (let i = 1; i < GRANT_LIMITS.perSession; i++) await x.begin();
+  assert.equal((await x.begin()).refusal, 'capacity');
+  const p = await x.prepare();
+  assert.equal(
+    (await x.authority.owner.admitPrepared(x.f.core, p.input)).kind,
+    'device-admission-successor',
+  );
+  await assert.rejects(x.submit(old[0]), denial('authority-changed'));
+  const renewed = await x.grant();
+  assert.equal(renewed.stage, 'granted');
+  assert.equal((await x.finish(staleProof)).refusal, 'unknown-attempt');
+  await assert.rejects(x.submit(old[1]), denial('grant-required'));
+});
+
 test('both read versions withhold content after revocation during verification', async (t) => {
   for (const [operation, query, method] of [
     ['read-accepted', oldQuery, 'readAccepted'],
@@ -477,7 +496,8 @@ test('certification needs a fresh workspace grant; inbound scope follows the rea
   );
   const read = (g) =>
     x.authority.owner.readInbound(x.f.core, q, x.f.core.grants.authorize(g.grantToken));
-  await assert.rejects(read(grants.new), denial('insufficient-scope'));
+  // Fresh grants reclaimed the obsolete ceremony grant at certification.
+  await assert.rejects(read(grants.new), denial('grant-required'));
   await assert.rejects(read(oldDevice), denial('insufficient-scope'));
   assert.equal((await read(newDevice)).kind, 'decision');
   const r = {

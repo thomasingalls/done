@@ -11646,3 +11646,19 @@ Next: enable the post-rotation invitation action and exercise removal by the rep
 another current-generation connection. Native source composition now accepts its own replacement
 baseline, but that further native cycle is not yet established. Live service unchanged; release
 validation paused.
+
+
+## 2026-10-08 — Reclaim obsolete lifecycle network grants (`L-1`)
+
+The longer replacement/removal browser flow exposed repeated authorization-capacity refusals.
+A focused service reproduction filled a remembered login's grant quota, advanced membership, and
+showed that a fresh valid proof could not obtain a grant while unusable old grants remained retained.
+The service now reclaims changed-authority grants and challenges for that login/workspace before
+allocating another challenge. Current grants and their existing capacity limits remain intact;
+reclaimed bearers cannot authorize requests. This does not renew or extend the remembered login.
+
+The new test fails before the repair and passes afterward. All 26 affected grant, notification and
+scoped-HTTP cases pass, with TypeScript, scoped lint/format and diff checks.
+[Preserved output](./development-evidence/2026-10-08-lifecycle-grant-reclamation.log).
+The complete native repeated product cycle remains in flight; this entry does not claim it passed.
+Live service unchanged; release validation paused.

@@ -88,6 +88,29 @@ export class ScopedGrants {
     for (const [id, p] of this.#pending) if (p.challenge.expiresAt <= now) this.#pending.delete(id);
     for (const [id, g] of this.#grants) if (g.expiresAt <= now) this.#grants.delete(id);
   }
+  #pruneChanged(sessionId: string, workspaceId: string): void {
+    // Membership transitions make old grants unusable immediately. Do not let those
+    // dead grants occupy the remembered login's quota until their time limit expires.
+    // The caller owns a transaction; cache one coherent fingerprint per distinct scope.
+    const current = new Map<string, string | null>();
+    const obsolete = (entry: Pending | Grant) => {
+      const c = entry.challenge;
+      if (c.sessionId !== sessionId || c.scope.workspaceId !== workspaceId) return false;
+      const scope = canonical(c.scope);
+      if (!current.has(scope)) {
+        try {
+          current.set(scope, fingerprint(this.#capture(c.scope)));
+        } catch (cause) {
+          if (!(cause instanceof AuthorizationRefused) || cause.refusal !== 'insufficient-scope')
+            throw cause;
+          current.set(scope, null);
+        }
+      }
+      return current.get(scope) !== entry.fingerprint;
+    };
+    for (const [id, pending] of this.#pending) if (obsolete(pending)) this.#pending.delete(id);
+    for (const [id, grant] of this.#grants) if (obsolete(grant)) this.#grants.delete(id);
+  }
   #capture(scope: GrantScope): Capture {
     if (!this.#db.isTransaction) throw new AuthorizationRefused('storage-unavailable');
     const authority = snapshotWorkspaceAuthority(this.#db, scope.workspaceId);
@@ -222,6 +245,7 @@ export class ScopedGrants {
         this.#prune(at);
         const live = this.#sessions.checkGrantParent(db, identity.sessionId, accountId);
         if (!live.ok) return live;
+        this.#pruneChanged(identity.sessionId, scope.workspaceId);
         if (
           this.#pending.size >= GRANT_LIMITS.challenges ||
           [...this.#pending.values()].filter((p) => p.challenge.sessionId === identity.sessionId)
