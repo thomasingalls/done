@@ -228,7 +228,7 @@ export function createSyncScheduler(options: {
       });
   };
   const wake = (
-    cause: 'start' | 'gate' | 'online' | 'local' | 'remote' | 'retry',
+    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry',
     target?: SyncLane,
   ) => {
     if (stopped) return;
@@ -239,14 +239,16 @@ export function createSyncScheduler(options: {
         if (active === name) lane.dirty = true;
         else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
       }
-      if (cause === 'retry') lane.halt = undefined;
+      // Only the owner calls this after installing verified membership. Other evidence halts stay closed.
+      if (cause === 'retry' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))
+        lane.halt = undefined;
       if (cause === 'local' && name === 'send') {
         lane.dirty = true;
         if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;
       }
       if (cause === 'start' && lane.due === undefined && active !== name && !lane.halt)
         lane.due = clock.now();
-      if ((cause === 'online' || cause === 'retry') && !lane.halt) {
+      if ((cause === 'online' || cause === 'authority' || cause === 'retry') && !lane.halt) {
         if (active === name) lane.expedite = true;
         else lane.due = clock.now();
       }
@@ -284,6 +286,8 @@ export async function driveOutboundStep(
   gate: () => DriverGate,
 ): Promise<OutboundStep> {
   let status = await ops.deliveryStatus();
+  if (status.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.()))
+    status = await ops.deliveryStatus();
   const pause = (): OutboundStep | null => {
     if (status.state !== 'ready')
       return { kind: 'blocked', acceptedThrough: status.acceptedThrough, reason: status.state };
@@ -315,14 +319,19 @@ export async function driveOutboundStep(
   paused = pause();
   if (paused) return paused;
   await ops.submitPending(token);
-  const next = await ops.deliveryStatus();
+  let next = await ops.deliveryStatus();
+  let retried = false;
+  if (next.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.())) {
+    retried = true;
+    next = await ops.deliveryStatus();
+  }
   if (next.acceptedThrough < status.acceptedThrough)
     throw Error('Durable delivery prefix regressed');
   if (next.state !== 'ready')
     return { kind: 'blocked', acceptedThrough: next.acceptedThrough, reason: next.state };
   return {
     kind:
-      next.acceptedThrough > status.acceptedThrough
+      retried || next.acceptedThrough > status.acceptedThrough
         ? 'progress'
         : gate() !== 'ready'
           ? 'paused'

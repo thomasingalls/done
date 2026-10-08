@@ -1,3 +1,4 @@
+import { historyMinimumGeneration } from '../../account-protocol/admissionHistory';
 import { type AccountAccess } from '../account/accountHttp';
 import type { VerificationMemo } from './verificationMemo';
 import type { OpenedRecord } from './contentRecord';
@@ -20,10 +21,15 @@ import {
   privateDeliveryPost,
   recordPrivateTransportDiagnostic,
 } from '../account/privateDeliveryHttp';
-import { networkRoute } from './spoolRecord';
+import { networkRoute, encodeSpoolEntry, type SpoolEntry } from './spoolRecord';
 /** Internal persistence operations attached to the spool's existing exclusive task queue. */
 import { signSubmission } from '../../account-protocol/submission';
-import { RESPONSE_LIMIT, type DecisionAuthority } from '../../account-protocol/positionDecision';
+import {
+  RESPONSE_LIMIT,
+  decodePositionResponse,
+  refusalId,
+  type DecisionAuthority,
+} from '../../account-protocol/positionDecision';
 import { guardedSubtle, hex, type Bytes } from './custodyCrypto';
 import {
   inspectDelivery,
@@ -129,9 +135,12 @@ export function createDeliveryOperations(context: DeliveryContext) {
     task: SessionTask,
     owner: Owner,
     route: CaptureRoute,
-    entry: DeliveryEntry,
+    entry: DeliveryEntry | Extract<SpoolEntry, { type: 'retry' }>,
   ) => {
-    const bytes = encodeDeliveryEntry(entry, route, context.authority());
+    const bytes =
+      entry.type === 'retry'
+        ? encodeSpoolEntry(entry, route)
+        : encodeDeliveryEntry(entry, route, context.authority());
     try {
       const before = await owner.carrier.spoolWitness(task),
         after = await task.wait(() => extendSpoolWitness(before, bytes, subtleFor(task)));
@@ -260,6 +269,33 @@ export function createDeliveryOperations(context: DeliveryContext) {
       }
     });
   return {
+    retryRetiredGeneration: () =>
+      withState(async (task, owner, route, c, s) => {
+        if (!route.history || s.conflict || s.finalThrough !== null || s.refusals.size !== 1)
+          return false;
+        const position = s.acceptedThrough + 1,
+          id = s.refusals.get(position);
+        const p = c.spool.positions.find((p) => p.position === position);
+        if (!id || !p?.wire) return false;
+        const envelope = decodeNetworkEnvelope(p.wire);
+        if (
+          envelope.gen >= route.generation ||
+          envelope.gen >= historyMinimumGeneration(route.history, route.epoch)
+        )
+          return false;
+        for (const wire of s.responses.get(position) ?? []) {
+          const response = decodePositionResponse(wire);
+          if (
+            response.kind !== 'refused' ||
+            response.refusal.reason !== 'retired-generation' ||
+            (await refusalId(response.refusal, subtleFor(task))) !== id
+          )
+            continue;
+          await persist(task, owner, route, { type: 'retry', position, refusal: wire });
+          return true;
+        }
+        return false;
+      }),
     deliveryStatus: () => withState(async (_task, _owner, _route, _c, s) => describeDelivery(s)),
     pendingSubmissions: () =>
       withState(async (_task, _owner, _route, _c, s) => {
@@ -279,15 +315,22 @@ export function createDeliveryOperations(context: DeliveryContext) {
           throw Error('Resolve the earliest pending position first');
         const found = s.submissions.get(position);
         if (found) return { kind: 'ready' as const, position, bytes: found.slice() };
-        const envelope = c.spool.positions.find((p) => p.position === position)?.wire;
+        const p = c.spool.positions.find((p) => p.position === position);
+        const envelope = p?.wire;
         if (!envelope) throw Error('Submission requires a persisted envelope');
         // A wire without a persisted submission has never been exposed by this owner.
         // Existing submissions above retain exact retry/readback under historical policy.
         assertAdmittedEnvelopeWireSize(envelope.length);
         await context.assertCurrent(task);
+        const closed = p?.retries?.at(-1)?.refusal;
+        const proof = closed ? decodePositionResponse(closed) : null;
         const wire = await task.wait(() =>
           signSubmission(
-            { lineage: context.authority().lineage, envelope, parent: null },
+            {
+              lineage: context.authority().lineage,
+              envelope,
+              parent: proof?.kind === 'refused' ? proof.refusal : null,
+            },
             context.signer(),
             subtleFor(task),
           ),

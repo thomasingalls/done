@@ -506,3 +506,36 @@ it('remote hints coalesce during catch-up and retain backoff, evidence halts and
   expect(f.scheduler.runtime.status.receive.reason).toBe('conflict');
   await f.scheduler.dispose();
 });
+
+it('verified authority adoption rechecks a closed sender without clearing conflict or finalization', async () => {
+  for (const reason of ['closed', 'conflict', 'finalized'] as const) {
+    const f = fixture((options) =>
+      createSyncScheduler({
+        ...options,
+        send: async () => {
+          const result = await options.send();
+          return result.kind === 'blocked' ? { ...result, reason } : result;
+        },
+      }),
+    );
+    f.scheduler.wake('start');
+    await f.tick(0);
+    f.calls[0]!.finish('blocked');
+    await flush();
+    await f.tick(0);
+    f.calls[1]!.finish('idle');
+    await flush();
+    f.scheduler.wake('online');
+    await f.tick(0);
+    expect(f.scheduler.runtime.status.send.reason).toBe(reason);
+    f.calls[2]!.finish('idle');
+    await flush();
+    f.scheduler.wake('authority');
+    await f.tick(0);
+    expect(f.calls[3]!.lane).toBe(reason === 'closed' ? 'send' : 'receive');
+    expect(f.scheduler.runtime.status.send.reason).toBe(reason === 'closed' ? null : reason);
+    f.calls[3]!.finish('idle');
+    await flush();
+    await f.scheduler.dispose();
+  }
+});

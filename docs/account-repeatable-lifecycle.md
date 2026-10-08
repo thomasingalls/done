@@ -94,3 +94,20 @@ The service/protocol floor is now implemented. It is derived from signed admissi
 epoch, persists through cancellation, and is evaluated at the original decision boundary during census.
 Before/after-commit refusal faults and exact accepted retry pass. Browser durable retry is in flight;
 current-generation replacement snapshots remain next. No live service change is implied.
+
+
+## Durable retry increment
+
+The browser now implements the approved boundary. An append-only retry record preserves its signed
+refusal, predecessor ciphertext and fixed source references; new encryption consumes a fresh durable
+grant, and its signed wrapper names the refusal. Replay authenticates the full sequence. Only a
+retired-generation refusal with installed newer admission authority can trigger automatic retry;
+ordinary network failures cannot. Verified membership adoption wakes a closed sender for this check,
+without clearing conflict/finalization.
+
+The native packaged test passes through an old upload retained before removal, generation-two
+replacement admission, a lost refusal reply, exact retransmission, current-key replacement at the same
+position, journal delivery and cold reopen. See the 2026-10-08 completion entry and
+[passing native output](./development-evidence/2026-10-08-current-key-retry.log). Next: the replacement
+snapshot must cover the admission's accepted cuts, including finalized publishers, and the joining
+device must start its streams at those authenticated cuts with only its approved generation key.

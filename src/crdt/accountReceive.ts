@@ -1440,7 +1440,7 @@ async function openReceivingWorkspace(
         send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
         receive: async () => {
           const authority = await refreshAuthority(operatorToken ?? '');
-          if (authority.kind === 'adopted') scheduler.wake('online');
+          if (authority.kind === 'adopted') scheduler.wake('authority');
           if (authority.kind === 'unknown' || authority.kind === 'paused') {
             const state = await api.status();
             return { kind: authority.kind, receivedThrough: state.receivedThrough };
@@ -1505,7 +1505,7 @@ async function openReceivingWorkspace(
         receiver: undefined,
         refreshAuthority: async () => {
           const result = await refreshAuthority(operatorToken ?? '', true);
-          if (result.kind === 'adopted') scheduler.wake('online');
+          if (result.kind === 'adopted') scheduler.wake('authority');
           return result;
         },
         adoptSuccessor: async (input: unknown) => {

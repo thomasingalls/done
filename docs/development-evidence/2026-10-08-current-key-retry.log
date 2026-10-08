@@ -1,0 +1,26 @@
+
+Running 1 test using 1 worker
+
+(node:38462) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Submit attempt 1 2 5 false false
+Submit attempt 1 2 5 false true
+Submit status 429
+Submit attempt 1 2 5 false true
+Submit status 200
+Submit outcome refused retired-generation
+Submit attempt 1 2 5 false true
+Submit status 200
+Submit outcome refused retired-generation
+Submit attempt 2 2 7 true true
+Submit status 200
+Submit outcome accepted 2
+Submit attempt 2 3 7 false true
+Submit status 200
+Submit outcome accepted 3
+Submit attempt 2 4 7 false true
+Submit status 200
+Submit outcome accepted 4
+  ✓  1 test/packaged-account/generation-retry.spec.ts:12:1 › a native survivor retries its exact old upload after replacement admission and retains journal writing on cold reopen (1.3m)
+
+  1 passed (1.3m)

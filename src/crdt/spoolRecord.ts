@@ -1,4 +1,14 @@
 /** Private v7 append-only allocation ledger. Outer StoredRecord authenticates these bytes. */
+import {
+  verifyHistoryDecision,
+  historyMinimumGeneration,
+} from '../../account-protocol/admissionHistory';
+import {
+  decodePositionResponse,
+  refusalId,
+  RESPONSE_LIMIT,
+  ZERO_REFUSAL,
+} from '../../account-protocol/positionDecision';
 import { generationKey, type GenerationKeys } from './generationKeys';
 import { utf8, hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
@@ -34,6 +44,7 @@ export interface SourceRef {
 export type SpoolEntry =
   | { type: 'position'; position: number; source: SourceRef }
   | { type: 'position-batch'; position: number; sources: SourceRef[] }
+  | { type: 'retry'; position: number; refusal: Bytes }
   | { type: 'attempt'; position: number; attempt: number }
   | { type: 'envelope'; position: number; attempt: number; wire: Bytes };
 export interface SpoolPosition {
@@ -43,6 +54,8 @@ export interface SpoolPosition {
   additional?: SourceRef[];
   attempts: number[];
   wire?: Bytes;
+  /** Closed attempts remain immutable; only the active attempt may be sent. */
+  retries?: { wire: Bytes; refusal: Bytes }[];
 }
 export interface SpoolState {
   sources: Map<string, Bytes>;
@@ -109,6 +122,10 @@ export function encodeSpoolEntry(entry: SpoolEntry, route: CaptureRoute): Bytes 
     }
     const values = refs.map((s) => [s.id, s.index, s.hash]);
     detail = entry.type === 'position' ? values[0] : values;
+  } else if (entry.type === 'retry') {
+    if (!route.history || decodePositionResponse(entry.refusal).kind !== 'refused')
+      captureError('Retry requires historical refusal evidence');
+    detail = hex(entry.refusal);
   } else {
     if (!positive(entry.attempt) || entry.attempt >= NET_SEAL_LIMIT)
       captureError('Invalid invocation count');
@@ -183,6 +200,8 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
         position: v[8],
         sources: v[9].map((s: [string, number, string]) => ({ id: s[0], index: s[1], hash: s[2] })),
       };
+    else if (v[7] === 'retry')
+      result = { type: 'retry', position: v[8], refusal: hexValue(v[9], RESPONSE_LIMIT) };
     else if (v[7] === 'attempt') result = { type: 'attempt', position: v[8], attempt: v[9] };
     else if (v[7] === 'envelope' && Array.isArray(v[9]) && v[9].length === 2)
       result = {
@@ -247,7 +266,7 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
     previousEpoch = epoch;
     const last = positions.at(-1);
     if (e.type === 'position' || e.type === 'position-batch') {
-      if (e.position !== positions.length + 1 || (last && !last.wire))
+      if (e.position !== positions.length + 1 || positions.some((p) => !p.wire))
         captureError('Position sequence or unresolved predecessor');
       const refs = e.type === 'position' ? [e.source] : e.sources;
       let previousSequence = -1,
@@ -293,18 +312,44 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
         ...(refs.length > 1 ? { additional: refs.slice(1) } : {}),
         attempts: [],
       });
+    } else if (e.type === 'retry') {
+      const p = positions.find((p) => p.position === e.position);
+      if (!p?.wire || !route.history) captureError('Retry without retained envelope');
+      const envelope = decodeNetworkEnvelope(p!.wire!),
+        proof = decodePositionResponse(e.refusal);
+      if (
+        proof.kind !== 'refused' ||
+        proof.refusal.reason !== 'retired-generation' ||
+        proof.refusal.workspace !== route.workspace ||
+        proof.refusal.credential !== route.credential ||
+        proof.refusal.position !== e.position ||
+        proof.refusal.digest !== hex(envelope.digest) ||
+        proof.refusal.epoch !== envelope.epoch ||
+        envelope.gen >= captureRouteAt(route, epoch).generation ||
+        envelope.gen >= historyMinimumGeneration(route.history!, epoch)
+      )
+        captureError('Retry does not close an older generation');
+      (p!.retries ??= []).push({ wire: p!.wire!, refusal: e.refusal });
+      delete p!.wire;
+      p!.attempts = [];
     } else {
-      if (!last || last.position !== e.position || last.wire)
+      const open = positions.find((p) => p.position === e.position);
+      if (!open || open.wire || (open !== last && !open.retries?.length))
         captureError('Spool transition without open position');
       if (e.type === 'attempt') {
         if (e.attempt !== attempts + 1 || e.attempt >= NET_SEAL_LIMIT)
           captureError('Invocation sequence changed');
         attempts = e.attempt;
-        last!.attempts.push(e.attempt);
+        open!.attempts.push(e.attempt);
       } else {
-        if (!last!.attempts.length || e.attempt !== last!.attempts.at(-1))
+        if (!open!.attempts.length || e.attempt !== open!.attempts.at(-1))
           captureError('Envelope lacks latest invocation grant');
-        last!.wire = e.wire;
+        if (
+          open!.retries?.length &&
+          decodeNetworkEnvelope(e.wire).gen <= decodeNetworkEnvelope(open!.retries.at(-1)!.wire).gen
+        )
+          captureError('Retry generation did not advance');
+        open!.wire = e.wire;
       }
     }
   }
@@ -336,24 +381,53 @@ export async function verifySpool(
             eraseCapsule(c);
           }
         }
-        if (!p.wire) return;
-        body = await openNetworkEnvelope(
-          p.wire,
-          networkRoute(route, decodeNetworkEnvelope(p.wire).epoch),
-          signer,
-          generationKey(kg, networkRoute(route, decodeNetworkEnvelope(p.wire).epoch).gen),
-          subtle,
-        );
-        if (
-          body.updates.length !== originals.length ||
-          originals.some(
-            (source, i) =>
-              body!.actor_id !== source.actor ||
-              body!.actor_kind !== source.kind ||
-              hex(body!.updates[i]!) !== hex(source.bytes),
+        let parent = ZERO_REFUSAL;
+        for (const attempt of [
+          ...(p.retries ?? []),
+          ...(p.wire ? [{ wire: p.wire, refusal: undefined }] : []),
+        ]) {
+          const envelope = decodeNetworkEnvelope(attempt.wire);
+          body = await openNetworkEnvelope(
+            attempt.wire,
+            networkRoute(route, envelope.epoch),
+            signer,
+            generationKey(kg, envelope.gen),
+            subtle,
+          );
+          if (
+            body.updates.length !== originals.length ||
+            originals.some(
+              (source, i) =>
+                body!.actor_id !== source.actor ||
+                body!.actor_kind !== source.kind ||
+                hex(body!.updates[i]!) !== hex(source.bytes),
+            )
           )
-        )
-          captureError('Persisted envelope source differs');
+            captureError('Persisted envelope source differs');
+          for (const b of body.updates) b.fill(0);
+          body = undefined;
+          if (attempt.refusal) {
+            if (!route.history) captureError('Retry without authenticated history');
+            const proof = await verifyHistoryDecision(
+              attempt.refusal,
+              {
+                workspace: route.workspace,
+                credential: route.credential,
+                position: p.position,
+                digest: hex(envelope.digest),
+                epoch: envelope.epoch,
+                parent,
+                previous: ZERO_REFUSAL,
+              },
+              route.history!.current,
+              route.history!,
+              subtle,
+            );
+            if (proof.kind !== 'refused' || proof.refusal.reason !== 'retired-generation')
+              throw Error('Retry refusal failed verification');
+            parent = await refusalId(proof.refusal, subtle);
+          }
+        }
       } finally {
         for (const source of originals) source.bytes.fill(0);
         for (const b of body?.updates ?? []) b.fill(0);
@@ -365,6 +439,7 @@ export async function verifySpool(
         JSON.stringify([route, positionSources(p)]),
         [
           ...positionSources(p).map((ref) => state.sources.get(ref.id)!),
+          ...(p.retries ?? []).flatMap((a) => [a.wire, a.refusal]),
           ...(p.wire ? [p.wire] : []),
         ],
         check,

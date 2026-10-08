@@ -11433,3 +11433,36 @@ commit, lost committed refusal/acceptance replies, exact historic readback, miss
 persistent floor after cancellation. Logs: `/tmp/done-replacement-generation-service-pass.log`.
 TypeScript, scoped lint/format and diff checks pass. No schema or retained-service change. Browser
 retry ownership and replacement snapshots are still required before enabling the post-rotation flow.
+
+
+## 2026-10-08 — Durable current-key retry of survivor offline writing (`L-1`)
+
+The browser's append-only spool now retains closed ciphertext and the exact signed retired-generation
+refusal before reopening the same position. It retains the original source references, reserves a new
+encryption invocation and persists the successor envelope and refusal-linked submission before send.
+Cold replay verifies each historical attempt, its refusal chain and exact original bytes. Unsigned,
+substituted, wrong-parent and wrong-purpose answers cannot authorize re-encryption. A refusal received
+before newer membership is installed remains closed. Verified membership adoption can recheck that
+closed sender; ordinary online notifications do not clear it, and conflict/finalization stay halted.
+
+The directed native packaged test passes with an already accepted prefix, an allocated old-generation
+upload, a separate offline journal edit, removal, replacement admission, a lost committed refusal
+reply, repeated exact old upload, same-position generation-two delivery, cold reopen and subsequent
+ordinary editing. It follows the existing second unlock after passive rotation discovery and verifies
+the removing device's current membership before establishing the admission boundary. Replacement
+approval/loading stays gated: this test stops the joining candidate at comparison. Evidence:
+[passing native output](./development-evidence/2026-10-08-current-key-retry.log).
+
+Four new focused retry cases exercise before/after-save failures through refusal, retry opening,
+reservation, ciphertext and submission; they verify retained originals and authority boundaries.
+Three generation-replay regressions pass. The affected spool, delivery and scheduler unit checks,
+TypeScript, scoped lint/format, packaged build, budget and origin isolation pass. Logs:
+`/tmp/done-current-key-retry-unit-all-final.log`,
+`/tmp/done-current-key-retry-regressions-final.log`,
+`/tmp/done-current-key-retry-build-final.log`. Diagnostic build hooks were build-only and are absent
+from the final package. Earlier native attempts exposed fixture capacity-response decoding, stale
+membership setup, and the missing post-discovery unlock; these are corrected without weakening
+service capacity limits or counting an unfinished removal as success.
+
+No retained-service change, pruning, old-key retirement or release-validation campaign. Next is the
+current-generation replacement snapshot and its native reader/custody integration.

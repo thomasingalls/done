@@ -4,11 +4,12 @@ import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import { captureError, captureRouteAt, type CaptureRoute } from './sourceCapture';
-import { inspectSpool, networkRoute, type SpoolState } from './spoolRecord';
+import { inspectSpool, decodeSpoolEntry, networkRoute, type SpoolState } from './spoolRecord';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import { decodeSubmission, verifySubmission } from '../../account-protocol/submission';
 import {
   acceptanceLink,
+  refusalId,
   decodePositionResponse,
   verifyPositionResponse,
   ZERO_REFUSAL,
@@ -190,7 +191,13 @@ export async function expectedPosition(spool: SpoolState, position: number, subt
         digest: hex(e.digest),
         epoch: e.epoch,
       };
-    if (p.position === position) return { ...subject, previous, parent: ZERO_REFUSAL };
+    if (p.position === position) {
+      const proof = p.retries?.at(-1)?.refusal;
+      const decoded = proof ? decodePositionResponse(proof) : null;
+      const parent =
+        decoded?.kind === 'refused' ? await refusalId(decoded.refusal, subtle) : ZERO_REFUSAL;
+      return { ...subject, previous, parent };
+    }
     previous = await acceptanceLink(subject, previous, subtle);
   }
   return null;
@@ -206,14 +213,25 @@ export async function verifyDelivery(
   const state = emptyDelivery(),
     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
     envelopes = new Map<number, number>();
-  const expectedPositions = new Map<
+  // Replay each attempt at its own point in the append-only ledger, not using its final successor.
+  const active: SpoolState = {
+    ...c.spool,
+    positions: c.spool.positions.map((p) => ({
+      position: p.position,
+      source: p.source,
+      ...(p.additional ? { additional: p.additional } : {}),
+      attempts: [],
+    })),
+  };
+  const expectedCache = new Map<
     number,
-    NonNullable<Awaited<ReturnType<typeof expectedPosition>>>
+    NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
   >();
-  if (reuse) {
-    let previous = ZERO_REFUSAL;
-    for (const p of c.spool.positions) {
-      if (!p.wire) break;
+  const expectedAt = async (position: number) => {
+    if (!reuse) return expectedPosition(active, position, subtle);
+    for (let n = expectedCache.size + 1; n <= position; n++) {
+      const p = active.positions[n - 1];
+      if (!p?.wire) return null;
       const e = decodeNetworkEnvelope(p.wire),
         subject = {
           workspace: e.workspace_id,
@@ -222,29 +240,58 @@ export async function verifyDelivery(
           digest: hex(e.digest),
           epoch: e.epoch,
         },
-        before = previous;
-      expectedPositions.set(p.position, { ...subject, previous, parent: ZERO_REFUSAL });
-      previous = await reuse.memo.check(
-        'link:' + p.position,
-        JSON.stringify([subject, before]),
-        [],
-        () => acceptanceLink(subject, before, subtle),
-        reuse.current,
-      );
+        previous = expectedCache.get(n - 1)?.next ?? ZERO_REFUSAL,
+        proof = p.retries?.at(-1)?.refusal,
+        closed = proof ? decodePositionResponse(proof) : null,
+        parent =
+          closed?.kind === 'refused' ? await refusalId(closed.refusal, subtle) : ZERO_REFUSAL,
+        next = await reuse.memo.check(
+          'link:' + n,
+          JSON.stringify([subject, previous]),
+          [],
+          () => acceptanceLink(subject, previous, subtle),
+          reuse.current,
+        );
+      expectedCache.set(n, { ...subject, previous, parent, next });
     }
-  }
+    return expectedCache.get(position) ?? null;
+  };
   for (const row of c.ledger) {
     const retained = entries.get(row.seq),
       entry = retained?.entry;
     if (!entry) {
-      if (publicationState(state) !== 'ready') captureError('Allocation after delivery halt');
-      const v = JSON.parse(new TextDecoder().decode(row.bytes));
-      if (v[7] === 'envelope') envelopes.set(v[8], row.seq);
+      const event = decodeSpoolEntry(row.bytes, r),
+        p = active.positions.find((p) => p.position === event.position)!;
+      if (event.type === 'retry') {
+        const proof = decodePositionResponse(event.refusal);
+        if (
+          state.conflict ||
+          state.finalThrough !== null ||
+          event.position !== state.acceptedThrough + 1 ||
+          proof.kind !== 'refused' ||
+          proof.refusal.reason !== 'retired-generation' ||
+          state.refusals.get(event.position) !== (await refusalId(proof.refusal, subtle)) ||
+          !p.wire
+        )
+          captureError('Retry lacks the retained closing decision');
+        (p.retries ??= []).push({ wire: p.wire!, refusal: event.refusal });
+        delete p.wire;
+        state.refusals.delete(event.position);
+        state.submissions.delete(event.position);
+        envelopes.delete(event.position);
+        for (const n of expectedCache.keys()) if (n >= event.position) expectedCache.delete(n);
+      } else {
+        if (publicationState(state) !== 'ready') captureError('Allocation after delivery halt');
+        if (event.type === 'envelope') {
+          p.wire = event.wire;
+          envelopes.set(event.position, row.seq);
+        }
+      }
       continue;
     }
     if (!envelopes.has(entry.position) || envelopes.get(entry.position)! >= row.seq)
       captureError('Delivery precedes its envelope');
-    const p = c.spool.positions.find((p) => p.position === entry.position)!;
+    const p = active.positions.find((p) => p.position === entry.position)!;
     const authority = r.history
       ? historyAuthority(r.history, retained!.epoch === 1 ? r.history.first : a)
       : a;
@@ -258,8 +305,9 @@ export async function verifyDelivery(
         captureError('Submission order or eligibility changed');
       const epoch = decodeNetworkEnvelope(p.wire!).epoch;
       if (epoch > retained!.epoch) captureError('Submission precedes envelope authority');
+      const issuance = r.history ? r.history.authorities.find((a) => a.tip === epoch)! : authority;
       const check = () =>
-          verifySubmission(entry.wire, networkRoute(r, epoch), publicKey, authority, subtle),
+          verifySubmission(entry.wire, networkRoute(r, epoch), publicKey, issuance, subtle),
         opened = reuse
           ? await reuse.memo.check(
               'delivery:' + row.seq,
@@ -269,14 +317,13 @@ export async function verifyDelivery(
               reuse.current,
             )
           : await check();
-      if (opened.parent !== null || hex(opened.envelope) !== hex(p.wire!))
-        captureError('Submission differs from persisted first attempt');
+      const expected = await expectedAt(entry.position);
+      if (!expected || opened.parentId !== expected.parent || hex(opened.envelope) !== hex(p.wire!))
+        captureError('Submission differs from persisted attempt');
       state.submissions.set(entry.position, entry.wire);
     } else {
       if (state.conflict) captureError('New response after contradictory evidence');
-      const expected = reuse
-        ? expectedPositions.get(entry.position)
-        : await expectedPosition(c.spool, entry.position, subtle);
+      const expected = await expectedAt(entry.position);
       if (!expected) captureError('Response without envelope');
       const check = () => verifyDeliveryDecision(entry.wire, expected!, authority, r, subtle),
         evidence = reuse

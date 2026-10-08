@@ -176,6 +176,7 @@ export function createDeliveryScheduler(options: {
   };
 }
 export interface DriverOperations {
+  retryRetiredGeneration?(): Promise<boolean>;
   deliveryStatus(): Promise<{
     state: 'ready' | 'closed' | 'conflict' | 'finalized';
     acceptedThrough: number;

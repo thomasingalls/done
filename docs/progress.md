@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable lifecycle; repeated connections and removals complete; service retry boundary complete; durable browser retries in flight
+scope: repeatable lifecycle; repeated connections and removals complete; durable current-key retry complete; replacement snapshots next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -93,7 +93,10 @@ Repeated generation-one connections now archive completed custody exactly; five 
 retained-coordinator cases pass. The four-device packaged case passes two actual UI removals, a
 survivor missing both rotations, old-generation offline delivery, generation-three two-way writing
 and cold reopen. The signed current-key service boundary now passes its five affected cases, including lost committed
-replies. Next: durable browser retries, then replacement snapshots and the full remove/connect/remove flow. Post-rotation connections remain gated. No live
+replies. Durable browser retries now pass the focused native case: exact old ciphertext after a lost
+refusal reply, same-position current-key delivery, journal preservation and cold reopen. Four new
+retry cases and affected unit checks pass. Next: replacement snapshots, native joining custody and
+the full remove/connect/remove flow. Post-rotation connections remain gated. No live
 service switch has occurred.
 
 **Further product work:** self/last-device removal, lost-device

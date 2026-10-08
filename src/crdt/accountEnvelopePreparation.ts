@@ -133,7 +133,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
         try {
           // Same just-loaded complete view; every append still obtains a fresh publication census.
           await context.checkPublication(task, owner, route, records);
-          let position = state.positions.at(-1);
+          let position = state.positions.find((p) => !p.wire) ?? state.positions.at(-1);
           const allocate = !position || !!position.wire;
           const selected = allocate
             ? await task.wait(() =>
