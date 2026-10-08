@@ -27,6 +27,8 @@ import { parseWitness, witnessMessage, type DeliveryWitness } from './deliveryWi
 import { retryHash } from './protocol.ts';
 import { rethrowAuthorization } from './authorization.ts';
 import { verifyPendingMembership } from './membershipAuthority.ts';
+import { membershipCheckpointRow, retainedCheckpoint } from './membershipCheckpoint.ts';
+import { verifyContentCheckpoint } from '../account-protocol/contentCheckpoint.ts';
 import {
   causeCode,
   reportDiagnostic,
@@ -74,6 +76,7 @@ export async function admitMembership(
       root,
       cert,
       snapshots,
+      checkpoint: row ? membershipCheckpointRow(db, row.workspace_id) : null,
       authorityToken: row ? enrollmentSnapshot(db, row.workspace_id)?.token : undefined,
     };
   };
@@ -84,6 +87,7 @@ export async function admitMembership(
       snapshotBytes(s.root),
       s.snapshots.map(snapshotBytes),
       s.authorityToken,
+      s.checkpoint,
     ]);
   for (let retry = 0; retry < 4; retry++) {
     let phase: 'storage' | 'verify' | 'commit' = 'storage';
@@ -110,6 +114,15 @@ export async function admitMembership(
       };
       const auth = await verifyWorkspaceAuthority(original, issuer);
       const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
+      // The v1 producer can only publish at epoch 3. Preserve its actual catch-up snapshot before
+      // leaving that head; original genesis alone omits pre-sync Local writing.
+      if (!before.checkpoint) return no('checkpoint-required');
+      if (!auth.successor) return no('unavailable');
+      await verifyContentCheckpoint(retainedCheckpoint(before.checkpoint), {
+        base,
+        successor: auth.successor,
+        certification: cert,
+      });
       let parent = await verifyMembershipAnchor(base, auth.successor, cert, {
         epoch: 3,
         head: cert.head,

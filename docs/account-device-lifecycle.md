@@ -288,3 +288,16 @@ The original epoch-3 checkpoint includes writing accumulated before ordinary out
 replaying only the original genesis is insufficient. Its baseline and all eligible publisher streams
 must be carried into the later installation without reusing the original second device's semantic
 admission as the new candidate's approval. Generation replacement/pruning remains later work.
+
+
+## Historical checkpoint access checkpoint — 2026-10-08
+
+Continuation admission now requires a verified retained epoch-3 baseline and rechecks it at commit.
+This preserves writing accumulated before the original Local-to-Account catch-up. Later certified
+readers fetch that same immutable baseline through the opt-in version-2 checkpoint route, with current
+workspace authorization and device proof. The original publication/admission route remains unchanged.
+
+This read provides authenticated historical ciphertext, not a new semantic admission or a claim that
+all subsequent writing has been fetched. The client must replay every eligible publisher's accepted
+history and retain its own admission before activating a later slot. No new schema or live upgrade
+is needed for this read-only addition; continuation serving remains disabled by default.

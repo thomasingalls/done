@@ -516,6 +516,9 @@ export class PrivateAuthority {
   exchangeCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.exchangeCheckpoint(input, this.#deliveryIssuer(authorize));
   }
+  readMembershipCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.readMembershipCheckpoint(input, this.#deliveryIssuer(authorize));
+  }
   readInbound(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.readInbound(input, this.#deliveryIssuer(authorize));
   }

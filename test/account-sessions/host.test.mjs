@@ -70,6 +70,7 @@ test('session host preserves capability-protected bootstrap through restart with
     '/account/membership/v2/ceremony',
     '/account/membership/v2/transfer',
     '/account/membership/v2/discover',
+    '/account/membership/v2/checkpoint',
   ]) {
     const r = await f.post(route);
     assert.equal(r.status, 404);

@@ -1,6 +1,13 @@
+import {
+  membershipCheckpointRequestMessage,
+  verifyMembershipCheckpointRequest,
+  verifyMembershipCheckpoint,
+  parseMembershipCheckpointRequest,
+} from '../../account-protocol/membershipCheckpoint.ts';
 import { createServer, request as httpRequest } from 'node:http';
 import { createSessionAccountHandler } from '../../account-service/session-host.ts';
 import {
+  verifyMembershipChain,
   verifyMembershipBootstrapResponse,
   verifyMembershipDiscoveryResponse,
 } from '../../account-protocol/membershipLocator.ts';
@@ -407,6 +414,7 @@ test('private continuation admission retains both publisher boundaries, aborts a
   const extra = x.candidate();
   extra.input.candidate.head = x.certification.head;
   assert.equal((await x.enroll('begin', extra.input)).refusal, 'connection-in-progress');
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
   const originalRecords = [
     'workspace_successors',
     'content_ceremonies',
@@ -646,6 +654,7 @@ async function continuationFixture(t, options = {}) {
     membershipContinuation: true,
     ...options,
   });
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
   await options.beforeContinuation?.(x);
   const entry = x.candidate();
   entry.input.candidate.head = x.certification.head;
@@ -675,6 +684,247 @@ async function continuationFixture(t, options = {}) {
     exchange: (role) => continuationExchange(x, admission, entry, role),
   };
 }
+
+function membershipCheckpointRead(
+  x,
+  credential = x.context.candidate.id,
+  key = x.keys.new,
+  patch = {},
+) {
+  const body = {
+    v: 2,
+    kind: 'membership-checkpoint-read',
+    pin: x.authority.pin,
+    workspaceId: x.workspace,
+    lineageId: x.base.request.candidate.lineageId,
+    credentialId: credential,
+    epoch: 4,
+    head: x.admission.head,
+    nonce: 'be'.repeat(32),
+    expiresAt: 61000,
+    ...patch,
+  };
+  return { ...body, signature: signed(key, message('done/membership-checkpoint-read/v2', body)) };
+}
+
+test('continuation admission requires the immutable baseline and rechecks it before changing authority', async (t) => {
+  let remove = null;
+  const x = await continuationFixture(t, {
+    hook(point, op) {
+      if (point === 'after-verify' && op === 'admit-membership') remove?.();
+    },
+    async beforeMembershipAdmission(y) {
+      const row = y.f.rows('content_checkpoints')[0],
+        original = y.f.rows('promotions');
+      const restore = () =>
+        mutate(y, (db) =>
+          db
+            .prepare('INSERT OR REPLACE INTO content_checkpoints VALUES (?,?,?)')
+            .run(row.workspace_id, row.checkpoint, row.admission),
+        );
+      const call = () => y.authority.owner.admitMembership(y.f.core, y.admissionInput);
+      mutate(y, (db) => db.exec('DELETE FROM content_checkpoints'));
+      assert.equal((await call()).refusal, 'checkpoint-required');
+      assert.deepEqual(y.f.rows('promotions'), original);
+      restore();
+      const bad = structuredClone(y.checkpoint);
+      bad.manifest.signature = '00'.repeat(64);
+      mutate(y, (db) =>
+        db.prepare('UPDATE content_checkpoints SET checkpoint=?').run(JSON.stringify(bad)),
+      );
+      assert.equal((await call()).ok, false);
+      assert.deepEqual(y.f.rows('membership_admissions'), []);
+      restore();
+      remove = () => {
+        remove = null;
+        mutate(y, (db) => db.exec('DELETE FROM content_checkpoints'));
+      };
+      assert.equal((await call()).refusal, 'checkpoint-required');
+      assert.deepEqual(y.f.rows('promotions'), original);
+      assert.deepEqual(y.f.rows('membership_admissions'), []);
+      restore();
+    },
+  });
+  assert.equal(x.admission.kind, 'membership-admission');
+});
+
+test('later certified readers authenticate the original baseline without borrowing its earlier admission', async (t) => {
+  const x = await continuationFixture(t),
+    e = x.exchange('new'),
+    d = await continuationDelivery(x, e);
+  const call = (request, authorization) =>
+    x.authority.owner.readMembershipCheckpoint(x.f.core, request, authorization);
+  const prior = x.f.rows('content_checkpoints');
+  assert.equal(prior[0].admission, null); // No old receipt is needed or manufactured for this reader.
+  assert.deepEqual(await call(membershipCheckpointRead(x)), { ok: true, checkpoint: x.checkpoint });
+  assert.equal(
+    (await call(membershipCheckpointRead(x, e.context.candidate.id, x.entry.key))).ok,
+    false,
+  );
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  assert.equal(
+    (await call(membershipCheckpointRead(x, e.context.candidate.id, x.entry.key))).ok,
+    false,
+  );
+  const installed = await d.transfer(d.request('new', 'install', d.installation));
+  const request = membershipCheckpointRead(x, e.context.candidate.id, x.entry.key, {
+    epoch: 5,
+    head: installed.certification.head,
+  });
+  const { signature: _signature, ...body } = request;
+  assert.deepEqual(
+    Buffer.from(await membershipCheckpointRequestMessage(request)),
+    message('done/membership-checkpoint-read/v2', body),
+  );
+  const { history } = await verifyMembershipChain(
+    {
+      successor: x.successor,
+      certification: x.certification,
+      continuations: [x.admission, installed.certification],
+    },
+    x.base,
+  );
+  const captured = structuredClone(request);
+  const checking = verifyMembershipCheckpointRequest(captured, x.authority.pin, history, 1000);
+  captured.head = 'ff'.repeat(32);
+  assert.deepEqual(await checking, request);
+  const checkpointAuthority = {
+    base: x.base,
+    successor: x.successor,
+    certification: x.certification,
+  };
+  const result = await call(request);
+  assert.deepEqual(
+    await verifyMembershipCheckpoint(result.checkpoint, checkpointAuthority, history),
+    x.checkpoint,
+  );
+  assert.deepEqual(
+    await verifyMembershipCheckpoint(
+      result.checkpoint,
+      checkpointAuthority,
+      historyPublisher(history, e.context.candidate.id),
+    ),
+    x.checkpoint,
+  );
+  await assert.rejects(
+    verifyMembershipCheckpoint(result.checkpoint, checkpointAuthority, { ...history }),
+  );
+  const corrupt = structuredClone(result.checkpoint);
+  corrupt.ct = '00'.repeat(32);
+  await assert.rejects(verifyMembershipCheckpoint(corrupt, checkpointAuthority, history));
+  for (const patch of [
+    { head: x.admission.head, epoch: 4 },
+    { epoch: 6 },
+    { workspaceId: 'ff'.repeat(16) },
+    { lineageId: 'ff'.repeat(32) },
+    { expiresAt: 1000 },
+    { expiresAt: 61001 },
+    { pin: { ...x.authority.pin, serviceId: 'ff'.repeat(16) } },
+  ]) {
+    const bad = membershipCheckpointRead(x, e.context.candidate.id, x.entry.key, {
+      epoch: request.epoch,
+      head: request.head,
+      ...patch,
+    });
+    await assert.rejects(verifyMembershipCheckpointRequest(bad, x.authority.pin, history, 1000));
+    assert.equal((await call(bad)).ok, false);
+  }
+  await assert.rejects(
+    verifyMembershipCheckpointRequest(
+      { ...request, signature: '00'.repeat(64) },
+      x.authority.pin,
+      history,
+      1000,
+    ),
+  );
+  assert.throws(() => parseMembershipCheckpointRequest({ ...request, action: 'publish' }));
+  assert.throws(() => parseMembershipCheckpointRequest({ ...request, nonce: 'x'.repeat(4097) }));
+  assert.deepEqual(x.f.rows('content_checkpoints'), prior);
+  const g = await continuationGrants(x),
+    scope = {
+      kind: 'workspace',
+      workspaceId: x.workspace,
+      credentialId: e.context.candidate.id,
+    };
+  const grant = await g.grant(scope, x.entry.key);
+  assert.deepEqual(await call(request, x.f.core.grants.authorize(grant.grantToken)), result);
+  await assert.rejects(
+    call(
+      membershipCheckpointRead(x, x.context.existing.id, x.keys.existing, {
+        epoch: 5,
+        head: request.head,
+      }),
+      x.f.core.grants.authorize(grant.grantToken),
+    ),
+    denial('insufficient-scope'),
+  );
+  x.f.restart();
+  g.restart();
+  await assert.rejects(
+    call(request, x.f.core.grants.authorize(grant.grantToken)),
+    denial('grant-required'),
+  );
+  const resumed = await g.grant(scope, x.entry.key);
+  assert.deepEqual(await call(request, x.f.core.grants.authorize(resumed.grantToken)), result);
+  const wire = x.make(1, 'third reader history', {
+    epoch: 5,
+    credential: scope.credentialId,
+    signer: x.entry.key,
+  });
+  assert.equal((await x.deliveryCall(wire)).kind, 'decision');
+  mutate(x, (db) =>
+    db.prepare('DELETE FROM publisher_decisions WHERE credential_id=?').run(scope.credentialId),
+  );
+  assert.equal((await call(request, x.f.core.grants.authorize(resumed.grantToken))).ok, false);
+  assert.deepEqual(x.f.rows('content_checkpoints'), prior);
+});
+
+test('historical checkpoint reads recheck the captured row, login and deadline after verification', async (t) => {
+  let at = 1000,
+    act = null;
+  const x = await continuationFixture(t, {
+    now: () => at,
+    hook(point, op) {
+      if (op === 'membership-checkpoint') act?.(point);
+    },
+  });
+  const request = membershipCheckpointRead(x),
+    call = (guard) => x.authority.owner.readMembershipCheckpoint(x.f.core, request, guard);
+  const row = x.f.rows('content_checkpoints')[0];
+  act = (point) => {
+    if (point !== 'after-verify') return;
+    act = null;
+    mutate(x, (db) => db.exec('DELETE FROM content_checkpoints'));
+  };
+  assert.equal((await call()).ok, false);
+  mutate(x, (db) =>
+    db
+      .prepare('INSERT INTO content_checkpoints VALUES (?,?,?)')
+      .run(row.workspace_id, row.checkpoint, row.admission),
+  );
+  const g = await continuationGrants(x),
+    grant = await g.grant(
+      {
+        kind: 'workspace',
+        workspaceId: x.workspace,
+        credentialId: request.credentialId,
+      },
+      x.keys.new,
+    );
+  act = (point) => {
+    if (point === 'after-verify') g.revoke();
+  };
+  await assert.rejects(
+    call(x.f.core.grants.authorize(grant.grantToken)),
+    denial('sign-in-required'),
+  );
+  act = (point) => {
+    if (point === 'before-commit') at = 61000;
+  };
+  assert.equal((await call()).ok, false);
+  assert.deepEqual(x.f.rows('content_checkpoints'), [row]);
+});
 
 for (const approving of ['existing', 'new'])
   test(`continuation relay preserves the original ceremony and binds restart/retry to the ${approving} approver`, async (t) => {
@@ -2398,6 +2648,7 @@ test('opt-in HTTP continuation uses exact scoped grants and publishes hints only
     transfer: '/account/membership/v2/transfer',
     admit: '/account/membership/v2/admit',
     discover: '/account/membership/v2/discover',
+    checkpoint: '/account/membership/v2/checkpoint',
   };
   for (const path of Object.values(routes)) {
     assert.equal((await api.post(path, {})).status, 401);
@@ -2473,6 +2724,16 @@ test('opt-in HTTP continuation uses exact scoped grants and publishes hints only
     credentialId: enrollment.credentialId,
   };
   const reader = await g.grant(workspace, x.entry.key);
+  const checkpointRead = membershipCheckpointRead(x, enrollment.credentialId, x.entry.key, {
+    epoch: 5,
+    head: installed.body.certification.head,
+  });
+  assert.equal((await api.post(routes.checkpoint, checkpointRead, retry)).status, 403);
+  assert.equal((await api.post(routes.checkpoint, 'x'.repeat(4097), reader)).status, 413);
+  assert.deepEqual((await api.post(routes.checkpoint, checkpointRead, reader)).body, {
+    ok: true,
+    checkpoint: x.checkpoint,
+  });
   const discovery = q.discovery(enrollment.credentialId, x.entry.key, {
     epoch: 5,
     head: installed.body.certification.head,

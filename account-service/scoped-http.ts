@@ -1,4 +1,5 @@
 import { MEMBERSHIP_PROOF_LIMIT } from '../account-protocol/membership.ts';
+import { MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT } from '../account-protocol/membershipCheckpoint.ts';
 /** Session/grant-protected routes. Bootstrap capabilities are composed separately;
  * there is no shared bearer fallback or /access endpoint here. */
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -82,6 +83,10 @@ export function createScopedAccountHandler(
     ),
   ]);
   if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/membership/v2/checkpoint', {
+      limit: MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT,
+      run: (v, _token, auth) => authority.readMembershipCheckpoint(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v2/admit', {
       limit: 4096,
       run: (v, _token, auth) => authority.admitMembership(core, v, auth),

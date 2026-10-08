@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: native continuation custody complete; historical checkpoint loading and owned authority adoption next
+scope: historical checkpoint access complete; client replay and owned activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -89,7 +89,13 @@ custody atomically. 18 focused membership checks and one real packaged browser c
 interrupted saves, cold reopening, equal installed keys and continued two-way writing. The new-device
 product walkthrough is still required.
 
-**Next:** third-device historical checkpoint/loading/editor and subsequent authority adoption;
+Native custody is committed as `fe4c2893`. Continuation admission now requires the original catch-up
+checkpoint before advancing authority. A current certified member can fetch it through a distinct
+read-only version-2 route; pending candidates cannot. 73 affected Node checks and build checks pass.
+The new device still needs its own replay and semantic admission before activation.
+
+**Next:** third-device replay across publishers, durable local admission, editor activation and
+subsequent authority adoption;
 then complete membership cancellation/removal with forward rotation/finalization, repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.

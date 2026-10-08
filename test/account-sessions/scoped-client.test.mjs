@@ -383,6 +383,7 @@ test('browser continuation routes retain workspace/enrollment separation and imm
   };
   assert.equal((await x.scoped.fetch('/account/membership/v2/discover', init)).status, 200);
   assert.deepEqual(seen[0], seen[1]);
+  assert.equal((await x.scoped.fetch('/account/membership/v2/checkpoint', init)).status, 200);
   const p = await x.prepare();
   const enrollment = x.owner.bind({
     ...x.binding,
@@ -399,6 +400,10 @@ test('browser continuation routes retain workspace/enrollment separation and imm
     await assert.rejects(x.scoped.fetch(path, init), /Wrong grant route/);
     assert.equal((await enrollment.fetch(path, init)).status, 200);
   }
+  await assert.rejects(
+    enrollment.fetch('/account/membership/v2/checkpoint', init),
+    /Wrong grant route/,
+  );
   await assert.rejects(
     enrollment.fetch('/account/membership/v2/discover', init),
     /Wrong grant route/,

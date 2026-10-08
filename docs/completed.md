@@ -10578,3 +10578,30 @@ lint/format, build, budget, origin isolation and diff checks pass. Logs:
 `/tmp/done-membership-custody-build.log`. This establishes native custody composition, not a completed
 third-device ceremony or activation. Historical checkpoint loading, owned authority adoption and the
 new device's editor remain next. No retained-service restart occurred; release validation is paused.
+
+
+## 2026-10-08 — Historical checkpoint access for later devices (`L-1`)
+
+After native custody checkpoint `fe4c2893`, continuation admission requires the verified immutable
+epoch-3 checkpoint and includes its retained row in the final compare. This closes a sequencing gap:
+advancing first could strand the original producer behind its epoch-3-only publication endpoint, and
+original genesis alone does not contain all pre-sync Local writing. Missing or changed baseline
+evidence refuses before advancing membership.
+
+The private schema-17 host now exposes a read-only `/account/membership/v2/checkpoint` route under a
+current workspace grant and a distinct signed request. It binds pin, workspace, lineage, certified
+reader, current epoch/head, nonce and deadline. Pending/key-delivered candidates cannot read until
+certification. The service verifies the original checkpoint and the reader's accepted-history census,
+then rechecks the captured state, session and lifetime. It neither replaces the baseline nor assigns
+the earlier second-device semantic receipt to a new reader. The client verifier ties the original
+checkpoint to its full verified membership chain; decryption and local installation remain separate.
+
+Evidence: 73 affected membership, transfer, session-host and browser-transport Node checks pass. Three
+new directed cases cover absent/tampered/racing baseline evidence, certified-versus-pending readers,
+original and later publisher contexts, request capture and substitutions, scope isolation, restart,
+missing accepted writing and expiry/session retirement during verification. HTTP read retries are
+silent and the default host still returns 404. TypeScript, scoped lint/format, build, budget, origin
+isolation and diff checks pass. Logs: `/tmp/done-membership-checkpoint-regressions.log`,
+`/tmp/done-membership-checkpoint-focused-final.log`, `/tmp/done-membership-checkpoint-build.log`.
+Next: client replay across all publishers, the new device's own durable semantic admission, and
+activation/current-authority adoption. No retained installation was changed. Release validation is paused.

@@ -41,6 +41,7 @@ const routes: Record<string, GrantScope['kind']> = {
   '/account/delivery/read-v2': 'workspace',
   '/account/authority/discover': 'workspace',
   '/account/membership/v2/discover': 'workspace',
+  '/account/membership/v2/checkpoint': 'workspace',
   '/account/membership/v2/admit': 'enrollment',
   '/account/membership/v2/ceremony': 'enrollment',
   '/account/membership/v2/transfer': 'enrollment',

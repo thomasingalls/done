@@ -14,6 +14,7 @@ import {
 import { admitMembership, type MembershipIssuer } from './membership.ts';
 import { transferMembership, type MembershipTransferIssuer } from './membershipTransfer.ts';
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
+import { readMembershipCheckpoint } from './membershipCheckpoint.ts';
 import {
   CEREMONY_SCHEMA,
   ceremonyBootstrap,
@@ -473,6 +474,9 @@ export class AccountCore {
   }
   exchangeCheckpoint(input: unknown, issuer: DeliveryIssuer) {
     return exchangeCheckpoint(this.#db, input, issuer, this.#hook);
+  }
+  readMembershipCheckpoint(input: unknown, issuer: DeliveryIssuer) {
+    return readMembershipCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {
     return readInbound(
