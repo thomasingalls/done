@@ -82,6 +82,14 @@ export interface VerifiedMembership {
   readonly state: Immutable<MembershipState>;
 }
 const verified = new WeakSet<VerifiedMembership>();
+const admittedCandidate = new WeakMap<VerifiedMembership, string>();
+/** The exact admission transition, not a later state which happens to retain a pending candidate. */
+export function membershipAdmissionCandidate(parent: VerifiedMembership): string {
+  membershipState(parent);
+  const candidate = admittedCandidate.get(parent);
+  if (!candidate) throw Error('Membership is not an admission boundary');
+  return candidate;
+}
 const freeze = <T>(value: T): Immutable<T> => {
   if (value && typeof value === 'object') {
     for (const child of Object.values(value)) freeze(child);
@@ -327,7 +335,7 @@ export async function verifyMembershipAdmission(
   if (proof.head !== (await digest(message))) throw Error('Membership head changed');
   await verifySignature(p.pin.authRoot, proof.signature, message);
   // Carry the verified recipient object, with its original approval context, through admission.
-  return retain({
+  const result = retain({
     ...structuredClone(p),
     epoch: e.epoch,
     head: proof.head,
@@ -338,6 +346,8 @@ export async function verifyMembershipAdmission(
     roster: e.roster,
     heads: e.heads,
   } as MembershipState);
+  admittedCandidate.set(result, candidate.credentialId);
+  return result;
 }
 
 export interface MembershipCertificationEpoch {

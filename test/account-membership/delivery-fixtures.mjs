@@ -7,10 +7,12 @@ import {
   membershipState,
 } from '../../account-protocol/membership.ts';
 
-export async function deliveryFixture(approving = 'existing') {
-  const f = fixture();
-  const anchor = await verifyMembershipAnchor(f.f.base, f.f.successor, f.certification, f.anchor);
-  const admission = f.admit(membershipState(anchor));
+export async function deliveryFixture(approving = 'existing', retained) {
+  const f = retained?.f ?? fixture();
+  const anchor =
+    retained?.anchor ??
+    (await verifyMembershipAnchor(f.f.base, f.f.successor, f.certification, f.anchor));
+  const admission = retained?.admission ?? f.admit(membershipState(anchor));
   const parent = await verifyMembershipAdmission(admission, anchor),
     p = membershipState(parent);
   const candidate = admission.epoch.preparation.context.candidate;

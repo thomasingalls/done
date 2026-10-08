@@ -120,3 +120,17 @@ an acknowledgement of the complete artifact hash after semantic replay. Eight fo
 The constructor is an internal primitive, not publication authority: source coverage must still be
 proved from an authenticated baseline and each accepted publisher suffix. Service retention, hash
 binding into approval, native joining custody and reader prefixes remain before enabling the product.
+
+## Accepted source replay increment
+
+Source verification is implemented for both existing survivors and replacements. Existing survivors
+cold-open the original baseline using their retained key. A replacement cold-opens its own admitted
+snapshot and starts at its authenticated cutoffs, requiring no earlier generation key. Each source
+then verifies signed accepted envelopes through every admission cutoff, including removed publishers;
+only after complete replay can it merge durable local originals and create the next snapshot.
+Twenty-four focused/affected checks pass, with [preserved output](./development-evidence/2026-10-08-replacement-source.log).
+
+The remaining work is composition with durable owners: persist the exact snapshot before publication,
+retain its service result and recipient acknowledgement, bind its hash into approval, install the
+joining device's current generation and nonzero receive prefixes, and exercise the complete repeated
+lifecycle. These helpers do not expose that unfinished path or upgrade the retained service.

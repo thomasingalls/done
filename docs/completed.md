@@ -11489,3 +11489,33 @@ truncated by a shared low-level decoder; this format now rejects it before decod
 `/tmp/done-replacement-checkpoint-focused.log`. TypeScript, scoped lint/format and diff checks pass.
 Next: prove source coverage from the authenticated baseline and each accepted publisher suffix, then
 retain publication/acknowledgement and integrate joining custody. Live service unchanged; validation paused.
+
+
+## 2026-10-08 — Accepted-prefix replay for replacement snapshot producers (`L-1`)
+
+The source replay now cold-opens an authenticated baseline and verifies every publisher through the
+exact admission cut, including finalized publishers. A newer advertised suffix does not expand that
+cut. Missing writing, a mismatched terminal link, unresolved dependencies, substituted requests and
+cancelled operations cannot produce a snapshot. A removed pending candidate's authenticated empty
+cutoff needs no invented publisher stream. Verified records can be retained by the future native owner
+and replayed after request expiry. Only the branded admission transition can define replacement cuts.
+
+The second source adapter starts from the producer's own signed, semantically admitted replacement
+baseline. It verifies that baseline's ancestry and exact prefixes, then reads only the later accepted
+suffix. A focused case proves that a generation-two replacement can prepare the next replacement's
+snapshot without a generation-one key. Local originals merge without advancing accepted cuts. Keys
+are captured and cleared by the replay lifetime; the original borrowed key buffers remain intact.
+
+Six source cases, nine checkpoint protocol/crypto cases and nine affected delivery/rotation cases pass
+(24 total). The independent source fixture uses real encrypted genesis and signed accepted envelopes;
+one early variant correctly failed because its acceptance predated a signed zero cutoff, and was
+corrected to issue after admission. An attempted pending-survivor rotation test was itself outside
+the existing removal contract and was replaced with a direct branded-boundary assertion. Evidence:
+[focused output](./development-evidence/2026-10-08-replacement-source.log).
+TypeScript, scoped lint/format, packaged build, budget (109.5 kB initial JS) and origin isolation pass.
+
+This is source verification, not native publication durability or product activation. Remaining:
+retain the exact snapshot and recipient acknowledgement through service/custody retry; bind the snapshot
+hash into approval; install a joining device's initial generation and nonzero verified prefixes; then
+exercise remove/connect-replacement/remove in packaged browsers. The post-rotation connection remains
+gated. No retained-service switch, key retirement, pruning or release-validation campaign.

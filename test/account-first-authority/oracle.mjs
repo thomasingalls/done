@@ -130,6 +130,7 @@ export function recoveryDigests(d) {
 export function fixedFixture({
   wrappingPublicKey = '6a'.repeat(32),
   recoveryPublicKey = '44'.repeat(32),
+  genesis,
 } = {}) {
   const seeds = Object.fromEntries(
     ['authority', 'device', 'bootstrap', 'acceptance', 'passkey'].map((name, i) => [
@@ -197,6 +198,10 @@ export function fixedFixture({
     ],
     signature,
   };
+  if (genesis) {
+    candidate.checkpoint = structuredClone(genesis.checkpoint);
+    candidate.coverage.snapshot = genesis.snapshot;
+  }
   candidate.signature = signed(keys.device, message('candidate', candidate));
   const request = {
     v: 1,
@@ -246,8 +251,8 @@ export function fixedFixture({
     epochHead: offer.head,
     generation: 1,
     checkpointDigest: hash(Buffer.from(candidate.checkpoint.ct, 'hex')),
-    sv: '00',
-    ds: '0000',
+    sv: genesis?.sv ?? '00',
+    ds: genesis?.ds ?? '0000',
     headVectorDigest: head,
     producer: candidate.signer,
     signature,

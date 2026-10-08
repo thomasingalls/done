@@ -5,6 +5,7 @@ import { digest, unhex, lp } from './recovery.ts';
 import { GENESIS_LIMIT } from './genesis.ts';
 import {
   membershipState,
+  membershipAdmissionCandidate,
   MEMBERSHIP_CREDENTIAL_LIMIT,
   type VerifiedMembership,
 } from './membership.ts';
@@ -116,6 +117,7 @@ export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoin
 }
 /** Includes finalized publishers: excluding them would silently omit their already accepted writing. */
 export function replacementCheckpointHeads(parent: VerifiedMembership) {
+  membershipAdmissionCandidate(parent);
   const p = membershipState(parent);
   const heads = [
     ...p.heads.map((h) => ({ ...h })),
@@ -157,6 +159,7 @@ export async function verifyReplacementCheckpoint(input: unknown, parent: Verifi
   const preparation = p.preparations.find((r) => r.credentialId === m.candidate);
   if (
     !candidate ||
+    membershipAdmissionCandidate(parent) !== m.candidate ||
     !producer ||
     !preparation ||
     m.workspaceId !== p.workspaceId ||

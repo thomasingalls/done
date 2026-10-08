@@ -6,8 +6,8 @@ import {
   membershipState,
 } from '../../account-protocol/membership.ts';
 // Independent LP/signature oracle, including the selected row-15 grammar and exact HPKE bytes.
-export async function rotationFixture(pending = false, removeOriginal = false) {
-  const f = fixture();
+export async function rotationFixture(pending = false, removeOriginal = false, options = {}) {
+  const f = fixture(options);
   let parent = await verifyMembershipAnchor(f.f.base, f.f.successor, f.certification, f.anchor);
   const actor = removeOriginal ? f.context.candidate : f.context.existing;
   const actorKey = removeOriginal ? f.keys.new : f.keys.existing;
@@ -165,8 +165,12 @@ export async function rotationFixture(pending = false, removeOriginal = false) {
   };
 }
 
-export async function membershipRotationFixture(pending = false, removeOriginal = false) {
-  const x = await rotationFixture(pending, removeOriginal),
+export async function membershipRotationFixture(
+  pending = false,
+  removeOriginal = false,
+  options = {},
+) {
+  const x = await rotationFixture(pending, removeOriginal, options),
     f = x.f;
   const proofs = {
     successor: f.f.successor,

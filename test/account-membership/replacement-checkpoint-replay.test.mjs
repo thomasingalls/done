@@ -1,33 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { build } from 'vite';
-import { resolve, join } from 'node:path';
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { pathToFileURL } from 'node:url';
+import { client } from './replacement-checkpoint-client.mjs';
 import { checkpointFixture } from './replacement-checkpoint-fixture.mjs';
 import { signed } from './fixtures.mjs';
-const built = await build({
-  configFile: false,
-  logLevel: 'error',
-  build: {
-    write: false,
-    minify: false,
-    rollupOptions: { output: { inlineDynamicImports: true } },
-    lib: {
-      entry: resolve('test/account-membership/replacement-checkpoint-entry.ts'),
-      formats: ['es'],
-    },
-  },
-});
-const dir = mkdtempSync(join(tmpdir(), 'done-replacement-replay-')),
-  path = join(dir, 'client.mjs');
-writeFileSync(
-  path,
-  (Array.isArray(built) ? built[0] : built).output.find((o) => o.type === 'chunk').code,
-);
-process.once('exit', () => rmSync(dir, { recursive: true, force: true }));
-const client = await import(pathToFileURL(path).href);
 async function fixture() {
   const f = await checkpointFixture();
   const { history } = await client.verifyMembershipChain(

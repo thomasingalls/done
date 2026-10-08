@@ -193,3 +193,9 @@ test('recipient acknowledgement authenticates the exact checkpoint and cannot be
   const different = f.sign({ ...c, nonce: '54'.repeat(12) });
   await assert.rejects(verifyReplacementCheckpointAdmission(a, different, f.parent));
 });
+
+test('replacement coverage requires the branded admission transition, not a rotation or a copied state', async () => {
+  const f = await checkpointFixture();
+  assert.throws(() => replacementCheckpointHeads(f.rotated), /not an admission boundary/);
+  assert.throws(() => replacementCheckpointHeads({ ...f.parent }), /Unverified/);
+});

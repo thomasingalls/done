@@ -1,0 +1,36 @@
+✔ additional-device delivery and installed certification verify independent signatures from existing (62.559417ms)
+✔ additional-device delivery and installed certification verify independent signatures from new (52.917458ms)
+✔ approver-signed delivery must preserve every existing recipient, recovery, generation and exact comparison (76.137666ms)
+✔ certification cannot authorize an uninstalled device or change prior keys, rights, parent or accepted coverage (49.610208ms)
+(node:41053) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current-key replacement cold replay preserves accepted writing, local journal edits and deletions (106.948917ms)
+✔ snapshot captures source documents and key before asynchronous signing (71.177042ms)
+✔ signed wrong coverage and altered ciphertext context cannot pass semantic replay (71.641583ms)
+✔ construction refuses incomplete accepted replay and unresolved local dependencies before signing (72.752375ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (125.013416ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (35.086834ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (26.977708ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (31.37025ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (25.717125ms)
+(node:41055) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (255.097791ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (443.265625ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (254.514375ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (102.86ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (164.504333ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (206.797583ms)
+✔ other-device removal binds the exact parent, recipients, recovery wrap and selected transition grammar (83.589292ms)
+✔ even service-signed preparation cannot authorize self-removal, an unknown target or an unapproved actor (62.103333ms)
+✔ no recipient injection, omitted wrap, recovery substitution, generation skip or ciphertext substitution (48.274125ms)
+✔ lost or forged outcomes remain pending; only authenticated competing intent can supersede (27.333208ms)
+✔ finalization binds the removed stream and exact link, including a zero-write device (29.570709ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1785.007125
