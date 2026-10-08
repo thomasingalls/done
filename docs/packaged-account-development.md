@@ -3,9 +3,10 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
-**Current retained installation:** lifecycle build `2bea3437`, schema 20, same `:8443` origin and pin.
+**Current retained installation:** lifecycle build `ea120109`, schema 21, same `:8443` origin and pin.
 Both network sessions and membership continuation are enabled. Use the lifecycle-cutover commands at
-the end; earlier serving checkpoints are historical. Operator browser update uptake remains pending.
+the end; earlier serving checkpoints are historical. A fresh disposable desktop-pair walkthrough now
+passes on the retained service; existing personal-browser update uptake remains unclaimed.
 
 ## Serving and access
 
@@ -417,3 +418,20 @@ close/reopen after download if an old worker still controls a tab. Confirm versi
 writing and ordinary sync on both devices. The preview label stays; release validation remains paused.
 The prior build and the full pre-upgrade backup are retained, subject to the session-restore constraints
 above. No personal browser was opened during this cutover.
+
+## Retained-service desktop walkthrough — 2026-10-08
+
+The operator requested computer use instead of personally repeating the writing/sync check. Both
+disposable Firefox containers lacked their earlier chooser entries, so the operator authorized a fresh
+pair and handled credential saving and content approval. Both editors displayed `ea120109`. The new
+pair passed initial Goals transfer, ordinary cards in both directions without page reloads, and
+lock/tab-close/chooser-reopen on each device with all writing retained. The joined device reopened
+without re-entering its invitation. Both showed remembered logins; another B edit reached A after both
+reopens. No application repair or service change was necessary.
+
+[Observation record](./development-evidence/2026-10-08-retained-desktop-walkthrough.json).
+This completes the requested desktop walkthrough and leaves both test editors available for use.
+It does not establish preservation/update uptake of the old browser accounts, physical-phone behavior,
+offline/crash recovery, or a manual removal/replacement cycle. The earlier automated repeated-lifecycle
+checks remain their own evidence. B's saved connection/unlock still uses enrollment wording; that
+usability detail is recorded without changing the product flow. Release validation remains paused.

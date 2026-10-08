@@ -11717,3 +11717,29 @@ Next is operator uptake: reopen online, allow the normal app update, confirm ver
 existing writing and ordinary sync on both devices. No personal removal is needed for this first
 check. Recovery, self/last-device removal, checkpoint/pruning/key retirement and production operations
 remain separate; release validation remains paused.
+
+
+## 2026-10-08 — Retained-service desktop account walkthrough (`L-1`)
+
+At the operator's request, exercised the actual `:8443` installation through native Firefox UI in
+two disposable Multi-Account Containers, with real Bitwarden passkey prompts. Neither container
+offered its earlier account, so the operator authorized a fresh pair, saved/confirmed credentials,
+entered a short Goals marker, and completed content approval. The operator explicitly confirmed
+intentional reuse of the older-labelled disposable passkey entry before it was used for later logins.
+Both editors displayed build `ea120109` and the same account identity.
+
+B received A's original Goals text. A received B's first day card on returning from approval; then
+A-to-B and B-to-A cards arrived with both editors open, without reloading either page. Each workspace
+was locked, its tab closed/restored, and its saved account/connection reopened through the chooser
+using its existing device-lock code and passkey. Both retained Goals and all three cards. B needed no
+invitation re-entry. Both showed the remembered network login, and a fourth B card reached A after
+both reopens without another network-login ceremony. Both disposable editors remain open for use.
+[Structured observation record](./development-evidence/2026-10-08-retained-desktop-walkthrough.json).
+
+No application repair was needed. B still has transitional chooser/unlock wording (Device connection,
+Connect this device, Unlock enrollment); record this for a later agreed usability pass. This is fresh
+desktop enrollment and ordinary delivery evidence, not preservation of the missing prior browser
+accounts, physical-phone uptake, offline/crash recovery, or another manual removal/replacement cycle.
+The existing focused automated repeated-lifecycle evidence remains separate. The requested desktop
+walkthrough is complete; personal-device uptake is not claimed. Lost-device recovery remains the next
+separate product journey, and release validation remains paused.

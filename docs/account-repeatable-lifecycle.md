@@ -3,7 +3,9 @@
 2026-10-08. The operator authorized continuing through repeated connections and removals, with
 unsigned intermediate commits and focused implementation evidence. Release validation remains paused.
 The retained development service now serves immutable build `ea120109` on schema 21 after a confirmed
-quiet point and verified offline backup. Personal-device uptake remains pending; see the cutover runbook.
+quiet point and verified offline backup. The requested fresh desktop-pair walkthrough now passes on
+that service, including two-way edits and reopening. Personal-device uptake remains unclaimed; see
+the cutover runbook and [desktop observations](./development-evidence/2026-10-08-retained-desktop-walkthrough.json).
 
 ## Product boundary
 
@@ -211,6 +213,9 @@ repairs within the existing product decisions.
 
 This completes the bounded repeated lifecycle in disposable packaged browsers. The retained service
 now serves this implementation at the same origin and ports after a verified schema-21 upgrade,
-preserving the original pin and account rows. Operator writing/sync uptake is the next check.
+preserving the original pin and account rows. The operator-requested computer-use check on a fresh
+disposable Firefox pair passes initial transfer, two-way editing, chooser reopen and subsequent
+delivery. It does not establish preservation of the unavailable prior browser accounts or manual
+removal/replacement; those limits are explicit in the observation record. Paused for operator use.
 Self/last-device removal, lost-device recovery, successor snapshot replacement/pruning, key retirement
 and production operations remain separate. Release validation stays paused.

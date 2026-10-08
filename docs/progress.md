@@ -49,13 +49,13 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: bounded repeatable lifecycle implemented, checked and served; operator uptake pending
-blocks_on: operator writing/sync check on retained devices
+scope: bounded repeatable lifecycle served; requested desktop walkthrough complete
+blocks_on: none for the completed desktop walkthrough; paused for operator use
 release_validation: paused by operator
 updated: 2026-10-08
 ```
 
-**Source checkpoint:** `ea120109` (unsigned; grant repair `6387d955`) completes the bounded flow now works in disposable packaged browsers:
+**Source checkpoint:** `ea120109` (unsigned; grant repair `6387d955`) completes the bounded flow in disposable packaged browsers:
 remove → connect replacement → edit → remove another → connect again. Original and joined producers
 capture accepted/journal writing. Replacements start at the approved current generation, retain
 nonzero receive cuts, edit in both directions and cold-reopen. The generation-two replacement itself
@@ -83,12 +83,21 @@ Integrity checks pass. API 54398 and app 54401 serve the updated installation. T
 gateway, a fresh authority proof and all 29 precache URLs/worker bytes verify.
 [Cutover evidence](./development-evidence/2026-10-08-repeatable-lifecycle-cutover.json).
 
-**Next:** operator uptake. Reopen the unchanged address online, allow the normal app update, confirm
-version `ea120109`, existing writing and ordinary sync on both devices. Close/reopen after download
-if the old worker still controls a tab. No personal-device removal is needed for the initial check.
-No personal browser was opened during the cutover. [Runbook](./packaged-account-development.md).
+**Requested desktop walkthrough complete:** the operator authorized a fresh pair after neither
+disposable Firefox container offered its old account. With real passkeys and operator-completed
+credential saving/content approval, both editors opened build `ea120109`. B received A's Goals;
+ordinary cards flowed both ways without reload. Each locked workspace survived tab closure and
+reopened from the chooser with all test writing. B needed no invitation re-entry. Both remembered
+network logins, and another B edit reached A after both reopens. No application repair was needed.
+[Observation record](./development-evidence/2026-10-08-retained-desktop-walkthrough.json).
 
-**After uptake:** lost-device recovery remains the next separate product journey. Self/last-device
+**Next:** pause for operator use; both disposable editors remain open. This fresh-pair walkthrough
+does not establish preservation/update uptake of earlier personal browser accounts or physical-phone
+behavior. Those remain unclaimed, not a reason to repeat the completed desktop check. B's chooser and
+unlock still use enrollment terminology; any wording change belongs to an agreed usability pass.
+[Runbook](./packaged-account-development.md).
+
+**Next separate product journey:** lost-device recovery. Self/last-device
 removal needs an explicit UX decision. Successor checkpoint replacement, history pruning, old-key
 retirement and production operations are unfinished; existing history-size bounds remain. The
 account-preview label stays. Release validation remains paused until explicitly resumed.
