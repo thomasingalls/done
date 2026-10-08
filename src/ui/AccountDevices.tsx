@@ -51,6 +51,12 @@ export function AccountDevices({
           <p role="status">Reading saved devices…</p>
         ) : (
           <>
+            {roster.detached && (
+              <p role="status">
+                Removed from account. This is a detached local copy. Your writing can be edited and
+                exported; it no longer syncs.
+              </p>
+            )}
             <ul className="account-device-list">
               {roster.devices.map((device) => (
                 <li key={device.id} data-device-state={device.state}>
@@ -77,13 +83,19 @@ export function AccountDevices({
             <button
               className="setup-primary"
               onClick={onConnect}
-              disabled={roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4)}
+              disabled={
+                roster.detached ||
+                (roster.generation ?? 1) !== 1 ||
+                (roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4))
+              }
             >
               {roster.devices.some((d) => d.state === 'pending')
                 ? 'Resume connection'
                 : 'Connect another device'}
             </button>
-            {roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4) && (
+            {(roster.detached ||
+              (roster.generation ?? 1) !== 1 ||
+              (roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4))) && (
               <p className="setup-note">
                 Additional device connections are not available yet in this preview.
               </p>

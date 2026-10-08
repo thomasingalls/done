@@ -1,3 +1,8 @@
+import {
+  parseRemovalDiscoveryRequest,
+  removalDiscoveryRequestMessage,
+  verifyRemovalDiscoveryResponse,
+} from '../../account-protocol/removalDiscovery';
 import { openActiveRotation } from './rotationKeys';
 import { ScopedTransport } from '../account/scopedTransport';
 import { isAccountAccess, type AccountAccess } from '../account/accountHttp';
@@ -317,11 +322,19 @@ async function openAccountReceiveOwner(
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
   // openAccountCaptureOwner's exclusive permit; the source principal is checked by its startup verifier.
-  const { account, carrier, runCaptureTask, runNetworkTask, listCaptures, installRoute } =
-    await openAccountCaptureOwner(options, principalId, extension, joined);
-  const scopedOwner = options.networkLogin
-    ? new ScopedTransport(options.pin, carrier.signal)
-    : undefined;
+  const {
+    account,
+    carrier,
+    runCaptureTask,
+    runNetworkTask,
+    listCaptures,
+    installRoute,
+    suspendCapture,
+  } = await openAccountCaptureOwner(options, principalId, extension, joined);
+  const scopedOwner =
+    options.networkLogin && !account.detached
+      ? new ScopedTransport(options.pin, carrier.signal)
+      : undefined;
   const access = scopedOwner?.bind({
     login: options.networkLogin!,
     scope: {
@@ -329,6 +342,16 @@ async function openAccountReceiveOwner(
       workspaceId: base.authority.workspace,
       credentialId: base.reader.id,
     },
+    sign: (message) =>
+      runNetworkTask(async (task) =>
+        hex(
+          new Uint8Array(await task.wait(() => subtleFor(task).sign('Ed25519', signer!, message))),
+        ),
+      ),
+  });
+  const terminalAccess = scopedOwner?.bind({
+    login: options.networkLogin!,
+    scope: { kind: 'removal', workspaceId: base.authority.workspace, credentialId: base.reader.id },
     sign: (message) =>
       runNetworkTask(async (task) =>
         hex(
@@ -370,6 +393,7 @@ async function openAccountReceiveOwner(
     route: CaptureRoute,
     after?: number,
   ) => {
+    if (account.detached) throw Error('This local copy is detached from sync');
     const all = await state(task, owner, route);
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
     const publisher =
@@ -454,6 +478,7 @@ async function openAccountReceiveOwner(
       promote: (updates: readonly Bytes[]) => void = () => {},
       expectedRequest?: Bytes,
     ) => {
+      if (account.detached) return Promise.reject(Error('This local copy is detached from sync'));
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
       const page = input.slice();
@@ -705,7 +730,25 @@ async function openAccountReceiveOwner(
       task.step(() => checkCommit?.());
       if (history.current.tip === route.epoch)
         return { epoch: route.epoch, head: history.current.head };
-      if (historyGeneration(history) !== 1) throw Error('Rotation requires generation activation');
+      if (historyGeneration(history) !== base.generation) {
+        // A fully verified successor stops admission synchronously, before the first custody await.
+        suspendCapture();
+        try {
+          await (
+            await import('./rotationObservation')
+          ).retainObservedRotation(
+            task,
+            joined ? 'joined' : 'promotion',
+            options.slotId,
+            options.code,
+            proofs,
+          );
+          return { epoch: history.current.tip, head: history.current.head };
+        } finally {
+          // Do not await release from inside its own storage/network task.
+          void carrier.close().catch(() => {});
+        }
+      }
       if (history.current.tip < route.epoch) throw Error('Membership cannot regress');
       const records = await owner.carrier.load(task);
       let committed = false;
@@ -814,6 +857,7 @@ async function openAccountReceiveOwner(
   const refreshAuthority = (token: AccountAccess, force = false) => {
     if (discoveryFlight) return discoveryFlight;
     const work = runNetworkTask(async (network) => {
+      if (account.detached) return { kind: 'paused' as const };
       if (!composed) throw Error('Discovery requires the composed owner');
       const continuation =
         typeof options.membershipContinuation === 'function'
@@ -868,7 +912,50 @@ async function openAccountReceiveOwner(
         const response = await network.wait(() =>
           privateDiscoveryPost(options.pin, access ?? token, prepared.request, network.signal),
         );
-        if (!response) return { kind: 'unknown' as const };
+        if (!response) {
+          if (terminalAccess) {
+            const request = await runCaptureTask(async (task) => {
+              await assertCurrent(task);
+              const r = parseRemovalDiscoveryRequest({
+                v: 1,
+                kind: 'removal-discovery-request',
+                pin: options.pin,
+                workspaceId: base.authority.workspace,
+                lineageId: base.authority.lineage,
+                credentialId: base.reader.id,
+                nonce: hex(random(32)),
+                expiresAt: Date.now() + 30000,
+                signature: '00'.repeat(64),
+              });
+              r.signature = hex(
+                new Uint8Array(
+                  await task.wait(async () =>
+                    subtleFor(task).sign(
+                      'Ed25519',
+                      signer!,
+                      await removalDiscoveryRequestMessage(r),
+                    ),
+                  ),
+                ),
+              );
+              return r;
+            });
+            const terminal = await network.wait(() =>
+              privateDiscoveryPost(options.pin, terminalAccess, request, network.signal),
+            );
+            if (terminal) {
+              const verified = await network.wait(() =>
+                verifyRemovalDiscoveryResponse(terminal, request, prepared.anchor, Date.now()),
+              );
+              await adoptMembership(verified.proofs, () => {
+                network.step(() => {});
+                if (request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
+              });
+              return { kind: 'adopted' as const };
+            }
+          }
+          return { kind: 'unknown' as const };
+        }
         try {
           const answer = await network.wait(() =>
             verifyMembershipDiscoveryResponse(
@@ -980,6 +1067,7 @@ async function openAccountReceiveOwner(
     return work;
   };
   const createOutbound = (whenDurable: () => Promise<unknown>) => {
+    if (account.detached) throw Error('This local copy is detached from sync');
     if (!composed) throw Error('Outbound composition was not opened');
     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
       records,
@@ -1070,12 +1158,15 @@ async function openAccountReceiveOwner(
   return {
     access,
     devices: Object.freeze({
+      detached: account.detached,
       read: () =>
         runCaptureTask(async (task) => {
           await assertCurrent(task);
           return task.step(() =>
             Object.freeze({
               epoch: base.authority.tip,
+              generation: base.generation,
+              detached: account.detached,
               currentDevice: base.reader.id,
               devices: base.history
                 ? historyDevices(base.history)
@@ -1168,7 +1259,11 @@ async function openReceivingWorkspace(
       throw Error('Account opening was cancelled');
     }
     gate = () => {
-      if (carrier.signal.aborted || !['active', 'blocked'].includes(workspace.status.state))
+      if (
+        carrier.signal.aborted ||
+        carrier.state !== 'active' ||
+        !['active', 'blocked'].includes(workspace.status.state)
+      )
         return 'closed';
       if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
         return 'local-storage';
@@ -1265,7 +1360,7 @@ async function openReceivingWorkspace(
       },
       listCaptures,
     });
-    if (composed) {
+    if (composed && !account.detached) {
       const outbound = createOutbound(() => workspace.whenDurable());
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
@@ -1364,7 +1459,7 @@ async function openReceivingWorkspace(
         },
       });
     }
-    if (!driven)
+    if (!driven || account.detached)
       return Object.freeze({
         ...result,
         receiver: undefined,
@@ -1444,7 +1539,8 @@ export async function openOwnedSyncingAccountWorkspace(
 ) {
   if (!isAccountAccess(operatorToken)) throw Error('Private operator token required');
   const result = await openReceivingWorkspace(input, operatorToken, true, joined);
-  if (!result.sync || !result.outbound) throw Error('Missing outbound composition');
+  if ((!result.sync || !result.outbound) && !result.detached)
+    throw Error('Missing outbound composition');
   const {
     prepareRead: _prepare,
     receivePage: _receive,
@@ -1455,7 +1551,18 @@ export async function openOwnedSyncingAccountWorkspace(
   } = result;
   return Object.freeze({
     ...owned,
-    deliveryStatus: outbound.deliveryStatus,
-    spoolStatus: outbound.spoolStatus,
+    adoptMembership: (input: unknown) => {
+      if (!('adoptMembership' in result))
+        return Promise.reject(Error('Detached copy cannot adopt membership'));
+      return result.adoptMembership(input);
+    },
+    deliveryStatus: () => {
+      if (!outbound) throw Error('Detached copy has no delivery driver');
+      return outbound.deliveryStatus();
+    },
+    spoolStatus: () => {
+      if (!outbound) throw Error('Detached copy has no outbound spool');
+      return outbound.spoolStatus();
+    },
   });
 }

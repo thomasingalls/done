@@ -24,7 +24,13 @@ import {
   historyMembership,
   historyGeneration,
 } from '../../account-protocol/admissionHistory';
-import { resolveRotationOutcome, verifyRotationRequest } from '../../account-protocol/rotation';
+import {
+  resolveRotationOutcome,
+  verifyRotationRequest,
+  verifyRemovalPreparationRequest,
+  verifyRemovalPreparation,
+  removalPreparationMatchesRequest,
+} from '../../account-protocol/rotation';
 import { contentCheckpointHash } from '../../account-protocol/contentCheckpoint';
 import { generationInfo } from '../../account-protocol/genesis';
 import { same } from '../../account-protocol/admission';
@@ -101,12 +107,7 @@ export async function activateAccountRotation(
       commit,
     });
     const progress = parseNativeRemoval(await vault.load());
-    if (
-      !progress.successor ||
-      !progress.key ||
-      !progress.progress?.rotation ||
-      !progress.progress.outcome
-    )
+    if (!progress.successor || !progress.key)
       throw Error('Removal outcome and opener must be retained before activation');
     const parent = await verifyMembershipChain(progress.parent, base);
     const proof = progress.successor;
@@ -117,18 +118,30 @@ export async function activateAccountRotation(
       historyGeneration(parent.history) !== 1 ||
       historyGeneration(history) !== 2 ||
       history.finalization ||
-      progress.progress.request.actorId !== credentials[1].id ||
-      !same(proof.epoch.rotation.payload.excluded, [progress.target]) ||
-      !same(progress.progress.outcome, proof.epoch.outcome)
+      !same(proof.epoch.rotation.payload.excluded, [progress.target])
     )
       throw Error('Unsupported local rotation');
-    const intent = await verifyRotationRequest(
-      progress.progress.rotation,
-      historyMembership(parent.history),
-      base.request.recovery,
-    );
-    if ((await resolveRotationOutcome(progress.progress.outcome, intent)).kind === 'pending')
-      throw Error('Unverified rotation outcome');
+    if (progress.progress) {
+      const p = progress.progress,
+        membership = historyMembership(parent.history);
+      await verifyRemovalPreparationRequest(p.request, membership);
+      if (p.request.actorId !== credentials[1].id || p.request.targetId !== progress.target)
+        throw Error('Retained removal owner changed');
+      if (p.preparation) {
+        await verifyRemovalPreparation(p.preparation, membership);
+        if (!removalPreparationMatchesRequest(p.request, p.preparation))
+          throw Error('Retained preparation changed');
+      }
+      if (p.rotation) {
+        if (!same(p.rotation.preparation, p.preparation)) throw Error('Retained rotation changed');
+        const intent = await verifyRotationRequest(p.rotation, membership, base.request.recovery);
+        if (
+          (p.outcome && !same(p.outcome, proof.epoch.outcome)) ||
+          (await resolveRotationOutcome(proof.epoch.outcome, intent)).kind === 'pending'
+        )
+          throw Error('Unverified rotation outcome');
+      } else if (p.outcome) throw Error('Outcome has no intent');
+    }
     if (existingMembership) {
       const held = await verifyMembershipChain(existingMembership.proofs, base);
       historyAuthority(history, held.history.current);

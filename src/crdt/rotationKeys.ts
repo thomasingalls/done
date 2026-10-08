@@ -14,8 +14,6 @@ export async function openActiveRotation(
     if (record.active_rotation) throw Error('Active rotation has no retained apply record');
     return null;
   }
-  if (!record.active_rotation)
-    throw Error('Resume account generation activation before opening this workspace');
   const vault = await createApprovalVault({
     channel: 'rotation',
     slotId: scope.slotId,
@@ -29,6 +27,15 @@ export async function openActiveRotation(
     },
   });
   const state = parseNativeRemoval(await vault.load());
+  if (
+    !record.active_rotation &&
+    state.successor &&
+    state.target === record.credentials![1].id &&
+    !state.key &&
+    state.successor.epoch.rotation.payload.excluded.length === 1 &&
+    state.successor.epoch.rotation.payload.excluded[0] === state.target
+  )
+    return null;
   if (
     !state.key ||
     !state.successor ||

@@ -45,6 +45,9 @@ export async function verifyAccountUnderPermit(
   options: AccountStartupOptions,
   maxVersion = 8,
 ) {
+  const detached = await (
+    await import('./rotationObservation')
+  ).resumeAccountRotation(task, 'promotion', options.slotId, options.code);
   const { claim, record, marker } = await readPromotion(task, options.slotId, options.code);
   if (
     !marker ||
@@ -85,7 +88,7 @@ export async function verifyAccountUnderPermit(
   };
   if (!same(marker.handoff!.destination, destination)) throw Error('Account destination changed');
   await localCensus(task, claim, options.code);
-  if (options.networkLogin) {
+  if (options.networkLogin && !detached) {
     await withPromotionRoot(task, claim, record, options.code, (root) =>
       options.networkLogin!.initialize(task, root, record.root_id, proof),
     );
@@ -235,6 +238,10 @@ export async function verifyAccountUnderPermit(
                         ? inspectDelivery(records, route, authority).spool
                         : inspectSpool(records, route);
                   await verifySpoolWitness(state, counter, subtle);
+                  if (detached)
+                    await (
+                      await import('./rotationObservation')
+                    ).verifyDetachedPrefix(detached, state, subtle);
                   await verifyInstalledSuccessor(
                     state,
                     route,
@@ -289,7 +296,11 @@ export async function verifyAccountUnderPermit(
     record,
     marker,
     route,
-    account: Object.freeze({ ...handoffResult(destination), kind: 'account' as const }),
+    account: Object.freeze({
+      ...handoffResult(destination),
+      kind: 'account' as const,
+      detached: !!detached,
+    }),
   };
 }
 export async function classifyAccountStartup(input: AccountStartupOptions) {

@@ -179,6 +179,8 @@ export async function withCeremonyVault<T>(
             return checkpoint;
           },
           wrapContent: async (recipient, info, workspace) => {
+            if (record.rotation)
+              throw Error('Further enrollment after rotation is not available yet');
             if (
               !marker?.admission?.receipt ||
               marker.source.workspaceId !== workspace ||

@@ -11230,3 +11230,32 @@ origin isolation and diff checks pass. Content switch checkpoint: `edaf7c5d`. Th
 Next: passive discovery must stop the old writer and retain/apply the verified successor; then Devices
 removal/restart and the removed device's detached local copy. No Remove control is exposed yet. No live
 process/store changed; release validation remains paused.
+
+
+## 2026-10-08 — Observed rotation and detached local copies (`L-1`)
+
+The composed editor now stops acknowledgement synchronously after verifying a newer rotation, retains
+its full chain and recipient opener under the held slot permit, then retires the old runtime. Opening
+resumes authenticated activation before constructing a writer. A removed credential uses the existing
+proof-only grant when workspace discovery refuses; only its request-bound terminal proof is retained.
+
+Removed devices cold-verify their final accepted cutoff against their own retained ciphertext prefix.
+They retain the predecessor installation and key as a writable/exportable detached copy, with a visible
+notice and no content, publication or notification driver. They receive no successor opener. Neither
+an unsigned refusal nor an unverified chain establishes removal. Further enrollment after the first
+rotation is explicitly refused rather than wrapping the predecessor key.
+
+The focused three-device native walkthrough passes: authenticated observation closes both old editors,
+two survivors exchange generation-two edits and cold-reopen, and the removed device edits/reopens its
+detached copy without content or notification requests. Original/joined lost-reply and interrupted-apply
+regressions also pass (`/tmp/done-removal-observation-final.log`, 3 cases). The test encountered normal
+service throttling and retried the same retained intent; it does not relax those limits. Thirty-six
+content/journal cases, 42 admission/receive cases, and eleven protocol/replay cases pass:
+`/tmp/done-removal-observation-unit.log`, `/tmp/done-removal-admission-regressions.log`,
+`/tmp/done-removal-observation-protocol.log`. TypeScript, scoped lint/format, build/budget, origin and
+diff checks pass. A temporary diagnostic confirmed the editor's hidden retry controls were not an
+admission failure and was removed before the final run.
+
+Native activation checkpoint: `70f13011`. This checkpoint is unsigned. Next is the Devices removal
+action, pending-operation/restart messages and a product-level removal walkthrough. The retained
+installation remains untouched; release validation stays paused.

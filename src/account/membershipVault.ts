@@ -151,6 +151,8 @@ export function withMembershipVault<T>(
             }
           },
           wrapContent: async (recipient, info, workspace) => {
+            if (state.record.rotation)
+              throw Error('Further enrollment after rotation is not available yet');
             if (
               workspace !== marker.authority.base.request.candidate.workspaceId ||
               marker.authority.certification.epoch.delivery.generation !== 1

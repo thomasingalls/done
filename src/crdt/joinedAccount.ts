@@ -365,10 +365,10 @@ export async function joinedKeys<T>(
   work: (key: Bytes, signer: CryptoKey, publicKey: CryptoKey) => Promise<T>,
   applying = false,
 ) {
-  if (state.record.rotation && !state.record.active_rotation && !applying)
-    throw Error('Resume account generation activation before opening this workspace');
   const marker = state.marker!;
   return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => {
+    if (!applying && state.record.rotation && !state.record.active_rotation)
+      await openActiveRotation(claimScope(state.claim), root, state.record, subtle);
     if (marker.key.sequence > state.record.seal_reserved)
       throw Error('Installed key exceeds reservation');
     const iv = new Uint8Array(12);
@@ -645,6 +645,9 @@ async function installCertifiedAccount(
 }
 /** Restartable installation: each native prefix is rechecked against the immutable authenticated input. */
 export async function verifyJoinedAccount(task: SessionTask, options: AccountStartupOptions) {
+  const detached = await (
+    await import('./rotationObservation')
+  ).resumeAccountRotation(task, 'joined', options.slotId, options.code);
   const state = await readJoinedAccount(task, options.slotId, options.code),
     marker = state.marker;
   if (!marker || !same(marker.authority.base.pin, options.pin))
@@ -692,7 +695,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           ...(active ? { retainedGenerationKeys: new Map([[1, kg]]) } : {}),
         };
       }
-      if (options.networkLogin) {
+      if (options.networkLogin && !detached) {
         await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
           options.networkLogin!.initialize(
             task,
@@ -857,6 +860,10 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
                 initialEpoch,
                 crypto.subtle,
               );
+            if (detached)
+              await (
+                await import('./rotationObservation')
+              ).verifyDetachedPrefix(detached, census.delivery.spool, crypto.subtle);
             const delivery = await verifyDelivery(
               census.delivery,
               b.route,
@@ -877,6 +884,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         base: { ...b.base, generationKey: new Uint8Array(), retainedGenerationKeys: new Map() },
         account: {
           kind: 'account' as const,
+          detached: !!detached,
           slotId: options.slotId,
           accountId: slot.unlockBinding!.binding.accountId,
           principalId: b.route.principal,

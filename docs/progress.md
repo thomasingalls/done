@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: native account activation complete; passive discovery and device-removal UI next
+scope: observed rotation and detached copies complete; Devices removal and restart UX next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -87,10 +87,16 @@ commits matching custody/membership pointers. Interrupted activation resumes; or
 editing and cold reopen pass. Three native cases, 71 affected unit cases and twelve protocol cases pass.
 Old keys and the apply record remain for later checkpoint/retirement work.
 
-**Next:** verified passive discovery must stop the old writer and retain/apply the successor; Devices
-removal/progress and crash resume; detached local copy; disposable removal/write/reopen check.
-No Remove action is exposed yet. Repeated later admissions, lost-device recovery, checkpoint
-replacement/pruning and operations remain later work.
+Native activation checkpoint: `70f13011`. Observed rotation now stops old acknowledgements, retains
+the verified successor and resumes activation on unlock. Removed-device terminal discovery opens a
+writable/exportable detached copy after checking its accepted ciphertext prefix; no successor key or
+network driver is installed. Three native cases include three-device two-way delivery, cold reopen and
+detached editing with no content/notification requests. Seventy-eight affected unit cases and eleven
+protocol/replay cases pass; evidence is recorded in [completed.md](./completed.md).
+
+**Next:** Devices removal action and pending-operation/restart messages, then the product-level removal
+walkthrough. No Remove action is exposed yet. Repeated later admissions/rotations, lost-device recovery,
+checkpoint replacement/pruning and operations remain later work.
 
 Continue unsigned intermediate commits and end-of-phase chat summaries; one signed checkpoint at the
 end of the agreed sequence. Consult the operator on product decisions. Release validation stays paused.

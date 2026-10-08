@@ -16,8 +16,9 @@ The private protocol verifies preparation, intent, outcome and finalization evid
 rotation successor now extends verified membership/history, retaining historical authorship while
 ending current access. The private service now commits the preparation/fence and atomic rotation with historical delivery.
 Protected transport, native retained custody, successor opener installation and original/joined local
-activation are implemented. No product control is enabled. Passive discovery still needs to close the
-old writer and hand its verified successor to the activation owner.
+activation are implemented. No product control is enabled. Passive discovery now closes the old
+writer after retaining its verified successor; unlocking resumes activation. Removed devices retain
+a writable detached copy and start no content or notification driver.
 
 ## Stable cutoff before the intent
 
@@ -80,10 +81,11 @@ prefix; a signature over a claimed link is not replay evidence.
   Removed-device terminal discovery now has a separate proof-only grant, including exposed pending
   targets; it returns no transitions after their removal. A different remaining owner can finish the
   exact prepared target, and the original intent resolves against the authenticated winner.
-- Passive discovery and activation handoff under the exclusive writer barrier. Native activation now
+- Passive discovery and activation handoff are implemented under the exclusive writer barrier. Native activation now
   includes synchronous journal and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.
-- Devices action and progress; removed-device detached copy; disposable removal, remaining-device
-  writes and cold reopen, including lost replies and interrupted installation.
+- Devices action, pending-operation progress and restart UX remain. Detached-copy opening/editing and
+  a disposable three-device removal/write/reopen flow pass, alongside lost-reply/interrupted-installation
+  regressions. The final walkthrough should exercise the product Remove action.
 
 The retained `:8443` installation remains unchanged until a new quiet point and backed-up upgrade.

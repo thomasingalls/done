@@ -30,6 +30,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     switchAccount,
     networkLogin,
     showDevices,
+    devices,
   } = useWorkspaceUi();
   const installState = useSyncExternalStore(
     subscribeToInstallState,
@@ -174,8 +175,15 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Use another account
           </button>
         )}
-        {networkLogin && <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />}
-        {!networkLogin && (
+        {devices?.detached ? (
+          <p className="menu-note" role="status">
+            Removed from account. This local copy can be edited and exported, but it no longer
+            syncs.
+          </p>
+        ) : (
+          networkLogin && <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
+        )}
+        {!networkLogin && !devices?.detached && (
           <p className="menu-note">
             {accountWorkspace
               ? 'Account connected. Approved devices can sync writing in this preview.'

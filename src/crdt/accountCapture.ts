@@ -73,6 +73,7 @@ export async function openAccountCaptureOwner(
   let owner: ReturnType<typeof prepareAccountCustody> | undefined;
   let account!: Awaited<ReturnType<typeof verifyAccountUnderPermit>>['account'];
   let route!: CaptureRoute;
+  let suspended = false;
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
     extension ? extension.sourceRecords(records, route) : records;
@@ -255,6 +256,7 @@ export async function openAccountCaptureOwner(
     try {
       const catalog = captureCatalog(sourceRecords(records), route);
       for (const bytes of values) {
+        if (suspended) throw Error('Account generation is changing');
         const c = decodeSourceCapsule(bytes, route);
         try {
           const found = catalog.get(c.id);
@@ -298,7 +300,7 @@ export async function openAccountCaptureOwner(
   const carrier: JournalSession = Object.freeze({
     ...owner!.describe(),
     get state() {
-      return live.state;
+      return suspended && live.state === 'active' ? 'closing' : live.state;
     },
     signal: live.signal,
     close: () => live.close(),
@@ -310,11 +312,13 @@ export async function openAccountCaptureOwner(
     },
     captureLocal: (_update: Bytes, sources: readonly SourceUpdate[] | undefined) =>
       live.write(() => {
+        if (suspended) throw Error('Account generation is changing');
         if (!sources?.length) captureError('Source metadata must accompany local admission');
         return makeSourceCapsule(route, sources!);
       }),
     appendLocal: (bytes: Bytes) =>
       live.write(() => {
+        if (suspended) throw Error('Account generation is changing');
         const c = decodeSourceCapsule(bytes, route);
         eraseCapsule(c);
         return owner!.journal.append(bytes);
@@ -322,7 +326,10 @@ export async function openAccountCaptureOwner(
     appendBatch: (input: readonly ContentInput[]) => {
       let copied: ContentInput[];
       try {
-        copied = live.write(() => copyBatch(input));
+        copied = live.write(() => {
+          if (suspended) throw Error('Account generation is changing');
+          return copyBatch(input);
+        });
       } catch (e) {
         return Promise.reject(e);
       }
@@ -404,6 +411,10 @@ export async function openAccountCaptureOwner(
   return {
     account,
     carrier,
+    // Synchronous admission barrier. Retention still owns the permit and serialized storage tail.
+    suspendCapture() {
+      suspended = true;
+    },
     // Internal composition only: caller persists and verifies authority before this synchronous swap.
     installRoute(task: SessionTask, next: CaptureRoute) {
       task.step(() => {
