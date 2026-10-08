@@ -199,6 +199,7 @@ export async function prepared(t, options = {}) {
     recovery,
     recoveryInput,
     s,
+    w,
     begin,
     completion,
     activationInput,

@@ -4812,3 +4812,192 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
+
+let removalClient;
+async function compiledRemoval() {
+  removalClient ??= (async () => {
+    const built = await build({
+      configFile: false,
+      logLevel: 'error',
+      build: {
+        write: false,
+        minify: false,
+        lib: { entry: resolve('test/account-membership/removal-entry.ts'), formats: ['es'] },
+        rolldownOptions: { output: { codeSplitting: false } },
+      },
+    });
+    const code = (Array.isArray(built) ? built[0] : built).output.find(
+      (v) => v.type === 'chunk',
+    ).code;
+    return import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'));
+  })();
+  return removalClient;
+}
+
+test('protected rotation routes require the exact actor and emit only committed preparation and rotation hints', async (t) => {
+  const x = await removalFixture(t),
+    api = await membershipHTTP(t, x),
+    g = await continuationGrants(x),
+    r = await removalRequest(x);
+  const prepare = '/account/membership/v2/removal/prepare',
+    commit = '/account/membership/v2/removal/commit';
+  assert.equal((await api.post(prepare, r)).status, 401);
+  const target = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: r.targetId },
+    x.keys.new,
+  );
+  assert.equal((await api.post(prepare, r, target)).status, 403);
+  assert.equal(x.f.rows('removal_preparations').length, 0);
+  const own = () =>
+    g.grant(
+      { kind: 'workspace', workspaceId: x.workspace, credentialId: r.actorId },
+      x.keys.existing,
+    );
+  const first = await api.post(prepare, r, await own());
+  assert.equal(first.status, 200, JSON.stringify(first));
+  assert.equal(api.hints.length, 1);
+  assert.deepEqual((await api.post(prepare, r, await own())).body, first.body);
+  assert.equal(api.hints.length, 1);
+  const { request } = await rotationRequest(x, r);
+  assert.equal((await api.post(commit, request)).status, 401);
+  const grant = await own();
+  const result = await api.post(commit, request, grant);
+  assert.equal(result.status, 200, JSON.stringify(result));
+  assert.equal(api.hints.length, 2);
+  assert.equal((await api.post(commit, request, grant)).status, 409);
+  assert.deepEqual((await api.post(commit, request, await own())).body, result.body);
+  assert.equal(api.hints.length, 2);
+  for (const path of ['/__account-setup/removal/prepare', '/__account-setup/removal/commit'])
+    assert.equal((await api.post(path, request)).status, 404);
+});
+
+test('retained browser rotation producer composes with scoped HTTP through lost preparation and committed replies', async (t) => {
+  let liveClock = false;
+  const client = await compiledRemoval(),
+    x = await removalFixture(t, { now: () => (liveClock ? Date.now() : 1000) }),
+    api = await membershipHTTP(t, x);
+  liveClock = true;
+  const g = await continuationGrants(x);
+  const beforeLocation = globalThis.location;
+  globalThis.location = { origin: x.authority.pin.origin };
+  t.after(() => {
+    globalThis.location = beforeLocation;
+  });
+  const stop = new AbortController();
+  t.after(() => stop.abort());
+  let access,
+    retained = null,
+    lose = 'prepare';
+  const requests = [];
+  const login = {
+    networkSignal: stop.signal,
+    getSnapshot: () => 'remembered',
+    authorization: async () => {
+      access ??= x.f.core.sessions.renew({
+        sessionId: g.session.sessionId,
+        renewalToken: g.session.renewalToken,
+      });
+      assert.equal(access.stage, 'access', JSON.stringify(access));
+      return {
+        token: access.accessToken,
+        sessionId: access.sessionId,
+        accountId: access.accountId,
+      };
+    },
+    rejectAccess: () => {
+      access = undefined;
+    },
+  };
+  const fetch = async (url, init) => {
+    const path = new URL(url).pathname;
+    requests.push({ path, body: init.body });
+    const auth = new Headers(init.headers).get('Authorization');
+    const result = await api.post(
+      path,
+      init.body,
+      auth ? { grantToken: auth.slice(7) } : undefined,
+    );
+    if (result.status === 200 && path.endsWith('/removal/' + lose)) {
+      lose = lose === 'prepare' ? 'commit' : null;
+      throw Error('committed reply lost');
+    }
+    return new Response(JSON.stringify(result.body), {
+      status: result.status,
+      headers: result.headers,
+    });
+  };
+  const transport = new client.ScopedTransport(x.authority.pin, stop.signal, fetch);
+  const binding = {
+    login,
+    scope: { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.existing.id },
+    sign: async (bytes) => signed(x.keys.existing, bytes),
+  };
+  const parent = await client.verifyMembershipAnchor(x.base, x.successor, x.certification, {
+    epoch: 3,
+    head: x.certification.head,
+  });
+  const network = client.createDeviceRemovalTransport(parent, transport.bind(binding), stop.signal);
+  const wrapping = await crypto.subtle.importKey(
+    'pkcs8',
+    x.w.privateKey.export({ format: 'der', type: 'pkcs8' }),
+    'X25519',
+    false,
+    ['deriveBits'],
+  );
+  const opened = [];
+  const owner = {
+    participant: x.context.existing,
+    sign: binding.sign,
+    openWrap: async (w, info) => {
+      const key = await client.openGeneration(
+        w,
+        wrapping,
+        new Uint8Array(Buffer.from(x.context.existing.wPub, 'hex')),
+        info,
+      );
+      opened.push(key);
+      return key;
+    },
+  };
+  const run = () =>
+    client.continueDeviceRemoval(parent, x.base.request.recovery, x.context.candidate.id, owner, {
+      ...network,
+      signal: stop.signal,
+      load: async () => structuredClone(retained),
+      replace: async (before, next) => {
+        assert.deepEqual(before, retained);
+        retained = structuredClone(next);
+      },
+    });
+  assert.equal(await run(), 'pending');
+  assert.equal(retained.preparation, null);
+  assert.equal(api.hints.length, 1);
+  assert.equal(await run(), 'pending');
+  assert(retained.rotation);
+  assert.equal(retained.outcome, null);
+  assert.equal(api.hints.length, 2);
+  const intent = structuredClone(retained.rotation);
+  x.f.restart();
+  x.authority.restart();
+  assert.equal(await run(), 'committed');
+  assert.deepEqual(retained.rotation, intent);
+  assert.equal(api.hints.length, 2);
+  assert.equal(x.f.rows('membership_rotations').length, 1);
+  assert(opened.every((k) => k.every((b) => b === 0)));
+  const sent = requests.filter((r) => r.path.endsWith('/removal/commit'));
+  assert(sent.length >= 2);
+  assert(sent.every((r) => r.body === JSON.stringify(intent)));
+  const own = await client.openGeneration(
+    intent.payload.wraps[0],
+    wrapping,
+    new Uint8Array(Buffer.from(x.context.existing.wPub, 'hex')),
+    client.generationInfo({
+      workspaceId: x.workspace,
+      lineageId: x.context.lineageId,
+      authRoot: x.authority.pin.authRoot,
+      generation: 2,
+    }),
+  );
+  assert.equal(own.length, 32);
+  own.fill(0);
+});

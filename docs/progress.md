@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: atomic service rotation complete; protected transport and native activation next
+scope: protected removal transport complete; discovery/takeover and native activation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -101,7 +101,13 @@ racing publication and schema-19 upgrade checks pass. The affected service selec
 checks. No HTTP/product entry point or native activation is enabled yet. Preparation checkpoint:
 `009965c2`.
 
-**Next:** protected HTTP/client composition, removed-device discovery and takeover;
+Protected HTTP and the real browser producer now compose with the service through lost preparation
+and commit replies plus restart, using actual HPKE and scoped grants with a simulated persistence port.
+Four focused HTTP cases, six client/bounds cases and sixteen scoped transport regressions pass. Exact
+retries produce no duplicate hints. No native activation or product control is enabled. Atomic service
+checkpoint: `df0fd467`.
+
+**Next:** removed-device discovery and prepared-removal takeover;
 actual journal-inclusive generation activation;
 Devices action and disposable removal/write/reopen check. Repeated later admissions and lost-device
 recovery follow. Checkpoint replacement/pruning and operations remain later work.

@@ -15,7 +15,8 @@ still produce old-generation writing until it observes and activates the success
 The private protocol verifies preparation, intent, outcome and finalization evidence. The committed
 rotation successor now extends verified membership/history, retaining historical authorship while
 ending current access. The private service now commits the preparation/fence and atomic rotation with historical delivery.
-Protected transport and native activation still need composition; no product control is enabled.
+Protected transport and retained-client composition are implemented; native activation remains.
+No product control is enabled.
 The generation-one native owner explicitly refuses rotation adoption.
 
 ## Stable cutoff before the intent
@@ -71,7 +72,8 @@ prefix; a signature over a claimed link is not replay evidence.
 - Durable service preparation/fence and atomic successor, wraps, finalization and outcome are implemented
   in private schema 20. History, survivor discovery and scoped authorization compose with the rotation.
   Old-generation work from remaining authorized offline devices keeps its historical admission path.
-  Protected HTTP/client transport, removed-device discovery and prepared-removal takeover remain next.
+  Protected HTTP/client transport and the retained producer compose through lost replies/restart.
+  Removed-device discovery and prepared-removal takeover remain next.
 - Actual local generation activation under the exclusive writer barrier, including synchronous journal
   and retained outbound work. Follow TRD §13.7 / SC-03/04 applying order. Keep predecessor keys until
   successor checkpoint admission and a fresh journal-inclusive retirement census permit retirement.

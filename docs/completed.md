@@ -11038,3 +11038,31 @@ removed-device discovery, prepared-removal takeover, native generation/journal a
 controls remain open. No native activation guard was removed. No live store or process changed;
 `:8443` remains `a07de792` / schema 14. Release validation remains paused. Previous checkpoint:
 `009965c2`; this checkpoint is unsigned.
+
+
+## 2026-10-08 — Protected removal transport and retained producer composition (`L-1`)
+
+The opt-in session host exposes bounded preparation/commit routes only through workspace-scoped
+`remove` authorization. There is no bootstrap/shared-bearer alias. Notification hints follow changes
+to the exact prepared record or newest committed rotation, keeping exact retries quiet. Browser
+ScopedTransport admits the two explicit workspace routes; a dedicated bounded transport verifies the
+returned preparation and complete winning rotation before returning outcome evidence to the producer.
+
+Preparation changes the grant fingerprint. The transport therefore allows one reacquisition/retry
+on `authority-changed` for these identical signed request bytes. This advances no local authority:
+the domain still verifies the exact prepared parent or retained terminal outcome. Network loss,
+invalid replies and abort still preserve the client intent. The response stream is size-bounded and
+cancelled on refusal, overflow or lifetime end.
+
+Four focused HTTP cases pass, including the actual bundled browser producer with real HPKE self-wrap
+opening and scoped HTTP authorization, lost replies after preparation and commit, service/custody
+restart and identical intent replay. Wrong-actor/missing grants refuse; retries emit no extra hints.
+Evidence `/tmp/done-rotation-http-final.log`. Six retained-client/transport cases pass including bounds,
+abort and incomplete outcome evidence (`/tmp/done-rotation-http-bounds.log`); 16 scoped HTTP/client
+regressions pass (`/tmp/done-rotation-scoped.log`). TypeScript, scoped lint/format, build, budget and
+origin checks pass. The test uses a simulated committed client persistence port, **not** native browser
+storage or local generation activation.
+
+No Devices control is exposed and no live state/server changed. Removed-device discovery, prepared
+removal takeover and actual journal-inclusive activation remain next. Atomic service checkpoint:
+`df0fd467`. This intermediate checkpoint is unsigned; release validation remains paused.

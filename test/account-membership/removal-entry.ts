@@ -6,3 +6,6 @@ export {
 } from '../../account-protocol/membership';
 export { openGeneration } from '../../src/account/generationWrap';
 export { generationInfo } from '../../account-protocol/genesis';
+
+export { createDeviceRemovalTransport } from '../../src/account/deviceRemovalHttp';
+export { ScopedTransport } from '../../src/account/scopedTransport';

@@ -1,3 +1,4 @@
+import { ROTATION_LIMIT } from '../account-protocol/rotation.ts';
 import { MEMBERSHIP_PROOF_LIMIT } from '../account-protocol/membership.ts';
 import { MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT } from '../account-protocol/membershipCheckpoint.ts';
 /** Session/grant-protected routes. Bootstrap capabilities are composed separately;
@@ -83,6 +84,14 @@ export function createScopedAccountHandler(
     ),
   ]);
   if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/membership/v2/removal/prepare', {
+      limit: 4096,
+      run: (v, _token, auth) => authority.prepareRemoval(core, v, auth),
+    });
+    jsonRoutes.set('/account/membership/v2/removal/commit', {
+      limit: ROTATION_LIMIT,
+      run: (v, _token, auth) => authority.commitRotation(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v2/checkpoint', {
       limit: MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT,
       run: (v, _token, auth) => authority.readMembershipCheckpoint(core, v, auth),
@@ -217,11 +226,13 @@ export function createScopedAccountHandler(
           '/__account-setup/content/checkpoint': 'content_checkpoints',
           '/account/membership/v2/admit': 'membership_admissions',
           '/account/membership/v2/cancel': 'membership_cancellations',
+          '/account/membership/v2/removal/prepare': 'removal_preparations',
+          '/account/membership/v2/removal/commit': 'membership_rotations',
           '/account/membership/v2/ceremony': 'membership_ceremonies',
           '/account/membership/v2/transfer': 'membership_transfers',
         }[path];
         if (!table) return check;
-        const continuation = table.startsWith('membership_');
+        const continuation = table.startsWith('membership_') && table !== 'membership_rotations';
         if (continuation && scope.kind !== 'enrollment')
           throw new AuthorizationRefused('insufficient-scope');
         const row = () =>
@@ -229,7 +240,13 @@ export function createScopedAccountHandler(
             ? db
                 .prepare(`SELECT * FROM ${table} WHERE workspace_id=? AND preparation_id=?`)
                 .get(scope.workspaceId, scope.attemptId)
-            : db.prepare(`SELECT * FROM ${table} WHERE workspace_id=?`).get(scope.workspaceId);
+            : table === 'membership_rotations'
+              ? db
+                  .prepare(
+                    'SELECT * FROM membership_rotations WHERE workspace_id=? ORDER BY epoch DESC LIMIT 1',
+                  )
+                  .get(scope.workspaceId)
+              : db.prepare(`SELECT * FROM ${table} WHERE workspace_id=?`).get(scope.workspaceId);
         const before = row();
         return () => {
           check();
@@ -269,6 +286,8 @@ export function createScopedAccountHandler(
             (path === '/__account-setup/enrollment/admit' ||
               path === '/account/membership/v2/admit' ||
               path === '/account/membership/v2/cancel' ||
+              path === '/account/membership/v2/removal/prepare' ||
+              path === '/account/membership/v2/removal/commit' ||
               (value && typeof value === 'object' && 'action' in value && value.action !== 'read'))
           )
             notifications?.committed(target, path === '/__account-setup/content/checkpoint');

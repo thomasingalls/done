@@ -361,3 +361,47 @@ test('unsigned stale response remains pending; authenticated competing outcome i
   assert.equal(await x.run(), 'superseded');
   assert.deepEqual(x.retained.rotation, held.rotation);
 });
+
+test('removal HTTP bounds and cancellation leave the retained intent unchanged', async () => {
+  const x = await ready();
+  await x.run();
+  const retained = x.retained;
+  let reply;
+  const access = { kind: 'scoped-account', pin: x.p.pin, fetch: async () => reply };
+  const network = client.createDeviceRemovalTransport(x.parent, access, x.controller.signal);
+  let cancelled = 0;
+  reply = new Response(
+    new ReadableStream({
+      start(c) {
+        c.enqueue(new Uint8Array(70000));
+      },
+      cancel() {
+        cancelled++;
+      },
+    }),
+    { headers: { 'Content-Type': 'application/json' } },
+  );
+  await assert.rejects(network.prepare(retained.request), /too large/);
+  assert.equal(cancelled, 1);
+  reply = Response.json(
+    { ok: true, preparation: retained.preparation },
+    { headers: { 'Content-Length': '999999' } },
+  );
+  await assert.rejects(network.prepare(retained.request), /unavailable/);
+  reply = Response.json({ ok: true, outcome: retained.outcome });
+  await assert.rejects(network.submit(retained.rotation));
+  reply = new Response(
+    new ReadableStream({
+      pull() {
+        x.controller.abort();
+      },
+      cancel() {
+        cancelled++;
+      },
+    }),
+    { headers: { 'Content-Type': 'application/json' } },
+  );
+  await assert.rejects(network.prepare(retained.request));
+  assert.equal(cancelled, 2);
+  assert.deepEqual(x.retained, retained);
+});
