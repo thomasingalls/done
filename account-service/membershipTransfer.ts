@@ -81,6 +81,7 @@ export async function transferMembership(
       if (!s) return refuse('unavailable');
       const auth = await verifyPendingMembership(s, issuer),
         p = membershipState(auth.membership);
+      if (auth.cancellation) return refuse('cancelled');
       if (
         request.parent !== p.head ||
         request.preparationId !== auth.proof.epoch.preparation.context.attemptId

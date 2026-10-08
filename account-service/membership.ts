@@ -110,6 +110,7 @@ export async function admitMembership(
         ...root,
         continuations: [],
         membershipTransfers: [],
+        membershipCancellations: [],
         promotion: { ...root.promotion, successor_head: cert.head },
       };
       const auth = await verifyWorkspaceAuthority(original, issuer);
@@ -196,7 +197,8 @@ export async function admitMembership(
         }
       }
       const current = membershipState(parent);
-      if (root.membershipTransfers?.length && result) await verifyPendingMembership(root, issuer);
+      if ((root.membershipTransfers?.length || root.membershipCancellations?.length) && result)
+        await verifyPendingMembership(root, issuer);
       else if (root.promotion.successor_head !== current.head)
         throw Error('Membership current pointer changed');
       const boundaries: { credentialId: string; witness: DeliveryWitness | null }[] = [];

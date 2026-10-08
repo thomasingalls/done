@@ -12,6 +12,8 @@ import {
   verifyMembershipAdmission,
   parseMembershipCertification,
   verifyMembershipCertification,
+  parseMembershipCancellation,
+  verifyMembershipCancellation,
 } from '../account-protocol/membership.ts';
 import {
   verifyWorkspaceAuthority,
@@ -34,6 +36,7 @@ export async function verifyPendingMembership(
       ...snapshot,
       continuations: [],
       membershipTransfers: [],
+      membershipCancellations: [],
       promotion: { ...snapshot.promotion, successor_head: certificate.head },
     },
     issuer,
@@ -82,8 +85,24 @@ export async function verifyPendingMembership(
       currentMembership = await verifyMembershipCertification(certification, membership);
     }
   }
+  const cancellations = snapshot.membershipCancellations ?? [];
+  if (cancellations.length > 1) throw Error('Unsupported cancellation history');
+  const rowCancellation = cancellations[0];
+  let cancellation = null;
+  if (rowCancellation) {
+    cancellation = parseMembershipCancellation(JSON.parse(rowCancellation.artifact));
+    if (
+      transfer ||
+      rowCancellation.workspace_id !== row.workspace_id ||
+      rowCancellation.parent !== proof.head ||
+      rowCancellation.preparation_id !== row.preparation_id ||
+      cancellation.epoch.cancellation.preparationId !== row.preparation_id
+    )
+      throw Error('Retained cancellation scope changed');
+    currentMembership = await verifyMembershipCancellation(cancellation, membership);
+  }
   const current = membershipState(currentMembership);
   if (snapshot.promotion.successor_head !== current.head)
     throw Error('Current membership pointer changed');
-  return { membership, currentMembership, anchor, proof, delivery, certification };
+  return { membership, currentMembership, anchor, proof, delivery, certification, cancellation };
 }

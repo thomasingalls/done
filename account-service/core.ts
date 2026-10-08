@@ -8,10 +8,12 @@ import {
   MEMBERSHIP_SCHEMA,
   MEMBERSHIP_CEREMONY_SCHEMA,
   MEMBERSHIP_TRANSFER_SCHEMA,
+  MEMBERSHIP_CANCELLATION_SCHEMA,
   enableMembershipStore,
   membershipEnabled,
 } from './membershipStore.ts';
 import { admitMembership, type MembershipIssuer } from './membership.ts';
+import { cancelMembership, type MembershipCancellationIssuer } from './membershipCancellation.ts';
 import { transferMembership, type MembershipTransferIssuer } from './membershipTransfer.ts';
 import { exchangeCheckpoint, CONTENT_CHECKPOINT_SCHEMA } from './contentCheckpoint.ts';
 import { readMembershipCheckpoint } from './membershipCheckpoint.ts';
@@ -198,6 +200,7 @@ export class AccountCore {
       upgradeFromV14?: boolean;
       upgradeFromV15?: boolean;
       upgradeFromV16?: boolean;
+      upgradeFromV17?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -239,7 +242,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 17 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 18 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 17 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV17
+        ) &&
         !(
           version === 16 &&
           instrumentation.sessions &&
@@ -358,6 +367,10 @@ export class AccountCore {
             this.#db.exec(MEMBERSHIP_TRANSFER_SCHEMA);
             this.#db.exec('PRAGMA user_version=17;');
           }
+          if (version < 18) {
+            this.#db.exec(MEMBERSHIP_CANCELLATION_SCHEMA);
+            this.#db.exec('PRAGMA user_version=18;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -411,6 +424,9 @@ export class AccountCore {
       this.#hook,
       this.#diagnostics.record,
     );
+  }
+  cancelMembership(input: unknown, issuer: MembershipCancellationIssuer) {
+    return cancelMembership(this.#db, input, issuer, this.#hook);
   }
   relayCeremony(input: unknown, issuer: DeliveryIssuer) {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook);

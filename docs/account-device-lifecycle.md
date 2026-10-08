@@ -404,3 +404,12 @@ verification supports the transition. The service must still atomically fence ap
 retain its exact result; the pure proof does not establish absence of an approval. Cancellation must
 refuse once approval/key exposure is possible, and local uncertain outcomes remain removal territory.
 No cancellation control is enabled before that service/client composition exists.
+
+
+## Atomic cancellation service checkpoint — 2026-10-08
+
+The private schema-18 producer now serializes cancellation against comparison approval and key delivery.
+It retains exact outcomes and both publisher cutoffs/witnesses atomically. Lost replies resume without
+changing the intent; current discovery and continued writing verify the cancelled successor. Approval
+winning the race requires removal with rotation; a signed mismatch can still cancel. The retained host
+remains on schema 14. HTTP/client cancellation and the product control are the next composition boundary.

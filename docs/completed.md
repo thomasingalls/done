@@ -10818,3 +10818,33 @@ Evidence: 10 focused cancellation/admission/history/locator tests pass in
 actor and scope, attempts to remove approved recipients or change keys/coverage, input mutation during
 verification, cold full-chain replay and subsequent admission. TypeScript, scoped lint/format and diff
 checks pass. The service commit is next; removal/rotation remains separate. Live service unchanged.
+
+
+## 2026-10-08 — Atomic pending-membership cancellation service (`L-1`)
+
+Following cancellation proof `7d4df6ee`, the private service commits the exact signed cancellation,
+complete publisher ledger boundaries, rebound witnesses and current head atomically. An existing
+member or the candidate may request withdrawal. Approval or any key-bearing transfer forces
+`removal-required`; a signed mismatch remains cancellable. The producer rechecks its complete captured
+state under the commit lock and the scoped authorization immediately before commit. A before-commit
+interruption rolls back; an after-commit lost reply retries the same retained result after restart.
+Changed requests cannot replace the result. Cancellation does not erase accepted writing.
+
+Current authority, full-chain bootstrap/discovery and both publisher ledgers now resolve the cancelled
+successor. Existing publishers keep writing; the pending candidate never gains read/write rights.
+Old admission retries retain their original result, while ceremony and transfer refuse the cancelled
+connection. Tampered publisher boundaries refuse. Repeated later admission remains separately fenced.
+
+Private schema 18 adds an admission-keyed cancellation table. Retained 17 requires explicit
+`upgradeFromV17`; earlier explicit upgrade paths install it too. The default service remains schema 14.
+No cancellation HTTP route or product control is exposed in this checkpoint. No live upgrade occurred.
+
+Evidence: four focused real-service cases in `/tmp/done-membership-cancel-service.log` cover both
+approval/cancellation orderings plus a concurrent race, commit interruption/restart, exact retry after
+subsequent writing, authenticated discovery, denied candidate writes, signed mismatch, commit-time
+authorization loss, altered boundaries and the offline 17-to-18 upgrade. Five schema/coordinator
+regressions pass (`/tmp/done-membership-cancel-service-regressions.log`), including either existing
+approver's successful third-device connection. Four host cases pass
+(`/tmp/done-membership-cancel-host.log`), including backed-up 14-to-18 upgrade and default-host refusal.
+TypeScript, scoped lint/format and diff checks pass. Next: protected route and durable client cancellation;
+removal/rotation remains open. Release validation stays paused.

@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: cancellation proof complete; atomic service transition next
+scope: atomic cancellation complete; protected route and retained client cancellation next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -116,10 +116,13 @@ writing across all three and cold reopening. Original two-device compatibility a
 host capability/offline upgrade remains undeployed. Bounded capacity retries recover under the unchanged
 request limits; the passing rapid test still hit those limits. Committed as `31b19f78`.
 Cancellation request/successor verification now preserves approved recipients and full publisher history;
-10 focused protocol cases pass. Service serialization against approval/delivery remains unwired.
+10 focused protocol cases pass; committed as `7d4df6ee`. The private schema-18 service now commits
+cancellation, publisher boundaries and current head atomically; approval/delivery fences cancellation.
+Four focused service cases, five schema/coordinator regressions and four host cases pass. The cancellation
+route and client control remain unwired; retained service schema 14 is unchanged.
 See the completed checkpoints for evidence.
 
-**Next:** atomic service retention and client composition for pending-membership cancellation before
+**Next:** protected HTTP route and durable client composition for pending-membership cancellation before
 approval, then removal with forward
 rotation/finalization after approval or uncertain key exposure; repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed

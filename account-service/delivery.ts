@@ -5,8 +5,10 @@ import { rethrowAuthorization, type OperationAuthorization } from './authorizati
 import {
   membershipRows,
   membershipTransferRows,
+  membershipCancellationRows,
   type MembershipRow,
   type MembershipTransferRow,
+  type MembershipCancellationRow,
 } from './membershipStore.ts';
 import {
   causeCode,
@@ -158,6 +160,7 @@ export interface WorkspaceAuthoritySnapshot {
   transfer: ContentTransferRow | null;
   continuations?: MembershipRow[];
   membershipTransfers?: MembershipTransferRow[];
+  membershipCancellations?: MembershipCancellationRow[];
 }
 export const PUBLISHER_SCHEMA = `
   CREATE TABLE publisher_decisions (
@@ -240,6 +243,7 @@ export function snapshotWorkspaceAuthority(
   if (transfer && !successor) throw Error('Delivery without admission');
   const continuations = membershipRows(db, workspace);
   const membershipTransfers = membershipTransferRows(db, workspace);
+  const membershipCancellations = membershipCancellationRows(db, workspace);
   return {
     promotion,
     account,
@@ -250,6 +254,7 @@ export function snapshotWorkspaceAuthority(
     transfer,
     ...(continuations.length ? { continuations } : {}),
     ...(membershipTransfers.length ? { membershipTransfers } : {}),
+    ...(membershipCancellations.length ? { membershipCancellations } : {}),
   };
 }
 export function snapshot(db: DatabaseSync, workspace: string, publisher?: string): Snapshot | null {
@@ -304,7 +309,7 @@ export async function verifyWorkspaceAuthority(
 ) {
   // Continuation mutation is a private development entry point until general history/transport
   // composition lands. The old 1–3 reader must never silently treat the old anchor as current.
-  if (s.continuations?.length || s.membershipTransfers?.length)
+  if (s.continuations?.length || s.membershipTransfers?.length || s.membershipCancellations?.length)
     throw Error('Membership continuation requires its owned history path');
   const p = s.promotion,
     request = parseAdmissionRequest(JSON.parse(p.request)),
@@ -472,7 +477,7 @@ export const verifyCurrentWorkspaceAuthority = (
   s: WorkspaceAuthoritySnapshot,
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
 ): Promise<Authority> =>
-  s.continuations?.length || s.membershipTransfers?.length
+  s.continuations?.length || s.membershipTransfers?.length || s.membershipCancellations?.length
     ? resolveMembershipDeliveryAuthority(s, issuer)
     : verifyWorkspaceAuthority(s, issuer);
 /** A publisher starts at its own verified certification; it has no earlier ledger. */

@@ -13,6 +13,8 @@ import type { OperationAuthorization } from './authorization.ts';
 import {
   parseMembershipAdmissionEpoch,
   membershipAdmissionMessage,
+  parseMembershipCancellationEpoch,
+  membershipCancellationMessage,
 } from '../account-protocol/membership.ts';
 import { ceremonyBootstrapMessage } from '../account-protocol/ceremonyRelay.ts';
 import {
@@ -420,6 +422,23 @@ export class PrivateAuthority {
   }
   relayCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayCeremony(input, this.#deliveryIssuer(authorize));
+  }
+  cancelMembership(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.cancelMembership(input, {
+      ...this.#deliveryIssuer(authorize),
+      cancel: async (input) => {
+        const epoch = parseMembershipCancellationEpoch(input),
+          message = await membershipCancellationMessage(epoch);
+        if (!this.#key) throw Error('Authority closed');
+        return {
+          v: 2,
+          kind: 'membership-cancellation',
+          epoch,
+          head: await digest(message),
+          signature: sign(null, message, this.#key).toString('hex'),
+        };
+      },
+    });
   }
   relayMembershipCeremony(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.relayMembershipCeremony(input, this.#deliveryIssuer(authorize));

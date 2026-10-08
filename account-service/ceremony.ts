@@ -164,6 +164,7 @@ export async function relayCeremony(
       db.exec('COMMIT');
       if (!before.authority) return refuse('unavailable');
       const pending = continuation ? await verifyPendingMembership(before.authority, issuer) : null;
+      if (pending?.cancellation) return refuse('cancelled');
       const auth = pending?.anchor ?? (await verifyWorkspaceAuthority(before.authority, issuer));
       if (!auth.successor) return refuse('not-admitted');
       const preparation = pending?.proof.epoch.preparation ?? auth.successor.epoch.preparation;

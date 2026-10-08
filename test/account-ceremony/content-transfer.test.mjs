@@ -35,6 +35,8 @@ import {
   verifyMembershipAnchor,
   verifyMembershipAdmission,
   membershipState,
+  membershipCancellationRequestMessage,
+  verifyMembershipCancellation,
 } from '../../account-protocol/membership.ts';
 import {
   parseEnrollmentContext,
@@ -554,7 +556,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
   for (const [name, rows] of before)
     assert.deepEqual(db.prepare(`SELECT * FROM ${name} ORDER BY rowid`).all(), rows, name);
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1129,7 +1131,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -1153,7 +1155,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -1964,7 +1966,9 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   await backup(source, path);
   source.close();
   let db = new DatabaseSync(path);
-  db.exec('DROP TABLE membership_transfers; PRAGMA user_version=16;');
+  db.exec(
+    'DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+  );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
     policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
@@ -1984,7 +1988,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 17);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -3936,4 +3940,220 @@ test('retained connection loads actual encrypted writing and retries interrupted
     reopened.entries.find((e) => e.path === 'master.md').content,
     'Original genesis. Before sync began.',
   );
+});
+
+async function cancellationRequest(x, role = 'existing') {
+  const actors = {
+    existing: [x.context.existing.id, x.keys.existing],
+    second: [x.context.candidate.id, x.keys.new],
+    candidate: [x.entry.input.candidate.credentialId, x.entry.key],
+  };
+  const [actorId, key] = actors[role],
+    e = x.admission.epoch;
+  const r = {
+    v: 2,
+    kind: 'membership-cancellation-request',
+    workspaceId: e.workspaceId,
+    lineageId: e.lineageId,
+    parent: x.admission.head,
+    epoch: e.epoch,
+    preparationId: e.preparation.context.attemptId,
+    candidateId: e.preparation.context.candidate.credentialId,
+    actorId,
+    nonce: 'c3'.repeat(32),
+    signature: '00'.repeat(64),
+  };
+  r.signature = signed(key, await membershipCancellationRequestMessage(r));
+  return r;
+}
+
+test('membership cancellation retains exact retry, both publisher boundaries and subsequent writing after crash', async (t) => {
+  let fault;
+  const x = await continuationFixture(t, {
+    hook(at, op) {
+      if (op === 'membership-cancellation' && at === fault) throw Error('interrupted');
+    },
+  });
+  const retained = [];
+  for (const [id, signer] of [
+    [x.context.existing.id, x.keys.existing],
+    [x.context.candidate.id, x.keys.new],
+  ]) {
+    const w = x.make(1, 'before cancellation', { epoch: 4, credential: id, signer });
+    const r = await x.deliveryCall(w);
+    decision(x, r, w, undefined, 4);
+    retained.push({ id, signer, w, r });
+  }
+  const request = await cancellationRequest(x, 'second');
+  const call = (r = request, auth) => x.authority.owner.cancelMembership(x.f.core, r, auth);
+  fault = 'before-commit';
+  assert.equal((await call()).ok, false);
+  assert.equal(x.f.rows('membership_cancellations').length, 0);
+  assert.equal(x.f.rows('promotions')[0].successor_head, x.admission.head);
+  fault = 'after-commit';
+  assert.equal((await call()).ok, false);
+  const row = x.f.rows('membership_cancellations')[0];
+  assert(row);
+  x.f.restart();
+  x.authority.restart();
+  fault = undefined;
+  const result = await call();
+  assert.equal(result.ok, true, JSON.stringify(result));
+  assert.deepEqual(result.cancellation, JSON.parse(row.artifact));
+  const anchor = await verifyMembershipAnchor(x.base, x.successor, x.certification, {
+    epoch: 3,
+    head: x.certification.head,
+  });
+  const parent = await verifyMembershipAdmission(x.admission, anchor);
+  const state = membershipState(await verifyMembershipCancellation(result.cancellation, parent));
+  assert.equal(state.roster.length, 2);
+  assert(state.heads.every((h) => h.position === 1));
+  const locator = membershipLocatorRequests(x),
+    bootstrap = locator.bootstrap(),
+    discovery = locator.discovery();
+  const boot = await x.authority.owner.membershipBootstrap(x.f.core, bootstrap);
+  assert.equal(
+    (await verifyMembershipBootstrapResponse(boot, bootstrap, x.authority.pin)).history.current
+      .head,
+    result.cancellation.head,
+  );
+  const discovered = await x.authority.owner.discoverMembership(x.f.core, discovery);
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(discovered, discovery, x.base, 1000)).history.current
+      .head,
+    result.cancellation.head,
+  );
+  for (const { id, signer, w, r } of retained) {
+    assert.deepEqual(await x.deliveryCall(w), r);
+    const after = x.make(2, 'after cancellation', { epoch: 5, credential: id, signer });
+    decision(x, await x.deliveryCall(after), after, link(w.subject, '00'.repeat(32)), 5);
+  }
+  assert.deepEqual(await call(), result);
+  assert.equal((await call(await cancellationRequest(x, 'existing'))).refusal, 'request-conflict');
+  assert.deepEqual(
+    await x.authority.owner.admitMembership(x.f.core, x.admissionInput),
+    x.admission,
+  );
+  const e = x.exchange('existing');
+  assert.equal(
+    (await x.relay(e.request('existing', 'commit', e.commits.existing))).refusal,
+    'cancelled',
+  );
+  const d = await continuationDelivery(x, e);
+  assert.equal((await d.transfer(d.request('new', 'read'))).refusal, 'cancelled');
+  const pendingWrite = x.make(1, 'cancelled candidate cannot publish', {
+    epoch: 5,
+    credential: request.candidateId,
+    signer: x.entry.key,
+  });
+  assert.equal((await x.deliveryCall(pendingWrite)).kind, 'unknown');
+});
+
+test('membership cancellation and approval have one winner; uncertain or delivered keys require removal', async (t) => {
+  for (const approvedFirst of [false, true]) {
+    const x = await continuationFixture(t),
+      e = x.exchange('existing'),
+      d = await continuationDelivery(x, e);
+    for (const role of ['existing', 'new'])
+      await x.relay(e.request(role, 'commit', e.commits[role]));
+    for (const role of ['existing', 'new'])
+      await x.relay(e.request(role, 'reveal', e.reveals[role]));
+    const request = await cancellationRequest(x, 'candidate');
+    if (approvedFirst) assert.equal((await x.relay(e.approval)).ok, true);
+    const cancelled = await x.authority.owner.cancelMembership(x.f.core, request);
+    if (approvedFirst) {
+      assert.equal(cancelled.refusal, 'removal-required');
+      assert.equal(x.f.rows('membership_cancellations').length, 0);
+      assert.equal((await d.transfer(d.request('existing', 'deliver', d.delivery))).ok, true);
+      assert.equal(
+        (await x.authority.owner.cancelMembership(x.f.core, request)).refusal,
+        'removal-required',
+      );
+    } else {
+      assert.equal(cancelled.ok, true, JSON.stringify(cancelled));
+      assert.equal((await x.relay(e.approval)).refusal, 'cancelled');
+      assert.equal(
+        (await d.transfer(d.request('existing', 'deliver', d.delivery))).refusal,
+        'cancelled',
+      );
+      assert.equal(x.f.rows('membership_transfers').length, 0);
+    }
+  }
+  const x = await continuationFixture(t),
+    e = x.exchange('existing');
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'commit', e.commits[role]));
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'reveal', e.reveals[role]));
+  const request = await cancellationRequest(x);
+  const [cancelled, approved] = await Promise.all([
+    x.authority.owner.cancelMembership(x.f.core, request),
+    x.relay(e.approval),
+  ]);
+  assert.notEqual(cancelled.ok, approved.ok);
+  assert.equal(x.f.rows('membership_cancellations').length, cancelled.ok ? 1 : 0);
+  assert.equal(!!x.f.rows('membership_ceremonies')[0].decision, approved.ok);
+});
+
+test('membership cancellation checks commit authorization, changed boundaries and signed mismatch', async (t) => {
+  const x = await continuationFixture(t),
+    e = x.exchange('existing');
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'commit', e.commits[role]));
+  for (const role of ['existing', 'new']) await x.relay(e.request(role, 'reveal', e.reveals[role]));
+  const mismatch = e.request('existing', 'decide', { ...e.approval.payload, outcome: 'mismatch' });
+  assert.equal((await x.relay(mismatch)).ok, true);
+  const request = await cancellationRequest(x, 'candidate');
+  let checked = false;
+  await assert.rejects(
+    x.authority.owner.cancelMembership(x.f.core, request, (_db, target) => {
+      assert.equal(target.credentialId, request.actorId);
+      assert.equal(target.attemptId, request.preparationId);
+      checked = true;
+      return () => {
+        throw new AuthorizationRefused('session-required');
+      };
+    }),
+    AuthorizationRefused,
+  );
+  assert(checked);
+  assert.equal(x.f.rows('membership_cancellations').length, 0);
+  assert.equal(x.f.rows('promotions')[0].successor_head, x.admission.head);
+  const done = await x.authority.owner.cancelMembership(x.f.core, request);
+  assert.equal(done.ok, true, JSON.stringify(done));
+  const row = x.f.rows('membership_cancellations')[0];
+  mutate(x, (db) => db.prepare('UPDATE membership_cancellations SET boundaries=?').run('[]'));
+  assert.equal((await x.authority.owner.cancelMembership(x.f.core, request)).ok, false);
+  mutate(x, (db) =>
+    db.prepare('UPDATE membership_cancellations SET boundaries=?').run(row.boundaries),
+  );
+  assert.deepEqual(await x.authority.owner.cancelMembership(x.f.core, request), done);
+});
+
+test('schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt', async (t) => {
+  const x = await continuationFixture(t),
+    source = new DatabaseSync(x.f.path),
+    path = x.f.path + '.offline-v17';
+  await backup(source, path);
+  source.close();
+  let db = new DatabaseSync(path);
+  db.exec('DROP TABLE membership_cancellations; PRAGMA user_version=17;');
+  db.close();
+  const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
+    policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId };
+  assert.throws(
+    () => new AccountCore(path, policy, { sessions, membershipContinuation: true }),
+    /explicit offline upgrade/,
+  );
+  const upgraded = new AccountCore(path, policy, {
+    sessions,
+    membershipContinuation: true,
+    upgradeFromV17: true,
+  });
+  upgraded.close();
+  db = new DatabaseSync(path);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 18);
+  assert.deepEqual(
+    db.prepare('SELECT * FROM membership_admissions').all(),
+    x.f.rows('membership_admissions'),
+  );
+  assert.deepEqual(db.prepare('SELECT * FROM membership_cancellations').all(), []);
+  db.close();
 });

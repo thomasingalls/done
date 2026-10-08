@@ -18,6 +18,7 @@ import {
 import {
   parseMembershipAdmission,
   parseMembershipCertification,
+  parseMembershipCancellation,
 } from '../account-protocol/membership.ts';
 import { membershipEnabled } from './membershipStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
@@ -48,9 +49,13 @@ function chain(s: WorkspaceAuthoritySnapshot) {
   const continuations = (s.continuations ?? []).flatMap((row) => {
     const admission = parseMembershipAdmission(JSON.parse(row.artifact));
     const transfer = s.membershipTransfers?.find((r) => r.preparation_id === row.preparation_id);
+    const cancellation = s.membershipCancellations?.find(
+      (r) => r.preparation_id === row.preparation_id,
+    );
     return [
       admission,
       ...(transfer?.artifact ? [parseMembershipCertification(JSON.parse(transfer.artifact))] : []),
+      ...(cancellation ? [parseMembershipCancellation(JSON.parse(cancellation.artifact))] : []),
     ];
   });
   return parseMembershipChain({

@@ -9,6 +9,7 @@ import {
 import {
   parseMembershipAdmission,
   parseMembershipCertification,
+  parseMembershipCancellation,
   membershipState,
 } from '../account-protocol/membership.ts';
 import { verifyMembershipDelivery } from '../account-protocol/membershipDelivery.ts';
@@ -39,6 +40,7 @@ export async function resolveMembershipDeliveryAuthority(
       ...s,
       continuations: [],
       membershipTransfers: [],
+      membershipCancellations: [],
       promotion: { ...s.promotion, successor_head: cert.head },
     },
     issuer,
@@ -56,6 +58,11 @@ export async function resolveMembershipDeliveryAuthority(
   ]);
   for (const m of cert.epoch.roster) if (m.id !== anchor.credential) cuts.set(m.id, []);
   const transfers = new Map((s.membershipTransfers ?? []).map((r) => [r.preparation_id, r]));
+  const cancellations = new Map(
+    (s.membershipCancellations ?? []).map((r) => [r.preparation_id, r]),
+  );
+  if (cancellations.size !== (s.membershipCancellations ?? []).length)
+    throw Error('Repeated membership cancellation');
   if (transfers.size !== (s.membershipTransfers ?? []).length)
     throw Error('Repeated membership transfer');
   const append = (raw: string, proof: LedgerBoundary['successor'], parent: typeof history) => {
@@ -97,6 +104,22 @@ export async function resolveMembershipDeliveryAuthority(
     append(row.boundaries, proof, before);
     seen.add(row.preparation_id);
     const transfer = transfers.get(row.preparation_id);
+    const cancelled = cancellations.get(row.preparation_id);
+    if (cancelled) {
+      const cancellation = parseMembershipCancellation(JSON.parse(cancelled.artifact));
+      if (
+        transfer ||
+        cancelled.workspace_id !== row.workspace_id ||
+        cancelled.parent !== proof.head ||
+        cancellation.epoch.cancellation.preparationId !== row.preparation_id
+      )
+        throw Error('Retained cancellation scope changed');
+      const prior = history;
+      history = await extendMembershipHistory(cancellation, history);
+      append(cancelled.boundaries, cancellation, prior);
+      cancellations.delete(row.preparation_id);
+      continue;
+    }
     if (!transfer) continue;
     if (
       transfer.workspace_id !== row.workspace_id ||
@@ -118,7 +141,7 @@ export async function resolveMembershipDeliveryAuthority(
     }
     transfers.delete(row.preparation_id);
   }
-  if (transfers.size || history.current.head !== s.promotion.successor_head)
+  if (transfers.size || cancellations.size || history.current.head !== s.promotion.successor_head)
     throw Error('Current membership pointer changed');
   const state = membershipState(historyMembership(history));
   if (state.generation !== 1) throw Error('Rotation needs its generation owner');

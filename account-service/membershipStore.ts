@@ -67,6 +67,38 @@ export interface MembershipTransferRow {
   artifact: string | null;
   boundaries: string | null;
 }
+
+export const MEMBERSHIP_CANCELLATION_SCHEMA = `CREATE TABLE membership_cancellations (
+ workspace_id TEXT NOT NULL, preparation_id TEXT NOT NULL, parent TEXT NOT NULL,
+ artifact TEXT NOT NULL, boundaries TEXT NOT NULL,
+ PRIMARY KEY(workspace_id,preparation_id), UNIQUE(workspace_id,parent),
+ FOREIGN KEY(workspace_id,preparation_id) REFERENCES membership_admissions(workspace_id,preparation_id));`;
+export interface MembershipCancellationRow {
+  workspace_id: string;
+  preparation_id: string;
+  parent: string;
+  artifact: string;
+  boundaries: string;
+}
+export function membershipCancellationRows(
+  db: DatabaseSync,
+  workspace: string,
+): MembershipCancellationRow[] {
+  if (!enabled.has(db)) return [];
+  if (!db.isTransaction) throw Error('Membership capture requires a transaction');
+  const sizes = db
+    .prepare(`SELECT length(CAST(artifact AS BLOB)) AS a, length(CAST(boundaries AS BLOB)) AS b
+    FROM membership_cancellations WHERE workspace_id=? LIMIT ?`)
+    .all(workspace, MEMBERSHIP_CREDENTIAL_LIMIT + 1);
+  if (
+    sizes.length > MEMBERSHIP_CREDENTIAL_LIMIT ||
+    sizes.some((r) => Number(r.a) > MEMBERSHIP_PROOF_LIMIT || Number(r.b) > MEMBERSHIP_PROOF_LIMIT)
+  )
+    throw Error('Oversized retained membership cancellation');
+  return db
+    .prepare('SELECT * FROM membership_cancellations WHERE workspace_id=? ORDER BY preparation_id')
+    .all(workspace) as unknown as MembershipCancellationRow[];
+}
 export function membershipTransferRows(
   db: DatabaseSync,
   workspace: string,
