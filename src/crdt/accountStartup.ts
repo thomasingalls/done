@@ -32,7 +32,7 @@ export interface AccountStartupOptions {
   /** Staged session adapter; absent in the private-token host until route cutover. */
   networkLogin?: NetworkLogin;
   /** Private continuation host capability; retained continuation custody also enables discovery. */
-  membershipContinuation?: boolean;
+  membershipContinuation?: boolean | (() => boolean);
 }
 export const captureAccountOptions = (input: AccountStartupOptions): AccountStartupOptions => ({
   ...input,

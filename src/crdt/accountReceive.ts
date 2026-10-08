@@ -773,9 +773,13 @@ async function openAccountReceiveOwner(
     if (discoveryFlight) return discoveryFlight;
     const work = runNetworkTask(async (network) => {
       if (!composed) throw Error('Discovery requires the composed owner');
+      const continuation =
+        typeof options.membershipContinuation === 'function'
+          ? options.membershipContinuation()
+          : options.membershipContinuation;
       if (
         base.authority.tip === 2 ||
-        (base.authority.tip === 3 && !options.membershipContinuation) ||
+        (base.authority.tip === 3 && !continuation) ||
         (!force && performance.now() < discoveryDue)
       )
         return { kind: 'unchanged' as const };

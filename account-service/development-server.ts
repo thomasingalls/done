@@ -7,6 +7,7 @@ import type { Policy } from './webauthn.ts';
 export async function startDevelopmentAccountServer(options: {
   directory: string;
   networkSessions?: boolean;
+  membershipContinuation?: boolean;
   policy: Policy;
   port: number;
 }) {

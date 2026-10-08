@@ -237,7 +237,11 @@ test('failed persistence cannot send a commitment, and committed lost replies re
   f.cold('existing');
   f.hooks();
   assert.equal((await f.run('existing')).kind, 'waiting');
-  assert.deepEqual(f.calls.at(-1), sent);
+  assert.equal(f.calls.at(-1).action, 'read');
+  assert.deepEqual(
+    f.calls.filter((c) => c.action === 'commit'),
+    [sent],
+  );
   assert.deepEqual(f.durable.existing, held);
   assert.equal((await f.run('new')).kind, 'waiting');
   f.hooks({

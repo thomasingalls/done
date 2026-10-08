@@ -364,7 +364,10 @@ export async function continueMembershipComparison(
   }
   await verifyCeremonyCommit(authority, p.own, p.role, now());
   live();
-  remote = await send('commit', p.own);
+  const acknowledgedCommit = remote[p.role === 'existing' ? 'existing' : 'candidate'];
+  if (acknowledgedCommit && !same(acknowledgedCommit, p.own))
+    throw Error('The retained commitment changed');
+  if (!acknowledgedCommit) remote = await send('commit', p.own);
   const peer = remote[p.role === 'existing' ? 'candidate' : 'existing'];
   if (peer) {
     const checked = await verifyCeremonyCommit(authority, peer, peerRole, now());
@@ -387,7 +390,10 @@ export async function continueMembershipComparison(
     await save(live);
   }
   live();
-  remote = await send('reveal', p.reveal);
+  const acknowledgedReveal = remote[p.role === 'existing' ? 'existingReveal' : 'newReveal'];
+  if (acknowledgedReveal && !same(acknowledgedReveal, p.reveal))
+    throw Error('The retained reveal changed');
+  if (!acknowledgedReveal) remote = await send('reveal', p.reveal);
   const peerReveal = remote[p.role === 'existing' ? 'newReveal' : 'existingReveal'];
   if (peerReveal) {
     const checked = await verifyCeremonyReveal(pair, peerReveal, peerRole, now());

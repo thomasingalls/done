@@ -18,7 +18,15 @@ export function previewConfig(env = process.env) {
     !['0', '1'].includes(env.ACCOUNT_NETWORK_SESSIONS)
   )
     throw Error('ACCOUNT_NETWORK_SESSIONS must be 0 or 1');
+  if (
+    env.ACCOUNT_MEMBERSHIP_CONTINUATION !== undefined &&
+    !['0', '1'].includes(env.ACCOUNT_MEMBERSHIP_CONTINUATION)
+  )
+    throw Error('ACCOUNT_MEMBERSHIP_CONTINUATION must be 0 or 1');
+  if (env.ACCOUNT_MEMBERSHIP_CONTINUATION === '1' && env.ACCOUNT_NETWORK_SESSIONS !== '1')
+    throw Error('Membership continuation requires account sessions');
   return {
+    ...(env.ACCOUNT_MEMBERSHIP_CONTINUATION === '1' ? { membershipContinuation: true } : {}),
     ...(env.ACCOUNT_NETWORK_SESSIONS === '1' ? { networkSessions: true } : {}),
     port,
     directory: resolve(env.ACCOUNT_SETUP_STATE ?? '.dev/account-setup'),

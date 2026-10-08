@@ -415,3 +415,48 @@ test('browser continuation routes retain workspace/enrollment separation and imm
   x.stop.abort();
   await assert.rejects(enrollment.fetch('/account/membership/v2/ceremony', init));
 });
+
+test('capacity retries keep the exact grant finish and valid request grant, with a bounded stop', async (t) => {
+  let refuseFinish = true,
+    refuseReads = false;
+  const x = await client(t, (path) => {
+    if (path === '/account/grant/v1/finish' && refuseFinish) {
+      refuseFinish = false;
+      return denied('capacity', 429);
+    }
+    if (path === '/account/delivery/read-v2' && refuseReads) return denied('capacity', 429);
+  });
+  assert.equal((await x.read()).status, 200);
+  const finishes = x.calls.filter((c) => c.path === '/account/grant/v1/finish');
+  assert.equal(finishes.length, 2);
+  assert.deepEqual(finishes[0], finishes[1]);
+  assert.equal(x.signatures, 1);
+  const before = x.calls.length;
+  refuseReads = true;
+  await assert.rejects(x.read(), /service is busy/);
+  const retries = x.calls.slice(before);
+  assert.equal(retries.length, 3);
+  assert.deepEqual(retries[0], retries[1]);
+  assert.deepEqual(retries[0], retries[2]);
+  refuseReads = false;
+  assert.equal((await x.read()).status, 200);
+  assert.equal(x.signatures, 1, 'capacity does not invalidate an authenticated grant');
+  assert.equal(x.renewals, 0);
+});
+
+test('closing during capacity backoff prevents a delayed request', async (t) => {
+  let refused;
+  const encountered = new Promise((r) => {
+    refused = r;
+  });
+  const x = await client(t, (path) => {
+    if (path !== '/account/delivery/read-v2') return;
+    refused();
+    return denied('capacity', 429);
+  });
+  const result = x.read();
+  await encountered;
+  x.stop.abort();
+  await assert.rejects(result);
+  assert.equal(x.calls.filter((c) => c.path === '/account/delivery/read-v2').length, 1);
+});

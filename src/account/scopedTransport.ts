@@ -23,6 +23,11 @@ export class NetworkAuthorityChanged extends Error {
     super('Account authorization refused: authority-changed');
   }
 }
+export class NetworkThrottled extends Error {
+  constructor() {
+    super('The account service is busy. Saved progress can be retried.');
+  }
+}
 type Login = Pick<NetworkLogin, 'authorization' | 'rejectAccess' | 'getSnapshot' | 'networkSignal'>;
 export interface GrantBinding {
   login: Login;
@@ -150,21 +155,44 @@ export class ScopedTransport {
     type: string,
     signal: AbortSignal,
   ) {
-    signal.throwIfAborted();
-    const response = await this.#fetch(new URL(path, this.#pin.origin), {
-      method: 'POST',
-      headers: { 'Content-Type': type, Authorization: 'Bearer ' + token },
-      body,
-      signal,
-      credentials: 'omit',
-      cache: 'no-store',
-      redirect: 'error',
-    });
-    if (signal.aborted) {
-      await response.body?.cancel();
+    for (let attempt = 0; ; attempt++) {
       signal.throwIfAborted();
+      const response = await this.#fetch(new URL(path, this.#pin.origin), {
+        method: 'POST',
+        headers: { 'Content-Type': type, Authorization: 'Bearer ' + token },
+        body,
+        signal,
+        credentials: 'omit',
+        cache: 'no-store',
+        redirect: 'error',
+      });
+      if (signal.aborted) {
+        await response.body?.cancel();
+        signal.throwIfAborted();
+      }
+      if (response.status !== 429 || attempt >= 2) return response;
+      const text = await smallBody(response, signal);
+      if (refusal(JSON.parse(text)) !== 'capacity')
+        return new Response(text, { status: response.status, headers: response.headers });
+      // This explicit refusal has not executed the request. Retry its exact bytes, including
+      // a grant finish proof, rather than creating another challenge or discarding a valid grant.
+      await new Promise<void>((resolve, reject) => {
+        const abort = () => {
+          clearTimeout(timer);
+          signal.removeEventListener('abort', abort);
+          reject(signal.reason);
+        };
+        const timer = setTimeout(
+          () => {
+            signal.removeEventListener('abort', abort);
+            resolve();
+          },
+          1000 * (attempt + 1),
+        );
+        signal.addEventListener('abort', abort, { once: true });
+        if (signal.aborted) abort();
+      });
     }
-    return response;
   }
   async #acquire(
     binding: GrantBinding,
@@ -316,7 +344,8 @@ export class ScopedTransport {
           if (!reason)
             return new Response(text, { status: response.status, headers: response.headers });
           // A late denial must not evict a different grant acquired by another request.
-          if (this.#cache.get(key)?.token === grant.token) this.#cache.delete(key);
+          if (reason !== 'capacity' && this.#cache.get(key)?.token === grant.token)
+            this.#cache.delete(key);
           if (reason === 'grant-required' && !retried) {
             retried = true;
             continue;
@@ -334,6 +363,8 @@ export class ScopedTransport {
           }
           if (cause instanceof GrantDenied && cause.reason === 'authority-changed')
             throw new NetworkAuthorityChanged();
+          if (cause instanceof GrantDenied && cause.reason === 'capacity')
+            throw new NetworkThrottled();
           throw cause;
         }
       }

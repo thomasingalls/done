@@ -3,9 +3,9 @@ import { startNotifications } from '../account/notifications';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { rememberedAccounts, isSetupSlot, type SetupConfig } from '../account/setupProgress';
+import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
+import { createAccountEnrollment, isConnectionSlot } from '../account/accountEnrollment';
 import {
-  createDeviceEnrollment,
   pendingDeviceSlot,
   preparePendingDevice,
   type EnrollmentView,
@@ -13,6 +13,7 @@ import {
 import { inspectLocalStartup, type LocalGenesisEnrollment } from '../crdt/localGenesis';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { parseCeremonyInvitation } from '../../account-protocol/ceremonyRelay';
+import { parseMembershipInvitation } from '../../account-protocol/membershipLocator';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
 import { AccountDevices } from './AccountDevices';
@@ -35,12 +36,14 @@ export function AccountEnrollmentApp({
   const [slot, setSlot] = useState(() =>
     workspace
       ? (pendingDeviceSlot(workspace) ?? '')
-      : isSetupSlot(selectedSlot)
+      : isConnectionSlot(selectedSlot)
         ? selectedSlot
         : '',
   );
   const [stage, setStage] = useState<'choose' | 'save' | 'unlock' | 'open'>(
-    (workspace && pendingDeviceSlot(workspace)) || isSetupSlot(selectedSlot) ? 'unlock' : 'choose',
+    (workspace && pendingDeviceSlot(workspace)) || isConnectionSlot(selectedSlot)
+      ? 'unlock'
+      : 'choose',
   );
   const [generated, setGenerated] = useState(''),
     [code, setCode] = useState(''),
@@ -50,7 +53,7 @@ export function AccountEnrollmentApp({
   const [state, setState] = useState<EnrollmentView | null>(null),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
-  const owner = useRef<ReturnType<typeof createDeviceEnrollment> | null>(null),
+  const owner = useRef<Awaited<ReturnType<typeof createAccountEnrollment>> | null>(null),
     genesis = useRef<LocalGenesisEnrollment | null>(null),
     life = useRef(new AbortController()),
     operating = useRef<Promise<void> | null>(null),
@@ -268,6 +271,9 @@ export function AccountEnrollmentApp({
   useEffect(() => {
     if (!state?.editor) return;
     return state.editor.workspace.onStatus((status) => {
+      // Explicit navigation has already chosen its destination. Closing the old owner must
+      // not race that route with this fallback for an unexpected storage closure.
+      if (life.current.signal.aborted) return;
       if (
         ['active', 'blocked'].includes(status.state) &&
         status.pressure?.code !== 'repair-required'
@@ -298,6 +304,7 @@ export function AccountEnrollmentApp({
       >
         {screen === 'devices' ? (
           <AccountDevices
+            continuationAvailable={config.membershipContinuation === true}
             onBack={() => (navigation.enabled ? navigation.back() : setScreen('editing'))}
             onConnect={() => {
               void close().then(() =>
@@ -374,7 +381,9 @@ export function AccountEnrollmentApp({
                     )
                       throw Error('Invalid invitation');
                     const encoded = url.searchParams.get('invitation') ?? '';
-                    const invitation = parseCeremonyInvitation(JSON.parse(atob(encoded)));
+                    const raw = JSON.parse(atob(encoded));
+                    const invitation =
+                      raw?.v === 2 ? parseMembershipInvitation(raw) : parseCeremonyInvitation(raw);
                     if (url.searchParams.get('workspace') !== invitation.workspaceId)
                       throw Error('Invalid invitation');
                     const query = new URLSearchParams({
@@ -479,7 +488,7 @@ export function AccountEnrollmentApp({
                   setGenerated('');
                 }
                 await owner.current?.close();
-                owner.current = createDeviceEnrollment(
+                owner.current = await createAccountEnrollment(
                   config,
                   slot,
                   entered,
@@ -487,6 +496,7 @@ export function AccountEnrollmentApp({
                   workspace ?? undefined,
                   workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
                   login.current,
+                  life.current.signal,
                 );
                 publish(await owner.current.refresh());
                 if (!life.current.signal.aborted) setStage('open');
@@ -529,7 +539,7 @@ export function AccountEnrollmentApp({
                               : 'Attempt stopped'}
             </h2>
             <p role="status">{state.message}</p>
-            {state.kind === 'certified' && (
+            {state.kind === 'certified' && state.canOpenWriting !== false && (
               <button
                 disabled={busy}
                 onClick={() => {
@@ -612,7 +622,7 @@ export function AccountEnrollmentApp({
                 >
                   Check again
                 </button>
-                {['compare', 'display'].includes(state.kind) && (
+                {state.canCancel !== false && ['compare', 'display'].includes(state.kind) && (
                   <button
                     disabled={busy}
                     onClick={() => {

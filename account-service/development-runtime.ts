@@ -18,7 +18,10 @@ export function openDevelopmentAccountService(options: {
   directory: string;
   policy: Policy;
   networkSessions?: boolean;
+  membershipContinuation?: boolean;
 }) {
+  if (options.membershipContinuation && !options.networkSessions)
+    throw Error('Membership continuation requires account sessions');
   const directory = options.directory;
   const policy = { ...options.policy };
   validatePolicy(policy);
@@ -59,6 +62,7 @@ export function openDevelopmentAccountService(options: {
       if (options.networkSessions)
         core = new AccountCore(join(directory, 'account.sqlite'), policy, {
           sessions: { pin, operatorKey: key },
+          membershipContinuation: options.membershipContinuation,
         });
     } finally {
       key.fill(0);
@@ -101,7 +105,13 @@ export function openDevelopmentAccountService(options: {
     };
     return Object.freeze({
       clientConfig: Object.freeze(
-        options.networkSessions ? { pin, networkSessions: true as const } : { pin, token: token! },
+        options.networkSessions
+          ? {
+              pin,
+              networkSessions: true as const,
+              ...(options.membershipContinuation ? { membershipContinuation: true } : {}),
+            }
+          : { pin, token: token! },
       ),
       handle,
       close: () => {

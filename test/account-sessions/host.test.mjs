@@ -149,3 +149,45 @@ test('retained schema 11 requires offline opt-in; upgrade preserves pending acco
     /Unsupported account schema|explicit offline upgrade/,
   );
 });
+
+test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 17', async (t) => {
+  const f = await fixture(t),
+    retryKey = fresh();
+  const pending = await (
+    await f.post('/__account-setup/begin', { operation: 'register', retryKey })
+  ).json();
+  const key = readFileSync(join(f.directory, 'operator.key')),
+    pin = f.service.clientConfig.pin;
+  await f.service.close();
+  assert.throws(
+    () => openDevelopmentAccountService({ ...f.config, membershipContinuation: true }),
+    /offline upgrade/,
+  );
+  assert.equal(accountSchema(join(f.directory, 'account.sqlite')), 14);
+  await new Promise((r) => {
+    f.server.close(r);
+    f.server.closeIdleConnections();
+  });
+  const upgraded = await upgradePreviewState({ ...f.config, membershipContinuation: true });
+  assert.equal(upgraded.from, 14);
+  assert.equal(upgraded.to, 17);
+  assert.equal(accountSchema(join(upgraded.backup, 'account.sqlite')), 14);
+  assert.deepEqual(readFileSync(join(f.directory, 'operator.key')), key);
+  assert.deepEqual(JSON.parse(readFileSync(join(f.directory, 'pin.json'))), pin);
+  f.config.membershipContinuation = true;
+  f.reopen();
+  await new Promise((r) => f.server.listen(f.config.port, '127.0.0.1', r));
+  assert.equal(
+    (await (await f.post('/__account-setup/config')).json()).membershipContinuation,
+    true,
+  );
+  assert.deepEqual(await (await f.post('/__account-setup/resume', { retryKey })).json(), pending);
+  const missing = await f.post('/account/membership/v2/admit');
+  assert.equal(missing.status, 401);
+  await missing.text();
+  await f.service.close();
+  assert.throws(
+    () => openDevelopmentAccountService({ ...f.config, membershipContinuation: false }),
+    /Unsupported account schema|offline upgrade/,
+  );
+});

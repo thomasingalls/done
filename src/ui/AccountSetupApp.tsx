@@ -174,6 +174,7 @@ export function Setup({
       >
         {screen === 'devices' ? (
           <AccountDevices
+            continuationAvailable={config.membershipContinuation === true}
             onBack={() => (navigation.enabled ? navigation.back() : setScreen('ready'))}
             onConnect={() => leave(onConnectDevice)}
           />

@@ -104,6 +104,9 @@ interface Progress {
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
 export interface EnrollmentView {
+  /** A disabled continuation action must not claim to remove pending membership. */
+  canCancel?: boolean;
+  canOpenWriting?: boolean;
   kind:
     | 'reconnect'
     | 'locked'
@@ -144,7 +147,7 @@ export async function preparePendingDevice(workspace: string, signal: AbortSigna
   rememberPendingDevice(workspace, slot);
   return { slot, enrollment: beginLocalGenesis(slot, { signal }) };
 }
-const messages: Record<EnrollmentView['kind'], string> = {
+export const enrollmentMessages: Record<EnrollmentView['kind'], string> = {
   reconnect: 'Reconnect sync with your account passkey to continue. Your progress is saved.',
   locked: 'Unlock this device to continue.',
   invite: 'Open this link on the device you want to connect.',
@@ -161,6 +164,7 @@ const messages: Record<EnrollmentView['kind'], string> = {
   'restart-required': 'Account authority changed. This attempt cannot continue.',
   cancelled: 'This attempt was cancelled.',
 };
+const messages = enrollmentMessages;
 export function createDeviceEnrollment(
   config: SetupConfig,
   slotId: string,
@@ -893,6 +897,7 @@ export function createDeviceEnrollment(
     opened = await openOwnedSyncingAccountWorkspace(
       {
         slotId,
+        membershipContinuation: () => config.membershipContinuation === true,
         code,
         pin,
         assertPasskey: assertSlotPasskey(lifetime.signal),

@@ -358,6 +358,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           openOwnedSyncingAccountWorkspace(options, token)
       : openOwnedAccountWorkspace;
     const opened = await open({
+      membershipContinuation: () => input.membershipContinuation === true,
       slotId: slotId,
       code,
       pin,

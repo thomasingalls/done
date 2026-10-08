@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: retained connection coordinator complete; native browser/session and route composition next
+scope: native third-device path complete; cancellation and removal transitions next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -110,11 +110,14 @@ retain exact combined login/enrollment proof before effects. Two invitation and 
 pass, including failed saves and service restarts; committed as `b53497a7`. The retained connection
 coordinator now composes these components through certification and encrypted loading. Three composed
 service/reader cases, 11 component regressions and four service component cases pass with simulated
-custody/installation ports. Native browser/session and product routing remain unwired.
+custody/installation ports; committed as `b43279e1`. Native browser/session and route composition now
+passes the actual packaged three-device walkthrough: joined invitation, comparison reload, content load,
+writing across all three and cold reopening. Original two-device compatibility also passes. The explicit
+host capability/offline upgrade remains undeployed. Bounded capacity retries recover under the unchanged
+request limits; the passing rapid test still hit those limits. See the new completed checkpoint for evidence.
 
-**Next:** native browser/session adapter, ceremony routes and editor composition, including a real three-device check of
-original/joined authority adoption and delivery;
-then complete membership cancellation/removal with forward rotation/finalization, repeated later
+**Next:** authenticated pending-membership cancellation before approval, then removal with forward
+rotation/finalization after approval or uncertain key exposure; repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.
 

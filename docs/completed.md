@@ -10755,3 +10755,43 @@ format and diff checks pass. The test bundle uses a single chunk because the com
 in dynamic native-owner imports. Separate test bundles still emit the known duplicate-Yjs warning.
 Next: native browser/session adapter and route integration, then actual cancellation/removal transitions
 and the disposable three-device product check. No retained installation change; validation remains paused.
+
+
+## 2026-10-08 — Native third-device connection and session composition (`L-1`)
+
+After coordinator checkpoint `b43279e1`, the packaged app composes version-2 invitation, retained
+preparation/comparison, key handoff, writing load and editor activation through native slot custody
+and scoped sessions. A joined device can invite the third. Routing accepts actual joined slots and
+selects continuation from validated invitations or retained progress. Explicit editor closure no longer
+races the chosen connection route with an unexpected-closure fallback. Completed continuation approval
+does not offer the obsolete first-pair “Make writing available” action.
+
+The host has an explicit `ACCOUNT_MEMBERSHIP_CONTINUATION=1` option requiring sessions and an offline
+schema-14-to-17 upgrade. Backup, retained account, service identity and pin are preserved in the focused
+upgrade test. Default hosts remain schema 14. Cached clients refresh the matching service's public
+capability hint without delaying offline opening; authenticated owners still verify all authority.
+No retained service has been upgraded or restarted for this work.
+
+The disposable three-device browser walkthrough passed in 59.7 seconds: the joined second device
+invites, the third reloads and redisplays its saved comparison, approval delivers keys, pre-sync and
+subsequent writing load, third/second edits reach the other devices, and all three lock/reopen with
+the writing and three certified entries intact. The existing two-device Devices/navigation check also
+passes (15.7 seconds). These are actual packaged browser/native-custody paths, not simulated custody.
+
+The rapid walkthrough exposed capacity pressure and transient authority changes. Scoped HTTP retries
+only explicit capacity refusals, at most twice with delay and identical bytes, retaining a valid grant.
+Closure aborts backoff. Comparison skips already acknowledged exact commitments/reveals; changed
+acknowledgments still refuse. A second transient authorization-head change returns to saved waiting
+state rather than stopping the ceremony. The passing browser run still records capacity refusals; this
+is recovery evidence, not a claim of smooth performance under load. Host limits were not increased.
+
+Evidence: `/tmp/done-membership-browser-native.log` (three-device pass),
+`/tmp/done-membership-browser-original.log` (original flow pass),
+`/tmp/done-membership-browser-transport.log` (14 scoped transport cases),
+`/tmp/done-membership-browser-regressions.log` (6 comparison and 4 host cases),
+`/tmp/done-membership-browser-composed.log` (7 composed service cases), and
+`/tmp/done-membership-browser-config.log` (3 configuration cases). The composed test bundles retain
+the previously recorded duplicate-Yjs warning. TypeScript, scoped lint/format, build, diff, bundle
+budget (108.7 kB gzip initial JS) and origin checks pass. Cancellation/removal controls remain disabled
+until their actual transitions exist. Repeated admissions after this first third-device continuation,
+forward rotation, lost-device recovery and operational work remain open; release validation is paused.

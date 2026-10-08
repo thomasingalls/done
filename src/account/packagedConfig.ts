@@ -4,6 +4,7 @@ import type { PrivateAccess } from './privateAccess';
 
 const PIN_KEY = 'done.account-service.pin.v1';
 const MODE_KEY = 'done.account-service.transport.v1';
+const MEMBERSHIP_KEY = 'done.account-service.membership.v2';
 const LOCAL_ONLY_KEY = 'done.application.local-only';
 const LIMIT = 8192;
 const samePin = (a: AuthorityPin, b: AuthorityPin) => String(pinBytes(a)) === String(pinBytes(b));
@@ -37,8 +38,9 @@ async function readConfig(path: 'config' | 'access', signal: AbortSignal) {
     text += decoder.decode();
     const result = JSON.parse(text);
     const sessions = path === 'config' && result?.v === 2 && result.networkSessions === true;
+    const membership = sessions && result.membershipContinuation === true;
     const keys = sessions
-      ? ['networkSessions', 'pin', 'v']
+      ? [...(membership ? ['membershipContinuation'] : []), 'networkSessions', 'pin', 'v']
       : path === 'config'
         ? ['pin', 'v']
         : ['pin', 'token', 'v'];
@@ -55,7 +57,12 @@ async function readConfig(path: 'config' | 'access', signal: AbortSignal) {
       (typeof result.token !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(result.token))
     )
       throw Error('Invalid private access');
-    return { pin, networkSessions: sessions, token: result.token as string | undefined };
+    return {
+      pin,
+      networkSessions: sessions,
+      membershipContinuation: membership,
+      token: result.token as string | undefined,
+    };
   } finally {
     await reader.cancel().catch(() => {});
     reader.releaseLock();
@@ -88,10 +95,33 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
     networkSessions = config.networkSessions;
     localStorage.setItem(MODE_KEY, networkSessions ? 'sessions' : 'private');
     localStorage.setItem(PIN_KEY, JSON.stringify(pin));
+    localStorage.setItem(MEMBERSHIP_KEY, config.membershipContinuation ? '1' : '0');
     localStorage.removeItem(LOCAL_ONLY_KEY);
   }
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
-  if (networkSessions) return { pin, networkSessions: true };
+  if (networkSessions) {
+    let membershipContinuation = localStorage.getItem(MEMBERSHIP_KEY) === '1';
+    // Public protocol selection is a hint, never account authority. Refresh without delaying
+    // offline opening. Owners read the getter when discovering, so an already-open editor can
+    // notice an upgraded host. Only a matching pinned service may update this hint.
+    if (retained !== null)
+      void readConfig('config', AbortSignal.timeout(10000))
+        .then((current) => {
+          if (!current || !current.networkSessions || !samePin(current.pin, pin)) return;
+          membershipContinuation = current.membershipContinuation;
+          localStorage.setItem(MEMBERSHIP_KEY, membershipContinuation ? '1' : '0');
+        })
+        .catch(() => {
+          /* Keep offline opening independent of service availability. */
+        });
+    return {
+      pin,
+      networkSessions: true,
+      get membershipContinuation() {
+        return membershipContinuation;
+      },
+    };
+  }
   let token: string | undefined;
   const access: PrivateAccess = async (refresh, signal) => {
     if (token && !refresh) return token;

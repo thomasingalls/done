@@ -177,7 +177,7 @@ export async function createAccountPreview(config: SetupConfig) {
       <PreviewNavigationContext value={context}>
         <div className="account-development">
           <aside className="setup-dev-note">
-            Account preview · encrypted two-device sync
+            Account preview · encrypted account sync
             {offline && (
               <span role="status">
                 {' '}

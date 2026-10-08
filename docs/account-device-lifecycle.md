@@ -380,3 +380,17 @@ and certification advances can finish after lost replies; competing membership r
 human comparison. Composed real-service tests pass for either approver, and actual encrypted loading
 survives interruption at the installation port. These use simulated custody; native browser/session
 and route composition remains next. Cancellation and removal are still separate unfinished transitions.
+
+
+## Native third-device product checkpoint — 2026-10-08
+
+The packaged continuation adapter now uses actual encrypted custody, remembered sessions, scoped
+grants and notifications. A disposable native browser test demonstrates the joined second device
+approving a third, saved comparison after reload, historical writing load, edits between all three,
+and cold reopening. The original two-device path still passes. Explicit schema-17 host opt-in and
+offline upgrade are implemented, but the retained `:8443` service remains on schema 14 / `a07de792`.
+Capacity refusals during the rapid test recover through bounded exact-byte retries; limits are unchanged.
+
+Next is the authenticated cancellation transition before approval, then removal with forward key
+rotation afterward (including uncertain exposure), repeated later admissions and lost-device recovery.
+The existing cancelled-relay record alone does not remove membership. No control may claim otherwise.

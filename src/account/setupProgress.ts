@@ -4,7 +4,7 @@ import { hex } from '../../account-protocol/recovery';
 import type { PrivateAccess } from './privateAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { isAccountId, type RememberedAccount } from './accountIdentity';
-export type SetupConfig = { pin: AuthorityPin } & (
+export type SetupConfig = { pin: AuthorityPin; readonly membershipContinuation?: boolean } & (
   | { networkSessions: true; token?: never }
   | { networkSessions?: false; token: PrivateAccess }
 );

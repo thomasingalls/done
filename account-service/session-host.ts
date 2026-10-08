@@ -18,7 +18,18 @@ export function createSessionAccountHandler(
   // Every route here verifies its own fresh proof or retained attempt capability in the domain.
   // No protected workspace/enrollment operation may be added as a bootstrap alias.
   const routes = new Map<string, { limit: number; run: (v: unknown) => unknown }>([
-    ['config', { limit: 64, run: () => ({ v: 2, pin, networkSessions: true }) }],
+    [
+      'config',
+      {
+        limit: 64,
+        run: () => ({
+          v: 2,
+          pin,
+          networkSessions: true,
+          ...(core.membershipContinuationEnabled ? { membershipContinuation: true } : {}),
+        }),
+      },
+    ],
     ['authority/prove', { limit: 4096, run: (v) => authority.prove(v) }],
     ['begin', { limit: 131072, run: (v) => core.begin(v) }],
     ['resume', { limit: 4096, run: (v) => core.resume(v) }],

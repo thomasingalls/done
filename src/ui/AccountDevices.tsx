@@ -4,7 +4,15 @@ import { useWorkspaceUi } from './workspaceUi';
 import { AccountIdentity } from './AccountIdentity';
 
 /** Membership comes only from the account owner. Editable labels never establish membership. */
-export function AccountDevices({ onBack, onConnect }: { onBack(): void; onConnect(): void }) {
+export function AccountDevices({
+  onBack,
+  onConnect,
+  continuationAvailable = false,
+}: {
+  onBack(): void;
+  onConnect(): void;
+  continuationAvailable?: boolean;
+}) {
   const { devices, snapshot, accountId } = useWorkspaceUi();
   const [roster, setRoster] = useState<DeviceRosterSnapshot | null>(null);
   const [error, setError] = useState('');
@@ -66,10 +74,16 @@ export function AccountDevices({ onBack, onConnect }: { onBack(): void; onConnec
                 </li>
               ))}
             </ul>
-            <button className="setup-primary" onClick={onConnect} disabled={roster.epoch > 1}>
-              Connect another device
+            <button
+              className="setup-primary"
+              onClick={onConnect}
+              disabled={roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4)}
+            >
+              {roster.devices.some((d) => d.state === 'pending')
+                ? 'Resume connection'
+                : 'Connect another device'}
             </button>
-            {roster.epoch > 1 && (
+            {roster.epoch > 1 && !(continuationAvailable && roster.epoch <= 4) && (
               <p className="setup-note">
                 Additional device connections are not available yet in this preview.
               </p>

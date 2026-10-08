@@ -30,18 +30,26 @@ export function accountSchema(path) {
 }
 
 // Ask this checkout's core which schema it creates. No duplicated migration SQL or target constant.
-function targetSchema(policy, sessions) {
+function targetSchema(policy, sessions, membershipContinuation) {
   const scratch = mkdtempSync(join(tmpdir(), 'done-account-schema-'));
   try {
     const path = join(scratch, 'account.sqlite');
-    new AccountCore(path, policy, { sessions }).close();
+    new AccountCore(path, policy, { sessions, membershipContinuation }).close();
     return accountSchema(path);
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
 }
 
-export async function upgradePreviewState({ directory, port, policy, networkSessions = false }) {
+export async function upgradePreviewState({
+  directory,
+  port,
+  policy,
+  networkSessions = false,
+  membershipContinuation = false,
+}) {
+  if (membershipContinuation && !networkSessions)
+    throw Error('Membership continuation requires account sessions');
   // Never initialize replacement state when the operator meant to upgrade an existing service.
   for (const file of ['account.sqlite', 'authority.sqlite', 'pin.json', 'operator.key'])
     if (!existsSync(join(directory, file))) throw Error(`Missing preview state: ${file}`);
@@ -67,9 +75,9 @@ export async function upgradePreviewState({ directory, port, policy, networkSess
       const path = join(directory, 'account.sqlite');
       const from = accountSchema(path);
       const sessions = networkSessions ? { pin, operatorKey: key } : undefined;
-      const to = targetSchema(policy, sessions);
+      const to = targetSchema(policy, sessions, membershipContinuation);
       if (from === to) {
-        new AccountCore(path, policy, { sessions }).close();
+        new AccountCore(path, policy, { sessions, membershipContinuation }).close();
         return { from, to, backup: null };
       }
       if (from < 1 || from >= to || from > to)
@@ -106,8 +114,10 @@ export async function upgradePreviewState({ directory, port, policy, networkSess
       try {
         new AccountCore(path, policy, {
           sessions,
+          membershipContinuation,
           [`upgradeFromV${from}`]: true,
           ...(sessions && from < 12 ? { upgradeFromV11: true } : {}),
+          ...(membershipContinuation && from < 14 ? { upgradeFromV14: true } : {}),
         }).close();
         if (accountSchema(path) !== to) throw Error('Account schema did not reach its target');
       } catch (cause) {

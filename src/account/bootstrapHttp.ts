@@ -24,6 +24,7 @@ const routes = new Set([
   'promotion/finish',
   'promotion/binding',
   'ceremony/bootstrap',
+  'membership/bootstrap',
   'enrollment/begin',
   'enrollment/finish',
 ]);
