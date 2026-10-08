@@ -131,3 +131,66 @@ test('joined device invites a third through packaged UI; all three retain and ex
     }
   }
 });
+
+test('pending connection cancellation recovers after losing its reply and reopening native custody', async ({
+  page,
+  browser,
+}, info) => {
+  page.setDefaultTimeout(15000);
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  const context = await browser.newContext(),
+    third = await context.newPage();
+  third.setDefaultTimeout(15000);
+  try {
+    pair = await pairedEditors(page, browser, true);
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(pair.second, pair.next.code);
+    const invitation = await pair.second.getByLabel('Device invitation link').inputValue();
+    const next = await pending(third, invitation, pair.next.auth);
+    await compared(pair.second, third);
+    let lost = false;
+    await third.route('**/account/membership/v2/cancel', async (route) => {
+      const response = await route.fetch();
+      if (!lost && response.ok()) {
+        lost = true;
+        await route.abort('failed');
+      } else await route.fulfill({ response });
+    });
+    await third.getByRole('button', { name: 'Cancel connection', exact: true }).click();
+    await expect(third.locator('[role=alert]')).toBeVisible();
+    expect(lost).toBe(true);
+    await third.reload();
+    await unlock(third, next.code);
+    await expect(third.getByRole('status')).toContainText('The connection was cancelled.', {
+      timeout: 15000,
+    });
+    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toHaveCount(
+      0,
+    );
+    await expect(pair.second.getByRole('status')).toContainText('The connection was cancelled.', {
+      timeout: 20000,
+    });
+    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await add(pair.second, 'Writing continues after cancelling the pending connection');
+    await expect(page.locator('.shell')).toContainText(
+      'Writing continues after cancelling the pending connection',
+      { timeout: 20000 },
+    );
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
+    await expect(
+      pair.second.locator('.account-device-list [data-device-state=pending]'),
+    ).toHaveCount(0);
+  } finally {
+    try {
+      await context.close().catch(() => {});
+      await pair?.other.close().catch(() => {});
+    } finally {
+      await stopService(service);
+    }
+  }
+});

@@ -24,9 +24,9 @@ import { enrollmentMessages, type EnrollmentView } from './deviceEnrollment';
 import type { SetupConfig } from './setupProgress';
 
 /** Stream bounds apply before parsing a potentially large signed membership/checkpoint response. */
-async function responseJson(response: Response, signal: AbortSignal) {
+async function responseJson(response: Response, signal: AbortSignal, cancellation = false) {
   if (
-    !response.ok ||
+    (!response.ok && !cancellation) ||
     !response.body ||
     response.headers.get('content-type') !== 'application/json'
   ) {
@@ -62,7 +62,8 @@ async function responseJson(response: Response, signal: AbortSignal) {
     if (declared !== null && Number(declared) !== length)
       throw Error('Incomplete account response');
     const result = JSON.parse(text + decoder.decode());
-    if (result?.ok === false) throw Error('The service refused this step. Your progress is saved.');
+    if (result?.ok === false && !cancellation)
+      throw Error('The service refused this step. Your progress is saved.');
     return result as unknown;
   } finally {
     signal.removeEventListener('abort', cancel);
@@ -156,7 +157,11 @@ export function createMembershipEnrollment(
             let attemptId;
             if (path === '/account/membership/v2/admit') attemptId = b.attemptId;
             else if (
-              ['/account/membership/v2/ceremony', '/account/membership/v2/transfer'].includes(path)
+              [
+                '/account/membership/v2/ceremony',
+                '/account/membership/v2/transfer',
+                '/account/membership/v2/cancel',
+              ].includes(path)
             )
               attemptId = b.preparationId;
             else if (path !== '/account/membership/v2/checkpoint')
@@ -165,7 +170,11 @@ export function createMembershipEnrollment(
               throw Error('Connection attempt is missing');
             const scoped = access(owner, base, attemptId);
             return owner.withLogin(ceremonyLogin, identity(base), async () =>
-              responseJson(await scoped.fetch(path, init), signal),
+              responseJson(
+                await scoped.fetch(path, init),
+                signal,
+                path === '/account/membership/v2/cancel',
+              ),
             );
           },
           read: async (bytes, base) => {
@@ -227,6 +236,11 @@ export function createMembershipEnrollment(
       if (result.kind === 'comparison-cancelled')
         return view('restart-required', {
           message: 'This comparison was stopped. The pending device has not been removed.',
+          canCancel: result.canCancel === true,
+        });
+      if (result.kind === 'cancelled')
+        return view('cancelled', {
+          message: 'The connection was cancelled. Existing devices and writing are retained.',
         });
       if (result.kind === 'certified' && role === 'existing')
         return view('certified', {
@@ -234,7 +248,10 @@ export function createMembershipEnrollment(
           message:
             'The device is connected. It can open your writing there. You can return to your account.',
         });
-      return view(result.kind, result.code ? { code: result.code } : {});
+      return view(result.kind, {
+        ...(result.code ? { code: result.code } : {}),
+        canCancel: result.canCancel === true,
+      });
     });
   const openEditor = async () => {
     if (role !== 'new') return null;
@@ -310,9 +327,7 @@ export function createMembershipEnrollment(
     enroll: () => operate({ enroll: true }),
     reconnect: () => operate({ reconnect: true }),
     compare: (typed: string) => operate({ typed }),
-    cancel: async (): Promise<EnrollmentView> => {
-      throw Error('Membership cancellation is not available yet.');
-    },
+    cancel: () => operate({ cancel: true }),
     openWriting: async () => {
       const result = await operate({ read: true });
       return (await openEditor()) ?? result;

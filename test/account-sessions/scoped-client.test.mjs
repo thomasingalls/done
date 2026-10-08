@@ -395,7 +395,7 @@ test('browser continuation routes retain workspace/enrollment separation and imm
     },
     sign: async (body) => sign(null, body, p.entry.key).toString('hex'),
   });
-  for (const suffix of ['admit', 'ceremony', 'transfer']) {
+  for (const suffix of ['admit', 'ceremony', 'transfer', 'cancel']) {
     const path = '/account/membership/v2/' + suffix;
     await assert.rejects(x.scoped.fetch(path, init), /Wrong grant route/);
     assert.equal((await enrollment.fetch(path, init)).status, 200);

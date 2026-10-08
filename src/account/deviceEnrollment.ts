@@ -121,6 +121,7 @@ export interface EnrollmentView {
     | 'mismatch'
     | 'expired'
     | 'restart-required'
+    | 'removal-required'
     | 'cancelled';
   link?: string;
   code?: string;
@@ -162,6 +163,8 @@ export const enrollmentMessages: Record<EnrollmentView['kind'], string> = {
   mismatch: 'The codes did not match. This device attempt is spent.',
   expired: 'This attempt expired. It cannot be restarted with the same device credential.',
   'restart-required': 'Account authority changed. This attempt cannot continue.',
+  'removal-required':
+    'This device may already have content access. Removing it requires key rotation; cancellation cannot withdraw that access.',
   cancelled: 'This attempt was cancelled.',
 };
 const messages = enrollmentMessages;

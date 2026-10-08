@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: atomic cancellation complete; protected route and retained client cancellation next
+scope: cancellation product path complete; removal/rotation scope pending
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-08
@@ -119,12 +119,16 @@ Cancellation request/successor verification now preserves approved recipients an
 10 focused protocol cases pass; committed as `7d4df6ee`. The private schema-18 service now commits
 cancellation, publisher boundaries and current head atomically; approval/delivery fences cancellation.
 Four focused service cases, five schema/coordinator regressions and four host cases pass. The cancellation
-route and client control remain unwired; retained service schema 14 is unchanged.
+service is committed as `ceab6326`. The protected cancellation route and retained client/UI now pass
+a native lost-reply/reload test; existing devices keep syncing without the pending member. The three-device
+flow passes again. An original-ceremony regression exposed and repaired a legacy bearer-route allowlist
+error; session bootstrap remains restricted. Retained service schema 14 is unchanged.
 See the completed checkpoints for evidence.
 
-**Next:** protected HTTP route and durable client composition for pending-membership cancellation before
-approval, then removal with forward
-rotation/finalization after approval or uncertain key exposure; repeated later
+**Next:** removal with forward rotation/finalization after approval or uncertain key exposure. The operator
+has been asked whether the first journey should remove other devices only (recommended) or also cover
+self/last-device removal. The concrete proposed sequence is in the lifecycle plan; await that product
+scope decision before fixing the next removal journey. Repeated later
 connections and lost-device recovery. A removal control must not claim completion without the committed
 transition. Checkpoint/pruning and operational deployment/restore follow lifecycle work.
 

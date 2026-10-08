@@ -3803,6 +3803,11 @@ for (const approver of ['existing', 'new'])
     assert.equal(display.kind, 'display');
     await assert.rejects(run('existing', { typed: display.code }), /Lost approved/);
     const decision = structuredClone(durable.existing.comparison.decision);
+    assert.equal((await run('existing', { cancel: true })).kind, 'removal-required');
+    assert.equal(
+      calls.some((path) => path.endsWith('/cancel')),
+      false,
+    );
     x.f.restart();
     await assert.rejects(run('existing'), /Lost delivered/);
     const delivery = structuredClone(durable.existing.comparison.content.delivery);
@@ -4156,4 +4161,101 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_cancellations').all(), []);
   db.close();
+});
+
+test('protected membership cancellation invalidates old grants and emits only one committed hint', async (t) => {
+  const x = await continuationFixture(t),
+    http = await membershipHTTP(t, x),
+    g = await continuationGrants(x);
+  const request = await cancellationRequest(x, 'candidate'),
+    path = '/account/membership/v2/cancel';
+  const scope = {
+    kind: 'enrollment',
+    workspaceId: x.workspace,
+    credentialId: request.actorId,
+    attemptId: request.preparationId,
+  };
+  assert.equal((await http.post(path, request)).status, 401);
+  const workspace = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.existing.id },
+    x.keys.existing,
+  );
+  assert.equal((await http.post(path, request, workspace)).body.refusal, 'insufficient-scope');
+  const grant = await g.grant(scope, x.entry.key);
+  const done = await http.post(path, request, grant);
+  assert.equal(done.status, 200, JSON.stringify(done));
+  assert.equal(done.body.cancellation.kind, 'membership-cancellation');
+  assert.equal(http.hints.length, 1);
+  assert.equal((await http.post(path, request, grant)).body.refusal, 'authority-changed');
+  const retry = await g.grant(scope, x.entry.key);
+  assert.deepEqual((await http.post(path, request, retry)).body, done.body);
+  assert.equal(http.hints.length, 1);
+  assert.equal(
+    (await g.begin({ kind: 'workspace', workspaceId: x.workspace, credentialId: request.actorId }))
+      .ok,
+    false,
+  );
+});
+
+test('retained client cancellation saves before effects and cold-resolves a lost committed reply', async (t) => {
+  const client = await compiledComparison(),
+    x = await continuationFixture(t);
+  let durable = null,
+    failSave = false,
+    loseReply = true,
+    sends = 0;
+  const owner = {
+    participant: x.context.existing,
+    source: {
+      kind: 'original',
+      base: x.base,
+      proofs: { successor: x.successor, certification: x.certification, continuations: [] },
+    },
+    load: async () => structuredClone(durable),
+    save: async (value) => {
+      if (failSave && value.withdrawal) throw Error('failed cancellation save');
+      durable = structuredClone(value);
+    },
+    sign: async (bytes) => signed(x.keys.existing, bytes),
+  };
+  const run = (input = {}) =>
+    client.advanceMembershipConnection(
+      owner,
+      'existing',
+      {
+        pin: x.authority.pin,
+        signal: new AbortController().signal,
+        now: () => 1000,
+        request: async (path, body) => {
+          if (path.endsWith('/bootstrap'))
+            return x.authority.owner.membershipBootstrap(x.f.core, body);
+          if (path.endsWith('/ceremony')) return x.relay(body);
+          assert(path.endsWith('/cancel'));
+          assert.deepEqual(durable.withdrawal, body);
+          sends++;
+          const result = await x.authority.owner.cancelMembership(x.f.core, body);
+          if (loseReply) {
+            loseReply = false;
+            throw Error('lost cancellation reply');
+          }
+          return result;
+        },
+      },
+      input,
+    );
+  assert.equal((await run()).canCancel, true);
+  failSave = true;
+  await assert.rejects(run({ cancel: true }), /failed cancellation save/);
+  assert.equal(sends, 0);
+  assert.equal(durable.withdrawal, undefined);
+  failSave = false;
+  await assert.rejects(run({ cancel: true }), /lost cancellation reply/);
+  assert.equal(sends, 1);
+  const saved = structuredClone(durable.withdrawal);
+  x.f.restart();
+  x.authority.restart();
+  assert.equal((await run()).kind, 'cancelled');
+  assert.deepEqual(durable.withdrawal, saved);
+  assert.equal(sends, 1, 'verified bootstrap resolves the already committed outcome');
+  assert.equal(durable.latest.continuations.at(-1).kind, 'membership-cancellation');
 });

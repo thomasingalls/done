@@ -7,7 +7,16 @@ import {
   verifyMembershipChain,
 } from '../../account-protocol/membershipLocator';
 import { historyAuthority, historyMembership } from '../../account-protocol/admissionHistory';
-import { membershipState } from '../../account-protocol/membership';
+import {
+  membershipState,
+  parseMembershipCancellationRequest,
+  membershipCancellationRequestMessage,
+  verifyMembershipCancellationRequest,
+  verifyMembershipCancellation,
+  parseMembershipCancellation,
+  type MembershipCancellationRequest,
+} from '../../account-protocol/membership';
+import { hex, random } from '../crdt/custodyCrypto';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import type { SuccessorBase } from '../../account-protocol/successor';
 import type { EnrollmentContext } from '../../account-protocol/enrollment';
@@ -41,6 +50,7 @@ export interface MembershipConnection {
   preparation: { parent: Proofs; progress: MembershipPreparation } | null;
   comparison: Comparison | null;
   terminal: 'restart-required' | null;
+  withdrawal?: MembershipCancellationRequest;
 }
 export interface MembershipConnectionIO {
   pin: AuthorityPin;
@@ -67,7 +77,10 @@ export type MembershipConnectionView = {
     | 'mismatch'
     | 'expired'
     | 'restart-required'
+    | 'cancelled'
+    | 'removal-required'
     | 'comparison-cancelled';
+  canCancel?: boolean;
   code?: string;
   invitation?: ReturnType<typeof parseMembershipInvitation>;
 };
@@ -83,6 +96,7 @@ function capture(input: unknown): MembershipConnection {
     'preparation',
     'comparison',
     'terminal',
+    ...((input as { withdrawal?: unknown } | null)?.withdrawal !== undefined ? ['withdrawal'] : []),
   ]);
   if (
     p['v'] !== 2 ||
@@ -96,6 +110,9 @@ function capture(input: unknown): MembershipConnection {
   return {
     ...p,
     invitation: parseMembershipInvitation(p['invitation']),
+    ...(p['withdrawal'] !== undefined
+      ? { withdrawal: parseMembershipCancellationRequest(p['withdrawal']) }
+      : {}),
   } as unknown as MembershipConnection;
 }
 
@@ -111,6 +128,7 @@ export async function advanceMembershipConnection(
     typed?: string;
     read?: boolean;
     reconnect?: boolean;
+    cancel?: boolean;
   } = {},
 ): Promise<MembershipConnectionView> {
   const guard = () => io.signal.throwIfAborted();
@@ -252,11 +270,73 @@ export async function advanceMembershipConnection(
   const i = proofs.continuations.findIndex((proof) => proof.head === comparison.parent);
   if (i < 0 || proofs.continuations[i]?.kind !== 'membership-admission') return restart();
   const following = proofs.continuations.slice(i + 1);
+  if (following[0]?.kind === 'membership-cancellation' && following.length === 1) {
+    if (comparison.content) return { kind: 'removal-required' };
+    return { kind: 'cancelled' };
+  }
   if (following.length > 1 || (following[0] && following[0].kind !== 'membership-certification'))
     return restart();
   const pendingProofs = { ...proofs, continuations: proofs.continuations.slice(0, i + 1) },
     pending = historyMembership((await verifyMembershipChain(pendingProofs, base)).history),
     childOwner = { ...owner, load: async () => capture(await owner.load()).comparison };
+  if (input.cancel || p.withdrawal) {
+    // An approved local decision may already have reached the service. Never reinterpret a lost
+    // approval or a retained key-bearing handoff as evidence that no key was exposed.
+    if (
+      following.length ||
+      comparison.content ||
+      (comparison.decision?.payload as { outcome?: unknown } | null)?.outcome === 'approved'
+    )
+      return { kind: 'removal-required' };
+    const state = membershipState(pending),
+      candidate = state.preparations[0];
+    if (!candidate || state.preparations.length !== 1)
+      throw Error('Cancellation needs the exact pending connection');
+    if (!p.withdrawal) {
+      p.withdrawal = parseMembershipCancellationRequest({
+        v: 2,
+        kind: 'membership-cancellation-request',
+        workspaceId: state.workspaceId,
+        lineageId: state.lineageId,
+        parent: state.head,
+        epoch: state.epoch,
+        preparationId: candidate.attemptId,
+        candidateId: candidate.credentialId,
+        actorId: owner.participant.id,
+        nonce: hex(random(32)),
+        signature: '00'.repeat(64),
+      });
+      p.withdrawal.signature = await owner.sign(
+        await membershipCancellationRequestMessage(p.withdrawal),
+      );
+      await save();
+    }
+    const withdrawal = await verifyMembershipCancellationRequest(p.withdrawal, pending);
+    if (
+      withdrawal.actorId !== owner.participant.id ||
+      !same(capture(await owner.load()).withdrawal, withdrawal)
+    )
+      throw Error('Cancellation intent did not persist');
+    const result = (await request('/account/membership/v2/cancel', withdrawal)) as {
+      ok?: unknown;
+      refusal?: unknown;
+      cancellation?: unknown;
+    };
+    if (result.ok !== true) {
+      if (result.refusal === 'removal-required') return { kind: 'removal-required' };
+      throw Error('Cancellation was not confirmed. Retry the saved connection.');
+    }
+    const cancellation = parseMembershipCancellation(result.cancellation);
+    await verifyMembershipCancellation(cancellation, pending);
+    if (!same(cancellation.epoch.cancellation, withdrawal))
+      throw Error('Cancellation result changed');
+    p.latest = parseMembershipChain({
+      ...pendingProofs,
+      continuations: [...pendingProofs.continuations, cancellation],
+    });
+    await save();
+    return { kind: 'cancelled' };
+  }
   const compared = await continueMembershipComparison(
     comparison,
     childOwner,
@@ -264,7 +344,13 @@ export async function advanceMembershipConnection(
     { ...io, save, request },
     input.typed,
   );
-  if (compared.kind !== 'approved') return compared;
+  if (compared.kind !== 'approved')
+    return {
+      ...compared,
+      canCancel:
+        !comparison.content &&
+        (comparison.decision?.payload as { outcome?: unknown } | null)?.outcome !== 'approved',
+    };
   const certification = following[0]?.kind === 'membership-certification' ? following[0] : null;
   const handoff = await continueMembershipHandoff(
     comparison,

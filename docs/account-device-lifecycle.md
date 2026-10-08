@@ -413,3 +413,31 @@ It retains exact outcomes and both publisher cutoffs/witnesses atomically. Lost 
 changing the intent; current discovery and continued writing verify the cancelled successor. Approval
 winning the race requires removal with rotation; a signed mismatch can still cancel. The retained host
 remains on schema 14. HTTP/client cancellation and the product control are the next composition boundary.
+
+
+## Cancellation product checkpoint and next removal scope — 2026-10-08
+
+Protected cancellation and its retained client/UI path now pass a real packaged browser test with a
+discarded committed response and reload. Existing publishers continue syncing; a cancelled candidate
+never opens writing. Saved or competing approval requires removal with rotation. Cancellation does not
+delete the joining slot. Repeated invitations after cancellation still need the general service
+continuation producer; no new invitation is advertised at that unsupported head.
+
+The pending operator question proposes **removing another device first**, with self-removal and the
+last-device case kept for local clearing/recovery. This is a proposal, not a new decision. The first
+proposed removal increment would:
+
+1. Retain an exact intent naming the target credential and verified parent. Keep the requesting device
+   in the resulting recipient set. Present the loss-of-access effect and existing-copy limitation.
+2. Generate the next content key on that client, with wraps for precisely the remaining certified
+   recipients and the existing recovery key. Bind recipient approval and retry identity to that parent.
+3. Commit the successor, distribution and authenticated accepted-write cutoff atomically on the
+   service; never report removal from a notification or an HTTP success alone.
+4. Install the next generation through the actual content/journal owners. Preserve pre-cutoff accepted
+   writing, keep unknown outcomes pending, and let excluded devices retain an honest detached copy.
+5. Demonstrate the removal and remaining-device writing/reopening path on disposable devices, including
+   response loss and interrupted installation. Keep the retained service unchanged until a new quiet point.
+
+If self/last-device removal is selected now, the initiating owner's retirement and recovery-only
+recipient state must be included before fixing the first producer/installation contract. No removal
+implementation is being treated as complete by the cancellation checkpoints above.

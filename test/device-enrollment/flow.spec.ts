@@ -812,7 +812,7 @@ test('a queued comparison rechecks peer cancellation instead of approving stale 
         decisions++;
     });
     await page.getByRole('button', { name: 'Compare and approve' }).click();
-    await second.getByRole('button', { name: 'Cancel this attempt' }).click();
+    await second.getByRole('button', { name: 'Cancel connection' }).click();
     await expect(second.getByText('This attempt was cancelled.', { exact: true })).toBeVisible();
     poll.release();
     await expect(page.getByText('This attempt was cancelled.', { exact: true })).toBeVisible();

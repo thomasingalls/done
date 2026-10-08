@@ -28,8 +28,18 @@ const routes = new Set([
   'enrollment/begin',
   'enrollment/finish',
 ]);
+const privateRoutes = new Set([
+  'enrollment/admit',
+  'ceremony/exchange',
+  'ceremony/transfer',
+  'content/checkpoint',
+  'authority/discover',
+]);
 export function bootstrapFetch(config: SetupConfig, route: string, init: RequestInit) {
-  if (!routes.has(route) || config.pin.origin !== location.origin)
+  if (
+    (!routes.has(route) && (config.networkSessions || !privateRoutes.has(route))) ||
+    config.pin.origin !== location.origin
+  )
     throw Error('Unsupported account bootstrap route');
   const path = '/__account-setup/' + route;
   if (!config.networkSessions) return privateServiceFetch(config.pin, config.token, path, init);

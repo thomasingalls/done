@@ -10848,3 +10848,43 @@ approver's successful third-device connection. Four host cases pass
 (`/tmp/done-membership-cancel-host.log`), including backed-up 14-to-18 upgrade and default-host refusal.
 TypeScript, scoped lint/format and diff checks pass. Next: protected route and durable client cancellation;
 removal/rotation remains open. Release validation stays paused.
+
+
+## 2026-10-08 — Protected cancellation and native lost-reply recovery (`L-1`)
+
+After service checkpoint `ceab6326`, the opt-in cancellation route requires an enrollment grant bound
+to the exact actor/workspace/attempt. Its committed row invalidates old grants and emits one hint;
+exact retry under a fresh grant emits no duplicate hint. The cancelled candidate cannot obtain a
+workspace grant. The retained coordinator saves and reads back its signed cancellation intent before
+transmission, verifies the returned successor, and can recover an already committed cancellation from
+authenticated bootstrap after a lost response. A saved local approval, even with an unknown service
+reply, requires removal rather than cancellation. No new comparison can overtake a saved withdrawal.
+
+The additional-device screen offers “Cancel connection” before approval and reports cancellation only
+after verifying the committed membership transition. A winning approval instead explains that removal
+requires rotation. Removal itself remains unavailable. The joining slot/progress is retained; cancellation
+is not local erasure. Fresh connections after this cancelled head remain behind the existing repeated-
+admission fence, which must be removed in the later membership-continuation phase.
+
+The packaged native test deliberately discards the successful cancellation response, reloads/unlocks
+the candidate, verifies the recovered cancellation, observes it on the inviter, and confirms subsequent
+sync between the original two devices with no pending member. It passes (33.7 seconds). The full
+three-device writing/reopening test passes again (63.8 seconds). Its rapid traffic still incurs capacity
+refusals, recovered by bounded retries; usability under that pressure remains open.
+
+An extra original-ceremony regression exposed an existing routing mistake: the shared bootstrap
+allowlist rejected legacy bearer-protected admission/exchange routes. Those exact routes now remain
+available only to the legacy bearer adapter; session bootstrap still rejects them before network work.
+The queued-comparison/peer-cancellation regression passes after repair (16.0 seconds).
+
+Evidence: `/tmp/done-membership-cancel-native.log` (2 packaged cases),
+`/tmp/done-membership-cancel-original.log` (original cancellation),
+`/tmp/done-membership-cancel-client.log` (protected HTTP and retained client recovery),
+`/tmp/done-membership-cancel-coordinator.log` (both approvers' successful connection, including refusal
+to cancel after a lost approval reply, plus retained cancellation),
+`/tmp/done-membership-cancel-transport.log` (route/scope separation), and
+`/tmp/done-membership-cancel-bootstrap.log` (legacy bearer versus session-bootstrap boundary).
+TypeScript, scoped lint/format, build, bundle budget, origin and diff checks pass. Live service remains
+`a07de792` / schema 14 at `:8443`; no user data or running service was changed. Release validation remains
+paused. Next is removal with forward rotation; the operator's scope choice about self/last-device
+removal is pending. All intermediate commits remain unsigned as authorized.

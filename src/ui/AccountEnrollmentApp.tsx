@@ -167,6 +167,8 @@ export function AccountEnrollmentApp({
       previous.message === next.message &&
       previous.link === next.link &&
       previous.code === next.code &&
+      previous.canCancel === next.canCancel &&
+      previous.canOpenWriting === next.canOpenWriting &&
       previous.editor === next.editor
         ? previous
         : next,
@@ -622,17 +624,18 @@ export function AccountEnrollmentApp({
                 >
                   Check again
                 </button>
-                {state.canCancel !== false && ['compare', 'display'].includes(state.kind) && (
-                  <button
-                    disabled={busy}
-                    onClick={() => {
-                      void run(async () => publish(await owner.current!.cancel()));
-                    }}
-                  >
-                    Cancel this attempt
-                  </button>
-                )}
               </>
+            )}
+            {(state.canCancel === true ||
+              (state.canCancel !== false && ['compare', 'display'].includes(state.kind))) && (
+              <button
+                disabled={busy}
+                onClick={() => {
+                  void run(async () => publish(await owner.current!.cancel()));
+                }}
+              >
+                Cancel connection
+              </button>
             )}
           </>
         )}

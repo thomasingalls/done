@@ -91,6 +91,10 @@ export function createScopedAccountHandler(
       limit: 4096,
       run: (v, _token, auth) => authority.admitMembership(core, v, auth),
     });
+    jsonRoutes.set('/account/membership/v2/cancel', {
+      limit: 4096,
+      run: (v, _token, auth) => authority.cancelMembership(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v2/ceremony', {
       limit: CEREMONY_RELAY_LIMIT,
       run: (v, _token, auth) => authority.relayMembershipCeremony(core, v, auth),
@@ -212,6 +216,7 @@ export function createScopedAccountHandler(
           '/__account-setup/ceremony/transfer': 'content_transfers',
           '/__account-setup/content/checkpoint': 'content_checkpoints',
           '/account/membership/v2/admit': 'membership_admissions',
+          '/account/membership/v2/cancel': 'membership_cancellations',
           '/account/membership/v2/ceremony': 'membership_ceremonies',
           '/account/membership/v2/transfer': 'membership_transfers',
         }[path];
@@ -263,6 +268,7 @@ export function createScopedAccountHandler(
             changed &&
             (path === '/__account-setup/enrollment/admit' ||
               path === '/account/membership/v2/admit' ||
+              path === '/account/membership/v2/cancel' ||
               (value && typeof value === 'object' && 'action' in value && value.action !== 'read'))
           )
             notifications?.committed(target, path === '/__account-setup/content/checkpoint');
