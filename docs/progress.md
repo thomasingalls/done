@@ -49,8 +49,8 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: bounded repeatable lifecycle implemented and checked; retained-service update preparation
-blocks_on: fresh operator locked/closed confirmation before live switch
+scope: bounded repeatable lifecycle implemented, checked and served; operator uptake pending
+blocks_on: operator writing/sync check on retained devices
 release_validation: paused by operator
 updated: 2026-10-08
 ```
@@ -74,21 +74,19 @@ Twenty-six focused grant/notification/HTTP cases pass. TypeScript, scoped lint/f
 [grant reclamation](./development-evidence/2026-10-08-lifecycle-grant-reclamation.log).
 These are focused implementation checks, not release qualification.
 
-**Live remains unchanged:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-immutable frontend `2bea3437`, schema 20, original pin and both feature flags enabled.
-API 29654 and app 29655 were still listening during read-only preparation. The previous offline
-backup is `.dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ`.
-[Previous cutover evidence](./development-evidence/2026-10-08-device-lifecycle-cutover.json).
+**Live update completed:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
+immutable frontend `ea120109`, schema 21, original pin and both feature flags enabled.
+A fresh locked/closed confirmation preceded clean shutdown and the explicit offline upgrade.
+The backup is `.dev/account-enrollment-tailnet/backups/schema-20-25xQob`. All 42 prior account rows
+across 25 tables and all prior columns matched before startup, as did authority, pin and key.
+Integrity checks pass. API 54398 and app 54401 serve the updated installation. Through the HTTPS
+gateway, a fresh authority proof and all 29 precache URLs/worker bytes verify.
+[Cutover evidence](./development-evidence/2026-10-08-repeatable-lifecycle-cutover.json).
 
-**Prepared candidate:** `.dev/account-enrollment-tailnet/builds/ea120109`; worker SHA-256
-`7cf78e59314c5caacf196d401098e0730b9d075d8b73f082f3ec44a3e52362fa`.
-Build, budget and origin checks pass.
-
-**Next:** obtain a fresh locked/closed confirmation. Stop the two
-verified processes, use the explicit offline upgrader and its full pre-upgrade backup, compare prior
-rows/columns and pin/key, then serve schema 21 plus the candidate behind the same address. Verify
-configuration, fresh authority proof and cached asset bytes before asking the operator to reopen.
-[Runbook](./packaged-account-development.md). No reset, source cleanup or key replacement is intended.
+**Next:** operator uptake. Reopen the unchanged address online, allow the normal app update, confirm
+version `ea120109`, existing writing and ordinary sync on both devices. Close/reopen after download
+if the old worker still controls a tab. No personal-device removal is needed for the initial check.
+No personal browser was opened during the cutover. [Runbook](./packaged-account-development.md).
 
 **After uptake:** lost-device recovery remains the next separate product journey. Self/last-device
 removal needs an explicit UX decision. Successor checkpoint replacement, history pruning, old-key

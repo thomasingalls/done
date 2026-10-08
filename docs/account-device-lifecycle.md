@@ -2,7 +2,7 @@
 
 2026-10-08 · active development plan · release validation remains paused.
 
-Sessions, notifications and the bounded lifecycle are served at the retained `:8443` origin on `2bea3437`.
+Sessions, notifications and the bounded lifecycle are served at the retained `:8443` origin on `ea120109`.
 The operator chose additional devices and removal/revocation before lost-device recovery, and approved
 one **Devices** screen in the editor’s Account menu, with the verified list, connect and removal actions.
 The existing invitation/code-comparison ceremony stays; pending enrollment is distinct from approval.
@@ -16,9 +16,9 @@ detached copies and two-way editing across cold reopen. The replacement needs no
 key. See [the repeatable lifecycle checkpoint](./account-repeatable-lifecycle.md) and the dated entries
 in [completed.md](./completed.md) for the focused evidence and limits.
 
-The retained installation still serves `2bea3437` on schema 20. Updating it needs a fresh locked/closed
-confirmation, an offline backup and explicit schema-21 upgrade; see the
-[cutover runbook](./packaged-account-development.md). Source changes have not restarted that service.
+The retained installation now serves `ea120109` on schema 21 after a fresh locked/closed confirmation,
+a verified offline backup and explicit upgrade. Operator writing/sync uptake remains pending; see the
+[cutover runbook](./packaged-account-development.md).
 
 Self/last-device removal, lost-device recovery, successor checkpoints/pruning, old-key retirement and
 public operations remain. Existing history-size limits still apply. The account-preview label stays,

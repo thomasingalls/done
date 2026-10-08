@@ -11694,3 +11694,26 @@ obtain a fresh locked/closed confirmation, back up and explicitly upgrade schema
 unchanged `:8443` origin, then check existing writing and sync. No personal browser or live service was
 changed by these tests. Self/last-device removal, lost-device recovery, checkpoint/pruning/key-retirement
 and production operations remain outside this increment. Release validation stays paused.
+
+
+## 2026-10-08 — Retained repeatable-lifecycle cutover (`L-1`)
+
+After a fresh operator confirmation that both devices were locked and closed, the two verified old
+processes stopped cleanly. The explicit offline upgrader saved
+`.dev/account-enrollment-tailnet/backups/schema-20-25xQob` and moved schema 20 to 21. Before starting
+the API, all 42 prior account rows across 25 tables and every prior column matched the backup. The
+authority table/row, pin and operator key also matched; both databases and backups passed integrity
+checks. No personal browser, source cleanup, account reset or key replacement was involved.
+
+The retained address now serves immutable application `ea120109` with sessions and membership
+continuation enabled. API PID 54398 listens on 53220 and application PID 54401 on 53219. Through
+`https://mbp.tail0e0d4.ts.net:8443/`, the original pin and capabilities match, a fresh nonce-bound
+identity proof verifies, all 29 precache URLs plus the worker match the immutable local bytes, and the
+existing wrong-Origin/unauthenticated/private-file boundaries pass. Worker SHA-256 is
+`7cf78e59314c5caacf196d401098e0730b9d075d8b73f082f3ec44a3e52362fa`.
+[Cutover evidence](./development-evidence/2026-10-08-repeatable-lifecycle-cutover.json).
+
+Next is operator uptake: reopen online, allow the normal app update, confirm version `ea120109`,
+existing writing and ordinary sync on both devices. No personal removal is needed for this first
+check. Recovery, self/last-device removal, checkpoint/pruning/key retirement and production operations
+remain separate; release validation remains paused.

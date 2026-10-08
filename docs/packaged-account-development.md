@@ -349,7 +349,7 @@ issuance-custody context. The build exposes the first removal/rotation only; lat
 maintenance obligations remain open, and release validation stays paused.
 
 
-## Repeatable-lifecycle update prepared — 2026-10-08
+## Repeatable-lifecycle update prepared — 2026-10-08 (completed below)
 
 Implementation `ea120109` completes the bounded repeated connection/removal product flow, including
 current-key replacement installation and another connection initiated by that replacement.
@@ -392,3 +392,28 @@ no personal-device removal is required for initial uptake. Preserve the backup a
 build. A session-bearing backup is not a supported rollback of acknowledged writing: restore requires
 session invalidation and a changed issuance-custody context. Recovery, pruning/key retirement and
 public operations remain open; the preview label and release-validation pause remain.
+
+
+## Live repeatable-lifecycle cutover — 2026-10-08
+
+Fresh operator locked/closed confirmation received. The explicit offline upgrade saved
+`.dev/account-enrollment-tailnet/backups/schema-20-25xQob` and moved schema 20 to 21. Before starting
+the API, every prior account row/column (42 rows, 25 tables), the authority row, pin and operator key
+matched the backup. Current and backup databases passed SQLite integrity checks.
+
+Current immutable application: `.dev/account-enrollment-tailnet/builds/ea120109`.
+Current processes: API 54398, application 54401. Logs:
+`/tmp/done-account-service-ea120109.log`, `/tmp/done-account-app-ea120109.log`.
+Use the launch environment in the preceding preparation section, with both API feature flags and
+the `ea120109` application directory. Public origin and internal ports are unchanged.
+
+Through the actual HTTPS gateway, configuration retains the original pin and both capabilities;
+a fresh authority proof verifies. All 29 precache URLs and the worker match the immutable build.
+Wrong Origin is refused, unauthenticated subscription is refused, and private state/source paths are
+absent. [Machine-readable cutover record](./development-evidence/2026-10-08-repeatable-lifecycle-cutover.json).
+
+Operator uptake remains pending. Reopen online and allow the normal application update to activate;
+close/reopen after download if an old worker still controls a tab. Confirm version `ea120109`, existing
+writing and ordinary sync on both devices. The preview label stays; release validation remains paused.
+The prior build and the full pre-upgrade backup are retained, subject to the session-restore constraints
+above. No personal browser was opened during this cutover.

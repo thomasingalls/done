@@ -2,8 +2,8 @@
 
 2026-10-08. The operator authorized continuing through repeated connections and removals, with
 unsigned intermediate commits and focused implementation evidence. Release validation remains paused.
-The retained development service still serves immutable build `2bea3437` on schema 20; changing source
-does not restart that process or switch its build.
+The retained development service now serves immutable build `ea120109` on schema 21 after a confirmed
+quiet point and verified offline backup. Personal-device uptake remains pending; see the cutover runbook.
 
 ## Product boundary
 
@@ -209,8 +209,8 @@ also exposed obsolete grants exhausting a remembered login's quota; changed-auth
 challenges are reclaimed without raising the limit or extending the login. These are implementation
 repairs within the existing product decisions.
 
-This completes the bounded repeated lifecycle in disposable packaged browsers. Retained service
-uptake is the next step: preserve an immutable build, obtain a fresh locked/closed confirmation, back
-up and explicitly upgrade schema 20 to 21, then retain the same origin, pin, accounts and ports.
+This completes the bounded repeated lifecycle in disposable packaged browsers. The retained service
+now serves this implementation at the same origin and ports after a verified schema-21 upgrade,
+preserving the original pin and account rows. Operator writing/sync uptake is the next check.
 Self/last-device removal, lost-device recovery, successor snapshot replacement/pruning, key retirement
 and production operations remain separate. Release validation stays paused.
