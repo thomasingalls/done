@@ -271,3 +271,28 @@ test('mismatched approval, missing durable custody and substituted device refuse
   await assert.rejects(x.run('existing', x.certification), /Saved delivery is missing/);
   assert.equal(x.counts.wrap, 1);
 });
+
+test('continuation progress preserves the first ceremony and refuses an older writer or incomplete value', async () => {
+  const original = { v: 1, role: 'new', content: { installed: true } };
+  let stored = structuredClone(original);
+  const raw = {
+    load: async () => structuredClone(stored),
+    save: async (next) => {
+      stored = structuredClone(next);
+    },
+  };
+  const legacy = client.approvalProgress(raw, 'legacy'),
+    current = client.approvalProgress(raw, 'membership');
+  assert.deepEqual(await legacy.load(), original);
+  assert.equal(await current.load(), null);
+  await current.save({ v: 2, stage: 'pending' });
+  assert.deepEqual(stored.previous, original);
+  await assert.rejects(legacy.load(), /current owner/);
+  await assert.rejects(legacy.save({ v: 1 }), /current owner/);
+  const before = structuredClone(stored);
+  await assert.rejects(current.save(undefined), /missing/);
+  assert.deepEqual(stored, before);
+  assert.deepEqual(await current.load(), { v: 2, stage: 'pending' });
+  stored = { ...stored, v: 3 };
+  await assert.rejects(current.load(), /Unsupported/);
+});

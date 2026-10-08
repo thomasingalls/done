@@ -4,3 +4,4 @@ export {
   verifyMembershipAnchor,
   verifyMembershipAdmission,
 } from '../../account-protocol/membership';
+export { approvalProgress } from '../../src/account/approvalProgress';

@@ -273,3 +273,18 @@ the persisted installed-key seal. Certification must verify the same delivery an
 This is a generation-one coordinator with focused simulated-custody interruption tests. It is not yet
 wired to native slot custody or the enrollment UI. Next: connect the actual original/joined/pending
 slot owners while preserving the earlier completed ceremony and its installed key.
+
+
+## Native continuation custody checkpoint — 2026-10-08
+
+Original, joined and pending slots now share the approval/key primitives under their existing lifecycle
+permits. Encrypted progress preserves the original ceremony. Joined writes atomically rebind custody
+and marker authentication; a failed ciphertext save consumes its reserved nonce and retains prior
+progress. Both existing owners wrap the same account key for a new pending device. A packaged native
+check cold-opens all three owners and confirms the original editors still exchange edits.
+
+Next: authenticated historical checkpoint loading and current-authority adoption for the new device.
+The original epoch-3 checkpoint includes writing accumulated before ordinary outbound delivery, so
+replaying only the original genesis is insufficient. Its baseline and all eligible publisher streams
+must be carried into the later installation without reusing the original second device's semantic
+admission as the new candidate's approval. Generation replacement/pruning remains later work.

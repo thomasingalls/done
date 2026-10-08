@@ -10558,3 +10558,23 @@ and mismatched approval. TypeScript and scoped lint/format/diff checks pass. Log
 These tests do not establish native IndexedDB integration for this new coordinator. Attaching the
 actual slot owners, including a previously joined device as approver, is next; no UI activation or
 retained-service change occurred. Release validation remains paused.
+
+
+## 2026-10-08 — Native continuation custody (`L-1`)
+
+After handoff checkpoint `7a3f9608`, original, joined and fresh pending slots expose the same encrypted
+approval and installed-key primitives through their actual lifecycle owners. A versioned encrypted
+progress wrapper retains the earlier ceremony; the legacy writer refuses to overwrite an active
+continuation. Joined-device approval writes rebind the authenticated custody record and local marker
+in one IndexedDB transaction. Nonce reservation precedes encryption, including interrupted saves.
+A joined approver wraps its installed account key, not its physical Local envelope key.
+
+Evidence: 18 focused membership Node cases and one packaged native browser case pass (18.0 seconds).
+The browser case interrupts saves after nonce reservation, cold-opens both existing owners, checks
+that prior progress survives, and compares their wrapped keys in a fresh pending slot. Wrong delivery
+binding refuses. Both existing editors then reopen and exchange a new edit. TypeScript, scoped
+lint/format, build, budget, origin isolation and diff checks pass. Logs:
+`/tmp/done-membership-custody-regressions.log`, `/tmp/done-membership-custody-browser.log`,
+`/tmp/done-membership-custody-build.log`. This establishes native custody composition, not a completed
+third-device ceremony or activation. Historical checkpoint loading, owned authority adoption and the
+new device's editor remain next. No retained-service restart occurred; release validation is paused.

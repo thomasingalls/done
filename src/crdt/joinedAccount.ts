@@ -26,9 +26,9 @@ import {
   slotCustodyRows,
   localClaimKey,
 } from './localGenesisRecord';
-import { parseRecord, recordKey, recordEqual } from './custodyRecord';
+import { parseRecord, recordKey, recordEqual, type CustodyRecord } from './custodyRecord';
 import { storageUpgradeKey } from './storageCompatibility';
-import { withPromotionRoot } from './promotionRecord';
+import { withPromotionRoot, signRecord } from './promotionRecord';
 import { hex, utf8, hkdf, fields, openCredential, type Bytes } from './custodyCrypto';
 import { contentTransaction } from './contentDatabase';
 import { probeDatabase } from './startupStorage';
@@ -172,7 +172,13 @@ export async function readJoinedAccount(task: SessionTask, slotId: string, code:
   return { claim, record, marker };
 }
 export type JoinedState = Awaited<ReturnType<typeof readJoinedAccount>>;
-async function writeJoined(task: SessionTask, state: JoinedState, next: JoinedRecord) {
+async function writeJoined(
+  task: SessionTask,
+  state: JoinedState,
+  next: JoinedRecord,
+  record: CustodyRecord = state.record,
+  check?: () => void,
+) {
   const found = await probeDatabase(task, 'done.custody', (db) =>
     contentTransaction(
       db,
@@ -198,6 +204,8 @@ async function writeJoined(task: SessionTask, state: JoinedState, next: JoinedRe
                 !same(requests[2]!.result ?? null, state.marker)
               )
                 throw Error('Certified device compare changed');
+              check?.();
+              if (!recordEqual(record, state.record)) store.put(record, recordKey(scope));
               store.put(next, storageUpgradeKey(next.slotId));
             });
       },
@@ -206,6 +214,7 @@ async function writeJoined(task: SessionTask, state: JoinedState, next: JoinedRe
   );
   if (!found) throw Error('Certified device custody disappeared');
   state.marker = next;
+  state.record = record;
 }
 async function signJoined(task: SessionTask, state: JoinedState, code: string, next: JoinedRecord) {
   return withPromotionRoot(task, state.claim, state.record, code, async (root, subtle) => ({
@@ -216,6 +225,37 @@ async function signJoined(task: SessionTask, state: JoinedState, code: string, n
       ),
     ),
   }));
+}
+/** Approval writes must rebind the active joined marker in the same native transaction. */
+export async function writeJoinedApproval(
+  task: SessionTask,
+  state: JoinedState,
+  code: string,
+  input: CustodyRecord,
+  check?: () => void,
+) {
+  input = parseRecord(input, claimScope(state.claim));
+  if (
+    !state.marker ||
+    state.marker.phase !== 'active' ||
+    !recordEqual(input, {
+      ...state.record,
+      seal_reserved: input.seal_reserved,
+      ...(input.approval ? { approval: input.approval } : {}),
+      mac: input.mac,
+    }) ||
+    input.seal_reserved < state.record.seal_reserved ||
+    input.seal_reserved > state.record.seal_reserved + 1
+  )
+    throw Error('Joined approval cannot change content custody');
+  const next = await withPromotionRoot(task, state.claim, state.record, code, (root, subtle) =>
+    signRecord(root, input, subtle),
+  );
+  const marker = await signJoined(task, state, code, {
+    ...state.marker,
+    custodyMac: hex(next.mac),
+  });
+  await writeJoined(task, state, marker, next, check);
 }
 export async function joinedKeys<T>(
   task: SessionTask,
