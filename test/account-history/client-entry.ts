@@ -8,3 +8,5 @@ export {
 export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
 export { historyMembership } from '../../account-protocol/admissionHistory';
 export { Y, sameDocState, hasPendingUpdates, genesisCoverageParts } from '../../src/crdt/yjs';
+
+export * from '../../src/account/historyMaintenance';

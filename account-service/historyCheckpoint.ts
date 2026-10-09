@@ -53,7 +53,10 @@ export const HISTORY_CHECKPOINT_SCHEMA = `
   checkpoint TEXT NOT NULL, admission TEXT,
   PRIMARY KEY(workspace_id,hash), UNIQUE(workspace_id,sequence));
  CREATE UNIQUE INDEX history_checkpoint_pending ON history_checkpoint_records(workspace_id) WHERE admission IS NULL;
- CREATE TABLE history_checkpoint_catalog (workspace_id TEXT PRIMARY KEY, value TEXT NOT NULL);`;
+ CREATE TABLE history_checkpoint_catalog (workspace_id TEXT PRIMARY KEY, value TEXT NOT NULL);
+ CREATE TABLE history_checkpoint_discards (
+  workspace_id TEXT NOT NULL, hash TEXT NOT NULL, credential_id TEXT NOT NULL, request TEXT NOT NULL,
+  PRIMARY KEY(workspace_id,hash,credential_id));`;
 export interface HistoryCheckpointIssuer extends DeliveryIssuer {
   catalog(value: HistoryCatalog): Promise<HistoryCatalog>;
   historyPage(value: HistoryCheckpointPage): Promise<HistoryCheckpointPage>;
@@ -126,7 +129,9 @@ export async function exchangeHistoryCheckpoint(
       ? await historyCheckpointHash(r.payload)
       : r.action === 'admit'
         ? (r.payload as HistoryCheckpointAdmission).checkpointHash
-        : null;
+        : r.action === 'discard'
+          ? (r.payload as string)
+          : null;
   const capture = () => {
     const original = snapshot(db, r.workspaceId);
     if (!original) return null;
@@ -159,6 +164,13 @@ export async function exchangeHistoryCheckpoint(
       original,
       streams,
       catalog,
+      discard: requestedHash
+        ? (db
+            .prepare(
+              'SELECT * FROM history_checkpoint_discards WHERE workspace_id=? AND hash=? AND credential_id=?',
+            )
+            .get(r.workspaceId, requestedHash, r.credentialId) ?? null)
+        : null,
       records: hashes.map((hash) => ({ hash, row: record(db, r.workspaceId, hash) })),
     };
   };
@@ -181,6 +193,23 @@ export async function exchangeHistoryCheckpoint(
       const membership = historyMembership(authorities.get(auth.a.tip)!),
         p = membershipState(membership);
       await verifyHistoryExchange(r, membership, now());
+      if (before.discard) {
+        const old = parseHistoryExchange(JSON.parse(String(before.discard.request))),
+          at = authorities.get(old.epoch);
+        if (
+          !at ||
+          old.action !== 'discard' ||
+          old.payload !== requestedHash ||
+          old.workspaceId !== r.workspaceId ||
+          old.credentialId !== r.credentialId ||
+          before.discard.workspace_id !== old.workspaceId ||
+          before.discard.hash !== old.payload ||
+          before.discard.credential_id !== old.credentialId
+        )
+          throw Error('Invalid retained checkpoint cancellation');
+        // The signed intent remains evidence after its network lifetime has elapsed.
+        await verifyHistoryExchange(old, historyMembership(at), old.expiresAt - 1);
+      }
       const rawCatalog = before.catalog;
       const catalog = rawCatalog
         ? await verifyHistoryCatalog(rawCatalog, issuer.pin, p.workspaceId, p.lineageId)
@@ -310,6 +339,7 @@ export async function exchangeHistoryCheckpoint(
         const old = await get(requestedHash!, false);
         if (old) selected = old;
         else {
+          if (before.discard) return no('checkpoint-cancelled');
           if (pending) return no('checkpoint-busy');
           const checkpoint = await verifyHistoryCheckpoint(r.payload, membership);
           if (checkpoint.manifest.producer !== r.credentialId) return no('invalid-proof');
@@ -400,6 +430,13 @@ export async function exchangeHistoryCheckpoint(
         db.prepare(
           'DELETE FROM history_checkpoint_records WHERE workspace_id=? AND hash=? AND admission IS NULL',
         ).run(p.workspaceId, remove);
+      if (r.action === 'discard' && !before.discard)
+        db.prepare('INSERT INTO history_checkpoint_discards VALUES (?,?,?,?)').run(
+          r.workspaceId,
+          r.payload as string,
+          r.credentialId,
+          JSON.stringify(r),
+        );
       if (changed)
         db.prepare(
           'INSERT INTO history_checkpoint_catalog VALUES (?,?) ON CONFLICT(workspace_id) DO UPDATE SET value=excluded.value',

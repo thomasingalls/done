@@ -12204,3 +12204,13 @@ for exact retries. Upgrade tests preserve retained rows and require offline opt-
 scoped static checks pass. [History plan](./account-history-management.md). The operator selected an
 explicit Account-menu action initially; durable native progress and that product flow are next.
 Retained :8443 build `34035330` is unchanged. This increment is committed unsigned; qualification is paused.
+
+### 2026-10-09 — Retained history-maintenance attempts and cancellation fencing
+
+Added a serial client coordinator with exact saved proposal/admission retries, authenticated catalog
+monotonicity and explicit stale-attempt cancellation. Fixed delayed-publication resurrection with
+signed, credential-scoped service cancellation tombstones and saved client cancellation intent.
+Seven focused client checks, ten service checks and thirteen predecessor-upgrade checks pass;
+TypeScript and scoped lint/format/diff checks pass. Native persistence and replay are the next adapter,
+not claimed by these injected-persistence tests. The live `34035330` installation is unchanged and
+no history is pruned. [History plan](./account-history-management.md). Committed unsigned as authorized.

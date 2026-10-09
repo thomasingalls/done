@@ -66,8 +66,10 @@ baseline/suffix replacements are exercised. No pruning is enabled by the first i
 
 Checkpoint primitives and the durable service exchange are committed: exact retry, signed catalog,
 accepted-prefix checks and current membership/grant enforcement have focused passing evidence.
-Schema 25 is development-only until an explicit offline upgrade. Now implementing durable client
-preparation and the operator-selected Account-menu action; automatic cadence remains off.
+The retained client coordinator now handles exact retries, catalog rollback and cancellation; service
+tombstones prevent delayed publication from reviving a cancelled attempt. Native custody/replay and
+the operator-selected Account-menu action are next; automatic cadence remains off. Schema 25 remains
+development-only until an explicit offline upgrade.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 
 ---

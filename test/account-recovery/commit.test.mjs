@@ -318,7 +318,7 @@ test('schema 22 requires an explicit upgrade and preserves every retained accoun
   const x = await ready(t);
   mutate(x, (db) =>
     db.exec(
-      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; PRAGMA user_version=22',
+      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; PRAGMA user_version=22',
     ),
   );
   const tables = mutate(x, (db) =>

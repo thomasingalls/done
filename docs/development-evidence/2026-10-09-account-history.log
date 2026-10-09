@@ -25,3 +25,14 @@ Durable service exchange:
   TypeScript, scoped oxlint/oxfmt and git diff --check pass.
 
 No live service upgrade, personal browser action, history deletion or release-validation campaign.
+
+Client attempts and cancellation fencing:
+  node --test --test-timeout=20000 test/account-history/client.test.mjs
+  7 passed, 0 failed; duration 1786 ms.
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 1711 ms (disposable loopback HTTP).
+  node --test --test-timeout=20000 --test-name-pattern='schema|offline.*upgrade' test/account-ceremony/content-transfer.test.mjs test/account-recovery/login.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/preparation.test.mjs
+  13 passed, 0 failed; duration 4232 ms.
+  TypeScript, scoped oxlint/oxfmt and git diff --check passed.
+  Client tests use real service/cryptography, injected persistence, and fresh owner calls after failure.
+  Native custody/replay and UI are not yet integrated; no release inventory or broad campaign ran.

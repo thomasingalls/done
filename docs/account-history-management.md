@@ -83,3 +83,23 @@ also needed updating to 25. TypeScript and scoped lint/format/diff checks pass.
 The operator chose an explicit Account-menu action for the initial usable flow. Automatic cadence
 remains off until maintenance cost is observed. Native preparation/progress, the menu flow, baseline
 installation and pruning still follow; this service archive alone does not reduce retained history.
+
+## Client attempt checkpoint
+
+The serial client coordinator saves and cold-reads exact proposal/admission bytes before sending;
+network requests receive fresh nonces/lifetimes on retry. It pins the authenticated catalog sequence
+and refuses rollback or same-sequence fork. Inspection never prepares another snapshot. A lost reply
+can be reconciled even if a different eligible admitter won. Membership changes preserve the stale
+attempt for explicit cancellation; they do not silently rebuild it.
+
+Cancellation exposed a service gap: forgetting an unpublished proposal locally allowed a delayed
+request to recreate it. Schema 25 now retains a signed cancellation tombstone scoped to the requesting
+credential and proposal hash. The client saves cancellation intent before sending and resumes that
+operation after a lost reply. A different proposal can reuse the cancelled, unadmitted sequence.
+Existing admitted records are not removed. This remains an undeployed schema-25 increment.
+
+Seven focused client checks pass against the real service and crypto helpers, including lost replies,
+failed storage, wrong-owner progress, untrusted replies, signed catalog rollback, async owner change,
+stale cancellation and delayed publication. The ten service and thirteen predecessor-upgrade checks
+pass again. The coordinator's test persistence is deliberately an owner seam; native custody, source
+replay and the Account-menu integration remain next, followed by installation/readers and retention.

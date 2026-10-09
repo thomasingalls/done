@@ -250,7 +250,7 @@ test('the offline schema upgrade is explicit and preserves existing rows', async
     before = unchanged(x);
   mutate(x, (db) =>
     db.exec(
-      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; PRAGMA user_version=21',
+      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; PRAGMA user_version=21',
     ),
   );
   assert.throws(

@@ -1137,7 +1137,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -2193,7 +2193,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -4394,7 +4394,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -4704,7 +4704,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -5054,7 +5054,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -5841,7 +5841,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_discards; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
   );
   const tables = db
     .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
