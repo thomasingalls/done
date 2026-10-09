@@ -72,7 +72,7 @@ export async function withRotationCustody<T>(
     : (joined!.marker!.membership?.proofs ?? {
         successor: joined!.marker!.authority.successor,
         certification: joined!.marker!.authority.certification,
-        continuations: joined!.marker!.v === 2 ? joined!.marker!.authority.continuations : [],
+        continuations: joined!.marker!.v !== 1 ? joined!.marker!.authority.continuations : [],
       });
   const credentials = original ? marker!.credentials! : record.credentials!;
   return withPromotionRoot(task, state.claim, record, code, async (root, subtle) => {

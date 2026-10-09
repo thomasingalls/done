@@ -1,3 +1,10 @@
+import {
+  captureRecoveryReading,
+  verifyRecoveryReading,
+  openRecoveryReading,
+  type RecoveryReading,
+} from './recoveryReading';
+import { recoveryCheckpointDigest } from '../../account-protocol/recoveryCommit';
 /** Private certified-device activation. Physical Local custody and logical Account identity stay distinct. */
 import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { same, parseAdmissionRequest, parseReceipt } from '../../account-protocol/admission';
@@ -94,15 +101,36 @@ type JoinedRecord = JoinedFields &
   (
     | { v: 1; authority: CheckpointAuthority; reading: ContentReaderState }
     | { v: 2; authority: JoinedAuthority; reading: MembershipReading }
+    | { v: 3; authority: JoinedAuthority; reading: RecoveryReading }
   );
 export const joinedBinding = (marker: JoinedRecord) =>
-  marker.v === 2 ? membershipReadingBinding(marker.reading) : marker.reading.checkpoint.binding;
+  marker.v === 3
+    ? marker.reading.binding
+    : marker.v === 2
+      ? membershipReadingBinding(marker.reading)
+      : marker.reading.checkpoint.binding;
 export const joinedBaselineHash = (marker: JoinedRecord) =>
-  marker.v === 2
-    ? membershipReadingHash(marker.reading)
-    : contentCheckpointHash(marker.reading.checkpoint);
+  marker.v === 3
+    ? recoveryCheckpointDigest(marker.reading.checkpoint)
+    : marker.v === 2
+      ? membershipReadingHash(marker.reading)
+      : contentCheckpointHash(marker.reading.checkpoint);
 export const joinedInitialGeneration = (marker: JoinedRecord) =>
-  marker.reading.checkpoint.manifest.generation;
+  marker.v === 3
+    ? marker.reading.successor.epoch.generation
+    : marker.reading.checkpoint.manifest.generation;
+export const joinedBaselineHeads = (marker: JoinedRecord) =>
+  marker.v === 3
+    ? marker.reading.successor.epoch.intent.heads
+    : marker.v === 2 && marker.reading.v === 3
+      ? marker.reading.checkpoint.heads
+      : undefined;
+export const joinedKeyHash = (marker: JoinedRecord) =>
+  marker.v === 3
+    ? Promise.resolve(marker.reading.head)
+    : marker.v === 2
+      ? membershipDeliveryHash(laterCertification(marker).epoch.delivery)
+      : contentDeliveryHash(marker.authority.certification.epoch.delivery);
 export const joinedPayload = (r: JoinedRecord) => {
   const { mac: _mac, ...payload } = r;
   return utf8(JSON.stringify(payload));
@@ -131,7 +159,7 @@ function parseJoined(input: unknown): JoinedRecord {
     ...(Object.hasOwn(input as object, 'membership') ? ['membership'] : []),
   ]);
   if (
-    (r['v'] !== 1 && r['v'] !== 2) ||
+    (r['v'] !== 1 && r['v'] !== 2 && r['v'] !== 3) ||
     r['kind'] !== 'certified-account-device' ||
     typeof r['slotId'] !== 'string' ||
     !['installing', 'active'].includes(String(r['phase']))
@@ -144,7 +172,7 @@ function parseJoined(input: unknown): JoinedRecord {
   for (const field of ['claimMac', 'custodyMac', 'mac']) unhex(r[field], 32);
   const a = closed(
     r['authority'],
-    r['v'] === 2
+    r['v'] !== 1
       ? ['base', 'successor', 'certification', 'continuations']
       : ['base', 'successor', 'certification'],
   );
@@ -158,6 +186,17 @@ function parseJoined(input: unknown): JoinedRecord {
   if (!Number.isSafeInteger(key['sequence']) || (key['sequence'] as number) < 1)
     throw Error('Invalid installed key');
   unhex(key['ct'], 48);
+  if (r['v'] === 3) {
+    const proofs = parseMembershipChain({
+        successor: a['successor'],
+        certification: a['certification'],
+        continuations: a['continuations'],
+      }),
+      reading = captureRecoveryReading(r['reading']);
+    if (!same(proofs.continuations.at(-1), reading.successor))
+      throw Error('Recovery installation history changed');
+    return { ...(r as unknown as JoinedFields), v: 3, authority: { base, ...proofs }, reading };
+  }
   if (r['v'] === 2) {
     const proofs = parseMembershipChain({
         successor: a['successor'],
@@ -245,11 +284,9 @@ export async function readJoinedAccount(task: SessionTask, slotId: string, code:
   if (record.initial_account) {
     if (
       !marker ||
-      marker.v !== 2 ||
-      marker.reading.v !== 3 ||
+      !(marker.v === 3 || (marker.v === 2 && marker.reading.v === 3)) ||
       record.initial_account.generation !== joinedInitialGeneration(marker) ||
-      record.initial_account.deliveryHash !==
-        (await membershipDeliveryHash(laterCertification(marker).epoch.delivery)) ||
+      record.initial_account.deliveryHash !== (await joinedKeyHash(marker)) ||
       !same(record.initial_account.key, marker.key)
     )
       throw Error('Initial account opener differs from certified installation');
@@ -408,9 +445,7 @@ export async function joinedKeys<T>(
             'done/installed-content-key/v1',
             marker.slotId,
             state.record.root_id,
-            marker.v === 2
-              ? await membershipDeliveryHash(laterCertification(marker).epoch.delivery)
-              : await contentDeliveryHash(marker.authority.certification.epoch.delivery),
+            await joinedKeyHash(marker),
           ),
         },
         await hkdf(
@@ -441,7 +476,7 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
   const marker = state.marker!,
     { authority: a } = marker;
   const original = await task.wait(() =>
-    marker.v === 2
+    marker.v !== 1
       ? verifyMembershipChain(
           {
             successor: a.successor,
@@ -457,9 +492,14 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
   );
   const credential = state.record.credentials![1];
   const recipient =
-    marker.v === 2
-      ? laterCertification(marker).epoch.delivery.candidate.context.candidate
-      : marker.authority.certification.epoch.delivery.candidate.context.candidate;
+    marker.v === 3
+      ? {
+          id: marker.reading.successor.epoch.intent.bootstrap.newCredentialId,
+          wPub: marker.reading.successor.epoch.intent.bootstrap.newWPub,
+        }
+      : marker.v === 2
+        ? laterCertification(marker).epoch.delivery.candidate.context.candidate
+        : marker.authority.certification.epoch.delivery.candidate.context.candidate;
   if (
     credential.id !== recipient.id ||
     hex(state.record.credentials![0].publicKey) !== recipient.wPub
@@ -469,28 +509,28 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
   if (history.signingKey !== hex(credential.publicKey))
     throw Error('Certified signing key differs from custody');
   await task.wait<unknown>(() =>
-    marker.v === 2
-      ? marker.reading.v === 3
-        ? verifyReplacementReading(marker.reading, marker.authority, original, {
-            id: credential.id,
-            sPub: history.signingKey,
-          })
-        : verifyMembershipCheckpointAdmission(
+    marker.v === 3
+      ? verifyRecoveryReading(marker.reading, marker.authority, original, credential.id)
+      : marker.v === 2
+        ? marker.reading.v === 3
+          ? verifyReplacementReading(marker.reading, marker.authority, original, {
+              id: credential.id,
+              sPub: history.signingKey,
+            })
+          : verifyMembershipCheckpointAdmission(
+              marker.reading.admission,
+              marker.reading.checkpoint,
+              original,
+            )
+        : verifyCheckpointAdmission(
             marker.reading.admission,
             marker.reading.checkpoint,
-            original,
-          )
-      : verifyCheckpointAdmission(
-          marker.reading.admission,
-          marker.reading.checkpoint,
-          marker.authority,
-        ),
+            marker.authority,
+          ),
   );
   const base: InboundContext = {
     baseline: { kind: 'content-checkpoint', id: await joinedBaselineHash(marker) },
-    ...(marker.v === 2 && marker.reading.v === 3
-      ? { baselineHeads: marker.reading.checkpoint.heads }
-      : {}),
+    ...(joinedBaselineHeads(marker) ? { baselineHeads: joinedBaselineHeads(marker)! } : {}),
     service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
     authority: history.current,
     history,
@@ -523,6 +563,28 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
 async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
   const marker = state.marker!,
     { base, route, original } = await joinedContext(task, state, key);
+  if (marker.v === 3) {
+    const doc = await task.wait(() =>
+      openRecoveryReading(marker.reading, key, marker.authority, original, base.reader.id),
+    );
+    try {
+      const initial = new Uint8Array(Y.encodeStateAsUpdate(doc));
+      if (initial.length > MAX_BATCH_BYTES) {
+        initial.fill(0);
+        throw Error('Recovery checkpoint exceeds supported size');
+      }
+      return {
+        doc,
+        initial,
+        events: [] as { record: Bytes; updates: readonly Bytes[] }[],
+        base,
+        route,
+      };
+    } catch (error) {
+      doc.destroy();
+      throw error;
+    }
+  }
   if (marker.v === 2) {
     const replay = await task.wait(() =>
       replayMembershipReading(
@@ -615,7 +677,12 @@ async function destination(task: SessionTask, state: JoinedState) {
       v: 1,
       promotionId: state.claim.initial.creation_intent!.id,
       requestDigest: a.base.receipt.offer.epoch.requestDigest,
-      epochHead: m.v === 2 ? laterCertification(m).head : m.authority.certification.head,
+      epochHead:
+        m.v === 3
+          ? m.reading.head
+          : m.v === 2
+            ? laterCertification(m).head
+            : m.authority.certification.head,
     },
     stores: local.stores,
   };
@@ -638,13 +705,22 @@ export async function installMembershipAccount(
 ) {
   return installCertifiedAccount(task, slotId, code, { ...input, v: 2 });
 }
+export async function installRecoveryAccount(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  input: { authority: JoinedAuthority; reading: RecoveryReading; key: InstalledContentKey },
+) {
+  return installCertifiedAccount(task, slotId, code, { ...input, v: 3 });
+}
 async function installCertifiedAccount(
   task: SessionTask,
   slotId: string,
   code: string,
   input:
     | Pick<Extract<JoinedRecord, { v: 1 }>, 'v' | 'authority' | 'reading' | 'key'>
-    | Pick<Extract<JoinedRecord, { v: 2 }>, 'v' | 'authority' | 'reading' | 'key'>,
+    | Pick<Extract<JoinedRecord, { v: 2 }>, 'v' | 'authority' | 'reading' | 'key'>
+    | Pick<Extract<JoinedRecord, { v: 3 }>, 'v' | 'authority' | 'reading' | 'key'>,
 ) {
   input = structuredClone(input);
   const state = await readJoinedAccount(task, slotId, code);
@@ -702,11 +778,11 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
     const b = await baseline(task, state, kg);
     if (joinedInitialGeneration(marker) > 1 && !state.record.initial_account) {
       try {
-        if (marker.phase !== 'installing' || marker.v !== 2 || state.record.rotation)
+        if (marker.phase !== 'installing' || marker.v === 1 || state.record.rotation)
           throw Error('Replacement initial generation cannot change active custody');
         const initial = {
           generation: joinedInitialGeneration(marker),
-          deliveryHash: await membershipDeliveryHash(laterCertification(marker).epoch.delivery),
+          deliveryHash: await joinedKeyHash(marker),
           key: marker.key,
         };
         const signed = await withPromotionRoot(

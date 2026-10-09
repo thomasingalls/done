@@ -76,6 +76,7 @@ export async function recoveryReader(x) {
     bootstrap,
     signer,
     nodeSigner: keys.privateKey,
+    nodeWrapping: wrapping.privateKey,
     request,
     read: (r) => x.authority.owner.readRecovery(x.f.core, r),
     cancel: () => call('cancel', { retryKey: input.retryKey }),

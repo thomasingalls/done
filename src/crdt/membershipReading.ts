@@ -91,7 +91,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
   if (
     (r['v'] !== 2 && r['v'] !== 3) ||
     !Number.isSafeInteger(r['epoch']) ||
-    (r['epoch'] as number) < 5 ||
+    (r['epoch'] as number) < 4 ||
     !Array.isArray(r['streams']) ||
     !r['streams'].length ||
     r['streams'].length > 64

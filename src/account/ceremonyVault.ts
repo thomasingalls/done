@@ -1,8 +1,10 @@
+import type { RecoveryReading } from '../crdt/recoveryReading';
 import { approvalProgress } from './approvalProgress';
 import { createApprovalVault, type InstalledContentKey } from './approvalVault';
 export type { InstalledContentKey } from './approvalVault';
 import {
   installJoinedAccount,
+  installRecoveryAccount,
   installMembershipAccount,
   type JoinedAuthority,
 } from '../crdt/joinedAccount';
@@ -36,6 +38,11 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  installRecoveryWriting(
+    authority: JoinedAuthority,
+    reading: RecoveryReading,
+    key: InstalledContentKey,
+  ): Promise<void>;
   prepareReplacement(
     authority: Parameters<typeof prepareNativeReplacement>[1],
     candidate: string,
@@ -178,6 +185,8 @@ export async function withCeremonyVault<T>(
               vault.close();
             }
           },
+          installRecoveryWriting: (authority, reading, key) =>
+            installRecoveryAccount(task, slotId, code, { authority, reading, key }),
           installWriting: (authority, reading, key) =>
             installJoinedAccount(task, slotId, code, { authority, reading, key }),
           installMembershipWriting: (authority, reading, key) =>

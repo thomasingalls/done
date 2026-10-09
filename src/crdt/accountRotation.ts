@@ -12,6 +12,7 @@ import {
   joinedKeys,
   joinedInitialGeneration,
   joinedBaselineHash,
+  joinedBaselineHeads,
   writeJoinedApproval,
   writeJoinedRotation,
 } from './joinedAccount';
@@ -224,8 +225,8 @@ export async function activateAccountRotation(
                 kind: 'content-checkpoint',
                 id: await joinedBaselineHash(joined!.marker!),
               },
-          ...(joined?.marker?.v === 2 && joined.marker.reading.v === 3
-            ? { baselineHeads: joined.marker.reading.checkpoint.heads }
+          ...(joined?.marker && joinedBaselineHeads(joined.marker)
+            ? { baselineHeads: joinedBaselineHeads(joined.marker)! }
             : {}),
           service: { id: base.pin.serviceId, origin: base.pin.origin },
           authority: history.current,
@@ -405,7 +406,7 @@ export async function activateAccountRotation(
             inspectInbound(records, route, context).delivery.spool,
             history,
             membership,
-            joined?.marker?.v === 2 ? joined.marker.reading.epoch : 3,
+            joined?.marker && joined.marker.v !== 1 ? joined.marker.reading.epoch : 3,
             subtle,
           );
         } finally {

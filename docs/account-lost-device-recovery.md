@@ -232,3 +232,19 @@ client independently checks the fresh combined assertion against it and its in-m
 The upcoming native owner must bind that check to the new slot and current opening, never treat a
 serialized assertion or saved preparation as permission to reopen later. Schema 24 needs explicit
 offline upgrade; no live upgrade has run. Approved screens and installation are still unmounted.
+
+
+## Native installation checkpoint
+
+The joined-account owner accepts a dedicated recovery reading/marker. Its checkpoint digest and
+successor are anchored in verified history, its signed passkey binding belongs to the original
+account, and its candidate keys must match the actual Local custody. Cold replay requires complete
+Yjs integration and current actor schema. Content, initial generation, index selection and active
+marker use the existing restartable installation path. Subsequent opening uses both local factors.
+
+Recovery baseline cuts also feed ordinary receive/rotation and future replacement-source replay.
+A new epoch-two recovered device can adopt an epoch-three admission and prepare a replacement
+snapshot, including its unuploaded durable edits, with only its current key. A disposable native
+restart/edit/enrollment-source check and existing activation regressions pass. The coordinator must
+still seal intent before submission, resolve an uncertain reply, and consume only a freshly verified
+in-memory passkey opening when avoiding a duplicate initial prompt. Approved UI remains to mount.

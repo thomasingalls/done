@@ -3,3 +3,6 @@ export { Y, genesisCoverage, genesisCoverageParts, sameDocState } from '../../sr
 export { sealGeneration } from '../../src/account/generationWrap';
 export { prepareRecoveryCommit } from '../../src/account/recoveryTransition';
 export { verifyRecoverySlotUnlock } from '../../src/account/slotUnlock';
+export { openReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';
+export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+export { historyMembership } from '../../account-protocol/admissionHistory';

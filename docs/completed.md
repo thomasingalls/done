@@ -11943,3 +11943,31 @@ finish, restart/lost reply, nonce burning, cancellation, changed credentials and
 Affected historical upgrade/rotated-recovery and local slot/custody regressions also pass, as do
 TypeScript and scoped static checks. [Output](./development-evidence/2026-10-09-recovery-login.log).
 Product recovery remains in flight; release qualification stays paused.
+
+
+### 2026-10-09 — Native recovery baseline, installation and subsequent-device source
+
+The joined-account owner now has an explicit recovery installation variant. It authenticates the
+committed successor, exact encrypted checkpoint digest, candidate custody and signed offline binding;
+cold decryption checks current actor schema and complete Yjs integration. The replacement's fresh
+generation key and immutable baseline remain separate from later membership. Native installation
+uses the existing resumable content/index sequence and refuses existing local writing. Ordinary
+editor admission, reopening and future membership preserve the baseline's historical accepted cuts.
+
+A recovered device can prepare a subsequent device's replacement snapshot from this baseline plus
+current-key accepted suffixes and its own durable local writing. It does not require old generation
+keys. Focused native testing exposed and repaired hardcoded epoch assumptions in route adoption and
+replacement checkpoint parsing: first-device recovery at epoch two legitimately admits the next
+device at three. Signature/history checks still establish those transitions.
+
+A disposable Chromium test passes substituted-ciphertext refusal before installation, interruption
+after content initialization before account index selection, cold restart/activation, offline edit and
+reopen, next-device admission, replacement snapshot preparation preserving the unuploaded edit, and
+reopening again after membership adoption. The existing native later-device activation test and 18
+affected membership/replacement tests pass, with TypeScript/scoped static checks.
+[Output](./development-evidence/2026-10-09-recovery-installation.log).
+
+The recovery coordinator, fresh first-open ownership, approved screens and walkthrough remain in
+flight. This checkpoint does not claim the recovery product is usable yet or that removed old devices
+have the final recovery-specific status UI. Live service/personal browsers and paused release
+validation remain unchanged.

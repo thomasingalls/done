@@ -1,6 +1,11 @@
 /** Read the actual certified slot under its exclusive permit. No editor document or caller key. */
 import { readPromotion, withPromotionRoot } from './promotionRecord';
-import { readJoinedAccount, joinedContext, joinedKeys } from './joinedAccount';
+import {
+  readJoinedAccount,
+  joinedContext,
+  joinedKeys,
+  joinedInitialGeneration,
+} from './joinedAccount';
 import { claimScope } from './localGenesisRecord';
 import { openActiveRotation, eraseRotationKeys } from './rotationKeys';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
@@ -86,7 +91,7 @@ async function withSource<T>(
         ? await openEnvelope(scope, root, state.record.envelope!, subtle)
         : await joinedKeys(task, joined!, code, async (key) => key.slice());
       active = await openActiveRotation(scope, root, state.record, subtle, membership?.proofs);
-      const initialGeneration = joined?.marker?.reading.checkpoint.manifest.generation ?? 1,
+      const initialGeneration = joined?.marker ? joinedInitialGeneration(joined.marker) : 1,
         generation = active?.generation ?? initialGeneration,
         key = active?.key ?? first,
         keys = new Map<number, Bytes>([[initialGeneration, first], ...(active?.previous ?? [])]);
@@ -147,7 +152,11 @@ async function withSource<T>(
         generation,
         producer,
         subtle,
-        snapshot: original ? marker!.catchup! : joined!.marker!.reading.checkpoint,
+        snapshot: original
+          ? marker!.catchup!
+          : joined!.marker!.v === 3
+            ? joined!.marker!.reading
+            : joined!.marker!.reading.checkpoint,
         ...(joined?.marker?.v === 2 && joined.marker.reading.v === 3
           ? {
               installed: {

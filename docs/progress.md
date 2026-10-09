@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery service, seeded custody and combined login verified; native installation and screens in flight
+scope: recovery native installation verified; coordinator, fresh opening and screens in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -110,6 +110,12 @@ with preparation; the browser independently verifies its passkey assertion. Veri
 is retained. Schema 24 upgrade and focused retry/authority checks pass; live schema 21 is untouched.
 [Output](./development-evidence/2026-10-09-recovery-login.log). Native first-open ownership and screens
 remain, so this is not yet a usable recovery journey.
+
+**Native installation checkpoint:** recovery checkpoint/candidate/binding verification, interrupted
+activation, offline edit and cold reopen pass in Chromium. The recovered device also adopts a later
+admission and prepares its replacement snapshot without historical keys, preserving an unuploaded edit.
+Existing native activation and 18 focused membership/replacement regressions pass.
+[Output](./development-evidence/2026-10-09-recovery-installation.log). Coordinator and screens remain.
 
 ---
 

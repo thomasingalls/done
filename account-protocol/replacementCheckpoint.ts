@@ -111,7 +111,7 @@ export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoin
     manifest: {
       workspaceId: h(m['workspaceId'], 16),
       lineageId: h(m['lineageId']),
-      epoch: integer(m['epoch'], 5),
+      epoch: integer(m['epoch'], 3),
       epochHead: h(m['epochHead']),
       generation,
       producer: h(m['producer'], 16),

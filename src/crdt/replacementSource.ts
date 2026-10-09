@@ -1,3 +1,5 @@
+import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
+import { recoveryCheckpointDigest } from '../../account-protocol/recoveryCommit';
 /** Cold accepted-prefix replay for a replacement producer; no authority installation or publication. */
 import type {
   HistoryCheckpointAuthority,
@@ -39,7 +41,7 @@ export const REPLACEMENT_SOURCE_EVENTS = 4096;
  * can skip writing. The native owner supplies captured journal-inclusive local originals at finish. */
 export async function openReplacementSource(input: {
   authority: HistoryCheckpointAuthority;
-  checkpoint: ContentCheckpoint | ReplacementCheckpoint;
+  checkpoint: ContentCheckpoint | ReplacementCheckpoint | RecoveryReading;
   installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
   history: AdmissionHistory;
   producer: string;
@@ -92,10 +94,23 @@ export async function openReplacementSource(input: {
         throw Error('Invalid replacement source key');
       keys.set(generation, key.slice());
     }
-    const baselineGeneration = checkpoint.manifest.generation;
+    const recovered = checkpoint.kind === 'recovery-reading';
+    const baselineGeneration = recovered
+      ? checkpoint.successor.epoch.generation
+      : checkpoint.manifest.generation;
+    const baselineHeads = recovered ? checkpoint.successor.epoch.intent.heads : checkpoint.heads;
     if (!keys.has(baselineGeneration) || !keys.has(p.generation))
       throw Error('Missing replacement source key');
-    if (checkpoint.kind === 'replacement-checkpoint') {
+    if (checkpoint.kind === 'recovery-reading') {
+      if (installed) throw Error('Recovery cannot borrow replacement admission');
+      doc = await openRecoveryReading(
+        checkpoint,
+        keys.get(baselineGeneration)!,
+        a,
+        history,
+        producer,
+      );
+    } else if (checkpoint.kind === 'replacement-checkpoint') {
       if (
         !installed ||
         checkpoint.manifest.candidate !== producer ||
@@ -125,14 +140,16 @@ export async function openReplacementSource(input: {
     guard();
     const baseline = {
         kind: 'content-checkpoint' as const,
-        id: await (checkpoint.kind === 'replacement-checkpoint'
-          ? replacementCheckpointHash(checkpoint)
-          : contentCheckpointHash(checkpoint)),
+        id: await (checkpoint.kind === 'recovery-reading'
+          ? recoveryCheckpointDigest(checkpoint.checkpoint)
+          : checkpoint.kind === 'replacement-checkpoint'
+            ? replacementCheckpointHash(checkpoint)
+            : contentCheckpointHash(checkpoint)),
       },
       cuts = replacementCheckpointHeads(parent),
       contexts = new Map<string, InboundContext>();
     guard();
-    for (const before of checkpoint.heads) {
+    for (const before of baselineHeads) {
       const cut = cuts.find((c) => c.credentialId === before.credentialId);
       if (
         !cut ||
@@ -142,7 +159,7 @@ export async function openReplacementSource(input: {
         throw Error('Replacement baseline exceeds current accepted coverage');
     }
     for (const cut of cuts) {
-      const before = checkpoint.heads.find((h) => h.credentialId === cut.credentialId) ?? {
+      const before = baselineHeads.find((h) => h.credentialId === cut.credentialId) ?? {
         position: 0,
         link: '00'.repeat(32),
       };

@@ -30,7 +30,7 @@ export function parseInstalledMembership(input: unknown): InstalledMembership {
     proofs = parseMembershipChain(r['proofs']);
   if (r['v'] !== 1 || !Array.isArray(r['cuts']) || !r['cuts'].length || r['cuts'].length > 128)
     throw Error('Invalid installed membership cuts');
-  let epoch = 3,
+  let epoch = 2,
     events = 0;
   const cuts = r['cuts'].map((input: unknown) => {
     const c = closed(input, ['epoch', 'head', 'before']),

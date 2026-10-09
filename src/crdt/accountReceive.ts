@@ -220,7 +220,7 @@ async function openAccountReceiveOwner(
       expectedPayload = hex(joinedPayload(v.marker!));
       expectedRecord = v.record;
       membership = v.marker!.membership;
-      initialEpoch = v.marker!.v === 2 ? v.marker!.reading.epoch : 3;
+      initialEpoch = v.marker!.v !== 1 ? v.marker!.reading.epoch : 3;
       await joinedKeys(task, v, options.code, async (kg, signing, verifying) => {
         const active = await withPromotionRoot(
           task,
@@ -722,7 +722,7 @@ async function openAccountReceiveOwner(
       return Promise.reject(Error('Membership installation requires the composed owner'));
     return runCaptureTask(async (task, owner, route) => {
       await assertCurrent(task);
-      if (!route.history || route.epoch < 3)
+      if (!route.history || (route.epoch < 3 && base.generation < 2))
         throw Error('Membership needs a certified installation');
       task.step(() => checkCommit?.());
       const current = joined
@@ -882,14 +882,14 @@ async function openAccountReceiveOwner(
           ? options.membershipContinuation()
           : options.membershipContinuation;
       if (
-        base.authority.tip === 2 ||
+        (base.authority.tip === 2 && base.generation === 1) ||
         (base.authority.tip === 3 && !continuation) ||
         (!force && performance.now() < discoveryDue)
       )
         return { kind: 'unchanged' as const };
       if (!canReceive()) return { kind: 'paused' as const };
       const revision = discoveryRevision;
-      if (base.authority.tip >= 3) {
+      if (base.authority.tip >= 3 || base.generation > 1) {
         const prepared = await runCaptureTask(async (task) => {
           await assertCurrent(task);
           const anchor = joined

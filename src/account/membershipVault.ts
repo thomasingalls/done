@@ -143,7 +143,7 @@ export function withMembershipVault<T>(
             proofs: marker.membership?.proofs ?? {
               successor: marker.authority.successor,
               certification: marker.authority.certification,
-              continuations: marker.v === 2 ? marker.authority.continuations : [],
+              continuations: marker.v !== 1 ? marker.authority.continuations : [],
             },
           },
           installMembershipWriting: async () => {

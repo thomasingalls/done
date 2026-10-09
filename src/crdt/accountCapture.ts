@@ -423,7 +423,7 @@ export async function openAccountCaptureOwner(
           !next.history ||
           next.epoch <= route.epoch ||
           (route.epoch === 1 && next.epoch !== 2) ||
-          (route.epoch !== 1 && route.epoch < 3) ||
+          (route.epoch !== 1 && route.epoch < 3 && route.generation === 1) ||
           next.workspace !== route.workspace ||
           next.principal !== route.principal ||
           next.credential !== route.credential ||
