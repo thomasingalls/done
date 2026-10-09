@@ -4365,3 +4365,23 @@ validation remain paused until after a version is published. Publication does no
 resume the campaign; wait for operator direction. Focused deployment integrity/identity checks are
 part of the requested upgrade, not a resumed qualification campaign. This does not select a public
 host/domain or authorize moving existing passkeys/accounts to a different origin.
+
+
+## 2026-10-09 — First public host, snapshot retention and separate operations (`L-1`)
+
+The operator selected `done.oxidationlabs.com` on the existing `~/Code/ol-infra` Kubernetes/Flux
+platform, with cert-manager and SOPS/Kubernetes Secrets. The Tailscale installation need not migrate;
+the public deployment can start fresh. SQLite snapshots without Litestream, encrypted before upload
+to B2, are accepted. Brief sync outages are acceptable. Target 30-second non-overlapping backups
+while state changes; retain recent copies for five minutes, hourly for six hours and daily for seven
+days, with no weekly/monthly tier initially. Slow/failed backups change the observed recovery point,
+not the meaning of a successful local write.
+
+The operator explicitly agreed that ordinary application updates, schema migrations and disaster
+restores require different rules. The detailed implementation plan is [public deployment](./public-deployment.md).
+Release validation remains paused until after publication and explicit resumption; the personal history
+walkthrough remains deferred. Final destination credentials and public activation are separate steps.
+
+For Git, the operator chose a signed explicit merge commit on local main to incorporate the long-running
+branch while retaining its existing commit hashes, then a new deployment branch. No squash, rebase,
+remote push or retroactive signing of the old history is implied.

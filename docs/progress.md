@@ -48,8 +48,8 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-scope: define the first published host and its operations; history implementation and retained upgrade complete
+status: in flight
+scope: record agreed deployment and integrate the long-running branch; production runtime follows
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -74,11 +74,17 @@ Current launch commands are in [packaged development](./packaged-account-develop
   durable hosting/supervision, service-secret custody, off-host backups/restore and the publishing
   and schema-update runbook need definition and implementation.
 
-The next bounded proposal should settle the host, public domain/passkey RP identity, and whether the
-existing Tailscale account stays separate or needs an explicit transfer. Then implement one deployable
-service/app configuration with durable state and a recoverable update procedure. A public origin must
-not be substituted for the existing pinned origin or treated as a transparent passkey migration.
-No public destination or account-transfer product decision has been made.
+The operator selected a fresh public installation at `done.oxidationlabs.com` through `~/Code/ol-infra`;
+no Tailscale account migration is required. Kubernetes/Flux, cert-manager and SOPS follow that repo.
+Agreed backups: consistent SQLite snapshots without Litestream, encrypted before B2 upload, targeting
+30 seconds while changed with no overlap; recent copies for five minutes, hourly for six hours, daily
+for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
+procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
+
+Next: an explicit signed merge of this branch onto local main, preserving all existing hashes, then
+`codex/first-public-deployment`. Before pushing main, separate routine CI from the paused full check.
+The first implementation increment is the public runtime/initialization and container boundary.
+Remote pushes and public activation await the concrete deployment and operator direction.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
