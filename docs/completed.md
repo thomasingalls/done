@@ -12376,3 +12376,14 @@ and actual-origin verification of all 34 precache URLs pass. Protected endpoints
 without credentials. No personal writing was opened and no pruning was run. The operator deferred
 the personal walkthrough and kept release validation paused until after publication. Next is
 publication hosting/operations design. See [history checkpoint](./account-history-management.md).
+
+
+### 2026-10-09 — Public plan, signed main integration and CI preparation
+
+Recorded the accepted deployment/backup policy in `37795ea6`, then integrated the long-running branch
+into local main with explicit signed merge `a4473d5e`. Signature verification passed; its tree exactly
+matches the merged branch and all old hashes remain unchanged. Continued on
+`codex/first-public-deployment`, preparing automatic application-build CI with a separately opted-in
+full check. The existing build checks and workflow parsing pass locally; no validation campaign or
+remote CI was run. Nothing was pushed, deployed or changed in ol-infra. Main must receive the CI split
+before its first push. Next: public runtime/initialization and container implementation.

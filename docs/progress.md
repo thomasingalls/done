@@ -47,9 +47,9 @@ that is no longer active.
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
-branch: codex/encrypted-store-contract-corrections
+branch: codex/first-public-deployment
 status: in flight
-scope: record agreed deployment and integrate the long-running branch; production runtime follows
+scope: public runtime and container implementation; plan and signed main integration complete
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -81,10 +81,11 @@ Agreed backups: consistent SQLite snapshots without Litestream, encrypted before
 for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
 procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
 
-Next: an explicit signed merge of this branch onto local main, preserving all existing hashes, then
-`codex/first-public-deployment`. Before pushing main, separate routine CI from the paused full check.
-The first implementation increment is the public runtime/initialization and container boundary.
-Remote pushes and public activation await the concrete deployment and operator direction.
+Plan `37795ea6` and explicit signed merge `a4473d5e` are complete; the signature verifies and original
+hashes are preserved. Work continues on `codex/first-public-deployment`. The automatic build/full-check
+CI split is prepared on this branch and must reach main before its first push. The existing build
+checks pass locally. Next is the public runtime/initialization and container boundary. Registry/B2
+credentials can wait for publication. Remote pushes and public activation remain separate steps.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;

@@ -139,3 +139,25 @@ only in an explicit initialization step. No live deployment or remote push has b
 - [Session restore requirement](./account-session-core.md#custody-transactions-and-retention).
 - [Packaged application](./packaged-account-development.md) and [history management](./account-history-management.md).
 - [Litestream encryption support](https://litestream.io/reference/config/#encryption).
+
+
+## Repository preparation checkpoint — 2026-10-09
+
+The agreed plan was recorded in `37795ea6`. Local main now includes the prior branch through signed
+merge `a4473d5e` (parents `c61ad005` and `37795ea6`). Its SSH signature was verified against the
+configured signing public key, and the merge tree exactly matches the source branch. Existing commit
+hashes and all evidence files remain intact. The broad old-main-to-branch whitespace check reports
+historical logs/patches; those archival bytes were not reformatted as part of this integration.
+
+Work continues on `codex/first-public-deployment`. CI separation is prepared there: push/PR/default
+manual runs perform the existing application build; the full `pnpm check` job requires the explicit
+manual `run_full_check` input. Automatic CI is named Application build and does not claim unit, native
+or release qualification. The complete build command's constituent checks passed locally on Node
+26.11.0: Yjs patch/runtime checks, TypeScript, bundling, 136.6 kB initial JS against the unchanged
+350 kB limit, and the built-origin scan. Workflow YAML parses. The pinned CI Node version remains
+24.18.0; this is not evidence of a GitHub-hosted run. No broad campaign was run.
+
+Neither repository was pushed. Main must include this CI separation before its first push; its signed
+integration commit alone still contains the earlier automatic full-check workflow. The infrastructure
+repository and running Tailscale processes were unchanged. Next is the public runtime/initialization
+and container implementation. Environment credentials are only needed at the publication boundary.
