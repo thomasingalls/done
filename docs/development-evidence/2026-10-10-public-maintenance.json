@@ -1,0 +1,94 @@
+{
+  "scope": "Offline schema-maintenance preparation, protected backup, unchanged-state resumption and resolved-copy expiry; no public schema transition yet",
+  "sourceCommit": "ff3d42951d3a841eeecefcc82097dc74c52a3477",
+  "releaseValidation": "paused; bounded implementation checks only",
+  "build": {
+    "command": "docker build --platform linux/arm64 --build-arg APP_BUILD_REVISION=ff3d42951d3a841eeecefcc82097dc74c52a3477 --build-arg APP_BUILD_DATE=2026-10-10 --progress=plain -t done-public:ff3d4295 .",
+    "exitCode": 0,
+    "node": "24.18.0",
+    "checkUid": 65532,
+    "agePackage": "1.1.1-1+b3",
+    "applicationBuild": "passed: Yjs patch/runtime, TypeScript, Vite, 136.7 kB initial JS / 350 kB limit, built-origin scan",
+    "focusedTests": {
+      "runtimeAndGateway": 14,
+      "backup": 5,
+      "restore": 6,
+      "maintenance": 6,
+      "total": 31,
+      "failed": 0
+    }
+  },
+  "hostChecks": {
+    "node": "26.11.0",
+    "command": "node --test --test-timeout=20000 test/public-runtime/*.test.mjs test/account-application/gateway.test.mjs test/public-backup/*.test.mjs test/public-restore/*.test.mjs test/public-maintenance/*.test.mjs",
+    "passed": 31,
+    "failed": 0,
+    "typecheck": "tsc -b passed",
+    "changedCodeLint": "oxlint passed"
+  },
+  "packagedSmoke": {
+    "image": "done-public:ff3d4295",
+    "started": "2026-10-09T22:58:13.962Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:ad84bd71b47d3ef0756cc10c0acba09cfc552a9d0463229c30f20fd07243b8a7",
+    "platform": "linux/arm64",
+    "sourceRevision": "ff3d42951d3a841eeecefcc82097dc74c52a3477",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-09T22:58:23.319Z"
+  },
+  "runtimeMaintenance": {
+    "prepareInput": "Concatenate test/public-backup/b2-fixture.mjs and docs/development-evidence/2026-10-10-public-maintenance-runtime.mjs into /tmp/done-public-maintenance-runtime.mjs",
+    "command": "docker run --rm -i --network none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges --entrypoint node done-public:ff3d4295 --input-type=module - < /tmp/done-public-maintenance-runtime.mjs",
+    "fixtureSourceSha256": "6fa242cdd40ddffebf6a08b7ba7542199fe562543cfece714b572866cc46228e",
+    "combinedInputSha256": "75e5a7898c1e9d65bad1671bb28b10a98bb20e4caf9053692c2b9a632df470c4",
+    "result": {
+      "ok": true,
+      "sourceRevision": "ff3d42951d3a841eeecefcc82097dc74c52a3477",
+      "node": "v24.18.0",
+      "uid": 65532,
+      "network": "none; loopback B2 fixture only",
+      "checks": [
+        "actual offline CLI and production dependencies",
+        "saved-key decrypt/cold-open and exact-version upload/readback",
+        "fenced public startup",
+        "stable preparation and resume retries",
+        "unchanged service identity reopens"
+      ]
+    }
+  },
+  "findingsDuringImplementation": [
+    "Review found that a killed maintenance job could leave scratch directories incompatible with routine worker cleanup. Both now use the existing run-<32 hex> convention and shared ownership-scoped cleanup; SIGKILL/retry checks assert scratch removal.",
+    "Allowing maintenance history at initialization must not allow a missing store to be replaced with a new identity. Explicit missing-store refusal and a focused control cover this.",
+    "The initial image invocation supplied a timestamp where APP_BUILD_DATE requires YYYY-MM-DD. It failed before app compilation; the corrected invocation used the identical signed source and passed."
+  ],
+  "artifactsSha256": {
+    "2026-10-10-public-maintenance-build-date-error.log": "85e2fa1720c19a0711d51637b04bd1ac83fb3bab03c593274f0e27e8ae1df85a",
+    "2026-10-10-public-maintenance-container-build.log": "1e6a3eb5c74702d229f680cc76bb8e95384426bd41a58feda5967e456b81281b",
+    "2026-10-10-public-maintenance-container-smoke.log": "f144d5ec85b9e5c5531f259a122390ed0017b4a993cb3a3de962176d5806a858",
+    "2026-10-10-public-maintenance-host.log": "388a7482ed99e3c1da1a65027709ff54c007e9f31da6a3e52b9baf0a0ea0613a",
+    "2026-10-10-public-maintenance-runtime.log": "8488b1905005c56222202198c522e7e9885f7422e70cfe7c2d2ebad3fb0b5fd8",
+    "2026-10-10-public-maintenance-runtime.mjs": "c3bec65cde91d4f3c8880d3e6a699044865bbf81a07de084f5f16cd1c520eaa6"
+  },
+  "limits": [
+    "There is no older deployed public schema and no fabricated schema transition. The first actual transition must ship an explicit source/target migration and crash/retry tests in its target image.",
+    "Maintenance success remains fenced until an unchanged-state resume or a future reviewed migration completion. No generic SQL, force-open, restore promotion or private intermediate upgrader was added.",
+    "Backup decryption identity is used only in offline preparation, not in API/worker configuration. Fixture identities were generated and discarded; real custody remains an activation check.",
+    "Protected copies are excluded from routine retention. Expiry is an explicit offline operator command, after resolution/seven days and verification of a post-resolution routine backup. Failures may extend retention.",
+    "B2 transfers used a controlled protocol destination. The production-image CLI rehearsal had no external network and only tmpfs state; no actual bucket, public deployment, registry push or Tailscale data was used.",
+    "Process-crash tests are not a host power-loss durability proof; cleanup is not forensic erasure.",
+    "Release qualification and the personal history-management walkthrough remain paused."
+  ]
+}

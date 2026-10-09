@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: offline maintenance implemented; exact-image evidence then infrastructure integration
+scope: offline maintenance and image evidence complete; infrastructure integration next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-10
@@ -118,8 +118,10 @@ ARM64 image as UID 65532. Packaged app/API smoke and the network-disabled produc
 backup/restore rehearsal also pass; [evidence](./development-evidence/2026-10-10-public-restore.json)
 is retained. Offline [schema maintenance](./public-maintenance.md) now adds a persistent writer fence,
 verified protected B2 backup, unchanged-state resumption and explicit expiry. Six maintenance checks
-and all 25 runtime/backup/restore regressions pass on the host; target-image evidence is next, then
-infrastructure integration. No older public schema is deployed today; its first actual transition
+and all 25 runtime/backup/restore regressions pass on the host and in the ARM64 image as UID 65532.
+Signed implementation `ff3d4295` also passes the production-only maintenance CLI rehearsal and packaged
+app/API smoke; [exact source/image evidence](./development-evidence/2026-10-10-public-maintenance.json)
+is retained. Next is infrastructure integration. No older public schema is deployed today; its first actual transition
 must ship explicit target-image migration code. The operator's final 2026-10-10 choice defers automatic
 reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
 [recovery choices](./recovery-options.md). No retained installation or infrastructure resource has

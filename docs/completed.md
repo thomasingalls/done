@@ -12549,3 +12549,18 @@ code lint checks. Target-image evidence follows. There is no older public schema
 transitions must ship version-bounded target-image code as specified in the
 [maintenance runbook](./public-maintenance.md). No live state, real B2 bucket, deployment or release
 campaign was used.
+
+
+### 2026-10-10 — Signed maintenance implementation and exact-image checkpoint
+
+Signed `ff3d4295` completes the maintenance preparation/procedure implementation. Its ARM64 image
+`done-public:ff3d4295` passes the application build and all 31 focused runtime/gateway/backup/restore/
+maintenance checks as UID 65532. The production-dependencies-only image passes actual offline CLI
+preparation, decrypt/cold-open, exact-version transfer/readback, fence refusal and stable resume using
+only generated keys, tmpfs and a loopback fixture with external networking disabled. The packaged
+app/API container smoke passes all eight checks and 34 precache assets. Exact source/image identities,
+raw logs, reproducible runtime script and limitations are in
+[maintenance evidence](./development-evidence/2026-10-10-public-maintenance.json). One image invocation
+rejected an incorrectly formatted build-date argument before compilation; the corrected command used
+the same signed source. No actual schema transition is needed yet; no provider, retained service,
+publication or release campaign was touched. Next is ol-infra integration and deployment inputs.

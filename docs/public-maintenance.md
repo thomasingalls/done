@@ -146,7 +146,10 @@ refusal, exact ciphertext readback and lost replies, wrong recovery identity, si
 SIGKILL after upload, recovery of scratch plaintext, live-WAL changes, unsupported schema refusal,
 scoped retention and preservation on failures. Missing source after completed maintenance cannot
 silently initialize a replacement identity. Type checking and focused runtime/backup/restore
-regressions accompany these checks; exact image evidence is recorded separately after building.
+regressions accompany these checks. Signed source `ff3d4295` passes the application build and all 31
+focused checks in the ARM64 image as UID 65532. The production-only runtime CLI rehearsal (with no
+external network) and packaged two-container smoke pass too.
+[Exact source/image evidence and logs](./development-evidence/2026-10-10-public-maintenance.json) are retained.
 No real B2 bucket, production maintenance, Tailscale state, schema transition, deployment or release
 campaign is exercised by these fixtures. The first real-provider upload/decrypt rehearsal remains an
 activation requirement.
