@@ -355,3 +355,136 @@ node --test --test-timeout=20000 test/account-successor/history.test.mjs test/ac
 ℹ duration_ms 2299.940416
 
 Initial affected regression caught mutable base capture after await in the new history anchor adapter; captured before await and reran all 26 focused cases successfully. TypeScript --noEmit and scoped oxfmt/oxlint: pass. No browser/live writes in this stage.
+
+
+=== Ordered additive reader installation (2026-10-09) ===
+
+--- Focused service and HTTP tests (loopback allowed) ---
+(node:42486) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42486) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:42486) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (115.848667ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (66.230792ms)
+(node:42487) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42487) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:42487) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (246.372125ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (77.02125ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (84.213166ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (96.498792ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (86.835125ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (121.202166ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (239.329083ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (65.118875ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (64.576917ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (148.062042ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (92.0565ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2097.679083
+
+--- Six installation cases ---
+(node:43182) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (40.615208ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (73.421708ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (15.16575ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (22.646708ms)
+✔ installation captures the opener and proof before async verification (10.960625ms)
+✔ combined proof and plaintext refuse the native admission bound before publication (6080.41425ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6665.61925
+
+--- Final transport-only check ---
+(node:43355) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43355) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:43355) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (93.211ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (61.221666ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 804.061458
+
+--- Initial packaged run (sole-device pass; later second snapshot assertion exceeded 5 s) ---
+
+Running 2 tests using 1 worker
+
+(node:42485) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:13:1 › sole device creates repeated native snapshots, retries lost publication and keeps editing (8.8s)
+  ✘  2 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (47.4s)
+
+
+  1) test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'History maintenance', exact: true })
+    Expected substring: "Snapshot saved. Verify it from another approved device."
+    Received string:    "Save a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.This first step keeps existing history. Space reclamation is not enabled yet.Checking and saving history…Check historyCreate history snapshot"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('region', { name: 'History maintenance', exact: true })
+        14 × locator resolved to <section aria-label="History maintenance">…</section>
+           - unexpected value "Save a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.This first step keeps existing history. Space reclamation is not enabled yet.Checking and saving history…Check historyCreate history snapshot"
+
+
+      113 |     await expect(panel(page)).toContainText('Verified snapshot 1 is saved.');
+      114 |     await panel(second).getByRole('button', { name: 'Create history snapshot' }).click();
+    > 115 |     await expect(panel(second)).toContainText(
+          |                                 ^
+      116 |       'Snapshot saved. Verify it from another approved device.',
+      117 |     );
+      118 |     await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/history.spec.ts:115:33
+
+    Error Context: test-results/packaged-account/artifacts/history-two-native-device--7231d-s-and-keep-two-way-delivery/error-context.md
+
+  1 failed
+    test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery
+  1 passed (57.1s)
+
+--- Two-device abort/retry and offline replay ---
+
+Running 1 test using 1 worker
+
+(node:42891) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.1m)
+
+  1 passed (1.1m)
+
+--- Recovered/replacement reader across rotation and repeated recovery ---
+
+Running 1 test using 1 worker
+
+(node:43130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:7:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.5m)
+
+  1 passed (1.5m)
+
+TypeScript --noEmit, scoped oxfmt/oxlint, git diff --check: pass. Packaged walkthrough used the normal happy-path transport before the final network-abort classification change; that change has separate focused HTTP evidence. No personal state or retained service was changed. No release-validation campaign.
+
+Final production bundling: pass, 2.80 s.

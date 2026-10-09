@@ -78,7 +78,10 @@ test('history transport cancels oversized, incomplete, and aborted reply streams
       headers: { 'Content-Type': 'application/json' },
     },
   );
-  await assert.rejects(exchange(request));
+  await assert.rejects(
+    exchange(request),
+    (error) => !(error instanceof c.HistoryTransportUnavailable),
+  );
   let reading;
   const started = new Promise((resolve) => {
     reading = resolve;
@@ -103,6 +106,6 @@ test('history transport cancels oversized, incomplete, and aborted reply streams
   const pending = exchange(request);
   await started;
   stop.abort();
-  await assert.rejects(pending);
+  await assert.rejects(pending, c.HistoryTransportUnavailable);
   assert(cancelled);
 });

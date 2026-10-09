@@ -21,6 +21,12 @@ import { Y } from './yjs';
 import type { InboundContext, InboundLifetime } from './accountInbound';
 import type { Bytes } from './custodyCrypto';
 
+export class HistoryInstallSizeError extends Error {
+  constructor() {
+    super('History installation exceeds supported size');
+  }
+}
+
 export const HISTORY_INSTALL_TAG = 'done/history-install/v1';
 export interface HistoryInstall {
   baseline: string;
@@ -52,7 +58,7 @@ export function encodeHistoryInstall(e: HistoryInstall): Bytes {
       parseHistoryCheckpointAdmission(e.admission),
     ]),
   );
-  if (bytes.length > MAX_BATCH_BYTES) throw Error('History installation exceeds supported size');
+  if (bytes.length > MAX_BATCH_BYTES) throw new HistoryInstallSizeError();
   return bytes;
 }
 export function decodeHistoryInstall(bytes: Bytes): HistoryInstall {
@@ -83,6 +89,7 @@ export async function verifyHistoryInstall(
   previous: InstalledHistory | undefined,
   lifetime: InboundLifetime,
 ) {
+  previous = previous ? { ...previous } : undefined;
   const event = decodeHistoryInstall(input),
     installed = membershipState(checkpointAuthority(base, event.epoch)),
     cp = event.checkpoint,
@@ -101,35 +108,33 @@ export async function verifyHistoryInstall(
     )
   )
     throw Error('History installation scope changed');
-  await verifyHistoryCheckpointAdmission(event.admission, cp, authority);
-  const hash = await historyCheckpointHash(cp),
-    sequence = cp.manifest.sequence;
-  if (
-    previous &&
-    (sequence <= previous.sequence ||
-      (sequence === previous.sequence + 1 && cp.manifest.parent !== previous.hash))
-  )
-    throw Error('History installation regressed or forked');
-  const doc = await openHistoryCheckpoint(
-    cp,
-    generationKey(
-      new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
-      cp.manifest.generation,
-    ),
-    authority,
-  );
+  const key = generationKey(
+    new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
+    cp.manifest.generation,
+  ).slice();
+  let doc: Awaited<ReturnType<typeof openHistoryCheckpoint>> | undefined;
   let update: Bytes | undefined;
   try {
+    await verifyHistoryCheckpointAdmission(event.admission, cp, authority);
+    const hash = await historyCheckpointHash(cp),
+      sequence = cp.manifest.sequence;
+    if (
+      previous &&
+      (sequence <= previous.sequence ||
+        (sequence === previous.sequence + 1 && cp.manifest.parent !== previous.hash))
+    )
+      throw Error('History installation regressed or forked');
+    doc = await openHistoryCheckpoint(cp, key, authority);
     update = new Uint8Array(Y.encodeStateAsUpdate(doc));
     // Keep the existing native admission bound. A larger snapshot is refused before any write.
-    if (update.length + input.length > MAX_BATCH_BYTES)
-      throw Error('History installation exceeds supported size');
+    if (update.length + input.length > MAX_BATCH_BYTES) throw new HistoryInstallSizeError();
     lifetime.assertCurrent();
     return { update, installed: { hash, sequence } };
   } catch (cause) {
     update?.fill(0);
     throw cause;
   } finally {
-    doc.destroy();
+    doc?.destroy();
+    key.fill(0);
   }
 }

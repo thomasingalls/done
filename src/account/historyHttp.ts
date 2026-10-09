@@ -11,6 +11,8 @@ import {
 } from '../../account-protocol/historyExchange';
 import type { ScopedAccess } from './scopedTransport';
 
+export class HistoryTransportUnavailable extends Error {}
+
 export function createHistoryTransport(
   authority: VerifiedMembership,
   access: ScopedAccess,
@@ -23,9 +25,15 @@ export function createHistoryTransport(
   return async (input: HistoryExchange) => {
     const request = parseHistoryExchange(input);
     const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
-    stopped.throwIfAborted();
+    const live = () => {
+      if (stopped.aborted)
+        throw new HistoryTransportUnavailable('History service request stopped', {
+          cause: stopped.reason,
+        });
+    };
+    live();
     await verifyHistoryExchange(request, authority, Date.now());
-    stopped.throwIfAborted();
+    live();
     const response = await send('/account/history/v1/checkpoint', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -34,6 +42,8 @@ export function createHistoryTransport(
       cache: 'no-store',
       redirect: 'error',
       signal: stopped,
+    }).catch((cause: unknown) => {
+      throw new HistoryTransportUnavailable('History service is unavailable', { cause });
     });
     const limit = HISTORY_PAGE_LIMIT + 64;
     const declared = response.headers.get('content-length');
@@ -45,7 +55,9 @@ export function createHistoryTransport(
       (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit))
     ) {
       await response.body?.cancel();
-      throw Error('History service reply unavailable. Saved progress can be retried.');
+      throw new HistoryTransportUnavailable(
+        'History service reply unavailable. Saved progress can be retried.',
+      );
     }
     const reader = response.body.getReader(),
       decoder = new TextDecoder('utf-8', { fatal: true });
@@ -57,9 +69,11 @@ export function createHistoryTransport(
     stopped.addEventListener('abort', cancel, { once: true });
     try {
       for (;;) {
-        stopped.throwIfAborted();
-        const { done, value } = await reader.read();
-        stopped.throwIfAborted();
+        live();
+        const { done, value } = await reader.read().catch((cause: unknown) => {
+          throw new HistoryTransportUnavailable('History reply was interrupted', { cause });
+        });
+        live();
         if (done) break;
         length += value.length;
         if (length > limit) throw Error('History service reply is too large');
@@ -71,7 +85,7 @@ export function createHistoryTransport(
       const result = closed(raw, ['ok', 'page']);
       if (result['ok'] !== true) throw Error('History service did not confirm the operation');
       const page = await verifyHistoryCheckpointPage(result['page'], request, p.pin);
-      stopped.throwIfAborted();
+      live();
       return page;
     } finally {
       stopped.removeEventListener('abort', cancel);

@@ -37,8 +37,9 @@ remove the application's activation limit.
 The explicit Account-menu snapshot action, recovery reader, recovered-owner baseline adapter and
 current-key replacement handoff adapter are implemented. New replacement snapshots bind the admitted
 history and exact handoff sources they include. Recovered/replacement owners can use their certified
-installed baselines without historical keys when that coverage evidence is present. Ordinary reader
-installation, the remaining generation-one handoff path and pruning remain next. Automatic cadence
+installed baselines without historical keys when that coverage evidence is present. Ordinary editors
+now merge admitted snapshots through an atomic, witnessed receive event and cold-open them offline.
+Receive-cut installation, the remaining generation-one handoff path and pruning remain next. Automatic cadence
 remains off. No new snapshot authorizes pruning or replaces a local content root. The development
 action remains undeployed to the retained service.
 
@@ -315,3 +316,47 @@ Focused checks: four new installation cases plus seven checkpoint and fifteen af
 successor cases pass (26 total), including mutable-input capture, local originals, compacted content,
 missing-content refusal and historical certification. TypeScript and scoped formatting/lint pass.
 Evidence is in `development-evidence/2026-10-09-account-history.log`. No live change or release campaign.
+
+
+### 2026-10-09 — Ordered editor installation and offline reopening
+
+Ordinary composed editors check a signed catalog after their inbound catch-up pass; service hints and
+idle repair reuse the existing scheduler. The new `read: catalog` selector authenticates pointers
+without returning snapshot ciphertext. Only a new admitted pointer triggers a full read. A missing or
+changed latest pointer cannot overwrite the installed sequence/hash. Catalog and latest responses are
+request-bound; a competing installed membership makes the in-flight read retry against fresh authority.
+A recovery/replacement's already-authenticated, explicitly covered history hash avoids attempting to
+open that inherited snapshot with an unavailable historical key.
+
+The exact proof enters the existing ordered admission FIFO. The native owner decrypts/validates it,
+commits its update, evidence and completeness witness in one strict IndexedDB transaction, cold-checks
+the new state, then promotes the update into the editor. Local journal/originals and all prior decision
+records remain intact. Failures before commit publish nothing; a failure after durable commit closes
+the owner so reopening is the only continuation. No snapshot is captured as a new local edit. The
+existing combined 4 MiB admission bound now reports the receive-size halt; it has not been increased.
+Network interruption is retryable, whereas invalid authenticated evidence remains a refusal.
+
+Focused evidence:
+- Six installation cases pass, including input/key capture before awaits and a real encrypted snapshot
+  whose proof fits but whose combined plaintext/proof exceeds the native bound.
+- Thirteen service/HTTP cases pass, including catalog selection and unchanged history retention; the
+  final two transport cases separately verify abort classification and forged-reply refusal.
+- The sole-device packaged case passes. The expanded two-device case passes (1.1 min): both ordinary
+  uploads are blocked, one device proposes snapshot-only writing, the other independently admits it,
+  and a fault aborts the actual content+heads transaction after its content add. The editor does not
+  receive the snapshot; reopening retries successfully, preserves the second device's independent
+  unsent original, then opens both offline. Restored uploads and another snapshot/peer admission pass.
+- The packaged recovery/replacement/rotation walkthrough passes (1.5 min), now positively requiring
+  snapshot-only writing in the ordinary recovered editor before removal/rotation and recovery again.
+- TypeScript, scoped format/lint and production bundling pass. An initial later snapshot action exceeded
+  the old 5 s assertion; the focused test uses the existing 15 s allowance for history actions. Catalog
+  checks were also moved out of per-update processing to the end of catch-up. This is functional
+  evidence, not a performance qualification.
+
+This closes **additive** editor installation. It does not yet establish a new receive starting cut,
+skip old acceptance records, migrate the remaining generation-one handoff reader, widen activation/
+recovery output limits, reclaim service or local history, retire keys, or prune Yjs/attribution state.
+Next: authenticated receive-cut/suffix installation and the remaining handoff reader, then exact
+retention/pruning while preserving two admitted checkpoints and needed suffixes. Live build `34035330`
+and schema 24 remain untouched; schema 25/history UI are still undeployed. Release validation remains
+paused. Unsigned intermediate commit.

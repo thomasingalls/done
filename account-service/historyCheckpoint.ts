@@ -332,7 +332,7 @@ export async function exchangeHistoryCheckpoint(
       for (const item of verified.values()) verifyCuts(item.checkpoint);
       if (r.action === 'source' && !before.handoffs.source) return no('source-unavailable');
       let selected =
-        r.action === 'read'
+        r.action === 'read' && r.payload !== 'catalog'
           ? await get(catalog[r.payload as 'latest' | 'previous' | 'pending'])
           : null;
       let write: {

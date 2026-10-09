@@ -70,14 +70,85 @@ test('two native device owners independently admit snapshots and keep two-way de
     await expect(page.locator('.shell')).toContainText('Second device before snapshot', {
       timeout: 15000,
     });
+    // Neither edit reaches delivery. The first is carried only in its admitted snapshot;
+    // the second remains an independent local original while that snapshot is installed.
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await second.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'First device snapshot-only writing');
+    await add(second, 'Second device retained offline original');
+    await expect(second.locator('.shell')).not.toContainText('First device snapshot-only writing');
     await inspect(page);
     await panel(page).getByRole('button', { name: 'Create history snapshot' }).click();
     await expect(panel(page)).toContainText(
       'Snapshot saved. Verify it from another approved device.',
+      { timeout: 15000 },
     );
+    // Abort the exact content+heads transaction after its content add. Counter reservations
+    // may survive, but neither the content row nor the installation witness may partially commit.
+    await second.evaluate(() => {
+      const txs = new WeakSet<IDBTransaction>();
+      const state = { armed: false, aborted: false };
+      (window as unknown as { historyFault: typeof state }).historyFault = state;
+      const add = IDBObjectStore.prototype.add;
+      IDBObjectStore.prototype.add = function (value, key) {
+        if (state.armed && !state.aborted && this.transaction.mode === 'readwrite') {
+          if (this.name === 'content' && value.kind === 'update') txs.add(this.transaction);
+          if (this.name === 'heads' && txs.has(this.transaction)) {
+            state.aborted = true;
+            this.transaction.abort();
+            throw new DOMException('Interrupted history installation', 'AbortError');
+          }
+        }
+        return add.call(this, value, key);
+      };
+    });
+    let intercepted = false;
+    await second.route('**/account/history/v1/checkpoint', async (route) => {
+      const r = route.request().postDataJSON();
+      if (r.action === 'read' && r.payload === 'latest' && !intercepted) {
+        const response = await route.fetch(),
+          value = await response.json();
+        if (value.page?.admission) {
+          intercepted = true;
+          await second.evaluate(() => {
+            (window as unknown as { historyFault: { armed: boolean } }).historyFault.armed = true;
+          });
+        }
+        await route.fulfill({ response });
+      } else await route.continue();
+    });
     await inspect(second);
     await panel(second).getByRole('button', { name: 'Verify history snapshot' }).click();
     await expect(panel(second)).toContainText('Verified snapshot 1 is saved.');
+    await expect
+      .poll(
+        () =>
+          second.evaluate(
+            () =>
+              (window as unknown as { historyFault: { aborted: boolean } }).historyFault.aborted,
+          ),
+        { timeout: 20000 },
+      )
+      .toBe(true);
+    await expect(second.locator('.shell')).not.toContainText('First device snapshot-only writing');
+    await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+    // A new renderer has no test fault, and retries from the unchanged durable witness.
+    await second.goto('/');
+    await openSaved(second, pair.next.code, true);
+    await expect(second.locator('.shell')).toContainText('First device snapshot-only writing', {
+      timeout: 20000,
+    });
+    await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+    await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await pair.other.setOffline(true);
+    await second.goto('/');
+    await openSaved(second, pair.next.code, true);
+    await expect(second.locator('.shell')).toContainText('First device snapshot-only writing');
+    await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+    await pair.other.setOffline(false);
+    await page.unroute('**/account/delivery/submit');
+    await second.unroute('**/account/delivery/submit');
+    await inspect(second);
     await add(page, 'First device after maintenance');
     await expect(second.locator('.shell')).toContainText('First device after maintenance', {
       timeout: 15000,
@@ -93,6 +164,7 @@ test('two native device owners independently admit snapshots and keep two-way de
     await panel(second).getByRole('button', { name: 'Create history snapshot' }).click();
     await expect(panel(second)).toContainText(
       'Snapshot saved. Verify it from another approved device.',
+      { timeout: 15000 },
     );
     await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
     const verificationStarted = Date.now();

@@ -191,8 +191,9 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       .getByRole('button', { name: 'Verify history snapshot', exact: true })
       .click();
     await expect(verification).toContainText('Verified snapshot 1 is saved.', { timeout: 15000 });
-    await expect(next.locator('.shell')).not.toContainText(
+    await expect(next.locator('.shell')).toContainText(
       'Retained only by the replacement history snapshot',
+      { timeout: 15000 },
     );
     // A subsequent key rotation must keep the existing saved recovery code useful.
     await next.getByRole('button', { name: 'Devices', exact: true }).click();

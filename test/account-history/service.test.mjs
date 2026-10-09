@@ -262,3 +262,23 @@ test('HTTP history exchange requires a workspace grant; exact retries do not emi
   f.f.core.sessions.revoke({ sessionId: login.sessionId, revokeToken: login.revokeToken });
   assert.notEqual((await post(read, grant.grantToken)).status, 200);
 });
+
+test('catalog reads authenticate the current pointers without downloading checkpoint content', async (t) => {
+  const f = await setup(t),
+    cp = await f.create(),
+    pub = await f.makeRequest('publish', cp);
+  await f.check(pub, await f.exchange(pub));
+  const admit = await f.makeRequest('admit', await f.admit(cp));
+  await f.check(admit, await f.exchange(admit));
+  const request = await f.makeRequest('read', 'catalog'),
+    response = await f.exchange(request),
+    page = await f.check(request, response);
+  assert.equal(page.catalog.sequence, 1);
+  assert.equal(page.catalog.latest, await c.historyCheckpointHash(cp));
+  assert.equal(page.checkpoint, null);
+  assert.equal(page.admission, null);
+  assert.equal(page.source, null);
+  assert.equal(f.f.rows('history_checkpoint_records').length, 1);
+  const old = await f.makeRequest('read', 'latest');
+  await assert.rejects(f.check(request, await f.exchange(old)), /request changed/);
+});

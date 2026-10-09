@@ -12320,3 +12320,17 @@ uses retained verified membership states; mutable inputs are captured before asy
 Twenty-six focused checks and TypeScript/scoped lint/format pass. Native ordered installation follows;
 no pruning, cursor skipping, deployment or release validation. Unsigned intermediate commit.
 See [history checkpoint](./account-history-management.md) and its focused evidence log.
+
+
+### 2026-10-09 — Ordinary editors install admitted history and reopen offline
+
+Added lightweight signed catalog reads and ordered native snapshot installation. Content, proof and
+witness commit atomically before editor promotion; receive cursors and all older records remain intact.
+Focused checks cover an actual aborted IndexedDB transaction, restart/retry, snapshot-only writing,
+independent unsent local edits, offline reopen, restored two-way delivery, and recovery/key rotation.
+Six installation, thirteen service/HTTP cases, a final two-case transport recheck and affected packaged
+walkthroughs pass; static checks/build pass. See [history checkpoint](./account-history-management.md)
+and its evidence log. No live switch, history deletion or resumed release validation. Unsigned commit.
+
+Next is receive-cut/suffix installation and the remaining generation-one handoff reader, followed by
+retention/pruning with two admitted checkpoints. The combined native admission bound remains 4 MiB.

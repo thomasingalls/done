@@ -79,9 +79,11 @@ packaged check proves snapshot-only writing survives recovery and subsequent enr
 owners now use signed source coverage to create current-key history snapshots without older openers.
 Replacement handoffs now include admitted history and bind their source coverage; certified replacement
 owners can reuse those current-key baselines. Focused native checks include peer admission and recovery
-of snapshot-only writing after removal/rotation. The additive installation ledger now verifies
-historical eligibility and durable content coverage without moving receive cuts. Next: native ordered
-reader installation, the remaining generation-one later-handoff path, then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
+of snapshot-only writing after removal/rotation. Ordinary editors now atomically install admitted
+snapshots through the ordered receive queue and reopen them offline, preserving unsent local originals.
+The additive installation ledger verifies historical eligibility and durable content coverage without
+moving receive cuts. Native transaction-abort/retry and recovery/rotation checks pass. Next: authenticated
+receive-cut/suffix installation, the remaining generation-one later-handoff path, then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
 Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

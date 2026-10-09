@@ -66,7 +66,7 @@ export function parseHistoryExchange(input: unknown) {
   else if (action === 'admit') payload = parseHistoryCheckpointAdmission(r['payload']);
   else if (action === 'discard' || action === 'source') payload = h(r['payload']);
   else {
-    if (!['latest', 'previous', 'pending'].includes(r['payload'] as string))
+    if (!['latest', 'previous', 'pending', 'catalog'].includes(r['payload'] as string))
       throw Error('Invalid checkpoint selector');
     payload = r['payload'];
   }
@@ -260,6 +260,10 @@ export async function verifyHistoryCheckpointPage(
     return p;
   }
   if (p.source !== null) throw Error('Unexpected history source');
+  if (r.action === 'read' && r.payload === 'catalog') {
+    if (p.checkpoint !== null || p.admission !== null) throw Error('Unexpected catalog content');
+    return p;
+  }
   if (r.action === 'read') {
     const selector = r.payload as 'latest' | 'previous' | 'pending';
     if (

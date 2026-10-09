@@ -1,3 +1,16 @@
+import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+import {
+  historyExchangeMessage,
+  parseHistoryExchange,
+} from '../../account-protocol/historyExchange';
+import { EMPTY_HISTORY_CHECKPOINT } from '../../account-protocol/historyCheckpoint';
+import {
+  HistoryInstallSizeError,
+  checkpointAuthority,
+  encodeHistoryInstall,
+  decodeHistoryInstall,
+  verifyHistoryInstall,
+} from './historyInstall';
 import { recordEqual, type CustodyRecord } from './custodyRecord';
 import {
   rememberAccountTransition,
@@ -148,6 +161,7 @@ async function openAccountReceiveOwner(
   let membership: InstalledMembership | undefined,
     initialEpoch = 3;
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
+  let inheritedHistoryHash: string | undefined;
   let handoff = false,
     transition = '';
   let expectedPayload = '',
@@ -220,6 +234,12 @@ async function openAccountReceiveOwner(
       expectedPayload = hex(joinedPayload(v.marker!));
       expectedRecord = v.record;
       membership = v.marker!.membership;
+      inheritedHistoryHash =
+        v.marker!.v === 3
+          ? v.marker!.reading.successor.epoch.intent.historyCheckpoint
+          : v.marker!.v === 2 && 'history' in v.marker!.reading.checkpoint
+            ? v.marker!.reading.checkpoint.history?.checkpoint
+            : undefined;
       initialEpoch = v.marker!.v !== 1 ? v.marker!.reading.epoch : 3;
       await joinedKeys(task, v, options.code, async (kg, signing, verifying) => {
         const active = await withPromotionRoot(
@@ -478,6 +498,154 @@ async function openAccountReceiveOwner(
       (page as Bytes | null)?.fill(0);
       throw cause;
     }
+  };
+  // Network waits never hold the local writer tail. The request captures actual slot authority;
+  // its evidence re-enters the admission FIFO and checks that authority again before persistence.
+  const fetchHistory = () =>
+    runNetworkTask(async (network) => {
+      if (!access || account.detached || !canReceive()) return null;
+      const prepared = await runCaptureTask(async (task, owner, route) => {
+        const current = await state(task, owner, route);
+        if (describe(current).state === 'conflict') throw Error('Inbound stream is conflicted');
+        const authority = checkpointAuthority(base);
+        const request = parseHistoryExchange({
+          v: 1,
+          kind: 'history-checkpoint-request',
+          workspaceId: base.authority.workspace,
+          lineageId: base.authority.lineage,
+          epoch: base.authority.tip,
+          head: base.authority.head,
+          credentialId: base.reader.id,
+          nonce: hex(random(32)),
+          expiresAt: Date.now() + 60000,
+          action: 'read',
+          payload: 'catalog',
+          signature: '00'.repeat(64),
+        });
+        const sign = async () =>
+          hex(
+            new Uint8Array(
+              await task.wait(async () =>
+                subtleFor(task).sign('Ed25519', signer!, await historyExchangeMessage(request)),
+              ),
+            ),
+          );
+        request.signature = await sign();
+        return {
+          authority,
+          request,
+          baseline: base.baseline.id,
+          installed: current.installedHistory,
+        };
+      });
+      const exchange = createHistoryTransport(prepared.authority, access, network.signal);
+      const catalog = (await network.wait(() => exchange(prepared.request))).catalog;
+      if (prepared.installed) {
+        if (
+          catalog.sequence < prepared.installed.sequence ||
+          (catalog.sequence === prepared.installed.sequence &&
+            catalog.latest !== prepared.installed.hash)
+        )
+          throw Error('History catalog regressed or forked');
+        if (catalog.latest === prepared.installed.hash) return null;
+      }
+      if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash)
+        return null;
+      const request = await runCaptureTask(async (task) => {
+        await assertCurrent(task);
+        if (prepared.request.head !== base.authority.head) throw new ReceiveAuthorityChanged();
+        const r = parseHistoryExchange({
+          ...prepared.request,
+          payload: 'latest',
+          nonce: hex(random(32)),
+          expiresAt: Date.now() + 60000,
+        });
+        r.signature = hex(
+          new Uint8Array(
+            await task.wait(async () =>
+              subtleFor(task).sign('Ed25519', signer!, await historyExchangeMessage(r)),
+            ),
+          ),
+        );
+        return r;
+      });
+      const page = await network.wait(() => exchange(request));
+      if (
+        !page.checkpoint ||
+        !page.admission ||
+        page.catalog.sequence < catalog.sequence ||
+        (page.catalog.sequence === catalog.sequence && page.catalog.latest !== catalog.latest)
+      )
+        throw Error('Admitted history changed during reading');
+      return encodeHistoryInstall({
+        baseline: prepared.baseline,
+        workspace: request.workspaceId,
+        lineage: request.lineageId,
+        epoch: request.epoch,
+        head: request.head,
+        reader: request.credentialId,
+        checkpoint: page.checkpoint,
+        admission: page.admission,
+      });
+    });
+  const installHistory = (input: Bytes, promote: (updates: readonly Bytes[]) => void) => {
+    const bytes = input.slice();
+    return runCaptureTask(async (task, owner, route) => {
+      let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
+        committed = false;
+      try {
+        const current = await state(task, owner, route);
+        try {
+          const event = decodeHistoryInstall(bytes);
+          if (event.epoch !== base.authority.tip || event.head !== base.authority.head)
+            throw new ReceiveAuthorityChanged();
+          if (describe(current).state === 'conflict') throw Error('Inbound stream is conflicted');
+          // Own plaintext before task.wait's final lifetime check may reject it.
+          await task.wait(async () => {
+            result = await verifyHistoryInstall(
+              base,
+              bytes,
+              current.installedHistory,
+              lifetime(task),
+            );
+          });
+        } catch (cause) {
+          throw new AdmissionError('receive-refused', 'History snapshot could not be installed', {
+            cause,
+          });
+        }
+        const before = await owner.carrier.spoolWitness(task),
+          after = await task.wait(() => extendSpoolWitness(before, bytes, subtleFor(task)));
+        await owner.carrier.appendInbound(
+          task,
+          [
+            { kind: 'update', bytes: result!.update },
+            { kind: 'heads', bytes },
+          ],
+          {
+            before,
+            after,
+            beforeCommit: async () => {
+              await assertCurrent(task);
+              const next = await state(task, owner, route);
+              if (!same(next.installedHistory ?? null, current.installedHistory ?? null))
+                throw Error('History installation changed before commit');
+            },
+          },
+        );
+        committed = true;
+        await state(task, owner, route);
+        return task.step(() => {
+          promote([result!.update]);
+          return { kind: 'installed' as const };
+        });
+      } catch (cause) {
+        if (committed) void carrier.close().catch(() => {});
+        throw cause;
+      } finally {
+        result?.update.fill(0);
+      }
+    }).finally(() => bytes.fill(0));
   };
   const api = Object.freeze({
     ...account,
@@ -1324,6 +1492,8 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    fetchHistory,
+    installHistory,
     createOutbound,
     adoptSuccessor,
     adoptMembership,
@@ -1364,6 +1534,8 @@ async function openReceivingWorkspace(
     carrier,
     listCaptures,
     fetchPage,
+    fetchHistory,
+    installHistory,
     createOutbound,
     adoptSuccessor,
     adoptMembership,
@@ -1409,6 +1581,17 @@ async function openReceivingWorkspace(
       if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
         return 'local-storage';
       return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
+    };
+    const receiveHistory = async () => {
+      let bytes: Bytes | null = null;
+      try {
+        bytes = await fetchHistory();
+        if (!bytes) return false;
+        await enqueue(bytes, (evidence, promote) => installHistory(evidence, promote));
+        return true;
+      } finally {
+        bytes?.fill(0);
+      }
     };
     const receivePage = (bytes: Bytes, request?: Bytes) => {
       try {
@@ -1527,7 +1710,39 @@ async function openReceivingWorkspace(
           // eligible stream before choosing the slow idle repair interval.
           for (let remaining = publisherCount(); ; remaining--) {
             const step = await driveReceiveStep(result, operatorToken ?? '', gate);
-            if (step.kind !== 'idle' || remaining <= 1) return step;
+            if (step.kind !== 'idle') return step;
+            if (remaining <= 1) {
+              try {
+                if (await receiveHistory()) {
+                  const state = await api.status();
+                  return { kind: 'progress', receivedThrough: state.receivedThrough };
+                }
+              } catch (cause) {
+                if (
+                  cause instanceof HistoryInstallSizeError ||
+                  (cause instanceof AdmissionError &&
+                    cause.cause instanceof HistoryInstallSizeError)
+                ) {
+                  const state = await api.status();
+                  return {
+                    kind: 'blocked',
+                    reason: 'inbound-size',
+                    receivedThrough: state.receivedThrough,
+                  };
+                }
+                if (
+                  cause instanceof HistoryTransportUnavailable ||
+                  cause instanceof ReceiveAuthorityChanged ||
+                  (cause instanceof AdmissionError &&
+                    cause.cause instanceof ReceiveAuthorityChanged)
+                ) {
+                  const state = await api.status();
+                  return { kind: 'unknown', receivedThrough: state.receivedThrough };
+                }
+                throw cause;
+              }
+              return step;
+            }
           }
         },
         detach() {

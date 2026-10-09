@@ -168,3 +168,41 @@ test('duplicate, regression and immediate parent fork refuse; cancellation erase
     /owner closed/,
   );
 });
+
+test('installation captures the opener and proof before async verification', async (t) => {
+  const f = await setup(t),
+    pending = c.verifyHistoryInstall(f.base, f.bytes, undefined, lifetime);
+  f.key.fill(0);
+  f.bytes.fill(0);
+  const result = await pending,
+    doc = new c.Y.Doc({ gc: false });
+  try {
+    c.Y.applyUpdate(doc, result.update);
+    assert.equal(doc.getText('master').toString(), 'snapshot-only writing');
+  } finally {
+    result.update.fill(0);
+    doc.destroy();
+  }
+});
+
+test('combined proof and plaintext refuse the native admission bound before publication', async (t) => {
+  const f = await setup(t);
+  f.doc.getText('master').insert(0, 'x'.repeat(1450 * 1024));
+  const cp = await c.createHistoryCheckpoint(
+      f.doc,
+      f.doc,
+      f.key,
+      f.authority,
+      f.producer,
+      f.p.heads,
+      null,
+      f.sign,
+    ),
+    admission = await c.admitHistoryCheckpoint(cp, f.key, f.authority, f.producer, f.doc, f.sign),
+    bytes = c.encodeHistoryInstall({ ...f.event, checkpoint: cp, admission });
+  assert(bytes.length < 4 * 1024 * 1024, 'proof alone fits');
+  await assert.rejects(
+    c.verifyHistoryInstall(f.base, bytes, undefined, lifetime),
+    c.HistoryInstallSizeError,
+  );
+});
