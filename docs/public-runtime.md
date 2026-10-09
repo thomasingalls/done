@@ -140,9 +140,13 @@ disposable two-container smoke also passed: explicit initialization, startup ref
 cross-container exclusion, exact-origin session API, all 34 precache assets matching their integrity
 hashes, SIGKILL/restart preserving an accepted registration attempt and identity, clean SIGTERM exit,
 and same-identity initialization retry. Both processes used a read-only root filesystem and UID 65532;
-the app had no key/state mounts. All disposable resources were removed. Candidate source was
-`c0d36c7a` plus the packaging changes, labelled `-dirty`; a final clean-commit image follows the signed
-packaging commit.
+the app had no key/state mounts. All disposable resources were removed. The initial candidate used
+`c0d36c7a` plus packaging changes, labelled `-dirty`. After signing packaging as `0485c12a`, the
+clean-source image `done-public:0485c12a` was rebuilt and passed the same build/checks and container
+smoke. [Exact source/image evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
+are retained. Its local image index digest is
+`sha256:96a15982bc8d43e661087b12ea2fdcd443d5c7e4e133515ab8378f2024e3c553`;
+no registry publication has occurred.
 
 This checks process interruption and packaged HTTP assets, not power-loss behavior or a fresh browser
 credential ceremony. No existing service, public deployment, backup/restore or release campaign ran.

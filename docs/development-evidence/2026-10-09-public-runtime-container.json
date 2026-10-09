@@ -1,0 +1,53 @@
+{
+  "scope": "Bounded public runtime, explicit initialization and container packaging",
+  "sourceCommit": "0485c12a8359abd52781c5eb43490af8ef3c8f76",
+  "releaseValidation": "paused; no generalized campaign",
+  "build": {
+    "command": "docker build --platform linux/arm64 --build-arg APP_BUILD_REVISION=0485c12a8359abd52781c5eb43490af8ef3c8f76 --build-arg APP_BUILD_DATE=2026-10-09 -t done-public:0485c12a .",
+    "baseImage": "node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d",
+    "exitCode": 0,
+    "log": "2026-10-09-public-container-build.log",
+    "logSha256": "e93c9a66bf9843c3b42eb5f7a0f8c584e674fa80a8b2cd7bcf2e3c95bf273b64",
+    "applicationChecks": [
+      "Yjs patch and runtime checks",
+      "TypeScript",
+      "Vite production build",
+      "136.6 kB initial JS gzip / 350 kB budget",
+      "Built-origin isolation"
+    ],
+    "focusedRuntimeAndGatewayTests": {
+      "passed": 14,
+      "failed": 0
+    }
+  },
+  "containerSmoke": {
+    "image": "done-public:0485c12a",
+    "started": "2026-10-09T21:35:47.003Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:96a15982bc8d43e661087b12ea2fdcd443d5c7e4e133515ab8378f2024e3c553",
+    "platform": "linux/arm64",
+    "sourceRevision": "0485c12a8359abd52781c5eb43490af8ef3c8f76",
+    "nodeVersion": "v24.18.0",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-09T21:35:53.628Z"
+  },
+  "limits": [
+    "Local ARM64 Docker Desktop execution; no registry push or infrastructure deployment.",
+    "Fixture HTTP uses the configured HTTPS Host/Origin behind the gateway; no public TLS or real passkey ceremony.",
+    "Precache byte integrity was checked; this is not a new browser offline-use campaign.",
+    "SIGKILL and graceful process termination were checked; host power-loss durability was not qualified.",
+    "No existing Tailscale state, secrets or running processes were used or changed.",
+    "Backups, migrations and restore commands remain subsequent implementation phases."
+  ]
+}

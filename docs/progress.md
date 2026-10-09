@@ -88,7 +88,7 @@ retaining required PRs and signatures. The [signing record and crosswalk](./comm
 preserve the 103 rewritten identities and original evidence. Local main and the deployment branch
 were fast-forwarded to the verified merge. The proposed squash-related validation adaptation is
 obsolete; the existing ancestry model is retained. Automatic application-build CI passed on the PR;
-the full check stayed skipped. Public runtime/initialization and container work continues on
+the full check stayed skipped. Public runtime/initialization and container work is committed on
 `codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
 remains a separate step.
 
@@ -97,10 +97,13 @@ and packaged app serving. Ordinary startup refuses absent/incompatible state; a 
 transaction excludes competing processes and releases after death. Fourteen focused public/gateway
 checks pass on local Node 26 and in the Node 24.18.0 ARM64 build. The two-container smoke verifies
 non-root/read-only execution, explicit initialization, missing-state refusal, competing-owner refusal,
-exact-origin API behavior, 34 packaged precache assets and restart durability. Packaging is ready to
-sign and build against that exact commit. Next phase: isolated consistent snapshots, encryption, B2
-upload, scheduling/retention and health reporting. No retained installation or infrastructure resource
-has changed; no image has been published.
+exact-origin API behavior, 34 packaged precache assets and restart durability. Signed commits
+`44784d11`, `c0d36c7a` and `0485c12a` record repository reconciliation, runtime and packaging. The local
+image built from exact signed source `0485c12a` passed the checks; its
+[source/image evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
+are retained. Next phase: isolated consistent snapshots, encryption, B2 upload, scheduling/retention
+and health reporting. No retained installation or infrastructure resource has changed; no image has
+been published.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;

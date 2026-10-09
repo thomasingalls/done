@@ -12442,3 +12442,15 @@ idempotent initialization. All fixture volumes/containers were removed. Operatin
 in [public runtime](./public-runtime.md). The candidate was labelled with its dirty source; a clean
 image will be rebuilt from the signed packaging commit. No deployment, registry push, retained
 installation change, backup/restore implementation or release campaign occurred.
+
+
+### 2026-10-09 — Signed public-container checkpoint
+
+Signing succeeded for repository reconciliation `44784d11`, public runtime `c0d36c7a` and packaging
+`0485c12a`. Rebuilt local image `done-public:0485c12a` from that exact signed source and reran the
+disposable container smoke successfully. Node 24.18.0 ARM64 build: existing application checks and
+14/14 runtime/gateway tests pass; smoke: all eight reported checks, including all 34 precache assets,
+pass with no resource cleanup failures. [Exact image/source evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
+are retained. The application/runtime/container phase is complete; next is consistent snapshots,
+encryption, B2 transfer, bounded scheduling/retention and health reporting. No registry push, public
+deployment or release qualification occurred. The three personal root notes remain untracked.
