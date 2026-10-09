@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-buffers-r1/candidate
+
+
+ Test Files  3 passed (3)
+      Tests  121 passed (121)
+   Start at  13:38:52
+   Duration  9.21s (transform 356ms, setup 88ms, import 601ms, tests 8.95s, environment 0ms)
+

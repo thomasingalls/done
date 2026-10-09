@@ -1,0 +1,1961 @@
+{
+  "parsed": 190,
+  "auth": 40,
+  "total": 230,
+  "evidence": [
+    {
+      "name": "fresh-custody",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-custody",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-content",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "fresh-ready",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "policy"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "recoveryDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "sourceOrigin"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "sourceDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "planDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "createdAt"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "imported",
+        "selectionMac"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "imported",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "policy"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "recoveryDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "sourceOrigin"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "sourceDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "planDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "createdAt"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "imported",
+        "selectionMac"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "v"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "intentId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "databaseDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        0,
+        "key"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        0,
+        "digest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        1,
+        "key"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        1,
+        "digest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "sourceCleanup",
+        "next"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v1",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "policy"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "recoveryDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "sourceOrigin"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "sourceDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "planDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "createdAt"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "imported",
+        "selectionMac"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "intentId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "databaseDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        0,
+        "key"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        0,
+        "digest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        1,
+        "key"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "entries",
+        1,
+        "digest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "sourceCleanup",
+        "next"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "state"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "slot_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "principal_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "workspace_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "store_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "root_id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "factor"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "salt"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "nonce"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seals",
+        0,
+        "ct"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "seal_reserved"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "rotation_owed"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "creation_intent",
+        "id"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "creation_intent",
+        "storeId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "creation_intent",
+        "rootId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "creation_intent",
+        "wrappingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "creation_intent",
+        "signingId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "envelope"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "credentials"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "initial",
+        "mac"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "stage"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "policy"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "recoveryDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "sourceOrigin"
+      ],
+      "refused": "authentication"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "sourceDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "planDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "createdAt"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "imported",
+        "selectionMac"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "sourceCleanup",
+        "v"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "sourceCleanup",
+        "intentId"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "sourceCleanup",
+        "databaseDigest"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "sourceCleanup",
+        "next"
+      ],
+      "refused": "parser"
+    },
+    {
+      "name": "cleanup-v2-empty",
+      "path": [
+        "mac"
+      ],
+      "refused": "authentication"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "base": "599bba9e419e47dfefac26b92452a54301474fcf",
+  "claim": "Account editing native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T07-57-04.799Z",
+  "summary": {
+    "schema": 1,
+    "selection": "editing-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-editing/native.test.mjs",
+        "key": "1947120bc20018e14ee13681074521473a9d6be8f7c7c395d535b1ec08e0a0ec",
+        "status": "passed",
+        "elapsedMs": 189376,
+        "cases": 16,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T07:57:04.802Z",
+    "input": "20b49780ad44307b78cb870fc3ed8acbd8655f9c97ccd731812fafc9feac9cf0",
+    "completedAt": "2026-09-14T08:00:38.613Z"
+  },
+  "elapsedMs": 213811,
+  "rawInputArchiveSha256": "123292b4ae1195b975007ed4cc3071769569650252f662d12f98d5fa38aca2dd",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "599bba9e419e47dfefac26b92452a54301474fcf",
+    "sourceDigest": "156ffe366b836c5148e4b547896cce3df15f8fcb142238da99f06ac0ab72c059",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 16,
+    "browserFiles": 1,
+    "generatedHistories": 24,
+    "seed": 9292026,
+    "generatedAncestryComparisons": 200,
+    "ancestrySeed": 9282026,
+    "priorGeneralFiles": 185,
+    "priorGeneralCases": 1566,
+    "currentGeneralFiles": 186,
+    "currentGeneralCases": 1582,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 90,
+    "accountFiles": 80,
+    "accountCases": 488,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 231,
+    "unresolvedTestFiles": 72,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 661533
+  },
+  "finalGatesSha256": "93e45257ed19c3420517e6b41bdd9cadcfe9fa7ccacf1512ad1f8ee850d8b10a",
+  "preservationSha256": "484c5adcb12568237c60e555cff4777dfb9e565e23258e8ece1883ee9788bc97",
+  "limits": [
+    "One complete existing native file retains 16 cases: fourteen directed, 200 generated ancestry comparisons and 24 generated editing histories. The file deadline is repaired from 120 to 300 seconds in both the direct wrapper and adapter; the generated editing case changes from 90 to 180 seconds, while fifteen other cases retain 30 seconds. Browser startup stays 15 seconds and drain grace five. Product code, native assertions, populations, mutations, census and browser owner are unchanged. The active historical-reader Git read gains 5000-ms/2-MiB bounds.",
+    "The initial uninstrumented 120-second selection timed out with twelve passing cases and no terminal generated result. A separate progress-only loader diagnostic allowed 240 seconds for the file while retaining the 90-second generated case limit: nineteen histories completed and history twenty reached its fourth reopen when that case expired. All fifteen other cases passed. This establishes progressing work constrained by both deadlines, not an assertion counterexample or release credit for the diagnostic. Both complete/partial receipts, progress trace and diagnostic hook are retained. A fresh uninstrumented final selection validates the repaired bounds; populations and assertions are not reduced.",
+    "The old-reader control uses promotionRecord.ts at 649925f; its reference, full revision, path and exact Git bytes enter the stage receipt. Existing historical drift controls cover this path. Other imported historical branches are dormant under the sanitized environment. Synthetic v4-to-v5 editing activation does not broaden the supported private v9 route or revive retired v8 support. This fixture exercises the earlier private editor factory and shared lifecycle/ancestry/admission primitives.",
+    "The base registers cleanup before setup, borrows the validated owned loopback CDP endpoint and creates synthetic factors, contexts and temporary Account service/SQLite stores. Preparation, registration, admission and handoff run against that service; subsequent Account access uses locally generated test authenticator assertions. Builds are in memory. The original genesis page stays separate from editing pages killed/replaced by histories. Generated editing histories share a context/service with distinct workspaces; teardown closes contexts/connections/services and removes temporary files, then the owner drains Chromium. No writing is sent to a peer or real Account.",
+    "Directed open/edit/undo/compaction compares recovered writing. One new page blocks **/account/** requests before opening, establishing local reopening under that request block, not a stopped service or whole-browser offline state. The initial case does not force its edit to remain journal-only before graceful close. Generated crash steps explicitly suppress the 250-ms flush callback before editing.",
+    "Before-activation commit aborts the actual IDB transaction after request success, leaving marker v4; post-commit activation holds completion at v5 then crashes the renderer. Both withhold the editor, preserve non-custody database rows and localStorage, and recover original writing in a new page. Custody is excluded from the at-boundary inventory equality. The before case is an abort plus page replacement, not renderer death.",
+    "Wrong pin, code, passkey and actor refuse activation without native inventory mutation; public receive refuses bytes before persistence. An exclusive queued editor does not request a passkey until acquired; cancellation and synthetic pagehide revoke stale read/input/snapshot/export capabilities. Held native flush completion retains the slot until close drains and getText-observed Yjs docs are destroyed. Synthetic pagehide is not navigation/BFCache and the instrumented set is not a complete heap inventory.",
+    "An authenticated but out-of-protocol counter change to generation 2 makes the live owner close on its next durability check, rejects the stale surface and refuses reopening without a matching opener. This uses a synthetic factor to deliberately rewrite a MACed counter outside the owner; it is not a supported rotation or restored-data recovery procedure.",
+    "Two uniquely anchored active mutations expose a bad result: suppressing the ancestry guard opens empty writing after content erasure; suppressing the passkey refusal opens and edits with an invalid assertion. Each has a current-code refusal followed by a specific mutant acceptance oracle. The helper also defines an identity mutation but the native file never invokes it; no mutation credit is claimed for that dormant branch.",
+    "Handoff, ordinary Local writers and the pinned historical reader refuse editable Account progress; classification remains Account and the captured inventory stays unchanged. Durable pending child frames are inserted through low-level test journal ingress, coexist with local editing, then become parent child after parent delivery and new-page reopen. This is neither the public receive path nor a network delivery test.",
+    "The 200-case ancestry campaign retains seed 9282026, numRuns:200, endOnFailure:true and 30 seconds. Browser-memory documents include a known checkpoint, arbitrary later insert/delete and optional unrelated pending child. An independent string calculation checks text; coversGenesis accepts current ancestry, rejects an empty replacement, and encoded current bytes remain identical before/after inspection. This does not inspect pending dependency bookkeeping separately or perform 200 persistent/crash histories.",
+    "The 24 editing histories retain seed 9292026, numRuns:24, endOnFailure:true and the repaired 180-second bound. Each history uses a fresh synthetic promoted workspace and one to six edit/optional-undo steps checked against an independent string model. The 250-ms timer is suppressed before each step; flush/compact are explicit, crash uses CDP Page.crash, and journal mode uses graceful close. Every step creates a new page, reopens, compares writing and compares the custody record plus logical promotion marker to a fixed pre-edit snapshot. Snapshot normalizes retained genesis references; this is not equality of all raw database/journal/counter/source bytes. There is no all-mode or shrinking claim.",
+    "Refused localStorage plus an actual content transaction abort keeps pending input outside visible text and outgoing callback observations; discard rejects its ticket, and a later accepted edit survives reopening. Queued option mutation cannot substitute slot, principal or pin. Missing/closed/empty-store selected indexes refuse without mutation. Abort during a held synthetic passkey callback keeps the slot until callback drain, preserves native inventory and permits a fresh open afterward.",
+    "There is one explicit directed renderer crash at post-commit activation, plus crashes selected by generated editing steps. CDP renderer death and same-context new-page reopen are not browser-process crash, power loss or another device. Optional ACCOUNT_REPORT_DIR JSON exports are disabled, leaving wrapper saved-output, ordering and prerequisite contracts unresolved.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence rather than new execution. The initial ledger historical service-path orphan classification and core receive\u2019s prior 297.025-of-300-second headroom remain at the owner/loaded-host gate. Capture\u2019s per-edit comparison-map refresh and overhead byte-length equality remain documented oracle follow-ups. This phase establishes no fix for those observations.",
+    "All 185 prior general contracts / 1566 case identities and six retired-v8 exclusions remain unchanged. Full frozen source/dependency/browser archives are retained locally and hashed here; later docs do not establish an immutable aggregate. The preceding capture phase is signed and verified. Personal profiles/services/builds/recovery/factors, prior vectors/evidence/debts/signing backups, unrelated root files and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 185176.034167,
+    "stageElapsedMs": 189376,
+    "selectionElapsedMs": 213811,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedEditingMs": 106813.772792
+  },
+  "timeoutInvestigation": {
+    "initialSelection": "test-results/release-validation/2026-09-14T07-46-28.958Z",
+    "initialFileDeadlineMs": 120000,
+    "initialCompletedCases": 12,
+    "diagnosticOutput": "test-results/editing-diagnostic/2026-09-14T07-51-51.205Z",
+    "diagnosticFileDeadlineMs": 240000,
+    "diagnosticCaseDeadlineMs": 90000,
+    "diagnosticCompletedHistories": 19,
+    "diagnosticActiveHistory": 20,
+    "diagnosticOtherCasesPassed": 15,
+    "note": "Progress-only loader instrumentation and a larger outer allowance establish continued work until the case timeout, not release credit. Both failed/partial runs are retained; final selection is uninstrumented. Bounds repaired without reducing populations or assertions."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "857d24121055a2b06516cf259635c70b09c521fa75241d0f2d341d2dbd6fc205",
+    "compressedSha256": "53bec6f1ffdc933327084920b261ea85aa6bcf567135f9cb10ccb195cf9797b3"
+  }
+}

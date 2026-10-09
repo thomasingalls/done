@@ -1,0 +1,13 @@
+(node:47679) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47679) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native neutral collector matrix: clean controls and planted representation per applicable surface (4283.614ms)
+✔ native structured clone, key, blob, view, header, chunk and false-coverage controls (2191.163417ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7079.087833

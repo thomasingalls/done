@@ -1,0 +1,42 @@
+[
+  {
+    "variant": "selected",
+    "session": "final-comparison-0",
+    "started": "2026-09-15T11:40:14.986Z",
+    "finished": "2026-09-15T11:40:55.977Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "candidate",
+    "session": "final-comparison-0",
+    "started": "2026-09-15T11:40:56.059Z",
+    "finished": "2026-09-15T11:41:37.344Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "candidate",
+    "session": "final-comparison-1",
+    "started": "2026-09-15T11:41:37.414Z",
+    "finished": "2026-09-15T11:42:18.280Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "selected",
+    "session": "final-comparison-1",
+    "started": "2026-09-15T11:42:18.363Z",
+    "finished": "2026-09-15T11:42:59.163Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "retention": "edit visible with no durable source capsule after omitted outbound write",
+  "route": "wrong-workspace capsule accepted after route guard removal"
+}

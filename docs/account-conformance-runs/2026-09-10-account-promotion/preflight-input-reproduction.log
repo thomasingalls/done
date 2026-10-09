@@ -1,0 +1,34 @@
+(node:73605) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73605) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ preflight snapshots caller input before queued acquisition (616.758792ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1224.367417
+
+✖ failing tests:
+
+test at test/account-authority/native.test.mjs:307:1
+✖ preflight snapshots caller input before queued acquisition (616.758792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'snapshot-b'
+  - 'snapshot-a'
+              ^
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/native.test.mjs:323:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'snapshot-b',
+    expected: 'snapshot-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

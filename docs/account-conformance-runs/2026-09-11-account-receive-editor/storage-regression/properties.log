@@ -1,0 +1,78 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+stderr | test/accountInboundControls.test.ts > actual page-signature removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > matches independent request, page and event bytes without changing v1 interpretation 42ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > rejects malformed, noncanonical and oversized request frames 1ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > rejects malformed, noncanonical and oversized page frames 0ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > rejects malformed, noncanonical and oversized record frames 3ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > rejects unsafe integers, signed zero, invalid IDs, odd/uppercase hex and malformed page entries 2ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > rejects outer metadata mismatches and nested carrier substitutions before granting evidence 8ms
+ ✓ test/accountInboundCodec.test.ts > closed inbound v2 transport and local record codecs > implements bounded contiguous page extent, including empty end pages and safe-integer exhaustion 1ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > verifies original stored wire after expiry and refuses changed baseline, link or record meaning 40ms
+stderr | test/accountInboundControls.test.ts > actual request-binding removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundControls.test.ts > actual page-signature removal produces the prohibited outcome 108ms
+ ✓ test/accountInboundControls.test.ts > actual request-binding removal produces the prohibited outcome 68ms
+stderr | test/accountInboundControls.test.ts > actual prefix-proof removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+stderr | test/accountInboundControls.test.ts > actual actor removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundControls.test.ts > actual prefix-proof removal produces the prohibited outcome 68ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > preserves per-publisher accepted links, exact duplicates and independently proved conflicts 32ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > does not learn its prefix from a correctly signed response 3ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed reader scope substitution 3ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed publisher scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed lineage scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed head scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed origin scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed service scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed workspace scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects a signed epoch scope substitution 2ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rejects invalid reader/page signatures, wrong nonce binding, missing members and mismatched current authority 12ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks epoch separately from signature validity 3ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks generation separately from signature validity 3ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks actor separately from signature validity 5ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks agent separately from signature validity 6ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks system separately from signature validity 4ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > checks final separately from signature validity 4ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > returns authenticated pending originals without requiring immediate Yjs integration 5ms
+stderr | test/accountInboundControls.test.ts > actual record-binding removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > bounds updates before a future 256-record local commit and rejects malformed Yjs plaintext 199ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > verifies empty end pages but rejects regressed retained high-water marks and unsupported batch reads 9ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > captures all mutable bytes/context before crypto and returns detached evidence 10ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > withholds new, duplicate, empty and stored results after close, including the last crypto completion 14ms
+stderr | test/accountInboundControls.test.ts > actual batch-count removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundControls.test.ts > actual actor removal produces the prohibited outcome 68ms
+ ✓ test/accountInboundControls.test.ts > actual record-binding removal produces the prohibited outcome 77ms
+stderr | test/accountInboundControls.test.ts > actual buffer-copy removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > rechecks expiry at completion and refuses an asynchronous owner assertion 5ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > keeps the original lifetime assertion when the caller replaces its callback during crypto 2ms
+stderr | test/accountInboundControls.test.ts > actual late-close removal produces the prohibited outcome
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+ ✓ test/accountInboundControls.test.ts > actual batch-count removal produces the prohibited outcome 68ms
+ ✓ test/accountInboundControls.test.ts > actual buffer-copy removal produces the prohibited outcome 76ms
+ ✓ test/accountInboundControls.test.ts > actual late-close removal produces the prohibited outcome 65ms
+ ✓ test/accountReceiveLedger.test.ts > requires pending originals and deletion coverage even when state vectors match 5ms
+ ✓ test/accountReceiveLedger.test.ts > replays independent stored events, detects a gap, wrong baseline and events after conflict 68ms
+ ✓ test/accountReceiveLedger.test.ts > 200 generated content/deletion histories remain covered after valid compaction; dropping the only content fails 141ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > 400 generated signed updates round-trip, cold-verify and reject independently re-signed actor substitutions 9155ms
+ ✓ test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > 500 arbitrary changed wire bytes never authenticate as the original frame 815ms
+
+ Test Files  3 passed (3)
+      Tests  45 passed (45)
+   Start at  08:14:08
+   Duration  10.72s (transform 198ms, setup 79ms, import 485ms, tests 11.22s, environment 0ms)
+

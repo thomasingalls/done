@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="effective composed fairness mutation" time="0.035532" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/controls.test.mjs"/>
+	<testcase name="effective composed overlap mutation" time="0.005491" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/controls.test.mjs"/>
+	<testcase name="effective composed halt mutation" time="0.004119" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/controls.test.mjs"/>
+	<testcase name="effective composed resume mutation" time="0.004098" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/controls.test.mjs"/>
+	<testcase name="effective composed wake mutation" time="0.004966" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/controls.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 119.263375 -->
+</testsuites>

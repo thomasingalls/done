@@ -1,0 +1,22 @@
+{
+  "bindingControls": [
+    {
+      "control": "root",
+      "baseline": "refused",
+      "omitted": "accepted"
+    },
+    {
+      "control": "witnessState",
+      "baseline": "refused",
+      "omitted": "accepted"
+    },
+    {
+      "control": "counterSpool",
+      "baseline": "refused",
+      "omitted": "accepted"
+    }
+  ],
+  "equalMac": "changed MAC accepted only by comparison omission",
+  "allocationSum": "inconsistent allocation accepted only by parser guard omission",
+  "ceiling": "prohibited grant returned only by ceiling omission"
+}

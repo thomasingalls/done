@@ -1,0 +1,45 @@
+{
+  "proof": {
+    "retryKey": "04_EDc1zHqtOdEgifXh1zqrTVBHBIVoREC2zpY3pXno",
+    "recoveryId": "xMbODT02cuwAxibUzij53Yj5hycv21DKyLglv26i_80",
+    "response": {},
+    "recoveryProof": "e38d38da64c4ab8c7a0491c9dc95d5ebe71a75b2ed37a72d895518a22c99a95ef232294df836ca4bd1a3e590f1b127b62546c04b966b0c8b0acf0f0d7e48d90d"
+  },
+  "result": {
+    "ok": true,
+    "stage": "recovery-confirmed",
+    "recoveryId": "xMbODT02cuwAxibUzij53Yj5hycv21DKyLglv26i_80",
+    "accountId": "6OyokrBVrHtPRbBTvZfs38bu_Qq9z6KzynBWTJDbKJE",
+    "draftDigest": "75fc2fb8f0ef8ea11f1e8c52b40842a57bd3249f8650f17483f882844a57d557",
+    "recoveryStateDigest": "6c6be13bbb2ab808625ac23dfc73929d9bc843d5a5aca027e719b01174abb2d9",
+    "receiptId": "yiNXPCnmYZz7zrelfy42hTnXx0Gq49-dp9KEh6yoGNE"
+  },
+  "before": [
+    {
+      "account_id": "6OyokrBVrHtPRbBTvZfs38bu_Qq9z6KzynBWTJDbKJE",
+      "attempt_id": "rUu-Pptu8MygfTVabqZmKnbL2w-JDtaX8aHXrDApXs0",
+      "id": "xMbODT02cuwAxibUzij53Yj5hycv21DKyLglv26i_80",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"78a275e9b537c7eb863b0f0b4e8161c142a454f9303bca240b97acaec1f142be\",\"envelope\":{\"ct\":\"eb59179fd01d84b2dd05f46fcbdbfd696adf9f8c36f9fb14abb439b9cb3404246d7d9fa4892e305f14d56e2306e18671c198bbb633dd2967878bc8ef09bc5a0f98e1389eade58197b92efb833d6ac321736acd66cde401ba507867ac335dd93d0c2e364bed77d29aa67f7f97cb8f76a0\",\"nonce\":\"e3872af6dc97dd0b6601bd1a\",\"salt\":\"bd75ad7e0438c3e7bf5c6926fa69033f\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"1d6fc508ba9aacd8a712ada10b2c5976a1db4d35b76dcac4b67f17bccef1c751\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "75fc2fb8f0ef8ea11f1e8c52b40842a57bd3249f8650f17483f882844a57d557",
+      "challenge": "BWbQF0PpDxBPb1KfNTsWhCHMinOL0b63RPmI-hrvJTc",
+      "expires": 1789138789356,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ],
+  "after": [
+    {
+      "account_id": "6OyokrBVrHtPRbBTvZfs38bu_Qq9z6KzynBWTJDbKJE",
+      "attempt_id": "rUu-Pptu8MygfTVabqZmKnbL2w-JDtaX8aHXrDApXs0",
+      "id": "xMbODT02cuwAxibUzij53Yj5hycv21DKyLglv26i_80",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"78a275e9b537c7eb863b0f0b4e8161c142a454f9303bca240b97acaec1f142be\",\"envelope\":{\"ct\":\"eb59179fd01d84b2dd05f46fcbdbfd696adf9f8c36f9fb14abb439b9cb3404246d7d9fa4892e305f14d56e2306e18671c198bbb633dd2967878bc8ef09bc5a0f98e1389eade58197b92efb833d6ac321736acd66cde401ba507867ac335dd93d0c2e364bed77d29aa67f7f97cb8f76a0\",\"nonce\":\"e3872af6dc97dd0b6601bd1a\",\"salt\":\"bd75ad7e0438c3e7bf5c6926fa69033f\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"1d6fc508ba9aacd8a712ada10b2c5976a1db4d35b76dcac4b67f17bccef1c751\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "75fc2fb8f0ef8ea11f1e8c52b40842a57bd3249f8650f17483f882844a57d557",
+      "challenge": "BWbQF0PpDxBPb1KfNTsWhCHMinOL0b63RPmI-hrvJTc",
+      "expires": 1789138789356,
+      "state": "done",
+      "proof_hash": "76dbc6d0bb3698a2f43072d092542b43d8ae26eb51a8059ade266717e5a1f4dc",
+      "result": "{\"accountId\":\"6OyokrBVrHtPRbBTvZfs38bu_Qq9z6KzynBWTJDbKJE\",\"draftDigest\":\"75fc2fb8f0ef8ea11f1e8c52b40842a57bd3249f8650f17483f882844a57d557\",\"ok\":true,\"receiptId\":\"yiNXPCnmYZz7zrelfy42hTnXx0Gq49-dp9KEh6yoGNE\",\"recoveryId\":\"xMbODT02cuwAxibUzij53Yj5hycv21DKyLglv26i_80\",\"recoveryStateDigest\":\"6c6be13bbb2ab808625ac23dfc73929d9bc843d5a5aca027e719b01174abb2d9\",\"stage\":\"recovery-confirmed\"}"
+    }
+  ]
+}

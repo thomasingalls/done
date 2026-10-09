@@ -1,0 +1,52 @@
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index ccaa8db9..56eadad1 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -40,7 +40,7 @@ import { createArchiveProjection } from './archiveProjection';
+ import { currentDate, plainDate, type ISODate } from '../lib/date';
+ import { exportArchive, exportEntries } from './export';
+ import {
+-  runWorkspaceCommand,
++  createWorkspaceCommandRunner,
+   relativeSelection,
+   resolveSelection,
+   targetText,
+@@ -150,6 +150,7 @@ export const createAdmittedWorkspace = async (
+     throw Error('Local preparation cannot capture Account sources');
+   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+   const archiveProjection = createArchiveProjection();
++  const commands = createWorkspaceCommandRunner();
+   const identity = structuredClone(options.identity);
+   const human: Origin = Object.freeze({
+     actor: identity.id,
+@@ -193,6 +194,7 @@ export const createAdmittedWorkspace = async (
+         ? selectionHistory.fork(accepted.history, human)
+         : forkWorkspaceHistory(accepted.history, human),
+       doc = history.doc;
++    commands.inherit(accepted.history, history);
+     doc.clientID = writer;
+     const state: State = { history, selections: new Map(), group: intent.group, value: false };
+     scope?.ownState(state);
+@@ -230,7 +232,7 @@ export const createAdmittedWorkspace = async (
+     try {
+       for (const [key, value] of accepted.selections) selections.set(key, structuredClone(value));
+       if (intent.group !== accepted.group) history.stopCapturing();
+-      const result = runWorkspaceCommand(
++      const result = commands.run(
+         history,
+         intent,
+         { identity, human, system, today: today() },
+@@ -475,7 +477,12 @@ export const createAdmittedWorkspace = async (
+           pending = undefined;
+           dispose(previous);
+           outcomes.set(accepted.group, accepted.value);
+-        } else applyUpdate(accepted!.history.doc, event.update, 'received');
++        } else {
++          // Invalidate before apply and publication: a subscriber may submit input before
++          // the queued membership repair runs, including when dependencies become visible.
++          /* fault: retain stale repair eligibility */
++          applyUpdate(accepted!.history.doc, event.update, 'received');
++        }
+         // Check every accepted transition, including later remote dependencies, before exposure.
+         if (!localHandoff || event.source === 'remote') verifyProjection();
+         verifiedRevision = event.revision;

@@ -1,0 +1,42 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-buffers-r1/candidate
+
+stdout | test/workspaceAdmission.test.ts > persistent text buffers > reused candidates remain private under refusal, retry, discard and drained close
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > persistent text buffers > reused candidates remain private under refusal, retry, discard and drained close
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > persistent text buffers > reused candidates remain private under refusal, retry, discard and drained close
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ❯ test/workspaceAdmission.test.ts (98 tests | 1 failed | 92 skipped) 3330ms
+     × reused candidates remain private under refusal, retry, discard and drained close 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspaceAdmission.test.ts > persistent text buffers > reused candidates remain private under refusal, retry, discard and drained close
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/workspaceAdmission.test.ts:1275:47
+    1273|       const pending = f.owned.at(-1)!.state;
+    1274|       const closing = f.doc.close();
+    1275|       expect(pending.history.doc.isDestroyed).toBe(false);
+       |                                               ^
+    1276|       f.resume(); await closing;
+    1277|       await expect(late.accepted).rejects.toHaveProperty('code', 'inac…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed | 92 skipped (98)
+   Start at  13:24:48
+   Duration  3.92s (transform 261ms, setup 44ms, import 430ms, tests 3.33s, environment 0ms)
+

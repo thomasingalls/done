@@ -1,0 +1,1840 @@
+{
+  "schema": 1,
+  "scope": "content-trim-browser",
+  "started": "2026-09-09T08:02:57.180Z",
+  "requestedCandidates": [
+    "trim"
+  ],
+  "requestedCases": [
+    "T01.union",
+    "T02.late",
+    "T03.concurrent",
+    "T04.dependencies",
+    "T05.unreadable",
+    "T06.changed",
+    "T07.recheck",
+    "T08.new-damage",
+    "T09.journal",
+    "T10.publish-abort",
+    "T11.delete-abort",
+    "T12.kill-reservation",
+    "T13.kill-publication",
+    "T14.kill-deletion",
+    "T15.close",
+    "T16.generation",
+    "T17.single-state",
+    "T18.replacement",
+    "T19.missing",
+    "T20.journal-tag",
+    "T21.journal-recheck"
+  ],
+  "harness": {
+    "commit": "0399567a965fb2b24128d03aee29ac54caec3f19",
+    "dirty": true,
+    "files": {
+      "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+      "wasm/journal-seal/src/lib.rs": "716be05c199b8796b654c8935b466f30c16ac4ac1fadb783ae4f597474218b78",
+      "wasm/journal-seal/Cargo.toml": "8f8c138c9ee1a8b3a7edf5371163d253c597b93bc374eadb0eb587a50d0706c9",
+      "wasm/journal-seal/Cargo.lock": "6339c5b066678ce11cb27f70e1bc7a31ffaa9f2ff4c416e45b67ff6344dc5998",
+      "scripts/build-wasm-seal.mjs": "e10af46d1aaf514937c289cd8d2d5b57bc40ad4ee071e138be8c71849c5ca335",
+      "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+      "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+      "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+      "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+      "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+      "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+      "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+      "src/crdt/yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+      "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+      "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+      "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+      "package.json": "f3e05b5e4e6b9eb37da2fe6daa8dd4086676ec3a3d4b425ab66bcf914204be08",
+      "test/contentRecord.test.ts": "04cc13f02dfa77f2a4a918a57e927f9481e21dad9be6d01da7e61ede4eb1545d",
+      "test/contentCompaction.test.ts": "91c67f2c06da68d82d1f9b89370a23d67015c7dbb0785fdc877e0be57de0c65b",
+      "test/content/browser.mjs": "00830bff7ec24592c429ccd7d62626ad8bb25739c44975f9e3028c75a73f4ae6",
+      "docs/content-trim.md": "1ecf15c98b99bed2141f2e16ac4aa772b9cb2ce992c8ce4f1e833b0d3ec0c926",
+      "test/vectors/record-format.json": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f",
+      "docs/content-store.md": "8ed092805fc0e13498ffa58055abe63c6426e4f12078f9d44a7f49b9b7e447b5",
+      "scripts/storage-conformance/report.mjs": "3213b63e0e5f4a39af85ef798a7f7e1eb09fee07e8006d78a2dc141263feb506",
+      "scripts/content-trim/catalog.mjs": "746f003fe228e08a03f36c08d3c76ef874de7f96dfd6e4b8933e5e627cb0ca88",
+      "scripts/content-trim/run.mjs": "450bbd024af8c15ab6e2d2ca6f32eb67c308985031d92f57a99ecba97a15888c",
+      "scripts/content-trim/scenarios.mjs": "1cef19c3c9e52c96c9c79dc53d15426b66e3d7be083c46fba29671ac48a90d3f",
+      "test/content-trim/browser.mjs": "10d2aff3bed3d813b85fa6ddec6e83ad4b8010824392ce671684664fbd87a05a",
+      "test/content-trim/index.html": "c272c03f63b0608dd91f428f7933e7a46893a8a2f780e65cda46e5bb26559434"
+    },
+    "node": "v26.8.1",
+    "vite": "8.1.5"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "candidates": [
+    {
+      "id": "trim",
+      "source": {
+        "files": {
+          "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+          "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+          "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+          "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+          "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+          "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+          "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+          "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+          "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+          "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+          "contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+          "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+          "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+          "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+          "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+          "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+        }
+      },
+      "mutation": null,
+      "cases": [
+        {
+          "id": "T01.union",
+          "title": "Disk union compaction preserves heads/outbound/journal and nonce accounting",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "trim-completes",
+              "actual": "compacted",
+              "expected": "compacted",
+              "passed": true
+            },
+            {
+              "id": "only-input-content-deleted",
+              "actual": [
+                1,
+                2
+              ],
+              "expected": [
+                1,
+                2
+              ],
+              "passed": true
+            },
+            {
+              "id": "heads-retained",
+              "actual": "6f46d427d62049e972dad11f0809100fa4ce2d590e334e91714618fc76c93cdf",
+              "expected": "6f46d427d62049e972dad11f0809100fa4ce2d590e334e91714618fc76c93cdf",
+              "passed": true
+            },
+            {
+              "id": "outbound-retained",
+              "actual": "8d03b99ae363733dc0e083e04c4a8a1f02c752bf4765cc6974a605a5da8ca3a3",
+              "expected": "8d03b99ae363733dc0e083e04c4a8a1f02c752bf4765cc6974a605a5da8ca3a3",
+              "passed": true
+            },
+            {
+              "id": "journal-retained",
+              "actual": "21210510cffbc45d434929de2ec25b1f1fd3ceaaf7f07994a2cf3ea1681c822b",
+              "expected": "21210510cffbc45d434929de2ec25b1f1fd3ceaaf7f07994a2cf3ea1681c822b",
+              "passed": true
+            },
+            {
+              "id": "reservations-never-reconstructed",
+              "actual": [
+                6,
+                {
+                  "1": 5
+                }
+              ],
+              "expected": [
+                6,
+                {
+                  "1": 5
+                }
+              ],
+              "passed": true
+            },
+            {
+              "id": "cold-replay-keeps-disk-union",
+              "actual": "ABJ",
+              "expected": "ABJ",
+              "passed": true
+            },
+            {
+              "id": "single-state-noop",
+              "actual": "unchanged",
+              "expected": "unchanged",
+              "passed": true
+            },
+            {
+              "id": "noop-no-new-reservation",
+              "actual": "cb6edda8a378de68d90a088b60353db984a358cc7b1d9451d82da0b47aed0ee0",
+              "expected": "cb6edda8a378de68d90a088b60353db984a358cc7b1d9451d82da0b47aed0ee0",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "5a75e5e9349d841a46fc8613d9a42da3b7b27bc21b31a22cbfb32f2fc5e3bbd9",
+              "expected": "5a75e5e9349d841a46fc8613d9a42da3b7b27bc21b31a22cbfb32f2fc5e3bbd9",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T02.late",
+          "title": "A late commit in an earlier reservation survives exact deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "snapshot-sequence-follows-gap",
+              "actual": [
+                1,
+                3,
+                4
+              ],
+              "expected": [
+                1,
+                3,
+                4
+              ],
+              "passed": true
+            },
+            {
+              "id": "late-batch-commits",
+              "actual": [
+                2
+              ],
+              "expected": [
+                2
+              ],
+              "passed": true
+            },
+            {
+              "id": "trim-completes",
+              "actual": "compacted",
+              "expected": "compacted",
+              "passed": true
+            },
+            {
+              "id": "late-record-survives",
+              "actual": "85c7352956d380b48215fe7a5b5029e0baba0881333f88b92dd9657f2f2404f0",
+              "expected": "85c7352956d380b48215fe7a5b5029e0baba0881333f88b92dd9657f2f2404f0",
+              "passed": true
+            },
+            {
+              "id": "exact-coverage-set",
+              "actual": [
+                2,
+                4
+              ],
+              "expected": [
+                2,
+                4
+              ],
+              "passed": true
+            },
+            {
+              "id": "late-semantic-union",
+              "actual": "ABC",
+              "expected": "ABC",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "51a5f33fcacdbf21b978d75bb48324278d2542dd3d5416b6fb34f2ba798e2f39",
+              "expected": "51a5f33fcacdbf21b978d75bb48324278d2542dd3d5416b6fb34f2ba798e2f39",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T03.concurrent",
+          "title": "Overlapping compactors retain concurrent replacement records",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "both-replacements-published",
+              "actual": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "expected": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "passed": true
+            },
+            {
+              "id": "first-compacts",
+              "actual": "compacted",
+              "expected": "compacted",
+              "passed": true
+            },
+            {
+              "id": "second-retains-on-missing-coverage",
+              "actual": "retained",
+              "expected": "retained",
+              "passed": true
+            },
+            {
+              "id": "concurrent-replacements-retained",
+              "actual": "0bd1e4b2801e040376e24705b3051bd69aaec92a3516a779b4031ebc584ba648",
+              "expected": "0bd1e4b2801e040376e24705b3051bd69aaec92a3516a779b4031ebc584ba648",
+              "passed": true
+            },
+            {
+              "id": "concurrent-replay",
+              "actual": "AB",
+              "expected": "AB",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "355b27c3d5c0bcce850b8c38c1e0cbed3def7eeaef6b00ca2e82f95921dabc84",
+              "expected": "355b27c3d5c0bcce850b8c38c1e0cbed3def7eeaef6b00ca2e82f95921dabc84",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T04.dependencies",
+          "title": "Delete-only and unresolved struct/delete bytes survive cold recovery",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "struct-retained",
+              "actual": "retained",
+              "expected": "retained",
+              "passed": true
+            },
+            {
+              "id": "pending-struct-recovers",
+              "actual": "BALATESE",
+              "expected": "BALATESE",
+              "passed": true
+            },
+            {
+              "id": "delete-retained",
+              "actual": "retained",
+              "expected": "retained",
+              "passed": true
+            },
+            {
+              "id": "pending-delete-recovers",
+              "actual": "BE",
+              "expected": "BE",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T05.unreadable",
+          "title": "Unreadable content or retained heads refuses whole trim",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "unreadable-retained-head-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "unreadable-no-record-deleted",
+              "actual": "81fa0bd2d7fd2ac3831362d9b12e9342d3cf7826b4dac92da3ac8bed7dc5aa13",
+              "expected": "81fa0bd2d7fd2ac3831362d9b12e9342d3cf7826b4dac92da3ac8bed7dc5aa13",
+              "passed": true
+            },
+            {
+              "id": "unreadable-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "d4d4a6fbeb089d96dc6c5c4a3ac2f69e29a953078e5c08bcf42aa186af770c9f",
+              "expected": "d4d4a6fbeb089d96dc6c5c4a3ac2f69e29a953078e5c08bcf42aa186af770c9f",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T06.changed",
+          "title": "Authenticated replacement of an observed record refuses deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "changed-record-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "changed-census-no-deletion",
+              "actual": "cdd0da7e04125125d20f792d3fecf49c6d3cad999f76fb01ec61650c7e8caf18",
+              "expected": "cdd0da7e04125125d20f792d3fecf49c6d3cad999f76fb01ec61650c7e8caf18",
+              "passed": true
+            },
+            {
+              "id": "repair-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "7517988cf94df85d8b2fa46637facba2b815e0d83dcec84f76b25a8e12044e47",
+              "expected": "7517988cf94df85d8b2fa46637facba2b815e0d83dcec84f76b25a8e12044e47",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T07.recheck",
+          "title": "Changed bytes after authentication are reread under the deleting transaction",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "changed-after-audit-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "changed-census-no-deletion",
+              "actual": "683706813a7e98b4e7afd19f4c172f8a711631fd42d31c6fc49eb31acb77ee1d",
+              "expected": "683706813a7e98b4e7afd19f4c172f8a711631fd42d31c6fc49eb31acb77ee1d",
+              "passed": true
+            },
+            {
+              "id": "repair-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "acfbeec4c274e790a56d37dd0f5a7068eaf125e96d2620cd444d6d69084bf00f",
+              "expected": "acfbeec4c274e790a56d37dd0f5a7068eaf125e96d2620cd444d6d69084bf00f",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T08.new-damage",
+          "title": "A newly committed unreadable update after audit prevents all deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "damage-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "changed-census-no-deletion",
+              "actual": "bbfb1d4ce7ea05a79cbcb519d5f4f5120efb749de819a197bef374a4431482a4",
+              "expected": "bbfb1d4ce7ea05a79cbcb519d5f4f5120efb749de819a197bef374a4431482a4",
+              "passed": true
+            },
+            {
+              "id": "repair-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "07ab1c5d1dfce4da33835b4122adadc6d389427fab876adc16cdc8b0446c3e2c",
+              "expected": "07ab1c5d1dfce4da33835b4122adadc6d389427fab876adc16cdc8b0446c3e2c",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T09.journal",
+          "title": "Journal damage before or after publication refuses trim and ordinary use",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "post-publication-journal-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "journal-refusal-keeps-inputs",
+              "actual": "eb6ae617e0586e7bf9608cae288e5f9e8102aebf00a755450a1320ded8d19565",
+              "expected": "eb6ae617e0586e7bf9608cae288e5f9e8102aebf00a755450a1320ded8d19565",
+              "passed": true
+            },
+            {
+              "id": "journal-refusal-keeps-journal",
+              "actual": "a9321d3cc06e03b9462ea743400963adae887abe564e0d3e9657204b304c16c1",
+              "expected": "a9321d3cc06e03b9462ea743400963adae887abe564e0d3e9657204b304c16c1",
+              "passed": true
+            },
+            {
+              "id": "journal-damage-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "93df9cd9b64cced4133f601fd64abc2161a586010161a0811f372706b850fe29",
+              "expected": "93df9cd9b64cced4133f601fd64abc2161a586010161a0811f372706b850fe29",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T10.publish-abort",
+          "title": "Replacement request success followed by abort never authorizes deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "publish-abort-no-success",
+              "actual": "storage-failed",
+              "expected": "storage-failed",
+              "passed": true
+            },
+            {
+              "id": "publish-abort-no-deletion",
+              "actual": "a40d2c7cde8fb432adc5d2e50992efce69965f3f0f940d1303fbdf31192aa883",
+              "expected": "a40d2c7cde8fb432adc5d2e50992efce69965f3f0f940d1303fbdf31192aa883",
+              "passed": true
+            },
+            {
+              "id": "aborted-seal-counted",
+              "actual": 4,
+              "expected": 4,
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "da300da582a08434420c9033910fc263af67a13ce97b451dbe2402ed07de2678",
+              "expected": "da300da582a08434420c9033910fc263af67a13ce97b451dbe2402ed07de2678",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T11.delete-abort",
+          "title": "Deletion abort keeps every input and the committed replacement",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "delete-abort-has-no-success-receipt",
+              "actual": "storage-failed",
+              "expected": "storage-failed",
+              "passed": true
+            },
+            {
+              "id": "delete-abort-keeps-every-input",
+              "actual": "5e0dc006cdf4289041e740e3672aac468d86179887af5d7ef2d4e514de66f9a4",
+              "expected": "5e0dc006cdf4289041e740e3672aac468d86179887af5d7ef2d4e514de66f9a4",
+              "passed": true
+            },
+            {
+              "id": "delete-abort-keeps-replacement",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            },
+            {
+              "id": "retry-covers-duplicates",
+              "actual": [
+                1,
+                2,
+                3
+              ],
+              "expected": [
+                1,
+                2,
+                3
+              ],
+              "passed": true
+            },
+            {
+              "id": "retry-recovers-union",
+              "actual": "AB",
+              "expected": "AB",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "a780b3cf3ee557e8ac751249bb1ea9b7d6e73b64dd5471ddc02718c7c78216a4",
+              "expected": "a780b3cf3ee557e8ac751249bb1ea9b7d6e73b64dd5471ddc02718c7c78216a4",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T12.kill-reservation",
+          "title": "Renderer death after a reservation burns budget and keeps input",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-pending-at-kill",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "reservation-counted-before-kill",
+              "actual": 4,
+              "expected": 4,
+              "passed": true
+            },
+            {
+              "id": "offline-recovery-after-kill",
+              "actual": "AB",
+              "expected": "AB",
+              "passed": true
+            },
+            {
+              "id": "fresh-maintenance-completes",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "one-state-remains",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "e9d77a438fa66e13a2867d3e5a0caf97a9efdff078f90a7466d6bf1159192929",
+              "expected": "e9d77a438fa66e13a2867d3e5a0caf97a9efdff078f90a7466d6bf1159192929",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "T13.kill-publication",
+          "title": "Renderer death after publication leaves safe duplicates for fresh maintenance",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-pending-at-kill",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "reservation-counted-before-kill",
+              "actual": 4,
+              "expected": 4,
+              "passed": true
+            },
+            {
+              "id": "offline-recovery-after-kill",
+              "actual": "AB",
+              "expected": "AB",
+              "passed": true
+            },
+            {
+              "id": "fresh-maintenance-completes",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "one-state-remains",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "2e994c853a1a03ff2db070e27dcb2b20f01e10ae248462d3f9f7efb5769235dd",
+              "expected": "2e994c853a1a03ff2db070e27dcb2b20f01e10ae248462d3f9f7efb5769235dd",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "T14.kill-deletion",
+          "title": "Renderer death after deletion recovers entirely from committed replacement",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-pending-at-kill",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "reservation-counted-before-kill",
+              "actual": 4,
+              "expected": 4,
+              "passed": true
+            },
+            {
+              "id": "offline-recovery-after-kill",
+              "actual": "AB",
+              "expected": "AB",
+              "passed": true
+            },
+            {
+              "id": "fresh-maintenance-completes",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "one-state-remains",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "3bc0ed8c002691acc36c7742103f0bc33b503c8d09751f08e432899ea212c628",
+              "expected": "3bc0ed8c002691acc36c7742103f0bc33b503c8d09751f08e432899ea212c628",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "T15.close",
+          "title": "Close drains pending crypto before an exclusive successor enters",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "close-retains-shared-permit",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "close-before-publication-keeps-input",
+              "actual": "bf1f57b0f0c4fa91579b25df48e21f260ebbad7411831000f0984767632ca4e1",
+              "expected": "bf1f57b0f0c4fa91579b25df48e21f260ebbad7411831000f0984767632ca4e1",
+              "passed": true
+            },
+            {
+              "id": "cancelled-trim-no-receipt",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "successor-after-drain",
+              "actual": "resolved",
+              "expected": "resolved",
+              "passed": true
+            },
+            {
+              "id": "close-no-late-publication",
+              "actual": "bf1f57b0f0c4fa91579b25df48e21f260ebbad7411831000f0984767632ca4e1",
+              "expected": "bf1f57b0f0c4fa91579b25df48e21f260ebbad7411831000f0984767632ca4e1",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "6cf1dc1d747c090041a28be1ef16b9234f188c60f967b4a663ec64593f61991a",
+              "expected": "6cf1dc1d747c090041a28be1ef16b9234f188c60f967b4a663ec64593f61991a",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T16.generation",
+          "title": "Generation changes after publication prevent deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "generation-change-refuses",
+              "actual": "generation-changed",
+              "expected": "generation-changed",
+              "passed": true
+            },
+            {
+              "id": "generation-change-no-deletion",
+              "actual": "85730a2dbf79644ce5fddef2edef05c46ba882f604b9fdf3d7d50374e0df59d2",
+              "expected": "85730a2dbf79644ce5fddef2edef05c46ba882f604b9fdf3d7d50374e0df59d2",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "0586cc9d11ae415982e206b25d958c1cd7e00f936d116d8a857c1061ea70b2ea",
+              "expected": "0586cc9d11ae415982e206b25d958c1cd7e00f936d116d8a857c1061ea70b2ea",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T17.single-state",
+          "title": "Malformed singleton states cannot take the no-op shortcut",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "singleton-invalid-state-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "singleton-no-mutation",
+              "actual": "0b1cbea05d8c3e7e6f51c0f4c92fd1af7942277a668c2bd51f0912b03509acad",
+              "expected": "0b1cbea05d8c3e7e6f51c0f4c92fd1af7942277a668c2bd51f0912b03509acad",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "eeeefe3596ab3c24da806ec0380b4904f3c029d5389be08d6eecf01edc3e58d6",
+              "expected": "eeeefe3596ab3c24da806ec0380b4904f3c029d5389be08d6eecf01edc3e58d6",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T18.replacement",
+          "title": "Damage to the committed replacement preserves every input",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "damage-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "changed-census-no-deletion",
+              "actual": "611ea31d424dd44ff4696d63d670647efe504f70154fbb96913a35f04c9ff472",
+              "expected": "611ea31d424dd44ff4696d63d670647efe504f70154fbb96913a35f04c9ff472",
+              "passed": true
+            },
+            {
+              "id": "repair-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "2723a69b68c05d468ecebcf86c21f68e7aa08c7d94c0e281ceb2a0a3dfd1e5a7",
+              "expected": "2723a69b68c05d468ecebcf86c21f68e7aa08c7d94c0e281ceb2a0a3dfd1e5a7",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T19.missing",
+          "title": "Missing initialized content metadata refuses trim and ordinary admission",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "missing-or-unreadable-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "failure-preserves-all-content",
+              "actual": "c38dbc2a4154410cdffe71c0645e4a09f82f29f613ea938647bbaf3ab0aaf77e",
+              "expected": "c38dbc2a4154410cdffe71c0645e4a09f82f29f613ea938647bbaf3ab0aaf77e",
+              "passed": true
+            },
+            {
+              "id": "failure-preserves-journal",
+              "actual": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "expected": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "passed": true
+            },
+            {
+              "id": "failure-closes-admission",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "4121fbcb17871a6f2a67e2da2a6832cf1774d9e46ae2451145aea24faecacffc",
+              "expected": "4121fbcb17871a6f2a67e2da2a6832cf1774d9e46ae2451145aea24faecacffc",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T20.journal-tag",
+          "title": "Unreadable journal tags prevent publication and preserve every carrier",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "missing-or-unreadable-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "failure-preserves-all-content",
+              "actual": "e39abfce56d610cdbf692ab0b44257073aa920049e15fa7a17e7e3cc52a3e91b",
+              "expected": "e39abfce56d610cdbf692ab0b44257073aa920049e15fa7a17e7e3cc52a3e91b",
+              "passed": true
+            },
+            {
+              "id": "failure-preserves-journal",
+              "actual": "7e5cd23c4568b277575ed4bc2fb1347933c2136e20ff310a05ec6d5cb48d82b4",
+              "expected": "7e5cd23c4568b277575ed4bc2fb1347933c2136e20ff310a05ec6d5cb48d82b4",
+              "passed": true
+            },
+            {
+              "id": "failure-closes-admission",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "04d2695410540a7f39b7a0c134fc8afa83c6707e51ab77bc39436176fefd6f7f",
+              "expected": "04d2695410540a7f39b7a0c134fc8afa83c6707e51ab77bc39436176fefd6f7f",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "T21.journal-recheck",
+          "title": "Journal damage after content audit aborts the deleting transaction",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "post-publication-journal-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "journal-refusal-keeps-inputs",
+              "actual": "68804ce7e4c67d91b8367e471b35c460e885ed482675f9a445a3d6ab520e481e",
+              "expected": "68804ce7e4c67d91b8367e471b35c460e885ed482675f9a445a3d6ab520e481e",
+              "passed": true
+            },
+            {
+              "id": "journal-refusal-keeps-journal",
+              "actual": "1f6cbb4cc7eac81206a617a582d2fc4b7d52129c7936ab0ee5e39f842f379f92",
+              "expected": "1f6cbb4cc7eac81206a617a582d2fc4b7d52129c7936ab0ee5e39f842f379f92",
+              "passed": true
+            },
+            {
+              "id": "journal-damage-closes-owner",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "custody-openers-retained",
+              "actual": "28d8cc63dd633457ac0ac207bcf9c6fedfee3b4965f2bd330398c14d5afe336c",
+              "expected": "28d8cc63dd633457ac0ac207bcf9c6fedfee3b4965f2bd330398c14d5afe336c",
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "range-delete",
+      "assertion": "late-record-survives",
+      "status": "detected",
+      "result": {
+        "id": "range-delete",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "2ba5afd06a33cc93c348b600218fa94a0f4c36fa188656c381e96c6a940d39c8",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "for (const record of covered) tx.objectStore('content').delete(record.seq);",
+          "to": "tx.objectStore('content').delete(IDBKeyRange.upperBound(covered.reduce((n,r)=>Math.max(n,r.seq),0)));"
+        },
+        "cases": [
+          {
+            "id": "T02.late",
+            "title": "A late commit in an earlier reservation survives exact deletion",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "snapshot-sequence-follows-gap",
+                "actual": [
+                  1,
+                  3,
+                  4
+                ],
+                "expected": [
+                  1,
+                  3,
+                  4
+                ],
+                "passed": true
+              },
+              {
+                "id": "late-batch-commits",
+                "actual": [
+                  2
+                ],
+                "expected": [
+                  2
+                ],
+                "passed": true
+              },
+              {
+                "id": "trim-completes",
+                "actual": "compacted",
+                "expected": "compacted",
+                "passed": true
+              },
+              {
+                "id": "late-record-survives",
+                "actual": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+                "expected": "b254864b0386b139d53903a90ed418816cd427a14d2882b5c4956bc721df08c2",
+                "passed": false
+              },
+              {
+                "id": "exact-coverage-set",
+                "actual": [
+                  4
+                ],
+                "expected": [
+                  2,
+                  4
+                ],
+                "passed": false
+              },
+              {
+                "id": "late-semantic-union",
+                "actual": "AC",
+                "expected": "ABC",
+                "passed": false
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "b522646959e8c9b90fb381a55529f0235ecc57b85f512959b333783cc456ac07",
+                "expected": "b522646959e8c9b90fb381a55529f0235ecc57b85f512959b333783cc456ac07",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "partial-disk-union",
+      "assertion": "cold-replay-keeps-disk-union",
+      "status": "detected",
+      "result": {
+        "id": "partial-disk-union",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "76fcd29578a7dbfbc8baaad4fa215f54490b925387f0bab947c32fe0e89754b2",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "Y.mergeUpdates(updates)",
+          "to": "Y.mergeUpdates(updates.slice(0, 1))"
+        },
+        "cases": [
+          {
+            "id": "T01.union",
+            "title": "Disk union compaction preserves heads/outbound/journal and nonce accounting",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "trim-completes",
+                "actual": "compacted",
+                "expected": "compacted",
+                "passed": true
+              },
+              {
+                "id": "only-input-content-deleted",
+                "actual": [
+                  1,
+                  2
+                ],
+                "expected": [
+                  1,
+                  2
+                ],
+                "passed": true
+              },
+              {
+                "id": "heads-retained",
+                "actual": "ffe70a3cc7b94d986f61248bb8ae209a5f7d6ea94fc35bb3b13957ec34b6a391",
+                "expected": "ffe70a3cc7b94d986f61248bb8ae209a5f7d6ea94fc35bb3b13957ec34b6a391",
+                "passed": true
+              },
+              {
+                "id": "outbound-retained",
+                "actual": "50380c4ee9a00b99d0160c17e67c5366a2a9971a1fe8da5449fef554ca5bcac3",
+                "expected": "50380c4ee9a00b99d0160c17e67c5366a2a9971a1fe8da5449fef554ca5bcac3",
+                "passed": true
+              },
+              {
+                "id": "journal-retained",
+                "actual": "a8b9e50dfdff96cff3e19c4076b8d7cfebea0bac8aeabd3507d1bfa9af858993",
+                "expected": "a8b9e50dfdff96cff3e19c4076b8d7cfebea0bac8aeabd3507d1bfa9af858993",
+                "passed": true
+              },
+              {
+                "id": "reservations-never-reconstructed",
+                "actual": [
+                  6,
+                  {
+                    "1": 5
+                  }
+                ],
+                "expected": [
+                  6,
+                  {
+                    "1": 5
+                  }
+                ],
+                "passed": true
+              },
+              {
+                "id": "cold-replay-keeps-disk-union",
+                "actual": "AJ",
+                "expected": "ABJ",
+                "passed": false
+              },
+              {
+                "id": "single-state-noop",
+                "actual": "unchanged",
+                "expected": "unchanged",
+                "passed": true
+              },
+              {
+                "id": "noop-no-new-reservation",
+                "actual": "d405fe2bdfbee3270c8669a67c4f2f7b98a4ba25b4d9faaf93d26680229cd708",
+                "expected": "d405fe2bdfbee3270c8669a67c4f2f7b98a4ba25b4d9faaf93d26680229cd708",
+                "passed": true
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "adc05ff0ed17d186869f3133ab204d17153fdacdcc56d7d80a462d40bfc3903b",
+                "expected": "adc05ff0ed17d186869f3133ab204d17153fdacdcc56d7d80a462d40bfc3903b",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ignore-record-bytes",
+      "assertion": "changed-record-refuses",
+      "status": "detected",
+      "result": {
+        "id": "ignore-record-bytes",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "a24c97aff98757d2ed136b2169fd604ebb00dff18443428306d4cf546599bfb6",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "equalBytes(a.nonce, b.nonce) &&\n  equalBytes(a.ct, b.ct)",
+          "to": "true"
+        },
+        "cases": [
+          {
+            "id": "T06.changed",
+            "title": "Authenticated replacement of an observed record refuses deletion",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "changed-record-refuses",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "changed-census-no-deletion",
+                "actual": "bd68b1a13825ab85007a2d15e98860f9c6ea5c65c3c537339d8b839148d59e08",
+                "expected": "249e3249f6215da59e8b043f74f2fb31400f45969363d079e0393e51246476e7",
+                "passed": false
+              },
+              {
+                "id": "repair-closes-owner",
+                "actual": "active",
+                "expected": "closed",
+                "passed": false
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "93ff8919135410046ea1333ec06481f5dce6c9c3be3604df908f2aa8ca88ce11",
+                "expected": "93ff8919135410046ea1333ec06481f5dce6c9c3be3604df908f2aa8ca88ce11",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-delete-census",
+      "assertion": "changed-after-audit-refuses",
+      "status": "detected",
+      "result": {
+        "id": "skip-delete-census",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "fb75202b8bcef02e245c9625773e8953c0c36148e600b618861fb35871d91ca7",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "for (const row of rows) {",
+          "to": "for (const row of []) {"
+        },
+        "cases": [
+          {
+            "id": "T07.recheck",
+            "title": "Changed bytes after authentication are reread under the deleting transaction",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "changed-after-audit-refuses",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "changed-census-no-deletion",
+                "actual": "4914020f260f7296ccad51e7da2ce78fc37028cc9fed92dc6989ff1cffbdc748",
+                "expected": "09cc3e8dcc40e6a35e501fb34e0096be218f3c3d2ded0b5309e4a43498f12198",
+                "passed": false
+              },
+              {
+                "id": "repair-closes-owner",
+                "actual": "active",
+                "expected": "closed",
+                "passed": false
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "698fc9f6186ca9f041af7eed7a0c3581301515af92fb88564033f85841ab3c14",
+                "expected": "698fc9f6186ca9f041af7eed7a0c3581301515af92fb88564033f85841ab3c14",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-journal-check",
+      "assertion": "post-publication-journal-refuses",
+      "status": "detected",
+      "result": {
+        "id": "skip-journal-check",
+        "source": {
+          "files": {
+            "custody.ts": "8e2f1494044ca508ef6e7c12615e338664bbc95b304de69f337ebfeb196bbb1d",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "custody.ts",
+          "from": "validateContentUpdates(snapshot.map((e) => e.bytes));",
+          "to": ";"
+        },
+        "cases": [
+          {
+            "id": "T09.journal",
+            "title": "Journal damage before or after publication refuses trim and ordinary use",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "post-publication-journal-refuses",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "journal-refusal-keeps-inputs",
+                "actual": "3384eb4c166bde396bd81b9e2fcb4b67c829dc49cbb0afe9e8b0e0a008f0ae01",
+                "expected": "139e80922ea81cce791be90a3d7729b5eb3f63a6229bcf0887170768b28e2093",
+                "passed": false
+              },
+              {
+                "id": "journal-refusal-keeps-journal",
+                "actual": "11599ed5533f2b3bf50ff19692e1ab5f9ae4a464f2ec89041937c7ad36b21dc4",
+                "expected": "11599ed5533f2b3bf50ff19692e1ab5f9ae4a464f2ec89041937c7ad36b21dc4",
+                "passed": true
+              },
+              {
+                "id": "journal-damage-closes-owner",
+                "actual": "active",
+                "expected": "closed",
+                "passed": false
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "81f9c8843ae2073efe3bcd2a328655a0f9ae98efcc0b5708032130e148359e99",
+                "expected": "81f9c8843ae2073efe3bcd2a328655a0f9ae98efcc0b5708032130e148359e99",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "merge-incomplete-content",
+      "assertion": "struct-retained",
+      "status": "detected",
+      "result": {
+        "id": "merge-incomplete-content",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "431e20cda1708c5d3a4908d0c7221f094b6a6d97601608a07f436e03f5dc8b5f",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "if (!complete) return receipt('retained', null);",
+          "to": ";"
+        },
+        "cases": [
+          {
+            "id": "T04.dependencies",
+            "title": "Delete-only and unresolved struct/delete bytes survive cold recovery",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "struct-retained",
+                "actual": "compacted",
+                "expected": "retained",
+                "passed": false
+              },
+              {
+                "id": "pending-struct-recovers",
+                "actual": "BALATESE",
+                "expected": "BALATESE",
+                "passed": true
+              },
+              {
+                "id": "delete-retained",
+                "actual": "compacted",
+                "expected": "retained",
+                "passed": false
+              },
+              {
+                "id": "pending-delete-recovers",
+                "actual": "BE",
+                "expected": "BE",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "early-delete-receipt",
+      "assertion": "delete-abort-has-no-success-receipt",
+      "status": "detected",
+      "result": {
+        "id": "early-delete-receipt",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "caf60a51a9e438350dfd6f1c24c84909a0361a1f55f7b484e1158d2452fe16bd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentDatabase.ts",
+          "from": "          value = result;",
+          "to": "          value = result; if (mode === 'readwrite' && result === true) resolve(value);"
+        },
+        "cases": [
+          {
+            "id": "T11.delete-abort",
+            "title": "Deletion abort keeps every input and the committed replacement",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "delete-abort-has-no-success-receipt",
+                "expected": "storage-failed",
+                "passed": false
+              },
+              {
+                "id": "delete-abort-keeps-every-input",
+                "actual": "8acd922396893c6fda4cb1e222692701d6cd08942c9f8cff064671912e0890fd",
+                "expected": "8acd922396893c6fda4cb1e222692701d6cd08942c9f8cff064671912e0890fd",
+                "passed": true
+              },
+              {
+                "id": "delete-abort-keeps-replacement",
+                "actual": 3,
+                "expected": 3,
+                "passed": true
+              },
+              {
+                "id": "retry-covers-duplicates",
+                "actual": [
+                  1,
+                  2,
+                  3
+                ],
+                "expected": [
+                  1,
+                  2,
+                  3
+                ],
+                "passed": true
+              },
+              {
+                "id": "retry-recovers-union",
+                "actual": "AB",
+                "expected": "AB",
+                "passed": true
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "e7aa4793a3a124ae3f364d1d985e01e9b2310d4141384ede206a3c94febd566a",
+                "expected": "e7aa4793a3a124ae3f364d1d985e01e9b2310d4141384ede206a3c94febd566a",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-final-journal-census",
+      "assertion": "post-publication-journal-refuses",
+      "status": "detected",
+      "result": {
+        "id": "skip-final-journal-census",
+        "source": {
+          "files": {
+            "custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "contentCompaction.ts": "3bcb83297f3d68f789ffc5d286e10d087ec871707781b831be4987c18da26d55",
+            "yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+            "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "contentCompaction.ts",
+          "from": "          owner.checkJournal();",
+          "to": "          ;"
+        },
+        "cases": [
+          {
+            "id": "T21.journal-recheck",
+            "title": "Journal damage after content audit aborts the deleting transaction",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "post-publication-journal-refuses",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "journal-refusal-keeps-inputs",
+                "actual": "385cb00220cee3bfb1be9f32d4830cb5ef0e8958a0769b355a1f8f3b3b2a050d",
+                "expected": "8263fa721eeb26147988757d227d580a0f4d0dff50deda445d68e91c6ec99048",
+                "passed": false
+              },
+              {
+                "id": "journal-refusal-keeps-journal",
+                "actual": "ec44e860029f69c2e1e34e3c8db2be8076d3cc72c0563d0a9a1a30bab22776e4",
+                "expected": "ec44e860029f69c2e1e34e3c8db2be8076d3cc72c0563d0a9a1a30bab22776e4",
+                "passed": true
+              },
+              {
+                "id": "journal-damage-closes-owner",
+                "actual": "active",
+                "expected": "closed",
+                "passed": false
+              },
+              {
+                "id": "custody-openers-retained",
+                "actual": "3a47e877286e09dc047587a79dfe1185b8708425d1e9e5f3cf1c2b25024a17c8",
+                "expected": "3a47e877286e09dc047587a79dfe1185b8708425d1e9e5f3cf1c2b25024a17c8",
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Explicit JournalSession content compaction in generation 1. No default UI/scheduler, Account admission, destructive day archival, key retirement or seeded legacy cutover.",
+    "Real IndexedDB/Web Locks/WebCrypto/WASM and renderer death on one Chromium/macOS host. Controlled native callbacks and adapter faults are identified; no power-loss or supported-population claim.",
+    "Synthetic required identity and creation checkers; actual custody enrollment/content initialization and journal owners. No caller-supplied document or coverage authority.",
+    "Input byte merging retains unresolved structs/delete sets. Bounded state size and eight-census contention limit; full scan memory/performance and independent review remain owed."
+  ],
+  "exitCode": 0,
+  "finished": "2026-09-09T08:03:22.815Z"
+}

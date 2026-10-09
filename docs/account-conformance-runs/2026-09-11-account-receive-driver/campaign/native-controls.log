@@ -1,0 +1,14 @@
+(node:34724) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34724) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:34724) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ final offline dispatch guard prevents a queued poll from fetching (17546.589833ms)
+✔ final pressure dispatch guard prevents a queued poll from fetching (16897.400458ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37452.968792

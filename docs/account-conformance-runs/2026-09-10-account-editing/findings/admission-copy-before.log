@@ -1,0 +1,264 @@
+8:32:21 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+8:32:21 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+8:32:21 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C01.pending-struct: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:32:32 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.synchronous: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:32:42 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.ordered-refusal: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:32:53 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.retry: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:03 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C01.remote-basis: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:14 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C02.pending-delete: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:24 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.slicing: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:34 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.capacity: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:45 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.barrier: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:33:55 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C03.timer: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:34:05 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C04.close: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:34:15 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+admission C09.persisted-yjs: error — page.waitForFunction: Timeout 10000ms exceeded.
+8:34:26 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/admission/2026-09-10T18-32-20.331Z/admission/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)

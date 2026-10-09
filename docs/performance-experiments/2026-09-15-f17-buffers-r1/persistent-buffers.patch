@@ -1,0 +1,1317 @@
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index ddac2fa1..24edfd3f 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -6,6 +6,7 @@ import {
+   workspaceUndo,
+   forkWorkspaceHistory,
+   createSelectionHistory,
++  isTextBufferBasis,
+   type YUndoManager,
+ } from './yjs';
+ import {
+@@ -149,6 +150,21 @@ export const createAdmittedWorkspace = async (
+   if (localHandoff && options.captureSources)
+     throw Error('Local preparation cannot capture Account sources');
+   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
++  // Private experiment: one retired predecessor, never more than two workspace histories.
++  let spare: { state: State; basis: State; update: Bytes } | undefined;
++  const stable = new WeakMap<YUndoManager, boolean>();
++  const transferred = new WeakSet<PreparedWorkspaceState>();
++  const transitions = new WeakMap<PreparedWorkspaceState, { update: Bytes; textOnly: boolean }>();
++  const resetSpare = () => {
++    if (!spare) return;
++    const old = spare;
++    spare = undefined;
++    try {
++      old.update.fill(0);
++    } finally {
++      dispose(old.state);
++    }
++  };
+   const archiveProjection = createArchiveProjection();
+   const commands = createWorkspaceCommandRunner();
+   const identity = structuredClone(options.identity);
+@@ -190,14 +206,72 @@ export const createAdmittedWorkspace = async (
+     const intent = JSON.parse(
+       new TextDecoder('utf-8', { fatal: true }).decode(input),
+     ) as WorkspaceIntent;
+-    const history = selectionHistory
+-        ? selectionHistory.fork(accepted.history, human)
+-        : forkWorkspaceHistory(accepted.history, human),
++    const basis = accepted;
++    const textCommand = intent.command.kind === 'text';
++    let reusable = false;
++    if (selectionHistory && scope && textCommand) {
++      let clean = stable.get(basis.history);
++      if (clean === undefined) {
++        clean = isTextBufferBasis(basis.history.doc);
++        stable.set(basis.history, clean);
++      }
++      reusable =
++        clean &&
++        !(
++          intent.command.kind === 'text' &&
++          intent.command.action.name === 'insert' &&
++          /[\uD800-\uDFFF]/.test(intent.command.action.text)
++        );
++    }
++    if (!reusable || spare?.basis !== basis) resetSpare();
++    let state: State;
++    if (spare) {
++      const old = spare;
++      spare = undefined;
++      state = old.state;
++      try {
++        scope!.ownState(state);
++        selectionHistory!.catchUpText(state.history, basis.history, old.update);
++      } finally {
++        old.update.fill(0);
++      }
++      state.selections = new Map();
++      state.group = intent.group;
++      state.value = false;
++    } else {
++      const history = selectionHistory
++        ? selectionHistory.fork(basis.history, human)
++        : forkWorkspaceHistory(basis.history, human);
++      state = { history, selections: new Map(), group: intent.group, value: false };
++      scope?.ownState(state);
++    }
++    const history = state.history,
+       doc = history.doc;
+-    commands.inherit(accepted.history, history);
++    commands.inherit(basis.history, history);
+     doc.clientID = writer;
+-    const state: State = { history, selections: new Map(), group: intent.group, value: false };
+-    scope?.ownState(state);
++    let textOnly = reusable;
++    const changed = (transaction: Y.Transaction) => {
++      if (!textOnly) return;
++      for (const type of transaction.changed.keys()) {
++        const parent = type.parent;
++        const id = parent instanceof Y.Map ? parent.get('id') : undefined;
++        if (
++          !(
++            type instanceof Y.Text &&
++            ((type as unknown) === doc.share.get('master') ||
++              (parent instanceof Y.Map &&
++                parent.parent === doc.getMap('cards') &&
++                typeof id === 'string' &&
++                doc.getMap('cards').get(id) === parent &&
++                parent.get('text') === type))
++          )
++        ) {
++          textOnly = false;
++          break;
++        }
++      }
++    };
++    doc.on('afterTransaction', changed);
+     const selections = state.selections;
+     const updates: Bytes[] = [],
+       sources: import('./sourceCapture').SourceUpdate[] = [];
+@@ -275,6 +349,12 @@ export const createAdmittedWorkspace = async (
+       }
+       state.value = result.value;
+       const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
++      if (selectionHistory && scope) {
++        transitions.set(state, { update, textOnly });
++        // Unknown/structural transitions rescan later. A conservative negative text fact may persist.
++        if (textOnly) stable.set(history, true);
++        else if (textCommand && stable.get(basis.history) === false) stable.set(history, false);
++      }
+       return {
+         state,
+         update,
+@@ -295,6 +375,7 @@ export const createAdmittedWorkspace = async (
+       }
+       throw error;
+     } finally {
++      doc.off('afterTransaction', changed);
+       doc.off('update', capture);
+       history.off('stack-item-added', captureItem);
+       history.off('stack-item-updated', captureItem);
+@@ -306,8 +387,16 @@ export const createAdmittedWorkspace = async (
+     const previous = accepted;
+     accepted = state;
+     verifiedRevision = adoptedRevision = revision;
+-    dispose(previous);
++    const transition = transitions.get(state);
++    transitions.delete(state);
++    let retired: PreparedWorkspaceState | undefined;
++    if (selectionHistory && previous && transferred.has(previous) && transition?.textOnly) {
++      spare = { state: previous, basis: state as State, update: transition.update.slice() };
++      retired = previous;
++    } else dispose(previous);
++    transferred.add(state);
+     outcomes.set(state.group, state.value);
++    return retired;
+   };
+   let session: AdmissionSession;
+   try {
+@@ -371,6 +460,7 @@ export const createAdmittedWorkspace = async (
+   let closing: Promise<void> | undefined,
+     repairQueued = false;
+   const teardown = () => {
++    resetSpare();
+     archiveProjection.clear();
+     dispose(pending);
+     dispose(accepted);
+@@ -480,6 +570,8 @@ export const createAdmittedWorkspace = async (
+         } else {
+           // Invalidate before apply and publication: a subscriber may submit input before
+           // the queued membership repair runs, including when dependencies become visible.
++          resetSpare();
++          stable.delete(accepted!.history);
+           commands.invalidate(accepted!.history);
+           applyUpdate(accepted!.history.doc, event.update, 'received');
+         }
+diff --git a/src/crdt/workspacePreparation.ts b/src/crdt/workspacePreparation.ts
+index f03bdce9..62d30077 100644
+--- a/src/crdt/workspacePreparation.ts
++++ b/src/crdt/workspacePreparation.ts
+@@ -34,7 +34,7 @@ export interface PreparedWorkspace extends PreparationBytes {
+   readonly carrierBytes?: Bytes;
+ }
+ export interface PreparationScope {
+-  /** Transfer a fresh, detached history immediately after construction, before running commands. */
++  /** Transfer a detached history, fresh or explicitly retired, before running commands. */
+   ownState(state: PreparedWorkspaceState): void;
+   /** Register temporary buffers as they are created, so a thrown command cannot leak them. */
+   ownBytes(bytes: Bytes): Bytes;
+@@ -44,7 +44,7 @@ export const localWorkspacePreparation: unique symbol = Symbol('localWorkspacePr
+ export interface LocalWorkspacePreparation {
+   verifiedRevision(): number;
+   command(context: PreparationContext, input: Bytes, scope: PreparationScope): PreparationBytes;
+-  accept(state: PreparedWorkspaceState, revision: number): void;
++  accept(state: PreparedWorkspaceState, revision: number): PreparedWorkspaceState | void;
+   fail(cause: unknown): void;
+ }
+ type Phase = 'issued' | 'preparing' | 'prepared' | 'adopting' | 'adopted';
+@@ -90,6 +90,8 @@ export const createWorkspacePreparation = (options: {
+     rejectClose: ((error: unknown) => void) | undefined;
+   // Remember transferred histories too: a late callback must not destroy accepted state.
+   const knownDocs = new WeakSet<Y.Doc>();
++  const transferred = new WeakSet<PreparedWorkspaceState>();
++  const retired = new WeakMap<Y.Doc, PreparedWorkspaceState>();
+   const destroy = (state: PreparedWorkspaceState) => {
+     try {
+       state.history.destroy();
+@@ -213,7 +215,20 @@ export const createWorkspacePreparation = (options: {
+     const scope: PreparationScope = Object.freeze({
+       ownState(state: PreparedWorkspaceState) {
+         if (!(state.history instanceof Y.UndoManager)) throw Error('Invalid prepared history');
+-        if (knownDocs.has(state.history.doc)) throw Error('History was already owned');
++        if (
++          knownDocs.has(state.history.doc) &&
++          !(
++            slot === entry &&
++            !entry.invalid &&
++            entry.phase === 'preparing' &&
++            !closed &&
++            !entry.state &&
++            retired.get(state.history.doc) === state &&
++            !state.history.doc.isDestroyed
++          )
++        )
++          throw Error('History was already owned');
++        retired.delete(state.history.doc);
+         knownDocs.add(state.history.doc);
+         if (entry.invalid || entry.phase !== 'preparing' || closed || entry.state) {
+           destroy(state);
+@@ -340,6 +355,7 @@ export const createWorkspacePreparation = (options: {
+       const state = entry.state!;
+       delete entry.state;
+       entry.phase = 'adopted';
++      transferred.add(state);
+       return state;
+     } catch (error) {
+       closed = true;
+@@ -355,6 +371,23 @@ export const createWorkspacePreparation = (options: {
+     prepare,
+     borrow,
+     adopt,
++    /** Trusted composition returns a previous transferred state after adopting its successor.
++     * Registration permits one later acquisition; the workspace still owns spare disposal. */
++    retire(state: PreparedWorkspaceState) {
++      live();
++      if (
++        !slot ||
++        slot.phase !== 'adopted' ||
++        slot.invalid ||
++        state === slot.prepared?.state ||
++        !transferred.has(state) ||
++        state.history.doc.isDestroyed ||
++        retired.has(state.history.doc)
++      )
++        throw Error('History cannot be retired');
++      transferred.delete(state);
++      retired.set(state.history.doc, state);
++    },
+     /** Copy any remaining intent before finishing. The adopted history belongs to the workspace. */
+     finish(context: PreparationContext) {
+       abandon(current(context, 'adopted'));
+diff --git a/src/crdt/admissionQueue.ts b/src/crdt/admissionQueue.ts
+index 7f29314d..702a5407 100644
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -368,7 +368,8 @@ export const createAdmissionOwner = async (
+           const candidate = preparation!.adopt(job.preparation, (prepared) =>
+             sameDocState(canonical, prepared.state.history.doc),
+           );
+-          local!.accept(candidate, revision);
++          const retired = local!.accept(candidate, revision);
++          if (retired) preparation!.retire(retired);
+         } catch (cause) {
+           // Persistence already succeeded. Never retry this input or expose the failed projection.
+           const error = new AdmissionError(
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index 3917c926..9206b2bc 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -624,24 +624,7 @@ const forkHistory = (
+         }
+     });
+     const manager = workspaceUndo(doc, origin);
+-    const copySet = (value: (typeof source.undoStack)[number]['insertions']) => {
+-      const copy = Y.createDeleteSet();
+-      for (const [client, ranges] of value.clients)
+-        copy.clients.set(
+-          client,
+-          ranges.map((r) => ({ clock: r.clock, len: r.len })),
+-        );
+-      return copy;
+-    };
+-    const copyStack = (stack: typeof source.undoStack) =>
+-      stack.map((item) => ({
+-        insertions: copySet(item.insertions),
+-        deletions: copySet(item.deletions),
+-        meta: copyMetadata(item.meta),
+-      }));
+-    manager.undoStack = copyStack(source.undoStack);
+-    manager.redoStack = copyStack(source.redoStack);
+-    manager.lastChange = source.lastChange;
++    copyHistoryStacks(source, manager, copyMetadata);
+     return manager;
+   } catch (error) {
+     doc.destroy();
+@@ -649,6 +632,82 @@ const forkHistory = (
+   }
+ };
+ 
++/** Every mutable range and outer metadata map remains detached. */
++const copyHistoryStacks = (
++  source: YUndoManager,
++  target: YUndoManager,
++  copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
++) => {
++  const copySet = (value: (typeof source.undoStack)[number]['insertions']) => {
++    const copy = Y.createDeleteSet();
++    for (const [client, ranges] of value.clients)
++      copy.clients.set(
++        client,
++        ranges.map((r) => ({ clock: r.clock, len: r.len })),
++      );
++    return copy;
++  };
++  const copyStack = (stack: typeof source.undoStack) =>
++    stack.map((item) => ({
++      insertions: copySet(item.insertions),
++      deletions: copySet(item.deletions),
++      meta: copyMetadata(item.meta),
++    }));
++  target.undoStack = copyStack(source.undoStack);
++  target.redoStack = copyStack(source.redoStack);
++  target.lastChange = source.lastChange;
++};
++
++/** Conservative once-per-basis guard for delta catch-up to equal a fresh normalized fork.
++ * Reject every surrogate, including complete pairs; extending that domain is separate work. */
++export const isTextBufferBasis = (doc: YDoc): boolean => {
++  if (hasPendingUpdates(doc) || doc.isDestroyed || doc.gc) return false;
++  const cleanString = (s: string) => !/[\uD800-\uDFFF]/.test(s);
++  const seen = new Set<object>();
++  const value = (v: unknown): boolean => {
++    if (typeof v === 'string') return cleanString(v);
++    if (v === null || typeof v === 'boolean' || typeof v === 'undefined') return true;
++    if (typeof v === 'number') return Number.isFinite(v);
++    if (!v || typeof v !== 'object' || seen.has(v)) return false;
++    if (!Array.isArray(v) && Object.getPrototypeOf(v) !== Object.prototype) return false;
++    if (
++      Array.isArray(v) &&
++      (Reflect.ownKeys(v).length !== v.length + 1 ||
++        !Array.from({ length: v.length }, (_, i) => Object.hasOwn(v, i)).every(Boolean))
++    )
++      return false;
++    seen.add(v);
++    const result = Reflect.ownKeys(v).every((key) => {
++      if (typeof key !== 'string' || !cleanString(key)) return false;
++      const d = Object.getOwnPropertyDescriptor(v, key)!;
++      return (
++        key !== '__proto__' &&
++        'value' in d &&
++        (d.enumerable || (Array.isArray(v) && key === 'length')) &&
++        value(d.value)
++      );
++    });
++    seen.delete(v);
++    return result;
++  };
++  if (![...doc.share.keys()].every(cleanString)) return false;
++  for (const structs of doc.store.clients.values())
++    for (const item of structs) {
++      if (!(item instanceof Y.Item)) continue;
++      if (item.parentSub && !cleanString(item.parentSub)) return false;
++      const c = item.content;
++      if (c instanceof Y.ContentString) {
++        if (!cleanString(c.str)) return false;
++      } else if (c instanceof Y.ContentAny) {
++        if (!value(c.arr)) return false;
++      } else if (c instanceof Y.ContentType) {
++        if (!(c.type instanceof Y.Text || c.type instanceof Y.Map || c.type instanceof Y.Array))
++          return false;
++      } else if (!(c instanceof Y.ContentDeleted)) return false;
++    }
++  return true;
++};
++
+ /** Explicit private Local history mode. Never infer it from a metadata shape or token lookalike. */
+ export const createSelectionHistory = () => {
+   const snapshots = createSelectionSnapshots();
+@@ -676,6 +735,16 @@ export const createSelectionHistory = () => {
+       check(history);
+       return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+     },
++    /** A retired predecessor catches up only across an owner-proven text transition.
++     * Applying a native delta normalizes new content; text does not create redone links. */
++    catchUpText(target: YUndoManager, source: YUndoManager, update: Uint8Array): void {
++      check(target);
++      check(source);
++      if (target === source) throw Error('Text buffer aliases accepted history');
++      applyUpdate(target.doc, update, 'text-buffer-catch-up');
++      copyHistoryStacks(source, target, (meta) => snapshots.fork(meta));
++      if (!sameDocState(target.doc, source.doc)) throw Error('Text buffer catch-up mismatch');
++    },
+     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+       check(history);
+       return snapshots.capture(positions);
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index 27d663d7..6dda17c9 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -4,6 +4,7 @@ import * as fc from 'fast-check';
+ import {
+   localWorkspacePreparation,
+   type PreparedWorkspaceState,
++  type PreparationScope,
+ } from '../src/crdt/workspacePreparation';
+ import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
+ import { createAdmissionOwner } from '../src/crdt/admissionQueue';
+@@ -52,6 +53,8 @@ const makeFixture = async (
+     fail = false,
+     release: (() => void) | undefined,
+     gate: Promise<void> | undefined;
++  const owned: { state: PreparedWorkspaceState; scope: PreparationScope }[] = [],
++    retired: PreparedWorkspaceState[] = [];
+   const preparations: number[] = [],
+     writeReferences: Uint8Array[] = [];
+   let corrupt = false;
+@@ -101,6 +104,11 @@ const makeFixture = async (
+           ? {
+               [localWorkspacePreparation]: {
+                 ...local,
++                accept(state, revision) {
++                  const previous = local.accept(state, revision);
++                  if (previous) retired.push(previous);
++                  return previous;
++                },
+                 command(context, input, scope) {
+                   preparations.push(context.writer);
+                   let candidate: PreparedWorkspaceState | undefined;
+@@ -108,6 +116,7 @@ const makeFixture = async (
+                     ...scope,
+                     ownState(state) {
+                       scope.ownState(state);
++                      owned.push({ state, scope });
+                       candidate = state;
+                     },
+                   });
+@@ -130,6 +139,8 @@ const makeFixture = async (
+   doc.outgoing((b) => emitted.push(b));
+   return {
+     doc,
++    owned,
++    retired,
+     preparations,
+     writeReferences,
+     corrupt: () => {
+@@ -1182,3 +1193,290 @@ it('selection owner outlives its retained write and closes only after all worksp
+     spy.mockRestore();
+   }
+ });
++
++describe('persistent text buffers', () => {
++  const insert = (text: string) => ({ name: 'insert' as const, text });
++  it('alternates two actual histories, detaches ranges and erases consumed delta copies', async () => {
++    const original = historySeam.createSelectionHistory,
++      copies: Uint8Array[] = [];
++    const spy = vi.spyOn(historySeam, 'createSelectionHistory').mockImplementation(() => {
++      const owner = original();
++      return {
++        ...owner,
++        catchUpText(target, source, update) {
++          copies.push(update);
++          return owner.catchUpText(target, source, update);
++        },
++      };
++    });
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      const before = f.doc.read();
++      for (let i = 0; i < 40; i++) {
++        await master(f.doc).input(insert('x')).accepted;
++        expect(f.doc.read().master).toBe('x'.repeat(i + 1));
++        const current = f.owned.at(-1)!.state.history,
++          other = f.retired.at(-1)!.history;
++        expect(current).not.toBe(other);
++        for (let j = 0; j < Math.min(current.undoStack.length, other.undoStack.length); j++) {
++          const a = current.undoStack[j]!,
++            b = other.undoStack[j]!;
++          expect(a).not.toBe(b);
++          expect(a.meta).not.toBe(b.meta);
++          expect(a.insertions).not.toBe(b.insertions);
++          for (const [client, ranges] of a.insertions.clients) {
++            const old = b.insertions.clients.get(client);
++            if (old?.length && ranges.length) expect(ranges[0]).not.toBe(old[0]);
++          }
++        }
++      }
++      expect(new Set(f.owned.map((x) => x.state.history.doc)).size).toBe(2);
++      expect(copies).toHaveLength(39);
++      expect(copies.every((b) => b.every((v) => v === 0))).toBe(true);
++      expect(before.master).toBe('');
++      const current = f.owned.at(-1)!.state;
++      for (const old of f.owned.slice(0, -1)) {
++        expect(() => old.scope.ownState(current)).toThrow(/already owned/);
++        expect(current.history.doc.isDestroyed).toBe(false);
++      }
++      for (let i = 0; i < 40; i++) await f.doc.command({ kind: 'undo' }).accepted;
++      expect(f.doc.read().master).toBe('');
++      for (let i = 0; i < 40; i++) await f.doc.command({ kind: 'redo' }).accepted;
++      expect(f.doc.read().master).toBe('x'.repeat(40));
++    } finally {
++      await f.doc.close();
++      spy.mockRestore();
++    }
++    expect(f.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
++  });
++
++  it('reused candidates remain private under refusal, retry, discard and drained close', async () => {
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      await master(f.doc).input(insert('kept')).accepted;
++      const accepted = f.owned.at(-1)!.state,
++        retired = f.retired.at(-1)!;
++      f.refuse();
++      f.fail();
++      const ticket = master(f.doc).input(insert('later'));
++      await until(() => f.doc.status.state === 'blocked');
++      expect(f.owned.at(-1)!.state).toBe(retired);
++      expect(f.doc.read().master).toBe('kept');
++      expect(accepted.history.doc.getText('master').toString()).toBe('kept');
++      const count = f.owned.length;
++      f.doc.retry();
++      await ticket.accepted;
++      expect(f.owned).toHaveLength(count);
++      expect(f.doc.read().master).toBe('keptlater');
++      f.fail();
++      const discarded = master(f.doc).input(insert('discarded'));
++      await until(() => f.doc.status.state === 'blocked');
++      const abandoned = f.owned.at(-1)!.state;
++      f.doc.discardPending();
++      await expect(discarded.accepted).rejects.toHaveProperty('code', 'discarded');
++      expect(abandoned.history.doc.isDestroyed).toBe(true);
++      expect(f.doc.read().master).toBe('keptlater');
++      await master(f.doc).input(insert('new')).accepted;
++      f.pause();
++      const writes = f.writeReferences.length;
++      const late = master(f.doc).input(insert('late'));
++      await until(() => f.writeReferences.length > writes);
++      const pending = f.owned.at(-1)!.state;
++      const closing = f.doc.close();
++      expect(pending.history.doc.isDestroyed).toBe(false);
++      f.resume();
++      await closing;
++      await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
++      expect(f.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
++    } finally {
++      f.resume();
++      await f.doc.close();
++    }
++  });
++
++  it('resets retired buffers before remote and structural changes, then rebuilds eligibility', async () => {
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      await master(f.doc).input(insert('A')).accepted;
++      let retired = f.retired.at(-1)!;
++      await f.doc.receive(remote(f.doc, (d) => d.getText('master').insert(0, 'R'))).accepted;
++      expect(retired.history.doc.isDestroyed).toBe(true);
++      await master(f.doc).input(insert('B'), selection(2)).accepted;
++      retired = f.retired.at(-1)!;
++      await f.doc.command({ kind: 'device-label', name: 'updated' }).accepted;
++      expect(retired.history.doc.isDestroyed).toBe(true);
++      await master(f.doc).input(insert('C')).accepted;
++      const nextSpare = f.retired.at(-1)!;
++      await master(f.doc).input(insert('D')).accepted;
++      expect(f.owned.at(-1)!.state).toBe(nextSpare);
++      expect(f.doc.read().master).toBe('RABCD');
++      expect(f.doc.read().deviceName).toBe('updated');
++    } finally {
++      await f.doc.close();
++    }
++  });
++
++  it('surrogate bases retain fresh-fork normalization rather than reuse', async () => {
++    for (const text of ['emoji \u{1f600}', 'lone \ud800', 'lone \udc00']) {
++      const seed = createDoc();
++      seed.getText('master').insert(0, text);
++      const f = await makeFixture(new Uint8Array(encodeState(seed)), 'local-snapshots');
++      seed.destroy();
++      try {
++        for (let i = 0; i < 4; i++) await master(f.doc).input(insert('x'), selection(0)).accepted;
++        // Valid pairs remain excluded; native encoding already normalizes lone halves in seed.
++        if (text.includes('\u{1f600}')) expect(f.retired).toHaveLength(0);
++        expect(f.doc.read().master).toBe(
++          'xxxx' + new TextDecoder().decode(new TextEncoder().encode(text)),
++        );
++      } finally {
++        await f.doc.close();
++      }
++    }
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      await master(f.doc).input(insert('A')).accepted;
++      const old = f.retired.at(-1)!;
++      await master(f.doc).input(insert('\ud800')).accepted;
++      expect(old.history.doc.isDestroyed).toBe(true);
++      await master(f.doc).input(insert('B')).accepted;
++      expect(f.doc.read().master).toBe('A\ufffdB');
++    } finally {
++      await f.doc.close();
++    }
++  });
++
++  it('full catch-up comparison refuses corrupted retired content before another append', async () => {
++    const f = await makeFixture(undefined, 'local-snapshots');
++    try {
++      await master(f.doc).input(insert('A')).accepted;
++      const spare = f.retired.at(-1)!,
++        count = f.emitted.length;
++      spare.history.doc.getMap('meta').set('uncovered', 'drift');
++      const ticket = master(f.doc).input(insert('B'));
++      await until(() => f.doc.status.state === 'blocked');
++      expect(f.doc.read().master).toBe('A');
++      expect(f.emitted).toHaveLength(count);
++      expect(spare.history.doc.isDestroyed).toBe(true);
++      f.doc.discardPending();
++      await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
++    } finally {
++      await f.doc.close();
++    }
++  });
++
++  it('generated buffer histories match fresh forks through deletion, grouping, reset and refusal', async () => {
++    const actions = fc.array(
++      fc.record({
++        kind: fc.constantFrom(
++          'insert',
++          'delete',
++          'undo',
++          'redo',
++          'remote',
++          'metadata',
++          'retry',
++          'discard',
++          'noop',
++          'unicode',
++          'sliced',
++        ),
++        n: fc.integer({ min: 0, max: 20 }),
++      }),
++      { minLength: 15, maxLength: 35 },
++    );
++    await fc.assert(
++      fc.asyncProperty(actions, async (generated) => {
++        const a = await makeFixture(undefined, 'local-handoff'),
++          b = await makeFixture(undefined, 'local-snapshots');
++        const prefix = [
++          'insert',
++          'insert',
++          'delete',
++          'undo',
++          'redo',
++          'retry',
++          'discard',
++          'remote',
++          'metadata',
++          'noop',
++        ];
++        try {
++          for (const step of [...prefix.map((kind) => ({ kind, n: 1 })), ...generated]) {
++            const outputs = [];
++            for (const f of [a, b]) {
++              const text = f.doc.read().master,
++                at = Math.min(step.n, text.length);
++              if (
++                ['insert', 'delete', 'retry', 'discard', 'noop', 'unicode', 'sliced'].includes(
++                  step.kind,
++                )
++              ) {
++                if (step.kind === 'retry' || step.kind === 'discard') {
++                  f.refuse();
++                  f.fail();
++                }
++                const inserted =
++                  step.kind === 'unicode'
++                    ? '\u{1f600}'
++                    : step.kind === 'sliced'
++                      ? 'q'.repeat(1001)
++                      : step.kind === 'noop'
++                        ? ''
++                        : 'x';
++                const action =
++                  step.kind === 'delete' ? { name: 'backspace' as const } : insert(inserted);
++                const ticket = master(f.doc).input(action, selection(at));
++                if (step.kind === 'retry' || step.kind === 'discard') {
++                  await until(() => f.doc.status.state === 'blocked');
++                  expect(f.doc.read().master).toBe(text);
++                  if (step.kind === 'discard') {
++                    f.doc.discardPending();
++                    await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
++                    outputs.push('discarded');
++                    continue;
++                  }
++                  const calls = f.preparations.length;
++                  f.doc.retry();
++                  await ticket.accepted;
++                  expect(f.preparations).toHaveLength(calls);
++                }
++                outputs.push((await ticket.accepted).revision);
++              } else if (step.kind === 'remote') {
++                await f.doc.receive(
++                  remote(f.doc, (d) => d.getText('master').insert(d.getText('master').length, 'R')),
++                ).accepted;
++                outputs.push('remote');
++              } else
++                outputs.push(
++                  (
++                    await f.doc.command(
++                      step.kind === 'metadata'
++                        ? { kind: 'device-label', name: 'device' + step.n }
++                        : { kind: step.kind as 'undo' | 'redo' },
++                    ).accepted
++                  ).value,
++                );
++            }
++            expect(outputs[1]).toEqual(outputs[0]);
++            expect(b.doc.read()).toEqual(a.doc.read());
++            expect(master(b.doc).read()).toEqual(master(a.doc).read());
++            expect(b.doc.status.revision).toBe(a.doc.status.revision);
++          }
++          const replay = createDoc();
++          try {
++            for (const bytes of [...b.disk, ...b.wal]) applyUpdate(replay, bytes);
++            expect(replay.getText('master').toString()).toBe(b.doc.read().master);
++          } finally {
++            replay.destroy();
++          }
++        } finally {
++          await a.doc.close();
++          await b.doc.close();
++        }
++        expect(b.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
++      }),
++      { seed: 171510, numRuns: 60 },
++    );
++  }, 30000);
++});
+diff --git a/test/historyRetirement.test.ts b/test/historyRetirement.test.ts
+new file mode 100644
+index 00000000..68cf590e
+--- /dev/null
++++ b/test/historyRetirement.test.ts
+@@ -0,0 +1,147 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import { Y, createHistoryDoc, workspaceUndo } from '../src/crdt/yjs';
++import {
++  createWorkspacePreparation,
++  type PreparedWorkspaceState,
++  type PreparationScope,
++} from '../src/crdt/workspacePreparation';
++
++const fixture = () => {
++  const head = { kind: 'local' as const, job: {}, slice: 0, revision: 0, writer: 71 };
++  let verified = 0;
++  const owner = createWorkspacePreparation({ head: () => head, verifiedRevision: () => verified });
++  const states: PreparedWorkspaceState[] = [],
++    scopes: PreparationScope[] = [];
++  const fresh = () => {
++    const history = workspaceUndo(createHistoryDoc(), {});
++    history.doc.clientID = head.writer;
++    const state = { history, selections: new Map(), group: 1, value: true };
++    states.push(state);
++    return state;
++  };
++  const prepare = (state = fresh()) => {
++    head.job = {};
++    const context = owner.issue();
++    owner.prepare(
++      context,
++      new Uint8Array([1]),
++      128,
++      (_ctx, _input, scope) => {
++        scopes.push(scope);
++        scope.ownState(state);
++        return { update: new Uint8Array([0, 0]) };
++      },
++      () => true,
++    );
++    return { context, state };
++  };
++  const adopt = (p: ReturnType<typeof prepare>) => {
++    head.revision++;
++    const state = owner.adopt(p.context, () => true);
++    verified = head.revision;
++    return state;
++  };
++  return {
++    owner,
++    head,
++    states,
++    scopes,
++    fresh,
++    prepare,
++    adopt,
++    async close() {
++      await owner.close();
++      for (const s of states) {
++        s.history.destroy();
++        s.history.doc.destroy();
++      }
++    },
++  };
++};
++
++it('history retirement permits one exact previous transfer and rejects active foreign duplicate or alias states', async () => {
++  const f = fixture(),
++    other = fixture();
++  try {
++    const a = f.prepare();
++    f.adopt(a);
++    expect(() => f.owner.retire(a.state)).toThrow(/cannot be retired/);
++    f.owner.finish(a.context);
++    const b = f.prepare();
++    f.adopt(b);
++    expect(() => f.owner.retire(f.fresh())).toThrow(/cannot be retired/);
++    const foreign = other.prepare();
++    other.adopt(foreign);
++    expect(() => f.owner.retire(foreign.state)).toThrow(/cannot be retired/);
++    expect(() => f.owner.retire({ ...a.state })).toThrow(/cannot be retired/);
++    f.owner.retire(a.state);
++    expect(() => f.owner.retire(a.state)).toThrow(/cannot be retired/);
++    f.owner.finish(b.context);
++    const c = f.prepare(a.state);
++    expect(c.state).toBe(a.state);
++    f.adopt(c);
++    expect(() => f.owner.retire(c.state)).toThrow(/cannot be retired/);
++    f.owner.retire(b.state);
++    f.owner.finish(c.context);
++    const d = f.prepare(b.state);
++    f.adopt(d);
++    f.owner.finish(d.context);
++    expect(a.state.history.doc.isDestroyed).toBe(false);
++    expect(b.state.history.doc.isDestroyed).toBe(false);
++  } finally {
++    await f.close();
++    await other.close();
++  }
++});
++
++it('retired histories resist stale callbacks before during and after reownership', async () => {
++  const f = fixture();
++  try {
++    const a = f.prepare();
++    f.adopt(a);
++    f.owner.finish(a.context);
++    const old = f.scopes[0]!;
++    const b = f.prepare();
++    f.adopt(b);
++    f.owner.retire(a.state);
++    expect(() => old.ownState(a.state)).toThrow(/already owned/);
++    expect(a.state.history.doc.isDestroyed).toBe(false);
++    f.owner.finish(b.context);
++    const c = f.prepare(a.state);
++    const lease = f.owner.borrow(c.context);
++    expect(() => old.ownState(a.state)).toThrow(/already owned/);
++    expect(a.state.history.doc.isDestroyed).toBe(false);
++    f.owner.discard(c.context);
++    expect(a.state.history.doc.isDestroyed).toBe(false);
++    lease.release();
++    expect(a.state.history.doc.isDestroyed).toBe(true);
++    expect(() => old.ownState(b.state)).toThrow(/already owned/);
++    expect(b.state.history.doc.isDestroyed).toBe(false);
++    await f.owner.close();
++    expect(() => f.owner.retire(b.state)).toThrow(/closed/);
++  } finally {
++    await f.close();
++  }
++});
++
++it('retirement does not let a new wrapper reacquire or destroy the real retired document', async () => {
++  const f = fixture();
++  try {
++    const a = f.prepare();
++    f.adopt(a);
++    f.owner.finish(a.context);
++    const b = f.prepare();
++    f.adopt(b);
++    f.owner.retire(a.state);
++    f.owner.finish(b.context);
++    expect(() => f.prepare({ ...a.state })).toThrow(/already owned/);
++    expect(a.state.history.doc.isDestroyed).toBe(false);
++    const next = f.prepare(a.state);
++    f.adopt(next);
++    f.owner.finish(next.context);
++    expect(a.state.history.doc).toBeInstanceOf(Y.Doc);
++  } finally {
++    await f.close();
++  }
++});
+diff --git a/test/textBufferBasis.test.ts b/test/textBufferBasis.test.ts
+new file mode 100644
+index 00000000..a92c2943
+--- /dev/null
++++ b/test/textBufferBasis.test.ts
+@@ -0,0 +1,116 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import {
++  Y,
++  createHistoryDoc,
++  isTextBufferBasis,
++  createSelectionHistory,
++  applyUpdate,
++} from '../src/crdt/yjs';
++
++it('text buffer basis rejects every unsupported normalization shape', () => {
++  const sparse = Array(2);
++  sparse[1] = 'value';
++  const extra = ['value'] as string[] & { extra?: string };
++  extra.extra = 'lost';
++  const hidden = {};
++  Object.defineProperty(hidden, 'hidden', { value: 'lost' });
++  for (const value of [sparse, extra, hidden]) {
++    const doc = createHistoryDoc();
++    try {
++      doc.getMap('meta').set('value', value);
++      expect(isTextBufferBasis(doc), String(value)).toBe(false);
++    } finally {
++      doc.destroy();
++    }
++  }
++});
++
++it('text buffer basis accepts ordinary strings and rejects surrogates, unsupported content and pending state', () => {
++  const doc = createHistoryDoc();
++  try {
++    doc.getText('master').insert(0, 'ordinary é');
++    doc.getMap('meta').set('nested', { list: ['yes', true, null, 2] });
++    expect(isTextBufferBasis(doc)).toBe(true);
++    for (const text of ['\u{1f600}', '\ud800', '\udc00']) {
++      const own = createHistoryDoc();
++      try {
++        own.getText('master').insert(0, text);
++        expect(isTextBufferBasis(own)).toBe(false);
++      } finally {
++        own.destroy();
++      }
++    }
++    const bin = createHistoryDoc();
++    try {
++      bin.getMap('meta').set('bin', new Uint8Array([1]));
++      expect(isTextBufferBasis(bin)).toBe(false);
++    } finally {
++      bin.destroy();
++    }
++    const writer = createHistoryDoc(),
++      updates: Uint8Array[] = [];
++    writer.on('update', (b) => updates.push(new Uint8Array(b)));
++    writer.getText('master').insert(0, 'dependency');
++    writer.getText('master').insert(0, 'dependent');
++    applyUpdate(doc, updates[1]!);
++    expect(doc.store.pendingStructs).not.toBeNull();
++    expect(isTextBufferBasis(doc)).toBe(false);
++    writer.destroy();
++  } finally {
++    doc.destroy();
++  }
++});
++
++it('text history catch-up refuses aliases foreign owners and closed or disposed histories', () => {
++  const a = createSelectionHistory(),
++    b = createSelectionHistory(),
++    human = {};
++  const source = a.create(createHistoryDoc(), human),
++    target = a.fork(source, human),
++    foreign = b.create(createHistoryDoc(), human);
++  try {
++    expect(() => a.catchUpText(source, source, new Uint8Array([0, 0]))).toThrow(/aliases/);
++    expect(() => a.catchUpText(target, foreign, new Uint8Array([0, 0]))).toThrow(/foreign/);
++    a.close();
++    expect(() => a.catchUpText(target, source, new Uint8Array([0, 0]))).toThrow(/closed/);
++    foreign.destroy();
++    expect(() => b.catchUpText(foreign, foreign, new Uint8Array([0, 0]))).toThrow(/disposed/);
++    expect(source.doc).toBeInstanceOf(Y.Doc);
++  } finally {
++    for (const h of [source, target, foreign]) {
++      h.destroy();
++      h.doc.destroy();
++    }
++    a.close();
++    b.close();
++  }
++});
++
++it('text history catch-up applies the exact delta and copies both detached stacks', () => {
++  const owner = createSelectionHistory(),
++    human = {};
++  const source = owner.create(createHistoryDoc(), human);
++  source.doc.transact(() => source.doc.getText('master').insert(0, 'A'), human);
++  const target = owner.fork(source, human),
++    updates: Uint8Array[] = [];
++  source.doc.on('update', (b) => updates.push(new Uint8Array(b)));
++  try {
++    source.stopCapturing();
++    source.doc.transact(() => source.doc.getText('master').insert(1, 'B'), human);
++    owner.catchUpText(target, source, updates[0]!);
++    expect(target.doc.getText('master').toString()).toBe('AB');
++    expect(target.undoStack).toEqual(source.undoStack);
++    expect(target.undoStack[0]).not.toBe(source.undoStack[0]);
++    expect(target.redoStack).not.toBe(source.redoStack);
++    target.undo();
++    expect(target.doc.getText('master').toString()).toBe('A');
++    expect(source.doc.getText('master').toString()).toBe('AB');
++  } finally {
++    for (const h of [source, target]) {
++      h.destroy();
++      h.doc.destroy();
++    }
++    owner.close();
++  }
++});
+diff --git a/test/textBufferNormalizationProbe.test.ts b/test/textBufferNormalizationProbe.test.ts
+new file mode 100644
+index 00000000..3f991821
+--- /dev/null
++++ b/test/textBufferNormalizationProbe.test.ts
+@@ -0,0 +1,46 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import { writeFileSync } from 'node:fs';
++import { createHistoryDoc, createSelectionHistory } from '../src/crdt/yjs';
++it('records native fork behavior for negative zero and unsupported object shapes', () => {
++  const sparse = Array(2);
++  sparse[1] = 'value';
++  const extra = ['value'] as string[] & { extra?: string };
++  extra.extra = 'lost';
++  const hidden = {};
++  Object.defineProperty(hidden, 'hidden', { value: 'lost' });
++  const rows = [];
++  for (const [name, value] of [
++    ['negative-zero', -0],
++    ['sparse', sparse],
++    ['extra-array-property', extra],
++    ['nonenumerable', hidden],
++  ] as const) {
++    const owner = createSelectionHistory(),
++      history = owner.create(createHistoryDoc(), {});
++    history.doc.getMap('meta').set('value', value);
++    const fork = owner.fork(history, {}),
++      copied = fork.doc.getMap('meta').get('value');
++    try {
++      rows.push({
++        name,
++        sourceNegativeZero: Object.is(value, -0),
++        forkNegativeZero: Object.is(copied, -0),
++        sourceKeys: Object.getOwnPropertyNames(Object(value)),
++        forkKeys: Object.getOwnPropertyNames(Object(copied)),
++      });
++      if (name === 'negative-zero') expect(Object.is(copied, -0)).toBe(true);
++      else
++        expect(Object.getOwnPropertyNames(Object(copied))).not.toEqual(
++          Object.getOwnPropertyNames(Object(value)),
++        );
++    } finally {
++      history.destroy();
++      history.doc.destroy();
++      fork.destroy();
++      fork.doc.destroy();
++      owner.close();
++    }
++  }
++  writeFileSync('/private/tmp/done-f17-buffers-r1/normalization-values.json', JSON.stringify(rows, null, 2) + '\n');
++});
+diff --git a/test/admittedEditorProjection.test.ts b/test/admittedEditorProjection.test.ts
+new file mode 100644
+index 00000000..08f9a140
+--- /dev/null
++++ b/test/admittedEditorProjection.test.ts
+@@ -0,0 +1,245 @@
++import { EditorSelection } from '@codemirror/state';
++import { EditorView } from '@codemirror/view';
++import { afterEach, describe, expect, it, vi } from 'vitest';
++import { createAdmittedEditor } from '../src/editor/admittedEditor';
++import type { AdmittedTextSurface, TextSnapshot } from '../src/editor/admittedText';
++import type { AdmissionStatus } from '../src/crdt/admission';
++
++const cleanups: (() => void)[] = [];
++afterEach(() => {
++  while (cleanups.length) cleanups.pop()?.();
++});
++
++const mount = (text = 'accepted text') => {
++  let snapshot: TextSnapshot = {
++      text,
++      selection: EditorSelection.single(0).toJSON(),
++      undo: 0,
++      redo: 0,
++    },
++    status: AdmissionStatus = {
++      state: 'active',
++      revision: 0,
++      pendingItems: 0,
++      pendingBytes: 0,
++      reservedBytes: 0,
++      durable: true,
++      pressure: null,
++    },
++    unreadable = false,
++    updates = 0;
++  const publications = new Set<() => void>(),
++    statuses = new Set<(status: AdmissionStatus) => void>();
++  const read = vi.fn(() => {
++    if (unreadable) throw Error('unreadable');
++    return snapshot;
++  });
++  const input = vi.fn<AdmittedTextSurface['input']>(() => ({
++    id: 1,
++    accepted: Promise.resolve({ id: 1, source: 'local', revision: 1, slices: 1 }),
++  }));
++  const surface: AdmittedTextSurface = {
++    get status() {
++      return status;
++    },
++    read,
++    input,
++    subscribe(listener) {
++      publications.add(listener);
++      return () => publications.delete(listener);
++    },
++    onStatus(listener) {
++      statuses.add(listener);
++      return () => statuses.delete(listener);
++    },
++    retry() {},
++    discardPending() {},
++  };
++  const parent = document.createElement('div');
++  document.body.append(parent);
++  const editor = createAdmittedEditor({
++    parent,
++    document: surface,
++    extra: [EditorView.updateListener.of(() => updates++)],
++  });
++  cleanups.push(() => {
++    editor.destroy();
++    parent.remove();
++  });
++  const publish = () => {
++    for (const listener of publications) listener();
++  };
++  return {
++    ...editor,
++    parent,
++    read,
++    input,
++    publish,
++    get updates() {
++      return updates;
++    },
++    resetUpdates: () => (updates = 0),
++    setSnapshot(value: Partial<TextSnapshot>) {
++      snapshot = { ...snapshot, ...value };
++      publish();
++    },
++    setUnreadable(value: boolean) {
++      unreadable = value;
++    },
++    setStatus(value: Partial<AdmissionStatus>) {
++      status = { ...status, ...value };
++      for (const listener of statuses) listener(status);
++    },
++  };
++};
++
++describe('admitted editor projection', () => {
++  it('reads every publication while leaving an unchanged editor state alone', () => {
++    const editor = mount('unchanged master '.repeat(6000));
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.read.mockClear();
++    for (let index = 0; index < 5; index++) editor.publish();
++    expect(editor.read).toHaveBeenCalledTimes(5);
++    expect(editor.view.state).toBe(before);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('preserves a local selection when another surface publishes', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(2, 7) });
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: EditorSelection.single(0).toJSON() });
++    expect(editor.view.state).toBe(before);
++    expect(editor.view.state.selection.main.anchor).toBe(2);
++    expect(editor.view.state.selection.main.head).toBe(7);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('projects selection-only changes including secondary ranges and main range', () => {
++    const editor = mount();
++    const selection = EditorSelection.create(
++      [EditorSelection.range(0, 2), EditorSelection.range(6, 8)],
++      1,
++    );
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: selection.toJSON() });
++    expect(editor.view.state.selection.toJSON()).toEqual(selection.toJSON());
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: { ...selection.toJSON(), main: 0 } });
++    expect(editor.view.state.selection.mainIndex).toBe(0);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('still normalizes cursor association, bidi level and goal column', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.cursor(2, 1, 1, 9)]),
++    });
++    editor.resetUpdates();
++    editor.publish();
++    const cursor = editor.view.state.selection.main;
++    expect(cursor.head).toBe(2);
++    expect(cursor.assoc).toBe(0);
++    expect(cursor.bidiLevel).toBe(null);
++    expect(cursor.goalColumn).toBeUndefined();
++    expect(editor.updates).toBe(1);
++  });
++
++  it('normalizes an undirectional range on an otherwise unchanged publication', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.undirectionalRange(2, 7)]),
++    });
++    expect(editor.view.state.selection.main.undirectional).toBe(true);
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.view.state.selection.main.undirectional).toBe(false);
++    expect(editor.updates).toBe(1);
++  });
++
++  it('applies text changes with the accepted selection and drops the old local selection', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(3) });
++    editor.resetUpdates();
++    editor.setSnapshot({
++      text: 'accepted new text',
++      selection: EditorSelection.single(12).toJSON(),
++    });
++    expect(editor.view.state.doc.toString()).toBe('accepted new text');
++    expect(editor.view.state.selection.main.head).toBe(12);
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: EditorSelection.single(4).toJSON() });
++    expect(editor.view.state.selection.main.head).toBe(4);
++  });
++
++  it('projects editability-only changes and restores editing', () => {
++    const editor = mount();
++    editor.resetUpdates();
++    editor.setSnapshot({ editable: false });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    expect(editor.view.contentDOM.getAttribute('contenteditable')).toBe('false');
++    editor.setSnapshot({ editable: true });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('clears stale writing when a publication becomes unreadable and projects a later valid read', () => {
++    const editor = mount();
++    editor.setUnreadable(true);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    editor.setUnreadable(false);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++  });
++
++  it('keeps blocked pending input out of the editor and reacts to unavailable status', () => {
++    const editor = mount();
++    editor.setStatus({ state: 'blocked', pendingItems: 1 });
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Input is waiting for storage.',
++    );
++    editor.setUnreadable(true);
++    editor.setStatus({ state: 'failed' });
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Editing is unavailable.',
++    );
++  });
++
++  it('keeps a local input error visible through an unchanged publication', () => {
++    const editor = mount();
++    editor.input.mockImplementationOnce(() => {
++      throw Error('input refused');
++    });
++    editor.view.contentDOM.dispatchEvent(
++      new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }),
++    );
++    editor.publish();
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain('input refused');
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++
++  it('keeps projection transactions during composition and reconciles after a cancelled preedit', async () => {
++    const editor = mount();
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionstart', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.updates).toBeGreaterThan(0);
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionend', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    await Promise.resolve();
++    expect(editor.updates).toBeGreaterThan(0);
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++});

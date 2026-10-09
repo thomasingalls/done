@@ -1,0 +1,186 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.local-startup.config.ts",
+      "--grep",
+      "Local entry"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.local-startup.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+        "testIgnore": [],
+        "testMatch": [
+          "**/packaged.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/local-app/packaged.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4181 --strictPort",
+      "url": "http://127.0.0.1:4181/local.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "packaged.spec.ts",
+      "file": "packaged.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "packaged Local entry cold-opens offline without falling back to the legacy shell",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5489,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:67:48",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                      "column": 48,
+                      "line": 67
+                    },
+                    "snippet": "  65 |   await context.setOffline(true);\n  66 |   await page.reload();\n> 67 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');\n     |                                                ^\n  68 |   await page.getByLabel('Device-lock code', { exact: true }).fill(code);\n  69 |   await page.getByRole('button', { name: 'Unlock', exact: true }).click();\n  70 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'ready');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                        "column": 48,
+                        "line": 67
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n\n\n  65 |   await context.setOffline(true);\n  66 |   await page.reload();\n> 67 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');\n     |                                                ^\n  68 |   await page.getByLabel('Device-lock code', { exact: true }).fill(code);\n  69 |   await page.getByRole('button', { name: 'Unlock', exact: true }).click();\n  70 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'ready');\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:67:48"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "offline cache diagnostic: [{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/index.html\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/local.html\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/assets/app-BJuKSTsi.js\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/assets/local-CjNqOizZ.js\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/assets/styles-5ufV901D.css\",\"vary\":\"Origin\"},{\"cache\":\"done-precache-bfb4a8c6fab3\",\"url\":\"http://127.0.0.1:4181/assets/styles-Bo0gXtbr.js\",\"vary\":\"Origin\"}]\n"
+                    }
+                  ],
+                  "stderr": [
+                    {
+                      "text": "packaged request failed: http://127.0.0.1:4181/assets/local-CjNqOizZ.js net::ERR_FAILED\n"
+                    },
+                    {
+                      "text": "packaged console: Failed to load resource: net::ERR_FAILED\n"
+                    },
+                    {
+                      "text": "packaged request failed: http://127.0.0.1:4181/assets/styles-5ufV901D.css net::ERR_FAILED\n"
+                    },
+                    {
+                      "text": "packaged console: Failed to load resource: net::ERR_FAILED\n"
+                    },
+                    {
+                      "text": "packaged request failed: http://127.0.0.1:4181/assets/styles-Bo0gXtbr.js net::ERR_FAILED\n"
+                    },
+                    {
+                      "text": "packaged console: Failed to load resource: net::ERR_FAILED\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-10T08:35:26.418Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "offline-cache-diagnostic",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJjYWNoZSI6ICJkb25lLXByZWNhY2hlLWJmYjRhOGM2ZmFiMyIsCiAgICAidXJsIjogImh0dHA6Ly8xMjcuMC4wLjE6NDE4MS8iLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0sCiAgewogICAgImNhY2hlIjogImRvbmUtcHJlY2FjaGUtYmZiNGE4YzZmYWIzIiwKICAgICJ1cmwiOiAiaHR0cDovLzEyNy4wLjAuMTo0MTgxL2luZGV4Lmh0bWwiLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0sCiAgewogICAgImNhY2hlIjogImRvbmUtcHJlY2FjaGUtYmZiNGE4YzZmYWIzIiwKICAgICJ1cmwiOiAiaHR0cDovLzEyNy4wLjAuMTo0MTgxL2xvY2FsLmh0bWwiLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0sCiAgewogICAgImNhY2hlIjogImRvbmUtcHJlY2FjaGUtYmZiNGE4YzZmYWIzIiwKICAgICJ1cmwiOiAiaHR0cDovLzEyNy4wLjAuMTo0MTgxL2Fzc2V0cy9hcHAtQkp1S1NUc2kuanMiLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0sCiAgewogICAgImNhY2hlIjogImRvbmUtcHJlY2FjaGUtYmZiNGE4YzZmYWIzIiwKICAgICJ1cmwiOiAiaHR0cDovLzEyNy4wLjAuMTo0MTgxL2Fzc2V0cy9sb2NhbC1Dak5xT2l6Wi5qcyIsCiAgICAidmFyeSI6ICJPcmlnaW4iCiAgfSwKICB7CiAgICAiY2FjaGUiOiAiZG9uZS1wcmVjYWNoZS1iZmI0YThjNmZhYjMiLAogICAgInVybCI6ICJodHRwOi8vMTI3LjAuMC4xOjQxODEvYXNzZXRzL3N0eWxlcy01dWZWOTAxRC5jc3MiLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0sCiAgewogICAgImNhY2hlIjogImRvbmUtcHJlY2FjaGUtYmZiNGE4YzZmYWIzIiwKICAgICJ1cmwiOiAiaHR0cDovLzEyNy4wLjAuMTo0MTgxL2Fzc2V0cy9zdHlsZXMtQm8wZ1h0YnIuanMiLAogICAgInZhcnkiOiAiT3JpZ2luIgogIH0KXQ=="
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts/packaged-packaged-Local-en-ebd7f-ng-back-to-the-legacy-shell/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                    "column": 48,
+                    "line": 67
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "799fbeebfe2b1a80fa58-e40ffac64d602cc2a034",
+          "file": "packaged.spec.ts",
+          "line": 47,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T08:35:25.746Z",
+    "duration": 6370.954,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

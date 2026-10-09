@@ -1,0 +1,47 @@
+{
+  "policy": "recommended",
+  "role": "intentional invalid-policy canary; never opens a source profile",
+  "passed": true,
+  "launcherRefused": true,
+  "refusal": "ENOENT: no such file or directory, open '/etc/chromium/policies/managed/denial.json'",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/152.0.7977.82",
+    "revision": "@d04cdb24d67b081f6cf80200ffc5233f44b61109",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "jsVersion": "15.2.124.21"
+  },
+  "effectivePolicy": {
+    "rows": [
+      [
+        "DefaultJavaScriptSetting",
+        "2",
+        "Platform",
+        "Machine",
+        "Recommended",
+        "OK",
+        "Value",
+        "2",
+        "Applies to",
+        "Machine",
+        "Level",
+        "Recommended",
+        "Status",
+        "OK",
+        "Error",
+        "Warning",
+        "Info"
+      ]
+    ],
+    "text": [
+      "DefaultJavaScriptSetting"
+    ]
+  },
+  "controlKind": "configuration-refusal; user-override execution coverage unproven",
+  "inventory": {
+    "local": [],
+    "databases": [],
+    "caches": []
+  },
+  "positiveWrite": false
+}

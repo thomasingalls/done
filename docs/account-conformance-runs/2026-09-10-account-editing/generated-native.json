@@ -1,0 +1,805 @@
+{
+  "seed": 9292026,
+  "histories": [
+    {
+      "commands": [
+        {
+          "at": 8,
+          "remove": 7,
+          "insert": "}lbEH8",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 25,
+          "remove": 3,
+          "insert": "+!",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 27,
+          "remove": 11,
+          "insert": "5UEGJ",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 42,
+          "remove": 1,
+          "insert": "p",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 43,
+          "remove": 8,
+          "insert": "E_?jQ",
+          "undo": false,
+          "mode": "journal"
+        }
+      ],
+      "observed": [
+        "base ori}lbEH8",
+        "base ori}l+!8",
+        "base ori}l+!8",
+        "base ori}l+!8",
+        "bE_?jQl+!8"
+      ],
+      "expected": "bE_?jQl+!8"
+    },
+    {
+      "commands": [
+        {
+          "at": 13,
+          "remove": 10,
+          "insert": ">*h",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 11,
+          "remove": 12,
+          "insert": " ",
+          "undo": false,
+          "mode": "compact"
+        },
+        {
+          "at": 15,
+          "remove": 2,
+          "insert": "",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 50,
+          "remove": 3,
+          "insert": "NncC",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 50,
+          "remove": 9,
+          "insert": "Er",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 50,
+          "remove": 2,
+          "insert": "",
+          "undo": false,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base origin ",
+        "ba origin ",
+        "ba origin ",
+        "ba origin ",
+        "ba orin "
+      ],
+      "expected": "ba orin "
+    },
+    {
+      "commands": [
+        {
+          "at": 1,
+          "remove": 2,
+          "insert": "\\6jj((",
+          "undo": false,
+          "mode": "compact"
+        },
+        {
+          "at": 14,
+          "remove": 4,
+          "insert": "!",
+          "undo": true,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "b\\6jj((e original",
+        "b\\6jj((e original"
+      ],
+      "expected": "b\\6jj((e original"
+    },
+    {
+      "commands": [
+        {
+          "at": 25,
+          "remove": 8,
+          "insert": "",
+          "undo": false,
+          "mode": "flush"
+        },
+        {
+          "at": 46,
+          "remove": 7,
+          "insert": "w3\\3cMt",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 4,
+          "remove": 1,
+          "insert": "-",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 22,
+          "remove": 7,
+          "insert": "[kSq",
+          "undo": true,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "base origin",
+        "base origin",
+        "base origin",
+        "base origin"
+      ],
+      "expected": "base origin"
+    },
+    {
+      "commands": [
+        {
+          "at": 37,
+          "remove": 10,
+          "insert": " ",
+          "undo": true,
+          "mode": "journal"
+        }
+      ],
+      "observed": [
+        "base original"
+      ],
+      "expected": "base original"
+    },
+    {
+      "commands": [
+        {
+          "at": 45,
+          "remove": 12,
+          "insert": "",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 26,
+          "remove": 0,
+          "insert": "",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 45,
+          "remove": 9,
+          "insert": "lue",
+          "undo": false,
+          "mode": "journal"
+        },
+        {
+          "at": 4,
+          "remove": 8,
+          "insert": "4hy#2+4v\"W",
+          "undo": false,
+          "mode": "flush"
+        },
+        {
+          "at": 4,
+          "remove": 9,
+          "insert": ";U5",
+          "undo": false,
+          "mode": "journal"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base original",
+        "basluel",
+        "basl4hy#2+4v\"W",
+        "basl;U5W"
+      ],
+      "expected": "basl;U5W"
+    },
+    {
+      "commands": [
+        {
+          "at": 10,
+          "remove": 6,
+          "insert": "uJ@v",
+          "undo": false,
+          "mode": "flush"
+        },
+        {
+          "at": 48,
+          "remove": 7,
+          "insert": "TF'k",
+          "undo": false,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "base origiuJ@v",
+        "basTF'kuJ@v"
+      ],
+      "expected": "basTF'kuJ@v"
+    },
+    {
+      "commands": [
+        {
+          "at": 27,
+          "remove": 0,
+          "insert": "8@&TL",
+          "undo": false,
+          "mode": "flush"
+        }
+      ],
+      "observed": [
+        "base original8@&TL"
+      ],
+      "expected": "base original8@&TL"
+    },
+    {
+      "commands": [
+        {
+          "at": 28,
+          "remove": 10,
+          "insert": "",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 50,
+          "remove": 11,
+          "insert": "e",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 4,
+          "remove": 12,
+          "insert": "$",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 1,
+          "remove": 8,
+          "insert": "MlcqM60nJ",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 23,
+          "remove": 2,
+          "insert": "",
+          "undo": true,
+          "mode": "compact"
+        },
+        {
+          "at": 34,
+          "remove": 6,
+          "insert": "z",
+          "undo": false,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base original",
+        "base original",
+        "bMlcqM60nJinal",
+        "bMlcqM60nJinal",
+        "bMlczinal"
+      ],
+      "expected": "bMlczinal"
+    },
+    {
+      "commands": [
+        {
+          "at": 14,
+          "remove": 9,
+          "insert": "b[mKrl@d`",
+          "undo": false,
+          "mode": "journal"
+        },
+        {
+          "at": 4,
+          "remove": 12,
+          "insert": "",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 47,
+          "remove": 7,
+          "insert": "P`X:-LaM e",
+          "undo": true,
+          "mode": "compact"
+        },
+        {
+          "at": 37,
+          "remove": 1,
+          "insert": "|L)",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 6,
+          "remove": 10,
+          "insert": "Z",
+          "undo": false,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "b[mKrl@d`inal",
+        "b[mKrl@d`inal",
+        "b[mKrl@d`inal",
+        "b[mKrl@d`inal",
+        "b[mKrlZ"
+      ],
+      "expected": "b[mKrlZ"
+    },
+    {
+      "commands": [
+        {
+          "at": 10,
+          "remove": 8,
+          "insert": "-/ ",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 23,
+          "remove": 12,
+          "insert": "",
+          "undo": false,
+          "mode": "journal"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base orig"
+      ],
+      "expected": "base orig"
+    },
+    {
+      "commands": [
+        {
+          "at": 43,
+          "remove": 5,
+          "insert": "+y<^B",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 50,
+          "remove": 0,
+          "insert": "^",
+          "undo": false,
+          "mode": "compact"
+        },
+        {
+          "at": 21,
+          "remove": 1,
+          "insert": "P'x{Jyh1IP",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 4,
+          "remove": 1,
+          "insert": "!0P:`",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 45,
+          "remove": 9,
+          "insert": "\"-x",
+          "undo": false,
+          "mode": "compact"
+        },
+        {
+          "at": 24,
+          "remove": 7,
+          "insert": "S",
+          "undo": false,
+          "mode": "flush"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base ori^ginal",
+        "base ori^ginal",
+        "base ori^ginal",
+        "\"-xginal",
+        "\"-xginS"
+      ],
+      "expected": "\"-xginS"
+    },
+    {
+      "commands": [
+        {
+          "at": 32,
+          "remove": 8,
+          "insert": "JPY.0/%",
+          "undo": false,
+          "mode": "flush"
+        },
+        {
+          "at": 46,
+          "remove": 2,
+          "insert": "Vo_A{-J",
+          "undo": false,
+          "mode": "journal"
+        },
+        {
+          "at": 28,
+          "remove": 10,
+          "insert": "",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 16,
+          "remove": 5,
+          "insert": "Ke,",
+          "undo": true,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "baseJPY.0/%l",
+        "baseJPYVo_A{-J/%l",
+        "baseJPYVo_A{-J/%l",
+        "baseJPYVo_A{-J/%l"
+      ],
+      "expected": "baseJPYVo_A{-J/%l"
+    },
+    {
+      "commands": [
+        {
+          "at": 17,
+          "remove": 3,
+          "insert": "",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 10,
+          "remove": 9,
+          "insert": "> y1!c3*k",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 16,
+          "remove": 1,
+          "insert": "1",
+          "undo": true,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "basriginal",
+        "basriginal",
+        "basriginal"
+      ],
+      "expected": "basriginal"
+    },
+    {
+      "commands": [
+        {
+          "at": 0,
+          "remove": 6,
+          "insert": "p>S/iX>u)",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 16,
+          "remove": 5,
+          "insert": "W",
+          "undo": false,
+          "mode": "flush"
+        }
+      ],
+      "observed": [
+        "base original",
+        "baWiginal"
+      ],
+      "expected": "baWiginal"
+    },
+    {
+      "commands": [
+        {
+          "at": 16,
+          "remove": 7,
+          "insert": "hlayq([",
+          "undo": true,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base original"
+      ],
+      "expected": "base original"
+    },
+    {
+      "commands": [
+        {
+          "at": 44,
+          "remove": 10,
+          "insert": "",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 5,
+          "remove": 12,
+          "insert": "",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 2,
+          "remove": 6,
+          "insert": "\"_57w)}",
+          "undo": true,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base ",
+        "base "
+      ],
+      "expected": "base "
+    },
+    {
+      "commands": [
+        {
+          "at": 47,
+          "remove": 0,
+          "insert": "67}#7%3M",
+          "undo": false,
+          "mode": "flush"
+        },
+        {
+          "at": 40,
+          "remove": 5,
+          "insert": "BkIQC2r\\",
+          "undo": false,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base 67}#7%3Moriginal",
+        "base 67}#7%3MorigiBkIQC2r\\"
+      ],
+      "expected": "base 67}#7%3MorigiBkIQC2r\\"
+    },
+    {
+      "commands": [
+        {
+          "at": 16,
+          "remove": 0,
+          "insert": "Dr<#-%1|c",
+          "undo": false,
+          "mode": "crash"
+        }
+      ],
+      "observed": [
+        "baDr<#-%1|cse original"
+      ],
+      "expected": "baDr<#-%1|cse original"
+    },
+    {
+      "commands": [
+        {
+          "at": 38,
+          "remove": 1,
+          "insert": "G! hw",
+          "undo": false,
+          "mode": "crash"
+        },
+        {
+          "at": 27,
+          "remove": 8,
+          "insert": "D\\\\A\"t|!",
+          "undo": false,
+          "mode": "journal"
+        },
+        {
+          "at": 47,
+          "remove": 6,
+          "insert": "a<L",
+          "undo": true,
+          "mode": "compact"
+        },
+        {
+          "at": 45,
+          "remove": 5,
+          "insert": "fU&p%",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 1,
+          "remove": 6,
+          "insert": "4",
+          "undo": false,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base origiG! hwal",
+        "base origD\\\\A\"t|!",
+        "base origD\\\\A\"t|!",
+        "base origD\\\\A\"t|!",
+        "b4igD\\\\A\"t|!"
+      ],
+      "expected": "b4igD\\\\A\"t|!"
+    },
+    {
+      "commands": [
+        {
+          "at": 48,
+          "remove": 11,
+          "insert": "v{ma",
+          "undo": false,
+          "mode": "flush"
+        }
+      ],
+      "observed": [
+        "base ov{ma"
+      ],
+      "expected": "base ov{ma"
+    },
+    {
+      "commands": [
+        {
+          "at": 18,
+          "remove": 2,
+          "insert": "q22",
+          "undo": false,
+          "mode": "compact"
+        },
+        {
+          "at": 14,
+          "remove": 7,
+          "insert": "",
+          "undo": true,
+          "mode": "crash"
+        },
+        {
+          "at": 33,
+          "remove": 12,
+          "insert": "%",
+          "undo": true,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "baseq22riginal",
+        "baseq22riginal",
+        "baseq22riginal"
+      ],
+      "expected": "baseq22riginal"
+    },
+    {
+      "commands": [
+        {
+          "at": 23,
+          "remove": 7,
+          "insert": "YA5",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 23,
+          "remove": 1,
+          "insert": "-8",
+          "undo": false,
+          "mode": "journal"
+        },
+        {
+          "at": 37,
+          "remove": 8,
+          "insert": "f[KcEafB",
+          "undo": true,
+          "mode": "compact"
+        },
+        {
+          "at": 9,
+          "remove": 10,
+          "insert": "kW",
+          "undo": false,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base orig-8nal",
+        "base orig-8nal",
+        "base origkW"
+      ],
+      "expected": "base origkW"
+    },
+    {
+      "commands": [
+        {
+          "at": 21,
+          "remove": 7,
+          "insert": "$ixTXQ>|(W",
+          "undo": true,
+          "mode": "flush"
+        },
+        {
+          "at": 5,
+          "remove": 12,
+          "insert": "I3W",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 47,
+          "remove": 6,
+          "insert": "PtM",
+          "undo": true,
+          "mode": "compact"
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": "BT;/!w$o",
+          "undo": true,
+          "mode": "journal"
+        },
+        {
+          "at": 3,
+          "remove": 2,
+          "insert": "mw",
+          "undo": true,
+          "mode": "compact"
+        }
+      ],
+      "observed": [
+        "base original",
+        "base original",
+        "base original",
+        "base original",
+        "base original"
+      ],
+      "expected": "base original"
+    }
+  ]
+}

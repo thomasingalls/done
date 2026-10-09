@@ -1,0 +1,116 @@
+{
+  "base": "474aeaab990b68bc7c03578552d742d6a683d3f7",
+  "claim": "Account admission-bounds native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-28-58.493Z",
+  "summary": {
+    "schema": 1,
+    "selection": "admission-bounds-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-admission-bounds/native.test.mjs",
+        "key": "5facb5c55ba7df86b9a6c27b32ab82d03fe31298b25943e8239cf098d19e49c0",
+        "status": "passed",
+        "elapsedMs": 31733,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:28:58.495Z",
+    "input": "1e0f7353893401231d44d91df15cba1c52b5b307c5d29a9423985cc5acd773d9",
+    "completedAt": "2026-09-14T11:29:54.038Z"
+  },
+  "elapsedMs": 55543,
+  "rawInputArchiveSha256": "9604b71262ea07f96254b6b4dd3aac734ef97e5da28f7ee05923e3476aed15fb",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "474aeaab990b68bc7c03578552d742d6a683d3f7",
+    "sourceDigest": "475bb3a7637b2df62528d622fa516b659db2158a37648e76dafc1914999e49a5",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 6,
+    "browserFiles": 1,
+    "fixtureInstances": 6,
+    "generatedHistories": 0,
+    "longSyntheticHistories": 2,
+    "historicalModules": 2,
+    "historicalBundleExecutions": 3,
+    "reducedBoundControls": 1,
+    "authenticallySignedFalseCoverageInputs": 2,
+    "currentNodeOwnerTests": 23,
+    "historicalOwnerPathVariants": 10,
+    "historicalOwnerReceipts": 30,
+    "archivedNewPathReceipts": 3,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 203,
+    "priorGeneralCases": 1682,
+    "currentGeneralFiles": 204,
+    "currentGeneralCases": 1688,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 108,
+    "accountFiles": 98,
+    "accountCases": 594,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 213,
+    "unresolvedTestFiles": 54,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 686736
+  },
+  "finalGatesSha256": "39e91954d0989299fd514e52323a0d73e0e2b217a4d54c1375e45cfb0d1c3510",
+  "preservationSha256": "a556a1d80a65b7713904bd2a327b61254c48bf0a8ce5e7cc2000a2bd2856f16f",
+  "limits": [
+    "Six complete unchanged native cases run with the existing 180-second wrapper/file bound: two long-history cases retain 60 seconds each, and the four refusal cases retain 30 seconds each. CDP startup is 15 seconds and drain grace five. Account fixture registration, exact historical-source allowlisting, historical-owner tests and two Git-read limits change; product, native test bodies, browser/oracle/history helpers, inherited native owners, general census, reporter and wrapper are unchanged.",
+    "The inherited promotion/genesis/admission fixture owns disposable loopback Account services, SQLite stores, synthetic authority/service secrets, a software authenticator and an isolated CDP context. The two long-history cases close their page and create a fresh page in the same context; other cases reload/reconfigure that page. Neither operation kills the browser, service or OS. No personal account, profile, factor, deployment, human authenticator or PRF flow is involved.",
+    "Two deterministic Yjs histories use 12000 synthetic writer incarnations for a large state vector or 12000 delete ranges for a large delete set. Each actual admitted manifest carries the corresponding coverage field above 32767 bytes. These are fixed stress specimens, not fast-check generated/shrinking histories or a capacity distribution. The file's six cases do not qualify the full production maximum or worst-case scheduling.",
+    "The independent Node/OpenSSL oracle verifies admission/activation context bindings, authority and member signatures, recovery/HPKE checkpoint opening and plaintext replay. It derives state-vector/delete-set bytes from Yjs replay, compares them to the admitted manifest and requires no pending dependencies. It imports no production admission helper but shares the installed Yjs implementation; this is not an independent CRDT implementation. Cold page retry must reproduce the exact receipt, marker and measured inventory.",
+    "Historical control bundles load exactly account-protocol/admission.ts and src/crdt/promotionAdmission.ts at 6398e33da4fd4b5b413de23078a04707557599bf. Both Git reference/path hashes enter the stage contract and are checked before launch/reuse and after execution. Fixture reads now have a 5-second timeout and 2 MiB buffer cap. Builds check exactly two substitutions. These are two historical modules linked with current dependencies, not a complete historical app or support for shipping retired v8 paths.",
+    "The old reader refuses current large v2 admission state; the current owner refuses a genuine offered v1 carrier generated by the historical modules, preserving measured carrier/storage bytes. Two freshly signed and root-MACed false state-vector/delete-set claims first pass cryptographic completion verification, then refuse on retained-completion semantics before any finish submission, with snapshots and inventory unchanged. Their signatures are produced by synthetic fixture custody, not an attacker outside the test.",
+    "The small-bound control substitutes COVERAGE_LIMIT=32 at one checked anchor and uses a 100-writer state-vector specimen. It refuses before an admission begin call or a requested-carrier write and preserves measured state. This is a reduced-bound ordering control, not proof of the exact production-size frontier or a guard-omission mutation. No native generated histories, renderer/service crashes, power-loss or profile-restore campaign runs.",
+    "All 23 Node owner checks pass after adding the exact promotionAdmission path to historical drift controls. Ten path variants exercise prelaunch refusal, matching reuse, changed-input refusal, replanned receipt separation and during-run refusal with drained groups; 30 historical receipts are retained in raw control output, and all are represented in the owner log. The new path's three complete stage artifact sets are archived here. This does not resolve the earlier ledger phase's first orphaned-child classification. Prior native/Vitest owner evidence remains pinned rather than rerun.",
+    "ACCOUNT_REPORT_DIR is unset, so optional native wrapper JSON reports are not emitted. Exact reporter outcomes, frozen source/browser identities and historical source pins are archived. Broader protocol/vector/generated campaigns, wrapper postconditions and immutable aggregate qualification remain separate. All 93 pure runner checks, TypeScript and scoped gates pass; all 203 prior general contracts / 1682 identities, exclusions, 52 personal/vector pins and L-2 are preserved. Existing ledger orphan, receive/delivery-oracle headroom, capture oracle and earlier deadline observations remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 27837.365584,
+    "stageElapsedMs": 31733,
+    "selectionElapsedMs": 55543,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 180000,
+    "caseMs": [
+      60000,
+      60000,
+      30000,
+      30000,
+      30000,
+      30000
+    ],
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "historicalControlRawOutput": "/private/tmp/done-admission-bounds-native-fixture-history-controls",
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "0403b7cf2a4fde8c4421a17fa943fb76b35f28a5ead3c24e63e744181c8e58d1",
+    "compressedSha256": "547760194890f904e4ed0abf8a60aa4dc3670a03b512ff73d505c876593db77d"
+  }
+}

@@ -1,0 +1,70 @@
+# Plaintext-residue evidence assessment — F-21.4
+
+2026-09-12. Source baseline: signed `f118127c3156de1bac44cc731e51ffc2296643f5`.
+
+**F-21.4 remains open; preparation, bounded R1 and the packaged/migration/observable-file extension are complete.** Importance: **high assurance**, because the
+confidentiality claim requires observation of plaintext carriers beyond the successful encryption path.
+This assessment does not demonstrate a current content leak. The original review's concern is valid,
+but existing custody and cleanup tests deserve their narrower credit.
+
+C13 copies complete synthetic Chromium profiles and attempts known root openers against retained
+content and a synthetic future receiver. It includes factor-present and planted promptless-opener
+controls. That is useful custody evidence; it is not a neutral search for content. Cleanup tests
+establish absence of known legacy namespaces and retention of the encrypted destination. They do
+not scan arbitrary browser carriers, physical database remnants or all logs.
+
+The [test contract](../../account-residue-testing.md) and
+[surface inventory](../../account-residue-prep/surfaces.json) separate logical-carrier scans (R1),
+physical filesystem residue (R2) and copied-profile custody (C13). They require independent acquisition,
+matching before redaction/hashing, unknown-key discovery, representation and collector controls,
+explicit incomplete results and independent live/cold content checks. A clean empty scenario or a
+successful decryption cannot substitute for the measurement. Fragmentation, compression and opaque
+key capabilities limit what the first negative result can establish.
+
+Two source distinctions matter. Current actor/device-label edits use encrypted document metadata;
+the legacy plaintext device-name helper is not their current writer. Browser recovery preparation
+does retain the registration retry capability and its exact finalization request. Those known
+sensitive locations must be reported separately; the protocol is not a blanket "no secrets at rest"
+construction. The standard native preparation fixture bypasses that browser owner, so R1 must call
+it explicitly. No runtime exposure is newly authorized by this inventory.
+
+PRD acceptance item 13 still expected a copied default profile to unlock without a factor. It is
+corrected to agree with the already selected mandatory-factor contract in PRD §7.2, TRD §11.1 and
+SC-08. A planted promptless opener remains a positive control. The correction adds no empirical
+evidence for platform-wide protection.
+
+The [prep record](../../account-conformance-runs/2026-09-12-account-residue-prep.md) preserves the
+lexical source query, 71 source pins and 23 inventory entries. Static references and preservation
+are checked; no scanner, application test or plaintext-residue result was produced in the preparation phase.
+
+## R1 execution after signed preparation `6a9c9c4`
+
+The [implementation](../../account-residue-r1.md) now supplies independent browser logical-storage,
+current SQL and diagnostic collectors, calibrated encodings, explicit incompleteness, exact capability
+classification and actual owner histories. The
+[final campaign](../../account-conformance-runs/2026-09-12-account-residue.md) passes 7 stages and 16
+Node cases: 144 calibration cells, 26 directed checkpoints and 24 generated histories. No runtime
+counterexample was found in the completed generated campaign; all 871 source pins match. No production
+code changed. Detector and fixture defects found during development are recorded separately.
+
+Normal histories have no prohibited sentinel matches; the actual plaintext journal side-write is
+detected after an acknowledged edit. The browser recovery capability appears at its documented
+sensitive fields. Live and cold readback confirm that introduced content exists, preventing empty
+trials from qualifying the absence claim. Actual service issuance, lost replies and normal capture/
+spool/delivery preparation connect the Local and Account owner paths without forged stage records.
+
+This addresses the lack of neutral evidence for those named logical carriers and points. It does
+not close the review's broader plaintext-residue requirement. Packaged UI/service-worker/export and
+synthetic migration/clear trials are next. Physical files/WAL/deleted data, arbitrary transformations,
+fragmented content and opaque key/opener protection remain separate. No personal profile, recovery
+file, server or real Account participates in these tests.
+
+
+## Packaged and physical observation extension
+
+The [2026-09-12 extension](../../account-conformance-runs/2026-09-12-privacy-extended/README.md) passes
+its logical and detector-control contract. It adds actual UI exports, worker diagnostics, offline
+reopen, migration/cleanup/clear restart and raw profile/service files. It also directly observes
+legacy plaintext in a closed Chromium LevelDB file after logical cleanup and clear. This is evidence
+against a forensic-erasure claim, not a failure of encrypted destination replay. The wider platform,
+C13 opener, opaque-format and fragmentation qualifications remain open.

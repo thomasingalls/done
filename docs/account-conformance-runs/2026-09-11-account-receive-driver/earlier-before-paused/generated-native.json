@@ -1,0 +1,124 @@
+{
+  "seed": 9112052,
+  "histories": [
+    {
+      "actions": [
+        "lost",
+        "halt",
+        "lost",
+        "halt",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "restart",
+        "offline",
+        "restart",
+        "publish",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "restart",
+        "lost",
+        "lost",
+        "local",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "publish",
+        "restart",
+        "restart",
+        "restart",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "local",
+        "halt",
+        "publish",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "halt",
+        "halt",
+        "halt",
+        "lost",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "halt",
+        "local",
+        "offline",
+        "local",
+        "local",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "local",
+        "halt",
+        "offline",
+        "local",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "local",
+        "publish",
+        "restart",
+        "lost",
+        "lost",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "restart",
+        "lost",
+        "halt",
+        "local",
+        "publish",
+        "restart"
+      ],
+      "completed": true
+    }
+  ],
+  "coverage": {
+    "lost": 8,
+    "halt": 9,
+    "publish": 14,
+    "restart": 18,
+    "offline": 3,
+    "local": 9
+  }
+}

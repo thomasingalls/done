@@ -1,0 +1,10 @@
+{
+  "mode": "actor",
+  "changes": [
+    [
+      "if (!actorAllowed) fail('actor');",
+      "void actorAllowed;"
+    ]
+  ],
+  "outcome": "A different actor accepted."
+}

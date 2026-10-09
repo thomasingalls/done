@@ -1,0 +1,128 @@
+{
+  "base": "8bd6a07e8090866a0f4cb9c666bdd7ec32cc9d3c",
+  "claim": "Five Account sync/composition fixture files at frozen inputs; no whole-wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T06-25-38.307Z",
+  "summary": {
+    "schema": 1,
+    "selection": "sync-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-sync/batch.test.mjs",
+        "key": "fc2715cd0540c2726b4fd8eb9f1648660bfa285b408ccfe1ff87c9a1ac743058",
+        "status": "passed",
+        "elapsedMs": 132786,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-sync/controls.test.mjs",
+        "key": "1effc0bdec9aa735a4cef1493a06b6c4b49c0c558d84bef788f57f94dfabf813",
+        "status": "passed",
+        "elapsedMs": 2026,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-sync/generated.test.mjs",
+        "key": "92fe65caa50693dd52d3b62f3bd34b6d4f858b8ea7d692d43d52bfaf18531b2a",
+        "status": "passed",
+        "elapsedMs": 200257,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-sync/native-controls.test.mjs",
+        "key": "c26ca66477e650d462e814cb8f4227df0362f062ef4cac1acc0182f739a77db9",
+        "status": "passed",
+        "elapsedMs": 126333,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-sync/native.test.mjs",
+        "key": "9c1868e0a5c5be89e1649bfa6d49560e28113793772cae80cf17d8967bc058b3",
+        "status": "passed",
+        "elapsedMs": 496468,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T06:25:38.309Z",
+    "input": "d1b978529a1b6844de0b3bc0dd93c4b0f5ee40e3d1892ad8534fe7046d0782dd",
+    "completedAt": "2026-09-14T06:42:08.431Z"
+  },
+  "elapsedMs": 990122,
+  "rawInputArchiveSha256": "32084e3671e6fc13f1e2aa2ea4fc4b29a0f43915ba5f7cc843bfd623d0c386d3",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "8bd6a07e8090866a0f4cb9c666bdd7ec32cc9d3c",
+    "sourceDigest": "23bb79d691bb4bcf7393d52cd57432f7f5ab0ddaa9e59da523c57d637c422114",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 5,
+    "selectedCases": 29,
+    "browserFiles": 4,
+    "generatedHistories": 8,
+    "seed": 9112062,
+    "schedulerOmissionCases": 5,
+    "nativeControlCases": 4,
+    "nativeControlMutations": 5,
+    "nativePreflightOmissionCases": 1,
+    "rendererCrashCases": 6,
+    "priorGeneralFiles": 174,
+    "priorGeneralCases": 1444,
+    "currentGeneralFiles": 179,
+    "currentGeneralCases": 1473,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 83,
+    "accountFiles": 73,
+    "accountCases": 379,
+    "pureRunnerTests": 92,
+    "nodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 238,
+    "unresolvedTestFiles": 79,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 641301
+  },
+  "finalGatesSha256": "c0770482c2852cf78813793b706b8fb1651d0808e53f083d277922fd48a417b3",
+  "preservationSha256": "c0829742829bb1249cdda71f128ffed50138d27303fe0b247fc02565f89c09b3",
+  "limits": [
+    "This selection integrates five complete existing files, with 7 batch, 5 scheduler control, 1 generated, 4 native control and 12 native cases. Scheduler controls are Node-only; the other four borrow an owned Chromium CDP endpoint. No product source or case identity changes. Historical git show calls gain 5000-ms/2-MiB bounds. File deadlines are 300/90/450/150/600 seconds; browser startup 15 seconds and drain grace 5 seconds. Batch adopts the prior liveness ownership group's 300-second budget as its own ceiling, not equivalence to the group. Other four bounds match account-sync/run.mjs. Original wrappers are unchanged and remain separate obligations.",
+    "The first focused scheduler run failed all five cases before assertions: the copied module could no longer resolve the runtime EnvelopeSizeError import added in R-01. The repair rewrites exactly that import to the real current protocol module with its original transitive dependencies. It does not stub or remove the class. All five baseline/mutant comparisons now pass. Copied modules live beneath ignored test-results in the disposable checkout and are removed by test cleanup.",
+    "Five virtual-clock controls compare fairness, overlap exclusion, sticky halt, observer-pressure resume and wake during active work. Four native control cases cover five omissions: final submit offline/pressure gates, retained union witness, self-stream byte binding and refusal classification. A further no-preflight omission within the native file observes forbidden reservation allocation; an unrelated thrown error cannot satisfy that assertion. Mutations require exact anchors.",
+    "Seven batch cases include six CDP renderer deaths, before/after actual IDB position-batch, attempt and envelope commits; all eight originals map to one position after reopen. The seventh loses an actual accepted submit reply, adds three later originals and compares exact retry bytes, [8,3] grouping, capture identity and additional encryption invocation count. Renderer death is not browser-process crash, power loss or a separate-profile reopen.",
+    "Eight fixed-seed histories (9112062, numRuns:8, endOnFailure:true, 420-second test bound) use the actual synthetic loopback service. Five to seven actions combine edit/offline-edit/lost-send/lost-read/compact/restart; all six types must occur. After every action text, capture count, source-to-position mapping, send/read progress, distinct request count and encryption invocation count agree. Repeated positions must retry the exact wire. Lost send aborts a fetched actual response; lost read aborts the request; offline toggles navigator.onLine plus synthetic events. Each context closes per history, while base service/connection cleanup occurs at outer test completion.",
+    "Twelve native cases include a real ciphertext service round trip, unknown submit result received before send resolution, native submission/receive aborts, shared permit drain on close, local admission during held sealing and retained signed conflict without loss of valid Local content. Five R-01 variants cover fitting/oversize/no-preflight/old sealed/old prepared-submission. The last two seed 600-KiB originals using two exact pre-R-01 Git files plus one current-code sealer mutation, then reopen under current code. They compare retained originals, stable positions/submission state and no extra seal invocation on restart. The current protocol decoder is deliberately retained; this is not a complete old app build.",
+    "Only the native file executes those historical Git paths. Its receipt pins both reference/revision/path/content hashes; the existing runner checks before launch/reuse and after execution. The owner controls exercise both new paths with real Git blob replacement while checkout identity stays unchanged, requiring prelaunch rejection, different keys after replanning and failure/drain after midrun change. The previous expected-positive service-path orphan classification remains unresolved despite subsequent passes; no fix is claimed.",
+    "The fixture chain builds in memory and registers base cleanup before setup, borrows only a validated loopback CDP endpoint, creates fresh synthetic contexts/SQLite services and drains worker and browser groups. The batch report import also loads the liveness/residue helper modules, but does not call their independent browser/service fixture constructors. Its seven JSON reports go beneath ignored test-results inside the disposable checkout; they are not retained or asserted as output obligations here. Other ACCOUNT_REPORT_DIR exports remain disabled. Original wrapper output/order/prerequisites need separate postconditions.",
+    "All 92 pure runner tests and 23 Node owner tests pass. Five Vitest-process and twelve native-owner tests retain pinned earlier evidence; their implementation/fixtures remain unchanged and were not rerun. All 174 prior general contracts / 1444 case identities and six retired-v8 exclusions remain unchanged. This selection adds bounded execution evidence, not a complete wrapper or immutable aggregate result.",
+    "The input archive retains the exact execution base, source/dependency/runtime/browser identities. Documentation/evidence written after execution does not alter the captured identity or establish an immutable aggregate. The preceding receive-driver phase was signed and verified before this run. Personal profiles/services/builds/recovery/factor material, earlier vectors/evidence/debts/signing backups and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "725d925115c9ead34c80271f56fb3222454d894e01a9810c83f930fff6e6d899",
+    "compressedSha256": "4801ca525eb05e217ff22110c5d7ea41965cea121383a079a863ef13fa40ad59"
+  }
+}

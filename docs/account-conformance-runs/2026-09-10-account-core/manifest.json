@@ -1,0 +1,78 @@
+{
+  "sourceBaseCommit": "187b636476ada08ae12e20663cd39d6461af0937",
+  "scope": "Private account-core working tree; final 30-test campaign, synthetic acceptance-control snapshots and cross-process race before/after evidence",
+  "files": [
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core.md",
+      "sha256": "31a4a2f3fdd975cf00a101b36ce79777beb5d1b721778b2a7242bff3ce9c1f47"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/build-gates.json",
+      "sha256": "974b738465b73def872c0cf8a68da8531c3d21a8eb86502369eba1cd1f7c6a70"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/confirmation-race-after.log",
+      "sha256": "38f24a38ee5fcaa2f8522f742be328c6523206ee122e9f94b552a06e234e2369"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/confirmation-race-before-core.txt",
+      "sha256": "0aece46c5c446460d36502ab436082fb3e88aca9b5e7c1c0ef8ed9d4e1851d8a"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/confirmation-race-before.log",
+      "sha256": "7732027fa300fb27337dab8053988c8dda40fa6a2b280a691980ea1b98ca3725"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-key-baseline.json",
+      "sha256": "81512cfbb61a4437b37e2ede6355bd300a584b0135d8b89c7e4bb22db5bcb9bb"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-key-mutant.json",
+      "sha256": "7c6e771d38071b6c98cdaaa0fd40b60fb7fe83dc785075154de2e3cb8c471241"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-purpose-baseline.json",
+      "sha256": "79f0159b52091d86b10885c1d5d7b2c4c43fec9503c3007f0896492b55147ea5"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-purpose-mutant.json",
+      "sha256": "8b4daef9ec9871d2a387108b62e595bb25f9faa0ac6cfc0a2d37b3117f440666"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-replay-baseline.json",
+      "sha256": "348428cf6b1c6c889a9a8efbdd1aee6b902ce51017b96f6ed667868ae494e522"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/control-replay-mutant.json",
+      "sha256": "594246eac1169ddad879cff60f4f6e07c84fdf782475caeb97024e79e7e5804b"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/final-gates.json",
+      "sha256": "77725c65b055712f824e30f3a92c92a817472039aa35d4b1b35eadea986c93ad"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/governance.json",
+      "sha256": "a21b774325c77a66c0836da541149eaea2b1fe1f8c5f29b90c1521333bcc92e6"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/results.xml",
+      "sha256": "b6f92ec695c09cfb07285ea99236925ea30c2bd0a6be2e5b61c93d9011fd3768"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/run.log",
+      "sha256": "797267bedd9540d532cb485e1a2e3f714df5241f95f0abf345be6fc1bf4e65a9"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/sources.json",
+      "sha256": "215242bcf1f6dd82f4113d816ff3dea785882a8c87e0b055f659fec9e6d31c5a"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/summary.json",
+      "sha256": "e500ff887d93ff98654e39f5a8ce750ddea445ea9be0c2a850a3e709c61d5c2a"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-core/unit-and-static.json",
+      "sha256": "e915aeb8cf911abf21ff0d4408195459ba72c55ed87785903061a7c93b8087c0"
+    }
+  ]
+}

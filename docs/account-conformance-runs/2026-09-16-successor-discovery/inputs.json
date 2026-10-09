@@ -1,0 +1,17 @@
+{
+  "baseline": "f5a3399c9e53acc5280f3d0af8c812d1e5045e25",
+  "files": {
+    "account-protocol/diagnostics.ts": "992d87ee32c2656c9f9e4b8edfd10cf98faecd9e80364c3d5246b644fbfc31d7",
+    "account-service/authority.ts": "6cc2fbb754da6b5ecb9f20c1d9e8591bd58a262685b7c90976ba284a6c3f05df",
+    "account-service/core.ts": "dc041f1e3af21ed054c69e4fadcd70e7917f4a014e3b8b12c7e106cc068a906a",
+    "account-service/discovery.ts": "f8be355e264e4ee7b1c400e96c4b254a4e4db10d44e2c53f40800b0f259bf724",
+    "account-service/private-server.ts": "85dd01c2e114744036d78311f5aa092fea8ddc9bb6eba9c1ecc4e91841cc9212",
+    "account-service/successor.ts": "d62f8e757fe52bb23008bccb32250c56aea29679447010a89062d41f6926daa5",
+    "test/account-successor/discovery-controls.test.mjs": "d51e42feef87f8242921ef80e965d2177916a9dcc59551f86ebd167da0a3e82d",
+    "test/account-successor/discovery-fixtures.mjs": "a2b45cef370c59a336aafa8976d793bc3f74b76ead548d47a009168b10a0a8e2",
+    "test/account-successor/discovery.test.mjs": "2e80116edd79d26266ad4877d64676906e3a36e0581f91a3020642ae266a26d3",
+    "test/account-successor/http.test.mjs": "b5d4543edfaa9ca1cd56a23049d4a556809e9fb1e6293e43d4f1390321667ca4",
+    "test/account-successor/process-fixtures.mjs": "d2d92713ea828cd145016179f21a239ef2b5ee3dc6225b04cfffeecb4b12d533",
+    "test/account-successor/worker.mjs": "d7355a4723c6775eaaadcddb588b1cb5584584e143d1e0bfb1a50a81a322fdd8"
+  }
+}

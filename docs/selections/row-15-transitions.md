@@ -1,5 +1,9 @@
 # Selection — TRD §15 row 15: interrupted-rotation and downgrade behaviour
 
+**Local lifecycle correction 2026-09-08:** [SC-03/04](../storage-contract.md) supplies the shared
+writer-lifetime barrier and fresh retirement census, including the journal. Service outcome bytes stay
+unchanged; prior partial models do not certify this local activation boundary.
+
 **Status:** selected, and folded into the TRD. **Date:** 2026-08-20
 **Closes:** TRD §15 row 15, and the atomic-replace half [row 14](./row-14-recovery-code.md) §5 deferred ·
 **Scope of:** review 3b (protocol)
@@ -87,15 +91,19 @@ Local order
                                         --outcome(other)--> stale --> rebuild
 
   No content under the target generation before a committed outcome.
-  None under the previous generation after it.
+  An observer stops new acknowledgements; other contexts/devices may lag.
+  Exclusive slot activation ends previous-generation ordinary local writes (SC-03).
   applying is a DURABLE RECORD, not a label. Eight ordered idempotent steps:
     1 outcome verified   2 successor opener installed   3 old objects classified
     4 work covered under g+1   5 ACTIVE MARKER ADVANCED -- the commit point
     6 successor checkpoint admitted, local content trimmed
     7 old openers retired   8 apply record discharged
-  Restart resumes at the recorded step. 1-4 reversible; 5 is not.
+  Restart reacquires exclusion and rereads carriers before resuming recorded progress.
+  No earlier census is trusted across a released-lock gap (SC-04). Staging before
+  step 5 preserves predecessor recovery; it cannot undo the committed service outcome.
   Device lock and replace-recovery apply through this same machine.
 
+  Retirement additionally requires SC-03/04 exclusion and a fresh journal-inclusive census.
   The previous generation is retained until settled AND a checkpoint under
   the new one is admitted AND the local trim holds a state record under it
   AND every retained checkpoint still sealed under it has a surviving
@@ -221,9 +229,11 @@ each order fails differently.
 
 **So neither is selected: the atomic commit is one transition point and neither half may precede it.** §13.7
 already says the service "atomically commits and signs that package"; what this row adds is the client-side rule
-that makes the atomicity mean anything — **the local writer switches generation on observing a verified committed
-outcome, and only then.** No content under the target generation before it, none under the previous generation
-after it.
+that makes the atomicity mean anything — **an observing runtime stops acknowledgements on the old
+generation, then completes local activation under the exclusive writer-lifetime barrier** (SC-03/04).
+No target-generation content is written before a verified outcome where a service exists. Other
+contexts/devices may lag observation; no old-generation ordinary local write follows completed local
+activation. Do not collapse service commitment, observation and local activation into one event.
 
 **The crash case is what the pending record is for.** A client that committed and died before switching restarts
 holding a pending intent, resubmits it, and gets back the outcome naming its own id — because the service commits

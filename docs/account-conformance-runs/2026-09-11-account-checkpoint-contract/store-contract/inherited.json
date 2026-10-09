@@ -1,0 +1,16 @@
+{
+  "records": 6,
+  "journals": 4,
+  "sourcePins": [
+    {
+      "path": "test/vectors/record-format.json",
+      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+    },
+    {
+      "path": "test/vectors/journal-aead.json",
+      "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
+    }
+  ],
+  "envelopes": "deferred",
+  "wasm": "existing generated blob, no rebuild"
+}

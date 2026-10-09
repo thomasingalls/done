@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart" time="0.826112" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="renderer restart before genesis commit" time="0.850601" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="renderer restart after genesis commit" time="1.116311" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="wrong factors, foreign owner and current service abandonment preserve preparation" time="0.634281" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="unattestable actor refuses without rewriting content" time="0.536659" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="unattestable card refuses without rewriting content" time="0.538629" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed snapshot forgery is refused" time="0.840469" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed wrap forgery is refused" time="0.859379" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed coverage forgery is refused" time="0.593492" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed recipient forgery is refused" time="0.595199" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed actor forgery is refused" time="0.598246" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="competing owners converge and cancellation drains before releasing the exclusive permit" time="0.810917" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="previous version refuses the new carrier; malformed fields never gain an owner" time="0.991962" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="40 generated delivery/interruption histories preserve independent text and full source state" time="18.192639" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<!-- tests 14 -->
+	<!-- suites 0 -->
+	<!-- pass 14 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 28613.575834 -->
+</testsuites>

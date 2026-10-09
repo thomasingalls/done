@@ -1,0 +1,12 @@
+{
+  "seed": 9202026,
+  "histories": [
+    [
+      "invalid",
+      "local",
+      "receive",
+      "local",
+      "compact"
+    ]
+  ]
+}

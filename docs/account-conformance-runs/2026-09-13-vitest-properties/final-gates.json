@@ -1,0 +1,143 @@
+{
+  "checks": [
+    {
+      "name": "signature",
+      "argv": [
+        "git",
+        "verify-commit",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 28,
+      "log": "gate-signature.log.gz"
+    },
+    {
+      "name": "typecheck",
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 75,
+      "log": "gate-typecheck.log.gz"
+    },
+    {
+      "name": "lint",
+      "argv": [
+        "node_modules/.bin/oxlint",
+        "--react-plugin",
+        "scripts/release-validation/execute.mjs",
+        "scripts/release-validation/manifest.mjs",
+        "scripts/release-validation/stage.mjs",
+        "test/accountInboundPrep.test.ts",
+        "test/legacyCleanup.test.ts",
+        "test/legacyImport.test.ts",
+        "test/legacySelection.test.ts",
+        "test/spoolBatch.test.ts",
+        "scripts/release-validation/vitest-adapter.mjs",
+        "scripts/release-validation/vitest-census.mjs",
+        "scripts/release-validation/vitest-reporter.mjs",
+        "test/release-validation/vitest.test.mjs",
+        "test/release-validation/vitest-process.test.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 74,
+      "log": "gate-lint.log.gz"
+    },
+    {
+      "name": "format",
+      "argv": [
+        "node_modules/.bin/oxfmt",
+        "--check",
+        "scripts/release-validation/execute.mjs",
+        "scripts/release-validation/manifest.mjs",
+        "scripts/release-validation/stage.mjs",
+        "test/accountInboundPrep.test.ts",
+        "test/legacyCleanup.test.ts",
+        "test/legacyImport.test.ts",
+        "test/legacySelection.test.ts",
+        "test/spoolBatch.test.ts",
+        "scripts/release-validation/vitest-adapter.mjs",
+        "scripts/release-validation/vitest-census.mjs",
+        "scripts/release-validation/vitest-reporter.mjs",
+        "test/release-validation/vitest.test.mjs",
+        "test/release-validation/vitest-process.test.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 107,
+      "log": "gate-format.log.gz"
+    },
+    {
+      "name": "inventory",
+      "argv": [
+        "node",
+        "scripts/release-validation/check.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 653,
+      "log": "gate-inventory.log.gz"
+    },
+    {
+      "name": "manifest",
+      "argv": [
+        "node",
+        "scripts/release-validation/plan.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 914,
+      "log": "gate-manifest.log.gz"
+    },
+    {
+      "name": "authority",
+      "argv": [
+        "node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 636,
+      "log": "gate-authority.log.gz"
+    },
+    {
+      "name": "release-blocked",
+      "argv": [
+        "node",
+        "scripts/release-validation/plan.mjs",
+        "--require-complete"
+      ],
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "elapsedMs": 893,
+      "log": "gate-release-blocked.log.gz"
+    },
+    {
+      "name": "whitespace",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "elapsedMs": 43,
+      "log": "gate-whitespace.log.gz"
+    }
+  ],
+  "preservation": {
+    "personalFiles": 21,
+    "priorVectorFiles": 31,
+    "l2Sha256": "e053bf287bb8020201d067e2b33e66189920efc9b4bae8e7b3d373266bf65b95",
+    "appendOnlyRecords": true,
+    "priorEvidenceAndVectorsUnchanged": true
+  },
+  "inventorySha256": "5d4b129c57852e9672bb06bd06fe574aaaf85264fe0886a7932995bab72f6816",
+  "manifestSha256": "6ad8bc664fea36a0c8164501430db80f4314d8e795aa18cbb0a95dc67656b9fb"
+}

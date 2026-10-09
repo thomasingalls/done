@@ -1,0 +1,7 @@
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+baseline screen-0 shallow p50 33.5 p95 38.09999942779541
+baseline screen-0 deeper p50 32.80000019073486 p95 37.29999923706055
+Finished baseline screen-0 passed

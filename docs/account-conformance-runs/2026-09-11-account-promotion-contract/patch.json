@@ -1,0 +1,26 @@
+{
+  "baseCommit": "d24ca6632044e27b8f29777ed3d51db190194d12",
+  "sha256": "538f10d8854e0dca18975dc4be50f07d7d4e192f1597ee5ac483a209820e2434",
+  "paths": [
+    "docs/account-crypto/constructions.json",
+    "docs/account-promotion.md",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "docs/account-crypto/local-promotion.md",
+    "test/vectors/account-promotion.json",
+    "docs/account-conformance-runs/2026-09-11-account-promotion-contract.md",
+    "scripts/account-promotion-contract/run.mjs",
+    "scripts/account-promotion-contract/vectors.mjs",
+    "test/account-promotion-contract/browser.ts",
+    "test/account-promotion-contract/formats.test.mjs",
+    "test/account-promotion-contract/native.test.mjs",
+    "test/account-promotion-contract/oracle.mjs",
+    "test/account-promotion-contract/runtime.mjs"
+  ],
+  "note": "Uncommitted D2 tracked diff plus explicit new source/docs/vector files. Raw evidence folder excluded from self-referential patch; summary and source hashes are separate."
+}

@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "--no-heading",
+    "--color",
+    "never",
+    "--glob",
+    "*.{ts,tsx,js,mjs}",
+    "--glob",
+    "!*.test.*",
+    "--glob",
+    "!*.spec.*",
+    "indexedDB|localStorage|sessionStorage|document\\.cookie|cookieStore|caches\\.|CacheStorage|storage\\.getDirectory|createWritable|DatabaseSync|writeFile|appendFile|console\\.|sendBeacon|captureException|captureMessage|BroadcastChannel|createObjectURL",
+    "src",
+    "account-service",
+    "account-protocol",
+    "private",
+    "public",
+    "vite",
+    "relay/src"
+  ],
+  "exitCode": 0,
+  "stderr": "",
+  "scope": "Lexical navigation query, runtime roots excluding named test/spec files; includes comments; not reachability or exhaustiveness proof. Dependencies/browser internals not searched.",
+  "matches": 83
+}

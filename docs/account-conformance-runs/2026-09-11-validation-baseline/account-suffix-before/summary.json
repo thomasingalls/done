@@ -1,0 +1,129 @@
+{
+  "status": "failed",
+  "scope": "Account suffix diagnostic only, not the pnpm check aggregate",
+  "cwd": "/private/tmp/done-validation-500630f",
+  "started": "2026-09-11T07:32:16.572Z",
+  "stages": [
+    {
+      "name": "account:core",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:32:23.968Z"
+    },
+    {
+      "name": "account:recovery",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:32:29.406Z"
+    },
+    {
+      "name": "account:authority",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:32:44.879Z"
+    },
+    {
+      "name": "account:promotion",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:33:07.106Z"
+    },
+    {
+      "name": "account:genesis",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:33:51.875Z"
+    },
+    {
+      "name": "account:admission",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:34:55.694Z"
+    },
+    {
+      "name": "account:handoff",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:36:04.756Z"
+    },
+    {
+      "name": "account:editing",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:38:03.594Z"
+    },
+    {
+      "name": "account:outbound",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:38:11.307Z"
+    },
+    {
+      "name": "account:capture",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:39:50.911Z"
+    },
+    {
+      "name": "account:spool",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:42:13.216Z"
+    },
+    {
+      "name": "account:decisions",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:42:58.773Z"
+    },
+    {
+      "name": "account:delivery",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:45:48.793Z"
+    },
+    {
+      "name": "account:service-delivery",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:46:18.098Z"
+    },
+    {
+      "name": "account:transport",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:47:34.797Z"
+    },
+    {
+      "name": "account:driver",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:51:02.945Z"
+    },
+    {
+      "name": "account:inbound-prep",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:51:17.694Z"
+    },
+    {
+      "name": "account:inbound-codecs",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:51:37.799Z"
+    },
+    {
+      "name": "account:receive",
+      "code": 0,
+      "timedOut": false,
+      "finished": "2026-09-11T07:55:04.556Z"
+    },
+    {
+      "name": "account:receive-editor",
+      "code": 1,
+      "timedOut": false,
+      "finished": "2026-09-11T07:58:07.569Z"
+    }
+  ],
+  "finished": "2026-09-11T07:58:07.570Z"
+}

@@ -1,0 +1,23 @@
+✔ actual custody and content AES follow completed strict grants; modeled power loss retains burned count (444.509417ms)
+✔ content: strict requested/reported capability, body refusal and native settlement (265.989833ms)
+✔ content: default requested/reported capability, body refusal and native settlement (271.340167ms)
+✔ content: relaxed requested/reported capability, body refusal and native settlement (261.574208ms)
+✔ content: missing requested/reported capability, body refusal and native settlement (256.969458ms)
+✔ content: getter-throws requested/reported capability, body refusal and native settlement (287.164083ms)
+✔ content: options-throw requested/reported capability, body refusal and native settlement (264.753667ms)
+✔ content: abort-throws requested/reported capability, body refusal and native settlement (274.844333ms)
+✔ custody: strict requested/reported capability, body refusal and native settlement (252.400875ms)
+✔ custody: default requested/reported capability, body refusal and native settlement (272.309042ms)
+✔ custody: relaxed requested/reported capability, body refusal and native settlement (282.381ms)
+✔ custody: missing requested/reported capability, body refusal and native settlement (263.523875ms)
+✔ custody: getter-throws requested/reported capability, body refusal and native settlement (265.5185ms)
+✔ custody: options-throw requested/reported capability, body refusal and native settlement (259.097916ms)
+✔ custody: abort-throws requested/reported capability, body refusal and native settlement (251.53025ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4637.622791

@@ -1,0 +1,5 @@
+{
+  "base": "passing-full/inputs.json.gz",
+  "targetDecompressedSha256": "e1cedd7f7ed37920f97499512d957103578b068f1a5997dc590024cc88981dc6",
+  "targetNormalizedSha256": "e1cedd7f7ed37920f97499512d957103578b068f1a5997dc590024cc88981dc6"
+}

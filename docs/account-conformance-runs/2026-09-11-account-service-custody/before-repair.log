@@ -1,0 +1,87 @@
+✖ root creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (8.36425ms)
+✖ acceptance creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (1.243709ms)
+✖ acceptance create refuses after close before generating or exporting a new seed (0.609125ms)
+✖ acceptance create clears an exported seed if randomness fails before derivation (1.12025ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 135.440583
+
+✖ failing tests:
+
+test at test/account-service-custody/exports.test.mjs:39:3
+✖ root creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (8.36425ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: root:private:oid
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs:49:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Unexpected Ed25519 (PKCS#8|SPKI) export/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test/account-service-custody/exports.test.mjs:39:3
+✖ acceptance creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (1.243709ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: acceptance:private:oid
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs:49:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Unexpected Ed25519 (PKCS#8|SPKI) export/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test/account-service-custody/exports.test.mjs:55:1
+✖ acceptance create refuses after close before generating or exporting a new seed (0.609125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs:59:61)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-service-custody/exports.test.mjs:61:1
+✖ acceptance create clears an exported seed if randomness fails before derivation (1.12025ms)
+  AssertionError [ERR_ASSERTION]: private export retained after failure
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs:65:98)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

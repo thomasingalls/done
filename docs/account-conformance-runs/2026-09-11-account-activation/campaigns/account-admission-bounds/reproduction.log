@@ -1,0 +1,3 @@
+{"output":"/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission-bounds/2026-09-11T13-07-19.920Z","histories":[{"history":"sv","count":12000,"svBytes":41618,"dsBytes":2,"updateBytes":131239,"refusedBoth":true},{"history":"ds","count":12000,"svBytes":6,"dsBytes":39750,"updateBytes":215247,"refusedBoth":true}],"boundaries":18}
+(node:56390) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)

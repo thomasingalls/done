@@ -1,0 +1,37 @@
+{
+  "campaign": "baseline",
+  "trial": {
+    "campaign": "baseline",
+    "attempt": 21,
+    "stage": "generation",
+    "seed": 8941,
+    "inputHash": "583abe5e5750a28dd9d3b9051de3ba2c3683b725c33df37fbeb968c063d5e4ed"
+  },
+  "inputHash": "583abe5e5750a28dd9d3b9051de3ba2c3683b725c33df37fbeb968c063d5e4ed",
+  "error": {
+    "name": "FixtureOperationError",
+    "message": "operation-accepted: Error: Field too long",
+    "stack": "FixtureOperationError: operation-accepted: Error: Field too long\n    at requireOK (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:130:15)\n    at clean (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:272:12)\n    at async history (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:457:23)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:46:7\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)",
+    "cause": {
+      "name": "Error",
+      "message": "Field too long",
+      "stack": "Error: Field too long\n    at http://127.0.0.1:5198/src/crdt/custodyCrypto.ts:17:34\n    at Array.map (<anonymous>)\n    at fields (http://127.0.0.1:5198/src/crdt/custodyCrypto.ts:13:55)\n    at Object.digest (http://127.0.0.1:5198/src/crdt/legacyCleanupRecord.ts:50:18)\n    at databaseFingerprint (http://127.0.0.1:5198/src/crdt/legacyCleanupStorage.ts:21:42)\n    at async settings.signal.signal (http://127.0.0.1:5198/src/crdt/legacyCleanup.ts:70:23)\n    at async http://127.0.0.1:5198/src/crdt/writeSession.ts:74:19"
+    }
+  },
+  "lastBrowserOperation": {
+    "method": "clean",
+    "started": "2026-09-09T19:13:12.537Z",
+    "finished": "2026-09-09T19:13:12.730Z",
+    "refusals": [
+      {
+        "status": "refused",
+        "reason": "Error",
+        "error": {
+          "name": "Error",
+          "message": "Field too long",
+          "stack": "Error: Field too long\n    at http://127.0.0.1:5198/src/crdt/custodyCrypto.ts:17:34\n    at Array.map (<anonymous>)\n    at fields (http://127.0.0.1:5198/src/crdt/custodyCrypto.ts:13:55)\n    at Object.digest (http://127.0.0.1:5198/src/crdt/legacyCleanupRecord.ts:50:18)\n    at databaseFingerprint (http://127.0.0.1:5198/src/crdt/legacyCleanupStorage.ts:21:42)\n    at async settings.signal.signal (http://127.0.0.1:5198/src/crdt/legacyCleanup.ts:70:23)\n    at async http://127.0.0.1:5198/src/crdt/writeSession.ts:74:19"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+test/workspacePublication.test.ts(14,8): error TS6133: 'WorkspaceIntent' is declared but its value is never read.

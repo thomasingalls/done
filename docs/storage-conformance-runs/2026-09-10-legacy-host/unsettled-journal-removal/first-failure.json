@@ -1,0 +1,18 @@
+{
+  "campaign": "host-histories",
+  "trial": {
+    "campaign": "host-histories",
+    "attempt": 3,
+    "stage": "generation",
+    "seed": 8941,
+    "inputHash": "52c672b0f95bb6442a36c82022c2ea533fc413b658711b19788f5aef2dbe6ccf"
+  },
+  "inputHash": "52c672b0f95bb6442a36c82022c2ea533fc413b658711b19788f5aef2dbe6ccf",
+  "error": {
+    "name": "AssertionError",
+    "message": "source-carriers-preserved\n+ actual - expected\n\n+ '5ef06cca7764360aebd6eb2ac874ddce1f04d33448da93ff8d8d4756c44d5e87'\n- 'caf507addce7c8a455cd7757d6bf57310aa7546af6f848e0c6b6e306be82a251'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: source-carriers-preserved\n+ actual - expected\n\n+ '5ef06cca7764360aebd6eb2ac874ddce1f04d33448da93ff8d8d4756c44d5e87'\n- 'caf507addce7c8a455cd7757d6bf57310aa7546af6f848e0c6b6e306be82a251'\n\n    at same (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:153:10)\n    at unchangedSource (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:156:3)\n    at runHistory (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:365:3)",
+    "code": "ERR_ASSERTION"
+  },
+  "lastBrowserOperation": null
+}

@@ -1,0 +1,5 @@
+{
+  "observed": "Editor contains remote input despite native receive transaction abort. The baseline remains at the prior text.",
+  "initial": "base original",
+  "visible": "REMOTE base original"
+}

@@ -1,0 +1,25 @@
+(node:32594) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32594) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned proof checks resolve certified custody, retain exact wire and do not persist decision state (5673.085875ms)
+✔ foreign keys, subjects, parent and claimed chain links leave delivery unknown; proved conflicting digest is distinct (4367.582792ms)
+✔ close drains a pending response verification and withholds its evidence before releasing exclusion (5492.388458ms)
+decision history 1/8: ["conflict","conflict","accepted"]
+decision history 2/8: ["foreign-prefix","accepted","foreign-key"]
+decision history 3/8: ["foreign-prefix","accepted","foreign-prefix","junk","foreign-key"]
+decision history 4/8: ["junk","conflict","junk","foreign-prefix","refused"]
+decision history 5/8: ["foreign-prefix","foreign-prefix","junk","foreign-prefix","foreign-key"]
+decision history 6/8: ["accepted","junk"]
+decision history 7/8: ["refused","foreign-key"]
+decision history 8/8: ["junk","accepted","accepted","foreign-key","foreign-key"]
+✔ eight generated response histories preserve stored sources, wire and counters through cold restart (20253.890542ms)
+✔ later-position acceptance reconstructs every retained predecessor instead of trusting a supplied link (4306.218541ms)
+✔ actual verifier controls expose wrong-key, wrong-epoch, unanchored-head and unbound-parent acceptance (4847.216291ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46555.369084

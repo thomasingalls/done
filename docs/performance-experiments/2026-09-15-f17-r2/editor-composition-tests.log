@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r2/editor
+
+
+ Test Files  4 passed (4)
+      Tests  127 passed (127)
+   Start at  09:49:50
+   Duration  9.93s (transform 1.09s, setup 455ms, import 1.43s, tests 16.23s, environment 1.16s)
+

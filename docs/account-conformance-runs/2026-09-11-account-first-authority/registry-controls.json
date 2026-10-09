@@ -1,0 +1,102 @@
+{
+  "controls": 19,
+  "evidence": [
+    {
+      "name": "source construction",
+      "expected": "unregistered source label",
+      "caught": true
+    },
+    {
+      "name": "unlabelled digest construction",
+      "expected": "orphan executed vector",
+      "caught": true
+    },
+    {
+      "name": "source occurrence",
+      "expected": "source-site census changed",
+      "caught": true
+    },
+    {
+      "name": "exported entrypoint",
+      "expected": "missing entrypoint",
+      "caught": true
+    },
+    {
+      "name": "map edge",
+      "expected": "dangling/unresolved map dependency",
+      "caught": true
+    },
+    {
+      "name": "map home association",
+      "expected": "byte home not pinned",
+      "caught": true
+    },
+    {
+      "name": "byte home",
+      "expected": "stale/missing byte home",
+      "caught": true
+    },
+    {
+      "name": "field schema",
+      "expected": "stale field schema pin",
+      "caught": true
+    },
+    {
+      "name": "required negatives",
+      "expected": "missing evidence obligation",
+      "caught": true
+    },
+    {
+      "name": "tests",
+      "expected": "incomplete specified construction",
+      "caught": true
+    },
+    {
+      "name": "unknown status",
+      "expected": "unknown status",
+      "caught": true
+    },
+    {
+      "name": "signer guard",
+      "expected": "signer/authority guard mismatch",
+      "caught": true
+    },
+    {
+      "name": "signature classification",
+      "expected": "signature vector misclassified",
+      "caught": true
+    },
+    {
+      "name": "unreviewed primitive change",
+      "expected": "Runtime census changed",
+      "caught": true
+    },
+    {
+      "name": "new runtime domain",
+      "expected": "unregistered source label",
+      "caught": true
+    },
+    {
+      "name": "remaining blocker",
+      "expected": "unfinished record lacks bounded disposition",
+      "caught": true
+    },
+    {
+      "name": "vector reference",
+      "expected": "missing vector/negative corpus",
+      "caught": true
+    },
+    {
+      "name": "negatives",
+      "expected": "missing vector/negative corpus",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "expected": "missing signature/omission corpus",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

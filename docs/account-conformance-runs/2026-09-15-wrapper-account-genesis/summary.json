@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "b31be6c0",
+  "payloads": 192,
+  "compressedBytes": 725435,
+  "artifactsSha256": "b0a17544b24a670ae86beb7fb01703c20b193536176671605cc6f5b40c381e8b",
+  "rawIndexSha256": "1c5808f3bec71a3d73cdff915220de5e3e07e0261adc32a0657b93150b81d4b3",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-genesis-with-planning-promotion-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "2e5176191ab7e5927101d389fa8a99235f73eceb98d9f7fb85a5a03ea322e135",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 18592,
+        "cases": 30,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "66d460cbb3cee7c826572d92a94c745287ac75ffee184ab1886e4bb3e7844df5",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5824,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "bdac282a598f58ed2924f9d940edb6ee115e42ef3860901196088e84906eea4c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4831,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "8a77dd3705ac680ec16e34acae40ff9aa85b0379886791ef2a508cca0d539540",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5380,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-genesis/run.mjs",
+        "key": "589d2dada0b59c6540456386f1a13ea91994479b107f28e056159d1ad4e5a84e",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 80249,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-promotion/run.mjs",
+        "key": "0bbfadc8ec2ec420db691a802f2e7c951ad5f61ab1e8b38c400ca49dab0e8275",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 51509,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:genesis-reuse",
+        "key": "589d2dada0b59c6540456386f1a13ea91994479b107f28e056159d1ad4e5a84e",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 80249,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T16:51:24.048Z",
+    "input": "fe2783ed7e42de78257ef6707df5e83c36927d41d207bef5c432520343a85d6d",
+    "completedAt": "2026-09-15T16:54:55.099Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 89,
+    "campaign": 57
+  },
+  "claim": "Bounded Account genesis wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

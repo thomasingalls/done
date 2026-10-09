@@ -1,0 +1,16 @@
+{
+  "baseline": "605cb087f2fab66c55cb1100d3e341f3f32cec86",
+  "sha256": {
+    "account-protocol/ceremonyExchange.ts": "edb48e234f599a1cdbf108691c93b8b9b8b0646217fd08bb358f0b2b3642118e",
+    "account-protocol/ceremony.ts": "4a90a2bd5575dd0643ac2d023e1cc50ad2c0bd165c8c4fcb5a54d581cca0ece4",
+    "test/account-ceremony/exchange-oracle.mjs": "83e578e17697963047f4296a3241f272d5b24a32038a591949e2b0262c4c043e",
+    "test/account-ceremony/exchange.test.mjs": "74c3626f4101152540cda94c9ad1c39d1b64fc3af26d8e70ac8a5388e4a223fc",
+    "test/account-ceremony/exchange-model.mjs": "37cca28b6e1106e819a0ab743a33fce6fe094844af988b7d73800671774470ec",
+    "test/account-ceremony/exchange-model.test.mjs": "a45f5d72dcf227ef2cc85252c2918cff3b679cb758d87c3bb4789d28ca1f8ea8",
+    "test/account-ceremony/exchange-controls.test.mjs": "1f62cc5ee5a4d94b7f9a49d65bdd004ba1ba4a0173fbdaf230064845d20caab9",
+    "test/vectors/enrollment-ceremony.json": "d7f7184a427f1ebbf178c2e8fa410d0436254790a239c3dc4e0a6b37ff20ef84",
+    "docs/account-crypto/census.json": "03829c780891c9dc3f33f08c0348a83c196f2669620aef53037ceea5f4596a34",
+    "docs/account-crypto/registry.json": "65d57a14291c3d9b9355e05dad37453fb2b8041c56642289fd62ecac613fc512",
+    "docs/account-crypto/constructions.json": "4fa4b8faafee12bdde6f1062de55a320e89ca79e6daab087a90ba40938e12fc9"
+  }
+}

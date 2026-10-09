@@ -1,0 +1,15 @@
+✔ registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups (264.948291ms)
+✔ registration omission controls fail for the missing obligation, not just a stale aggregate hash (470.855125ms)
+✔ recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes (161.258083ms)
+✔ transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content (240.769166ms)
+✔ D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives (163.942292ms)
+✔ D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source (216.209333ms)
+✔ D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency (210.758417ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1860.915584

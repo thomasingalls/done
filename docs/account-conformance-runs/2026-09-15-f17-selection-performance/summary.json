@@ -1,0 +1,934 @@
+{
+  "at": "2026-09-15T06:13:42.943793+00:00",
+  "base": "0c84e5cce1149d2c163dae3a9fc7fc84dba35eeb",
+  "node": {
+    "sessions": 64,
+    "warmups": 5248,
+    "measured": 4096,
+    "semanticChecks": "passed",
+    "relativeCriteriaPassed": false,
+    "summary": [
+      {
+        "stratum": "1000",
+        "summary": {
+          "B": {
+            "median": 12.407187499999992,
+            "p95": 13.256103999999993
+          },
+          "R": {
+            "median": 12.567499749999996,
+            "p95": 13.605229000000065
+          },
+          "H": {
+            "median": 12.263583249999996,
+            "p95": 13.161895999999956
+          },
+          "S": {
+            "median": 11.842416749999984,
+            "p95": 12.692999999999984
+          }
+        },
+        "comparisons": [
+          {
+            "a": "S",
+            "b": "H",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9698465468702876,
+                "p95": 0.9635358391482284
+              },
+              {
+                "block": 1,
+                "median": 1.0000051965559682,
+                "p95": 1.0006300119780283
+              },
+              {
+                "block": 2,
+                "median": 0.961488877559619,
+                "p95": 0.9472078087542597
+              },
+              {
+                "block": 3,
+                "median": 0.9544881781799592,
+                "p95": 0.959945917603402
+              }
+            ],
+            "ratioMedian": 0.9656677122149533,
+            "faster": 3,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9309052279255561,
+                "p95": 0.9168587360258778
+              },
+              {
+                "block": 1,
+                "median": 0.9606281106226688,
+                "p95": 0.949585483549203
+              },
+              {
+                "block": 2,
+                "median": 0.968052001228379,
+                "p95": 0.9476007448506545
+              },
+              {
+                "block": 3,
+                "median": 0.9236070618558069,
+                "p95": 0.9138027647809478
+              }
+            ],
+            "ratioMedian": 0.9457666692741125,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9747838326354249,
+                "p95": 0.9626277255906693
+              },
+              {
+                "block": 1,
+                "median": 0.9578277078509594,
+                "p95": 0.9526978431427656
+              },
+              {
+                "block": 2,
+                "median": 0.9565548561537472,
+                "p95": 0.9461744715137547
+              },
+              {
+                "block": 3,
+                "median": 0.9365476669257702,
+                "p95": 0.9467813500964544
+              }
+            ],
+            "ratioMedian": 0.9571912820023534,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9598479583492916,
+                "p95": 0.9515564432314074
+              },
+              {
+                "block": 1,
+                "median": 0.9606231186908684,
+                "p95": 0.9489876099879103
+              },
+              {
+                "block": 2,
+                "median": 1.0068260006141911,
+                "p95": 1.000414836208869
+              },
+              {
+                "block": 3,
+                "median": 0.967646412988543,
+                "p95": 0.9519315078315506
+              }
+            ],
+            "ratioMedian": 0.9641347658397057,
+            "faster": 3,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 1.0050907906834023,
+                "p95": 0.9990575196887728
+              },
+              {
+                "block": 1,
+                "median": 0.957822730471533,
+                "p95": 0.9520980099922137
+              },
+              {
+                "block": 2,
+                "median": 0.9948683531125239,
+                "p95": 0.9989090701840136
+              },
+              {
+                "block": 3,
+                "median": 0.9812040508574988,
+                "p95": 0.9862861362650365
+              }
+            ],
+            "ratioMedian": 0.9880362019850113,
+            "faster": 3,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "R",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 1.0471354155005108,
+                "p95": 1.049919347186653
+              },
+              {
+                "block": 1,
+                "median": 0.9970848211282364,
+                "p95": 1.003277598117791
+              },
+              {
+                "block": 2,
+                "median": 0.9881234220268716,
+                "p95": 0.9984948583623954
+              },
+              {
+                "block": 3,
+                "median": 1.0140109421034111,
+                "p95": 1.036089391044261
+              }
+            ],
+            "ratioMedian": 1.0055478816158239,
+            "faster": 2,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          }
+        ]
+      },
+      {
+        "stratum": "10000",
+        "summary": {
+          "B": {
+            "median": 21.06478124999998,
+            "p95": 22.43966649999993
+          },
+          "R": {
+            "median": 21.213968499999964,
+            "p95": 22.89108349999998
+          },
+          "H": {
+            "median": 18.52556224999995,
+            "p95": 20.65929150000011
+          },
+          "S": {
+            "median": 18.05789599999997,
+            "p95": 20.40062499999999
+          }
+        },
+        "comparisons": [
+          {
+            "a": "S",
+            "b": "H",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9994551840496003,
+                "p95": 0.9731827903395064
+              },
+              {
+                "block": 1,
+                "median": 0.9266088312636307,
+                "p95": 0.6953848436109239
+              },
+              {
+                "block": 2,
+                "median": 1.0171533089109026,
+                "p95": 0.9879932348686096
+              },
+              {
+                "block": 3,
+                "median": 0.9430115850640101,
+                "p95": 1.002344955260717
+              }
+            ],
+            "ratioMedian": 0.9712333845568052,
+            "faster": 3,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": false
+          },
+          {
+            "a": "S",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.8586838613997152,
+                "p95": 0.905231662682796
+              },
+              {
+                "block": 1,
+                "median": 0.8124330189463567,
+                "p95": 0.5099103999083974
+              },
+              {
+                "block": 2,
+                "median": 0.8672518993432042,
+                "p95": 0.8656518589681018
+              },
+              {
+                "block": 3,
+                "median": 0.8368400235760339,
+                "p95": 0.882464794853964
+              }
+            ],
+            "ratioMedian": 0.8477619424878746,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.8630660701181317,
+                "p95": 0.915438207172949
+              },
+              {
+                "block": 1,
+                "median": 0.8216456789550017,
+                "p95": 0.9586272067902152
+              },
+              {
+                "block": 2,
+                "median": 0.8930565496727068,
+                "p95": 0.9145660456134893
+              },
+              {
+                "block": 3,
+                "median": 0.8444317509051579,
+                "p95": 0.9028536779623044
+              }
+            ],
+            "ratioMedian": 0.8537489105116448,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.859151941081033,
+                "p95": 0.9301763981738673
+              },
+              {
+                "block": 1,
+                "median": 0.8767810013621705,
+                "p95": 0.7332779892937936
+              },
+              {
+                "block": 2,
+                "median": 0.8526265330363989,
+                "p95": 0.8761718485686013
+              },
+              {
+                "block": 3,
+                "median": 0.8874122405603645,
+                "p95": 0.8804002955493786
+              }
+            ],
+            "ratioMedian": 0.8679664712216018,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.863536538598113,
+                "p95": 0.9406641961409813
+              },
+              {
+                "block": 1,
+                "median": 0.8867233413203184,
+                "p95": 1.3785563714796443
+              },
+              {
+                "block": 2,
+                "median": 0.8779960128418889,
+                "p95": 0.9256804736472866
+              },
+              {
+                "block": 3,
+                "median": 0.8954627538831765,
+                "p95": 0.9007414794914249
+              }
+            ],
+            "ratioMedian": 0.8823596770811036,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 1,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "R",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 1.0051034017470333,
+                "p95": 1.0112750635123657
+              },
+              {
+                "block": 1,
+                "median": 1.0113395932880633,
+                "p95": 1.879991478821431
+              },
+              {
+                "block": 2,
+                "median": 1.0297545042553902,
+                "p95": 1.05650561035437
+              },
+              {
+                "block": 3,
+                "median": 1.0090718979915452,
+                "p95": 1.0231044719599431
+              }
+            ],
+            "ratioMedian": 1.0102057456398041,
+            "faster": 0,
+            "medianRegressions": 0,
+            "p95Regressions": 1,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          }
+        ]
+      },
+      {
+        "stratum": "100000",
+        "summary": {
+          "B": {
+            "median": 92.3370727499996,
+            "p95": 115.91956249999976
+          },
+          "R": {
+            "median": 94.56984375000013,
+            "p95": 118.43358350000017
+          },
+          "H": {
+            "median": 63.847208749999936,
+            "p95": 80.67006199999992
+          },
+          "S": {
+            "median": 64.47540600000002,
+            "p95": 82.93225049999978
+          }
+        },
+        "comparisons": [
+          {
+            "a": "S",
+            "b": "H",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.979497349944774,
+                "p95": 0.9353150141608896
+              },
+              {
+                "block": 1,
+                "median": 1.0217175715524365,
+                "p95": 1.1434490033527764
+              },
+              {
+                "block": 2,
+                "median": 1.0380130317404204,
+                "p95": 1.0876004432156212
+              },
+              {
+                "block": 3,
+                "median": 0.9931031529812474,
+                "p95": 1.015083302112047
+              }
+            ],
+            "ratioMedian": 1.007410362266842,
+            "faster": 2,
+            "medianRegressions": 0,
+            "p95Regressions": 1,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.664518949439533,
+                "p95": 0.6808852802251903
+              },
+              {
+                "block": 1,
+                "median": 0.675013801272196,
+                "p95": 0.6689640932666646
+              },
+              {
+                "block": 2,
+                "median": 0.6778006653577832,
+                "p95": 0.7318474158215525
+              },
+              {
+                "block": 3,
+                "median": 0.7045375883177055,
+                "p95": 0.6716599869348688
+              }
+            ],
+            "ratioMedian": 0.6764072333149895,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.6591814922974033,
+                "p95": 0.6850936603303531
+              },
+              {
+                "block": 1,
+                "median": 0.6886031163634283,
+                "p95": 0.7215376531020987
+              },
+              {
+                "block": 2,
+                "median": 0.6969106173977824,
+                "p95": 0.7396711108705678
+              },
+              {
+                "block": 3,
+                "median": 0.707338089124472,
+                "p95": 0.7223471953661458
+              }
+            ],
+            "ratioMedian": 0.6927568668806053,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.6784285322231857,
+                "p95": 0.7279742866482704
+              },
+              {
+                "block": 1,
+                "median": 0.6606657456683988,
+                "p95": 0.5850406019902543
+              },
+              {
+                "block": 2,
+                "median": 0.6529789555929999,
+                "p95": 0.6729009907882696
+              },
+              {
+                "block": 3,
+                "median": 0.7094304214045821,
+                "p95": 0.6616796725326585
+              }
+            ],
+            "ratioMedian": 0.6695471389457922,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.6729793524551846,
+                "p95": 0.7324737120198797
+              },
+              {
+                "block": 1,
+                "median": 0.673966207038153,
+                "p95": 0.6310186558267438
+              },
+              {
+                "block": 2,
+                "median": 0.6713890828800898,
+                "p95": 0.6800945287256793
+              },
+              {
+                "block": 3,
+                "median": 0.7122503709721166,
+                "p95": 0.7116137107793855
+              }
+            ],
+            "ratioMedian": 0.6734727797466689,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "R",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9919679383911755,
+                "p95": 1.0061807476639395
+              },
+              {
+                "block": 1,
+                "median": 1.0201319070300794,
+                "p95": 1.078589509309399
+              },
+              {
+                "block": 2,
+                "median": 1.02819405913376,
+                "p95": 1.0106903363732351
+              },
+              {
+                "block": 3,
+                "median": 1.0039749487510718,
+                "p95": 1.0754655769544779
+              }
+            ],
+            "ratioMedian": 1.0120534278905757,
+            "faster": 1,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          }
+        ]
+      },
+      {
+        "stratum": "deep",
+        "summary": {
+          "B": {
+            "median": 22.742833250000103,
+            "p95": 24.52887499999997
+          },
+          "R": {
+            "median": 22.807468499999914,
+            "p95": 28.88431300000002
+          },
+          "H": {
+            "median": 20.506698250000227,
+            "p95": 22.41529150000042
+          },
+          "S": {
+            "median": 18.479604250000193,
+            "p95": 20.135333499999433
+          }
+        },
+        "comparisons": [
+          {
+            "a": "S",
+            "b": "H",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.8910359804389537,
+                "p95": 0.89932487529015
+              },
+              {
+                "block": 1,
+                "median": 0.903963616924771,
+                "p95": 0.897256625382856
+              },
+              {
+                "block": 2,
+                "median": 0.8843781246224761,
+                "p95": 0.715761271873079
+              },
+              {
+                "block": 3,
+                "median": 0.9233200007473847,
+                "p95": 0.9528781051148347
+              }
+            ],
+            "ratioMedian": 0.8974997986818624,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": true,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.7878195186694275,
+                "p95": 0.5938285392247133
+              },
+              {
+                "block": 1,
+                "median": 0.8239100900618174,
+                "p95": 0.6050114433592853
+              },
+              {
+                "block": 2,
+                "median": 0.790720614692499,
+                "p95": 0.797153694606627
+              },
+              {
+                "block": 3,
+                "median": 0.8177817375735444,
+                "p95": 0.8467785545148315
+              }
+            ],
+            "ratioMedian": 0.8042511761330218,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "S",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.806672330903694,
+                "p95": 0.8350828029455117
+              },
+              {
+                "block": 1,
+                "median": 0.8218931271078436,
+                "p95": 0.6813642454428133
+              },
+              {
+                "block": 2,
+                "median": 0.8020964633788779,
+                "p95": 0.8082727132265
+              },
+              {
+                "block": 3,
+                "median": 0.8046308578206123,
+                "p95": 0.8238420824034977
+              }
+            ],
+            "ratioMedian": 0.8056515943621532,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 0,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "R",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.884161286372882,
+                "p95": 0.6603048081296827
+              },
+              {
+                "block": 1,
+                "median": 0.9114416494600847,
+                "p95": 0.6742903047398833
+              },
+              {
+                "block": 2,
+                "median": 0.8940978894407211,
+                "p95": 1.113714482652228
+              },
+              {
+                "block": 3,
+                "median": 0.8856969814491055,
+                "p95": 0.8886535958476905
+              }
+            ],
+            "ratioMedian": 0.8898974354449133,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 1,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "H",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 0.9053195927130805,
+                "p95": 0.9285663344696077
+              },
+              {
+                "block": 1,
+                "median": 0.9092104059496042,
+                "p95": 0.7593861401157977
+              },
+              {
+                "block": 2,
+                "median": 0.9069609944516406,
+                "p95": 1.12924901777841
+              },
+              {
+                "block": 3,
+                "median": 0.8714539457277011,
+                "p95": 0.8645828653017623
+              }
+            ],
+            "ratioMedian": 0.9061402935823606,
+            "faster": 4,
+            "medianRegressions": 0,
+            "p95Regressions": 1,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          },
+          {
+            "a": "R",
+            "b": "B",
+            "ratios": [
+              {
+                "block": 0,
+                "median": 1.0239303695675217,
+                "p95": 1.4062692305691025
+              },
+              {
+                "block": 1,
+                "median": 0.9975519623095981,
+                "p95": 1.1262005916112665
+              },
+              {
+                "block": 2,
+                "median": 1.014386685353844,
+                "p95": 1.0139484000326435
+              },
+              {
+                "block": 3,
+                "median": 0.9839188390389441,
+                "p95": 0.9729132581487311
+              }
+            ],
+            "ratioMedian": 1.0059693238317209,
+            "faster": 2,
+            "medianRegressions": 0,
+            "p95Regressions": 2,
+            "guardrail": true,
+            "benefitRequired": false,
+            "benefit": true
+          }
+        ]
+      }
+    ]
+  },
+  "application": {
+    "status": "failed",
+    "cardP95Ms": {
+      "desktop": 12.199999809265137,
+      "android": 75.10000038146973
+    },
+    "focusMs": {
+      "desktop": 7.5,
+      "android": 54.19999980926514
+    },
+    "measurementRows": 30,
+    "casesExecuted": 12,
+    "caseStatuses": {
+      "failed": 1,
+      "passed": 11
+    },
+    "groupDrained": true,
+    "elapsedMs": 138362,
+    "input": "f7f2949bf7518234d0c5f70328ddd8a275cb14c772844f7c698134c196fb0269"
+  },
+  "defaultActivation": false,
+  "accountActivation": false,
+  "runtimeUnchanged": true,
+  "manifestUnchanged": true,
+  "counts": {
+    "obligations": 618,
+    "requiredTestFiles": 282,
+    "generalFiles": 263,
+    "generalDispositions": 2121,
+    "notApplicable": 11,
+    "unresolvedTestFiles": 0,
+    "command": 96,
+    "campaign": 63
+  },
+  "prospectivePacketCeilingBytes": 350000,
+  "artifactsSha256": "c0a6b28dff530a3814d2ef04626072e6372ef283c89ec98b80c78f7e6e172bcd",
+  "rawIndexSha256": "847c5c86f7eaef2d0c9074bb29be31448377927f3dbecf44942da1cec1c3f18b"
+}

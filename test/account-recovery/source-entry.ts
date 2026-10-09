@@ -1,0 +1,12 @@
+export { readRecoverySource } from '../../src/crdt/recoverySource';
+export { Y, genesisCoverage, genesisCoverageParts, sameDocState } from '../../src/crdt/yjs';
+export { sealGeneration } from '../../src/account/generationWrap';
+export { prepareRecoveryCommit } from '../../src/account/recoveryTransition';
+export { verifyRecoverySlotUnlock } from '../../src/account/slotUnlock';
+export { openReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';
+export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+export { historyMembership } from '../../account-protocol/admissionHistory';
+export { createHistoryCheckpoint, admitHistoryCheckpoint } from '../../src/crdt/historyCheckpoint';
+export { verifyEarlyMembership, membershipState } from '../../account-protocol/membership';
+export { readHistorySource } from '../../src/crdt/historySource';
+export { historyCheckpointHash } from '../../account-protocol/historyCheckpoint';

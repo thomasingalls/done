@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "name": "live recovery 0 retryKey",
+      "refusal": "unknown-attempt",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 0 recoveryId",
+      "refusal": "unknown-attempt",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 0 response",
+      "refusal": "invalid-proof",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 0 recoveryProof",
+      "refusal": "invalid-proof",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 1 retryKey",
+      "refusal": "unknown-attempt",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 1 recoveryId",
+      "refusal": "unknown-attempt",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 1 response",
+      "refusal": "invalid-proof",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    },
+    {
+      "name": "live recovery 1 recoveryProof",
+      "refusal": "invalid-proof",
+      "stateHash": "dad1b36383a5c1ff2f69d983179fcc7ad4f31051303eb7ff16de96aa0db31073"
+    }
+  ],
+  "legitimate": [
+    {
+      "accountId": "Ar7lRMK4hghWG4ITKZU8R-Tlz6KGI9_lLOiHCtI-k7k",
+      "stage": "recovery-confirmed"
+    },
+    {
+      "accountId": "nhmbQVlefVypWEHrH_d6oPQhhdQPz6NMCqOp0sXnIrM",
+      "stage": "recovery-confirmed"
+    }
+  ]
+}

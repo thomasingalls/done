@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-receive-editor/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-receive-editor/owned/inputs.json.gz",
+    "bytes": 1225234,
+    "sha256": "b73cd88125918e3f74651935589faa1b535aebf27b3ae9951c648cfd9d287c1a"
+  }
+]

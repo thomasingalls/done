@@ -1,0 +1,42 @@
+[
+  {
+    "path": "src/crdt/inboundLedger.ts",
+    "sha256": "c5a14c7c9db94f078f60c005b34f76af297fa28c8722b2500e74618ff1a31144"
+  },
+  {
+    "path": "src/account/privateDeliveryHttp.ts",
+    "sha256": "1128ab978b3c8c2efd0a05812321ccddbdeb3e2cc8270458379da4e0274cefb2"
+  },
+  {
+    "path": "src/crdt/contentStore.ts",
+    "sha256": "75f7dd6927bdea2af9ab34ada95f877aa61516de3c29eaa55d81369b73e7f50a"
+  },
+  {
+    "path": "test/account-receive/fixtures.mjs",
+    "sha256": "11a28870537a1ab9160a496e15ab5878e62802645773bf3e8077078c5ddd8eb1"
+  },
+  {
+    "path": "test/account-receive/native.test.mjs",
+    "sha256": "d45def4ce2ba48d9ffa1580f32fbc730fd73823aed7f4bdeaa25a287839162ac"
+  },
+  {
+    "path": "test/account-receive-transport/controls.test.mjs",
+    "sha256": "3a8433e08828068e01f353df8a236f0788cbd4ffb1f53ff388ec41bac3f1f6ee"
+  },
+  {
+    "path": "scripts/content/catalog.mjs",
+    "sha256": "5d1af48e1272c6041358df357ec89b4966736e7995f3f7c43b809f6c30efe381"
+  },
+  {
+    "path": "scripts/content/run.mjs",
+    "sha256": "b3f70e1fffc986ad4005dbec632b625d5822103b50da3ff9575b46294538efec"
+  },
+  {
+    "path": "docs/account-crypto/census.json",
+    "sha256": "49db7f1b3affaa727fb98d09e5583b7b8ea514d7bbc1263910f95e79d2f3fe09"
+  },
+  {
+    "path": "docs/account-crypto/constructions.json",
+    "sha256": "009f19823ef7c8a9a8b5b249df27ab439b265109619e60981a3ecdd32b576dac"
+  }
+]

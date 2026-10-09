@@ -1,0 +1,60 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1036ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 19ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor 13ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 4ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated real-wire histories retain exact source coverage and reject removed grant events 1414ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated authority substitutions reject a well-framed entry in the wrong domain 6ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions 3ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > verifies exact source hash, original actor/update, digest and prepared signature before exposure 4ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects unknown versions, noncanonical bytes, unsafe positions, exhausted budgets and wrong physical placement 1ms
+ ✓ test/spoolRecord.test.ts > counter v2 is closed and authenticated separately while v1 bytes stay unchanged 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > reports absent carriers without persisting any database or enumerating databases 7ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > does not mistake a retained undefined-valued record for absence 4ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses an orphan journal without custody or index 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > keeps unassigned legacy persistence on the migration path 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > does not invoke identity verification or open stores through a closed slot 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > requires independently verified identity before treating an index as authority 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > does not substitute a supplied principal for an Account binding 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > does not substitute an Account binding for Local identity 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses missing custody beside an indexed identity 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses mismatched or duplicate routes rather than deriving around them 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > preserves an explicitly selected legacy route 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > reports structurally complete but unauthenticated carriers as needing unlock 3ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses protected custody without a content creation witness 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > never recreates a missing initialized content database 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses a counter belonging to another store instance 3ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > recognizes unfinished content without completing or consuming reservations 3ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > recognizes custody creation and refuses unrelated surviving content beside it 3ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses a scoped clearing control without performing its action 3ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses a scoped cleared control without performing its action 5ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses a scoped migrating control without performing its action 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses a scoped unknown control without performing its action 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > finds unsupported scoped rows with array-valued key suffixes 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > does not classify unrelated custody rows as target material 1ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses unknown database versions without upgrading them 2ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > reports unavailable native storage rather than fresh 0ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > refuses unsupported coordination before inspecting persistence 0ms
+ ✓ test/ownedStartup.test.ts > owned startup preflight > cancels a delayed identity read without returning an old classification 2ms
+ ✓ test/accountDelivery.test.ts > 500 generated proof histories agree with independent prefix and closure propositions at every step 69ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (true) 0ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (false) 0ms
+ ✓ test/accountDelivery.test.ts > acceptance and closure duplicates are propositions, and conflict is irreversible 0ms
+
+ Test Files  4 passed (4)
+      Tests  44 passed (44)
+   Start at  00:39:23
+   Duration  1.97s (transform 290ms, setup 110ms, import 655ms, tests 2.64s, environment 0ms)
+
+JUNIT report written to /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/unit.xml

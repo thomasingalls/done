@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "edits": 140,
+  "final": [
+    {
+      "kind": "state",
+      "seq": 142,
+      "bytes": 1520
+    }
+  ],
+  "elapsedMs": 2439.655125,
+  "description": "one-host directed wall time, not a population latency estimate"
+}

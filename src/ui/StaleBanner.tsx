@@ -14,65 +14,25 @@
  * the fact, which is the concrete failure TRD §4.8 exists to prevent.
  */
 
-import { useEffect, useState } from 'react';
-import {
-  moveAllNextTo,
-  moveAllNextToMaster,
-  staleDays,
-  type StaleDay,
-  type Store,
-  type Workspace,
-} from '../crdt';
-import { relativeDay, type ISODate } from '../lib/date';
-
-/**
- * Recomputed on a deep observation of `days`, debounced. The scan walks every
- * day, which is nothing on its own and too much to repeat per keystroke — and
- * nothing about a freeze three days out needs to be current to the millisecond.
- */
-const useStaleDays = (store: Store, today: ISODate): StaleDay[] => {
-  const [stale, setStale] = useState<StaleDay[]>(() => staleDays(store.doc, today));
-
-  useEffect(() => {
-    let timer: number | undefined;
-    const recompute = (): void => setStale(staleDays(store.doc, today));
-
-    const schedule = (): void => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(recompute, 500);
-    };
-
-    recompute();
-    store.days.observeDeep(schedule);
-    return () => {
-      window.clearTimeout(timer);
-      store.days.unobserveDeep(schedule);
-    };
-  }, [store, today]);
-
-  return stale;
-};
+import { daysUntilFreeze, isFrozen } from '../crdt/freeze';
+import { relativeDay, compareDates, type ISODate } from '../lib/date';
+import { useWorkspaceUi } from './workspaceUi';
 
 export interface StaleBannerProps {
-  store: Store;
-  /** Carries the system origin: these are the app's writes, not the user's. */
-  system: Workspace;
   today: ISODate;
   onGoTo: (date: ISODate) => void;
 }
 
-export const StaleBanner = ({
-  store,
-  system,
-  today,
-  onGoTo,
-}: StaleBannerProps): React.ReactElement | null => {
-  const stale = useStaleDays(store, today);
+export const StaleBanner = ({ today, onGoTo }: StaleBannerProps): React.ReactElement | null => {
+  const { snapshot, execute } = useWorkspaceUi();
+  const stale = snapshot.days.filter(
+    (day) => compareDates(day.date, today) < 0 && !isFrozen(day.date, today) && day.next.length > 0,
+  );
   if (stale.length === 0) return null;
 
-  const first = stale[0] as StaleDay;
-  const items = stale.reduce((sum, day) => sum + day.cards.length, 0);
-  const soonest = Math.min(...stale.map((day) => day.daysLeft));
+  const first = stale[0]!;
+  const items = stale.reduce((sum, day) => sum + day.next.length, 0);
+  const soonest = Math.min(...stale.map((day) => daysUntilFreeze(day.date, today)));
 
   return (
     <output className="stale">
@@ -87,7 +47,11 @@ export const StaleBanner = ({
         className="card-action"
         onClick={() => {
           for (const day of stale) {
-            moveAllNextTo(system, day.date, { date: today, section: 'scheduled' });
+            void execute({
+              kind: 'bulk',
+              from: day.date,
+              to: { date: today, section: 'scheduled' },
+            });
           }
         }}
       >
@@ -97,7 +61,7 @@ export const StaleBanner = ({
         type="button"
         className="card-action"
         onClick={() => {
-          for (const day of stale) moveAllNextToMaster(system, store.master, day.date);
+          for (const day of stale) void execute({ kind: 'bulk', from: day.date, to: 'master' });
         }}
       >
         To master

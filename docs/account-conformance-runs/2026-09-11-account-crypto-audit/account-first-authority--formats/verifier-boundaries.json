@@ -1,0 +1,20 @@
+{
+  "positive": [
+    "pin",
+    "pending",
+    "request",
+    "offer",
+    "receipt",
+    "binding"
+  ],
+  "genuinelySignedNegatives": [
+    "substituted pinned root",
+    "wrong signature purpose",
+    "wrong epoch owner",
+    "wrong candidate signer",
+    "wrong certification signer",
+    "wrong origin signer",
+    "acceptance key issuing receipt",
+    "workspace signing ID as passkey ID"
+  ]
+}

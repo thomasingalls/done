@@ -19,7 +19,7 @@
 #![no_std]
 
 use chacha20poly1305::aead::{AeadInPlace, KeyInit};
-use chacha20poly1305::{Key, XChaCha20Poly1305, XNonce};
+use chacha20poly1305::{Key, Tag, XChaCha20Poly1305, XNonce};
 
 /// Larger than any AAD row 3 or row 2 defines; small enough to cost nothing.
 const MAX_AAD: usize = 4096;
@@ -110,4 +110,27 @@ pub extern "C" fn seal(aad_len: usize, plaintext_len: usize) -> isize {
     }
 
     (plaintext_len + TAG) as isize
+}
+
+/// Authenticate before returning plaintext. The JS boundary clears staged
+/// buffers on both success and refusal; no unauthenticated bytes are returned.
+#[no_mangle]
+pub extern "C" fn open(aad_len: usize, ciphertext_len: usize) -> isize {
+    if aad_len > MAX_AAD || ciphertext_len < TAG || ciphertext_len > MAX_PLAINTEXT + TAG {
+        return -1;
+    }
+    let plaintext_len = ciphertext_len - TAG;
+    // SAFETY: the same fixed-buffer, single-threaded/no-reentrancy contract as seal.
+    unsafe {
+        let key = &*(&raw const KEY);
+        let nonce = &*(&raw const NONCE);
+        let aad = &(&*(&raw const AAD))[..aad_len];
+        let tag = Tag::clone_from_slice(&(&*(&raw const BUF))[plaintext_len..ciphertext_len]);
+        let buf = &mut (&mut *(&raw mut BUF))[..plaintext_len];
+        let cipher = XChaCha20Poly1305::new(Key::from_slice(key));
+        if cipher.decrypt_in_place_detached(XNonce::from_slice(nonce), aad, buf, &tag).is_err() {
+            return -1;
+        }
+    }
+    plaintext_len as isize
 }

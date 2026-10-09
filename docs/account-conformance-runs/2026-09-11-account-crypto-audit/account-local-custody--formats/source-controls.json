@@ -1,0 +1,13 @@
+{
+  "caught": [
+    "signingPair",
+    "wrappingPair",
+    "credentialId",
+    "metadataCount",
+    "metadataKeySlot",
+    "equalMac",
+    "stateCoercion"
+  ],
+  "stateCoercion": "old parser accepts authenticated boxed state; ordinary owner separately refuses nonprimitive state",
+  "metadataKeySlot": "independent bytes detect weakened KDF even though payload still binds the slot"
+}

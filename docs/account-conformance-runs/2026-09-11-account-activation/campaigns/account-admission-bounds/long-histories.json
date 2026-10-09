@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "sv",
+    "count": 12000,
+    "svBytes": 41618,
+    "dsBytes": 2,
+    "checkpointBytes": 131239
+  },
+  {
+    "kind": "sv",
+    "count": 12317,
+    "svBytes": 42886,
+    "dsBytes": 2,
+    "checkpointBytes": 135043
+  },
+  {
+    "kind": "sv",
+    "count": 13001,
+    "svBytes": 45622,
+    "dsBytes": 2,
+    "checkpointBytes": 143251
+  },
+  {
+    "kind": "ds",
+    "count": 12000,
+    "svBytes": 6,
+    "dsBytes": 39750,
+    "checkpointBytes": 215247
+  },
+  {
+    "kind": "ds",
+    "count": 12317,
+    "svBytes": 6,
+    "dsBytes": 41018,
+    "checkpointBytes": 221587
+  },
+  {
+    "kind": "ds",
+    "count": 13001,
+    "svBytes": 6,
+    "dsBytes": 43754,
+    "checkpointBytes": 235267
+  }
+]

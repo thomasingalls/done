@@ -1,0 +1,231 @@
+{
+  "history": {
+    "edits": [
+      {
+        "lane": 0,
+        "actor": 1,
+        "at": 7,
+        "text": "caca",
+        "remove": 6
+      },
+      {
+        "lane": 2,
+        "actor": 1,
+        "at": 8,
+        "text": "c\naca",
+        "remove": 1
+      },
+      {
+        "lane": 0,
+        "actor": 1,
+        "at": 40,
+        "text": " é\nc",
+        "remove": 7
+      },
+      {
+        "lane": 2,
+        "actor": 1,
+        "at": 22,
+        "text": "\naéé",
+        "remove": 8
+      },
+      {
+        "lane": 1,
+        "actor": 0,
+        "at": 31,
+        "text": " c",
+        "remove": 6
+      },
+      {
+        "lane": 1,
+        "actor": 1,
+        "at": 13,
+        "text": "bé\nc",
+        "remove": 1
+      },
+      {
+        "lane": 1,
+        "actor": 0,
+        "at": 28,
+        "text": " bbéc",
+        "remove": 6
+      },
+      {
+        "lane": 0,
+        "actor": 2,
+        "at": 31,
+        "text": "b c",
+        "remove": 7
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 22,
+        "text": "\n ",
+        "remove": 8
+      }
+    ],
+    "steps": [
+      {
+        "op": "journal",
+        "id": 28
+      },
+      {
+        "op": "overlap",
+        "background": "flush",
+        "boundary": "published",
+        "ids": [
+          21
+        ],
+        "during": [
+          {
+            "op": "disk",
+            "ids": [
+              39
+            ]
+          },
+          {
+            "op": "journal",
+            "id": 31
+          },
+          {
+            "op": "compact"
+          }
+        ],
+        "finish": "release"
+      },
+      {
+        "op": "abort",
+        "at": "delete",
+        "ids": [
+          22,
+          18,
+          7,
+          26
+        ]
+      },
+      {
+        "op": "abort",
+        "at": "publish",
+        "ids": [
+          15,
+          25,
+          7,
+          38
+        ]
+      },
+      {
+        "op": "journal",
+        "id": 30
+      },
+      {
+        "op": "journal",
+        "id": 3
+      },
+      {
+        "op": "compact"
+      },
+      {
+        "op": "compact"
+      },
+      {
+        "op": "disk",
+        "ids": [
+          17
+        ]
+      },
+      {
+        "op": "disk",
+        "ids": [
+          36,
+          40
+        ]
+      },
+      {
+        "op": "journal",
+        "id": 17
+      }
+    ]
+  },
+  "outcome": {
+    "error": {
+      "type": "property",
+      "invariant": "recovery-wire-structs",
+      "actual": [
+        [
+          "101:5",
+          " "
+        ],
+        [
+          "101:6",
+          "c"
+        ],
+        [
+          "102:5",
+          "c"
+        ],
+        [
+          "102:6",
+          "a"
+        ],
+        [
+          "102:7",
+          "c"
+        ],
+        [
+          "102:8",
+          "a"
+        ]
+      ],
+      "expected": [
+        [
+          "101:5",
+          " "
+        ],
+        [
+          "101:6",
+          "c"
+        ],
+        [
+          "102:10",
+          "\n"
+        ],
+        [
+          "102:11",
+          "a"
+        ],
+        [
+          "102:12",
+          "c"
+        ],
+        [
+          "102:13",
+          "a"
+        ],
+        [
+          "102:5",
+          "c"
+        ],
+        [
+          "102:6",
+          "a"
+        ],
+        [
+          "102:7",
+          "c"
+        ],
+        [
+          "102:8",
+          "a"
+        ],
+        [
+          "102:9",
+          "c"
+        ]
+      ],
+      "message": "recovery-wire-structs: [[\"101:5\",\" \"],[\"101:6\",\"c\"],[\"102:5\",\"c\"],[\"102:6\",\"a\"],[\"102:7\",\"c\"],[\"102:8\",\"a\"]] !== [[\"101:5\",\" \"],[\"101:6\",\"c\"],[\"102:10\",\"\\n\"],[\"102:11\",\"a\"],[\"102:12\",\"c\"],[\"102:13\",\"a\"],[\"102:5\",\"c\"],[\"102:6\",\"a\"],[\"102:7\",\"c\"],[\"102:8\",\"a\"],[\"102:9\",\"c\"]]",
+      "stack": "Error: recovery-wire-structs: [[\"101:5\",\" \"],[\"101:6\",\"c\"],[\"102:5\",\"c\"],[\"102:6\",\"a\"],[\"102:7\",\"c\"],[\"102:8\",\"a\"]] !== [[\"101:5\",\" \"],[\"101:6\",\"c\"],[\"102:10\",\"\\n\"],[\"102:11\",\"a\"],[\"102:12\",\"c\"],[\"102:13\",\"a\"],[\"102:5\",\"c\"],[\"102:6\",\"a\"],[\"102:7\",\"c\"],[\"102:8\",\"a\"],[\"102:9\",\"c\"]]\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at checkRecovery (http://127.0.0.1:5186/test/storage-properties/oracle.ts:108:3)\n    at check (http://127.0.0.1:5186/test/storage-properties/browser.mjs:157:26)\n    at async overlap (http://127.0.0.1:5186/test/storage-properties/browser.mjs:266:3)\n    at async step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:300:15)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+    },
+    "index": 1
+  }
+}

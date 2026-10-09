@@ -21,6 +21,8 @@
     --color-warning: #9d3f1f;
     --color-warning-contrast: #fffaf6;
     --color-warning-surface: #f9e4d8;
+    --color-danger: #b42318;
+    --color-danger-surface: #fef3f2;
     --color-code-bg: #efece6;
     --color-quote-bar: #d6d2c8;
     --color-checkbox: #b3aea3;
@@ -43,6 +45,8 @@
       --color-warning: #f08a4b;
       --color-warning-contrast: #19161a;
       --color-warning-surface: #3a251d;
+      --color-danger: #ff8a80;
+      --color-danger-surface: #3d2327;
       --color-code-bg: #202027;
       --color-quote-bar: #3a3a42;
       --color-checkbox: #55524c;

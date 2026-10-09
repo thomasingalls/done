@@ -28,25 +28,14 @@ import type { EditorView } from '@codemirror/view';
 import { shouldCommit, type Direction } from '../gestures/recognizer';
 import { useGestures } from '../gestures/useGestures';
 import { addDays, currentDate, type ISODate } from '../lib/date';
-import {
-  DEFAULT_SETTINGS,
-  compactDueDays,
-  readSettings,
-  unfiledCards,
-  scheduleCompaction,
-  transactionAffectsMembership,
-  type UnfiledCard,
-  type Workspace,
-} from '../crdt';
+import { useWorkspaceUi } from './workspaceUi';
 import { DayPlane } from './DayPlane';
 import { Goals } from './Goals';
 import { Menu } from './Menu';
 import { UnfiledPanel } from './UnfiledPanel';
 import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
-import { useStore } from './useStore';
 import { useToday } from './useToday';
-import { useYDocValue, useYValue } from './useYjs';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -58,31 +47,22 @@ const SNAP_MS = 220;
 type Lateral = 'menu' | 'goals';
 
 export const App = (): React.ReactElement => {
-  const { store, storage, error, persistenceError } = useStore();
+  const { snapshot } = useWorkspaceUi();
   const breakpoint = useBreakpoint();
-  const settings = useYValue(
-    store?.meta,
-    () => (store ? JSON.stringify(readSettings(store.meta)) : 'absent'),
-    () => (store ? readSettings(store.meta) : DEFAULT_SETTINGS),
-  );
+  const settings = snapshot.settings;
   const today = useToday(settings.rolloverHour);
 
   const [date, setDate] = useState<ISODate>(currentDate);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [goalsOpen, setGoalsOpen] = useState(false);
+  // Overlay navigation has one destination; opening either panel replaces the other.
+  const [openPanel, setOpenPanel] = useState<Lateral | null>(null);
+  const menuOpen = openPanel === 'menu';
+  const goalsOpen = openPanel === 'goals';
   const [unfiledOpen, setUnfiledOpen] = useState(false);
 
-  const unfiled = useYDocValue<UnfiledCard[]>(
-    store?.doc,
-    () => (store ? unfiledCards(store.doc) : []),
-    (cards) =>
-      store
-        ? cards
-            .map(({ id, location }) => `${id}:${location?.date ?? ''}:${location?.section ?? ''}`)
-            .join('|')
-        : 'absent',
-    (transaction) => Boolean(store && transactionAffectsMembership(store.doc, transaction)),
+  const placed = new Set(
+    snapshot.days.flatMap((day) => [...day.next, ...day.scheduled, ...day.done]),
   );
+  const unfiled = snapshot.cards.filter((card) => !placed.has(card.id));
 
   const [lateral, setLateral] = useState<Lateral | null>(null);
   const [menuProgress, setMenuProgress] = useState(0);
@@ -199,12 +179,16 @@ export const App = (): React.ReactElement => {
   }, []);
 
   const closeLateral = useCallback(() => {
-    setMenuOpen(false);
-    setGoalsOpen(false);
+    setOpenPanel(null);
     setMenuProgress(0);
     setGoalsProgress(0);
     setLateral(null);
   }, []);
+
+  const closeGoals = useCallback(() => {
+    closeLateral();
+    plane.current?.querySelector<HTMLButtonElement>('.goals-trigger')?.focus();
+  }, [closeLateral]);
 
   const canNavigate = useCallback(
     (direction: Direction): boolean => {
@@ -284,11 +268,10 @@ export const App = (): React.ReactElement => {
         const open =
           shouldCommit(delta, velocity, width) && towardsOpen !== wasOpen ? !wasOpen : wasOpen;
 
+        setOpenPanel(open ? (toGoals ? 'goals' : 'menu') : null);
         if (toGoals) {
-          setGoalsOpen(open);
           setGoalsProgress(open ? 1 : 0);
         } else {
-          setMenuOpen(open);
           setMenuProgress(open ? 1 : 0);
         }
         dragTarget.current = null;
@@ -319,8 +302,11 @@ export const App = (): React.ReactElement => {
    */
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
-      const target = event.target as HTMLElement | null;
-      const typing = target?.closest('.cm-editor, input, textarea') != null;
+      if (event.defaultPrevented || event.isComposing) return;
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const typing =
+        target?.closest('.cm-editor, input, textarea, select') != null ||
+        target?.isContentEditable === true;
 
       if (unfiledOpen) {
         if (event.key === 'Escape') setUnfiledOpen(false);
@@ -332,8 +318,10 @@ export const App = (): React.ReactElement => {
         return;
       }
 
+      if (typing || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
       if (!event.altKey) {
-        if (!typing && event.key === 't') {
+        if (event.key === 't') {
           event.preventDefault();
           goTo(today);
         }
@@ -345,10 +333,10 @@ export const App = (): React.ReactElement => {
         k: () => step(-1),
         ArrowDown: () => step(1),
         j: () => step(1),
-        ArrowLeft: () => setMenuOpen(menuOverlay),
-        h: () => setMenuOpen(menuOverlay),
-        ArrowRight: () => setGoalsOpen(goalsOverlay),
-        l: () => setGoalsOpen(goalsOverlay),
+        ArrowLeft: () => setOpenPanel(menuOverlay ? 'menu' : null),
+        h: () => setOpenPanel(menuOverlay ? 'menu' : null),
+        ArrowRight: () => setOpenPanel(goalsOverlay ? 'goals' : null),
+        l: () => setOpenPanel(goalsOverlay ? 'goals' : null),
       };
 
       const move = moves[event.key];
@@ -371,24 +359,16 @@ export const App = (): React.ReactElement => {
     today,
   ]);
 
-  /** Compaction, opportunistically, on idle. Never on the keystroke path. */
   useEffect(() => {
-    if (!store) return;
-    return scheduleCompaction(() => {
-      compactDueDays(store.doc, store.actor.systemOrigin, today);
-    });
-  }, [store, today]);
-
-  /** The rollover hour is in the document, so the first real `today` arrives late. */
-  useEffect(() => {
-    if (!store || started.current) return;
+    if (started.current) return;
     started.current = true;
     setDate(today);
-  }, [store, today]);
+  }, [today]);
 
   useEffect(() => {
-    if (!menuOverlay) setMenuOpen(false);
-    if (!goalsOverlay) setGoalsOpen(false);
+    setOpenPanel((open) =>
+      (open === 'menu' && !menuOverlay) || (open === 'goals' && !goalsOverlay) ? null : open,
+    );
   }, [goalsOverlay, menuOverlay]);
 
   useEffect(() => {
@@ -426,34 +406,10 @@ export const App = (): React.ReactElement => {
     [clearGoalsFocus, clearSettlement],
   );
 
-  if (error) {
-    return (
-      <div className="boot" role="alert">
-        <p>Could not open local storage.</p>
-        <p className="menu-note">{error.message}</p>
-      </div>
-    );
-  }
-
-  if (!store) {
-    // Deliberately blank rather than a spinner: offline is the normal state,
-    // and this wait is a disk read, not a network one (PRD principle 3).
-    return <div className="boot" aria-busy="true" />;
-  }
-
-  const workspace: Workspace = {
-    doc: store.doc,
-    origin: store.actor.origin,
-    systemOrigin: store.actor.systemOrigin,
-    author: store.actor.id,
-    today,
-    undo: store.undo,
-  };
-  const system: Workspace = { ...workspace, origin: store.actor.systemOrigin };
-
   return (
     <div
       className="shell"
+      data-local-workspace="true"
       ref={shell}
       data-breakpoint={breakpoint}
       data-menu={lateral === 'menu' ? 'dragging' : menuOpen ? 'open' : 'closed'}
@@ -484,21 +440,9 @@ export const App = (): React.ReactElement => {
         } as React.CSSProperties
       }
     >
-      <Menu
-        ref={menu}
-        store={store}
-        storage={storage}
-        persistenceError={persistenceError}
-        settings={settings}
-        today={today}
-        date={date}
-        onGoTo={goTo}
-        onClose={closeLateral}
-      />
+      <Menu ref={menu} today={today} date={date} onGoTo={goTo} onClose={closeLateral} />
 
       <UnfiledPanel
-        store={store}
-        workspace={workspace}
         today={today}
         cards={unfiled}
         open={unfiledOpen}
@@ -516,17 +460,21 @@ export const App = (): React.ReactElement => {
       <button type="button" className="scrim" aria-label="Close" onClick={closeLateral} />
 
       <div className="plane" ref={plane} onWheel={onDayWheel}>
-        <StaleBanner store={store} system={system} today={today} onGoTo={goTo} />
+        <StaleBanner today={today} onGoTo={goTo} />
         <DayPlane
-          store={store}
-          workspace={workspace}
           date={date}
           today={today}
           shift={dayShift}
           settling={settling}
           showMenuTrigger={menuOverlay}
           menuOpen={menuOpen}
-          onOpenMenu={() => setMenuOpen((open) => !open)}
+          showGoalsTrigger={goalsOverlay}
+          goalsOpen={goalsOpen}
+          onOpenGoals={() => {
+            closeLateral();
+            setOpenPanel('goals');
+          }}
+          onOpenMenu={() => setOpenPanel((open) => (open === 'menu' ? null : 'menu'))}
           onGoTo={goTo}
           unfiledCount={unfiled.length}
           unfiledOpen={unfiledOpen}
@@ -539,10 +487,10 @@ export const App = (): React.ReactElement => {
 
       <Goals
         ref={goals}
-        store={store}
-        workspace={workspace}
         date={date}
+        today={today}
         onEditorReady={onGoalsEditorReady}
+        onClose={goalsOverlay ? closeGoals : undefined}
       />
     </div>
   );

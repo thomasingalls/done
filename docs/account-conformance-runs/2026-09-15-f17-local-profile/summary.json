@@ -1,0 +1,181 @@
+{
+  "status": "diagnostic passed; application gate remains failed",
+  "defaultActivation": false,
+  "implementationChanged": false,
+  "stage": {
+    "id": "test:test/latency/diagnosis.spec.ts",
+    "key": "20de7dd95b2b795025001ba48ddb796d95a17472953ebfa3c71a9e5e42782ad5",
+    "status": "passed",
+    "elapsedMs": 208584,
+    "cases": 4,
+    "reason": null,
+    "groupDrained": true
+  },
+  "artifactsSha256": "17ecef3a501f48893336cdf58458efca01f9f519aea2d1b1ce8a5698254680e9",
+  "rawIndexSha256": "508cd5c02a7e0a64b6a4ce8ae5973ae2da1601d611d598c7efeff03425320f21",
+  "fileCount": 29,
+  "uniqueBlobCount": 29,
+  "cases": 4,
+  "rawTimings": 1440,
+  "cpuProfiles": 4,
+  "mappedNodesVerified": 2168,
+  "mappedApplicationSourcesVerified": 79,
+  "timings": [
+    {
+      "project": "desktop",
+      "surface": "textarea",
+      "block": 1,
+      "attachmentSha256": "09ffb74bfcd289d62eff3fe51aeed5df427c85cbb937e5423282632489471777",
+      "count": 120,
+      "p50": 1.1999998092651367,
+      "p95": 1.4000005722045898
+    },
+    {
+      "project": "desktop",
+      "surface": "codemirror",
+      "block": 1,
+      "attachmentSha256": "8a11cdfc2ca894b2f005cdb670130ecfd6fa4b745c29680d1455e2ffec7df827",
+      "count": 120,
+      "p50": 1.5,
+      "p95": 1.9000005722045898
+    },
+    {
+      "project": "desktop",
+      "surface": "card",
+      "block": 1,
+      "attachmentSha256": "6f8d7e792345e7039b9bce10086ee69b529c3aa59c02d276d4db4335772c3a43",
+      "count": 120,
+      "p50": 11.699999809265137,
+      "p95": 14.600000381469727
+    },
+    {
+      "project": "desktop",
+      "surface": "card",
+      "block": 2,
+      "attachmentSha256": "acc9b7a0162b77768609d9a9fb513c4a9eed5d81367dece6d1e63f8547e5231a",
+      "count": 120,
+      "p50": 12.5,
+      "p95": 13.700000762939453
+    },
+    {
+      "project": "desktop",
+      "surface": "codemirror",
+      "block": 2,
+      "attachmentSha256": "7228bf06be765775a977581810e9b8b36a600876951a099676840a8e00d5fc2a",
+      "count": 120,
+      "p50": 1.6999998092651367,
+      "p95": 16.90000057220459
+    },
+    {
+      "project": "desktop",
+      "surface": "textarea",
+      "block": 2,
+      "attachmentSha256": "ed23ae6b8a36ad6f64c160f2c0c4062bf823ee3e339f511b6a120f982455db04",
+      "count": 120,
+      "p50": 1.1000003814697266,
+      "p95": 1.3000001907348633
+    },
+    {
+      "project": "android",
+      "surface": "textarea",
+      "block": 1,
+      "attachmentSha256": "9fa382313d00723ce3f1bdf277252574625d1da5b249d7e6054412ff6168327f",
+      "count": 120,
+      "p50": 4.600000381469727,
+      "p95": 5.90000057220459
+    },
+    {
+      "project": "android",
+      "surface": "codemirror",
+      "block": 1,
+      "attachmentSha256": "22815a721ff2175cbe93fb510504523d770c28cff5e421210ade590c22ffca24",
+      "count": 120,
+      "p50": 6.100000381469727,
+      "p95": 7.59999942779541
+    },
+    {
+      "project": "android",
+      "surface": "card",
+      "block": 1,
+      "attachmentSha256": "10e52c80f1a72a7e7fdcea1c8a2423de2c3e642a36ba103cb8fdf843378dc6e3",
+      "count": 120,
+      "p50": 55.60000038146973,
+      "p95": 80.5
+    },
+    {
+      "project": "android",
+      "surface": "card",
+      "block": 2,
+      "attachmentSha256": "b73423c753de46f4bec2a0a88b8eb1f88dd61309bc052a1f3718c0ea880ec7a0",
+      "count": 120,
+      "p50": 57.59999942779541,
+      "p95": 68.69999980926514
+    },
+    {
+      "project": "android",
+      "surface": "codemirror",
+      "block": 2,
+      "attachmentSha256": "d6087e5d376d0b60754184260cc17d43d721e6cc79dc1d97b693c9e76967e24e",
+      "count": 120,
+      "p50": 6.800000190734863,
+      "p95": 19.100000381469727
+    },
+    {
+      "project": "android",
+      "surface": "textarea",
+      "block": 2,
+      "attachmentSha256": "cfddd1ab7ad28a5dc6a54637e191610340b7947a7b18ecc0b08b98a826d10b3a",
+      "count": 120,
+      "p50": 4.799999237060547,
+      "p95": 5.800000190734863
+    }
+  ],
+  "typingCpuMilliseconds": [
+    {
+      "project": "desktop",
+      "inclusive": {
+        "preparationLifecycle": 398.035,
+        "workspacePrepare": 398.035,
+        "forkWorkspaceHistory": 345.189,
+        "forkDoc": 170.294,
+        "historyDocumentFork": 170.294,
+        "copyStack": 172.375,
+        "stackItemConstruction": 168.569,
+        "copyDeleteSet": 3.576,
+        "promote": 256.479,
+        "adoptLifecycle": 190.173,
+        "sameDocState": 190.173,
+        "publicationListeners": 61.401
+      }
+    },
+    {
+      "project": "android",
+      "inclusive": {
+        "preparationLifecycle": 1838.003,
+        "workspacePrepare": 1836.532,
+        "forkWorkspaceHistory": 1558.416,
+        "forkDoc": 770.083,
+        "historyDocumentFork": 770.083,
+        "copyStack": 778.751,
+        "stackItemConstruction": 775.116,
+        "copyDeleteSet": 15.519,
+        "promote": 1316.636,
+        "adoptLifecycle": 807.377,
+        "sameDocState": 804.817,
+        "publicationListeners": 489.89
+      }
+    }
+  ],
+  "conversion": {
+    "candidate": 1.3700787401574803,
+    "reference": 1.557636887608069,
+    "roughFactor": 1.5,
+    "scope": "card-typing, separate runs; planning only"
+  },
+  "next": "Private immutable selection-snapshot ownership contract and reference/mutation controls before component/runtime implementation.",
+  "obligations": {
+    "testFile": 0,
+    "command": 96,
+    "campaign": 63
+  }
+}

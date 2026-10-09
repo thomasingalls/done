@@ -1,0 +1,33 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-buffers-r1/candidate
+
+ ❯ test/textBufferBasis.test.ts (3 tests | 1 failed) 10ms
+   × text buffer basis rejects every unsupported normalization shape 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/textBufferBasis.test.ts > text buffer basis rejects every unsupported normalization shape
+AssertionError: 0: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/textBufferBasis.test.ts:11:93
+      9|   for(const value of [-0,sparse,extra,hidden]){
+     10|     const doc=createHistoryDoc();
+     11|     try {doc.getMap('meta').set('value',value);expect(isTextBufferBasi…
+       |                                                                                             ^
+     12|     finally{doc.destroy();}
+     13|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  13:26:20
+   Duration  276ms (transform 48ms, setup 46ms, import 104ms, tests 10ms, environment 0ms)
+

@@ -1,0 +1,32 @@
+(node:88257) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88257) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ current signed observation binds nonce, pin, account and confirmed draft; historical receipts cannot reauthorize abandonment (80.461666ms)
+✔ 120 generated service histories retain cancellation despite old receipts, restart, lost replies and wrong capabilities (6527.347ms)
+✔ SIGKILL before-commit abandonment is resolved cold (886.620083ms)
+✔ SIGKILL after-commit abandonment is resolved cold (745.9785ms)
+✔ current-eligibility fault control accepts an abandoned account only when live-state checks are removed (63.196ms)
+✔ abandonment owns absent, expired and cancelled recovery drafts without making the old registration reusable (130.225292ms)
+(node:88258) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88258) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native preparation resumes exact credentials, preserves journal/content/Local identity and restores Local only through abandonment (1421.363125ms)
+✔ native before reserved commit interruption preserves reservation and winning keys (1423.097875ms)
+✔ native after reserved commit interruption preserves reservation and winning keys (2351.224292ms)
+✔ native before prepared commit interruption preserves reservation and winning keys (1460.333917ms)
+✔ native after prepared commit interruption preserves reservation and winning keys (2267.595875ms)
+✔ generated histories exercise restart, damaged markers, failed reservations, writing and abandonment against an independent ledger (13512.93225ms)
+✔ observed MAC fault control admits a substituted preparation identity only with authentication disabled (673.461209ms)
+✔ missing completed counter and exhausted seal budget refuse without replacement or network authority (525.87025ms)
+✔ competing preparers converge; cancellation retains exclusion until native network work settles (742.32875ms)
+✔ recovery owner abandons unsaved or cancelled code through current proof, retains lost replies, and permits a fresh registration (595.094916ms)
+✔ abandonment lost reply and local deletion abort retain exact prepared identity for retry (619.737167ms)
+✔ confirmed recovery draft stays owned until Local promotion is abandoned, and unknown Local references refuse reset (525.716208ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27391.987708

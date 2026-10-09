@@ -1,0 +1,22 @@
+(node:7966) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7966) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ both proofs finalize one exact recovery preparation (-8) (42.284375ms)
+✔ both proofs finalize one exact recovery preparation (-7) (27.648791ms)
+✔ wrong code, binding and substituted private keys cannot confirm (23.535667ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (16.728875ms)
+✔ finalization rechecks cancel after verification (12.948167ms)
+✔ finalization rechecks expiry after verification (12.170834ms)
+✔ finalization rechecks activation after verification (14.286584ms)
+✔ finalization rechecks key after verification (14.229542ms)
+✔ finalization before-commit write failure has one retry outcome (21.584666ms)
+✔ finalization after-commit write failure has one retry outcome (14.660958ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (12.583709ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 715.187208

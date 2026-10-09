@@ -1,0 +1,22 @@
+(node:55131) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55131) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh -8 assertion binds the exact completion; no-proof finish leaves every row unchanged (100.348708ms)
+✔ fresh -7 assertion binds the exact completion; no-proof finish leaves every row unchanged (77.769667ms)
+✔ real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption (88.751042ms)
+✔ expiry, renewal and a separately valid completion cannot reuse or replace the fixed challenge target (83.181375ms)
+✔ expiry advancing during verification is checked again inside the activation transaction (33.290958ms)
+✔ account/nonce swaps and completion changes cannot borrow another account assertion (82.879417ms)
+✔ closed context rejects aliases, noncanonical passkeys, extra fields and noninteger expiry (26.09775ms)
+✔ before-commit challenge failure has one cold-recoverable result (40.358042ms)
+✔ after-commit challenge failure has one cold-recoverable result (42.459125ms)
+✔ schema 4 upgrade preserves pending work; v1 receipts and absent consumed records are retained but refused (43.558292ms)
+✔ 120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine (4204.208167ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5053.988292

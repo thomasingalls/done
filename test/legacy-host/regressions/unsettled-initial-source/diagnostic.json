@@ -1,0 +1,18 @@
+{
+  "campaign": "host-histories",
+  "trial": {
+    "campaign": "host-histories",
+    "attempt": 2,
+    "stage": "generation",
+    "seed": 8941,
+    "inputHash": "9af318c084ec7bdecccb8145dc94daaa68b52326cc86e1c4cc4e837433e25f9c"
+  },
+  "inputHash": "9af318c084ec7bdecccb8145dc94daaa68b52326cc86e1c4cc4e837433e25f9c",
+  "error": {
+    "name": "AssertionError",
+    "message": "source-carriers-preserved\n+ actual - expected\n\n+ '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'\n- 'ebbcf287aed0a5fb013a68b81e9f17e084c810320bb4c52b37fd5063a9ca62ca'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: source-carriers-preserved\n+ actual - expected\n\n+ '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'\n- 'ebbcf287aed0a5fb013a68b81e9f17e084c810320bb4c52b37fd5063a9ca62ca'\n\n    at same (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:153:10)\n    at unchangedSource (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:156:3)\n    at history (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:360:3)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:46:7\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async checkHistories (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:54:19)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-host/campaign.mjs:776:23",
+    "code": "ERR_ASSERTION"
+  },
+  "lastBrowserOperation": null
+}

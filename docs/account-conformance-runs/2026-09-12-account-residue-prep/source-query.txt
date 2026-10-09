@@ -1,0 +1,83 @@
+relay/src/server.ts:45:  console.error(
+relay/src/server.ts:81:      console.warn(`relay: refused ${redactUrl(request.url)} — ${decision.reason}`);
+relay/src/server.ts:86:    console.log(`relay: ${decision.room} connected`);
+relay/src/server.ts:87:    connection.once('close', () => console.log(`relay: ${decision.room} disconnected`));
+relay/src/server.ts:93:  console.log(`relay: listening on ${host}:${port}`);
+relay/src/server.ts:94:  console.log(`relay: token ${policy.token ? 'required' : 'NOT required'}`);
+relay/src/server.ts:95:  console.log(`relay: rooms ${policy.rooms.length > 0 ? policy.rooms.join(', ') : 'any'}`);
+relay/src/server.ts:96:  console.log(`relay: state ${dataDirectory ? `in ${dataDirectory}` : 'in memory only'}`);
+relay/src/server.ts:100:  console.log(`relay: ${signal}, closing`);
+relay/src/persistence.ts:20:import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+relay/src/persistence.ts:52:    writeFileSync(temporary, Y.encodeStateAsUpdate(doc));
+relay/src/persistence.ts:71:        if (code !== 'ENOENT') console.error(`relay: could not read ${docName}:`, cause);
+vite/precacheServiceWorker.ts:11:import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+vite/precacheServiceWorker.ts:33:const cached = (request) => caches.open(CACHE).then((cache) => cache.match(request, { ignoreVary: true }));
+vite/precacheServiceWorker.ts:47:    const cache = await caches.open(CACHE);
+vite/precacheServiceWorker.ts:51:      await caches.delete(CACHE);
+vite/precacheServiceWorker.ts:63:      .then((keys) => Promise.all(keys.filter((key) => key.startsWith(PREFIX) && key !== CACHE).map((key) => caches.delete(key)))),
+vite/precacheServiceWorker.ts:133:      writeFileSync(
+private/cleanup.ts:105:  console.error(error instanceof Error ? error.message : 'Cleanup helper could not start.');
+relay/src/connection.ts:219:      console.error(`relay: bad message in ${room}:`, cause);
+account-service/authority.ts:20:import { DatabaseSync } from 'node:sqlite';
+account-service/authority.ts:73:  const db = new DatabaseSync(path, { readOnly });
+account-service/core.ts:52:import { DatabaseSync } from 'node:sqlite';
+account-service/core.ts:113:  #db: DatabaseSync;
+account-service/core.ts:134:    this.#db = new DatabaseSync(path);
+account-service/delivery.ts:19:import type { DatabaseSync } from 'node:sqlite';
+account-service/delivery.ts:118:function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+account-service/delivery.ts:183:function read(db: DatabaseSync, workspace: string) {
+account-service/delivery.ts:398:  db: DatabaseSync,
+account-service/delivery.ts:537:  db: DatabaseSync,
+account-service/delivery.ts:627:  db: DatabaseSync,
+src/editor/textChannel.ts:19:  const channel = new BroadcastChannel(
+src/account/recoveryOwner.ts:89:        const request = indexedDB.open(RECOVERY_PREPARATION_DB, 1);
+src/crdt/workspaceChannel.ts:23:  const channel = new BroadcastChannel(
+src/ui/Menu.tsx:57:      const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: 'application/zip' }));
+src/crdt/storageCompatibility.ts:29:          const request = task.step(() => indexedDB.open('done.custody'));
+src/ui/PrivateMigrationApp.tsx:42:    const url = URL.createObjectURL(
+src/lib/localStore.ts:17:    return localStorage.getItem(key);
+src/lib/localStore.ts:25:    localStorage.setItem(key, value);
+src/lib/localStore.ts:33:    localStorage.removeItem(key);
+src/crdt/sync.ts:87:/** A remote update every keystroke would otherwise be a localStorage write. */
+src/crdt/sync.ts:161:  // A browser refuses this outright, and says so only in the console.
+src/crdt/localClearState.ts:98:  const row = rows.find((r) => indexedDB.cmp(r.key, localClearKey(slotId)) === 0);
+src/crdt/custodyRecord.ts:288:    const req = indexedDB.open(CUSTODY_DB, 1);
+src/crdt/actors.ts:12: *   - which actor this client is lives in localStorage, and does not
+src/crdt/actors.ts:13: *   - device identity lives in localStorage, and does not
+src/crdt/legacyImportState.ts:11:    return rows.some((row) => indexedDB.cmp(row.key, importClaimKey(slotId)) === 0);
+src/crdt/localClearStorage.ts:23:const isKey = (row: Row, key: IDBValidKey): boolean => indexedDB.cmp(row.key, key) === 0;
+src/crdt/localClearStorage.ts:44:    const storage = globalThis.localStorage,
+src/crdt/localClearStorage.ts:82:        const req = task.step(() => indexedDB.deleteDatabase(target.dbName));
+src/crdt/localClearStorage.ts:94:      const storage = globalThis.localStorage;
+src/crdt/legacyImportRecord.ts:98:  const row = rows.find((r) => indexedDB.cmp(r.key, importClaimKey(slotId)) === 0);
+src/crdt/legacyImportRecord.ts:179:    if (indexedDB.cmp(row.key, importClaimKey(scope.slotId)) === 0) {
+src/crdt/legacyImportRecord.ts:183:    } else if (indexedDB.cmp(row.key, key) === 0) custody = row.value;
+src/crdt/legacyImportRecord.ts:184:    else if (indexedDB.cmp(row.key, [...key, 'content-v1']) === 0) witness = row.value;
+src/crdt/localGenesisRecord.ts:126:  const row = rows.find((r) => indexedDB.cmp(r.key, localClaimKey(slotId)) === 0);
+src/crdt/localGenesisRecord.ts:220:    indexedDB.cmp(recordKey(currentScope(current)), recordKey(claimScope(claim))) !== 0
+src/crdt/promotionRecord.ts:318:  const row = rows.find((r) => indexedDB.cmp(r.key, recordKey(scope)) === 0);
+src/crdt/promotionRecord.ts:322:  const retained = rows.find((r) => indexedDB.cmp(r.key, storageUpgradeKey(slotId)) === 0);
+src/crdt/persistence.ts:42: * in localStorage — and a handle is the only thing that names both. That is the
+src/crdt/persistence.ts:90:  if (typeof localStorage === 'undefined') {
+src/crdt/persistence.ts:95:    void localStorage.length;
+src/crdt/persistence.ts:96:    return localStorage;
+src/crdt/legacyCleanup.ts:123:            // Journal first within localStorage; ancillary names/credentials follow it. No values are persisted.
+src/crdt/custody.ts:1072:/** Internal Account composition seam; the Account owner authenticates before loading these caches. */
+src/crdt/legacyCoordinatorState.ts:54:  const row = (key: IDBValidKey) => rows.find((r) => indexedDB.cmp(r.key, key) === 0);
+src/crdt/localGenesisStorage.ts:102:    if (indexedDB.cmp(row.key, localClaimKey(scope.slotId)) === 0) continue;
+src/crdt/localGenesisStorage.ts:103:    if (promotion?.marker && indexedDB.cmp(row.key, storageUpgradeKey(scope.slotId)) === 0)
+src/crdt/localGenesisStorage.ts:105:    if (indexedDB.cmp(row.key, key) === 0) custody = row.value;
+src/crdt/localGenesisStorage.ts:106:    else if (indexedDB.cmp(row.key, [...key, 'content-v1']) === 0) {
+src/crdt/localGenesisStorage.ts:206:        const req = task.step(() => indexedDB.open('done.slots', 1));
+src/crdt/legacySource.ts:52:    const storage = globalThis.localStorage;
+src/crdt/legacySource.ts:128: * localStorage changes. Old tabs can still write after the last read (or ABA between
+src/crdt/startupStorage.ts:16:      const request = task.step(() => indexedDB.open(name));
+src/crdt/startupStorage.ts:121:    const storage = globalThis.localStorage;
+src/crdt/export.ts:83:  const url = URL.createObjectURL(blob);
+src/crdt/contentDatabase.ts:13:    const req = task.step(() => indexedDB.open(name, 1));
+src/crdt/legacyCleanupStorage.ts:74:    const storage = globalThis.localStorage;
+src/crdt/legacyCleanupStorage.ts:84:        const req = task.step(() => indexedDB.deleteDatabase('done'));
+src/crdt/slotIndex.ts:10: * **enumeration goes through it, never through `indexedDB.databases()`**.
+src/crdt/slotIndex.ts:93:    const open = indexedDB.open(name, INDEX_VERSION);
+src/crdt/slotIndex.ts:105:    const req = indexedDB.deleteDatabase(name);
+src/crdt/journalStore.ts:33:    return globalThis.localStorage;

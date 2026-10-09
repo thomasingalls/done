@@ -1,0 +1,1073 @@
+(node:34927) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ generated coercible stage values must be rejected by the promotion parser (4.235791ms)
+✖ all nested data nodes reject incompatible types across thirteen promotions and admission (3187.752917ms)
+✖ sparse retained arrays cannot skip validation of credentials, actors or recipients (72.841375ms)
+✖ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (0.678333ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (197.756958ms)
+✔ generated admission scalar corruptions execute the direct parser (13.482916ms)
+✔ admission nested genesis limits are checked at the declared byte edges (43.752083ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 3
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3758.202
+
+✖ failing tests:
+
+test at test/account-parser-conformance/objects.test.mjs:9:1
+✖ generated coercible stage values must be rejected by the promotion parser (4.235791ms)
+  AssertionError [ERR_ASSERTION]: stage-reproduction: AssertionError [ERR_ASSERTION]: Missing expected exception.; path=0:0
+  
+  true !== false
+  
+      at property (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/helpers.mjs:74:10)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:10:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/objects.test.mjs:19:1
+✖ all nested data nodes reject incompatible types across thirteen promotions and admission (3187.752917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     name: 'prepared',
+  +     path: [
+  +       'stage'
+  +     ],
+  +     value: [
+  +       'prepared'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'stage'
+  +     ],
+  +     value: [
+  +       'handoff-prepared'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'stage'
+  +     ],
+  +     value: [
+  +       'handoff-selected'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-active',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-active',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-active',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-capturing',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-capturing',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-capturing',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-spooling',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-spooling',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-spooling',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-delivering',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-delivering',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-delivering',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-receiving',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'promotionId'
+  +     ],
+  +     value: [
+  +       '85858585858585858585858585858585'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-receiving',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'requestDigest'
+  +     ],
+  +     value: [
+  +       'd51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135'
+  +     ]
+  +   },
+  +   {
+  +     name: 'account-receiving',
+  +     path: [
+  +       'handoff',
+  +       'destination',
+  +       'account',
+  +       'epochHead'
+  +     ],
+  +     value: [
+  +       'bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4'
+  +     ]
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:31:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { name: 'prepared', path: [Array], value: [Array] }, { name: 'handoff-prepared', path: [Array], value: [Array] }, { name: 'handoff-prepared', path: [Array], value: [Array] }, { name: 'handoff-prepared', path: [Array], value: [Array] }, { name: 'handoff-prepared', path: [Array], value: [Array] }, { name: 'handoff-selected', path: [Array], value: [Array] }, { name: 'handoff-selected', path: [Array], value: [Array] }, { name: 'handoff-selected', path: [Array], value: [Array] }, { name: 'handoff-selected', path: [Array], value: [Array] }, { name: 'account-active', path: [Array], value: [Array] }, { name: 'account-active', path: [Array], value: [Array] }, { name: 'account-active', path: [Array], value: [Array] }, { name: 'account-capturing', path: [Array], value: [Array] }, { name: 'account-capturing', path: [Array], value: [Array] }, { name: 'account-capturing', path: [Array], value: [Array] }, { name: 'account-spooling', path: [Array], value: [Array] }, { name: 'account-spooling', path: [Array], value: [Array] }, { name: 'account-spooling', path: [Array], value: [Array] }, { name: 'account-delivering', path: [Array], value: [Array] }, { name: 'account-delivering', path: [Array], value: [Array] }, { name: 'account-delivering', path: [Array], value: [Array] }, { name: 'account-receiving', path: [Array], value: [Array] }, { name: 'account-receiving', path: [Array], value: [Array] }, { name: 'account-receiving', path: [Array], value: [Array] } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/objects.test.mjs:34:1
+✖ sparse retained arrays cannot skip validation of credentials, actors or recipients (72.841375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     hole: 0,
+  +     name: 'prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'genesis-prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'genesis-prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'genesis-prepared',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'genesis-prepared',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'genesis-prepared',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-requested',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-offered',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission-receipted',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-prepared',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'handoff-selected',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-active',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-active',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-active',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-active',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-active',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-active',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-active',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-capturing',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-spooling',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-delivering',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'credentials'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'genesis',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 0,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'genesis',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'account-receiving',
+  +     path: [
+  +       'admission',
+  +       'request',
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission',
+  +     path: [
+  +       'candidate',
+  +       'actors'
+  +     ]
+  +   },
+  +   {
+  +     hole: 1,
+  +     name: 'admission',
+  +     path: [
+  +       'candidate',
+  +       'wraps'
+  +     ]
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      { name: 'prepared', path: [Array], hole: 0 },            { name: 'prepared', path: [Array], hole: 1 },
+      { name: 'genesis-prepared', path: [Array], hole: 0 },    { name: 'genesis-prepared', path: [Array], hole: 1 },
+      { name: 'genesis-prepared', path: [Array], hole: 1 },    { name: 'genesis-prepared', path: [Array], hole: 0 },
+      { name: 'genesis-prepared', path: [Array], hole: 1 },    { name: 'admission-requested', path: [Array], hole: 0 },
+      { name: 'admission-requested', path: [Array], hole: 1 }, { name: 'admission-requested', path: [Array], hole: 1 },
+      { name: 'admission-requested', path: [Array], hole: 0 }, { name: 'admission-requested', path: [Array], hole: 1 },
+      { name: 'admission-requested', path: [Array], hole: 1 }, { name: 'admission-requested', path: [Array], hole: 1 },
+      { name: 'admission-offered', path: [Array], hole: 0 },   { name: 'admission-offered', path: [Array], hole: 1 },
+      { name: 'admission-offered', path: [Array], hole: 1 },   { name: 'admission-offered', path: [Array], hole: 0 },
+      { name: 'admission-offered', path: [Array], hole: 1 },   { name: 'admission-offered', path: [Array], hole: 1 },
+      { name: 'admission-offered', path: [Array], hole: 1 },   { name: 'admission-receipted', path: [Array], hole: 0 },
+      { name: 'admission-receipted', path: [Array], hole: 1 }, { name: 'admission-receipted', path: [Array], hole: 1 },
+      { name: 'admission-receipted', path: [Array], hole: 0 }, { name: 'admission-receipted', path: [Array], hole: 1 },
+      { name: 'admission-receipted', path: [Array], hole: 1 }, { name: 'admission-receipted', path: [Array], hole: 1 },
+      { name: 'handoff-prepared', path: [Array], hole: 0 },    { name: 'handoff-prepared', path: [Array], hole: 1 },
+      { name: 'handoff-prepared', path: [Array], hole: 1 },    { name: 'handoff-prepared', path: [Array], hole: 0 },
+      { name: 'handoff-prepared', path: [Array], hole: 1 },    { name: 'handoff-prepared', path: [Array], hole: 1 },
+      { name: 'handoff-prepared', path: [Array], hole: 1 },    { name: 'handoff-selected', path: [Array], hole: 0 },
+      { name: 'handoff-selected', path: [Array], hole: 1 },    { name: 'handoff-selected', path: [Array], hole: 1 },
+      { name: 'handoff-selected', path: [Array], hole: 0 },    { name: 'handoff-selected', path: [Array], hole: 1 },
+      { name: 'handoff-selected', path: [Array], hole: 1 },    { name: 'handoff-selected', path: [Array], hole: 1 },
+      { name: 'account-active', path: [Array], hole: 0 },      { name: 'account-active', path: [Array], hole: 1 },
+      { name: 'account-active', path: [Array], hole: 1 },      { name: 'account-active', path: [Array], hole: 0 },
+      { name: 'account-active', path: [Array], hole: 1 },      { name: 'account-active', path: [Array], hole: 1 },
+      { name: 'account-active', path: [Array], hole: 1 },      { name: 'account-capturing', path: [Array], hole: 0 },
+      { name: 'account-capturing', path: [Array], hole: 1 },   { name: 'account-capturing', path: [Array], hole: 1 },
+      { name: 'account-capturing', path: [Array], hole: 0 },   { name: 'account-capturing', path: [Array], hole: 1 },
+      { name: 'account-capturing', path: [Array], hole: 1 },   { name: 'account-capturing', path: [Array], hole: 1 },
+      { name: 'account-spooling', path: [Array], hole: 0 },    { name: 'account-spooling', path: [Array], hole: 1 },
+      { name: 'account-spooling', path: [Array], hole: 1 },    { name: 'account-spooling', path: [Array], hole: 0 },
+      { name: 'account-spooling', path: [Array], hole: 1 },    { name: 'account-spooling', path: [Array], hole: 1 },
+      { name: 'account-spooling', path: [Array], hole: 1 },    { name: 'account-delivering', path: [Array], hole: 0 },
+      { name: 'account-delivering', path: [Array], hole: 1 },  { name: 'account-delivering', path: [Array], hole: 1 },
+      { name: 'account-delivering', path: [Array], hole: 0 },  { name: 'account-delivering', path: [Array], hole: 1 },
+      { name: 'account-delivering', path: [Array], hole: 1 },  { name: 'account-delivering', path: [Array], hole: 1 },
+      { name: 'account-receiving', path: [Array], hole: 0 },   { name: 'account-receiving', path: [Array], hole: 1 },
+      { name: 'account-receiving', path: [Array], hole: 1 },   { name: 'account-receiving', path: [Array], hole: 0 },
+      { name: 'account-receiving', path: [Array], hole: 1 },   { name: 'account-receiving', path: [Array], hole: 1 },
+      { name: 'account-receiving', path: [Array], hole: 1 },   { name: 'admission', path: [Array], hole: 1 },
+      { name: 'admission', path: [Array], hole: 1 }
+    ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/objects.test.mjs:48:1
+✖ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (0.678333ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: candidate.actors.1
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:54:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

@@ -1,6 +1,8 @@
+import { test } from '../release-validation/browser-fixture';
+import { openApp } from './openApp';
 /** Browser coverage for the pointer details of Done-card reordering. */
 
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
 
@@ -45,7 +47,7 @@ test.describe('Done-card reordering', () => {
   test('a mouse drag on the grip reorders cards', async ({ page, isMobile }) => {
     test.skip(isMobile, 'The mouse grip is the desktop activation path.');
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await addDoneCards(page, ['third', 'second', 'first']);
 
     const cards = activeDay(page).locator('.card[data-section="done"]');
@@ -69,7 +71,7 @@ test.describe('Done-card reordering', () => {
   test('a touch long-press then drag reorders cards', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'Long-press activation is exercised in the Android project.');
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await addDoneCards(page, ['third', 'second', 'first']);
 
     const cards = activeDay(page).locator('.card[data-section="done"]');
@@ -83,7 +85,7 @@ test.describe('Done-card reordering', () => {
   test('movement before the hold remains day navigation', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'The touch arbitration path is exercised in the Android project.');
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await addDoneCards(page, ['second', 'first']);
 
     const initial = await activeDay(page).getAttribute('data-date');
@@ -113,7 +115,7 @@ test.describe('Done-card reordering', () => {
   test('a stationary touch long-press still unlocks Done', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'Long-press activation is exercised in the Android project.');
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await addDoneCards(page, ['second', 'first']);
 
     const first = activeDay(page).locator('.card[data-section="done"]').first();

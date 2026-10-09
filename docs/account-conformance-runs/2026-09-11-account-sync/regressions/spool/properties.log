@@ -1,0 +1,15 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated real-wire histories retain exact source coverage and reject removed grant events 1164ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated authority substitutions reject a well-framed entry in the wrong domain 6ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions 2ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > verifies exact source hash, original actor/update, digest and prepared signature before exposure 3ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects unknown versions, noncanonical bytes, unsafe positions, exhausted budgets and wrong physical placement 1ms
+ ✓ test/spoolRecord.test.ts > counter v2 is closed and authenticated separately while v1 bytes stay unchanged 1ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  13:55:21
+   Duration  1.40s (transform 60ms, setup 27ms, import 104ms, tests 1.18s, environment 0ms)
+

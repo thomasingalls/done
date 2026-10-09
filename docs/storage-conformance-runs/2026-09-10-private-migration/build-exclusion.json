@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "sourceMaps": [
+    "main-gl67UxlV.js.map"
+  ],
+  "privateRuntimeSources": [],
+  "privateHtmlPresent": false,
+  "scope": "Ordinary production entries exclude the private utility; development entry remains explicitly served by Vite"
+}

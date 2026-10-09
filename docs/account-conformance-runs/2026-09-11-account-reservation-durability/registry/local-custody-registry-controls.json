@@ -1,0 +1,43 @@
+{
+  "controls": 9,
+  "evidence": [
+    {
+      "name": "native owner",
+      "caught": true
+    },
+    {
+      "name": "inherited envelope",
+      "caught": true
+    },
+    {
+      "name": "correspondence",
+      "caught": true
+    },
+    {
+      "name": "private format",
+      "caught": true
+    },
+    {
+      "name": "state counterexample",
+      "caught": true
+    },
+    {
+      "name": "native comparison",
+      "caught": true
+    },
+    {
+      "name": "negatives",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "metadata MAC owner",
+      "caught": true
+    }
+  ]
+}

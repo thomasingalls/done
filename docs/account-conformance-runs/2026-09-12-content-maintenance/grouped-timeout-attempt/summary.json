@@ -1,0 +1,63 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-12T15:35:49.646Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 61
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 35447
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "test/storage-capacity/maintenance.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 5487
+    },
+    {
+      "name": "trim",
+      "args": [
+        "scripts/content-trim/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 19970
+    },
+    {
+      "name": "account",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-capture/native.test.mjs",
+        "test/account-receive-editor/native.test.mjs",
+        "test/account-sync/native.test.mjs"
+      ],
+      "code": 1,
+      "timedOut": true,
+      "elapsedMs": 240015
+    }
+  ],
+  "sourcePins": 910,
+  "error": "Error: Stage failed: account\n    at run (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:135:46)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:176:5",
+  "finishedAt": "2026-09-12T15:40:50.629Z"
+}

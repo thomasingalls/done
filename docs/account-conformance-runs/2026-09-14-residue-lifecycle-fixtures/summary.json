@@ -1,0 +1,133 @@
+{
+  "base": "c5e21128026222dc624f9232bd4fbfc1fb18f3e4",
+  "claim": "residue-lifecycle-fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T13-05-51.474Z",
+  "summary": {
+    "schema": 1,
+    "selection": "residue-lifecycle-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/lifecycle.test.mjs",
+        "key": "9df8747d5d89558cc3d27872babcae2bb26d9743e0cbef3af623b230d6685c6b",
+        "status": "passed",
+        "elapsedMs": 24676,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-residue/service-files.test.mjs",
+        "key": "0d6e7661afe52d87067b5d33d33709c126e69c0a5195f4f54fb8565c91c06d5d",
+        "status": "passed",
+        "elapsedMs": 5582,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T13:05:51.476Z",
+    "input": "df46845c399731c459083c30dd93fdac2d996f226846150c4873a463fafabfdb",
+    "completedAt": "2026-09-14T13:06:44.153Z"
+  },
+  "elapsedMs": 52677,
+  "rawInputArchiveSha256": "95efbf3f9b64e76e43f150de9f10c73ebfb479a4e321e71b0d35355ee703f963",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "c5e21128026222dc624f9232bd4fbfc1fb18f3e4",
+    "sourceDigest": "79a22e63044cc5fff6bb41975ec544b30713a9074cf37270094023777c3190fc",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "priorGeneralFiles": 225,
+    "priorGeneralCases": 1765,
+    "currentGeneralFiles": 227,
+    "currentGeneralCases": 1769,
+    "currentNodeFiles": 131,
+    "accountFiles": 121,
+    "accountCases": 675,
+    "selectedFiles": 2,
+    "selectedCases": 4,
+    "browserFiles": 2,
+    "fixtureInstances": 5,
+    "generatedHistories": 0,
+    "executedOmissionControls": 1,
+    "rendererCrashes": 0,
+    "currentVitestFiles": 96,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 190,
+    "unresolvedTestFiles": 31,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 708782,
+    "nodeOwnerTests": 24,
+    "nativeOwnerTests": 14
+  },
+  "finalGatesSha256": "94d042749c8b02a8a46251bbbedc666cd60a3f1b5c0bf433b333b5c9dcb2b71b",
+  "preservationSha256": "865c2a59d4f9d624d8ed8d9192134023200dffe252256c436ecd8f2dec234943",
+  "limits": [
+    "Four complete unchanged cases retain their existing 240-second file bounds: three lifecycle cases (180/60/60 seconds) and one service-file case (180 seconds). Six registration files, the shared Chromium launcher, two existing owner-control files and generated snapshots change. Product code, the four residue test bodies, synthetic browser/service fixture, acquisition and matching helpers, and wrappers remain unchanged. Five fixture instances run in two owned disposable browsers.",
+    "The lifecycle requires at least five synchronous admitted writes held solely in the encrypted journal while content-row counts remain unchanged. Flush must empty that journal; compaction and cold page replacement must preserve the exact projection. Recovery preparation checks the specific allowed retry-key exposures, then actual HTTP selection includes a lost final reply. Later Account edits, compaction and cold replay must retain the expected content. Software authenticators and generated factors exercise the private flow; this is not a human ceremony or a personal Account receipt.",
+    "Wrong-factor and cancelled opens refuse access. A real Storage.setItem override throws QuotaExceededError for encrypted journal keys; the test requires that failure to occur and verifies fallback persistence through cold reopen. The paired write-path control deliberately plants a plaintext side record after an acknowledged edit and requires the neutral scanner to detect it. These are directed controls, not generated histories or physical process/power failures.",
+    "The separate service-file case drives synthetic Local-to-Account HTTP delivery and observes the actual service directory twice after a barrier. Both observations must agree, the bounded acquired-file scan must be complete with no prohibited writing/factor sentinel, and it must include a real WAL. The intentional retry marker is excluded. This establishes the tested acquired-file result, not physical disk erasure or universal carrier coverage.",
+    "Existing host-Python identity binding, default report/stdout retention, owner classification/headroom and capture-oracle follow-ups remain open. Owned case receipts establish these four results; original wrapper campaign and output contracts, immutable validation and personal Account preparation remain separate.",
+    "The first native attempt refused all three lifecycle cases with uncaptured-worker, including the empty checkpoint. A separate diagnostic probe identified a chrome-extension worker; no product worker was inferred from that URL. The shared direct Chromium launcher now supplies the two extension-disabling flags already present in installed Playwright defaults. The uncaptured-worker refusal remains unchanged. The native owner control checks an empty worker census then observes a deliberately created real Blob worker; the existing startup control pins both flags. All 24 Node-owner and 14 native-owner cases are rerun, including timeout, cancellation, death and group/listener cleanup. The failed lifecycle receipt and diagnostic probe are retained alongside the passing final run. This changes the browser launch inputs; earlier native receipts retain their original input identities and are not recast as reruns under these flags.",
+    "The first ownership recheck passed 13/14 native controls; browser-death cleanup recorded kill EPERM and refused group-drain credit. Its PID was subsequently absent, but that later observation does not repair the failed receipt. Browser signaling now retries EPERM within each existing TERM/KILL grace interval and still requires ESRCH for drain. A new Node-owner control injects transient and persistent signal denial, requiring recovery only in the former and a failed drain result in the latter. Both the failed ownership log/receipt and successful requalification are retained. No deadline was enlarged and persistent uncertainty is not treated as success.",
+    "This packet alone uses a 175,000-byte ceiling, expanded from the usual 150,000 to preserve both failed attempts, the diagnostic probe and the full 24/14 owner requalification logs. The next ordinary integration packet returns to the usual ceiling."
+  ],
+  "prospectivePacketCeilingBytes": 175000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-residue/lifecycle.test.mjs",
+        "nodeSummaryMs": 22441.77025,
+        "stageElapsedMs": 24676,
+        "fileDeadlineMs": 240000
+      },
+      {
+        "id": "test:test/account-residue/service-files.test.mjs",
+        "nodeSummaryMs": 3431.68375,
+        "stageElapsedMs": 5582,
+        "fileDeadlineMs": 240000
+      }
+    ],
+    "selectionElapsedMs": 52677,
+    "note": "File bounds apply to Node execution; stage and selection include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 240000,
+    "caseMs": [
+      180000,
+      60000,
+      60000,
+      180000
+    ],
+    "note": "Existing file and case bounds retained; wrapper qualification remains separate."
+  },
+  "ownerRequalification": {
+    "nodeCases": 24,
+    "nativeCases": 14,
+    "browserExtensionFlagsAdded": true,
+    "appWorkerObservationRetained": true,
+    "priorReceiptsKeepPriorInputs": true
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "2a03deb0ec0924c9801a8c90728d7c2c7ddc34262a8c81641c211a719b32311e",
+    "compressedSha256": "a6fc7d832260c4f49feabfc1184b15f5970e4da37970d9be9ecfcfcbcd6ebfed"
+  }
+}

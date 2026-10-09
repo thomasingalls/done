@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "a55ae626",
+  "payloads": 115,
+  "compressedBytes": 287636,
+  "artifactsSha256": "e78ae03fdd028159675241928f59a2fd179f92c1b0170ed85eff5f496dbb7a20",
+  "rawIndexSha256": "b3556553e768c63d1fc3122f541e5515de3d5c74f70f280b26496e98f7774bcd",
+  "qualification": {
+    "schema": 1,
+    "selection": "manifest-headroom-and-historical-execution-controls",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "66ebe47d3da48bc14b191dad2d90eb67ce1d75179bb36ecfb3aae3617400a1a5",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 38171,
+        "cases": 70,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/campaign-wrappers.test.mjs",
+        "key": "e3dd1fece5153fbc62491a6e12ae2f585945fa314aeecb823d96f82999adab56",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 39798,
+        "cases": 45,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "c95e90e8d53d5bc9c09b05e5c6006e812fed1284cdca81c0d8ec49e188c02085",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4968,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "a9d62f62ee6e88633592e385360801b5a1529b4d8af35fec4d53f75709c67239",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 3906,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "e4f49bd70b493c85b106f102aaef066647772aae03924d64db972bd88f5ccb63",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4627,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/stage.test.mjs",
+        "key": "b6afbce5152a05301b381aa2632d099243f16f7cbc70100d845f7f8a66676f9e",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 30559,
+        "cases": 36,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:manifest-reuse",
+        "key": "66ebe47d3da48bc14b191dad2d90eb67ce1d75179bb36ecfb3aae3617400a1a5",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 38171,
+        "cases": 70,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T23:49:39.064Z",
+    "input": "f68495b8596516668f93b47b7cea886320918175bb803cf0a6fdacba043d630c",
+    "completedAt": "2026-09-15T23:52:09.884Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 72,
+    "campaign": 40
+  },
+  "claim": "Bounded manifest planning headroom and historical execution controls; no immutable aggregate."
+}

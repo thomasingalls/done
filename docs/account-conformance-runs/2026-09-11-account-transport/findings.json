@@ -1,0 +1,31 @@
+{
+  "generated": {
+    "runs": 60,
+    "seed": 9112026,
+    "length": "4..16 operations",
+    "oracle": "Independent Node/OpenSSL signed request/page framing plus retained original ciphertexts, proofs and accepted-prefix links. Commands append, read with varied count/cursor, restart, replay and tamper; an end-to-end page walk checks full retention.",
+    "result": "No production design or implementation counterexample was demonstrated by these histories."
+  },
+  "controls": {
+    "signature": "Removing the retained member signature check returns a signed ciphertext page to a foreign signing key.",
+    "current": "Removing the final authority/snapshot comparison returns a signed page after the account changes to pending during verification.",
+    "requestBinding": "Removing the exact request hash check makes the actual browser owner accept an old signed page for a fresh nonce."
+  },
+  "fixtureCorrection": {
+    "initialFailure": "CHECK constraint failed: state IN ('staged','confirmed')",
+    "cause": "The initial direct test attempted to use an unimplemented credential state 'revoked'.",
+    "repair": "Use the existing non-confirmed state 'staged'; replay must refuse. The corrected service test and final campaign pass.",
+    "classification": "Test setup failure, not a production protocol counterexample."
+  },
+  "supplementalBoundaryProbe": {
+    "description": "Direct parser probes accepted canonical maximum-size submission-hex and envelope/proof page frames.",
+    "result": "Submission parsed in 564 ms; page in 1056 ms in the observed local run. These are one-off parser timings, not a performance guarantee or end-to-end throughput benchmark."
+  },
+  "limits": [
+    "Private first epoch and creating credential only; readback requires each returned envelope already in the local spool.",
+    "No downloaded-content application, durable receive cursor, public UI, enrollment, personal Account or deployment.",
+    "Short-lived signed requests can be replayed for their exact selector during the expiry window; current membership is rechecked. Client/service clocks must overlap the allowed window.",
+    "Whole-ledger scans and retention remain; the maximum-envelope service case took about 23 seconds across two submissions and two page reads. Backlog performance, pruning and coordinated whole-state rollback remain open."
+  ],
+  "wiring": "pnpm account:transport is wired into pnpm check. Direct node entrypoints ran the focused and regression campaigns; no whole pnpm check run is claimed."
+}

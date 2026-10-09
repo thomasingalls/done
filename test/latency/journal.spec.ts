@@ -1,3 +1,4 @@
+import { test } from '../release-validation/browser-fixture';
 /**
  * What one journal record costs to write (TRD §12, §15 row 2).
  *
@@ -16,16 +17,16 @@
  * that already costs something?* If `setItem` dominates, the budget is pointed
  * at the wrong term and Stage 1 should know that before it starts.
  *
- * **The construction is bundled from the specification, not imported from the
- * app**, because Stage 1 has not built it yet — that is the point of measuring
- * now. So the first thing this does is reproduce a published vector byte for
- * byte, and refuse to measure if it cannot. A benchmark of the wrong
+ * **This is the historical construction microbenchmark**, bundled from the
+ * specification rather than the current admission implementation. It does not
+ * measure the full production journal/admission path. It first reproduces a
+ * published vector byte for byte, and refuse to measure if it cannot. A benchmark of the wrong
  * construction produces numbers that look exactly like the right ones.
  */
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { expect, test, type Browser, type Page } from '@playwright/test';
+import { expect, type Browser, type Page } from '@playwright/test';
 import { build } from 'vite';
 import { CPU_THROTTLE, percentile, record } from './measure';
 import {
@@ -130,7 +131,18 @@ const keystrokeVector = (): JournalVector => {
 
 test.beforeAll(async ({ browser }: { browser: Browser }, info) => {
   project = info.project.name;
-  page = await (await browser.newContext()).newPage();
+  const { baseURL, viewport, deviceScaleFactor, isMobile, hasTouch, userAgent } = info.project.use;
+  if (!baseURL) throw Error('The benchmark requires its configured fixture origin.');
+  page = await (
+    await browser.newContext({
+      baseURL,
+      ...(viewport === undefined ? {} : { viewport }),
+      ...(deviceScaleFactor === undefined ? {} : { deviceScaleFactor }),
+      ...(isMobile === undefined ? {} : { isMobile }),
+      ...(hasTouch === undefined ? {} : { hasTouch }),
+      ...(userAgent === undefined ? {} : { userAgent }),
+    })
+  ).newPage();
 
   // A minimal page on the server's own origin: a real origin, so localStorage
   // works, and none of the application, so the microbenchmark is not sharing a

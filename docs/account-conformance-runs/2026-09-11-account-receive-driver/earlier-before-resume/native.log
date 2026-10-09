@@ -1,0 +1,17 @@
+(node:31345) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31345) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:31345) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual service empty-to-later-data polling advances durable progress without a local wake (14589.743875ms)
+✔ lost replies back off at the unchanged cursor then catch up original remote text without recapture (10688.640916ms)
+✔ invalid page halts across edits and offline/online, with an explicit retry rechecking durable state (12862.969125ms)
+✔ native storage failure pauses the suffix and requires explicit driver retry after Local repair (8402.572ms)
+✔ close aborts and drains the active poll before releasing exclusion; backoff closes promptly (10800.414625ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59196.04375

@@ -1,0 +1,50 @@
+{
+  "controls": 9,
+  "evidence": [
+    {
+      "name": "D3 corpus",
+      "caught": true,
+      "expected": "specified phase/blocker mismatch"
+    },
+    {
+      "name": "witness edge",
+      "caught": true,
+      "expected": "missing counter witness dependency"
+    },
+    {
+      "name": "witness obligation",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "canonicality obligation",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "unlabelled receipt hash",
+      "caught": true,
+      "expected": "orphan executed vector"
+    },
+    {
+      "name": "nested source site",
+      "caught": true,
+      "expected": "source-site census changed"
+    },
+    {
+      "name": "chain role",
+      "caught": true,
+      "expected": "digest vector misclassified"
+    },
+    {
+      "name": "negatives",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

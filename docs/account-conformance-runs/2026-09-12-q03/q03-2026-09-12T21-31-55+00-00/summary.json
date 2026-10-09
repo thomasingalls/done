@@ -1,0 +1,42 @@
+{
+  "phase": "q03",
+  "head": "dceec5c40779ae80253a7fa31142e071bd95b558",
+  "status": "failed",
+  "started": "2026-09-12T21:31:55.266227+00:00",
+  "node": "v26.8.2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "stages": [
+    {
+      "name": "service-context",
+      "command": [
+        "node",
+        "--test",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "timeoutSeconds": 90,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 10.831,
+      "tests": 4
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "node",
+        "--test",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/native.test.mjs",
+        "test/account-service-delivery/restart.test.mjs"
+      ],
+      "timeoutSeconds": 180,
+      "exitCode": 1,
+      "timedOut": false,
+      "elapsedSeconds": 15.554
+    }
+  ],
+  "sourceCount": 934,
+  "error": "AssertionError(('service-delivery', PosixPath('test-results/liveness-followups/q03-2026-09-12T21-31-55+00-00/service-delivery.log')))",
+  "finished": "2026-09-12T21:32:21.726944+00:00"
+}

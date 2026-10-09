@@ -1,0 +1,53 @@
+{
+  "base": "8c5fdaeedc099c3562d59314e497df868aa6b050",
+  "selection": "vitest-reviewed/pendingProjection (bounded subset)",
+  "integrationGroup": "f17-metadata",
+  "rawOutput": "test-results/release-validation/2026-09-14T18-34-42.069Z",
+  "result": {
+    "schema": 1,
+    "selection": "vitest-reviewed/pendingProjection (bounded subset)",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "97adec80f599facaeabff5cbc683d8639596f9797f9f0f22bcdb5e2197090453",
+        "status": "passed",
+        "elapsedMs": 8003,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T18:34:42.071Z",
+    "input": "d2c02b824b00c05df0f3d3884d2c9e93559d88524bd4e570fef882988ec0c96a",
+    "completedAt": "2026-09-14T18:35:12.140Z"
+  },
+  "counts": {
+    "generalFiles": 260,
+    "generalCases": 2018,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 159,
+    "unresolvedTestFiles": 0
+  },
+  "priorContractsPreserved": 259,
+  "changedPriorContracts": [
+    "test:test/pendingProjection.test.ts"
+  ],
+  "rawInputArchiveSha256": "ec5bb91110cec7819c14951e87a2c843de44649f6ac418547ffe817611ba87ae",
+  "sourceDigest": "f8a4ffa662e362c29ef0c872675c7a5c2fc6876acad1705bd3380fe984d78354",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1057,
+  "scope": "Both metadata fast paths are rejected and all production bytes are restored to signed 8c5fdaee. The first recursive dispatcher passes focused correctness but improves the 1,000-group one/100-target strata by only 5.1%/20.1%; direct constructors improve them by 10.3%/30.5%. Neither satisfies the predeclared >=20% rule in both strata. Each distinct implementation has its own fixed nine-stratum, five-warmup, twenty-alternating-pair observation: all 720 measured forks, source patches, bundle hashes, ranges and failed acceptance decisions are preserved. These dependent single-host observations do not estimate a customer workload or application speedup. Three new retained cases add 200 generated reference-graph/isolation checks, fallback values/cycles/accessor behavior and 150 undo/redo histories with restored master/card selections against an unforked reference. Sharing a nested ID fails the intended isolation assertion in both discarded candidates; a shallow-copy mutation fails the same assertion in the retained baseline. The full unit suite passes 96 files / 1,038 tests. The owned runner executes the changed suite as an explicitly bounded subset, with all 15 cases passing and process drain. Only the changed suite, two runner denominator fixtures and their reviewed planning/case registrations change executable validation coverage; source, authority labels, exclusions and selection membership are unchanged. No runtime/native/application campaign is rerun after restoring production; the conditional optimization gate was not reached. The last independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x typing. The personal browser, server, package and deployment remain untouched.",
+  "artifactIndexSha256": "b0dcd0abba5c7fe55b6606af99790a2d099bedabc6c78782b161cdc5d51d11f1",
+  "gatesSha256": "9db2b24de4b0e29a12b0e16947a0288058f055da2df9e61824e33b7de852dca6",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

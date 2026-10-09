@@ -1,0 +1,15 @@
+(node:55141) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55141) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ omitting assertion admits a forbidden first activation (73.610709ms)
+✔ omitting expiry admits a forbidden first activation (59.217542ms)
+✔ omitting target admits a forbidden first activation (58.366417ms)
+✔ generated stale-proof invariant fails and shrinks when assertion verification is omitted (106.186875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 519.374334

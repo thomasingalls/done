@@ -1,0 +1,6 @@
+{
+  "control": "custodyStore",
+  "localRoundTrip": "passed",
+  "independentByteContract": "detected omitted storeId",
+  "crypto": "real factor, HKDF and AES; no success override"
+}

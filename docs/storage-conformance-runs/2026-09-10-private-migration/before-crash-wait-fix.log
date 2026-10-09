@@ -1,0 +1,35 @@
+[WebServer] (node:29795) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:29801) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/private-migration/rehearsal.spec.ts:135:1 › saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger (1.5m)
+(node:29950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 test/private-migration/rehearsal.spec.ts:206:1 › wrong saved digest and origin refuse before enrollment; source drift refuses first intent (1.0s)
+  ✓  3 test/private-migration/rehearsal.spec.ts:235:1 › an aborted first content write offers resume with the original factor and retains source (1.6s)
+  ✓  4 test/private-migration/rehearsal.spec.ts:267:1 › a retained service-worker registration blocks observation without removing site data (328ms)
+
+
+  1) test/private-migration/rehearsal.spec.ts:135:1 › saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger 
+
+    Test timeout of 90000ms exceeded.
+
+    Error: browserContext.newPage: Protocol error (Target.createTarget): browserContextId
+
+      153 |   await Promise.all([page.waitForEvent('crash'), cdp.send('Page.crash').catch(() => {})]);
+      154 |   await page.close();
+    > 155 |   const reopened = await context.newPage();
+          |                                  ^
+      156 |   reopened.on('pageerror', (error) => errors.push(error.message));
+      157 |   await resume(reopened, files, code);
+      158 |   await finishImport(reopened);
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:155:34
+
+    Error Context: test-results/private-migration/artifacts/rehearsal-saved-files-rend-18727-ecovery-preserve-the-ledger/error-context.md
+
+  1 failed
+    test/private-migration/rehearsal.spec.ts:135:1 › saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger 
+  3 passed (1.6m)

@@ -1,5 +1,5 @@
 /**
- * Test vectors for the optional device lock (TRD §15 row 13, §13.3).
+ * Test vectors for the required factor custody and legacy migration (TRD §15 row 13, §13.3).
  *
  * The construction is specified in docs/selections/row-13-device-lock.md.
  * This script is the executable half of that document: it emits
@@ -19,7 +19,7 @@
  *     so it cannot be tested from ciphertext, and an implementation that
  *     regresses it produces working locks with no visible defect.
  *   - The *custody* vectors show one KeyEnvelope, with row 3's AAD unchanged,
- *     opening under L_local on the default tier and under L_lock on the lock
+ *     opening under legacy L_local custody and under L_lock on the factor
  *     tier. Row 3 says its format is "deliberately indifferent to that choice";
  *     this asserts it, against row 3's own published bytes.
  *   - The *negatives* are the substitutions the AAD exists to refuse.
@@ -341,12 +341,12 @@ const MUST_FAIL = [
   { name: 'seal-moved-to-other-principal', why: 'The same, across principals.' },
   {
     name: 'replacement-credential-under-a-wrong-code',
-    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
+    falsifies: ['f-f5def83-device-lock-reader-key-bypass -> L-4'],
     why: 'The replacement wrapping credential is sealed with the same LockSeal machinery as L_lock itself, so a wrong code does not open it. Without this the lock would replace a promptless key with another promptless key and change nothing.',
   },
   {
     name: 'replacement-credential-seal-as-a-factor-seal',
-    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
+    falsifies: ['f-f5def83-device-lock-reader-key-bypass -> L-4'],
     why: "The credential seal presented under the code factor's own id. The seal AAD binds the id, so the two sealed objects in a locked slot -- L_lock and the wrapping credential -- cannot be substituted for one another.",
   },
   {
@@ -369,7 +369,11 @@ const MUST_FAIL = [
     isolates: 'lock seal.workspace',
     why: 'The same isolation for workspace_id: correct key, AAD naming the other slot.',
   },
-  { name: 'aad-only-other-principal', isolates: 'lock seal.principal', why: 'The same isolation for principal_id.' },
+  {
+    name: 'aad-only-other-principal',
+    isolates: 'lock seal.principal',
+    why: 'The same isolation for principal_id.',
+  },
   {
     name: 'aad-only-envelope-label',
     isolates: 'lock seal.label',
@@ -572,7 +576,7 @@ const main = async () => {
   const custodyVectors = [
     {
       name: 'envelope-under-l-local',
-      why: 'The default tier. Row 3s vector, reproduced here so the two rows are checked against each other in one file.',
+      why: 'Legacy promptless custody, not a current genesis option. Row 3s fixture is reproduced here to cross-check the unchanged envelope bytes.',
       tier: 'promptless',
       opened_by: 'l_local',
       key: hex(L_LOCAL),
@@ -581,7 +585,7 @@ const main = async () => {
     },
     {
       name: 'envelope-under-l-lock',
-      why: 'The lock tier. Same format, same AAD, same K_g, different key -- which is what "no default handle capable of opening the envelopes remains" costs in bytes.',
+      why: 'Factor custody: same format, same AAD, same K_g, different opening key. This one-envelope test does not establish absence of other persisted openers.',
       tier: 'locked',
       opened_by: 'l_lock',
       key: hex(L_LOCK),
@@ -854,7 +858,7 @@ const main = async () => {
   if (!Object.hasOwn(wrapsByGeneration[GEN], W_PUB_PRELOCK)) {
     throw new Error('The pre-lock copy cannot open generation g. History was re-keyed.');
   }
-  falsifies('the post-lock wrap set', ['f-f5def83-device-lock-reader-key-bypass']);
+  falsifies('the post-lock wrap set', ['f-f5def83-device-lock-reader-key-bypass -> L-4']);
   if (Object.hasOwn(wrapsByGeneration[SUCCESSOR_GEN], W_PUB_PRELOCK)) {
     throw new Error(
       'The successor generation is wrapped to the pre-lock credential. A copied profile opens it, ' +
@@ -901,11 +905,11 @@ const main = async () => {
     trd_row: 13,
     construction: {
       tiers:
-        "CustodyRecord = { v, state: 'promptless' | 'enrolling' | 'locked', seals: LockSeal[], rotation_owed }. Written at genesis on the default tier, so enabling the lock is never a schema change",
+        'Current CustodyRecord v2 has creating/migrating/protected lifecycle states, scoped sealed custody and a durable custody-seal reservation count. Factors are mandatory from genesis (SC-08). Fixture tier labels describe legacy v1 custody; LockSeal/KeyEnvelope bytes remain v1. This generator does not exercise v2 lifecycle metadata',
       factors:
         'A generated 125-bit code is mandatory and is the root; WebAuthn PRF outputs are additional seals of the same L_lock. A user-chosen passphrase is rejected: the seal sits beside the ciphertext it protects, so guessing is offline and free, and a browser origin has no rate-limiting anchor except the authenticator',
       indirection:
-        'Factors seal a random 32-byte L_lock; L_lock opens row 3s KeyEnvelope in place of L_local. Adding, replacing or removing a factor is one 32-byte seal and moves no content and no content key',
+        'Factors seal a random 32-byte L_lock; L_lock opens row 3s KeyEnvelope in place of L_local. A non-exposure factor change updates seals while retaining a valid factor and moves no content key; exposure-driven replacement requires the selected forward transition',
       kdf: 'K_factor = HKDF-SHA256(ikm, salt = salt[16], info = LP("done/devicelock/v1") || LP(principal_id) || LP(workspace_id) || LP(factor), L = 32)',
       aad: 'LP("done/devicelock/v1") || LP(principal_id) || LP(workspace_id) || LP(decimal v) || LP(factor) || LP(id)',
       prf_eval_input:
@@ -915,9 +919,9 @@ const main = async () => {
       salt_note:
         'A fresh 16-byte salt per seal means a fresh K_factor per seal and exactly one message under it, so nonce reuse is structurally unreachable rather than avoided by discipline (row 14 §4)',
       enrollment:
-        'Seal L_lock under every factor and write state enrolling; reseal each retained generations KeyEnvelope under L_lock, staged; then one transaction swaps staged over live, deletes L_local and writes state locked. The state that must never exist -- no L_local and unresealed envelopes -- is unreachable because the delete and the swap are the same transaction',
+        'New genesis confirms a generated code before persistent acknowledgement. Legacy migration stages sealed custody and replacement receivers under an exclusive slot barrier, swaps same-database custody atomically and resumes cross-carrier transitions by durable intent; SC-03/04/08 define completion. These vectors do not execute those phases',
       rotation:
-        'Enrollment then rotates the content key forward, tracked by rotation_owed. Without it a profile copy taken before enrollment keeps opening K_g, and therefore keeps opening content written after the lock was enabled. Forward-only: history is not re-keyed, because the copy that motivated the rotation already holds it',
+        'Legacy migration rotates content forward after receiver replacement; rotation_owed remains derived from incomplete required phases. Fresh protected genesis has no promptless predecessor. Old copies retain history and remote writers can use old keys until observing the successor; protection remains pending until local activation and safe retirement complete',
       not_carried:
         'The lock never signs, never authenticates an account, never unwraps R_priv and never becomes a recovery factor. Recovery may not open a locked slot; a lost factor re-enrolls as a device',
     },
@@ -942,13 +946,13 @@ const main = async () => {
       rotation_owed: {
         derived_from: "the generation-application record's step, never asserted",
         true_while: 'step < 8 -- from the custody swap until the application settles',
-        why: 'That interval is exactly the one in which a pre-lock copy still holds K_g. Clearing it at the swap, when the envelopes move and before any rotation has landed, claims future-copy protection during precisely the window where there is none.',
+        why: 'This abstract eight-step fixture tracks an incomplete generation application, not actual writer lifetimes or every migration phase. Old copies retain K_g permanently; current protection-pending also includes receiver replacement and safe local activation under SC-03/04/08.',
       },
       expected:
         'generation g is wrapped to the pre-lock key and the successor is not; history is not re-keyed',
     },
     custody_note:
-      'One KeyEnvelope, row 3s AAD byte for byte, under each tiers key. The generator reproduces row 3s published ciphertext from its published inputs and fails if either has changed, and separately asserts that L_local does not open the lock tiers envelope',
+      'One KeyEnvelope, row 3s AAD byte for byte, under each fixture key. Reconstruction and the wrong-opening-key negative cover those bytes only; they do not prove absence of other profile openers or future receiving credentials. C12-C14 production tests remain pending',
     must_fail: MUST_FAIL,
   };
 

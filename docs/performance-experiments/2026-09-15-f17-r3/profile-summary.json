@@ -1,0 +1,61 @@
+{
+  "note": "Two diagnostic sessions,60 keys each. CPU and allocation sampling overlap. Dominant callsite inclusive values overlap child work; these are not exclusive timings or treatment effects. Full20-day corpus differs from earlier round-one profiling scope.",
+  "rows": [
+    {
+      "session": "profile-0",
+      "sampledAllocationBytes": 225273632,
+      "sampledGcMs": 194.686,
+      "encodeIntoSelfMs": 514.848,
+      "dominantForkInclusiveMs": 1340.427,
+      "dominantComparisonInclusiveMs": 999.312,
+      "dominantMembershipRepairInclusiveMs": 354.181,
+      "dominantCollectionInclusiveMs": 132.821,
+      "heapBefore": {
+        "usedSize": 12033760,
+        "totalSize": 13500416,
+        "embedderHeapUsedSize": 2773312,
+        "backingStorageSize": 1554579
+      },
+      "heapAfter": {
+        "usedSize": 12720004,
+        "totalSize": 13762560,
+        "embedderHeapUsedSize": 2316232,
+        "backingStorageSize": 1537491
+      },
+      "heapLocked": {
+        "usedSize": 10557832,
+        "totalSize": 11665408,
+        "embedderHeapUsedSize": 1866768,
+        "backingStorageSize": 1474308
+      }
+    },
+    {
+      "session": "profile-1",
+      "sampledAllocationBytes": 223812560,
+      "sampledGcMs": 172.582,
+      "encodeIntoSelfMs": 467.525,
+      "dominantForkInclusiveMs": 1351.262,
+      "dominantComparisonInclusiveMs": 996.333,
+      "dominantMembershipRepairInclusiveMs": 357.531,
+      "dominantCollectionInclusiveMs": 130.895,
+      "heapBefore": {
+        "usedSize": 12049460,
+        "totalSize": 13762560,
+        "embedderHeapUsedSize": 2803024,
+        "backingStorageSize": 1554616
+      },
+      "heapAfter": {
+        "usedSize": 12736656,
+        "totalSize": 13500416,
+        "embedderHeapUsedSize": 2325680,
+        "backingStorageSize": 1537492
+      },
+      "heapLocked": {
+        "usedSize": 10582764,
+        "totalSize": 11665408,
+        "embedderHeapUsedSize": 1928168,
+        "backingStorageSize": 1474309
+      }
+    }
+  ]
+}

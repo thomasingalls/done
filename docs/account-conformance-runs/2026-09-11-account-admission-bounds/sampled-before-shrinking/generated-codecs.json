@@ -1,0 +1,12 @@
+{
+  "seed": 9112071,
+  "histories": 85,
+  "oldBoundaries": [
+    1,
+    32766,
+    32767,
+    32768,
+    65536
+  ],
+  "independent": "OpenSSL SHA256 and Ed25519; decoded opaque bytes"
+}

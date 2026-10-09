@@ -1,0 +1,17 @@
+(node:7997) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7997) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (555.236917ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (534.918458ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (529.658917ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (546.792208ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (699.926791ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (542.719541ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3659.924125

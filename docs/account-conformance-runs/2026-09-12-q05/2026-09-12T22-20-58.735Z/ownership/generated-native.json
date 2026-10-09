@@ -1,0 +1,112 @@
+{
+  "seed": 9112062,
+  "histories": [
+    {
+      "actions": [
+        "edit",
+        "lost-send",
+        "offline-edit",
+        "compact",
+        "restart",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 5
+    },
+    {
+      "actions": [
+        "edit",
+        "compact",
+        "offline-edit",
+        "compact",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 4
+    },
+    {
+      "actions": [
+        "lost-send",
+        "edit",
+        "edit",
+        "edit",
+        "lost-send",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 7
+    },
+    {
+      "actions": [
+        "lost-read",
+        "compact",
+        "restart",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 3
+    },
+    {
+      "actions": [
+        "lost-read",
+        "lost-read",
+        "offline-edit",
+        "restart",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 5
+    },
+    {
+      "actions": [
+        "lost-send",
+        "lost-send",
+        "offline-edit",
+        "edit",
+        "offline-edit",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 7
+    },
+    {
+      "actions": [
+        "restart",
+        "edit",
+        "edit",
+        "lost-send",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 5
+    },
+    {
+      "actions": [
+        "edit",
+        "compact",
+        "offline-edit",
+        "edit",
+        "edit",
+        "edit",
+        "restart"
+      ],
+      "completed": true,
+      "positions": 6
+    }
+  ],
+  "coverage": {
+    "edit": 19,
+    "lost-send": 6,
+    "offline-edit": 6,
+    "compact": 5,
+    "restart": 12,
+    "lost-read": 3
+  }
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "path": "assets/main-BBv1bmH8.css",
+    "bytes": 22825,
+    "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+  },
+  {
+    "path": "assets/main-CUz1uowK.js",
+    "bytes": 1030598,
+    "sha256": "f75ce54f5e25bacfe239cf07e175645465a60f362391faa4ced0396b0b503be3"
+  },
+  {
+    "path": "assets/main-CUz1uowK.js.map",
+    "bytes": 4471035,
+    "sha256": "666d60dd0dff55219fa37e17ca78042b3a69360b90d178a7faeeb5db7563df2a"
+  },
+  {
+    "path": "assets/promotionRecord-DT7hmZJ1.js",
+    "bytes": 19681,
+    "sha256": "a7e35faaadebadf0e35509657fd9311697b78d63347326bfce4a54e8c2d0e5c5"
+  },
+  {
+    "path": "assets/promotionRecord-DT7hmZJ1.js.map",
+    "bytes": 84628,
+    "sha256": "918791df9f600d2c8bee81fda83a8b77e1c1b45b21177789f655e1e12e926206"
+  },
+  {
+    "path": "favicon.svg",
+    "bytes": 274,
+    "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+  },
+  {
+    "path": "icon-192.png",
+    "bytes": 1906,
+    "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+  },
+  {
+    "path": "icon-512.png",
+    "bytes": 6151,
+    "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+  },
+  {
+    "path": "icon-maskable-512.png",
+    "bytes": 3197,
+    "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+  },
+  {
+    "path": "index.html",
+    "bytes": 1472,
+    "sha256": "d38efbda3dcca15978da42ca2f47b822bef475e63b151a947c960a79aea123eb"
+  },
+  {
+    "path": "local.html",
+    "bytes": 531,
+    "sha256": "7eb77bfd3e9a89081f6f56d0a89371b69c6908add3a3b40900dac55d65f50b91"
+  },
+  {
+    "path": "manifest.webmanifest",
+    "bytes": 835,
+    "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+  },
+  {
+    "path": "sw.js",
+    "bytes": 3943,
+    "sha256": "37331fe90a35a02d3b7085fbe25fbf33a04c79e282a9e839e26d0f361dde5b81"
+  }
+]

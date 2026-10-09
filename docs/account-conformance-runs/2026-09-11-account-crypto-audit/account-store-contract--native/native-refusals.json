@@ -1,0 +1,13 @@
+{
+  "fields": [
+    "seq",
+    "gen",
+    "kind",
+    "nonce",
+    "ct",
+    "writer",
+    "ordinal",
+    "storeId"
+  ],
+  "preserved": true
+}

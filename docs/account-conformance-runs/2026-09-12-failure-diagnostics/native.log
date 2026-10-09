@@ -1,0 +1,22 @@
+(node:96231) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96231) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual service HTTP uncertainty reaches the client diagnostic and returns no decision bytes (872.578625ms)
+(node:96238) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96238) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ unsigned begin refusal retains progress and an exact retry can finish (930.281792ms)
+✔ unsigned challenge refusal retains progress and an exact retry can finish (892.321333ms)
+✔ unsigned finish refusal retains progress and an exact retry can finish (890.836875ms)
+(node:96251) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96251) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service catch diagnostics are bounded and redact the thrown failure while withholding a decision (54.508625ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4969.48525

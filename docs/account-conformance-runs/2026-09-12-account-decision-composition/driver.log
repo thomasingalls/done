@@ -1,0 +1,30 @@
+(node:33244) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:33244) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (13571.272833ms)
+✔ unknown replies back off despite edits, then online wake retries exact bytes before new content (7033.096792ms)
+✔ cold restart resolves a persisted unknown wrapper before any new seal (8586.720917ms)
+✔ verified closed evidence halts automatic publication and retains later Local edits (7104.634208ms)
+✔ verified conflict evidence halts automatic publication and retains later Local edits (7138.579708ms)
+✔ verified finalized evidence halts automatic publication and retains later Local edits (7405.043583ms)
+✔ close during backoff removes wake sources and never waits for the retry deadline (6731.654583ms)
+✔ close drains a late fetch while retaining the native slot permit (5660.546541ms)
+driver history 1/8: ["retry","restart","restart"]
+✔ Local storage failure pauses publication and restoring admission wakes retained work (7222.942459ms)
+driver history 2/8: ["retry","lost","restart","edit","lost"]
+driver history 3/8: ["lost","edit","lost","offline","offline","lost"]
+driver history 4/8: ["retry","lost","restart","lost","offline","restart"]
+driver history 5/8: ["retry","retry","lost"]
+driver history 6/8: ["retry","restart","lost","restart"]
+driver history 7/8: ["lost","offline","offline"]
+driver history 8/8: ["restart","retry","retry","lost"]
+✔ eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures (114604.924125ms)
+✔ browser polling awaits false results instead of treating their Promise as success (4805.871625ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 191509.469625

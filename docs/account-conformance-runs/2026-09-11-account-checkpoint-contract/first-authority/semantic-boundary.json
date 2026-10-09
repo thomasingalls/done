@@ -1,0 +1,4 @@
+{
+  "signedDescriptorLie": "passes content-blind verification; refuses with independently supplied coverage",
+  "signedZeroPositionBaseline": "refuses; only empty first-genesis baseline accepted"
+}

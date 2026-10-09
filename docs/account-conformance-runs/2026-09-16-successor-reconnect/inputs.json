@@ -1,0 +1,11 @@
+{
+  "baseline": "e5e77a05bd9eb75b908bd2806f81deb7c641a2e7",
+  "files": {
+    "src/account/privateDiscoveryHttp.ts": "b39d2d4ee642a02b1267ad8e30a506190b44d21cf4212f38017a46c8e70e77b9",
+    "src/crdt/accountReceive.ts": "f140e137bd4355a24e9ef994b750aec6ae5fabe820e9b7725a717a2f3a63d142",
+    "src/crdt/promotionRecord.ts": "c2a5d3791762d1f8f532beef471d86d25b704fb068c75562168352097efab899",
+    "test/account-successor/owner-fixtures.mjs": "6115508f803c7f5c669fbf9df18c017cbde8762a3a6dfb959dff8a0de20667d4",
+    "test/account-successor/reconnect.test.mjs": "85cfe0d3ce99a7090b9c15b6af398ed108812dcdaa51657572c7cb6334634abb",
+    "test/privateDiscoveryHttp.test.ts": "87ad488a9eb6c8a370392d6fe1ec06824593f7b7696843534e82ed66535e8c55"
+  }
+}

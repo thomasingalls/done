@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T15:41:15.189Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 106
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 36520
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "test/storage-capacity/maintenance.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 5518
+    },
+    {
+      "name": "trim",
+      "args": [
+        "scripts/content-trim/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 20073
+    },
+    {
+      "name": "account-capture",
+      "args": [
+        "--test",
+        "test/account-capture/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 15,
+      "timedOut": false,
+      "elapsedMs": 83753
+    },
+    {
+      "name": "account-receive-editor",
+      "args": [
+        "--test",
+        "test/account-receive-editor/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 12,
+      "timedOut": false,
+      "elapsedMs": 163038
+    },
+    {
+      "name": "account-sync",
+      "args": [
+        "--test",
+        "test/account-sync/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 7,
+      "timedOut": false,
+      "elapsedMs": 69115
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/admissionQueue.ts",
+        "test/admissionQueue.test.ts",
+        "test/storage-capacity",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 74
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/admissionQueue.ts",
+        "test/admissionQueue.test.ts",
+        "test/storage-capacity",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 96
+    }
+  ],
+  "sourcePins": 910,
+  "finishedAt": "2026-09-12T15:47:33.626Z"
+}

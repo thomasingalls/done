@@ -1,0 +1,6921 @@
+{
+  "failed": false,
+  "interrupted": false,
+  "numRuns": 200,
+  "numSkips": 0,
+  "numShrinks": 0,
+  "seed": 5110916,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "error": null,
+  "errorInstance": null,
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 5110916,
+    "numRuns": 200,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  },
+  "runs": 200,
+  "operations": 1372,
+  "histories": [
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1702155875
+        },
+        {
+          "op": "commit",
+          "pick": 2147483642
+        },
+        {
+          "op": "reorder",
+          "pick": 628483484
+        },
+        {
+          "op": "reorder",
+          "pick": 1677806728
+        }
+      ],
+      "finalMac": "51e99dac84bfff738fe08d5da6ef90cc7e47d3c11e2cd0b1ecc983007c236335"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 96714784
+        },
+        {
+          "op": "reopen",
+          "pick": 884712700
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1850987747
+        },
+        {
+          "op": "reopen",
+          "pick": 2056068899
+        },
+        {
+          "op": "reorder",
+          "pick": 821514891
+        },
+        {
+          "op": "commit",
+          "pick": 919698858
+        },
+        {
+          "op": "reorder",
+          "pick": 1162540788
+        },
+        {
+          "op": "reorder",
+          "pick": 1198397349
+        },
+        {
+          "op": "commit",
+          "pick": 1785684553
+        },
+        {
+          "op": "reorder",
+          "pick": 1989787174
+        },
+        {
+          "op": "reopen",
+          "pick": 1950710562
+        },
+        {
+          "op": "commit",
+          "pick": 2099268032
+        },
+        {
+          "op": "reorder",
+          "pick": 123092159
+        }
+      ],
+      "finalMac": "498206207239449369a532126c803ddc74ceab64f898850061a220130d44340a"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 13
+        },
+        {
+          "op": "reopen",
+          "pick": 1
+        },
+        {
+          "op": "reopen",
+          "pick": 1959464660
+        }
+      ],
+      "finalMac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 802321646
+        },
+        {
+          "op": "reopen",
+          "pick": 671076568
+        },
+        {
+          "op": "reopen",
+          "pick": 2123215758
+        },
+        {
+          "op": "commit",
+          "pick": 440091801
+        },
+        {
+          "op": "reopen",
+          "pick": 2114210870
+        },
+        {
+          "op": "tamper",
+          "pick": 998771474
+        }
+      ],
+      "finalMac": "4b00793a7521e0be83273d4d50034e077aa35d20bba41fabfb54dd71e7b6ece0"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 698413124
+        },
+        {
+          "op": "commit",
+          "pick": 762575217
+        },
+        {
+          "op": "commit",
+          "pick": 1934912826
+        },
+        {
+          "op": "reorder",
+          "pick": 1151805190
+        },
+        {
+          "op": "reorder",
+          "pick": 1608496144
+        },
+        {
+          "op": "commit",
+          "pick": 2090771167
+        },
+        {
+          "op": "tamper",
+          "pick": 73047802
+        },
+        {
+          "op": "tamper",
+          "pick": 300675152
+        },
+        {
+          "op": "reopen",
+          "pick": 1155894248
+        },
+        {
+          "op": "reopen",
+          "pick": 607747752
+        },
+        {
+          "op": "commit",
+          "pick": 1045901793
+        },
+        {
+          "op": "commit",
+          "pick": 828788207
+        }
+      ],
+      "finalMac": "80d1f35e2495a3d8011ba063dbcdffffd0cb13e030aafc90cfbe2ca9e9024098"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1772598078
+        },
+        {
+          "op": "reopen",
+          "pick": 328541381
+        },
+        {
+          "op": "reopen",
+          "pick": 338374946
+        }
+      ],
+      "finalMac": "22d106de29cf90c2cfbafc18a8a8544ff9e5df02ee1f2337765abb6e56e06fb1"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 2
+        },
+        {
+          "op": "reopen",
+          "pick": 20
+        },
+        {
+          "op": "tamper",
+          "pick": 688150233
+        }
+      ],
+      "finalMac": "29887b95da9b0b6f7cb1a08ef611211d157c3ab7b54ff27b4ac7f22b7cd6e855"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1998493595
+        },
+        {
+          "op": "reopen",
+          "pick": 1486212251
+        },
+        {
+          "op": "commit",
+          "pick": 18141184
+        },
+        {
+          "op": "commit",
+          "pick": 488290150
+        },
+        {
+          "op": "reorder",
+          "pick": 27435519
+        },
+        {
+          "op": "reorder",
+          "pick": 948772354
+        },
+        {
+          "op": "commit",
+          "pick": 511759110
+        },
+        {
+          "op": "commit",
+          "pick": 1117916042
+        }
+      ],
+      "finalMac": "364bbb8b9917c012e6ff26744a26c0fff82ff067ccf1e70f8694c1369f9c51b8"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 2147483621
+        },
+        {
+          "op": "reopen",
+          "pick": 5
+        },
+        {
+          "op": "tamper",
+          "pick": 1587671627
+        },
+        {
+          "op": "reorder",
+          "pick": 620725390
+        }
+      ],
+      "finalMac": "bc61171e5bb387927f8f5518e4155990a28da73385a8601a82aa19f32bcabace"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 2147483640
+        },
+        {
+          "op": "reorder",
+          "pick": 1511460238
+        }
+      ],
+      "finalMac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1601594399
+        },
+        {
+          "op": "commit",
+          "pick": 267405700
+        },
+        {
+          "op": "tamper",
+          "pick": 826874420
+        },
+        {
+          "op": "reorder",
+          "pick": 2017987494
+        }
+      ],
+      "finalMac": "7cd859f26df76cebc17d1321c493cf866c99a8dabf0f4460779996bb42a47ea5"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1642561317
+        },
+        {
+          "op": "reorder",
+          "pick": 2035403406
+        },
+        {
+          "op": "reorder",
+          "pick": 1339260302
+        },
+        {
+          "op": "tamper",
+          "pick": 28
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 2147483644
+        },
+        {
+          "op": "commit",
+          "pick": 119313394
+        }
+      ],
+      "finalMac": "b10c491328e8178f885066a0a818bce1b227348142cfaeb4a11413a324bb7961"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1954654053
+        },
+        {
+          "op": "tamper",
+          "pick": 1779455578
+        },
+        {
+          "op": "commit",
+          "pick": 336694322
+        },
+        {
+          "op": "reopen",
+          "pick": 588592937
+        },
+        {
+          "op": "reopen",
+          "pick": 353108884
+        },
+        {
+          "op": "commit",
+          "pick": 2023841924
+        },
+        {
+          "op": "commit",
+          "pick": 974727940
+        }
+      ],
+      "finalMac": "c48bd33c2840d2cff5a7cdeb347e43039506fe17a6ae2d18642a8e9afe2217ac"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 2000551428
+        },
+        {
+          "op": "reopen",
+          "pick": 1264909849
+        },
+        {
+          "op": "tamper",
+          "pick": 1962684397
+        },
+        {
+          "op": "reopen",
+          "pick": 1225134153
+        },
+        {
+          "op": "reopen",
+          "pick": 29276200
+        },
+        {
+          "op": "commit",
+          "pick": 2128400458
+        },
+        {
+          "op": "reopen",
+          "pick": 1765149088
+        },
+        {
+          "op": "reorder",
+          "pick": 1261562009
+        },
+        {
+          "op": "reopen",
+          "pick": 1917822146
+        }
+      ],
+      "finalMac": "d83c0e879d4da89330cf03c405c54d067ccd0c6720e5c6bcf1315a0b8c35baee"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 196543160
+        },
+        {
+          "op": "reorder",
+          "pick": 708566270
+        },
+        {
+          "op": "tamper",
+          "pick": 36070233
+        },
+        {
+          "op": "tamper",
+          "pick": 1442623623
+        },
+        {
+          "op": "reorder",
+          "pick": 918295209
+        },
+        {
+          "op": "commit",
+          "pick": 723937427
+        },
+        {
+          "op": "reopen",
+          "pick": 1509278106
+        }
+      ],
+      "finalMac": "d9ca8ba087d539b771634b6744510c26e2d93fac7242f68b642535d9a24db895"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 708088013
+        },
+        {
+          "op": "reorder",
+          "pick": 1300679566
+        },
+        {
+          "op": "reorder",
+          "pick": 1648764698
+        },
+        {
+          "op": "tamper",
+          "pick": 1888525567
+        },
+        {
+          "op": "commit",
+          "pick": 177703228
+        },
+        {
+          "op": "tamper",
+          "pick": 958690324
+        },
+        {
+          "op": "commit",
+          "pick": 1845757361
+        }
+      ],
+      "finalMac": "03e6201cfdf6d3f0c30b5e594979d98419a0c5af66502067fa86630ab0dd69f5"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1564142966
+        },
+        {
+          "op": "reorder",
+          "pick": 1331581201
+        },
+        {
+          "op": "tamper",
+          "pick": 1850700023
+        },
+        {
+          "op": "reopen",
+          "pick": 914094037
+        },
+        {
+          "op": "reopen",
+          "pick": 1633186576
+        },
+        {
+          "op": "reorder",
+          "pick": 1108056585
+        }
+      ],
+      "finalMac": "d8bbe3968eac7260c4bc27f6d8896e756718048a9780657c6d6b7184117aea95"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1010548638
+        },
+        {
+          "op": "commit",
+          "pick": 177104642
+        },
+        {
+          "op": "commit",
+          "pick": 1854701622
+        },
+        {
+          "op": "reopen",
+          "pick": 1623423676
+        },
+        {
+          "op": "tamper",
+          "pick": 1633937321
+        },
+        {
+          "op": "reorder",
+          "pick": 1958511616
+        },
+        {
+          "op": "reopen",
+          "pick": 969209449
+        }
+      ],
+      "finalMac": "61d5764a2348f26653b8ec1df8a3db1839ae8497aaa2833655698fdefe761c16"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 707610675
+        },
+        {
+          "op": "reorder",
+          "pick": 118676685
+        },
+        {
+          "op": "reopen",
+          "pick": 1581645539
+        },
+        {
+          "op": "commit",
+          "pick": 1938495616
+        },
+        {
+          "op": "reopen",
+          "pick": 833812388
+        },
+        {
+          "op": "commit",
+          "pick": 1811670379
+        },
+        {
+          "op": "commit",
+          "pick": 1391263165
+        },
+        {
+          "op": "reopen",
+          "pick": 1026655280
+        }
+      ],
+      "finalMac": "06a98f3894258bd4c08dfb7349047a89cc2d4665259cd0baa360ec33e86e523c"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2052384547
+        },
+        {
+          "op": "reopen",
+          "pick": 1240056784
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483625
+        },
+        {
+          "op": "reopen",
+          "pick": 1449402328
+        },
+        {
+          "op": "commit",
+          "pick": 2147483644
+        },
+        {
+          "op": "commit",
+          "pick": 457448576
+        },
+        {
+          "op": "commit",
+          "pick": 1685159319
+        },
+        {
+          "op": "reopen",
+          "pick": 1423910304
+        },
+        {
+          "op": "reopen",
+          "pick": 1393554440
+        }
+      ],
+      "finalMac": "31c00b396edc7198349d23577787fc896ff3847a179895f89bbbeac2b555c210"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 788068950
+        },
+        {
+          "op": "reorder",
+          "pick": 1191223216
+        },
+        {
+          "op": "tamper",
+          "pick": 1658729551
+        },
+        {
+          "op": "tamper",
+          "pick": 513965596
+        },
+        {
+          "op": "commit",
+          "pick": 1862806382
+        },
+        {
+          "op": "commit",
+          "pick": 567514769
+        },
+        {
+          "op": "reopen",
+          "pick": 1815991350
+        },
+        {
+          "op": "commit",
+          "pick": 2133133891
+        }
+      ],
+      "finalMac": "e80094ca332a3d2c19c890f1d21fa9dac4d02dd68f1d09103bbf0e59ec0959dd"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 873105915
+        },
+        {
+          "op": "reopen",
+          "pick": 554631413
+        },
+        {
+          "op": "reopen",
+          "pick": 310916581
+        },
+        {
+          "op": "commit",
+          "pick": 119581960
+        },
+        {
+          "op": "commit",
+          "pick": 681585706
+        }
+      ],
+      "finalMac": "6315607a077dcfa2fe818914a5c539069c27eb436c555b77eb433a2f717fac16"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 611052006
+        },
+        {
+          "op": "commit",
+          "pick": 763156164
+        },
+        {
+          "op": "tamper",
+          "pick": 1351504686
+        }
+      ],
+      "finalMac": "59051297566884664d2d54e4e4c40fb30883f4f125ca5561aa65bdf4de9b08b8"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 29
+        },
+        {
+          "op": "reorder",
+          "pick": 5
+        },
+        {
+          "op": "reopen",
+          "pick": 18
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1977055633
+        },
+        {
+          "op": "tamper",
+          "pick": 1977714653
+        },
+        {
+          "op": "tamper",
+          "pick": 1569772341
+        },
+        {
+          "op": "tamper",
+          "pick": 1405308538
+        },
+        {
+          "op": "commit",
+          "pick": 1942539241
+        },
+        {
+          "op": "reorder",
+          "pick": 1801654163
+        },
+        {
+          "op": "reopen",
+          "pick": 11706613
+        },
+        {
+          "op": "reopen",
+          "pick": 545778344
+        },
+        {
+          "op": "reopen",
+          "pick": 1827449211
+        }
+      ],
+      "finalMac": "104588881dba271d7f5e0c51f9a80fee80757d942c97bb875e5ddbeee1ac2087"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1577197605
+        },
+        {
+          "op": "tamper",
+          "pick": 1684194078
+        },
+        {
+          "op": "tamper",
+          "pick": 1434567625
+        },
+        {
+          "op": "commit",
+          "pick": 1637877222
+        },
+        {
+          "op": "reopen",
+          "pick": 1477344773
+        },
+        {
+          "op": "tamper",
+          "pick": 1221968420
+        },
+        {
+          "op": "reopen",
+          "pick": 1821913751
+        },
+        {
+          "op": "tamper",
+          "pick": 977645577
+        },
+        {
+          "op": "commit",
+          "pick": 114855055
+        }
+      ],
+      "finalMac": "98e80b966cf9289f91b2b83e85a9b5c1481cd790d9670d6d9240cbaf50695ecc"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 2042256101
+        },
+        {
+          "op": "reorder",
+          "pick": 3190286
+        },
+        {
+          "op": "tamper",
+          "pick": 1509002160
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 86872167
+        },
+        {
+          "op": "reopen",
+          "pick": 103855444
+        },
+        {
+          "op": "tamper",
+          "pick": 636307007
+        },
+        {
+          "op": "reopen",
+          "pick": 1244502940
+        },
+        {
+          "op": "reorder",
+          "pick": 192216794
+        },
+        {
+          "op": "reopen",
+          "pick": 507636285
+        },
+        {
+          "op": "commit",
+          "pick": 19198280
+        },
+        {
+          "op": "tamper",
+          "pick": 430360367
+        },
+        {
+          "op": "commit",
+          "pick": 250639296
+        },
+        {
+          "op": "tamper",
+          "pick": 488709552
+        }
+      ],
+      "finalMac": "d3d030d0ac3e3d2ba297201d2c194bd89b40db9339edb99a4da8d25677dc6660"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1647111266
+        },
+        {
+          "op": "reorder",
+          "pick": 996148474
+        },
+        {
+          "op": "reopen",
+          "pick": 2141858381
+        },
+        {
+          "op": "reorder",
+          "pick": 1424920484
+        },
+        {
+          "op": "reopen",
+          "pick": 470014164
+        },
+        {
+          "op": "reorder",
+          "pick": 985359497
+        }
+      ],
+      "finalMac": "bc61171e5bb387927f8f5518e4155990a28da73385a8601a82aa19f32bcabace"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1940261424
+        },
+        {
+          "op": "commit",
+          "pick": 303297789
+        },
+        {
+          "op": "tamper",
+          "pick": 608804366
+        },
+        {
+          "op": "tamper",
+          "pick": 2129941333
+        },
+        {
+          "op": "commit",
+          "pick": 80023939
+        },
+        {
+          "op": "commit",
+          "pick": 1264804142
+        },
+        {
+          "op": "commit",
+          "pick": 1618715167
+        }
+      ],
+      "finalMac": "213ed9265e7971a8e498975f896152903c85618a45188c072ca09463720d697a"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 518060412
+        },
+        {
+          "op": "reopen",
+          "pick": 1588006677
+        },
+        {
+          "op": "reorder",
+          "pick": 1521329578
+        },
+        {
+          "op": "commit",
+          "pick": 1953742993
+        },
+        {
+          "op": "reorder",
+          "pick": 1739737511
+        },
+        {
+          "op": "commit",
+          "pick": 876284988
+        },
+        {
+          "op": "reopen",
+          "pick": 2126602078
+        },
+        {
+          "op": "tamper",
+          "pick": 913200656
+        }
+      ],
+      "finalMac": "448260c1f949e8a737e43d410d6fd4a1fc3091630374fa77bdd064b4fa33b698"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1614789405
+        },
+        {
+          "op": "commit",
+          "pick": 173636261
+        },
+        {
+          "op": "reopen",
+          "pick": 597903110
+        },
+        {
+          "op": "reopen",
+          "pick": 1946604669
+        },
+        {
+          "op": "reorder",
+          "pick": 57525847
+        },
+        {
+          "op": "reopen",
+          "pick": 2065392526
+        },
+        {
+          "op": "reopen",
+          "pick": 1162079375
+        },
+        {
+          "op": "commit",
+          "pick": 1819281649
+        },
+        {
+          "op": "commit",
+          "pick": 94847840
+        },
+        {
+          "op": "reopen",
+          "pick": 1622213449
+        }
+      ],
+      "finalMac": "cfd5e52c88bb78eee0bce0a2c8104b4d7bcf110505cfd413164064c9458569f2"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 725598125
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483621
+        }
+      ],
+      "finalMac": "9a33e475af60f94ace827b0c2e251e7def16ac5375308050954ba34365b1aedb"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1374772041
+        },
+        {
+          "op": "reorder",
+          "pick": 1576691453
+        },
+        {
+          "op": "commit",
+          "pick": 1369139882
+        },
+        {
+          "op": "reorder",
+          "pick": 1198017987
+        },
+        {
+          "op": "reopen",
+          "pick": 1988636467
+        },
+        {
+          "op": "commit",
+          "pick": 1487412809
+        },
+        {
+          "op": "reopen",
+          "pick": 547455393
+        },
+        {
+          "op": "tamper",
+          "pick": 1150522101
+        },
+        {
+          "op": "reopen",
+          "pick": 527308588
+        }
+      ],
+      "finalMac": "0e3c9ee79ba2a2138629bf22d894c5739b0036711d8a74c84f491a4b66839d10"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 2011092145
+        },
+        {
+          "op": "commit",
+          "pick": 1170419904
+        },
+        {
+          "op": "reorder",
+          "pick": 1869164152
+        },
+        {
+          "op": "commit",
+          "pick": 903361116
+        },
+        {
+          "op": "reorder",
+          "pick": 217398921
+        },
+        {
+          "op": "tamper",
+          "pick": 1647977435
+        },
+        {
+          "op": "reopen",
+          "pick": 278145748
+        },
+        {
+          "op": "commit",
+          "pick": 1984154464
+        },
+        {
+          "op": "commit",
+          "pick": 1181183662
+        }
+      ],
+      "finalMac": "6b241c095df09e7423f2f9f68c49718b98b709d226c52ec85a913ac1f8074df0"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 610390058
+        },
+        {
+          "op": "reorder",
+          "pick": 798877551
+        },
+        {
+          "op": "reopen",
+          "pick": 865654560
+        },
+        {
+          "op": "reopen",
+          "pick": 1448289593
+        },
+        {
+          "op": "tamper",
+          "pick": 173906826
+        },
+        {
+          "op": "commit",
+          "pick": 238833862
+        }
+      ],
+      "finalMac": "52aab6ffa05f16327a16fbe836c513a16efc5f4d169b307a5a30e564831d47d4"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1396227030
+        },
+        {
+          "op": "tamper",
+          "pick": 2
+        },
+        {
+          "op": "reorder",
+          "pick": 19
+        },
+        {
+          "op": "reopen",
+          "pick": 30
+        },
+        {
+          "op": "commit",
+          "pick": 1407707310
+        },
+        {
+          "op": "reopen",
+          "pick": 22
+        },
+        {
+          "op": "reopen",
+          "pick": 990210178
+        },
+        {
+          "op": "tamper",
+          "pick": 1025081237
+        },
+        {
+          "op": "commit",
+          "pick": 681665679
+        }
+      ],
+      "finalMac": "b30ff0e79210a0072045089434eb69d6ef7ddc6678664ef91a43c934ea1d16f8"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 442188535
+        },
+        {
+          "op": "tamper",
+          "pick": 638293180
+        },
+        {
+          "op": "reorder",
+          "pick": 1670778926
+        },
+        {
+          "op": "commit",
+          "pick": 523642527
+        },
+        {
+          "op": "tamper",
+          "pick": 1891789307
+        }
+      ],
+      "finalMac": "9c11fbef7ed3700ecfeb7aa5708e775fb09e3ba8454d17834e863c24a9f7a586"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1260658659
+        },
+        {
+          "op": "commit",
+          "pick": 2147483637
+        },
+        {
+          "op": "reorder",
+          "pick": 627726174
+        },
+        {
+          "op": "reorder",
+          "pick": 1964754080
+        },
+        {
+          "op": "commit",
+          "pick": 1510598104
+        },
+        {
+          "op": "reorder",
+          "pick": 2147483627
+        },
+        {
+          "op": "reorder",
+          "pick": 1445223180
+        },
+        {
+          "op": "tamper",
+          "pick": 1225231849
+        }
+      ],
+      "finalMac": "d0b514ac79ee71337881758d8263d1a882fc14d107e87975e0dcfb894115dc73"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1
+        },
+        {
+          "op": "reopen",
+          "pick": 5
+        },
+        {
+          "op": "reorder",
+          "pick": 2147483639
+        }
+      ],
+      "finalMac": "d8bbe3968eac7260c4bc27f6d8896e756718048a9780657c6d6b7184117aea95"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 30412510
+        },
+        {
+          "op": "reopen",
+          "pick": 791874685
+        },
+        {
+          "op": "reorder",
+          "pick": 338081304
+        },
+        {
+          "op": "tamper",
+          "pick": 781280288
+        },
+        {
+          "op": "reorder",
+          "pick": 1622114004
+        },
+        {
+          "op": "reopen",
+          "pick": 1365513845
+        },
+        {
+          "op": "tamper",
+          "pick": 733796123
+        },
+        {
+          "op": "commit",
+          "pick": 1102184286
+        },
+        {
+          "op": "reopen",
+          "pick": 508149410
+        },
+        {
+          "op": "commit",
+          "pick": 948215864
+        },
+        {
+          "op": "reopen",
+          "pick": 578866220
+        }
+      ],
+      "finalMac": "1cb2cb497946f924aad22958a9165894b68d998ce38ef9b54aad707f1c0fa82b"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1423018113
+        },
+        {
+          "op": "reopen",
+          "pick": 2089363740
+        },
+        {
+          "op": "tamper",
+          "pick": 2147483644
+        }
+      ],
+      "finalMac": "bb15e7c7fb0272b6b050bd112a668749535ada64e0db00ad1e170c9eef0c6ed0"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 2006176976
+        },
+        {
+          "op": "commit",
+          "pick": 90483611
+        }
+      ],
+      "finalMac": "42f869bf035027944f14a7cd6da01aecb3d06bacc17c51a40affc4f0b60d0100"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1412577390
+        },
+        {
+          "op": "reopen",
+          "pick": 1968314056
+        },
+        {
+          "op": "reorder",
+          "pick": 2009825407
+        },
+        {
+          "op": "reopen",
+          "pick": 473730484
+        },
+        {
+          "op": "tamper",
+          "pick": 1804344812
+        },
+        {
+          "op": "reopen",
+          "pick": 260657659
+        },
+        {
+          "op": "reorder",
+          "pick": 1542194924
+        },
+        {
+          "op": "tamper",
+          "pick": 1101320149
+        },
+        {
+          "op": "reorder",
+          "pick": 899334823
+        },
+        {
+          "op": "reopen",
+          "pick": 2089247598
+        }
+      ],
+      "finalMac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1498568075
+        },
+        {
+          "op": "commit",
+          "pick": 1192991978
+        },
+        {
+          "op": "reopen",
+          "pick": 1250543908
+        },
+        {
+          "op": "reopen",
+          "pick": 1534561661
+        },
+        {
+          "op": "tamper",
+          "pick": 1326288418
+        },
+        {
+          "op": "tamper",
+          "pick": 943571210
+        },
+        {
+          "op": "tamper",
+          "pick": 1621347181
+        },
+        {
+          "op": "commit",
+          "pick": 1933926072
+        },
+        {
+          "op": "reopen",
+          "pick": 1056026005
+        },
+        {
+          "op": "reopen",
+          "pick": 1988147518
+        },
+        {
+          "op": "reorder",
+          "pick": 794260249
+        }
+      ],
+      "finalMac": "ff2b8d5f846b694a71a836de3eb9da4b4d1f0b0da0021b2301554e9e164c8f44"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1151698701
+        },
+        {
+          "op": "commit",
+          "pick": 652587332
+        },
+        {
+          "op": "commit",
+          "pick": 1579989850
+        },
+        {
+          "op": "reopen",
+          "pick": 452231260
+        },
+        {
+          "op": "tamper",
+          "pick": 992137072
+        },
+        {
+          "op": "tamper",
+          "pick": 2126569504
+        },
+        {
+          "op": "commit",
+          "pick": 681945962
+        },
+        {
+          "op": "reorder",
+          "pick": 81736335
+        }
+      ],
+      "finalMac": "67a48e525f16a83b897dceeb05f00045583068dce1564cd4bb736e0a67999048"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1813869918
+        },
+        {
+          "op": "commit",
+          "pick": 1324373429
+        },
+        {
+          "op": "reopen",
+          "pick": 923274830
+        },
+        {
+          "op": "commit",
+          "pick": 1971527746
+        },
+        {
+          "op": "commit",
+          "pick": 1792599126
+        }
+      ],
+      "finalMac": "e0a3605f5f83cc35c15b66553017594214de3d1ea19f5d5593446a5484fbf5cc"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1268880591
+        },
+        {
+          "op": "reorder",
+          "pick": 1706857873
+        },
+        {
+          "op": "commit",
+          "pick": 1700960558
+        },
+        {
+          "op": "tamper",
+          "pick": 1895856596
+        },
+        {
+          "op": "reorder",
+          "pick": 860708034
+        },
+        {
+          "op": "reorder",
+          "pick": 1840048487
+        },
+        {
+          "op": "tamper",
+          "pick": 1197398442
+        }
+      ],
+      "finalMac": "4004d0b4b362b3a8f6804422c4836db01e716e1b687bef65089ea1f2ea13a720"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1283471953
+        },
+        {
+          "op": "reopen",
+          "pick": 1555019927
+        },
+        {
+          "op": "reopen",
+          "pick": 615367367
+        },
+        {
+          "op": "tamper",
+          "pick": 662900336
+        },
+        {
+          "op": "tamper",
+          "pick": 750052467
+        }
+      ],
+      "finalMac": "08ce7cce7a42bab59236bd9b39b731cd1e9473758274a56ab3ec244c7929b4b0"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 174098407
+        },
+        {
+          "op": "reopen",
+          "pick": 714182411
+        },
+        {
+          "op": "tamper",
+          "pick": 1501111830
+        },
+        {
+          "op": "reopen",
+          "pick": 816075538
+        },
+        {
+          "op": "reorder",
+          "pick": 1318754691
+        },
+        {
+          "op": "commit",
+          "pick": 157475846
+        }
+      ],
+      "finalMac": "ce9029d5f4275aabc98956a7d5440be570fb24231b9e23a0c829fa8338899f0d"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1494833517
+        },
+        {
+          "op": "commit",
+          "pick": 1578074593
+        },
+        {
+          "op": "reopen",
+          "pick": 101590502
+        },
+        {
+          "op": "reorder",
+          "pick": 294139248
+        },
+        {
+          "op": "tamper",
+          "pick": 1747588928
+        },
+        {
+          "op": "commit",
+          "pick": 335831535
+        },
+        {
+          "op": "tamper",
+          "pick": 1170977233
+        }
+      ],
+      "finalMac": "c697badc118b45f878f491f24d475ac8aad0eeac5daae0d8d968deee6860007d"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1728806082
+        },
+        {
+          "op": "reopen",
+          "pick": 36250390
+        },
+        {
+          "op": "tamper",
+          "pick": 62454256
+        },
+        {
+          "op": "commit",
+          "pick": 1145419717
+        },
+        {
+          "op": "tamper",
+          "pick": 1427645444
+        },
+        {
+          "op": "commit",
+          "pick": 766425963
+        },
+        {
+          "op": "reopen",
+          "pick": 63663022
+        },
+        {
+          "op": "tamper",
+          "pick": 122977221
+        },
+        {
+          "op": "reorder",
+          "pick": 496664298
+        },
+        {
+          "op": "reorder",
+          "pick": 1287701736
+        },
+        {
+          "op": "commit",
+          "pick": 89125913
+        },
+        {
+          "op": "reorder",
+          "pick": 1184299544
+        }
+      ],
+      "finalMac": "56ba4d51cd1ed0840b1e8213d869084df46fda6e2a6b5333ff63dc94d3f23371"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 43786672
+        },
+        {
+          "op": "tamper",
+          "pick": 1623995247
+        },
+        {
+          "op": "tamper",
+          "pick": 1780712468
+        }
+      ],
+      "finalMac": "bc61171e5bb387927f8f5518e4155990a28da73385a8601a82aa19f32bcabace"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1301036669
+        },
+        {
+          "op": "reorder",
+          "pick": 1091210254
+        },
+        {
+          "op": "tamper",
+          "pick": 2071588088
+        },
+        {
+          "op": "reorder",
+          "pick": 2024906431
+        },
+        {
+          "op": "reopen",
+          "pick": 985725789
+        },
+        {
+          "op": "tamper",
+          "pick": 1501077190
+        },
+        {
+          "op": "tamper",
+          "pick": 773636910
+        },
+        {
+          "op": "reopen",
+          "pick": 1577110718
+        },
+        {
+          "op": "commit",
+          "pick": 445978991
+        },
+        {
+          "op": "tamper",
+          "pick": 125441298
+        },
+        {
+          "op": "reorder",
+          "pick": 677184761
+        }
+      ],
+      "finalMac": "31de679e43b833e38deee444e833d6ae25c708c51105ee017d87b9f5d3223526"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1046791804
+        },
+        {
+          "op": "reorder",
+          "pick": 1644378585
+        },
+        {
+          "op": "tamper",
+          "pick": 249062189
+        },
+        {
+          "op": "commit",
+          "pick": 1194404706
+        },
+        {
+          "op": "tamper",
+          "pick": 853639257
+        }
+      ],
+      "finalMac": "a11b307949ca5db46efd9610718abb96159660a47423aafc7ce2fede5b1632d8"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1426268332
+        },
+        {
+          "op": "reorder",
+          "pick": 617926887
+        },
+        {
+          "op": "tamper",
+          "pick": 1527648545
+        },
+        {
+          "op": "tamper",
+          "pick": 335975015
+        },
+        {
+          "op": "reorder",
+          "pick": 864101076
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 7
+        },
+        {
+          "op": "reorder",
+          "pick": 981557790
+        },
+        {
+          "op": "tamper",
+          "pick": 16
+        },
+        {
+          "op": "reopen",
+          "pick": 412367312
+        },
+        {
+          "op": "tamper",
+          "pick": 752234441
+        },
+        {
+          "op": "reopen",
+          "pick": 0
+        },
+        {
+          "op": "commit",
+          "pick": 1393586826
+        },
+        {
+          "op": "commit",
+          "pick": 2121658125
+        }
+      ],
+      "finalMac": "ff3678e7b19f5cce68308cb61318b4e9b41af2354b93e0fc44a40e3263321947"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 15528176
+        },
+        {
+          "op": "reorder",
+          "pick": 1759377439
+        },
+        {
+          "op": "commit",
+          "pick": 1020953866
+        },
+        {
+          "op": "reopen",
+          "pick": 934289161
+        }
+      ],
+      "finalMac": "d30568c520baf65fe9be7a83a6a5b26e888e61bf191a6f2be11c7c1d0c4c9373"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 387925711
+        },
+        {
+          "op": "reorder",
+          "pick": 392784103
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483640
+        },
+        {
+          "op": "commit",
+          "pick": 122562603
+        },
+        {
+          "op": "reorder",
+          "pick": 2008550136
+        }
+      ],
+      "finalMac": "663684b1a98c2e387c63dfcf9bf083ef17be92263bbc470ce8ab2ea2ab0845c5"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 18294558
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483634
+        },
+        {
+          "op": "commit",
+          "pick": 2100436949
+        },
+        {
+          "op": "commit",
+          "pick": 1451684359
+        },
+        {
+          "op": "reopen",
+          "pick": 3
+        },
+        {
+          "op": "commit",
+          "pick": 722771834
+        }
+      ],
+      "finalMac": "8ca95878273bc3b9156dfe60be50882cc3326395e064e3b152397934df750521"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 345296734
+        },
+        {
+          "op": "commit",
+          "pick": 1823953252
+        },
+        {
+          "op": "reopen",
+          "pick": 1449546519
+        },
+        {
+          "op": "reorder",
+          "pick": 1173133266
+        }
+      ],
+      "finalMac": "d800bef0cd8c84328575e2e32a5e6a44c3b9875127f12e2b085c2c04d0e30903"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 660546313
+        },
+        {
+          "op": "tamper",
+          "pick": 1402114449
+        },
+        {
+          "op": "commit",
+          "pick": 1039503311
+        },
+        {
+          "op": "commit",
+          "pick": 1748539878
+        },
+        {
+          "op": "tamper",
+          "pick": 454628254
+        },
+        {
+          "op": "reorder",
+          "pick": 419481431
+        }
+      ],
+      "finalMac": "0f053ee8d726abcccb4c59539c164f660d628741f1e3833f3a4cb7fefc6b5aca"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 591167900
+        },
+        {
+          "op": "tamper",
+          "pick": 928958628
+        },
+        {
+          "op": "commit",
+          "pick": 988900689
+        }
+      ],
+      "finalMac": "c49af976a362932c4d98607fb04e696b9705c812fff9f4b47198bde03bf453c5"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1557605329
+        },
+        {
+          "op": "reorder",
+          "pick": 933512339
+        },
+        {
+          "op": "reorder",
+          "pick": 1581153908
+        },
+        {
+          "op": "commit",
+          "pick": 106318495
+        },
+        {
+          "op": "commit",
+          "pick": 774236231
+        },
+        {
+          "op": "commit",
+          "pick": 1410851605
+        },
+        {
+          "op": "reopen",
+          "pick": 1998466444
+        }
+      ],
+      "finalMac": "6465a7331dbf3995804f8fb08349ae118d30cf0fd44b22782815a949e4dab443"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 77683269
+        },
+        {
+          "op": "tamper",
+          "pick": 2059198260
+        },
+        {
+          "op": "commit",
+          "pick": 2
+        },
+        {
+          "op": "reopen",
+          "pick": 5
+        }
+      ],
+      "finalMac": "34f453d9218b8453d287dc99d0252cbb0b9eadac9f2ed3d803d9ebe4fc902530"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 367604973
+        },
+        {
+          "op": "reopen",
+          "pick": 596455328
+        },
+        {
+          "op": "tamper",
+          "pick": 303414456
+        },
+        {
+          "op": "tamper",
+          "pick": 1778446090
+        },
+        {
+          "op": "reorder",
+          "pick": 1061632570
+        }
+      ],
+      "finalMac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1841118036
+        },
+        {
+          "op": "tamper",
+          "pick": 1803475295
+        },
+        {
+          "op": "reopen",
+          "pick": 1463884478
+        },
+        {
+          "op": "reorder",
+          "pick": 822506727
+        },
+        {
+          "op": "reopen",
+          "pick": 736225956
+        },
+        {
+          "op": "reopen",
+          "pick": 1961238859
+        }
+      ],
+      "finalMac": "8f7ccbbd62d8468cde577b485d72dfbc577bdca23463bdd3f9cdd68b1184023f"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 646553093
+        },
+        {
+          "op": "tamper",
+          "pick": 1103739469
+        },
+        {
+          "op": "tamper",
+          "pick": 1833591149
+        },
+        {
+          "op": "commit",
+          "pick": 1968251182
+        },
+        {
+          "op": "tamper",
+          "pick": 583875996
+        },
+        {
+          "op": "reopen",
+          "pick": 1919769104
+        },
+        {
+          "op": "tamper",
+          "pick": 2026415276
+        },
+        {
+          "op": "reopen",
+          "pick": 165059390
+        },
+        {
+          "op": "reorder",
+          "pick": 1608006987
+        }
+      ],
+      "finalMac": "4d4bfa20a7af209b4cf78797021c8596e0397d86cc582ba9dadab4ae170f8657"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 2068932591
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483631
+        },
+        {
+          "op": "tamper",
+          "pick": 1399303981
+        },
+        {
+          "op": "tamper",
+          "pick": 85907150
+        },
+        {
+          "op": "reopen",
+          "pick": 608805890
+        },
+        {
+          "op": "commit",
+          "pick": 21
+        },
+        {
+          "op": "reorder",
+          "pick": 888791997
+        },
+        {
+          "op": "reorder",
+          "pick": 10
+        },
+        {
+          "op": "reorder",
+          "pick": 430371885
+        },
+        {
+          "op": "tamper",
+          "pick": 857185221
+        },
+        {
+          "op": "tamper",
+          "pick": 15
+        },
+        {
+          "op": "reorder",
+          "pick": 675442340
+        }
+      ],
+      "finalMac": "d212e7dc04d57b7dc724f05a10b8b23e4db9c5a9da6f179912d50336212a7bdd"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1382813348
+        },
+        {
+          "op": "reopen",
+          "pick": 1414963051
+        },
+        {
+          "op": "reorder",
+          "pick": 990572839
+        },
+        {
+          "op": "reopen",
+          "pick": 1552594555
+        },
+        {
+          "op": "reopen",
+          "pick": 175308210
+        },
+        {
+          "op": "tamper",
+          "pick": 1039200090
+        },
+        {
+          "op": "reopen",
+          "pick": 1784248877
+        },
+        {
+          "op": "reorder",
+          "pick": 233187265
+        },
+        {
+          "op": "tamper",
+          "pick": 862198425
+        }
+      ],
+      "finalMac": "a3c8ade0242e17417e14aec917b968e692fc543822863c29af9f1dd993a47114"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 999947525
+        },
+        {
+          "op": "commit",
+          "pick": 1723836797
+        }
+      ],
+      "finalMac": "46e557a14a6511395905c0a8e97655a814bf6c99b5f8c0e084299fa93cbca3be"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 3401108
+        },
+        {
+          "op": "tamper",
+          "pick": 1468188831
+        },
+        {
+          "op": "tamper",
+          "pick": 662025398
+        },
+        {
+          "op": "commit",
+          "pick": 1892785205
+        },
+        {
+          "op": "tamper",
+          "pick": 1581021738
+        },
+        {
+          "op": "reopen",
+          "pick": 999581256
+        },
+        {
+          "op": "commit",
+          "pick": 1274664856
+        },
+        {
+          "op": "reorder",
+          "pick": 361447586
+        },
+        {
+          "op": "commit",
+          "pick": 784268766
+        },
+        {
+          "op": "reorder",
+          "pick": 1660771033
+        },
+        {
+          "op": "commit",
+          "pick": 406624047
+        },
+        {
+          "op": "reopen",
+          "pick": 916979591
+        }
+      ],
+      "finalMac": "f38e5eff8bd8338a17494b16c05c1ddf2230beb4c76002b1e9d0b285b459d88d"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 22
+        },
+        {
+          "op": "reorder",
+          "pick": 7
+        },
+        {
+          "op": "reorder",
+          "pick": 9
+        },
+        {
+          "op": "commit",
+          "pick": 776480070
+        }
+      ],
+      "finalMac": "1f8b551c4ab43e4a788c4db3117c5bba666cc46b7c42c7e581c79983b4ef5853"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 2037510122
+        },
+        {
+          "op": "tamper",
+          "pick": 1176294943
+        },
+        {
+          "op": "reorder",
+          "pick": 1376891788
+        }
+      ],
+      "finalMac": "f6785b4ba5c14104e233f44054275a46d691446c46e5fb4d8d990ce74bcc27c7"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 571658989
+        },
+        {
+          "op": "commit",
+          "pick": 221245569
+        },
+        {
+          "op": "tamper",
+          "pick": 665001175
+        },
+        {
+          "op": "reopen",
+          "pick": 874003383
+        },
+        {
+          "op": "tamper",
+          "pick": 655340428
+        },
+        {
+          "op": "reorder",
+          "pick": 2078507170
+        },
+        {
+          "op": "commit",
+          "pick": 753210231
+        },
+        {
+          "op": "reopen",
+          "pick": 563249513
+        },
+        {
+          "op": "reopen",
+          "pick": 82625412
+        }
+      ],
+      "finalMac": "1b1afdfc9bebc6e2b4582cecf53e05df4f2a3c18f61a0a7da846f6d4ec7b6c22"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 144925239
+        },
+        {
+          "op": "reorder",
+          "pick": 1439195174
+        },
+        {
+          "op": "reopen",
+          "pick": 1349242801
+        },
+        {
+          "op": "reorder",
+          "pick": 1283479755
+        },
+        {
+          "op": "commit",
+          "pick": 433450140
+        },
+        {
+          "op": "commit",
+          "pick": 327644817
+        },
+        {
+          "op": "reorder",
+          "pick": 1862662939
+        },
+        {
+          "op": "tamper",
+          "pick": 1466530017
+        },
+        {
+          "op": "reorder",
+          "pick": 698034737
+        }
+      ],
+      "finalMac": "1fd3aa99f0f18d3423727ad2b0023c07e8f887253b009f238b514ba710061678"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 2147483627
+        },
+        {
+          "op": "commit",
+          "pick": 542252587
+        },
+        {
+          "op": "reopen",
+          "pick": 415082071
+        },
+        {
+          "op": "commit",
+          "pick": 718347319
+        },
+        {
+          "op": "reopen",
+          "pick": 569675229
+        },
+        {
+          "op": "commit",
+          "pick": 31384775
+        }
+      ],
+      "finalMac": "f4872082252793517b8bba735b418151f9936956431081628e2c65ecb8135352"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 361801573
+        },
+        {
+          "op": "reopen",
+          "pick": 869217531
+        },
+        {
+          "op": "reorder",
+          "pick": 1672315490
+        },
+        {
+          "op": "commit",
+          "pick": 1564604980
+        },
+        {
+          "op": "reopen",
+          "pick": 1942569260
+        },
+        {
+          "op": "reopen",
+          "pick": 1706029122
+        },
+        {
+          "op": "tamper",
+          "pick": 998132051
+        },
+        {
+          "op": "reopen",
+          "pick": 1803657494
+        }
+      ],
+      "finalMac": "1fb005fecfb9fe1cf0b1b79282b5034a44df13e05a164a75b9c257d1feaa9160"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 286200467
+        },
+        {
+          "op": "reopen",
+          "pick": 1536986959
+        },
+        {
+          "op": "commit",
+          "pick": 70885090
+        },
+        {
+          "op": "reopen",
+          "pick": 1251843214
+        },
+        {
+          "op": "commit",
+          "pick": 230797536
+        },
+        {
+          "op": "reopen",
+          "pick": 1151467911
+        },
+        {
+          "op": "reorder",
+          "pick": 318870627
+        },
+        {
+          "op": "tamper",
+          "pick": 620555280
+        },
+        {
+          "op": "commit",
+          "pick": 569188491
+        },
+        {
+          "op": "reopen",
+          "pick": 2072507335
+        }
+      ],
+      "finalMac": "f17fca9570b1ac318cb7b3c9c905536f82c1c3168b2e8958c0d8b64dad48d40a"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1637702143
+        },
+        {
+          "op": "tamper",
+          "pick": 1500875238
+        },
+        {
+          "op": "reopen",
+          "pick": 426297197
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 889883058
+        },
+        {
+          "op": "commit",
+          "pick": 250699228
+        },
+        {
+          "op": "tamper",
+          "pick": 706390816
+        },
+        {
+          "op": "tamper",
+          "pick": 984449042
+        },
+        {
+          "op": "reorder",
+          "pick": 1630237859
+        },
+        {
+          "op": "tamper",
+          "pick": 329056141
+        },
+        {
+          "op": "reorder",
+          "pick": 1210147038
+        },
+        {
+          "op": "tamper",
+          "pick": 489226209
+        },
+        {
+          "op": "reorder",
+          "pick": 1472849688
+        },
+        {
+          "op": "reopen",
+          "pick": 1504283150
+        },
+        {
+          "op": "commit",
+          "pick": 646002781
+        }
+      ],
+      "finalMac": "b169a38bd8c01d8f2cc056373040ebef3c43f052b2b090910a7f122a4e6a26af"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 22
+        },
+        {
+          "op": "tamper",
+          "pick": 367360588
+        },
+        {
+          "op": "reopen",
+          "pick": 1931083817
+        },
+        {
+          "op": "reorder",
+          "pick": 29
+        },
+        {
+          "op": "reorder",
+          "pick": 1429726607
+        },
+        {
+          "op": "tamper",
+          "pick": 1347235864
+        },
+        {
+          "op": "tamper",
+          "pick": 1306512789
+        },
+        {
+          "op": "reopen",
+          "pick": 1578646300
+        },
+        {
+          "op": "reorder",
+          "pick": 440177961
+        },
+        {
+          "op": "reorder",
+          "pick": 485926702
+        },
+        {
+          "op": "reorder",
+          "pick": 25
+        }
+      ],
+      "finalMac": "08ce7cce7a42bab59236bd9b39b731cd1e9473758274a56ab3ec244c7929b4b0"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 4
+        },
+        {
+          "op": "reopen",
+          "pick": 433182339
+        },
+        {
+          "op": "tamper",
+          "pick": 2147483643
+        },
+        {
+          "op": "reorder",
+          "pick": 8
+        },
+        {
+          "op": "commit",
+          "pick": 15
+        },
+        {
+          "op": "commit",
+          "pick": 1693474398
+        },
+        {
+          "op": "reopen",
+          "pick": 2060141612
+        },
+        {
+          "op": "reorder",
+          "pick": 2147483633
+        },
+        {
+          "op": "commit",
+          "pick": 2147483637
+        },
+        {
+          "op": "tamper",
+          "pick": 26
+        },
+        {
+          "op": "commit",
+          "pick": 356628560
+        },
+        {
+          "op": "commit",
+          "pick": 480725721
+        }
+      ],
+      "finalMac": "02fce4c5a1bbe8b624f81f38aee29bf08d2b01e82ea36c4d2db1ff75030617e0"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1056030906
+        },
+        {
+          "op": "reorder",
+          "pick": 1884175289
+        },
+        {
+          "op": "tamper",
+          "pick": 348293232
+        },
+        {
+          "op": "reopen",
+          "pick": 238563613
+        },
+        {
+          "op": "tamper",
+          "pick": 739370236
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1840480393
+        },
+        {
+          "op": "tamper",
+          "pick": 531794817
+        },
+        {
+          "op": "reorder",
+          "pick": 522431205
+        },
+        {
+          "op": "commit",
+          "pick": 1047284653
+        }
+      ],
+      "finalMac": "4bc8e502da2a0d26842d1483e2194f8fdde6fd0f7e96904388317fdfcb30338a"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 937855747
+        },
+        {
+          "op": "reopen",
+          "pick": 282167638
+        },
+        {
+          "op": "commit",
+          "pick": 239267815
+        },
+        {
+          "op": "reorder",
+          "pick": 1880786518
+        },
+        {
+          "op": "tamper",
+          "pick": 987362466
+        },
+        {
+          "op": "tamper",
+          "pick": 1794231626
+        },
+        {
+          "op": "reorder",
+          "pick": 1070463122
+        },
+        {
+          "op": "reorder",
+          "pick": 1735238773
+        },
+        {
+          "op": "reopen",
+          "pick": 2031862658
+        },
+        {
+          "op": "reorder",
+          "pick": 1912350440
+        },
+        {
+          "op": "tamper",
+          "pick": 1421568425
+        },
+        {
+          "op": "commit",
+          "pick": 425668662
+        }
+      ],
+      "finalMac": "3f6cf66ac2948dd1ff4e646163a0e1a47c29c254d029ce7d69e6b556c8dd92ab"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 625188397
+        },
+        {
+          "op": "tamper",
+          "pick": 1376831265
+        },
+        {
+          "op": "commit",
+          "pick": 1770487849
+        },
+        {
+          "op": "reorder",
+          "pick": 704223333
+        },
+        {
+          "op": "reorder",
+          "pick": 1890369473
+        },
+        {
+          "op": "reopen",
+          "pick": 354085277
+        },
+        {
+          "op": "reopen",
+          "pick": 0
+        },
+        {
+          "op": "commit",
+          "pick": 1150786155
+        }
+      ],
+      "finalMac": "cb5974bf7e954941fa71e25af1c9f15597e39e345a6676346ce8c7809a3d6aa6"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 568847051
+        },
+        {
+          "op": "tamper",
+          "pick": 298119850
+        },
+        {
+          "op": "commit",
+          "pick": 535532635
+        }
+      ],
+      "finalMac": "cadad040c4ff0eb44f82137a875ff9fd958eddafd17755bfbc896b1bd9c90e85"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 53506747
+        },
+        {
+          "op": "commit",
+          "pick": 747466608
+        },
+        {
+          "op": "reopen",
+          "pick": 173501166
+        },
+        {
+          "op": "tamper",
+          "pick": 387731285
+        },
+        {
+          "op": "reopen",
+          "pick": 63272731
+        },
+        {
+          "op": "reorder",
+          "pick": 1767362277
+        }
+      ],
+      "finalMac": "a0cf16f03257ae4c67ab596e0c802661f9915a43c6410c73bda4ce8ea0589846"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1470144325
+        },
+        {
+          "op": "tamper",
+          "pick": 571565797
+        },
+        {
+          "op": "reopen",
+          "pick": 1637015431
+        },
+        {
+          "op": "tamper",
+          "pick": 2080984534
+        },
+        {
+          "op": "commit",
+          "pick": 1979051594
+        },
+        {
+          "op": "reopen",
+          "pick": 301496547
+        },
+        {
+          "op": "tamper",
+          "pick": 1786851963
+        },
+        {
+          "op": "commit",
+          "pick": 1925409075
+        },
+        {
+          "op": "reorder",
+          "pick": 319998179
+        }
+      ],
+      "finalMac": "f54f1e0995ad4156dfffeedb63592a0326494a3345cb17988516552c7dff253a"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 4
+        },
+        {
+          "op": "reorder",
+          "pick": 1532549826
+        },
+        {
+          "op": "reorder",
+          "pick": 907901163
+        }
+      ],
+      "finalMac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 719927220
+        },
+        {
+          "op": "reopen",
+          "pick": 996228393
+        },
+        {
+          "op": "commit",
+          "pick": 1419308651
+        },
+        {
+          "op": "reopen",
+          "pick": 1095688930
+        },
+        {
+          "op": "commit",
+          "pick": 1037090783
+        },
+        {
+          "op": "reopen",
+          "pick": 1951377993
+        },
+        {
+          "op": "reopen",
+          "pick": 455421259
+        }
+      ],
+      "finalMac": "b134812d9bf884c46d8eb4533229543f319c2e42dc1c1b01614669d7f162f850"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 827508946
+        },
+        {
+          "op": "reorder",
+          "pick": 39034738
+        },
+        {
+          "op": "commit",
+          "pick": 273389028
+        },
+        {
+          "op": "tamper",
+          "pick": 740574144
+        },
+        {
+          "op": "reorder",
+          "pick": 814483997
+        },
+        {
+          "op": "reopen",
+          "pick": 1614440488
+        },
+        {
+          "op": "reopen",
+          "pick": 2090244504
+        },
+        {
+          "op": "reorder",
+          "pick": 1284759593
+        },
+        {
+          "op": "reorder",
+          "pick": 210871365
+        },
+        {
+          "op": "reopen",
+          "pick": 490229967
+        },
+        {
+          "op": "reorder",
+          "pick": 700947454
+        },
+        {
+          "op": "tamper",
+          "pick": 570444967
+        }
+      ],
+      "finalMac": "2e161112fd9f8a25cad7c86586068d8d47fd95a48e881209e69d977d623b6a14"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1312009905
+        },
+        {
+          "op": "commit",
+          "pick": 900093667
+        },
+        {
+          "op": "commit",
+          "pick": 1314431632
+        },
+        {
+          "op": "tamper",
+          "pick": 1516251519
+        },
+        {
+          "op": "commit",
+          "pick": 1015730065
+        },
+        {
+          "op": "reorder",
+          "pick": 695716532
+        }
+      ],
+      "finalMac": "1fd3aa99f0f18d3423727ad2b0023c07e8f887253b009f238b514ba710061678"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 853666328
+        },
+        {
+          "op": "reopen",
+          "pick": 1224877180
+        },
+        {
+          "op": "commit",
+          "pick": 2084485891
+        },
+        {
+          "op": "commit",
+          "pick": 710307358
+        },
+        {
+          "op": "reorder",
+          "pick": 1287396364
+        },
+        {
+          "op": "commit",
+          "pick": 426044167
+        },
+        {
+          "op": "reorder",
+          "pick": 301075198
+        },
+        {
+          "op": "commit",
+          "pick": 1710724057
+        }
+      ],
+      "finalMac": "fd36a2a20747264764b58f2bb0f2dd41ffbcec9837364ee40c9d041764c07ccb"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 807139688
+        },
+        {
+          "op": "commit",
+          "pick": 1903288077
+        },
+        {
+          "op": "reopen",
+          "pick": 650141777
+        },
+        {
+          "op": "tamper",
+          "pick": 2073258161
+        },
+        {
+          "op": "tamper",
+          "pick": 885196562
+        },
+        {
+          "op": "commit",
+          "pick": 815940175
+        }
+      ],
+      "finalMac": "58222c69127f1ef3e722bc8ff96a1d2020f1b55f7ddec3e85d4eb9be9fa211ba"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 386967901
+        },
+        {
+          "op": "tamper",
+          "pick": 113500468
+        },
+        {
+          "op": "tamper",
+          "pick": 1518295956
+        },
+        {
+          "op": "commit",
+          "pick": 590087067
+        },
+        {
+          "op": "reorder",
+          "pick": 1357036797
+        },
+        {
+          "op": "reorder",
+          "pick": 1144681386
+        },
+        {
+          "op": "commit",
+          "pick": 600615822
+        },
+        {
+          "op": "reorder",
+          "pick": 1547443137
+        },
+        {
+          "op": "commit",
+          "pick": 1798002084
+        }
+      ],
+      "finalMac": "61a0e8114468903245f300981fcb9db889e67d73b5b351dc7d2a6037e6855038"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 807605511
+        },
+        {
+          "op": "commit",
+          "pick": 554259230
+        },
+        {
+          "op": "tamper",
+          "pick": 677715569
+        },
+        {
+          "op": "reorder",
+          "pick": 443741774
+        },
+        {
+          "op": "reopen",
+          "pick": 2119497069
+        },
+        {
+          "op": "commit",
+          "pick": 2002364740
+        },
+        {
+          "op": "tamper",
+          "pick": 1709181243
+        },
+        {
+          "op": "reorder",
+          "pick": 246605874
+        },
+        {
+          "op": "commit",
+          "pick": 1909053074
+        },
+        {
+          "op": "commit",
+          "pick": 75585882
+        }
+      ],
+      "finalMac": "eea2ea6b9c76d74ee32048085bc46966f47dcd38829b86c341cbe6e08513070a"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1018327499
+        },
+        {
+          "op": "reorder",
+          "pick": 1808056963
+        },
+        {
+          "op": "commit",
+          "pick": 526707087
+        },
+        {
+          "op": "reorder",
+          "pick": 1483735883
+        },
+        {
+          "op": "reorder",
+          "pick": 414662200
+        },
+        {
+          "op": "reopen",
+          "pick": 1539029794
+        },
+        {
+          "op": "reorder",
+          "pick": 1531576777
+        },
+        {
+          "op": "reopen",
+          "pick": 1196256251
+        },
+        {
+          "op": "commit",
+          "pick": 2002713007
+        },
+        {
+          "op": "reorder",
+          "pick": 1588425196
+        },
+        {
+          "op": "reorder",
+          "pick": 87539598
+        }
+      ],
+      "finalMac": "97ad5bfa6ce7fe6c890296935277d3e22ee7ce444dfd27619d7f7e93bc6c187d"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 301731289
+        },
+        {
+          "op": "commit",
+          "pick": 284867521
+        },
+        {
+          "op": "tamper",
+          "pick": 640883721
+        },
+        {
+          "op": "reorder",
+          "pick": 1674703864
+        },
+        {
+          "op": "reopen",
+          "pick": 683410046
+        },
+        {
+          "op": "commit",
+          "pick": 1149389471
+        },
+        {
+          "op": "tamper",
+          "pick": 1240142875
+        },
+        {
+          "op": "commit",
+          "pick": 1732996867
+        },
+        {
+          "op": "tamper",
+          "pick": 572920990
+        },
+        {
+          "op": "reorder",
+          "pick": 1674083635
+        }
+      ],
+      "finalMac": "6e7762a45c7f5d1975e0156c2ce0a93d6a53b9db8ee675379c1cf23718f69cdc"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1730672961
+        },
+        {
+          "op": "reopen",
+          "pick": 2013119545
+        },
+        {
+          "op": "reorder",
+          "pick": 432006501
+        },
+        {
+          "op": "tamper",
+          "pick": 1625716492
+        },
+        {
+          "op": "reorder",
+          "pick": 1896118117
+        },
+        {
+          "op": "reopen",
+          "pick": 1669297748
+        },
+        {
+          "op": "tamper",
+          "pick": 928571620
+        },
+        {
+          "op": "reopen",
+          "pick": 1217055973
+        },
+        {
+          "op": "reorder",
+          "pick": 1312012939
+        },
+        {
+          "op": "reorder",
+          "pick": 1469023735
+        }
+      ],
+      "finalMac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 289100317
+        },
+        {
+          "op": "tamper",
+          "pick": 1991357767
+        },
+        {
+          "op": "commit",
+          "pick": 1914849877
+        },
+        {
+          "op": "commit",
+          "pick": 1947770109
+        },
+        {
+          "op": "commit",
+          "pick": 369687467
+        }
+      ],
+      "finalMac": "e72dcfe6ca1b41f5633e7dadf4163f89d28e755f79daa64034cbba1fb37c8dff"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 928733866
+        },
+        {
+          "op": "reopen",
+          "pick": 1696726878
+        },
+        {
+          "op": "commit",
+          "pick": 1742002044
+        },
+        {
+          "op": "tamper",
+          "pick": 7004230
+        },
+        {
+          "op": "reopen",
+          "pick": 1948861875
+        },
+        {
+          "op": "reopen",
+          "pick": 1051186442
+        },
+        {
+          "op": "tamper",
+          "pick": 334013886
+        },
+        {
+          "op": "commit",
+          "pick": 875698930
+        },
+        {
+          "op": "reorder",
+          "pick": 1456569582
+        },
+        {
+          "op": "reopen",
+          "pick": 1443303198
+        },
+        {
+          "op": "tamper",
+          "pick": 152216189
+        },
+        {
+          "op": "tamper",
+          "pick": 1360380076
+        }
+      ],
+      "finalMac": "d4a39a7cae7a0d5a3a745f7627471d2244ef002b620dc64622257d391b2a399f"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1724444908
+        },
+        {
+          "op": "tamper",
+          "pick": 408775963
+        },
+        {
+          "op": "reorder",
+          "pick": 1628351902
+        },
+        {
+          "op": "reopen",
+          "pick": 1013530232
+        },
+        {
+          "op": "commit",
+          "pick": 1659847555
+        },
+        {
+          "op": "reorder",
+          "pick": 817332269
+        },
+        {
+          "op": "reorder",
+          "pick": 1520712735
+        },
+        {
+          "op": "reopen",
+          "pick": 1511899929
+        }
+      ],
+      "finalMac": "06fd3858c952c0d37f08e17f3cd4fc673075f657d8d3485a0ad7c1651177fc6b"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 2044376591
+        },
+        {
+          "op": "reopen",
+          "pick": 603156345
+        },
+        {
+          "op": "reorder",
+          "pick": 369796746
+        },
+        {
+          "op": "reorder",
+          "pick": 1403160391
+        },
+        {
+          "op": "commit",
+          "pick": 1765251620
+        },
+        {
+          "op": "reopen",
+          "pick": 716438194
+        },
+        {
+          "op": "tamper",
+          "pick": 401714406
+        },
+        {
+          "op": "commit",
+          "pick": 2050808403
+        },
+        {
+          "op": "reopen",
+          "pick": 693025841
+        },
+        {
+          "op": "commit",
+          "pick": 239101456
+        }
+      ],
+      "finalMac": "572324abcd6a3af8c21f6c117d1d73cfe821c4d9113c4c52757ce26ebc27380f"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 370882472
+        },
+        {
+          "op": "reopen",
+          "pick": 1517343681
+        },
+        {
+          "op": "commit",
+          "pick": 265017924
+        },
+        {
+          "op": "reorder",
+          "pick": 773385981
+        },
+        {
+          "op": "reorder",
+          "pick": 1612148462
+        },
+        {
+          "op": "commit",
+          "pick": 777844118
+        }
+      ],
+      "finalMac": "bedaeb034327e69fbaa782c17851d989bb8471bf5360ae5466308e236b362a30"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 311325105
+        },
+        {
+          "op": "reorder",
+          "pick": 982452070
+        },
+        {
+          "op": "reopen",
+          "pick": 4366834
+        },
+        {
+          "op": "reorder",
+          "pick": 2085916927
+        },
+        {
+          "op": "reopen",
+          "pick": 1004478692
+        },
+        {
+          "op": "commit",
+          "pick": 1960927767
+        },
+        {
+          "op": "reopen",
+          "pick": 2111950285
+        },
+        {
+          "op": "commit",
+          "pick": 1722083225
+        },
+        {
+          "op": "reorder",
+          "pick": 578954782
+        },
+        {
+          "op": "tamper",
+          "pick": 892159529
+        }
+      ],
+      "finalMac": "5623451f8fd5cdfbea91eff5f86c8b02e4b1b2de9e26044c953ef6a7df794fd6"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2060358029
+        },
+        {
+          "op": "tamper",
+          "pick": 325469780
+        },
+        {
+          "op": "tamper",
+          "pick": 1463466417
+        },
+        {
+          "op": "reopen",
+          "pick": 488476875
+        },
+        {
+          "op": "reorder",
+          "pick": 1699863649
+        },
+        {
+          "op": "tamper",
+          "pick": 1066474130
+        },
+        {
+          "op": "reorder",
+          "pick": 1787739010
+        },
+        {
+          "op": "reopen",
+          "pick": 915071631
+        },
+        {
+          "op": "tamper",
+          "pick": 1174399640
+        },
+        {
+          "op": "reorder",
+          "pick": 549747454
+        },
+        {
+          "op": "reopen",
+          "pick": 1414535340
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1041020006
+        },
+        {
+          "op": "reorder",
+          "pick": 1851080502
+        },
+        {
+          "op": "tamper",
+          "pick": 894355626
+        },
+        {
+          "op": "tamper",
+          "pick": 1442129825
+        },
+        {
+          "op": "commit",
+          "pick": 1163218990
+        },
+        {
+          "op": "tamper",
+          "pick": 391468131
+        }
+      ],
+      "finalMac": "57cafb7afa6379c1d0da20bc9a9338558f3f211fd9c5c83aa7b48a86ec257480"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 494524994
+        },
+        {
+          "op": "reorder",
+          "pick": 632513463
+        },
+        {
+          "op": "reopen",
+          "pick": 238109914
+        },
+        {
+          "op": "reorder",
+          "pick": 598793323
+        },
+        {
+          "op": "tamper",
+          "pick": 1384160828
+        },
+        {
+          "op": "reorder",
+          "pick": 314545841
+        },
+        {
+          "op": "tamper",
+          "pick": 1596722224
+        },
+        {
+          "op": "reopen",
+          "pick": 1397242989
+        },
+        {
+          "op": "commit",
+          "pick": 101933281
+        },
+        {
+          "op": "reopen",
+          "pick": 1788607953
+        }
+      ],
+      "finalMac": "1832576a8c5a2f906e5518ee2f8e728369f89ae222b4760ac6f17d3172ba0d8c"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1686955472
+        },
+        {
+          "op": "reopen",
+          "pick": 1463998030
+        },
+        {
+          "op": "reorder",
+          "pick": 2147483646
+        },
+        {
+          "op": "tamper",
+          "pick": 432980679
+        }
+      ],
+      "finalMac": "bc61171e5bb387927f8f5518e4155990a28da73385a8601a82aa19f32bcabace"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 683369949
+        },
+        {
+          "op": "reopen",
+          "pick": 1075019494
+        },
+        {
+          "op": "tamper",
+          "pick": 2095116491
+        },
+        {
+          "op": "reopen",
+          "pick": 831304579
+        },
+        {
+          "op": "reorder",
+          "pick": 347573114
+        }
+      ],
+      "finalMac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1661056837
+        },
+        {
+          "op": "tamper",
+          "pick": 1934805551
+        },
+        {
+          "op": "tamper",
+          "pick": 1743278695
+        },
+        {
+          "op": "reorder",
+          "pick": 1900143173
+        },
+        {
+          "op": "reorder",
+          "pick": 426089854
+        },
+        {
+          "op": "tamper",
+          "pick": 1903086653
+        },
+        {
+          "op": "tamper",
+          "pick": 1783682546
+        }
+      ],
+      "finalMac": "1e8fe1037406f298f5a0fa96c94babce331e172ea40fc6ede263f87f7642f8fb"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1043285929
+        },
+        {
+          "op": "tamper",
+          "pick": 486751629
+        },
+        {
+          "op": "commit",
+          "pick": 1015368601
+        },
+        {
+          "op": "reopen",
+          "pick": 1807673125
+        },
+        {
+          "op": "reorder",
+          "pick": 143605580
+        },
+        {
+          "op": "reopen",
+          "pick": 528064285
+        },
+        {
+          "op": "tamper",
+          "pick": 168503072
+        }
+      ],
+      "finalMac": "6f400bcd3b6642607d8b65b3a7e2536c2099516e981d79e2d4082a6be75d8a00"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1913582009
+        },
+        {
+          "op": "tamper",
+          "pick": 1508822529
+        },
+        {
+          "op": "reorder",
+          "pick": 1178165219
+        },
+        {
+          "op": "tamper",
+          "pick": 960649949
+        },
+        {
+          "op": "reopen",
+          "pick": 954549951
+        },
+        {
+          "op": "tamper",
+          "pick": 1941831038
+        },
+        {
+          "op": "commit",
+          "pick": 1517739803
+        },
+        {
+          "op": "tamper",
+          "pick": 345009499
+        },
+        {
+          "op": "reopen",
+          "pick": 1972202343
+        },
+        {
+          "op": "commit",
+          "pick": 859886903
+        }
+      ],
+      "finalMac": "ab1cf1b45f6e327473cf06b88b2de6ab2c23c697cd09a6f491318849bfadda0e"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 358958683
+        },
+        {
+          "op": "reopen",
+          "pick": 1823751345
+        },
+        {
+          "op": "tamper",
+          "pick": 1498531510
+        }
+      ],
+      "finalMac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1370419762
+        },
+        {
+          "op": "reopen",
+          "pick": 1764508598
+        },
+        {
+          "op": "tamper",
+          "pick": 769762972
+        },
+        {
+          "op": "commit",
+          "pick": 1939376705
+        },
+        {
+          "op": "commit",
+          "pick": 933187622
+        },
+        {
+          "op": "reopen",
+          "pick": 1503138643
+        },
+        {
+          "op": "reopen",
+          "pick": 1226711741
+        },
+        {
+          "op": "reorder",
+          "pick": 10602004
+        },
+        {
+          "op": "commit",
+          "pick": 1498014516
+        },
+        {
+          "op": "reorder",
+          "pick": 1640549096
+        }
+      ],
+      "finalMac": "6285c9fb02748087f5de9b9a4acc136b41b70e2d12cdad7d4323b67284eeb035"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 70967634
+        },
+        {
+          "op": "tamper",
+          "pick": 1929364931
+        }
+      ],
+      "finalMac": "617558b8e0d18fa4e2e85203785d708de7af18c86eae6a737eafa2890fe0d8e3"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 988175057
+        },
+        {
+          "op": "commit",
+          "pick": 961742743
+        },
+        {
+          "op": "reorder",
+          "pick": 181328622
+        },
+        {
+          "op": "commit",
+          "pick": 1903182354
+        }
+      ],
+      "finalMac": "bf58beada425d62048ff943e7809c74e27a972848d79a06276a1ee41ac813784"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 378003797
+        },
+        {
+          "op": "reorder",
+          "pick": 1118011207
+        },
+        {
+          "op": "tamper",
+          "pick": 1908658548
+        },
+        {
+          "op": "commit",
+          "pick": 1080224301
+        },
+        {
+          "op": "reorder",
+          "pick": 1845569866
+        },
+        {
+          "op": "tamper",
+          "pick": 422279698
+        },
+        {
+          "op": "reorder",
+          "pick": 758930134
+        },
+        {
+          "op": "reorder",
+          "pick": 2126898337
+        },
+        {
+          "op": "tamper",
+          "pick": 368122053
+        },
+        {
+          "op": "commit",
+          "pick": 974796525
+        }
+      ],
+      "finalMac": "a27b2a129133f17209cde6687065a783d16b388af632811ef744006032adec39"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 212191128
+        },
+        {
+          "op": "reorder",
+          "pick": 1383311057
+        },
+        {
+          "op": "reorder",
+          "pick": 1583977488
+        },
+        {
+          "op": "commit",
+          "pick": 353376964
+        },
+        {
+          "op": "commit",
+          "pick": 458131687
+        },
+        {
+          "op": "reorder",
+          "pick": 407160466
+        },
+        {
+          "op": "reopen",
+          "pick": 1368115473
+        }
+      ],
+      "finalMac": "f0f9401706390ad98914bd8e52f263c98c9aff61b0dbe435d0166a4b0f31484d"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1722007284
+        },
+        {
+          "op": "reopen",
+          "pick": 92265460
+        },
+        {
+          "op": "reorder",
+          "pick": 1631149542
+        },
+        {
+          "op": "tamper",
+          "pick": 2064632840
+        },
+        {
+          "op": "reorder",
+          "pick": 698319196
+        },
+        {
+          "op": "reopen",
+          "pick": 2101021683
+        },
+        {
+          "op": "tamper",
+          "pick": 1989282598
+        },
+        {
+          "op": "tamper",
+          "pick": 491048544
+        },
+        {
+          "op": "reopen",
+          "pick": 727876309
+        },
+        {
+          "op": "commit",
+          "pick": 1039388168
+        },
+        {
+          "op": "commit",
+          "pick": 878196734
+        },
+        {
+          "op": "commit",
+          "pick": 545456102
+        }
+      ],
+      "finalMac": "f7efc2ae44941a57995673282b0bc60aa2202a6ea88f422ccb5d7a35df5b69ee"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1191747367
+        },
+        {
+          "op": "reorder",
+          "pick": 1532095781
+        },
+        {
+          "op": "tamper",
+          "pick": 985408469
+        },
+        {
+          "op": "commit",
+          "pick": 901871470
+        },
+        {
+          "op": "tamper",
+          "pick": 1504404754
+        },
+        {
+          "op": "tamper",
+          "pick": 1052347973
+        },
+        {
+          "op": "reorder",
+          "pick": 533170469
+        },
+        {
+          "op": "tamper",
+          "pick": 2104619361
+        },
+        {
+          "op": "commit",
+          "pick": 377106884
+        },
+        {
+          "op": "reorder",
+          "pick": 400893913
+        },
+        {
+          "op": "tamper",
+          "pick": 2045122250
+        }
+      ],
+      "finalMac": "59051297566884664d2d54e4e4c40fb30883f4f125ca5561aa65bdf4de9b08b8"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1382204163
+        },
+        {
+          "op": "reorder",
+          "pick": 1165137737
+        },
+        {
+          "op": "reorder",
+          "pick": 1084127840
+        },
+        {
+          "op": "commit",
+          "pick": 1519009110
+        },
+        {
+          "op": "commit",
+          "pick": 680251040
+        },
+        {
+          "op": "tamper",
+          "pick": 159581617
+        },
+        {
+          "op": "commit",
+          "pick": 1322064716
+        },
+        {
+          "op": "commit",
+          "pick": 477244033
+        }
+      ],
+      "finalMac": "9901819137c7c63dd65cf1d8b7ed3bce36ce3456d1ba830c4cff84d00cb74d58"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 28
+        },
+        {
+          "op": "tamper",
+          "pick": 2014921645
+        },
+        {
+          "op": "tamper",
+          "pick": 564233360
+        },
+        {
+          "op": "reorder",
+          "pick": 1012110263
+        },
+        {
+          "op": "commit",
+          "pick": 4
+        },
+        {
+          "op": "commit",
+          "pick": 448735446
+        },
+        {
+          "op": "tamper",
+          "pick": 782666532
+        },
+        {
+          "op": "reorder",
+          "pick": 1264927985
+        },
+        {
+          "op": "reorder",
+          "pick": 28
+        }
+      ],
+      "finalMac": "ad78ecceb931d08e8c73e6ae92f4d2fe8dd110027b1f0123242b7d206a70629b"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 322147373
+        },
+        {
+          "op": "tamper",
+          "pick": 467780690
+        },
+        {
+          "op": "reorder",
+          "pick": 2059834525
+        },
+        {
+          "op": "commit",
+          "pick": 159074237
+        },
+        {
+          "op": "commit",
+          "pick": 1411404735
+        },
+        {
+          "op": "tamper",
+          "pick": 921320183
+        },
+        {
+          "op": "commit",
+          "pick": 1994474060
+        },
+        {
+          "op": "reorder",
+          "pick": 2090828650
+        },
+        {
+          "op": "tamper",
+          "pick": 701340047
+        },
+        {
+          "op": "commit",
+          "pick": 1646575643
+        }
+      ],
+      "finalMac": "49103b749c2de86c174ecfbcb719c6d0c763e05005dca0cc6719247da84d2618"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1107187965
+        },
+        {
+          "op": "commit",
+          "pick": 1446395255
+        },
+        {
+          "op": "reopen",
+          "pick": 1701787669
+        },
+        {
+          "op": "reopen",
+          "pick": 1050273827
+        }
+      ],
+      "finalMac": "3a5318f915135e6a5fc137ea86f804d18e1b703a15561d6148e1add304899c1c"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 2147483636
+        },
+        {
+          "op": "commit",
+          "pick": 6
+        }
+      ],
+      "finalMac": "cc1a46cff7e8296c1379ec9ad9aed5ad9e42f0c3011500243305f8394f8d8a0e"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1546027774
+        },
+        {
+          "op": "commit",
+          "pick": 984465940
+        }
+      ],
+      "finalMac": "3c6b6d3abf9f9c055154af72ab0dafe73d14ea579f3a2eadcc6de8eb3180a5ab"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 831026865
+        },
+        {
+          "op": "reorder",
+          "pick": 591834163
+        },
+        {
+          "op": "tamper",
+          "pick": 494591790
+        },
+        {
+          "op": "tamper",
+          "pick": 532806387
+        },
+        {
+          "op": "commit",
+          "pick": 2117991651
+        },
+        {
+          "op": "commit",
+          "pick": 264954386
+        },
+        {
+          "op": "reorder",
+          "pick": 1463579929
+        },
+        {
+          "op": "tamper",
+          "pick": 203173987
+        },
+        {
+          "op": "reorder",
+          "pick": 2067537683
+        }
+      ],
+      "finalMac": "92194c3fcb78b81df3da8ddc753c71a7242dac396ab4a1339c0bf6a6d599c4b1"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1299721190
+        },
+        {
+          "op": "reopen",
+          "pick": 893661237
+        }
+      ],
+      "finalMac": "617558b8e0d18fa4e2e85203785d708de7af18c86eae6a737eafa2890fe0d8e3"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 2131182436
+        },
+        {
+          "op": "reopen",
+          "pick": 1725936809
+        },
+        {
+          "op": "tamper",
+          "pick": 1824686075
+        },
+        {
+          "op": "reopen",
+          "pick": 778267572
+        },
+        {
+          "op": "reorder",
+          "pick": 2107585988
+        },
+        {
+          "op": "reorder",
+          "pick": 77803418
+        },
+        {
+          "op": "reorder",
+          "pick": 578910474
+        },
+        {
+          "op": "tamper",
+          "pick": 1781090695
+        },
+        {
+          "op": "reorder",
+          "pick": 1752891352
+        },
+        {
+          "op": "tamper",
+          "pick": 1508710970
+        },
+        {
+          "op": "reopen",
+          "pick": 1879723548
+        },
+        {
+          "op": "tamper",
+          "pick": 1621706479
+        }
+      ],
+      "finalMac": "a3c8ade0242e17417e14aec917b968e692fc543822863c29af9f1dd993a47114"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 884901627
+        },
+        {
+          "op": "commit",
+          "pick": 243200043
+        },
+        {
+          "op": "reorder",
+          "pick": 1655857027
+        },
+        {
+          "op": "tamper",
+          "pick": 2049997017
+        },
+        {
+          "op": "tamper",
+          "pick": 1573526550
+        },
+        {
+          "op": "reopen",
+          "pick": 422360986
+        },
+        {
+          "op": "tamper",
+          "pick": 1876197902
+        }
+      ],
+      "finalMac": "d9cbe81e5872b0fa78449f295298d8e5d370cb4842663fe599aee7c10b46febe"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 6241745
+        },
+        {
+          "op": "tamper",
+          "pick": 612865438
+        },
+        {
+          "op": "tamper",
+          "pick": 2044657956
+        },
+        {
+          "op": "tamper",
+          "pick": 37285317
+        },
+        {
+          "op": "tamper",
+          "pick": 1317590490
+        },
+        {
+          "op": "reorder",
+          "pick": 355818276
+        },
+        {
+          "op": "commit",
+          "pick": 295214552
+        },
+        {
+          "op": "reorder",
+          "pick": 186025961
+        }
+      ],
+      "finalMac": "346f6f3811b4a31682a7f333fd7a2444fdd6d42cbe14c5bb0fc04ef628147952"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2050678000
+        },
+        {
+          "op": "tamper",
+          "pick": 2100003451
+        },
+        {
+          "op": "reopen",
+          "pick": 364301359
+        },
+        {
+          "op": "reopen",
+          "pick": 780254504
+        },
+        {
+          "op": "commit",
+          "pick": 14157588
+        },
+        {
+          "op": "commit",
+          "pick": 1145232876
+        },
+        {
+          "op": "reopen",
+          "pick": 3779376
+        },
+        {
+          "op": "reopen",
+          "pick": 1702282319
+        },
+        {
+          "op": "reorder",
+          "pick": 750628173
+        },
+        {
+          "op": "reopen",
+          "pick": 722962973
+        },
+        {
+          "op": "reopen",
+          "pick": 464498102
+        },
+        {
+          "op": "commit",
+          "pick": 1834286030
+        }
+      ],
+      "finalMac": "c0c27190d3c59ff5b9b57897e6db72a637b23123999d9e8d2d836f1498146f7b"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1284277713
+        },
+        {
+          "op": "tamper",
+          "pick": 117172230
+        },
+        {
+          "op": "reopen",
+          "pick": 1283388980
+        },
+        {
+          "op": "reopen",
+          "pick": 1995843220
+        },
+        {
+          "op": "reorder",
+          "pick": 1395294217
+        },
+        {
+          "op": "reorder",
+          "pick": 116818812
+        },
+        {
+          "op": "commit",
+          "pick": 1822834472
+        },
+        {
+          "op": "tamper",
+          "pick": 1920470751
+        }
+      ],
+      "finalMac": "e4c475b2693b6e117e4109dac74637040fe0cc599e82648f5806378453dd6405"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 570637624
+        },
+        {
+          "op": "reorder",
+          "pick": 54500407
+        },
+        {
+          "op": "tamper",
+          "pick": 341251199
+        },
+        {
+          "op": "reorder",
+          "pick": 868348790
+        },
+        {
+          "op": "commit",
+          "pick": 2068788260
+        },
+        {
+          "op": "commit",
+          "pick": 1471665858
+        },
+        {
+          "op": "commit",
+          "pick": 191897729
+        },
+        {
+          "op": "tamper",
+          "pick": 1959500475
+        },
+        {
+          "op": "tamper",
+          "pick": 1896801644
+        },
+        {
+          "op": "reorder",
+          "pick": 2064541447
+        },
+        {
+          "op": "commit",
+          "pick": 1774187142
+        },
+        {
+          "op": "commit",
+          "pick": 1373245681
+        }
+      ],
+      "finalMac": "995b17d7665d33aec0748226d1d2d659a1edd24e5a3aa1ee8b4d9fdde9d3f631"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1359578778
+        },
+        {
+          "op": "reorder",
+          "pick": 1005994390
+        },
+        {
+          "op": "reorder",
+          "pick": 1713090759
+        },
+        {
+          "op": "reopen",
+          "pick": 271139071
+        },
+        {
+          "op": "reorder",
+          "pick": 543672977
+        },
+        {
+          "op": "reopen",
+          "pick": 565033588
+        },
+        {
+          "op": "commit",
+          "pick": 1926278931
+        },
+        {
+          "op": "commit",
+          "pick": 541794038
+        },
+        {
+          "op": "commit",
+          "pick": 1591119263
+        },
+        {
+          "op": "tamper",
+          "pick": 1012640540
+        }
+      ],
+      "finalMac": "c9b2d864f4527f8dafd2484586ecd30ea363261ea1c8f67de87ce82e06d4798d"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1668965690
+        },
+        {
+          "op": "commit",
+          "pick": 1946398986
+        },
+        {
+          "op": "reorder",
+          "pick": 374930945
+        },
+        {
+          "op": "commit",
+          "pick": 2042134090
+        },
+        {
+          "op": "tamper",
+          "pick": 1183775192
+        },
+        {
+          "op": "reopen",
+          "pick": 1631635529
+        },
+        {
+          "op": "commit",
+          "pick": 921688403
+        },
+        {
+          "op": "commit",
+          "pick": 1016843625
+        },
+        {
+          "op": "tamper",
+          "pick": 682084922
+        }
+      ],
+      "finalMac": "713ce8534ea9d3091a2353d1633b20c5dcf60f4de30629d50867a6c4d275ca30"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 562039368
+        },
+        {
+          "op": "reopen",
+          "pick": 1383284568
+        },
+        {
+          "op": "tamper",
+          "pick": 1873619081
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2093421780
+        },
+        {
+          "op": "commit",
+          "pick": 658837044
+        },
+        {
+          "op": "tamper",
+          "pick": 1618883634
+        },
+        {
+          "op": "reopen",
+          "pick": 1135583373
+        },
+        {
+          "op": "commit",
+          "pick": 1822235904
+        },
+        {
+          "op": "reopen",
+          "pick": 1523818887
+        },
+        {
+          "op": "reorder",
+          "pick": 124417087
+        },
+        {
+          "op": "reorder",
+          "pick": 1733007918
+        },
+        {
+          "op": "reorder",
+          "pick": 991043780
+        },
+        {
+          "op": "reorder",
+          "pick": 1941740397
+        },
+        {
+          "op": "commit",
+          "pick": 546584494
+        }
+      ],
+      "finalMac": "58f1f233620d1b93bfb86d5d0674c4d87f31ba3327324ac269509215ad27cc2d"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1943895144
+        },
+        {
+          "op": "tamper",
+          "pick": 933448806
+        },
+        {
+          "op": "reorder",
+          "pick": 1590137713
+        },
+        {
+          "op": "commit",
+          "pick": 228133413
+        },
+        {
+          "op": "commit",
+          "pick": 1810501792
+        },
+        {
+          "op": "reorder",
+          "pick": 1902476686
+        },
+        {
+          "op": "reopen",
+          "pick": 1027362221
+        },
+        {
+          "op": "commit",
+          "pick": 1181838588
+        },
+        {
+          "op": "reopen",
+          "pick": 57787531
+        },
+        {
+          "op": "commit",
+          "pick": 2147483623
+        }
+      ],
+      "finalMac": "a2eb7a123caffd9e88e4847e765cb82618f76afd0c9627850640130a70c68885"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1743288639
+        },
+        {
+          "op": "reorder",
+          "pick": 566638849
+        },
+        {
+          "op": "reorder",
+          "pick": 808146390
+        }
+      ],
+      "finalMac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 133842291
+        },
+        {
+          "op": "commit",
+          "pick": 1933087107
+        }
+      ],
+      "finalMac": "06fd3858c952c0d37f08e17f3cd4fc673075f657d8d3485a0ad7c1651177fc6b"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 798066934
+        },
+        {
+          "op": "reopen",
+          "pick": 1007273998
+        },
+        {
+          "op": "reopen",
+          "pick": 1684251970
+        },
+        {
+          "op": "reorder",
+          "pick": 278157112
+        },
+        {
+          "op": "reopen",
+          "pick": 2076332905
+        }
+      ],
+      "finalMac": "0d028d6c56282cdb2a49df5efa6362de7db02b6137a2e28ecb1d36ea94b725e4"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 221357407
+        },
+        {
+          "op": "tamper",
+          "pick": 433472483
+        },
+        {
+          "op": "reorder",
+          "pick": 1920211707
+        },
+        {
+          "op": "tamper",
+          "pick": 1992409449
+        },
+        {
+          "op": "reorder",
+          "pick": 536778692
+        },
+        {
+          "op": "commit",
+          "pick": 97044435
+        }
+      ],
+      "finalMac": "00f559aca5681fe746356b2dcd23ef7b6dfaf2b8c7e220018f74942828375962"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1682224984
+        },
+        {
+          "op": "reopen",
+          "pick": 1478772329
+        },
+        {
+          "op": "reorder",
+          "pick": 785785541
+        },
+        {
+          "op": "commit",
+          "pick": 370458331
+        },
+        {
+          "op": "tamper",
+          "pick": 1152006869
+        },
+        {
+          "op": "commit",
+          "pick": 1565931054
+        },
+        {
+          "op": "tamper",
+          "pick": 1464305648
+        },
+        {
+          "op": "commit",
+          "pick": 100047314
+        },
+        {
+          "op": "reopen",
+          "pick": 1555724638
+        },
+        {
+          "op": "commit",
+          "pick": 320915289
+        },
+        {
+          "op": "tamper",
+          "pick": 897699017
+        }
+      ],
+      "finalMac": "789e3cad8b4a4f87ed4191a3189d80681ac6991aa7a97a75717481e3942e32c3"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1213842019
+        },
+        {
+          "op": "tamper",
+          "pick": 1482410790
+        },
+        {
+          "op": "reopen",
+          "pick": 402109173
+        }
+      ],
+      "finalMac": "29887b95da9b0b6f7cb1a08ef611211d157c3ab7b54ff27b4ac7f22b7cd6e855"
+    },
+    {
+      "v": 6,
+      "stage": "account-capturing",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 332893490
+        },
+        {
+          "op": "reorder",
+          "pick": 208606483
+        },
+        {
+          "op": "commit",
+          "pick": 1612786514
+        },
+        {
+          "op": "reorder",
+          "pick": 1225943789
+        },
+        {
+          "op": "tamper",
+          "pick": 270938689
+        },
+        {
+          "op": "commit",
+          "pick": 188317479
+        }
+      ],
+      "finalMac": "9b72f9557284976212945f9c63dd82f9f939c85a360494a28d9bb946012288e1"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1433408486
+        },
+        {
+          "op": "tamper",
+          "pick": 676299908
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1783127739
+        },
+        {
+          "op": "reopen",
+          "pick": 1058495523
+        },
+        {
+          "op": "tamper",
+          "pick": 975105838
+        },
+        {
+          "op": "commit",
+          "pick": 170484050
+        },
+        {
+          "op": "reopen",
+          "pick": 1129522129
+        },
+        {
+          "op": "tamper",
+          "pick": 120121981
+        },
+        {
+          "op": "tamper",
+          "pick": 1625915335
+        },
+        {
+          "op": "tamper",
+          "pick": 45458853
+        }
+      ],
+      "finalMac": "cbb66f8b2782f0987ef929e150c0220be265018d82edfe6aa15a0c1882faab72"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1567655411
+        },
+        {
+          "op": "tamper",
+          "pick": 505562889
+        },
+        {
+          "op": "commit",
+          "pick": 126864016
+        },
+        {
+          "op": "tamper",
+          "pick": 1403451243
+        },
+        {
+          "op": "commit",
+          "pick": 2145092153
+        },
+        {
+          "op": "tamper",
+          "pick": 1038630300
+        },
+        {
+          "op": "commit",
+          "pick": 1115562632
+        },
+        {
+          "op": "reorder",
+          "pick": 344718061
+        },
+        {
+          "op": "commit",
+          "pick": 840049362
+        },
+        {
+          "op": "tamper",
+          "pick": 947388346
+        }
+      ],
+      "finalMac": "07bdc6d483176384254fd04b2a4b01c826ea97fbc4245f8854bad64379638e04"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1953469905
+        },
+        {
+          "op": "commit",
+          "pick": 273093206
+        },
+        {
+          "op": "reorder",
+          "pick": 1134244987
+        },
+        {
+          "op": "reopen",
+          "pick": 1329419185
+        },
+        {
+          "op": "commit",
+          "pick": 1017575966
+        },
+        {
+          "op": "commit",
+          "pick": 1446744706
+        },
+        {
+          "op": "tamper",
+          "pick": 1563215582
+        },
+        {
+          "op": "commit",
+          "pick": 29153029
+        },
+        {
+          "op": "reorder",
+          "pick": 286134171
+        },
+        {
+          "op": "reorder",
+          "pick": 673109586
+        },
+        {
+          "op": "commit",
+          "pick": 781170191
+        },
+        {
+          "op": "reorder",
+          "pick": 1927838596
+        }
+      ],
+      "finalMac": "5c5581e09aa11acf92b1878de286a84054fa48ab4deb236e68fca6d4429f0a1d"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 168989586
+        },
+        {
+          "op": "tamper",
+          "pick": 942848208
+        },
+        {
+          "op": "commit",
+          "pick": 76271712
+        },
+        {
+          "op": "reorder",
+          "pick": 94187024
+        },
+        {
+          "op": "reorder",
+          "pick": 110950295
+        },
+        {
+          "op": "tamper",
+          "pick": 268355719
+        },
+        {
+          "op": "reorder",
+          "pick": 2014661951
+        },
+        {
+          "op": "reopen",
+          "pick": 335769377
+        },
+        {
+          "op": "commit",
+          "pick": 1195155472
+        }
+      ],
+      "finalMac": "5e63af4751ee0143478580e19106cb32eb13381b872772d0729beb8271a96706"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1514388251
+        },
+        {
+          "op": "tamper",
+          "pick": 1885691933
+        }
+      ],
+      "finalMac": "49103b749c2de86c174ecfbcb719c6d0c763e05005dca0cc6719247da84d2618"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1563719618
+        },
+        {
+          "op": "commit",
+          "pick": 88596266
+        },
+        {
+          "op": "reopen",
+          "pick": 2087742216
+        },
+        {
+          "op": "tamper",
+          "pick": 744587178
+        }
+      ],
+      "finalMac": "8e1b0fa84a6f872f5642c980980b4b9c0e6ccc2b25eb385ec79b85a1127acbaa"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 70342402
+        },
+        {
+          "op": "reorder",
+          "pick": 2101622923
+        },
+        {
+          "op": "commit",
+          "pick": 224547110
+        },
+        {
+          "op": "reorder",
+          "pick": 398558666
+        },
+        {
+          "op": "commit",
+          "pick": 1871480607
+        },
+        {
+          "op": "reopen",
+          "pick": 2140335082
+        }
+      ],
+      "finalMac": "694136ed710bad22197b275d33c8c4a95ac54f52d53978afc564c0ec4c05a675"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 528371601
+        },
+        {
+          "op": "reorder",
+          "pick": 372632881
+        },
+        {
+          "op": "reopen",
+          "pick": 1115895264
+        },
+        {
+          "op": "reopen",
+          "pick": 1215478978
+        },
+        {
+          "op": "reorder",
+          "pick": 1755908880
+        },
+        {
+          "op": "tamper",
+          "pick": 221925567
+        },
+        {
+          "op": "tamper",
+          "pick": 1364173438
+        },
+        {
+          "op": "commit",
+          "pick": 1510117407
+        },
+        {
+          "op": "reorder",
+          "pick": 275256880
+        }
+      ],
+      "finalMac": "4b54f84b0ba7ed7a77065e3f7c2c82ba1b43f20c5152003cf19f07b4c9fae7a6"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1945881832
+        },
+        {
+          "op": "reorder",
+          "pick": 257943046
+        },
+        {
+          "op": "reorder",
+          "pick": 45161816
+        },
+        {
+          "op": "commit",
+          "pick": 627383624
+        },
+        {
+          "op": "commit",
+          "pick": 18
+        },
+        {
+          "op": "commit",
+          "pick": 12
+        },
+        {
+          "op": "tamper",
+          "pick": 1848025913
+        },
+        {
+          "op": "commit",
+          "pick": 516162244
+        },
+        {
+          "op": "reorder",
+          "pick": 909083618
+        },
+        {
+          "op": "reopen",
+          "pick": 1534084673
+        },
+        {
+          "op": "commit",
+          "pick": 26
+        },
+        {
+          "op": "reopen",
+          "pick": 15
+        }
+      ],
+      "finalMac": "a299f5384216d8125d793057b86d24ccbb0d2e310bb4985fdd8dfb742cc18575"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1972542392
+        },
+        {
+          "op": "commit",
+          "pick": 249230028
+        },
+        {
+          "op": "reopen",
+          "pick": 704364056
+        },
+        {
+          "op": "reopen",
+          "pick": 1815530547
+        },
+        {
+          "op": "tamper",
+          "pick": 993403415
+        },
+        {
+          "op": "commit",
+          "pick": 1528926011
+        },
+        {
+          "op": "commit",
+          "pick": 162538864
+        },
+        {
+          "op": "reopen",
+          "pick": 116023762
+        },
+        {
+          "op": "reorder",
+          "pick": 1958394681
+        },
+        {
+          "op": "reorder",
+          "pick": 576523710
+        }
+      ],
+      "finalMac": "bf2e1548069c9bdc61ada54a192fd4f36b45ae732c56b39d4778bcfa51db6041"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 307379959
+        },
+        {
+          "op": "reopen",
+          "pick": 1113409081
+        },
+        {
+          "op": "reorder",
+          "pick": 827331664
+        },
+        {
+          "op": "reopen",
+          "pick": 497949981
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 857750859
+        },
+        {
+          "op": "commit",
+          "pick": 1854089484
+        },
+        {
+          "op": "reorder",
+          "pick": 1300297959
+        },
+        {
+          "op": "reopen",
+          "pick": 2062586839
+        },
+        {
+          "op": "reopen",
+          "pick": 1413243851
+        },
+        {
+          "op": "reopen",
+          "pick": 219518620
+        },
+        {
+          "op": "tamper",
+          "pick": 1223353408
+        },
+        {
+          "op": "commit",
+          "pick": 1118206296
+        },
+        {
+          "op": "reorder",
+          "pick": 408924713
+        },
+        {
+          "op": "reorder",
+          "pick": 1399047015
+        },
+        {
+          "op": "reorder",
+          "pick": 306205662
+        },
+        {
+          "op": "reopen",
+          "pick": 1789393772
+        }
+      ],
+      "finalMac": "6d4dc01f6fac6c600ace8ff25ea309bc226d3153d84afcbd04996ec7a53b5420"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 606448556
+        },
+        {
+          "op": "commit",
+          "pick": 1776751139
+        },
+        {
+          "op": "reorder",
+          "pick": 1127115084
+        }
+      ],
+      "finalMac": "43699ca8ac1e211af9e458922e77798c0a6a9915ba5eb98218083f0ca87c25e7"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1509784726
+        },
+        {
+          "op": "tamper",
+          "pick": 104166742
+        },
+        {
+          "op": "commit",
+          "pick": 2058182564
+        },
+        {
+          "op": "commit",
+          "pick": 1853572924
+        },
+        {
+          "op": "reorder",
+          "pick": 792909134
+        },
+        {
+          "op": "tamper",
+          "pick": 1674609106
+        },
+        {
+          "op": "tamper",
+          "pick": 1794708513
+        },
+        {
+          "op": "reorder",
+          "pick": 277084207
+        },
+        {
+          "op": "commit",
+          "pick": 1803204266
+        },
+        {
+          "op": "commit",
+          "pick": 830311188
+        },
+        {
+          "op": "reorder",
+          "pick": 1845733835
+        },
+        {
+          "op": "reorder",
+          "pick": 1646801825
+        }
+      ],
+      "finalMac": "af2eac0c92dfcfff65e960dc48c52b96f0b528639be9a0434d0c8acc03774fc2"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1113364759
+        },
+        {
+          "op": "tamper",
+          "pick": 1906614611
+        },
+        {
+          "op": "commit",
+          "pick": 1988677282
+        },
+        {
+          "op": "tamper",
+          "pick": 287818372
+        },
+        {
+          "op": "reopen",
+          "pick": 508129161
+        },
+        {
+          "op": "reopen",
+          "pick": 1590341188
+        },
+        {
+          "op": "reopen",
+          "pick": 1057595195
+        },
+        {
+          "op": "tamper",
+          "pick": 1877101146
+        },
+        {
+          "op": "reopen",
+          "pick": 177447886
+        }
+      ],
+      "finalMac": "125963eef43fb1efa69aef21dc4f9f917d4108ad0cbc1e6a6ef158cd167f5e86"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1827312542
+        },
+        {
+          "op": "commit",
+          "pick": 30277517
+        },
+        {
+          "op": "commit",
+          "pick": 1020674698
+        },
+        {
+          "op": "reorder",
+          "pick": 373096554
+        },
+        {
+          "op": "tamper",
+          "pick": 1112274283
+        },
+        {
+          "op": "reopen",
+          "pick": 1157479132
+        },
+        {
+          "op": "reopen",
+          "pick": 1758769103
+        }
+      ],
+      "finalMac": "4acb9964740c69943b6d344492e6194f3c8422c2714ec2b01852594e79554fe0"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1352560767
+        },
+        {
+          "op": "commit",
+          "pick": 648245157
+        },
+        {
+          "op": "tamper",
+          "pick": 531725220
+        },
+        {
+          "op": "tamper",
+          "pick": 111365594
+        },
+        {
+          "op": "reorder",
+          "pick": 321352544
+        },
+        {
+          "op": "commit",
+          "pick": 334163658
+        }
+      ],
+      "finalMac": "2c188fdb6bf1df6d189c8e1cd2b5eef1e7bb4796539fd6a3438403074d12200c"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 618465814
+        },
+        {
+          "op": "tamper",
+          "pick": 531176859
+        }
+      ],
+      "finalMac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1480865185
+        },
+        {
+          "op": "tamper",
+          "pick": 283327185
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1100946315
+        },
+        {
+          "op": "tamper",
+          "pick": 1861144341
+        },
+        {
+          "op": "tamper",
+          "pick": 103354800
+        }
+      ],
+      "finalMac": "a3c8ade0242e17417e14aec917b968e692fc543822863c29af9f1dd993a47114"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1789536456
+        },
+        {
+          "op": "reopen",
+          "pick": 1938207126
+        },
+        {
+          "op": "commit",
+          "pick": 769754744
+        },
+        {
+          "op": "reopen",
+          "pick": 757881228
+        },
+        {
+          "op": "commit",
+          "pick": 1635197385
+        },
+        {
+          "op": "commit",
+          "pick": 923541929
+        },
+        {
+          "op": "reopen",
+          "pick": 1407386306
+        },
+        {
+          "op": "reorder",
+          "pick": 1161538953
+        }
+      ],
+      "finalMac": "5904fcfbcaa16e4e04b0b0e61a01722b825e05971477a72bae41a040d08f22ff"
+    },
+    {
+      "v": 3,
+      "stage": "admission-receipted",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2088448796
+        },
+        {
+          "op": "commit",
+          "pick": 871722741
+        },
+        {
+          "op": "tamper",
+          "pick": 1792253722
+        },
+        {
+          "op": "reorder",
+          "pick": 1558508757
+        },
+        {
+          "op": "tamper",
+          "pick": 1377130646
+        }
+      ],
+      "finalMac": "4974a8fdf55b6e169ef37b0f212d7701614f0f4fdb2c6b32a67020d726a9800b"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 1218460426
+        },
+        {
+          "op": "reopen",
+          "pick": 910064774
+        },
+        {
+          "op": "reopen",
+          "pick": 167167488
+        },
+        {
+          "op": "reorder",
+          "pick": 571779691
+        },
+        {
+          "op": "reopen",
+          "pick": 1181416244
+        },
+        {
+          "op": "reopen",
+          "pick": 838872232
+        }
+      ],
+      "finalMac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 868097171
+        },
+        {
+          "op": "tamper",
+          "pick": 915547527
+        },
+        {
+          "op": "commit",
+          "pick": 1997526689
+        },
+        {
+          "op": "reopen",
+          "pick": 1768066383
+        },
+        {
+          "op": "reorder",
+          "pick": 1795838430
+        },
+        {
+          "op": "commit",
+          "pick": 63727903
+        },
+        {
+          "op": "reopen",
+          "pick": 126132928
+        },
+        {
+          "op": "tamper",
+          "pick": 486134730
+        },
+        {
+          "op": "commit",
+          "pick": 814902724
+        }
+      ],
+      "finalMac": "4715526b7b9b39aaaffd3fc00269cf3b330fedfc5850562b54ccf684772de4a7"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 206948580
+        },
+        {
+          "op": "commit",
+          "pick": 1655449303
+        },
+        {
+          "op": "reopen",
+          "pick": 1440012380
+        },
+        {
+          "op": "reopen",
+          "pick": 690910013
+        },
+        {
+          "op": "reorder",
+          "pick": 1904524528
+        },
+        {
+          "op": "tamper",
+          "pick": 132673136
+        },
+        {
+          "op": "tamper",
+          "pick": 1784404434
+        },
+        {
+          "op": "reorder",
+          "pick": 1465596057
+        },
+        {
+          "op": "commit",
+          "pick": 1762289774
+        },
+        {
+          "op": "reorder",
+          "pick": 2143832141
+        },
+        {
+          "op": "reorder",
+          "pick": 1446576455
+        }
+      ],
+      "finalMac": "e85b605a50bc990acd55b30dd0bd2b751ca336009d8efb540dd8e841c264bdf1"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 938160062
+        },
+        {
+          "op": "reorder",
+          "pick": 38759797
+        },
+        {
+          "op": "reopen",
+          "pick": 81338911
+        },
+        {
+          "op": "reopen",
+          "pick": 1622975102
+        },
+        {
+          "op": "tamper",
+          "pick": 1330993746
+        },
+        {
+          "op": "commit",
+          "pick": 903747312
+        },
+        {
+          "op": "tamper",
+          "pick": 2040702078
+        }
+      ],
+      "finalMac": "7789fb9ccd136b9d87d22a40de27345879698ba314f9be3ea13655355a2115ad"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1411046844
+        },
+        {
+          "op": "tamper",
+          "pick": 411438839
+        }
+      ],
+      "finalMac": "d8bbe3968eac7260c4bc27f6d8896e756718048a9780657c6d6b7184117aea95"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 765033881
+        },
+        {
+          "op": "reorder",
+          "pick": 1138046399
+        },
+        {
+          "op": "reorder",
+          "pick": 308305895
+        },
+        {
+          "op": "reorder",
+          "pick": 232992557
+        },
+        {
+          "op": "tamper",
+          "pick": 1707379766
+        },
+        {
+          "op": "reorder",
+          "pick": 30
+        },
+        {
+          "op": "reorder",
+          "pick": 1802782060
+        },
+        {
+          "op": "reorder",
+          "pick": 14
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 3,
+      "stage": "admission-requested",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 806335881
+        },
+        {
+          "op": "reorder",
+          "pick": 1253855490
+        },
+        {
+          "op": "commit",
+          "pick": 1419703878
+        }
+      ],
+      "finalMac": "601b5bb91c67cf48927897845d409e27cda7a995a68112e79537186ad468c993"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1506119588
+        },
+        {
+          "op": "reorder",
+          "pick": 516669298
+        },
+        {
+          "op": "commit",
+          "pick": 1671135016
+        },
+        {
+          "op": "reorder",
+          "pick": 400107508
+        },
+        {
+          "op": "tamper",
+          "pick": 2002542681
+        },
+        {
+          "op": "commit",
+          "pick": 1416440535
+        },
+        {
+          "op": "reopen",
+          "pick": 1368709506
+        },
+        {
+          "op": "reopen",
+          "pick": 204798141
+        }
+      ],
+      "finalMac": "b4ef8336f9cc660d17cd79c1275e097abb1455006fcd02072907baffc15eb3bf"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 1092832074
+        },
+        {
+          "op": "reorder",
+          "pick": 1703866685
+        },
+        {
+          "op": "commit",
+          "pick": 1261661712
+        }
+      ],
+      "finalMac": "9a4bc37f1b523390e4fa8bfe6623a3e9a75e3e66693facd14bb2ce330b2b5d63"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1968877365
+        },
+        {
+          "op": "commit",
+          "pick": 281256327
+        },
+        {
+          "op": "commit",
+          "pick": 1550164812
+        },
+        {
+          "op": "reopen",
+          "pick": 1154542449
+        },
+        {
+          "op": "reorder",
+          "pick": 1016554729
+        },
+        {
+          "op": "commit",
+          "pick": 791866950
+        },
+        {
+          "op": "commit",
+          "pick": 587315298
+        },
+        {
+          "op": "reopen",
+          "pick": 1586418460
+        }
+      ],
+      "finalMac": "797af78eac2b488e6cb04ae4169179e97cacca8d47ed89f55f0c8a013dcbbcb5"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 863250352
+        },
+        {
+          "op": "reorder",
+          "pick": 737528084
+        },
+        {
+          "op": "reorder",
+          "pick": 975569959
+        },
+        {
+          "op": "reorder",
+          "pick": 1008035808
+        }
+      ],
+      "finalMac": "08ce7cce7a42bab59236bd9b39b731cd1e9473758274a56ab3ec244c7929b4b0"
+    },
+    {
+      "v": 9,
+      "stage": "account-receiving",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1348452879
+        },
+        {
+          "op": "reopen",
+          "pick": 1658627714
+        }
+      ],
+      "finalMac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1130801580
+        },
+        {
+          "op": "reorder",
+          "pick": 1413210303
+        },
+        {
+          "op": "reopen",
+          "pick": 1162515644
+        },
+        {
+          "op": "reorder",
+          "pick": 1114235858
+        },
+        {
+          "op": "reorder",
+          "pick": 2084326465
+        },
+        {
+          "op": "reopen",
+          "pick": 1526972373
+        },
+        {
+          "op": "commit",
+          "pick": 698501700
+        }
+      ],
+      "finalMac": "7c14a64dfe82ba5b5eafbe651e3b8bcf90f68253ca35f45bad731470929e5fb6"
+    },
+    {
+      "v": 7,
+      "stage": "account-spooling",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1924645409
+        },
+        {
+          "op": "reopen",
+          "pick": 636072330
+        },
+        {
+          "op": "commit",
+          "pick": 1668864854
+        }
+      ],
+      "finalMac": "81921ba46970777244e86052ec4578190d0d56efa09f916a6252ebed0d0277a3"
+    },
+    {
+      "v": 8,
+      "stage": "account-delivering",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 46252834
+        },
+        {
+          "op": "reorder",
+          "pick": 2035773990
+        },
+        {
+          "op": "reopen",
+          "pick": 2057006311
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483639
+        },
+        {
+          "op": "reopen",
+          "pick": 779581663
+        },
+        {
+          "op": "tamper",
+          "pick": 3
+        },
+        {
+          "op": "reorder",
+          "pick": 1616011933
+        },
+        {
+          "op": "reopen",
+          "pick": 2147483639
+        }
+      ],
+      "finalMac": "08ce7cce7a42bab59236bd9b39b731cd1e9473758274a56ab3ec244c7929b4b0"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1460562697
+        },
+        {
+          "op": "reopen",
+          "pick": 924996391
+        },
+        {
+          "op": "commit",
+          "pick": 831591852
+        },
+        {
+          "op": "commit",
+          "pick": 2067266675
+        },
+        {
+          "op": "tamper",
+          "pick": 558320425
+        },
+        {
+          "op": "reorder",
+          "pick": 932280205
+        },
+        {
+          "op": "commit",
+          "pick": 440861578
+        },
+        {
+          "op": "commit",
+          "pick": 27
+        }
+      ],
+      "finalMac": "f9b68056fef9fa4f426f3513125c56a10dae99d0ec07be3fd502298fa182e914"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 544123335
+        },
+        {
+          "op": "commit",
+          "pick": 1344719530
+        },
+        {
+          "op": "reopen",
+          "pick": 586681749
+        },
+        {
+          "op": "tamper",
+          "pick": 231089829
+        },
+        {
+          "op": "reorder",
+          "pick": 293403501
+        },
+        {
+          "op": "reorder",
+          "pick": 587141385
+        },
+        {
+          "op": "reorder",
+          "pick": 809530372
+        },
+        {
+          "op": "reopen",
+          "pick": 474722645
+        },
+        {
+          "op": "reopen",
+          "pick": 473385893
+        }
+      ],
+      "finalMac": "cc1508c7aecdffc5ea612b1196e6c3632faafa95cfb869fb708b05acb4cbf412"
+    },
+    {
+      "v": 1,
+      "stage": "reserved",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 2147483632
+        },
+        {
+          "op": "commit",
+          "pick": 686906761
+        },
+        {
+          "op": "reorder",
+          "pick": 855273280
+        }
+      ],
+      "finalMac": "4ba70cebb3ef3fbd811bea15ceddbf6ed0e4458f315c365496094b8fbcbf4d6f"
+    },
+    {
+      "v": 5,
+      "stage": "account-active",
+      "commands": [
+        {
+          "op": "tamper",
+          "pick": 571912910
+        },
+        {
+          "op": "reopen",
+          "pick": 1196444288
+        },
+        {
+          "op": "reorder",
+          "pick": 1106933183
+        },
+        {
+          "op": "reopen",
+          "pick": 808001537
+        },
+        {
+          "op": "commit",
+          "pick": 268000966
+        }
+      ],
+      "finalMac": "3cd87d28057a0881fe8c68f82106d7246dfd8f7e5abb5e00cd8e13ed6e7f2584"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 1075527646
+        },
+        {
+          "op": "tamper",
+          "pick": 87497690
+        },
+        {
+          "op": "reorder",
+          "pick": 293086444
+        },
+        {
+          "op": "tamper",
+          "pick": 26
+        },
+        {
+          "op": "reopen",
+          "pick": 626203764
+        },
+        {
+          "op": "commit",
+          "pick": 29
+        },
+        {
+          "op": "tamper",
+          "pick": 217268120
+        },
+        {
+          "op": "commit",
+          "pick": 431979493
+        }
+      ],
+      "finalMac": "ea679d0d7c91c1158267d82e2c443da0ff2b866f93178f733cbf7e76d1dff2fc"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "reorder",
+          "pick": 553675672
+        },
+        {
+          "op": "reopen",
+          "pick": 1618107346
+        },
+        {
+          "op": "reorder",
+          "pick": 747434251
+        },
+        {
+          "op": "reorder",
+          "pick": 2097720525
+        },
+        {
+          "op": "commit",
+          "pick": 772628917
+        },
+        {
+          "op": "commit",
+          "pick": 1966258947
+        },
+        {
+          "op": "tamper",
+          "pick": 1621709837
+        },
+        {
+          "op": "reorder",
+          "pick": 905121080
+        },
+        {
+          "op": "commit",
+          "pick": 1736026690
+        },
+        {
+          "op": "reopen",
+          "pick": 1328143825
+        },
+        {
+          "op": "tamper",
+          "pick": 2126341586
+        },
+        {
+          "op": "reorder",
+          "pick": 1498615926
+        }
+      ],
+      "finalMac": "d4d8bbf91e7e4afe5955b5c28fc4a1b07a2cde905984fb44dbabcf10907a6824"
+    },
+    {
+      "v": 1,
+      "stage": "prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 357771858
+        },
+        {
+          "op": "commit",
+          "pick": 1905540371
+        },
+        {
+          "op": "reorder",
+          "pick": 795570323
+        }
+      ],
+      "finalMac": "66fcfac69417d610a62eb5f9bc2fd0605599531a33db561ae8063cbfbeeb0ddd"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 129304271
+        },
+        {
+          "op": "reorder",
+          "pick": 868600561
+        },
+        {
+          "op": "reorder",
+          "pick": 878554733
+        },
+        {
+          "op": "tamper",
+          "pick": 372346863
+        },
+        {
+          "op": "reopen",
+          "pick": 1576922820
+        },
+        {
+          "op": "commit",
+          "pick": 127522769
+        },
+        {
+          "op": "commit",
+          "pick": 729545178
+        }
+      ],
+      "finalMac": "5f6587a0afc2310f1e4f4ef24defea9c03409a56a2a89bab37c46bbce6da2aa5"
+    },
+    {
+      "v": 4,
+      "stage": "handoff-selected",
+      "commands": [
+        {
+          "op": "commit",
+          "pick": 1493262084
+        },
+        {
+          "op": "reorder",
+          "pick": 1294906529
+        },
+        {
+          "op": "reorder",
+          "pick": 1154225559
+        },
+        {
+          "op": "commit",
+          "pick": 956220554
+        },
+        {
+          "op": "commit",
+          "pick": 1939817754
+        },
+        {
+          "op": "commit",
+          "pick": 1207469296
+        },
+        {
+          "op": "commit",
+          "pick": 1548609900
+        }
+      ],
+      "finalMac": "0b3ba44909f41349172bcefa6c4e8d5661c0a273f99de3928972118cb02c5a9e"
+    },
+    {
+      "v": 3,
+      "stage": "admission-offered",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 910001496
+        },
+        {
+          "op": "tamper",
+          "pick": 1579027863
+        },
+        {
+          "op": "tamper",
+          "pick": 1361457341
+        },
+        {
+          "op": "commit",
+          "pick": 1278795275
+        }
+      ],
+      "finalMac": "0a6b19dc7f3c17879423b1a235c9b22ea031d79aa9c90cdaf212e1301e4b4b56"
+    },
+    {
+      "v": 2,
+      "stage": "genesis-prepared",
+      "commands": [
+        {
+          "op": "reopen",
+          "pick": 520541388
+        },
+        {
+          "op": "reorder",
+          "pick": 1867986683
+        },
+        {
+          "op": "reorder",
+          "pick": 1473578741
+        },
+        {
+          "op": "reorder",
+          "pick": 1352190006
+        },
+        {
+          "op": "tamper",
+          "pick": 1265531468
+        },
+        {
+          "op": "reopen",
+          "pick": 33996527
+        },
+        {
+          "op": "reorder",
+          "pick": 1190945951
+        },
+        {
+          "op": "reopen",
+          "pick": 107503975
+        }
+      ],
+      "finalMac": "d8bbe3968eac7260c4bc27f6d8896e756718048a9780657c6d6b7184117aea95"
+    }
+  ]
+}

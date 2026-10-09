@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "e18a77df",
+  "payloads": 177,
+  "compressedBytes": 596973,
+  "artifactsSha256": "3f88ef37494aa8e0e8066a8ceac07fbe843bdf828c9d2d876ba76a17f263cbdf",
+  "rawIndexSha256": "ac391367075658724de30cf064615b1e9e86342e2d6eb9b844d611a0f611b062",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-promotion-with-planning-authority-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "0960acae9863ddc59f69e58ff02a3f8db46dbe0990c32499908819f52533554f",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 15992,
+        "cases": 25,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "39848c40a4fe11f706f3b0c71ef09e91559dc31f90c1acc6c9def424e61757c8",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6138,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "19d4367fadd70445f5fee9bcb70ae434530406fec5725f061b49734f68ad856e",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4714,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "fb92e122b325490c5bf2e0df2862ad6c59e7cb61614a91d7b6f5480942059ef0",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5843,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-promotion/run.mjs",
+        "key": "c3d31b171aeb0008393514bd1a5a422a67581d1450d0cfa16a2b1e27db013bf8",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 56497,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-authority/run.mjs",
+        "key": "f6ef89aee5543b11b1075737924dbf855b397b3ca49b79031b89fc6242b7753d",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 33131,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:promotion-reuse",
+        "key": "c3d31b171aeb0008393514bd1a5a422a67581d1450d0cfa16a2b1e27db013bf8",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 56497,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T16:39:05.871Z",
+    "input": "c822b374b71ff169478790c7adaf80e67706fddd7d9006112fd423d85c5a78f6",
+    "completedAt": "2026-09-15T16:41:54.069Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 90,
+    "campaign": 58
+  },
+  "claim": "Bounded Account promotion wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

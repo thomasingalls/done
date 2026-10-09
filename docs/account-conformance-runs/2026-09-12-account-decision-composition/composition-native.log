@@ -1,0 +1,20 @@
+(node:30887) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30887) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual HTTP accepted decision persists exact evidence and original source through cold compaction (10795.871708ms)
+✔ actual HTTP closed decision persists exact evidence and original source through cold compaction (10681.678416ms)
+✔ actual HTTP conflict decision persists exact evidence and original source through cold compaction (10702.723791ms)
+✔ automatic sender closed, lost reply false, halts without reseal and preserves later Local edits (9397.211792ms)
+✔ automatic sender closed, lost reply true, halts without reseal and preserves later Local edits (11380.71975ms)
+✔ automatic sender conflict, lost reply false, halts without reseal and preserves later Local edits (9430.198583ms)
+✔ automatic sender conflict, lost reply true, halts without reseal and preserves later Local edits (11347.683458ms)
+✔ shared sync scheduler keeps lane-specific outcomes for a real closed delivery decision (8912.865292ms)
+✔ shared sync scheduler keeps lane-specific outcomes for a real conflict delivery decision (8911.450083ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93485.006

@@ -1,0 +1,1057 @@
+{
+  "seed": 9232026,
+  "histories": [
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "wrong",
+        "finish",
+        "abandon",
+        "finish",
+        "finish",
+        "offer",
+        "wrong",
+        "abandon",
+        "wrong",
+        "offer",
+        "offer",
+        "offer"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "offer",
+        "abandon",
+        "abandon",
+        "offer",
+        "finish",
+        "abandon",
+        "restart",
+        "offer",
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "wrong",
+        "offer",
+        "finish",
+        "abandon",
+        "abandon",
+        "restart",
+        "finish",
+        "wrong",
+        "abandon",
+        "abandon",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "restart",
+        "restart",
+        "restart",
+        "wrong",
+        "abandon",
+        "abandon",
+        "abandon",
+        "abandon",
+        "wrong",
+        "abandon",
+        "abandon",
+        "abandon",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "offer",
+        "restart"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "restart"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "offer",
+        "abandon",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "wrong",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "offer",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "offer",
+        "wrong",
+        "finish",
+        "offer",
+        "finish",
+        "offer",
+        "abandon",
+        "finish",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "offer",
+        "finish",
+        "abandon",
+        "restart",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "finish",
+        "restart",
+        "abandon",
+        "wrong",
+        "abandon",
+        "wrong",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "finish",
+        "wrong",
+        "finish",
+        "offer",
+        "finish",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "restart",
+        "restart"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "restart",
+        "offer",
+        "offer",
+        "offer",
+        "finish",
+        "offer",
+        "finish"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "abandon",
+        "offer",
+        "restart",
+        "finish",
+        "abandon",
+        "abandon",
+        "finish",
+        "offer",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "offer",
+        "restart",
+        "finish",
+        "offer",
+        "offer",
+        "offer",
+        "offer",
+        "finish",
+        "abandon",
+        "offer",
+        "offer",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "offer",
+        "restart",
+        "offer",
+        "wrong",
+        "restart",
+        "wrong",
+        "offer",
+        "finish"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "offer",
+        "abandon",
+        "restart",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "offer",
+        "wrong",
+        "finish",
+        "restart",
+        "finish",
+        "restart",
+        "offer",
+        "abandon",
+        "offer",
+        "wrong",
+        "wrong",
+        "wrong"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "offer",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "offer",
+        "finish",
+        "finish",
+        "wrong",
+        "finish",
+        "finish",
+        "abandon",
+        "finish",
+        "offer",
+        "abandon",
+        "abandon",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "wrong",
+        "wrong",
+        "wrong",
+        "finish",
+        "offer",
+        "wrong",
+        "finish",
+        "abandon",
+        "abandon",
+        "offer"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "wrong",
+        "wrong",
+        "finish",
+        "abandon",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "restart",
+        "wrong",
+        "finish",
+        "restart",
+        "finish",
+        "abandon",
+        "offer",
+        "abandon",
+        "finish",
+        "abandon",
+        "offer",
+        "restart",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "restart",
+        "abandon",
+        "wrong",
+        "offer",
+        "wrong",
+        "finish",
+        "restart",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "restart",
+        "abandon",
+        "restart",
+        "restart",
+        "wrong",
+        "wrong",
+        "restart",
+        "finish",
+        "restart",
+        "offer",
+        "offer",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "abandon",
+        "wrong",
+        "abandon",
+        "wrong",
+        "restart",
+        "abandon",
+        "finish",
+        "finish",
+        "wrong",
+        "restart",
+        "offer",
+        "abandon",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "wrong",
+        "wrong",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "abandon",
+        "abandon",
+        "wrong",
+        "offer",
+        "finish",
+        "offer",
+        "abandon",
+        "wrong",
+        "finish",
+        "wrong",
+        "finish",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "abandon",
+        "finish",
+        "wrong",
+        "abandon",
+        "restart",
+        "wrong",
+        "wrong",
+        "wrong",
+        "abandon",
+        "offer",
+        "restart",
+        "finish",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "finish"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "offer",
+        "abandon",
+        "offer",
+        "finish",
+        "wrong",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "wrong",
+        "finish",
+        "finish",
+        "finish"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "offer",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "wrong",
+        "wrong",
+        "offer",
+        "offer",
+        "wrong",
+        "abandon",
+        "offer",
+        "abandon",
+        "offer",
+        "offer",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "restart",
+        "restart",
+        "offer",
+        "abandon",
+        "abandon",
+        "abandon",
+        "restart",
+        "offer",
+        "abandon",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "abandon",
+        "wrong",
+        "finish",
+        "offer",
+        "offer",
+        "restart",
+        "abandon",
+        "offer",
+        "restart",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "finish",
+        "finish",
+        "offer",
+        "restart",
+        "abandon",
+        "offer",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "wrong",
+        "offer",
+        "abandon",
+        "offer",
+        "restart",
+        "wrong",
+        "offer",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "offer",
+        "restart",
+        "abandon",
+        "offer",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "finish",
+        "wrong",
+        "abandon",
+        "finish",
+        "wrong",
+        "wrong",
+        "offer",
+        "offer",
+        "wrong",
+        "offer",
+        "abandon",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "wrong",
+        "wrong",
+        "restart"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "finish",
+        "abandon",
+        "wrong",
+        "wrong",
+        "offer",
+        "abandon",
+        "offer",
+        "wrong",
+        "finish",
+        "wrong",
+        "wrong",
+        "abandon",
+        "finish",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "wrong",
+        "offer",
+        "finish",
+        "offer",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "wrong",
+        "abandon",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "wrong",
+        "restart",
+        "abandon",
+        "wrong",
+        "restart",
+        "restart",
+        "finish",
+        "offer",
+        "wrong",
+        "abandon",
+        "restart",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "offer",
+        "finish",
+        "finish",
+        "abandon",
+        "offer",
+        "restart",
+        "restart",
+        "restart",
+        "offer",
+        "offer",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "abandon",
+        "offer",
+        "restart",
+        "restart",
+        "finish",
+        "abandon",
+        "restart",
+        "abandon",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "wrong",
+        "finish",
+        "finish",
+        "restart",
+        "restart",
+        "wrong",
+        "abandon",
+        "abandon",
+        "offer",
+        "finish",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "wrong",
+        "restart",
+        "offer",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "wrong",
+        "abandon",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "offer",
+        "finish",
+        "finish",
+        "restart",
+        "abandon",
+        "finish",
+        "restart",
+        "wrong",
+        "wrong",
+        "abandon"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "finish",
+        "offer",
+        "restart",
+        "abandon",
+        "wrong",
+        "wrong"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "abandon",
+        "finish",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "finish",
+        "wrong",
+        "abandon",
+        "offer",
+        "finish",
+        "finish",
+        "offer",
+        "restart",
+        "finish",
+        "offer",
+        "abandon",
+        "offer",
+        "restart",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "wrong",
+        "abandon",
+        "finish",
+        "restart",
+        "abandon",
+        "finish",
+        "wrong",
+        "wrong",
+        "offer",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "offer",
+        "restart",
+        "restart",
+        "wrong"
+      ],
+      "state": "offered"
+    },
+    {
+      "commands": [
+        "wrong",
+        "restart",
+        "abandon",
+        "offer",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "wrong",
+        "finish"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "wrong",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "finish",
+        "wrong",
+        "abandon",
+        "abandon",
+        "wrong",
+        "restart",
+        "offer"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "finish",
+        "offer",
+        "offer",
+        "finish",
+        "offer"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "offer",
+        "finish",
+        "offer",
+        "abandon",
+        "abandon",
+        "restart",
+        "wrong",
+        "abandon",
+        "finish"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "finish",
+        "wrong",
+        "restart",
+        "restart"
+      ],
+      "state": "pending"
+    },
+    {
+      "commands": [
+        "restart",
+        "wrong",
+        "restart",
+        "wrong",
+        "restart",
+        "abandon",
+        "restart",
+        "wrong",
+        "offer"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "finish",
+        "wrong",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "abandon",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "wrong",
+        "restart",
+        "restart",
+        "finish",
+        "finish",
+        "restart",
+        "abandon",
+        "restart"
+      ],
+      "state": "active"
+    },
+    {
+      "commands": [
+        "wrong",
+        "wrong",
+        "restart",
+        "restart",
+        "abandon",
+        "finish",
+        "wrong",
+        "restart"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "restart",
+        "abandon",
+        "abandon",
+        "restart",
+        "wrong",
+        "abandon",
+        "offer",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "offer",
+        "offer",
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "wrong",
+        "restart",
+        "finish",
+        "restart",
+        "abandon",
+        "finish",
+        "offer",
+        "finish",
+        "wrong",
+        "abandon",
+        "offer",
+        "finish",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "offer",
+        "offer",
+        "abandon",
+        "finish",
+        "wrong",
+        "wrong",
+        "wrong",
+        "finish",
+        "wrong",
+        "finish",
+        "offer",
+        "wrong"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "restart",
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "wrong",
+        "wrong",
+        "abandon",
+        "restart",
+        "finish",
+        "finish",
+        "offer",
+        "wrong",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled"
+    },
+    {
+      "commands": [
+        "offer",
+        "wrong",
+        "wrong",
+        "restart",
+        "abandon"
+      ],
+      "state": "cancelled"
+    }
+  ]
+}

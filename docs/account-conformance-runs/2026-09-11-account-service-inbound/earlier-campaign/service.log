@@ -1,0 +1,39 @@
+(node:24985) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24985) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual reader omission produces a signed page forbidden by the baseline (110.701917ms)
+✔ actual publisher omission produces a signed page forbidden by the baseline (85.808459ms)
+✔ actual signature omission produces a signed page forbidden by the baseline (85.132541ms)
+✔ actual current omission produces a signed page forbidden by the baseline (96.120458ms)
+✔ actual registration omission produces a signed page forbidden by the baseline (89.039ms)
+✔ actual witness omission produces a signed page forbidden by the baseline (94.178875ms)
+✔ actual expiry omission produces a signed page forbidden by the baseline (88.188541ms)
+✔ actual custody omission produces a signed page forbidden by the baseline (87.114958ms)
+(node:24991) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24991) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose (169.129459ms)
+✔ each role, pin field, signature, expiry and extent is checked with no service writes (101.225666ms)
+✔ maximum wire sizes still produce byte-bounded pages without losing a position (23191.008ms)
+✔ registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse (70.378333ms)
+✔ state change after verification refuses and four racing snapshots exhaust retries (58.696917ms)
+✔ caller bytes are copied and a concurrent append forces fresh census after crypto (43.083667ms)
+✔ expiry and custody loss on the far side of signing withhold every page byte (43.308291ms)
+✔ another service process cannot change membership during synchronous page signing (145.024042ms)
+(node:25013) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25013) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 60 generated append/read/restart/replay/role/ledger histories preserve original prefixes (5646.14525ms)
+(node:25018) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25018) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service SIGKILL after verified read leaves no writes and retry returns originals (276.578ms)
+✔ service SIGKILL after signed read leaves no writes and retry returns originals (255.375666ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 31733.935917

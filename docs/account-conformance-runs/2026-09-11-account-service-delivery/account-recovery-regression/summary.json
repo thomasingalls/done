@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T22:03:26.494Z",
+  "completedAt": "2026-09-10T22:03:31.098Z",
+  "code": 0,
+  "timedOut": false,
+  "scope": "Private recovery preparation; independent crypto, generated ledgers, deliberate controls, SIGKILL service restarts, IndexedDB aborts, renderer death and disposable Chromium WebAuthn. Accounts stay pending; no personal operations."
+}

@@ -1,0 +1,176 @@
+{
+  "seed": 9182026,
+  "runs": 12,
+  "histories": [
+    {
+      "actions": [
+        {
+          "cut": "none",
+          "compact": false,
+          "cold": false
+        }
+      ],
+      "expected": "0"
+    },
+    {
+      "actions": [
+        {
+          "cut": "before",
+          "compact": true,
+          "cold": true
+        },
+        {
+          "cut": "after",
+          "compact": true,
+          "cold": false
+        },
+        {
+          "cut": "after",
+          "compact": true,
+          "cold": true
+        }
+      ],
+      "expected": "012"
+    },
+    {
+      "actions": [
+        {
+          "cut": "none",
+          "compact": false,
+          "cold": true
+        },
+        {
+          "cut": "after",
+          "compact": false,
+          "cold": false
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "after",
+          "compact": false,
+          "cold": true
+        },
+        {
+          "cut": "before",
+          "compact": true,
+          "cold": false
+        },
+        {
+          "cut": "none",
+          "compact": true,
+          "cold": true
+        }
+      ],
+      "expected": "012"
+    },
+    {
+      "actions": [
+        {
+          "cut": "before",
+          "compact": true,
+          "cold": false
+        }
+      ],
+      "expected": "0"
+    },
+    {
+      "actions": [
+        {
+          "cut": "none",
+          "compact": true,
+          "cold": false
+        },
+        {
+          "cut": "before",
+          "compact": true,
+          "cold": false
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "none",
+          "compact": true,
+          "cold": false
+        }
+      ],
+      "expected": "0"
+    },
+    {
+      "actions": [
+        {
+          "cut": "after",
+          "compact": true,
+          "cold": true
+        },
+        {
+          "cut": "after",
+          "compact": false,
+          "cold": true
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "after",
+          "compact": true,
+          "cold": false
+        },
+        {
+          "cut": "none",
+          "compact": true,
+          "cold": false
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "after",
+          "compact": false,
+          "cold": true
+        },
+        {
+          "cut": "none",
+          "compact": true,
+          "cold": true
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "before",
+          "compact": false,
+          "cold": true
+        },
+        {
+          "cut": "after",
+          "compact": true,
+          "cold": true
+        }
+      ],
+      "expected": "01"
+    },
+    {
+      "actions": [
+        {
+          "cut": "before",
+          "compact": true,
+          "cold": false
+        }
+      ],
+      "expected": "0"
+    }
+  ]
+}

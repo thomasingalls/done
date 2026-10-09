@@ -1,0 +1,9 @@
+{
+  "baseline": "f42b4a70b4301ad76545f343bcf185f99c189857",
+  "phase": "privacy",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise"
+}

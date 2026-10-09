@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual scheduler overlap control demonstrates its prohibited invocation" time="0.030606" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/controls.test.mjs"/>
+	<testcase name="actual scheduler after-close control demonstrates its prohibited invocation" time="0.003091" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/controls.test.mjs"/>
+	<testcase name="actual dispatch guard control sends after connectivity changes at the final fetch boundary" time="10.856242" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native-controls.test.mjs"/>
+	<testcase name="startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin" time="11.968354" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="unknown replies back off despite edits, then online wake retries exact bytes before new content" time="6.500285" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="cold restart resolves a persisted unknown wrapper before any new seal" time="7.867269" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="verified closed evidence halts automatic publication and retains later Local edits" time="6.546722" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="verified conflict evidence halts automatic publication and retains later Local edits" time="6.541404" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="verified finalized evidence halts automatic publication and retains later Local edits" time="6.507945" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="close during backoff removes wake sources and never waits for the retry deadline" time="6.303179" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="close drains a late fetch while retaining the native slot permit" time="5.042735" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="Local storage failure pauses publication and restoring admission wakes retained work" time="6.385267" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures" time="103.541472" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<testcase name="browser polling awaits false results instead of treating their Promise as success" time="4.546047" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs"/>
+	<!-- tests 14 -->
+	<!-- suites 0 -->
+	<!-- pass 14 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 185674.980375 -->
+</testsuites>

@@ -1,0 +1,11 @@
+✔ real factor-opened owners derive the specified keys and persist exact store and writer/ordinal journal bytes across reopen and flush (542.029292ms)
+✔ native cold recovery refuses changed record placement/header/tag and copied journal writer/ordinal/scope without deletion (809.414ms)
+✔ removing storeId from actual custody HKDF still makes locally usable ciphertext but the independent owner-byte check detects it (403.830875ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2353.390542

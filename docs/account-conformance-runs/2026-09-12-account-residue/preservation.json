@@ -1,0 +1,270 @@
+{
+  "base": "6a9c9c42d2d10a1d0dbfd3030497b5a3cb0fe248",
+  "campaign": "test-results/account-residue/2026-09-12T00-36-59.609Z",
+  "personalFiles": [
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js",
+      "sha256": "3ac59f06a8feecd324d551ce7b64bac42f2bd4334aa6e11989582f7630d25b77"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/assets/main-CZBDGDKK.js.map",
+      "sha256": "22c4b0b24e48ccda6b6741e8c726a69b29b65bb85bd1bbffbf63f4a68dfa1cff"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/index.html",
+      "sha256": "b1c40d390f76787eb8f386b047d3412b0ee319a6e35a5b38974b70174f0ad244"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/local.html",
+      "sha256": "58f9fb240a2ca48aff5715341e4d4748502e2c7a28ae29b3762c64bcefc186b2"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/dist/sw.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/assets/main-QtGIH--m.js",
+      "sha256": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/index.html",
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/local.html",
+      "sha256": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app/sw.js",
+      "sha256": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a"
+    }
+  ],
+  "priorVectorFiles": [
+    {
+      "path": "test/vectors/account-checkpoint.json",
+      "sha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03"
+    },
+    {
+      "path": "test/vectors/account-counter.json",
+      "sha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
+    },
+    {
+      "path": "test/vectors/account-credential.json",
+      "sha256": "ca891a46e3739dac529893bd687b7436f15b0044c2477253104a6e26b8827e5b"
+    },
+    {
+      "path": "test/vectors/account-ledger.json",
+      "sha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c"
+    },
+    {
+      "path": "test/vectors/account-local-custody.json",
+      "sha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27"
+    },
+    {
+      "path": "test/vectors/account-local-provenance.json",
+      "sha256": "a15f93629a0657756159db942e959ec9dc594b1b225b64082d9d030d2e08231d"
+    },
+    {
+      "path": "test/vectors/account-promotion.json",
+      "sha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34"
+    },
+    {
+      "path": "test/vectors/account-recovery.json",
+      "sha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a"
+    },
+    {
+      "path": "test/vectors/account-service-custody.json",
+      "sha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c"
+    },
+    {
+      "path": "test/vectors/account-store.json",
+      "sha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
+    },
+    {
+      "path": "test/vectors/account-transport.json",
+      "sha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41"
+    },
+    {
+      "path": "test/vectors/admission-coverage.json",
+      "sha256": "1e20a41ed2dd7330833090d1fa033a4e84c764a7bbd3de891edcf49fb8690712"
+    },
+    {
+      "path": "test/vectors/algorithm-suite.json",
+      "sha256": "a844647ff43a851016742f25fed41e4fd513ab467452d85e40d39375f2e7fd22"
+    },
+    {
+      "path": "test/vectors/antireplay.json",
+      "sha256": "58c00dc33f0db2fcbb8de7e6826c0c35afe61662b22bcea4210c9b5b832e37b7"
+    },
+    {
+      "path": "test/vectors/attribution.json",
+      "sha256": "cf9f8c33898588e204e93436307e62f130576784b08db7e1af9d166f2e15182b"
+    },
+    {
+      "path": "test/vectors/checkpoint.json",
+      "sha256": "803d8c3a2532dd70a0c2dd76fe6dbeb855e4a43bb764f150ef4c490ff1259893"
+    },
+    {
+      "path": "test/vectors/device-lock.json",
+      "sha256": "8e56b26b79389995d4e1d308728ab6160087dff0ea147c908334ea4759973862"
+    },
+    {
+      "path": "test/vectors/enrollment-ceremony.json",
+      "sha256": "d7f7184a427f1ebbf178c2e8fa410d0436254790a239c3dc4e0a6b37ff20ef84"
+    },
+    {
+      "path": "test/vectors/envelope.json",
+      "sha256": "12953a7382ef7005ec50d6ed64449e3a9ecfd0161f2b06b33b2621e550905029"
+    },
+    {
+      "path": "test/vectors/finalization.json",
+      "sha256": "4aefdafcc053f1b45ca9535d60db34a069614c0436d96c0aae7e17a6351e13f1"
+    },
+    {
+      "path": "test/vectors/first-authority.json",
+      "sha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9"
+    },
+    {
+      "path": "test/vectors/head-discovery.json",
+      "sha256": "dd348ad5e0abb92f83e2c794ab7c3bfe4967b23026e1cff908b2f1da12db10ae"
+    },
+    {
+      "path": "test/vectors/historical/README.md",
+      "sha256": "6110e2aac28fc30682160aa763a6db9fc4e8903646b32b507afaf8ee89c50ea9"
+    },
+    {
+      "path": "test/vectors/historical/recovery-code.scalar-only.json",
+      "sha256": "08900f54013d8211462f3e38af161a163423c2d62d6925eebc439bc9da972a19"
+    },
+    {
+      "path": "test/vectors/journal-aead.json",
+      "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
+    },
+    {
+      "path": "test/vectors/package.json",
+      "sha256": "c625ce1d70ad65e58c8b803879a39ddfc2984003ccf7f746ef0db3e34241e610"
+    },
+    {
+      "path": "test/vectors/private-envelope.json",
+      "sha256": "81a753a0aaf2e8ffb354a699340b294638f9fdb0cdbfdcbbf97cc7fc5e6b3dd5"
+    },
+    {
+      "path": "test/vectors/record-format.json",
+      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+    },
+    {
+      "path": "test/vectors/recovery-code.json",
+      "sha256": "49b741f2a0970ea91084d0c90e3fb9e430db886e88633e0b3df8263feb24f6b8"
+    },
+    {
+      "path": "test/vectors/transition.json",
+      "sha256": "7569daf02c789ac47bb2070d3afdf3b5ec0dcf9255ef74b434c682cde6e91a66"
+    },
+    {
+      "path": "test/vectors/web-security-baseline.json",
+      "sha256": "1c7981b9043a50cf2705f21ac9cd53d7af4ce175ea77d1141c255e8e179ef797"
+    }
+  ],
+  "historicalReviewSha256": "c48a517fd90c9dd0d06a799721a3fafc9b5680eee381d39900ccafad31f95dac",
+  "L2Sha256": "447a086b85b1168047add2d02833e31b10d9cfaee961bab270e5f712f5b612bc",
+  "verifiedSignatures": [
+    "6a9c9c42d2d10a1d0dbfd3030497b5a3cb0fe248 G",
+    "f118127c3156de1bac44cc731e51ffc2296643f5 G",
+    "3b0a1ba54ead617bf1c994fffbaa1844b4a59eec G",
+    "77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3 G",
+    "f0b6acd2e624d89034c88706d4053a830ab50cc6 G",
+    "2bbb4c6be75f93b3516b57605cf7b13770f5e3b6 G",
+    "c10dee3c850c5e56ced82657fe0dbb8b2ac3d053 G",
+    "ec889d9317da743f225960afea3afe4d3589878f G",
+    "393ef435af72a5c0b8e2d19b410a5d932400f902 G",
+    "555523863b0dc999e4fe1407a6883d000f233e75 G",
+    "862a9d75af5b8f452503f4aff04417a970dcbfa6 G",
+    "ed1a930471ac19db023d592b16136c662e305dfa G",
+    "1500379624e8d02b46a83eb102bd801a6db64c07 G",
+    "10fef3d7216adcc8fb893a4aa400d2bceb958d73 G",
+    "437bc86a1ee34fb02a65e425f0ae5bb0e0e83d61 G",
+    "32d4074bef4492f46742940a2685d7febff7ed4d G",
+    "a20e4392ae152b5920080668dd6077e8bfa9749f G"
+  ],
+  "sourcePinsVerified": 871,
+  "previousSourcePinChecks": [
+    {
+      "sourceSet": "prep",
+      "verifiedAtPreparationCommit": 71,
+      "currentDifferences": [
+        "package.json"
+      ]
+    },
+    {
+      "sourceSet": "admission",
+      "verifiedAtPreparationCommit": 898,
+      "currentDifferences": [
+        "package.json"
+      ]
+    }
+  ],
+  "productionPathsUnchanged": [
+    "src",
+    "account-protocol",
+    "account-service",
+    "relay",
+    "private",
+    "vite",
+    "public",
+    "test/vectors",
+    "pnpm-lock.yaml"
+  ],
+  "indexEmpty": true,
+  "personalServersRestarted": false,
+  "realAccountProvisioned": false,
+  "personalProfileOrRecoveryInspected": false,
+  "newBundlesWrittenToRootDist": false
+}

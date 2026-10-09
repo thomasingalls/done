@@ -1,0 +1,20 @@
+{
+  "baseCommit": "1ceb88d3f5b203a9034501b816a426663e060a0e",
+  "campaignCodeInputsMatch": 500,
+  "isolatedRuntimeInputsMatch": 170,
+  "reviewUnchanged": true,
+  "otherSeatUnchanged": true,
+  "personalBundles": {
+    "/Users/thomasingalls/.codex/worktrees/c030/done/dist": {
+      "files": 11,
+      "unchanged": true
+    },
+    "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app": {
+      "files": 10,
+      "unchanged": true
+    }
+  },
+  "fullAggregateRerun": false,
+  "docsWrittenAfterTests": true,
+  "regressionScope": "Manual receive source and v8 sender unchanged by later scheduler-only corrections. Final new-driver campaign and full units cover the final scheduler."
+}

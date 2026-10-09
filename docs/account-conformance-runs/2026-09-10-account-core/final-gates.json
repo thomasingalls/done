@@ -1,0 +1,96 @@
+[
+  {
+    "args": [
+      "check-yjs-patch.mjs"
+    ],
+    "status": 0,
+    "output": "Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.\n"
+  },
+  {
+    "args": [
+      "check-retention.mjs"
+    ],
+    "status": 0,
+    "output": "retention: 12 months stated consistently across 6 anchors; every §16 unselected cell is bounded and open; §14.7's 6 states and 6 deletion classes match the executable model and stay disjoint from §13.7's 3 kinds and from §13.5's lineage words; the published deletion-authority domain, §14.7's table and the model agree on one six-class order with the boundary tokens stated in both; and 8 destructive-boundary homes carry the ratified sentences with the superseded ones refused (P-4 falsifiers 17 and 19 — byte rules; the boundary's execution semantics are the model tests' to prove).\n"
+  },
+  {
+    "args": [
+      "check-selection-status.mjs"
+    ],
+    "status": 0,
+    "output": "selection status: 18 selected and 3 unselected rows, disjoint, and the stated counts match; 5 PRD sentences cite a row and none disagrees with its membership.\n  Membership and counts only: a construction cell describing a selected row as open is outside this scan (S0-9 E3/E4; row 3’s cell landed at the S0-3 return, and pnpm admission:check reads it).\n"
+  },
+  {
+    "args": [
+      "check-update-limit.mjs"
+    ],
+    "status": 0,
+    "output": "update limit: 0.0476 µs/byte from 3 measurements; the budget is exhausted at 19.6 kB and §12's 4 extrapolated rows agree; the interim 16 kB is under it and under the module's guard.\n"
+  },
+  {
+    "args": [
+      "check-authority-map.mjs"
+    ],
+    "status": 0,
+    "output": "authority map: 34 entries, 37 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 8 swept documents sits in a pinned section.\n  open at their own joint: 0\n  blocked through an open home: 0\n  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Class 1 closes when \"open\" reads zero.\n"
+  },
+  {
+    "args": [
+      "check-recipient-authority.mjs"
+    ],
+    "status": 0,
+    "output": "recipient authority: the ratified formulas are stated at the named homes, the retired sentences appear in none of them, and the enrollment transcript, hash, wrap info and SAS reconstruct from published inputs alone.\n  Scope: byte rules over the named homes and one vector reconstruction — never construction soundness (the negatives and vectors:coverage own that) and never implementation (the authority map’s status lines own that).\n"
+  },
+  {
+    "args": [
+      "check-write-admission.mjs"
+    ],
+    "status": 0,
+    "output": "write admission: the ratified scope, carrier and fence are stated at the named homes, the retired sentences appear in none of them, and the record vectors — two stores, two subkeys — reconstruct from published inputs alone.\n  Scope: byte rules over the named homes and two vector reconstructions — never construction soundness and never implementation. Vectors cover declared cases; production obligations remain in storage-conformance.md.\n"
+  },
+  {
+    "args": [
+      "remediation-status.mjs",
+      "--check"
+    ],
+    "status": 0,
+    "output": "remediation census: 48 documents (25 home · 21 record · 1 projection · 1 superseded), 21 pins current; 5 ratified · 3 decided; HANDOFF's dates, options and owed ranges agree in both directions.\n  Scope: standings, pins, readback existence, header/claim agreement, the S0-9 input rule and two named sentence negatives — byte rules, never an execution receipt (FU-14's receipts live at trace:check since the S0-8 regeneration; this stays byte rules).\n"
+  },
+  {
+    "args": [
+      "check-debts.mjs",
+      "--check"
+    ],
+    "status": 0,
+    "output": "debts: 9 registered (8 open · 1 paid · 0 waived), entries valid, pins current, gate-class census total, homes agree. Scope: the manifest and its byte rules, plus §10.11's evidence table held to the X25519 payment record in both directions — a gate arrival is evaluated by --gate, and blocking happens there.\n"
+  },
+  {
+    "args": [
+      "check-wasm-seal.mjs"
+    ],
+    "status": 0,
+    "output": "journal seal: 28 checks pass — the published KAT, 4 composition vectors, authenticated open/tag refusal, disposal, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).\n"
+  },
+  {
+    "args": [
+      "check-budget.mjs"
+    ],
+    "status": 0,
+    "output": "index.html\n   327.2 kB  /assets/main-CQ3wFtsf.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\nlocal.html\n   327.2 kB  /assets/main-CQ3wFtsf.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\n     5.1 kB  (css, informational — the budget is on JS)\n"
+  },
+  {
+    "args": [
+      "check-origin-isolation.mjs"
+    ],
+    "status": 0,
+    "output": "origin isolation: scanned 7 built files\n  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)\n  no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)\n"
+  },
+  {
+    "args": [
+      "check-traceability.mjs",
+      "--check"
+    ],
+    "status": 0,
+    "output": "traceability: 101 claims, 28 of 28 current defects carry a named falsifier, 9 registered debts. Script claims credited by execution receipts; recency held against 9edd930. docs/review/remediation/traceability.md is current.\n"
+  }
+]

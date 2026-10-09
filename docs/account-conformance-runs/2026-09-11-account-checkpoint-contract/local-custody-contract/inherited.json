@@ -1,0 +1,15 @@
+{
+  "seals": 3,
+  "envelopes": 2,
+  "pins": [
+    {
+      "path": "test/vectors/device-lock.json",
+      "sha256": "8e56b26b79389995d4e1d308728ab6160087dff0ea147c908334ea4759973862"
+    },
+    {
+      "path": "test/vectors/record-format.json",
+      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+    }
+  ],
+  "excluded": "historical wrapping replacement seal and PRF ceremonies; later generation is byte syntax only"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "baseline",
+    "session": "confirm-0",
+    "started": "2026-09-15T07:18:27.967Z",
+    "finished": "2026-09-15T07:19:13.563Z",
+    "code": 0
+  },
+  {
+    "variant": "combined",
+    "session": "confirm-0",
+    "started": "2026-09-15T07:19:13.564Z",
+    "finished": "2026-09-15T07:19:55.368Z",
+    "code": 0
+  },
+  {
+    "variant": "combined",
+    "session": "confirm-1",
+    "started": "2026-09-15T07:19:55.369Z",
+    "finished": "2026-09-15T07:20:37.817Z",
+    "code": 0
+  },
+  {
+    "variant": "baseline",
+    "session": "confirm-1",
+    "started": "2026-09-15T07:20:37.818Z",
+    "finished": "2026-09-15T07:21:22.035Z",
+    "code": 0
+  }
+]

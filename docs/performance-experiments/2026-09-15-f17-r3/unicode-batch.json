@@ -1,0 +1,16 @@
+[
+  {
+    "variant": "selected",
+    "session": "unicode-0",
+    "started": "2026-09-15T08:27:37.916Z",
+    "finished": "2026-09-15T08:28:20.926Z",
+    "code": 0
+  },
+  {
+    "variant": "candidate",
+    "session": "unicode-0",
+    "started": "2026-09-15T08:28:20.927Z",
+    "finished": "2026-09-15T08:29:02.512Z",
+    "code": 0
+  }
+]

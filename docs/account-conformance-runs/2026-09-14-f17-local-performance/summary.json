@@ -1,0 +1,49 @@
+{
+  "base": "0c84e5cce1149d2c163dae3a9fc7fc84dba35eeb",
+  "scope": "Private Local preparation comparison; candidate application gate; no default activation",
+  "protocolFrozenBeforeTimings": {
+    "at": "2026-09-14T21:13:46.963Z",
+    "inputsSha256": "4575602e20f517d5dda450019bb47055c73be4b70366df2a646e4f8be00dc098",
+    "protocol": "a4619f49a529f9dd1785a92abe222a158d87292e70ec0ffef816b4dcf806aab9",
+    "build": "a02b4f420b1646c8ccc45192130465255e6933726e719f9912854f426b87195e",
+    "worker": "cfb412c5d6b10aa4f38cf1ee893bdfabdafcba5565f024d6360f8d30a71b4b33",
+    "run": "9352be68ff0631e4a264596b335bb73b1851fcc2a8eb70c84acd12379e630f88",
+    "analysis": "b91e7b58e76b32e1c82d7590dad066e4b278b45a6f109091f08f18a5da960d27"
+  },
+  "node": {
+    "sessions": 54,
+    "warmups": 1296,
+    "measured": 3456,
+    "semanticChecks": "passed",
+    "relativeCriteria": "passed"
+  },
+  "application": {
+    "status": "failed",
+    "reason": "CPU-4x Android card typing p95 63.5 ms exceeds unchanged <16 ms budget",
+    "desktopCardP95Ms": 12.90000057220459,
+    "androidCardP95Ms": 63.5,
+    "casesExecuted": 12,
+    "caseStatuses": {
+      "passed": 11,
+      "failedAfterAllBudgetHook": 1
+    },
+    "measurementRows": 30,
+    "groupDrained": true,
+    "elapsedMs": 130777,
+    "raw": "test-results/f17-local-performance/application-candidate"
+  },
+  "decision": "Keep candidate private; F-17 partial",
+  "counts": {
+    "obligations": 616,
+    "unresolved": 159,
+    "command": 96,
+    "campaign": 63,
+    "unresolvedTestFiles": 0,
+    "generalFiles": 261,
+    "generalDispositions": 2073,
+    "notApplicable": 11
+  },
+  "prospectivePacketCeilingBytes": 250000,
+  "artifactIndexSha256": "e942b8f6098c25f8b510e3e7b6f72d9f5c30fa4b1ecece7537dd9ddfaab271fc",
+  "next": "Diagnose remaining candidate browser cost before choosing another F-17 repair; wrapper and immutable qualification remain open."
+}

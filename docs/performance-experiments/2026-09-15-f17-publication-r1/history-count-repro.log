@@ -1,0 +1,33 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-publication-r1/candidate
+
+ ❯ test/workspacePublication.test.ts (9 tests | 1 failed | 8 skipped) 11ms
+   × reads current runtime undo counts after the existing out-of-band history-clear diagnostic 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspacePublication.test.ts > reads current runtime undo counts after the existing out-of-band history-clear diagnostic
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/workspacePublication.test.ts:374:26
+    372|     f.history.clear();
+    373|     const cleared = f.read();
+    374|     expect(cleared.undo).toBe(0); expect(cleared.redo).toBe(0);
+       |                          ^
+    375|     expect(spy).toHaveBeenCalledTimes(0);
+    376|     expect(cleared).toEqual(f.full());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  12:42:46
+   Duration  353ms (transform 104ms, setup 35ms, import 210ms, tests 11ms, environment 0ms)
+

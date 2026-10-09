@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T20:24:52.972Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private v7 Account position allocation, distinct native invocation grants, exact persisted v2 envelopes, source/actor coverage, cold restart and cancellation. No sending, acceptance, refusal, relay, default cutover or personal operations.",
+  "completedAt": "2026-09-10T20:26:57.590Z"
+}

@@ -1,0 +1,138 @@
+{
+  "signedBase": "aa54be3161c2267404e7a5901bad117757105013",
+  "sessions": [
+    {
+      "mode": "diagnostic",
+      "variant": "selected",
+      "session": "cost-0",
+      "sha256": "17b5b87e3918ecc7b2bc8fea87247d51916e3b2f20adda6cf3b0439f28d1563b",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "diagnostic",
+      "variant": "guarded",
+      "session": "cost-0",
+      "sha256": "dad1c28768c87156dac3309afcdfbc17d762a467d76306f0e523f051e3f7c2ec",
+      "measuredKeys": 80,
+      "reuses": [
+        40,
+        40
+      ]
+    },
+    {
+      "mode": "diagnostic",
+      "variant": "guarded",
+      "session": "cost-1",
+      "sha256": "8951de169b4ba653ce14bb9b859bab2386214edce4bb75189fbb103a61028349",
+      "measuredKeys": 80,
+      "reuses": [
+        40,
+        40
+      ]
+    },
+    {
+      "mode": "diagnostic",
+      "variant": "selected",
+      "session": "cost-1",
+      "sha256": "d05f94eea830aa946b63681509a743a9f7373dc8f0b6dff29d344ed028fc21ab",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "comparison",
+      "variant": "selected",
+      "session": "comparison-0",
+      "sha256": "f0f2cb42fc8e1fc8adfcce0507252c84fa09e0f41340de193c8d12536bc0bf47",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "comparison",
+      "variant": "candidate",
+      "session": "comparison-0",
+      "sha256": "b4c6d8a52968a90f989746ba96bfba64d5f725816282009dd2bbca88f928431d",
+      "measuredKeys": 80,
+      "reuses": [
+        40,
+        40
+      ]
+    },
+    {
+      "mode": "comparison",
+      "variant": "candidate",
+      "session": "comparison-1",
+      "sha256": "a2c8ec3b31ad7a48e437f62366a0a49d81dd12e7e4814d1777f2e04693b1f041",
+      "measuredKeys": 80,
+      "reuses": [
+        40,
+        40
+      ]
+    },
+    {
+      "mode": "comparison",
+      "variant": "selected",
+      "session": "comparison-1",
+      "sha256": "b4cfb4e9531b6800bf605277ef34327aac86275bd3e8b54463daf2bf0be60652",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "unicode",
+      "variant": "selected",
+      "session": "unicode-0",
+      "sha256": "f7d9ce82abe86cb8d42fecdbf675a61c625acfb170a55087b6e2466de892dd9a",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "unicode",
+      "variant": "candidate",
+      "session": "unicode-0",
+      "sha256": "d787b841d0dc81b7245c943935a47801822f25bebcb7f692b5bb6304c66091d6",
+      "measuredKeys": 80,
+      "reuses": [
+        0,
+        0
+      ]
+    }
+  ],
+  "diagnosticSessions": 4,
+  "diagnosticMeasuredKeys": 320,
+  "diagnosticWarmupKeys": 416,
+  "performanceSessions": 6,
+  "performanceMeasuredKeys": 480,
+  "performanceWarmupKeys": 624,
+  "diagnosticFrozenIdentities": 1482,
+  "performanceFrozenIdentities": 1481,
+  "affectedTests": 227,
+  "affectedFiles": 16,
+  "newCases": 3,
+  "newGeneratedHistories": 100,
+  "retainedWorkspaceHistories": 60,
+  "faults": 4,
+  "typecheckPassed": true,
+  "previousPacketFiles": 201,
+  "personalAndVectorPins": 52,
+  "rootPerspectiveUnchanged": true,
+  "appendOnlyPrefixesPreserved": true,
+  "L2Unchanged": true,
+  "mainRuntimeTestsUnchanged": true,
+  "historicalPacketsUnchanged": true,
+  "preexistingCanonicalChecksUnchanged": true
+}

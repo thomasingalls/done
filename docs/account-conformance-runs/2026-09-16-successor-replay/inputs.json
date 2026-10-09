@@ -1,0 +1,18 @@
+{
+  "baseline": "6ba5336b1617fdeacb151e3cac62d84f09c4e6ea",
+  "files": {
+    "src/crdt/sourceCapture.ts": "e0461b768a4becf5e0fe3e131caceb6f500906603953ab90a130a50e79e52fcb",
+    "src/crdt/spoolRecord.ts": "bc438c6d8da7863a70adc1ae3fde9f571491dbfdd36ac2a4c7d338d6721ffc69",
+    "src/crdt/accountEnvelopePreparation.ts": "0e57b1ae4c5bff6c1f2522851bfe565fad6393f8d0c5f29fbb7d4b06ba013c2a",
+    "src/crdt/deliveryRecord.ts": "a0e71d45d31fa29dfce4ed947c9d0a25108514d77c6ccc44b4023b0a73f9a85b",
+    "src/crdt/accountInbound.ts": "8db5cbef3b20a8e8373a2dd4a8adb1e90cb0394c40481de57a75d81ed1490909",
+    "src/crdt/inboundLedger.ts": "7286eeb39b650c26469411ada9755d4a7b7cbf357d69df21c3af12254f4f06d9",
+    "account-protocol/admissionHistory.ts": "47ed9901048d69fc0e369f00f28d20a4f6f590099c73ece1de7a54067c65c8fe",
+    "test/account-successor/client-browser.ts": "2312a0f9e3c1d8e6c4ea30e3516582bf81676bd243766e4adc81d3385bfa8a7a",
+    "test/account-successor/client-fixtures.mjs": "394797867aafebbc36cab45b713a27de20a73888c77858b5ab0dc9c5991a5df1",
+    "test/account-successor/client-replay.test.mjs": "ced7113ad1a853d4e158b5e3bb18e9add647fca56d208fee8ea1199f8611e02a",
+    "test/account-successor/client-replay-controls.test.mjs": "150ae93503a7b20d7b86e0a2d9dab79dd03512b289f35b4b6f45705a9bdf01fb",
+    "test/accountInboundControls.test.ts": "21196d9e9b897e080bfd9d2c236bfae7738bfbba35d5fdae8b520ba36ababb76",
+    "scripts/release-validation/account-inbound-codecs-wrapper.mjs": "9a598a727c2a2f65402bf9d404215fa4d24e4f4b7899a2e34f6fea16bda2e843"
+  }
+}

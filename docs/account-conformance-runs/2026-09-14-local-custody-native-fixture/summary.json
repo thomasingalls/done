@@ -1,0 +1,111 @@
+{
+  "base": "8fed0daa3513d35e652086b6d8553efc42847b09",
+  "claim": "Account Local custody native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-17-51.652Z",
+  "summary": {
+    "schema": 1,
+    "selection": "local-custody-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-local-custody/native.test.mjs",
+        "key": "d5ffe9035ca32ff979cb666355e91ff40bb44daae56dab2fc1e2cb1f5b413d54",
+        "status": "passed",
+        "elapsedMs": 11610,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:17:51.658Z",
+    "input": "1adc0ceca88fc1571ce4454e65b91ae109755857da81105a2319768539e255bd",
+    "completedAt": "2026-09-14T11:18:23.387Z"
+  },
+  "elapsedMs": 31729,
+  "rawInputArchiveSha256": "f2e90120b2b8467f737c466a9c12d7f54c61f7635262b53772f1fa3a674e6c85",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "8fed0daa3513d35e652086b6d8553efc42847b09",
+    "sourceDigest": "d7119b93e70b06c9a66e5cfb9f54239da4ba1aae643b13b66860779c8159b22a",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 5,
+    "browserFiles": 1,
+    "fixtureInstances": 5,
+    "generatedHistories": 0,
+    "executedOmissionControls": 5,
+    "wrongPrivateKeyPairs": 2,
+    "malformedStateForms": 2,
+    "modeledReportControls": 1,
+    "priorCleanupModelControls": 9,
+    "priorAdditionalNativeOwnerTests": 8,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 202,
+    "priorGeneralCases": 1677,
+    "currentGeneralFiles": 203,
+    "currentGeneralCases": 1682,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 107,
+    "accountFiles": 97,
+    "accountCases": 588,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 214,
+    "unresolvedTestFiles": 55,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 684946
+  },
+  "finalGatesSha256": "6500d743a6ba26418e2d4e1352b92f1a041810fdad4959bafda7e73270e63fc2",
+  "preservationSha256": "17cd845f96bdd6d3d2ff7edc6a27a9d9b207b9eadeca1beb272d392779c08491",
+  "limits": [
+    "The previous file had three ordinary tests and one container with two awaited subtests. Census and reporter correctly refused that nested shape. The two scenarios are now named top-level cases, yielding five substantive cases rather than six reporter entries including the former container. The first three bodies remain byte-identical; normalized AST comparison confirms the two scenario bodies retain their assertions, with only fixture-context and evidence-variable renames. The pair's former 40-second shared allowance is split into 20 seconds per scenario; the other cases retain 40 seconds and the file retains its 300-second wrapper allowance. General nested registration remains refused.",
+    "Standalone fixture setup now uses the existing openFixtureBrowser CDP helper and explicit isolated contexts, with early nested cleanup and listen-error handling. Its lifecycle block is byte-identical to the signed store/counter fixtures, with their prior modeled and native-owner evidence pinned rather than rerun. Five fixture instances run. The old custody fixture already had independent server cleanup registered before launch; no prior setup leak is claimed. Product, runtime/oracle/browser helpers, interpreter, reporter, browser owner and wrapper are unchanged.",
+    "Synthetic custody enrollment uses a no-op creation check, not a real Account service or admission receipt. Independent Node HKDF/AES, HMAC and public-key derivation validate factor opening, generation envelope, sealed private credential seeds and metadata MAC. Metadata key instrumentation checks exact info, empty salt, non-extractability, sign/verify usages and an independent HMAC probe. Four encryptions have 32-byte plaintexts; the authenticated reservation is three root-key uses, excluding the factor-key seal.",
+    "Observed owned temporary arrays must be zeroed after operations and after page navigation/open/close. This is logical disposal of observed buffers, not evidence of physical heap erasure, absence of copies, native key storage secrecy or whole-profile forensic protection. A factor code retained in Node is explicitly reconfigured after page navigation. The browser/context stays alive; no renderer kill, power-loss or actual human authenticator/PRF flow executes.",
+    "Two independently re-sealed, correctly MACed wrong private-key pairs refuse without changing the record; checked signing and wrapping correspondence omissions each permit opening. Changed reservation metadata without an updated MAC similarly refuses until the metadata-authentication guard is omitted. A changed factor returns unlock-failed and preserves the original record.",
+    "Structured-clone array and boxed-string states refuse at the current parser. The checked coercion control accepts them at parsing but the ordinary owner still reports creation-pending, not a usable session. The fixture therefore does not reproduce an authority bypass from that parser defect. Restoring the original permits opening.",
+    "The two promoted scenarios exercise a real browser interleaving: an HMAC hook changes the persisted MAC during reservation signing. Baseline detects the changed record, remains creating and performs zero root encryptions. The checked equalMac omission completes protected custody with three root encryptions. Both require the race hook to run. This is an in-page deterministic interleaving, not multi-tab scheduling or generated histories. Five uniquely anchored mutant bundles execute in total; state coercion exposes a parser boundary while later owner refusal remains effective.",
+    "The combined standalone comparison report retains its passing name/shape/values, checked by executing old and new extracted scenario registration with mocked browser results. This modeled control does not establish actual cryptography. ACCOUNT_REPORT_DIR is unset in the native selection so wrapper report files are not emitted; exact reporter outcomes and frozen source/browser identities are archived. Full vector/format/PRF/rotation campaigns, wrapper report postconditions and immutable aggregate qualification remain separate.",
+    "All 93 pure runner checks, TypeScript, scoped style/planning/authority/signature checks pass. All 202 prior general contracts / 1677 identities and exclusions are unchanged. Source-pinned prior owner controls retain earlier evidence. All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups are unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and prior deadline evidence remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 9098.69425,
+    "stageElapsedMs": 11610,
+    "selectionElapsedMs": 31729,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "caseMs": [
+      40000,
+      40000,
+      40000,
+      20000,
+      20000
+    ],
+    "note": "Existing file and first three case limits retained; former 40-second shared comparison allowance is split into two 20-second scenarios."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "acac58865b6fe67017dffc42c90169f20471d5eb2dd27a132250c1df497bbb9f",
+    "compressedSha256": "515aa52336074c395b289d0afb39c5f989221fd928850a8f6fdf4ee873dba9fe"
+  }
+}

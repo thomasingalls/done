@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "scope": "yjs-delivery",
+  "started": "2026-09-09T07:34:09.215Z",
+  "commit": "0399567a965fb2b24128d03aee29ac54caec3f19",
+  "node": "v26.8.1",
+  "files": {
+    "scripts/yjs-delivery/campaign.mjs": "4654c3e31ebd5074d66b49916594bbc30d3f10a4d348c6e63aa0695be0eb9b03",
+    "scripts/core-reproductions/source.mjs": "2d43f853e5861ee5d357d05e97afebba9a9f596727c04604a115f4235bb32b46",
+    "test/yjs-delivery/model.mjs": "5c7eaf174242f9b2f618fefaffc6de6e2fa7fbd6acc4e59abdce90a35813ee8c",
+    "test/yjsDelivery.test.ts": "fe935d34c7a14d51864d8db824878c2639a858c891587a57d78b9504c0d23ab4",
+    "test/core-reproductions/original-order.json": "41781a14259177d524886ae4a87a5b15e876a7729da2c24dc75e5e70e0e36933",
+    "vendor-patches/yjs@13.6.31.patch": "07538daeaa901cacc5fa325bad8835fb0874a2b055c2f36b23b80203f246bffa",
+    "pnpm-lock.yaml": "beaa51f79f91ee83607a718d5ced0fbf23df28aa39fa3d1dc5cb49cfa45cb8b4",
+    "pnpm-workspace.yaml": "c47ec22acbc22d2c84ecf0e3eb3d55d4b4b39e6e8e20eff4b62d16d3bd22720a",
+    "node_modules/yjs/package.json": "ebe6efd8e33ebc6bc9fea6cce26bf3156733b7156a2889d203bffc1a200b8914",
+    "node_modules/yjs/src/utils/encoding.js": "29c93c91c4ac0219bc995adc55284e4625ed14ef551528894b7dcccd51146cad",
+    "node_modules/yjs/dist/yjs.mjs": "89b4a1bbd63507fb3e7312b05e49d06c9e89bf4574e0c74cd6723f93e0168485",
+    "node_modules/yjs/dist/yjs.cjs": "8968fb15c876d304a9fa07192a3d8893129e1c2135baf48aee99ddb4bc02cbd5"
+  },
+  "runtimeHash": "89b4a1bbd63507fb3e7312b05e49d06c9e89bf4574e0c74cd6723f93e0168485",
+  "mutant": null,
+  "runs": 50000,
+  "seed": 8941,
+  "arms": [
+    {
+      "arm": "originals",
+      "histories": 1088,
+      "pendingDonors": 0,
+      "pendingDeletionDonors": 0,
+      "failed": true,
+      "seed": 8941,
+      "path": "6:1:0:0:1:3:4:3:1:1:1:10:11:14:2:12:12:13:10:8:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13:13",
+      "shrinks": 93
+    }
+  ],
+  "exhaustive": {
+    "orders": 5040,
+    "failures": 0
+  },
+  "status": "failed",
+  "error": {
+    "name": "AssertionError",
+    "message": "source ledger\n+ actual - expected\n\n  [\n+   'b�aa0',\n-   'b\\ude00aa0',\n    'base1',\n    'base2'\n  ]\n",
+    "stack": "AssertionError [ERR_ASSERTION]: source ledger\n+ actual - expected\n\n  [\n+   'b�aa0',\n-   'b\\ude00aa0',\n    'base1',\n    'base2'\n  ]\n\n    at makeSource (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/core-reproductions/source.mjs:50:16)\n    at evaluate (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/yjs-delivery/campaign.mjs:89:67)\n    at file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/yjs-delivery/campaign.mjs:135:28\n    at Property.predicate (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1353:99)\n    at Property.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1322:24)\n    at runIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2505:24)\n    at Module.check (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2537:204)\n    at file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/yjs-delivery/campaign.mjs:133:28",
+    "actual": [
+      "b�aa0",
+      "base1",
+      "base2"
+    ],
+    "expected": [
+      "b\ude00aa0",
+      "base1",
+      "base2"
+    ]
+  },
+  "finished": "2026-09-09T07:34:10.184Z"
+}

@@ -1,0 +1,48 @@
+{
+  "base": "f6e4cf4",
+  "scope": "Ordered remote editor integration; no personal activation",
+  "results": {
+    "unit": 957,
+    "files": 84,
+    "nativeEditor": 12,
+    "nativeEditorHistories": 10,
+    "nativeEditorSeed": 9202026,
+    "queueHistories": 200,
+    "queueSeed": 9192026,
+    "focusedPropertiesAndUnit": 54,
+    "nativeStorageRegression": 17,
+    "nativeDeliveryRegression": 19
+  },
+  "effectiveControls": [
+    "early promotion exposes received text despite an aborted content/event transaction",
+    "source relabel creates an extra local capsule"
+  ],
+  "fixed": [
+    {
+      "id": "F-08-scoped",
+      "detail": "New v9 editor omits verified source-free startup/command capsules. Deletion updates remain captured. Legacy v6/v7/v8 behavior and retained empty sources remain unchanged."
+    },
+    {
+      "id": "composition-return",
+      "detail": "A later edit spread account metadata without capturing the returned account binding. Native startup and TypeScript rejected it. Corrected destructuring, retained exact failing source, added runner TypeScript preflight."
+    }
+  ],
+  "harnessCorrections": [
+    "A fixture had a missing parenthesis before native execution.",
+    "The first interleaving case awaited a carrier census queued behind its deliberately held receive task; the test timed out. It now observes the visible editor while paused, then checks capture inventory after release.",
+    "The first generated history invalid/local/receive/local/compact expected a signature-refusal message when no request existed. It now asserts the stable receive-refused code. Seed 9202026 path 0 preserved in the log."
+  ],
+  "gateStatus": {
+    "scopedPassed": 13,
+    "aadCoverage": "failed, pre-existing F-01 reproduced",
+    "aggregateCheck": "not run; cannot be green while F-01/F-02 remain"
+  },
+  "limits": [
+    "Actual admitted synthetic creating credential, not fresh publisher enrollment or safe key cloning.",
+    "Generated native alphabet covers master text, receipt/retry, local writes, invalid pages, compaction and reopen. Directed cases cover pressure, close, undo, pending deletions and crash cuts; this is not arbitrary hostile Yjs or card-layout coverage.",
+    "A remote-triggered workspace membership repair remains a separate ordinary system command; original received frames themselves are never relabelled.",
+    "Unit carrier doubles do not establish native exclusion; browser cases use actual Web Locks and IndexedDB.",
+    "Full replay cost, background compaction, epochs, writer enrollment, sender/receiver driver composition, service v2 route, restore/clone and power-loss accounting remain open.",
+    "Review packet annotations remain untracked/uncommitted. No broad spec repair or whole debt payment is claimed."
+  ]
+}

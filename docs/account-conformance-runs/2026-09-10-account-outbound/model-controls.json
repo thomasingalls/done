@@ -1,0 +1,23 @@
+[
+  {
+    "fault": "listenerGap",
+    "expected": "lost-admission",
+    "observed": [
+      "lost-admission"
+    ]
+  },
+  {
+    "fault": "counterOnly",
+    "expected": "position-gap",
+    "observed": [
+      "position-gap"
+    ]
+  },
+  {
+    "fault": "sendEarly",
+    "expected": "changed-retry",
+    "observed": [
+      "changed-retry"
+    ]
+  }
+]

@@ -1,0 +1,3 @@
+Error: injected trim server startup failure
+    at run (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/content-trim/run.mjs:152:11)
+    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/content-trim/run.mjs:188:26

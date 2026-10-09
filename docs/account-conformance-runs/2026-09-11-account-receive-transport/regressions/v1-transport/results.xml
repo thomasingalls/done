@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual service signature mutation discloses a signed page to an unauthorized reader" time="0.102446" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/controls.test.mjs"/>
+	<testcase name="actual service current mutation discloses a signed page to an unauthorized reader" time="0.074029" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/controls.test.mjs"/>
+	<testcase name="60 generated append/read/restart/replay histories retain exact bounded prefixes" time="6.217499" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/generated.test.mjs"/>
+	<testcase name="authenticated empty, count-bounded pages, exact ciphertext/proof, and cursor end across restart" time="0.175124" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<testcase name="byte-bounded page makes progress with maximum-size envelopes" time="21.803819" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<testcase name="foreign signer, all foreign scope fields, expired/future requests, malformed framing and past-end cursors refuse without mutations" time="0.096525" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<testcase name="signed read authorization is rechecked after verification and a retained witness refuses missing rows" time="0.051973" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<testcase name="current membership is required on every replay, with no new durable nonce state" time="0.038596" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<testcase name="binary endpoint parsers reject oversize, noncanonical JSON, trailing bytes and unbounded hex" time="0.001371" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport/service.test.mjs"/>
+	<!-- tests 9 -->
+	<!-- suites 0 -->
+	<!-- pass 9 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 22433.028167 -->
+</testsuites>

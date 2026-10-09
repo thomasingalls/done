@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="twenty fixed carriers, chain steps, source digest and baseline agree with actual encoders and crypto" time="0.026881" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="all carrier leaves are rejected or retained as distinct canonical bytes; omissions cannot disappear unnoticed" time="0.016776" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="canonical framing rejects whitespace, BOM, alternate spellings, bad UTF-8, extra fields and all truncated prefixes" time="0.136921" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="capsules require bounded original Yjs frames and exact identity deduplication, not snapshot equivalence" time="0.002706" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="ledger census composes all families, validates signed source correspondence and reconstructs conflict with cold expiry" time="0.064889" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="chain binds raw previous hash, u32 big-endian length and exact event bytes; count is checked separately" time="0.000755" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled generated spool histories compare retained prefixes, retries and omission faults to an independent ledger" time="1.134944" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<!-- tests 7 -->
+	<!-- suites 0 -->
+	<!-- pass 7 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1613.293458 -->
+</testsuites>

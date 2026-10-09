@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-selection-contract/owned/inputs.json.gz",
+    "bytes": 1180059,
+    "sha256": "bc1d69f1998fe38723f041ad100af108bb359725c9de0b076b45c592adbc1dc8"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-contract/before/docs/release-validation-manifest.json",
+    "bytes": 776391,
+    "sha256": "c5461c533020cdc285d6b0486509ddf1def266a248834e4387ce8049dbd2ef10"
+  },
+  {
+    "path": "/private/tmp/done-f17-selection-contract/before/docs/release-validation-graph.json",
+    "bytes": 454068,
+    "sha256": "e4c0e19bc96c85ad64c4d903572d19edf3f17c42617b9d4252352962ab37bee6"
+  }
+]

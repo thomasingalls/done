@@ -1,0 +1,6 @@
+{
+  "refusals": 88,
+  "closedObjects": true,
+  "detached": true,
+  "spoolSemanticCheck": "not implied by parseCounter"
+}

@@ -1,0 +1,7 @@
+import {spawn} from 'node:child_process';import fs from 'node:fs';import path from 'node:path';
+const dir=path.resolve('test-results/account-spool/regressions');fs.mkdirSync(dir,{recursive:true});const results=[];
+const tasks=[['account-capture',['--test','--test-reporter=spec','test/account-capture/native.test.mjs'],180000],
+...['content-trim'].map(name=>[name,[`scripts/${name}/run.mjs`,'--output',path.join(dir,name)],180000])];
+for(const [name,args,ms]of tasks){console.log('Starting '+name);const log=fs.createWriteStream(path.join(dir,name+'.log'));const start=Date.now();const child=spawn(process.execPath,args,{stdio:['ignore','pipe','pipe']});let timedOut=false,force;const timer=setTimeout(()=>{timedOut=true;child.kill('SIGTERM');force=setTimeout(()=>child.kill('SIGKILL'),5000);},ms);
+const heartbeat=setInterval(()=>console.log(name+' still running'),15000);
+for(const s of[child.stdout,child.stderr])s.on('data',b=>log.write(b));const code=await new Promise(resolve=>{child.once('close',c=>resolve(c??1));child.once('error',e=>{log.write(String(e));resolve(1);});});clearTimeout(timer);clearTimeout(force);clearInterval(heartbeat);await new Promise(r=>log.end(r));results.push({name,args,code,timedOut,durationMs:Date.now()-start});fs.writeFileSync(path.join(dir,'summary.json'),JSON.stringify(results,null,2)+'\n');console.log(name+': '+code);if(code||timedOut){process.exitCode=1;break;}}

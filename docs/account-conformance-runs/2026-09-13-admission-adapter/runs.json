@@ -1,0 +1,320 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-admission",
+    "source": "test-results/admission/2026-09-13T10-44-01.575Z",
+    "status": "passed",
+    "input": "15f24deea5759948dc3cb65c00ba35c060eab45fc2ba65eabca9954c29948f99",
+    "stageCases": [
+      21
+    ],
+    "stageElapsedMs": [
+      58928
+    ],
+    "totalMs": 81904,
+    "native": [
+      {
+        "scope": "ordered-admission-browser",
+        "baselineAssertions": 64,
+        "baselines": 15,
+        "mutants": 6,
+        "mutations": [
+          {
+            "id": "publish-before-forced-commit",
+            "assertion": "refused-prefix-is-private",
+            "status": "detected"
+          },
+          {
+            "id": "prepare-queued-input-early",
+            "assertion": "only-head-prepared",
+            "status": "detected"
+          },
+          {
+            "id": "publish-receive-before-commit",
+            "assertion": "remote-is-private-until-commit",
+            "status": "detected"
+          },
+          {
+            "id": "retry-via-journal",
+            "assertion": "retry-forces-second-content-invocation",
+            "status": "detected"
+          },
+          {
+            "id": "early-durability-return",
+            "assertion": "barrier-waits-for-prior-input",
+            "status": "detected"
+          },
+          {
+            "id": "ignore-byte-capacity",
+            "assertion": "byte-capacity-refuses",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "admission",
+            "origin": "http://127.0.0.1:59099",
+            "closed": true
+          },
+          {
+            "variant": "publish-before-forced-commit",
+            "origin": "http://127.0.0.1:59461",
+            "closed": true
+          },
+          {
+            "variant": "prepare-queued-input-early",
+            "origin": "http://127.0.0.1:59480",
+            "closed": true
+          },
+          {
+            "variant": "publish-receive-before-commit",
+            "origin": "http://127.0.0.1:59498",
+            "closed": true
+          },
+          {
+            "variant": "retry-via-journal",
+            "origin": "http://127.0.0.1:59521",
+            "closed": true
+          },
+          {
+            "variant": "early-durability-return",
+            "origin": "http://127.0.0.1:59542",
+            "closed": true
+          },
+          {
+            "variant": "ignore-byte-capacity",
+            "origin": "http://127.0.0.1:59562",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "content-regression",
+    "selection": "content-control",
+    "source": "test-results/release-validation/2026-09-13T10-48-19.264Z",
+    "status": "passed",
+    "input": "15f24deea5759948dc3cb65c00ba35c060eab45fc2ba65eabca9954c29948f99",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      20352
+    ],
+    "totalMs": 55950,
+    "native": [
+      {
+        "scope": "content-carrier-browser",
+        "baselineAssertions": 12,
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:60406",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:60455",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "journal-regression",
+    "selection": "standalone-journal",
+    "source": "test-results/admission-adapter-journal-control",
+    "status": "passed",
+    "input": "15f24deea5759948dc3cb65c00ba35c060eab45fc2ba65eabca9954c29948f99",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      16619
+    ],
+    "totalMs": 54541,
+    "native": [
+      {
+        "scope": "journal-carrier-browser",
+        "baselineAssertions": 2,
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "reread-journal-after-content",
+            "assertion": "handoff-cannot-fall-between-reads",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "journal",
+            "origin": "http://127.0.0.1:60411",
+            "closed": true
+          },
+          {
+            "variant": "reread-journal-after-content",
+            "origin": "http://127.0.0.1:60447",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-contract",
+    "selection": "standalone-admission",
+    "source": "test-results/admission-adapter-selected-order",
+    "status": "passed",
+    "input": "15f24deea5759948dc3cb65c00ba35c060eab45fc2ba65eabca9954c29948f99",
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      19499
+    ],
+    "totalMs": 55823,
+    "native": [
+      {
+        "scope": "ordered-admission-browser",
+        "baselineAssertions": 6,
+        "baselines": 1,
+        "mutants": 2,
+        "mutations": [
+          {
+            "id": "publish-before-forced-commit",
+            "assertion": "refused-prefix-is-private",
+            "status": "detected"
+          },
+          {
+            "id": "prepare-queued-input-early",
+            "assertion": "only-head-prepared",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "admission",
+            "origin": "http://127.0.0.1:60407",
+            "closed": true
+          },
+          {
+            "variant": "publish-before-forced-commit",
+            "origin": "http://127.0.0.1:60453",
+            "closed": true
+          },
+          {
+            "variant": "prepare-queued-input-early",
+            "origin": "http://127.0.0.1:60472",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-admission",
+    "source": "test-results/admission-adapter-baseline-order",
+    "status": "passed",
+    "input": "15f24deea5759948dc3cb65c00ba35c060eab45fc2ba65eabca9954c29948f99",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      15808
+    ],
+    "totalMs": 56456,
+    "native": [
+      {
+        "scope": "ordered-admission-browser",
+        "baselineAssertions": 6,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "admission",
+            "origin": "http://127.0.0.1:60409",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T10-51-06.114Z",
+    "status": "passed",
+    "input": "cb673e4e6fd10adfea957f029b7b0a1b34f0c5708dca90963a9d7541b804d37a",
+    "stageCases": [
+      4,
+      3,
+      4,
+      10,
+      4,
+      6,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2188,
+      1868,
+      1925,
+      1719,
+      1876,
+      1894,
+      3171,
+      1966
+    ],
+    "totalMs": 39292,
+    "native": []
+  }
+]

@@ -1,0 +1,53 @@
+(node:61578) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61578) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ replay control actually mints a second logical result when retirement guards are removed (60.141834ms)
+✔ wrong-operation proof control is accepted only with expected-challenge verification removed (85.191583ms)
+✔ substituted-key control grants proof only when a caller key replaces the retained verifier (87.032875ms)
+(node:61579) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61579) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ registration, confirmation, pending refusal and discoverable sign-in (-8) (34.086833ms)
+✔ registration policy negatives and attested-key identity (-8) (22.716084ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-8) (59.1895ms)
+✔ registration, confirmation, pending refusal and discoverable sign-in (-7) (22.442042ms)
+✔ registration policy negatives and attested-key identity (-7) (37.498292ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-7) (49.208584ms)
+✔ retry secret, operation binding, concurrent proof and conflicting replay (8.4ms)
+✔ global credential uniqueness, key possession and account identity (10.697667ms)
+✔ expiry, cancellation and account change during verification recheck at commit (12.063041ms)
+✔ abort and lost response around every mutating ceremony commit (14.665375ms)
+✔ hostile wire input is refused and durable policy cannot be changed on restart (8.025291ms)
+✔ caller mutation cannot change the verified/committed request, and retained-key races refuse (10.814ms)
+✔ a competing process completing confirmation between inspection and crypto returns the same receipt (241.298917ms)
+(node:61580) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61580) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native discoverable passkey registration/confirmation, restart/login and browser cancellation (996.606709ms)
+✔ private adapter refuses missing token, hostile origin/host and oversized input (26.445792ms)
+(node:61581) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61581) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated durable ceremony histories against an independent acceptance ledger (2132.183ms)
+✔ 80 generated sign-in histories preserve one receipt through abort, lost response, replay and restart (1316.807041ms)
+(node:61582) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61582) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin: cold process recovers one outcome (588.670958ms)
+✔ SIGKILL after-commit begin: cold process recovers one outcome (419.400042ms)
+✔ SIGKILL before-commit register: cold process recovers one outcome (386.804416ms)
+✔ SIGKILL after-commit register: cold process recovers one outcome (369.517334ms)
+✔ SIGKILL before-commit confirm-registration: cold process recovers one outcome (375.9685ms)
+✔ SIGKILL after-commit confirm-registration: cold process recovers one outcome (371.001584ms)
+✔ SIGKILL before-commit authenticate: cold process recovers one outcome (382.119167ms)
+✔ SIGKILL after-commit authenticate: cold process recovers one outcome (377.673042ms)
+✔ SIGKILL before-commit cancel: cold process recovers one outcome (376.312375ms)
+✔ SIGKILL after-commit cancel: cold process recovers one outcome (368.2755ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4299.907666

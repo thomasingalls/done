@@ -1,0 +1,687 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/editor-admission/2026-09-13T11-21-18.750Z",
+    "status": "passed",
+    "input": "78d0f90ad3dbe6a8987c1ba8df648b1fac9379edbd75dded428d8a04418c73b4",
+    "receiptCount": 1,
+    "stageCases": [
+      15
+    ],
+    "stageElapsedMs": [
+      67287
+    ],
+    "totalMs": 93547,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": "tagged-json-v1",
+        "baselineStatuses": [
+          {
+            "id": "E11.repair",
+            "status": "pass"
+          },
+          {
+            "id": "E12.multicaret",
+            "status": "pass"
+          },
+          {
+            "id": "E09.pending-death",
+            "status": "pass"
+          },
+          {
+            "id": "E10.checkbox",
+            "status": "pass"
+          },
+          {
+            "id": "E01.typing",
+            "status": "pass"
+          },
+          {
+            "id": "E02.pressure",
+            "status": "pass"
+          },
+          {
+            "id": "E03.remote",
+            "status": "pass"
+          },
+          {
+            "id": "E04.cross-tab",
+            "status": "pass"
+          },
+          {
+            "id": "E05.paste",
+            "status": "pass"
+          },
+          {
+            "id": "E06.composition",
+            "status": "pass"
+          },
+          {
+            "id": "E07.close",
+            "status": "pass"
+          },
+          {
+            "id": "E08.profile",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 61,
+        "baselines": 12,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "history-before-receipt",
+            "assertion": "pending-not-in-history",
+            "status": "detected"
+          },
+          {
+            "id": "ordinary-view-before-receipt",
+            "assertion": "pending-not-in-editor",
+            "status": "detected"
+          },
+          {
+            "id": "remote-in-undo",
+            "assertion": "undo-preserves-remote",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:61605",
+            "closed": true
+          },
+          {
+            "variant": "history-before-receipt",
+            "origin": "http://127.0.0.1:61752",
+            "closed": true
+          },
+          {
+            "variant": "ordinary-view-before-receipt",
+            "origin": "http://127.0.0.1:61763",
+            "closed": true
+          },
+          {
+            "variant": "remote-in-undo",
+            "origin": "http://127.0.0.1:61775",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "content-regression",
+    "selection": "content-control",
+    "source": "test-results/release-validation/2026-09-13T11-15-00.550Z",
+    "status": "passed",
+    "input": "249ce3c9bd0a46e5a5e4126721efdc2d6d84a15a1a211b153058eb63ade43c39",
+    "receiptCount": 1,
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      21328
+    ],
+    "totalMs": 50175,
+    "native": [
+      {
+        "scope": "content-carrier-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": null,
+        "baselineStatuses": [
+          {
+            "id": "C09.unreadable-load",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 12,
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:61281",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:61317",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "journal-regression",
+    "selection": "standalone-journal",
+    "source": "test-results/editor-admission-journal-regression",
+    "status": "passed",
+    "input": "249ce3c9bd0a46e5a5e4126721efdc2d6d84a15a1a211b153058eb63ade43c39",
+    "receiptCount": 1,
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      16528
+    ],
+    "totalMs": 47765,
+    "native": [
+      {
+        "scope": "journal-carrier-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": null,
+        "baselineStatuses": [
+          {
+            "id": "C01.handoff-race",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 2,
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "reread-journal-after-content",
+            "assertion": "handoff-cannot-fall-between-reads",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "journal",
+            "origin": "http://127.0.0.1:61289",
+            "closed": true
+          },
+          {
+            "variant": "reread-journal-after-content",
+            "origin": "http://127.0.0.1:61313",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "admission-regression",
+    "selection": "standalone-admission",
+    "source": "test-results/editor-admission-admission-regression",
+    "status": "passed",
+    "input": "249ce3c9bd0a46e5a5e4126721efdc2d6d84a15a1a211b153058eb63ade43c39",
+    "receiptCount": 1,
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      20554
+    ],
+    "totalMs": 52341,
+    "native": [
+      {
+        "scope": "ordered-admission-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": null,
+        "baselineStatuses": [
+          {
+            "id": "C03.ordered-refusal",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 6,
+        "baselines": 1,
+        "mutants": 2,
+        "mutations": [
+          {
+            "id": "publish-before-forced-commit",
+            "assertion": "refused-prefix-is-private",
+            "status": "detected"
+          },
+          {
+            "id": "prepare-queued-input-early",
+            "assertion": "only-head-prepared",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "admission",
+            "origin": "http://127.0.0.1:61280",
+            "closed": true
+          },
+          {
+            "variant": "publish-before-forced-commit",
+            "origin": "http://127.0.0.1:61312",
+            "closed": true
+          },
+          {
+            "variant": "prepare-queued-input-early",
+            "origin": "http://127.0.0.1:61337",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "failed-module-resolution",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/editor-admission/2026-09-13T11-09-55.477Z",
+    "status": "failed",
+    "input": "16607e93e1e79683543984e45293912c669093a68be3029c993fefa0cd092735",
+    "receiptCount": 1,
+    "stageCases": [
+      null
+    ],
+    "stageElapsedMs": [
+      60260
+    ],
+    "totalMs": 77250,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "workerExitCode": 2,
+        "evidenceEncoding": null,
+        "baselineStatuses": [
+          {
+            "id": "E11.repair",
+            "status": "pass"
+          },
+          {
+            "id": "E12.multicaret",
+            "status": "error"
+          },
+          {
+            "id": "E09.pending-death",
+            "status": "pass"
+          },
+          {
+            "id": "E10.checkbox",
+            "status": "pass"
+          },
+          {
+            "id": "E01.typing",
+            "status": "pass"
+          },
+          {
+            "id": "E02.pressure",
+            "status": "pass"
+          },
+          {
+            "id": "E03.remote",
+            "status": "pass"
+          },
+          {
+            "id": "E04.cross-tab",
+            "status": "pass"
+          },
+          {
+            "id": "E05.paste",
+            "status": "pass"
+          },
+          {
+            "id": "E06.composition",
+            "status": "pass"
+          },
+          {
+            "id": "E07.close",
+            "status": "pass"
+          },
+          {
+            "id": "E08.profile",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 58,
+        "baselines": 12,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "history-before-receipt",
+            "assertion": "pending-not-in-history",
+            "status": "detected"
+          },
+          {
+            "id": "ordinary-view-before-receipt",
+            "assertion": "pending-not-in-editor",
+            "status": "detected"
+          },
+          {
+            "id": "remote-in-undo",
+            "assertion": "undo-preserves-remote",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:60774",
+            "closed": true
+          },
+          {
+            "variant": "history-before-receipt",
+            "origin": "http://127.0.0.1:60885",
+            "closed": true
+          },
+          {
+            "variant": "ordinary-view-before-receipt",
+            "origin": "http://127.0.0.1:60896",
+            "closed": true
+          },
+          {
+            "variant": "remote-in-undo",
+            "origin": "http://127.0.0.1:60906",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "failed-report-publication",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/editor-admission/2026-09-13T11-14-29.936Z",
+    "status": "failed",
+    "input": "249ce3c9bd0a46e5a5e4126721efdc2d6d84a15a1a211b153058eb63ade43c39",
+    "receiptCount": 0,
+    "stageCases": [],
+    "stageElapsedMs": [],
+    "totalMs": 82767,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": null,
+        "baselineStatuses": [
+          {
+            "id": "E11.repair",
+            "status": "pass"
+          },
+          {
+            "id": "E12.multicaret",
+            "status": "pass"
+          },
+          {
+            "id": "E09.pending-death",
+            "status": "pass"
+          },
+          {
+            "id": "E10.checkbox",
+            "status": "pass"
+          },
+          {
+            "id": "E01.typing",
+            "status": "pass"
+          },
+          {
+            "id": "E02.pressure",
+            "status": "pass"
+          },
+          {
+            "id": "E03.remote",
+            "status": "pass"
+          },
+          {
+            "id": "E04.cross-tab",
+            "status": "pass"
+          },
+          {
+            "id": "E05.paste",
+            "status": "pass"
+          },
+          {
+            "id": "E06.composition",
+            "status": "pass"
+          },
+          {
+            "id": "E07.close",
+            "status": "pass"
+          },
+          {
+            "id": "E08.profile",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 61,
+        "baselines": 12,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "history-before-receipt",
+            "assertion": "pending-not-in-history",
+            "status": "detected"
+          },
+          {
+            "id": "ordinary-view-before-receipt",
+            "assertion": "pending-not-in-editor",
+            "status": "detected"
+          },
+          {
+            "id": "remote-in-undo",
+            "assertion": "undo-preserves-remote",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:61121",
+            "closed": true
+          },
+          {
+            "variant": "history-before-receipt",
+            "origin": "http://127.0.0.1:61340",
+            "closed": true
+          },
+          {
+            "variant": "ordinary-view-before-receipt",
+            "origin": "http://127.0.0.1:61362",
+            "closed": true
+          },
+          {
+            "variant": "remote-in-undo",
+            "origin": "http://127.0.0.1:61377",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-contract",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/editor-admission-adapter-selected-pressure",
+    "status": "passed",
+    "input": "78d0f90ad3dbe6a8987c1ba8df648b1fac9379edbd75dded428d8a04418c73b4",
+    "receiptCount": 1,
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      22968
+    ],
+    "totalMs": 50274,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": "tagged-json-v1",
+        "baselineStatuses": [
+          {
+            "id": "E02.pressure",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 9,
+        "baselines": 1,
+        "mutants": 2,
+        "mutations": [
+          {
+            "id": "history-before-receipt",
+            "assertion": "pending-not-in-history",
+            "status": "detected"
+          },
+          {
+            "id": "ordinary-view-before-receipt",
+            "assertion": "pending-not-in-editor",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:61621",
+            "closed": true
+          },
+          {
+            "variant": "history-before-receipt",
+            "origin": "http://127.0.0.1:61652",
+            "closed": true
+          },
+          {
+            "variant": "ordinary-view-before-receipt",
+            "origin": "http://127.0.0.1:61672",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-editor-admission",
+    "source": "test-results/editor-admission-adapter-baseline-pressure",
+    "status": "passed",
+    "input": "78d0f90ad3dbe6a8987c1ba8df648b1fac9379edbd75dded428d8a04418c73b4",
+    "receiptCount": 1,
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      14279
+    ],
+    "totalMs": 43629,
+    "native": [
+      {
+        "scope": "editor-admission-browser",
+        "workerExitCode": 0,
+        "evidenceEncoding": "tagged-json-v1",
+        "baselineStatuses": [
+          {
+            "id": "E02.pressure",
+            "status": "pass"
+          }
+        ],
+        "baselineAssertions": 9,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "editor",
+            "origin": "http://127.0.0.1:61619",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T11-24-24.710Z",
+    "status": "passed",
+    "input": "1f61f868715e66f4802f410b9c5176524ad65aeb1035508987db0c388b006570",
+    "receiptCount": 9,
+    "stageCases": [
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      6,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      1995,
+      1762,
+      1818,
+      1789,
+      1609,
+      1767,
+      1736,
+      2946,
+      1831
+    ],
+    "totalMs": 39653,
+    "native": []
+  }
+]

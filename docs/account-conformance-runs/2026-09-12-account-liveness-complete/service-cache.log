@@ -1,0 +1,13 @@
+(node:86911) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86911) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ bounded service cache owns bytes/context, evicts, and cannot repopulate after close (9.705625ms)
+✔ warm service read matches cold verification, reduces crypto, and rechecks SQL fields and membership (170.393792ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 837.062666

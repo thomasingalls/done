@@ -1,0 +1,57 @@
+(node:6113) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6113) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh discoverable passkey + new-key possession yields a code-verifiable first-device recovery preparation, never membership or login (149.37775ms)
+✔ restart retains exact challenge, nonce and prepared bytes; a different assertion cannot reuse the attempt (97.570875ms)
+✔ old login, enrollment/creation proofs and substituted candidate possession do not authorize recovery (48.403375ms)
+✔ discoverable assertion chooses its own account, never an attacker-supplied workspace; inactive account refuses (52.533625ms)
+✔ before-commit interruption retries without fresh challenge or second preparation (85.062875ms)
+✔ after-commit interruption retries without fresh challenge or second preparation (74.671625ms)
+✔ credential change across verification invalidates finish; counter observations do not (77.961084ms)
+✔ cancel and expiry during verification cannot leak a preparation (56.286833ms)
+✔ the offline schema upgrade is explicit and preserves existing rows (44.052ms)
+✔ a competing admission invalidates prepared recovery; a fresh attempt includes the pending second-device history (120.964042ms)
+(node:6114) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6114) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two-factor recovery reads accepted ciphertext in bounded, authenticated pages, including after restart (219.684542ms)
+✔ passkey alone, forged bootstrap, another candidate signature and unsigned read edits cannot read (136.928083ms)
+▶ cancellation, expiry and account changes between verification and the actual read withhold ciphertext
+  ✔ cancel (105.12375ms)
+  ✔ expire (90.6395ms)
+  ✔ account (84.219542ms)
+✔ cancellation, expiry and account changes between verification and the actual read withhold ciphertext (280.669125ms)
+✔ a competing valid membership head invalidates recovery read; corrupt accepted history cannot be hidden (130.39925ms)
+✔ byte-bounded pages make forward progress without truncating or skipping accepted writing (8059.2305ms)
+(node:6115) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6115) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:6115) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ the saved code cold-opens the original admitted snapshot plus accepted edits and returns an exact replay cut (160.470917ms)
+✔ cold replay rejects a wrong saved code and unresolved Yjs dependencies before returning writing (132.395166ms)
+✔ cancellation during a read cannot return decrypted writing; corrupted pages are never applied (119.175084ms)
+✔ empty first-device history works without a certification checkpoint or another device (90.095417ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9414.634875
+
+
+(node:6112) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6112) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant (911.812333ms)
+(node:6112) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ lost-device recovery cold-replays removed writing and a later generation using the saved code (1249.635667ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2803.408959

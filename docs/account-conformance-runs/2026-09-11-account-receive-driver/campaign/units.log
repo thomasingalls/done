@@ -1,0 +1,25 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountReceiveDriver.test.ts > polls five seconds after empty, yields 50ms between pages, and coalesces wakes including reentrant observers 4ms
+ ✓ test/accountReceiveDriver.test.ts > caps unknown backoff, preserves its floor through Local pauses, and allows only explicit expedite 4ms
+ ✓ test/accountReceiveDriver.test.ts > offline and pressure pause timers without deleting a permanent halt, including failures while paused 2ms
+ ✓ test/accountReceiveDriver.test.ts > close drains its pass and suppresses late notifications; synchronous observer closure prevents dispatch 1ms
+ ✓ test/accountReceiveDriver.test.ts > a gate transition during an unfinished pass cannot overlap work or lose polling after resume 1ms
+ ✓ test/accountReceiveDriver.test.ts > 400 generated deferred schedules obey an independent timer/deadline and halt oracle 143ms
+ ✓ test/accountReceiveDriver.test.ts > uses durable progress only and treats a verified empty result as polling idle 2ms
+ ✓ test/accountReceiveDriver.test.ts > resumes after reentrant Local pressure interrupts startup before the owned step begins 0ms
+ ✓ test/accountReceiveDriver.test.ts > 100 generated observer-pause durations resume the unstarted pass through an ordinary gate wake 9ms
+ ✓ test/accountReceiveDriver.test.ts > a pass skipped for readiness neither claims a verified end nor resets the unknown streak 0ms
+ ✓ test/ownedReceiveQueue.test.ts > holds local preparation behind owned commit and publishes originals without a local append 8ms
+ ✓ test/ownedReceiveQueue.test.ts > refuses invalid pages without blocking later edits and never accepts raw updates through the seam 2ms
+ ✓ test/ownedReceiveQueue.test.ts > close while commit is pending prevents promotion and late acknowledgement 1ms
+ ✓ test/ownedReceiveQueue.test.ts > capacity refusal happens before dispatch and capture owns all queued wire bytes 0ms
+ ✓ test/ownedReceiveQueue.test.ts > 200 generated interleavings recover authored text and preserve source counts 496ms
+ ✓ test/ownedReceiveQueue.test.ts > empty source lists cannot conceal a deletion with an unchanged state vector 2ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  12:56:06
+   Duration  1.64s (transform 740ms, setup 149ms, import 921ms, tests 678ms, environment 0ms)
+

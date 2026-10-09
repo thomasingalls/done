@@ -1,0 +1,23 @@
+(node:96316) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96316) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose (150.306166ms)
+✔ each role, pin field, signature, expiry and extent is checked with no service writes (91.5735ms)
+✔ maximum wire sizes still produce byte-bounded pages without losing a position (20579.986292ms)
+✔ registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse (67.652167ms)
+✔ state change after verification refuses and four racing snapshots exhaust retries (57.121083ms)
+✔ caller bytes are copied and a concurrent append forces fresh census after crypto (42.930625ms)
+✔ expiry and custody loss on the far side of signing withhold every page byte (41.86225ms)
+✔ another service process cannot change membership during synchronous page signing (144.389334ms)
+(node:96339) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96339) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 60 generated append/read/restart/replay/role/ledger histories preserve original prefixes (5064.362ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26716.00275

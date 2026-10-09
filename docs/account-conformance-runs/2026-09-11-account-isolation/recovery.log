@@ -1,0 +1,47 @@
+(node:25384) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25384) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ control: removing recovery verification actually accepts a one-factor finalization (55.232666ms)
+✔ control: removing passkey verification actually accepts a one-factor finalization (47.041917ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (20.105042ms)
+(node:25385) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25385) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ both proofs finalize one exact recovery preparation (-8) (30.503708ms)
+✔ both proofs finalize one exact recovery preparation (-7) (17.92575ms)
+✔ wrong code, binding and substituted private keys cannot confirm (16.145292ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (11.516916ms)
+✔ finalization rechecks cancel after verification (10.820125ms)
+✔ finalization rechecks expiry after verification (9.658875ms)
+✔ finalization rechecks activation after verification (10.115666ms)
+✔ finalization rechecks key after verification (10.028334ms)
+✔ finalization before-commit write failure has one retry outcome (13.080459ms)
+✔ finalization after-commit write failure has one retry outcome (11.831958ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (9.704125ms)
+(node:25386) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25386) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (9.550542ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (6.161666ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.330542ms)
+(node:25388) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25388) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated recovery histories obey an independent durable outcome ledger (2182.714958ms)
+(node:25392) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25392) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (427.807ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (430.38375ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (436.794625ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (447.530708ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (431.731ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (438.190958ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6182.888458

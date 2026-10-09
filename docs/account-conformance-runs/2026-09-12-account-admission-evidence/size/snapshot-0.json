@@ -1,0 +1,15 @@
+{
+  "target": 16777216,
+  "source": {
+    "bytes": 16777216,
+    "sha256": "9c91dc62352e28d1f2c6129a6c9899a5f55cac25686cd28173f1cc6e9583be22",
+    "textLength": 16776975
+  },
+  "actualYjsDocument": true,
+  "exactColdReplay": true,
+  "sourceUnchanged": true,
+  "candidate": {
+    "ciphertextBytes": 16777232,
+    "signature": "8e5feadc31e9da25a865b5a4c7b18a122b9d59c7d0a468684ab4a651057bd38ba3c8e327f51396df26193e20568f3a3d9cbb13edf23be6df37a5e1c6ed00e40a"
+  }
+}

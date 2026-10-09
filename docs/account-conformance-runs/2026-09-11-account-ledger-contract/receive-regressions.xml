@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="owned request, atomic original content/evidence, stale duplicate, compaction and expired cold replay" time="7.888245" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="receive before commit renderer death recovers content and event together" time="6.553474" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="receive after commit renderer death recovers content and event together" time="6.538515" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="v9 activation before commit is resumable and fences v8" time="6.437944" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="v9 activation after commit is resumable and fences v8" time="6.442540" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="cold replay refuses missing or changed content" time="6.533324" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="cold replay refuses missing or changed event" time="6.504686" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="cold replay refuses missing or changed ciphertext" time="6.187870" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="split-content implementation control is rejected on authenticated readback" time="6.454137" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="pending originals survive compaction and later dependencies without a source capsule" time="7.721801" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="a second accepted digest stops receipt and survives cold open" time="6.384847" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="input copies, owned request binding and close drain withhold late crypto results" time="6.207443" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="12 generated native histories preserve receipt/content together across commit cuts and cold replay" time="68.451923" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="cold replay reauthenticates page behind valid local AEAD and witness" time="6.538440" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="cold replay reauthenticates baseline behind valid local AEAD and witness" time="6.188535" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="batch limit refuses before reservation; quota abort and retry preserve the full 256-record batch" time="6.483317" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<testcase name="authority changed during sealing refuses before the receive commit" time="6.175654" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs"/>
+	<!-- tests 17 -->
+	<!-- suites 0 -->
+	<!-- pass 17 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 175190.136375 -->
+</testsuites>

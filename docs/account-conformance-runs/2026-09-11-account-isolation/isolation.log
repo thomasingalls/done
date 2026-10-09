@@ -1,0 +1,46 @@
+(node:24956) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24956) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ valid-but-unbound selector passes the old unknown-key negative but leaks a neighboring offer (89.482583ms)
+✔ omitting explicit pending target binding makes a crossed request cancel its token owner (66.771875ms)
+✔ generated full-row oracle shrinks a missing abandonment account predicate (995.197916ms)
+(node:24958) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24958) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ valid neighboring capabilities refuse mixed targets in both directions: pending (210.105834ms)
+✔ valid neighboring capabilities refuse mixed targets in both directions: offered (231.735709ms)
+✔ valid neighboring capabilities refuse mixed targets in both directions: challenged (273.361ms)
+✔ valid neighboring capabilities refuse mixed targets in both directions: active (305.403458ms)
+✔ valid neighboring capabilities refuse mixed targets in both directions: cancelled (127.843917ms)
+✔ neighboring legal abandonment during asynchronous activation leaves the target account independent (69.6475ms)
+✔ cross-account reads after restart preserve exact offered authority (62.89475ms)
+✔ cross-account reads after restart preserve exact active authority (82.038042ms)
+(node:24960) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24960) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated shared-service histories preserve per-account rows and exact authority across reply loss and restart (12791.547541ms)
+✔ directed complete histories exercise every before-commit loss with a live neighbor (163.806791ms)
+✔ directed complete histories exercise every after-commit loss with a live neighbor (178.905792ms)
+(node:24986) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24986) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ live recovery ceremonies reject genuine neighboring capabilities and proofs before either confirmation (56.979542ms)
+✔ cancelling one live recovery ceremony leaves the other confirmable (24.843708ms)
+(node:24987) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24987) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two-account SIGKILL before-commit offer-promotion preserves the neighbor and exact retry (543.177666ms)
+✔ two-account SIGKILL after-commit offer-promotion preserves the neighbor and exact retry (507.164125ms)
+✔ two-account SIGKILL before-commit challenge-promotion preserves the neighbor and exact retry (521.611791ms)
+✔ two-account SIGKILL after-commit challenge-promotion preserves the neighbor and exact retry (521.020041ms)
+✔ two-account SIGKILL before-commit admit-promotion preserves the neighbor and exact retry (536.427834ms)
+✔ two-account SIGKILL after-commit admit-promotion preserves the neighbor and exact retry (531.441375ms)
+✔ two live service processes independently admit both accounts and reject crossed tokens (518.63425ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20606.839625

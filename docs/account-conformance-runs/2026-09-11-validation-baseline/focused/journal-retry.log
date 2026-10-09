@@ -1,0 +1,25 @@
+journal C01.synchronous-crash: pass
+journal C01.remote-basis: pass
+journal C03.refusals: pass
+journal C03.watermark: pass
+journal C03.actual-quota: pass
+journal C09.unreadable: pass
+journal C09.enumeration-change: pass
+journal C11.abort-flush: pass
+journal C11.crash-before-cleanup: pass
+journal C11.changed-entry: pass
+journal C11.cleanup-refused: pass
+journal C01.handoff-race: pass
+journal C04.close-and-keys: pass
+journal C04.frozen-writer: pass
+journal C04.concurrent-writers: pass
+journal C11.chunked-flush: pass
+journal C03.host-smoke: pass
+skip-storage-append C01.synchronous-crash: fail
+acknowledge-refusal C03.refusals: fail
+remove-changed-entry C11.changed-entry: fail
+cleanup-before-commit C11.abort-flush: fail
+reread-journal-after-content C01.handoff-race: fail
+skip-wasm-disposal C04.close-and-keys: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/journal/2026-09-11T06-29-56.063Z/report.md
+Exit 0 (bounded journal carrier)

@@ -1,0 +1,26 @@
+{
+  "sourceBaseCommit": "187b636",
+  "sourceTree": "account core working tree; source pins retained separately",
+  "commands": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=dot",
+      "exitCode": 0,
+      "testFiles": 73,
+      "tests": 825,
+      "durationSeconds": 37.08
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/oxlint/bin/oxlint --react-plugin account-service scripts/account-core test/account-core",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "basis": "Captured tool outputs; the Vitest stdout stream was not saved as a separate raw file"
+}

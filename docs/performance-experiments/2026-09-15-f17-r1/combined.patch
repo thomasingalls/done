@@ -1,0 +1,782 @@
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index ccaa8db9..7b23eb9a 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -150,6 +150,62 @@ export const createAdmittedWorkspace = async (
+     throw Error('Local preparation cannot capture Account sources');
+   const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+   const archiveProjection = createArchiveProjection();
++  // Experimental Local projection reuse. Only actual text-only transactions can retain a cache.
++  type ReadChanges = {
++    readonly basis: number;
++    master: boolean;
++    readonly cards: Set<string>;
++    full: boolean;
++  };
++  const preparedReads = new WeakMap<PreparedWorkspaceState, ReadChanges>();
++  // Fork codecs can normalize UTF-16 fragments even without a transaction on that field.
++  // Conservatively exclude every surrogate code unit, including valid pairs split across items.
++  const reusableRead = (value: unknown): boolean => {
++    if (typeof value === 'string') return !/[\uD800-\uDFFF]/.test(value);
++    if (Array.isArray(value)) return value.every(reusableRead);
++    if (value && typeof value === 'object')
++      return Object.entries(value).every(
++        ([key, entry]) => reusableRead(key) && reusableRead(entry),
++      );
++    return true;
++  };
++  let cachedRead: { revision: number; value: WorkspaceSnapshot; reusable: boolean } | undefined;
++  const advanceRead = (state: PreparedWorkspaceState, revision: number) => {
++    const changes = preparedReads.get(state);
++    preparedReads.delete(state);
++    if (
++      !cachedRead ||
++      !cachedRead.reusable ||
++      !changes ||
++      changes.full ||
++      changes.basis !== cachedRead.revision
++    ) {
++      cachedRead = undefined;
++      return;
++    }
++    const doc = state.history.doc;
++    const master = changes.master ? doc.getText('master').toString() : cachedRead.value.master;
++    let reusable = !changes.master || reusableRead(master);
++    const cards = changes.cards.size
++      ? cachedRead.value.cards.map((card) => {
++          if (!changes.cards.has(card.id)) return card;
++          const text = cardBody(cardAt(doc, card.id)!);
++          reusable = reusable && reusableRead(text);
++          return { ...card, text };
++        })
++      : cachedRead.value.cards;
++    cachedRead = {
++      revision,
++      reusable,
++      value: {
++        ...cachedRead.value,
++        master,
++        cards,
++        undo: state.history.undoStack.length,
++        redo: state.history.redoStack.length,
++      },
++    };
++  };
+   const identity = structuredClone(options.identity);
+   const human: Origin = Object.freeze({
+     actor: identity.id,
+@@ -197,6 +253,37 @@ export const createAdmittedWorkspace = async (
+     const state: State = { history, selections: new Map(), group: intent.group, value: false };
+     scope?.ownState(state);
+     const selections = state.selections;
++    const readChanges: ReadChanges | undefined = selectionHistory
++      ? { basis: verifiedRevision, master: false, cards: new Set(), full: false }
++      : undefined;
++    const trackRead = (transaction: Y.Transaction) => {
++      if (!readChanges || readChanges.full) return;
++      const cards = doc.getMap('cards');
++      for (const changed of transaction.changed.keys()) {
++        const target: unknown = changed;
++        if (changed instanceof Y.Text && target === doc.share.get('master')) {
++          readChanges.master = true;
++          continue;
++        }
++        const card = changed.parent;
++        const id = card instanceof Y.Map ? card.get('id') : undefined;
++        if (
++          changed instanceof Y.Text &&
++          card instanceof Y.Map &&
++          card.parent === cards &&
++          typeof id === 'string' &&
++          cards.get(id) === card &&
++          card.get('text') === changed
++        ) {
++          readChanges.cards.add(id);
++          continue;
++        }
++        // Structural, archive, settings and unknown changes use the established full reader.
++        readChanges.full = true;
++        break;
++      }
++    };
++    if (selectionHistory) doc.on('afterTransaction', trackRead);
+     const updates: Bytes[] = [],
+       sources: import('./sourceCapture').SourceUpdate[] = [];
+     const capture = (bytes: Uint8Array, origin: unknown) => {
+@@ -272,6 +359,7 @@ export const createAdmittedWorkspace = async (
+         }
+       }
+       state.value = result.value;
++      if (readChanges) preparedReads.set(state, readChanges);
+       const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
+       return {
+         state,
+@@ -293,6 +381,7 @@ export const createAdmittedWorkspace = async (
+       }
+       throw error;
+     } finally {
++      if (selectionHistory) doc.off('afterTransaction', trackRead);
+       doc.off('update', capture);
+       history.off('stack-item-added', captureItem);
+       history.off('stack-item-updated', captureItem);
+@@ -301,6 +390,7 @@ export const createAdmittedWorkspace = async (
+     }
+   };
+   const accept = (state: PreparedWorkspaceState, revision: number) => {
++    if (selectionHistory) advanceRead(state, revision);
+     const previous = accepted;
+     accepted = state;
+     verifiedRevision = adoptedRevision = revision;
+@@ -370,6 +460,7 @@ export const createAdmittedWorkspace = async (
+     repairQueued = false;
+   const teardown = () => {
+     archiveProjection.clear();
++    cachedRead = undefined;
+     dispose(pending);
+     dispose(accepted);
+     pending = accepted = undefined;
+@@ -475,7 +566,10 @@ export const createAdmittedWorkspace = async (
+           pending = undefined;
+           dispose(previous);
+           outcomes.set(accepted.group, accepted.value);
+-        } else applyUpdate(accepted!.history.doc, event.update, 'received');
++        } else {
++          cachedRead = undefined;
++          applyUpdate(accepted!.history.doc, event.update, 'received');
++        }
+         // Check every accepted transition, including later remote dependencies, before exposure.
+         if (!localHandoff || event.source === 'remote') verifyProjection();
+         verifiedRevision = event.revision;
+@@ -543,7 +637,7 @@ export const createAdmittedWorkspace = async (
+     // specific failure instead of reclassifying the subsequent rejected barrier as cancellation.
+     throw failure ?? error;
+   }
+-  const read = (): WorkspaceSnapshot => {
++  const readFull = (): WorkspaceSnapshot => {
+     live();
+     const history = accepted!.history,
+       doc = history.doc;
+@@ -587,6 +681,16 @@ export const createAdmittedWorkspace = async (
+       redo: history.redoStack.length,
+     };
+   };
++  const read = (): WorkspaceSnapshot => {
++    live();
++    if (!selectionHistory) return readFull();
++    if (!cachedRead || cachedRead.revision !== verifiedRevision) {
++      const value = readFull();
++      cachedRead = { revision: verifiedRevision, value, reusable: reusableRead(value) };
++    }
++    // The cache is owner-private: even retained snapshots and nested returned arrays are detached.
++    return structuredClone(cachedRead.value);
++  };
+   const api: AdmittedWorkspace = {
+     get status() {
+       return session.status;
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index ea605627..4a48208c 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -71,7 +71,19 @@ const forkString = (value: string): string => {
+ };
+ /** Private paired codecs: V2 struct compression with the existing V1 legacy-JSON semantics. */
+ class ForkEncoder extends Y.UpdateEncoderV2 {
++  constructor(readonly strings?: (string | null)[]) {
++    super();
++  }
+   override writeString(value: string): void {
++    if (this.strings) {
++      // Private paired runtime transport: strings are immutable. Keep surrogate-containing
++      // fields on the old UTF-8 path so its exact replacement behavior stays authoritative.
++      if (typeof value === 'string' && value.length >= 32 && !/[\uD800-\uDFFF]/.test(value)) {
++        this.strings.push(value);
++        return;
++      }
++      this.strings.push(null);
++    }
+     super.writeString(forkString(value));
+   }
+   override writeKey(value: string): void {
+@@ -92,6 +104,23 @@ const detachForkBuffers = (value: unknown): unknown => {
+   return value;
+ };
+ class ForkDecoder extends Y.UpdateDecoderV2 {
++  private stringAt = 0;
++  constructor(
++    decoder: decoding.Decoder,
++    private readonly strings?: readonly (string | null)[],
++  ) {
++    super(decoder);
++  }
++  override readString(): string {
++    if (!this.strings) return super.readString();
++    if (this.stringAt >= this.strings.length) throw Error('Missing private fork string');
++    const value = this.strings[this.stringAt++]!;
++    return value === null ? super.readString() : value;
++  }
++  complete(): void {
++    if (this.strings && this.stringAt !== this.strings.length)
++      throw Error('Unconsumed private fork string');
++  }
+   override readJSON(): unknown {
+     return JSON.parse(decoding.readVarString(this.restDecoder));
+   }
+@@ -104,18 +133,24 @@ class ForkDecoder extends Y.UpdateDecoderV2 {
+ }
+ 
+ /** Detached runtime fork. Its paired private codecs never escape as a wire/archive format. */
+-export const forkDoc = (source: YDoc, gc = true): YDoc => {
+-  const bytes = Y.encodeStateAsUpdateV2(
+-    {
+-      ...source,
+-      store: { ...source.store, pendingStructs: null, pendingDs: null },
+-    } as YDoc,
+-    undefined,
+-    new ForkEncoder(),
+-  );
+-  const doc = new Y.Doc({ gc });
++export const forkDoc = (source: YDoc, gc = true): YDoc => forkRuntimeDoc(source, gc, false);
++const forkRuntimeDoc = (source: YDoc, gc: boolean, reuseStrings: boolean): YDoc => {
++  const strings: (string | null)[] | undefined = reuseStrings ? [] : undefined;
++  let bytes: Uint8Array | undefined, doc: YDoc | undefined;
+   try {
+-    Y.applyUpdateV2(doc, bytes, undefined, ForkDecoder);
++    bytes = Y.encodeStateAsUpdateV2(
++      {
++        ...source,
++        store: { ...source.store, pendingStructs: null, pendingDs: null },
++      } as YDoc,
++      undefined,
++      new ForkEncoder(strings),
++    );
++    doc = new Y.Doc({ gc });
++    const decoder = decoding.createDecoder(bytes),
++      paired = new ForkDecoder(decoder, strings);
++    Y.readUpdateV2(decoder, doc, undefined, paired);
++    paired.complete();
+     const pending = source.store.pendingStructs;
+     doc.store.pendingStructs = pending
+       ? { missing: new Map(pending.missing), update: pending.update.slice() }
+@@ -123,10 +158,11 @@ export const forkDoc = (source: YDoc, gc = true): YDoc => {
+     doc.store.pendingDs = source.store.pendingDs?.slice() ?? null;
+     return doc;
+   } catch (error) {
+-    doc.destroy();
++    doc?.destroy();
+     throw error;
+   } finally {
+-    bytes.fill(0);
++    bytes?.fill(0);
++    if (strings) strings.length = 0;
+   }
+ };
+ const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
+@@ -149,12 +185,47 @@ const normalizedIntegratedState = (bytes: Uint8Array): Uint8Array => {
+  */
+ class ComparisonEncoder extends Y.UpdateEncoderV1 {
+   readonly strings: { at: number; value: string }[] = [];
++  stringCount = 0;
++  override toUint8Array(): Uint8Array {
++    // A warm scratch buffer is contiguous. Its borrowed view stays private to this comparison,
++    // and the encoder is not returned until comparison/fallback has consumed every byte.
++    const rest = this.restEncoder;
++    return rest.bufs.length === 0 ? rest.cbuf.subarray(0, rest.cpos) : super.toUint8Array();
++  }
+   override writeString(value: string): void {
+     // Small fragmented items keep the ordinary encoder path and avoid a field allocation.
+     if (value.length < 32) super.writeString(value);
+-    else this.strings.push({ at: encoding.length(this.restEncoder), value });
++    else {
++      const index = this.stringCount++,
++        at = encoding.length(this.restEncoder),
++        field = this.strings[index];
++      if (field) {
++        field.at = at;
++        field.value = value;
++      } else this.strings.push({ at, value });
++    }
+   }
+ }
++// This private pool retains only cleared synchronous scratch. A borrowed encoder is removed
++// before encoding, so getters that reenter sameDocState cannot borrow an active encoder.
++// No document, escaped output, pending update or history capability enters the pool.
++const comparisonScratch: ComparisonEncoder[] = [];
++const returnComparisonScratch = (encoder: ComparisonEncoder): void => {
++  const rest = encoder.restEncoder;
++  for (const bytes of rest.bufs) bytes.fill(0);
++  rest.cbuf.fill(0);
++  rest.bufs.length = 0;
++  rest.cpos = 0;
++  if (rest.cbuf.length > 256 * 1024) rest.cbuf = new Uint8Array(100);
++  for (let i = 0; i < encoder.stringCount; i++) {
++    const field = encoder.strings[i]!;
++    field.value = '';
++    field.at = 0;
++  }
++  encoder.stringCount = 0;
++  if (encoder.strings.length > 1024) encoder.strings.length = 1024;
++  if (comparisonScratch.length < 2) comparisonScratch.push(encoder);
++};
+ const hasEarlyLongString = (doc: YDoc): boolean => {
+   // A bounded eligibility probe avoids adding per-string dispatch cost to dense short-fragment
+   // histories. Missing a later long string only forgoes an optimization; both paths encode all data.
+@@ -175,19 +246,34 @@ const hasEarlyLongString = (doc: YDoc): boolean => {
+   return longStrings;
+ };
+ const comparisonEncoding = (doc: YDoc) => {
+-  const encoder = new ComparisonEncoder();
+-  const bytes = Y.encodeStateAsUpdateV2(
+-    { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
+-    undefined,
+-    encoder,
+-  );
+-  return { bytes, strings: encoder.strings };
++  const encoder = comparisonScratch.pop() ?? new ComparisonEncoder();
++  try {
++    const bytes = Y.encodeStateAsUpdateV2(
++      { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
++      undefined,
++      encoder,
++    );
++    return { bytes, encoder };
++  } catch (error) {
++    returnComparisonScratch(encoder);
++    throw error;
++  }
++};
++const sameComparisonStrings = (a: ComparisonEncoder, b: ComparisonEncoder): boolean => {
++  if (a.stringCount !== b.stringCount) return false;
++  for (let i = 0; i < a.stringCount; i++) {
++    const aa = a.strings[i]!,
++      bb = b.strings[i]!;
++    if (aa.at !== bb.at || aa.value !== bb.value) return false;
++  }
++  return true;
+ };
+ const completeEncoding = (parts: ReturnType<typeof comparisonEncoding>): Uint8Array => {
+-  if (!parts.strings.length) return parts.bytes;
++  if (!parts.encoder.stringCount) return parts.bytes;
+   const encoder = encoding.createEncoder();
+   let at = 0;
+-  for (const field of parts.strings) {
++  for (let i = 0; i < parts.encoder.stringCount; i++) {
++    const field = parts.encoder.strings[i]!;
+     encoding.writeUint8Array(encoder, parts.bytes.subarray(at, field.at));
+     encoding.writeVarString(encoder, field.value);
+     at = field.at;
+@@ -247,11 +333,7 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+   try {
+     partsB = comparisonEncoding(b);
+     if (
+-      partsA.strings.length === partsB.strings.length &&
+-      partsA.strings.every(
+-        (field, i) =>
+-          field.at === partsB!.strings[i]!.at && field.value === partsB!.strings[i]!.value,
+-      ) &&
++      sameComparisonStrings(partsA.encoder, partsB.encoder) &&
+       equalBytes(partsA.bytes, partsB.bytes)
+     )
+       return true;
+@@ -262,9 +344,9 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+     return sameEncoding(rawA, rawB);
+   } finally {
+     partsA.bytes.fill(0);
+-    partsA.strings.length = 0;
++    returnComparisonScratch(partsA.encoder);
+     partsB?.bytes.fill(0);
+-    if (partsB) partsB.strings.length = 0;
++    if (partsB) returnComparisonScratch(partsB.encoder);
+     rawA?.fill(0);
+     rawB?.fill(0);
+   }
+@@ -500,8 +582,9 @@ const forkHistory = (
+   source: YUndoManager,
+   origin: unknown,
+   copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
++  reuseStrings = false,
+ ): YUndoManager => {
+-  const doc = forkDoc(source.doc, false);
++  const doc = forkRuntimeDoc(source.doc, false, reuseStrings);
+   try {
+     doc.transact((tr) => {
+       for (const structs of source.doc.store.clients.values())
+@@ -569,7 +652,7 @@ export const createSelectionHistory = () => {
+     },
+     fork(history: YUndoManager, origin: unknown): YUndoManager {
+       check(history);
+-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta)));
++      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+     },
+     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+       check(history);
+diff --git a/test/projectionEquality.test.ts b/test/projectionEquality.test.ts
+index e1bfb2ca..938e5e2e 100644
+--- a/test/projectionEquality.test.ts
++++ b/test/projectionEquality.test.ts
+@@ -184,3 +184,83 @@ it('compares all content even when long strings occur after the bounded eligibil
+     b.destroy();
+   }
+ });
++
++it('keeps simultaneously borrowed comparison scratch separate under encoding reentry', () => {
++  const docs = Array.from({ length: 4 }, () => new Y.Doc({ gc: false }));
++  try {
++    for (const doc of docs) {
++      doc.clientID = 91;
++      doc.getText('master').insert(0, 'same long text'.repeat(8));
++    }
++    let reentries = 0;
++    const value = {
++      get nested() {
++        reentries++;
++        expect(sameDocState(docs[2]!, docs[3]!)).toBe(full(docs[2]!, docs[3]!));
++        return 'same';
++      },
++    };
++    docs[0]!.getMap('meta').set('value', value);
++    docs[1]!.getMap('meta').set('value', { nested: 'same' });
++    expect(sameDocState(docs[0]!, docs[1]!)).toBe(true);
++    expect(reentries).toBeGreaterThan(0);
++    docs[3]!.getText('master').insert(0, 'different');
++    docs[0]!.getMap('meta').set('value', { nested: 'same' });
++    Y.applyUpdate(docs[1]!, Y.encodeStateAsUpdate(docs[0]!));
++    expect(sameDocState(docs[0]!, docs[1]!)).toBe(full(docs[0]!, docs[1]!));
++  } finally {
++    for (const doc of docs) doc.destroy();
++  }
++});
++
++it('releases partial comparison scratch when an encoded value throws', () => {
++  const a = new Y.Doc({ gc: false }),
++    b = new Y.Doc({ gc: false });
++  let fail = false;
++  try {
++    for (const doc of [a, b]) {
++      doc.clientID = 92;
++      doc.getText('master').insert(0, 'long text that must not survive a scratch lease'.repeat(4));
++    }
++    a.getMap('meta').set('value', {
++      get nested() {
++        if (fail) throw Error('encoding failed');
++        return 'same';
++      },
++    });
++    b.getMap('meta').set('value', { nested: 'same' });
++    fail = true;
++    expect(() => sameDocState(a, b)).toThrow('encoding failed');
++    fail = false;
++    expect(sameDocState(a, b)).toBe(full(a, b));
++    expect(sameDocState(b, a)).toBe(true);
++  } finally {
++    a.destroy();
++    b.destroy();
++  }
++});
++
++it('compares large then small documents without retaining active scratch fields', () => {
++  const a = new Y.Doc({ gc: false }),
++    b = new Y.Doc({ gc: false }),
++    c = new Y.Doc({ gc: false }),
++    d = new Y.Doc({ gc: false });
++  try {
++    for (const doc of [a, b, c, d]) {
++      doc.clientID = 93;
++      doc.getText('master').insert(0, 'same text'.repeat(8));
++    }
++    for (const doc of [a, b]) {
++      for (let i = 0; i < 1100; i++) doc.getText('text' + i).insert(0, 'long text'.repeat(5));
++      doc.getMap('meta').set('binary', new Uint8Array(400_000));
++    }
++    expect(sameDocState(a, b)).toBe(true);
++    expect(sameDocState(c, d)).toBe(true);
++    const content = d.store.clients.get(93)![0]! as Y.Item;
++    (content.content as Y.ContentString).str = 'othertex'.repeat(9);
++    expect(sameDocState(c, d)).toBe(full(c, d));
++    expect(sameDocState(c, d)).toBe(false);
++  } finally {
++    for (const doc of [a, b, c, d]) doc.destroy();
++  }
++});
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index 17a6d47b..27d663d7 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -286,6 +286,83 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
+           await f.doc.close();
+         }
+       });
++      it('keeps incremental text projections detached and falls back for structural and remote changes', async () => {
++        const f = await fixture();
++        try {
++          const first = await create(f.doc, 'first');
++          await create(f.doc, 'second');
++          const pristine = f.doc.read();
++          const poisoned = f.doc.read();
++          (poisoned as { master: string }).master = 'caller mutation';
++          poisoned.cards[0]!.text = 'caller mutation';
++          poisoned.cards[0]!.location!.date = '2030-01-01';
++          (poisoned.days[0]!.next as string[]).length = 0;
++          poisoned.actors[0]!.name = 'caller mutation';
++          poisoned.settings.rolloverHour = 13;
++          expect(f.doc.read()).toEqual(pristine);
++          const compareCold = async () => {
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              const { undo: _undo, redo: _redo, ...actual } = f.doc.read();
++              const { undo: _coldUndo, redo: _coldRedo, ...expected } = cold.doc.read();
++              expect(actual).toEqual(expected);
++            } finally {
++              await cold.doc.close();
++            }
++          };
++          await f.doc.text({ kind: 'card', id: first }).input(insert('!'), selection(5)).accepted;
++          await compareCold();
++          expect(pristine.cards.find((card) => card.id === first)!.text).toBe('first');
++          await master(f.doc).input(insert('master')).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'move', id: first, to: done }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'undo' }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'settings', rolloverHour: 4 }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'actor', patch: { name: 'Renamed' } }).accepted;
++          await compareCold();
++          await f.doc.receive(
++            remote(f.doc, (doc) => {
++              doc.getText('master').insert(0, 'remote ');
++              doc.getMap('meta').set('device-label:device-one', 'Remote label');
++              doc.getText('unknown-extension').insert(0, 'not a projected field');
++            }),
++          ).accepted;
++          await compareCold();
++          expect(f.doc.read().deviceName).toBe('Remote label');
++          await f.doc.text({ kind: 'card', id: first }).input(insert('?'), selection(6)).accepted;
++          await compareCold();
++        } finally {
++          await f.doc.close();
++        }
++      });
++      it('refreshes cached projections when a later history fork normalizes UTF-16 fields', async () => {
++        const f = await fixture();
++        try {
++          const id = await create(f.doc);
++          for (const text of ['\uD800', '\uDC00', '😀']) {
++            await master(f.doc).input(insert(text)).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('!')).accepted;
++            expect(f.doc.read().master).toBe(master(f.doc).read().text);
++            await f.doc.command({ kind: 'actor', patch: { name: text } }).accepted;
++            await f.doc.command({ kind: 'device-label', name: text }).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('?')).accepted;
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              expect(f.doc.read().actors).toEqual(cold.doc.read().actors);
++              expect(f.doc.read().deviceName).toEqual(cold.doc.read().deviceName);
++            } finally {
++              await cold.doc.close();
++            }
++          }
++        } finally {
++          await f.doc.close();
++        }
++      });
+       it('follows local redone links when undoing an edit inside a restored parent', async () => {
+         const f = await fixture();
+         try {
+diff --git a/test/exploratoryPreparation.test.ts b/test/exploratoryPreparation.test.ts
+new file mode 100644
+index 00000000..75782080
+--- /dev/null
++++ b/test/exploratoryPreparation.test.ts
+@@ -0,0 +1,189 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import fc from 'fast-check';
++import { Y, createHistoryDoc, createSelectionHistory, forkDoc } from '../src/crdt/yjs';
++
++it('private string-tape forks retain mixed field ordering and detached mutable content', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  source.getText('long-root-' + 'r'.repeat(70)).insert(0, '\uFEFF' + 'body'.repeat(300));
++  source.getText('short').insert(0, 'small');
++  const text = source.getText('master');
++  text.insert(0, 'ordinary'.repeat(100));
++  text.format(0, 8, { ['format-' + 'k'.repeat(60)]: { nested: ['value'] } });
++  text.insertEmbed(3, { embed: 'E'.repeat(100) });
++  source.getText('surrogate\uD800').insert(0, '\uDC00' + '😀\uD800x\uDC00'.repeat(40));
++  source.getMap('meta').set('nested', { binary: new Uint8Array([1, 2, 3]), values: ['v'] });
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++    expect(actual.doc.getText('master').toDelta()).toEqual(expected.getText('master').toDelta());
++    const original = source.getMap('meta').get('nested') as {
++      binary: Uint8Array;
++      values: string[];
++    };
++    const copied = actual.doc.getMap('meta').get('nested') as typeof original;
++    copied.binary.fill(9);
++    copied.values.push('child');
++    expect([...original.binary]).toEqual([1, 2, 3]);
++    expect(original.values).toEqual(['v']);
++    original.values.push('parent');
++    expect(copied.values).toEqual(['v', 'child']);
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
++
++it('generated private string-tape forks match the existing codec for BMP, surrogate and mixed fields', () => {
++  fc.assert(
++    fc.property(
++      fc.array(fc.integer({ min: 0, max: 0xffff }), { minLength: 0, maxLength: 180 }),
++      fc.integer({ min: 32, max: 500 }),
++      (units, count) => {
++        const source = createHistoryDoc(),
++          owner = createSelectionHistory();
++        const text = String.fromCharCode(...units);
++        source.getText('master').insert(0, 'a'.repeat(count));
++        source.getText('unicode').insert(0, text);
++        source.getText('root-' + 'x'.repeat(count)).insert(0, 'middle');
++        source.getText('tail').insert(0, text + 'z'.repeat(count));
++        const history = owner.create(source, 'human'),
++          expected = forkDoc(source, false),
++          actual = owner.fork(history, 'human');
++        try {
++          expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++          for (const key of expected.share.keys())
++            if (key !== 'days' && key !== 'cards' && key !== 'cardLocations')
++              expect(actual.doc.getText(key).toString()).toBe(expected.getText(key).toString());
++        } finally {
++          actual.destroy();
++          actual.doc.destroy();
++          expected.destroy();
++          history.destroy();
++          source.destroy();
++          owner.close();
++        }
++      },
++    ),
++    { seed: 150917, numRuns: 150 },
++  );
++});
++
++it('private string tapes remain scoped when encoding triggers a nested owned fork', () => {
++  const owner = createSelectionHistory(),
++    source = createHistoryDoc(),
++    nested = createHistoryDoc();
++  source.getText('master').insert(0, 'outer'.repeat(200));
++  nested.getText('master').insert(0, 'inner'.repeat(100));
++  const history = owner.create(source, 'human'),
++    other = owner.create(nested, 'human');
++  let armed = false,
++    forks = 0;
++  source.getMap('meta').set('accessor', {
++    get nested() {
++      if (armed) {
++        const copy = owner.fork(other, 'human');
++        try {
++          expect(copy.doc.getText('master').toString()).toBe('inner'.repeat(100));
++          forks++;
++        } finally {
++          copy.destroy();
++          copy.doc.destroy();
++        }
++      }
++      return 'value';
++    },
++  });
++  armed = true;
++  const actual = owner.fork(history, 'human');
++  try {
++    expect(forks).toBeGreaterThan(0);
++    expect(actual.doc.getText('master').toString()).toBe('outer'.repeat(200));
++    expect(actual.doc.getMap('meta').get('accessor')).toEqual({ nested: 'value' });
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    history.destroy();
++    other.destroy();
++    source.destroy();
++    nested.destroy();
++    owner.close();
++  }
++});
++
++it('private string tapes keep boxed runtime strings on the coercing baseline codec path', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  const boxed = Object('boxed'.repeat(40)) as string;
++  source.getText('master').insert(0, boxed);
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    const original = source.getText('master')._start!.content as Y.ContentString;
++    const copied = actual.doc.getText('master')._start!.content as Y.ContentString;
++    expect(original.str).toBe(boxed);
++    expect(typeof copied.str).toBe('string');
++    expect(copied.str).not.toBe(boxed);
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
++
++it('private string tapes preserve legacy JSON, subdoc GUIDs and parent keys interleaved with XML keys', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  const text = source.getText('master');
++  text.insert(0, 'text'.repeat(60));
++  text.format(0, 50, { ['format-' + 'f'.repeat(40) + '\uD800']: 'v' });
++  const key = '\uFEFF' + 'parent-key'.repeat(8);
++  source.getMap('meta').set(key, 'value');
++  const legacy = source.getArray('legacy');
++  legacy.push([null, null, null]);
++  legacy._start!.content = new Y.ContentJSON([
++    undefined,
++    { long: 'j'.repeat(90) },
++    'legacy'.repeat(30),
++  ]);
++  const guid = '\uFEFF' + 'guid-'.repeat(20);
++  source.getMap('subdocs').set('one', new Y.Doc({ guid }));
++  source
++    .getXmlFragment('xml')
++    .insert(0, [
++      new Y.XmlElement('\uFEFF' + 'element'.repeat(10)),
++      // Pinned runtime accepts hooks here; the public insertion type omits them.
++      // @ts-expect-error Deliberate codec fixture for the pinned Y.XmlHook carrier.
++      new Y.XmlHook('hook'.repeat(20)),
++      new Y.XmlElement('tail\uD800'),
++    ]);
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++    expect(actual.doc.getArray('legacy').toArray()).toEqual(expected.getArray('legacy').toArray());
++    expect((actual.doc.getMap('subdocs').get('one') as Y.Doc).guid).toBe(guid);
++    expect(actual.doc.getMap('meta').get(key)).toBe('value');
++    expect(actual.doc.getXmlFragment('xml').toJSON()).toBe(expected.getXmlFragment('xml').toJSON());
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});

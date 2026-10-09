@@ -1,0 +1,19 @@
+Focused native recovery coordinator checks; disposable Chromium profiles and service fixture.
+Command: node --test --test-timeout=70000 test/account-recovery/coordinator-native.test.mjs
+
+(node:16042) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16042) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:16042) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ native recovery coordinator uses one passkey ceremony for the first editor opening (1895.283125ms)
+✔ native recovery coordinator resolves a lost commit reply after browser death (2052.651333ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4806.551583
+
+Additional checks: tsc -b --noEmit; scoped oxlint; git diff --check: passed.

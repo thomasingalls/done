@@ -1,0 +1,50 @@
+{
+  "controls": 9,
+  "evidence": [
+    {
+      "name": "D4 corpus",
+      "caught": true,
+      "expected": "specified phase/blocker mismatch"
+    },
+    {
+      "name": "MAC owner",
+      "caught": true,
+      "expected": "missing MAC custody authority entry"
+    },
+    {
+      "name": "ledger edge",
+      "caught": true,
+      "expected": "missing native counter/ledger dependency"
+    },
+    {
+      "name": "native obligation",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "parser obligation",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "witness source",
+      "caught": true,
+      "expected": "source-site census changed"
+    },
+    {
+      "name": "KDF role",
+      "caught": true,
+      "expected": "primitive vector misclassified"
+    },
+    {
+      "name": "negatives",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

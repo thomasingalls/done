@@ -1,0 +1,144 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T15:51:32.949Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 61
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 36118
+    },
+    {
+      "name": "profile-before",
+      "args": [
+        "scripts/private-release/profile-editor.mjs",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/profile-before/result.json",
+        "70e6d5b"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 3255
+    },
+    {
+      "name": "profile-after",
+      "args": [
+        "scripts/private-release/profile-editor.mjs",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/profile-after/result.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 2154
+    },
+    {
+      "name": "pending",
+      "args": [
+        "scripts/pending-projection/run.mjs",
+        "--output",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/pending/evidence"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 64830
+    },
+    {
+      "name": "content-control",
+      "args": [
+        "scripts/pending-projection/run.mjs",
+        "--mutant",
+        "ignore-integrated-content",
+        "--output",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/content-control/evidence"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 1518
+    },
+    {
+      "name": "publication-control",
+      "args": [
+        "scripts/pending-projection/run.mjs",
+        "--mutant",
+        "skip-workspace-check",
+        "--output",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/publication-control/evidence"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 1467
+    },
+    {
+      "name": "delivery",
+      "args": [
+        "scripts/yjs-delivery/run.mjs",
+        "--output",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-projection/2026-09-12T15-51-32.839Z/delivery/evidence"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 91724
+    },
+    {
+      "name": "packaged",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-residue/packaged.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 14278
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/yjs.ts",
+        "src/crdt/admittedWorkspace.ts",
+        "src/crdt/archiveProjection.ts",
+        "test/projectionEquality.test.ts",
+        "test/archiveProjection.test.ts",
+        "test/workspaceAdmission.test.ts",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 88
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/yjs.ts",
+        "src/crdt/admittedWorkspace.ts",
+        "src/crdt/archiveProjection.ts",
+        "test/projectionEquality.test.ts",
+        "test/archiveProjection.test.ts",
+        "test/workspaceAdmission.test.ts",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 109
+    }
+  ],
+  "sourcePins": 914,
+  "finishedAt": "2026-09-12T15:55:08.717Z"
+}

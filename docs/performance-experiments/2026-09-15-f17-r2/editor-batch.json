@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "no-publication",
+    "session": "editor-0",
+    "started": "2026-09-15T07:51:39.521Z",
+    "finished": "2026-09-15T07:52:24.480Z",
+    "code": 0
+  },
+  {
+    "variant": "editor",
+    "session": "editor-0",
+    "started": "2026-09-15T07:52:24.481Z",
+    "finished": "2026-09-15T07:53:08.009Z",
+    "code": 0
+  },
+  {
+    "variant": "editor",
+    "session": "editor-1",
+    "started": "2026-09-15T07:53:08.009Z",
+    "finished": "2026-09-15T07:53:51.132Z",
+    "code": 0
+  },
+  {
+    "variant": "no-publication",
+    "session": "editor-1",
+    "started": "2026-09-15T07:53:51.132Z",
+    "finished": "2026-09-15T07:54:34.314Z",
+    "code": 0
+  }
+]

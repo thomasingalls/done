@@ -1,0 +1,1862 @@
+{
+  "seed": 9110401,
+  "numRuns": 120,
+  "numShrinks": 0,
+  "failed": false,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "histories": [
+    {
+      "commands": [
+        "old",
+        "changed",
+        "challenge"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "changed",
+        "finish"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "challenge",
+        "changed",
+        "old",
+        "changed"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "restart",
+        "finish",
+        "advance",
+        "advance"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "changed",
+        "finish",
+        "advance",
+        "old",
+        "changed"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "advance",
+        "abandon",
+        "finish",
+        "challenge",
+        "challenge",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "advance",
+        "old",
+        "finish",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "abandon",
+        "finish",
+        "finish",
+        "old",
+        "abandon",
+        "restart",
+        "changed",
+        "abandon",
+        "old",
+        "changed",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "changed",
+        "changed",
+        "finish",
+        "abandon",
+        "restart",
+        "abandon",
+        "advance",
+        "restart",
+        "restart",
+        "abandon",
+        "challenge",
+        "changed",
+        "changed",
+        "advance",
+        "old",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "changed",
+        "changed",
+        "old",
+        "advance",
+        "advance",
+        "changed",
+        "changed",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "changed",
+        "abandon",
+        "restart",
+        "restart",
+        "old",
+        "advance",
+        "challenge",
+        "challenge",
+        "old",
+        "restart",
+        "advance",
+        "restart",
+        "changed",
+        "challenge",
+        "restart"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "old",
+        "abandon",
+        "finish",
+        "challenge",
+        "abandon",
+        "old",
+        "advance",
+        "abandon",
+        "finish",
+        "restart",
+        "restart",
+        "advance",
+        "restart"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "abandon",
+        "changed",
+        "abandon",
+        "advance",
+        "restart",
+        "changed",
+        "challenge",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "abandon",
+        "challenge",
+        "changed",
+        "challenge",
+        "challenge",
+        "advance",
+        "finish",
+        "advance",
+        "finish",
+        "changed",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "changed",
+        "restart",
+        "changed",
+        "old",
+        "advance",
+        "abandon",
+        "restart",
+        "abandon",
+        "old",
+        "restart",
+        "restart",
+        "advance",
+        "challenge",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "advance",
+        "challenge",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "changed",
+        "restart"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "challenge",
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "restart",
+        "abandon",
+        "finish",
+        "old",
+        "challenge",
+        "restart",
+        "challenge",
+        "abandon",
+        "challenge",
+        "changed",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "finish",
+        "old",
+        "challenge",
+        "finish",
+        "restart"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "challenge",
+        "changed",
+        "finish",
+        "abandon",
+        "old",
+        "old",
+        "advance",
+        "advance",
+        "abandon"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "finish",
+        "old",
+        "challenge"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "old",
+        "advance",
+        "abandon",
+        "advance",
+        "changed",
+        "challenge",
+        "abandon",
+        "finish",
+        "finish",
+        "finish",
+        "old",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "challenge",
+        "changed",
+        "restart",
+        "restart",
+        "finish",
+        "old",
+        "finish",
+        "advance",
+        "old",
+        "changed",
+        "advance",
+        "changed"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "changed",
+        "restart",
+        "old",
+        "advance",
+        "changed",
+        "restart",
+        "advance",
+        "abandon",
+        "advance",
+        "restart",
+        "finish",
+        "advance",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "changed",
+        "changed",
+        "advance",
+        "advance",
+        "changed",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "restart",
+        "restart",
+        "old",
+        "challenge",
+        "abandon",
+        "changed",
+        "changed",
+        "restart",
+        "changed",
+        "finish",
+        "old",
+        "old",
+        "restart",
+        "restart",
+        "abandon"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "abandon",
+        "advance",
+        "abandon",
+        "abandon",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "old",
+        "old",
+        "abandon",
+        "old",
+        "restart",
+        "finish",
+        "challenge",
+        "abandon",
+        "restart",
+        "finish",
+        "abandon",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "advance",
+        "challenge",
+        "old",
+        "abandon",
+        "finish",
+        "restart",
+        "abandon",
+        "advance",
+        "abandon",
+        "finish",
+        "restart",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "changed",
+        "restart",
+        "changed",
+        "challenge",
+        "old",
+        "challenge",
+        "changed",
+        "advance",
+        "challenge",
+        "challenge",
+        "restart"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "abandon",
+        "advance",
+        "changed",
+        "challenge",
+        "advance",
+        "challenge",
+        "challenge",
+        "finish",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "old",
+        "finish",
+        "changed",
+        "advance",
+        "challenge",
+        "challenge",
+        "advance",
+        "finish",
+        "restart"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "old",
+        "abandon",
+        "finish",
+        "abandon",
+        "advance",
+        "challenge",
+        "changed",
+        "changed",
+        "finish",
+        "abandon",
+        "finish",
+        "abandon",
+        "abandon",
+        "finish",
+        "old",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "old",
+        "restart",
+        "restart",
+        "challenge",
+        "changed",
+        "challenge",
+        "advance",
+        "advance",
+        "changed",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "challenge",
+        "changed",
+        "restart",
+        "abandon",
+        "restart",
+        "restart",
+        "old",
+        "old",
+        "restart",
+        "finish",
+        "finish",
+        "advance",
+        "changed",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "advance",
+        "challenge",
+        "challenge",
+        "abandon",
+        "advance",
+        "old",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "old",
+        "abandon",
+        "restart",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "changed",
+        "abandon",
+        "finish",
+        "old",
+        "old",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "challenge",
+        "changed",
+        "changed",
+        "abandon",
+        "abandon",
+        "changed",
+        "finish",
+        "changed",
+        "changed",
+        "old",
+        "challenge",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "finish",
+        "restart",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "challenge",
+        "old",
+        "old",
+        "abandon",
+        "finish",
+        "challenge"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "abandon",
+        "advance",
+        "abandon",
+        "finish",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "changed",
+        "restart",
+        "challenge",
+        "old",
+        "old",
+        "advance",
+        "finish",
+        "old",
+        "restart",
+        "old",
+        "finish",
+        "finish",
+        "old",
+        "restart",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "old",
+        "restart",
+        "challenge",
+        "restart",
+        "finish",
+        "restart",
+        "abandon",
+        "abandon",
+        "old",
+        "changed",
+        "abandon",
+        "finish"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "old",
+        "abandon",
+        "changed",
+        "abandon",
+        "advance",
+        "old",
+        "old",
+        "changed",
+        "changed",
+        "advance",
+        "changed",
+        "advance",
+        "old",
+        "advance",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "changed",
+        "abandon",
+        "abandon",
+        "changed",
+        "changed",
+        "finish",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "old",
+        "advance"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "finish",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "abandon",
+        "challenge",
+        "old",
+        "changed",
+        "advance",
+        "old",
+        "abandon",
+        "finish",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "restart",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "abandon",
+        "challenge",
+        "abandon",
+        "changed",
+        "challenge",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "old",
+        "advance",
+        "old",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "challenge",
+        "restart",
+        "old",
+        "advance",
+        "abandon",
+        "advance",
+        "advance",
+        "restart"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "finish",
+        "changed",
+        "abandon",
+        "old",
+        "old",
+        "challenge",
+        "challenge",
+        "changed",
+        "changed",
+        "challenge",
+        "restart",
+        "changed",
+        "advance",
+        "old",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "restart",
+        "restart",
+        "advance",
+        "restart",
+        "changed",
+        "abandon",
+        "advance",
+        "changed",
+        "challenge",
+        "abandon",
+        "restart",
+        "challenge",
+        "challenge",
+        "advance",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "old",
+        "finish",
+        "changed",
+        "finish",
+        "challenge",
+        "advance",
+        "abandon",
+        "old",
+        "changed",
+        "finish",
+        "restart",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "changed",
+        "changed",
+        "abandon",
+        "advance",
+        "advance",
+        "restart",
+        "challenge",
+        "abandon",
+        "changed",
+        "changed",
+        "restart",
+        "advance",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "changed",
+        "abandon",
+        "advance",
+        "old",
+        "abandon",
+        "restart",
+        "advance",
+        "abandon",
+        "challenge",
+        "finish",
+        "advance",
+        "advance",
+        "restart",
+        "old",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "changed",
+        "changed",
+        "old",
+        "changed",
+        "changed",
+        "old"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "advance",
+        "finish",
+        "restart",
+        "restart",
+        "challenge",
+        "finish",
+        "challenge",
+        "abandon",
+        "challenge"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "abandon",
+        "challenge",
+        "abandon",
+        "changed",
+        "restart",
+        "finish",
+        "old",
+        "challenge",
+        "abandon",
+        "abandon",
+        "changed",
+        "finish",
+        "challenge",
+        "old",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "old",
+        "changed",
+        "abandon",
+        "challenge",
+        "advance",
+        "challenge",
+        "restart",
+        "finish",
+        "finish",
+        "abandon",
+        "old",
+        "advance",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "abandon",
+        "challenge",
+        "finish",
+        "old",
+        "challenge",
+        "challenge",
+        "finish",
+        "changed",
+        "changed",
+        "old",
+        "old",
+        "finish",
+        "old",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "restart",
+        "advance",
+        "challenge",
+        "changed",
+        "changed",
+        "challenge",
+        "advance",
+        "challenge"
+      ],
+      "state": "pending",
+      "issued": 2
+    },
+    {
+      "commands": [
+        "finish",
+        "old",
+        "old",
+        "challenge",
+        "challenge",
+        "challenge",
+        "challenge",
+        "finish",
+        "restart",
+        "challenge",
+        "advance",
+        "finish",
+        "advance",
+        "changed"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "old",
+        "old",
+        "challenge",
+        "challenge",
+        "changed",
+        "advance",
+        "old",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "abandon",
+        "advance",
+        "finish",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "challenge",
+        "challenge",
+        "changed",
+        "finish"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "changed",
+        "abandon",
+        "restart",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "finish",
+        "challenge",
+        "old",
+        "old",
+        "challenge",
+        "changed",
+        "old",
+        "changed",
+        "challenge",
+        "challenge",
+        "old",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "restart",
+        "advance",
+        "advance",
+        "challenge",
+        "abandon",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "abandon",
+        "restart"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "changed",
+        "old",
+        "abandon",
+        "advance",
+        "advance",
+        "challenge",
+        "finish",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "advance",
+        "abandon",
+        "finish",
+        "changed",
+        "advance",
+        "challenge",
+        "finish",
+        "advance",
+        "abandon",
+        "advance",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "restart",
+        "finish",
+        "old",
+        "changed",
+        "changed",
+        "changed",
+        "changed",
+        "abandon",
+        "advance",
+        "old",
+        "restart",
+        "advance",
+        "challenge",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "advance",
+        "changed",
+        "changed",
+        "changed",
+        "challenge",
+        "abandon",
+        "old",
+        "old",
+        "restart",
+        "challenge",
+        "finish",
+        "abandon",
+        "advance",
+        "restart",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "restart",
+        "abandon",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "restart",
+        "challenge",
+        "advance",
+        "challenge",
+        "finish",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 2
+    },
+    {
+      "commands": [
+        "advance",
+        "advance",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "advance",
+        "challenge",
+        "changed",
+        "advance",
+        "finish",
+        "restart",
+        "advance",
+        "old",
+        "restart",
+        "changed",
+        "restart",
+        "restart",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 2
+    },
+    {
+      "commands": [
+        "restart",
+        "advance",
+        "finish",
+        "old",
+        "challenge",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "restart",
+        "abandon",
+        "abandon",
+        "finish",
+        "challenge",
+        "old",
+        "old",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "changed",
+        "finish",
+        "old",
+        "finish",
+        "abandon",
+        "advance",
+        "finish",
+        "advance",
+        "advance",
+        "abandon",
+        "challenge",
+        "abandon",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "restart",
+        "restart",
+        "finish",
+        "challenge",
+        "restart",
+        "changed",
+        "changed",
+        "changed",
+        "finish",
+        "abandon",
+        "old",
+        "finish"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "old",
+        "changed",
+        "abandon",
+        "old",
+        "abandon",
+        "changed",
+        "abandon",
+        "changed",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "changed",
+        "old"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "finish",
+        "advance"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "restart",
+        "advance",
+        "abandon",
+        "challenge",
+        "restart",
+        "restart",
+        "old",
+        "old",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "changed",
+        "abandon",
+        "challenge",
+        "abandon",
+        "abandon",
+        "finish",
+        "changed",
+        "restart",
+        "advance",
+        "advance",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "old",
+        "advance",
+        "abandon",
+        "advance",
+        "restart",
+        "challenge",
+        "restart",
+        "advance",
+        "restart",
+        "abandon",
+        "changed",
+        "advance",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "old",
+        "challenge",
+        "advance"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "advance",
+        "old",
+        "old",
+        "old",
+        "changed",
+        "abandon",
+        "abandon",
+        "restart",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "restart",
+        "abandon",
+        "old",
+        "abandon",
+        "abandon",
+        "advance",
+        "advance",
+        "abandon",
+        "changed",
+        "changed",
+        "old",
+        "restart"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "finish",
+        "finish",
+        "abandon",
+        "restart",
+        "old",
+        "advance",
+        "finish",
+        "abandon",
+        "finish",
+        "finish",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "advance",
+        "abandon",
+        "challenge",
+        "finish",
+        "restart",
+        "changed",
+        "restart",
+        "restart"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "abandon",
+        "restart",
+        "advance",
+        "advance"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "advance",
+        "advance",
+        "changed",
+        "challenge",
+        "restart",
+        "changed",
+        "old",
+        "advance",
+        "finish",
+        "old",
+        "finish"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "abandon",
+        "abandon",
+        "changed",
+        "finish",
+        "abandon",
+        "challenge",
+        "abandon",
+        "old",
+        "restart",
+        "advance",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "abandon",
+        "restart",
+        "old",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "restart",
+        "restart",
+        "finish",
+        "old"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "advance",
+        "old",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "challenge",
+        "finish",
+        "advance",
+        "finish",
+        "advance",
+        "advance",
+        "changed",
+        "changed",
+        "abandon",
+        "finish",
+        "abandon",
+        "challenge",
+        "restart",
+        "finish"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "advance",
+        "challenge",
+        "old",
+        "old",
+        "finish",
+        "challenge",
+        "finish",
+        "advance",
+        "restart",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "restart",
+        "old",
+        "restart",
+        "restart",
+        "advance",
+        "restart",
+        "abandon",
+        "challenge",
+        "restart",
+        "advance",
+        "finish"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "advance",
+        "challenge",
+        "advance"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "finish",
+        "restart",
+        "old",
+        "changed"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "restart",
+        "restart",
+        "changed",
+        "old",
+        "abandon",
+        "changed",
+        "advance",
+        "advance",
+        "changed",
+        "changed",
+        "restart",
+        "advance",
+        "changed",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "challenge",
+        "changed",
+        "finish",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "old",
+        "abandon",
+        "finish",
+        "challenge",
+        "restart",
+        "advance",
+        "advance",
+        "restart",
+        "finish",
+        "restart",
+        "challenge",
+        "finish",
+        "finish",
+        "abandon"
+      ],
+      "state": "active",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "restart",
+        "changed",
+        "old",
+        "advance",
+        "challenge",
+        "challenge",
+        "restart",
+        "advance",
+        "challenge",
+        "advance",
+        "changed",
+        "old",
+        "old",
+        "challenge",
+        "old",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 3
+    },
+    {
+      "commands": [
+        "abandon",
+        "abandon",
+        "advance",
+        "changed",
+        "old",
+        "changed",
+        "advance",
+        "restart",
+        "abandon",
+        "changed",
+        "advance",
+        "changed",
+        "changed"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "old",
+        "old",
+        "abandon",
+        "abandon",
+        "abandon",
+        "advance",
+        "old",
+        "old",
+        "finish",
+        "finish",
+        "advance",
+        "changed",
+        "old",
+        "challenge"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "advance",
+        "restart",
+        "old",
+        "restart",
+        "challenge",
+        "finish",
+        "old",
+        "restart",
+        "challenge",
+        "finish",
+        "restart",
+        "restart",
+        "changed",
+        "finish",
+        "abandon"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "finish",
+        "changed",
+        "changed",
+        "restart"
+      ],
+      "state": "pending",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "abandon",
+        "restart",
+        "old",
+        "finish",
+        "advance",
+        "advance",
+        "abandon",
+        "abandon",
+        "finish",
+        "challenge",
+        "changed",
+        "old"
+      ],
+      "state": "cancelled",
+      "issued": 0
+    },
+    {
+      "commands": [
+        "finish",
+        "challenge",
+        "advance",
+        "old",
+        "restart",
+        "advance",
+        "changed",
+        "old"
+      ],
+      "state": "pending",
+      "issued": 1
+    },
+    {
+      "commands": [
+        "challenge",
+        "restart",
+        "restart",
+        "finish",
+        "finish",
+        "advance",
+        "abandon",
+        "advance"
+      ],
+      "state": "active",
+      "issued": 1
+    }
+  ]
+}

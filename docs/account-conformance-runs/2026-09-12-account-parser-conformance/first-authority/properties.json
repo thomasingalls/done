@@ -1,0 +1,6 @@
+{
+  "seed": 5110912,
+  "runs": 200,
+  "shrinking": true,
+  "property": "Recursive input property ordering is immaterial; array order retained"
+}

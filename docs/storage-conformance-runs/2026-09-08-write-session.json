@@ -1,0 +1,3864 @@
+{
+  "schema": 1,
+  "scope": "C04-component-browser",
+  "started": "2026-09-08T15:19:47.624Z",
+  "requestedCandidates": ["write-session"],
+  "requestedCases": [
+    "C04.shared-scope",
+    "C04.freeze-barrier",
+    "C04.drain-cleanup",
+    "C04.detached-work",
+    "C04.stale-task",
+    "C04.cancel-queued",
+    "C04.cancel-initialize",
+    "C04.initialize-error",
+    "C04.cleanup-error",
+    "C04.renderer-death",
+    "C04.worker-lifetime",
+    "C04.exclusive-error",
+    "C04.navigation"
+  ],
+  "harness": {
+    "commit": "f87997d94da9c1fe4ebd587849365f6c5240129d",
+    "dirty": true,
+    "files": {
+      "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "scripts/storage-conformance/report.mjs": "3213b63e0e5f4a39af85ef798a7f7e1eb09fee07e8006d78a2dc141263feb506",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "pnpm-lock.yaml": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "scripts/write-session/catalog.mjs": "989566c07c2ea8d5447b5d186b9087f2a1d3b6b9b55d1c4ec5c7dd2f08f5ac8b",
+      "scripts/write-session/run.mjs": "9afa81d8d2d89639fdc85e7630decc56c6736b710040013c8d6fc6f4d2f57e03",
+      "scripts/write-session/scenarios.mjs": "340e7a0325adff3ef99c1a27f74cabd8752c29fae72b38a78dc62098a643dd2e",
+      "test/write-session/browser.mjs": "54310c47526b19bd0f8775069ad2a8a677e39dc12151bfb14d277486e5a3168b",
+      "test/write-session/index.html": "f54c2f7a16bc6d96ce040a7043f381cc79d5cb2c2eca9702599b244ab5bb9a67",
+      "test/write-session/runtime.mjs": "5d94f623c3f9fbc17a3ccc55665771b41c418584c50f5d5983fff24e6a443a4a",
+      "test/write-session/worker.mjs": "cc7ec654ef8fe6f3a4c7b49d4a952301cab741bba68aa111b38cd04de5a0cce2"
+    },
+    "node": "v26.8.1",
+    "vite": "8.1.5"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "candidates": [
+    {
+      "id": "write-session",
+      "source": {
+        "path": "src/crdt/writeSession.ts",
+        "sha256": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+        "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+      },
+      "mutation": null,
+      "cases": [
+        {
+          "id": "C04.shared-scope",
+          "title": "Shared writers coexist; another slot remains independent",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "two-shared-holders",
+              "actual": 2,
+              "expected": 2,
+              "passed": true
+            },
+            {
+              "id": "other-slot-is-independent",
+              "actual": "active",
+              "expected": "active",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Two tabs acquire shared permits; other slot opens while same-slot exclusive waits"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "other": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "initialize",
+                    "id": "other",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"other-slot\""
+                        },
+                        {
+                          "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        },
+                        {
+                          "clientId": "EB5ABB8E9FA4A996ED42D470EC034617",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": [
+                        {
+                          "clientId": "EB5ABB8E9FA4A996ED42D470EC034617",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-loaded",
+                    "id": "other"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"other-slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "b": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "b",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        },
+                        {
+                          "clientId": "EB5ABB8E9FA4A996ED42D470EC034617",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "b"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "b"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "b"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"other-slot\""
+                        },
+                        {
+                          "clientId": "EB5ABB8E9FA4A996ED42D470EC034617",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 6,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 7,
+                    "kind": "gate",
+                    "name": "x:exclusive"
+                  },
+                  {
+                    "order": 8,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 9,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "C565FF41BFFDDC5854227538F505F9A3",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"other-slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.freeze-barrier",
+          "title": "Frozen and remaining writers block exclusivity and subsequent initialization",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "frozen-writer-blocks-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "closing-one-writer-is-insufficient",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "frozen-shared-permit-remains",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "resume-keeps-session-active",
+              "actual": "active",
+              "expected": "active",
+              "passed": true
+            },
+            {
+              "id": "resumed-writer-can-write",
+              "actual": "wrote",
+              "expected": "wrote",
+              "passed": true
+            },
+            {
+              "id": "exclusive-blocks-key-initialization",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "fresh-initialization-after-grant",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Freeze A; queue exclusive; close B; resume/close A; attempt initialization under exclusive"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "fresh": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "B132BE89904EFCDFB048C866D5F7F337",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "write",
+                    "generation": 1
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "initialize",
+                    "id": "fresh",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "B132BE89904EFCDFB048C866D5F7F337",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 6,
+                    "kind": "cache-loaded",
+                    "id": "fresh"
+                  }
+                ],
+                "writes": [1],
+                "gates": [],
+                "persistedWrites": "[1]"
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "B132BE89904EFCDFB048C866D5F7F337",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "b": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "b",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "B132BE89904EFCDFB048C866D5F7F337",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        },
+                        {
+                          "clientId": "908B5FEB2D0D389CD208854E2C0F3AC1",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "b"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "b"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "b"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "908B5FEB2D0D389CD208854E2C0F3AC1",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 6,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 7,
+                    "kind": "gate",
+                    "name": "x:exclusive"
+                  },
+                  {
+                    "order": 8,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 9,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": "[1]"
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "B132BE89904EFCDFB048C866D5F7F337",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.drain-cleanup",
+          "title": "Close invalidates immediately and waits for work and cache cleanup",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "close-disables-immediately",
+              "actual": "closing",
+              "expected": "closing",
+              "passed": true
+            },
+            {
+              "id": "abort-handler-cannot-write",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "work-blocks-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "closing-callback-cannot-write",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "cleanup-blocks-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "cache-cleared-before-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "closed-session-refuses-writes",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "cleanup-runs-once",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Pause work, close synchronously, attempt abort reentry, release work, pause cache disposal"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "work": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "WriteSessionError",
+                          "code": "inactive",
+                          "message": "This write capability is no longer live."
+                        }
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": "inactive"
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "4882C452E6771C55BB682F2C7141A069",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "gate",
+                    "name": "a:work"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "gate",
+                    "name": "a:dispose"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "DB2238D5FD45711134780E1EAE47B3A5",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.detached-work",
+          "title": "Native work remains pinned even when its caller forgot to await it",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "detached-work-blocks-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "detached-task-did-not-write",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Task returns without awaiting a registered wait; close must still drain that wait"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "work": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "7B668FD391505EE420920E6BE2F93201",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "gate",
+                    "name": "a:work"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "7945B7E9E14BC964DF18BD77DC37EF35",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.stale-task",
+          "title": "Finished task callbacks cannot write; reacquisition reads fresh state",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "finished-task-cannot-write",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "reacquisition-rereads-generation",
+              "actual": 2,
+              "expected": 2,
+              "passed": true
+            },
+            {
+              "id": "old-session-stays-closed",
+              "actual": "closed",
+              "expected": "closed",
+              "passed": true
+            },
+            {
+              "id": "old-callback-not-revived",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "fresh-session-can-write",
+              "actual": "wrote",
+              "expected": "wrote",
+              "passed": true
+            },
+            {
+              "id": "only-fresh-generation-written",
+              "actual": [2],
+              "expected": [2],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Retain a task callback; finish task; close; change synthetic durable generation under exclusive; reopen"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "old": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "fresh": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 2,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "old",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "A3A036362F82AB824BA3022984BF2DD5",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "old"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "old"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "old"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "initialize",
+                    "id": "fresh",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "A3A036362F82AB824BA3022984BF2DD5",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-loaded",
+                    "id": "fresh"
+                  },
+                  {
+                    "order": 6,
+                    "kind": "write",
+                    "generation": 2
+                  }
+                ],
+                "writes": [2],
+                "gates": [],
+                "persistedWrites": "[2]"
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "A3A036362F82AB824BA3022984BF2DD5",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 2
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "0180FFCFFCC189D1E3851923A4FDA993",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": "[2]"
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "A3A036362F82AB824BA3022984BF2DD5",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.cancel-queued",
+          "title": "Cancelled queued acquisition never initializes",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "queued-acquisition-cancelled",
+              "actual": "cancelled",
+              "expected": "cancelled",
+              "passed": true
+            },
+            {
+              "id": "cancelled-request-never-initializes",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "uninitialized-request-needs-no-disposal",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "cancelled-request-does-not-block-reopen",
+              "actual": "active",
+              "expected": "active",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Hold exclusive; queue a writer; abort before grant; release exclusive and acquire afresh"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": null,
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "WriteSessionError",
+                          "code": "cancelled",
+                          "message": "Writer permit acquisition failed."
+                        }
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 0,
+                    "disposals": 0,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "fresh": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "fresh",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "846CDA46505FD404118DD9614BB4F340",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "fresh"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "846CDA46505FD404118DD9614BB4F340",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "EA23B74F4DB8EB9C01C34F3B89CF3275",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "gate",
+                    "name": "x:exclusive"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "846CDA46505FD404118DD9614BB4F340",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.cancel-initialize",
+          "title": "Cancellation during initialization drains and disposes before release",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "cancelled-initialization-still-pins-work",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "cancelled-initialization-refuses-open",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "cancelled-initialization-clears-cache",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "partial-initialization-disposed-once",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Grant shared permit and pause initialization; abort; queue exclusive; resume initializer and require cleanup"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": null,
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "WriteSessionError",
+                          "code": "inactive",
+                          "message": "This write capability is no longer live."
+                        }
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "DA513F2D080E87CA03408770ED18D05A",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "gate",
+                    "name": "a:initialize"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "9DD1B80A07DA98907CDB8CE2D600A4E8",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.initialize-error",
+          "title": "Failed initialization cleans partial resources and releases",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "initialization-error-refuses-open",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "failed-initialization-disposes",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "failed-initializer-had-loaded-key",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "failed-initializer-clears-loaded-key",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "failed-initialization-releases-permit",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Reject the initializer; require cleanup before a subsequent exclusive acquisition"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "Error",
+                          "code": null,
+                          "message": "Injected initialization failure after loading a key"
+                        }
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "ED39297E41A037B94824D77E23C3978F",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "E42C1B4244AC4EAA80034B41949E14BB",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.cleanup-error",
+          "title": "Failed cleanup retains exclusion until actual context death",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "cleanup-failure-reported",
+              "actual": "cleanup-failed",
+              "expected": "cleanup-failed",
+              "passed": true
+            },
+            {
+              "id": "failed-session-disabled",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "failed-cleanup-retains-permit",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "dead-runtime-no-longer-holds-capability",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Reject cache disposal; require disabled writes and a retained permit until renderer death",
+            "CDP Page.crash; no graceful close or unload flush"
+          ],
+          "artifacts": [
+            {
+              "point": "before-renderer-crash",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "failed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "WriteSessionError",
+                          "code": "cleanup-failed",
+                          "message": "Cleanup failed; permit retained."
+                        }
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "A116287ED927F1603E67547991AB618D",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "A116287ED927F1603E67547991AB618D",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": [
+                  {
+                    "clientId": "39FDC87B05D8173BDC1A655DECE170CA",
+                    "mode": "exclusive",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ]
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "39FDC87B05D8173BDC1A655DECE170CA",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.renderer-death",
+          "title": "Renderer death releases the permit without application disposal",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "live-writer-blocks-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "renderer-death-releases-permit",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": ["CDP Page.crash; no graceful close or unload flush"],
+          "artifacts": [
+            {
+              "point": "before-renderer-crash",
+              "snapshot": {
+                "entries": {
+                  "a": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "a",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "C08AB6AE2984874CCB0C2320575775F1",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "a"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "C08AB6AE2984874CCB0C2320575775F1",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": [
+                  {
+                    "clientId": "CAACDF2E5A90C85D386B4CD43974838A",
+                    "mode": "exclusive",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ]
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "CAACDF2E5A90C85D386B4CD43974838A",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.worker-lifetime",
+          "title": "Dedicated workers participate in the same slot barrier",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "worker-blocks-tab-exclusive",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "worker-cleanup-clears-cache",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "second-worker-session-blocks",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "worker-termination-releases-permit",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Worker blocks tab-exclusive; graceful close releases; a second worker session releases only after termination"
+          ],
+          "artifacts": [
+            {
+              "point": "before-worker-termination",
+              "snapshot": {
+                "entries": {
+                  "worker": {
+                    "state": "closed",
+                    "aborted": true,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      },
+                      "close": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "second": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "worker",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "B5B26934368AAD9BA10C36F2282ECC22",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "worker"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "dispose-start",
+                    "id": "worker"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "cache-cleared",
+                    "id": "worker"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "initialize",
+                    "id": "second",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "B5B26934368AAD9BA10C36F2282ECC22",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-loaded",
+                    "id": "second"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              }
+            },
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {},
+                "events": [],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  },
+                  "y": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "D370C288761C12668C0EB622B6F64579",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "initialize",
+                    "id": "y",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "D370C288761C12668C0EB622B6F64579",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 6,
+                    "kind": "cache-loaded",
+                    "id": "y"
+                  },
+                  {
+                    "order": 7,
+                    "kind": "exclusive-enter",
+                    "id": "y"
+                  },
+                  {
+                    "order": 8,
+                    "kind": "dispose-start",
+                    "id": "y"
+                  },
+                  {
+                    "order": 9,
+                    "kind": "cache-cleared",
+                    "id": "y"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.exclusive-error",
+          "title": "Exclusive operation failure releases through the same cleanup boundary",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "exclusive-error-case-blocks-initialization",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "exclusive-error-propagates",
+              "actual": "Injected exclusive operation failure",
+              "expected": "Injected exclusive operation failure",
+              "passed": true
+            },
+            {
+              "id": "exclusive-error-disposes-cache",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "writer-proceeds-after-exclusive-error",
+              "actual": "active",
+              "expected": "active",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Hold exclusive and queue writer; throw from exclusive operation; dispose cache before writer initializes"
+          ],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "rejected",
+                        "error": {
+                          "name": "Error",
+                          "code": null,
+                          "message": "Injected exclusive operation failure"
+                        }
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "73BA1D09804677BA8655A9B50AA69211",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "gate",
+                    "name": "x:exclusive"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 5,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "F6ED7EDE6A382729446E6E07FD89FA3B",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "b": {
+                    "state": "active",
+                    "aborted": false,
+                    "operations": {
+                      "open": {
+                        "status": "resolved",
+                        "value": null
+                      }
+                    },
+                    "entered": false,
+                    "initializations": 1,
+                    "disposals": 0,
+                    "hasCache": true,
+                    "generation": 1,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "b",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "F6ED7EDE6A382729446E6E07FD89FA3B",
+                          "mode": "shared",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "b"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [
+                  {
+                    "clientId": "F6ED7EDE6A382729446E6E07FD89FA3B",
+                    "mode": "shared",
+                    "name": "done/slot-writer/\"slot\""
+                  }
+                ],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        },
+        {
+          "id": "C04.navigation",
+          "title": "Navigation never revives a writable pre-navigation session",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "navigation-does-not-revive-session",
+              "actual": "new-document",
+              "expected": "new-document",
+              "passed": true
+            },
+            {
+              "id": "navigation-releases-old-permit",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": ["Browser created a new document; BFCache restoration not observed"],
+          "artifacts": [
+            {
+              "point": "page-0-final",
+              "snapshot": {
+                "entries": {},
+                "events": [],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "page-1-final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "state": null,
+                    "aborted": false,
+                    "operations": {
+                      "exclusive": {
+                        "status": "resolved",
+                        "value": 1
+                      }
+                    },
+                    "entered": true,
+                    "initializations": 1,
+                    "disposals": 1,
+                    "hasCache": false,
+                    "generation": null,
+                    "abortWrite": null
+                  }
+                },
+                "events": [
+                  {
+                    "order": 0,
+                    "kind": "initialize",
+                    "id": "x",
+                    "locks": {
+                      "held": [
+                        {
+                          "clientId": "4F2E571D9F7D60C6C467580713AFFF2C",
+                          "mode": "exclusive",
+                          "name": "done/slot-writer/\"slot\""
+                        }
+                      ],
+                      "pending": []
+                    }
+                  },
+                  {
+                    "order": 1,
+                    "kind": "cache-loaded",
+                    "id": "x"
+                  },
+                  {
+                    "order": 2,
+                    "kind": "exclusive-enter",
+                    "id": "x"
+                  },
+                  {
+                    "order": 3,
+                    "kind": "dispose-start",
+                    "id": "x"
+                  },
+                  {
+                    "order": 4,
+                    "kind": "cache-cleared",
+                    "id": "x"
+                  }
+                ],
+                "writes": [],
+                "gates": [],
+                "persistedWrites": null
+              },
+              "locks": {
+                "held": [],
+                "pending": []
+              }
+            },
+            {
+              "point": "unexpected-page-errors",
+              "errors": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "split-coordination-domain",
+      "assertion": "frozen-writer-blocks-exclusive",
+      "status": "detected",
+      "result": {
+        "id": "split-coordination-domain",
+        "source": {
+          "path": "src/crdt/writeSession.ts",
+          "sha256": "32662fcef9a197c7c827995bb5411a6ff9939a00cec32515a9712a1f34c81e30",
+          "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+        },
+        "mutation": {
+          "from": "const name = slotPermitName(slotId);",
+          "to": "const name = slotPermitName(slotId) + (mode === 'exclusive' ? '/split' : '');"
+        },
+        "cases": [
+          {
+            "id": "C04.freeze-barrier",
+            "title": "Frozen and remaining writers block exclusivity and subsequent initialization",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "frozen-writer-blocks-exclusive",
+                "actual": true,
+                "expected": false,
+                "passed": false
+              }
+            ],
+            "schedule": [],
+            "artifacts": [
+              {
+                "point": "page-0-final",
+                "snapshot": {
+                  "entries": {
+                    "a": {
+                      "state": "active",
+                      "aborted": false,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 1,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "a",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "72E59839DE520B25C2DE5B41E3E692BA",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "a"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [
+                    {
+                      "clientId": "72E59839DE520B25C2DE5B41E3E692BA",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    },
+                    {
+                      "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    },
+                    {
+                      "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                      "mode": "exclusive",
+                      "name": "done/slot-writer/\"slot\"/split"
+                    }
+                  ],
+                  "pending": []
+                }
+              },
+              {
+                "point": "page-1-final",
+                "snapshot": {
+                  "entries": {
+                    "b": {
+                      "state": "active",
+                      "aborted": false,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 1,
+                      "abortWrite": null
+                    },
+                    "x": {
+                      "state": null,
+                      "aborted": false,
+                      "operations": {
+                        "exclusive": {
+                          "status": "pending"
+                        }
+                      },
+                      "entered": true,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 1,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "b",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "72E59839DE520B25C2DE5B41E3E692BA",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          },
+                          {
+                            "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "b"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "initialize",
+                      "id": "x",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "72E59839DE520B25C2DE5B41E3E692BA",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          },
+                          {
+                            "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          },
+                          {
+                            "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                            "mode": "exclusive",
+                            "name": "done/slot-writer/\"slot\"/split"
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 3,
+                      "kind": "cache-loaded",
+                      "id": "x"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "exclusive-enter",
+                      "id": "x"
+                    },
+                    {
+                      "order": 5,
+                      "kind": "gate",
+                      "name": "x:exclusive"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": ["x:exclusive"],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [
+                    {
+                      "clientId": "72E59839DE520B25C2DE5B41E3E692BA",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    },
+                    {
+                      "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    },
+                    {
+                      "clientId": "AF3969F4EEA8B4754CA3EB8C4CE5DFAB",
+                      "mode": "exclusive",
+                      "name": "done/slot-writer/\"slot\"/split"
+                    }
+                  ],
+                  "pending": []
+                }
+              },
+              {
+                "point": "unexpected-page-errors",
+                "errors": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ignore-session-invalidation",
+      "assertion": "closing-callback-cannot-write",
+      "status": "detected",
+      "result": {
+        "id": "ignore-session-invalidation",
+        "source": {
+          "path": "src/crdt/writeSession.ts",
+          "sha256": "e0083a174efb487ee0a58567fc9cff6f75d727f053d590c3d29449c73c46a929",
+          "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+        },
+        "mutation": {
+          "from": "if (state !== 'active' && !(initializing && state === 'opening')) throw inactive();",
+          "to": "void initializing; // removed session validity check"
+        },
+        "cases": [
+          {
+            "id": "C04.drain-cleanup",
+            "title": "Close invalidates immediately and waits for work and cache cleanup",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "close-disables-immediately",
+                "actual": "closing",
+                "expected": "closing",
+                "passed": true
+              },
+              {
+                "id": "abort-handler-cannot-write",
+                "actual": "wrote",
+                "expected": "inactive",
+                "passed": false
+              },
+              {
+                "id": "work-blocks-exclusive",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "closing-callback-cannot-write",
+                "actual": [1, 1],
+                "expected": [],
+                "passed": false
+              },
+              {
+                "id": "cleanup-blocks-exclusive",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "cache-cleared-before-exclusive",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "closed-session-refuses-writes",
+                "actual": "Probe has no loaded key",
+                "expected": "inactive",
+                "passed": false
+              },
+              {
+                "id": "cleanup-runs-once",
+                "actual": 1,
+                "expected": 1,
+                "passed": true
+              }
+            ],
+            "schedule": [
+              "Pause work, close synchronously, attempt abort reentry, release work, pause cache disposal"
+            ],
+            "artifacts": [
+              {
+                "point": "page-0-final",
+                "snapshot": {
+                  "entries": {
+                    "a": {
+                      "state": "closed",
+                      "aborted": true,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "work": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "close": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": "wrote"
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "a",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "CDBF1BFD90D55BE010C5301072697E95",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "a"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "gate",
+                      "name": "a:work"
+                    },
+                    {
+                      "order": 3,
+                      "kind": "write",
+                      "generation": 1
+                    },
+                    {
+                      "order": 4,
+                      "kind": "write",
+                      "generation": 1
+                    },
+                    {
+                      "order": 5,
+                      "kind": "dispose-start",
+                      "id": "a"
+                    },
+                    {
+                      "order": 6,
+                      "kind": "gate",
+                      "name": "a:dispose"
+                    },
+                    {
+                      "order": 7,
+                      "kind": "cache-cleared",
+                      "id": "a"
+                    }
+                  ],
+                  "writes": [1, 1],
+                  "gates": [],
+                  "persistedWrites": "[1,1]"
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "page-1-final",
+                "snapshot": {
+                  "entries": {
+                    "x": {
+                      "state": null,
+                      "aborted": false,
+                      "operations": {
+                        "exclusive": {
+                          "status": "resolved",
+                          "value": 1
+                        }
+                      },
+                      "entered": true,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "x",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "B233B88C407D60E80D848190735A44E0",
+                            "mode": "exclusive",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "x"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "exclusive-enter",
+                      "id": "x"
+                    },
+                    {
+                      "order": 3,
+                      "kind": "dispose-start",
+                      "id": "x"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "cache-cleared",
+                      "id": "x"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": "[1,1]"
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "unexpected-page-errors",
+                "errors": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "release-before-drain",
+      "assertion": "detached-work-blocks-exclusive",
+      "status": "detected",
+      "result": {
+        "id": "release-before-drain",
+        "source": {
+          "path": "src/crdt/writeSession.ts",
+          "sha256": "68ed31bf77c629f4aecf38605a4f5470f6735e036bd35689646939a57f093ea1",
+          "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+        },
+        "mutation": {
+          "from": "await drain();",
+          "to": "void drain; // removed drain boundary"
+        },
+        "cases": [
+          {
+            "id": "C04.detached-work",
+            "title": "Native work remains pinned even when its caller forgot to await it",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "detached-work-blocks-exclusive",
+                "actual": true,
+                "expected": false,
+                "passed": false
+              },
+              {
+                "id": "detached-task-did-not-write",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [
+              "Task returns without awaiting a registered wait; close must still drain that wait"
+            ],
+            "artifacts": [
+              {
+                "point": "page-0-final",
+                "snapshot": {
+                  "entries": {
+                    "a": {
+                      "state": "closed",
+                      "aborted": true,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "work": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "close": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "a",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "E88F85BBD0ADE5B2FD970490A84744FE",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "a"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "gate",
+                      "name": "a:work"
+                    },
+                    {
+                      "order": 3,
+                      "kind": "dispose-start",
+                      "id": "a"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "cache-cleared",
+                      "id": "a"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "page-1-final",
+                "snapshot": {
+                  "entries": {
+                    "x": {
+                      "state": null,
+                      "aborted": false,
+                      "operations": {
+                        "exclusive": {
+                          "status": "resolved",
+                          "value": 1
+                        }
+                      },
+                      "entered": true,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "x",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "76548E86F004879E175141E050A366B3",
+                            "mode": "exclusive",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "x"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "exclusive-enter",
+                      "id": "x"
+                    },
+                    {
+                      "order": 3,
+                      "kind": "dispose-start",
+                      "id": "x"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "cache-cleared",
+                      "id": "x"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "unexpected-page-errors",
+                "errors": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-cache-cleanup",
+      "assertion": "cache-cleared-before-exclusive",
+      "status": "detected",
+      "result": {
+        "id": "skip-cache-cleanup",
+        "source": {
+          "path": "src/crdt/writeSession.ts",
+          "sha256": "c7abba9832bce86b21bef7b81d30bbc189f627493fc92dddbd38cf915e0e1f8b",
+          "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+        },
+        "mutation": {
+          "from": "if (granted) await dispose?.();",
+          "to": "void granted; // removed cache cleanup"
+        },
+        "cases": [
+          {
+            "id": "C04.drain-cleanup",
+            "title": "Close invalidates immediately and waits for work and cache cleanup",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "close-disables-immediately",
+                "actual": "closing",
+                "expected": "closing",
+                "passed": true
+              },
+              {
+                "id": "abort-handler-cannot-write",
+                "actual": "inactive",
+                "expected": "inactive",
+                "passed": true
+              },
+              {
+                "id": "work-blocks-exclusive",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "closing-callback-cannot-write",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              },
+              {
+                "id": "cache-cleared-before-exclusive",
+                "actual": true,
+                "expected": false,
+                "passed": false
+              },
+              {
+                "id": "closed-session-refuses-writes",
+                "actual": "inactive",
+                "expected": "inactive",
+                "passed": true
+              },
+              {
+                "id": "cleanup-runs-once",
+                "actual": 0,
+                "expected": 1,
+                "passed": false
+              }
+            ],
+            "schedule": [
+              "Pause work, close synchronously, attempt abort reentry, release work, pause cache disposal"
+            ],
+            "artifacts": [
+              {
+                "point": "page-0-final",
+                "snapshot": {
+                  "entries": {
+                    "a": {
+                      "state": "closed",
+                      "aborted": true,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "work": {
+                          "status": "rejected",
+                          "error": {
+                            "name": "WriteSessionError",
+                            "code": "inactive",
+                            "message": "This write capability is no longer live."
+                          }
+                        },
+                        "close": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 1,
+                      "abortWrite": "inactive"
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "a",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "2FE1697CD6B470EA1265F18CAA679BF5",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "a"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "gate",
+                      "name": "a:work"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "page-1-final",
+                "snapshot": {
+                  "entries": {
+                    "x": {
+                      "state": null,
+                      "aborted": false,
+                      "operations": {
+                        "exclusive": {
+                          "status": "resolved",
+                          "value": 1
+                        }
+                      },
+                      "entered": true,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 1,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "x",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "937E4ECB8F3C9A961157E193C31CD635",
+                            "mode": "exclusive",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "x"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "exclusive-enter",
+                      "id": "x"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": null
+                },
+                "locks": {
+                  "held": [],
+                  "pending": []
+                }
+              },
+              {
+                "point": "unexpected-page-errors",
+                "errors": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "reuse-finished-task",
+      "assertion": "finished-task-cannot-write",
+      "status": "detected",
+      "result": {
+        "id": "reuse-finished-task",
+        "source": {
+          "path": "src/crdt/writeSession.ts",
+          "sha256": "7ff049207cd3cbcba223513050d399b2488a78b727b3b7110df9966cbb933ca4",
+          "original": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9"
+        },
+        "mutation": {
+          "from": "if (!live) throw inactive();",
+          "to": "void live; // removed task validity check"
+        },
+        "cases": [
+          {
+            "id": "C04.stale-task",
+            "title": "Finished task callbacks cannot write; reacquisition reads fresh state",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "finished-task-cannot-write",
+                "actual": "wrote",
+                "expected": "inactive",
+                "passed": false
+              },
+              {
+                "id": "reacquisition-rereads-generation",
+                "actual": 2,
+                "expected": 2,
+                "passed": true
+              },
+              {
+                "id": "old-session-stays-closed",
+                "actual": "closed",
+                "expected": "closed",
+                "passed": true
+              },
+              {
+                "id": "old-callback-not-revived",
+                "actual": "inactive",
+                "expected": "inactive",
+                "passed": true
+              },
+              {
+                "id": "fresh-session-can-write",
+                "actual": "wrote",
+                "expected": "wrote",
+                "passed": true
+              },
+              {
+                "id": "only-fresh-generation-written",
+                "actual": [1, 2],
+                "expected": [2],
+                "passed": false
+              }
+            ],
+            "schedule": [
+              "Retain a task callback; finish task; close; change synthetic durable generation under exclusive; reopen"
+            ],
+            "artifacts": [
+              {
+                "point": "page-0-final",
+                "snapshot": {
+                  "entries": {
+                    "old": {
+                      "state": "closed",
+                      "aborted": true,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        },
+                        "close": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": null
+                    },
+                    "fresh": {
+                      "state": "active",
+                      "aborted": false,
+                      "operations": {
+                        "open": {
+                          "status": "resolved",
+                          "value": null
+                        }
+                      },
+                      "entered": false,
+                      "initializations": 1,
+                      "disposals": 0,
+                      "hasCache": true,
+                      "generation": 2,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "old",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "3D7091C04CE1228DDA7DAA7D849BEA68",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "old"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "write",
+                      "generation": 1
+                    },
+                    {
+                      "order": 3,
+                      "kind": "dispose-start",
+                      "id": "old"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "cache-cleared",
+                      "id": "old"
+                    },
+                    {
+                      "order": 5,
+                      "kind": "initialize",
+                      "id": "fresh",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "3D7091C04CE1228DDA7DAA7D849BEA68",
+                            "mode": "shared",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 6,
+                      "kind": "cache-loaded",
+                      "id": "fresh"
+                    },
+                    {
+                      "order": 7,
+                      "kind": "write",
+                      "generation": 2
+                    }
+                  ],
+                  "writes": [1, 2],
+                  "gates": [],
+                  "persistedWrites": "[1,2]"
+                },
+                "locks": {
+                  "held": [
+                    {
+                      "clientId": "3D7091C04CE1228DDA7DAA7D849BEA68",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    }
+                  ],
+                  "pending": []
+                }
+              },
+              {
+                "point": "page-1-final",
+                "snapshot": {
+                  "entries": {
+                    "x": {
+                      "state": null,
+                      "aborted": false,
+                      "operations": {
+                        "exclusive": {
+                          "status": "resolved",
+                          "value": 2
+                        }
+                      },
+                      "entered": true,
+                      "initializations": 1,
+                      "disposals": 1,
+                      "hasCache": false,
+                      "generation": null,
+                      "abortWrite": null
+                    }
+                  },
+                  "events": [
+                    {
+                      "order": 0,
+                      "kind": "initialize",
+                      "id": "x",
+                      "locks": {
+                        "held": [
+                          {
+                            "clientId": "8C1AB9F65FD0755A8BAC3167B3C1DAFB",
+                            "mode": "exclusive",
+                            "name": "done/slot-writer/\"slot\""
+                          }
+                        ],
+                        "pending": []
+                      }
+                    },
+                    {
+                      "order": 1,
+                      "kind": "cache-loaded",
+                      "id": "x"
+                    },
+                    {
+                      "order": 2,
+                      "kind": "exclusive-enter",
+                      "id": "x"
+                    },
+                    {
+                      "order": 3,
+                      "kind": "dispose-start",
+                      "id": "x"
+                    },
+                    {
+                      "order": 4,
+                      "kind": "cache-cleared",
+                      "id": "x"
+                    }
+                  ],
+                  "writes": [],
+                  "gates": [],
+                  "persistedWrites": "[1,2]"
+                },
+                "locks": {
+                  "held": [
+                    {
+                      "clientId": "3D7091C04CE1228DDA7DAA7D849BEA68",
+                      "mode": "shared",
+                      "name": "done/slot-writer/\"slot\""
+                    }
+                  ],
+                  "pending": []
+                }
+              },
+              {
+                "point": "unexpected-page-errors",
+                "errors": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Production lifecycle component with synthetic cache/write probes; not wired into the encrypted store or editor.",
+    "No factor custody, opener census, generation activation, clear authorization, or supported-version cutover is certified.",
+    "Chromium on this host only. Freeze, renderer death, worker termination and navigation are real browser operations.",
+    "A new document on back navigation is not evidence of a BFCache restoration.",
+    "All side effects must use the capability API; it does not sandbox hostile same-origin code or escaped raw keys."
+  ],
+  "exitCode": 0,
+  "finished": "2026-09-08T15:19:59.282Z"
+}

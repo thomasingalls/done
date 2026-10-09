@@ -1,0 +1,61 @@
+{
+  "counts": [
+    {
+      "name": "reserved",
+      "count": 207
+    },
+    {
+      "name": "prepared",
+      "count": 268
+    },
+    {
+      "name": "genesis-prepared",
+      "count": 438
+    },
+    {
+      "name": "admission-requested",
+      "count": 724
+    },
+    {
+      "name": "admission-offered",
+      "count": 975
+    },
+    {
+      "name": "admission-receipted",
+      "count": 1318
+    },
+    {
+      "name": "handoff-prepared",
+      "count": 1470
+    },
+    {
+      "name": "handoff-selected",
+      "count": 1470
+    },
+    {
+      "name": "account-active",
+      "count": 1470
+    },
+    {
+      "name": "account-capturing",
+      "count": 1470
+    },
+    {
+      "name": "account-spooling",
+      "count": 1470
+    },
+    {
+      "name": "account-delivering",
+      "count": 1470
+    },
+    {
+      "name": "account-receiving",
+      "count": 1470
+    },
+    {
+      "name": "admission",
+      "count": 271
+    }
+  ],
+  "accepted": []
+}

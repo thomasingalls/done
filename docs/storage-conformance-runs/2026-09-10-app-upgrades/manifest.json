@@ -1,0 +1,226 @@
+{
+  "baseCommit": "07d89f6ac2954b28858a00e98154523fff3e4719",
+  "scope": "compatible upgrade sources, isolated native builds and reports, private helper code; no personal writing, factor or origin",
+  "files": [
+    {
+      "path": "vite/precacheServiceWorker.ts",
+      "sha256": "bae23814e83f3e5355b66456306e03130237795e640342456d88c2ed5ee50d01"
+    },
+    {
+      "path": "vite/appUpgradeProperties.test.ts",
+      "sha256": "c9e0abcda62b689f84233fe3b28ce5465b1f5e9e81d7160e35a529a4a9e0f274"
+    },
+    {
+      "path": "vite/precacheBuild.test.ts",
+      "sha256": "c494e695feee044163a21afeb58d5aa33767b2c7f1b19d475970f340304cba7e"
+    },
+    {
+      "path": "src/appUpdate.ts",
+      "sha256": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df"
+    },
+    {
+      "path": "src/pwa.ts",
+      "sha256": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587"
+    },
+    {
+      "path": "src/ui/AppUpdateNotice.tsx",
+      "sha256": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47"
+    },
+    {
+      "path": "src/ui/LocalApp.tsx",
+      "sha256": "ad0ca0e79c8f5a41850098d5c8f1d4247f63e2c2a33ddc1aedcbf1eb87cf3518"
+    },
+    {
+      "path": "src/ui/Menu.tsx",
+      "sha256": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8"
+    },
+    {
+      "path": "src/ui/privateMigration.ts",
+      "sha256": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50"
+    },
+    {
+      "path": "private/cleanup.ts",
+      "sha256": "5007737fd9fe798c516d27e53c2a6475a7df5b966466af3083b75721d9075976"
+    },
+    {
+      "path": "scripts/build-private-cleanup.mjs",
+      "sha256": "887b8d7c11984fce2c0d18c7729d5ddf5b9627c30c2e1778e71ef84e91266a9c"
+    },
+    {
+      "path": "scripts/app-upgrades/run.mjs",
+      "sha256": "325ed117bfd4721ff9195577cd81ddef38a0c7c38c709ae5678c1213860b8e32"
+    },
+    {
+      "path": "scripts/app-upgrades/server.mjs",
+      "sha256": "6b2f08a9237679de70c6a6fdb092f78bd826ae54be65af6c00cf8b1ed27244ec"
+    },
+    {
+      "path": "playwright.app-upgrades.config.ts",
+      "sha256": "e8a0823848dbb877e338f05f0a2688b1c93f915a824891741b31096691768502"
+    },
+    {
+      "path": "playwright.private-migration.config.ts",
+      "sha256": "b81bb41b0631de6041c8e32bfbe52d5fc4fce57c3fe8471010b312d0ec57ff0b"
+    },
+    {
+      "path": "test/app-upgrades/upgrades.spec.ts",
+      "sha256": "84b81a82fa005ca309b807a7ef9558b185ff29f2437c180deae8d73bdf40da20"
+    },
+    {
+      "path": "test/local-app/packaged.spec.ts",
+      "sha256": "0ea5088efac0dfdc29a1675a9803237b51b3c7a381fa5a2c113adb2afec153e3"
+    },
+    {
+      "path": "test/private-migration/rehearsal.spec.ts",
+      "sha256": "ca20958741ed0b9f33c870e243a9d20dd9ce6a5a1099a66a1f5b850031941427"
+    },
+    {
+      "path": "test/privateMigration.test.ts",
+      "sha256": "4f520923ff571eb7f57720a57ee10d18047064d75144eede1dd13b05f8f15411"
+    },
+    {
+      "path": "test/localAppStartup.test.ts",
+      "sha256": "d452388fc2984f6cd203741c5fbc3bdf5f9ec2c5bc9b50a63acde2c83e28d303"
+    },
+    {
+      "path": "test/workspaceAdmission.test.ts",
+      "sha256": "180cccabada01c85cddb28e2cc95963e0e4026a78d2b8b84dfe6a0cc6c3e5f67"
+    },
+    {
+      "path": "package.json",
+      "sha256": "8a23b21f8772472b63d089ee63b6d3cc220726b0414497c9198bf058f8e07420"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "5e249294bdfba86b20dd8aef1d6be467d2de269e99597b0816ed802364e0f0b1"
+    },
+    {
+      "path": "tsconfig.node.json",
+      "sha256": "db999da5c7520da5323b38624ec208069bf5b554d4cea50e92f68f0546850a55"
+    },
+    {
+      "path": ".dev/private-cleanup/paste.js",
+      "sha256": "3127aead48c25c55d8cb64e20dec437f6c079c89fef5d90d21b4387935451caa"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/build-checks.json",
+      "sha256": "ddda7c7f9af30d3cc9d58f364f8deaa0b2ee9775eb94b11086ff20e37100cb9a"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/cleanup-native.json",
+      "sha256": "655a442e88963b244213a04260b7f4e82037346b2c0ea97cb8b1a43b4ff37bbc"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/cleanup-retry-before.json",
+      "sha256": "54c18962a3695a96a5845994d69908f80b0d839cc1961f76604f1ed983a38b57"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/native.json",
+      "sha256": "3fc8dd1fbd31dd5ac7fb268448aad57d6dc074d9e58cefad26d7f234c1e573db"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/predecessor-worker.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/predecessor.json",
+      "sha256": "0534153de38e296570c18430e9156b90babe42230eb0a6b0a4d64c24ea732bbe"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/unit.json",
+      "sha256": "3cb6ded9ad18ad1829dba9d1ac385c53e4b56dd15ed072743e62fc5cc3781d23"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/worker-a.js",
+      "sha256": "bff65f077c39e03a56ef4564c552464518b979643abe19ee0838ad1aa02d738b"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades/worker-b.js",
+      "sha256": "c4e5f0dc410a73917d9a01f1859e4955d889f98703f3228a9f2ff7e74b620794"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/index.html",
+      "sha256": "0884403497bc8395079e157174b713e23affd4d0dd74dd2dd1139dd2a972d390"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/local.html",
+      "sha256": "0151c88bf2a9e5a5d099ea1d47fdb4fd307c2156e3f033f4cda0e75f61d0ee01"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/sw.js",
+      "sha256": "bff65f077c39e03a56ef4564c552464518b979643abe19ee0838ad1aa02d738b"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/assets/main-B0AV8VPD.js",
+      "sha256": "526dda7dbbbad1dd3b6558d855c9534d8a39e1e0ac0d1ccbd3f8271c37734d1d"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/a/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/index.html",
+      "sha256": "bb0c449dcecc07b2fc55d90e1ca4a0181a35900f7147c92ebb8e321a755e5272"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/local.html",
+      "sha256": "95995867d4fe88ae21d6c28b8cf9f8c6bcd3af00328ad5f24dbcaada989ab02e"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/sw.js",
+      "sha256": "c4e5f0dc410a73917d9a01f1859e4955d889f98703f3228a9f2ff7e74b620794"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "test-results/app-upgrades/2026-09-10T12-07-07.340Z/b/assets/main-DPytj3_g.js",
+      "sha256": "59e71482cb748da7dd29f917af04b1e60b6c34e27e5431738ffd441f81f8b8fc"
+    }
+  ]
+}

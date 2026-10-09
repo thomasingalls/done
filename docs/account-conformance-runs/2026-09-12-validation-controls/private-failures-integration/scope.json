@@ -1,0 +1,9 @@
+{
+  "baseline": "409fbd09768561393431378d076bc71939f24ac3",
+  "phase": "failures",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision"
+}

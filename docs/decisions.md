@@ -1463,3 +1463,2939 @@ the register as an open row.
 Stage 4 will get wrong first. The residual §5 names is unchanged and accepted: a party holding a device _and_ the
 account credential can replace the recovery envelope and destroy the owner's recovery path — an availability loss,
 strictly less than deleting the account outright, surfaced at the explicit confirmation rather than prevented.
+
+
+---
+
+### Encrypted-store contracts corrected before implementation synthesis
+
+**Date:** 2026-09-08 · **Base:** `af8941e` · **Branch:** `codex/encrypted-store-contract-corrections`
+
+The three implementations inherited contradictory or incomplete prose. The spec assessment and bounded
+counterexamples showed why an IndexedDB fence cannot exclude a stale localStorage writer, unique sequence
+numbers cannot prove snapshot coverage, and a journalled local Yjs edit may require an unpersisted remote
+predecessor. An empty Yjs replica does not erase a populated peer by ordinary synchronization. Treat the
+old closure/model claims as evidence of represented cases, not authority for these omitted states.
+
+**Product decision.** The user selected factor unlock for protection against copied profiles. Require the
+generated 125-bit code at persistent Local and Account genesis and cold start; PRF adds a seal. Narrow the
+claim to supported copied profiles without the external factor, after complete custody/receiver protection.
+Non-extractability alone is not filesystem confidentiality. Existing copies retain history; migration and
+remote observation can leave forward protection pending. No ordinary disable-lock downgrade remains.
+
+**Selected storage rules.** SC-01–09 in [storage-contract.md](./storage-contract.md) now own the detailed
+boundary: shared writer-lifetime permits and exclusive slot transitions; journal-inclusive fresh retirement
+census after every restart; remote/cross-tab commit before canonical promotion; ordered private pending
+input; exact authenticated trim; repair-required refusal of unreadable persisted state; classified partial
+genesis; resumable authorized clear; mandatory factors and qualified nonce accounting/restore. A frozen
+writer may delay transitions indefinitely. No timeout or stale census supplies safety. Pressured local
+input becomes ordinary document content only when durable; IME preedit remains provisional native input.
+
+**Metadata and bytes.** Custody lifecycle metadata becomes v2 (`creating | migrating | protected`), with
+verified durable intent and per-root seal reservations. Factor authority remains principal/workspace-scoped
+inside the local user slot; the coordination permit is wider than that key authority. Record, journal,
+LockSeal and transition cryptographic encodings are unchanged. The older generation-only custody budget
+counted stored rows but omitted encryption retries and multiple purposes; reserve every custody-root seal
+before encryption instead. All random-nonce counter claims assume unrewound, unbranched histories.
+Supported writable restore uses verified import with a fresh store/key scope, never a restored counter.
+
+**Five ambiguity dispositions.** Partial genesis resumes a verified intent or refuses; unreadable load
+refuses ordinary open; unreadable trim refuses the whole trim; pending input stays private until durable;
+clear includes the journal and preserves recovery material when content deletion fails. A durable clear
+intent and terminal marker prevent resurrection after interrupted cleanup.
+
+**Evidence and next gate.** [storage-conformance.md](./storage-conformance.md) separates finite models,
+real Yjs components, production adapters and browser evidence. New model/component tests expose the losing
+schedules; all production obligations remain pending. Register adapter conformance at L-1, complete
+writer/generation lifetime at L-3, and supported factor/profile evidence at L-4. A prose check or primitive
+vector cannot pay these debts. Next build one shared harness against each candidate's actual paths, then
+synthesize deliberately around a rebuilt coordinator. This decision does not select a whole branch as
+correct, recertify the full protocol, or authorize the live Stage 2 cutover.
+
+
+---
+
+### Phase-two local custody: authenticated v2 metadata and root-sealed credentials
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Context:** mandatory-factor custody implementation
+
+The corrected contract requires authenticated resumable creation and per-root invocation accounting,
+while retaining the selected v1 factor and generation-envelope bytes. A cleartext count or intent whose
+fields are not authenticated would reintroduce trust in editable profile metadata. The new component
+therefore binds its complete closed v2 metadata tuple with HMAC-SHA256 under a separately derived key;
+[the exact encoding](./custody.md#v2-local-encodings) and production parser own its field order.
+Transactional comparison retains the observed identity and bytes before each mutation. The MAC prevents
+unauthenticated edits, not replay of authentic old states: the unrewound/unbranched-history condition
+remains necessary.
+
+New operational credentials use a separately labelled v2 local credential seal directly under the random
+custody root. It authenticates principal/workspace, role, credential id and public key. This makes all
+three creation encryptions — generation, wrapping scalar and signing seed — direct counted invocations
+under that root. The count is committed before encryption and includes abandoned attempts. The historical
+code-sealed wrapping-credential vector remains a historical byte fixture; the new representation does not
+mislabel a custody root as a PRF output or require a credential reseal when an additional root factor is
+implemented. Existing v1 LockSeal, generation KeyEnvelope, record, journal and wire bytes are unchanged.
+This concretizes the new local v2 lifecycle rather than modifying a deployed carrier.
+
+The custody descriptor exposes no private capability. Generation 1 can decrypt selected content records
+through live task checks; encryption awaits the content allocator, and signing/receiving await their
+protocol authority. The v2 custody state does not independently authorize workspace readiness: startup
+must still retain and complete its own cross-carrier genesis intent before acknowledging edits or
+reporting whole-workspace protection. Phase-two fixture checks do not substitute for that production
+owner. The browser controls are bounded evidence, not a supported-platform or independent security review.
+
+### 2026-09-08 — content allocation has authenticated metadata and a custody-side initialization witness
+
+Phase three retains the selected v1 record and generation-envelope bytes. Its counter is scoped to the
+store id already minted by custody; all four record kinds share one global sequence and per-generation
+reservation history. AES-GCM runs only after an exactly sized reservation transaction completes.
+Metadata authentication uses a distinct HKDF-SHA256-derived HMAC key under `K_g`, empty salt and
+`LP("done/content-metadata/v1") || LP(slotId) || LP(principalId) || LP(workspaceId) || LP(storeId)`.
+The counter and witness use separate labelled, closed JSON tuples binding every trusted field and the
+slot/principal/workspace/store/root identities. [content-store.md](./content-store.md) specifies them;
+[contentRecord.ts](../src/crdt/contentRecord.ts) owns the actual ordered encodings.
+
+A `creating`/`ready` witness at `[slotId, principalId, workspaceId, "content-v1"]` in `done.custody/entries`
+precedes content initialization and remains when its database is deleted. This leaves v2 custody entries
+unchanged and makes missing initialized content a refusal instead of a zero-count replacement. The
+exclusive owner resumes the same unused intent; ordinary open never initializes. Fresh genesis still
+requires the startup owner's cross-carrier authorization. The witness is not a complete workspace-ready
+receipt or a detector of arbitrary multi-carrier rollback/removal, which remains outside SC-09's history.
+
+A counter is read/authenticated outside IDB, then compared byte-for-byte inside the updating transaction;
+conflicts retry with fresh authentication. Record insertion uses `add` in a transaction spanning metadata
+and all record stores, and validates the generation there. This phase refuses ceiling/generation changes;
+successor activation and automatic re-reservation are later transition work. Full snapshots authenticate
+all records and never use a state record to hide predecessors. The bounded API accepts 256 records/4 MiB
+per batch, independent of the journal's measured limit; total input queue policy remains admission work.
+
+The [executed component evidence](./storage-conformance-runs/2026-09-08-content.md) supplies browser
+counterexamples and mutations for these choices. It does not pay full startup/admission/trim obligations.
+
+
+### 2026-09-08 — journal recovery captures before content, and cleanup owns the completed handoff
+
+Phase four keeps the selected row-2 HKDF/AAD and generation-bearing journal bytes. The mandatory-factor
+owner derives the raw journal subkey once while holding the shared writer lifetime and disposes both
+that key and its synchronous WASM instance before releasing the permit. The existing RustCrypto module
+now opens authenticated ciphertext and clears staged buffers; whole-instance disposal is a logical
+owned-memory guarantee, not an engine/OS forensic guarantee. The independently registered toolchain
+provenance debt remains open after the rebuild.
+
+The new byte journal reports synchronous success only after localStorage setItem succeeds. Its immutable
+entry identity combines the existing database namespace, custody store id, random runtime writer id and
+monotonic ordinal. Oversize, pressure and unavailable writes refuse without queueing or promotion. A
+full scoped read authenticates every entry and rechecks its captured identities/bytes; unreadability
+refuses ordinary open/recovery/flush and preserves entries. Unknown generations remain opener references,
+not absent data. The interim 16 KiB bound precedes nonce generation and sealing; the observed origin-wide
+UTF-16 character watermark is advisory because storage events can lag.
+
+Full recovery captures the journal before reading content. Reversing those reads allows a concurrent
+flush to move an update out of the journal after the content snapshot and before the journal read,
+leaving neither copy in the result. Recovery therefore accepts duplicate carrier coverage. Flush owns
+its captured private bytes and invokes the actual content allocator/commit, then checks each completed
+chunk's exact journal identity/value before removal. No public receipt assertion can authorize cleanup.
+A failed content chunk leaves its journal entries intact; an earlier completed chunk may already be
+cleared. Changed values are retained and require repair.
+
+There is no atomic localStorage compare-and-delete. The equality cleanup relies on conforming writers
+never overwriting or reusing an identity; it does not exclude an arbitrary older/hostile writer between
+individual storage calls. Shared lifetimes block exclusive transition/retirement while a cached journal
+writer survives, including freeze. Supported-version cutover, a fresh journal-inclusive retirement census
+and complete owned startup/clear remain later obligations. The [component guide](./journal-store.md)
+and [executed evidence](./storage-conformance-runs/2026-09-08-journal.md) record these limits explicitly.
+
+The next owner is ordered admission over both carriers. This checkpoint has no canonical document,
+editor, transport, pending-intent queue or batching timer and cannot itself guarantee causal closure of
+arbitrary caller bytes. The raw content/journal API is an internal integration boundary, not permission
+for a production receive path to promote memory-only dependencies.
+
+
+### 2026-09-08 — ordered admission owns canonical state, intent preparation and durability barriers
+
+Phase five introduces [one admission owner](./ordered-admission.md) over the real factor-unlocked journal
+and content capabilities. Canonical Yjs state is private; callers receive detached accepted snapshots and
+post-carrier update events. Local input queues encoded intent rather than updates prepared against a
+possibly uncommitted predecessor. At the head, a required synchronous command adapter prepares on a
+private clone. The owner captures its exact delta and never publishes the clone. Transport-specific
+receive validation and private Yjs validation precede persistence; content completion precedes remote
+canonical application. Pending structs/delete sets are retained, without state-vector coverage shortcuts.
+
+A successful single-slice journal append retains synchronous promotion. A refusal forces journal-prefix
+flush and then candidate content commit; these are separate transactions. Failed content retains the
+prepared bytes and the pending suffix. Retry remains forced to content even if journal availability has
+changed. A rejected inbound message can leave the queue because it never became authorized input; failed
+local preparation or storage instead holds the suffix until retry or explicit whole-suffix discard.
+Known repair-required persistence cannot be hidden by retry/discard or an ordinary snapshot.
+
+Commands that need slicing return a strictly smaller remaining byte intent. Every prepared update stays
+within the selected interim 16 KiB limit; oversized adapter output blocks before sealing. Each slice of a
+large command completes content persistence before promotion and next preparation. This is a resumable
+accepted prefix at the carrier boundary, not persisted ownership of an arbitrary import's remaining source.
+The application adapter supplies command semantics, slicing and product-level source recovery.
+
+Initial queue policy is 256 jobs and 4 MiB of conservative byte reservations: local input reserves twice
+its byte length plus 16 KiB for input/remainder/update, and receive reserves captured input bytes. These
+are explicit implementation bounds, not population measurements or a Yjs/process-memory bound. Full draft
+cloning buys an isolated candidate here; profiling its document-size cost and improving the preparation
+seam as necessary precede low-end/editor acceptance.
+
+The 250 ms timer and `whenDurable()` use FIFO flush barriers. A barrier covers every prior observed input,
+including pending intent, and may finish while later input is still journal-only. Storage failure rejects
+barriers observably and blocks automatic retry. Closing invalidates input/publication, erases the pending
+suffix and drains the guarded underlying lifecycle before document disposal and permit release.
+
+[Executed evidence](./storage-conformance-runs/2026-09-08-admission.md) exercises this production owner
+with synthetic command/receive authorities and accepted-event projections. It does not certify actual
+CodeMirror/IME/undo/export/transport adapters, full startup/clear/migration, generation/reference composition
+or the old-writer cutover. The application remains on its previous persistence until the integrated unit
+is ready. No release obligation or debt status changes at this component checkpoint.
+
+
+### 2026-09-08 — integrate the Goals command/history boundary before the whole workspace
+
+The next [bounded integration checkpoint](./editor-admission.md) is the real Goals text surface. The
+existing application's writable Y.Doc is shared by editor bindings, card/workflow operations, actor
+repair, undo and the legacy provider. Replacing that capability everywhere is a broader workspace change;
+this checkpoint supplies a text command boundary and its actual browser observation surfaces first.
+The default application's persistence and startup remain unchanged.
+
+CodeMirror commands run against private state at the admission head. The accepted CodeMirror state owns
+history; a prepared transaction/history state remains private until the exact Yjs candidate promotes.
+Remote Y.Text deltas rebase that history with addToHistory disabled. Each submitted action is an undo
+step, while a paste's completed slices group together. This is one Goals history stream, not the final
+actor-scoped cross-surface history. The later workspace adapter must preserve that broader contract.
+
+Input normally follows the preceding accepted command's selection. An explicit UI selection is encoded
+as relative positions against accepted Yjs text and resolved when the intent reaches the head. Therefore
+queued typing can continue while earlier input is private without precomputing CRDT updates against an
+unaccepted document. Text projections, copy/export and outgoing bytes observe only accepted state.
+The same-origin BroadcastChannel adapter sends accepted local bytes and never lends a writable doc to
+its receiver. Caller-supplied receive authority and later Account envelope verification remain distinct.
+
+Native composition stays provisional. Blink may reconcile away preedit without a compositionend event;
+its final non-composing insertText must still enter admission. The CDP probe demonstrates the corrected
+commit route, not native IME/candidate-window usability or supported-device acceptance. Large paste
+slices stay below 1000 UTF-16 units without breaking surrogate pairs. All commands, including undo/redo,
+still face the owner's 16 KiB encoded-update limit; unsupported large command output refuses visibly.
+
+The preparation profile is diagnostic. Compact text size and fragmented Yjs history both affect full
+clone cost; the extreme 2000-writer case measured 6.1 ms p95 on this Mac before journal, view and paint
+costs. This does not prove the low-end budget holds or justify changing it. Preparation optimization and
+complete interaction measurement, plus native IME validation, remain prerequisites for editor acceptance.
+The [execution record](./storage-conformance-runs/2026-09-08-editor-admission.md) distinguishes passing
+cases and mutations from corrected/incomplete development runs. No release gate is paid by this checkpoint.
+
+
+### 2026-09-08 — one admitted workspace history, with private system transactions and tab bootstrap exchange
+
+The [phase-seven workspace adapter](./workspace-admission.md) reuses existing semantic application commands
+at the ordered admission head. Goals/card text and human structural operations share a runtime content
+undo scope. Metadata remains outside that scope, as in the existing application. Day materialization,
+bulk work and membership repair keep their system origins. Received work persists before promotion and
+never enters human undo. Application actor/schema initialization itself enters admission and completes a
+content barrier before the factory returns. Identity is supplied by the owner; this does not introduce
+legacy localStorage actor/device side effects or solve scoped identity onboarding.
+
+Preparation uses a private history document separate from the ordered owner's draft because its outer
+transaction would swallow nested origins. The pinned Yjs seam copies delete sets, selection metadata and
+Item.redone links that wire encoding omits. The browser mutant demonstrates the latter dependency by
+removing a card, restoring it and undoing an earlier text edit inside it. gc:false retains deleted runtime
+content and this design adds a second full clone. Those costs and version-sensitive internals are explicit
+acceptance/review work, not a performance optimization or a claim that arbitrary runtime history is proved.
+
+The workspace facade exposes detached projections, accepted export/update bytes and shared text surfaces.
+Text surfaces do not own session close or transport. Each command receipt preserves its business result,
+including false/null/zero; a completed no-op/refusal must not be confused with an applied mutation or a
+storage failure. Storage-blocked preparation retains the pending candidate and history for retry/discard.
+
+Joining same-origin tabs exchange accepted snapshots in both directions: actor initialization can happen
+before a channel opens, so future-only update delivery can omit dependencies permanently. Snapshots and
+subsequent bytes all enter the receiver's durable FIFO path. The channel remains a bounded participating-tab
+adapter with explicit error reporting, not Account authorization, reliable delivery or a trim certificate.
+
+[Execution evidence](./storage-conformance-runs/2026-09-08-workspace-admission.md) covers real editor surfaces,
+commands, aborts, joins and renderer death. It leaves the default application on its earlier store. Full
+startup/classification/clear, scoped identity/index, migration/cutover, exact trim and the release/review
+obligations remain subsequent work; no debt status changes at this checkpoint.
+
+
+### 2026-09-08 — retained-workspace startup rereads under the eventual writer lifetime
+
+The next [bounded checkpoint](./owned-startup.md) owns retained-workspace opening. A read-only preflight
+can offer an unlock-required or refusal disposition; it cannot authorize a later open. Actual open repeats
+the scoped index/carrier census inside the underlying writer's shared permit, before custody reads/key
+selection, and holds that lifetime through authenticated replay, admitted application initialization and
+runtime use. Editor and transport construction follow only a ready result. The independent Local/Account
+identity verifier runs under the permit and does not turn a raw index row into authority.
+
+Known-name IndexedDB probes abort would-be creation, settle record reads at transaction completion, and
+close eventual abandoned connections. Missing initialized material, conflicting routes and orphan carriers
+are typed refusals; an undefined-valued retained row still counts as material. Structurally consistent
+preflight is not authentication: a correct factor and full carrier/replay validation remain required.
+Unsupported application schema is rejected before admitted actor/schema initialization.
+
+This phase deliberately has no genesis, clear or migration execution API. Fresh means observed absence of
+requested known carriers, not authorization to mint an identity/root or reset a counter. Creation-pending
+requires the later owner to authenticate its immutable cross-database intent and expected stages. Extra
+scoped rows bearing clearing/cleared/migrating tags give refusal-only hints, not validated transition
+formats, proof of completion or cleanup authority. Other unknown controls require repair.
+
+[Browser evidence](./storage-conformance-runs/2026-09-08-owned-startup.md) tests a clear marker installed
+between preflight and the eventual lock grant, cancellation while crypto is pending, and renderer death
+before the initialization barrier. Reacquisition and complete replay precede exposure; cancellation cannot
+release exclusion ahead of owned native work. The fixture's enrollment, identity and index installation
+are explicit synthetic assumptions. Verified Local genesis and lifecycle-owned indexing are next, before
+application cutover; no debt or release gate is paid by this checkpoint.
+
+
+### 2026-09-08 — Local genesis atomically claims identity/custody and authenticates cross-database progress
+
+The [Local genesis owner](./local-genesis.md) uses a fixed per-slot claim in the custody database, committed
+with the first factor-sealed custody record in one add-only transaction. The signed initial record binds
+principal/workspace, root/store and credential IDs. Keeping that immutable anchor lets interrupted work
+verify the winner without minting a replacement identity or reconstructing a used custody counter.
+The content initialization intent is the same signed intent ID; expected stages and layouts are versioned
+by this Local protocol. No Account binding is fabricated for Local access.
+
+A separately authenticated `custody` → `content` → `ready` progress field prevents missing later carriers
+from looking like permission to initialize again. Its HMAC derives from the factor-opened root under the
+documented Local metadata domain and binds the initial record MAC plus stage. Crypto and transaction
+completion stay within one exclusive slot lifetime; cancellation drains them before release. The final
+index is added only after authenticated empty content initialization and ready progress. A loser obtains
+the winner's valid factor or receives the existing locked disposition. Normal Local startup rereads and
+verifies the claim under its eventual shared writer permit before replay and application initialization.
+
+The retained initial record is an authentication anchor, never a live-custody restoration source. It
+contains another copy of the same factor-sealed opener bytes and therefore belongs in later clear and
+rotation/reference accounting. The added progress construction needs independent review; these tests are
+bounded evidence rather than proof of the full protocol or copied-profile support population.
+
+Earlier index APIs now serialize slot writes, await transaction completion and refuse Local-owned rows
+or claims. The new picker requires factor verification and returns a detached, slot-scoped route list.
+This checkpoint handles the first workspace in a fresh Local slot; additional-workspace registration,
+Account onboarding, Local close/reopen/delete, migration, clear and default-application cutover remain
+subsequent owners. [Browser evidence](./storage-conformance-runs/2026-09-08-local-genesis.md) exercises the
+nine creation boundaries, two factors/creators, cancellation, transaction aborts and legacy interference.
+No obligation or debt status is paid by this checkpoint.
+
+
+### 2026-09-08 — Local clear authenticates resumable progress after removing every content opener
+
+The [Local clear owner](./local-clear.md) handles the first completed active Local workspace in its slot.
+Read-only preparation verifies the generated factor and returns an immutable target for the host's explicit
+deletion confirmation. The exclusive action rereads ownership after grant, rejects unknown references and
+persists a scoped intent before any deletion. It waits for native content deletion success before touching
+the journal; blocked native deletion keeps exclusion until settlement, including after cancellation.
+
+Exact observed journal removal and verified absence precede opener cleanup. Live custody, the content
+witness and the genesis claim's retained factor seal are removed in the same transaction as advancement
+to index cleanup. Index removal and terminal progress span databases, so a crash can leave no content
+opener with cleanup still pending. An independent HKDF/HMAC construction derives only from the existing
+high-entropy generated factor, salt and domain-separated intent context. Its authenticated payload binds
+the full target and stage. No derived key or code is persisted; the terminal record retains no content
+opener. Initial authority additionally requires the existing factor-authenticated Local genesis claim.
+The guide records the exact construction and its independent-review requirement.
+
+Every resumer reacquires exclusion and verifies current progress and surviving carriers. A pending content
+stage may observe absence after an interrupted native success; a surviving database must still match its
+bound counter/layout. Later stages refuse reappearing residue. Normal custody access, Local genesis,
+startup and legacy index writes observe the fixed control before proceeding. Structural observation only
+authorizes refusal, never deletion. Terminal state blocks automatic fresh genesis; explicit reuse of a
+cleared slot needs a later owner. The action has no rollback after intent commit.
+
+The browser preparation exposed that the legacy `done` journal prefix includes modern encrypted
+namespaces. The legacy-only census now excludes only complete modern key framing; ambiguous keys still
+refuse. Namespaces and stored data remain unchanged. [Execution evidence](./storage-conformance-runs/2026-09-08-local-clear.md)
+records native blocked deletion, cancellation drain, seven crash boundaries, partial journal failure,
+transaction aborts and five detected mutants. Account/shared-custody clear, migration/cutover and independent
+review remain owed. Exact-coverage content compaction is next; no debt status changes here.
+
+
+### 2026-09-08 — content compaction commits a disk-union replacement and rechecks exact coverage
+
+[JournalSession compaction](./content-trim.md) is explicit maintenance under its existing shared writer
+lifetime. The public call accepts no live document, state vector, watermark or deletion set. It validates
+and authenticates a consistent snapshot of every content store, merges content wire updates including
+pending structs/delete sets, and publishes a state using the existing durable allocator. Heads/outbound
+are authenticated but remain outside the replacement/deletion set. The journal is authenticated and retained.
+
+The owner keeps the observed encrypted record identities and bytes in memory, and a completed publication
+receipt precedes deletion. A new authenticated census checks that replacement and covered inputs still
+match. The deleting transaction compares the entire census and counter before synchronously checking the
+journal and deleting only exact covered content identities. Changed material requires reevaluation; known
+unreadable material refuses the entire trim and closes ordinary use. Persistent keys remain. A removed input
+or replacement may reflect another completed compaction, so this invocation returns `retained` without
+its own deletion. Concurrent new records/replacements are never covered merely by their sequence.
+
+There is no persisted trim watermark. Interrupted publication/deletion leaves recoverable input or safe
+duplication; a fresh invocation starts again. Eight conflicting censuses bound one deletion attempt's retry
+loop. A replacement above the existing 4 MiB limit refuses before reservation. These choices bound output
+and contention, not input memory or low-end latency: the full union remains an in-memory scan and merge.
+Automatic scheduling, streaming/chunking and default-app integration need later acceptance work.
+
+[Execution evidence](./storage-conformance-runs/2026-09-08-content-trim.md) includes the late-sequence
+counterexample, overlapping compactors, byte replacement after authentication, final journal damage,
+native request-success/abort distinctions and actual renderer death. The selected record crypto and key
+formats remain unchanged. Storage/crypto review and full reference/Account/checkpoint composition remain
+owed. Next is legacy migration/cutover preparation, before any real-data or default-application switch.
+No debt status changes at this checkpoint.
+
+
+### 2026-09-09 — generate production carrier histories; defer compaction over unresolved dependencies
+
+The [property harness](./storage-properties.md) exercises the real encrypted carrier with a separate source
+operation ledger. Pending text structs/deletions are checked by decoded wire inventories, and complete
+semantic bases by replay plus a plain string model. Partial visible equality is not a preservation oracle:
+pinned Yjs can expose different portions of incomplete information depending on update framing/order.
+The suite still requires every pending clock/payload and deletion range to survive, and every fully supplied
+history to recover. It also requires maintenance to complete once its basis is actually persisted.
+
+Generated cross-client histories exposed a stronger failure in the previous compactor: merging a partial
+union could strand text even after all dependencies were delivered. The bounded correction retains the
+original content records whenever validation leaves pending structs or deletion sets. It returns `retained`
+with no reserved state sequence and no persistent mutation; later flush/dependency delivery and a fresh
+compaction can proceed. This is valid pending material, not damage. The guard is read through the pinned
+Yjs seam and must be reevaluated on a dependency upgrade. The native counterexample and standalone complete-
+delivery control are recorded in [execution evidence](./storage-conformance-runs/2026-09-09-storage-properties.md).
+
+Exact identity/byte coverage, journal authentication, transaction-completion receipts, invocation accounting
+and mandatory-factor custody remain unchanged. Deferral can retain growing input while dependencies are
+absent; streaming, memory limits and scheduling remain acceptance work. Source mutants must repeat a named
+property failure and pass the same minimized history on unmodified production; exceptions/timeouts do not
+count as sensitivity. JSON replay accompanies seed/path metadata. No debt is paid, and migration/default-app
+cutover remains subsequent work.
+
+
+### 2026-09-09 — migration preparation observes the predecessor without treating observation as authority
+
+Phase twelve is committed as `a0811e2`. The next bounded [migration preparation](./legacy-migration-prep.md)
+uses a separate read-only source observer: ordinary `openStore` and its predecessor provider perform writes
+on startup and cannot serve as a source survey. The observer captures original `done` update rows, `1:` WAL
+entries and four known ancillary keys; it refuses unknown/unreadable supported-carrier material, detects
+observed journal drift, and retains pending dependencies without merging away their original framing.
+The observation digest is unkeyed and authorizes no destination, active selection or deletion.
+
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-source.md) confirms that the real legacy
+provider can journal and commit while the new exclusive slot lock is held. Matching scans cannot exclude
+that writer. The next seeded harness therefore needs controller-owned exclusion of every old execution
+context and route across restart. That test precondition is not a production fence; supported-version
+exclusion for the actual installation remains an explicit implementation/acceptance requirement.
+
+The preparation plan orders verified source/export, mandatory-factor pre-active destination creation,
+bounded idempotent import, cold verification, selection and resumable exact cleanup. It inventories old
+journal/DB, ancillary credentials/device names, cached executable shells and transport paths. Fresh writable
+store/key/counter history is mandatory; imported writable keys/counters never become a second live instance.
+The plan does not define a new authenticated progress format or implement those transitions yet. Existing
+Local genesis absence checks must not be bypassed to build migration. The next bounded implementation is
+verified export capture under controlled seeded exclusion, before the destination/import owner.
+
+The open Markdown/system-attribution versus fidelity-archive decision still gates the real Stage 2 cutover;
+this reader does not choose it or change ordinary application routing. Matrix evidence and its three pins
+advance without changing obligations/debt status. The independent L-2 record is preserved.
+
+
+### 2026-09-09 — verify seeded source recovery before designing pre-active destination authority
+
+Phase thirteen is committed as `e64cd2a`. The next bounded [capture checkpoint](./legacy-export-capture.md)
+keeps original legacy update records in a diagnostic JSON packet and exercises Markdown only as an explicit
+preview adapter. It does not choose the Stage 2 Markdown/system-attribution versus fidelity-archive policy.
+The packet omits ancillary local credentials, carries no destination keys/counters and is not a portable
+encrypted archive. Its separate SHA-256 checksum establishes integrity relative to an expected digest, not
+authenticity if both can be replaced. A future migration owner must bind source, policy, intent and authority.
+
+Capture requires complete CRDT dependencies and a supported schema-4 projection; unknown shapes and omitted
+registry membership refuse without repair or deletion. A new test exposed that valid array ContentAny items
+can disappear from pinned Yjs Text projection. The correction checks live text item kinds through the Yjs
+seam before exporting. This is a defect discovered while building the new private path, not evidence of an
+executed migration or deployed data loss. Version-sensitive guards require reevaluation on a Yjs upgrade.
+
+A seeded Node controller owns browser-context shutdown, route admission and invalidatable observation epochs.
+It stops the known old page/dedicated worker before capture and detects new execution attempts across cold
+replay. This controlled fixture precondition does not exclude arbitrary supported historical installations,
+SharedWorkers, profiles or remote devices. Matching source observations and a new lifecycle lock still do
+not fence the real predecessor. No boolean assertion, packet or digest grants production exclusion.
+
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-export.md) combines generated delivery/content
+histories, independent input-string and ZIP readback, saved-file replay, renderer deaths and seven named
+sensitivity controls. The default application remains on the legacy provider. Next is an authenticated
+pre-active destination/import owner with mandatory-factor fresh writable scope and bounded idempotent slices;
+it must not bypass Local genesis absence checks or publish a ready index row before verification. Selection,
+resumable exact cleanup, production exclusion and the complete cutover kill matrix follow. Source recovery
+material survives until verified encrypted selection. No obligation/debt status changes at this checkpoint.
+
+
+### 2026-09-09 — separate reproduced core failures from unproven routine schedules
+
+Phase fourteen is committed as `da5def9`. Further migration integration pauses for the three user-selected
+[core reproductions](./core-reproductions.md). Production code remains unchanged. A completed investigation
+report is not a conformance pass: it records observed violations separately from passed controls and treats
+unexpected exceptions as harness failures.
+
+Journal-changed puts the real owner into human-retry pressure when a paused native snapshot observes a
+peer append or completed cleanup. Neither uninterrupted synchronous overlap nor the simultaneous keyboard
+campaign reproduces that interleaving on this Chromium host. A debugger-induced event-processing opportunity
+must not be used to claim ordinary two-tab typing commonly blocks. Cross-platform/routine frequency remains
+unproven, while the error propagation and retained pending input are reproduced.
+
+The pending-clone corpus reproduces canonical/editor/export divergence after later dependency delivery;
+visible texts and integrated state vectors can agree before the missing basis arrives. Therefore a cheap
+visible comparison only at promotion is not an adequate acceptance condition for the proposed repair.
+Independent reopen and a later Undo both heal this corpus, but neither is yet a general recovery design.
+The original-framing Yjs campaign also finds delivery-order failures; no observed sender-ordered or complete-
+join failures imply no proof outside those narrow alphabets. Saved original bytes, minimized schedules and
+external string oracles are retained for the next bounded repair phase. No migration or debt payment follows.
+
+
+### 2026-09-09 — retry journal acquisition within one live operation, with a finite budget
+
+The core reproductions are committed as `a292103`. Repair phase 1 changes journal read acquisition only:
+three total capture attempts, counting the existing synchronous invocation capture. Only an actual
+`JournalError('journal-changed')` retries, after 0 ms then 8 ms scheduling delays. The same live task and
+permit cover the wait and each read; cancellation removes its timer and prevents another capture. Delays
+are scheduling requests, not wall-clock guarantees. Failed decoded attempts are erased.
+
+The successful invocation fast path keeps its exact set. On churn, a replacement capture can include
+later peer entries. Journal-first recovery still precedes the content read. Content reservation/sealing/
+publication/cleanup begins only after acquisition and executes once; content failure is never fed back
+through this retry. The synchronous compaction preflight remains outside the helper so no later mutation
+operation is accidentally repeated. Cleanup remains exact identity/value matched and commit dependent.
+
+During acquisition, later local input stays behind the pending barrier. Three changed captures produce
+`journal-busy`; the admission owner then retains input for explicit Retry/discard, without indefinite
+background attempts. Startup classifies this as `busy` / `journal-read-contention`, with cancellation
+precedence and no creation/deletion/migration authority. Unavailable storage and malformed/unopenable
+entries fail immediately. An observed replacement of an immutable captured value latches repair-required;
+disappearance can be conforming completed cleanup and remains retryable churn.
+
+[Native and generated evidence](./storage-conformance-runs/2026-09-09-journal-contention.md) covers bounded
+capture, ordering, preservation, cancellation/permit release and no repeated content writes, with four
+focused sensitivity controls. This does not strengthen the earlier unproven routine-typing frequency
+claim. No Yjs/projection repair is included. Phase 2 must preserve or recover pending information and verify
+projection agreement when later dependencies arrive; then migration preparation can resume. Evidence and
+three matrix pins advance without paying any obligation or changing debt status.
+
+
+### 2026-09-09 — preserve pending runtime state and verify projection before publication
+
+Journal contention repair is committed as `fc1ff41`. Core repair phase 2 copies integrated state through
+a detached read-only view of the pinned Yjs encoder and then copies exact pending structs, missing-clock
+bookkeeping and pending deletion bytes. Reapplying the encoder's merged pending snapshot changed that
+bookkeeping in the saved corpus. The runtime copy neither mutates source fields nor aliases source buffers.
+Workspace undo stacks/redone links retain the existing seam; initial projections use admission's owned
+detached fork. Canonical state itself is never lent to commands, projections or observers.
+
+Every accepted local/remote transition checks integrated clocks/deletions, normalized integrated content,
+pending bytes and the missing-clock map before publishing views or outgoing local updates. Checking only
+visible text or integrated vectors at promotion would miss the reproduced later divergence. Normalization
+accounts for undo-only deleted content and split Item boundaries; it adds whole-state scans/copies and
+still needs memory and low-end latency acceptance. Version-sensitive encoder/store/history details remain
+inside the pinned seam and need reevaluation on a dependency upgrade.
+
+An unexpected mismatch closes ordinary access with `projection-mismatch` while preserving durable
+originals. Startup reports unavailable / runtime-projection-mismatch; valid pending data is not thereby
+classified as corrupted storage. A fresh open constructs a new runtime projection. No silent active undo
+reset, carrier rewrite or deletion is authorized. A directed test caught initialization replacing this
+failure with its later inactive-session barrier error; the owner now preserves its original failure.
+
+[Native, generated and mutation evidence](./storage-conformance-runs/2026-09-09-pending-projection.md)
+covers pending startup, later dependencies, local typing/undo, pressure/privacy, renderer death and explicit
+projection faults. It does not establish arbitrary original-record Yjs ordering or pending donor snapshot
+handoff. Those are the next core gates before destination/import work resumes; no new wire/storage format
+or migration is introduced here. Evidence and three matrix pins advance without obligation/debt payment.
+
+
+### 2026-09-09 — repair Yjs dependency wake-ups before pending handoff
+
+Phase 2 is committed as `0399567`. Core repair phase 3 uses an exact-version local Yjs 13.6.31 patch to
+repair the reproduced integration mechanism. A transport-only ordering rule would leave already stored
+original records and serialized pending unions dependent on delivery assumptions. The patch keeps the
+existing wire format and receive/storage owners and changes the underlying wake-up conditions instead.
+
+Every missing cross-client dependency records its current lower bound before the integration routine
+follows an available reader. That reader can start too late; retaining only its later same-client gap loses
+an earlier wake-up. The saved seven-record fixture demonstrates this at client 102 clocks 0 and 5.
+After the routine merges the newly parked and previously pending unions, it tests all resulting wake-ups,
+including when there was no previous pending union. Satisfied wake-ups are retried before returning.
+The native property generator required this second change: canonical/history copies otherwise retained
+identical pending bytes but different bookkeeping and the strict projection guard closed access.
+
+No comparison is weakened, no complete-basis redelivery is introduced, and no original-record archive is
+added. The existing snapshot update carries unresolved structs and deletion sets. A receiver can finish
+a pending handoff from missing original basis after its donor closes, while preserving receiver-local
+input and human-only undo. Snapshot acceptance remains an ordinary encrypted receive transaction; it is
+not authenticated trim coverage, Account authority or old-writer exclusion.
+
+[Saved, generated, native and mutation evidence](./storage-conformance-runs/2026-09-09-yjs-delivery.md)
+holds the patch to original bytes and independent input ledgers. Source/ESM/CJS hashes, lock/workspace
+pins, peer resolution and a clean frozen install make the local patch reviewable and reproducible. It is
+not an upstream-reviewed release. Existing recursive integration, version-sensitive history/fork internals,
+whole-state comparison, memory and input-to-paint acceptance remain independent obligations.
+
+The previous serialized-startup control and semantic partial-merge control now exercise recovered behavior
+and are retired from those fault batteries. Their historical evidence remains; current properties require
+complete external-string recovery in every generated original order. Conservative incomplete-content
+compaction deferral is unchanged and still has its directed policy control. Migration, carrier choice,
+pre-active destination/import ownership, source exclusion and default-app cutover remain separate work.
+Evidence and three matrix pins advance without obligation/debt payment.
+
+
+### 2026-09-09 — bind pre-active imports to fresh custody and immutable encrypted receipts
+
+The Yjs delivery repair is committed as `a465310`. The next bounded owner accepts a verified diagnostic
+source packet, separately held digest, expected origin/source observation and explicit `markdown-system-v1`
+policy. Generated-factor confirmation binds these choices to a fresh Local principal/workspace/store/root
+and reservation history. This locally authenticated intent is not source authenticity or old-writer exclusion.
+The real carrier/attribution choice in sequencing §5.4 remains open; no downloaded fidelity archive or writable
+key/counter restoration is implemented by this preparatory adapter.
+
+The factor-sealed initial custody record and import claim install atomically. A domain-separated HMAC
+binds that initial custody MAC, input/plan/policy, immutable timestamp and coarse custody/content/importing/
+imported stages. The owner checks exact previous progress and all scoped destination carriers under the
+existing exclusive permit. It never writes a Local genesis claim or ready index row. Ordinary custody,
+startup, genesis/index mutation and Local open refuse retained pre-active import state. Internal composition
+seams retain their trusted-owner responsibility; they are not a sandbox against unlocked same-origin code.
+
+Each bounded action writes its receipt and content in one encrypted update/native commit. Resume validates
+consecutive, intent-bound receipts from authenticated disk records before preparing the next action. Final
+semantic verification rereads committed ciphertext into a new private document, rather than checking only
+the document used to prepare writes. Missing/unknown material refuses; reservations abandoned after failure
+remain spent. Every invocation admits at most 1–32 actions, with an authoritative 16 KiB encoded-update guard.
+Whole-input planning/history replay still needs memory and latency acceptance.
+
+A directed stress probe rejected the original mutable cursor at action index 2296: overwriting one meta key
+under successive Yjs client ids accumulated deletion metadata until a tiny slice exceeded the update limit.
+The correction writes immutable per-action receipt keys. A generated restarted-writer regression and an
+explicit mutable-receipt control retain this failure mechanism. This is a discovered preparation defect,
+not a claim about production prevalence. The separate native repeated-write property is shrunk and saved.
+
+The explicit adapter preserves master/card text, all day files and unfiled bodies, without consulting freeze
+or cap. It assigns fresh intent-scoped ids, system authorship, null origin and the import timestamp. Nonempty
+archives become collections; empty archive files retain their empty representation to preserve file presence.
+Old actor/device/settings/history metadata and unfiled provenance are not promoted into destination authority.
+The [construction and evidence](./legacy-import-preparation.md) leave selection, source exclusion and cleanup
+to subsequent owners. No obligation/debt status or payment changes with this component.
+
+### 2026-09-09 — make the custody handoff the imported Local active decision
+
+Pre-active import (`a0072e8`) has its own durable marker and freshly generated writable identity. Selection
+must not remove that protection based only on an `imported` claim. The new internal owner replays freshly
+factor-opened disk records into a new private document, validates every slice receipt and verifies the
+selected logical projection against the same source/policy/plan binding. Current source observations
+must still match before verification and before the final custody commit. They detect change, not source
+authenticity or old-writer exclusion; the host's exclusion precondition remains independently owed.
+
+A signed `selecting` intent precedes the exact Local index route. The route alone leaves ordinary access
+blocked. After requiring the exact route to remain present, a single custody transaction compares the
+selecting claim, adds the authenticated ready Local claim and deletes the import marker. That transaction's
+completion is the active decision. Imported Local provenance has a distinct signed payload domain, including
+its presence, source/plan/policy, timestamp and selecting MAC. Existing fresh Local claims keep their format
+and payload. Neither selection nor resumption restores live custody, writable keys, content or counters.
+
+Before the active decision, resume always repeats cold destination verification. After it, resume verifies
+the recorded selection and current route/census without reimporting or requiring today's document to equal
+the old payload; later admitted edits must survive. Ordinary open still owns current record/journal recovery.
+A missing completed index refuses rather than being recreated. A directed omitted-route fault exposed the
+need for the explicit last route-presence check; its native regression and control are retained with evidence.
+
+The default application does not call this owner. The explicit Markdown/system adapter does not settle
+sequencing §5.4. The existing Local clear owner refuses imported selections until source cleanup can be
+composed, avoiding a clear result that leaves the original app-managed plaintext behind. Authenticated,
+resumable source DB/WAL/ancillary cleanup is the next bounded phase under seeded exclusion; production
+exclusion and real cutover acceptance remain separate gates. No obligation/debt status or payment changes.
+
+### 2026-09-09 — Version cleanup bulk MAC framing; preserve existing signed v1 intents
+
+The native cleanup campaign exposed a source accepted by the reader/importer but rejected by cleanup's
+65,535-byte MAC field encoding. Database hex JSON, local values and full manifests can all exceed that width.
+New cleanup intents use manifest version 2 with dedicated domain-tagged UTF-8 JSON-array MAC messages and a
+versioned fingerprint KDF domain. The shared custody `fields()` construction stays unchanged. Existing v1
+intents retain their original MAC/fingerprint bytes and version while resuming; there is no cross-version
+verification fallback. The manifest version is authenticated and unknown versions refuse. This is an internal
+preparatory format change, not approval of old-writer exclusion, default cutover or maximum-size performance.
+See [focused evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md).
+
+### 2026-09-09 — Derive migration restart state from existing authenticated owners
+
+The bounded native source-cleanup campaign now passes in full; the next coordinator is specified in
+[legacy-coordinator-preparation.md](./legacy-coordinator-preparation.md). It will inspect one explicit Local
+slot and dispatch one requested component step, with fresh permit-bound verification. Existing import,
+selected Local, cleanup and clear records remain the durable authority. No separate coordinator cursor,
+index-as-active decision, source-binding replacement or completion certificate is introduced.
+
+After selection, current edits belong to the destination and cannot be checked against or overwritten by
+the old source payload. Once cleanup begins, resumption uses the authenticated exact manifest, not a new
+whole-source capture. The original externally saved/cold-verified packet and factor remain required by
+maintenance APIs; missing input does not authorize reminting or rollback. Ordinary selected Local open has
+its existing independent recovery path and need not wait for cleanup or possession of that packet.
+
+The composed seeded host must retain exclusion between calls, invalidate restart epochs, cancel on observed
+loss and wait for native draining. A blocked deletion can still settle after cancellation; neither an epoch
+assertion nor a timeout cancels it. No in-page exclusion flag/token supplies production browser authority.
+Production supported-version exclusion, a real recovery-save/readback ceremony and sequencing §5.4 remain
+default-app/live-cutover gates. This is a preparation decision, with implementation and falsifiers still owed.
+
+Reread the three conformance debts after adding this execution checkpoint to the matrix. Their requirements,
+owners, gates, statuses and payment conditions still apply unchanged. Re-pinned only their
+`docs/storage-conformance.md` inputs to `7e3f4cce55f1`; the bounded component pass does not pay any of them.
+
+### 2026-09-09 — Separate terminal observation from deletion in the private migration coordinator
+
+The private coordinator is implemented against the existing authenticated import, selected Local, cleanup and
+clear records. It stores no second durable phase. Inspection releases its lifecycle permit before entering
+public owners, which reacquire exclusion and recheck their own state. Wrong/missing input and a lost selected
+route never fall back to fresh identity creation. Selected editing remains independent of the recovery packet.
+
+Added `verifyLegacyCleanup` as a read-only entry point to the existing cleanup owner. It requires terminal
+signed progress under its own permit before reaching any deletion loop, repeats current destination DB/WAL
+and source-absence checks, then the coordinator separately opens/closes ordinary Local recovery. This avoids
+a stale inspection accidentally authorizing resumed deletion. The resulting observation is not persisted as
+a completion certificate; the external host still needs a current unbroken exclusion epoch.
+
+The seeded controller now reports first exclusion loss, allowing the harness to cancel the coordinator and
+stop dispatch. Close remains pending while native deletion drains; a competing writer stays excluded.
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) tests these gaps and later edits,
+including source/route/clear changes after inspection. The generated failure was a harness assumption about
+which bounded call reaches import completion; its corrected schedule and exact replay are retained.
+
+Production supported-version exclusion, host recovery-save/readback, real carrier choice and default-app
+cutover remain separate work. Reread all three conformance debts; only their matrix input hashes advance to
+`0d492c62fe48`. Requirements, owners, gates, statuses and payment conditions are unchanged.
+
+### 2026-09-09 — Test host feasibility before bridging production migration
+
+The next bounded build is the [persistent-profile host preflight](./legacy-host-preparation.md), limited to
+measuring predecessor exclusion, preserving source and independently rereading the recovery file. It may
+control a disposable seeded browser, but cannot enroll/import/select a destination or delete source/site
+storage. The private coordinator is committed as `7d238ee`; its existing authenticated owners stay private.
+
+Do not promote service-worker client enumeration, new Web Locks, request blocking, after-creation callbacks
+or a branded epoch into browser authority. Investigate an external pre-execution controller with explicit
+target/version coverage and loss/restart falsifiers. A missing capability or counterexample means unsupported;
+it does not justify default-app integration. No production utility/platform choice is made by this test.
+
+The source inventory must cover the conditional lib0 localStorage broadcast fallback before claiming full
+cleanup. Preserve unsupported keys; an authenticated extension requires its own bounded work. Also preserve
+the distinction between disk-recoverable legacy data and unflushed visible edits before terminating old
+contexts. Recovery save/readback is a host-owned disk boundary, with the mandatory factor held separately.
+
+Keep current same-origin binding checks. A deployment-origin move, remote-source reconciliation, durable
+retirement of old routes and the real carrier/attribution choice need later explicit contracts. No new host
+progress record or success token may replace authenticated component state. The existing conformance matrix,
+three input pins and all debt requirements/statuses remain unchanged by this preparation.
+
+### 2026-09-10 — Reject the measured host candidate; retain the whole-browser persistence boundary
+
+The [persistent-profile preflight](./storage-conformance-runs/2026-09-10-legacy-host.md) returns no production
+migration authority. The tested CDP auto-attachment controller allowed first-script page/frame writes and a
+crash-restored cached old application at a maintenance URL. Keep this implementation as a diagnostic tool;
+revise the host strategy before any coordinator bridge. A completed test campaign means the observations
+and refusals were checked, not that exclusion succeeded. Finite paused-worker observations, history reload
+and a rejected second process cannot fill BFCache, installed-window or production-profile coverage gaps.
+
+Native generation also invalidated an implicit assumption that successful localStorage writes/removals force
+physical persistence across whole-browser kill. Define the readonly carrier baseline after a clean profile
+reopen, including after deliberate source drift, and retain separate unsettled-source counterexamples plus
+their exact saved inputs. An external saved packet still recovers its captured ledger. This is an explicit
+fixture/protocol-acceptance boundary, not a justification to erase failures or silently extend earlier
+renderer-death evidence to browser/power loss. Whole-browser acceptance and preservation of visible unflushed
+legacy work remain owed before a live migration procedure.
+
+The dependency fallback's native plaintext carrier remains unsupported by the current cleanup manifest.
+Preserve/classify it; do not expand deletion by heuristic URL keys. No deployed carrier footprint, production
+utility/origin choice, migration-carrier decision or debt payment follows from this experiment. Mandatory
+factor custody, authenticated component progress and same-origin binding contracts remain unchanged.
+
+### 2026-09-10 — Move the next host experiment's denial before browser startup
+
+Use [cold-start global execution denial](./legacy-host-cold-start.md) as the next seeded experiment, in a
+disposable Linux runtime with mandatory browser policy installed before the source profile launches. Keep
+policy independent of the debugger/controller lifetime. Origin-scoped blocking leaves the documented
+cross-origin top-level embedding case; more target callbacks do not repair the measured pre-attachment gap.
+No website or maintenance path gets a JavaScript exception. The first observer uses narrowly permitted storage
+protocol commands; an inability to read exact bytes with execution denied is an unsupported result.
+
+This selects a falsifiable prototype, not a supported production profile/platform, cleanup capability or
+migration authority. Pin and verify the real runtime/browser/policy; do not install global policy on the
+user's host or clone a real profile to make the test possible. Missing/ignored policy, worker/background gaps,
+controller/browser death and second-process entry need native controls. No current browser API documentation
+is treated as proof that every restored worker is stopped. Offline reading/custom hosting remain alternatives
+if denial or bounded exact observation fails.
+
+Require the explicit clean-reopened source basis for this first experiment. A later live procedure must
+preserve or settle all visible old edits before termination; uncertain settlement refuses first intent.
+Successful temporary denial still cannot be removed to enable the modern app until lasting old-executable
+and transport retirement has its own owner/evidence. Source binding, mandatory factor custody, full residue,
+real carrier choice and all debt payment conditions remain unchanged. No runtime implementation or new native
+campaign accompanies this preparation.
+
+
+### 2026-09-10 — Keep cold-start denial as a private readback experiment, not host authority
+
+The [bounded native diagnostic](./storage-conformance-runs/2026-09-10-legacy-host-cold.md) supports further
+readonly source/packet parity work in the measured synthetic Debian/Chromium runtime. Mandatory global denial
+preserved exact carriers through the exercised page/frame/worker-attempt, controller-death, cold restart and
+cached/direct legacy executable cases. The source-only policy produced the foreign-top-level write and is
+rejected as the containment boundary. Keep execution denial independent of debugger lifetime.
+
+Credit only exercised controls: four invalid-policy canaries write; recommended-only configuration refuses
+but its user-override write remains unproven. Worker/background delivery, actual BFCache, installed windows,
+dynamic late policy installation/removal and wider profile entry are not established by this result. Passing
+bounded diagnostics does not issue production authority or pay whole conformance obligations.
+
+The protocol reader must continue to refuse moving/unsupported source and must never enable source JavaScript
+as a fallback. Positive controls deliberately run writers and may wait for a complete read after recording
+metadata drift; denied reads fail on drift immediately. Native generated sequences preserve first inputs and
+executed prefixes without shrinking a contaminated profile. The separate byte/pagination property tests retain
+shrinking. No unsettled browser-death observation becomes a lossless live-shutdown promise.
+
+Next, reuse/extract the existing production parsing/digest/packet rules for private readonly parity. Keep
+same-origin binding, mandatory factor custody and authenticated owners intact; a protocol census alone cannot
+permit capture substitution, selection or cleanup. Releasing denial, lasting executable/transport retirement,
+real carrier/attribution, remote-source reconciliation, whole-profile residue and review remain separate gates.
+
+
+**Runtime ownership refinement.** The readonly mount must be paired with inherited `NoNewPrivs=1` for the
+browser/controller process tree: Lima's default guest account otherwise retains passwordless sudo. Native
+checks now reject elevation via `sudo -n true` while the sandbox and full campaign still pass. Credit the
+rerun with that boundary; an ordinary permission error on a policy file alone is insufficient evidence that
+the controller lacks policy-removal privilege. The separate privileged namespace/watchdog owner remains trusted.
+
+
+### 2026-09-10 — Personal development cutover through the existing importer
+
+There is no deployed instance or external user to migrate. The author accepts the existing private
+`markdown-system-v1` semantics, including system attribution and metadata/history losses. Record this as
+[TRD row 21](./selections/row-21-development-cutover.md) and sequencing §5.4's selected product choice. Stop
+expanding automatic migration-host experiments into requirements for this one-person cutover. Preserve the
+experiments and their limitations; they do not become supported host authority. The author operates the
+personal browser. Retain verified recovery backups and use an explicit operator-assisted procedure through
+the existing authenticated owners. A ZIP or relay snapshot alone is not a source-bound import packet or
+cleanup capability. Conformance and review requirements are unchanged.
+
+### 2026-09-10 — Stage Local startup before switching the main editor
+
+Use `/local.html` for the first bounded application integration: classify, confirm a generated factor,
+unlock/resume, and expose a read-only verified preview. Keep the ordinary app entry until every editor mutation
+surface is routed through admission. The Local actor is the authenticated principal; its device label is
+Local attribution only, not an Account credential. Do not use the legacy plaintext identity cache or attach
+transport. Lock/cancel drains the owner, including a late open. Both HTML entries must have packaged offline
+coverage and pass the existing initial-JS budget separately. Real import/cutover follows editor integration.
+
+### 2026-09-10 — Make the admitted Local workspace the application editor boundary
+
+With [bounded editor evidence](./storage-conformance-runs/2026-09-10-local-app-editor.md), switch both built
+entries to Local startup and the existing editor UI through admitted text surfaces and workspace commands.
+The active UI consumes read snapshots and does not open a legacy Store or writable transport document.
+Pending editor input remains owned by admission, with retry/discard; compose retains its draft until
+acceptance. Preserve local CodeMirror selection across accepted operations that do not change its text.
+Destroy editors before lifetime close and remove visible content on lock/invalidation. Recoverable storage
+blockage must not lock the user out of retrying or discarding the pending work.
+
+Save identity/preferences explicitly through separately acknowledged commands. Store the device's display
+label in encrypted metadata keyed by the Local device ID, without changing authenticated identity or using
+the legacy plaintext cache. Actor/device-label/rollover metadata remain outside content undo. The menu's
+Markdown export covers accepted writing and is not an authenticated migration packet. No relay is attached
+to Local; Account/transport and automatic compaction scheduling retain separate integration work.
+
+This local build switch does not perform the author's browser cutover or revive automatic migration-host
+research. Rehearse the existing private capture/recovery/import/selection procedure next, retaining verified
+backups and author-controlled browser interaction. Real source cleanup and all remaining conformance/review
+obligations are unchanged.
+
+### 2026-09-10 — Keep the personal migration page private and stop at a recoverable selected destination
+
+Use the [development-only operator page](./private-migration-procedure.md) to connect the existing coordinator
+to the sole personal cutover. The author owns stopped editing, disconnected relay and closed old clients.
+The page refuses an observed service-worker registration/controller, but that observation and the operator
+checkbox never mint general old-writer exclusion authority. Keep automatic policy-host research stopped.
+Serve the page explicitly from the existing source origin; exclude it from the normal build/menu/precache.
+
+Download a recovery packet and separate binding record outside browser persistence, restart and reselect the
+saved files before enrollment. Preserve the generated-factor confirmation boundary and original factor/input
+on restart. Import calls remain bounded to eight actions; selection and editor opening are separate actions.
+No UI checkpoint, URL parameter or saved plaintext copy replaces authenticated component progress.
+
+This page ends at ordinary Local unlock/recovery and subsequent edit/export verification. It exposes no
+source-cleanup action and does not label selected metadata as complete migration. Retain the source and
+external backups until the separate operator cleanup step has its existing preconditions. The seeded UI
+rehearsal changes no conformance debt, real-profile residue claim or independent review requirement.
+
+### 2026-09-10 — Separate network positions from seal attempts and retain source at admission
+
+Private outbound preparation reproduced two defects in the older network budget model: repeated crashed
+mints reuse one position count, and separate credentials derive the same v1 key. New private envelopes
+therefore require v2 with workspace, signing credential and generation in the key derivation. Retain v1
+vectors as historical readback and refuse v1 minting or implicit downgrade. Every future encryption
+attempt must have its own durable reservation; retries of persisted envelopes reuse the exact bytes.
+This is a construction correction, not native spool or relay completion.
+
+A real Account journal/crash reproduction also shows that accepted-update observers cannot supply
+outbound durability. Build encrypted source capsules into admission before allocating network positions.
+Preserve capsule identity, attribution and exact updates through journal flush and content compaction;
+retain remote envelopes under their original source credentials. Start the initial capture implementation
+at verified frozen genesis with an authenticated reader-version fence. Already-edited v5 Account histories
+need a separate verified catch-up checkpoint before publication; do not infer their source history from a
+compacted snapshot. No real Account exists yet, and the author's Local migration remains intact.
+
+The [outbound contract](./account-outbound.md) records the concrete bytes, proposed transaction boundaries,
+remaining refusal-proof carrier and required native evidence. Public Account receive, relay publication,
+rotation and second-device enrollment remain disabled until their owned integrations exist.
+
+
+### 2026-09-11 — Pin private first-genesis bytes before expanding Account authority
+
+Keep the current private first-epoch genesis's accepted-head vector empty. Local writing enters via the
+checkpoint; no Account network position has been accepted. The certified member still exists, and the
+first envelope starts from zero link. A member/position-zero vector hashes differently and is not an
+alternate encoding. Apply the exception only to first genesis, with rows 5/7 and TRD amendments in the
+next format/vector phase; do not infer sparse-vector behavior for later epochs or existing streams.
+
+Preserve the current ordered first-authority JSON/LP/domain/hash bytes and receipt v2. Preserve the
+strict recovery v1 payload as raw X25519 scalar, binary root commitment and raw Ed25519 bootstrap seed,
+32 bytes each, sealed to exactly 112 bytes. The old scalar-only 48-byte vector is historical evidence,
+not an accepted alternate payload. Publish amended vectors and normative homes before treating these
+contracts as closed. No real Account receipt exists. The [prep](./account-crypto-prep.md) separates
+source-inventory coverage from authority-map and independent-vector completion, in four bounded groups.
+
+
+### Retire the intermediate Account v8 product paths
+
+**Date:** 2026-09-12 · **Commit:** working tree after signed `1372c39` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Review findings F-08/N-04 and N-09 concern the intermediate Account v8 sender/driver.
+The user confirms that these paths have never held customer data or personal dogfood data and sees no
+reason to ship an intermediate implementation. The current composed owner is v9; its preparation/tests
+still use some v8 code. This stage number is unrelated to the TRD document's version.
+
+**Decision.** Do not ship or support the v8 product entry points or promise compatibility with their
+intermediate persisted workspace state. Dispose those v8-only findings by non-shipment, without further
+hardening. Retain setup/test dependencies temporarily where v9 needs them; remove that scaffolding in
+its own bounded cleanup. Requirements on code actually used by v9 remain in force. The historical review
+responses stay unchanged; the current findings index records this explicit product disposition.
+
+### Record the authorized unsigned phase boundary
+
+**Date:** 2026-09-12 · **Commit:** assessment of `9ff48b5` (documentation intake follows) · **Against:** PRD v9 / TRD v8
+
+**Orientation.** The user explicitly authorized successive unsigned commits through the sync-liveness,
+privacy, failures/recovery and storage/responsiveness phases, with phase summaries and a reminder to
+sign later. Q-06 asks that this intentional state be discoverable within the repository. The phase
+records already state the authorization; an external reminder is not a repository gate.
+
+**Decision.** Record the eleven unsigned commits after signed `1372c39`, from `0e07fe4` through
+`9ff48b5`, with full original commit/tree IDs in the [Q intake record](./review/implementation/addendum-393ef43-9ff48b5.json)
+and a readable [phase table](./review/implementation/findings.md#q-06-intentionally-unsigned-current-chain).
+This records the user's existing temporary authorization, not a permanent waiver or a new signing
+action. Signing remains outstanding. A later signing operation must preserve historical tested IDs,
+source hashes and receipts, then add an original/replacement/tree crosswalk like P-04. Rewriting commit
+metadata alone does not invalidate unchanged tested bytes; altered source trees need applicable fresh
+validation. No history rewrite or additional runtime work is performed by this review intake.
+
+
+## Preserve review identities through the next signing sweep — 2026-09-13
+
+The user requests signing the outstanding unsigned commits after the R review intake, with an
+explicit pause until keyboard confirmation. At `6ba7c22` the linear chain contains thirty unsigned
+commits after signed `1372c39`. Prior eleven/seventeen-commit records describe their own historical
+boundaries and remain intact. Signing has not started.
+
+Use the prepared per-commit tree/parent/message/metadata inventory, preserve old objects under a local
+backup ref, verify every signature and identical tree, and move the live branch only after the whole
+replacement chain is verified. Keep historical evidence and review hashes unchanged with a permanent
+old/new crosswalk. Migrate the three executable before-source lookups to equivalent signed IDs so a
+future checkout does not depend on the unpublished backup ref; arbitrary unit-test labels can stay.
+Reconcile current navigation and generated plans in a separate signed follow-up commit, with its own
+applicable validation. Revision-bound receipts keep their original identity; signing does not turn
+staged historical campaigns into an immutable aggregate. See
+`docs/review/implementation/signing-prep-2026-09-13.md` for the execution and recovery checks.
+
+
+## Complete the authorized signing sweep without relabelling evidence — 2026-09-13
+
+The user confirmed keyboard availability, then all thirty reviewed unsigned descendants of `1372c39`
+were replaced with verified signed commits ending at `3e53b4a`. Original trees, message bytes and
+author/committer metadata are preserved; a local backup retains the original `6ba7c22` lineage.
+The permanent crosswalk and current phase navigation distinguish original measurement identities
+from signed branch locations. Historical review/evidence and intake snapshots remain unchanged.
+
+Three executable before-source references now use identical signed counterparts so future checkouts
+can run them without fetching the unpublished backup branch. Generated inventory/manifest data were
+regenerated with unchanged coverage obligations. This is the narrow exception to preserving old IDs:
+current executable dependencies and navigation move; historical source-bound evidence does not.
+Focused affected controls pass, and the review/documentation/baseline reconciliation is a separate
+signed checkpoint. Signing proves commit authorship and tree identity, not a new aggregate result.
+The temporary signing-progress ref can be removed after the verified reconciliation commit; original
+history backup refs remain. No remote push or personal-instance operation is part of this decision.
+
+
+## Separate current envelope admission from historical readback — 2026-09-13
+
+R-01 narrows new sender/sealer admission to the current receiver's exact complete-wire/count/decoded
+bounds and applies the visible wire cap before any new service decision. Historical structural codecs
+must remain broad because the service uses them to authenticate its existing ledger. Known local
+oversize consumes no new position or invocation; an old sealed wire without a submission consumes no
+new submission. Existing submissions retain exact retry because a lost acknowledgement may conceal
+an earlier acceptance. An unsigned `envelope-size` service hint only stops automatic retry.
+
+Current receive `inbound-size` and HTTP `response-too-large` retain durable state and need an explicit
+retry. These observations never authorize replacement, skipping, re-sealing or deletion. The private
+creating-member workflow trusts its member to produce conforming decryptable updates; the service
+cannot prove encrypted counts, actors or Yjs semantics. A small 256-update service-to-receiver case
+keeps that residual executable. General membership needs a malicious-member recovery policy under
+F-09 and membership/revocation work; already accepted invalid positions cannot be silently overwritten.
+A future compatible reader or authenticated baseline/lineage recovery is separate work. See
+`docs/review/implementation/service-receiver-bounds.md` for boundaries and retained validation.
+
+
+## 2026-09-13 — General validation begins with the five property-deadline suites
+
+The first general adapter takes the concrete R-03/N-06 Vitest obligations before broadening general
+Node/Vitest families. Only an explicit reviewed file allowlist resolves. Literal registration ASTs
+provide an independent denominator; runtime collection, exit zero or a wrapper's prior green result
+cannot define the expected population. The ordinary test config/setup stays in the frozen identity.
+Whole package/wrapper selections remain separate obligations.
+
+Use explicit 60-second limits for the five existing generated properties, preserving all 515 histories,
+seeds and assertions. Sequential one-fork stages receive 180 seconds plus bounded drain. Current
+1.1–6.2-second property measurements and historical loaded-host failures justify finite margin, not a
+universal load guarantee. Keep partial progress, error message and stack, seed/path/counterexample and
+explicit process-drain evidence. No automatic retry or deadline increase may turn a failure into credit.
+R-04 live/archive style scope and the full immutable aggregate remain subsequent work.
+
+
+## 2026-09-13 — General test credit requires an explicit fixture and process disposition
+
+Supported registration syntax does not automatically qualify a discovered test file. Keep an explicit
+reviewed policy for ordinary Vitest and Node protocol files, verify it against fresh inventory and
+compute exact case identities from source before execution. Generated registrations, native browser
+ownership and deliberate nested owners require separate reviewed adapters. A direct Node format-file
+receipt does not discharge its wrapper's optional artifacts, mutation variants or prerequisites.
+
+Node reports retain wrapped assertion errors, seed/path/counterexample diagnostics and completed-case
+progress while running. Require terminal reporter completion for success; timeout progress remains
+failed evidence after drain. Preserve the actual signed old reporter as the diagnostic-loss control.
+The manifest's existing 700 kB limit stays in force; compact its representation before future adapter
+expansion would exceed it, without dropping case identities or unresolved obligations.
+
+
+## 2026-09-13 — Generated case identities come from finite declarations and pinned data
+
+Generated registration is not permission to execute arbitrary test code while planning. Expand only
+reviewed literal data, lexical bindings, for-of loops, tuple/suite tables and explicit JSON inputs.
+Carry function metadata opaquely; helper invocations still need a separate disposition. Reject
+ambiguous duplicate names and unsupported registration syntax rather than learning the denominator
+from a green report. Bind vector bytes as well as names, check them before launch and reconcile every
+runtime case. Registration-data metadata is defined only for Vitest; other stage types must reject it.
+The own-field filter subset excludes inherited-property keys to avoid different JavaScript semantics.
+
+Use one complete manifest obligation per line, retaining the schema and every parsed value. The
+700 kB ceiling is unchanged; schema/coverage reduction is not a substitute for compact formatting.
+The generated layout belongs to the manifest writer; R-04 must retain that explicit formatting scope.
+Whole wrapper postconditions and historical partial-model limits remain separate from file receipts.
+
+
+## 2026-09-13 — Label ambiguous scenarios and explicitly admit synthetic service fixtures
+
+A tuple's first formatted value is not necessarily a unique case identity. Give distinct delivery
+histories stable scenario labels; retain their exact event construction and assertions in opaque
+builders executed only by the test. Do not broaden the planner into executing arbitrary helpers or
+collapse duplicate scenarios to make the case census pass.
+
+Temporary SQLite, synthetic credentials and copied-source mutants can use the ordinary Node file
+adapter after explicit fixture review. Inherited IPC crash workers must stay under the same bounded
+owner; an otherwise passing case with a leaked worker fails and drains. Parsing alone does not admit
+other fixture files, browser owners or wrappers. Optional campaign exports and wrapper postconditions
+keep separate obligations even after all their ordinary file cases have adapters.
+
+
+## 2026-09-13 — Boolean data branches preserve existing service-test identities
+
+Admit a conditional registration-data expression only when its guard resolves to a boolean under
+the finite reader. Select its corresponding data branch with ordinary lazy semantics. Do not coerce
+other values to truthiness or execute helpers. Conditional test registration itself remains outside
+the adapter. This retains the activation race test's existing names without changing product tests.
+
+Recovery, promotion, activation and handoff service files use the existing bounded inherited owner
+after explicit import/fixture review. Preserve independent wrapper artifacts and native obligations;
+passing an in-file mutation assertion does not grant its optional exported counterexample artifact.
+Shared reader changes warrant actual Node/Vitest controls and the existing generated registrations
+as regressions, while preserving every older stage contract and case identity.
+
+
+## 2026-09-13 — Reviewed historical Git inputs must enter receipt identity
+
+A current checkout hash does not bind bytes read by a test through historical `git show` expressions.
+For explicitly reviewed Node fixtures, record the original reference, resolved full commit, source
+path and SHA-256 in the stage contract. Read the exact expression used by the fixture, preserving
+Git replacement semantics; bound each read's time and output. Validate metadata, check before
+launch/reuse and after execution, and include it in the receipt key. Do not grant historical variant
+credit based on a current checkout or an abbreviated revision alone. Other result adapters reject
+this metadata until separately reviewed.
+
+Synthetic replacement controls must demonstrate changed history with unchanged checkout identity,
+refusal before launch/reuse, and a failed drained receipt when the case passes but its historical
+input changes. Explicit replanning may adopt different bytes only under a different receipt key.
+These cooperative pre/post checks have the same transient/hostile-change limits as source checks.
+Service fixture admission preserves binary IPC ownership, exact cases and independent wrapper/native
+obligations; old source used for compatibility or size fixtures does not revive retired v8 support.
+
+
+## 2026-09-13 — Shared-account fixtures retain their mutation and wrapper boundaries
+
+Admit the reviewed isolation service files under the existing Node owner without changing their
+case bodies, generated populations or deadlines. Two accounts may share synthetic databases while
+per-history cleanup closes handles and removes directories; crash/concurrent workers remain in the
+inherited process group. Reconcile all five file denominators and keep wrapper obligations separate.
+
+A test requiring a generated mutant history to fail and shrink is a passing detection case, not
+its requested run budget of positive histories. Credit its actual assertions while leaving optional
+exported histories/metrics/counterexamples to wrapper verification. Describe an oracle's dependence
+on observed initial rows instead of claiming independent derivation of every field. A wrapper that
+still calls a retired v8 fixture needs an explicit disposition before certification; direct current
+file execution does not re-admit retired support.
+
+
+## 2026-09-13 — Ledger runtime inputs and failed ownership evidence stay explicit
+
+Admit reviewed in-memory ledger builds under the existing Node owner, keeping Vite configuration
+loading and output disabled and every original test assertion/population intact. Pin the exact
+historical spoolRecord source path used by the batch reader; do not broaden this to arbitrary src
+paths. Vector-file reads enter ordinary source identity, while generator checks and optional
+wrapper exports retain separate obligations. Preserve the witness's coordinated-rollback limitation.
+
+Exercise historical drift controls on both old and newly admitted paths. Preserve an initial owner
+failure even if later focused and unfiltered runs pass. Add optional pre-cleanup receipt capture to
+the historical control helper without relaxing process rules or deadlines. An unreproduced orphan
+classification has an unresolved cause, not an established fix; carry it into owner/aggregate
+reliability work. Evidence packing must distinguish text from binary auxiliary output and retain
+binary bytes with their encoding/hash, rather than silently dropping non-UTF-8 files.
+
+
+## 2026-09-13 — Contract control/export file credit stays distinct from campaign exports
+
+Admit the reviewed recovery, transport and service-custody control/export files under the existing
+Node fixture owner. Keep generated names statically enumerable, test bodies unchanged and source
+mutation anchors exact. Transport omission controls establish bindings at the actual verification
+boundary; they do not establish all enclosing owner predicates. Private-export clearing assertions
+cover captured owned buffers and must not be promoted to a forensic memory-erasure claim.
+
+Keep two meanings of export explicit: these exports.test.mjs files test cryptographic provider
+output; optional ACCOUNT_REPORT_DIR JSON and wrapper evidence inventories need their own saved-output
+postconditions and ordered prerequisites. Passing ordinary cases does not discharge those wrappers.
+Retain prior process-control evidence when the owner is unchanged, including the ledger phase's
+unresolved initial orphan classification; later passing file selections do not establish its repair.
+
+
+## 2026-09-13 — Review fixture effects independently of filenames and preserve existing bounds
+
+A Node filename does not imply a browser-free fixture. Admission receipt/size evidence must use
+stage-owned Chromium and temporary service ownership. Borrow the owned endpoint without fallback,
+close each context explicitly, and register cleanup before setup. Keep standalone campaign launches
+available when no release owner is active. Preserve existing six-minute campaign bounds and
+individual test deadlines; do not derive a new bound from a passing or failing timing observation.
+
+Extend static declaration evaluation only for the reviewed finite numeric >= comparison needed by
+signed boundary titles. Pin every historical source the protocol fixture reads, with an exact new
+protocol path, retaining prior stage contracts. Keep native descriptor injection, actual Yjs size
+edges, earlier outbound models, registry obligation checks and runtime cryptographic evidence
+separately described. None substitutes for the others or discharges a whole-wrapper obligation.
+
+
+## 2026-09-13 — Pin reviewed declaration modules and historical test oracles as inputs
+
+A test's expected case population may come from a helper, but planning must not execute that helper.
+Admit only the reviewed delivery-oracle controls export through a finite literal reader, pin its full
+bytes in the stage contract and verify them before launch/reuse and after execution. Changing only
+patch values still invalidates the receipt. Keep Node module metadata restricted to that explicit
+consumer/helper pair; this is not permission to import arbitrary registration modules.
+
+Historical test code can determine expected outcomes just as historical product code can determine
+runtime behavior. Pin the old delivery oracle test and every source in the parser baseline bundle.
+Retain exact reference/revision/path/hash tuples through normal historical drift checks. Distinguish
+expected-failure/shrinking controls, finite exhaustive model domains, structural parser acceptance
+and cryptographic authorization when reporting the resulting evidence.
+
+
+## 2026-09-13 — Keep admission limits distinct from historical readback in transport evidence
+
+R-01's 512 KiB fresh-envelope admission rule does not narrow the historical decode/read/retry
+contract. Repair the stale v1 size fixture by requiring fresh oversize refusal, seeding historical
+accepted decisions with the actual signed pre-R-01 implementation, and using current code for all
+readback and retries. Pin that historical source through the existing receipt metadata. Add a
+separate exact current admission-edge case; do not reduce the old large-payload pagination assertion.
+
+The historical fixture's added seeding and retry work needs the same finite 90-second test allowance
+already used by the equivalent inbound historical fixture. Retain its earlier 40-second timeout as
+failed evidence and keep the outer owner bound unchanged. Preserve the old wrapper/browser exclusions;
+shared service evidence does not revive support for the retired v8 product lifecycle.
+
+
+## 2026-09-14 — Receive-transport browser fixtures preserve their whole-file bounds
+
+The three receive-transport test files enter the existing inherited-group adapter with an owned
+Chromium/CDP fixture and an explicit selection. Preserve their original wrapper deadlines separately:
+controls 90 seconds, generated 330 seconds and native 120 seconds. The two previously integrated
+admission-evidence browser files retain six minutes. Browser ownership alone does not choose a
+uniform test deadline. Finite case identities, per-test bounds, populations and assertions stay intact.
+
+Reuse the reviewed promotion fixture's borrowed CDP connection and cleanup registered before setup.
+No historical input contract is inferred from dormant mutation branches in shared helpers; the
+selected calls do not use those branches and the owner clears ambient fixture-control variables.
+Optional JSON exports, original wrapper ordering/prerequisites and saved-output postconditions remain
+separate obligations. Distinguish real service HTTP, independently signed fixture pages, renderer
+crash and same-context page reopen when stating the evidence's scope.
+
+
+## 2026-09-14 — Separate receive scheduler and browser fixture ownership
+
+The receive-driver selection explicitly admits four complete files. Its five scheduler omission
+controls use a copied TypeScript module and virtual clock, with no browser; only generated histories,
+final dispatch controls and native cases receive an owned Chromium/CDP fixture. Preserve each file's
+reviewed whole-file bounds, rather than inferring ownership from the directory name. Existing case census and process ownership need no implementation changes.
+
+The initial native run exhausted the original 120-second file bound after seven passing cases.
+Signed history shows four R-01 cases were added after that bound was set for five cases. Use
+180 seconds for the complete nine-case file in both adapter and wrapper; keep its individual
+45-second limits and every assertion. Preserve the failure and partial report. Other file bounds
+remain unchanged. This calibrates one fixture suite, not loaded-host aggregate reliability.
+
+Generated fixture pages and simulated navigator connectivity remain distinct from the real service
+polling case. Prior scheduler Vitest/property checks retain earlier evidence. Whole-wrapper ordering,
+prerequisites and optional JSON exports require their own postconditions. Signing completed phase
+commits reconciles navigation and the recorded staged tree without rewriting historical receipts.
+
+
+## 2026-09-14 — Pin historical sync builders and preserve real scheduler imports
+
+The Account sync/composition selection explicitly separates five virtual-clock Node scheduler
+controls from four files that need owned Chromium. Preserve complete case identities, individual
+case limits and generated seeds/populations. Use the four existing sync wrapper file deadlines and
+300 seconds for the batch file, the limit previously shared by the liveness ownership group. The
+single-file budget does not certify that multi-file group or its ordering/output prerequisites.
+
+A copied scheduler with a newly added runtime import must resolve the real protocol module, including
+its actual error class. Rewrite exactly that import in the fixture and retain the failing baseline;
+do not remove the dependency or substitute an error stub to make mutation checks load.
+
+The two actual historical sources used by the oversized-spool builder join the explicit historical
+locator allowlist and native receipt. Keep bounded git reads and verify bytes before launch/reuse
+and after execution, with real Git replacement controls for both paths. The current sealer mutation
+is separately pinned in fixture source; this is a composite test builder, not a complete old app.
+Dormant historical branches in other helpers receive no inferred execution credit. Batch reports
+written inside the disposable checkout and optional JSON exports remain separate output obligations.
+
+
+## 2026-09-14 — Preserve receive/editor fixture boundaries and pin the old reader
+
+The core receive and ordered editor files enter the existing owned-CDP adapter as complete files,
+retaining their distinct 300/480-second wrapper deadlines, individual test bounds and generated
+populations. Pin the exact old promotionRecord reader in the core file's receipt and bound its Git
+read; do not infer historical-input execution from dormant branches in other imported helpers.
+The existing allowlist and historical drift controls already cover this path.
+
+Keep distinct evidence claims for atomic receive storage and ordered visible publication. Core
+histories check durable progress at each step and replayed text at the end; editor histories additionally
+check writing and local source counts after each action. Independently signed fixture pages do not
+establish service HTTP delivery. A new page in one browser context and CDP renderer death do not
+establish whole-browser/power-loss or second-device behavior. Retain the v8 exclusion: seeding and
+fencing an intermediate format in a fixture is not support for shipping that app. Wrapper output,
+ordering and prerequisite postconditions remain separate from direct-file execution.
+
+
+## 2026-09-14 — Preserve spool native crash oracles and historical identity
+
+Admit the complete spool native file with its existing four-minute wrapper deadline and unchanged
+case limits, assertions and generated population. Pin the exact historical promotionRecord reader
+used by this file, bound its Git read, and reuse the existing owned-CDP and historical drift contracts.
+Do not infer execution from dormant historical branches elsewhere in the imported fixture chain.
+
+Keep exact-wire, source-coverage and external invocation-count observations distinct. Native transaction
+cuts and a Node observer support the stated crash/accounting checks; they do not establish nonce
+uniqueness, power-loss behavior or an independent cryptographic oracle. Generated histories check after
+each step and final drain, with cold reopen only at selected crash boundaries. Preserve that limit
+instead of describing a final cold replay that the test does not perform. Wrapper saved outputs,
+ordering and prerequisites remain separate from direct-file execution; intermediate-format activation
+fixtures do not revive retired product support.
+
+
+## 2026-09-14 — Preserve durable delivery proof and restart fixture boundaries
+
+Admit the complete delivery native file with its existing eight-minute wrapper deadline, unchanged
+case limits and eight generated histories. Pin and bound the exact historical promotionRecord reader;
+reuse existing owned-CDP and historical drift contracts. Dormant helper branches add no historical
+execution claim. Intermediate-format activation in a fixture does not restore v8 as a supported product.
+
+Keep independently signed response framing, separate derived-state oracles and native storage cut
+observations distinct from actual service HTTP decision issuance. Exact-retry cases compare bytes;
+commit-cut cases additionally establish entry counts and duplicate/retry behavior. Generated final
+reopen compares status, envelope bytes and source capsules, not visible text. Authority-change controls
+establish the checked boundary without promising atomicity against arbitrary out-of-protocol writers.
+Wrapper outputs, ordering, prerequisites and complete immutable qualification remain separate obligations.
+
+
+## 2026-09-14 — Preserve read-only decision evidence and mutation scope
+
+Admit the complete decisions native file with its existing two-minute bound, case limits and eight
+histories. Existing helpers and test bodies need no repair. Pin both runtime vector inputs in the
+frozen source identity; do not infer historical execution from dormant helper branches or vector
+regeneration from runtime reads. Retain whole-wrapper output and prerequisite obligations separately.
+
+Describe the assertions actually made: inventory is unchanged after every generated inspection,
+spool status is checked before close, and final reopen compares envelope bytes. Do not turn the case
+title into an after-reopen source/counter/text assertion. Distinguish the parent mutation's shared
+signing/verifying message change from replacing a signature made by unmutated code. Graceful close and
+page reopen do not establish renderer crash or durable successor behavior. These scope limits preserve
+the useful evidence without granting the primitive verifier broader authority.
+
+
+## 2026-09-14 — Integrate capture with bounded history and precise retention claims
+
+Admit the complete fifteen-case capture native file with its original three-minute bound, case limits
+and sixteen generated histories. Pin the existing historical promotion reader and bound its Git read
+at five seconds / 2 MiB. Keep the native test bodies, mutations and product code unchanged; existing
+historical drift and browser-owner contracts need no expansion. Whole-wrapper output/prerequisites
+remain separate obligations.
+
+The generated map refreshes saved capsules after each edit, so same-ID changes during that edit may
+be masked. Record boundary retention rather than universal first-observed immutability; keep a focused
+oracle-strengthening follow-up visible. The route mutation only exercises decoding, synthetic pagehide
+is not BFCache, and getText document instrumentation is not a full heap inventory. Capsule-overhead
+recovery establishes recovered text length but its source-byte predicate lacks a separate length
+assertion; atomic abort evidence comes from another case. These are evidence limits, not newly proven
+product failures, and do not erase the actual journal, attribution, pending-frame and crash checks.
+
+
+## 2026-09-14 — Separate native editing recovery from ancestry and provenance comparisons
+
+The original two-minute file bound expired after twelve passing cases. A separate progress-instrumented
+diagnostic retained the 90-second generated bound, completed nineteen histories and reached history
+twenty before expiry; all fifteen other cases passed. Retain both failed/partial runs. Repair the wrapper
+and adapter file allowance to five minutes and generated editing to three, without reducing the
+200 ancestry comparisons / 24 native histories or their assertions. Pin the historical promotion reader and bound
+its Git read at five seconds / 2 MiB. Product code, assertions, populations, owner and historical
+drift controls remain unchanged; saved-output and wrapper prerequisite obligations remain separate.
+
+Count only the two invoked guard mutations: ancestry omission and passkey refusal omission. The helper's
+identity branch is dormant. State the generated assertions precisely: ancestry compares browser-memory
+text and encoded state; native editing reopens after every step and compares writing plus custody and
+logical progress, not all raw source/counter inventories. Request blocking is not whole-browser offline,
+synthetic pagehide is not BFCache and getText instrumentation is not exhaustive memory accounting.
+These limits preserve useful observed evidence without expanding its release claim.
+
+
+## 2026-09-14 — Preserve handoff boundaries and distinguish virtual authenticator evidence
+
+Admit the complete fifteen-case handoff native file, including all 24 generated histories, with its
+unchanged case limits. The original two-minute file allowance expired during the final provenance
+case after fourteen passes, including the entire generated campaign in 59.596 seconds. Preserve that
+failed run and raise only the wrapper/adapter file allowance to three minutes; do not reduce the
+population or raise case deadlines. Pin and bound only its active historical promotion
+reader. The old-slot-verifier environment branch remains dormant; do not grant negative-control credit
+for a branch that did not run. Existing core/ES256 sibling receipts and wrapper obligations stay separate.
+
+The ES256 case uses actual navigator.credentials.get backed by a disposable virtual authenticator,
+not a human/hardware ceremony. Directed post-commit cuts kill renderers; generated histories reload
+pages after aborted commits or simulated response failures. Stable inventory excludes two authorized
+rows, and independent crypto opening precedes handoff while Yjs decoding remains shared. Report those
+actual assertions and their limits without broadening classification into editor/transport authority.
+
+
+## 2026-09-14 — Preserve first-admission oracles and give the complete native file a finite budget
+
+Integrate all fifteen Account admission native cases and all 30 histories, without modifying their
+bodies, oracles, populations, seeds or case limits. Use a 180-second adapter/wrapper allowance based
+on the preceding handoff's measured 121.212-second execution and admission's larger campaign, before
+running this selection; do not represent this prospective choice as an admission timeout repair.
+Pin and bound the active historical promotion reader, leaving inherited dormant controls uncredited.
+
+Keep independent Node/OpenSSL message/signature/decryption evidence separate from shared Yjs semantics.
+Report that filtered inventory excludes all application-upgrade rows, that generated retries reload
+pages while three directed cuts kill renderers, and that activation uses synthetic assertions rather
+than a browser authenticator ceremony. The receipt mutant must actually retain an invalid signature;
+a generic failure does not establish detection. Wrapper siblings/outputs and Account handoff/editor/
+transport authority remain separate obligations. Preserve the stale runner-assertion failure and rerun
+the complete pure suite after correcting its obsolete blocked-file expectation.
+
+
+## 2026-09-14 — Preserve genesis semantics and identify the independent oracle's actual reach
+
+Integrate the complete fourteen-case genesis native file and all 40 histories. Keep their bodies,
+oracles, populations, seed and case limits unchanged. Set a three-minute adapter/wrapper allowance
+before running the file, informed by preceding admission/handoff timings and the larger population;
+this prospective choice is not a genesis timeout repair. Pin and bound only the active historical reader.
+
+Require the actual snapshot/wrap mutants to accept bad candidates, with independent decryption showing
+missing state or inability to recover. Distinguish signed semantic forgeries from unsigned malformed
+marker edits. Report that the independent Node/OpenSSL oracle opens the recovery path, while device
+wrap opening, candidate signature verification and Yjs semantics are not independently implemented by
+this native file. Filtered inventory excludes every promotion row, generated restarts reload pages,
+and one directed cut kills a renderer. Keep crypto sibling and wrapper credit separate, and do not
+broaden a prepared proposal into service admission or Account editing authority.
+
+
+## 2026-09-14 — Keep promotion preparation evidence separate from broader recovery claims
+
+Integrate all twelve promotion native cases and 45 generated histories with the existing two-minute
+file allowance, 30-second directed and 60-second generated limits. Preserve product, fixture, wrapper,
+case bodies, population and seed; this file has no historical-source or registration-data input.
+Require the MAC mutant to actually return the substituted preparation identity after current-code
+refusal, rather than treating any failure as mutation detection.
+
+The generated scalar ledger checks reservation spending and stable credentials at preparation steps,
+not full writing or every post-action invariant. Record command preconditions/fallthrough and the
+main comparison's exclusion of the whole custody database; synthetic imported provenance does not
+constitute an importer replay or explicit all-claim preservation proof. Recovery cleanup observations
+remain scoped to the tested owner states; they do not establish same-slot re-registration, general
+reset or key-loss recovery. Two directed cuts kill renderers, while generated restarts reload pages.
+Keep core sibling, wrapper and later genesis/admission/index/editor/transport obligations separate.
+
+
+## 2026-09-14 — Borrow the owned browser for authority preflight without broadening its evidence
+
+Integrate all four authority native cases and forty generated histories under the existing shared
+browser owner. Register fixture cleanup before asynchronous setup and close the context explicitly;
+keep standalone launch, product code, every test body, seed/population and all deadlines unchanged.
+The native file's expected cases are exact; whole-wrapper scheduling and optional output obligations
+remain separate. No historical-source input or registration-data adapter is required.
+
+Credit logical inventory preservation, configured authority proof, specific refusal boundaries and
+observed context stability. Generated edits do not independently assert expected writing or journalled
+status. Page reloads are not process deaths; input mutation does not force queued contention, and
+cancellation delays a wrapper before its HTTP request. Keep service-only cryptographic mutations and
+full recovery/adoption evidence separate. The next recovery native fixture genuinely restarts a
+persistent browser profile and restores virtual credentials; its owner integration must preserve those
+semantics, rather than substitute a page reload.
+
+
+## 2026-09-14 — Preserve full browser restarts through bounded persistent-profile reopen
+
+Reuse the custody profile owner's inherited process-group launch for Account recovery. Add at most
+two reopens after clean prior exit, preserving its origin filter, pinned executable, startup/close
+bounds and fresh endpoint publication. Keep all three generations on the same profile and require
+three distinct PIDs, clean exits and predecessor links in the recovery scenario. Retain per-generation
+records with the selection evidence. The ordinary stage CDP browser remains auxiliary.
+
+Do not replace full restart with page reload or emulate IndexedDB persistence through storageState.
+Keep the existing explicit virtual WebAuthn credential export/restore, all original recovery operations,
+case identity and deadline, and standalone behavior. Run the changed profile owner's controls, including
+cold-copy compatibility, reopen refusal and actual worker death after reopening. Do not credit virtual
+credentials as hardware persistence, one row's literal-code check as forensic privacy, or pending-account
+recovery-code confirmation as full account recovery/adoption. Wrapper and broader recovery obligations
+remain separate.
+
+
+## 2026-09-14 — Bound core WebAuthn evidence to the native ceremonies actually exercised
+
+Integrate both Account core native cases under the existing shared CDP owner, with cleanup registered
+before setup and explicit context ownership. Preserve both original scenario bodies, identities, limits,
+product code, fixture utilities and wrapper. This file needs no historical or registration-data adapter.
+
+Credit virtual resident-key registration/confirmation, repeated completion after same-process service
+reopen, pending-account refusal, seeded-active authentication, browser cancellation and the specific
+HTTP refusals. Record the direct SQLite activation setup and distinguish service-object reopen from
+process death. These cases do not establish real activation, hardware passkey persistence or Account
+content authorization. Keep broader sibling and wrapper obligations separate.
+
+
+## 2026-09-14 — Require activation omission controls to reach the assertion callback
+
+Integrate the unchanged five-case activation native file under its existing owned-CDP fixture chain
+and three-minute wrapper bound, preserving 30 seconds per case. No historical reader or runtime
+registration-data adapter is needed; optional helper branches do not grant historical execution credit.
+
+The two omission controls must show current-code refusal with zero callbacks, then reach the callback
+once after removal of the relevant target/signature check. Do not reinterpret that as forged admission
+acceptance. Preserve real renderer death at held assertion and lost committed finish, and cancellation
+with a pending competing lock and zero finish calls from the cancelled owner. Node-generated activation
+assertions do not establish browser/hardware ceremonies. Keep generated service histories, wrapper
+outputs/reproduction and subsequent index handoff separate.
+
+
+## 2026-09-14 — Separate inbound HTTP interoperability from browser transport and writing recovery
+
+Integrate the unchanged one-case Account service inbound native file under its existing 90-second
+wrapper bound and owned-CDP fixture chain. Retain its sixty-second case limit. No historical input or
+runtime registration-data adapter is needed for its baseline helper path.
+
+Credit exact envelope bytes, repeated response bytes, directed HTTP refusals and receive-cursor
+recovery after page replacement. The reader signs/verifies in the browser but sends reads with Node
+fetch; browser transport and CORS are separate. Repeated queries do not establish injected response
+loss or service-state immutability. Cold cursor recovery without a writing assertion does not establish
+independent content reconstruction, particularly for locally authored envelopes in the same workspace.
+Keep service-only controls/histories, wrapper postconditions and human Account work separate.
+
+
+## 2026-09-14 — Admit boolean title concatenation without general coercion; retain full-state oracle controls
+
+Extend finite registration only for string/boolean concatenation in either order. Keep arithmetic
+booleans, object/function coercion, unknown calls and null/undefined concatenation outside the subset.
+Require generated Node/Vitest identity checks and exact six-case native reconciliation. This changes
+planning support, not native test bodies or product behavior.
+
+The delivery-oracle native controls must expose a full-state mismatch even while publication remains
+conflict. Preserve the unique first-refusal and first-final assignment mutations and the observation
+hook used equally by baseline and mutants. Signed contradictory proofs come from synthetic acceptance
+custody, not live service issuance. Credit logical proof retention, text/envelope preservation and orderly
+page reopen/compaction within the existing two-minute wrapper bound. Do not credit physical-disk
+immutability, crash recovery, all cryptographic activity or separate wrapper/oracle campaigns.
+
+
+## 2026-09-14 — Credit native parser shape refusal separately from authenticated startup
+
+Integrate the unchanged parser-conformance native case under its existing two-minute wrapper bound,
+with thirty seconds per case. Its eight samples stay one exact reporter identity. No interpreter
+extension or historical/data input is needed for its single literal declaration.
+
+Credit real IndexedDB preservation of sparse-array holes, structural acceptance of the synthetic v9
+positive and refusal of seven malformed records after reopening the connection. The zero-MAC fixture
+is structurally valid only. The same page remains alive and parsePromotion is called directly; this is
+not authenticated workspace startup or crash recovery. Keep the wrapper's broader parser matrices,
+omission controls, old-source comparison and report postconditions separate.
+
+
+## 2026-09-14 — Require omitted-binding controls to perform a real substitution
+
+Integrate the three promotion-contract native cases under the existing three-minute wrapper bound,
+with sixty seconds per case. Retain the current interpreter and owned browser fixture. Credit thirteen
+stage/version carriers, ten inputs for one source-guard omission and three HMAC-message omissions
+within those three reporter identities, separately from complete wrapper/vector qualification.
+
+Repair the receipt substitution that could leave an `a`-prefixed value unchanged. Toggle and assert
+inequality for all three target bindings, and force the pending receipt's old no-op edge before signing
+on every native run. Preserve the source-extraction reproduction and 160 generated repaired checks.
+The mutated verifier must still invoke real WebCrypto verification with the omitted message field;
+unconditional verification success would not establish this control's effect.
+
+Credit current reader authentication and source binding of directly installed synthetic marker rows.
+Fixture stage/version carriers do not prove service-authorized lifecycle transitions or cold writing
+recovery, and the v8 carrier remains a shared reader case rather than a supported product path.
+
+
+## 2026-09-14 — Separate persisted checkpoint startup from full crash and wrapper qualification
+
+Integrate the four unchanged checkpoint-contract native cases under the existing five-minute wrapper
+bound. Keep forty seconds for each directed case and two minutes for the 24-history generated case.
+Use the current literal declaration interpreter and owned CDP fixture; no historical/data input is
+needed for this native path. Optional vector builders are imported but not called.
+
+Credit independent ciphertext reconstruction, no reseal on retry, read-only startup after page
+navigation, effective selected/active coverage omissions, wrong-KDF refusal and nested authority
+refusal despite a recomputed local MAC. Navigation replaces the JavaScript realm but keeps the
+browser and service alive. The generated histories compare seeded text independently, then test
+classification and journal removal/restoration; full final editor/card equality is a separate claim.
+Checkpoint observations and serialized storage equality do not establish whole-profile residue freedom.
+Keep wrapper JSON/report postconditions and complete vector/regression chains as separate obligations.
+
+
+## 2026-09-14 — Own counter fixtures before setup and distinguish reservation order from eventual refusal
+
+Integrate the five counter-contract native cases under the existing five-minute wrapper bound and
+forty-second case limits. Keep their bodies unchanged. Adapt fixture setup to the existing owned CDP
+helper with an isolated context per instance and cleanup registered before resource acquisition.
+Attempt later cleanup steps even if an earlier close fails, and reject loopback listen errors.
+Retain the mocked setup-leak reproduction, nine cleanup scenarios and eight real browser-owner controls.
+
+Credit independent metadata MAC bytes, semantic refusal of correctly authenticated lies, burned
+reservations after final transaction abort and the browser's reported strict durability. Keep physical
+power loss separate. The reserve omission is detected at the AES invocation: a late rewind refusal
+cannot compensate for encryption before durable allocation. The fixture configures synthetic custody
+directly; it does not establish Account admission, factor UX, profile restore or whole-wrapper coverage.
+
+
+## 2026-09-14 — Preserve independent store bytes and qualify reopen terminology
+
+Integrate all three store-contract native cases under their existing bounds, adapting only fixture
+ownership to the established CDP lifecycle. Retain byte-identical test bodies and the independent
+HKDF/AES/XChaCha oracle. Credit its storeId omission control separately from owner self-roundtrips.
+Distinguish page navigation/reconfiguration from session reopen and crash recovery. Reuse the signed
+counter fixture's identical cleanup block with pinned prior controls; do not claim those controls ran
+again. Continue the remaining Account suite integrations in signed bounded groups as authorized, and
+stop if signing needs unavailable interaction rather than falling back to unsigned commits.
+
+
+## 2026-09-14 — Separate Local provenance consumption from custody registration work
+
+Integrate the four unchanged provenance native cases with the existing owned promotion fixture chain
+and five-minute wrapper bound. Credit independent Local claim authentication, guarded read-only Account
+startup and twenty generated tamper/restoration histories. Imported/cleanup claims are synthesized;
+creation and deletion remain obligations of their existing campaigns. A preflight claim-MAC omission
+is effective before promotion, while the post-handoff winning-claim marker still refuses it.
+
+The adjacent local-custody file uses nested Node subtests that both current census and reporter reject.
+Keep that restriction unchanged in this phase and handle its registration/ownership explicitly next.
+
+
+## 2026-09-14 — Give custody control scenarios explicit identities without broadening nested registration
+
+Promote the two fixed custody comparison subtests to named top-level tests, preserving assertions
+and their passing combined standalone report. Keep each scenario in an isolated fixture and split the
+former shared forty-second limit into twenty seconds each. The enclosing container has no independent
+assertion; it is removed rather than counted as another substantive case. Retain the source/AST and
+modeled report-equivalence checks, and adapt fixture ownership to the already qualified CDP lifecycle.
+Keep nested Node declarations refused by the general census/reporter. Credit logical buffer zeroing
+and parser refusal precisely; neither establishes physical erasure or an owner authority bypass.
+
+
+## 2026-09-14 — Bind both admission compatibility modules and bound their historical reads
+
+Integrate the six unchanged admission-bounds native cases under their existing three-minute wrapper
+bound. Pin both Git modules read by the old/current compatibility cases, allow only the exact new
+promotionAdmission path and apply the established five-second/2 MiB limits to the fixture's Git reads.
+Extend the historical owner controls to this path, preserving prelaunch/reuse/midrun refusal and
+replanned receipt separation. Keep production code and native assertions unchanged. Credit the two
+large deterministic coverage specimens, signed semantic lies and reduced-bound ordering control at
+their actual scope; they do not establish the maximum supported workload or whole historical-app support.
+
+
+## 2026-09-14 — Keep allocation-model power loss separate from native strict-durability evidence
+
+Integrate all three reservation-durability files under their existing five-minute wrapper bounds,
+adapting only the standalone native browser lifecycle. Preserve all test bodies and counters. Retain
+the pure model's two shrunk weakened-policy counterexamples via a separate repeat run with optional
+reporting enabled. That repeated seed adds evidence artifacts, not a new population or wrapper credit.
+Distinguish the model's strict-persistence assumption and explicit counter rollback from observed native
+transaction/AES ordering and API-reported durability. Keep physical power cuts, profile restore/clone
+safety and second-device delivery outside these claims.
+
+
+## 2026-09-14 — Qualify outbound observer recovery at the editing boundary
+
+Integrate the two unchanged outbound native cases under the existing one-minute wrapper bound.
+Retain exact signature/digest/route source-control anchors and pin the envelope-vector input with the
+frozen sources. Credit the actual renderer crash and journal recovery at the lower-level editing
+owner. An observer's absent replay/outbound record there explains a preparation constraint; it does
+not establish a defect in the later captured/spooled sync composition. Keep full vector, wrapper,
+relay, second-device and immutable release qualification separate.
+
+
+## 2026-09-14 — Keep service-issued decision evidence distinct from arrival and crash campaigns
+
+Integrate the two unchanged directed decision files with twelve cases under their existing five-minute wrapper bounds. Retain genuine issuer verification, exact response/source retention and the three uniquely anchored persistence/closure/conflict controls. Credit direct HTTP, sender retry/halt and shared scheduler assertions. Keep separate generated ordering and service/renderer crash fixtures blocked until their own integration; optional reports, full wrapper preparation and immutable aggregate qualification remain separate.
+
+
+## 2026-09-14 — Qualify decision ordering with exact retained proof sets and native process cuts
+
+Integrate the three unchanged restart/order/generated files under the existing five-minute file bounds. Credit four actual service SIGKILL and four renderer crashes, two directed proof-arrival orders and 28 fixed-seed property histories. Keep command-level optional reports, full wrapper output, physical power-loss guarantees and immutable aggregate qualification separate. Preserve the initially failed registration-order check and the passing correction.
+
+
+## 2026-09-14 — Treat failure hints as diagnostics while retaining exact admission retry
+
+Integrate five unchanged service/HTTP/admission failure cases, retaining null decision bytes or no receipt on diagnostic hints and exact retryable progress. Borrow the existing owned browser for the shared residue HTTP fixture, explicitly close its context and attempt each cleanup boundary independently. Keep broad diagnostic/privacy claims, full residue suites and the original combined wrapper allowance separate.
+
+
+## 2026-09-14 — Keep liveness instrument and service-cache checks finite and independently observable
+
+Integrate six Node instrumentation/cache cases with the existing one-minute file limits. Replace only equivalent checkpoint-size registration expressions with literal bytes, leaving the finite reader and test bodies unchanged. Preserve exact warm/cold signature counts, cache ownership/invalidation checks and instrument controls. Raise the compact manifest ceiling to 750 kB in writer and regression assertion while preserving schema, layout and all earlier contracts. Performance workloads and browser liveness remain separate.
+
+
+## 2026-09-14 — Qualify local progress and cached-view refusal under controlled native boundaries
+
+Integrate the two unchanged controlled/view browser cases using the existing owned-CDP helper with explicit context and finally cleanup. Retain their existing file/case bounds. Credit progress while genuine HTTP is held, fresh automatic retry after three expired reads, and refusal/recovery for seven IDB tamper modes. Preserve instrument/source pins. Keep performance reports, growing workloads, full wrapper outputs and immutable release qualification separate.
+
+
+## 2026-09-14 — Qualify the ordinary-scheduling workload without manufacturing a latency guarantee
+
+Integrate the unchanged 80-edit, 30-edit burst and post-growth recovery workload under its existing 750/720-second file/case bounds. Credit natural scheduler progress, bounded burst positions and cold text equality. Preserve ordinary versus measured bundle distinctions and exact case identities. Do not infer per-edit latency thresholds, loaded-host reliability or full performance-report/wrapper qualification from this case.
+
+
+## 2026-09-14 — Keep growing-history liveness evidence tied to exact causal and source assertions
+
+Integrate the unchanged 24-job growth case under its existing 930/900-second file/case bounds. Credit ordered source/spool correspondence, exact prefixes, one ordinary-read census per observed poll, local-admission/send-wake equality and cold text preservation. Keep collected performance/control samples distinct from asserted thresholds or full object equivalence. Wrapper outputs and immutable release qualification remain separate.
+
+
+## 2026-09-14 — Bound the independent ZIP producer and retain residue matcher limitations
+
+Integrate fourteen neutral matcher/container cases under 60-second file bounds. Bound host Python ZIP generation to five seconds and one MiB, retaining before/after observed tool pins. This evidence does not substitute for binding external tools into immutable runner identity. Keep fragmented records, limited static-import checks and raw-file versus logical SQL observations explicit; claim no forensic erasure or complete wrapper-output qualification.
+
+
+## 2026-09-14 — Keep residue calibration credit tied to planted surfaces and fault controls
+
+Admit the unchanged two-case native calibration file with its canonical 150-second file and 120/90-second case bounds. Credit all 144 applicable representation/surface cells, ten missing-surface controls and four collector faults. Keep opaque-key contents, physical-carrier completeness, wrapper outputs and immutable qualification outside this result.
+
+
+## 2026-09-14 — Retain directed lifecycle and acquired service-file residue evidence without widening its claim
+
+Integrate the unchanged three lifecycle cases and one service-file case under their existing 240-second file bounds. Credit exact journal/flush/cold content assertions, explicit recovery retry-key exposure rules, actual storage failure and plaintext side-record controls, and stable acquired DB/WAL file scans. Keep directed synthetic evidence distinct from process crashes, human Account qualification and forensic erasure. The initial empty-checkpoint refusal traced to a Chromium extension worker. Align the direct launcher with Playwright extension-disabling defaults, retaining worker refusal and a positive app-worker observation control. Rerun the 24 Node-owner and 14 native-owner controls; preserve the failed receipt and probe. Bound browser signal-denial retries within existing grace intervals, with transient/persistent denial controls. Preserve the earlier failed crash-cleanup receipt and require actual group disappearance for success.
+
+
+## 2026-09-14 — Retain the generated residue population and its scoped recovery assertions
+
+Admit the unchanged 24-history native property at seed 1121040, preserving 330/300/270-second file/case/property bounds and treating interruption as failure. Credit exact cold text and declared logical-carrier scans. Preserve the final operation histories as auxiliary observations, distinct from full wrapper-output or physical-profile qualification.
+
+
+## 2026-09-14 — Complete Account suite integration with owned persistent-profile lifetimes
+
+Use an explicit inherited-profile fixture kind to bind the installed browser without starting an unused CDP browser. Reuse the custody helper for real profile closure and reopen, keeping the packaged cases and existing time limits. Requalify the six profile-owner controls through this contract plus existing Node, Vitest and CDP controls. Distinguish acquired-file observations from the cases' narrower assertions and from forensic erasure. Close the authorized Account integration group; other suite, wrapper/output and immutable release gates remain.
+
+
+## 2026-09-14 — Other Node marker, origin and legacy observer controls
+
+Register only the four reviewed control files with exact static case identities and bounded inherited children. Preserve generated populations, retired-v8 exclusions, optional host experiment dispositions and separate wrapper obligations. Continue the authorized three suite groups with signed intermediate commits; stop if signing blocks.
+
+
+## 2026-09-14 — Other native marker, maintenance and partial-recovery fixtures
+
+Repair the shared fixture-name regression and qualify all four reviewed callers. Bind installed Chromium to the new native adapters, preserve existing case/file deadlines and all prior contracts, and distinguish partial read-only recovery from complete recovery or physical erasure.
+
+
+## 2026-09-14 — Registered harness groups and current storage lifecycle fixtures
+
+Replace obsolete port assumptions with current executable lifecycle checks rather than preserving false expectations. Keep the storage-properties startup refusal and all cleanup-supervisor assertions. Explicit owner sites may launch registered groups; ordinary detached launches still refuse. Publish an intent before creating a group, prevent payload execution until leader registration, fence late launch during teardown and refuse unresolved cleanup. Retain separate group-leader and actual-worker identities, inherited Chromium binding and failed-attempt evidence.
+
+
+## 2026-09-14 — Runner self-test integration and nested stage environment ownership
+
+Keep nested stage environment ownership explicit: an owned stage may reset its inherited Node-test marker and route violations to its own guarded scope; ordinary children cannot suppress violations by supplying a new environment. Accept the active guard or a guard inside the owned temporary tree, and constrain violation files to that tree or the disposable checkout output. Keep every registered leader in drain evidence and preserve the self-tests that reproduced the nesting failures. Resolve actual filesystem paths before checking the boundary; macOS aliases must not reject the same owned checkout, and a symlink must not extend ownership outside it.
+
+
+## 2026-09-14 — Owned Playwright adapter and Local startup/editor fixtures
+
+Introduce explicit single-file Playwright contracts and an independent static census before admitting browser suites. Retain default application case assertions and ordinary standalone behavior while owned runs supply browser and server lifetimes. Reject partial, repeated, filtered or unexpected-skip results, and retain bounded exact attachment bytes rather than losing generated histories. Preserve the failed fixture and metadata attempts.
+
+
+## 2026-09-14 — Packaged Local, compatibility and private migration browser fixtures
+
+Keep browser file admission explicit while adding disposable package builds and the original private migration Vite configuration. Serve exact build files with no missing-asset fallback or path escape; preserve application assertions, case bounds and standalone commands. Retain the native adapter regressions and seeded migration evidence without treating host Python or wrapper obligations as qualified.
+
+
+## 2026-09-14 — Application upgrade browser fixtures
+
+Admit the application upgrade file using two disposable builds and the existing fault server. Keep the supplied-predecessor variant visibly unexercised, represented by one exact identity/reason rather than general skip acceptance. Preserve standalone server behavior, all application assertions, wrapper obligations and strict failure/drain reconciliation. Report not-applicable cases separately from passing cases.
+
+
+## 2026-09-14 — Integration of geometry layout and editor fixtures
+
+Admit the four geometry layout/editor files through the owned packaged browser adapter with their original desktop/Android projects and unchanged assertions. Keep execution serial, retain complete case/project populations and preserve per-case bounds. Prospectively allow the finite remaining browser census within an 800000-byte manifest ceiling in both writer and independent regression control; do not alter runtime report limits or remove obligations.
+
+
+## 2026-09-14 — Integration of geometry interaction fixtures
+
+Keep the existing interaction semantics and platform applicability. Admit all four files through disposable packaged browser ownership and encode the ten device-specific non-applicable identities/reasons explicitly, retaining strict unknown-skip rejection and exact case/project reconciliation. Split the final latency work into journal microbenchmarks and application latency so obsolete plaintext startup/measurement setup can be repaired and validated separately.
+
+
+## 2026-09-14 — Integration of journal latency fixtures and measurement retention
+
+Require independent, exact project/metric reconciliation in addition to passing latency tests. Retain bounded measurement bytes beside the owned report and exercise partial-output survival under native timeout and cancellation. Pass the configured origin/device options to manual browser contexts, preserve the existing microbenchmark construction and budgets, and keep full production editing latency and real-device evidence separate.
+
+
+## 2026-09-14 — Integration of current Local application latency fixtures
+
+Finish application-latency adapter integration while keeping the measured budget failures explicitly open. Correct obsolete factor-free startup, absent-mark-as-zero behavior and legacy DB probing; preserve the workload and numeric budgets. Use guarded current-path timing marks and a locked encrypted payload census, and record factor-entry exclusion plus viewport/CPU interpretation. Collect timing failures at project teardown, enforce the same numeric predicates independently at the output boundary, and retain all observations even on failure. Diagnose timer calibration, frame scheduling and the editor/admission hot path in a separate bounded performance phase before claiming qualification; do not raise budgets or infer a handset regression from throttled emulation. Then continue the separate 96 command and 63 campaign adapter/output obligations, external-tool binding and immutable aggregate gates.
+
+
+## 2026-09-14 — Calibrate Local input latency and isolate admission costs
+
+Keep the original application performance gate failed. The diagnostic makes private Yjs preparation, workspace-history forking and full projection comparison the priority for a bounded performance repair; preserve isolated preparation, journal-before-publication, undo, pending-dependency and projection checks. Do not disable safety checks or subtract control quantiles. Bare CodeMirror block variability also leaves recorder/scheduler calibration open; current frame-plus-task timings are proxies, not proof that a particular character was displayed. Investigate the typing path first and treat focus/mount cost separately. A repair needs semantic controls and the unchanged timing workload before a performance claim.
+
+
+## 2026-09-14 — Reduce complete projection comparison cost without skipping verification
+
+Retain complete per-transition equality and its normalization fallback. Avoid repeated long-string UTF-8 encoding only when exact ordered string fields plus every remaining byte establish the same full encoding. A 64-item eligibility probe may forgo the optimization, never content coverage. The initial dense-history regression led to the ordinary encoder path for short fragments; retain the negative and mixed profiles. Useful comparison-only improvement supports this bounded repair, but neither timing thresholds nor staging checks are relaxed. F-17 remains partial; full document/history preparation, dense-history/device capacity and focus remain separate. Preserve the failed packaged application gate and proceed to a bounded fork-cost repair before immutable qualification.
+
+
+## 2026-09-14 — Reduce detached document fork cost while preserving runtime semantics
+
+Keep detached admission and history documents, complete per-transition verification and the existing undo copy. Use paired private codecs for cheaper runtime construction only: V2 struct compression, V1 legacy JSON conversions, independent UTF-8 edge replacement and detached binary leaves. Tests rejected the naïve swap and revealed a pre-existing V1 nested-binary alias with erased temporary bytes. Preserve that counterexample and repair the alias; do not propagate an existing defect for byte-equivalence. The final alternating fork checks satisfy the prospective acceptance rule, but whole-command samples remain mixed and no universal or device-capacity claim follows. Never publish the private codec bytes or relax an application budget. Keep F-17 partial and target the remaining undo-history/duplicate-preparation costs with fresh profiling before choosing a larger ownership change.
+
+
+## 2026-09-14 — Profile residual preparation and undo-history copying
+
+Browser stack attribution and fixed-document metadata scaling support a bounded selection-metadata clone attempt before a larger prepared-history ownership change. Preserve fully detached mutable graphs and per-item reference semantics, use structuredClone fallback outside the known shape, and require generated differential/undo/alias controls plus a deliberate sharing mutation before performance acceptance. Pin five warmups and twenty alternating baseline/candidate pairs in nine strata; require >=20% median improvement in both nonzero-metadata 1,000-group strata without consistent >10% regression in zero-metadata controls, then run the unchanged application gate. No production changes or release pass in this diagnostic phase. Retain raw profiles and resolved mappings in the bounded packet; full generated maps stay in the recorded raw run with hashes. F-17 and immutable qualification remain open.
+
+
+## 2026-09-14 — History metadata optimization assessment
+
+Keep the new generated graph/isolation, fallback and undo/selection oracles, but reject both shape-specific metadata copiers under the predeclared performance rule. The second version improves the heavy 100-target stress case by 30.5% but only 10.3% at one target, so do not lower the rule after seeing results or ship the added complexity on that basis. Restore the production seam exactly; preserve both candidates, all measurements and the sharing controls. No product speedup or new application/native pass follows. Next define the workspace preparation ownership and accepted-basis handoff before eliminating its duplicate admission draft; preserve canonical privacy, refusal isolation, source coverage and complete verification. F-17, physical-device capacity and immutable qualification remain open.
+
+
+## 2026-09-14 — Workspace preparation ownership contract and baseline controls
+
+Require a private identity-bound, one-shot preparation handoff before eliminating the duplicate canonical draft. Storage retry retains a consumed handoff; a new slice gets fresh authority even when a no-op left its state vector unchanged. Preserve the independent canonical document, complete post-promotion verification and the separate Account source probe. Keep the generic path as an integration reference, implement negative capability tests against the actual component before connecting Local, and qualify Account separately. The new baseline tests and four failing mutations establish sensitivity to existing lifecycle/coverage invariants; they do not establish correctness or performance of an unimplemented fast path. No threshold is relaxed; F-17 and immutable qualification remain open.
+
+
+## 2026-09-14 — Private workspace preparation handoff component
+
+Implement the private ownership component without activating it. Require a matching opaque context and verified local head, synchronous preparation, complete verification before capture and adoption, exact retained retry, and lease-aware cancellation cleanup. Treat post-promotion comparison failure as terminal. Keep the existing editor/generic path and all budgets unchanged. Actual component fault controls and generated Yjs histories precede Local integration; Account source/capture checks remain a separate gate. Preserve both resource-gap counterexamples and the initial mutation-fixture timeout. The full-suite standalone rerun passes at unchanged limits after two concurrent-run timeouts in unchanged tests; preserve that loaded-host observation rather than extending deadlines or declaring timing qualification.
+
+
+## 2026-09-14 — Private Local preparation handoff integration
+
+Keep the candidate an explicit private Local selection while retaining the generic/default and Account paths. Preserve one verified queue basis, leased prepared resources, exact retry, per-slice renewal and complete post-promotion comparison before workspace publication. Reject Account capture registration. Bind both publication revision and source; preserve terminal projection failure causes. The native initialization counterexample and three new discriminating faults remain in the evidence. Functional integration passes without changing latency budgets or claiming a speedup. Next compare against the retained reference and signed baseline under a prospective protocol before default Local activation. After the F-17 disposition, resume wrapper certification and immutable qualification.
+
+
+## 2026-09-14 — Keep the faster Local handoff private while its application budget fails
+
+Require both the prospectively specified relative command improvement and the unchanged application
+budgets before default activation. The six-block comparison meets its criteria against current
+reference and signed baseline, but CPU-4x Android card typing is 63.5 ms against <16 ms. Keep the
+candidate private, preserve every observation, and leave F-17 partial. Do not relax the budget,
+repeat a valid failing gate or infer a browser effect from separate historical runs. Diagnose the
+candidate's remaining work before selecting a further repair; Account activation stays separate.
+
+
+## 2026-09-15 — Keep Local handoff private after the physical-phone comparison
+
+The Pixel 9a companion shows lower candidate card-typing p95 in both opposite-order pairs, but
+86.9–87.1 ms remains above the unchanged <16 ms budget. Retain the candidate privately and keep
+F-17 partial. Preserve every failed setup and diagnostic run, all four comparison sessions, delivered
+input cadence and thermal observations. Do not generalize automated trusted keys to ordinary phone
+keyboard composition or treat one device as fleet qualification. Finish the manual input/recovery
+exercise, then profile the remaining candidate card cost before another repair. The 96 command /
+63 campaign obligations and immutable qualification remain separate.
+
+
+## 2026-09-15 — Close the phone comparison and resume candidate diagnosis
+
+The operator cancels the remaining physical-device campaign, including the planned manual
+keyboard exercise. Preserve its completed four-session evidence without claiming that exercise
+passed. The fixture server exited cleanly after removing its five owned USB reverse forwards;
+the dedicated ADB server on port 5047 is stopped. Keep the emulation reference values and use
+roughly 1.5 times card-typing latency for planning only: C 87.0/63.5 = 1.37; R 108.1/69.4 = 1.56.
+These separate sessions are not a controlled hardware calibration or evidence for other metrics.
+Resume the [bounded private-candidate browser profile](./f17-local-profile.md) once, with unchanged
+samples and source-mapped attribution before another repair. Default activation stays refused.
+
+
+## 2026-09-15 — Attribute remaining private Local card work
+
+The unchanged owned browser diagnostic passes once on the isolated Local handoff variant:
+4 cases, no retries/skips, 1,440 raw timings, 4 CPU profiles, exact text/cold-reopen checks and
+process drain (208.584-second stage). Full maps independently reproduce 2,168 mapped nodes;
+79 mapped application source files match the activated candidate. Original workspace identity
+is unchanged during execution. Card diagnostic p95 is 14.6/13.7 ms desktop and 80.5/68.7 ms
+CPU-4x Android across the two blocks; these do not replace the prior 12.9/63.5 ms application
+gate observation. The later bare-CodeMirror tail persists and limits timing interpretation.
+Across separate 60-key profiles, full history copying takes 345.2/1,558.4 ms desktop/Android,
+including document copying 170.3/770.1 and stack copying 172.4/778.8. Full comparison uses
+190.2/804.8 ms and publication/listeners 61.4/489.9 ms. Nested totals overlap; callback self time
+does not isolate structuredClone. Native/unmapped and GC samples are retained.
+
+Next define and test an ownership contract for private immutable selection snapshots: detach
+at capture, safely reuse only owned sealed values, detach on restore, and prove foreign/stale
+reference, nested-alias, undo/redo and lifetime behavior. Keep generic history forks fully detached,
+full verification and durable admission unchanged. Both rejected metadata copiers remain rejected;
+no speedup or default activation follows from this diagnosis. F-17 is partial; adapter obligations
+remain 0 test-file / 96 command / 63 campaign. [Protocol and next phase](./f17-local-profile.md);
+[evidence](./account-conformance-runs/2026-09-15-f17-local-profile/README.md).
+
+
+## 2026-09-15 — Selection-snapshot ownership contract and baseline controls
+
+Define the [private selection-snapshot contract](./f17-selection-snapshots.md): capture a detached
+payload once behind an owner-issued opaque token, reuse only same-owner tokens in explicitly owned
+metadata, restore detached selections, and invalidate on owner close without erasing snapshots a
+live sibling history still needs. Generic metadata forks remain fully detached. Weak-key lifetime
+must not be replaced by a strong global registry; shallow freezing does not establish immutability.
+The component and its owner/forgery/closed-token controls are the next phase, not implemented here.
+
+Six owned suites pass 118 cases with no skips/retries and process drain. Four new registrations
+cover 96 generated retained-branch histories, frozen/lookalike generic metadata, and 80 generated
+master/card ledger histories under each current preparation strategy. The independent ledger
+checks text, selections, undo/redo, revision, failed-write retry/discard, remote prefixes and cold
+replay. Three faults are detected: shallow nested sharing, empty before capture and stale after
+capture. The first sharing attempt failed earlier at prototype normalization; production-shaped
+cloned fixture metadata makes the corrected control reach the intended alias assertion. Both
+attempts remain. No production defect was identified and all runtime bytes remain unchanged.
+
+All 17 selected runner/registration checks, TypeScript, scoped source style, inventory/manifest and
+authority checks pass. Exactly four cases and one denominator-title update are reviewed; all other
+contracts, deadlines and exclusions remain. General integration is 261 files / 2,077 dispositions
+(11 not applicable). Wrapper obligations remain 0 test-file / 96 command / 63 campaign. Full unit,
+native and timing aggregates are not rerun in this baseline-only phase. F-17 remains partial, the
+application gate remains failed, and the rough 1.5× Pixel card estimate remains planning context.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-contract/README.md).
+
+
+## 2026-09-15 — Unmounted private selection-snapshot owner
+
+Implement [the private selection owner](./f17-selection-owner.md) without connecting it to the
+editor. Capture detaches and validates a complete selection Map behind a fresh opaque token;
+restore returns a fresh graph; metadata fork reuses recognized tokens in a new outer Map. Foreign,
+forged, cloned and closed-owner tokens refuse. A private WeakMap supplies identity and lifetime,
+with no strong inventory or per-branch revocation. Reentrant close during capture prevents issuance.
+History-to-owner binding and workspace shutdown ordering remain explicit integration obligations.
+
+Seven owned suites pass **127 cases**, including nine new component cases and the unchanged
+adjacent history/admission/delivery regressions, with no skips/retries and process groups drained.
+The component runs 200 generated graph/isolation examples (seed 150903), 160 independent branch/
+group lifetime histories (150904), and 80 malformed sparse-array examples (150905). The last
+property exposed a defect in the initial unmounted validator: extra properties could disguise
+holes from a key-count/Array.every check. Requiring consecutive array indexes fixes the retained
+minimal counterexample. Original source/test, failed run and repaired pass survive. Four deliberate
+faults are detected: borrowed input, lent restore payload, shared owner registry and invalidation
+of a token retained by a sibling branch. GC timing and forensic erasure are not claimed.
+
+All 17 selected runner checks, TypeScript, scoped source format/lint, inventory/manifest, crypto
+census and authority checks pass. One reviewed source and one nine-case adapter are added; prior
+runtime files, contracts, deadlines, exclusions and crypto classifications are preserved apart from
+the exact denominator-test title update. General integration is **262 files / 2,086 dispositions
+(11 not applicable)**. The 96 command / 63 campaign obligations remain. Five prior phase packets,
+52 personal/vector pins, append-only record prefixes and L-2 are preserved. No full unit, native
+or performance aggregate is run in this unmounted phase; the application gate remains failed at
+12.9/63.5 ms desktop/CPU-4x Android card p95. No default activation or speedup is claimed.
+
+Next integrate an explicit private Local variant with workspace/history owner binding and all
+metadata producers/consumers converted together. Retain the generic reference and current Local
+handoff for comparison. Generated/native retry, discard, grouping, slicing, remote, reentrancy and
+close checks precede a new prospective performance comparison and the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-owner/README.md).
+
+
+## 2026-09-15 — Explicit private Local selection-snapshot integration
+
+Integrate [owner-bound selection history](./f17-selection-integration.md) through the explicit
+internal `local-snapshots` variant. Default Local/Account and the existing reference/Local-handoff
+paths remain available. A workspace capability binds even empty histories to its live owner;
+generic forks refuse owned histories. Group before/after capture, history fork, undo/redo metadata
+transfer and detached restore now use recognized opaque tokens together. History documents, stacks,
+ranges and restored selections stay detached. No token or history handle is exposed to the UI.
+Private admission retains its complete comparison, revision/job/slice/writer binding, byte leases,
+retry and source guards. Teardown disposes histories after write/preparation drain, then closes the
+snapshot owner. A targeted startup check found a new cleanup gap: synchronous opener throws escaped
+the initial Promise.catch. A surrounding try/catch repairs it; original source/test and red/green
+runs are preserved. The defect preceded history allocation and is not evidence of content loss.
+
+All **86 workspace cases** pass, including the same 27 shared cases under three variants, existing
+Local controls, and new activation/startup/close checks. The new seam suite passes five cases,
+including 120 generated retained-branch/cursor histories (seed 150906). Existing accepted-state
+and independent master/card selection ledgers run 80 histories per variant (140925/150902).
+Thirteen affected and timing-follow-up owned suites pass **215 cases** with no skips/retries and
+process groups drained. Five deliberate faults fail their intended assertions: missing history
+binding, cloned tokens, stale after capture, omitted undo transfer and premature owner close.
+
+Native pending-state and original-order delivery campaigns each pass directed cases plus **100
+generated histories** (seed 8941), explicitly selecting the new variant in disposable Chromium
+profiles. The owned workspace catalogue passes **10 cases and all four mutations**, with browser
+and process drain. The first native run passed all ten cases but its whole-state pending-history
+mutation destroyed the active candidate and timed out before reaching the privacy assertion. The
+replacement fault exposes the candidate undo stack without replacing the accepted document; the
+original error run and both catalogue definitions remain, with the same assertion and limits. Full units initially pass 99 files / 1,141 tests before startup repair; the next
+run times out in the same two unchanged five-second Account-liveness/position-decision cases noted
+previously. Both pass in isolation, and one unchanged full repeat after repair passes **99 files /
+1,141 tests**. All runs remain; the cause is not established and loaded-host qualification stays open.
+
+All 21 selected runner checks, types, scoped source style, inventory/manifest, census and authority
+checks pass. Registration adds five seam cases and thirty workspace cases while retaining every
+previous case and contract except the denominator-title update and the reviewed pending-history
+mutation target repair. General integration is **263 files /
+2,121 dispositions (11 not applicable)**, with 0 test-file / 96 command / 63 campaign obligations
+remaining. Only the Yjs seam, admitted workspace and the snapshot owner's descriptive comment change
+runtime source bytes in this phase. Crypto classifications, six prior packets, 52 personal/vector
+pins, append-only prefixes and L-2 remain intact. No performance measurement or default activation
+occurs. F-17 remains partial and the application gate remains 12.9/63.5 ms desktop/CPU-4x Android
+card p95, with Android failing <16 ms. Next specify and run a balanced comparison with the reference,
+existing Local handoff and appropriate signed baseline before the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).
+
+
+## 2026-09-15 — Keep Local selection snapshots private after mixed timing evidence
+
+The [prospective four-variant comparison](./f17-selection-performance.md) completes **64 fresh
+sessions, 5,248 warmups and 4,096 measured insertions**, with all exact text/caret/revision/history
+and canonical cold-replay checks passing. B is complete signed `0c84e5cc`; R/H/S share current
+runtime/dependency bytes with explicit reference, Local-handoff and Local-snapshot selection.
+Four balanced orders cover three 100,000-character document item-count strata plus a deeper
+10,000-item history growing from 256 to 320 undo groups. The memory carrier excludes encryption,
+IndexedDB and paint; this is a host engineering comparison, not fleet qualification.
+
+The snapshot increment over H is **2.9%** at 10,000 items with shallow history and **10.3%** with
+deeper history. The prospective rule requires >=10% in both, so the relative gate **fails**.
+Cumulative S/R and S/B benefits and all median/p95 regression guardrails pass. At 100,000 items
+S is 0.7% slower than H by median paired ratio; the substantial cumulative gain comes from the
+existing handoff. Preserve the mixed result rather than declaring a broad snapshot speedup.
+
+The unchanged application gate runs **once** on a disposable current-source build with exactly
+one runtime patch selecting `local-snapshots` at the Local opener. All twelve cases execute and
+all thirty measurement rows are retained; browser, process group and localhost server drain.
+Card p95 is **12.2/75.1 ms desktop/CPU-4x Android** against <16 ms. Android focus is
+**54.2 ms** against <50 ms; both Android budgets fail. The remaining budgeted metrics pass. The failure is reported through the deferred afterAll budget hook,
+not a navigation correctness failure. The earlier H observation (12.9/63.5 ms) is a separate,
+unpaired run; its difference from this run is not a controlled browser treatment effect.
+
+Default Local and Account retain the reference. No runtime, adapter, manifest, census or registry
+changes occur in this phase. F-17 stays partial; general integration remains **263 files / 2,121
+dispositions (11 not applicable)** and unresolved obligations remain **0 test-file / 96 command /
+63 campaign**. Seven preceding evidence packets, 52 personal/vector pins, append-only prefixes
+and L-2 are preserved. The packet embeds all command observations, helper/protocol bytes,
+application measurements/receipts and preservation data; large pinned inputs and bundles remain
+under ignored local test-results with hashes. No personal app, phone, relay or deployment changes.
+
+Next: Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-performance/README.md).
+
+
+## 2026-09-15 — Reconcile the F-17 signed commit backlog
+
+Eight completed bounded phases are grouped into five newly signed descendant commits above
+`0c84e5cc`: `67d31c75` Local handoff; `a245fb7f` its performance/Pixel/profile evidence;
+`ffc0d370` selection contract and unmounted owner; `15eb389c` private Local snapshot integration;
+and `e2d42fac` the final performance decision. All five signatures verify. A following documentation
+commit carries this reconciliation. No existing commit or historical receipt identity is rewritten.
+
+The final content commit contains all 219 original pending files byte-for-byte. The handoff,
+component and integration checkpoints match respectively 1,059, 1,061 and 1,062 non-document
+files of their retained frozen phase inputs, including tests/runners/configuration; corresponding
+registry/census snapshots also match. The grouping uses exact saved versions where available,
+combines related phases where useful, and recovers append-only records by verified byte prefixes.
+Unavailable intermediate mutable summaries are not invented; the current checkpoint is reconciled
+here. All 177 files across eight original evidence packets, 52 personal/vector pins and L-2 remain
+unchanged. Three unrelated root files are left untracked and untouched.
+
+[Commit map and reproducible checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md).
+The original phase results are not reruns at the new commit IDs. F-17 remains partial, defaults
+remain reference, and the latest application gate remains failed at 12.2/75.1 ms desktop/CPU-4x
+card p95, with Android focus 54.2 ms. Counts remain 263 files / 2,121 dispositions (11 not applicable),
+with 0 test-file / 96 command / 63 campaign obligations unresolved. No runtime or test changes,
+measurement campaign, personal app operation or deployment occur during this bookkeeping turn.
+
+The backlog through this performance phase is closed. Next profile the snapshot application's
+remaining document/history fork, complete comparison and publication costs before another repair;
+retain the unchanged budgets, failed observations and loaded-host uncertainty.
+
+
+## 2026-09-15 — Separate F-17 exploration from RC qualification
+
+Keep isolated, composable optimization prototypes behind a cheap focused-correctness floor and a common serial browser screen. Preserve credible small gains and negative/inconclusive observations; do not require every component to solve the whole overrun or rerun every release validator per prototype. Combine and compare before selecting a candidate for ownership/native/recovery/memory qualification and the unchanged application gate. No release budget or default activation rule changes. The [first round](./f17-exploration-r1.md) retains about a 9.4% median full-corpus improvement as experimental work, with all source patches and failed probes preserved.
+
+
+## 2026-09-15 — Retain a simpler F-17 experimental combination
+
+Keep preparation reuse and bounded comparison pooling, park the conservative publication cache, and add the editor projection shortcut for further exploration. Publication's measured ordinary-text gain remains useful evidence; the mixed requested-Unicode guard, incomplete condition assertion in those initial sessions and semantic complexity support preferring a simpler baseline, not a universal rejection of small gains. The editor contributes about 3–4% median improvement against that exact companion configuration. All patches and observations remain available. This does not establish a net speedup over round one's complete combination or change default/RC gates. [Comparison and limitations](./f17-exploration-r2.md).
+
+Continue bounded profiling/optimization before paying for whole-release qualification. A Rust/Wasm migration is not part of this phase: the current stateful Yjs/history/editor boundary makes it a substantial engine/integration change, while journal encryption already uses a narrow Rust/Wasm implementation. Reconsider a resident kernel or engine migration only when a measured remaining target justifies the integration and behavioral proof work.
+
+
+## 2026-09-15 — Extend private string reuse to primitive Yjs values
+
+Retain the top-level primitive ContentAny string extension on the selected preparation + pool + editor combination. Two profiles identify the missed native encoding path, focused differential and fault controls preserve complete canonical comparison and ownership behavior, and both forward/reverse application pairs improve all median/p95 blocks. Paired median gain is about 13%, with about 30% p95 gain in this bounded screen; no candidate GC/heap benefit or release budget pass is established. Keep the pinned private marker/paired-decoder convention separate from published wire encoding and qualify that dependency before RC entry. Publication caching remains parked. [Evidence and limitations](./f17-exploration-r3.md).
+
+Next target the repeated per-snapshot UI card index with a single lookup shared across Collections, preserving fresh detached projections and current editing/membership/status behavior. This is another bounded incremental experiment, not default activation or a reason to relax the full release gates. Broader context memoization, membership repair and byte-comparison changes stay separate.
+
+
+## 2026-09-15 — Preserve optional UI indexing; retain the R3 baseline
+
+The shared per-snapshot UI lookup removes repeated Collection Map construction in the emitted build and passes focused/generated/fault and browser correctness checks. Its ordinary later median improves 2.7%, but early p95 worsens 8% in both opposite-order pairs; the Unicode timing is also mixed. Preserve its small isolated patch and the favorable later result as an optional component, while retaining preparation + pool + editor + primitive value-string reuse as the selected baseline. This is a response to mixed tail evidence, not rejection of incremental gains below a fixed threshold. No GC/heap or release-budget benefit is established. [Evidence and limitations](./f17-exploration-r4.md).
+
+Next refresh the selected combination's CPU/allocation profiles, then choose a bounded repair of measured remaining comparison-byte, document/history allocation or membership cost. Keep the existing full normalization/comparison and ownership guarantees; no need to rerun broad release qualification for each prototype. RC/default activation remains separately gated. The current round ends after the fixed comparison and disposition.
+
+
+## 2026-09-15 — Prioritize architectural F-17 cost reduction
+
+Following the perspective at `55ab217e` and its static assessment, the operator adopts a sequence that targets work proportional to workspace size and retained history. Preserve the selected R3 constant-factor improvements and the optional R4/publication patches. First run a bounded application growth diagnostic separating corpus size from retained history, including a disposable history-clear control whose document and canonical bytes must remain unchanged. Then address membership-repair eligibility and incremental publication separately; prototype persistent buffers for a restricted text path while retaining full verification; only then design incremental verification and its detection contract. This replaces another generic constant-factor profiling round as the immediate plan.
+
+Do not inherit the perspective's numerical forecast or claim that native Yjs delta/snapshot helpers are O(edit): deletion-set construction still scans the struct store. Text commands run one pre-command membership-repair pass, not both syntactic callsites; skipping it needs a repaired-basis invariant because remote repair is queued. Stable UI identities need selective subscriptions, not just a new root snapshot API. Persistent buffers change the preparation ownership contract and must mirror redo invalidation, metadata and slow-path transitions. Incremental verification must establish which old state a transition can change and define delayed failure detection. Keep frame-sensitive end-to-end measurements; subtracting control p95 values is not a p95 overhead estimator. The reviewer's scratch probes remain reported evidence, not independently reproduced measurements here.
+
+The first diagnostic uses the fixed R3 combination, adds no production optimization, and does not change defaults, budgets or release-adapter counts. [Protocol and outcome](./f17-growth-r1.md).
+
+
+## 2026-09-15 — Growth diagnostic supports whole-document work as the next priority
+
+The fixed R3 application comparison passes all eight sessions, actual history-intervention checks and 1,280 measured keys. Doubling seeded cards increases paired deep medians by 59.3% with history retained and 45.2% after clearing. Clearing history is modestly helpful at 600 cards and mixed at 300. This supports the accepted membership/publication phase order without treating history as free or predicting persistent-buffer speedup: the latter would also eliminate a document fork still present in both arms. Keep the R3 improvements and optional patches. No default activation or budget change follows. The immediate-read setup failure and bounded-settlement amendment are retained separately. [Evidence, limits and next boundary](./f17-growth-r1.md).
+
+
+## 2026-09-15 — Retain conservative membership-repair eligibility in the F-17 experimental combination
+
+The owner may reuse completed repair only for its exact accepted-history basis and trusted detached candidate. Successful preparation records the candidate alone; remote application invalidates before publication, regardless of whether that update appears text-only or pending. Failed/unaccepted work must not establish the accepted basis. Only membership-preserving text skips the pre-command scan; every other command retains current repair behavior. This is an internal sole-mutator contract, with no caller intent flag, state-vector inference or changed verifier policy.
+
+The two-file runtime experiment passes focused/source/generated controls and both discriminating faults. Six serial browser sessions pass correctness/drain and consistently favor the candidate: ordinary paired median gains 5.5% early /10.1% later, with variable later pair effects and a passing Unicode guard. Retain this additive improvement without requiring it to close the entire latency gap. These small descriptive comparisons do not establish a budget, GC or population claim. [Evidence and limits](./f17-repair-r1.md).
+
+The selected experimental combination is now R3 preparation + comparison pool + editor shortcut + primitive value-string reuse + membership-repair eligibility. Optional UI/publication patches remain separate. Next incremental publication with detached-read/status/remote semantics retained; persistent buffers keep full verification initially, and incremental verification remains a distinct proof/policy choice. Native ownership/memory/Account composition checks and the unchanged application gate still precede RC entry. Defaults, release counts and F-17's partial disposition are unchanged.
+
+
+## 2026-09-15 — Park this incremental publication implementation
+
+Preserve the new private projection cache and its normalization/detachment/history controls as an optional component. It passes 218 focused cases and the fixed six-session browser screen's correctness checks, but ordinary early timing is mixed and later median/p95 is slower in both pairs (median paired regressions 12.3%/18.2%). Unicode timing is also slower. The bounded source-work reduction is useful evidence, but does not justify adding this implementation to the selected combination. This declines selection on observed timing; it does not impose a minimum gain threshold or reject incremental publication generally. No profile identifies the regression's cause. [Evidence and limits](./f17-publication-r1.md).
+
+Keep R3 preparation reuse, comparison pooling, editor shortcut, primitive value-string reuse and membership-repair eligibility. Keep optional UI and previous publication patches separate. Next persistent text-history buffers for a restricted text path, retaining full verification and defining ownership, reset, acceptance/refusal/retry/discard, remote/structural/undo/metadata and close behavior before measurement. Incremental verification remains a separate proof/policy decision; native ownership/memory/Account qualification and the unchanged application gate still precede RC entry. No default, release count or F-17 disposition changes.
+
+
+## 2026-09-15 — Preserve the first buffer prototype; investigate its added costs
+
+The private two-buffer candidate passes focused/generated/fault controls and its browser treatment receipts prove actual reuse on ordinary text. Nevertheless, every final ordinary median and p95 pair is slower: median paired regressions are 6.8%/4.0% early/later. Keep its retirement mechanism, normalization controls and complete patch as optional work while retaining R3 + membership-repair eligibility as the selected combination. This declines the measured implementation, not persistent buffers or small cumulative improvements. All earlier observations and the reference-lifetime correction remain recorded. [Evidence and limitations](./f17-buffers-r1.md).
+
+Next use targeted cost accounting to separate full catch-up comparison and stack copying from the saved document fork. Specify the exact-predecessor, normalization, text-transition and runtime-history conditions under which replay produces the same preparation basis as a fresh fork. Only then consider replacing this prototype's added comparison with that proved invariant while retaining the existing full post-admission comparison. These timings do not attribute the regression or authorize simply removing a check. Incremental history mirroring and wider eligibility remain options; native ownership/memory/Account and the unchanged gate precede RC entry. Incremental verification of the existing canonical check remains a separate later proof/policy decision. Defaults, counts and F-17's partial disposition remain unchanged.
+
+
+## 2026-09-15 — Recommend replay buffers and close the F-17 optimization round
+
+Retain R3 preparation/value-string reuse, comparison pooling, editor projection shortcut and membership-repair eligibility; recommend adding Local replay buffers to the RC combination. Exact predecessor/accepted-delta ownership, conservative normalization and full copied history establish the restricted preparation basis. An idle transaction fence preserves pre-append transactional drift refusal. Raw private-field mutation remains outside that contract; every preexisting full canonical comparison stays unchanged. [Argument, controls and measured result](./f17-replay-r1.md).
+
+Four diagnostic sessions identify the added comparison as about 11 ms against about 9 ms for a fresh document fork, with replay about 1 ms and relatively small stack copying in this corpus. The separate fixed six-session application screen favors replay in both ordinary pairs: median paired gains 21.1% early /20.5% later and p95 gains 21.5%/19.8%, with all correctness/drain checks passing. Emoji-bearing histories still use fresh forks. This is descriptive incremental evidence, not additive cumulative gains or a passing release budget.
+
+The operator explicitly ends optimization exploration after this round and intends to accept the best supported combination for the RC while deferring a larger rewrite. Next choose/freeze and integrate this combination, then qualify its relevant native ownership/crash/memory/shared Account effects and run the unchanged application gate. Record any accepted performance shortfall as explicit release debt; do not relabel failing evidence. UI/publication alternatives, incremental history copying, wider normalization and incremental canonical verification stay out of this release integration. Defaults, F-17's partial status, release counts and immutable receipts remain unchanged in this phase.
+
+
+## 2026-09-15 — Freeze the selected F-17 runtime and end exploratory selection
+
+Integrate the exact measured R3 + membership-repair eligibility + Local replay candidate. Preserve
+full canonical verification and full detached history copies. Keep the UI/publication alternatives
+out. The candidate's six runtime files are unchanged during functional integration; the maintained
+suite now includes the earlier codec controls missing from the combined patch. The full unit,
+owned/native and nine discriminating fault checks pass. [Scope and evidence](./f17-rc-integration.md).
+
+This selects the combination for qualification, without claiming default activation or release
+acceptance. Shared comparison/editor/command changes enter source; Local replay remains private
+and Account buffers remain excluded. Next qualify lifetime/memory and remaining native/Account
+boundaries, then run the unchanged application gate and explicitly disposition any accepted
+latency debt. Do not reopen optimization exploration or weaken the gate to make this integration
+appear complete. The 96 command/63 campaign wrappers and immutable qualification remain ahead.
+
+
+## 2026-09-15 — Keep selected F-17 runtime fixed; resolve native execution headroom before the next gate
+
+The selected combination passes the bounded history/scratch lifetime campaign and three sensitive
+fault controls. Do not turn those observations into a general heap or erasure guarantee: the
+pre-existing canonical admission document remains reachable while its closed facade is retained,
+and becomes collectible when that facade is dropped. No runtime change is made for that separate
+hardening opportunity. [Evidence and scope](./f17-rc-lifetime.md).
+
+Ten complete Account files pass 102 cases, but core receive twice exhausts its existing 300-second
+stage limit. Its separately passing final authority-change case cannot replace a full-file receipt.
+Keep both failures. Next diagnose and qualify that fixture's execution headroom with semantic/case
+controls unchanged; do not blindly loosen the bound or restart product optimization exploration.
+Then resume the unchanged application gate and Local activation decision. The selected runtime,
+defaults, budgets and adapter counts remain unchanged here; whole-release qualification remains open.
+
+
+## 2026-09-15 — Stop after one receive-fixture headroom repair
+
+Following signed checkpoint `52a6aa80`, one measured fixture repair removes repeated ancestor
+bundle evaluation only for receive's explicit full-bundle path. All test bodies, generated seeds,
+crash operations and 300/480-second bounds stay unchanged. The single owned pass qualifies core
+receive (17 cases/149.007s) and its ordered editor derivative (12 cases/150.515s). No second
+repair or campaign round is undertaken. Earlier failed attempts stay preserved; this establishes
+bounded fixture headroom, not application speed or full current-input Account qualification.
+Return next to the unchanged application-latency gate and Local activation/debt decision. Keep
+production defaults and the selected optimization combination fixed. Larger rewrites remain later
+work; 159 wrapper obligations and immutable/loaded-host qualification remain open.
+[Evidence and scope](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+
+
+## 2026-09-15 — Activate the selected Local RC with open F-17 timing debt
+
+Following signed `e38be54c`, retain the unchanged gate's failure: Android card p95 38.7 ms (<16 ms
+required) and settled navigation 113.6 ms (<100 ms required). Desktop card is 9.0 ms and Android focus
+35.4 ms; the other budgets pass. The initial card/focus-only exception rule refuses activation;
+preserve that assessment. The operator's existing broader direction to accept the best combination
+for the RC supports a separate explicit post-measurement navigation exception. Record both misses
+as open implementation-review RC debt, with no altered test, threshold, receipt or automatic waiver.
+
+The same measured candidate passes 147 owned unit cases, ten native workspace cases/four mutations,
+and eight normal Local app cases with 20 generated histories. Apply its exact one-line Local factory
+selection after those checks. Account and the internal constructor default stay reference. Keep
+full canonical verification and complete detached stacks; stop optimization exploration. Return to
+96 command/63 campaign wrappers, qualification repairs and immutable validation. The manual debt
+disposition does not turn the failed gate green or claim a supported-device performance floor.
+[Scope and closure criterion](./review/implementation/f17-rc-latency-debt.json);
+[retained failed gate and functional receipts](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+## 2026-09-15 — Preserve grouped wrapper semantics and passing-test evidence
+
+The crypto preparation Node wrapper retains its reviewed two-file glob and default file concurrency.
+Existing serial per-file receipts are different invocation contracts and cannot discharge that
+command. Its real check-mode campaign is an explicit prerequisite, even in the bounded selection.
+Vector aliases share only exact argv/environment contracts and same-owner, unchanged input/result
+receipts. The final qualification includes an actual reused vector key rather than inferring reuse
+from common source paths. Passing Node stdout/stderr/diagnostics enter the existing bounded stage
+log; overflow fails instead of silently discarding success-path evidence. Campaign file outputs
+remain a separate adapter obligation. [Evidence](./account-conformance-runs/2026-09-15-wrapper-preparation/README.md).
+
+## 2026-09-15 — Retain report files under the execution owner
+
+Opted-in report writers receive a fresh ACCOUNT_REPORT_DIR beneath the stage's retained output,
+outside the disposable checkout. Required paths and byte/entry/depth limits are part of the receipt
+contract. Inventory includes regular-file bytes and empty directories; both cache reuse and
+prerequisite consumption recheck tree membership as well as hashes. Partial files remain after
+failure/cancellation, while incomplete or oversized trees cannot establish passing output custody.
+The first real report writer is a separate crypto probe variant, leaving package-command semantics
+unchanged. Semantic report assertions and other output roots require their own wrapper review;
+cooperative polling does not promise a disk quota or hostile-code confinement.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-file-output/README.md).
+
+
+## 2026-09-15 — Account core wrappers require semantic report reconciliation
+
+Execute the actual grouped Account core campaign with owner-issued process/browser/report resources.
+A passing exit and intact report files alone are insufficient: require the complete terminal case
+census, successful campaign summary, owned source hashes and discriminating baseline/mutant reports.
+Keep spec/JUnit output as auxiliary evidence and exact per-file obligations separate from grouped
+wrapper execution. Alias only exact command arguments and empty user environment. The first browser
+startup abort remains a failed receipt; its passing retry does not erase it or establish a repair.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-core/README.md).
+
+
+## 2026-09-15 — Recovery wrapper receipts bind persistent browser lifetimes
+
+The owned recovery wrapper uses the existing inherited persistent-profile fixture and retains its
+lifecycle report beside campaign evidence. Require three distinct clean browser incarnations, the
+same owned profile and the complete reopen predecessor chain, along with exact terminal cases,
+summary/source pins and recovery factor/root controls. Group drain is independently checked by the
+owner; reported PIDs are cooperative observations, and virtual passkey restoration is simulated.
+Keep the standalone wrapper and native report fallback intact. Previous blocked-wrapper assertions
+must advance to explicit resolved-contract checks as adapters land, while unresolved rows still refuse.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-recovery/README.md).
+
+
+## 2026-09-15 — Authority control evidence must distinguish trust and freshness
+
+The authority wrapper's retained reports must show the specific controlled failures: a substituted
+root with the requested nonce, and an old nonce with the expected root. Require baseline refusal,
+mutant acceptance of the supplied pin and independently valid signatures over the archived message
+bytes. A self-signature alone supplies neither the expected trust anchor nor a fresh challenge.
+Preserve actual grouped execution and its exact case census; report labels and exit zero are
+insufficient. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-authority/README.md).
+
+
+## 2026-09-15 — Promotion controls retain actual mutation and acceptance observations
+
+The promotion wrapper must retain the observed service eligibility result and all three intent
+identities from its MAC control. Require baseline refusal, mutant acceptance of an actually
+substituted intent, complete grouped test outcomes and bound source reports. Report labels alone
+cannot establish that the mutation changed anything or that the mutant accepted that change.
+These postconditions corroborate the existing native/service assertions; they are not independent
+service or cryptographic replays. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-promotion/README.md).
+
+
+## 2026-09-15 — Genesis wrapper credit includes historical inputs and semantic differences
+
+A current source fingerprint does not replace explicit pins for the historical reader invoked by
+the genesis fixture. Bind its actual Git expression and bytes through the existing before/after
+history checks, including reuse. Retained controls must distinguish lost checkpoint state and a
+wrong generation wrap while preserving unrelated candidate fields; recorded generated histories
+must be complete and within their declared bounds. These checks corroborate the existing native
+assertions and independent Node/OpenSSL oracle. They do not independently decrypt candidates or
+regenerate the seeded schedule. [Evidence](./account-conformance-runs/2026-09-15-wrapper-account-genesis/README.md).
+
+
+## 2026-09-15 — Admission controls bind observed activation and retained receipts
+
+Require the approval controls' recorded active account and receipt target to match the exact account
+and request subjected to the corrupted signature. Require the native receipt control to show offered
+baseline refusal and exact retention of the invalid receipt after disabling verification. Replay
+recorded service-history commands to check their final ledger state; preserve the separate native
+receipt/coverage oracle. These report postconditions corroborate actual execution and do not replace
+cryptographic verification, passkey checks or browser/database replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-admission/README.md).
+
+
+## 2026-09-15 — Handoff reports bind credential substitution, routes and signature evidence
+
+Require a refused credential baseline and an actually substituted public key with otherwise identical
+binding targets; independently verify original and accepted service binding signatures. Require the invalid
+passkey control's selected and classified routes to agree with its intended target. Verify retained P-256
+DER signature bytes independently, while preserving the original test as authority for runtime conversion
+and malformed-DER refusal. These report postconditions corroborate bounded execution; they do not replace
+native state/content assertions or establish aggregate correctness.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-handoff/README.md).
+
+
+## 2026-09-15 — Editing reports require observed outcomes and per-command recovery
+
+Record the actual ancestry control's original writing and unchanged refusal baseline, and the passkey
+control's invalid signature and unauthorized writing. Retain generated ancestry text and source hashes;
+require the expected splice, descendant acceptance, missing-genesis refusal and no source mutation.
+Reconstruct every generated editing/undo observation, not only the final result. Keep the native Yjs,
+provenance and storage assertions as execution authority; a matching report is not independent ancestry
+or browser/database verification.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-editing/README.md).
+
+
+## 2026-09-15 — Multi-stage wrapper evidence keeps distinct child case domains
+
+Use a completion trace for exact serial child invocations and nonce-bound reports for each Node/Vitest
+child. Reconcile both only after producer drain and bounded output inventory. Retain exit-only vector
+checks as such; a successful wrapper summary cannot stand in for terminal test outcomes. Preserve
+standalone invocation and original concurrency, arguments and child deadlines. The complete planning
+snapshot needs a 1,000,000-byte ceiling; runtime artifact bounds remain separate and unchanged.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-outbound/README.md).
+
+
+## 2026-09-15 — Source-capture evidence preserves the first complete observation
+
+Generated capture histories must compare every previously observed capsule before admitting new ones;
+never refresh the expectation from the value being checked. Clone first observations to avoid aliases,
+require retention of every prior record and compare both byte lengths and contents. Admit only the
+existing v6 route-matching empty initialization capsule on reopen/crash, then retain its first observation. Retain actual admitted,
+reopened and control outcomes so the wrapper can corroborate the native assertions with a separate map
+and text fold. These checks repair the recorded map-refresh/byte-prefix weaknesses without changing
+product admission or source-capture behavior.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-capture/README.md).
+
+
+## 2026-09-15 — Spool evidence binds observed wire, grants and source coverage
+
+Keep actual returned/persisted bytes and observed WebCrypto invocation counts in control and generated
+reports. Reconcile complete grant events, immutable source positions, unchanged persisted wires and
+exact final id/index coverage, with bounded allocation for malformed numeric fields. A missing-tail
+control needs both the actual incomplete-ledger refusal and same-position changed-wire mutant. These
+checks corroborate existing native/codec assertions; they are not independent decryption or storage replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-spool/README.md).
+
+
+## 2026-09-15 — Decision controls pair normal and mutated verification on the same bytes
+
+Retain actual normal-verifier unknown/rejection and mutated usable evidence/acceptance for each proof
+control. Bind the recorded response/submission fields to the bytes used, require the specific intended
+proof change and preserve observation/storage histories. Report checks corroborate native assertions;
+structural framing and predecessor hashing do not independently verify signatures or replay storage.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-decisions/README.md).
+
+
+## 2026-09-15 — Delivery wrapper evidence retains observed transitions and exact retry bytes
+
+Persist generated observations before their assertions and pair fault outcomes with actual normal-code
+persistence/refusal. Reconcile commit recovery, retries, proof-derived status, pending eligibility and
+cold-reopened source/wire retention after producer drain. The event oracle corroborates native assertions;
+it does not independently authenticate responses or replay storage. Preserve original native bounds,
+case identities and intermediate fixture fencing without restoring retired v8 product support.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-delivery/README.md).
+
+
+## 2026-09-15 — Service wrapper excludes its retired browser child and keeps full service evidence
+
+The current service-delivery wrapper preserves its required Node files and removes the already-excluded
+v8 HTTP interoperability invocation. Required v9 interoperability stays separate. New wrapper controls live
+in another bounded infrastructure file; the existing manifest suite retains its cases and one-minute limit.
+Retain observed baseline/mutant results and each generated command's ledger/response/recovery evidence.
+Report reconciliation corroborates execution without claiming independent signature or database replay.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-delivery/README.md).
+
+
+## 2026-09-15 — Inbound preparation preserves model scope and unordered module census
+
+Transport and driver whole-wrapper exclusions already exist; retain their required shared tests rather
+than reintegrating retired browser paths. Inbound preparation keeps original child commands/concurrency
+and bounds. Reconcile exact multi-file Vitest census independently of scheduling order, preserving duplicate,
+omission, mode and retry checks. Independently replay plaintext fixture updates and account for delivery
+history while retaining crypto/full-state assertions in the actual tests. Atomic model evidence does not
+establish IndexedDB safety or production receiver behavior.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-prep/README.md).
+
+
+## 2026-09-15 — Codec wrapper evidence retains actual mutation and recovery observations
+
+Keep codec and preparation evidence in separate existing namespaces. Preserve both Vitest child commands
+and the exit-only Node import probe. Corroborate actual normal/mutant results, exact source edits and
+live/cold byte agreement; generated wire faults retain their actual changed byte and refusal. Plaintext
+Yjs replay and report framing supplement the executed crypto assertions without claiming independent
+signature validation, compiled-bundle replay or native persistence.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-inbound-codecs/README.md).
+
+
+## 2026-09-15 — Receive evidence retains exact committed wire; planning capacity is separate
+
+Preserve original receive commands/cases/deadlines. Retain the request/page actually committed across
+before/after cuts, and independently reconcile receipt progress and plaintext content coverage including
+pending state. Cache only exact repeated unit-replay tuples within one report check, avoiding synthetic
+Node async-resource exhaustion without skipping observations. The finite checked-in planning manifest
+gets a four-MiB cap as explicit child contracts grow; exact round-trip/overflow checks cover it. Native,
+process-report and archive limits are separate and unchanged.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive/README.md).
+
+
+## 2026-09-15 — Ordered editor reports preserve first source observations
+
+Retain original ordered-editor commands, case counts and bounds. Reconcile full source identities and
+bytes against their first observation throughout generated actions and cold reopen, instead of relying
+only on source counts. Require measured normal/crash and compiled-mutation observations to discriminate
+early publication from durable recovery and remote relabeling from local authorship. Empty successful
+typecheck output is permitted while command identity, completion and log presence remain required.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-editor/README.md).
+
+
+## 2026-09-15 — Owned transport wrappers keep descendants in the runner's group
+
+Preserve standalone detached-child behavior while owned transport campaigns inherit the supervising
+process group. Retain exact child invocations, case domains and deadlines. HTTP evidence distinguishes
+the candidate signed page from the chosen response body or aborted transport, and checks actual durable
+request positions plus first-observation source continuity across retries and cold reopen.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-transport/README.md).
+
+
+## 2026-09-15 — Polling evidence distinguishes transient gates from recovered progress
+
+Keep original polling commands, effective mutations, generated counts and deadlines. Retain transient
+failure/offline observations separately from the restored idle state, and bind cold restart queries to
+durable receipt progress. Preserve exact source identities/bytes throughout. Scheduler control reports
+must include disposal state and cleared timers, while original clock/authority properties remain the
+scheduler oracle. A background empty poll may change idle/working status without changing progress.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-receive-driver/README.md).
+
+
+## 2026-09-15 — Composition evidence binds sealed positions to actual request bytes
+
+Retain observed encryption nonces and complete detached submissions, not only aggregate seal counts.
+Reconcile their independently parsed positions/nonces, exact retry bytes, first source assignments,
+authored text and both recovered lane counters. Distinguish server responses from replies actually
+delivered to the client. Keep existing native cryptographic and scheduler oracles authoritative, and
+save actual witness refusal/reopen observations in effective mutation reports.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-sync/README.md).
+
+
+## 2026-09-15 — Service read evidence retains actual refusals and signed originals
+
+Replace control success labels with the observed baseline and mutated results, retaining separate queries
+when a simulated clock change requires them. Record exact pages/acceptances, generated inventory continuity,
+process-death outcomes and HTTP/cold receipts. Verify signatures against observed keys as internal evidence
+consistency, while retaining the independent fixture's authentication/authority assertions. Update planning
+expectations when a wrapper becomes concrete without allowing unintegrated wrappers to borrow its receipt.
+[Evidence](./account-conformance-runs/2026-09-15-wrapper-account-service-inbound/README.md).
+
+
+## 2026-09-16 — Historical planning reuse is scoped; execution authority stays fresh
+
+Deduplicate historical source reads only within one synchronous manifest compilation, keyed by root,
+exact reference and path. Return independent pin objects, release the snapshot on every exit and make
+all execution-time checks bypass it. Keep Git replacement semantics and existing deadlines unchanged.
+The identical-manifest differential and real replacement/drift controls distinguish this optimization
+from trusting a long-lived cache. Three new runner tests raise the reviewed disposition total to 2,201;
+refresh the explicit census rather than suppressing them. Single-host timing headroom does not close
+aggregate or loaded-host qualification.
+
+
+## 2026-09-16 — Activation wrapper binds both historical and current evidence
+
+Treat the older no-proof activation reproduction as an exact historical execution input, with 26 pinned
+files and a closed population checked by the reproduction itself. Permit larger historical metadata
+only for that complete reviewed set. Share revision reads only within one synchronous compilation;
+execution checks remain fresh. Retain generated clocks, signed responses, observed state and actual
+mutation/process/browser outcomes rather than replacing independent fixture assertions with labels.
+Observed-key signature consistency is corroboration, not external authority. Keep the original child
+commands, deadlines and counterexamples, including the manifest timeout that exposed duplicated work.
+
+
+## 2026-09-16 — Batch historical planning reads without caching execution authority
+
+Read the exact reviewed historical expressions in a bounded Git batch and hash the original blob bytes.
+Require complete framing before publishing pins to the compilation-local snapshot. Keep the same
+reference resolution and replacement semantics, with independent fresh reads at execution and reuse.
+Use equal-manifest comparisons, binary/generated framing tests and real replacement controls to qualify
+this optimization. Preserve unchanged deadlines and prior failures; single-host margin does not prove
+loaded-host reliability. The two additional runner cases must enter both explicit census expectations.
+
+
+## 2026-09-16 — Bounds evidence binds observed bytes and lifecycle states
+
+Keep original command populations, deadlines and the report-custody ceiling. Retain complete long replay
+updates with lossless encoding, and verify decoded descriptors independently alongside the original
+cryptographic and native assertions. Distinguish historical parser and message-builder errors, and use
+actual retained lifecycle states rather than convenience labels. Deduplicate only deterministic
+signature work for exact byte triples within one reconciliation call. Before broader composed campaigns,
+review child invocation identity, report namespaces, explicit retirements and prerequisite adapters;
+source mentions and overlapping filenames cannot substitute for execution evidence.
+
+
+## 2026-09-16 — Composed Account campaign preparation
+
+Admission-bounds is signed and verified as `3af765d3`. Read-only inspection selects Account isolation
+as the first composed pilot: 44 commands, 32 required Node files /205 cases, nine Node groups and
+30 vector commands. Preserve exact order, grouping, 300-second child bounds and existing child report
+namespaces. Its remaining retired v8 service-delivery browser child must be removed under the existing
+exclusion; the four live service files and separate v9 interoperability remain required. Five invoked
+historical blobs are identified from the selected leaf contracts. Standalone reproduction commands
+absent from this wrapper do not acquire invented obligations or credit.
+
+Four preserved generated reports alone total 5,932,919 bytes, exceeding the existing 4 MiB single-set
+limit. This is a historical sample, not composed-run qualification. The next bounded phase is opt-in
+namespaced report custody: independently bounded children and root metadata, a finite parent cap,
+unchanged legacy single-set limits, complete retention and identity/reuse binding. The pilot will then
+add the exact cooperative trace, semantic observations and owned qualification. Reservation-durability
+remains separate: 50 commands, 15 direct Node files /133 cases plus three nested Local components and
+full Vitest, whose postconditions cannot be replaced by successful exit codes.
+
+A finite AST reader reproduces both frozen inventories without importing tests or campaigns. Its two
+unknown-call probes refuse. The first draft counted a test filename supplied to lint/format; retain
+that incorrect inventory, restrict cases to actual Node test invocations, and verify identical current
+and signed-baseline output. No product tests or campaigns run in this documentation/preparation phase.
+No manifest, runtime, package/dependency, vector, crypto-census, F-17 debt or prior archive changes.
+The append-only records and L-2 checkpoint remain preserved. Counts stay **629 obligations /292 required
+files /272 general files /2,203 dispositions (11 not applicable)**; **108 unresolved: zero test-file
+/70 command /38 campaign**. Preparation does not resolve a wrapper. No personal operations occur.
+[Plan](./release-validation-composed-campaigns.md);
+[static evidence](./account-conformance-runs/2026-09-16-composed-campaign-prep/README.md).
+
+
+## 2026-09-16 — Pause the release-validation campaign
+
+The operator has paused the campaign: release validation was started prematurely, and the product
+is not close to releasable. Preserve the completed runner work, composed-campaign preparation and
+all existing evidence as a checkpoint. Do not start namespaced report custody, another wrapper
+integration phase or an aggregate campaign under the previous standing instruction to continue.
+
+The unresolved integration count remains 108 (70 commands /38 campaigns); this is bookkeeping,
+not an estimate of product readiness or a mandate to finish validation before further product work.
+The previously proposed validation-first sequence is deferred. Choose the next product work and any
+resumption of this campaign explicitly with the operator. No gate is waived, no failure is relabelled
+and no release claim is made.
+
+
+## 2026-09-16 — Platform-specific UX follows the first RC
+
+Per operator direction, platform-specific UX is work for after the first release candidate. This
+includes native keyboard conventions and their platform-specific browser coverage. Keep the current
+Goals keyboard integration; extending its Mac shortcut checks to genuine Windows/Linux and Android
+behavior is deferred, not a prerequisite for the first RC. Describe existing coverage accurately:
+the Mac shortcut suite does not establish other platforms' keyboard behavior. The release-validation
+campaign remains paused.
+
+
+## 2026-09-16 — Prepare second-device enrollment before advancing authority
+
+Define the next backend product slice as a durable, freshly authenticated enrollment request, with an
+explicit `prepared` result. The present service's delivery owner derives membership from the original
+first-epoch promotion receipt. Therefore actual service admission must wait for a coordinated successor
+format, current-authority owner and compatible delivery behavior; do not advance the head while leaving
+its consumers unchanged. Account authorization and client-certified content recipients remain separate.
+This bounds implementation rather than weakening the full enrollment contract. No backend implementation
+or release-validation resumption is included in this definition.
+[Phase contract](./account-enrollment-prep.md).
+
+
+## 2026-09-16 — Coordinate successor admission with delivery and client adoption
+
+Define the next backend phase against signed `d015210e` as one private epoch-1-to-2 admission of an
+uncertified device. Preserve generation, acceptance key, principal, existing writer rights and the
+effective certified recipients/recovery state. Admission alone carries the original client-approved
+certification unchanged, including its original epoch context; the service cannot re-sign or reinterpret
+that approval. Record this clarification in TRD §13.5.
+
+Permit the creating publisher's exact already-sealed parent-epoch envelope across this explicitly
+compatible transition, subject to the existing position/refusal rules. Newly issued acceptance names
+the current epoch; the source envelope remains unchanged. Record the narrow rule in §7.4 rather than
+treating an unsupported-epoch error as permission to re-mint. Historical proof verification and current
+eligibility must become separate authenticated contexts, with ancestry and accepted-prefix checks.
+
+The complete phase includes an atomic service current-head owner, delivery continuity and supported
+v9 client adoption/cold reopen before enabling private consumption. First implement the distinct
+successor bytes and pure verifier; retain unchanged first-epoch artifacts. Do not revive retired v8,
+enable ordinary Account entry, generalize to multiple publishers or resume release validation.
+The new device stays ineligible for content reads, publication and key delivery until later gates.
+
+The later content-approval phase must settle SAS epoch restart versus installed-sibling certificate
+rebasing with transcript-aware checks; the current state model omits that question. Do not silently
+extend its assurance. [Definition, chunk boundaries and falsifiers](./account-successor-admission-prep.md).
+
+
+## 2026-09-16 — Retain complete delivery evidence at successor admission
+
+The admission head vector binds accepted stream positions, but not intervening permanent refusals.
+Retain the original signed full-ledger witness at the transition boundary and re-sign the current
+witness under the new head in the same transaction as the successor/pointer. Verify both complete
+prefixes and the vector; never rewrite historical decisions. Consumption is the unique successor
+record, so the original preparation receipt remains immutable and subsequent views report `admitted`.
+Schema-6 upgrades preserve the original genesis preparation token shape. This private service result
+does not enable the HTTP path before supported client adoption exists.
+[Contract](./account-crypto/admission-successor.md#5-durable-service-consumption-and-delivery-chunk-b).
+
+
+## 2026-09-16 — split successor client adoption at the historical replay boundary
+
+Chunk C first supplies a read-only verified-history foundation (C1), then integrates ledger replay and
+owned installation (C2). The current v9 owner assumes one head in captures, delivery rows and received
+pages; installing a pointer before repairing that assumption would make retained writing unreadable.
+Historical acceptance issuance is bounded by the signed successor prefix; refusal history cannot be
+classified by that accepted-position vector. Complete signed-envelope prefix matching is necessary
+but does not replace custody/content coverage or the eventual atomic lifecycle commit. Neither C1's
+focused tests nor its runtime inventory qualify the new construction or resume release validation.
+
+
+## 2026-09-16 — preserve capsule, mint, record and proof epochs separately
+
+Successor client replay (C2a) resolves compatible historical bytes only through verified admission
+history. A capsule's capture epoch, envelope's mint epoch, record owner's current context and signed
+proof's issuance epoch can legitimately differ; rewriting them would change retained evidence or
+lose pending work. Batch selection respects capture-epoch boundaries, while old unsealed captures
+and interrupted allocations may use fresh current-epoch seals. Legacy readers remain strict without
+that verified context. Current owner installation/dispatch stays disabled until C2b pays atomic
+persistence, exact local boundary, cold reopen and late-response obligations.
+
+
+## 2026-09-16 — authenticate the client's adoption boundary without replacing genesis
+
+The supported private v9 promotion gains a closed optional successor field containing the full artifact
+and its pre-install local ledger witness. Only markers containing that field extend the existing MAC
+tuple. This preserves original receipt/slot custody evidence and all old marker bytes, while older
+closed parsers refuse the new field. Installation writes only the marker under the existing exclusive
+lifetime after complete prefix and coverage checks; no new key, content write or nonce reset is needed.
+Cold replay verifies the same prefix and exact ledger cut. Historical source capsules are excluded from
+the authority-event cut so an already-acknowledged old journal edit can flush after adoption.
+
+A late old acceptance remains historical evidence in a current-context local record. A receive reply
+bound to a superseded request is transiently discarded and polling resumes under the installed head.
+Invalid adoption or precommit storage refusal cannot be reported as successful adoption or unnecessarily
+close a valid editor. Complete-profile rollback still requires a surviving newer anchor; the marker MAC
+and native transaction do not establish external freshness. HTTP discovery and qualification remain
+separate obligations; no release-validation work resumes through this product phase.
+
+
+## 2026-09-16 — separate discovery transport from authority installation
+
+Split the remaining private integration into D1 service endpoints and D2 client reconnect ownership.
+`/account/enrollment/admit` consumes the retained preparation capability and exact attempt/receipt;
+`/account/authority/discover` requires an original certified member signature and binds the pinned
+service, workspace, lineage, held head, nonce and deadline. Both have 4 KiB ingress bounds in addition
+to the private same-origin/token gates. No operator-only enrollment or uncertified-device discovery
+fallback is introduced.
+
+Discovery validates the complete retained delivery census and rechecks the current snapshot, expiry
+and custody after asynchronous verification/signing. It retries at most four snapshot changes and
+otherwise refuses; signed locator bytes are not content/key/publication authority. A concurrent
+transition after the final read remains an ordinary later state; the response and client anchor do
+not provide an external freshness oracle. Automatic client adoption remains D2, under its existing
+storage lifetime and the authenticated local prefix/ledger-cut checks.
+
+
+## 2026-09-16 — reconnect discovery belongs to the existing sync lifetime
+
+Run admission-only discovery in the composed owner's receive lane, retaining one automatic network
+pass and existing offline/storage gates. Successful unchanged replies use a five-second monotonic
+cadence, invalidated by reconnect; unavailable replies use the existing backoff. Stop discovery after
+the single supported successor is installed instead of implying a general epoch-chain implementation.
+Explicit refreshes share in-flight discovery and cannot create another storage or authority owner.
+
+The exact creator-signed request remains owned until its root-signed reply verifies or the lifetime
+ends. Expiry is checked again at the native marker comparison; a verified reply may expire while
+waiting for asynchronous custody work. That online freshness condition is separate from the historical
+successor signature and local prefix proof. A late empty reply cannot regress an already-installed
+child, and an invalid locator cannot close a valid editor merely for being untrusted. No change to
+ordinary Account entry, deployment or the paused release-validation decision follows from this result.
+
+
+## 2026-09-16 — content approval restarts on a competing epoch
+
+The operator selected restart rather than rebasing a typed-code approval onto a new epoch head.
+Restart uses fresh credential identity/keys, admission, nonces, transcript and code entry; exact
+resumption keeps the original transcript and durable decision. The ceremony's own exact verified
+certification successor is completion. An untrusted stale-parent response cannot itself establish
+a competing transition. The existing client retains the one-comparison budget under authenticated
+custody as well as reporting terminal refusal to the service.
+
+Already-delivered keys cannot be taken back by restarting. Retain pending delivery/certificate
+evidence and refuse activation against another parent; do not claim erasure or revocation. The
+current one-child admission runtime cannot offer fresh replacement admission, so the first private
+ceremony may stop with restart-required. General admission/history and the delivery/install/
+certification contract must precede a supported retry and second content reader.
+
+TRD §13.6 and row 11 §7 now agree. The old enrollment state model is explicitly historical where it
+asserts sibling-rebase liveness. [Phase-three preparation](./account-content-approval-prep.md) orders
+primitive bytes, authenticated exchange, durable attempt/relay and two private owners before key
+release. Existing cryptographic vectors and frozen release evidence are unchanged.
+
+
+## 2026-09-16 — ceremony primitive agreement is not approval authority
+
+Expose row-11 primitive derivation without a comparison or key-release API. Verifying nonce openings
+after collecting all inputs does not prove both commitments preceded disclosure; that belongs to
+the authenticated exchange and durable owner. Fixed historical vectors stay exact, while generated
+properties compare the full transcript digest and independent HKDF result rather than asserting
+that every mutation must change a 25-bit SAS.
+
+Use bounded ASCII code normalization with O/I/L folding at five symbols; reject non-ASCII case
+folding and invisible separators without changing the existing recovery-code parser. The private
+runtime still supports one admitted child; a generic positive safe epoch in this byte helper merely
+permits reproduction of the historical epoch-9 vector. Record the new runtime construction as open
+qualification, not inherited closure or release credit.
+
+
+## 2026-09-16 — first-device UI joins the private enrollment backend
+
+Integrate `ea3a3ffb` locally alongside the ceremony work. Keep the first-device product preview's
+existing owners and its explicit no-sync boundary. Account selection/verification supplies no
+second-device content authority; committed exchange, durable approval and delivery/install/
+certification remain required. Preview schema upgrades are explicit offline operations with backups,
+not a side effect of normal startup or this source merge. The integration check uses disposable
+schema-five service state and virtual authenticators, never the author's running installation.
+
+
+## 2026-09-16 — bind nonce reveals to both signed commitments and a fixed attempt
+
+Use separate fixed-purpose exchange domains around the unchanged row-11 primitives. Each
+commitment signs the complete authority/participant/attempt/deadline context. Each reveal signs
+that context identity and the hashes of both complete signed commitments, then opens its own
+role-bound nonce. Resolve approver keys from original certification, candidate keys from verified
+admission, and compare the caller's owned tuple. Service signatures cannot replace participant
+signatures. A fixed ten-minute content-ceremony lifetime starts independently of account preparation.
+
+Pure verified context/pair handles are private brands, not serializable persistence or approval
+capabilities. C/D must retain exact signed records and reverify them after restart, enforce one
+attempt/comparison per credential, and compare head/deadline/cancellation at native saves and
+before disclosure. Model crash/resume and generated interleaving results are explicitly conditional
+on those storage predicates. Competing authority terminates the attempt without erasing its record;
+unsigned stale/error responses cannot establish that authority change.
+
+
+## 2026-09-16 — stop at a usable private two-device approval flow
+
+The operator's objective is an experiential milestone, not qualification. Replace the broad C/D
+exit campaign with one real development path and focused crash/retry and authority checks, then
+stop for operator use. Keep release validation paused and do not refresh inventories, run mutation
+controls or invent additional qualification gates. Delivery/install/certification remains a later
+product phase; approval alone must not open writing on the pending device.
+
+Use the existing mandatory-factor custody and exclusive slot lifetime for both participants, with
+a counted encrypted approval carrier and a local durable single-comparison record. The service is
+an additional ordering/budget keeper, not the client's authority for comparison. The existing device
+explicitly signs an invitation before historical account proof, including encrypted genesis, is
+shared. Bootstrap is nonce-bound and root-signed; peer messages and outcome remain device-signed.
+The service's single-child schema stores one immutable attempt per workspace and never resets it.
+
+For the operator's requested physical-device trial, use a separate tailnet HTTPS origin on port
+8443 and fresh development state. Preserve the existing 443 route and other services. The author
+controls both personal browser sessions; automated checks use disposable profiles.
+
+
+## 2026-09-17 — root splash precedes the shared-device chooser
+
+The operator confirms that `/` should always start at the existing splash. **I already have a
+workspace** opens the chooser, which contains saved accounts, device connections and retained
+setup/enrollment progress. A remembered selection must not bypass the root splash. Selecting a
+connection resumes its factor-gated state; an approved device still does not open writing before
+delivery, installation and certification exist. Apply this to the private development entry;
+the existing default-app deployment is not changed by this phase.
+
+The older enrollment retained its approval but not the invitation needed for bootstrap. The
+operator accepts reopening the original invitation and unlocking once on that development phone.
+Retain the verified invitation in encrypted approval state for subsequent chooser-based resumes;
+keep the existing workspace/slot navigation hint untrusted and recheck custody and authority.
+New attempts save the invitation with their first encrypted enrollment progress. No service
+authorization bypass, reset of comparison budget or implicit new-account creation is authorized.
+
+Further product choices, including device names, QR entry, fewer prompts and factor simplification,
+require operator input before implementation.
+
+
+## 2026-09-18 — browser navigation within credential ceremonies
+
+The operator selects TanStack Router and approves the 22 proposed Back dispositions in
+[account-preview-navigation.md](./account-preview-navigation.md). In particular, Back from recovery
+confirmation may redisplay the original generation result during the same unfinished in-memory
+ceremony. This amends the earlier wording that forbade redisplay immediately after leaving the
+save screen. It does not authorize persistence, post-completion redisplay or reconstruction on
+reload. Leaving the ceremony warns before discarding the display; a signed confirmation retires
+it because its outcome may already have committed.
+
+Navigation changes presentation, not authority. Reversible save/confirm views retain one owner;
+leaving an unlocked flow aborts/settles and drains it. Pending, terminal and approved attempts
+resume their authenticated state without cancellation, budget reset or replaying completed
+commands. Direct invitations get an internal parent. Native passkey cancellation remains owned
+by the browser/OS. The root splash remains at `/`, and the chooser contains saved accounts and
+connections. Other product decisions still require operator input. Release qualification remains
+paused; this is bounded development usability work.
+
+
+## 2026-09-18 — continue approved enrollment through durable key installation
+
+The operator authorizes the next bounded product phase: delivery, factor-protected installation
+and certification, followed by content bootstrap/opening and later sync integration. Continue the
+already approved attempt without another passkey, code or comparison. Do not import or delete the
+phone's previous writing. Keep the preview designation and release qualification paused.
+
+The concrete continuation retains exact delivery bytes and a signed recipient-set successor
+before releasing the generation key. The recipient durably saves the matching recovery state
+and locally sealed key before signing installation. A service-serialized epoch 3 binds that exact
+installation, certificate and original-writer accepted prefix. Unknown outcomes resume immutable
+records. A competing parent cannot rebase the approval, and pending delivery evidence cannot be
+removed to undo a disclosure. See [the implementation contract](./account-content-delivery-development.md).
+
+The operator confirmed both devices locked and closed for the additive preview schema upgrade.
+Back up the retained state and preserve the pin/origin, accounts and attempts; do not reset the
+preview or change other Tailscale services. Product choices about fewer factors, device naming,
+QR routing or broader enrollment remain separate and still require operator input.
+
+
+## 2026-10-07 — activate the certified second device through the existing editor owners
+
+The operator requested continuing through second-device editing and two-way delivery. The second
+client retains its existing factor-protected enrollment custody and physical content scope, while a
+new authenticated interlock explicitly binds them to the logical Account identity and certified
+shared content key. It does not masquerade as an original Local-to-Account promotion or rewrite that
+promotion's provenance. Installation is resumable; ordinary writers refuse its interlock.
+
+Each certified device publishes a separate position sequence with its own completeness witness. The
+original publisher's historical ledger remains unchanged. Receiving keeps per-publisher cursors and
+proofs, and preserves the existing atomic durable receive and ordered admission boundary. The editor,
+local journal, source capture and network spool are reused. This is the bounded two-device development
+path, with focused retry/authority checks; it does not restart release qualification or introduce a
+new generalized migration/sync framework.
+
+
+## 2026-10-07 — remembered network login across Lock and its absolute lifetime
+
+The operator selects **preserve login when locking**: Lock workspace closes live connections and clears
+unlocked keys/access credentials, while the selected person's encrypted local custody retains the
+credential needed to resume network access after unlock. Sign out instead ends that installation's
+selected login and closes the person's local slot under PRD §6.6; it does not revoke the device or sign
+out another person or another device. Offline sign-out cannot claim server completion before an
+acknowledgement; local closure and disabled resumption do not wait for the service.
+
+The operator selects **30 days from sign-in** as the maximum age of remembered network login before a
+fresh online passkey check. This is an absolute service-side deadline, not an inactivity timeout; use,
+locking, reopening and background renewal cannot extend it. Network expiry leaves otherwise-eligible
+offline opening, reading and durable editing available. Existing local factor/verifier requirements
+remain distinct from online login. No additional idle-expiry policy is introduced in this increment.
+
+The recommended construction and bounded implementation sequence are in
+[account-sessions-subscriptions.md](./account-sessions-subscriptions.md): account-specific factor-sealed
+renewal, in-memory short access, stateful revocation and scoped fetch/SSE wakeups into authenticated
+catch-up. These are design recommendations, not running-service capabilities. Prompt consolidation,
+broader device/recovery journeys, Redis deployment and public hosting remain separate. Release
+validation stays paused.
+
+
+## 2026-10-07 — opportunistic combined local unlock and network login
+
+The operator approves one fresh passkey assertion serving both local unlock and online login when
+login is needed and an explicit combined challenge is already ready. Prepare the challenge in the
+background while the unlock screen is visible. A valid remembered login keeps the ordinary local
+unlock plus background renewal. Offline/slow service must not delay opening; later Connect/Reconnect
+is explicit. The device-lock code and locally verified service-signed account binding remain required.
+A server result alone cannot open writing, and an ordinary historical/offline assertion cannot mint
+a network login. Sign-out must suppress automatic login even when reopening retained writing.
+
+The implementation uses a separately sealed auxiliary login carrier under the actual slot writer,
+derived from existing mandatory-factor custody with its own random salt, domain and reserved counter.
+This avoids mutating the content owner's authenticated cached custody record. For unknown issuance,
+offline sign-out retains only the attempt cancellation capability; it does not retain the assertion
+or an unsealed renewal secret. The narrower cancellation endpoint can also revoke that attempt's
+already-issued session. See [phase 2](./account-session-client.md). Live activation remains behind
+phase 3's scoped route cutover; this is not a new release-validation campaign.
+
+
+## 2026-10-07 — combine fresh enrollment and network login
+
+The operator approves extending the joining device's already-required online enrollment passkey
+assertion to establish network login, avoiding another prompt before content approval. This must use
+an explicit combined challenge purpose and commit enrollment/session issuance atomically, with exact
+retry recovery and factor-sealed client retention. An old enrollment receipt or assertion from the
+ordinary enrollment purpose remains insufficient. Approval of this product choice is not an
+implementation or live-cutover claim; it is the next part of sessions/subscriptions phase 3.
+
+### Device lifecycle entry point and ordering
+
+**Date:** 2026-10-08 · **Gate:** L-1
+
+The operator chose additional devices and removal/revocation before lost-device recovery, and approved
+a **Devices** entry in the editor’s Account menu. It opens one verified device list with connection and
+removal actions. Keep the existing invitation/code-comparison ceremony and visibly distinguish pending
+enrollment from approved content access. This is UI/order approval, not permission to weaken the
+revocation/rotation/finalization contract or infer remote custody properties from a display label.
+
+
+## 2026-10-08 — Serialize unfinished device connections (`L-1`)
+
+The operator selected **one unfinished connection per account at a time** for the initial additional-device
+flow. Devices offers Resume or Cancel for the pending connection before another invitation. Enforce the
+same rule at the service boundary, not only in the interface. Preserve pending-versus-certified authority:
+cancellation of an unapproved device must not revoke approved readers or rotate their content key. A
+competing authorization change still requires a fresh transcript and human code comparison under the
+existing ruling; serialization of enrollment does not allow rebasing an earlier approval.
+
+
+## 2026-10-08 — Cancel before comparison approval; Remove afterward (`L-1`)
+
+The operator selected **Cancel connection before approval**, then **Remove device after approval**.
+After the human approves the comparison code, the new device may already have received a content key
+even if certification/setup is unfinished. Removal therefore includes forward key rotation and explains
+that existing copies cannot be erased. A pending roster alone cannot establish that no key was delivered.
+Uncertain approval/delivery outcomes preserve the possible-access classification; an unsigned denial or
+missing acknowledgement cannot downgrade removal into cancellation. Resume is offered where the actual
+retained local attempt can be resumed, not by transferring another device's private signing authority.
+
+
+## 2026-10-08 — First removal flow targets other devices (`L-1`)
+
+The operator selected **other devices only initially** and renewed authorization for unsigned
+intermediate commits and continued implementation. Keep the requesting device connected. Self-removal
+and the last-device case remain local-clear/recovery work. This does not relax forward rotation,
+authenticated finalization, exact retry or the existing-copy limitation. The implementation plan is
+[other-device removal](./account-device-removal.md); no removal control is enabled yet.
+
+
+## 2026-10-08 — Replacement admission uses current-key retries (`L-1`)
+
+The operator chose **Require current-key retries; preserve offline edits** over distributing historical
+content keys to replacement devices. The replacement snapshot must include already accepted writing.
+Surviving devices retain original local edits and old openers, but still-unaccepted old-key uploads
+must be retried under the current key at the replacement boundary, with signed evidence before
+superseding an allocated upload. An unsigned denial, timeout or stale authority hint cannot authorize
+that change. Exact accepted-envelope retry remains exact. This qualifies the earlier allowance for
+late historical-generation survivor uploads; it does not authorize losing offline writing or retiring
+historical keys. See [repeatable lifecycle](./account-repeatable-lifecycle.md).
+
+
+## 2026-10-09 — First lost-device recovery scope (`L-1`)
+
+The operator selected **Passkey plus recovery code first**: a person may lose every connected device
+but must retain an account passkey and the saved recovery code. Loss of the passkey too remains an
+explicitly unsupported account-access recovery path until separately designed. The code does not
+silently become an account login credential.
+
+The operator selected **Disconnect previous devices and rotate**. The explicit confirmation is
+“Recover on this device and disconnect the previous devices.” The recovered device becomes the sole
+approved content device; future writing uses a fresh content-key generation. Previous devices may
+retain their old copies. This does not authorize erasing other local workspaces, replacing the account
+passkey, or claiming that copies of old writing can be recalled. Exact UI placement and screens remain
+for an operator walkthrough. See [the implementation plan](./account-lost-device-recovery.md).
+
+
+### 2026-10-09 — Recovery screen sequence approved
+
+The operator approved: Use another account → Recover with a saved recovery code → choose the
+existing account passkey → enter recovery code → save and confirm a new device-lock code → review
+“Recover on this device and disconnect the previous devices” → recover and open the editor.
+Keep the account passkey and recovery code unchanged; retained recovery progress belongs in the chooser.
+Implementation must still establish complete replay and atomic replacement before presenting success.
+
+
+### 2026-10-09 — Recovery restart boundary before device-lock setup
+
+The operator approved restarting the passkey/recovery-code steps if the tab or browser is closed or
+killed before the new device-lock code is saved. Candidate private keys remain in memory in that
+interval; switching to a password manager or backgrounding the page must preserve the ceremony.
+After lock setup, recovery progress and exact pending intent must be protected durably by that lock,
+including retries after a lost commit reply. No recovery code is retained for redisplay.
+
+
+## 2026-10-09 — Upgrade now; defer walkthrough and validation until publication (`L-1`)
+
+The operator authorized deploying the completed history-management build to the retained :8443
+installation, deferred the personal history-management walkthrough, and instructed that release
+validation remain paused until after a version is published. Publication does not automatically
+resume the campaign; wait for operator direction. Focused deployment integrity/identity checks are
+part of the requested upgrade, not a resumed qualification campaign. This does not select a public
+host/domain or authorize moving existing passkeys/accounts to a different origin.
+
+
+## 2026-10-09 — First public host, snapshot retention and separate operations (`L-1`)
+
+The operator selected `done.oxidationlabs.com` on the existing `~/Code/ol-infra` Kubernetes/Flux
+platform, with cert-manager and SOPS/Kubernetes Secrets. The Tailscale installation need not migrate;
+the public deployment can start fresh. SQLite snapshots without Litestream, encrypted before upload
+to B2, are accepted. Brief sync outages are acceptable. Target 30-second non-overlapping backups
+while state changes; retain recent copies for five minutes, hourly for six hours and daily for seven
+days, with no weekly/monthly tier initially. Slow/failed backups change the observed recovery point,
+not the meaning of a successful local write.
+
+The operator explicitly agreed that ordinary application updates, schema migrations and disaster
+restores require different rules. The detailed implementation plan is [public deployment](./public-deployment.md).
+Release validation remains paused until after publication and explicit resumption; the personal history
+walkthrough remains deferred. Final destination credentials and public activation are separate steps.
+
+For Git, the operator chose a signed explicit merge commit on local main to incorporate the long-running
+branch while retaining its existing commit hashes, then a new deployment branch. No squash, rebase,
+remote push or retroactive signing of the old history is implied.
+
+
+### 2026-10-09 — Signed PR history replaces the direct-main integration route (`L-1`)
+
+The operator identified main protections and authorized signing the outstanding commits to use the
+PR route. GitHub rules require signatures, linear history and a pull request with squash as its only
+merge method. Preserve those protections. Replace the 102 unsigned commits and re-sign the one merge
+whose parent changes, preserving all trees, messages and author/committer metadata; keep original
+objects under a local backup and commit a permanent hash crosswalk. Restore local main to the remote
+base and update existing PR #41 without force-pushing. Retain the signed PR branch after squash so
+phase objects remain reachable. Reconcile ancestry-dependent validation before its explicit
+resumption on squashed main; do not alter historical receipts. Future PR/deployment commits are signed.
+See [the signing record](./commit-history/README.md). This changes repository workflow, not the
+agreed deployment or paused-validation scope.

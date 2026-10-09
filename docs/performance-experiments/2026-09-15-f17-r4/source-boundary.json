@@ -1,0 +1,7 @@
+{
+  "changedRuntimeFiles": [
+    "ui/workspaceUi.tsx",
+    "ui/Collection.tsx"
+  ],
+  "note": "Relative to selected preparation + pool + editor + primitive any-string combination. No core/ownership/CRDT/admission change in this increment."
+}

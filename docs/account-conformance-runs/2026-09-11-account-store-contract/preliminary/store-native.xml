@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="real factor-opened owners derive the specified keys and persist exact store and writer/ordinal journal bytes across reopen and flush" time="0.510159" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-store-contract/native.test.mjs"/>
+	<testcase name="native cold recovery refuses changed record placement/header/tag and copied journal writer/ordinal/scope without deletion" time="0.287768" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-store-contract/native.test.mjs"/>
+	<testcase name="removing storeId from actual custody HKDF still makes locally usable ciphertext but the independent owner-byte check detects it" time="0.227440" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-store-contract/native.test.mjs"/>
+	<!-- tests 3 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1416.992375 -->
+</testsuites>

@@ -1,0 +1,29 @@
+{
+  "baseCommit": "837cd1433d52cbc4a7d5e9eb45cd18d53ccde86e",
+  "sha256": "96f7dfb6dc166cb3aa037b55c95ae05acc60f86235c9f72aedeff1e2f4264edb",
+  "bytes": 181907,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-store-contract.md",
+    "docs/account-crypto/constructions.json",
+    "docs/account-crypto/store-journal.md",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "docs/selections/row-2-journal-aead.md",
+    "package.json",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/account-store-contract/run.mjs",
+    "scripts/account-store-contract/vectors.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "test/account-store-contract/browser.ts",
+    "test/account-store-contract/formats.test.mjs",
+    "test/account-store-contract/native-browser.ts",
+    "test/account-store-contract/native.test.mjs",
+    "test/account-store-contract/oracle.mjs",
+    "test/account-store-contract/runtime.mjs",
+    "test/vectors/account-store.json"
+  ],
+  "scope": "D5 contracts, tests, vector bridges, registrations, nonce-wording correction and checkpoint. Raw final/preliminary evidence and patch/manifest excluded to avoid recursive packaging. Production code unchanged.",
+  "indexEmpty": true
+}

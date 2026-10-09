@@ -1,0 +1,51 @@
+[
+  {
+    "variant": "preparation",
+    "session": "screen-0",
+    "started": "2026-09-15T07:13:00.155Z",
+    "finished": "2026-09-15T07:13:24.014Z",
+    "code": 0
+  },
+  {
+    "variant": "allocation",
+    "session": "screen-0",
+    "started": "2026-09-15T07:13:24.015Z",
+    "finished": "2026-09-15T07:13:47.838Z",
+    "code": 0
+  },
+  {
+    "variant": "publication",
+    "session": "screen-0",
+    "started": "2026-09-15T07:13:47.838Z",
+    "finished": "2026-09-15T07:14:12.367Z",
+    "code": 0
+  },
+  {
+    "variant": "publication",
+    "session": "screen-1",
+    "started": "2026-09-15T07:14:12.368Z",
+    "finished": "2026-09-15T07:14:36.606Z",
+    "code": 0
+  },
+  {
+    "variant": "allocation",
+    "session": "screen-1",
+    "started": "2026-09-15T07:14:36.606Z",
+    "finished": "2026-09-15T07:14:59.963Z",
+    "code": 0
+  },
+  {
+    "variant": "preparation",
+    "session": "screen-1",
+    "started": "2026-09-15T07:14:59.963Z",
+    "finished": "2026-09-15T07:15:24.318Z",
+    "code": 0
+  },
+  {
+    "variant": "baseline",
+    "session": "screen-1",
+    "started": "2026-09-15T07:15:24.318Z",
+    "finished": "2026-09-15T07:15:49.513Z",
+    "code": 0
+  }
+]

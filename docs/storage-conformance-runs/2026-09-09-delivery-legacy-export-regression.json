@@ -1,0 +1,1604 @@
+{
+  "schema": 1,
+  "scope": "seeded-legacy-export-capture",
+  "started": "2026-09-09T08:04:15.380Z",
+  "commit": "0399567a965fb2b24128d03aee29ac54caec3f19",
+  "dirty": true,
+  "files": {
+    "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+    "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+    "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+    "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+    "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+    "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+    "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+    "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+    "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+    "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+    "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+    "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+    "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+    "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+    "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+    "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+    "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+    "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+    "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+    "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+    "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+    "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+    "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+    "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+    "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+    "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+    "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+    "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+    "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+    "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+    "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+    "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+    "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+    "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+    "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+    "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+    "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+    "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+    "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+    "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+    "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+    "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+    "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+    "src/crdt/yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+    "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+    "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+    "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+    "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+    "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+    "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+    "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+    "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+    "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+    "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+    "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+    "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+    "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+    "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+    "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+    "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+    "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+    "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+    "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+    "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+    "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+    "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+    "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+    "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+    "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+    "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+    "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+    "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+    "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+    "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+    "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+    "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+    "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+    "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+    "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+    "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+    "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+    "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+    "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+    "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+    "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+    "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+    "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+    "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+    "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+    "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+    "test/legacy-export/browser.mjs": "bde953fb3bf30f920541b500f37689b7c154d4f6ad5c1f3cb80daf417710d35f",
+    "test/legacy-export/index.html": "bb5b610b0fbacdd0d19d13ea16d776d3c2e97209d7e7f35c8fec732f30367989",
+    "test/legacy-export/old.html": "473826fe22cb32182a78810f0e54e3982092814e96ae12ef035fd25876c01972",
+    "test/legacy-export/source.ts": "d4be6bc0a96b890b6ebb567ec9c225c7af29ddcd3e50f11ce4da237c6a07c95e",
+    "test/legacy-export/worker.mjs": "0d0e8eb775d9086462cbbe388a88d01b0bdb877f76e4a0d77a9d54e165ad8055",
+    "scripts/legacy-export/arbitrary.mjs": "1f4eddbb751bf9e5ae129fb7704fe5a1814af1c5aa5d04f9fe66944f65f2c8d2",
+    "scripts/legacy-export/exclusion.mjs": "ed5f861b4d900f648e2affcdbb02fbfd2a23dd502a9dd0765d7c566cba2ac1d0",
+    "scripts/legacy-export/oracle.mjs": "a00314dd73c5c974c6b9d416cada44084b3e5dac85638c89fe425acd8dbfd4e4",
+    "scripts/legacy-export/run.mjs": "362c1cdba43ae9930508c8624b2232f61871b960619fa4b0373cfc6e150e225b",
+    "scripts/legacy-export/unzip.py": "1ebf4dd98b0642d196664935852beb8442da82a939a9132bcc2e7cd32f81da9e",
+    "test/legacy-source/browser.mjs": "b9b242001c385b8a08720b8612268a65ee23556c3b1656c3e66da02b3ceef5cc",
+    "test/legacy-source/fixture.ts": "b832a38836238527eac12cda2d89605ecc63fd3dbca8bdc300965ccb2c8fb0ae",
+    "test/legacy-source/index.html": "c249933bc76326fbb6d047b5be409d316155c3b1cc4984a3b8aa1fdb36024ad4",
+    "test/storage-properties/oracle.ts": "08aaad91335c21a078ce1b9461d25ad46038b2e7c213d705c0677c472d292140",
+    "test/legacyExport.test.ts": "e39666f8cfdc2420013ddc5b810744d5c4e3a069a56ebb32b4cfa7feefef9a0b",
+    "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+    "package.json": "f3e05b5e4e6b9eb37da2fe6daa8dd4086676ec3a3d4b425ab66bcf914204be08",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+    "docs/legacy-export-capture.md": "d4680e2a81322a19fec8302c2fc97ad0c76ca5c0ee29e23167caca2c56e45c23",
+    "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "node": "v26.8.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "id": "ten-days-journal-unfiled-worker",
+      "passed": true
+    },
+    {
+      "id": "pending",
+      "passed": true
+    },
+    {
+      "id": "unreadable",
+      "passed": true
+    },
+    {
+      "id": "schema",
+      "passed": true
+    },
+    {
+      "id": "membership",
+      "passed": true
+    },
+    {
+      "id": "path",
+      "passed": true
+    },
+    {
+      "id": "unknown-root",
+      "passed": true
+    },
+    {
+      "id": "text-array",
+      "passed": true
+    },
+    {
+      "id": "digest-and-partial-file",
+      "passed": true
+    },
+    {
+      "id": "exclusion-route-loss",
+      "passed": true
+    },
+    {
+      "id": "exclusion-new-page",
+      "passed": true
+    },
+    {
+      "id": "late-source-drift",
+      "passed": true
+    },
+    {
+      "id": "legacy-archive",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-digest-1",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-digest-2",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-after-file-save",
+      "passed": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "baseline/artifacts/0",
+      "recoveryDigest": "caffa59f24271a483079b2e7978bbaa7bf24b5c7c853d7fd1211f3d95ca18ba7",
+      "markdownDigest": "94fd8884e0581ccb3e185949ea68b8f63e97905a750130d7b260e27dba214d16",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/1",
+      "recoveryDigest": "ef181e9528f6d40a97383fedef585e7d726e2fc1f55b8684301bf55e2f4684c0",
+      "markdownDigest": "94fd8884e0581ccb3e185949ea68b8f63e97905a750130d7b260e27dba214d16",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/2",
+      "recoveryDigest": "caffa59f24271a483079b2e7978bbaa7bf24b5c7c853d7fd1211f3d95ca18ba7",
+      "markdownDigest": "94fd8884e0581ccb3e185949ea68b8f63e97905a750130d7b260e27dba214d16",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/3",
+      "recoveryDigest": "caffa59f24271a483079b2e7978bbaa7bf24b5c7c853d7fd1211f3d95ca18ba7",
+      "markdownDigest": "94fd8884e0581ccb3e185949ea68b8f63e97905a750130d7b260e27dba214d16",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/4",
+      "recoveryDigest": "3c02b198910b7c326cdc2913f39fd6d992572ec03f8380334daa9a06d5508472",
+      "markdownDigest": "ad908a2ee71a78a4e4d17725c921164aeef0b0eecde4b3f08c18a5d1f0409e71",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/5",
+      "recoveryDigest": "a7e39525b6c086eb629969732a7067b3f1cbc2dfa1968d4f33a215e5eacc3a98",
+      "markdownDigest": "a8c88d15e43c39bc4b6609cf87527d8683f7f0657eba5751724a4fce691e1216",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/6",
+      "recoveryDigest": "88995618c5c3897a5a945d506f601c1aae6c92d6fea7a1c0372e0599ec917454",
+      "markdownDigest": "f4c568c54efd33f0100d8fccfa2b05e448d63440220ab8450e937886788eeb72",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/7",
+      "recoveryDigest": "935242105cbac8accf68a5667282b5f3f3bb4aa927fe0f60891f92aa7f47c505",
+      "markdownDigest": "6ace208f23722d5c267de3d036c0539c29c82e3324b52a79b203c4784f4da0e2",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/8",
+      "recoveryDigest": "4ac374ec60541b36a3708de2316b45c9748fa835a90dc9c50371a809bcb5b2ff",
+      "markdownDigest": "369dc35e22308a2d01a21936e8ae39f3ef843173a9c26ace9ace36b6d2613e0e",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/9",
+      "recoveryDigest": "967f0dbe526756afcb98e0d6a1173299e901e9c6eaba35d83a70cfc806072769",
+      "markdownDigest": "6ab7a4d6f75c564201660bbb8b841623e3eb11391f33075c2232b3e9087e524e",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/10",
+      "recoveryDigest": "2a78a63db869390b6a93dc1e844f03e41b07e08a2d1f657390600898007c6a83",
+      "markdownDigest": "6872b9188ce47c8cf9a0e3acc4639b051989f3278b5128361f1865de2fcd17aa",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/11",
+      "recoveryDigest": "7c5f5fa100bb5218bbd266d7511c820ac035e07957ecde6f5ec9d707e484971f",
+      "markdownDigest": "860155ccab4bd849d6e28c06238950f7aaa7c9e97049f15792daa67c7e18f6c1",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/12",
+      "recoveryDigest": "26a9898ca58c8a7f8f3518b1c76662d8b81ee7266867de414ea028a0ad581aac",
+      "markdownDigest": "f3086d22e1823fd51f4a29d285c2c955bb68941e158e7af968e387ac28a1face",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/13",
+      "recoveryDigest": "31eda64f4b8c623a8dc985fded38383a308538559d43d0285fffe4a1c4e32a81",
+      "markdownDigest": "d0035740c1f6b441cefe22452b095e4d4b369c2c7438d523b4faf4e2f88d477d",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/14",
+      "recoveryDigest": "0c1b4e9ef6ecfc72d3a866e6157d4bdbc970ace9f7683d588ecca55953165cce",
+      "markdownDigest": "19511e7ce71dbdf0a5908f78436974dbf4c7571feb442bc60c66cf7dac74b985",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/15",
+      "recoveryDigest": "51b0af06c732ae0d21ec7ad1f2bd7f133f8d4c4de9fa970173a5788402634bd4",
+      "markdownDigest": "e27ddb9f4ac5d263763865c033612cb6056bb900095fa4b87cbc885446398eeb",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/16",
+      "recoveryDigest": "f56ba9b49dce12631e804e79f0c7a27ca5fb5434c03484ea0261ace591666258",
+      "markdownDigest": "e6b685ed98c8b1805571ef886c53062d9310c7df55c08ace6f81f734cbc2623c",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/17",
+      "recoveryDigest": "b9e21f9253dee3f1be2e3d825031d00860c98a99dfb1aa0a71ef64c3ab4d16da",
+      "markdownDigest": "cf97e1353f0af0d98428a672a442268469ff444831d0f58b0e48924c582285b0",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/18",
+      "recoveryDigest": "5009212ccab794a40e7b66c4c0b6a51b3c7af45840d19455aadf4b4f88c0d0f5",
+      "markdownDigest": "f13bf2b392318fd4563f072a8d57686ed7cde3cdb9c6c485c59e6164d1015e9d",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/19",
+      "recoveryDigest": "d7514ff0ca1a66a12db87704ea4f8073309c1664841639662e4fdb8a893d56c0",
+      "markdownDigest": "71853e4be4a91bf1d9563220c3b0bd7acc7a93317dfd668b8eecabd26e5d4d91",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/20",
+      "recoveryDigest": "c6619c26ca0f8dac7f4e3f8ff2b702d0f9d893e792a12b8e1501e5b684245058",
+      "markdownDigest": "cb6bac131fff2ad055a8af677e3e978d47c42f0a33a482f97e4a0be35ee280a3",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/21",
+      "recoveryDigest": "f14690a18830a42dab1a24bf424a5c18c41059acb6f56a267cf7befd094d8b61",
+      "markdownDigest": "fa70f420e7bb7b2904bf7e4b56bcb4866aeab7dd932f021532a29291a4f819cd",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/22",
+      "recoveryDigest": "7e5c9be76bd155afaf27479180488bfd41b5cfb80957dd84f873a69848903aff",
+      "markdownDigest": "7733b2acc635bd80804078409a51f92e3e346d82789b0c31ed81447293695753",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/23",
+      "recoveryDigest": "b23fd12bd9c70f5ac83adfcc82c588842c3931990e72f272860d55f5ddd5a6d2",
+      "markdownDigest": "f7299c96f2b33a9456200de6b86329115b92ec67336e2c23b60b19416102f788",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/24",
+      "recoveryDigest": "a234d0807dcf44c1cb072ad766df0e4b27960677afd49c4a4e496938c7e41db1",
+      "markdownDigest": "67dcc03110045b12d4ad6aaf2a773523ed436f87e43497ba32513a3124ecfeef",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/25",
+      "recoveryDigest": "3179d795375f95edbc36bb67397e406658ffe9acfec843e9df8c9b321644fe1d",
+      "markdownDigest": "1dd41f37a2f086290d0ac24b7ef1b21c1e55966be698456accb61cc611dd5e73",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/26",
+      "recoveryDigest": "34f2a23e15d20cdba1adc51b5d080fb572c94c2423204212bc1841433021c5ba",
+      "markdownDigest": "47579f3124237c0996d89a8c06e98e34c990231c85e0d78ac7e038b71a654137",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/27",
+      "recoveryDigest": "a4981b987057fd1f1a5dfb85d939bb7f0590b296328bd5dee768dfe41c0f1680",
+      "markdownDigest": "4bdd5042651835042c780ae144dd8749087577b207aa72802c18960264a3e245",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/28",
+      "recoveryDigest": "0e3cb864685b645d88a18a3d78ac34f00b9b998c799b24b6a901e04ac788eb2f",
+      "markdownDigest": "285f0c7a95c6248897fcda702f50444559b36490f5bb7da02966eb643641686f",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/29",
+      "recoveryDigest": "37b8fe0056ad6a3dbd00ffa63f2851a869917712cd31bc718c058f496d347fc0",
+      "markdownDigest": "b1d662316439a8df7db6b9d749fb194b85b592ebcb085e8f49e4adbe42c4cf8a",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/30",
+      "recoveryDigest": "ed22ab3928b448bc86c5ed7ee9aa4ec908e9c46117f9f6b25d19acd3d0197d7e",
+      "markdownDigest": "69ca367af14c6cfaa86f676bd8e4d262206c860e08114ce675fcbfd58af74b86",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/31",
+      "recoveryDigest": "cb12b8b7e0876e6042fc99ff185075cd75244d65b07e7592ceccd4af68234b7f",
+      "markdownDigest": "de1fb9d50dd7c33ace533acca7600a6bc173a7861a4cd0a2f3594a13ab8e0889",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/32",
+      "recoveryDigest": "9b65f7a02a9b3624ca504fface356842c1d19485ac8c5f4b7726f49faa273811",
+      "markdownDigest": "25971a86e537ddbe8f2596053a0e9f9d1bffffcf60dc80e44b93a893498dab62",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/33",
+      "recoveryDigest": "b9a4d2fc0736cbad590b59f3356fae18f30221d4fc48f2bd33e878c17be7b661",
+      "markdownDigest": "c8868a9ead63e75756bb2f803f5f3100f089e1187cfe19e422d2923bee6c5dec",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/34",
+      "recoveryDigest": "fa5d40a4cc897d11a9c02bf95fef3459078bd68768ad3da9447661394d09f0be",
+      "markdownDigest": "adce2d26b25b90bed3d6c4156c3a740d83a361e2c2fc9eebd798c45733332c14",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/35",
+      "recoveryDigest": "827cdb2567cedf78cdb5a0fd3d49435146921ce066998cd154229037613c3b35",
+      "markdownDigest": "33a3fab89a54f1aa6981bc326deb039394eea4d8bf2d69a99b1c8175a3efd535",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/36",
+      "recoveryDigest": "2885adb420f67707790a49e3df12f140c6834df044b41b71a30053d1c691746a",
+      "markdownDigest": "155e50249a447c92a5aedfaab9f173eca8f3c7eea7faf83c5c29f8f8e5dc8a8e",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/37",
+      "recoveryDigest": "93d998fedfe03cdc66e7777bef56beaac16804bed60d45a919876e7e5594931e",
+      "markdownDigest": "5feaebd2dff144f2fc7a1d9e373e9441c9e5155c61aa5e96d08a594fba5d52f4",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/38",
+      "recoveryDigest": "5bd2815a6d8575721cb0707b23994a44ff17974d9e3ef64a0180bd0aa0d42e2a",
+      "markdownDigest": "58f1c1213a77cfb2e83d2b4061a87256e7f1c0f3dd51fbc1360aef651d05d689",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/39",
+      "recoveryDigest": "192a4ad75663cdcf6729bbebe1a6232f5509d8fe88f7abd151a20db03929915f",
+      "markdownDigest": "b7f319fb2abb9c0696ec470149df3f6d096186138dfe914b939bdc794544d562",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/40",
+      "recoveryDigest": "42385cfc0cc429bc0fb3b6e24a32bf155dd66e70dc00022ab5f5c4c05a207968",
+      "markdownDigest": "9d7cea360d72bf08bed31ebb5df8628e33a447c7c0004d93f0d0903ab9461ddb",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/41",
+      "recoveryDigest": "9b696bf9aa1584b497dd6435f15885096a9a91330cdf306e6fd81acf1c0c51bd",
+      "markdownDigest": "faf10eaed6b88f070b99f1fda23a18f314536972fb6ad54ccc3acb56f242e7b9",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/42",
+      "recoveryDigest": "2f2a8ee4fc3df961be81d0c05258ddd429d0b4fac5c0cf0c68efaa15eda038b8",
+      "markdownDigest": "751a1f2e52d53316aea940b9b3c6aabcd9e25da7605ff47156a0c46eaf60785e",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/43",
+      "recoveryDigest": "f5af8a6f174c9d52dd7a1c7448edfd70c9fdaa3707ae3ee4a39c87c0a460a65d",
+      "markdownDigest": "549a60bddceff316a8bf8f96c8033934b513f7b21a987c5e451ca0c7b76cff75",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/44",
+      "recoveryDigest": "fcdae7fec793e36ea16fb4151232af78ca23c5852e6d694f8bcdd779364c65fc",
+      "markdownDigest": "37ec6ff1030092c1c727900c443371939de87820cb85c7faf2f868674131d6fa",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/45",
+      "recoveryDigest": "04a8d1c4193f14cfb1857e188f26c8a4b5c3c53df580573c8b7cea014f6a812a",
+      "markdownDigest": "dcb10436f42dc6e978f35b91df501be606c5eff9903b5dcdb5fc8db74be3a311",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/46",
+      "recoveryDigest": "cb73ddbbbaacd9c20c76aa243b265b6ef29d0c425186a06917b1c89f6a4015cf",
+      "markdownDigest": "73152b0d93728193bedc9d012c535d08d0b1d2356b277ae6cbaae8cd6a9cc77a",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/47",
+      "recoveryDigest": "d0cb518ce9783e6f2dcced59f2257fd85013a6332b0db6a9aca211f255d9b745",
+      "markdownDigest": "60cd8135e05ddf760ea58ce2d0657a9e861b81fb4f5fbba5139dd2e8f5a459b9",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/48",
+      "recoveryDigest": "af3a6f64c3365d5f2db84ddf946b4e5cb78db0a289afbbde25627024ad7b9d4f",
+      "markdownDigest": "f195776c8ae86b3a7e0a36cc9adc34de27f2b18d37775b85d1690a1ca434656f",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/49",
+      "recoveryDigest": "1dd3802100f9140ceadbeb9c6ddc9acdd068a015fa93a12bd1b7c9d8ec8e8aae",
+      "markdownDigest": "fb45ac516b8b902cce6e0bb0a735731b36fb99c8a31462e3dee68ebbdbe4ed68",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/50",
+      "recoveryDigest": "28712c6f9303540b99d015103c9d08ba896d08c2f455e8124a2485c5b6c4b005",
+      "markdownDigest": "2e9024772f25428577deb0e08967170a91e6b7e002e9ab4b87043879db700ecc",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/51",
+      "recoveryDigest": "7052ec7ed94f6f918ab5295d0b000586363eaf5c913565e1056782c9f4194e9e",
+      "markdownDigest": "3875bba1514616006a72c29f3af7c9b82001fb9e7b62fdb43dd0826fad64f340",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/52",
+      "recoveryDigest": "b0e4b2d04f2ff9db6b56d87c645a20c3d75e6fe1f2e2321a1b050479dec8078f",
+      "markdownDigest": "3629950a3c7c671fb5be25194330417873fec613a1f6340ee53ec77309eaf96c",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/53",
+      "recoveryDigest": "1692b36d092c0e0afdca6bd3fd61ceef52126da583f4971a4b2069eca1276f68",
+      "markdownDigest": "1ac8351cb487659c705c0a30c49bc90bbb53859b01e38c8c3627b6ce0ca8e24e",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/54",
+      "recoveryDigest": "5f0e8d3fa6c7aae041068d9f94ed3c5a5ac0ea45f50f1d3e97c6c345802014b5",
+      "markdownDigest": "9f03b30adfd94b5a4ba29ac0d4e83b77f4c3199f4bef1631e1efca60c57ab426",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/55",
+      "recoveryDigest": "9ef3e367c27fe312d7da2c5c99e70633e0dd3243b8ab0f48c706ea41c88d0e05",
+      "markdownDigest": "243e75446c88c2de4f2a8b5c3b500c5017dc505af82f74b1f5d8b62b011cc11c",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/56",
+      "recoveryDigest": "965654ac3b32265a89e606c2c047107ab944b22dfc27fc85d5024b97683fc2d1",
+      "markdownDigest": "04762bdb3fa75d19258a9aa893c3f6fe683d0c8be790c754734ca11151a17405",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/57",
+      "recoveryDigest": "2a33119b6b5121dcdd29dd08ee0f1bfcd31acffc66f520b83122292e323eca02",
+      "markdownDigest": "29662a5ff88dc18b1c5a1e1929194840ccaae4010ee394a6cd0e1ba8a35fcea3",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/58",
+      "recoveryDigest": "8cf9d7e6fa3db607b248c7c39695b01937bebd193b822a0aad238b9aee63f8f6",
+      "markdownDigest": "744a1c70fecb5ba7718ce196bc4a7b6ac452ac67242e73359a3b2ca70bf478e1",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/59",
+      "recoveryDigest": "6311dd2bc1dbdb25e90bc3896da0edaefd9d206fab14288d4da921ce943968c9",
+      "markdownDigest": "f70ed4f461d93163a25bf8e215d4455172384f11411a2c58a7af0b3bd2511050",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/60",
+      "recoveryDigest": "8c529cf9a76e612b5da47ba695986c234eff57f48b74d46d972c381166b0a219",
+      "markdownDigest": "fd7ca8b53b9290662587d81b1be7b04a65cb11a03bf7981c26fe9ab9a239297d",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/61",
+      "recoveryDigest": "280fd6ebaa1956e8550cab377c752948a8cc4a90d4bada382a8b5289d1b7b859",
+      "markdownDigest": "4690e97f81e67bf43686c113bdac49afe286a6590f8d7dcb19c54f5f0948b3ce",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/62",
+      "recoveryDigest": "805c8efe89ffce939309902f5c319aef6c3b07ac72aa7e82abb727f98c586005",
+      "markdownDigest": "33668e554dbcb17dfa0b7eae9be5bdbf7d1280c816c589914dcad7a53eeeccd3",
+      "dayFiles": 10
+    },
+    {
+      "path": "baseline/artifacts/63",
+      "recoveryDigest": "8824fa08f6379942e813bc234c2936f712d137a62bfe04f114645b1df0eb2212",
+      "markdownDigest": "150a2b64b5f3ecc599e22a9b8a04b979ed0aed52367119a5f241a8d6d000a13e",
+      "dayFiles": 10
+    }
+  ],
+  "properties": {
+    "seed": 8941,
+    "numRuns": 60,
+    "numShrinks": 0,
+    "path": null,
+    "failed": false,
+    "comparisons": 240,
+    "counterexample": null,
+    "error": null
+  },
+  "mutations": [
+    {
+      "id": "ignore-text-item-kind",
+      "detected": true,
+      "assertion": "text-array-refuses-candidate\n+ actual - expected\n\n+ 'candidate'\n- 'refused'\n",
+      "patches": [
+        [
+          "src/crdt/legacyExport.ts",
+          "hasNonTextContent(text) ||",
+          "false ||"
+        ]
+      ],
+      "hashes": {
+        "src/crdt/legacyExport.ts": "168acc799fbe4c6846dc5bb12f2a15fc00016a3ce44871472c4096462ca18887"
+      }
+    },
+    {
+      "id": "omit-journal",
+      "detected": true,
+      "assertion": "original-wire-inventory-preserved\n+ actual - expected\n\n  [\n    {\n-     carrier: 'journal',\n-     id: 'done.pending-update.done.fixture.0',\n-     update: 'AQHKAQCEZRsSIWpvdXJuYWwtb25seSDinJQKAA=='\n-   },\n-   {\n-     carrier: 'journal',\n-     id: 'done.pending-update.done.fixture.1',\n-     update: 'AAHKAQEAAQ=='\n-   },\n-   {\n      carrier: 'disk',\n      id: 1,\n      update: 'AZ8FZQAoAQRtZXRhDXNjaGVtYVZlcnNpb24BfQQoAQRtZXRhCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAEEbWV0YQthY3RvcjpodW1hbgF2AwRraW5kdwVodW1hbgRuYW1ldwVIdW1hbgVjb2xvcncHI2FhMDAwMAQBBm1hc3RlchkjIE1hc3RlcgoKT3JpZ2luYWwgdGV4dC4KJwEEZGF5cwoyMDI2LTA4LTAxAScAZRwEbmV4dAAnAGUcCXNjaGVkdWxlZAAnAGUcBGRvbmUAJwEFY2FyZHMNY2FyZC0wLW5leHQtMAEoAGUgAmlkAXcNY2FyZC0wLW5leHQtMCcAZSAEdGV4dAIEAGUiBjA6IG9uZSgAZSAGb3JpZ2luAXcGbWFzdGVyKABlIAZhdXRob3IBdwVodW1hbigAZSAJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMC1uZXh0LTABdw8yMDI2LTA4LTAxOm5leHQIAGUdAXcNY2FyZC0wLW5leHQtMCcBBWNhcmRzDWNhcmQtMC1uZXh0LTEBKABlLgJpZAF3DWNhcmQtMC1uZXh0LTEnAGUuBHRleHQCBABlMAYwOiB0d28oAGUuBm9yaWdpbgF3Bm1hc3RlcigAZS4GYXV0aG9yAXcFaHVtYW4oAGUuCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTAtbmV4dC0xAXcPMjAyNi0wOC0wMTpuZXh0iGUtAXcNY2FyZC0wLW5leHQtMScBBWNhcmRzDWNhcmQtMC1uZXh0LTIBKABlPAJpZAF3DWNhcmQtMC1uZXh0LTInAGU8BHRleHQCBABlPggwOiB0aHJlZSgAZTwGb3JpZ2luAXcGbWFzdGVyKABlPAZhdXRob3IBdwVodW1hbigAZTwJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMC1uZXh0LTIBdw8yMDI2LTA4LTAxOm5leHSIZTsBdw1jYXJkLTAtbmV4dC0yJwEFY2FyZHMNY2FyZC0wLW5leHQtMwEoAGVMAmlkAXcNY2FyZC0wLW5leHQtMycAZUwEdGV4dAIEAGVOBzA6IGZvdXIoAGVMBm9yaWdpbgF3Bm1hc3RlcigAZUwGYXV0aG9yAXcFaHVtYW4oAGVMCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTAtbmV4dC0zAXcPMjAyNi0wOC0wMTpuZXh0iGVLAXcNY2FyZC0wLW5leHQtMycBBWNhcmRzEmNhcmQtMC1zY2hlZHVsZWQtMAEoAGVbAmlkAXcSY2FyZC0wLXNjaGVkdWxlZC0wJwBlWwR0ZXh0AgQAZV0jc2NoZWR1bGVkIDAKCiMjIERvbmUKICB3aGl0ZXNwYWNlICAoAGVbBm9yaWdpbgF3Bm1hc3RlcigAZVsGYXV0aG9yAXcFaHVtYW4oAGVbCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucxJjYXJkLTAtc2NoZWR1bGVkLTABdxQyMDI2LTA4LTAxOnNjaGVkdWxlZAgAZR4BdxJjYXJkLTAtc2NoZWR1bGVkLTAnAQVjYXJkcw1jYXJkLTAtZG9uZS0wASgAZYYBAmlkAXcNY2FyZC0wLWRvbmUtMCcAZYYBBHRleHQCBABliAEGZG9uZSAwKABlhgEGb3JpZ2luAXcGbWFzdGVyKABlhgEGYXV0aG9yAXcFaHVtYW4oAGWGAQljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0wLWRvbmUtMAF3DzIwMjYtMDgtMDE6ZG9uZQgAZR8Bdw1jYXJkLTAtZG9uZS0wJwEFY2FyZHMNY2FyZC0wLWRvbmUtMQEoAGWUAQJpZAF3DWNhcmQtMC1kb25lLTEnAGWUAQR0ZXh0AigAZZQBBm9yaWdpbgF3Bm1hc3RlcigAZZQBBmF1dGhvcgF3BWh1bWFuKABllAEJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMC1kb25lLTEBdw8yMDI2LTA4LTAxOmRvbmWIZZMBAXcNY2FyZC0wLWRvbmUtMScBBGRheXMKMjAyNi0wOC0wMgEnAGWcAQRuZXh0ACcAZZwBCXNjaGVkdWxlZAAnAGWcAQRkb25lACcBBWNhcmRzDWNhcmQtMS1uZXh0LTABKABloAECaWQBdw1jYXJkLTEtbmV4dC0wJwBloAEEdGV4dAIEAGWiAQYxOiBvbmUoAGWgAQZvcmlnaW4BdwZtYXN0ZXIoAGWgAQZhdXRob3IBdwVodW1hbigAZaABCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTEtbmV4dC0wAXcPMjAyNi0wOC0wMjpuZXh0CABlnQEBdw1jYXJkLTEtbmV4dC0wJwEFY2FyZHMNY2FyZC0xLW5leHQtMQEoAGWuAQJpZAF3DWNhcmQtMS1uZXh0LTEnAGWuAQR0ZXh0AgQAZbABBjE6IHR3bygAZa4BBm9yaWdpbgF3Bm1hc3RlcigAZa4BBmF1dGhvcgF3BWh1bWFuKABlrgEJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMS1uZXh0LTEBdw8yMDI2LTA4LTAyOm5leHSIZa0BAXcNY2FyZC0xLW5leHQtMScBBWNhcmRzDWNhcmQtMS1uZXh0LTIBKABlvAECaWQBdw1jYXJkLTEtbmV4dC0yJwBlvAEEdGV4dAIEAGW+AQgxOiB0aHJlZSgAZbwBBm9yaWdpbgF3Bm1hc3RlcigAZbwBBmF1dGhvcgF3BWh1bWFuKABlvAEJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMS1uZXh0LTIBdw8yMDI2LTA4LTAyOm5leHSIZbsBAXcNY2FyZC0xLW5leHQtMicBBWNhcmRzDWNhcmQtMS1uZXh0LTMBKABlzAECaWQBdw1jYXJkLTEtbmV4dC0zJwBlzAEEdGV4dAIEAGXOAQcxOiBmb3VyKABlzAEGb3JpZ2luAXcGbWFzdGVyKABlzAEGYXV0aG9yAXcFaHVtYW4oAGXMAQljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0xLW5leHQtMwF3DzIwMjYtMDgtMDI6bmV4dIhlywEBdw1jYXJkLTEtbmV4dC0zJwEFY2FyZHMSY2FyZC0xLXNjaGVkdWxlZC0wASgAZdsBAmlkAXcSY2FyZC0xLXNjaGVkdWxlZC0wJwBl2wEEdGV4dAIEAGXdASNzY2hlZHVsZWQgMQoKIyMgRG9uZQogIHdoaXRlc3BhY2UgICgAZdsBBm9yaWdpbgF3Bm1hc3RlcigAZdsBBmF1dGhvcgF3BWh1bWFuKABl2wEJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zEmNhcmQtMS1zY2hlZHVsZWQtMAF3FDIwMjYtMDgtMDI6c2NoZWR1bGVkCABlngEBdxJjYXJkLTEtc2NoZWR1bGVkLTAnAQVjYXJkcw1jYXJkLTEtZG9uZS0wASgAZYYCAmlkAXcNY2FyZC0xLWRvbmUtMCcAZYYCBHRleHQCBABliAIGZG9uZSAxKABlhgIGb3JpZ2luAXcGbWFzdGVyKABlhgIGYXV0aG9yAXcFaHVtYW4oAGWGAgljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0xLWRvbmUtMAF3DzIwMjYtMDgtMDI6ZG9uZQgAZZ8BAXcNY2FyZC0xLWRvbmUtMCcBBWNhcmRzDWNhcmQtMS1kb25lLTEBKABllAICaWQBdw1jYXJkLTEtZG9uZS0xJwBllAIEdGV4dAIoAGWUAgZvcmlnaW4BdwZtYXN0ZXIoAGWUAgZhdXRob3IBdwVodW1hbigAZZQCCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTEtZG9uZS0xAXcPMjAyNi0wOC0wMjpkb25liGWTAgF3DWNhcmQtMS1kb25lLTEnAQRkYXlzCjIwMjYtMDgtMDMBJwBlnAIEbmV4dAAnAGWcAglzY2hlZHVsZWQAJwBlnAIEZG9uZQAnAQVjYXJkcw1jYXJkLTItbmV4dC0wASgAZaACAmlkAXcNY2FyZC0yLW5leHQtMCcAZaACBHRleHQCBABlogIGMjogb25lKABloAIGb3JpZ2luAXcGbWFzdGVyKABloAIGYXV0aG9yAXcFaHVtYW4oAGWgAgljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0yLW5leHQtMAF3DzIwMjYtMDgtMDM6bmV4dAgAZZ0CAXcNY2FyZC0yLW5leHQtMCcBBWNhcmRzDWNhcmQtMi1uZXh0LTEBKABlrgICaWQBdw1jYXJkLTItbmV4dC0xJwBlrgIEdGV4dAIEAGWwAgYyOiB0d28oAGWuAgZvcmlnaW4BdwZtYXN0ZXIoAGWuAgZhdXRob3IBdwVodW1hbigAZa4CCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTItbmV4dC0xAXcPMjAyNi0wOC0wMzpuZXh0iGWtAgF3DWNhcmQtMi1uZXh0LTEnAQVjYXJkcw1jYXJkLTItbmV4dC0yASgAZbwCAmlkAXcNY2FyZC0yLW5leHQtMicAZbwCBHRleHQCBABlvgIIMjogdGhyZWUoAGW8AgZvcmlnaW4BdwZtYXN0ZXIoAGW8AgZhdXRob3IBdwVodW1hbigAZbwCCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTItbmV4dC0yAXcPMjAyNi0wOC0wMzpuZXh0iGW7AgF3DWNhcmQtMi1uZXh0LTInAQVjYXJkcw1jYXJkLTItbmV4dC0zASgAZcwCAmlkAXcNY2FyZC0yLW5leHQtMycAZcwCBHRleHQCBABlzgIHMjogZm91cigAZcwCBm9yaWdpbgF3Bm1hc3RlcigAZcwCBmF1dGhvcgF3BWh1bWFuKABlzAIJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMi1uZXh0LTMBdw8yMDI2LTA4LTAzOm5leHSIZcsCAXcNY2FyZC0yLW5leHQtMycBBWNhcmRzEmNhcmQtMi1zY2hlZHVsZWQtMAEoAGXbAgJpZAF3EmNhcmQtMi1zY2hlZHVsZWQtMCcAZdsCBHRleHQCBABl3QIjc2NoZWR1bGVkIDIKCiMjIERvbmUKICB3aGl0ZXNwYWNlICAoAGXbAgZvcmlnaW4BdwZtYXN0ZXIoAGXbAgZhdXRob3IBdwVodW1hbigAZdsCCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucxJjYXJkLTItc2NoZWR1bGVkLTABdxQyMDI2LTA4LTAzOnNjaGVkdWxlZAgAZZ4CAXcSY2FyZC0yLXNjaGVkdWxlZC0wJwEFY2FyZHMNY2FyZC0yLWRvbmUtMAEoAGWGAwJpZAF3DWNhcmQtMi1kb25lLTAnAGWGAwR0ZXh0AgQAZYgDBmRvbmUgMigAZYYDBm9yaWdpbgF3Bm1hc3RlcigAZYYDBmF1dGhvcgF3BWh1bWFuKABlhgMJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMi1kb25lLTABdw8yMDI2LTA4LTAzOmRvbmUIAGWfAgF3DWNhcmQtMi1kb25lLTAnAQVjYXJkcw1jYXJkLTItZG9uZS0xASgAZZQDAmlkAXcNY2FyZC0yLWRvbmUtMScAZZQDBHRleHQCKABllAMGb3JpZ2luAXcGbWFzdGVyKABllAMGYXV0aG9yAXcFaHVtYW4oAGWUAwljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0yLWRvbmUtMQF3DzIwMjYtMDgtMDM6ZG9uZYhlkwMBdw1jYXJkLTItZG9uZS0xJwEEZGF5cwoyMDI2LTA4LTA0AScAZZwDBG5leHQAJwBlnAMJc2NoZWR1bGVkACcAZZwDBGRvbmUAJwEFY2FyZHMNY2FyZC0zLW5leHQtMAEoAGWgAwJpZAF3DWNhcmQtMy1uZXh0LTAnAGWgAwR0ZXh0AgQAZaIDBjM6IG9uZSgAZaADBm9yaWdpbgF3Bm1hc3RlcigAZaADBmF1dGhvcgF3BWh1bWFuKABloAMJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMy1uZXh0LTABdw8yMDI2LTA4LTA0Om5leHQIAGWdAwF3DWNhcmQtMy1uZXh0LTAnAQVjYXJkcw1jYXJkLTMtbmV4dC0xASgAZa4DAmlkAXcNY2FyZC0zLW5leHQtMScAZa4DBHRleHQCBABlsAMGMzogdHdvKABlrgMGb3JpZ2luAXcGbWFzdGVyKABlrgMGYXV0aG9yAXcFaHVtYW4oAGWuAwljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0zLW5leHQtMQF3DzIwMjYtMDgtMDQ6bmV4dIhlrQMBdw1jYXJkLTMtbmV4dC0xJwEFY2FyZHMNY2FyZC0zLW5leHQtMgEoAGW8AwJpZAF3DWNhcmQtMy1uZXh0LTInAGW8AwR0ZXh0AgQAZb4DCDM6IHRocmVlKABlvAMGb3JpZ2luAXcGbWFzdGVyKABlvAMGYXV0aG9yAXcFaHVtYW4oAGW8AwljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMNY2FyZC0zLW5leHQtMgF3DzIwMjYtMDgtMDQ6bmV4dIhluwMBdw1jYXJkLTMtbmV4dC0yJwEFY2FyZHMNY2FyZC0zLW5leHQtMwEoAGXMAwJpZAF3DWNhcmQtMy1uZXh0LTMnAGXMAwR0ZXh0AgQAZc4DBzM6IGZvdXIoAGXMAwZvcmlnaW4BdwZtYXN0ZXIoAGXMAwZhdXRob3IBdwVodW1hbigAZcwDCWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTMtbmV4dC0zAXcPMjAyNi0wOC0wNDpuZXh0iGXLAwF3DWNhcmQtMy1uZXh0LTMnAQVjYXJkcxJjYXJkLTMtc2NoZWR1bGVkLTABKABl2wMCaWQBdxJjYXJkLTMtc2NoZWR1bGVkLTAnAGXbAwR0ZXh0AgQAZd0DI3NjaGVkdWxlZCAzCgojIyBEb25lCiAgd2hpdGVzcGFjZSAgKABl2wMGb3JpZ2luAXcGbWFzdGVyKABl2wMGYXV0aG9yAXcFaHVtYW4oAGXbAwljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMSY2FyZC0zLXNjaGVkdWxlZC0wAXcUMjAyNi0wOC0wNDpzY2hlZHVsZWQIAGWeAwF3EmNhcmQtMy1zY2hlZHVsZWQtMCcBBWNhcmRzDWNhcmQtMy1kb25lLTABKABlhgQCaWQBdw1jYXJkLTMtZG9uZS0wJwBlhgQEdGV4dAIEAGWIBAZkb25lIDMoAGWGBAZvcmlnaW4BdwZtYXN0ZXIoAGWGBAZhdXRob3IBdwVodW1hbigAZYYECWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTMtZG9uZS0wAXcPMjAyNi0wOC0wNDpkb25lCABlnwMBdw1jYXJkLTMtZG9uZS0wJwEFY2FyZHMNY2FyZC0zLWRvbmUtMQEoAGWUBAJpZAF3DWNhcmQtMy1kb25lLTEnAGWUBAR0ZXh0AigAZZQEBm9yaWdpbgF3Bm1hc3RlcigAZZQEBmF1dGhvcgF3BWh1bWFuKABllAQJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtMy1kb25lLTEBdw8yMDI2LTA4LTA0OmRvbmWIZZMEAXcNY2FyZC0zLWRvbmUtMScBBGRheXMKMjAyNi0wOC0wNQEnAGWcBARuZXh0ACcAZZwECXNjaGVkdWxlZAAnAGWcBARkb25lACcBBWNhcmRzDWNhcmQtNC1uZXh0LTABKABloAQCaWQBdw1jYXJkLTQtbmV4dC0wJwBloAQEdGV4dAIEAGWiBAY0OiBvbmUoAGWgBAZvcmlnaW4BdwZtYXN0ZXIoAGWgBAZhdXRob3IBdwVodW1hbigAZaAECWNyZWF0ZWRBdAF3FDIwMjYtMDgtMDFUMDA6MDA6MDBaKAENY2FyZExvY2F0aW9ucw1jYXJkLTQtbmV4dC0wAXcPMjAyNi0wOC0wNTpuZXh0CABlnQQBdw1jYXJkLTQtbmV4dC0wJwEFY2FyZHMNY2FyZC00LW5leHQtMQEoAGWuBAJpZAF3DWNhcmQtNC1uZXh0LTEnAGWuBAR0ZXh0AgQAZbAEBjQ6IHR3bygAZa4EBm9yaWdpbgF3Bm1hc3RlcigAZa4EBmF1dGhvcgF3BWh1bWFuKABlrgQJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtNC1uZXh0LTEBdw8yMDI2LTA4LTA1Om5leHSIZa0EAXcNY2FyZC00LW5leHQtMScBBWNhcmRzDWNhcmQtNC1uZXh0LTIBKABlvAQCaWQBdw1jYXJkLTQtbmV4dC0yJwBlvAQEdGV4dAIEAGW+BAg0OiB0aHJlZSgAZbwEBm9yaWdpbgF3Bm1hc3RlcigAZbwEBmF1dGhvcgF3BWh1bWFuKABlvAQJY3JlYXRlZEF0AXcUMjAyNi0wOC0wMVQwMDowMDowMFooAQ1jYXJkTG9jYXRpb25zDWNhcmQtNC1uZXh0LTIBdw8yMDI2LTA4LTA1Om5leHSIZbsEAXcNY2FyZC00LW5leHQtMicBBWNhcmRzDWNhcmQtNC1uZXh0LTMBKABlzAQCaWQBdw1jYXJkLTQtbmV4dC0zJwBlzAQEdGV4dAIEAGXOBAc0OiBmb3VyKABlzAQGb3JpZ2luAXcGbWFzdGVyKABlzAQGYXV0aG9yAXcFaHVtYW4oAGXMBAljcmVhdGVkQXQBdxQyMDI2LTA4LTAxVDAwOjAwOjAwWigBDWNhcmRMb2NhdGlvbnMN'... 12032 more characters\n    }\n  ]\n",
+      "patches": [
+        [
+          "src/crdt/legacyExport.ts",
+          "...source.journal.map(",
+          "...source.journal.slice(0, 0).map("
+        ]
+      ],
+      "hashes": {
+        "src/crdt/legacyExport.ts": "562134d6a438e30c72d3886ab45f9eabf37b4c8787f8aecafc0d875a7f25295c"
+      }
+    },
+    {
+      "id": "last-three-days",
+      "detected": true,
+      "assertion": "all-authored-content-recovered\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      content: '# Master\\n\\nOriginal text.\\njournal-only ✔\\n',\n      path: 'master.md'\n    },\n...\n        '\\n' +\n-       '- 0: one\\n' +\n-       '\\n' +\n-       '- 0: two\\n' +\n-       '\\n' +\n-       '- 0: three\\n' +\n-       '\\n' +\n-       '- 0: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 0\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 0\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-01.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 1: one\\n' +\n-       '\\n' +\n-       '- 1: two\\n' +\n-       '\\n' +\n-       '- 1: three\\n' +\n-       '\\n' +\n-       '- 1: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 1\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 1\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-02.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 2: one\\n' +\n-       '\\n' +\n-       '- 2: two\\n' +\n-       '\\n' +\n-       '- 2: three\\n' +\n-       '\\n' +\n-       '- 2: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 2\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 2\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-03.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 3: one\\n' +\n-       '\\n' +\n-       '- 3: two\\n' +\n-       '\\n' +\n-       '- 3: three\\n' +\n-       '\\n' +\n-       '- 3: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 3\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 3\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-04.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 4: one\\n' +\n-       '\\n' +\n-       '- 4: two\\n' +\n-       '\\n' +\n-       '- 4: three\\n' +\n-       '\\n' +\n-       '- 4: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 4\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 4\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-05.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 5: one\\n' +\n-       '\\n' +\n-       '- 5: two\\n' +\n-       '\\n' +\n-       '- 5: three\\n' +\n-       '\\n' +\n-       '- 5: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 5\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 5\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-06.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n-       '- 6: one\\n' +\n-       '\\n' +\n-       '- 6: two\\n' +\n-       '\\n' +\n-       '- 6: three\\n' +\n-       '\\n' +\n-       '- 6: four\\n' +\n-       '\\n' +\n-       '## Scheduled\\n' +\n-       '\\n' +\n-       '- scheduled 6\\n' +\n-       '\\n' +\n-       '  ## Done\\n' +\n-       '    whitespace  \\n' +\n-       '\\n' +\n-       '## Done\\n' +\n-       '\\n' +\n-       '- done 6\\n' +\n-       '\\n' +\n-       '-\\n',\n-     path: 'days/2026-08-07.md'\n-   },\n-   {\n-     content: '## Next\\n' +\n-       '\\n' +\n        '- 7: one\\n' +\n        '\\n' +\n        '- 7: two\\n' +\n        '\\n' +\n        '- 7: three\\n' +\n",
+      "patches": [
+        [
+          "src/crdt/export.ts",
+          "for (const date of listDays(doc))",
+          "for (const date of listDays(doc).slice(-3))"
+        ]
+      ],
+      "hashes": {
+        "src/crdt/export.ts": "69e87cf23ecb536e5fa1b7907b963aa25c0968fd75679488481ace3cf324bf08"
+      }
+    },
+    {
+      "id": "ignore-pending",
+      "detected": true,
+      "assertion": "pending-refuses-candidate\n+ actual - expected\n\n+ 'candidate'\n- 'refused'\n",
+      "patches": [
+        [
+          "src/crdt/legacyExport.ts",
+          "if (source.dependencies !== 'complete') refuse('legacy-dependencies-missing');",
+          "void source.dependencies;"
+        ],
+        [
+          "src/crdt/legacyExport.ts",
+          "if (hasPendingUpdates(doc)) refuse('legacy-dependencies-missing');",
+          "void doc;"
+        ]
+      ],
+      "hashes": {
+        "src/crdt/legacyExport.ts": "70c08eb7daa7f0d6f9cc6cdeaff9fedf86ed1505564d8848a8f88a1641bc47a1"
+      }
+    },
+    {
+      "id": "ignore-membership",
+      "detected": true,
+      "assertion": "membership-refuses-candidate\n+ actual - expected\n\n+ 'candidate'\n- 'refused'\n",
+      "patches": [
+        [
+          "src/crdt/legacyExport.ts",
+          "if (represented.size !== cards.size) refuse('legacy-membership-needs-repair');",
+          "void represented;"
+        ]
+      ],
+      "hashes": {
+        "src/crdt/legacyExport.ts": "7a454a8c0c6ce633aeb24c798f33c5308ca7f9c79009dc157960a845608222c5"
+      }
+    },
+    {
+      "id": "ignore-digest",
+      "detected": true,
+      "assertion": "separate-digest-required\n+ actual - expected\n\n+ undefined\n- 'recovery-digest-mismatch'\n",
+      "patches": [
+        [
+          "src/crdt/legacyExport.ts",
+          "!DIGEST.test(expectedDigest) || (await sha256(bytes)) !== expectedDigest",
+          "!DIGEST.test(expectedDigest)"
+        ]
+      ],
+      "hashes": {
+        "src/crdt/legacyExport.ts": "071de27675a302d961664697174874dca7c5e9f7fbfa226a4affb8714a85ad22"
+      }
+    },
+    {
+      "id": "ignore-exclusion-loss",
+      "detected": true,
+      "assertion": "Missing expected exception (ExclusionLost): exclusion-loss-refuses-verification",
+      "patches": [
+        [
+          "scripts/legacy-export/exclusion.mjs",
+          "this.#reason ||",
+          "false ||"
+        ]
+      ],
+      "hashes": {
+        "scripts/legacy-export/exclusion.mjs": "5ee0e7a98899589a1252a48c2185a373f485130c0b4874707cc74701fc10dc83"
+      }
+    }
+  ],
+  "rendererCrashes": 3,
+  "limits": [
+    "Controller-owned disposable Chromium contexts, service workers blocked and only pinned fixtures admitted. Not production supported-version exclusion.",
+    "Plaintext diagnostic source recovery plus an explicit Markdown preview; neither a fidelity archive nor a selected migration carrier.",
+    "No destination custody/import/selection/deletion or full cutover kill matrix. Original source remains intact.",
+    "External string/wire ledger and Python zipfile readback; Yjs shared for fixture production and CRDT replay. No independent CRDT correctness or performance claim."
+  ],
+  "exclusion": [
+    {
+      "epoch": 1,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 1
+    },
+    {
+      "epoch": 2,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 3,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 4,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 5,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 6,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 7,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 8,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 9,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 10,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 11,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 11,
+      "event": "forbidden-route"
+    },
+    {
+      "epoch": 12,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 12,
+      "event": "unexpected-page"
+    },
+    {
+      "epoch": 12,
+      "event": "page-closed"
+    },
+    {
+      "epoch": 13,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 14,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 15,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 16,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 16,
+      "event": "renderer-crash"
+    },
+    {
+      "epoch": 16,
+      "event": "page-closed"
+    },
+    {
+      "epoch": 17,
+      "event": "established",
+      "closedPages": 0,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 18,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 19,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 19,
+      "event": "renderer-crash"
+    },
+    {
+      "epoch": 19,
+      "event": "page-closed"
+    },
+    {
+      "epoch": 20,
+      "event": "established",
+      "closedPages": 0,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 21,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 22,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 22,
+      "event": "renderer-crash"
+    },
+    {
+      "epoch": 22,
+      "event": "page-closed"
+    },
+    {
+      "epoch": 23,
+      "event": "established",
+      "closedPages": 0,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 24,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 25,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 26,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 27,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 28,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 29,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 30,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 31,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 32,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 33,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 34,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 35,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 36,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 37,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 38,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 39,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 40,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 41,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 42,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 43,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 44,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 45,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 46,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 47,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 48,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 49,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 50,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 51,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 52,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 53,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 54,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 55,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 56,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 57,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 58,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 59,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 60,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 61,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 62,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 63,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 64,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 65,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 66,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 67,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 68,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 69,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 70,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 71,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 72,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 73,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 74,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 75,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 76,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 77,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 78,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 79,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 80,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 81,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 82,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 83,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 84,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 85,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 86,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 87,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 88,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 89,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 90,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 91,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 92,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 93,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 94,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 95,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 96,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 97,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 98,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 99,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 100,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 101,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 102,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 103,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 104,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 105,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 106,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 107,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 108,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 109,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 110,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 111,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 112,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 113,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 114,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 115,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 116,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 117,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 118,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 119,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 120,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 121,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 122,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 123,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 124,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 125,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 126,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 127,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 128,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 129,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 130,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 131,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 132,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 133,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 134,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 135,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 136,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 137,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 138,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 139,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 140,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 141,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 142,
+      "event": "established",
+      "closedPages": 2,
+      "closedWorkers": 0
+    },
+    {
+      "epoch": 143,
+      "event": "established",
+      "closedPages": 1,
+      "closedWorkers": 0
+    }
+  ],
+  "status": "passed",
+  "finished": "2026-09-09T08:06:21.166Z"
+}

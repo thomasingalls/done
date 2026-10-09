@@ -1,0 +1,15 @@
+✔ fixed corpus independently reproduces; amended row 14 agrees and historical scalar-only ciphertext refuses (27.807708ms)
+✔ actual generator and opener reproduce full deterministic payload, KDF/AAD, root and key checks (5.457292ms)
+✔ actual service challenge encoders use exact operation, scope and fresh nonce; proof/retry hashes preserve their byte rules (1.699667ms)
+✔ authenticated wrong private/public pairs, sealed roots, segment order and widths refuse before releasing keys (7.002292ms)
+✔ every encoded field mutation and omission changes its independent result; signatures and AEAD reject valid wrong-purpose bytes (5.259541ms)
+✔ recovery-opened key consumes fixed HPKE wrap with exact generation info; each binding and low-order recipient refuses (9.99725ms)
+✔ 200 generated contexts, normalized codes and authentic payload faults: runtime and independent oracle agree (369.041958ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 539.027083

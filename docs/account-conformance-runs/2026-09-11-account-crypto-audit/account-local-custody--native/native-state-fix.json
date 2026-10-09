@@ -1,0 +1,8 @@
+{
+  "forms": [
+    "array",
+    "boxed"
+  ],
+  "oldOwnerAlsoRefused": true,
+  "severity": "parser contract defect, no reproduced authority bypass"
+}

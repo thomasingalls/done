@@ -1,0 +1,13 @@
+(node:96000) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96000) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ real content-blind codec controls accept the respective bad envelope when each guard is removed (56.089083ms)
+✔ real Account journal survives a failed outgoing observer and renderer death; no outbox is reconstructed (3772.372584ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5050.979333

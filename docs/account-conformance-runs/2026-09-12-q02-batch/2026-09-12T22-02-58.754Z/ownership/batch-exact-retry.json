@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "groups": [
+    8,
+    3
+  ],
+  "sameRetryBytes": true,
+  "laterSourcesPreserved": true
+}

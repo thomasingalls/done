@@ -1,0 +1,13 @@
+{
+  "target": 16777217,
+  "source": {
+    "bytes": 16777217,
+    "sha256": "f1665cc740c4fa1bcdb0553713717fd2d555b882d74642b20b939aee979d3086",
+    "textLength": 16776977
+  },
+  "actualYjsDocument": true,
+  "exactColdReplay": true,
+  "sourceUnchanged": true,
+  "earlyRefusal": true,
+  "omittedGuardSealsBeforeParserRefusal": true
+}

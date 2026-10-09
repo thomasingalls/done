@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T00:00:13.868Z",
+  "stages": [
+    {
+      "name": "codecs",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "regressions",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "node-import",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Closed inbound codecs and first-epoch verification; independently framed signatures, stored wire reauthentication, generated cases and actual guard-removal controls. No native storage, v9 activation, service route, browser or enrollment.",
+  "completedAt": "2026-09-11T00:00:34.035Z"
+}

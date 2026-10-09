@@ -23,10 +23,12 @@ import { repairCardMemberships, transactionAffectsMembership } from './days';
 import { CONTENT_ROOT, STORE_OPEN, STORE_READY, mark } from '../lib/marks';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
+  LEGACY_STORE,
   openLocalStore,
   requestPersistenceOnFirstWrite,
   type LocalStore,
   type StoragePersistence,
+  type StoreHandle,
 } from './persistence';
 
 export * from './yjs';
@@ -39,6 +41,10 @@ export * from './serialize';
 export * from './compaction';
 export * from './export';
 export * from './persistence';
+export * from './slotIndex';
+export * from './writeSession';
+export * from './custody';
+export * from './admission';
 export * from './sync';
 
 export interface Store extends DocumentTree {
@@ -64,7 +70,13 @@ export interface Store extends DocumentTree {
 
 export interface OpenStoreOptions {
   doc?: YDoc;
-  dbName?: string;
+  /**
+   * Which local store to open (TRD §6.5). Omitted means `LEGACY_STORE` — the
+   * one store that exists before the slot index does. That fallback is the
+   * next item of Stage 1 to go: once §6.5's index supplies the handle, a store
+   * opened without one is a bug rather than a default.
+   */
+  store?: StoreHandle;
   /** Off for tests that have no business touching IndexedDB. */
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
@@ -124,11 +136,9 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
  *    document that already knows it and overwrite the stored name and colour
  *    with fresh defaults.
  * 2. **No transport may be constructed until the disk read has landed**
- *    (TRD §6.1). A socket opened against a document that is still empty hands
- *    the relay and every other replica an empty document, and they converge on
- *    it — sync propagates the loss instead of repairing it. This is the most
- *    common data-loss report against Yjs in production, and the reason
- *    `createSync` is at the bottom of this function rather than the top.
+ *    (TRD §6.1). An empty Yjs document does not erase a populated peer when
+ *    merged. The ordering protects recovery classification and initialization:
+ *    transport must not expose a document before local recovery has succeeded.
  *    Asserted in `test/sync.test.ts`, "load before connect".
  */
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
@@ -140,7 +150,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
       ? null
       : openLocalStore(
           doc,
-          options.dbName,
+          options.store ?? LEGACY_STORE,
           options.onLocalPersistenceError
             ? { onPersistenceError: options.onLocalPersistenceError }
             : {},

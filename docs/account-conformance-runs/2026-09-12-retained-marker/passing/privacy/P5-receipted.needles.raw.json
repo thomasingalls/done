@@ -1,0 +1,61 @@
+{
+  "notice": "Controller-held synthetic needles. Outside the tested app/service exposure domain.",
+  "needles": [
+    {
+      "id": "master",
+      "values": [
+        "needle_master_a10b1ab586697a5e38e4559a10322dcf"
+      ]
+    },
+    {
+      "id": "card",
+      "values": [
+        "needle_card_6fdd2d4661f10ee0b6c1ac75d44d4d1c"
+      ]
+    },
+    {
+      "id": "actor",
+      "values": [
+        "needle_actor_99beeddc2f745868b4c3f1d777cf11b2"
+      ]
+    },
+    {
+      "id": "device",
+      "values": [
+        "needle_device_7056fc591e0bf027427a682b9549d34a"
+      ]
+    },
+    {
+      "id": "deviceFactor",
+      "values": [
+        "NQN30-1QYDY-0KS47-8WSM6-B2RSB",
+        "NQN301QYDY0KS478WSM6B2RSB"
+      ]
+    },
+    {
+      "id": "recoveryFactor",
+      "values": [
+        "6SS27-YK62K-CAYD1-C8BQ3-3QK70",
+        "6SS27YK62KCAYD1C8BQ33QK70"
+      ]
+    },
+    {
+      "id": "retry",
+      "values": [
+        "h7E5aaSc-rSgRVpf5RN1WppNVmcEz1YgIhEhggwzMz0"
+      ],
+      "raw": [
+        "h7E5aaSc+rSgRVpf5RN1WppNVmcEz1YgIhEhggwzMz0="
+      ]
+    },
+    {
+      "id": "httpToken",
+      "values": [
+        "TAXg3DnYEJFBQbUoDBkpuVJYfnJ0w3tNK6vNnV66PHU"
+      ],
+      "raw": [
+        "TAXg3DnYEJFBQbUoDBkpuVJYfnJ0w3tNK6vNnV66PHU="
+      ]
+    }
+  ]
+}

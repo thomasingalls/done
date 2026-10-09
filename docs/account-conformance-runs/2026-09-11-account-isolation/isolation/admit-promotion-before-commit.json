@@ -1,0 +1,8 @@
+{
+  "operation": "admit-promotion",
+  "side": "before-commit",
+  "signal": "SIGKILL",
+  "exactRetry": true,
+  "neighborUnchanged": true,
+  "bothCanActivate": true
+}

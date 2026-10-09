@@ -1,0 +1,24 @@
+clear L01.success: pass
+clear L02.blocked: pass
+clear L03.refused: pass
+clear L04.kill-intent: pass
+clear L05.kill-content-delete: pass
+clear L06.kill-stage-journal: pass
+clear L07.kill-stage-custody: pass
+clear L08.kill-stage-index: pass
+clear L09.kill-index-delete: pass
+clear L10.kill-stage-cleared: pass
+clear L11.journal: pass
+clear L12.aborts: pass
+clear L13.factor: pass
+clear L14.guards: pass
+clear L15.lifetime: pass
+clear L16.recheck: pass
+clear L17.cancel: pass
+blocked-as-success L02.blocked: fail
+journal-before-content L03.refused: fail
+retain-genesis-opener L01.success: fail
+skip-resume-authentication L13.factor: fail
+allow-component-open L14.guards: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-clear/2026-09-10T18-05-17.302Z/report.md
+Exit 0 (bounded Local clear integration)

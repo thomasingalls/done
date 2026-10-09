@@ -15,8 +15,10 @@
  *
  *   1. **The ratified formulas are present at each home** — the member triple,
  *      the approver-naming approval, the `bootstrap_signer` commitment inside
- *      `recovery_state_digest`, and the transcript's `new_signing_key` and
- *      `recovery_state_digest` fields — as byte rules per home.
+ *      `recovery_state_digest`, the transcript's `new_signing_key` and
+ *      `recovery_state_digest` fields, and (`R3-4`) the member-entry
+ *      uniqueness rule at the two homes that state it — as byte rules per
+ *      home.
  *   2. **The convicted sentences stay dead** — the pair-only member formula,
  *      and the uncarried `RecoverySet` commitment (`FU-01`'s finding: prose
  *      asserting a carrier no schema defined) — as byte rules against the
@@ -59,11 +61,23 @@ const APPROVAL = 'LP("done/certified-set-approval/v1") || LP(approver_credential
 const SIGNER_COMMIT = 'LP(hex bootstrap_signer)';
 const CARRIED_S_PUB = 'LP(hex new_S_pub)';
 
+/**
+ * `R3-4`'s malformedness rule, landed 2026-08-29 at both homes before `L-2`
+ * builds the verifier that owes it. `members_digest` sorts by `credential_id`
+ * alone, so a duplicated key leaves the order — and the digest, and the `S_pub`
+ * an approval resolves under — undetermined between two conforming verifiers.
+ * The generator cannot express the case (its `members` is an object keyed by
+ * `credential_id`), so no published negative covers it and prose is the only
+ * carrier the rule has; this byte rule is what stops the prose from going
+ * quiet.
+ */
+const UNIQUE_MEMBER = 'for the same `credential_id` is malformed';
+
 const REQUIRED = [
-  { file: 'docs/TRD.md', needs: [TRIPLE, APPROVAL, SIGNER_COMMIT, 'LP(hex new_S_pub)'] },
+  { file: 'docs/TRD.md', needs: [TRIPLE, APPROVAL, SIGNER_COMMIT, 'LP(hex new_S_pub)', UNIQUE_MEMBER] },
   {
     file: 'docs/review/remediation/S0-2/A-schemas.md',
-    needs: [TRIPLE, APPROVAL, SIGNER_COMMIT, CARRIED_S_PUB],
+    needs: [TRIPLE, APPROVAL, SIGNER_COMMIT, CARRIED_S_PUB, UNIQUE_MEMBER],
   },
   {
     file: 'scripts/generate-transition-vectors.mjs',

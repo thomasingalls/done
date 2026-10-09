@@ -1,0 +1,27 @@
+{
+  "notice": "Controller-held synthetic needles. Outside the tested app/service exposure domain.",
+  "needles": [
+    {
+      "id": "writeLeak",
+      "values": [
+        "needle_writeLeak_d9bdd539d6dc2c380b0567f01c3b5f5e"
+      ]
+    },
+    {
+      "id": "deviceFactor",
+      "values": [
+        "DNE8Z-NHD7P-7JZPQ-2DR38-2YB9H",
+        "DNE8ZNHD7P7JZPQ2DR382YB9H"
+      ]
+    },
+    {
+      "id": "httpToken",
+      "values": [
+        "Bq7wBYjSKXn2tuxHCPbrLSwVTU3XwwZu1dttAVe13h0"
+      ],
+      "raw": [
+        "Bq7wBYjSKXn2tuxHCPbrLSwVTU3XwwZu1dttAVe13h0="
+      ]
+    }
+  ]
+}

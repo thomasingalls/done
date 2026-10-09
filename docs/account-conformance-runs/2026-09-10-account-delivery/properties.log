@@ -1,0 +1,13 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountDelivery.test.ts > 500 generated proof histories agree with independent prefix and closure propositions at every step 149ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (true) 0ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (false) 0ms
+ ✓ test/accountDelivery.test.ts > acceptance and closure duplicates are propositions, and conflict is irreversible 0ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  23:36:17
+   Duration  680ms (transform 167ms, setup 38ms, import 298ms, tests 151ms, environment 0ms)
+

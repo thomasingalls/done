@@ -22,9 +22,9 @@ signatures, digests, sorting and current-body equality against **independent con
 evidence ever derived one from the other.
 
 ```
-A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
+A = LP("done/cp-admit/v2") || LP("2") || LP(workspace_id)
     || LP(hex checkpoint_digest) || LP(hex manifest_digest)
-    || LP(hex derived_sv) || LP(hex derived_ds)
+    || LP(hex SHA-256(derived_sv)) || LP(hex SHA-256(derived_ds))
     || LP(hex head_baseline_digest)
     || LP(derivation_version)
     || LP(admitting_credential) || LP(dec self_admitted)
@@ -32,6 +32,14 @@ A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
 
   sig = Ed25519( the admitting client's signing credential ; A )
 ```
+
+
+**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
+remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
+while full raw descriptors remain required and are rederived by every restorer. The private
+adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
+Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
+pre-completion requests/offers may resume. See [the compatibility and bounds contract](../../../account-admission-bounds.md).
 
 **`derived_sv` and `derived_ds` are the point of the object.** They are not copied from the manifest — they are
 what the admitter got by decrypting the checkpoint, materialising the snapshot, and deriving coverage from it.

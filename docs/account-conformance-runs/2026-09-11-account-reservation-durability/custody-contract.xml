@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="generated states preserve the closed primitive state domain at the structured-clone parser" time="0.043543" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="fixed factor, envelope, credential, key-correspondence and metadata vectors match actual native primitives" time="0.025143" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="inherited factor and generation-envelope bytes agree without qualifying historical credential or PRF ceremonies" time="0.012363" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="each factor, envelope, credential and metadata field binds; encoded omissions retain real AES/HMAC checks" time="0.020936" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="closed custody parser rejects malformed nested carriers and owns every retained byte array" time="0.003563" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled reservation and completion histories authenticate exact metadata and reject one-leaf alterations" time="1.519533" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="authentic wrong private keys, relocated credentials and metadata omissions expose effective source controls" time="0.087829" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="credential export-format and failure cleanup guards execute before accepting keys or retaining temporary private bytes" time="0.048643" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="native creation and cold unlock use exact factor/envelope/credential/MAC bytes and dispose owned temporary key material" time="0.356569" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/native.test.mjs"/>
+	<testcase name="native owner refuses authentically sealed wrong key pairs and changed metadata; actual guard omissions expose each boundary" time="0.566924" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/native.test.mjs"/>
+	<testcase name="native structured-clone state counterexample is rejected at parsing; old coercion still cannot open the ordinary owner" time="0.430830" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/native.test.mjs"/>
+	<testsuite name="native reservation comparison includes the prior MAC before any root encryption" time="0.571172" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-09-11T21:08:17.161Z" hostname="Thomass-MacBook-Pro.local">
+		<testcase name="base" time="0.289238" classname="native reservation comparison includes the prior MAC before any root encryption" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/native.test.mjs"/>
+		<testcase name="equalMac" time="0.280795" classname="native reservation comparison includes the prior MAC before any root encryption" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/native.test.mjs"/>
+	</testsuite>
+	<!-- tests 14 -->
+	<!-- suites 0 -->
+	<!-- pass 14 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 4585.009083 -->
+</testsuites>

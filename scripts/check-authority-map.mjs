@@ -62,6 +62,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { installReceipt } from './lib/receipts.mjs';
+import { checkConstructionRegistry } from './account-first-authority/registry.mjs';
 
 installReceipt(import.meta.url);
 
@@ -87,6 +88,17 @@ const SWEPT = [
   'docs/review/remediation/S0-5/A-schemas.md',
   'docs/review/remediation/S0-6/A-schemas.md',
   'docs/review/remediation/S0-7/A-schemas.md',
+  'docs/account-crypto/first-authority.md',
+  'docs/account-crypto/recovery-layout.md',
+  'docs/account-crypto/transport.md',
+  'docs/account-crypto/service-custody.md',
+  'docs/account-crypto/local-promotion.md',
+  'docs/account-crypto/account-ledger.md',
+  'docs/account-crypto/content-counter.md',
+  'docs/account-crypto/store-journal.md',
+  'docs/account-crypto/local-custody.md',
+  'docs/account-crypto/checkpoint.md',
+  'docs/account-crypto/local-provenance.md',
 ];
 
 const KINDS = new Set(['verification', 'predicate', 'aead']);
@@ -151,7 +163,9 @@ for (const [, body] of blocks) {
     }
     const [, key, value] = m;
     if (!FIELDS.has(key)) {
-      fail(`${MAP}: unknown field "${key}:" — the field list is exhaustive, and a value it does not name fails rather than entering no bucket.`);
+      fail(
+        `${MAP}: unknown field "${key}:" — the field list is exhaustive, and a value it does not name fails rather than entering no bucket.`,
+      );
       continue;
     }
     fields.set(key, [...(fields.get(key) ?? []), value.trim()]);
@@ -159,7 +173,8 @@ for (const [, body] of blocks) {
 
   const one = (key) => {
     const held = fields.get(key) ?? [];
-    if (held.length > 1) fail(`${MAP}: entry "${fields.get('entry')?.[0]}" repeats "${key}:", which takes one value.`);
+    if (held.length > 1)
+      fail(`${MAP}: entry "${fields.get('entry')?.[0]}" repeats "${key}:", which takes one value.`);
     return held[0] ?? null;
   };
 
@@ -176,20 +191,32 @@ for (const [, body] of blocks) {
   const kind = one('kind');
   const guards = one('guards');
   const status = one('status');
-  if (kind === null || !KINDS.has(kind)) fail(`${MAP}: entry "${id}" has kind "${kind}"; the enum is verification | predicate | aead.`);
-  if (guards === null || !GUARDS.has(guards)) fail(`${MAP}: entry "${id}" has guards "${guards}"; the enum is keys | content | custody | attribution | deletion | availability.`);
-  if (status === null || !STATUSES.has(status)) fail(`${MAP}: entry "${id}" has status "${status}"; the enum is resolved | open.`);
+  if (kind === null || !KINDS.has(kind))
+    fail(`${MAP}: entry "${id}" has kind "${kind}"; the enum is verification | predicate | aead.`);
+  if (guards === null || !GUARDS.has(guards))
+    fail(
+      `${MAP}: entry "${id}" has guards "${guards}"; the enum is keys | content | custody | attribution | deletion | availability.`,
+    );
+  if (status === null || !STATUSES.has(status))
+    fail(`${MAP}: entry "${id}" has status "${status}"; the enum is resolved | open.`);
 
-  const chains = (fields.get('resolves') ?? []).map((raw) => raw.split(' -> ').map((s) => s.trim()));
+  const chains = (fields.get('resolves') ?? []).map((raw) =>
+    raw.split(' -> ').map((s) => s.trim()),
+  );
 
-  const pins = (fields.get('pin') ?? []).map((raw) => {
-    const withSection = /^(\S+) §(\S+) ([0-9a-f]{12})$/u.exec(raw);
-    if (withSection !== null) return { path: withSection[1], section: withSection[2], hash: withSection[3] };
-    const wholeFile = /^(\S+) ([0-9a-f]{12})$/u.exec(raw);
-    if (wholeFile !== null) return { path: wholeFile[1], section: null, hash: wholeFile[2] };
-    fail(`${MAP}: entry "${id}" has an unparseable pin "${raw}" — the forms are "<path> §<number> <hash12>" and "<path> <hash12>".`);
-    return null;
-  }).filter((p) => p !== null);
+  const pins = (fields.get('pin') ?? [])
+    .map((raw) => {
+      const withSection = /^(\S+) §(\S+) ([0-9a-f]{12})$/u.exec(raw);
+      if (withSection !== null)
+        return { path: withSection[1], section: withSection[2], hash: withSection[3] };
+      const wholeFile = /^(\S+) ([0-9a-f]{12})$/u.exec(raw);
+      if (wholeFile !== null) return { path: wholeFile[1], section: null, hash: wholeFile[2] };
+      fail(
+        `${MAP}: entry "${id}" has an unparseable pin "${raw}" — the forms are "<path> §<number> <hash12>" and "<path> <hash12>".`,
+      );
+      return null;
+    })
+    .filter((p) => p !== null);
 
   entries.set(id, {
     id,
@@ -210,22 +237,42 @@ for (const [, body] of blocks) {
 
 for (const e of entries.values()) {
   if (e.kind === 'aead') {
-    if (e.chains.length > 0) fail(`${MAP}: "${e.id}" is an aead entry and carries "resolves:" chains; an AEAD key is counted or disciplined, never resolved.`);
+    if (e.chains.length > 0)
+      fail(
+        `${MAP}: "${e.id}" is an aead entry and carries "resolves:" chains; an AEAD key is counted or disciplined, never resolved.`,
+      );
     const has = [e.countedBy !== null, e.discipline !== null].filter(Boolean).length;
     if (has !== 1) {
-      fail(`${MAP}: "${e.id}" must name exactly one of "counted-by:" (the durable state that counts its invocations) or "discipline:" (the nonce rule that needs none) — P-3 falsifier 16's two clauses. It names ${has}.`);
+      fail(
+        `${MAP}: "${e.id}" must name exactly one of "counted-by:" (the durable state that counts its invocations) or "discipline:" (the nonce rule that needs none) — P-3 falsifier 16's two clauses. It names ${has}.`,
+      );
     }
   } else {
-    if (e.chains.length === 0) fail(`${MAP}: "${e.id}" has no "resolves:" chain; a key or predicate with no stated resolution is a dangling edge.`);
-    if (e.countedBy !== null || e.discipline !== null) fail(`${MAP}: "${e.id}" is not an aead entry and carries an AEAD field.`);
+    if (e.chains.length === 0)
+      fail(
+        `${MAP}: "${e.id}" has no "resolves:" chain; a key or predicate with no stated resolution is a dangling edge.`,
+      );
+    if (e.countedBy !== null || e.discipline !== null)
+      fail(`${MAP}: "${e.id}" is not an aead entry and carries an AEAD field.`);
   }
-  if (e.pins.length === 0) fail(`${MAP}: "${e.id}" pins nothing; every entry pins the home that states its rule or embodies its defect.`);
+  if (e.pins.length === 0)
+    fail(
+      `${MAP}: "${e.id}" pins nothing; every entry pins the home that states its rule or embodies its defect.`,
+    );
   if (e.status === 'open') {
-    if (e.blocker === null) fail(`${MAP}: "${e.id}" is open with no "blocker:" — an open joint names the disposition entry that holds it open.`);
-    if (e.ret === null) fail(`${MAP}: "${e.id}" is open with no "return:" — an open joint names the stage that owes its repair.`);
+    if (e.blocker === null)
+      fail(
+        `${MAP}: "${e.id}" is open with no "blocker:" — an open joint names the disposition entry that holds it open.`,
+      );
+    if (e.ret === null)
+      fail(
+        `${MAP}: "${e.id}" is open with no "return:" — an open joint names the stage that owes its repair.`,
+      );
   } else {
     if (e.blocker !== null || e.ret !== null) {
-      fail(`${MAP}: "${e.id}" is resolved and still carries a blocker or return — the debt was paid and the declaration was not struck, or the flip was premature. One of the two lines is wrong.`);
+      fail(
+        `${MAP}: "${e.id}" is resolved and still carries a blocker or return — the debt was paid and the declaration was not struck, or the flip was premature. One of the two lines is wrong.`,
+      );
     }
   }
 }
@@ -237,7 +284,9 @@ for (const e of entries.values()) {
     for (const [i, step] of chain.entries()) {
       const terminal = /^(root|via):/u.test(step);
       if (i === chain.length - 1 && !terminal) {
-        fail(`${MAP}: "${e.id}" has a chain ending at "${step}", which is neither "root:" nor "via:" — a dangling edge.`);
+        fail(
+          `${MAP}: "${e.id}" has a chain ending at "${step}", which is neither "root:" nor "via:" — a dangling edge.`,
+        );
       }
       if (i < chain.length - 1 && terminal) {
         fail(`${MAP}: "${e.id}" has "${step}" mid-chain; root: and via: are terminals.`);
@@ -246,7 +295,9 @@ for (const e of entries.values()) {
     const last = chain[chain.length - 1] ?? '';
     const root = /^root:(.+)$/u.exec(last);
     if (root !== null && !ROOTS.has(root[1])) {
-      fail(`${MAP}: "${e.id}" terminates at "root:${root[1]}"; the enum is trust-root | factor | structural | service.`);
+      fail(
+        `${MAP}: "${e.id}" terminates at "root:${root[1]}"; the enum is trust-root | factor | structural | service.`,
+      );
     }
     const via = /^via:(.+)$/u.exec(last);
     if (via !== null && !entries.has(via[1])) {
@@ -263,7 +314,9 @@ for (const e of entries.values()) {
  */
 const terminalRoots = (id, stack = []) => {
   if (stack.includes(id)) {
-    fail(`${MAP}: resolution cycle: ${[...stack, id].join(' -> ')} — a chain that resolves through itself resolves nothing.`);
+    fail(
+      `${MAP}: resolution cycle: ${[...stack, id].join(' -> ')} — a chain that resolves through itself resolves nothing.`,
+    );
     return new Set();
   }
   const e = entries.get(id);
@@ -284,7 +337,9 @@ for (const e of entries.values()) {
   const roots = terminalRoots(e.id);
   if (e.guards === 'availability') {
     if (roots.has('service') && e.bound === null) {
-      fail(`${MAP}: "${e.id}" terminates at root:service with no "bound:" — a service power is accepted only with its stated bound cited.`);
+      fail(
+        `${MAP}: "${e.id}" terminates at root:service with no "bound:" — a service power is accepted only with its stated bound cited.`,
+      );
     }
   } else {
     for (const r of roots) {
@@ -322,7 +377,9 @@ for (const e of entries.values()) {
         fail(`${MAP}: "${e.id}" names blocker ${e.blocker}, which is not a decision record.`);
       }
     } else {
-      fail(`${MAP}: "${e.id}" has blocker "${e.blocker}"; the forms are FU-nn, f-<finding>, and P-n.`);
+      fail(
+        `${MAP}: "${e.id}" has blocker "${e.blocker}"; the forms are FU-nn, f-<finding>, and P-n.`,
+      );
     }
   }
   if (e.ret !== null && !definesGate(e.ret)) {
@@ -373,7 +430,9 @@ for (const e of entries.values()) {
     }
     const subject = pin.section === null ? text : section(text, pin.section);
     if (subject === null) {
-      fail(`${MAP}: "${e.id}" pins ${pin.path} §${pin.section}, and no such section heading exists.`);
+      fail(
+        `${MAP}: "${e.id}" pins ${pin.path} §${pin.section}, and no such section heading exists.`,
+      );
       continue;
     }
     pinned.add(`${pin.path}::${pin.section ?? '*'}`);
@@ -402,7 +461,9 @@ for (const path of SWEPT) {
     if (h !== null) current = h[1];
     if (!CONSTRUCTS.some((t) => line.includes(t))) continue;
     if (current === null) {
-      fail(`${path}: a signature or AEAD construction sits above every numbered section; the sweep cannot attribute it.`);
+      fail(
+        `${path}: a signature or AEAD construction sits above every numbered section; the sweep cannot attribute it.`,
+      );
       continue;
     }
     if (!pinned.has(`${path}::${current}`) && !pinned.has(`${path}::*`)) {
@@ -434,6 +495,9 @@ for (const path of SWEPT) {
 }
 
 // --- 7. report ----------------------------------------------------------------
+
+const accountConstructions = checkConstructionRegistry(ROOT, { entries });
+for (const failure of accountConstructions.failures) fail(failure);
 
 if (failures.length > 0) {
   console.error(`authority map: ${failures.length} failure(s)\n`);
@@ -483,5 +547,8 @@ console.log(
 );
 console.log(
   '  This proves the rules resolve and their homes are pinned — not that the corpus implements them: ' +
-    'each open entry flips only at its return, under that record\'s falsifiers. Class 1 closes when "open" reads zero.',
+    "each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.",
+);
+console.log(
+  `  Account constructions: ${accountConstructions.specified} specified, ${accountConstructions.open} open, ${accountConstructions.inherited} inherited outside Account acceptance, ${accountConstructions.excluded} non-crypto exclusions. This is registration evidence, not a finding-closure decision. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit.`,
 );

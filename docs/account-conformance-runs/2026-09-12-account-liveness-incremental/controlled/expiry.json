@@ -1,0 +1,134 @@
+{
+  "status": "reproduced",
+  "shifted": {
+    "name": "commit-expiry",
+    "milliseconds": 478.46329200000037,
+    "load": [
+      5.2705078125,
+      5.0947265625,
+      5.005859375
+    ],
+    "value": {
+      "status": {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "blocked",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "reason": "operation-failed",
+          "receivedThrough": 4
+        }
+      },
+      "expiredAtCommit": true
+    },
+    "client": {
+      "rows": {
+        "content.load": {
+          "calls": 25,
+          "milliseconds": 172.70000076293945,
+          "size": 0
+        },
+        "content.open": {
+          "calls": 25,
+          "milliseconds": 102.50000286102295,
+          "size": 1066
+        },
+        "crypto.verify": {
+          "calls": 131,
+          "milliseconds": 2.000001907348633,
+          "size": 0
+        },
+        "crypto.sign": {
+          "calls": 15,
+          "milliseconds": 0,
+          "size": 0
+        },
+        "crypto.encrypt": {
+          "calls": 10,
+          "milliseconds": 0.10000038146972656,
+          "size": 0
+        },
+        "crypto.decrypt": {
+          "calls": 47,
+          "milliseconds": 0.3000001907348633,
+          "size": 0
+        },
+        "spool.witness": {
+          "calls": 11,
+          "milliseconds": 4.199999809265137,
+          "size": 292
+        },
+        "spool.verify": {
+          "calls": 11,
+          "milliseconds": 0.9000005722045898,
+          "size": 53
+        },
+        "delivery.verify": {
+          "calls": 13,
+          "milliseconds": 4.299999237060547,
+          "size": 297
+        },
+        "inbound.ledger": {
+          "calls": 11,
+          "milliseconds": 8.800000190734863,
+          "size": 44
+        },
+        "inbound.reconstruct": {
+          "calls": 1,
+          "milliseconds": 0.10000038146972656,
+          "size": 11
+        },
+        "crypto.digest": {
+          "calls": 29,
+          "milliseconds": 0.09999942779541016,
+          "size": 0
+        },
+        "receive.state": {
+          "calls": 6,
+          "milliseconds": 71.79999923706055,
+          "size": 0
+        }
+      },
+      "events": []
+    },
+    "service": {
+      "rows": {
+        "service.authority": {
+          "calls": 2,
+          "milliseconds": 11.707833000000392,
+          "size": 9
+        },
+        "crypto.digest": {
+          "calls": 90,
+          "milliseconds": 2.425748999998177,
+          "size": 0
+        },
+        "crypto.verify": {
+          "calls": 54,
+          "milliseconds": 6.421707999999853,
+          "size": 0
+        },
+        "service.census": {
+          "calls": 2,
+          "milliseconds": 7.658249000000978,
+          "size": 9
+        },
+        "service.snapshot": {
+          "calls": 4,
+          "milliseconds": 0.8923329999997804,
+          "size": 18
+        }
+      },
+      "events": []
+    }
+  },
+  "freshUnshiftedRetryThrough": 5,
+  "coldReopen": true,
+  "expected": "Baseline. During held fetch. Late genuine page."
+}

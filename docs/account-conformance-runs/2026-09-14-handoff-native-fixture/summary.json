@@ -1,0 +1,108 @@
+{
+  "base": "2e77b024dcfb9c0a81149f66d74cfad414641fb8",
+  "claim": "Account handoff native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T08-12-14.117Z",
+  "summary": {
+    "schema": 1,
+    "selection": "handoff-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-handoff/native.test.mjs",
+        "key": "04f64605bbee666df1f7adbe1376ca63ec355d8706ebfcfba0e8a10f78da2d36",
+        "status": "passed",
+        "elapsedMs": 124093,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T08:12:14.119Z",
+    "input": "5d212a969ab5eec67077cb6fea14b3eff557f918d2a5550ef8056c552d34960f",
+    "completedAt": "2026-09-14T08:14:42.894Z"
+  },
+  "elapsedMs": 148775,
+  "rawInputArchiveSha256": "734b7c0a02f3c37f08814992f5e9236498882d14238f7274d0c5569bc57b382c",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "2e77b024dcfb9c0a81149f66d74cfad414641fb8",
+    "sourceDigest": "cd582d8129a3724e58a3f9596a6cb579529ee22db90ea92eed1e379d59eb3f08",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 15,
+    "browserFiles": 1,
+    "generatedHistories": 24,
+    "seed": 9272026,
+    "priorGeneralFiles": 186,
+    "priorGeneralCases": 1582,
+    "currentGeneralFiles": 187,
+    "currentGeneralCases": 1597,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 91,
+    "accountFiles": 81,
+    "accountCases": 503,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 230,
+    "unresolvedTestFiles": 71,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 664284
+  },
+  "finalGatesSha256": "b02cca5907d500e158b1e29394202f395822e84c1bd9b694bc9c1f93f0a58520",
+  "preservationSha256": "9ced96d380a7c324de23e12676301a886ccf88950587a6c94805fe2ec9112895",
+  "limits": [
+    "One complete existing native file retains 15 cases: fourteen directed and one 24-history generated campaign. The complete-file allowance is repaired from 120 to 180 seconds in both adapter and direct wrapper; every directed case stays at 30 seconds and generated histories at 90. Browser startup remains 15 seconds, drain grace five. Product code, native test bodies, populations, seeds, mutation body, census and browser owner are unchanged. The active historical promotion-reader Git read gains 5000-ms/2-MiB bounds.",
+    "The initial uninstrumented selection reached its 120-second outer deadline during the final provenance case after fourteen passing cases. All 24 generated histories had already passed in 59.596 seconds, within their unchanged 90-second case bound. There was no reported assertion failure or terminal result for the final case. Full timeout receipts and frozen-input archive hashes are retained. Only the file allowance changes to three minutes, preserving all case limits and work; the final full uninstrumented selection provides the new result.",
+    "The active historical reader uses beed8cf:src/crdt/promotionRecord.ts; reference, full revision, path and exact bytes are part of its contract. Existing historical drift controls already cover this path. The helper\u2019s old-slot-verifier branch is not invoked: HANDOFF_SLOT_BASELINE is absent from the sanitized stage environment. No historical slot-verifier negative execution or broad receipt-version compatibility is claimed.",
+    "The existing base registers cleanup before setup, borrows owned loopback CDP, builds in memory and uses synthetic credentials/factors plus temporary service/SQLite stores. Registration, recovery enrollment, Local promotion, genesis preparation, admission and binding HTTP calls run there. Most local passkey assertions use Node-generated fixture credentials through a browser binding. The ES256 case additionally uses an actual navigator.credentials.get call backed by a CDP virtual authenticator loaded with a synthetic private key. This is browser WebAuthn/DER compatibility evidence, not a personal or hardware authenticator result.",
+    "The basic handoff verifies selection identity and marker stage, then reloads the same page and classifies with Account HTTP requests aborted and no recovery code supplied. Native serialized inventory is unchanged by classification. The stable comparison excludes only this slot\u2019s promotion marker and selected slot-index row; all remaining serialized database rows and localStorage stay equal across handoff. This is not forensic equality of the browser profile or a whole-browser offline condition.",
+    "Six directed cases cover before/after prepared-marker, index and selected-marker commits. Before cuts abort actual IDB transactions after request success; after cuts hold actual completion callbacks then crash the renderer. New pages resume to the same Account result, retain any already-written handoff record, preserve inventory outside the two authorized rows, classify, and repeat handoff without further inventory changes. There are three directed renderer deaths, not six. This does not simulate power loss or browser-process crash.",
+    "Altered binding signatures refuse before any passkey callback or index mutation; wrong device code, saved assertion replay against a fresh challenge and abandonment after selection refuse without native inventory changes. Five missing/closed/empty-store/foreign-database/changed-epoch routes refuse classification and handoff without automatic repair. Removing each selected slot\u2019s custody/progress row or tampering the marker MAC refuses startup without rewriting carriers; fixture restoration permits normal classification.",
+    "The active passkey mutation removes the current, uniquely located refusal throw. Invalid signature is rejected by current code without mutation; the mutant actually selects an Account route and classifies it. This is a specific acceptance oracle rather than credit for any nonzero exit. The helper checks anchor presence rather than counting occurrences, so uniqueness was additionally checked against the recorded current source.",
+    "Cancellation during a held post-index acknowledgement leaves a competing owner queued until completion is released; the competitor then resumes selection. The case waits for the cancelled operation but does not assert its returned value or separately count callback invocations. It establishes permit/drain behavior, not general ceremony cancellation or editing-lifetime invalidation.",
+    "The 24 generated histories retain seed 9272026, numRuns:24, endOnFailure:true and 90 seconds. One to eight generated insert/delete operations mix database and journal persistence and can reverse update delivery. An independent string calculation checks master writing; independent Node/OpenSSL recovery-envelope/HPKE/checkpoint decryption is decoded with the shared browser Yjs helper and compared to the fixture\u2019s full expected state before handoff. The oracle does not independently implement Yjs semantics or clear all of its intermediate synthetic key/plaintext buffers.",
+    "Generated faults choose none, an aborted prepared/index/selected commit, lost binding reply, or wrong passkey credential. Faulted attempts refuse and preserve the filtered source inventory; reloading the same page permits retry to the expected principal/workspace. One to three further page reloads replace fetch with a throwing stub and classify without a recovery code, matching the complete Account result and exact serialized post-selection inventory. No generated renderer death, all-fault coverage assertion or shrinking claim is made; before-handoff plaintext is not independently decrypted again after selection.",
+    "Previous Local preparation/genesis/admission/abandon/read operations and the pinned historical handoff/startup reader refuse the selected carrier; the historical calls add no network requests or inventory changes. The scope remains private route selection and startup classification; there is no Account editor, encrypted transport, new peer adoption or real Account admission in this phase.",
+    "Optional ACCOUNT_REPORT_DIR control/history exports are disabled. The direct wrapper additionally runs core and ES256 files and has its own saved-output, scheduling and ownership obligations. This native selection does not rerun or grant new credit to those files or qualify the whole wrapper. Existing runtime vectors are not read by this native file and no vector regeneration is claimed.",
+    "All 92 pure runner checks pass. Unchanged 23 Node-owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence. Initial ledger owner orphan classification, prior core receive deadline headroom, and capture map-refresh/byte-length oracle follow-ups remain open. The preceding editing phase\u2019s failed runs and measured deadline repair remain historical evidence; this phase does not overwrite them.",
+    "All 186 prior general contracts / 1582 case identities and six retired-v8 exclusions remain unchanged. Full frozen source/dependency/browser archives are retained locally and hashed here. This is one bounded selection, not an immutable aggregate or loaded-host qualification. The preceding editing phase is signed and verified. All 52 personal/vector preservation pins and L-2 remain unchanged; personal profiles/services/builds/recovery/factors, earlier evidence/debts/signing backups and unrelated root files remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 121212.104,
+    "stageElapsedMs": 124093,
+    "selectionElapsedMs": 148775,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedHandoffMs": 60098.36325
+  },
+  "timeoutInvestigation": {
+    "initialSelection": "test-results/release-validation/2026-09-14T08-05-46.084Z",
+    "initialFileDeadlineMs": 120000,
+    "initialCompletedCases": 14,
+    "initialGeneratedHistoriesPassed": 24,
+    "initialGeneratedMs": 59596.27575,
+    "note": "The outer deadline expired during the last provenance case after the generated case passed within its 90-second bound. Only the wrapper/adapter file deadline changes to 180 seconds; all case limits, populations, seeds and assertions remain unchanged. Full initial timeout receipts are retained; final selection is uninstrumented."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "4b38c138b201ab69820f02e1d9539799301be6717e2011145ad46b89934ac19b",
+    "compressedSha256": "8fd0edd4bcf7fc24aa6829258e29640af5d132efc8df2d0a204930bb0bb47cac"
+  }
+}

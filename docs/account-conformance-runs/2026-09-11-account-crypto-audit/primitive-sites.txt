@@ -1,0 +1,159 @@
+src/account/recovery.ts:56:    return await subtle.deriveKey(
+src/account/recovery.ts:106:        await crypto.subtle.encrypt(
+src/account/recovery.ts:137:    await subtle.decrypt(
+src/account/recovery.ts:155:      await subtle.deriveBits({ name: 'X25519', public: peer.publicKey }, r, 256),
+src/account/recovery.ts:160:        await subtle.deriveBits({ name: 'X25519', public: pub }, peer.privateKey, 256),
+src/account/recovery.ts:169:    const proof = new Uint8Array(await subtle.sign('Ed25519', signer, message));
+src/account/recovery.ts:177:    if (!(await subtle.verify('Ed25519', verify, proof, message)))
+src/account/recovery.ts:198:        await crypto.subtle.sign('Ed25519', signer, confirmationBytes(challenge, expectedDigest)),
+account-protocol/positionDecision.ts:54:  hex(new Uint8Array(await subtle.digest('SHA-256', b)));
+account-protocol/positionDecision.ts:207:  if (!(await subtle.verify('Ed25519', key, unhex(signature, 64), message)))
+account-service/delivery.ts:20:import { createHash } from 'node:crypto';
+account-service/delivery.ts:85:const hash = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+account-service/delivery.ts:320:      !(await crypto.subtle.verify(
+account-service/delivery.ts:559:        !(await crypto.subtle.verify(
+account-service/delivery.ts:661:        !(await crypto.subtle.verify(
+src/account/slotUnlock.ts:186:  new Uint8Array(await crypto.subtle.digest('SHA-256', bytes as BufferSource));
+src/account/slotUnlock.ts:268:  return crypto.subtle.verify(
+src/account/slotUnlock.ts:289:    return await crypto.subtle.verify(
+account-service/recovery.ts:1:import { createHash } from 'node:crypto';
+account-service/recovery.ts:47:  createHash('sha256')
+account-service/recovery.ts:60:    !(await crypto.subtle.verify(
+account-protocol/recovery.ts:38:  hex(new Uint8Array(await crypto.subtle.digest('SHA-256', value)));
+account-protocol/deliveryTransport.ts:189:  hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+account-protocol/deliveryTransport.ts:201:  if (!(await subtle.verify('Ed25519', key, unhex(p.signature, 64), readPageMessage(p)))) invalid();
+src/crdt/promotionGenesis.ts:37:  hkdf,
+src/crdt/promotionGenesis.ts:80:  hkdf(
+src/crdt/promotionGenesis.ts:183:                    new Uint8Array(await subtle.digest('SHA-256', preparedBytes(marker))),
+src/crdt/promotionGenesis.ts:219:                        await subtle.encrypt(
+src/crdt/promotionGenesis.ts:251:                      await subtle.sign('Ed25519', signer, await genesisMessage(candidate, subtle)),
+src/crdt/promotionGenesis.ts:267:                  !(await subtle.verify(
+src/crdt/promotionGenesis.ts:294:                  await subtle.decrypt(
+account-service/acceptance.ts:18:  createCipheriv,
+account-service/acceptance.ts:19:  createDecipheriv,
+account-service/acceptance.ts:20:  hkdfSync,
+account-service/acceptance.ts:47:      hkdfSync(
+account-service/acceptance.ts:65:      hkdfSync('sha256', this.#key, unhex(salt, 16), lp('done/acceptance-seal/v1'), 32),
+account-service/acceptance.ts:83:      const cipher = createCipheriv('aes-256-gcm', key, Buffer.from(nonce, 'hex'));
+account-service/acceptance.ts:110:      const cipher = createDecipheriv('aes-256-gcm', key, unhex(s['nonce'], 12));
+account-service/acceptance.ts:142:            signature: sign(null, headMessage(response.head), key).toString('hex'),
+account-service/acceptance.ts:149:          signature: sign(null, refusalMessage(response.refusal), key).toString('hex'),
+account-service/acceptance.ts:165:      signature: sign(null, message, key).toString('hex'),
+account-service/acceptance.ts:173:        signature: sign(null, readPageMessage(value), key).toString('hex'),
+account-service/acceptance.ts:187:        signature: sign(null, inboundPageMessage(value), key).toString('hex'),
+account-protocol/submission.ts:101:  const digest = hex(new Uint8Array(await subtle.digest('SHA-256', s.envelope))),
+account-protocol/submission.ts:112:  s.signature = new Uint8Array(await subtle.sign('Ed25519', signer, await message(s, subtle)));
+account-protocol/submission.ts:129:  if (!(await subtle.verify('Ed25519', signer, s.signature, await message(s, subtle))))
+src/crdt/accountInbound.ts:171:async function verify(
+src/crdt/accountInbound.ts:223:    if (p.request !== hex(new Uint8Array(await subtle.digest('SHA-256', request)))) fail('request');
+src/crdt/accountInbound.ts:231:    const readerVerified = await subtle.verify(
+src/crdt/accountInbound.ts:245:    const pageVerified = await subtle.verify(
+src/crdt/accountInbound.ts:378:): Promise<InboundResult> => verify(context, request, page, lifetime);
+src/crdt/accountInbound.ts:389:  return verify(context, event.request, event.page, lifetime, captured);
+account-service/protocol.ts:1:import { createHash, randomBytes } from 'node:crypto';
+account-service/protocol.ts:58:  createHash('sha256').update(value).digest('hex');
+account-service/protocol.ts:94:  return createHash('sha256').update(Buffer.concat(parts)).digest('base64url');
+src/account/generationWrap.ts:37:      return keep(new Uint8Array(await subtle.sign('HMAC', key, input)));
+src/account/generationWrap.ts:62:      return keep(new Uint8Array(await subtle.sign('HMAC', key, input))).subarray(0, length);
+src/account/generationWrap.ts:99:    await subtle.deriveBits({ name: 'X25519', public: pub }, sender.privateKey, 256),
+src/account/generationWrap.ts:107:          await subtle.encrypt({ name: 'AES-GCM', iv: nonce, tagLength: 128 }, key, generationKey),
+src/account/generationWrap.ts:128:    await subtle.deriveBits({ name: 'X25519', public: pub }, privateKey, 256),
+src/account/generationWrap.ts:133:      await subtle.decrypt({ name: 'AES-GCM', iv: nonce, tagLength: 128 }, key, ct),
+src/crdt/legacyExport.ts:22:  Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), (b) =>
+src/crdt/accountDelivery.ts:277:            await task.wait(() => subtleFor(task).sign('Ed25519', context.signer(), message)),
+src/crdt/localGenesisRecord.ts:18:  hkdf,
+src/crdt/localGenesisRecord.ts:149:      hkdf(
+src/crdt/localGenesisRecord.ts:189:    if (signing) return new Uint8Array(await task.wait(() => subtle.sign('HMAC', key, payload)));
+src/crdt/localGenesisRecord.ts:190:    if (!(await task.wait(() => subtle.verify('HMAC', key, claim.mac, payload))))
+account-protocol/envelope.ts:195:    return await subtle.deriveKey(
+account-protocol/envelope.ts:225:      await subtle.encrypt(
+account-protocol/envelope.ts:231:    const digest = new Uint8Array(await subtle.digest('SHA-256', ct));
+account-protocol/envelope.ts:233:      await subtle.sign('Ed25519', signer, envelopeSignatureMessage(h, iv, digest)),
+account-protocol/envelope.ts:259:  if (hex(new Uint8Array(await subtle.digest('SHA-256', e.ct))) !== hex(e.digest))
+account-protocol/envelope.ts:262:    !(await subtle.verify('Ed25519', signer, e.sig, envelopeSignatureMessage(e, e.nonce, e.digest)))
+account-protocol/envelope.ts:280:      await subtle.decrypt(
+account-protocol/authority.ts:87:  if (!(await crypto.subtle.verify('Ed25519', key, signature, message)))
+src/crdt/legacySource.ts:173:        await crypto.subtle.digest(
+src/crdt/accountStartup.ts:17:import { openCredential, openEnvelope, hkdf, fields, hex } from './custodyCrypto';
+src/crdt/accountStartup.ts:111:      const cpKey = await hkdf(
+src/crdt/accountStartup.ts:120:        await subtle.decrypt(
+src/crdt/legacyCleanupRecord.ts:5:  hkdf,
+src/crdt/legacyCleanupRecord.ts:99:      hkdf(
+src/crdt/legacyCleanupRecord.ts:121:        return hex(new Uint8Array(await task.wait(() => subtle.sign('HMAC', key!, bytes))));
+account-service/authority.ts:22:  createCipheriv,
+account-service/authority.ts:23:  createDecipheriv,
+account-service/authority.ts:27:  hkdfSync,
+account-service/authority.ts:49:    hkdfSync(
+account-service/authority.ts:96:    const cipher = createDecipheriv('aes-256-gcm', key, unhex(row.nonce, 12));
+account-service/authority.ts:153:      const cipher = createCipheriv('aes-256-gcm', key, Buffer.from(nonce, 'hex'));
+account-service/authority.ts:236:      signature: sign(null, authorityMessage(this.#pin, nonce), this.#key).toString('hex'),
+account-service/authority.ts:261:      signature: sign(null, pendingMessage(this.#pin, nonce, result.state), this.#key).toString(
+account-service/authority.ts:269:      return sign(null, message, this.#key).toString('hex');
+account-protocol/genesis.ts:144:    new Uint8Array(await subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(body)))),
+account-protocol/preparation.ts:106:  if (!(await crypto.subtle.verify('Ed25519', key, signature, message)))
+account-protocol/admission.ts:195:  if (!(await subtle.verify('Ed25519', key, unhex(signature, 64), message)))
+src/crdt/spoolRecord.ts:242:    const digest = hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+src/crdt/spoolRecord.ts:281:      hash: hex(new Uint8Array(await subtle.digest('SHA-256', payload))),
+src/crdt/contentStore.ts:46:  sign(task: SessionTask, payload: Bytes): Promise<Bytes>;
+src/crdt/contentStore.ts:47:  verify(task: SessionTask, payload: Bytes, mac: Bytes): Promise<boolean>;
+src/crdt/contentStore.ts:76:    if (!(await crypt.verify(task, payload, mac)))
+src/crdt/contentStore.ts:98:    next = { ...next, mac: await crypt.sign(task, witnessPayload(scope, next)) };
+src/crdt/contentStore.ts:167:    await verify(task, counterPayload(scope, counter), counter.mac);
+src/crdt/contentStore.ts:210:    await verify(task, counterPayload(scope, counter), counter.mac);
+src/crdt/contentStore.ts:260:      next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+src/crdt/contentStore.ts:287:        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+src/crdt/contentStore.ts:305:      if (existing) await verify(task, witnessPayload(scope, existing), existing.mac);
+src/crdt/contentStore.ts:351:          await verify(task, counterPayload(scope, snapshot.counter), snapshot.counter.mac);
+src/crdt/contentStore.ts:364:          initial = { ...initial, mac: await crypt.sign(task, counterPayload(scope, initial)) };
+src/crdt/contentStore.ts:405:        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+src/crdt/localClearCrypto.ts:5:  hkdf,
+src/crdt/localClearCrypto.ts:51:      hkdf(
+src/crdt/localClearCrypto.ts:64:    async verify(record: LocalClearRecord): Promise<void> {
+src/crdt/localClearCrypto.ts:65:      if (!(await task.wait(() => subtle.verify('HMAC', key!, record.mac, clearPayload(record)))))
+src/crdt/localClearCrypto.ts:68:    async sign(record: LocalClearRecord): Promise<LocalClearRecord> {
+src/crdt/localClearCrypto.ts:71:        mac: new Uint8Array(await task.wait(() => subtle.sign('HMAC', key!, clearPayload(record)))),
+src/crdt/localClear.ts:94:    await auth.verify(record);
+src/crdt/localClear.ts:112:      const signed = await auth.sign({ ...record, stage: next });
+src/crdt/localClear.ts:156:          record = await auth.sign(record);
+src/crdt/inboundLedger.ts:33:      id: hex(new Uint8Array(await subtle.digest('SHA-256', utf8(JSON.stringify(receipt))))),
+src/crdt/custody.ts:47:  hkdf,
+src/crdt/custody.ts:223:      keys.store = await hkdf(
+src/crdt/custody.ts:234:        keys.metadata = await hkdf(
+src/crdt/custody.ts:607:          await crypto.subtle.decrypt(
+src/crdt/custody.ts:696:                  await crypto.subtle.encrypt(
+src/crdt/custody.ts:712:                  new Uint8Array(await crypto.subtle.sign('HMAC', keys.metadata!, payload)),
+src/crdt/custody.ts:715:              task.wait(() => crypto.subtle.verify('HMAC', keys.metadata!, mac, payload)),
+src/crdt/accountReceive.ts:186:        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
+src/crdt/journalCodec.ts:35:    await subtle.deriveBits(
+src/crdt/promotionAdmission.ts:77:            hex(new Uint8Array(await subtle.sign('Ed25519', signer, message)));
+src/crdt/promotionAdmission.ts:96:          request.certification.signature = await sign(await certificationMessage(request));
+src/crdt/promotionAdmission.ts:99:              await subtle.sign('Ed25519', bootstrapSigner, await originMessage(request)),
+src/crdt/promotionAdmission.ts:151:          completion.manifest.signature = await sign(await manifestMessage(completion.manifest));
+src/crdt/promotionAdmission.ts:152:          completion.admission.signature = await sign(await semanticMessage(completion.admission));
+src/crdt/storeName.ts:44:  const digest = await crypto.subtle.digest(
+src/crdt/legacyImportPlan.ts:49:  hex(new Uint8Array(await crypto.subtle.digest('SHA-256', utf8(value))));
+src/crdt/promotionRecord.ts:29:  hkdf,
+src/crdt/promotionRecord.ts:262:  hkdf(
+src/crdt/promotionRecord.ts:284:      await subtle.sign('HMAC', await macKey(root, r, subtle), promotionPayload(r)),
+src/crdt/promotionRecord.ts:326:      !(await subtle.verify(
+src/crdt/custodyCrypto.ts:73:export const hkdf = async (
+src/crdt/custodyCrypto.ts:82:  return subtle.deriveKey(
+src/crdt/custodyCrypto.ts:107:  hkdf(
+src/crdt/custodyCrypto.ts:133:    await subtle.encrypt(
+src/crdt/custodyCrypto.ts:149:    await subtle.decrypt(
+src/crdt/custodyCrypto.ts:167:    await subtle.encrypt(
+src/crdt/custodyCrypto.ts:182:    await subtle.decrypt(
+src/crdt/custodyCrypto.ts:261:      await subtle.encrypt(
+src/crdt/custodyCrypto.ts:284:    await subtle.decrypt(
+src/crdt/custodyCrypto.ts:311:      const sig = await subtle.sign('Ed25519', key, challenge);
+src/crdt/custodyCrypto.ts:312:      if (!(await subtle.verify('Ed25519', publicKey, sig, challenge)))
+src/crdt/custodyCrypto.ts:318:        await subtle.deriveBits({ name: 'X25519', public: peer.publicKey }, key, 256),
+src/crdt/custodyCrypto.ts:323:          await subtle.deriveBits({ name: 'X25519', public: publicKey }, peer.privateKey, 256),
+src/crdt/legacyImportRecord.ts:17:  hkdf,
+src/crdt/legacyImportRecord.ts:122:      hkdf(
+src/crdt/legacyImportRecord.ts:138:      return new Uint8Array(await task.wait(() => subtle.sign('HMAC', key, payload(claim))));
+src/crdt/legacyImportRecord.ts:139:    if (!(await task.wait(() => subtle.verify('HMAC', key, claim.mac, payload(claim)))))
+src/crdt/custodyRecord.ts:4:  hkdf,
+src/crdt/custodyRecord.ts:258:  hkdf(
+src/crdt/custodyRecord.ts:271:  if (!(await subtle.verify('HMAC', await macKey(root, r, subtle), r.mac, recordPayload(r))))
+src/crdt/custodyRecord.ts:280:  mac: new Uint8Array(await subtle.sign('HMAC', await macKey(root, r, subtle), recordPayload(r))),

@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-11T06:09:24.140Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private ordered editor integration under the v9 factor-owned receive lifetime. Local sources stay separate from committed remote originals. Native crash, pressure, close, pending dependencies, generated histories and effective source mutations. No v2 service route, sender, enrollment or personal operations.",
+  "error": "Error: native failed",
+  "completedAt": "2026-09-11T06:10:35.203Z"
+}

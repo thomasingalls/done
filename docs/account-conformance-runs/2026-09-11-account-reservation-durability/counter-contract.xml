@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="fixed metadata key, both initialization states and all counter variants agree with independent bytes" time="0.006846" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/formats.test.mjs"/>
+	<testcase name="every specified metadata input binds or refuses; encoded omission witnesses preserve real HMAC checks" time="0.033849" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/formats.test.mjs"/>
+	<testcase name="closed structured-clone parsers reject malformed counters without inferring missing allocation state" time="0.002066" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/formats.test.mjs"/>
+	<testcase name="200 generated allocation/restart histories match an independent integer budget and authenticate retained counters" time="0.316618" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/formats.test.mjs"/>
+	<testcase name="actual source omissions lose root/state/spool MAC bindings and allocator guards; crypto remains operative" time="0.062930" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/formats.test.mjs"/>
+	<testcase name="real custody metadata derivation, native HMAC bytes and v1 to v2 activation match independent construction" time="0.424468" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="correctly MACed allocation and witness lies refuse at their owning boundary" time="0.430501" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="native final abort preserves burned reservations but commits neither ledger event nor witness; observes actual durability" time="0.336665" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="actual MAC comparison omission overwrites a counter changed after authentication; retained comparison refuses" time="0.603073" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="actual reservation omission invokes AES before allocation even though the later rewind guard still refuses" time="0.590469" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<!-- tests 10 -->
+	<!-- suites 0 -->
+	<!-- pass 10 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 3600.2775 -->
+</testsuites>

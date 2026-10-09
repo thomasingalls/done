@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T23:34:41.623Z",
+  "stages": [
+    {
+      "name": "preparation",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "primitives",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Inbound protocol preparation only: independently framed synthetic signatures, actual envelope/proof/Yjs primitives, atomic-store model, generated histories and broken-design controls. No native receive owner, v2 transport deployment, enrollment, browser or personal provisioning.",
+  "completedAt": "2026-09-10T23:34:54.209Z"
+}

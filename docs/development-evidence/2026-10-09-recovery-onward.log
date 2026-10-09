@@ -1,0 +1,16 @@
+Focused packaged continuing-lifecycle walkthrough; disposable accounts and virtual passkeys.
+Command: node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts
+
+
+Running 1 test using 1 worker
+
+(node:18518) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:6:1 › packaged recovery resumes from the chooser and opens accepted writing with the existing passkey (1.1m)
+
+  1 passed (1.1m)
+
+After recovery: admit a device, receive its writing, remove it, upload after rotation, recover again
+with the unchanged original account passkey/recovery code. Previous detached-only writing stays
+out; the original browser retains its detached slot alongside the new recovered slot.
+The test title was clarified after this run; behavior is unchanged.

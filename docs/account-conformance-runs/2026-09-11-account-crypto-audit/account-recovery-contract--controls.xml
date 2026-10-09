@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="removing each production context/root/key-pair check rescues its separately authentic counterexample" time="0.020637" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/controls.test.mjs"/>
+	<testcase name="omitting exact PKCS#8 format checks recreates acceptance of each malformed export" time="0.007502" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/controls.test.mjs"/>
+	<!-- tests 2 -->
+	<!-- suites 0 -->
+	<!-- pass 2 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 128.953666 -->
+</testsuites>

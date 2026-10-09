@@ -1,4 +1,13 @@
 /**
+ * Evidence-scope amendment (2026-09-08): this is a partial Stage 0 model.
+ * It does not certify SC-01..09 as a whole. In particular the older storage
+ * composition omits generation-tagged journal capabilities and relies on
+ * explicit remote redelivery. Current counterexamples live in
+ * test/storageContract.test.ts; production obligations are in
+ * docs/storage-conformance.md. Retain the valid represented cases, not the
+ * former full-retirement/offline-recovery inference.
+ */
+/**
  * Local write admission, the sequence allocator and the nonce budget, as an
  * executable model (TRD §§6.1/7.4/10.10/12, §15 rows 2 and 3, `S0-3`, `P-3`).
  *
@@ -131,11 +140,7 @@ const commitBatch = (s: Store): Store => ({
   ...s,
   journal: { ...s.journal, entries: [] },
   pending: [],
-  committed: [
-    ...s.committed,
-    ...s.journal.entries.map((e) => e.id),
-    ...s.pending.map((p) => p.id),
-  ],
+  committed: [...s.committed, ...s.journal.entries.map((e) => e.id), ...s.pending.map((p) => p.id)],
   notDurable: null,
   acknowledged: [...s.acknowledged, ...s.pending.map((p) => p.id)],
 });
@@ -250,7 +255,7 @@ const trimBelow = (s: Store, boundary: number): Store => ({
   records: s.records.filter((r) => r.seq >= boundary),
 });
 
-// falsifies: f-9b49b74-journal-seal-64k-gap
+// falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
 describe('§6.1 — admission, and the one state behind it', () => {
   it('refuses an update over the limit before the seal ever sees it', () => {
     const attempt = journalWrite(store(), 'big', MAX_UPDATE + 1);
@@ -342,7 +347,8 @@ describe('§6.1 — admission, and the one state behind it', () => {
   it('fails a model that never marks not-durable, because the forced flush reads the mark', () => {
     const neverMarks = (s: Store, id: string, bytes: number): Store => {
       const attempt = journalWrite(s, id, bytes);
-      if (attempt.ok) return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
+      if (attempt.ok)
+        return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
       // The mutation: the refusal happens and the mark is never written.
       return {
         ...attempt.store,
@@ -364,7 +370,8 @@ describe('§6.1 — admission, and the one state behind it', () => {
   it('fails a model that acknowledges an unjournallable edit before IndexedDB commits', () => {
     const acksEarly = (s: Store, id: string, bytes: number): Store => {
       const attempt = journalWrite(s, id, bytes);
-      if (attempt.ok) return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
+      if (attempt.ok)
+        return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
       // The mutation: the verbatim reachable consequence of f-9b49b74 -- the
       // handler reports saved with nothing durable holding the edit.
       return {
@@ -384,7 +391,7 @@ describe('§6.1 — admission, and the one state behind it', () => {
   });
 });
 
-// falsifies: f-9b49b74-journal-seal-64k-gap
+// falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
 describe('§6.1 — slicing, so the log never meets what it cannot take', () => {
   it('applies an operation far over the limit in full, refusing nothing', () => {
     const after = applyOperation(
@@ -413,7 +420,7 @@ describe('§6.1 — slicing, so the log never meets what it cannot take', () => 
   });
 });
 
-// falsifies: f-9b49b74-journal-seal-64k-gap
+// falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
 describe('§6.1 — the back-pressure watermark is characters, not entries', () => {
   const wall = 5_300_000;
   const fits = (bytes: number) => Math.floor(wall / storedChars(bytes));
@@ -563,7 +570,7 @@ describe('§6.1 — the allocator, and the count the budget reads', () => {
   });
 });
 
-// falsifies: f-9b49b74-journal-seal-64k-gap
+// falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
 describe("§6.1 — remote updates are not this journal's contract", () => {
   /** The accepted mark advances only after the content batch commits. */
   const receive = (s: Store, mark: number, commit: boolean) =>

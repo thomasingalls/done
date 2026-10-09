@@ -1,0 +1,11 @@
+{
+  "reviewF11": "The original suggested credential.id/member.id equality conflated WebAuthn and workspace signing identities. They intentionally differ. Shared service authority now binds the passkey row to completed registration; existing signed candidate/member agreement remains enforced. Historical packet and prior response are not rewritten.",
+  "implementationValidation": "All directed, generated and native assertions passed during development. No generated counterexample was found. An initial missing contextual TypeScript return annotation and an unused test parameter were fixed before the recorded campaign; these were static-check failures, not passing gates.",
+  "initialTraceFailure": "The regression chain finished behavioral gates, then traceability rejected six receipts from f6e4cf4. The failed chain/log is retained. A fresh isolated build, prerequisite checks and trace --check subsequently passed at e835243 with the current code patch.",
+  "limits": [
+    "No full pnpm check rerun for this patch; e835243 preserves the previous full aggregate. This phase ran full units, targeted campaigns, affected regressions, isolated build and traceability.",
+    "Only first-epoch creating-member self-stream supported; no enrollment, cross-device installation, v9 sender or receive scheduling implemented.",
+    "No personal browser, bundle, relay, deployment, factor or account provisioned/modified."
+  ],
+  "finalReviewTestStrengthening": "The first candidate/member mismatch negative could stop at the approver check. The final test changes approver consistently and explicitly asserts the candidate-recipient parser refusal before exercising the service. The complete campaign was rerun; earlier passing campaign sources/log/patch are preserved separately. Production code did not change."
+}

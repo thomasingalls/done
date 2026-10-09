@@ -1,0 +1,296 @@
+(node:29545) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29545) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ actual HTTP accepted decision persists exact evidence and original source through cold compaction (7198.865ms)
+✖ actual HTTP closed decision persists exact evidence and original source through cold compaction (7104.156291ms)
+✖ actual HTTP conflict decision persists exact evidence and original source through cold compaction (7132.59525ms)
+✖ automatic sender closed, lost reply false, halts without reseal and preserves later Local edits (9388.776042ms)
+✖ automatic sender closed, lost reply true, halts without reseal and preserves later Local edits (7325.941958ms)
+✖ automatic sender conflict, lost reply false, halts without reseal and preserves later Local edits (9373.932208ms)
+✖ automatic sender conflict, lost reply true, halts without reseal and preserves later Local edits (7343.7775ms)
+✖ shared sync scheduler derives both lane halts from a real closed delivery decision (26853.131209ms)
+✖ shared sync scheduler derives both lane halts from a real conflict delivery decision (7086.535875ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 0
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 90838.953
+
+✖ failing tests:
+
+test at test/account-decision-composition/native.test.mjs:33:3
+✖ actual HTTP accepted decision persists exact evidence and original source through cold compaction (7198.865ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: 'c51f8337dee2d5954289c55adf196f0c',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: 'c51f8337dee2d5954289c55adf196f0c',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: 'e396759c2bd94e8fc4c6db1bd168fc6f',
+  +     principal: 'ebbfdcb6962e15c8ededd472179df426',
+  +     sources: [
+  +       {
+  +         actor: 'ebbfdcb6962e15c8ededd472179df426',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: 'c6b49008c0d63d9d34cee7ddac0d150a'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:45:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: '0c25aa43ea8a3bb11d3e31608011e195', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '4216a1a8cf9ccaf4f3a445e7cf8df619', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '41a30ba8113604e416f1a49ed98e2838', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'e396759c2bd94e8fc4c6db1bd168fc6f', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: '0c25aa43ea8a3bb11d3e31608011e195', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '4216a1a8cf9ccaf4f3a445e7cf8df619', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '41a30ba8113604e416f1a49ed98e2838', workspace: 'c6b49008c0d63d9d34cee7ddac0d150a', credential: 'c51f8337dee2d5954289c55adf196f0c', principal: 'ebbfdcb6962e15c8ededd472179df426', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-decision-composition/native.test.mjs:33:3
+✖ actual HTTP closed decision persists exact evidence and original source through cold compaction (7104.156291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: '3814c98dfeac062b09f824d53c87969b',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: '3814c98dfeac062b09f824d53c87969b',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: '67bb62e7550f8e1f58cf51cd6f55019b',
+  +     principal: 'ec2fa5ad0490b6c075471ce831eafe1d',
+  +     sources: [
+  +       {
+  +         actor: 'ec2fa5ad0490b6c075471ce831eafe1d',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: '281f36f974ccd46271bdc5f6c24bc13e'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:45:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: '3435af4671ae8d5d1f313158a50cfeee', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '0b3c7ffc2ab09e8f2b62804d64b86536', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '9b5686ffe5d45c4674ce6732945dbb6c', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '67bb62e7550f8e1f58cf51cd6f55019b', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: '3435af4671ae8d5d1f313158a50cfeee', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '0b3c7ffc2ab09e8f2b62804d64b86536', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '9b5686ffe5d45c4674ce6732945dbb6c', workspace: '281f36f974ccd46271bdc5f6c24bc13e', credential: '3814c98dfeac062b09f824d53c87969b', principal: 'ec2fa5ad0490b6c075471ce831eafe1d', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-decision-composition/native.test.mjs:33:3
+✖ actual HTTP conflict decision persists exact evidence and original source through cold compaction (7132.59525ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: '7010921d0ef86a144ff158a9bba1a4c6',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: '7010921d0ef86a144ff158a9bba1a4c6',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: '5eb79fbfab8c3ea54751214ea79798d6',
+  +     principal: 'aaf75b1191d5ea20f68c69da71bcd05c',
+  +     sources: [
+  +       {
+  +         actor: 'aaf75b1191d5ea20f68c69da71bcd05c',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: 'c74ff7badb42fb3923e9da477a19e9e5'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:45:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: 'caa2ec40ef2e2c5ba8584d5c4e1593d1', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'b1b1b39fdf182c3035c9a6b63dd093cf', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '7d7c00dc4a91a3bb0319b13d1c5059c8', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '5eb79fbfab8c3ea54751214ea79798d6', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: 'caa2ec40ef2e2c5ba8584d5c4e1593d1', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'b1b1b39fdf182c3035c9a6b63dd093cf', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '7d7c00dc4a91a3bb0319b13d1c5059c8', workspace: 'c74ff7badb42fb3923e9da477a19e9e5', credential: '7010921d0ef86a144ff158a9bba1a4c6', principal: 'aaf75b1191d5ea20f68c69da71bcd05c', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-decision-composition/native.test.mjs:76:5
+✖ automatic sender closed, lost reply false, halts without reseal and preserves later Local edits (9388.776042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: '20f37a165be3230801a2a3536c0a20d5',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: '20f37a165be3230801a2a3536c0a20d5',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: 'be1fb7b580572313c5ac7a5bc2707d64',
+  +     principal: '901d837bc6e2e5922b817551f28895b6',
+  +     sources: [
+  +       {
+  +         actor: '901d837bc6e2e5922b817551f28895b6',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: '948b1b285a03843b85417a0b469ef4e2'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:119:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: '334ac9f0cc596aa055d31a4a4b4c0706', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'db8e7388cfd1f897a4d25a346fc81868', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'b0b2c2f221afbaa582603b2f50977d1c', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '5adbacaaa39d43ce85200694847eb7e2', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '8a9d3efcd101c4e7d1fe1f0a662601f4', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'be1fb7b580572313c5ac7a5bc2707d64', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: '334ac9f0cc596aa055d31a4a4b4c0706', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'db8e7388cfd1f897a4d25a346fc81868', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'b0b2c2f221afbaa582603b2f50977d1c', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '5adbacaaa39d43ce85200694847eb7e2', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '8a9d3efcd101c4e7d1fe1f0a662601f4', workspace: '948b1b285a03843b85417a0b469ef4e2', credential: '20f37a165be3230801a2a3536c0a20d5', principal: '901d837bc6e2e5922b817551f28895b6', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-decision-composition/native.test.mjs:76:5
+✖ automatic sender closed, lost reply true, halts without reseal and preserves later Local edits (7325.941958ms)
+  page.evaluate: TypeError: opened.pendingSubmissions is not a function
+      at eval (eval at evaluate (:311:30), <anonymous>:2:19)
+      at UtilityScript.evaluate (<anonymous>:313:16)
+      at UtilityScript.<anonymous> (<anonymous>:1:44)
+      at pending (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/fixtures.mjs:111:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:96:34) {
+    log: []
+  }
+
+test at test/account-decision-composition/native.test.mjs:76:5
+✖ automatic sender conflict, lost reply false, halts without reseal and preserves later Local edits (9373.932208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: '6e61bfa4f45d9641f7161391603a9a9a',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: '6e61bfa4f45d9641f7161391603a9a9a',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: 'f36c1e967e82ef6baadb8c30ff4cfc0a',
+  +     principal: '3cc3121b031a5914dbcd8475688add79',
+  +     sources: [
+  +       {
+  +         actor: '3cc3121b031a5914dbcd8475688add79',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: '782884fc43768567a69f6ea53e0f9db7'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:119:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: 'e1b293a91e5749023817a483e7c08d91', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '9fcec56a2167c6eb8f238d1843b3369d', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '3896b046b65550c0c8b65281d87311d4', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '00e39a2496fe56792cb58a5071a99e9c', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'e0f9b8ead9d899466a9dd05c1c7567f2', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'f36c1e967e82ef6baadb8c30ff4cfc0a', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: 'e1b293a91e5749023817a483e7c08d91', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '9fcec56a2167c6eb8f238d1843b3369d', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '3896b046b65550c0c8b65281d87311d4', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '00e39a2496fe56792cb58a5071a99e9c', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: 'e0f9b8ead9d899466a9dd05c1c7567f2', workspace: '782884fc43768567a69f6ea53e0f9db7', credential: '6e61bfa4f45d9641f7161391603a9a9a', principal: '3cc3121b031a5914dbcd8475688add79', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-decision-composition/native.test.mjs:76:5
+✖ automatic sender conflict, lost reply true, halts without reseal and preserves later Local edits (7343.7775ms)
+  page.evaluate: TypeError: opened.pendingSubmissions is not a function
+      at eval (eval at evaluate (:311:30), <anonymous>:2:19)
+      at UtilityScript.evaluate (<anonymous>:313:16)
+      at UtilityScript.<anonymous> (<anonymous>:1:44)
+      at pending (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/fixtures.mjs:111:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:96:34) {
+    log: []
+  }
+
+test at test/account-decision-composition/native.test.mjs:134:3
+✖ shared sync scheduler derives both lane halts from a real closed delivery decision (26853.131209ms)
+  Error: Awaited browser predicate timed out
+      at waitUntil (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/fixtures.mjs:64:43)
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:147:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at test/account-decision-composition/native.test.mjs:134:3
+✖ shared sync scheduler derives both lane halts from a real conflict delivery decision (7086.535875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'operation-failed'
+  - 'conflict'
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-decision-composition/native.test.mjs:155:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'operation-failed',
+    expected: 'conflict',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

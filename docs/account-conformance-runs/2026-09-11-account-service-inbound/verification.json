@@ -1,0 +1,30 @@
+{
+  "head": "e835243b8e65658d8626db1e916a60d464fd890c",
+  "sources": {
+    "campaign": {
+      "sourceFiles": 502,
+      "rootCodeFiles": 457,
+      "drift": []
+    },
+    "build": {
+      "sourceFiles": 2395,
+      "rootCodeFiles": 652,
+      "drift": []
+    }
+  },
+  "newFiles": [
+    "docs/account-service-inbound.md",
+    "scripts/account-service-inbound/run.mjs",
+    "test/account-service-inbound/controls.test.mjs",
+    "test/account-service-inbound/core.test.mjs",
+    "test/account-service-inbound/generated.test.mjs",
+    "test/account-service-inbound/native.test.mjs",
+    "test/account-service-inbound/oracle.mjs",
+    "test/account-service-inbound/restart.test.mjs",
+    "test/account-service-inbound/worker.mjs"
+  ],
+  "patchSha256": "561a260d5e43faeeee05ab5f67436c4eed7b76977a2806d0995b1de1d0a9d4e5",
+  "personalBundleFiles": 21,
+  "personalBundlesUnchanged": true,
+  "historicalReviewUnchanged": true
+}

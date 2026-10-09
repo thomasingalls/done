@@ -1,0 +1,21 @@
+{
+  "source": "test/outboundSpool.test.ts",
+  "sha256": "7ddac6561c7fa83754090fb86f41a0558ca58151d98a6dcfdebb3331ea1013bb",
+  "crashTrace": [
+    "reserve once",
+    "mint; lose promote",
+    "mint; lose promote",
+    "mint; lose promote"
+  ],
+  "actualInvocations": 3,
+  "durableCount": 1,
+  "successorTrace": [
+    "reserve once",
+    "mint",
+    "verified refusal",
+    "mint successor"
+  ],
+  "successorActualInvocations": 2,
+  "successorDurableCount": 1,
+  "scope": "Model counterexamples, not a production network-writer defect; no writer exists yet."
+}

@@ -1,0 +1,106 @@
+{
+  "baseCommit": "8db707040a3ebac9240e63db1a010e75b3586094",
+  "scope": "packaged serving repair source, local build and synthetic reports; excludes personal files and origin",
+  "files": [
+    {
+      "path": "vite/precacheServiceWorker.ts",
+      "sha256": "856f8e38fadf2155de827981e128b35ebd27908dd771d872b06a0ee793d919f8"
+    },
+    {
+      "path": "vite/precacheBuild.test.ts",
+      "sha256": "c494e695feee044163a21afeb58d5aa33767b2c7f1b19d475970f340304cba7e"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "5e249294bdfba86b20dd8aef1d6be467d2de269e99597b0816ed802364e0f0b1"
+    },
+    {
+      "path": "test/local-app/packaged.spec.ts",
+      "sha256": "20da47bc4d3741987c15683907bdaddb98a6f11b05c68ff1c691b730ca49d662"
+    },
+    {
+      "path": "playwright.local-startup.config.ts",
+      "sha256": "f82d1c2804efde09b08bf7d705eec731fcdf91aa3799949a08f5ecd47e07579c"
+    },
+    {
+      "path": "package.json",
+      "sha256": "b50964dbd44d62a2cf497f50c8ffc814a1e5477e4d5a5101a5309373b64d34d0"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e"
+    },
+    {
+      "path": "dist/favicon.svg",
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "dist/icon-192.png",
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "dist/icon-512.png",
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "dist/icon-maskable-512.png",
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "b1c40d390f76787eb8f386b047d3412b0ee319a6e35a5b38974b70174f0ad244"
+    },
+    {
+      "path": "dist/local.html",
+      "sha256": "58f9fb240a2ca48aff5715341e4d4748502e2c7a28ae29b3762c64bcefc186b2"
+    },
+    {
+      "path": "dist/manifest.webmanifest",
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "dist/sw.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "dist/assets/main-BBv1bmH8.css",
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": "dist/assets/main-CZBDGDKK.js",
+      "sha256": "3ac59f06a8feecd324d551ce7b64bac42f2bd4334aa6e11989582f7630d25b77"
+    },
+    {
+      "path": "dist/assets/main-CZBDGDKK.js.map",
+      "sha256": "22c4b0b24e48ccda6b6741e8c726a69b29b65bb85bd1bbffbf63f4a68dfa1cff"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/after-sw.js",
+      "sha256": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/before-browser.json",
+      "sha256": "2fdd5304d29c7e9e5d2e3ad47f2843679a59b7396d94351f48e5c7889d718331"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/before-manifest-check.json",
+      "sha256": "7ca4ac9bb5d9524091c3c8efd3157d54c97b6e01bb0253caa3ad426359bf6ddd"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/before-sw.js",
+      "sha256": "a6192aee7c50effb343c2ec35cdc335a95c9ed5c1c07419d507f4c364f3ddea6"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/native.json",
+      "sha256": "e7056496428ee668d5b1d1adfa4278e42eab10e29cdce2ea5d91b7fc5d76c58e"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/unit-fixture-before.json",
+      "sha256": "03f325140f877ffd8b906d39993860530d321238fd89bcc03f71ec766073288b"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-packaged-serving/unit.json",
+      "sha256": "b5178c57fe1564b5d85ab331c3dea5e24f4346eb34ae416fe447bc71a6c75c9e"
+    }
+  ]
+}

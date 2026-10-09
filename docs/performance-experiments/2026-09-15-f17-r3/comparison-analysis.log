@@ -1,0 +1,127 @@
+{
+  "note": "Descriptive fresh-session summaries. Keys within sessions are dependent; Unicode is one guard pair, not a broad effect estimate. No significance or population confidence claims.",
+  "rows": [
+    {
+      "phase": "comparison",
+      "variant": "selected",
+      "block": "shallow",
+      "p50": 53.90000009536743,
+      "p95": 72.84999942779541,
+      "individual": [
+        {
+          "session": "comparison-0",
+          "block": "shallow",
+          "p50": 53,
+          "p95": 73.29999923706055
+        },
+        {
+          "session": "comparison-1",
+          "block": "shallow",
+          "p50": 54.80000019073486,
+          "p95": 72.39999961853027
+        }
+      ]
+    },
+    {
+      "phase": "comparison",
+      "variant": "selected",
+      "block": "deeper",
+      "p50": 55.549999713897705,
+      "p95": 74.40000009536743,
+      "individual": [
+        {
+          "session": "comparison-0",
+          "block": "deeper",
+          "p50": 54.89999961853027,
+          "p95": 76.69999980926514
+        },
+        {
+          "session": "comparison-1",
+          "block": "deeper",
+          "p50": 56.19999980926514,
+          "p95": 72.10000038146973
+        }
+      ]
+    },
+    {
+      "phase": "comparison",
+      "variant": "candidate",
+      "block": "shallow",
+      "p50": 47.049999713897705,
+      "p95": 51.200000286102295,
+      "individual": [
+        {
+          "session": "comparison-0",
+          "block": "shallow",
+          "p50": 46.89999961853027,
+          "p95": 52
+        },
+        {
+          "session": "comparison-1",
+          "block": "shallow",
+          "p50": 47.19999980926514,
+          "p95": 50.40000057220459
+        }
+      ]
+    },
+    {
+      "phase": "comparison",
+      "variant": "candidate",
+      "block": "deeper",
+      "p50": 47.94999980926514,
+      "p95": 52,
+      "individual": [
+        {
+          "session": "comparison-0",
+          "block": "deeper",
+          "p50": 48,
+          "p95": 53.69999980926514
+        },
+        {
+          "session": "comparison-1",
+          "block": "deeper",
+          "p50": 47.89999961853027,
+          "p95": 50.30000019073486
+        }
+      ]
+    }
+  ],
+  "contrasts": [
+    {
+      "phase": "comparison",
+      "block": "shallow",
+      "paired": [
+        {
+          "session": "comparison-0",
+          "p50Ratio": 0.8849056531798165,
+          "p95Ratio": 0.7094133770974005
+        },
+        {
+          "session": "comparison-1",
+          "p50Ratio": 0.8613138621347182,
+          "p95Ratio": 0.6961326082563274
+        }
+      ],
+      "candidateMedianGainPct": 12.689024234273273,
+      "candidateP95GainPct": 29.7227007323136
+    },
+    {
+      "phase": "comparison",
+      "block": "deeper",
+      "paired": [
+        {
+          "session": "comparison-0",
+          "p50Ratio": 0.8743169459658551,
+          "p95Ratio": 0.7001303773507745
+        },
+        {
+          "session": "comparison-1",
+          "p50Ratio": 0.8523131633646994,
+          "p95Ratio": 0.6976421626158876
+        }
+      ],
+      "candidateMedianGainPct": 13.668494533472275,
+      "candidateP95GainPct": 30.111373001666884
+    }
+  ]
+}

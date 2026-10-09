@@ -477,6 +477,15 @@
     color: var(--color-text);
   }
 
+  .goals-trigger {
+    min-block-size: 2.75rem;
+  }
+
+  .goals-trigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
   .panel-badge {
     background: var(--color-surface);
     color: var(--color-text-faint);
@@ -806,20 +815,206 @@
   /* ---- Goals ------------------------------------------------------------ */
 
   .goals-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
+    position: relative;
+    flex: 0 0 auto;
+    display: grid;
     border-block-start: 1px solid var(--color-border);
     background: var(--color-bg);
   }
 
-  .goals-hint {
-    flex: 1;
-    min-inline-size: 6rem;
+  .goals-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface);
+  }
+
+  .goals-transfer-mode {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-1);
+    background: var(--color-surface);
     font-size: 0.75rem;
-    color: var(--color-text-faint);
+    color: var(--color-text-dim);
+  }
+
+  .goals-transfer-mode legend {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .goals-transfer-mode label {
+    position: relative;
+    flex: 0 0 auto;
+    cursor: pointer;
+  }
+
+  .goals-transfer-mode input {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .goals-transfer-mode span {
+    display: grid;
+    place-items: center;
+    min-block-size: 1.75rem;
+    padding: 0.125rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-1);
+    white-space: nowrap;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .goals-transfer-mode input:checked + span {
+    color: var(--color-text);
+    background: var(--color-bg);
+    border-color: var(--color-border);
+  }
+
+  .goals-transfer-mode input:focus-visible + span {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .goals-transfer-mode:disabled {
+    opacity: 0.5;
+  }
+
+  .goals-transfer-error {
+    position: absolute;
+    inset-inline: var(--space-3);
+    inset-block-end: calc(100% + var(--space-2));
+    z-index: 4;
+    margin: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-panel);
+    font-size: 0.75rem;
+    color: var(--color-warning);
+    pointer-events: none;
+  }
+
+  .goals-action-buttons {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .goals-destinations {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    gap: 0.375rem;
+    justify-content: start;
+    padding: var(--space-3);
+  }
+
+  .goals-action-buttons .card-action {
+    inline-size: max-content;
+    block-size: 2rem;
+    padding: var(--space-1) var(--space-3);
+    border-color: var(--color-border);
+    border-radius: var(--radius-2);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.75rem;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .goals-action-buttons .card-action:hover:not(:disabled) {
+    border-color: var(--color-text-dim);
+    background: var(--color-bg);
+  }
+
+  .goals-action-buttons .card-action:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .goals-more {
+    position: relative;
+  }
+
+  .goals-more-trigger {
+    display: grid;
+    place-items: center;
+    min-block-size: 1.75rem;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    color: var(--color-text-dim);
+  }
+
+  .goals-more-trigger:hover,
+  .goals-more-trigger[aria-expanded='true'] {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .goals-more-trigger:focus-visible,
+  .goals-actions-menu button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .goals-actions-menu {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: calc(100% + var(--space-2));
+    z-index: 5;
+    display: grid;
+    inline-size: max-content;
+    padding: var(--space-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .goals-actions-menu button {
+    min-block-size: 2.25rem;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-1);
+    font-size: 0.8125rem;
+    text-align: start;
+    color: var(--color-text);
+  }
+
+  .goals-actions-menu button:hover:not(:disabled),
+  .goals-actions-menu button:focus-visible {
+    background: var(--color-bg);
+  }
+
+  .goals-actions-menu button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .goals-menu-separator {
+    block-size: 1px;
+    margin: var(--space-1);
+    background: var(--color-border);
+  }
+
+  .goals-actions-menu .goals-menu-remove {
+    color: var(--color-danger);
   }
 
   /* ---- The stale-item indicator (PRD §6) -------------------------------- */

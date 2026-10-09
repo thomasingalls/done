@@ -1,0 +1,21 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/positionDecision.test.ts > reads the selected refusal and link/head messages without changing their signed bytes 4ms
+ ✓ test/positionDecision.test.ts > binds all five refusal subject fields, parent and the current externally held acceptance key 4ms
+ ✓ test/positionDecision.test.ts > authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads 4ms
+ ✓ test/positionDecision.test.ts > keeps refusal IDs stable across acceptance-key rotation while requiring the current signature 2ms
+ ✓ test/positionDecision.test.ts > rejects unknown, noncanonical, oversized, unsigned and malformed response bytes 2ms
+ ✓ test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 1047ms
+ ✓ test/positionDecision.test.ts > signs a separate submission wrapper over exact v2 bytes and parent refusal ID 4ms
+ ✓ test/positionDecision.test.ts > rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys 8ms
+ ✓ test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs 417ms
+ ✓ test/positionDecision.test.ts > captures response, expected subject and authority before asynchronous verification 1ms
+ ✓ test/positionDecision.test.ts > captures submission inputs and rejects malformed/trailing/oversized framing 1ms
+ ✓ test/positionDecision.test.ts > re-signing the same permanent parent under the current key preserves wrapper verification 2ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  23:02:40
+   Duration  1.68s (transform 54ms, setup 30ms, import 63ms, tests 1.50s, environment 0ms)
+

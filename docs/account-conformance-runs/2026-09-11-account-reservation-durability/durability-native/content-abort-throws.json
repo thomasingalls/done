@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "event": "request",
+      "requested": "strict"
+    },
+    {
+      "event": "complete"
+    },
+    {
+      "event": "settled"
+    }
+  ],
+  "bodyCalls": 0,
+  "error": {
+    "code": "storage-failed",
+    "message": "ContentError: Strict transaction durability is required."
+  }
+}

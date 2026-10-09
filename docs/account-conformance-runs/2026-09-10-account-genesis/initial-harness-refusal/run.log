@@ -1,0 +1,63 @@
+✔ runtime and independent oracle open the published AES-256 HPKE generation vector (5.39275ms)
+✔ 100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse (200.754417ms)
+✔ low-order recipients and malformed generation size refuse (0.600958ms)
+(node:76460) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76460) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (1005.271292ms)
+✔ renderer restart before genesis commit (961.335042ms)
+✔ renderer restart after genesis commit (1243.250541ms)
+✔ wrong factors, foreign owner and current service abandonment preserve preparation (760.761583ms)
+✔ unattestable actor refuses without rewriting content (641.863792ms)
+✔ unattestable card refuses without rewriting content (620.82375ms)
+✔ validly signed snapshot forgery is refused (941.200125ms)
+✔ validly signed wrap forgery is refused (967.188875ms)
+✔ validly signed coverage forgery is refused (708.948583ms)
+✔ validly signed recipient forgery is refused (690.703541ms)
+✔ validly signed actor forgery is refused (691.111875ms)
+✔ competing owners converge and cancellation drains before releasing the exclusive permit (918.584958ms)
+✖ previous version refuses the new carrier; malformed fields never gain an owner (823.104542ms)
+✔ 40 generated delivery/interruption histories preserve independent text and full source state (31929.6725ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43671.618083
+
+✖ failing tests:
+
+test at test/account-genesis/native.test.mjs:228:1
+✖ previous version refuses the new carrier; malformed fields never gain an owner (823.104542ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Unsupported promotion|Invalid/. Input:
+  
+  'Error: page.evaluate: Error: Malformed preparation\n' +
+    '    at closed (eval at evaluate (:311:30), <anonymous>:1540:139)\n' +
+    '    at parsePromotion (eval at evaluate (:311:30), <anonymous>:1686:14)\n' +
+    '    at readPromotion (eval at evaluate (:311:30), <anonymous>:1628:29)\n' +
+    '    at async checkPromotionCompatibility (eval at evaluate (:311:30), <anonymous>:1647:10)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:21513:5)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:21450:7)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:21362:20)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs:241:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Malformed preparation
+        at closed (eval at evaluate (:311:30), <anonymous>:1540:139)
+        at parsePromotion (eval at evaluate (:311:30), <anonymous>:1686:14)
+        at readPromotion (eval at evaluate (:311:30), <anonymous>:1628:29)
+        at async checkPromotionCompatibility (eval at evaluate (:311:30), <anonymous>:1647:10)
+        at async eval (eval at evaluate (:311:30), <anonymous>:21513:5)
+        at async eval (eval at evaluate (:311:30), <anonymous>:21450:7)
+        at async eval (eval at evaluate (:311:30), <anonymous>:21362:20)
+        at prepare (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/fixtures.mjs:165:8)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs:241:26),
+    expected: /Unsupported promotion|Invalid/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

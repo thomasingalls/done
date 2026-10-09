@@ -1,0 +1,14 @@
+(node:96543) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96543) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ P0–P6 actual Local and browser recovery owners through selected Account HTTP delivery and cold replay (9152.07925ms)
+✔ P7 wrong factor, cancellation and actual journal storage failure retain acknowledged writing (1330.997166ms)
+✔ native write-path plaintext side-record is detected after the actual edit is acknowledged (1558.859333ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12508.790083

@@ -1,0 +1,30 @@
+{
+  "expected": {
+    "v": 1,
+    "serviceId": "1279ee68056897ac70f96314f8407d8a",
+    "origin": "http://localhost:4999",
+    "rpId": "localhost",
+    "authRoot": "58f68d2eb47c5ce8966dafe5ab5ba36700f93a784b9994087215600aeb3db8a0"
+  },
+  "nonce": "fe2ac7ef65817cbd9e4be5637476454539ae3fbdff9a8af8ed01a8a478419e70",
+  "proof": {
+    "v": 1,
+    "pin": {
+      "v": 1,
+      "serviceId": "713ef3048a14e841b17b0af5d2504b85",
+      "origin": "http://localhost:4999",
+      "rpId": "localhost",
+      "authRoot": "9c0d8350df23bcdebeefe8b5e80c740275bbad6e7572cfaeecff23c30e0b89d7"
+    },
+    "nonce": "fe2ac7ef65817cbd9e4be5637476454539ae3fbdff9a8af8ed01a8a478419e70",
+    "signature": "f830cd9ecde4970bd2a512edc2031611e9f1681d1ec101c52935000cfca9912e4aa1a95292896301438b5c76dfcabfe283b9e4950b15b25e52e5419d1a4abc05"
+  },
+  "baseline": "refused",
+  "mutant": {
+    "v": 1,
+    "serviceId": "713ef3048a14e841b17b0af5d2504b85",
+    "origin": "http://localhost:4999",
+    "rpId": "localhost",
+    "authRoot": "9c0d8350df23bcdebeefe8b5e80c740275bbad6e7572cfaeecff23c30e0b89d7"
+  }
+}

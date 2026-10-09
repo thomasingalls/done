@@ -1,0 +1,72 @@
+Focused development checks; no release qualification. Service fixtures authenticate synthetic ciphertext; semantic replay is exercised separately.
+
+(node:43059) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43059) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ repeatable admission after cancellation preserves old attempts and refuses old ceremony authority (2311.143125ms)
+✔ replacement after rotation (original removed: false) certifies at generation two and permits another rotation (2532.158083ms)
+✔ replacement after rotation (original removed: true) certifies at generation two and permits another rotation (2526.828083ms)
+✔ replacement admission fences new historical-key uploads but retains accepted bytes and signed retry outcomes (1679.0225ms)
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (4170.858083ms)
+✔ replacement snapshot HTTP route requires the exact enrollment grant and only hints on its first publication (2125.035292ms)
+✔ replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows (185.171084ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15861.702291
+
+(node:43159) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43159) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ schema-16 pending comparison upgrades explicitly without replacing its messages (560.681625ms)
+✔ schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt (460.371959ms)
+✔ removal schema upgrades only offline from 18 and refuses an older host (193.976125ms)
+✔ rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host (283.892375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1875.780625
+
+✔ additional-device delivery and installed certification verify independent signatures from existing (246.865417ms)
+✔ additional-device delivery and installed certification verify independent signatures from new (128.861333ms)
+✔ approver-signed delivery must preserve every existing recipient, recovery, generation and exact comparison (96.460041ms)
+✔ certification cannot authorize an uninstalled device or change prior keys, rights, parent or accepted coverage (89.468ms)
+(node:43111) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current-key replacement cold replay preserves accepted writing, local journal edits and deletions (150.570625ms)
+✔ snapshot captures source documents and key before asynchronous signing (92.732209ms)
+✔ signed wrong coverage and altered ciphertext context cannot pass semantic replay (200.954709ms)
+✔ construction refuses incomplete accepted replay and unresolved local dependencies before signing (76.352917ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (319.151333ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (109.810708ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (45.703833ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (45.314084ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (50.00975ms)
+(node:43113) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (432.77975ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (454.507084ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (223.86775ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (99.000875ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (160.496209ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (201.78625ms)
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (487.063209ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (43.508375ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (293.517417ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (110.583041ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2372.94075

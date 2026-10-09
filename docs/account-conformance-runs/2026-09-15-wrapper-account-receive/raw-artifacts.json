@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-receive/owned-cap-failure/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-receive/owned-cap-failure/inputs.json.gz",
+    "bytes": 1224936,
+    "sha256": "d78f572ac87508015663b9da1a08d00957a5098d3a4c92c47ef08e3e34227fb2"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-receive/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-receive/owned/inputs.json.gz",
+    "bytes": 1224946,
+    "sha256": "64deeab03f304232143f17dc7571f5d83a789011b5fa2bdc1c85a082e6b2fe5d"
+  }
+]

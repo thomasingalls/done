@@ -1,0 +1,60 @@
+[
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin",
+      "scripts/account-delivery/run.mjs",
+      "scripts/content/run.mjs",
+      "scripts/custody/run.mjs",
+      "scripts/generate-private-envelope-vectors.mjs",
+      "scripts/journal/catalog.mjs",
+      "scripts/journal/run.mjs",
+      "scripts/storage-properties/run.mjs",
+      "scripts/write-session/catalog.mjs",
+      "scripts/write-session/scenarios.mjs",
+      "test/account-receive-editor/native.test.mjs",
+      "test/networkEnvelope.test.ts",
+      "test/spoolRecord.test.ts",
+      "test/storage-compatibility/compatibility.spec.ts",
+      "test/write-session/runtime.mjs",
+      "test/storage-harness/lifecycle.node.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "format",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "scripts/account-delivery/run.mjs",
+      "scripts/content/run.mjs",
+      "scripts/custody/run.mjs",
+      "scripts/generate-private-envelope-vectors.mjs",
+      "scripts/journal/catalog.mjs",
+      "scripts/journal/run.mjs",
+      "scripts/storage-properties/run.mjs",
+      "scripts/write-session/catalog.mjs",
+      "scripts/write-session/scenarios.mjs",
+      "test/account-receive-editor/native.test.mjs",
+      "test/networkEnvelope.test.ts",
+      "test/spoolRecord.test.ts",
+      "test/storage-compatibility/compatibility.spec.ts",
+      "test/write-session/runtime.mjs",
+      "test/storage-harness/lifecycle.node.mjs",
+      "package.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0
+  }
+]

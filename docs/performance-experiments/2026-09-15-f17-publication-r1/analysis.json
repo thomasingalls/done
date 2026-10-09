@@ -1,0 +1,253 @@
+{
+  "sessions": 6,
+  "measuredKeys": 480,
+  "warmupKeys": 624,
+  "comparisons": [
+    {
+      "session": "comparison-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 31,
+        "p95": 34.80000019073486
+      },
+      "candidate": {
+        "p50": 28.199999809265137,
+        "p95": 30.800000190734863
+      },
+      "medianRatio": 0.9096774132021012,
+      "p95Ratio": 0.8850574718943548
+    },
+    {
+      "session": "comparison-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 27.300000190734863,
+        "p95": 30
+      },
+      "candidate": {
+        "p50": 28.300000190734863,
+        "p95": 32.80000019073486
+      },
+      "medianRatio": 1.0366300363741163,
+      "p95Ratio": 1.0933333396911622
+    },
+    {
+      "session": "comparison-1",
+      "block": "shallow",
+      "selected": {
+        "p50": 27.5,
+        "p95": 30.59999942779541
+      },
+      "candidate": {
+        "p50": 30.600000381469727,
+        "p95": 34.30000019073486
+      },
+      "medianRatio": 1.112727286598899,
+      "p95Ratio": 1.1209150598734512
+    },
+    {
+      "session": "comparison-1",
+      "block": "deeper",
+      "selected": {
+        "p50": 27.200000762939453,
+        "p95": 29.5
+      },
+      "candidate": {
+        "p50": 32.89999961853027,
+        "p95": 37.5
+      },
+      "medianRatio": 1.2095587755775794,
+      "p95Ratio": 1.271186440677966
+    },
+    {
+      "session": "unicode-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 28.200000762939453,
+        "p95": 31.300000190734863
+      },
+      "candidate": {
+        "p50": 30.5,
+        "p95": 36.19999980926514
+      },
+      "medianRatio": 1.0815602544267735,
+      "p95Ratio": 1.1565495076252659
+    },
+    {
+      "session": "unicode-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 29.800000190734863,
+        "p95": 33
+      },
+      "candidate": {
+        "p50": 30.199999809265137,
+        "p95": 34.10000038146973
+      },
+      "medianRatio": 1.013422805905036,
+      "p95Ratio": 1.033333344893022
+    }
+  ],
+  "ordinary": [
+    {
+      "block": "shallow",
+      "selectedMedian": 29.25,
+      "candidateMedian": 29.40000009536743,
+      "medianPairedRatio": 1.0112023499005,
+      "medianPairedP95Ratio": 1.002986265883903
+    },
+    {
+      "block": "deeper",
+      "selectedMedian": 27.250000476837158,
+      "candidateMedian": 30.59999990463257,
+      "medianPairedRatio": 1.1230944059758479,
+      "medianPairedP95Ratio": 1.182259890184564
+    }
+  ],
+  "results": [
+    {
+      "name": "selected",
+      "session": "comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 31,
+          "p95": 34.80000019073486
+        },
+        {
+          "block": "deeper",
+          "p50": 27.300000190734863,
+          "p95": 30
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 91.82249999999476,
+      "redoSettledMs": 80.9444169999988
+    },
+    {
+      "name": "candidate",
+      "session": "comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 28.199999809265137,
+          "p95": 30.800000190734863
+        },
+        {
+          "block": "deeper",
+          "p50": 28.300000190734863,
+          "p95": 32.80000019073486
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 82.8902919999964,
+      "redoSettledMs": 95.02291700000205
+    },
+    {
+      "name": "candidate",
+      "session": "comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 30.600000381469727,
+          "p95": 34.30000019073486
+        },
+        {
+          "block": "deeper",
+          "p50": 32.89999961853027,
+          "p95": 37.5
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 97.29120800000237,
+      "redoSettledMs": 98.72129100000166
+    },
+    {
+      "name": "selected",
+      "session": "comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 27.5,
+          "p95": 30.59999942779541
+        },
+        {
+          "block": "deeper",
+          "p50": 27.200000762939453,
+          "p95": 29.5
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 88.80345900000248,
+      "redoSettledMs": 84.81437500000175
+    },
+    {
+      "name": "selected",
+      "session": "unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 28.200000762939453,
+          "p95": 31.300000190734863
+        },
+        {
+          "block": "deeper",
+          "p50": 29.800000190734863,
+          "p95": 33
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 94.96058400000038,
+      "redoSettledMs": 85.71687499999825
+    },
+    {
+      "name": "candidate",
+      "session": "unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 30.5,
+          "p95": 36.19999980926514
+        },
+        {
+          "block": "deeper",
+          "p50": 30.199999809265137,
+          "p95": 34.10000038146973
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 99.82291699999769,
+      "redoSettledMs": 99.29487499999959
+    }
+  ]
+}

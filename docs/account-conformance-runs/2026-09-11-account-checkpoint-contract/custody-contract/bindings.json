@@ -1,0 +1,6 @@
+{
+  "negatives": 39,
+  "omissions": 24,
+  "aeadRefusals": 19,
+  "note": "Independent primitive controls; authentic plaintext differences require owner correspondence checks below."
+}

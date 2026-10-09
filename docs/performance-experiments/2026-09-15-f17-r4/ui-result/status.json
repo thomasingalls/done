@@ -1,0 +1,15 @@
+{
+  "testFile": "test/workspaceUiIndex.test.tsx",
+  "command": "node node_modules/vitest/vitest.mjs run test/workspaceUiIndex.test.tsx",
+  "status": "passed",
+  "testFiles": 1,
+  "tests": 7,
+  "generatedHistories": 50,
+  "generatedSeed": 170409,
+  "durationSeconds": 1.84,
+  "initialTestFailure": false,
+  "runtimeChangedBySubtask": false,
+  "mainCheckoutChangedBySubtask": false,
+  "committed": false,
+  "typecheckAndFaultControls": "owned by root"
+}

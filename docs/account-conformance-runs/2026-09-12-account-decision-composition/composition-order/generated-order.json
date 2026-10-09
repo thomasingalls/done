@@ -1,0 +1,263 @@
+{
+  "seed": 112108,
+  "histories": [
+    {
+      "commands": [
+        "restart",
+        "refusal",
+        "retry-service",
+        "retry-service",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "refusal",
+        "winner"
+      ],
+      "conflict": true,
+      "closed": true,
+      "responseDigests": {
+        "refusal": "94488c2b385bdc7a608b305aa29aacaebe488604fdbd9b8950927bd6e3289df7",
+        "winner": "b4c9e14edff43a9d59a2922eed1a4d1522713941a865f2e297998f711f5554ac"
+      }
+    },
+    {
+      "commands": [
+        "retry-service",
+        "winner",
+        "compact",
+        "winner",
+        "retry-service",
+        "compact",
+        "compact",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "41c57709f52e02d8006adc6266991551d6986528be497bf2a474e766883de03f",
+        "winner": "5afee888dfc2da1198ba882282ba2875f77d7a302ac6cc5560ef94eb58fdd122"
+      }
+    },
+    {
+      "commands": [
+        "refusal",
+        "restart",
+        "retry-service",
+        "winner",
+        "refusal",
+        "refusal",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "refusal",
+        "winner"
+      ],
+      "conflict": true,
+      "closed": true,
+      "responseDigests": {
+        "refusal": "8639b0d6a65d180ed58dda1771499e5a882d776419d13a03b13d5d4f5179bad3",
+        "winner": "b3fd083a38271de9237080501412164fd6d83960dfcfb909ae21f56b6580a70b"
+      }
+    },
+    {
+      "commands": [
+        "compact",
+        "refusal",
+        "retry-service",
+        "refusal",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "refusal",
+        "winner"
+      ],
+      "conflict": true,
+      "closed": true,
+      "responseDigests": {
+        "refusal": "d0553197fafa85e2b98bc16a4fb0d9e7e304a5a73d8a6ce05d80e82814d29e25",
+        "winner": "1e6303079c6e09ace734946a47c22a7a5ff6a5f3ea7e8a0fe1a59fc034985895"
+      }
+    },
+    {
+      "commands": [
+        "winner",
+        "refusal",
+        "winner",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "35da4c6294ecb6c2a17e723a3c7a8b31c0efcff6521c93bd6466d391be720a59",
+        "winner": "dd04c72cbdad32c357332604ddb33f06fe7ea590097942257a9f74d5b32a4cb7"
+      }
+    },
+    {
+      "commands": [
+        "compact",
+        "winner",
+        "compact",
+        "winner",
+        "refusal",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "3c0b7f732b88374d0652278321060d8adb0be22ae2b3f615bac11d4865d52103",
+        "winner": "e24d2cda7c89ea069e2bcb44a67991f9d7ed1eeed349b46effbc0ef205eff1ca"
+      }
+    },
+    {
+      "commands": [
+        "winner",
+        "winner",
+        "retry-service",
+        "compact",
+        "winner",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "ec074af447181db5256ee449eab7a97b374b9005938d70462573addace61871b",
+        "winner": "460c6adfca98056ec495fcc86212a8f592325d9d8ec6c92c2089611a588e0e8e"
+      }
+    },
+    {
+      "commands": [
+        "retry-service",
+        "retry-service",
+        "winner",
+        "winner",
+        "compact",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "23315e676401b88719581ca39c96861d79eaad777f6bcb89b064fd65d192dcfa",
+        "winner": "2a1f3b6b3dd8b5c23e876be375da435fccd8826b5cd458bfaaee6b7b3f44a7d3"
+      }
+    },
+    {
+      "commands": [
+        "refusal",
+        "retry-service",
+        "refusal",
+        "winner",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "refusal",
+        "winner"
+      ],
+      "conflict": true,
+      "closed": true,
+      "responseDigests": {
+        "refusal": "c2855df62e54e06ed233817f4e5f71f62faaf78ba3daa537e1523b3effcaf177",
+        "winner": "6639b2384cf274dcc4e221ae157339214727758f8021632ee64ed354564fa0dc"
+      }
+    },
+    {
+      "commands": [
+        "compact",
+        "refusal",
+        "retry-service",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "refusal",
+        "winner"
+      ],
+      "conflict": true,
+      "closed": true,
+      "responseDigests": {
+        "refusal": "69b8cde12f41214d7a90b762777c852576d45cabbef0f42c5150430b244ef025",
+        "winner": "c5bb265a85adecae1426d8a87a4e19775115ca245119ee7392035edc92ecc864"
+      }
+    },
+    {
+      "commands": [
+        "winner",
+        "restart",
+        "restart",
+        "compact",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "930885342ef696e1816d8356e73ae0fbbf06e2d54c5ad62bbf74bba5faf17daa",
+        "winner": "47eaa7905d1fad839bfa1275f2d1e472213be0d234708296b6eca5c2a8899931"
+      }
+    },
+    {
+      "commands": [
+        "winner",
+        "restart",
+        "refusal",
+        "retry-service",
+        "restart",
+        "refusal",
+        "winner",
+        "restart"
+      ],
+      "retained": [
+        "winner"
+      ],
+      "conflict": true,
+      "closed": false,
+      "responseDigests": {
+        "refusal": "67360df81f74094fc1aac1986a12a4e75d0e14cba7cbfad792148c9173418c5a",
+        "winner": "2fcb0f8ed19779ceaab840768ce58c37c071e3bdbcaab518742e63c36926994a"
+      }
+    }
+  ],
+  "numRuns": 12,
+  "failed": false,
+  "numShrinks": 0,
+  "path": null,
+  "counterexample": null,
+  "error": null
+}

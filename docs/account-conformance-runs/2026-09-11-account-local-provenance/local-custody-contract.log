@@ -1,0 +1,16 @@
+✔ generated states preserve the closed primitive state domain at the structured-clone parser (36.996625ms)
+✔ fixed factor, envelope, credential, key-correspondence and metadata vectors match actual native primitives (18.013167ms)
+✔ inherited factor and generation-envelope bytes agree without qualifying historical credential or PRF ceremonies (5.603667ms)
+✔ each factor, envelope, credential and metadata field binds; encoded omissions retain real AES/HMAC checks (12.747375ms)
+✔ closed custody parser rejects malformed nested carriers and owns every retained byte array (2.656208ms)
+✔ 200 shrinking-enabled reservation and completion histories authenticate exact metadata and reject one-leaf alterations (1026.46325ms)
+✔ authentic wrong private keys, relocated credentials and metadata omissions expose effective source controls (61.131625ms)
+✔ credential export-format and failure cleanup guards execute before accepting keys or retaining temporary private bytes (34.307208ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1353.097875

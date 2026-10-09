@@ -1,0 +1,28 @@
+✔ runtime and independent oracle open the published AES-256 HPKE generation vector (4.298334ms)
+✔ 100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse (157.826583ms)
+✔ low-order recipients and malformed generation size refuse (0.462042ms)
+(node:95446) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95446) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (857.524417ms)
+✔ renderer restart before genesis commit (854.47125ms)
+✔ renderer restart after genesis commit (1104.277792ms)
+✔ wrong factors, foreign owner and current service abandonment preserve preparation (648.536ms)
+✔ unattestable actor refuses without rewriting content (539.128625ms)
+✔ unattestable card refuses without rewriting content (549.871791ms)
+✔ validly signed snapshot forgery is refused (849.827959ms)
+✔ validly signed wrap forgery is refused (875.384542ms)
+✔ validly signed coverage forgery is refused (632.429584ms)
+✔ validly signed recipient forgery is refused (627.010041ms)
+✔ validly signed actor forgery is refused (587.65725ms)
+✔ competing owners converge and cancellation drains before releasing the exclusive permit (815.184042ms)
+✔ previous version refuses the new carrier; malformed fields never gain an owner (968.371917ms)
+✔ 40 generated delivery/interruption histories preserve independent text and full source state (18009.3125ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28858.532

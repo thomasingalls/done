@@ -1,0 +1,57 @@
+{
+  "control": "wrap",
+  "observed": "forged artifact accepted with semantic refusal disabled",
+  "candidate": {
+    "v": 1,
+    "kind": "promotion-genesis-candidate",
+    "preparation": "30cd263c630dd0a9ef7874a17c39b223c1e9408ba7d7643993d3847e2fcd7d04",
+    "accountId": "y5cZiCpKZ7VmH2SavTirl17-4IkZ9AgbMzIEfIdaseE",
+    "principalId": "570e3dee7ea60a5421c17b77a2acef87",
+    "workspaceId": "ef5b458bebc2ff6c62752c14e52c3eac",
+    "lineageId": "aad171cca2d28dccddd1ebe9762840901bd8820bdc11927093f3895c82e30104",
+    "authRoot": "174193f270f2fc6ae0fc08885e13e76e2e0093e263d42b16e976e699312f3de8",
+    "generation": 1,
+    "proposedEpoch": 1,
+    "signer": "98e6b5b90c8780bf9a1fe2fce02f999a",
+    "actors": [
+      {
+        "id": "570e3dee7ea60a5421c17b77a2acef87",
+        "kind": "human",
+        "credential": "98e6b5b90c8780bf9a1fe2fce02f999a"
+      },
+      {
+        "id": "system",
+        "kind": "system",
+        "credential": "98e6b5b90c8780bf9a1fe2fce02f999a"
+      }
+    ],
+    "coverage": {
+      "derivation": "yjs-13.6.31-snapshot-v1",
+      "snapshot": "019b8cd2ef02022c014e02019b8cd2ef0274",
+      "heads": []
+    },
+    "checkpoint": {
+      "v": 1,
+      "salt": "5d3e161cc4ce294fd8c4caab893014c3",
+      "nonce": "deef2b5c08d66e84f6948fe0",
+      "ct": "03a3340e9d3a00ab8f28029c1e5ba9e5de4bb0a431202e0f849f50698d347965055a8b38ba9928caca6dafafc61c490ba33f4f7c17e25391952668541cf9fb845c2108d871cffc2b67577175b291396653b42c5b83ee4abb2f1128f2d70f2a2be9d93ac9be24c54fa51bbca0cca6af30ebd410a23dbcde86ccc82466d3cb8ca3a9384d6f458690cfbf7fe6af158b80b5613d4113bfdd7828c1efaa51cee119082854d8a76e4ba93835ae331e80f2d28c4061fb3ab8171a523d2a3b8a2c06e0d400fec841be92920f699e8a0bb8c864d7b20c558723064871b336beedb1bc5bd822e1e99dfeb8864795cc0f7415869868e04e5eb181a5937e12d8cf6158c616c67953513e0cd8855f81adde7267b4f541f32d547ebef2eb454c8eebe3280559130cd79b8e25d44a853504bafb6cf581b5fee06863516fc2eb20d781a1b3335d16013d67ef6726043dd767b75e32413533a7369bb805a1ae1b0486a741cf8dc014e7a4121c1d2b2e2672ffd10288bb17afe8cae36b774c7e5d229c399be3de64a407ac29bfdde8dcd67a998bf1cd091323f08d96d44268d6899b075cb65d81ac31f46b8f1d409887f48c1bfcc79f53f758351b2456848e4b86c88078a527dadd4fa897bd57370a8ddfbc457a7010f5da58cc41ffa69858b469e28fd3071d48c7e476e39f9f959e3714ded19c7cc4bb1f5c6ad982e7172f9a6391ea2e0eca6d1ad8a6b000838f7c745fbd9f05b2382635a686f4cd4ba6deac1665526d8a5ce63095453f0e830bf724645a5746cc3bcfa0ddd11f3f5966a53bae68869cc110a74adeafcff18d89733dff93f1981818912c3e6857555718ee4498433aaaca01d6f3e64bef21f62d1df18e43479ac8ab84094f5ceb9ccca45b4385551b2e00e66f27d6ff5f923a203530379717de41ce837aef3802d53e179f08062841937bd19ab5c112e6ccc11449b5c22418fcadb4fb7c624dcc4cc4358d7d7ad08e1a94b05772af74e85be541ae6767359a169a22f83ccb1d4ceaa7110b2daf2232988020b70e925ea72f85889c43ca217a4869e2d722eba4f058cbdbae0d2b7d5cf5622d01c910dfc17cc68f9196611e131fc26d097ac3ff4980565aae2fd07819163d0038c290000207d7f091d0aeb44d4f33622eaa6d03a5d6d56b87728e7ebe7beee6374de3aa66a46cbaee46fc986b54c4b60f6085564bc8acc27c4caaa8be1dc370cdfa88824d6a17d6befbb4732c443f081eacf9747480db1e1c14d7770d9ccce54437c8a6191de95a08ebbe7dc50a83bfce1ed32ddce6fe21da045a0b77ce3a1e613efac5224ca26ea53fcb73bd7eacfae7977e5b6a419a42f84b258714d287da33d88cc8b839c8366bedb3eff44fa755a4fd85a65d104bdcccb30940b6d16054b1281a0b86aa7a0b"
+    },
+    "wraps": [
+      {
+        "recipient": "device",
+        "id": "89b9f8b6ca9f97b5b42a82347d5a7ab5",
+        "publicKey": "915e5a8a3ea8739ed243e87ecd660bc4174286db8ea728b2700a8b0dc6dbe959",
+        "enc": "c0c41da6aac01528515fd1cb2d7fb22bcff53252fae5858ac0478202b5879044",
+        "ct": "16b1d1c3ed0d4229f3521bf3f5d2dad71b5e27b0e85cae2f19633cc105b3a6020153ecc4a0cca97385ab96ed27b77279"
+      },
+      {
+        "recipient": "recovery",
+        "id": "WmkzggNyax39XC5j-eQaiVHBtIDqTPOQDcD45pBDLT0",
+        "publicKey": "641b0bb69d08d022e5fd2d54d49d0b9550ef6a76b3860d37275c21c9d0922d3f",
+        "enc": "83f6fd1872773341f0f505243ad022f63c7bc269e9f2c988fd6a1d917d40b60a",
+        "ct": "8b0c263094e1ea9b40bfda83867a07fe7ab4ac73cb42514f45ed7beb50e9ca03ce3395150b7350f3ce483139b1014536"
+      }
+    ],
+    "signature": "520df1078f3279fe4012d1dc9b37f09f6cd2f5434e499c5293efa60016d0453f843af845e87c03b80382ea941f80a8f7aaf01954ede9af1fbc1d6f8b72332b08"
+  }
+}

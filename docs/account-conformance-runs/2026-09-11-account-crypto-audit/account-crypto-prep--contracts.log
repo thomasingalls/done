@@ -1,0 +1,13 @@
+(node:2824) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2824) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ prep probes: six declared message encodings, first-head distinction and old/current recovery payloads (70.180958ms)
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 391.905792

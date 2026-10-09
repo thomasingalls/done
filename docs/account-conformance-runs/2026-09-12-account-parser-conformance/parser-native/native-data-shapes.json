@@ -1,0 +1,17 @@
+{
+  "holes": [
+    true,
+    true,
+    true
+  ],
+  "accepted": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ]
+}

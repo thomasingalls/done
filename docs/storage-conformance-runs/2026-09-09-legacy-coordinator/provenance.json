@@ -1,0 +1,373 @@
+{
+  "schema": 1,
+  "note": "Original reports retained without rewriting their starting commit or tested hashes. Native tests ran on uncommitted implementation based on f4ed6bc. Full-native preceded three additive dispatch-gap cases; first-full and abort-replay preceded independent identity/reservation assertions. Unit report has no native snapshot provenance. Current-file comparisons occur before final documentation edits; historical differences are explicit. The first-full package snapshot precedes adding the coordinator command to package.json and pnpm check; that snapshot is also retained.",
+  "files": [
+    {
+      "source": "test-results/legacy-coordinator/full-native/baseline-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/full-native/baseline-current-input.json",
+      "sourceBytes": 3231,
+      "sourceSha256": "df9a1d70c16fdad7cb42d17dc804bda6f19a3537496e667050ef719e9ce6708c",
+      "artifactBytes": 3231,
+      "artifactSha256": "df9a1d70c16fdad7cb42d17dc804bda6f19a3537496e667050ef719e9ce6708c"
+    },
+    {
+      "source": "test-results/legacy-coordinator/full-native/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/full-native/events.jsonl.gz",
+      "sourceBytes": 1258909,
+      "sourceSha256": "8c1d2669c4271541bc161af14fca5669b2b3ed2dd73a0ac1592bc90226ede291",
+      "artifactBytes": 80641,
+      "artifactSha256": "73b74674f49a30b5eb8b1c24c703477072438eb3b1c7fd6b1366a73171237504"
+    },
+    {
+      "source": "test-results/legacy-coordinator/full-native/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/full-native/report.json",
+      "sourceBytes": 76904,
+      "sourceSha256": "24248d4d9e6b34742963f25487a62c5b489235296e0340bd56005c5c7900839b",
+      "artifactBytes": 76904,
+      "artifactSha256": "24248d4d9e6b34742963f25487a62c5b489235296e0340bd56005c5c7900839b"
+    },
+    {
+      "source": "test-results/legacy-coordinator/full-native/baseline/scripts/legacy-coordinator/campaign.mjs",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/full-native/tested-campaign.mjs",
+      "sourceBytes": 30939,
+      "sourceSha256": "5d25fa622ba52d728bed396eeb6198110ef529e95ccbe442c1957ede94d47107",
+      "artifactBytes": 30939,
+      "artifactSha256": "5d25fa622ba52d728bed396eeb6198110ef529e95ccbe442c1957ede94d47107"
+    },
+    {
+      "source": "test-results/legacy-coordinator/dispatch-gaps/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/dispatch-gaps/events.jsonl.gz",
+      "sourceBytes": 21047,
+      "sourceSha256": "a8f8ad72c91bd5dd417bc6a0f5d3b20bab4427f03a9783f40b2e578a79af11e1",
+      "artifactBytes": 1949,
+      "artifactSha256": "658b3cadca6b8b6b795601b8f0c9068254818382fa7488efe605379ff07ffec2"
+    },
+    {
+      "source": "test-results/legacy-coordinator/dispatch-gaps/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/dispatch-gaps/report.json",
+      "sourceBytes": 18792,
+      "sourceSha256": "31db99e8ee80f8b511796a61cfb146ef1a4f5eb65becee1e46afd4b2f5769667",
+      "artifactBytes": 18792,
+      "artifactSha256": "31db99e8ee80f8b511796a61cfb146ef1a4f5eb65becee1e46afd4b2f5769667"
+    },
+    {
+      "source": "test-results/legacy-coordinator/dispatch-gaps/baseline/scripts/legacy-coordinator/campaign.mjs",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/dispatch-gaps/tested-campaign.mjs",
+      "sourceBytes": 32261,
+      "sourceSha256": "08fa37ce9f95f826371744e5666e7aceed719a64037972ff7ea59494894f3b55",
+      "artifactBytes": 32261,
+      "artifactSha256": "08fa37ce9f95f826371744e5666e7aceed719a64037972ff7ea59494894f3b55"
+    },
+    {
+      "source": "test-results/legacy-coordinator/abort-replay/baseline-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/abort-replay/baseline-current-input.json",
+      "sourceBytes": 3283,
+      "sourceSha256": "6eaffe64faae2066bdf718ee9de0a0938f5f161156e9dbebe0714b0d144b7c57",
+      "artifactBytes": 3283,
+      "artifactSha256": "6eaffe64faae2066bdf718ee9de0a0938f5f161156e9dbebe0714b0d144b7c57"
+    },
+    {
+      "source": "test-results/legacy-coordinator/abort-replay/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/abort-replay/events.jsonl.gz",
+      "sourceBytes": 13788,
+      "sourceSha256": "d797832e1c37f941d868e83049dfc06b40232d2f0b2566528cfa6d88a0416110",
+      "artifactBytes": 1659,
+      "artifactSha256": "6bbaf03d28a6a0f5ca21074368ade7c40846fd4d1c40aa4472c0e44cecbf4898"
+    },
+    {
+      "source": "test-results/legacy-coordinator/abort-replay/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/abort-replay/report.json",
+      "sourceBytes": 18528,
+      "sourceSha256": "af62d02fef54eec8f3540fadde51e6e112bef7612e0edc5ceeda7200b8010876",
+      "artifactBytes": 18528,
+      "artifactSha256": "af62d02fef54eec8f3540fadde51e6e112bef7612e0edc5ceeda7200b8010876"
+    },
+    {
+      "source": "test-results/legacy-coordinator/abort-replay/baseline/scripts/legacy-coordinator/campaign.mjs",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/abort-replay/tested-campaign.mjs",
+      "sourceBytes": 29173,
+      "sourceSha256": "b15a5fc2154c806b422fdadc6844fdb3e5bc00a91a8425c5f13e896e4a649973",
+      "artifactBytes": 29173,
+      "artifactSha256": "b15a5fc2154c806b422fdadc6844fdb3e5bc00a91a8425c5f13e896e4a649973"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/baseline-current-input.json",
+      "sourceBytes": 2011,
+      "sourceSha256": "6654dd70037a9ea3bad5f3121f305ef64c72d093c9879a533e16127b63b467ae",
+      "artifactBytes": 2011,
+      "artifactSha256": "6654dd70037a9ea3bad5f3121f305ef64c72d093c9879a533e16127b63b467ae"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline-first-failure-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/baseline-first-failure-input.json",
+      "sourceBytes": 3283,
+      "sourceSha256": "6eaffe64faae2066bdf718ee9de0a0938f5f161156e9dbebe0714b0d144b7c57",
+      "artifactBytes": 3283,
+      "artifactSha256": "6eaffe64faae2066bdf718ee9de0a0938f5f161156e9dbebe0714b0d144b7c57"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline-first-failure.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/baseline-first-failure.json",
+      "sourceBytes": 2013,
+      "sourceSha256": "7afeaf148dbacfb030f2795d673520965e94efab8816de9fca5b6ffb51bfc618",
+      "artifactBytes": 2013,
+      "artifactSha256": "7afeaf148dbacfb030f2795d673520965e94efab8816de9fca5b6ffb51bfc618"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/events.jsonl.gz",
+      "sourceBytes": 753154,
+      "sourceSha256": "ec56ecef533dae32fbe945196a2da55236c82bb7365f7d4345fc72a691dfb2de",
+      "artifactBytes": 43515,
+      "artifactSha256": "fd9009340e9fdaa1c73496a08b6a0ecead0ea41a225a7de3d520b7ab00d12be1"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/report.json",
+      "sourceBytes": 63064,
+      "sourceSha256": "a5e47a6eaeaaeaccba671d7be8fad26bfe7ab733688eef06da3afb3b90291ccd",
+      "artifactBytes": 63064,
+      "artifactSha256": "a5e47a6eaeaaeaccba671d7be8fad26bfe7ab733688eef06da3afb3b90291ccd"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline/scripts/legacy-coordinator/campaign.mjs",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/tested-campaign.mjs",
+      "sourceBytes": 28548,
+      "sourceSha256": "6cc881aff3fd9ef70c361edaa06fe8d99aa01f66e9bc03095833635a1a987ff4",
+      "artifactBytes": 28548,
+      "artifactSha256": "6cc881aff3fd9ef70c361edaa06fe8d99aa01f66e9bc03095833635a1a987ff4"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-import/repeat-slice-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-import/repeat-slice-counterexample.json",
+      "sourceBytes": 206,
+      "sourceSha256": "6b4331e88cb39edb4040af43f25aa9924ee09501d4fade3af33b05df9d4885d1",
+      "artifactBytes": 206,
+      "artifactSha256": "6b4331e88cb39edb4040af43f25aa9924ee09501d4fade3af33b05df9d4885d1"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-import/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-import/report.json",
+      "sourceBytes": 19131,
+      "sourceSha256": "f1e652bb281442ff9a21f92cf89f64534cd569574d9717f31f9dfe648ae6b6bd",
+      "artifactBytes": 19131,
+      "artifactSha256": "f1e652bb281442ff9a21f92cf89f64534cd569574d9717f31f9dfe648ae6b6bd"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-selection/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-selection/report.json",
+      "sourceBytes": 16425,
+      "sourceSha256": "834c4cdaaed0467b84e72f73c3c9dba69c435b5811d021437dd96bb4692e382f",
+      "artifactBytes": 16425,
+      "artifactSha256": "834c4cdaaed0467b84e72f73c3c9dba69c435b5811d021437dd96bb4692e382f"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-selection/trust-imported-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-selection/trust-imported-counterexample.json",
+      "sourceBytes": 40,
+      "sourceSha256": "56911f945a89cfaa559915ab3dc884b5dde2b94aa710b65bbb1e38e13ee0236b",
+      "artifactBytes": 40,
+      "artifactSha256": "56911f945a89cfaa559915ab3dc884b5dde2b94aa710b65bbb1e38e13ee0236b"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/baseline-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/baseline-current-input.json",
+      "sourceBytes": 3194,
+      "sourceSha256": "83c37ad94d07fe2915c2d487f128bd8894a544e32682008c9ef7c9176fc1517d",
+      "artifactBytes": 3194,
+      "artifactSha256": "83c37ad94d07fe2915c2d487f128bd8894a544e32682008c9ef7c9176fc1517d"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/events.jsonl.gz",
+      "sourceBytes": 797874,
+      "sourceSha256": "afbcd55ec2579fb2d807dfbc99e3859c5e24f2dc55e7a5ad0547869a1ba5f96b",
+      "artifactBytes": 55239,
+      "artifactSha256": "aecbb8284775ca55f0dd34346889a8a3e487096246d28656c83c8d8d9a1d313a"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/manifest-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/manifest-counterexample.json",
+      "sourceBytes": 36,
+      "sourceSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "artifactBytes": 36,
+      "artifactSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/report.json",
+      "sourceBytes": 88271,
+      "sourceSha256": "730fd27d6c85a50bb94209ff9163ad58b7ab397a0c30609a27dd9085ee0068d8",
+      "artifactBytes": 88271,
+      "artifactSha256": "730fd27d6c85a50bb94209ff9163ad58b7ab397a0c30609a27dd9085ee0068d8"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-destination-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-destination-counterexample.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-destination-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-destination-current-input.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-destination-first-failure-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-destination-first-failure-input.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-destination-first-failure.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-destination-first-failure.json",
+      "sourceBytes": 2036,
+      "sourceSha256": "b5ec3af847496f528dc53d140778a68d007dee2b490524118f7217fa5942fcfe",
+      "artifactBytes": 2036,
+      "artifactSha256": "b5ec3af847496f528dc53d140778a68d007dee2b490524118f7217fa5942fcfe"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-manifest-validation-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-manifest-validation-current-input.json",
+      "sourceBytes": 36,
+      "sourceSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "artifactBytes": 36,
+      "artifactSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-manifest-validation-first-failure-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-manifest-validation-first-failure-input.json",
+      "sourceBytes": 36,
+      "sourceSha256": "ac2678b7e5426fdcd74f67c75f2e79c67b458b70972f5b6b963d8c088fd4ac2f",
+      "artifactBytes": 36,
+      "artifactSha256": "ac2678b7e5426fdcd74f67c75f2e79c67b458b70972f5b6b963d8c088fd4ac2f"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-cleanup/skip-manifest-validation-first-failure.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-cleanup/skip-manifest-validation-first-failure.json",
+      "sourceBytes": 44460,
+      "sourceSha256": "fc5dd5267c43ba2038f73a23747cd8ae97e440fe48d8cbe2a806898e1bb3eadd",
+      "artifactBytes": 44460,
+      "artifactSha256": "fc5dd5267c43ba2038f73a23747cd8ae97e440fe48d8cbe2a806898e1bb3eadd"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-startup/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-startup/report.json",
+      "sourceBytes": 200347,
+      "sourceSha256": "2b29bd2869c4149a93e15f544928a81b4774b050417d4956d8cf32b2eefa7900",
+      "artifactBytes": 200347,
+      "artifactSha256": "2b29bd2869c4149a93e15f544928a81b4774b050417d4956d8cf32b2eefa7900"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-startup/report.md",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-startup/report.md",
+      "sourceBytes": 1056,
+      "sourceSha256": "180651dd4546b1fd03a1ad0c76e647056fbab3d19ddafdd336fd64069be34097",
+      "artifactBytes": 1056,
+      "artifactSha256": "180651dd4546b1fd03a1ad0c76e647056fbab3d19ddafdd336fd64069be34097"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-clear/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-clear/report.json",
+      "sourceBytes": 137252,
+      "sourceSha256": "6afe91c786c468e755b4a4f565cdb64fc49dd00fe905ac9d7026ff6adaf866dc",
+      "artifactBytes": 137252,
+      "artifactSha256": "6afe91c786c468e755b4a4f565cdb64fc49dd00fe905ac9d7026ff6adaf866dc"
+    },
+    {
+      "source": "test-results/legacy-coordinator/regression-clear/report.md",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/regression-clear/report.md",
+      "sourceBytes": 1314,
+      "sourceSha256": "e83a57df76038204dfa71defd462e8e6ec9e6d4f0846ec183277be58d61867e7",
+      "artifactBytes": 1314,
+      "artifactSha256": "e83a57df76038204dfa71defd462e8e6ec9e6d4f0846ec183277be58d61867e7"
+    },
+    {
+      "source": "test-results/legacy-coordinator/unit-first.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/unit.json",
+      "sourceBytes": 274194,
+      "sourceSha256": "e169e28698267b3782979240261ba01da9369b0dfc4a45afe85bb9c66fda06c5",
+      "artifactBytes": 274194,
+      "artifactSha256": "e169e28698267b3782979240261ba01da9369b0dfc4a45afe85bb9c66fda06c5"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline/package.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-coordinator/first-full/tested-package.json",
+      "sourceBytes": 7726,
+      "sourceSha256": "d2b2373be1322234322442cfcb91b0228602b35871a3eb393b4379ec95547d35",
+      "artifactBytes": 7726,
+      "artifactSha256": "d2b2373be1322234322442cfcb91b0228602b35871a3eb393b4379ec95547d35"
+    }
+  ],
+  "snapshotChecks": [
+    {
+      "run": "full-native",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 155,
+      "differentCurrentFiles": [
+        "scripts/legacy-coordinator/campaign.mjs"
+      ]
+    },
+    {
+      "run": "dispatch-gaps",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 156,
+      "differentCurrentFiles": []
+    },
+    {
+      "run": "abort-replay",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 155,
+      "differentCurrentFiles": [
+        "scripts/legacy-coordinator/campaign.mjs"
+      ]
+    },
+    {
+      "run": "first-full",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 150,
+      "differentCurrentFiles": [
+        "scripts/legacy-coordinator/campaign.mjs",
+        "package.json"
+      ]
+    },
+    {
+      "run": "regression-import",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 129,
+      "differentCurrentFiles": []
+    },
+    {
+      "run": "regression-selection",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 130,
+      "differentCurrentFiles": []
+    },
+    {
+      "run": "regression-cleanup",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 150,
+      "differentCurrentFiles": []
+    },
+    {
+      "run": "regression-startup",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 120,
+      "differentCurrentFiles": []
+    },
+    {
+      "run": "regression-clear",
+      "recordedCommit": "f4ed6bcfbd0d50e52747f4fc1655e69e7885ad07",
+      "matchedCurrentFiles": 121,
+      "differentCurrentFiles": []
+    }
+  ]
+}

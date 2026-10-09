@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-retention.mjs",
+  "script_sha256": "29593a3c44d9a3570adba948ba83aed7066ab8af6e0e04b3a771b09229f01e87",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T10:10:14.690Z",
+  "finished": "2026-09-11T10:10:14.700Z",
+  "tree": {
+    "head": "e835243b8e65658d8626db1e916a60d464fd890c",
+    "dirty_sha256": "f1555561bb46609266f689dbfab2fe4dde03dcc966cf5dd06e5a05bcbb3aa405"
+  }
+}

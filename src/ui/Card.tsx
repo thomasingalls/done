@@ -18,20 +18,11 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { EditorView } from '@codemirror/view';
-import {
-  cardBody,
-  cardId,
-  cardText,
-  titleOf,
-  type Card as CardType,
-  type Origin,
-  type Section,
-  type Store,
-} from '../crdt';
+import { titleOf, type Section } from '../crdt/days';
+import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
+import { useWorkspaceUi } from './workspaceUi';
 import { blurToStatic, cardKeymap, type CardHooks } from '../editor/cardCommands';
-import { createEditor, type EditorHandle } from '../editor/createEditor';
 import { renderStatic } from '../editor/staticRender';
-import { useYText } from './useYjs';
 
 export interface CardAction {
   label: string;
@@ -51,8 +42,7 @@ export interface CardReorder {
 }
 
 export interface CardProps {
-  store: Store;
-  card: CardType;
+  card: WorkspaceSnapshot['cards'][number];
   section: Section;
   /** No editor mounts and no action runs. The freeze is permanent (PRD §6). */
   frozen: boolean;
@@ -62,7 +52,6 @@ export interface CardProps {
   hooks: CardHooks;
   /** False for a neighbouring day, which renders content but never edits it. */
   editable: boolean;
-  origin: Origin;
   /** Present only for live Done cards on the active, writable day. */
   reorder?: CardReorder;
   /** Set after a split/merge so editing resumes at the structural join. */
@@ -85,7 +74,6 @@ interface ReorderPointer {
 }
 
 export const Card = ({
-  store,
   card,
   section,
   frozen,
@@ -93,12 +81,11 @@ export const Card = ({
   actions,
   hooks,
   editable,
-  origin,
   reorder,
   autoFocusAt,
 }: CardProps): React.ReactElement => {
-  const id = cardId(card);
-  const text = useYText(cardText(card));
+  const { mountEditor } = useWorkspaceUi();
+  const { id, text } = card;
   const [editing, setEditing] = useState(autoFocusAt !== undefined);
   const staticHost = useRef<HTMLDivElement>(null);
   const editorHost = useRef<HTMLDivElement>(null);
@@ -132,15 +119,10 @@ export const Card = ({
       leave: () => latestHooks.current.leave(),
     };
 
-    const handle: EditorHandle = createEditor({
-      parent,
-      text: cardText(card),
-      awareness: store.awareness,
-      undo: store.undo,
-      origin,
-      surface: 'card',
-      extra: [cardKeymap(bridge), blurToStatic(() => setEditing(false))],
-    });
+    const handle = mountEditor(parent, { kind: 'card', id }, [
+      cardKeymap(bridge),
+      blurToStatic(() => setEditing(false)),
+    ]);
     view.current = handle.view;
     handle.view.focus();
 
@@ -160,13 +142,17 @@ export const Card = ({
       handle.destroy();
       view.current = null;
     };
-  }, [editing, card, store, origin]);
+  }, [editing, id, mountEditor]);
 
   useEffect(() => {
     if (autoFocusAt === undefined || editing || frozen || !editable) return;
     pendingPosition.current = autoFocusAt;
     setEditing(true);
   }, [autoFocusAt, editable, editing, frozen]);
+
+  useEffect(() => {
+    if (frozen || !editable) setEditing(false);
+  }, [frozen, editable]);
 
   const open = useCallback(
     (at?: { x: number; y: number }) => {
@@ -322,7 +308,7 @@ export const Card = ({
     open();
   };
 
-  const label = titleOf(cardBody(card)) || 'Empty card';
+  const label = titleOf(text) || 'Empty card';
 
   return (
     <article

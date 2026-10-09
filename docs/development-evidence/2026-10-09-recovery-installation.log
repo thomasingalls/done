@@ -1,0 +1,66 @@
+Focused recovery native installation, 2026-10-09
+
+(node:15072) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15072) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:15072) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ recovery native installation resumes after partial activation, then edits and cold-opens with the new key only (3446.341583ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4183.180208
+
+Existing native activation regression:
+(node:15133) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15133) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:15133) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ later native slot resumes activation after index interruption and rejects changed retained reading (5685.228334ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6035.467833
+
+Affected membership/replacement regressions:
+(node:15095) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ original and joined adopters retain exact local boundaries while skipping unseen heads (855.240958ms)
+✔ adoption rejects forged ancestry, reordered cuts, incomplete accepted prefixes and wrong installation (379.345333ms)
+✔ generation-one installation refuses a valid rotation until the actual generation owner exists (222.122292ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (397.764625ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (132.183125ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (145.837042ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (68.660208ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (55.412708ms)
+(node:15097) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ replacement reader starts at certified cuts with its current key, including removed writing but no removed stream (839.616042ms)
+✔ replacement reader verifies a current-key suffix after the admitted cut and cold-replays its saved prefix (594.32725ms)
+✔ replacement reader refuses changed binding, snapshot, candidate acknowledgement and uncovered receive prefix (454.172125ms)
+✔ replacement loading persists and cold-replays equivalent parsed field ordering (531.760541ms)
+(node:15098) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (619.146458ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (677.176458ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (266.460709ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (131.660334ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (215.41425ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (236.106667ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3178.315625
+
+TypeScript, scoped lint/format and git diff --check passed.

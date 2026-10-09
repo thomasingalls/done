@@ -1,0 +1,29 @@
+{
+  "seed": 1121040,
+  "numRuns": 17,
+  "numShrinks": 0,
+  "failed": true,
+  "interrupted": false,
+  "counterexample": [
+    {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    }
+  ],
+  "counterexamplePath": "16",
+  "attempts": 26,
+  "scope": "Seed determines operation schedules. Each attempt generates independent synthetic markers, factors and cryptographic randomness after compilation."
+}

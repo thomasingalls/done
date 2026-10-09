@@ -1,0 +1,40 @@
+(node:67196) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67196) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned request, atomic original content/evidence, stale duplicate, compaction and expired cold replay (9629.503916ms)
+✔ receive before commit renderer death recovers content and event together (7947.168625ms)
+✔ receive after commit renderer death recovers content and event together (7780.720041ms)
+✔ v9 activation before commit is resumable and fences v8 (7427.180583ms)
+✔ v9 activation after commit is resumable and fences v8 (7433.530042ms)
+✔ cold replay refuses missing or changed content (7525.853542ms)
+✔ cold replay refuses missing or changed event (7525.6975ms)
+✔ cold replay refuses missing or changed ciphertext (7084.908792ms)
+✔ split-content implementation control is rejected on authenticated readback (7411.278875ms)
+✔ pending originals survive compaction and later dependencies without a source capsule (8970.187042ms)
+✔ a second accepted digest stops receipt and survives cold open (7473.238083ms)
+✔ input copies, owned request binding and close drain withhold late crypto results (7109.88425ms)
+Receive history 1/12 passed
+Receive history 2/12 passed
+Receive history 3/12 passed
+Receive history 4/12 passed
+Receive history 5/12 passed
+Receive history 6/12 passed
+Receive history 7/12 passed
+Receive history 8/12 passed
+Receive history 9/12 passed
+Receive history 10/12 passed
+Receive history 11/12 passed
+Receive history 12/12 passed
+✔ 12 generated native histories preserve receipt/content together across commit cuts and cold replay (79633.106583ms)
+✔ cold replay reauthenticates page behind valid local AEAD and witness (7443.009334ms)
+✔ cold replay reauthenticates baseline behind valid local AEAD and witness (7035.640666ms)
+✔ batch limit refuses before reservation; quota abort and retry preserve the full 256-record batch (7338.149ms)
+✔ authority changed during sealing refuses before the receive commit (6978.1665ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 203656.539667

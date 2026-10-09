@@ -1,0 +1,16 @@
+{
+  "baseline": "cf371bd0bcd22fdad09ce4b571a257f76405601e",
+  "files": {
+    "src/crdt/accountCapture.ts": "f7951e477c6d0d18f8a3b7723988dc3dc73f12b21076b4331d4dd3868e0670a8",
+    "src/crdt/accountDelivery.ts": "a1560fed87521b28590ad22756b45d53c85fd9d307eb0ed6cf4a2d27cd25c23d",
+    "src/crdt/accountReceive.ts": "0ced735f0ee11bf4464c784bc3706c0909ccc835bfb557de21936c2662ebd417",
+    "src/crdt/accountStartup.ts": "85664e21da4a3807d4c249743624499dd1b2e25e51d79874e4795271c2eb44a2",
+    "src/crdt/accountSuccessor.ts": "685031010dae1a6354b68d0dd8445979c0faf19725f5843117916f7e68dc1348",
+    "src/crdt/inboundLedger.ts": "fc1fafe46d5c0c8076d0767b5f397c9240352c79689ed8f487d2f6185767759b",
+    "src/crdt/promotionRecord.ts": "fbeaddcdfadeca2ec9a88b08cb28a17bb1a297d3f69a2050f6affa2a9f5c8be6",
+    "test/account-successor/owner-browser.ts": "46013e33822911b0440a5322a4569e80a7d33ef174fc2a67e2b5129df6468208",
+    "test/account-successor/owner-controls.test.mjs": "250256f776350d5c6c8c7ccda5e68ba5975fa5d3fd32213f31d93af5c1536483",
+    "test/account-successor/owner-fixtures.mjs": "41cf985dff185d1232b6f83644177587e28b9de6efc1a920465fc9f25d0aa765",
+    "test/account-successor/owner.test.mjs": "eccda7625625f98f268d0107b05cff57bc23ee0fc9a35ec60dc5a37cb93a54e1"
+  }
+}

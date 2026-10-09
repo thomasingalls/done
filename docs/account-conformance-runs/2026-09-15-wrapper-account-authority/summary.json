@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "4e8a8f3a",
+  "payloads": 176,
+  "compressedBytes": 594550,
+  "artifactsSha256": "4ed17de2cf4c6776fc73b69a50e01cf34e2f019a32389e10e29ae1e21439cac7",
+  "rawIndexSha256": "17271b6e40146e92799b62ee743c750e937aed746bb3966d354d2f063c060376",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-authority-with-planning-recovery-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "e917903fec9edcac8e078ba54350003c74b7b59265992742171f5c783e244de1",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 13607,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "fe4ec3657106a4f49c00544e23db54e5108a2d214a757f980fb464612cab8161",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5740,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "fab1b958dbf86bd4981c0da14b951d5f2c093b229b6aca01baba98ddd3be94a0",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4670,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "f31c163eaddb6da2491decab53959bc0407a3c21b1937abcb2e10b6145b44e1e",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5410,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-authority/run.mjs",
+        "key": "df28652bef9c5f997fd478e44da2495fd10d9e906b78428c37852a992871dde9",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 30635,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-recovery/run.mjs",
+        "key": "52e1159d30de596b3839034f298e4d1f1109866f476de8dd243251ebd4d4cdc6",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 11021,
+        "cases": 25,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:authority-reuse",
+        "key": "df28652bef9c5f997fd478e44da2495fd10d9e906b78428c37852a992871dde9",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 30635,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T16:25:01.838Z",
+    "input": "c81d4c8f3749983b3eb95e0b28d59ea10c845f51b69a2fe5dfae16271500c2b9",
+    "completedAt": "2026-09-15T16:26:57.445Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 91,
+    "campaign": 59
+  },
+  "claim": "Bounded Account authority wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

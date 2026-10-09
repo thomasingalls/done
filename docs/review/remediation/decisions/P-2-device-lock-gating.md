@@ -1,5 +1,10 @@
 # `P-2` — locked-device future-generation gating
 
+**Amended 2026-09-08:** receiver replacement remains selected for legacy migration. New persistent
+workspaces begin with mandatory factor custody. SC-03/04/08 at [storage-contract.md](../../../storage-contract.md)
+separates service settlement, observation and local activation; previous execution receipts do not certify
+writer-lifetime or complete copied-profile conformance.
+
 **Standing:** home — the decision’s current status lives in the header below; read back by
 `pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
 
@@ -45,7 +50,9 @@ bytes, sealed under `L_lock`, and imported as a non-extractable runtime key afte
 only the replacement credential.
 
 **Cutover:** the old local and operational credentials remain valid until the certified recipient-set successor
-and the generation winner are both durably known. After the winner, no new write uses `g`.
+and the generation winner are both durably known. An observing runtime stops old-generation
+acknowledgements; local activation requires the exclusive lifetime barrier. Other contexts/devices may
+lag observation. No ordinary local write uses `g` after completed local activation (SC-03).
 
 ## Why A rather than B
 
@@ -100,7 +107,8 @@ Same-origin hostile code after factor entry also remains in scope, unchanged.
 4. Kill at every `GenerationApply` step leaves a recoverable state: no lost old journal, unflushed batch, or
    accepted-but-unmarked envelope.
 5. Credential replacement does not revoke signing or reader authority on any other device.
-6. Factor loss behaves as declared, and disable/re-enable rotates again rather than restoring the old credential.
+6. Factor loss behaves as declared; no ordinary disable-lock downgrade exists. Exposure-driven factor
+   replacement follows the forward-generation rules and never restores a promptless predecessor.
 7. Another device rotating during the transition produces a result the locking device can still apply.
 8. Newest-checkpoint loss after two rotations still falls back — the opener for the second-newest survives.
 9. No opener is deleted while any journal, outbound envelope, retained checkpoint/suffix, package, or pending

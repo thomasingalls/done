@@ -1,0 +1,93 @@
+algorithm-suite.json is current; primitive KATs and the §13.2 separation check pass.
+record-format.json is current, and every negative still fails to authenticate.
+journal-aead.json is current, and the primitive KAT passes.
+recovery-code.json is current; the alphabet and keypair checks pass.
+device-lock.json is current; the alphabet, row 3 and row 14 cross-checks pass.
+finalization.json is current, and every negative still fails.
+enrollment-ceremony.json is current, and every negative still fails.
+envelope.json is current, and every negative still fails.
+Private envelope vectors checked: five independent Node/OpenSSL cases and 20 isolating negatives.
+head-discovery.json is current, and every negative still fails.
+attribution.json is current, and every negative still fails.
+checkpoint.json is current, and every negative still fails.
+antireplay.json is current, and every negative still fails.
+package.json is current, and every negative still fails.
+account-credential.json is current; the keypair and row 1 cross-checks pass.
+transition.json is current; the keypair and row 1 cross-checks pass.
+web-security-baseline.json is current; 17 ASVS 5.0.0 chapters dispositioned.
+Four v2 implementation vectors agree with independent OpenSSL bytes; 92 field mutations refuse.
+Recreating /Users/thomasingalls/.codex/worktrees/c030/done/node_modules
+✓ Lockfile passes supply-chain policies (verified 22h ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +220
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 220, reused 220, downloaded 0, added 219
+Progress: resolved 220, reused 220, downloaded 0, added 220, done
+
+dependencies:
++ @codemirror/commands 6.10.4
++ @codemirror/lang-markdown 6.5.1
++ @codemirror/language 6.12.4
++ @codemirror/state 6.7.1
++ @codemirror/view 6.43.7
++ @lezer/common 1.5.2
++ @lezer/highlight 1.2.3
++ @lezer/markdown 1.7.2
++ @simplewebauthn/server 14.0.0
++ lib0 0.2.117
++ react 19.2.8
++ react-dom 19.2.8
++ temporal-polyfill 1.0.2
++ y-codemirror.next 0.3.5
++ y-indexeddb 9.0.12
++ y-protocols 1.0.7
++ y-websocket 3.0.0
++ yjs 13.6.31
+
+devDependencies:
++ @babel/core 8.0.1
++ @emnapi/core 2.0.0-alpha.3
++ @emnapi/runtime 2.0.0-alpha.3
++ @noble/ciphers 2.3.0
++ @playwright/test 1.62.0
++ @rolldown/plugin-babel 0.2.3
++ @stablelib/xchacha20poly1305 2.0.1
++ @types/babel__core 7.20.5
++ @types/node 26.1.2
++ @types/react 19.2.17
++ @types/react-dom 19.2.3
++ @vitejs/plugin-react 6.0.4
++ babel-plugin-react-compiler 1.0.0
++ fake-indexeddb 6.2.5
++ fast-check 4.9.0
++ jsdom 30.0.1
++ libsodium-wrappers 0.8.4
++ oxfmt 0.61.0
++ oxlint 1.76.0
++ oxlint-tsgolint 7.0.2001
++ typescript 7.0.2
++ vite 8.1.5
++ vitest 4.1.10
+
+Done in 1.3s using pnpm v11.20.0
+$ node scripts/check-aad-coverage.mjs
+  ok  scripts/generate-account-credential-vectors.mjs — slot binding (8), unlock challenge (5)
+  ok  scripts/generate-antireplay-vectors.mjs — heads record (7), position refusal (9)
+  ok  scripts/generate-attribution-vectors.mjs — attribution record (9)
+  ok  scripts/generate-baseline-vectors.mjs — no AAD
+  ok  scripts/generate-checkpoint-vectors.mjs — checkpoint aad (5), checkpoint manifest (11), checkpoint admission (12)
+  ok  scripts/generate-device-lock-vectors.mjs — lock seal (6)
+  ok  scripts/generate-enrollment-vectors.mjs — nonce commitment (3), enrollment transcript (11)
+  ok  scripts/generate-envelope-vectors.mjs — envelope aad (7), envelope signature (9)
+  ok  scripts/generate-finalization-vectors.mjs — accepted link (7), accepted head (7)
+  ok  scripts/generate-head-discovery-vectors.mjs — recovery bootstrap (14), head assertion (6)
+  ok  scripts/generate-journal-vectors.mjs — journal record (4)
+  ok  scripts/generate-package-vectors.mjs — generation wrap info (5), archive envelope (4), package manifest (10)
+  ok  scripts/generate-private-envelope-vectors.mjs — private envelope hkdf_info (4), private envelope aad (7), private envelope signature_message (9)
+  ok  scripts/generate-record-vectors.mjs — content record (8), key envelope (6)
+  ok  scripts/generate-recovery-vectors.mjs — recovery envelope (4), step-up challenge (4)
+  ok  scripts/generate-suite-vectors.mjs — no AAD
+  ok  scripts/generate-transition-vectors.mjs — certified set (8), transition intent (8), transition outcome (8)
+
+225 AAD fields, each isolated by a published negative.

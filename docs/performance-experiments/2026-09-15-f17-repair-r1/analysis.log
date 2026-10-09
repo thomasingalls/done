@@ -1,0 +1,253 @@
+{
+  "sessions": 6,
+  "measuredKeys": 480,
+  "warmupKeys": 624,
+  "comparisons": [
+    {
+      "session": "native-comparison-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 28.800000190734863,
+        "p95": 32.60000038146973
+      },
+      "candidate": {
+        "p50": 27,
+        "p95": 29.399999618530273
+      },
+      "medianRatio": 0.9374999937911829,
+      "p95Ratio": 0.9018404685431115
+    },
+    {
+      "session": "native-comparison-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 28.899999618530273,
+        "p95": 33.09999942779541
+      },
+      "candidate": {
+        "p50": 27.59999942779541,
+        "p95": 32
+      },
+      "medianRatio": 0.9550172938444843,
+      "p95Ratio": 0.9667673883138591
+    },
+    {
+      "session": "native-comparison-1",
+      "block": "shallow",
+      "selected": {
+        "p50": 29,
+        "p95": 34.69999980926514
+      },
+      "candidate": {
+        "p50": 27.600000381469727,
+        "p95": 29.699999809265137
+      },
+      "medianRatio": 0.951724151085163,
+      "p95Ratio": 0.855907780187798
+    },
+    {
+      "session": "native-comparison-1",
+      "block": "deeper",
+      "selected": {
+        "p50": 32.59999942779541,
+        "p95": 37.89999961853027
+      },
+      "candidate": {
+        "p50": 27.5,
+        "p95": 32
+      },
+      "medianRatio": 0.8435582970149672,
+      "p95Ratio": 0.8443271852792945
+    },
+    {
+      "session": "native-unicode-0",
+      "block": "shallow",
+      "selected": {
+        "p50": 28.799999237060547,
+        "p95": 31.600000381469727
+      },
+      "candidate": {
+        "p50": 27.399999618530273,
+        "p95": 29.300000190734863
+      },
+      "medianRatio": 0.9513889008466111,
+      "p95Ratio": 0.92721518471615
+    },
+    {
+      "session": "native-unicode-0",
+      "block": "deeper",
+      "selected": {
+        "p50": 29.5,
+        "p95": 32.89999961853027
+      },
+      "candidate": {
+        "p50": 28.200000762939453,
+        "p95": 31.100000381469727
+      },
+      "medianRatio": 0.9559322292521849,
+      "p95Ratio": 0.9452887763546741
+    }
+  ],
+  "ordinary": [
+    {
+      "block": "shallow",
+      "selectedMedian": 28.90000009536743,
+      "candidateMedian": 27.300000190734863,
+      "medianPairedRatio": 0.9446120724381729,
+      "medianPairedP95Ratio": 0.8788741243654548
+    },
+    {
+      "block": "deeper",
+      "selectedMedian": 30.749999523162842,
+      "candidateMedian": 27.549999713897705,
+      "medianPairedRatio": 0.8992877954297258,
+      "medianPairedP95Ratio": 0.9055472867965768
+    }
+  ],
+  "results": [
+    {
+      "name": "selected",
+      "session": "native-comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 28.800000190734863,
+          "p95": 32.60000038146973
+        },
+        {
+          "block": "deeper",
+          "p50": 28.899999618530273,
+          "p95": 33.09999942779541
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 90.640542000001,
+      "redoSettledMs": 86.25641599999653
+    },
+    {
+      "name": "candidate",
+      "session": "native-comparison-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 27,
+          "p95": 29.399999618530273
+        },
+        {
+          "block": "deeper",
+          "p50": 27.59999942779541,
+          "p95": 32
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 88.61304199999722,
+      "redoSettledMs": 82.8815409999952
+    },
+    {
+      "name": "candidate",
+      "session": "native-comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 27.600000381469727,
+          "p95": 29.699999809265137
+        },
+        {
+          "block": "deeper",
+          "p50": 27.5,
+          "p95": 32
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 89.57316700000229,
+      "redoSettledMs": 86.05945899999642
+    },
+    {
+      "name": "selected",
+      "session": "native-comparison-1",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 29,
+          "p95": 34.69999980926514
+        },
+        {
+          "block": "deeper",
+          "p50": 32.59999942779541,
+          "p95": 37.89999961853027
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 106.44249999999738,
+      "redoSettledMs": 101.51766700000007
+    },
+    {
+      "name": "selected",
+      "session": "native-unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 28.799999237060547,
+          "p95": 31.600000381469727
+        },
+        {
+          "block": "deeper",
+          "p50": 29.5,
+          "p95": 32.89999961853027
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 88.02324999999837,
+      "redoSettledMs": 86.80649999999878
+    },
+    {
+      "name": "candidate",
+      "session": "native-unicode-0",
+      "browser": "151.0.7922.34",
+      "rows": [
+        {
+          "block": "shallow",
+          "p50": 27.399999618530273,
+          "p95": 29.300000190734863
+        },
+        {
+          "block": "deeper",
+          "p50": 28.200000762939453,
+          "p95": 31.100000381469727
+        }
+      ],
+      "checks": [
+        "exact text after every block",
+        "undo/redo exact roundtrip",
+        "cold reopen exact text"
+      ],
+      "undoSettledMs": 90.43912500000079,
+      "redoSettledMs": 85.09124999999767
+    }
+  ]
+}

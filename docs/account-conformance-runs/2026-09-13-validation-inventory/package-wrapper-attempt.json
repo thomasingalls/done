@@ -1,0 +1,11 @@
+{
+  "command": [
+    "pnpm",
+    "validation:inventory"
+  ],
+  "status": "stopped-without-result",
+  "observedElapsed": "01:32 at process inspection",
+  "outputFromPnpm": "",
+  "stop": "Task-owned wrapper sent SIGTERM; execution session returned 143.",
+  "interpretation": "No checker or test output observed from this package-manager attempt. Cause not established; this is not credited as a pass. Exact Node commands subsequently passed."
+}

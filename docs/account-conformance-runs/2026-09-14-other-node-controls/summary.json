@@ -1,0 +1,76 @@
+{
+  "base": "94d4926b247e24b0c1778ab4bfcc665fc6eea64e",
+  "selection": "other-node-controls",
+  "rawOutput": "test-results/release-validation/2026-09-14T13-44-12.951Z",
+  "result": {
+    "schema": 1,
+    "selection": "other-node-controls",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/legacy-host-cold/harness.node.mjs",
+        "key": "52826e31d6feae2e4da8c74cd37102c606800a854fc01c57dfa9d04b0a2c0563",
+        "status": "passed",
+        "elapsedMs": 1727,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/legacy-host/harness.node.mjs",
+        "key": "a908dbb5783467afeb28f06f6fb69e5882eb11f32622dddc699115addd099fbe",
+        "status": "passed",
+        "elapsedMs": 3082,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storage-capacity/marker.test.mjs",
+        "key": "fc78e73488ddbaf7faaf99470486c29508bde79f7a403e64ae3ab4e91b64d962",
+        "status": "passed",
+        "elapsedMs": 2689,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/validation-controls/origin.test.mjs",
+        "key": "ae60acd1d8de8cceb56009e7b2c455a093c9ac0002b9452e24eef6b473940c61",
+        "status": "passed",
+        "elapsedMs": 4438,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T13:44:12.953Z",
+    "input": "f5d808fbd3c34fff0279f9f45e2bb6666e4e13c3999b7a4d053fd056030047c3",
+    "completedAt": "2026-09-14T13:44:54.031Z"
+  },
+  "counts": {
+    "generalFiles": 233,
+    "generalCases": 1790,
+    "accountFiles": 123,
+    "unresolved": 184,
+    "unresolvedTestFiles": 25
+  },
+  "priorContractsPreserved": 229,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "c8409d8cdf35932afc85ffb18104df32ec8e988bc465619ae5a91f21260611fa",
+  "sourceDigest": "bcccff68220bc60393f83c524461edbc45cf9b6cab38b2625fa7dd3a23a4501b",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1042,
+  "scope": "Four unchanged files retain their 18 exact cases and 550 generated inputs (150 marker, 100 saved-file, 200 byte-decoder and 100 paged-inventory inputs). All stages use a 60-second file bound and the existing inherited process-group guard. Origin checks use disposable output; legacy host controls use files and protocol stubs. No browser, host denial policy or personal installation is used. These controls do not establish production old-writer exclusion or qualify their campaign wrappers.",
+  "artifactIndexSha256": "cfeb298de1519d22a3491a1d5a923dbd97da27b6894e49c63c9f0336108fa036",
+  "gatesSha256": "69b1be1a97712bef3bc43501939697ba175d55fce5b29efb02c869b27a1ab0d3",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

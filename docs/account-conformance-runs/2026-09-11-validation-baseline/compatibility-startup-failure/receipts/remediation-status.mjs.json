@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "script": "scripts/remediation-status.mjs",
+  "script_sha256": "e884ae4577738e6856e380abbd121d538869864c7ebe608fda0f8a177e26eb2f",
+  "argv": [
+    "--check"
+  ],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T06:41:12.830Z",
+  "finished": "2026-09-11T06:41:12.960Z",
+  "tree": {
+    "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+    "dirty_sha256": "b88b402bca19aebfd454182c6f2bdfb519062fbdd4d9982ed15bd032c2a8457e"
+  }
+}

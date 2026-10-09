@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "base": "6ca643f5",
+  "payloads": 249,
+  "compressedBytes": 528828,
+  "artifactsSha256": "cd35ea5465f313ecc5e0280057bd471fbbeb9d87b11331c854fee7898911da72",
+  "rawIndexSha256": "b5bfc614079cfa5bc9b9020767a7248db1258e043bd81a25141100a87f8fd316",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-account-service-delivery-with-planning-delivery-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "7de8d86d280dbd664b39f12366e773b935303a8c97e9d7b4d90da930cbc4fccc",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 56718,
+        "cases": 70,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "7690f81a090b2bd88433bc4683d3cafacc9bbfeb4b79025478408569ec7b9b49",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6924,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "a24874bc8efccf21424daa71b9b2de604a8dd64f7c64bdc1c62b289edf7820ae",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5042,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "33cf26b4422963b6fe13e0a99854f458795d9642e11980745b3e4f767be0f400",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 5822,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/campaign-wrappers.test.mjs",
+        "key": "143d2e0dc3d6eb3b6bbacde20e99f45e1153e0b3ac24bf43aafacd3b8f8e03db",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 10006,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-service-delivery/run.mjs",
+        "key": "acbd08d8c20074fa33ba68ce6430ac778f5835f249f50c542ca9d62f54c3c694",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 23776,
+        "cases": 32,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-delivery/run.mjs",
+        "key": "c3a9aab0ab61fb4c4d8c68f43e55deaa9464365aa8e4e53133f99bb0e0f9d5f5",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 269083,
+        "cases": 31,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:service-delivery-reuse",
+        "key": "acbd08d8c20074fa33ba68ce6430ac778f5835f249f50c542ca9d62f54c3c694",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 23776,
+        "cases": 32,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T20:28:36.160Z",
+    "input": "a2d1394e6e5e8e2d71d624d6f47bc0e43d0b3fdb5d6ba90fab297432e88ae9df",
+    "completedAt": "2026-09-15T20:35:40.033Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 80,
+    "campaign": 48
+  },
+  "claim": "Bounded Account service-delivery wrapper integration; no immutable aggregate or personal Account rehearsal."
+}

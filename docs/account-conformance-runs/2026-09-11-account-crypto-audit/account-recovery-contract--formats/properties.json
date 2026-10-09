@@ -1,0 +1,7 @@
+{
+  "seed": 5110913,
+  "runs": 200,
+  "shrinkingEnabled": true,
+  "generator": "root/scope, normalization, payload segment and nonzero changed byte",
+  "controls": "Each authentic reseal must refuse before callback"
+}

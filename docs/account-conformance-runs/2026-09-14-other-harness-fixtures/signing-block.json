@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "commit",
+    "-S",
+    "-m",
+    "Own nested harness groups and update storage lifecycle fixtures"
+  ],
+  "exitCode": 128,
+  "error": "Could not sign message: signer agent refused operation; failed to write commit object",
+  "head": "e7b98bcd",
+  "disposition": "Completed source and evidence staged; no unsigned fallback; stop before runner self-tests and browser application tests."
+}

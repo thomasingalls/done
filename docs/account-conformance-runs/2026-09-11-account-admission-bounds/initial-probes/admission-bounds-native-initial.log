@@ -1,0 +1,65 @@
+(node:48736) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48736) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:48736) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✖ long sv history survives HTTP admission, independent decrypt and cold retry; old reader refuses (1991.449375ms)
+✖ long ds history survives HTTP admission, independent decrypt and cold retry; old reader refuses (1906.031875ms)
+✔ genuine retained sv lie refuses without a completion submission or carrier change (1720.768666ms)
+✔ genuine retained ds lie refuses without a completion submission or carrier change (1552.072209ms)
+✔ genuine v1 offered carrier is retained unchanged and refused by new owner (1716.2725ms)
+✖ coverage preflight refuses before requested carrier or admission network call (1106.287125ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 3
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11111.127125
+
+✖ failing tests:
+
+test at test/account-admission-bounds/native.test.mjs:20:32
+✖ long sv history survives HTTP admission, independent decrypt and cold retry; old reader refuses (1991.449375ms)
+  page.evaluate: Error: Genesis needs current actor schema
+      at actors (eval at evaluate (:311:30), <anonymous>:32348:68)
+      at eval (eval at evaluate (:311:30), <anonymous>:32431:24)
+      at withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26502:18)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31689:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32418:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25997:23)
+      at genesis (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/fixtures.mjs:59:8)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:13:36)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:21:48) {
+    log: []
+  }
+
+test at test/account-admission-bounds/native.test.mjs:20:32
+✖ long ds history survives HTTP admission, independent decrypt and cold retry; old reader refuses (1906.031875ms)
+  page.evaluate: Error: Genesis needs current actor schema
+      at actors (eval at evaluate (:311:30), <anonymous>:32348:68)
+      at eval (eval at evaluate (:311:30), <anonymous>:32431:24)
+      at withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26502:18)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31689:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32418:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25997:23)
+      at genesis (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/fixtures.mjs:59:8)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:13:36)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:21:48) {
+    log: []
+  }
+
+test at test/account-admission-bounds/native.test.mjs:62:1
+✖ coverage preflight refuses before requested carrier or admission network call (1106.287125ms)
+  page.evaluate: Error: Genesis needs current actor schema
+      at actors (eval at evaluate (:311:30), <anonymous>:32348:68)
+      at eval (eval at evaluate (:311:30), <anonymous>:32431:24)
+      at withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26502:18)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31689:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32418:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25997:23)
+      at genesis (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/fixtures.mjs:59:8)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:13:36)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/native.test.mjs:63:32) {
+    log: []
+  }

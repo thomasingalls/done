@@ -3,7 +3,7 @@
  *
  * Moving items is the workflow's actual mechanic, so the PRD specifies each
  * flow by *difficulty* on purpose: nothing → Done is trivial and
- * non-negotiable, master → anywhere is deliberately two steps. That table is
+ * non-negotiable, while master → anywhere explicitly chooses Copy or Move. That table is
  * the specification for this module, and the difficulty lives in the UI. What
  * lives here is atomicity and the rules.
  *
@@ -26,6 +26,8 @@
  */
 
 import type { ISODate } from '../lib/date';
+import { masterLineSelection } from '../editor/masterLineSelection';
+import { masterLineBody } from '../lib/masterLineBody';
 import { newId } from '../lib/id';
 import type { ActorId, Origin } from './actors';
 import {
@@ -340,14 +342,8 @@ export const removeUnfiledCard = (workspace: Workspace, id: string): boolean => 
 /* -------------------------------------------------------------------------- */
 /* The master list                                                             */
 
-/** `- [ ] Draft the plan` → `Draft the plan`. */
-const stripLineMarkup = (line: string): string =>
-  line.replace(/^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/, '').trimEnd();
-
 /**
- * Copy-to (PRD §4). **Does not modify master.** The master list is not expected
- * to stay 1:1 with what appears in daily views, and bundling a delete into this
- * is exactly the one-action flow the PRD refuses.
+ * Copy-to (PRD §4). Does not modify master. Explicit Move is a separate operation.
  *
  * Selected lines become one card each; a line that is only markup is dropped.
  */
@@ -356,7 +352,7 @@ export const copyFromMaster = (
   ref: Ref,
   lines: readonly string[],
 ): number => {
-  const bodies = lines.map(stripLineMarkup).filter((line) => line.length > 0);
+  const bodies = lines.map(masterLineBody).filter((line) => line.length > 0);
   if (bodies.length === 0) return 0;
 
   const capacity = capacityFor(workspace.doc, ref);
@@ -364,10 +360,53 @@ export const copyFromMaster = (
 
   const accepted = bodies.slice(0, Math.min(bodies.length, capacity));
 
+  return placeMasterCards(workspace, ref, accepted);
+};
+
+/** Explicit, all-or-nothing transfer. Only lines that become cards are removed. */
+export const moveFromMaster = (
+  workspace: Workspace,
+  master: YText,
+  ref: Ref,
+  lineNumbers: readonly number[],
+): number => {
+  const text = master.toString();
+  const lines = text.split('\n');
+  const selected = [...new Set(lineNumbers)]
+    .filter((line) => Number.isInteger(line) && line >= 0 && line < lines.length)
+    .sort((a, b) => a - b)
+    .filter((line) => masterLineBody(lines[line]!).length > 0);
+  if (
+    selected.length === 0 ||
+    !writable(workspace, ref.date) ||
+    capacityFor(workspace.doc, ref) < selected.length
+  )
+    return 0;
+  const deletion = masterLineSelection(text, selected);
+  if (!deletion) return 0;
+  return placeMasterCards(
+    workspace,
+    ref,
+    selected.map((line) => masterLineBody(lines[line]!)),
+    () => {
+      for (const { anchor, head } of [...deletion.ranges].reverse()) {
+        master.delete(anchor, head - anchor);
+      }
+    },
+  );
+};
+
+/** Day bookkeeping precedes the single human transaction, including the optional source removal. */
+const placeMasterCards = (
+  workspace: Workspace,
+  ref: Ref,
+  bodies: readonly string[],
+  removeSource?: () => void,
+): number => {
   const target = collectionAt(workspace, ref);
   if (!target) return 0;
 
-  const cards = accepted.map((body) => {
+  const cards = bodies.map((body) => {
     const id = newId();
     return {
       id,
@@ -385,14 +424,15 @@ export const copyFromMaster = (
       arrivalIndex(ref.section, target.length),
       ref.section === 'done' ? [...ids].reverse() : ids,
     );
-    return accepted.length;
+    removeSource?.();
+    return bodies.length;
   });
 };
 
 /**
  * Remove from master — a separate, explicit text deletion. It exists as its own
- * operation precisely so that nothing can call it by accident as part of a copy
- * (PRD §4). Clearing completed items is manual only; there is no auto-archive.
+ * operation as well as the explicit Move flow. Copy never calls it;
+ * clearing completed items remains manual, with no auto-archive.
  */
 export const removeFromMaster = (
   workspace: Workspace,

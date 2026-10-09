@@ -1,0 +1,14 @@
+(node:38764) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38764) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two genuinely issued outcomes preserve exact evidence when refusal arrives first (10755.457583ms)
+✔ two genuinely issued outcomes preserve exact evidence when winner arrives first (10564.750875ms)
+✔ 12 generated genuine refusal/successor arrival histories compare complete retained proof sets (55468.367ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78626.82625

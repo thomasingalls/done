@@ -1,0 +1,80 @@
+{
+  "base": "aa54be3161c2267404e7a5901bad117757105013",
+  "cwd": "/private/tmp/done-f17-replay-r1/candidate",
+  "controls": [
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/historyReplay.test.ts",
+        "test/workspaceAdmission.test.ts"
+      ],
+      "log": "replay-initial.log",
+      "exit": 0,
+      "tests": 99,
+      "files": 2
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/workspacePreparation.test.ts",
+        "test/historyRetirement.test.ts",
+        "test/textBufferBasis.test.ts",
+        "test/textBufferNormalizationProbe.test.ts",
+        "test/workspaceAdmission.test.ts",
+        "test/membershipEligibility.test.ts",
+        "test/membership.test.ts",
+        "test/membership.property.test.ts",
+        "test/selectionHistory.test.ts",
+        "test/selectionSnapshots.test.ts",
+        "test/sourceCapture.test.ts",
+        "test/pendingProjection.test.ts",
+        "test/projectionEquality.test.ts",
+        "test/admittedText.test.ts",
+        "test/admittedEditorProjection.test.ts",
+        "test/historyReplay.test.ts"
+      ],
+      "log": "affected-tests.log",
+      "exit": 0,
+      "tests": 227,
+      "files": 16
+    }
+  ],
+  "typecheck": {
+    "argv": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "log": "typecheck-complete.log",
+    "exit": 0
+  },
+  "faults": "fault-controls.json",
+  "format": "format-final.log",
+  "toolingCorrections": "control-findings.md",
+  "diagnosticCommands": [
+    "node build.mjs selected --diagnostic",
+    "node build.mjs guarded --diagnostic",
+    "python3 freeze.py diagnostic",
+    "node batch.mjs diagnostic",
+    "python3 analyze-costs.py"
+  ],
+  "performanceCommands": [
+    "node build.mjs selected",
+    "node build.mjs candidate",
+    "python3 freeze.py performance",
+    "node batch.mjs comparison",
+    "node batch.mjs unicode"
+  ],
+  "uniqueTests": 227,
+  "uniqueFiles": 16,
+  "newCases": 3,
+  "newGeneratedHistories": 100,
+  "newGeneratedSeed": 171511,
+  "existingWorkspaceHistories": 60,
+  "existingWorkspaceSeed": 171510
+}

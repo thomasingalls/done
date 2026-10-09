@@ -1,0 +1,14 @@
+(node:76478) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76478) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native reader authenticates every stage version against real Local custody; all tampered IDs refuse (988.692958ms)
+✔ correct MACs do not replace source, budget and credential collision checks; actual guard removal rescues each lie (1204.682208ms)
+✔ native verifier message omissions rescue forged carrier bindings while WebCrypto verification still runs (455.108292ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3304.311084

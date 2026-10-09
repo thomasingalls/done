@@ -1,0 +1,3 @@
+{
+  "outcome": "Actual removal of content inputs commits an evidence-only event, detected by readback and cold replay."
+}

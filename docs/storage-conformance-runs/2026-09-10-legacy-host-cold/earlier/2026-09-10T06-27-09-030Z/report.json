@@ -1,0 +1,122 @@
+{
+  "id": "2026-09-10T06-27-09-030Z",
+  "started": "2026-09-10T06:27:09.032Z",
+  "predecessor": "7d238eecec4fe760f026ce1b68f3ca5603a9086a",
+  "limits": {
+    "phaseMs": 630000,
+    "runMs": 1800000,
+    "teardownMs": 10000
+  },
+  "phases": [
+    {
+      "mode": "policy-control",
+      "policy": "missing",
+      "code": 0,
+      "signal": null,
+      "timedOut": false
+    },
+    {
+      "mode": "policy-control",
+      "policy": "malformed",
+      "code": 0,
+      "signal": null,
+      "timedOut": false
+    },
+    {
+      "mode": "policy-control",
+      "policy": "ignored",
+      "code": 0,
+      "signal": null,
+      "timedOut": false
+    },
+    {
+      "mode": "policy-control",
+      "policy": "exception",
+      "code": 0,
+      "signal": null,
+      "timedOut": false
+    },
+    {
+      "mode": "policy-control",
+      "policy": "recommended",
+      "code": 1,
+      "signal": null,
+      "timedOut": false
+    }
+  ],
+  "diagnosticsPassed": false,
+  "hostSupported": false,
+  "verdict": "diagnostic-failed",
+  "runtime": {
+    "limaHome": "/private/tmp/done-cold-lima",
+    "machine": "probe",
+    "configHash": "21845fa9517c0f5500ffab74448974139db5c394cc94265f7131565d87724ea1"
+  },
+  "sourceCommit": "f8fdf1fd9460d20181312e2b22e1cc4f03176a46",
+  "assets": {
+    "old-dist/assets/index-6pjPrlNz.js": "b95ec46f7c3180457801895e1589907b52d3e41cd83e509aa43072ffb7f3ec04",
+    "old-dist/assets/index-6pjPrlNz.js.map": "e13ba189467d6fabb93780804b0e72ba68cbd3d784e2b2d32bd3e700f2e5c1ba",
+    "old-dist/assets/index-Ch0sP8W6.css": "001bb1af7d724995e731587255f4b11bf9e4c0c70472d736b56ca0be9ccc8c61",
+    "old-dist/favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+    "old-dist/icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+    "old-dist/icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+    "old-dist/icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+    "old-dist/index.html": "fc527cf8358a62b4c91e38ca437e341be0cedf389366bda074bf289f3787c191",
+    "old-dist/manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+    "old-dist/sw.js": "566d6ddadc64ae2d04b9aa84db65cde011815e2fce3036d71ec19dfa7b646a05",
+    "fixture-dist/assets/broadcast-CHRbeGSZ.js": "66b4743fcd3297881fcb1c47f1e0465f3c28a0c46fa5c4d26ccc96963c9c94d1",
+    "fixture-dist/assets/days-BBrMUEra.js": "cb4403c70965288fc2be7f1c2d6ada12856d2c958cb6bcad9e46c51dbdc894b2",
+    "fixture-dist/assets/decoding-BA9GrZCL.js": "e623a15908d35f6d0681105c605410217baea74a9c35fd303c9c86308ac7b9a1",
+    "fixture-dist/assets/decoding-CftgYQAU.js": "bf61bd4ef0ab499d7ad7e56c696b7df5a0299865e6b9c3e75a8924b8b3c588ea",
+    "fixture-dist/assets/index-DstX0vlf.js": "8b891b1e45b4c88e3a918a4ae2328bd2eacf3e569f193245f9bad2215acfbe55",
+    "fixture-dist/assets/modulepreload-polyfill-Dezn_h7o.js": "785597bca2e7dd97a652a20a197c077079e635a5663433448e0e1d9fd8c98a64",
+    "fixture-dist/assets/seed-DMAQX6zP.js": "4db0cd0e779c221a6850ab1de810017dfa9ca5bd2a45b7a9a55d8d60cb63c790",
+    "fixture-dist/assets/sync-DJk3JjhW.js": "0ee23be3c4308662e5f34275ea2ada9d7586c507b41ac21d2b803aacfbe938ff",
+    "fixture-dist/assets/sync-xu7PIb0i.js": "285735d81a7d79c0525b2446f066dbbf191ad94d550c969b0d3d3a32947d4eed",
+    "fixture-dist/assets/writer-UfH7j05u.js": "cbd81fc8f723692498fecacf209b7aacc2988d46e797196004ac3905a0bf4349",
+    "fixture-dist/assets/y-websocket-B88QJsXY.js": "16b733dba0225c0b1b846397aec1b61562e1297015d58fc46642cfc543b4dca3",
+    "fixture-dist/assets/y-websocket-wa1o3RiH.js": "6f5ec9d7b66617a31fe052d2d39cda13c4e2916da59304c962febeefa0fcdb00",
+    "fixture-dist/assets/yjs-BrUg-0Gf.js": "379fa7d6647f0a095b4ff0f73176d4e32754961a97024a0200b8dd610c1fb0d4",
+    "fixture-dist/assets/yjs-Df-jU5I4.js": "2f4c78c3b4b1ded0fbba3380f91ea21aa35039779a7ab67f10e10b8ba4819093",
+    "fixture-dist/favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+    "fixture-dist/icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+    "fixture-dist/icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+    "fixture-dist/icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+    "fixture-dist/manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+    "fixture-dist/test/legacy-host/broadcast.html": "1b9858eec1923fa18459cd932341643cf406c3a553d2011c0cce1950d76160b5",
+    "fixture-dist/test/legacy-host/index.html": "2f051f39f46f33b2f3fafbf9f6fdd95b76ecd09e3d7ed4e3c086dd55169dfc4c",
+    "fixture-dist/test/legacy-host/seed.html": "d006be12e7f543007d2d927efcbdb7052f75d30df59ee1bd6af74fcd8055d95e",
+    "fixture-dist/test/legacy-host/writer.html": "46712934a8c774c9942460027e8af0b9ae5d12816d933765d6e8db85887a2df4"
+  },
+  "inputs": {
+    "scripts/legacy-host-cold/browser.mjs": "0569cc3c052c0b214fb37b48433adeecc7339e40c54068a999ff3e2be565a648",
+    "scripts/legacy-host-cold/checks.mjs": "08f8f77de171a8e4f7778bb04430c654d9cf8207e5d8f8c3db69c298601a51af",
+    "scripts/legacy-host-cold/enter.sh": "f9bd19b014abfc80a8b1d0077d54b2864879b61b9c751a1992b8f5414064cdf3",
+    "scripts/legacy-host-cold/fixtures.mjs": "a67ef9ced7c4cc20d525e3e4272ec1af5d21c3b5d1b208e187187c2e452fbdc4",
+    "scripts/legacy-host-cold/guest.mjs": "9ec89f6201f96556e9e0287a195600840b06ba99551e89a441286e9a8eee2496",
+    "scripts/legacy-host-cold/lima.yaml": "21845fa9517c0f5500ffab74448974139db5c394cc94265f7131565d87724ea1",
+    "scripts/legacy-host-cold/native-policy.mjs": "fcd2a6ff8a88b7318c5b73fd58efa67d9539ab5fb9696be38424d523c1071848",
+    "scripts/legacy-host-cold/observer.mjs": "269c3b3f4b092781883ccfa4d114aea58a5e13f05407d578482ae2bb80c85854",
+    "scripts/legacy-host-cold/policies.sh": "d7886b9c53bb24f14d9641f434f078144491ae8758b5f65085683ae873e0355e",
+    "scripts/legacy-host-cold/provision.sh": "27445e50d192922c887ab3a098f40b70400cc09ed2f028f4e240cd6a595a2cac",
+    "scripts/legacy-host-cold/run.mjs": "e74b30f8be488eef3eb0c42825a848e47adb1fc5c65c41338b05d0068bbdbae0",
+    "scripts/legacy-host/assets.mjs": "f2cef421e2fd6e6c851b467e260f90b738d41228582a308642021488a4454bbe",
+    "scripts/legacy-host/cdp.mjs": "6cbd04264f03273ebebd58566e13cf2971bc266f363b09fe70d74127076a7b94",
+    "scripts/legacy-cleanup/diagnostics.mjs": "0a62fff8ac55662d50f1e44a4ef15890d52bbe115b832d964d5d34ea68dadcaa",
+    "test/legacy-import/error.mjs": "20b23e47a596a1d1dde4d545035f829d32ed9c3e317e93484e9813f3f09d2375",
+    "scripts/legacy-export/oracle.mjs": "a00314dd73c5c974c6b9d416cada44084b3e5dac85638c89fe425acd8dbfd4e4",
+    "test/legacy-host/seed.mjs": "154f8a7983612a2fc368a9e86529f74f4180330d3c42f3dd4cdcc6b0d49af5cb",
+    "test/legacy-export/source.ts": "d4be6bc0a96b890b6ebb567ec9c225c7af29ddcd3e50f11ce4da237c6a07c95e",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e"
+  },
+  "bundleHash": "8ecf476e6731cd2d0c6918aec64054cdcad7ec1db944ebc84a934bb57ee711d2",
+  "transferHash": "f5fadfd1c18c9855c2949e502cc518e09c38a5ae41c8c11a155f215a5cc79c10",
+  "evidence": {
+    "native/policy-control-exception.json": "b33f832fbd0199607f9ff8a13b1b0e14849c1571a829c8f69aca9c7197ab8fb2",
+    "native/policy-control-ignored.json": "3323b4af650dff4467dcbaa283818321f34f4e69b2d44823eb38b4d533081c01",
+    "native/policy-control-malformed.json": "4bd3a6069c6cefb3e532a34469985508691f1fdc112cfa97bbbf79c79b04ba95",
+    "native/policy-control-missing.json": "a6f08b56f24a0ba210e80f30d288058d48c1f36c1d7ced70907cc89a2f356933",
+    "native/policy-control-recommended.json": "f704533c795180195353ee5ea8b18f7c0f48e0fdd413e9f12fb18cc09b081b68"
+  },
+  "ended": "2026-09-10T06:27:24.241Z"
+}

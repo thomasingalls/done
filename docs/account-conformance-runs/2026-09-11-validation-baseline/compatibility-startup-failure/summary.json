@@ -1,0 +1,16 @@
+{
+  "command": "pnpm check",
+  "cwd": "/private/tmp/done-validation-500630f",
+  "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+  "patchSha256": "19301129e6099106773226f14c5b4be5c3beaf13d8aa385449f974a879eb3078",
+  "started": "2026-09-11T06:40:45.246Z",
+  "status": "failed",
+  "timeoutMs": 7200000,
+  "env": {
+    "CI": "1"
+  },
+  "log": "check.log",
+  "code": 1,
+  "timedOut": false,
+  "finished": "2026-09-11T07:27:56.605Z"
+}

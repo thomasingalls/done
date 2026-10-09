@@ -13,3 +13,8 @@ tsconfig*.tsbuildinfo
 relay/data/
 wasm/journal-seal/target/
 .receipts/
+/done-migration-recovery.json
+/done-migration-binding.json
+/done-migration-preview.zip
+/done-local-after-import.zip
+/done-local-after-reopen.zip

@@ -2,6 +2,11 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      run_full_check:
+        description: Run the full check after explicitly resuming the paused validation campaign
+        type: boolean
+        default: false
   pull_request:
   push:
     branches:
@@ -18,8 +23,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    name: Application build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          cache: false
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts --strict-peer-dependencies
+
+      - name: Build and check the application
+        run: pnpm build
+
   quality:
-    name: Quality
+    name: Full check (operator resumed)
+    # The product/operations work does not automatically resume release validation.
+    if: github.event_name == 'workflow_dispatch' && inputs.run_full_check == true
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 

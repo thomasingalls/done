@@ -1,0 +1,932 @@
+diff --git a/account-protocol/admission.ts b/account-protocol/admission.ts
+index fe90aef..6375e9f 100644
+--- a/account-protocol/admission.ts
++++ b/account-protocol/admission.ts
+@@ -1,7 +1,7 @@
+ /** Private first-epoch admission. Client certification and row-7 semantic evidence remain separate
+  * from the service's serialization authority. No transport-supplied verification key is trusted. */
+ import { closed, parsePendingState, type PendingState } from './preparation.ts';
+-import { parseGenesis, genesisMessage, type GenesisCandidate } from './genesis.ts';
++import { parseGenesis, genesisMessage, GENESIS_LIMIT, type GenesisCandidate } from './genesis.ts';
+ import { parseAuthorityPin, pinBytes, type AuthorityPin } from './authority.ts';
+ import {
+   unhex,
+@@ -14,6 +14,8 @@ import {
+   type RecoveryDraft,
+ } from './recovery.ts';
+ export const ADMISSION_LIMIT = 72 * 1024 * 1024;
++// Raw bytes in one SV/DS pair; four hex fields in completion fit ADMISSION_LIMIT.
++export const COVERAGE_LIMIT = GENESIS_LIMIT;
+ export const ZERO_HEAD = '00'.repeat(32);
+ export const DERIVATION = 'yjs-13.6.31-sv-ds-v1';
+ type Member = { id: string; wPub: string; sPub: string };
+@@ -60,7 +62,7 @@ export interface CoverageParts {
+   ds: string;
+ }
+ export interface CheckpointManifest extends CoverageParts {
+-  v: 1;
++  v: 2;
+   workspaceId: string;
+   epoch: 1;
+   epochHead: string;
+@@ -71,7 +73,7 @@ export interface CheckpointManifest extends CoverageParts {
+   signature: string;
+ }
+ export interface SemanticAdmission {
+-  v: 1;
++  v: 2;
+   workspaceId: string;
+   checkpointDigest: string;
+   manifestDigest: string;
+@@ -106,13 +108,25 @@ const opaque = (v: unknown): string => {
+   if (
+     typeof v !== 'string' ||
+     !v.length ||
+-    v.length > 65534 ||
++    v.length > 2 * COVERAGE_LIMIT ||
+     v.length % 2 ||
+     !/^[0-9a-f]+$/.test(v)
+   )
+     throw Error('Invalid coverage bytes');
+   return v;
+ };
++/** Validate before decoding/hashing, on both local and service paths. */
++export function coverageParts(input: CoverageParts): CoverageParts {
++  const sv = opaque(input.sv),
++    ds = opaque(input.ds);
++  if ((sv.length + ds.length) / 2 > COVERAGE_LIMIT)
++    throw Error('Admission coverage exceeds byte bound');
++  return { sv, ds };
++}
++async function coverageDigests(parts: CoverageParts) {
++  const { sv, ds } = coverageParts(parts);
++  return { sv: await digest(unhex(sv, sv.length / 2)), ds: await digest(unhex(ds, ds.length / 2)) };
++}
+ function certification(input: unknown): Certification {
+   const c = closed(input, ['members', 'recoveryStateDigest', 'approver', 'signature']);
+   if (!Array.isArray(c['members']) || c['members'].length !== 1)
+@@ -363,36 +377,38 @@ export function parseCompletion(input: unknown): AdmissionCompletion {
+     'signature',
+   ]);
+   if (
+-    m['v'] !== 1 ||
++    m['v'] !== 2 ||
+     m['epoch'] !== 1 ||
+     m['generation'] !== 1 ||
+-    a['v'] !== 1 ||
++    a['v'] !== 2 ||
+     a['derivation'] !== DERIVATION ||
+     a['selfAdmitted'] !== 1 ||
+     a['decisionParent'] !== ZERO_HEAD
+   )
+     throw Error('Unsupported semantic admission');
++  const mp = coverageParts({ sv: m['sv'] as string, ds: m['ds'] as string });
++  const ap = coverageParts({ sv: a['derivedSv'] as string, ds: a['derivedDs'] as string });
+   return {
+     manifest: {
+-      v: 1,
++      v: 2,
+       workspaceId: h(m['workspaceId'], 16),
+       epoch: 1,
+       epochHead: h(m['epochHead']),
+       generation: 1,
+       checkpointDigest: h(m['checkpointDigest']),
+-      sv: opaque(m['sv']),
+-      ds: opaque(m['ds']),
++      sv: mp.sv,
++      ds: mp.ds,
+       headVectorDigest: h(m['headVectorDigest']),
+       producer: h(m['producer'], 16),
+       signature: h(m['signature'], 64),
+     },
+     admission: {
+-      v: 1,
++      v: 2,
+       workspaceId: h(a['workspaceId'], 16),
+       checkpointDigest: h(a['checkpointDigest']),
+       manifestDigest: h(a['manifestDigest']),
+-      derivedSv: opaque(a['derivedSv']),
+-      derivedDs: opaque(a['derivedDs']),
++      derivedSv: ap.sv,
++      derivedDs: ap.ds,
+       headBaselineDigest: h(a['headBaselineDigest']),
+       derivation: DERIVATION,
+       admittingCredential: h(a['admittingCredential'], 16),
+@@ -402,35 +418,41 @@ export function parseCompletion(input: unknown): AdmissionCompletion {
+     },
+   };
+ }
+-export const manifestMessage = (m: CheckpointManifest) =>
+-  lp(
+-    'done/cp-manifest/v1',
+-    '1',
++export async function manifestMessage(m: CheckpointManifest) {
++  if (m.v !== 2) throw Error('Unsupported checkpoint manifest');
++  const hashes = await coverageDigests(m);
++  return lp(
++    'done/cp-manifest/v2',
++    String(m.v),
+     m.workspaceId,
+-    '1',
++    String(m.epoch),
+     m.epochHead,
+-    '1',
++    String(m.generation),
+     m.checkpointDigest,
+-    m.sv,
+-    m.ds,
++    hashes.sv,
++    hashes.ds,
+     m.headVectorDigest,
+     m.producer,
+   );
+-export const semanticMessage = (a: SemanticAdmission) =>
+-  lp(
+-    'done/cp-admit/v1',
+-    '1',
++}
++export async function semanticMessage(a: SemanticAdmission) {
++  if (a.v !== 2) throw Error('Unsupported semantic admission');
++  const hashes = await coverageDigests({ sv: a.derivedSv, ds: a.derivedDs });
++  return lp(
++    'done/cp-admit/v2',
++    String(a.v),
+     a.workspaceId,
+     a.checkpointDigest,
+     a.manifestDigest,
+-    a.derivedSv,
+-    a.derivedDs,
++    hashes.sv,
++    hashes.ds,
+     a.headBaselineDigest,
+     a.derivation,
+     a.admittingCredential,
+-    '1',
++    String(a.selfAdmitted),
+     a.decisionParent,
+   );
++}
+ export async function completionBodies(
+   request: AdmissionRequest,
+   offer: AdmissionOffer,
+@@ -438,15 +460,16 @@ export async function completionBodies(
+ ): Promise<AdmissionCompletion> {
+   const c = request.candidate,
+     head = await digest(lp('done/headvec/v1'));
++  const bounded = coverageParts(parts);
+   const manifest: CheckpointManifest = {
+-    v: 1,
++    v: 2,
+     workspaceId: c.workspaceId,
+     epoch: 1,
+     epochHead: offer.head,
+     generation: 1,
+     checkpointDigest: await digest(unhex(c.checkpoint.ct, c.checkpoint.ct.length / 2)),
+-    sv: opaque(parts.sv),
+-    ds: opaque(parts.ds),
++    sv: bounded.sv,
++    ds: bounded.ds,
+     headVectorDigest: head,
+     producer: c.signer,
+     signature: '00'.repeat(64),
+@@ -454,10 +477,10 @@ export async function completionBodies(
+   return {
+     manifest,
+     admission: {
+-      v: 1,
++      v: 2,
+       workspaceId: c.workspaceId,
+       checkpointDigest: manifest.checkpointDigest,
+-      manifestDigest: await digest(manifestMessage(manifest)),
++      manifestDigest: await digest(await manifestMessage(manifest)),
+       derivedSv: manifest.sv,
+       derivedDs: manifest.ds,
+       headBaselineDigest: head,
+@@ -481,8 +504,8 @@ export async function verifyCompletion(
+   expected.admission.signature = c.admission.signature;
+   if (!same(c, expected)) throw Error('Semantic coverage or manifest changed');
+   const key = request.certification.members[0].sPub;
+-  await verifySignature(key, c.manifest.signature, manifestMessage(c.manifest));
+-  await verifySignature(key, c.admission.signature, semanticMessage(c.admission));
++  await verifySignature(key, c.manifest.signature, await manifestMessage(c.manifest));
++  await verifySignature(key, c.admission.signature, await semanticMessage(c.admission));
+   return c;
+ }
+ export function parseReceipt(input: unknown): AdmissionReceipt {
+diff --git a/docs/TRD.md b/docs/TRD.md
+index 18cff8e..49add5e 100644
+--- a/docs/TRD.md
++++ b/docs/TRD.md
+@@ -1446,14 +1446,22 @@ K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP("done/checkpoint/v1"
+ cp_salt = 16 fresh random bytes per seal, carried in the clear beside the nonce and ciphertext
+ AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)
+ 
+-M    = Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v)
++M    = Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2")
+        || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
+-       || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
++       || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
+        || LP(hex head_vector_digest) || LP(producing_credential) )
+ 
+ head_vector = for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
+ ```
+ 
++
++**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
++remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
++while full raw descriptors remain required and are rederived by every restorer. The private
++adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
++Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
++pre-completion requests/offers may resume. See [the compatibility and bounds contract](./account-admission-bounds.md).
++
+ `checkpoint_digest` is SHA-256 of the ciphertext, so the durable store validates it with no content key, exactly
+ as the relay validates an envelope's (§7.2, §7.4). **`sv` and `ds` are bound separately and as opaque bytes** —
+ separately because either alone is the claim this section says is not a coverage claim, and opaquely because
+diff --git a/docs/account-admission.md b/docs/account-admission.md
+index 7b6f0c8..0a35a85 100644
+--- a/docs/account-admission.md
++++ b/docs/account-admission.md
+@@ -5,6 +5,9 @@ admission and retains the verified result in the existing promotion carrier. Ind
+ ordinary account UI, relay publication and device enrollment are subsequent owners. This API requires
+ online authority availability; offline Account startup is not established by this component.
+ 
++The [2026-09-11 encoding amendment](./account-admission-bounds.md) governs descriptor sizes, v2
++manifest/admission signatures and explicit refusal of private v1 completions. Encryption stays v1.
++
+ ## Commit boundary
+ 
+ A client first replays Local database plus journal and reopens both generation wraps under both saved
+@@ -36,8 +39,9 @@ recovery state before retaining the offer and completion in stage `admission-off
+ The client derives separate opaque SV and DS from its reopened checkpoint/source verification. SV is
+ Y.encodeStateVector(doc); DS is Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map())). The
+ DS encoding includes an empty-vector suffix; `yjs-13.6.31-sv-ds-v1` pins that representation. Neither
+-contains document text. Their hex LP fields must each fit the existing u16 bound; larger descriptors
+-refuse before a request, without discarding Local data. The checkpoint plaintext remains bounded at 16 MiB.
++contains document text. Each raw SV/DS pair is bounded to 16 MiB combined; larger descriptors
++refuse before a request, without discarding Local data. Separate decoded-byte SHA-256 hashes
++replace the raw hex fields in both v2 signed messages. The checkpoint plaintext remains bounded at 16 MiB.
+ The client signs row 7's exact manifest and SemanticAdmission bytes for the offered head. The accepted
+ head baseline is SHA256(LP("done/headvec/v1")), the decision parent is the all-zero 32-byte genesis
+ sentinel, and self_admitted is exactly 1 because the certified set contains only the creating client.
+@@ -79,7 +83,7 @@ boundaries. No timer chooses a competing winner or expires a durable promotion o
+ ## Encoding and transport
+ 
+ `account-protocol/admission.ts` owns closed ordered objects, bounded fields and fixed-purpose bytes.
+-Row-7 and CertifiedSet signatures retain their selected LP encodings. Private offer/first-epoch/receipt
++Row-7 signatures use the amended v2 encoding; CertifiedSet retains its selected LP encoding. Private offer/first-epoch/receipt
+ objects use separate versioned LP domains over the SHA256 of their fixed-order JSON body, excluding only
+ that object's signature. The epoch head is SHA256 of the epoch signing message. The request digest binds
+ the full closed request including candidate ciphertext, certification, recovery state and origin endorsement. Trusted callers compare full
+diff --git a/docs/completed.md b/docs/completed.md
+index ed0abf5..6fd73ee 100644
+--- a/docs/completed.md
++++ b/docs/completed.md
+@@ -2335,3 +2335,37 @@ and explicit versioning. Fresh activation assertion binding, crypto registry/rec
+ invocation power-loss accounting, diagnostics, performance and the other accepted review gates remain.
+ No whole-protocol debt is paid. All 21 personal package hashes, historical review, L-2 and stopped
+ personal preview/relay are unchanged. New composition work remains uncommitted at this checkpoint.
++
++
++## 2026-09-11 — Admission coverage bounds and v2 signatures (`L-1` seat)
++
++Outbound composition was committed as `6398e33`. The bounded F-03 repair and descriptor portion of
++F-21 are complete: [contract](./account-admission-bounds.md), [preserved evidence](./account-conformance-runs/2026-09-11-account-admission-bounds.md).
++
++The immutable v1 reproduction establishes both raw-hex LP ceilings: 32,767 descriptor bytes fit;
++32,768 refuse. Real synthetic Yjs histories exceed that ceiling with checkpoints below 216 kB.
++Manifest and SemanticAdmission both advance to v2, signing separate SHA-256 hashes of decoded
++opaque descriptors. Raw bytes and local three-way rederivation remain mandatory. The combined
++16 MiB pair bound fits the existing service envelope limit; it is not a browser performance promise.
++Checkpoint encryption remains v1 and its ciphertext vector is unchanged.
++
++Old private completions/receipts, mixed and unknown versions refuse without rewriting authenticated
++client progress or admitted service rows. No real Account receipt exists. Pre-completion requests and
++service offers remain resumable. Neither silent signature reinterpretation nor automatic fixture
++reset is introduced. Larger, honestly signed coverage does not become semantic evidence by signature
++alone: correctly signed lies pass the content-blind service and fail client-derived coverage.
++
++Validation passes: five protocol tests with 80 shrinking-enabled generated cases plus exact boundaries,
++six native long-history/refusal/cold-replay cases, four independent implementation vectors and 92 field
++mutations, six effective descriptor/semantic omission probes, all 225 existing field-isolation checks,
++all 980 units, complete 17-test genesis and 34-test admission campaigns, and the full composed-sync
++campaign with its generated histories and controls. The isolated build/budget/origin/trace chain and
++type/lint/targeted-format/whitespace checks pass. Authority entries were reread and re-pinned. No full
++historical aggregate was rerun; no whole-protocol debt or performance gate is paid. Harness setup
++failures and the earlier sampled-property run remain separate from final passing evidence.
++
++The next bounded phase is an operation-bound fresh account assertion at first service activation
++(F-04), with prep for exact retries, expiration, cancellation and atomic consumption before implementation.
++Crypto registry/recovery alignment, invocation power-loss accounting and the other accepted review gates
++remain before real Account use. All 21 personal package hashes, stopped preview/relay, personal browser,
++historical review and L-2 remain unchanged. This phase is uncommitted. Appended before the L-1 rewrite.
+diff --git a/docs/progress.md b/docs/progress.md
+index 846cd1f..fdaac57 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -42,71 +42,68 @@ that is no longer active.
+ 
+ ---
+ 
+-## Active slice: Account admission descriptor bounds and explicit versioning (`L-1`)
++## Active slice: Fresh account assertion bound to first activation (`L-1`)
+ 
+ ```yaml
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+ status: not started
+-blocks_on: bounded row-7/admission encoding prep first; real Account use remains gated below
++blocks_on: bounded activation-assertion contract prep first; real Account use remains gated below
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+ 
+-**Where we are on the roadmap.** Personal Local cutover, source cleanup and packaged offline upgrades
+-have been exercised. Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service): the
+-creating-member ciphertext round trip now runs through one private editor owner in synthetic fixtures.
+-This is the internal seam around item 5, not completion of all of Stage 4. Actual second-device enrollment
+-(item 6), device management, rotation/revocation/finalization and continuity remain later. No real Account
+-receipt has been created for the personal installation.
++**Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades have been
++exercised. Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's
++internal creating-member ciphertext round trip. Outbound/receive composition is committed as `6398e33`.
++This is not completion of Stage 4: actual second-device enrollment, device management, rotation,
++revocation, finalization and continuity remain later. No real Account receipt exists.
+ 
+-**Personal checkpoint.** The Local release remains `.dev/releases/17d87c2/app`; root `dist/` and all 21
+-saved package hashes are unchanged. Preview/relay stay stopped. Origin/Tailscale routing, browser and
+-factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned.
+-The actual old second device will adopt this device's workspace with fresh custody, store, counters and
+-credentials; its old writing will not be imported or merged.
++**Completed boundary.** [Admission descriptor bounds and explicit versioning](./account-admission-bounds.md)
++are implemented and uncommitted. Both signed objects use v2 domains and separate decoded-byte descriptor
++hashes; raw SV/DS pairs are bounded to 16 MiB combined and still rederived locally. Cipher/AAD stays v1.
++Private v1 completions/receipts refuse without rewriting retained state; unsent genesis and pre-completion
++requests/offers are unaffected. Native long-history admission and cold retry cross the previous 32,767-byte
++ceiling. Correctly signed descriptor lies fail client semantic comparison.
+ 
+-**Completed boundary.** Native receive `f6e4cf4`, ordered editor `19586b6`, unchanged historical review
+-`500630f`, aggregate validation-baseline repair `e835243`, private v2 service read `9598ca6`, receive HTTP
+-`1ceb88d`, and receive polling/reconnect `83eed0b` are committed. [Outbound composition](./account-outbound-composition.md)
+-is implemented and not yet committed. It uses one v9 owner, carrier, witness and ordered editor, preserving
+-original source identities, grants and exact envelopes/submissions. One fair scheduler drives both lanes
+-with independent retry/halts. The self-stream must match locally persisted envelopes; no copied or branched
+-credential history is supported. Raw mutating primitives stay inside the private factory.
++[Evidence](./account-conformance-runs/2026-09-11-account-admission-bounds.md) retains exact boundaries,
++80 shrinking-enabled generated codec cases, six native cases, independent vectors, effective omissions,
++all 980 units, complete genesis/admission/composed-sync regressions and isolated build/trace checks.
++The maximum-size service/parser check does not establish browser performance at that limit. F-03 and
++F-21's descriptor gap are addressed; broader negative-test and whole-protocol gates remain.
+ 
+-[Evidence](./account-conformance-runs/2026-09-11-account-sync.md) preserves seven directed native cases,
+-eight generated native histories, 400 new clock/event schedules, ten effective controls, all 980 units,
+-affected manual HTTP/v8 sender/spool/polling-receiver campaigns and isolated build/trace checks. The
+-network-refusal classification defect and effective reproduction are archived. Only outer generated-test
+-deadlines changed after its passing run; inputs and exact delta are retained. No whole-protocol debt is paid.
++**Next bounded build — F-04.** Require a fresh service-verified account assertion for the exact first
++activation, as the authority contract already requires:
+ 
+-**Next small build.** Correct the capacity/versioning contract before any real Account receipt:
++- Write the bounded prep first. Specify the bytes binding the account, retained promotion request,
++  offered head and exact completion to a fresh challenge; use the actual registered passkey namespace.
++- Define challenge lifetime, exact retry after a lost reply, cancellation/abandonment, replay and
++  concurrent completion. Consumption and activation must share the service's serialization boundary.
++- Bind the client operation to its already retained completion. Preserve its custody/lifecycle ownership
++  across assertion UI, cancellation and cold restart. Handoff/open assertions remain separate checks.
++- Implement and test only this private first-activation seam, including validly signed changed-operation
++  negatives, expired/used assertions, process/renderer death and idempotent committed receipt recovery.
++  Do not add Account onboarding UI, enrollment, real provisioning or default-app activation in this phase.
+ 
+-- Reproduce the current raw SV/DS hex length-prefix ceiling, including both row-7 manifest and semantic
+-  admission bytes. Use generated synthetic long-history coverage and exact boundaries; do not inspect or
+-  modify the personal browser to manufacture evidence.
+-- Specify versioned signed encodings at both homes, preserve rederived semantic coverage and exact request/
+-  receipt binding, and define the disposition of existing private v1 artifacts. Do not silently reinterpret
+-  old signatures or update only the manifest.
+-- Amend the selected row-7/TRD and Account contract homes together, implement the bounded client/service
+-  path, regenerate interoperable positives and per-field negatives, and test old-reader/version refusal,
+-  mismatched correctly signed descriptors and acceptance across the former ceiling.
+-- Preserve private genesis/admission and composed send/receive regressions. This phase does not add Account
+-  UI, enroll a device, provision production keys or activate the personal Account.
++**Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
++Preview/relay stay stopped; personal browser, factors and origin/Tailscale routing are unchanged.
++No real Account, passkey, recovery code, operator key or authority pin is provisioned. The actual old
++second device will adopt this device's workspace with fresh custody, store, counters and credentials;
++its old writing will not be imported or merged.
+ 
+-**Other gates before real Account receipts/rollout.** Require an operation-bound fresh account assertion
+-at first service activation; register/pin the exact Account crypto constructions with interoperable vectors;
+-align recovery's 96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep
+-salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering and other
+-accepted review follow-ups visible. The F-11 historical correction still applies: passkey and workspace
+-signing credential IDs intentionally differ; service binding is to completed registration, not ID equality.
++**Other gates before real Account receipts/rollout.** Register and pin the exact Account crypto
++constructions with interoperable vectors; align recovery's 96-byte payload with row 14/TRD; resolve
++invocation-grant power-loss accounting. Keep salvage/diagnostics, parser/admission/service negatives,
++performance/maintenance, lock ordering and other accepted review follow-ups visible. F-11's correction
++still applies: passkey and workspace signing IDs are different namespaces; bind service access to the
++actual completed passkey registration, not equality with the signing credential ID.
+ 
+ General lineage advancement, successor/checkpoint baselines, concurrent members, pruning/backlog scale,
+ revocation/rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue,
+ production provisioning/deployment/restore and independent review remain separate boundaries. L-2's
+-historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped.
+-Client credentials and service state still require unrewound, unbranched histories.
++historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays
++stopped. Client credentials and service state require unrewound, unbranched histories.
+ 
+ This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+ 
+diff --git a/docs/review/remediation/S0-2/authority-map.md b/docs/review/remediation/S0-2/authority-map.md
+index 7141d85..436c67c 100644
+--- a/docs/review/remediation/S0-2/authority-map.md
++++ b/docs/review/remediation/S0-2/authority-map.md
+@@ -258,10 +258,10 @@ pin: docs/TRD.md §7.4 879970c40c7c
+ entry: checkpoint-manifest
+ kind: verification
+ guards: content
+-verifies: M — the producing credential's manifest over checkpoint digest, sv, ds and the head vector
++verifies: M v2 — the producing credential's manifest over checkpoint digest, separate SHA-256(sv) and SHA-256(ds), and the head vector
+ resolves: the producing credential -> via:member-signing-keys
+ status: resolved
+-pin: docs/TRD.md §7.6 379e814fec88
++pin: docs/TRD.md §7.6 456e19fde83e
+ ```
+ 
+ ```authority
+@@ -272,11 +272,16 @@ verifies: that a checkpoint means the accepted snapshot it claims — SemanticAd
+ resolves: local re-derivation of {sv, ds} from the decrypted snapshot, compared three ways -> root:structural
+ resolves: the admission signature and the admitting credential's eligibility at the manifest's epoch -> via:member-signing-keys
+ status: resolved
+-pin: docs/TRD.md §7.6 379e814fec88
+-pin: docs/review/remediation/S0-5/A-schemas.md §1 c28c0a25fd1f
++pin: docs/TRD.md §7.6 456e19fde83e
++pin: docs/review/remediation/S0-5/A-schemas.md §1 87c7b6063c29
+ pin: docs/review/remediation/S0-5/A-schemas.md §4 6fc9ec7ea390
+ ```
+ 
++**Re-pinned 2026-09-11 for descriptor encoding v2.** The producing/admitting key paths and local
++three-way coverage comparison are unchanged; both signed messages bind separate decoded-byte
++descriptor hashes. Checkpoint encryption and its key authority are unchanged. The private v1 refusal
++and 16 MiB pair bound are recorded in [the amendment](../../../account-admission-bounds.md).
++
+ **Flipped 2026-08-28 at the `S0-5` return** (`FU-11`, `ST-06`). The rule was always stated; what flipped it is
+ that the evidence now exercises it with the authority as an input: the verifier resolves from the certified
+ set's member entry at the manifest's epoch — a genuine signature by an uncertified credential refuses at the
+@@ -578,8 +583,8 @@ guards: content
+ verifies: the sealed checkpoint — K_cp over the full snapshot, an opener on every device
+ discipline: one message per derived key — cp_salt is 16 fresh random bytes per seal into K_cp's HKDF, carried in the clear beside the nonce, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§7.6, row 7); the key cannot narrow to a store because every device must open it and no single store could count the others' seals, so freshness rides the seal rather than a counter — §13.8's discipline at the fifth subkey
+ status: resolved
+-pin: docs/TRD.md §7.6 379e814fec88
+-pin: docs/selections/row-7-checkpoint.md 7fee1deaff8a
++pin: docs/TRD.md §7.6 456e19fde83e
++pin: docs/selections/row-7-checkpoint.md f0ebd5feca31
+ ```
+ 
+ **The census's one declared absence, paid and struck at the `S0-5` return (2026-08-28).** From the `S0-3`
+diff --git a/docs/review/remediation/S0-5/A-schemas.md b/docs/review/remediation/S0-5/A-schemas.md
+index 04147ad..dff7a07 100644
+--- a/docs/review/remediation/S0-5/A-schemas.md
++++ b/docs/review/remediation/S0-5/A-schemas.md
+@@ -22,9 +22,9 @@ signatures, digests, sorting and current-body equality against **independent con
+ evidence ever derived one from the other.
+ 
+ ```
+-A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
++A = LP("done/cp-admit/v2") || LP("2") || LP(workspace_id)
+     || LP(hex checkpoint_digest) || LP(hex manifest_digest)
+-    || LP(hex derived_sv) || LP(hex derived_ds)
++    || LP(hex SHA-256(derived_sv)) || LP(hex SHA-256(derived_ds))
+     || LP(hex head_baseline_digest)
+     || LP(derivation_version)
+     || LP(admitting_credential) || LP(dec self_admitted)
+@@ -33,6 +33,14 @@ A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
+   sig = Ed25519( the admitting client's signing credential ; A )
+ ```
+ 
++
++**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
++remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
++while full raw descriptors remain required and are rederived by every restorer. The private
++adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
++Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
++pre-completion requests/offers may resume. See [the compatibility and bounds contract](../../../account-admission-bounds.md).
++
+ **`derived_sv` and `derived_ds` are the point of the object.** They are not copied from the manifest — they are
+ what the admitter got by decrypting the checkpoint, materialising the snapshot, and deriving coverage from it.
+ A restorer does the same and compares three things: its own derivation, the admission's, and the manifest's.
+diff --git a/docs/selections/row-7-checkpoint.md b/docs/selections/row-7-checkpoint.md
+index 01682bb..674ee1f 100644
+--- a/docs/selections/row-7-checkpoint.md
++++ b/docs/selections/row-7-checkpoint.md
+@@ -30,6 +30,14 @@ second-newest fallback installs through the same machine (TRD §7.6).
+ 
+ ## The selection
+ 
++
++**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
++remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
++while full raw descriptors remain required and are rederived by every restorer. The private
++adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
++Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
++pre-completion requests/offers may resume. See [the compatibility and bounds contract](../account-admission-bounds.md).
++
+ ```
+ The checkpoint          one full snapshot, sealed under one generation
+ 
+@@ -52,9 +60,9 @@ The checkpoint          one full snapshot, sealed under one generation
+ 
+ The manifest            signed by the producing credential
+ 
+-  M = LP("done/cp-manifest/v1") || LP(dec v) || LP(workspace_id)
++  M = LP("done/cp-manifest/v2") || LP("2") || LP(workspace_id)
+       || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
+-      || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
++      || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
+       || LP(hex head_vector_digest) || LP(producing_credential)
+ 
+   checkpoint_digest = SHA-256(ct)   — the durable store checks it with no key
+@@ -65,9 +73,9 @@ The manifest            signed by the producing credential
+ 
+ The admission           what the producer's signature does NOT say
+ 
+-  A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
++  A = LP("done/cp-admit/v2") || LP("2") || LP(workspace_id)
+       || LP(hex checkpoint_digest) || LP(hex manifest_digest)
+-      || LP(hex derived_sv) || LP(hex derived_ds)
++      || LP(hex SHA-256(derived_sv)) || LP(hex SHA-256(derived_ds))
+       || LP(hex head_baseline_digest) || LP(derivation_version)
+       || LP(admitting_credential) || LP(dec self_admitted)
+       || LP(hex decision_parent)
+diff --git a/package.json b/package.json
+index fe45359..a57cd74 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver && pnpm account:sync",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver && pnpm account:sync && pnpm account:admission-bounds",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -27,8 +27,8 @@
+     "review:status": "node scripts/review-status.mjs",
+     "review:check": "node scripts/review-status.mjs --check",
+     "budget": "node scripts/check-budget.mjs",
+-    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-private-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs && node scripts/generate-attribution-vectors.mjs && node scripts/generate-checkpoint-vectors.mjs && node scripts/generate-antireplay-vectors.mjs && node scripts/generate-package-vectors.mjs && node scripts/generate-account-credential-vectors.mjs && node scripts/generate-transition-vectors.mjs && node scripts/generate-baseline-vectors.mjs",
+-    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && pnpm vectors:coverage",
++    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-private-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs && node scripts/generate-attribution-vectors.mjs && node scripts/generate-checkpoint-vectors.mjs && node scripts/generate-antireplay-vectors.mjs && node scripts/generate-package-vectors.mjs && node scripts/generate-account-credential-vectors.mjs && node scripts/generate-transition-vectors.mjs && node scripts/generate-baseline-vectors.mjs && node scripts/account-admission-bounds/vectors.mjs",
++    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && node scripts/account-admission-bounds/vectors.mjs --check && pnpm vectors:coverage",
+     "vectors:coverage": "node scripts/check-aad-coverage.mjs",
+     "retention:check": "node scripts/check-retention.mjs",
+     "status:check": "node scripts/check-selection-status.mjs",
+@@ -102,7 +102,8 @@
+     "account:receive-editor": "node scripts/account-receive-editor/run.mjs",
+     "account:receive-transport": "node scripts/account-receive-transport/run.mjs",
+     "account:receive-driver": "node scripts/account-receive-driver/run.mjs",
+-    "account:sync": "node scripts/account-sync/run.mjs"
++    "account:sync": "node scripts/account-sync/run.mjs",
++    "account:admission-bounds": "node scripts/account-admission-bounds/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/scripts/generate-checkpoint-vectors.mjs b/scripts/generate-checkpoint-vectors.mjs
+index 4ca5987..c6b9d7e 100644
+--- a/scripts/generate-checkpoint-vectors.mjs
++++ b/scripts/generate-checkpoint-vectors.mjs
+@@ -50,6 +50,7 @@
+ import { writeFileSync, readFileSync } from 'node:fs';
+ import { webcrypto as crypto } from 'node:crypto';
+ 
++import { createHash } from 'node:crypto';
+ import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+ import { claims, falsifies } from './lib/traceability.mjs';
+ 
+@@ -57,7 +58,8 @@ const OUT = new URL('../test/vectors/checkpoint.json', import.meta.url);
+ 
+ const HKDF_LABEL = 'done/checkpoint/v1';
+ const CP_AAD_LABEL = 'done/cp/v1';
+-const MANIFEST_LABEL = 'done/cp-manifest/v1';
++const MANIFEST_LABEL = 'done/cp-manifest/v2';
++const coverageHash = (hexBytes) => createHash('sha256').update(unhex(hexBytes)).digest('hex');
+ const HEADVEC_LABEL = 'done/headvec/v1';
+ 
+ /** The PKCS#8 prefix for a raw Ed25519 seed, as row 1's generator uses. */
+@@ -189,8 +191,8 @@ const manifestMessage = ({
+       epoch_head: epochHead,
+       gen: String(gen),
+       checkpoint_digest: checkpointDigest,
+-      sv,
+-      ds,
++      sv: coverageHash(sv),
++      ds: coverageHash(ds),
+       head_vector_digest: headVecDigest,
+       producing_credential: credential,
+     }).map(lp),
+@@ -214,11 +216,11 @@ const manifestMessage = ({
+  * restorer's confidence in the baseline is exactly its confidence in that
+  * credential.
+  */
+-const ADMIT_LABEL = 'done/cp-admit/v1';
++const ADMIT_LABEL = 'done/cp-admit/v2';
+ const DERIVATION_VERSION = 'yjs-v13-sv-ds';
+ 
+ const admissionMessage = ({
+-  v = 1,
++  v = 2,
+   workspace,
+   checkpointDigest,
+   manifestDigest,
+@@ -238,8 +240,8 @@ const admissionMessage = ({
+       workspace_id: workspace,
+       checkpoint_digest: checkpointDigest,
+       manifest_digest: manifestDigest,
+-      derived_sv: derivedSv,
+-      derived_ds: derivedDs,
++      derived_sv: coverageHash(derivedSv),
++      derived_ds: coverageHash(derivedDs),
+       head_baseline_digest: headBaselineDigest,
+       derivation_version: derivationVersion,
+       admitting_credential: admittingCredential,
+@@ -601,6 +603,7 @@ const verify = async (doc) => {
+   const ct = unhex(v.expected.ciphertext);
+   const manifest = {
+     ...BASE,
++    v: 2,
+     checkpointDigest: v.expected.checkpoint_digest,
+     sv: SV,
+     ds: DS,
+@@ -664,8 +667,8 @@ const verify = async (doc) => {
+       'stale-epoch-head',
+       { epochHead: 'c4e1a6b3d0f295847e3b1c0d9a8f7e6d5c4b3a29180f7e6d5c4b3a2918f0e7d6' },
+     ],
+-    ['wrong-version', { v: 2 }],
+-    ['aad-only-renumbered-manifest-label', { label: 'done/cp-manifest/v2' }],
++    ['wrong-version', { v: 3 }],
++    ['aad-only-renumbered-manifest-label', { label: 'done/cp-manifest/v3' }],
+     // The producing credential is named *in the message*, so changing that name
+     // alone — verifier and signature untouched — is what isolates the field.
+     // The forged-signature half of the same negative is above.
+@@ -925,7 +928,7 @@ const verify = async (doc) => {
+   };
+ 
+   await refuses('aad-only-admission-label', () =>
+-    signatureOnly({ ...ADMISSION, label: 'done/cp-admit/v2' }),
++    signatureOnly({ ...ADMISSION, label: 'done/cp-admit/v3' }),
+   );
+   await refuses('aad-only-admission-version', () => signatureOnly({ ...ADMISSION, v: 0 }));
+   await refuses('aad-only-admission-workspace-id', () =>
+@@ -1046,7 +1049,7 @@ const verify = async (doc) => {
+   // checked against, so the refusals above reconstruct from this file alone.
+   const publishFields = (f) => ({
+     label: ADMIT_LABEL,
+-    v: 1,
++    v: 2,
+     workspace_id: f.workspace,
+     checkpoint_digest: f.checkpointDigest,
+     manifest_digest: f.manifestDigest,
+@@ -1096,7 +1099,7 @@ const main = async () => {
+   );
+   const checkpointDigest = hex(await sha256(ct));
+   const headVecDigest = await headVectorDigest(HEADS);
+-  const manifest = { ...BASE, checkpointDigest, sv: SV, ds: DS, headVecDigest };
++  const manifest = { ...BASE, v: 2, checkpointDigest, sv: SV, ds: DS, headVecDigest };
+   const message = manifestMessage(manifest);
+ 
+   const vectors = [
+@@ -1106,6 +1109,7 @@ const main = async () => {
+       inputs: {
+         k_g: hex(KG),
+         v: BASE.v,
++        manifest_v: 2,
+         workspace_id: WORKSPACE,
+         epoch: BASE.epoch,
+         epoch_head: EPOCH_HEAD,
+@@ -1136,7 +1140,7 @@ const main = async () => {
+   ];
+ 
+   const doc = {
+-    $schema: 'https://done.invalid/vectors/checkpoint/1',
++    $schema: 'https://done.invalid/vectors/checkpoint/2',
+     generated_by: 'scripts/generate-checkpoint-vectors.mjs',
+     // Filled after `verify`, which is where this file's guards run. Declared
+     // here so its position in the published document does not depend on that.
+@@ -1152,7 +1156,7 @@ const main = async () => {
+       checkpoint_aad:
+         'LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)',
+       manifest:
+-        'Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v) || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds) || LP(hex head_vector_digest) || LP(producing_credential) )',
++        'Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds)) || LP(hex head_vector_digest) || LP(producing_credential) )',
+       head_vector:
+         'For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP("done/headvec/v1") || head_vector ). The sort is the canonicalization',
+       coverage:
+diff --git a/src/crdt/promotionAdmission.ts b/src/crdt/promotionAdmission.ts
+index ce9832a..315962e 100644
+--- a/src/crdt/promotionAdmission.ts
++++ b/src/crdt/promotionAdmission.ts
+@@ -7,6 +7,7 @@ import {
+   verifyAdmissionRequest,
+   verifyOffer,
+   completionBodies,
++  coverageParts,
+   manifestMessage,
+   semanticMessage,
+   verifyCompletion,
+@@ -83,9 +84,8 @@ export async function admitLocalPromotion(
+           // Use the same closed, ordered representation in memory and in the retained carrier.
+           request = parseAdmissionRequest(request);
+           await verifyAdmissionRequest(request, marker.account);
+-          // Validate row-7 LP bounds before writing a request that cannot be completed.
+-          if (parts.sv.length > 65534 || parts.ds.length > 65534)
+-            throw Error('Admission coverage exceeds LP bound');
++          // Validate raw-byte bounds before retaining or sending an admission request.
++          coverageParts(parts);
+           const save = async (
+             stage: PromotionRecord['stage'],
+             admission: NonNullable<PromotionRecord['admission']>,
+@@ -130,8 +130,8 @@ export async function admitLocalPromotion(
+           if (marker.admission!.offer && !same(offer, marker.admission!.offer))
+             throw Error('Retained offer changed');
+           const completion = await completionBodies(request, offer, parts);
+-          completion.manifest.signature = await sign(manifestMessage(completion.manifest));
+-          completion.admission.signature = await sign(semanticMessage(completion.admission));
++          completion.manifest.signature = await sign(await manifestMessage(completion.manifest));
++          completion.admission.signature = await sign(await semanticMessage(completion.admission));
+           await verifyCompletion(completion, request, offer, parts);
+           if (marker.stage === 'admission-requested')
+             await save('admission-offered', { request, offer, completion, receipt: null });
+diff --git a/test/account-admission/core-fixtures.mjs b/test/account-admission/core-fixtures.mjs
+index e67647a..5d87378 100644
+--- a/test/account-admission/core-fixtures.mjs
++++ b/test/account-admission/core-fixtures.mjs
+@@ -31,27 +31,27 @@ export const certMessage = (r) => {
+ };
+ export const manifestBytes = (m) =>
+   lp(
+-    'done/cp-manifest/v1',
+-    '1',
++    'done/cp-manifest/v2',
++    '2',
+     m.workspaceId,
+     '1',
+     m.epochHead,
+     '1',
+     m.checkpointDigest,
+-    m.sv,
+-    m.ds,
++    hash(Buffer.from(m.sv, 'hex')),
++    hash(Buffer.from(m.ds, 'hex')),
+     m.headVectorDigest,
+     m.producer,
+   );
+ export const semanticBytes = (a) =>
+   lp(
+-    'done/cp-admit/v1',
+-    '1',
++    'done/cp-admit/v2',
++    '2',
+     a.workspaceId,
+     a.checkpointDigest,
+     a.manifestDigest,
+-    a.derivedSv,
+-    a.derivedDs,
++    hash(Buffer.from(a.derivedSv, 'hex')),
++    hash(Buffer.from(a.derivedDs, 'hex')),
+     a.headBaselineDigest,
+     a.derivation,
+     a.admittingCredential,
+diff --git a/test/account-admission/oracle.mjs b/test/account-admission/oracle.mjs
+index 6486796..4db8df3 100644
+--- a/test/account-admission/oracle.mjs
++++ b/test/account-admission/oracle.mjs
+@@ -64,15 +64,15 @@ export function inspectReceipt(receipt, request, item, expectedText) {
+     ]),
+   );
+   const manifest = lp(
+-    'done/cp-manifest/v1',
+-    '1',
++    'done/cp-manifest/v2',
++    '2',
+     c.workspaceId,
+     '1',
+     receipt.offer.head,
+     '1',
+     hash(Buffer.from(c.checkpoint.ct, 'hex')),
+-    m.sv,
+-    m.ds,
++    hash(Buffer.from(m.sv, 'hex')),
++    hash(Buffer.from(m.ds, 'hex')),
+     hash(lp('done/headvec/v1')),
+     c.signer,
+   );
+@@ -84,13 +84,13 @@ export function inspectReceipt(receipt, request, item, expectedText) {
+     member.sPub,
+     a.signature,
+     lp(
+-      'done/cp-admit/v1',
+-      '1',
++      'done/cp-admit/v2',
++      '2',
+       c.workspaceId,
+       m.checkpointDigest,
+       hash(manifest),
+-      m.sv,
+-      m.ds,
++      hash(Buffer.from(m.sv, 'hex')),
++      hash(Buffer.from(m.ds, 'hex')),
+       m.headVectorDigest,
+       'yjs-13.6.31-sv-ds-v1',
+       c.signer,
+diff --git a/test/vectors/checkpoint.json b/test/vectors/checkpoint.json
+index 3c41df8..b317caa 100644
+--- a/test/vectors/checkpoint.json
++++ b/test/vectors/checkpoint.json
+@@ -1,5 +1,5 @@
+ {
+-  "$schema": "https://done.invalid/vectors/checkpoint/1",
++  "$schema": "https://done.invalid/vectors/checkpoint/2",
+   "generated_by": "scripts/generate-checkpoint-vectors.mjs",
+   "falsifies": {
+     "the opener predicate": [
+@@ -13,7 +13,7 @@
+     "kdf": "K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP(\"done/checkpoint/v1\") || LP(workspace_id), L = 32)",
+     "seal_discipline": "cp_salt is 16 fresh random bytes per seal, carried in the clear beside the nonce — one message per derived key, so nonce reuse is structurally unreachable and no invocation counter exists because none is needed (§13.8’s discipline at the fifth subkey; the k-checkpoint census entry)",
+     "checkpoint_aad": "LP(\"done/cp/v1\") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)",
+-    "manifest": "Ed25519( producing credential ; LP(\"done/cp-manifest/v1\") || LP(dec v) || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds) || LP(hex head_vector_digest) || LP(producing_credential) )",
++    "manifest": "Ed25519( producing credential ; LP(\"done/cp-manifest/v2\") || LP(\"2\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds)) || LP(hex head_vector_digest) || LP(producing_credential) )",
+     "head_vector": "For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP(\"done/headvec/v1\") || head_vector ). The sort is the canonicalization",
+     "coverage": "`sv` and `ds` bound separately, as opaque bytes. §7.6 forbids a bare state vector as a coverage claim; opacity means §10.1’s deferred Yjs upgrade changes what the bytes say rather than what this construction is",
+     "attribution": "Preserved by row 8 rather than by anything here. Each claim is signed by its own author and lives in the snapshotted content; the producer signs the container and nothing inside it, so §7.6’s forbidden shape is unreachable",
+@@ -59,6 +59,7 @@
+       "inputs": {
+         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+         "v": 1,
++        "manifest_v": 2,
+         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+         "epoch": 9,
+         "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+@@ -87,12 +88,12 @@
+         "checkpoint_aad": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+         "head_vector": "001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e000134004037663365316430633962386135363437333832393130666564636261393837363534333231303066656463626139383736353433323130666564636261393837",
+         "head_vector_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+-        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e37440001390040326237663061396331346536643338353066613263353165383664343037336262396530633166323464386136333735396530623266346337613164386533360001330040366464613633343331313632633039626432396437346138663661633931636438353137323431356233623537666330393862343264303539333666346662380018303161386530633964323035303362316334663730613032001c30326138653063396432303530313037623163346637306130333034004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
++        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336000133004036646461363334333131363263303962643239643734613866366163393163643835313732343135623362353766633039386234326430353933366634666238004039643564313239613530383638376464343635626634353538623535636633623732306262383732616362373935386165383837636466316365393163323333004030316432373731373932636336643765303366623937616263373938363932323633363263626237616431623962613934396363613636633139393031333736004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
+       },
+       "expected": {
+         "ciphertext": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d9b121dbfd5221457a5ac01e5c5c46c18",
+         "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+-        "signature": "21d5958159f04a82d440059e6c0f6a7b1f7a868b93c0bb4d9a68910d80945da37a62c31c3b1bdc13b174653d6426b09a32cb19a3a061b49928c9a2a99abad405"
++        "signature": "5865f3a824ff583a567d5919ee3920987e437daa2008e7e9b3e1bde02fc5c240785a8ae6b25c0104a4a044fc3e02b7721b0860684d5fbfc57fdaa2a00154c80f"
+       }
+     }
+   ],
+@@ -109,11 +110,11 @@
+     },
+     "second_party": {
+       "fields": {
+-        "label": "done/cp-admit/v1",
+-        "v": 1,
++        "label": "done/cp-admit/v2",
++        "v": 2,
+         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+         "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+-        "manifest_digest": "8a168532f1ed4bf502a5f5cae753531818f6adfb0db390c58e85802d2ae3fd63",
++        "manifest_digest": "a8b5c1bdcc983ba69b7d51ca95ee79e43085013534a54d6de5a112fbe41424fa",
+         "derived_sv": "01a8e0c9d20503b1c4f70a02",
+         "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+         "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+@@ -123,7 +124,7 @@
+         "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+       },
+       "signed_by": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+-      "signature": "8cc4fede6c5c9268050e9b7e59995eb985e2c766aaf605d685ad9ddf2e7bd7c60c349704511b01a1829f394002a929100430af32bc4d72bad9f115faa1adc705",
++      "signature": "572ea1c51ef334377d311b98f34bfc983c6a35b781099118ac6b14eecb093b9bd1e84cef484f70f90a3aac786ed44efcbe9fa2c6acbbc2497ca10e8c37815b0a",
+       "accepted": "in the two-device set: eligible, not the producer, flag agrees"
+     },
+     "self_admission": {
+@@ -133,11 +134,11 @@
+         }
+       },
+       "fields": {
+-        "label": "done/cp-admit/v1",
+-        "v": 1,
++        "label": "done/cp-admit/v2",
++        "v": 2,
+         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+         "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+-        "manifest_digest": "8a168532f1ed4bf502a5f5cae753531818f6adfb0db390c58e85802d2ae3fd63",
++        "manifest_digest": "a8b5c1bdcc983ba69b7d51ca95ee79e43085013534a54d6de5a112fbe41424fa",
+         "derived_sv": "01a8e0c9d20503b1c4f70a02",
+         "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+         "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+@@ -147,7 +148,7 @@
+         "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+       },
+       "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+-      "signature": "1d0e09d2af1960f0baebc61b4cf3c5cb5da6c93065642992c3ed7075dc159e9ffb5b78c47e7f11a7c5ae18583aec389b54a032eb288eaeae4902cec5bbf0c40a",
++      "signature": "01a6e7f616a2a0a9a61a80ec2c3d1b72b837bacceb7d19cf19bd8a6cd318d2367e911e90bc08af630c121d7b165d84c6ac605999ba66e4554d78648f82f7190a",
+       "accepted": "only in the single-device set, and the record says it was self-admitted; the identical bytes beside certified_at_epoch_9 are the self-admission-beside-a-second-eligible negative"
+     }
+   },

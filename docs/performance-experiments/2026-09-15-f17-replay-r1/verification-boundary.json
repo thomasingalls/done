@@ -1,0 +1,12 @@
+{
+  "sameDocStateBodyUnchangedFromSelected": true,
+  "admissionQueueUnchangedFromGuarded": true,
+  "workspacePreparationUnchangedFromGuarded": true,
+  "guardedIncrement": [
+    "src/crdt/admittedWorkspace.ts",
+    "src/crdt/yjs.ts",
+    "test/historyReplay.test.ts",
+    "test/workspaceAdmission.test.ts",
+    "test/textBufferNormalizationProbe.test.ts"
+  ]
+}

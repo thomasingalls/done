@@ -1,0 +1,207 @@
+import {
+  parseRemovalFinalization,
+  removalFinalizationMessage,
+} from '../account-protocol/rotation.ts';
+import type { AcceptedHead } from '../account-protocol/positionDecision.ts';
+import {
+  encodeReadPage,
+  readPageMessage,
+  type ReadPage,
+} from '../account-protocol/deliveryTransport.ts';
+import {
+  encodeInboundPage,
+  inboundPageMessage,
+  type InboundReadPage,
+} from '../account-protocol/inboundTransport.ts';
+/** Private acceptance-seed custody. Fixed-purpose response and ledger-witness signing stays inside this owner. */
+import {
+  sign,
+  createSecretKey,
+  generateKeyPairSync,
+  createPrivateKey,
+  createPublicKey,
+  createCipheriv,
+  createDecipheriv,
+  hkdfSync,
+  randomBytes,
+  type KeyObject,
+} from 'node:crypto';
+import { lp, unhex } from '../account-protocol/recovery.ts';
+import { pinBytes, type AuthorityPin } from '../account-protocol/authority.ts';
+import {
+  encodePositionResponse,
+  headMessage,
+  refusalMessage,
+  type PositionResponse,
+} from '../account-protocol/positionDecision.ts';
+import { witnessMessage, type WitnessScope, type DeliveryWitness } from './deliveryWitness.ts';
+import { closed } from '../account-protocol/preparation.ts';
+import { assertEd25519SeedExport, ed25519PublicHex } from './keyEncoding.ts';
+export interface AcceptanceSeal {
+  v: 1;
+  publicKey: string;
+  salt: string;
+  nonce: string;
+  ct: string;
+}
+export class AcceptanceCustody {
+  #key: KeyObject | null;
+  #pin: AuthorityPin;
+  constructor(operatorKey: Uint8Array, pin: AuthorityPin) {
+    const raw = Buffer.from(
+      hkdfSync(
+        'sha256',
+        operatorKey,
+        new Uint8Array(),
+        lp('done/acceptance-custody/v1', pin.serviceId, pin.authRoot),
+        32,
+      ),
+    );
+    try {
+      this.#key = createSecretKey(raw);
+    } finally {
+      raw.fill(0);
+    }
+    this.#pin = { ...pin };
+  }
+  #derive(salt: string): Buffer {
+    if (!this.#key) throw Error('Acceptance custody closed');
+    return Buffer.from(
+      hkdfSync('sha256', this.#key, unhex(salt, 16), lp('done/acceptance-seal/v1'), 32),
+    );
+  }
+  #aad(id: string, pub: string) {
+    return Buffer.concat([pinBytes(this.#pin), lp('done/acceptance-seal/v1', id, pub)]);
+  }
+  create(id: string): AcceptanceSeal {
+    if (!this.#key) throw Error('Acceptance custody closed');
+    unhex(id, 32);
+    const pair = generateKeyPairSync('ed25519'),
+      raw = pair.privateKey.export({ format: 'der', type: 'pkcs8' });
+    let key: Buffer | undefined;
+    try {
+      assertEd25519SeedExport(raw);
+      const publicKey = ed25519PublicHex(pair.publicKey),
+        salt = randomBytes(16).toString('hex'),
+        nonce = randomBytes(12).toString('hex');
+      key = this.#derive(salt);
+      const cipher = createCipheriv('aes-256-gcm', key, Buffer.from(nonce, 'hex'));
+      cipher.setAAD(this.#aad(id, publicKey));
+      return {
+        v: 1,
+        publicKey,
+        salt,
+        nonce,
+        ct: Buffer.concat([
+          cipher.update(raw.subarray(-32)),
+          cipher.final(),
+          cipher.getAuthTag(),
+        ]).toString('hex'),
+      };
+    } finally {
+      key?.fill(0);
+      raw.fill(0);
+    }
+  }
+  #withKey<T>(input: unknown, id: string, pub: string, use: (key: KeyObject) => T): T {
+    const s = closed(input, ['v', 'publicKey', 'salt', 'nonce', 'ct']);
+    if (s['v'] !== 1 || s['publicKey'] !== pub) throw Error('Acceptance seal changed');
+    unhex(pub, 32);
+    unhex(id, 32);
+    const ct = unhex(s['ct'], 48),
+      key = this.#derive(s['salt'] as string);
+    let raw: Buffer | undefined, encoded: Buffer | undefined;
+    try {
+      const cipher = createDecipheriv('aes-256-gcm', key, unhex(s['nonce'], 12));
+      cipher.setAAD(this.#aad(id, pub));
+      cipher.setAuthTag(ct.subarray(-16));
+      raw = Buffer.concat([cipher.update(ct.subarray(0, -16)), cipher.final()]);
+      encoded = Buffer.concat([Buffer.from('302e020100300506032b657004220420', 'hex'), raw]);
+      const privateKey = createPrivateKey({ key: encoded, format: 'der', type: 'pkcs8' });
+      if (ed25519PublicHex(createPublicKey(privateKey)) !== pub)
+        throw Error('Acceptance key mismatch');
+      return use(privateKey);
+    } finally {
+      key.fill(0);
+      raw?.fill(0);
+      encoded?.fill(0);
+    }
+  }
+  check(input: unknown, id: string, pub: string): void {
+    this.#withKey(input, id, pub, () => {});
+  }
+  issue(
+    input: unknown,
+    id: string,
+    pub: string,
+    response: PositionResponse,
+  ): Uint8Array<ArrayBuffer> {
+    // Validate the exact purpose framing before custody signs anything.
+    encodePositionResponse(response);
+    return this.#withKey(input, id, pub, (key) => {
+      if (response.kind === 'accepted')
+        return encodePositionResponse({
+          ...response,
+          head: {
+            ...response.head,
+            signature: sign(null, headMessage(response.head), key).toString('hex'),
+          },
+        });
+      return encodePositionResponse({
+        ...response,
+        refusal: {
+          ...response.refusal,
+          signature: sign(null, refusalMessage(response.refusal), key).toString('hex'),
+        },
+      });
+    });
+  }
+  finalize(input: unknown, id: string, pub: string, value: AcceptedHead): AcceptedHead {
+    const head = parseRemovalFinalization(value),
+      message = removalFinalizationMessage(head);
+    return this.#withKey(input, id, pub, (key) => ({
+      ...head,
+      signature: sign(null, message, key).toString('hex'),
+    }));
+  }
+  witness(
+    input: unknown,
+    id: string,
+    pub: string,
+    scope: WitnessScope,
+    value: Omit<DeliveryWitness, 'signature'>,
+  ): DeliveryWitness {
+    if (scope.request !== id) throw Error('Witness custody mismatch');
+    const message = witnessMessage(scope, value);
+    return this.#withKey(input, id, pub, (key) => ({
+      ...value,
+      signature: sign(null, message, key).toString('hex'),
+    }));
+  }
+  page(input: unknown, id: string, pub: string, value: ReadPage): Uint8Array<ArrayBuffer> {
+    encodeReadPage(value);
+    return this.#withKey(input, id, pub, (key) =>
+      encodeReadPage({
+        ...value,
+        signature: sign(null, readPageMessage(value), key).toString('hex'),
+      }),
+    );
+  }
+  inboundPage(
+    input: unknown,
+    id: string,
+    pub: string,
+    value: InboundReadPage,
+  ): Uint8Array<ArrayBuffer> {
+    encodeInboundPage(value);
+    return this.#withKey(input, id, pub, (key) =>
+      encodeInboundPage({
+        ...value,
+        signature: sign(null, inboundPageMessage(value), key).toString('hex'),
+      }),
+    );
+  }
+  close() {
+    this.#key = null;
+  }
+}

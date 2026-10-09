@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="removing origin verification actually admits an unapproved genesis" time="0.165018" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/controls.test.mjs"/>
+	<testcase name="removing certification verification actually admits an unapproved genesis" time="0.131341" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/controls.test.mjs"/>
+	<testcase name="certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes" time="0.164453" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="validly signed changes of recovery, recipient and candidate cannot replace the offer" time="0.078824" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse" time="0.077500" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="abandonment during asynchronous verification wins before activation" time="0.062363" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="unreadable acceptance custody refuses cold reopen without replacing its key" time="0.055422" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="before-commit offer-promotion commit failure has one recoverable result" time="0.051034" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="after-commit offer-promotion commit failure has one recoverable result" time="0.069339" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="before-commit admit-promotion commit failure has one recoverable result" time="0.062873" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="after-commit admit-promotion commit failure has one recoverable result" time="0.076578" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="schema 2 upgrade is explicit and preserves all prior rows" time="0.028695" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="80 generated service histories match an independent pending/offered/active/cancelled ledger" time="3.362261" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="a cancelled proposal permits a fresh registration for the same retained workspace" time="0.039194" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="admission commits one verified first head and retains Local carriers through cold restart" time="1.943270" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-requested commit" time="1.578563" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-requested commit" time="1.820038" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-offered commit" time="1.550301" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-offered commit" time="1.778123" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-receipted commit" time="1.441310" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-receipted commit" time="1.759314" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="lost begin response resumes exact service outcome" time="1.275880" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="lost finish response resumes exact service outcome" time="1.235076" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local" time="1.477071" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="changed receipt signature is refused; disabling final verification actually retains it" time="1.322416" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="queued owner and cancellation retain the commit until native acknowledgement drains" time="1.409291" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="caller mutation after queuing cannot change the owned slot or request" time="1.071552" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="30 generated delivery, admission interruption and retry histories preserve independent writing and coverage" time="39.090319" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="the committed version-2 reader and ordinary Local editor refuse a retained admission" time="1.946668" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="SIGKILL before-commit offer-promotion recovers one durable result" time="0.707742" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit offer-promotion recovers one durable result" time="0.595312" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit admit-promotion recovers one durable result" time="0.574387" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit admit-promotion recovers one durable result" time="0.562146" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/restart.test.mjs"/>
+	<testcase name="two service processes converge on the exact offer and final receipt" time="0.649594" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/restart.test.mjs"/>
+	<!-- tests 34 -->
+	<!-- suites 0 -->
+	<!-- pass 34 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 61835.719041 -->
+</testsuites>

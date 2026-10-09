@@ -1,0 +1,7 @@
+{
+  "seed": 5110914,
+  "runs": 200,
+  "shrinkingEnabled": true,
+  "independent": "OpenSSL envelope and accepted chain oracle",
+  "mutations": "Nested proof byte changed and multi-entry page reversed without resigning; every accepted prefix independently reconstructed"
+}

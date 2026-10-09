@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T09:59:48.293Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private v2 service read with independent reader/publisher resolution, registration binding, witnessed census, restart cuts and actual omission controls; native HTTP interoperability with the owned self-stream receiver. No enrollment, v9 sender composition, personal operations or deployment.",
+  "completedAt": "2026-09-11T10:00:30.387Z"
+}

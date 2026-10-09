@@ -9,6 +9,8 @@ project stands** is [progress.md](./progress.md).
 corepack enable
 pnpm install
 pnpm dev            # http://localhost:5173, also on the LAN
+pnpm dev:account-setup # private account setup/access preview at http://localhost:53210
+pnpm test:account-setup # isolated first-device account browser checks
 pnpm dev:tailscale  # trusted HTTPS/WSS over MagicDNS; starts the whole stack
 pnpm build          # typecheck, bundle, and enforce the §12 budget
 pnpm lint           # opt-in; oxlint bug-catchers (correctness) only — not part of `pnpm check`
@@ -22,6 +24,11 @@ pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a brow
 pnpm test:latency   # TRD §12's latency budgets, measured; not part of `pnpm check`
 pnpm test:https     # production build, service worker, offline shell and real WSS proxy
 ```
+
+The [first-device account preview](./first-device-account-setup.md) runs a dedicated
+loopback service with persistent development state. It supports setup, account
+selection and offline unlock; device linking and sync remain unavailable. Its
+account entry is separate from the ordinary production bootstrap.
 
 `pnpm test:geometry` builds and previews the app, then drives Chromium. The
 Playwright matrix has a real desktop browser profile (`Desktop Chrome`) and a

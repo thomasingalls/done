@@ -19,6 +19,7 @@
 @import './cards.css';
 @import './markdown.css';
 @import './theme.css';
+@import './local-startup.css';
 
 /*
  * Registered so a lateral panel can be dragged continuously and released to a

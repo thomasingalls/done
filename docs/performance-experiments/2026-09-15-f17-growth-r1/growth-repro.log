@@ -1,0 +1,19 @@
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+growth-setup-repro early 47.5 52
+growth-setup-repro growth 188
+growth-setup-repro growth 288
+growth-setup-repro growth 388
+growth-setup-repro growth 488
+growth-setup-repro growth 588
+growth-setup-repro growth 688
+growth-setup-repro growth 788
+growth-setup-repro growth 888
+growth-setup-repro growth 988
+growth-setup-repro deep 49.69999980926514 53.40000057220459 undo 1010 → 1090
+Finished growth-setup-repro passed

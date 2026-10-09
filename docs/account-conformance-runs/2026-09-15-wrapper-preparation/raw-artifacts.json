@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-preparation/owned/inputs.json.gz",
+    "sha256": "59ba4731a417c5c0d91a1807d36a4b579858a37b00efef7df1c5330cee04011c",
+    "bytes": 1219573
+  },
+  {
+    "path": "/private/tmp/done-wrapper-preparation/owned-final/inputs.json.gz",
+    "sha256": "5258c0dd0739e705ba91665b32720474d087428f271f0b479260be0915dd7ffc",
+    "bytes": 1219573
+  }
+]

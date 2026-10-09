@@ -1,0 +1,17 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > coalesces wake storms, keeps one pass, and does not lose an edit arriving during idle detection 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > unknown backoff caps at 30 seconds and ordinary edits cannot accelerate it 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > offline and Local pressure cancel timers, and restore/manual retry expedite work 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > permanent evidence and unexpected operation failures suppress automatic retries 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > abort clears backoff immediately and drains unfinished work; observers cannot start work after close 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > 200 generated deferred event histories preserve single ownership, bounded timers and the retry floor 49ms
+ ✓ test/accountDriver.test.ts > owned delivery step > resolves persisted wrappers before preparation and never reseals a persisted envelope on an unknown reply 1ms
+ ✓ test/accountDriver.test.ts > owned delivery step > derives progress only from durable status and halts on owned publication evidence 0ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  00:58:09
+   Duration  649ms (transform 157ms, setup 127ms, import 56ms, tests 55ms, environment 320ms)
+

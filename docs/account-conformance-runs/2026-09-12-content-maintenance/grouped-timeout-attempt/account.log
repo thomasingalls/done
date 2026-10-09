@@ -1,0 +1,73 @@
+(node:98887) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:98887) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ captured Account activates, journals exact sources, cold reopens and retains capsules through compaction (4040.738084ms)
+✔ capture activation before commit prevents premature initialization (2990.125292ms)
+✔ capture activation after commit prevents premature initialization (3226.408167ms)
+✔ v5 histories and old readers refuse; public receive cannot acquire capture authority (3559.39575ms)
+✔ pressured database admission is atomic; aborted capture leaves input pending and retry captures once (2939.659625ms)
+✔ journal cleanup failure retains exact overlap; cold recovery deduplicates capsule identity (3241.955ms)
+✔ capture controls expose lost durable attribution and wrong-workspace acceptance (3717.643292ms)
+capture history 1/16: [{"text":"abc","cut":false,"boundary":"reopen"},{"text":"x","cut":true,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"flush"},{"text":"abc","cut":true,"boundary":"reopen"},{"text":"x","cut":false,"boundary":"compact"},{"text":"🙂","cut":true,"boundary":"crash"}]
+capture history 2/16: [{"text":"é","cut":false,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"compact"}]
+capture history 3/16: [{"text":"🙂","cut":false,"boundary":"crash"},{"text":"x","cut":false,"boundary":"compact"},{"text":"🙂","cut":true,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"crash"},{"text":"abc","cut":false,"boundary":"reopen"}]
+capture history 4/16: [{"text":"abc","cut":false,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"crash"},{"text":"abc","cut":false,"boundary":"flush"},{"text":"🙂","cut":true,"boundary":"compact"},{"text":"x","cut":true,"boundary":"crash"},{"text":"🙂","cut":false,"boundary":"flush"}]
+capture history 5/16: [{"text":"é","cut":false,"boundary":"reopen"},{"text":"abc","cut":false,"boundary":"reopen"},{"text":"é","cut":false,"boundary":"compact"},{"text":"abc","cut":false,"boundary":"flush"},{"text":"é","cut":true,"boundary":"compact"},{"text":"é","cut":true,"boundary":"reopen"}]
+capture history 6/16: [{"text":"é","cut":false,"boundary":"flush"},{"text":"x","cut":true,"boundary":"flush"},{"text":"🙂","cut":true,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"reopen"},{"text":"é","cut":true,"boundary":"compact"},{"text":"🙂","cut":false,"boundary":"compact"}]
+capture history 7/16: [{"text":"abc","cut":true,"boundary":"flush"},{"text":"🙂","cut":false,"boundary":"reopen"},{"text":"x","cut":true,"boundary":"reopen"},{"text":"abc","cut":true,"boundary":"compact"},{"text":"🙂","cut":true,"boundary":"flush"}]
+capture history 8/16: [{"text":"abc","cut":true,"boundary":"crash"},{"text":"x","cut":true,"boundary":"crash"},{"text":"é","cut":true,"boundary":"reopen"}]
+capture history 9/16: [{"text":"é","cut":false,"boundary":"reopen"},{"text":"x","cut":true,"boundary":"compact"}]
+capture history 10/16: [{"text":"🙂","cut":true,"boundary":"compact"},{"text":"é","cut":true,"boundary":"reopen"},{"text":"x","cut":false,"boundary":"crash"},{"text":"abc","cut":true,"boundary":"compact"},{"text":"é","cut":false,"boundary":"reopen"}]
+capture history 11/16: [{"text":"abc","cut":false,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"crash"},{"text":"abc","cut":false,"boundary":"reopen"},{"text":"é","cut":true,"boundary":"crash"}]
+capture history 12/16: [{"text":"abc","cut":false,"boundary":"flush"},{"text":"🙂","cut":true,"boundary":"crash"},{"text":"abc","cut":false,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"reopen"},{"text":"é","cut":true,"boundary":"reopen"}]
+capture history 13/16: [{"text":"é","cut":true,"boundary":"compact"},{"text":"abc","cut":true,"boundary":"compact"},{"text":"x","cut":false,"boundary":"flush"},{"text":"abc","cut":false,"boundary":"compact"}]
+capture history 14/16: [{"text":"abc","cut":true,"boundary":"flush"},{"text":"é","cut":false,"boundary":"compact"},{"text":"🙂","cut":true,"boundary":"compact"},{"text":"é","cut":true,"boundary":"crash"},{"text":"é","cut":true,"boundary":"flush"}]
+capture history 15/16: [{"text":"x","cut":true,"boundary":"crash"},{"text":"é","cut":false,"boundary":"reopen"},{"text":"🙂","cut":false,"boundary":"crash"},{"text":"abc","cut":true,"boundary":"compact"},{"text":"abc","cut":false,"boundary":"compact"}]
+capture history 16/16: [{"text":"🙂","cut":false,"boundary":"flush"},{"text":"🙂","cut":true,"boundary":"crash"},{"text":"🙂","cut":false,"boundary":"crash"},{"text":"🙂","cut":false,"boundary":"flush"},{"text":"abc","cut":false,"boundary":"flush"},{"text":"x","cut":false,"boundary":"flush"}]
+✔ generated real editing, flush, compaction and cold restart histories preserve source bytes (37950.179791ms)
+✔ exclusive lifetime queues another editor; cancellation, pagehide and stale surfaces revoke access (2928.87525ms)
+✔ cancelled native flush holds permit until drain and destroys projections before release (2920.517875ms)
+✔ wrong pin, factor, passkey and actor refuse activation; receive cannot reach persistence (2259.789291ms)
+✔ human undo and system bulk moves retain each transaction actor (2956.582833ms)
+✔ original pending structs and delete frames survive journal, flush and compaction until their parent arrives (3997.918458ms)
+✔ capsule overhead forces atomic database admission while preserving the original source bytes (2957.877333ms)
+✔ carrier refuses changed routes and conflicting intent reuse before database mutation (2978.607167ms)
+(node:99093) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99093) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:99093) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (8815.178625ms)
+✔ ordered receive before commit crash leaves no early edit or local recapture (7510.940125ms)
+✔ ordered receive after commit crash leaves no early edit or local recapture (7514.275834ms)
+✔ a local command queued during receive is prepared only after commit and ordered publication (7219.413875ms)
+✔ invalid page and authenticated stream conflict preserve local editor availability (7470.923333ms)
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (8787.566334ms)
+✔ storage pressure holds the entire remote/local suffix and discard cannot acknowledge it (5812.210833ms)
+✔ close drains a committed receive before releasing the slot, with no late acknowledgement or source (8573.578166ms)
+✔ actual early source mutation violates the publication/source oracle (6300.303125ms)
+✔ actual relabel source mutation violates the publication/source oracle (6148.626667ms)
+✔ 10 generated native histories preserve authored content, receive progress and exact local source counts (80409.698708ms)
+
+Interrupted while running:
+
+⚠ test/account-receive-editor/native.test.mjs (test/account-receive-editor/native.test.mjs:1:1)
+✖ test/account-receive-editor/native.test.mjs (156219.567625ms)
+✖ test/account-sync/native.test.mjs
+ℹ tests 28
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 2
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 239965.716417
+
+✖ failing tests:
+
+test at test/account-receive-editor/native.test.mjs:1:1
+✖ test/account-receive-editor/native.test.mjs (156219.567625ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at test/account-sync/native.test.mjs:1:1
+✖ test/account-sync/native.test.mjs
+  'Promise resolution is still pending but the event loop has already resolved'

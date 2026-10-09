@@ -1,0 +1,29 @@
+{
+  "baseCommit": "3585a1b8b845d92ae48022c5843b1ed448360948",
+  "sha256": "8469a6efb62c5c186a991133d9dfad16a4f277a69869f61ef71c8f0ab2ea9966",
+  "bytes": 128862,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-checkpoint-contract.md",
+    "docs/account-crypto/checkpoint.md",
+    "docs/account-crypto/constructions.json",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-checkpoint-contract/run.mjs",
+    "scripts/account-checkpoint-contract/vectors.mjs",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-checkpoint-contract/browser.ts",
+    "test/account-checkpoint-contract/formats.test.mjs",
+    "test/account-checkpoint-contract/native-browser.ts",
+    "test/account-checkpoint-contract/native.test.mjs",
+    "test/account-checkpoint-contract/oracle.mjs",
+    "test/account-checkpoint-contract/report.mjs",
+    "test/account-checkpoint-contract/runtime.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "test/vectors/account-checkpoint.json"
+  ],
+  "scope": "D7 checkpoint contracts, fixed vectors, independent/native tests, registrations, campaign and checkpoint. Raw evidence and patch/manifest excluded to avoid recursion. No production change.",
+  "indexEmpty": true
+}

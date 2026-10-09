@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="prep probes: six declared message encodings, first-head distinction and old/current recovery payloads" time="0.070021" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-crypto-prep/contracts.test.mjs"/>
+	<!-- {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}} -->
+	<testcase name="D8 requires live claim evidence and cannot relabel it as inherited migration scope" time="0.395749" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence" time="0.212841" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations" time="0.312088" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence" time="0.276303" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups" time="0.330297" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="registration omission controls fail for the missing obligation, not just a stale aggregate hash" time="0.651155" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes" time="0.231928" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content" time="0.354846" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives" time="0.237855" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source" time="0.306504" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency" time="0.300269" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus" time="0.308933" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<!-- tests 13 -->
+	<!-- suites 0 -->
+	<!-- pass 13 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 4398.436916 -->
+</testsuites>

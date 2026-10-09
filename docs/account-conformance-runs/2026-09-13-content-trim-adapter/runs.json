@@ -1,0 +1,317 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-content-trim",
+    "source": "test-results/content-trim-adapter-full",
+    "status": "passed",
+    "input": "ed2b4833faeb7a02e0d027e626425b7ec912c6eaef79a6d8a7f021fd2a94dc87",
+    "stageCases": [
+      29
+    ],
+    "stageElapsedMs": [
+      60314
+    ],
+    "totalMs": 74266,
+    "native": [
+      {
+        "scope": "content-trim-browser",
+        "baselineAssertions": 128,
+        "baselines": 21,
+        "mutants": 8,
+        "mutations": [
+          {
+            "id": "range-delete",
+            "assertion": "late-record-survives",
+            "status": "detected"
+          },
+          {
+            "id": "partial-disk-union",
+            "assertion": "cold-replay-keeps-disk-union",
+            "status": "detected"
+          },
+          {
+            "id": "ignore-record-bytes",
+            "assertion": "changed-record-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "skip-delete-census",
+            "assertion": "changed-after-audit-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "skip-journal-check",
+            "assertion": "post-publication-journal-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "merge-incomplete-content",
+            "assertion": "struct-retained",
+            "status": "detected"
+          },
+          {
+            "id": "early-delete-receipt",
+            "assertion": "delete-abort-has-no-success-receipt",
+            "status": "detected"
+          },
+          {
+            "id": "skip-final-journal-census",
+            "assertion": "post-publication-journal-refuses",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "trim",
+            "origin": "http://127.0.0.1:65103",
+            "closed": true
+          },
+          {
+            "variant": "range-delete",
+            "origin": "http://127.0.0.1:65297",
+            "closed": true
+          },
+          {
+            "variant": "partial-disk-union",
+            "origin": "http://127.0.0.1:65309",
+            "closed": true
+          },
+          {
+            "variant": "ignore-record-bytes",
+            "origin": "http://127.0.0.1:65320",
+            "closed": true
+          },
+          {
+            "variant": "skip-delete-census",
+            "origin": "http://127.0.0.1:65330",
+            "closed": true
+          },
+          {
+            "variant": "skip-journal-check",
+            "origin": "http://127.0.0.1:65340",
+            "closed": true
+          },
+          {
+            "variant": "merge-incomplete-content",
+            "origin": "http://127.0.0.1:65349",
+            "closed": true
+          },
+          {
+            "variant": "early-delete-receipt",
+            "origin": "http://127.0.0.1:65368",
+            "closed": true
+          },
+          {
+            "variant": "skip-final-journal-census",
+            "origin": "http://127.0.0.1:65377",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/content-trim-adapter-full/stages/74b63e99c1c6847f5ee98da3583974471a24725f6b1e92eef9fcb3eaa948bdbd/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-controls",
+    "selection": "standalone-content-trim",
+    "source": "test-results/content-trim-adapter-selected-controls",
+    "status": "passed",
+    "input": "ed2b4833faeb7a02e0d027e626425b7ec912c6eaef79a6d8a7f021fd2a94dc87",
+    "stageCases": [
+      8
+    ],
+    "stageElapsedMs": [
+      26922
+    ],
+    "totalMs": 45104,
+    "native": [
+      {
+        "scope": "content-trim-browser",
+        "baselineAssertions": 25,
+        "baselines": 4,
+        "mutants": 4,
+        "mutations": [
+          {
+            "id": "range-delete",
+            "assertion": "late-record-survives",
+            "status": "detected"
+          },
+          {
+            "id": "skip-journal-check",
+            "assertion": "post-publication-journal-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "merge-incomplete-content",
+            "assertion": "struct-retained",
+            "status": "detected"
+          },
+          {
+            "id": "skip-final-journal-census",
+            "assertion": "post-publication-journal-refuses",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "trim",
+            "origin": "http://127.0.0.1:65415",
+            "closed": true
+          },
+          {
+            "variant": "range-delete",
+            "origin": "http://127.0.0.1:65490",
+            "closed": true
+          },
+          {
+            "variant": "skip-journal-check",
+            "origin": "http://127.0.0.1:65502",
+            "closed": true
+          },
+          {
+            "variant": "merge-incomplete-content",
+            "origin": "http://127.0.0.1:65518",
+            "closed": true
+          },
+          {
+            "variant": "skip-final-journal-census",
+            "origin": "http://127.0.0.1:49161",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/content-trim-adapter-selected-controls/stages/f2d6976fa7a91dc11800796df04073a77f82a5a2b5dafa8fccbb0d8ed8c06448/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-content-trim",
+    "source": "test-results/content-trim-adapter-baseline-publication",
+    "status": "passed",
+    "input": "ed2b4833faeb7a02e0d027e626425b7ec912c6eaef79a6d8a7f021fd2a94dc87",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      9405
+    ],
+    "totalMs": 30963,
+    "native": [
+      {
+        "scope": "content-trim-browser",
+        "baselineAssertions": 7,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "trim",
+            "origin": "http://127.0.0.1:65445",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/content-trim-adapter-baseline-publication/stages/117b0439db63c8dfda56bb2de6fcf2c16703b896fbcb36e22fa4e454e431b7c6/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "clear-regression",
+    "selection": "standalone-local-clear",
+    "source": "test-results/content-trim-adapter-clear-regression",
+    "status": "passed",
+    "input": "ed2b4833faeb7a02e0d027e626425b7ec912c6eaef79a6d8a7f021fd2a94dc87",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      11677
+    ],
+    "totalMs": 31214,
+    "native": [
+      {
+        "scope": "local-clear-browser",
+        "baselineAssertions": 24,
+        "baselines": 2,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "clear",
+            "origin": "http://127.0.0.1:65476",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/content-trim-adapter-clear-regression/stages/7efb252a8c78ef1b04bb64b573ac60e573b4f61853dfb0890a468ed0511f20c1/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T13-32-06.351Z",
+    "status": "passed",
+    "input": "54c0159ebe864938f730a748817ae814913e79df4cee4100ef147eea9cc937f0",
+    "stageCases": [
+      4,
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      4,
+      5,
+      6,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2053,
+      1922,
+      1761,
+      1792,
+      1871,
+      1629,
+      1761,
+      1799,
+      1816,
+      1755,
+      1783,
+      1797,
+      2994,
+      1849
+    ],
+    "totalMs": 56654,
+    "native": []
+  }
+]

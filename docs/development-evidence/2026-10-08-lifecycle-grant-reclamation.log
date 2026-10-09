@@ -1,0 +1,49 @@
+Focused obsolete-grant repair, 2026-10-08
+Pre-repair reproduction: after filling the grant quota and advancing membership, fresh grant returned capacity instead of granted.
+
+(node:50498) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50498) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ current certified member obtains a purpose-bound grant; ordinary appends do not invalidate it (92.658959ms)
+✔ account login, a public challenge and a different device key cannot substitute for possession (53.725291ms)
+✔ a different login for the same account cannot claim a challenge; another account cannot request it (48.193333ms)
+✔ a pending participant obtains only its exact preparation scope; admission retires its old grant (126.157125ms)
+✔ competing prepared attempt and another actor cannot borrow a participant grant (78.77475ms)
+✔ empty and populated ceremony reads check the exact participant grant (142.768958ms)
+✔ session revocation during asynchronous operation verification prevents acceptance (41.175708ms)
+✔ deadline crossing after a write but before COMMIT rolls back the domain write (42.346875ms)
+✔ a live challenge expires, grants expire, and restart permits renewal but loses ephemeral grants (61.825458ms)
+✔ account/credential retirement invalidates an existing grant (71.337583ms)
+✔ a valid signed operation in another workspace cannot borrow the first workspace grant (73.208ms)
+✔ returned challenge objects cannot mutate retained service identity or challenge authority (38.191333ms)
+✔ authority change between challenge and proof forces a new device proof (76.692583ms)
+✔ grants cannot use another database or escape its domain transaction (36.421875ms)
+✔ per-session challenge and grant storage is bounded; expiry recovers capacity (220.331334ms)
+✔ membership changes reclaim unusable grants without expiring the remembered login (271.510583ms)
+✔ both read versions withhold content after revocation during verification (106.864916ms)
+✔ certification needs a fresh workspace grant; inbound scope follows the reader, not the publisher (461.646167ms)
+✔ grant lifetime is capped by the parent login absolute expiry (43.329166ms)
+(node:50499) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50499) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ packaged gateway delivers ready then a post-commit hint; durable catch-up repairs a deliberately missed notification (127.95875ms)
+✔ streams are exact-scope authorized; fake access, another reader, query credentials and wrong origin refuse (49.36225ms)
+✔ revocation closes only that parent and stream limits do not evict another session (55.653916ms)
+✔ access deadline caps a grant and expiry prevents further stream output (42.203ms)
+✔ a backpressured stream is dropped without retaining a queued output or timer (43.373542ms)
+(node:50500) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50500) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ scoped HTTP handshake and authenticated read; no shared bearer, cookie or /access fallback (124.082125ms)
+✔ HTTP rejects wrong framing/bounds and separates authorization from domain refusals (55.131042ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2508.28075
+
+TypeScript, scoped lint/format and diff checks: pass.
+Native repeated product cycle tracked separately. Live service unchanged.

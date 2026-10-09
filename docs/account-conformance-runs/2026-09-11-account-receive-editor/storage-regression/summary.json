@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T06:14:08.470Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private factor-owned v9 activation, atomic receive content/event/witness, complete cold wire verification and content coverage. One actual admitted creating stream; no editor, service receive route, enrollment or personal operations.",
+  "completedAt": "2026-09-11T06:17:43.239Z"
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="real custody metadata derivation, native HMAC bytes and v1 to v2 activation match independent construction" time="0.756190" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="correctly MACed allocation and witness lies refuse at their owning boundary" time="0.390869" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="native final abort preserves burned reservations but commits neither ledger event nor witness; observes actual durability" time="0.340178" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="actual MAC comparison omission overwrites a counter changed after authentication; retained comparison refuses" time="0.611032" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<testcase name="actual reservation omission invokes AES before allocation even though the later rewind guard still refuses" time="0.596600" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-counter-contract/native.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 3187.094542 -->
+</testsuites>

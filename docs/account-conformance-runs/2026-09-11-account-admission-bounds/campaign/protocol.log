@@ -1,0 +1,17 @@
+(node:49529) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49529) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:49529) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ v2 binds both decoded descriptors at old boundaries and generated sizes through independent OpenSSL bytes (5417.443542ms)
+✔ inclusive combined 16 MiB bound fits service limit; malformed/oversize refuse before digesting (17091.765875ms)
+✔ correctly signed independent SV and DS lies pass content-blind service but fail client-derived coverage; omissions are effective (66.200458ms)
+✔ v1, mixed, unknown versions and old readers refuse without rewriting completed service rows (70.501792ms)
+✔ real generated writer and deletion histories exceed the old limit and retain exact descriptors (416.271416ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23349.273292

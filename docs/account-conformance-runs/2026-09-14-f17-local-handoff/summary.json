@@ -1,0 +1,117 @@
+{
+  "base": "0c84e5cce1149d2c163dae3a9fc7fc84dba35eeb",
+  "selection": "vitest-reviewed/Local handoff integration (bounded subset)",
+  "integrationGroup": "f17-local-handoff",
+  "rawOutput": "test-results/release-validation/2026-09-14T20-46-06.674Z",
+  "result": {
+    "schema": 1,
+    "selection": "vitest-reviewed/Local handoff integration (bounded subset)",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/admissionQueue.test.ts",
+        "key": "b0a11cdb1bcbe454a2870852170c2b8936aab7a07b36531ee4aad7b4ca186c1c",
+        "status": "passed",
+        "elapsedMs": 14404,
+        "cases": 26,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/ownedReceiveQueue.test.ts",
+        "key": "fab4a298ae77526a464ef035ab30e86cf4cee1d7c97b21b40644afa0feb40858",
+        "status": "passed",
+        "elapsedMs": 11258,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/pendingProjection.test.ts",
+        "key": "eec357d2051568cd7f9fa04972a0cd00f82e240426d30815998a3c9b033e30a9",
+        "status": "passed",
+        "elapsedMs": 12414,
+        "cases": 15,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/sourceCapture.test.ts",
+        "key": "ad824e8a65a72a7ec565d01e29e5882b4e5ead26b36d210ac62beec528eb3004",
+        "status": "passed",
+        "elapsedMs": 7174,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "40abe852a65ab2f7587aa8b5a0061af5cc9ad2a3bca06641204928fd95a35c18",
+        "status": "passed",
+        "elapsedMs": 8807,
+        "cases": 54,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/workspacePreparation.test.ts",
+        "key": "5c013a081d4d63c1fe8be3a8a588df56a2bd495c0fc9982a76f4670555c9e7ed",
+        "status": "passed",
+        "elapsedMs": 4855,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/writeAdmission.test.ts",
+        "key": "d72ee9f1fbdafc2f11d615e18688c556888766cbbd6b8c74176f40f345d0cd43",
+        "status": "passed",
+        "elapsedMs": 4582,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/yjsDelivery.test.ts",
+        "key": "c62b381b2e144ba98f82ce49185146d508135047a666459a624af9e2d78cf126",
+        "status": "passed",
+        "elapsedMs": 8766,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T20:46:06.681Z",
+    "input": "c87c0c8d98d259fff264432f9d393e73b8bab59bd7422128644eaedd3f5d2002",
+    "completedAt": "2026-09-14T20:48:31.731Z"
+  },
+  "counts": {
+    "generalFiles": 261,
+    "generalCases": 2073,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 159,
+    "unresolvedTestFiles": 0
+  },
+  "priorContractsPreserved": 260,
+  "changedPriorContracts": [
+    "test:test/workspaceAdmission.test.ts"
+  ],
+  "rawInputArchiveSha256": "3dd431fd48e1fa35414ed3fcfc4b02ace22b51f1d52070f639ea7cbb69c8ae6f",
+  "sourceDigest": "fea508a50afe9f2928547c4a2bfe9d287094070fdd379545a914ee3c1a55c7d2",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1059,
+  "scope": "Connects the private Local handoff through explicit internal constructor registration; the default Local opener and every Account factory retain the generic reference path. Shared workspace commands capture actual transactions and preserve history, selections and result values. Candidate preparation omits the first canonical-derived draft, binds the verified job/slice/revision/writer, leases bytes through storage, retries the same preparation, copies a remainder before erasure, and performs full canonical comparison before adoption/publication. No-op transitions still advance revision; remote writer collisions renew the writer. Publication source and revision must match the adopted candidate. Post-promotion failure is terminal and preserves its projection-mismatch cause. The 23 original workspace cases run under both strategies; each also runs no-op/writer-collision and reentrant-observer controls plus the same 80 generated histories (seed 140925). Independent text/revision/undo/redo/cold-replay and selection/retry-count assertions accompany two Local-specific close/adoption cases: 54 workspace cases total. Eight affected files pass 155 dispositions through the owned runner. Native pending-state and original-order delivery each pass directed cases plus 100 generated histories. The final owned workspace catalogue passes ten cases and four mutations with drain. The first pending-state campaign found a new integration gap: a Local initialization publication relabeled as remote was tolerated after adoption. Binding its source fixes the existing directed counterexample; original source, failed report, repair pass and a new source-check mutation are retained. Two unit mutations separately detect skipped adoption comparison and premature byte erasure. Full units pass alone at unchanged limits: 97 files / 1,093 tests. The reviewed general set is now 261 files / 2,073 dispositions, including the same 11 not applicable; 260 prior general contracts and all original workspace reference cases remain. The crypto census changes only four runtime source hashes; domains, labels, groups and other source hashes remain unchanged. No performance measurement, default activation, Account source activation, package change or personal-browser operation occurs. The last application typing gate remains 15.2/69.4 ms desktop/CPU-4x Android, with Android failing <16 ms.",
+  "artifactIndexSha256": "a676e4cdf96da6cd58c66aaf16673a2d93eac7a462b799ecaf4a649c9e59ce38",
+  "gatesSha256": "f210d50773cf722eb106033cbd714ff360056639a495ecbe19d60e3c3a1ae291",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000,
+  "archiveLayout": "Native reports use checked lossless UTF-8 line-copy deltas against the final pending report; before-repair code uses a reversible diff against phase source; owned native input pins use exact deltas against source-pins.json.gz. All normalized payload hashes retained. Source pins use a lossless line-copy delta against the preserved signed component packet."
+}

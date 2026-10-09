@@ -1,0 +1,11 @@
+export { makeSourceCapsule, captureRouteAt } from '../../src/crdt/sourceCapture';
+export { encodeSpoolEntry, verifySpool } from '../../src/crdt/spoolRecord';
+export { inspectDelivery, verifyDelivery, publicationState } from '../../src/crdt/deliveryRecord';
+export { createDeliveryOperations } from '../../src/crdt/accountDelivery';
+export { createEnvelopePreparation } from '../../src/crdt/accountEnvelopePreparation';
+export { driveOutboundStep } from '../../src/crdt/accountSyncDriver';
+export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+export { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protocol/envelope';
+export { decodeSubmission } from '../../account-protocol/submission';
+export { createVerificationMemo } from '../../src/crdt/verificationMemo';
+export { Y } from '../../src/crdt/yjs';

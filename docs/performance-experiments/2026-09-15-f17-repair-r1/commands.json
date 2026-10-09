@@ -1,0 +1,111 @@
+[
+  {
+    "command": "python3 /private/tmp/done-f17-repair-r1/setup.py",
+    "exit": 0,
+    "note": "Sparse setup omitted wasm initially; git sparse-checkout add wasm then account-protocol account-service private relay completed before freeze."
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/vitest/vitest.mjs run test/membershipEligibility.test.ts",
+    "exit": 1,
+    "log": "initial-focused.log",
+    "note": "No tests ran: generated WASM module omitted from disposable sparse checkout."
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/vitest/vitest.mjs run test/membershipEligibility.test.ts",
+    "exit": 0,
+    "log": "focused-2.log",
+    "tests": 18
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/vitest/vitest.mjs run test/membershipEligibility.test.ts test/workspaceAdmission.test.ts test/workspacePreparation.test.ts test/membership.test.ts test/membership.property.test.ts test/pendingProjection.test.ts test/sourceCapture.test.ts test/selectionHistory.test.ts test/projectionEquality.test.ts",
+    "exit": 0,
+    "log": "affected-tests.log",
+    "tests": 176,
+    "files": 9
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "exit": 1,
+    "log": "typecheck.log",
+    "note": "New fixture needed prepare's third argument forwarded, AdmissionTicket rather than WorkspaceTicket, and ArrayBuffer-backed receive bytes. Candidate runtime unchanged."
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "log": "typecheck-final.log",
+    "note": "No diagnostics; followed by successful focused run in the same shell. Per-command status was not separately emitted."
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/vitest/vitest.mjs run test/membershipEligibility.test.ts",
+    "exit": 0,
+    "log": "focused-final.log",
+    "tests": 18
+  },
+  {
+    "command": "python3 /private/tmp/done-f17-repair-r1/fault-controls-initial.py",
+    "exit": 0,
+    "log": "fault-controls.log",
+    "note": "Both deliberately broken variants fail four selected assertions each."
+  },
+  {
+    "command": "python3 /private/tmp/done-f17-repair-r1/fault-controls.py",
+    "exit": 0,
+    "log": "fault-controls-final.log",
+    "note": "Repeated with final fixture; precise commands, exits and source/test identities in fault-controls-final.json."
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/build.mjs selected",
+    "exit": 0,
+    "log": "build-selected.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/build.mjs candidate",
+    "exit": 0,
+    "log": "build-candidate.log"
+  },
+  {
+    "command": "python3 /private/tmp/done-f17-repair-r1/freeze.py",
+    "exit": 0,
+    "log": "freeze.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/batch.mjs comparison",
+    "exit": 1,
+    "log": "comparison-batch.log",
+    "note": "Sandbox refused loopback listen before browser launch; parent reports process group drained. No timing samples or child result.json."
+  },
+  {
+    "command": "python3 /private/tmp/done-f17-repair-r1/freeze-native.py",
+    "exit": 0,
+    "log": "freeze-native.log"
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/batch-native.mjs comparison",
+    "exit": 0,
+    "log": "native-comparison-batch.log",
+    "note": "Host execution for isolated loopback fixture and disposable Chromium."
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/batch-native.mjs unicode",
+    "exit": 0,
+    "log": "native-unicode-batch.log",
+    "note": "Two planned Unicode guard sessions; same isolated host execution."
+  },
+  {
+    "command": "node /private/tmp/done-f17-repair-r1/analyze.mjs",
+    "exit": 0,
+    "log": "analysis.log"
+  },
+  {
+    "cwd": "candidate",
+    "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "exit": 0,
+    "log": "typecheck-status.log",
+    "note": "Final explicit process exit resolves the earlier shell status ambiguity, after all browser timing finished."
+  }
+]

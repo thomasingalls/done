@@ -1,0 +1,25 @@
+(node:18378) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18378) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (1094.979917ms)
+✔ renderer restart before genesis commit (1098.984959ms)
+✔ renderer restart after genesis commit (1412.049ms)
+✔ wrong factors, foreign owner and current service abandonment preserve preparation (892.862542ms)
+✔ unattestable actor refuses without rewriting content (720.050291ms)
+✔ unattestable card refuses without rewriting content (746.032958ms)
+✔ validly signed snapshot forgery is refused (1153.3675ms)
+✔ validly signed wrap forgery is refused (1126.735458ms)
+✔ validly signed coverage forgery is refused (789.095667ms)
+✔ validly signed recipient forgery is refused (786.538625ms)
+✔ validly signed actor forgery is refused (804.106875ms)
+✔ competing owners converge and cancellation drains before releasing the exclusive permit (1008.414792ms)
+✔ previous version refuses the new carrier; malformed fields never gain an owner (1272.501208ms)
+✔ 40 generated delivery/interruption histories preserve independent text and full source state (25426.733167ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39199.519583

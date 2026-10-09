@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="omitting assertion admits a forbidden first activation" time="0.081820" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/controls.test.mjs"/>
+	<testcase name="omitting expiry admits a forbidden first activation" time="0.064139" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/controls.test.mjs"/>
+	<testcase name="omitting target admits a forbidden first activation" time="0.062283" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/controls.test.mjs"/>
+	<testcase name="generated stale-proof invariant fails and shrinks when assertion verification is omitted" time="0.113862" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/controls.test.mjs"/>
+	<testcase name="fresh -8 assertion binds the exact completion; no-proof finish leaves every row unchanged" time="0.106073" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="fresh -7 assertion binds the exact completion; no-proof finish leaves every row unchanged" time="0.090735" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption" time="0.097014" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="expiry, renewal and a separately valid completion cannot reuse or replace the fixed challenge target" time="0.088366" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="expiry advancing during verification is checked again inside the activation transaction" time="0.036318" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="account/nonce swaps and completion changes cannot borrow another account assertion" time="0.088207" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="closed context rejects aliases, noncanonical passkeys, extra fields and noninteger expiry" time="0.033116" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="before-commit challenge failure has one cold-recoverable result" time="0.045028" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="after-commit challenge failure has one cold-recoverable result" time="0.043230" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="schema 4 upgrade preserves pending work; v1 receipts and absent consumed records are retained but refused" time="0.053376" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine" time="4.737967" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="concurrent challenges converge; competing valid proofs consume exactly one activation" time="0.051525" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="challenge losing a race to same completion returns only its exact outcome" time="0.041095" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="challenge losing a race to different completion returns only its exact outcome" time="0.038427" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="client rejects changed signature before prompting; omitted check actually prompts" time="1.605697" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="client rejects changed target before prompting; omitted check actually prompts" time="1.695448" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="cancelled assertion forwards abort and drains before a queued tab acquires the slot" time="1.551090" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="renderer death at prompt cold-recovers; committed result needs no new assertion" time="1.876845" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="renderer death at lost-finish cold-recovers; committed result needs no new assertion" time="1.964891" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="SIGKILL before-commit challenge-promotion recovers one durable result" time="0.529688" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit challenge-promotion recovers one durable result" time="0.478560" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/restart.test.mjs"/>
+	<!-- tests 25 -->
+	<!-- suites 0 -->
+	<!-- pass 25 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 17159.707708 -->
+</testsuites>

@@ -1,0 +1,2 @@
+Matched pinned runtime census: 158 sources, 89 labels/templates, 22 groups; 6 manual entrypoints.
+Inventory only: this command checks source classification, not byte contracts or finding closure. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit for aggregate evidence.

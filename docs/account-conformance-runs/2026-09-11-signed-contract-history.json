@@ -1,0 +1,68 @@
+{
+  "base": "e74fbaab6f759c2a183a47f5bd705b0dc916da66",
+  "backupRef": "refs/heads/codex/pre-sign-contract-history-2026-09-11",
+  "branch": "refs/heads/codex/encrypted-store-contract-corrections",
+  "commits": [
+    {
+      "old": "d098bd4a3905b908c41ac1f1c74c8a54e2739602",
+      "new": "a20e4392ae152b5920080668dd6077e8bfa9749f",
+      "tree": "6ded63ee9cc789f64b6f289156ecd41e877722d6",
+      "signature": "G",
+      "message": "Specify encrypted transport byte contracts and verify authority bindings",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "d24ca6632044e27b8f29777ed3d51db190194d12",
+      "new": "32d4074bef4492f46742940a2685d7febff7ed4d",
+      "tree": "70bd807b7cdb9c03cb82e6f9e0db9b4797e415c7",
+      "signature": "G",
+      "message": "Specify service key custody and validate exports and failure cleanup",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "18978483cf4387ec4336c5ab9fef0785e3ec5922",
+      "new": "437bc86a1ee34fb02a65e425f0ae5bb0e0e83d61",
+      "tree": "437410f9e8d141e418c989408824c3d5e2299cd1",
+      "signature": "G",
+      "message": "Specify Local promotion authentication and deterministic identities",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "24bc3a4519049abcf7e4b16433b759e7e34c971d",
+      "new": "10fef3d7216adcc8fb893a4aa400d2bceb958d73",
+      "tree": "210e7efee9056b1ef407c9da436c9d4ecc13e09c",
+      "signature": "G",
+      "message": "Specify Account capsule and ledger byte contracts",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "837cd1433d52cbc4a7d5e9eb45cd18d53ccde86e",
+      "new": "1500379624e8d02b46a83eb102bd801a6db64c07",
+      "tree": "9b9bd81531b7d4040e1c4452fac4e47f7435d4c4",
+      "signature": "G",
+      "message": "Specify authenticated counter and witness byte contracts",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "add6fd7ff1e2cec3e983b6195f8e886b30069903",
+      "new": "ed1a930471ac19db023d592b16136c662e305dfa",
+      "tree": "1fee656ac66e7f9c782ee17034ba19f42136149a",
+      "signature": "G",
+      "message": "Specify inherited store and synchronous journal byte bridges",
+      "authorAndCommitterPreserved": true
+    },
+    {
+      "old": "3585a1b8b845d92ae48022c5843b1ed448360948",
+      "new": "862a9d75af5b8f452503f4aff04417a970dcbfa6",
+      "tree": "c2aeb94e474491eba3a68b027d2f41d55d969bab",
+      "signature": "G",
+      "message": "Specify factor custody contracts and reject coerced record states",
+      "authorAndCommitterPreserved": true
+    }
+  ],
+  "branchUpdated": true,
+  "recordedAt": "2026-09-11T19:53:12.712906+00:00",
+  "d7Commit": "555523863b0dc999e4fe1407a6883d000f233e75",
+  "d7Signature": "G",
+  "note": "Seven prior unsigned commits were recreated with the same trees, messages, authors, committers and dates; parent links and signatures changed. Original objects remain reachable under backupRef so earlier evidence references remain valid. D7 was then committed signed. No push or other branch rewrite."
+}

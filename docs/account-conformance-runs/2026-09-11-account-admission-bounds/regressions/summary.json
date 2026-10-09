@@ -1,0 +1,55 @@
+{
+  "started": "2026-09-11T12:25:30.075Z",
+  "stages": [
+    {
+      "name": "unit",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--run",
+        "vectors:check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "genesis",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-genesis/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "admission",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "sync",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-sync/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "status": "passed",
+  "finished": "2026-09-11T12:35:48.595Z"
+}

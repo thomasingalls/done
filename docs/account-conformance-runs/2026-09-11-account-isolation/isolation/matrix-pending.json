@@ -1,0 +1,89 @@
+{
+  "stage": "pending",
+  "cases": [
+    {
+      "name": "0->1 offer valid foreign token",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 inspect foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 abandon foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 foreign recovery draft",
+      "refusal": "recovery-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 foreign recovery id",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 foreign recovery token",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 foreign recovery proof",
+      "refusal": "proof-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "0->1 foreign recovery assertion",
+      "refusal": "proof-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 offer valid foreign token",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 inspect foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 abandon foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 foreign recovery draft",
+      "refusal": "recovery-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 foreign recovery id",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 foreign recovery token",
+      "refusal": "unknown-attempt",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 foreign recovery proof",
+      "refusal": "proof-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    },
+    {
+      "name": "1->0 foreign recovery assertion",
+      "refusal": "proof-conflict",
+      "stateHash": "76eb1947158bf97ed58c672001582b7eca24332528e83bc514a7630b8eb79153"
+    }
+  ],
+  "accounts": [
+    "NslSZ0InJh4GbjiTKImkzQMY_j0Pr1F3NrMkpsTriNE",
+    "baZX5vth_-c2X2hl_aw0WkfTEGI53oU5EYDHne61bw4"
+  ]
+}

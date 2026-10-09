@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="control: resolving the anchor from the reply accepts a self-signed attacker root" time="0.021532" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/controls.test.mjs"/>
+	<testcase name="control: trusting the returned nonce accepts a captured bootstrap response" time="0.008479" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/controls.test.mjs"/>
+	<testcase name="durable encrypted root, independent proof bytes and close/restart" time="0.016653" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/core.test.mjs"/>
+	<testcase name="missing, damaged, wrong-factor, substituted-root and unknown-version states never create a new root" time="0.009114" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/core.test.mjs"/>
+	<testcase name="root proof refuses changed nonce, policy, pin and signature; service accepts only a nonce request" time="0.013619" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/core.test.mjs"/>
+	<testcase name="private files only and initialization failures preserve a classified prior outcome" time="0.011968" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/core.test.mjs"/>
+	<testcase name="native Local+encrypted-journal preflight, independent pin, repeatable recovery context and refusal boundaries" time="0.726007" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/native.test.mjs"/>
+	<testcase name="native preflight cancellation holds slot exclusion until the network attempt settles" time="0.556746" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/native.test.mjs"/>
+	<testcase name="40 generated native histories preserve carriers and keep the recovery context stable" time="9.581823" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/native.test.mjs"/>
+	<testcase name="160 generated authority histories preserve the root through corruption, restart and competing setup" time="1.383016" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/properties.test.mjs"/>
+	<testcase name="SIGKILL before-commit: cold operator recovery never silently rekeys" time="0.263376" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit: cold operator recovery never silently rekeys" time="0.260476" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/restart.test.mjs"/>
+	<testcase name="competing processes initialize exactly one root and can cold-recover the winner" time="0.188486" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-authority/restart.test.mjs"/>
+	<!-- tests 13 -->
+	<!-- suites 0 -->
+	<!-- pass 13 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 11620.175 -->
+</testsuites>

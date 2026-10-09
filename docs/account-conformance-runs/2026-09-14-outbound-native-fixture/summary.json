@@ -1,0 +1,101 @@
+{
+  "base": "19dfffea1bfc8b50cf105bb26757ca80e3a4def0",
+  "claim": "Account outbound native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-42-51.776Z",
+  "summary": {
+    "schema": 1,
+    "selection": "outbound-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-outbound/native.test.mjs",
+        "key": "58aff87e22de738374f78e2dc30c11ebe5b6f7498499016894d5d545a9df550f",
+        "status": "passed",
+        "elapsedMs": 10037,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:42:51.779Z",
+    "input": "f62d8c43f7b20799bca878e94653814363ab0b83a8c93082c029da3a058b845d",
+    "completedAt": "2026-09-14T11:43:25.130Z"
+  },
+  "elapsedMs": 33351,
+  "rawInputArchiveSha256": "6c6270131072e7a3b2d117fbe20c7c03fcf9ae1ca5bcbca93e270a22fe83f711",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "19dfffea1bfc8b50cf105bb26757ca80e3a4def0",
+    "sourceDigest": "a02e5ea72d0dec9135ce719627f39093dfae9527dbc56db1eb0504f05b76ea7f",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 2,
+    "browserFiles": 1,
+    "fixtureInstances": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 3,
+    "rendererCrashes": 1,
+    "priorGeneralFiles": 207,
+    "priorGeneralCases": 1708,
+    "currentGeneralFiles": 208,
+    "currentGeneralCases": 1710,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 112,
+    "accountFiles": 102,
+    "accountCases": 616,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 209,
+    "unresolvedTestFiles": 50,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 691932
+  },
+  "finalGatesSha256": "737f6be22cda43726fb1f456b2b7403bce71c8d6941d7b23454e6dca087a42c3",
+  "preservationSha256": "eeeef462c8c431b80234063f9a59fad04954845892f715d37f2e11484856fad2",
+  "limits": [
+    "Two complete unchanged cases run under the existing 60-second wrapper/file bound. The codec control retains 30 seconds and the renderer-crash case 45 seconds; CDP startup is 15 seconds and drain grace five. Only six runner/registration-test files and generated snapshots change. Product, native test bodies, inherited fixtures, oracles, owners, census, reporters and wrapper are unchanged.",
+    "The first case builds the actual envelope codec in memory and executes it under Node WebCrypto. It reads the first private-envelope vector, whose full source file hash is pinned in the frozen inputs. Three uniquely anchored transformations remove signature, digest or route refusal separately. Baseline rejects the corresponding bad signature, altered ciphertext or wrong expected workspace; the respective mutant accepts the exact altered envelope. This is a content-blind verifier boundary, not relay membership, authorization, decryption or full-vector qualification.",
+    "The second case uses the existing owned editing fixture with disposable Account bootstrap services, synthetic authority/service secrets, a software authenticator and an isolated context. A test-only timer shim delays the normal 250ms flush to 60 seconds. One outgoing observer throws; the accepted edit still appears, adds a synchronous journal entry and leaves measured database contents unchanged before the crash. Native Page.crash is observed, then a replacement page in the same context opens the preserved text.",
+    "The reopened lower-level editor is compacted; an outgoing observer installed after reopen sees zero replay callbacks. Session recovery afterward includes a state record and no outbound record. This demonstrates that an asynchronous observer is insufficient to reconstruct an outbox at this lower-level editing boundary. It does not demonstrate loss in the current captured/spooled sync composition, which this fixture does not open, and it connects no Account relay or second device.",
+    "One actual renderer crash executes. The browser, context and synthetic service survive; the test is not a browser/OS/service crash or physical power-loss campaign. Node retains the synthetic factor/options used for reopen. No human passkey/PRF flow, real Account receipt, personal profile/origin/routing/build or whole-profile erasure is involved. Inherited historical-reader branches are not selected; no historical input is required.",
+    "OUTBOUND_REPORT_DIR is unset in this owned selection, so the optional codec/counterexample JSON exports are not emitted. Exact reporter cases, outcomes, frozen source/browser identities and vector hash are retained. The vector file is a runtime source dependency rather than registration data; vector regeneration and the complete preparation/wrapper/output campaigns remain separate obligations.",
+    "All 93 pure runner checks, TypeScript and scoped style/planning/authority/signature checks pass. All 207 prior general contracts / 1708 identities and exclusions remain unchanged. Prior owner controls retain signed evidence, including admission-bounds historical drift coverage. All 52 personal/vector pins, L-2 and historical evidence/debts/signing backups are preserved. Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and prior deadline evidence remain open. No immutable aggregate or release qualification is claimed."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 7424.096375,
+    "stageElapsedMs": 10037,
+    "selectionElapsedMs": 33351,
+    "nodeDeadlineMs": 60000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 60000,
+    "caseMs": [
+      30000,
+      45000
+    ],
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "30e93dea753da9eedcbebcb4fb4c1b54ae8917e863ed5d492e7416b7302a0081",
+    "compressedSha256": "a7834a359090f64ff0d90024b4480841f6189bc55479a99ad2f426f4b5125b3b"
+  }
+}

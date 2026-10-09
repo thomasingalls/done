@@ -1,0 +1,51 @@
+(node:35521) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ promotion original generated failure shrinks against the frozen signed baseline (4.338375ms)
+✔ spool original generated failure shrinks against the frozen signed baseline (1.148625ms)
+✔ frozen baseline accepts sparse credentials/genesis and coerced index metadata; current parser refuses (8.215292ms)
+(node:35542) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ promotion omission control rescues its rejected malformed input (44.104917ms)
+✔ admission omission control rescues its rejected malformed input (41.432416ms)
+✔ source omission control rescues its rejected malformed input (44.278125ms)
+✔ spool omission control rescues its rejected malformed input (41.350625ms)
+✔ delivery omission control rescues its rejected malformed input (40.734291ms)
+✔ submission omission control rescues its rejected malformed input (42.389583ms)
+✔ credentials strictness repair has an effective omission control (42.243875ms)
+✔ actors strictness repair has an effective omission control (44.235333ms)
+✔ wraps strictness repair has an effective omission control (42.240125ms)
+✔ promotionId strictness repair has an effective omission control (45.699625ms)
+✔ requestDigest strictness repair has an effective omission control (45.574916ms)
+✔ epochHead strictness repair has an effective omission control (40.212084ms)
+(node:35543) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible stage values must be rejected by the promotion parser (7.740666ms)
+✔ all nested data nodes reject incompatible types across thirteen promotions and admission (3175.352875ms)
+✔ sparse retained arrays cannot skip validation of credentials, actors or recipients (49.380083ms)
+✔ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (15.865791ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (197.238667ms)
+✔ generated admission scalar corruptions execute the direct parser (13.630625ms)
+✔ admission nested genesis limits are checked at the declared byte edges (43.35775ms)
+(node:35545) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated internal length-prefix changes refuse for first and successor submissions (7.8245ms)
+✔ parent framing must be refusal and canonical; nested corruption cannot hide behind a valid outer frame (0.81275ms)
+✔ generated detached signature bytes round-trip structurally without conferring signature authority (49.691958ms)
+(node:35548) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible source hashes must be rejected by the spool decoder (5.711625ms)
+✔ generated source nested type mutations reach the decoder (10.352958ms)
+✔ generated spool nested type mutations reach the decoder (7.245458ms)
+✔ generated delivery nested type mutations reach the decoder (6.704458ms)
+✔ decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks (3.38875ms)
+✔ generated valid reference positions and invocation counts preserve exact independent wire bytes (15.27275ms)
+✔ generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse (96.889ms)
+✔ source wire limit accepts a real near-limit frame and refuses the first larger canonical wire (665.072625ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6216.664167

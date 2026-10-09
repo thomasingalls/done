@@ -1,0 +1,337 @@
+{
+  "schema": 1,
+  "scope": "F-17 selected RC combination \u2014 maintained integration and bounded functional qualification",
+  "base": "902cc397be0d191da5a928c827e29709f30e289b",
+  "claim": "No default buffer activation, new timing result, memory qualification or immutable release pass.",
+  "selection": {
+    "base": "902cc397be0d191da5a928c827e29709f30e289b",
+    "candidatePatchSha256": "e3a1406559ac71ac690ba4e042d20fdd944eb82e2c33762559ef19fa09041809",
+    "runtimeUnchangedFromCandidate": [
+      "src/crdt/admissionQueue.ts",
+      "src/crdt/admittedWorkspace.ts",
+      "src/crdt/workspaceCommands.ts",
+      "src/crdt/workspacePreparation.ts",
+      "src/crdt/yjs.ts",
+      "src/editor/admittedEditor.ts"
+    ],
+    "maintainedTestChanges": [
+      {
+        "path": "test/historyReplay.test.ts",
+        "before": "683d26ba5c360c65c5b372e926071a43d5fd64b0d465af0a8033d5a968cbf2c2",
+        "after": "5a8bac3b35165f0a3fa78e0cc45e56f49f21be6ec7e6a6aaf04f0dfa243f5c4a"
+      },
+      {
+        "path": "test/textBufferNormalizationProbe.test.ts",
+        "before": "10ef7c83bd61c9d20bca8ce36c8025130379f52863c264fe48edf02646ffa91f",
+        "after": "03fc27d751b25b68360a57ef4554f440e009b8e94555830b8774d596356dbfd8"
+      }
+    ],
+    "addedCases": [
+      {
+        "id": "test:test/projectionEquality.test.ts",
+        "cases": [
+          {
+            "id": "test/projectionEquality.test.ts::[\"keeps simultaneously borrowed comparison scratch separate under encoding reentry\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/projectionEquality.test.ts::[\"releases partial comparison scratch when an encoded value throws\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/projectionEquality.test.ts::[\"compares large then small documents without retaining active scratch fields\"]",
+            "outcome": "pass"
+          }
+        ]
+      },
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "cases": [
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation reference\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation reference\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-handoff\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-handoff\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"alternates two actual histories, detaches ranges and erases consumed delta copies\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"reused candidates remain private under refusal, retry, discard and drained close\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"resets retired buffers before remote and structural changes, then rebuilds eligibility\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"surrogate bases retain fresh-fork normalization rather than reuse\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"idle transaction fence refuses corrupted retired content before another append\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"idle no-op transactions refuse before append and release watchers on discard and reset\"]",
+            "outcome": "pass"
+          },
+          {
+            "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"generated buffer histories match fresh forks through deletion, grouping, reset and refusal\"]",
+            "outcome": "pass"
+          }
+        ]
+      }
+    ],
+    "administrativeRename": [],
+    "modifiedInputs": {
+      "src/crdt/admissionQueue.ts": "5f44852471884aae6bf2a61eced8413de941147176267eda889f6af9db219803",
+      "src/crdt/admittedWorkspace.ts": "e4759c7ab14fede6d492431c4c10dd9d17b0cf0155122613a9f078e1720c153d",
+      "src/crdt/workspaceCommands.ts": "d04615dc731b769437473185f81b3ff2bb38d7b15ff35872ff005b30a1af767e",
+      "src/crdt/workspacePreparation.ts": "e6cca82eb2b86a42e31e190a32b88b6c66ce9565e6058a33fbf203c72f3103f3",
+      "src/crdt/yjs.ts": "5521dcc56b06ca0beb3e4132fa44b67b2ba006cff6a98a0f01038485d1341625",
+      "src/editor/admittedEditor.ts": "0dd3c5836c594ea909df76fc143edc87f8ce3c02ef3437ea02b1a68e1d1b8de5",
+      "scripts/release-validation/general-tests.json": "573d4bf8d3d173757a02b164e4b54aed597333a9c7e580576c20563bf3ecc498",
+      "scripts/release-validation/manifest-snapshot.mjs": "2d355f31f358f892313f74a67f211ce1ca51fd4e28f0f381dee8655fee88d5f6",
+      "scripts/workspace-admission/catalog.mjs": "fa72d4daff9236bb77a5e62484a72ac698984f20f7c5b2c1551ec559ea35c272",
+      "test/projectionEquality.test.ts": "850f6cec9a09511dc3b531dc460a30a8b802a3a4d9f01df4f6cdd288c149033f",
+      "test/release-validation/general-tests.test.mjs": "b9a64b2987e9261043c33a793238ebaaf287fd66509e8b59b02adb281c8daf7f",
+      "test/release-validation/generated-tests.test.mjs": "9781b12a0ec13602b6d0794696d92f06820c46ef9fcfa71b6b908f36897b14a0",
+      "test/workspaceAdmission.test.ts": "11d93b1cbbc85ba373f81f284a77242a0e5b3ce469dd2c9321de2b493acb3c4f",
+      "test/admittedEditorProjection.test.ts": "4f3e58c34436e5f17cf73f88af754e0609dfd1faaf600378c6ae016c4d0233a1",
+      "test/historyReplay.test.ts": "5a8bac3b35165f0a3fa78e0cc45e56f49f21be6ec7e6a6aaf04f0dfa243f5c4a",
+      "test/historyRetirement.test.ts": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b",
+      "test/membershipEligibility.test.ts": "c26bc82453fdd7c3e53af1eaa5e9fdca2f4e259359530cc6a6697d973a6efece",
+      "test/runtimeForkPreparation.test.ts": "45e88f68e99bc291b5401bb3c701ca37158548b03505617a55502865bbcdb1e8",
+      "test/runtimeForkStrings.test.ts": "829dea731d1218621a110da5cfacba7969547d73fe30e1f1e41861b91c416b2b",
+      "test/textBufferBasis.test.ts": "4c9e1d5b811d91deaa290b6f91548500042f7272a3130d7d06712742b412acd7",
+      "test/textBufferNormalizationProbe.test.ts": "03fc27d751b25b68360a57ef4554f440e009b8e94555830b8774d596356dbfd8"
+    },
+    "counts": {
+      "obligations": 626,
+      "generalFiles": 271,
+      "generalDispositions": 2189,
+      "notApplicable": 11,
+      "unresolved": 159
+    },
+    "limits": {
+      "planningManifestBefore": 800000,
+      "planningManifestAfter": 850000,
+      "manifestBytes": 805675,
+      "caseStageReportLogLimitsUnchanged": true
+    }
+  },
+  "registration": {
+    "base": "0c4b31a95e52143da99b75e32c038b3c7e2af734af6992f098f9e35e902a7bf7",
+    "current": "028d30a94743e369a6d538591ac1be67c5228779156bc81eb2397f6a91bb0a5a",
+    "oldObligations": 618,
+    "newObligations": 626,
+    "unchangedRows": 614,
+    "changedRows": [
+      "test:test/projectionEquality.test.ts",
+      "test:test/release-validation/general-tests.test.mjs",
+      "test:test/workspaceAdmission.test.ts",
+      "catalogue:scripts/workspace-admission/catalog.mjs"
+    ],
+    "newFiles": [
+      {
+        "id": "test:test/admittedEditorProjection.test.ts",
+        "cases": 11
+      },
+      {
+        "id": "test:test/historyReplay.test.ts",
+        "cases": 2
+      },
+      {
+        "id": "test:test/historyRetirement.test.ts",
+        "cases": 3
+      },
+      {
+        "id": "test:test/membershipEligibility.test.ts",
+        "cases": 18
+      },
+      {
+        "id": "test:test/runtimeForkPreparation.test.ts",
+        "cases": 5
+      },
+      {
+        "id": "test:test/runtimeForkStrings.test.ts",
+        "cases": 8
+      },
+      {
+        "id": "test:test/textBufferBasis.test.ts",
+        "cases": 4
+      },
+      {
+        "id": "test:test/textBufferNormalizationProbe.test.ts",
+        "cases": 1
+      }
+    ],
+    "addedCasesInExistingFiles": [
+      {
+        "id": "test/projectionEquality.test.ts::[\"keeps simultaneously borrowed comparison scratch separate under encoding reentry\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/projectionEquality.test.ts::[\"releases partial comparison scratch when an encoded value throws\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/projectionEquality.test.ts::[\"compares large then small documents without retaining active scratch fields\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation reference\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation reference\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-handoff\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-handoff\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"keeps incremental text projections detached and falls back for structural and remote changes\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"workspace preparation local-snapshots\",\"admitted workspace commands and history\",\"refreshes cached projections when a later history fork normalizes UTF-16 fields\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"alternates two actual histories, detaches ranges and erases consumed delta copies\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"reused candidates remain private under refusal, retry, discard and drained close\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"resets retired buffers before remote and structural changes, then rebuilds eligibility\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"surrogate bases retain fresh-fork normalization rather than reuse\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"idle transaction fence refuses corrupted retired content before another append\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"idle no-op transactions refuse before append and release watchers on discard and reset\"]",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/workspaceAdmission.test.ts::[\"persistent text buffers\",\"generated buffer histories match fresh forks through deletion, grouping, reset and refusal\"]",
+        "outcome": "pass"
+      }
+    ],
+    "administrativeRename": [
+      {
+        "before": [
+          {
+            "id": "test/release-validation/general-tests.test.mjs::reviewed Vitest and Node selections preserve the 2121-case file denominator and separate wrapper obligations",
+            "outcome": "pass"
+          }
+        ],
+        "after": [
+          {
+            "id": "test/release-validation/general-tests.test.mjs::reviewed Vitest and Node selections preserve the 2189-case file denominator and separate wrapper obligations",
+            "outcome": "pass"
+          }
+        ]
+      }
+    ],
+    "newCaseCount": 68,
+    "limitsPreserved": true,
+    "unresolvedUnchanged": true,
+    "requiredTestFiles": 290,
+    "generalFiles": 271,
+    "generalDispositions": 2189,
+    "notApplicable": 11,
+    "planningManifestBytes": 805675
+  },
+  "ownedEpochs": [
+    {
+      "archive": "owned",
+      "input": "d67214405e9c0ba72d4dbaaabaf4ff36661b86b023be9fd2cc93c5f3b0fbfba9",
+      "stages": 28,
+      "dispositions": 366
+    },
+    {
+      "archive": "owned-recovered",
+      "input": "9e1a58ec6067085dec45288a193eb73f749ce4ef4eeb850630104ee19326af79",
+      "stages": 2,
+      "dispositions": 13
+    }
+  ],
+  "ownedVitest": {
+    "files": 29,
+    "cases": 365
+  },
+  "workspaceCatalogue": {
+    "cases": 10,
+    "mutations": 4
+  },
+  "fullUnitRuns": [
+    {
+      "log": "phase/full-unit.log",
+      "files": 105,
+      "tests": 1196
+    },
+    {
+      "log": "phase/full-unit-final.log",
+      "files": 107,
+      "tests": 1209
+    }
+  ],
+  "native": [
+    {
+      "name": "pending-projection",
+      "cases": 12,
+      "generatedHistories": 100,
+      "seed": 8941,
+      "rendererDeaths": 1
+    },
+    {
+      "name": "yjs-delivery",
+      "cases": 8,
+      "generatedHistories": 100,
+      "seed": 8941,
+      "rendererDeaths": 1
+    }
+  ],
+  "faults": 9,
+  "runnerChecks": 27,
+  "artifactsSha256": "33f11e8242504abec1dec9e5adff43b2e819243c8d1913393983eb9a3e2b330f",
+  "files": 956,
+  "uniqueBlobs": 394,
+  "rawIndexSha256": "9c2f38d730f392826d067373911b7492b6798d1bcef76adcb3cec44457989e2d",
+  "patchSha256": "c616ec5ab9de767399da55b36559a950870aa58450129a99cf52d6eda31880e7"
+}

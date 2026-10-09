@@ -1,0 +1,98 @@
+{
+  "base": "bc536f33ccbc186e31ca55572506dcdc5ada57e0",
+  "claim": "Account service inbound native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-30-33.963Z",
+  "summary": {
+    "schema": 1,
+    "selection": "service-inbound-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-service-inbound/native.test.mjs",
+        "key": "8320a3b2f798d7cdcc5d147a0a14422cedac9b6d45b2fabbf66b71f185393257",
+        "status": "passed",
+        "elapsedMs": 19272,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:30:33.966Z",
+    "input": "f153a8300dc7fa7703cfa4deb63be445cda8af019501a50f279eb5e65fd8bb24",
+    "completedAt": "2026-09-14T09:31:20.831Z"
+  },
+  "elapsedMs": 46865,
+  "rawInputArchiveSha256": "1dd05bb221f9c09cf1fc8743eabee1ed60140ecd6fe250ed0adccac3df9f5e7e",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "bc536f33ccbc186e31ca55572506dcdc5ada57e0",
+    "sourceDigest": "63351294444878c595b3e70dd296d3f03b204b934d4d06922e70ad80a87e271b",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 194,
+    "priorGeneralCases": 1650,
+    "currentGeneralFiles": 195,
+    "currentGeneralCases": 1651,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 99,
+    "accountFiles": 89,
+    "accountCases": 557,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 222,
+    "unresolvedTestFiles": 63,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 675744
+  },
+  "finalGatesSha256": "becedef16be28ef912d2ad7dcef2a2ec3c2fc5764032961507cf4b5a35078ffd",
+  "preservationSha256": "eb6dceb8b04d891da632cfa0f73e8e4fbed2fb74aadcb946000f338d5da39649",
+  "limits": [
+    "Exactly one unchanged native case runs via service-inbound-native-fixture, owned Chromium CDP, in-memory Vite bundles and temporary service databases. The existing 90-second wrapper/file allowance, 60-second case bound, 15-second startup and 5-second drain grace are retained. Complete wrapper execution, reports and scheduling remain separate obligations.",
+    "The browser creates signed v2 read requests and the owned storage-only receive API verifies and persists the original response bytes. The reads themselves use Node fetch with an explicit Origin header; this fixture does not exercise browser receive HTTP transport, CORS enforcement or automatic polling/reconnect. Browser-owned delivery submits two prepared envelopes using the temporary operator token.",
+    "One selected synthetic Account publishes and reads its own stream. Two single-entry pages retain the exact original envelope bytes, through=2 and successive next positions 1 and 2. The independent envelope helper extracts bytes from each original submission. The production page decoder and receiver perform parsing and verification; the independent v1 pageProof helper is not called. This is not independent page-signature proof or a two-device publication/adoption test.",
+    "Wrong protocol endpoint and a zeroed read signature return 409; foreign Origin, wrong content type and wrong bearer return 403; a 4097-byte body returns 413. These are directed response-status checks. They do not include independent service-state equality after each refusal, exhaustive parser/boundary coverage or separate reader/publisher authority combinations.",
+    "Identical signed read queries return byte-identical responses. A duplicate last page reports duplicate, then the receive cursor is 2. The source comment refers to lost response and absent service mutations, but the case injects neither network response loss nor a before/after service database census. The evidence supports exact request replay only.",
+    "After closing the receive owner, cold closes the page and opens a new one in the same browser context. Reopening the receive store recovers cursor 2 and a further read reports empty. No renderer crash, browser/service process death, fresh profile or independent visible-writing comparison is asserted. Both input envelopes originated locally in this same workspace; this does not prove reconstruction solely from downloaded pages.",
+    "No generated histories, omission controls or historical readers execute in this native file. Shared fixture helpers contain optional old-reader and mutation branches but only baseline bundles are requested. The wrapper service-only histories, restart cuts and controls retain their separate execution obligations. This phase grants no new product, WebAuthn, human Account, membership or deployment assurance.",
+    "All 194 prior general contracts and 1650 case identities, retired-v8 exclusions, product/native/helper/wrapper bytes, 52 personal/vector pins and L-2 remain unchanged. Unchanged owner controls retain earlier evidence. Ledger orphan classification, core receive loaded-host headroom, capture map-refresh/byte-length follow-ups and prior editing/handoff deadline evidence remain open. This selection is from frozen inputs with an uncommitted adapter patch, not an immutable aggregate release qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 15487.570292,
+    "stageElapsedMs": 19272,
+    "selectionElapsedMs": 46865,
+    "nodeDeadlineMs": 90000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 90000,
+    "caseMs": 60000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "51d78b2689f8e1b765273c79cf8ccec10ccfd4fde5f5951eb64a1e5883eb1126",
+    "compressedSha256": "1aef6a4ca50661b72127f9eef54efde82750195ca9fda17b517a4df799197149"
+  }
+}

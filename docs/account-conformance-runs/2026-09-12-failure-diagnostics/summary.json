@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T15:08:46.889Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 64
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 36240
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-failures/native.test.mjs",
+        "test/account-failures/service.test.mjs",
+        "test/account-failures/http.test.mjs"
+      ],
+      "code": 0,
+      "tests": 5,
+      "timedOut": false,
+      "elapsedMs": 5020
+    },
+    {
+      "name": "activation",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-activation/core.test.mjs",
+        "test/account-activation/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 19,
+      "timedOut": false,
+      "elapsedMs": 11485
+    },
+    {
+      "name": "service-delivery",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 20,
+      "timedOut": false,
+      "elapsedMs": 13122
+    },
+    {
+      "name": "service-inbound",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 9,
+      "timedOut": false,
+      "elapsedMs": 26757
+    },
+    {
+      "name": "transport",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-receive-transport/native.test.mjs",
+        "test/account-sync/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 16,
+      "timedOut": false,
+      "elapsedMs": 136133
+    },
+    {
+      "name": "privacy",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 12556
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "account-protocol/diagnostics.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/private-server.ts",
+        "src/account/privateDeliveryHttp.ts",
+        "src/crdt/promotionAdmission.ts",
+        "test/diagnostics.test.ts",
+        "test/privateDeliveryHttp.test.ts",
+        "test/account-failures",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 79
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "account-protocol/diagnostics.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/private-server.ts",
+        "src/account/privateDeliveryHttp.ts",
+        "src/crdt/promotionAdmission.ts",
+        "test/diagnostics.test.ts",
+        "test/privateDeliveryHttp.test.ts",
+        "test/account-failures",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 95
+    }
+  ],
+  "sourcePins": 905,
+  "finishedAt": "2026-09-12T15:12:48.597Z"
+}

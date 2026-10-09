@@ -1,0 +1,27 @@
+[
+  {
+    "path": "/private/tmp/done-f17-rc-activation/before-inputs.json.gz",
+    "sha256": "9e0672aa37d6efe01ba44ae4f541ca8eab3b7a44c43797da55ddac8f6cd6f1ee",
+    "bytes": 1219245
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-activation/application/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-activation/application/inputs.json.gz",
+    "sha256": "18651b59020604c46a89013e25c09fa8590283c5cc1fb80c7fd5ba308441b2cd",
+    "bytes": 1219314
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-activation/functional/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-f17-rc-activation/functional/inputs.json.gz",
+    "sha256": "18651b59020604c46a89013e25c09fa8590283c5cc1fb80c7fd5ba308441b2cd",
+    "bytes": 1219314
+  }
+]

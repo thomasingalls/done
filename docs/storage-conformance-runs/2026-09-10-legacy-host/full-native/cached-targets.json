@@ -1,0 +1,49 @@
+{
+  "targetInfos": [
+    {
+      "targetId": "AF990A664088EAC6A050347C759E21D5",
+      "type": "service_worker",
+      "title": "Service Worker http://127.0.0.1:50741/sw.js",
+      "url": "http://127.0.0.1:50741/sw.js",
+      "attached": true,
+      "canAccessOpener": false,
+      "browserContextId": "97B1C1694BC434798C6CF0C0660C8D73"
+    },
+    {
+      "targetId": "E71A6F8474D6AAA5B24B422223D872A4",
+      "type": "page",
+      "title": "Private readonly host preflight",
+      "url": "http://127.0.0.1:50741/test/legacy-host/index.html",
+      "attached": true,
+      "canAccessOpener": false,
+      "browserContextId": "97B1C1694BC434798C6CF0C0660C8D73"
+    },
+    {
+      "targetId": "F48C95A758C3A0B47AE1E8E4259016EB",
+      "type": "page",
+      "title": "about:blank",
+      "url": "about:blank",
+      "attached": true,
+      "canAccessOpener": false,
+      "browserContextId": "97B1C1694BC434798C6CF0C0660C8D73"
+    },
+    {
+      "targetId": "FA3A1FCB4619745AE7243650EE2012D5",
+      "type": "page",
+      "title": "done",
+      "url": "http://127.0.0.1:50741/test/legacy-host/index.html",
+      "attached": true,
+      "canAccessOpener": false,
+      "browserContextId": "97B1C1694BC434798C6CF0C0660C8D73"
+    },
+    {
+      "targetId": "8376541CD5104A5009BF0A01656551AC",
+      "type": "page",
+      "title": "about:blank",
+      "url": "about:blank",
+      "attached": true,
+      "canAccessOpener": false,
+      "browserContextId": "97B1C1694BC434798C6CF0C0660C8D73"
+    }
+  ]
+}

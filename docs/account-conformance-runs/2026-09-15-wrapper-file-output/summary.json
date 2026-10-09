@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "base": "5cbad3fa",
+  "payloads": 221,
+  "compressedBytes": 537567,
+  "artifactsSha256": "e4868919cd9092e52e9357678c1adf1acfabfb904e8bccf18a8439dc3b552abf",
+  "rawIndexSha256": "a6ac969d064ba287e73467c5b649c3fa18ba5ee0a074be6b14074d5ed8528f44",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-file-output-with-controls-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "1744be41413e5ebd7a223257d5adb4aabd45f4110d3bf86567bae1a196237145",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 8788,
+        "cases": 10,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "31455c3a8c5698e3767466527f56167cdd28db7591e039c1cc255105a966d70b",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 7842,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "320b0d812cea8daa6522b39848c92640e438b1695573089560fa8527d7d0224c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6342,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/stage.test.mjs",
+        "key": "020b5113885194544132c73321b2cf99f769df35ed78ba526448da4478b77479",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 101478,
+        "cases": 33,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/file-outputs.test.mjs",
+        "key": "845d9458ce819d0c741828b616928f48c5ad48e22a5c23fc3c1b650636dacca2",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 4444,
+        "cases": 7,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "variant:preparation-reports",
+        "key": "d98e0b0142121f8019d6846c5589c2afa68dc285c282c70a58ec90b6cbb93ad8",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 2056,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:report-reuse",
+        "key": "d98e0b0142121f8019d6846c5589c2afa68dc285c282c70a58ec90b6cbb93ad8",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 2056,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T15:37:14.738Z",
+    "input": "79b78b47e3bec6a08284095c03e781a9a41fd9c6db79f87665156da93ffc060e",
+    "completedAt": "2026-09-15T15:40:07.731Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 94,
+    "campaign": 62
+  },
+  "claim": "Bounded owned report retention, not complete wrapper or immutable release qualification."
+}

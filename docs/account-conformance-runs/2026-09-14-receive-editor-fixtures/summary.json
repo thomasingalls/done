@@ -1,0 +1,106 @@
+{
+  "base": "0a7d6d442c614e52e92d1e1529388d61f0f5ca3b",
+  "claim": "Core receive and ordered editor native fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T06-49-08.757Z",
+  "summary": {
+    "schema": 1,
+    "selection": "receive-editor-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-receive-editor/native.test.mjs",
+        "key": "74388941cde80df3d321af0e45951b351b81ca91f96ddb1ebe22617347144a42",
+        "status": "passed",
+        "elapsedMs": 306910,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-receive/native.test.mjs",
+        "key": "33925e1301fc66e5893b4043151a44443b683bab637e5ab0aca8a082e74ee04d",
+        "status": "passed",
+        "elapsedMs": 301462,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T06:49:08.759Z",
+    "input": "a8e1246b8b93a6967d5f2f6292d3639d40f55ac5c6ac7e2979813b24d5dafda1",
+    "completedAt": "2026-09-14T06:59:45.299Z"
+  },
+  "elapsedMs": 636540,
+  "rawInputArchiveSha256": "5a0a736826de8fdca95d449b7047f4ae7bf6996dde1db4700fccc94a751077ec",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "0a7d6d442c614e52e92d1e1529388d61f0f5ca3b",
+    "sourceDigest": "dbc672e049fef460003475039fcd3327e8c80acb6bf98a61daabe6428bcfd1c1",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 2,
+    "selectedCases": 29,
+    "browserFiles": 2,
+    "coreGeneratedHistories": 12,
+    "coreSeed": 9182026,
+    "editorGeneratedHistories": 10,
+    "editorSeed": 9202026,
+    "priorGeneralFiles": 179,
+    "priorGeneralCases": 1473,
+    "currentGeneralFiles": 181,
+    "currentGeneralCases": 1502,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 85,
+    "accountFiles": 75,
+    "accountCases": 408,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 236,
+    "unresolvedTestFiles": 77,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 646527
+  },
+  "finalGatesSha256": "62658e3581c31182904bac07a453d7700f31ffef9229950310480a3a5d0f3ea5",
+  "preservationSha256": "8a9cd06355ce3da4977807ae449624b9f0dde6c81a4ac1f4b266001664cd8c0c",
+  "limits": [
+    "Two complete existing test files retain all 29 cases and their original assertions. The editor file has 12 cases and a 480-second wrapper bound; core receive has 17 and a 300-second bound. Individual non-generated limits stay 45/40 seconds and generated limits 200/180 seconds respectively. Owned browser startup remains 15 seconds and drain grace five seconds. Product code, wrappers, mutation bodies, shared browser owner and census are unchanged. Only the historical-reader git show receives finite 5000-ms/2-MiB bounds.",
+    "The core historical control executes promotionRecord.ts at 8378596; its exact reference/revision/path/hash is pinned in that file's receipt and checked before launch/reuse and after execution. The existing historical input allowlist and owner controls cover this path; no new locator grammar or owner code was needed. Rejection by this composite old-reader fixture and the v8-to-v9 activation boundary do not revive support for the retired v8 app.",
+    "The promotion fixture registers cleanup before setup, borrows a validated owned loopback CDP endpoint, and creates synthetic contexts, credential/recovery fixtures and temporary loopback Account service/SQLite files. Services are used for setup/authority; inbound pages and acceptance proofs come from the independent Node/OpenSSL oracle, not a service delivery route. Inbound envelopes use separate browser framing and current WebCrypto under synthetic member keys, including deliberate 256-update adversarial input. Core generated histories share one browser context/service but create distinct workspaces; editor histories create and promptly close separate contexts. Outer test cleanup closes services/connections and the stage owner drains Chromium.",
+    "Core directed tests compare atomic original content/evidence, duplicate/no-outbound capture, compaction and expired retained proof replay; four explicit renderer deaths cover receive and v9 activation before/after commit. Other cases remove content/events, corrupt ciphertext, reauthenticate invalid service-page/baseline evidence under valid local AEAD/witness, preserve pending Yjs originals until a later dependency, retain conflict, drain held crypto before releasing the slot, reject oversized batches before reservation, abort/retry a 255-update-plus-event transaction and reject authority changed during sealing.",
+    "Core controls separately omit reuse and fallback coverage checks and require rejection to remain; only omitting both admits missing content. Witness omission resets received progress, split-content mutation commits evidence without its content and is detected by immediate/cold readback, and stored-page verification omission admits a locally reauthenticated invalid service signature. These are distinct observations, not a generic nonzero-exit oracle.",
+    "Twelve core generated histories retain seed 9182026 and numRuns:12, with ordinary fast-check shrinking and the existing 180-second test deadline. Each history has one to three receive operations with before/after/no commit cut and optional compaction/cold reopen. Cursor checks occur at each step and after crash/retry; final cold content replay is compared with independent expected text. This is not an exact original-byte comparison after every action. The twelve-history population and test bound are unchanged.",
+    "Ordered editor cases require remote publication after durable commit with no local capsule, undo or outgoing event; queued Local input is prepared only after remote publication. They cover two receive commit crashes, malformed/bad-signature pages, retained conflict with continued Local editing, pending structs/deletes through compaction, storage-pressure suffix discard, held committed receive during close with a second page competing for the same slot, and observer-triggered close followed by complete cold replay. Early-publication and local-relabel mutations must expose the prohibited visible text or extra source capsule. The early-publication control also crashes its renderer.",
+    "Ten editor generated histories retain seed 9202026, numRuns:10, endOnFailure:true and the 200-second case deadline. Three to six actions draw from receive/local/duplicate/invalid/compact/restart. Text, cursor and local source counts are compared after each action, with text/source counts compared after final reopen. There is no explicit all-action-coverage assertion, and a duplicate action before the first receive is a no-op. Do not describe this as a generated network-fault campaign.",
+    "Reopen means a new page in the same browser context; CDP Page.crash is renderer death, not a browser-process crash, power loss or a separate device. Storage failures and authority/ciphertext changes are deliberate synthetic native-boundary injections. Optional ACCOUNT_REPORT_DIR exports remain disabled, so their exact saved-output postconditions, original wrapper ordering and prerequisites remain separate unresolved obligations.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned earlier evidence rather than new execution. The ledger phase's first expected-positive historical service-path orphan classification remains unresolved despite subsequent passes; this phase establishes no fix.",
+    "All 179 prior general contracts / 1473 case identities and six retired-v8 exclusions remain unchanged. The full frozen source/dependency/browser archives are retained locally with hashes here; subsequent documentation changes do not make this an immutable aggregate. The preceding sync/composition phase is signed and verified. Personal profiles/services/builds/recovery/factors, earlier vectors/evidence/debts/signing backups, unrelated root done-space and L-2 remain untouched.",
+    "Node execution passed with less than three seconds of margin against the existing file deadline. Stage elapsed also includes preparation/drain work. Loaded-host reliability remains unqualified; the passing run does not justify a deadline change."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "ebbeb00ed42848ad1394870b3d906d30a617649443c0ca0301ecad434fbd30e0",
+    "compressedSha256": "e2da380a45d549e96dca01a1566b15a7db9cc83f5e8d192092a6dabb40713fdf"
+  },
+  "timing": {
+    "coreNodeDurationMs": 297025.465709,
+    "coreDeadlineMs": 300000,
+    "coreStageElapsedMs": 301462,
+    "note": "Node execution passed with less than three seconds of margin against the existing file deadline. Stage elapsed also includes preparation/drain work. Loaded-host reliability remains unqualified; the passing run does not justify a deadline change."
+  }
+}

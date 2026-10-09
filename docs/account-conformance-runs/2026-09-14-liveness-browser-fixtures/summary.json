@@ -1,0 +1,127 @@
+{
+  "base": "16d1612d65b253cd53a955a637ca1d2c78bb5486",
+  "claim": "Account controlled liveness and verified-view browser fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-19-01.457Z",
+  "summary": {
+    "schema": 1,
+    "selection": "liveness-browser-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-liveness/controlled.test.mjs",
+        "key": "7b4091a31967358be5ed35abf053099dd1c6f14cc6e6d2bb71e86f97d8e8b701",
+        "status": "passed",
+        "elapsedMs": 20622,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-liveness/view.test.mjs",
+        "key": "20955cfc3dc965d2fc7647a5b10be0b067b39aa116020b77f61f3ec25670b613",
+        "status": "passed",
+        "elapsedMs": 23177,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:19:01.460Z",
+    "input": "86aaf9bf53ed5582bcda96265b2596cf4422a0c306a273dc0a03a58f8aa5f53d",
+    "completedAt": "2026-09-14T12:20:14.243Z"
+  },
+  "elapsedMs": 72783,
+  "rawInputArchiveSha256": "0ab7ad82e93db9a69a40c9b9e6ce8f640f951475ec8b1bbed4edfaabcc32d7fa",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "16d1612d65b253cd53a955a637ca1d2c78bb5486",
+    "sourceDigest": "5443ceda66bb190d16c07779fa0457ea131dd34000e0e1d4cbd2f4f7fa9db231",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 2,
+    "selectedCases": 2,
+    "browserFiles": 2,
+    "fixtureInstances": 2,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "heldHttpBoundaries": 2,
+    "expiredReadAttempts": 3,
+    "carrierTamperModes": 7,
+    "priorGeneralFiles": 218,
+    "priorGeneralCases": 1745,
+    "currentGeneralFiles": 220,
+    "currentGeneralCases": 1747,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 124,
+    "accountFiles": 114,
+    "accountCases": 653,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 197,
+    "unresolvedTestFiles": 38,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 702696
+  },
+  "finalGatesSha256": "e42b9334ba9da3f0614dfbc1480d1b8396540d57525c83a0e68f2a27a5a3d223",
+  "preservationSha256": "6a1f3a48b69c788847bd7a7a94b185f83ea236d39d00083b61cea9c757eefe34",
+  "limits": [
+    "Two complete unchanged cases retain the existing controlled file/case limits of 200/180 seconds and verified-view limits of 180/150 seconds. The shared liveness fixture now borrows the established owned-CDP browser and retains its explicitly created context for cleanup. Nested finally blocks attempt context, browser, service and temporary-directory cleanup. Standalone launch fallback remains. Product, test bodies, instrumentation, probe, oracles, census, reporters and wrapper are unchanged.",
+    "The controlled case holds genuine read-v2 and submit responses at the route boundary. A later Local edit is accepted, its explicit flush settles within the five-second test wait, and a fresh receive-status storage read completes before the response is released. The case then compares writing after cold reopen. This verifies progress under the two held HTTP boundaries, not arbitrary network schedules or a universal latency bound.",
+    "A test-only commit clock shift induces exactly three expired incoming read attempts. The receive cursor stays unchanged and diagnostics contain only code/operation/phase. Removing the shift permits automatic recovery without manual retry or an online wake. At least four distinct signed requests are observed; final status clears failure/reason, and later writing survives cold offline reopen. Timings and detailed optional diagnostics are not separately retained by the general case runner.",
+    "The verified-view case activates the independent cold verification oracle, observes positive oracle checks, then sees zero inbound-ledger and delivery-verification calls for a warm status sample. Compaction and cold reopen preserve text. Seven actual IDB changes separately alter ciphertext, nonce, content/source presence, placement, counter MAC or active generation. Every status read must reject. Restoring saved carrier bytes and reopening recovers the exact expected writing; status after close also rejects.",
+    "These are two disposable browser/service fixture instances with synthetic authority/service secrets, software authentication and retained factor options. Cold replaces the page within the live context; no process is killed. The view case restores captured test carrier bytes deliberately and is not a production restore procedure. No personal profile/origin/build, human PRF/passkey ceremony, real Account receipt, second-device adoption, physical power loss or whole-profile erasure is exercised.",
+    "Measurement transforms and clock seams are uniquely anchored by the existing instrument; its separate six-case Node fixture has signed evidence. The browser test callbacks and all mutation/assertion logic remain unchanged. The full growing-history and ordinary-scheduling workload files remain blocked until their own integration. No generated history campaign runs here.",
+    "Optional reports live inside the disposable execution checkout and are removed with it. Exact owned case outcomes, file timings, source/browser identities and changed-fixture patch are archived. This selection does not retain a separate performance report, qualify the whole wrapper/output campaign or establish immutable release readiness. Prior owner/headroom/capture-oracle observations and deadline evidence remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-liveness/controlled.test.mjs",
+        "nodeSummaryMs": 16738.888042,
+        "stageElapsedMs": 20622,
+        "fileDeadlineMs": 200000
+      },
+      {
+        "id": "test:test/account-liveness/view.test.mjs",
+        "nodeSummaryMs": 19270.768417,
+        "stageElapsedMs": 23177,
+        "fileDeadlineMs": 180000
+      }
+    ],
+    "selectionElapsedMs": 72783,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": [
+      200000,
+      180000
+    ],
+    "caseMs": [
+      180000,
+      150000
+    ],
+    "note": "Existing wrapper and case limits retained."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "0ba67933bf2248b5320b160535647afb3c2d6e97b436f4b3c55f659d3025b521",
+    "compressedSha256": "415ff9a53e90767895e48475d9d8d8c8de4953415d0fe4f1bd987b065a41492b"
+  }
+}

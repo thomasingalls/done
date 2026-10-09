@@ -1,0 +1,161 @@
+Repeatable replacement product flow — 2026-10-08
+
+Clean packaged browser run:
+
+Running 2 tests using 1 worker
+
+(node:50602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/replacement-handoff.spec.ts:9:3 › native promotion producer hands a current-key snapshot to a replacement with removed-device and journal writing (2.0m)
+  ✓  2 test/packaged-account/replacement-handoff.spec.ts:9:3 › native joined producer hands a current-key snapshot to a replacement with removed-device and journal writing (58.7s)
+
+  2 passed (3.0m)
+
+Affected service/upgrade run (84 pass; one stale-denial expectation later corrected):
+(node:50835) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50835) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ bootstrap retries a certification committed while signing without returning the old authority (316.981417ms)
+✔ next-device preparation binds the certified parent and survives a lost reply (503.032875ms)
+✔ next-device preparation binds the certified parent and survives a lost reply with one login (505.296834ms)
+✔ next-device proof racing account invalidation cannot commit a receipt or login (289.860416ms)
+✔ private continuation admission retains both publisher boundaries, aborts atomically and recovers the exact committed result (1177.569333ms)
+✔ only a proved next-device connection reserves the account; concurrent proof, cancellation and retry preserve one login (401.043833ms)
+✔ continuation schema requires explicit offline opt-in and preserves retained session/account rows (217.825541ms)
+✔ continuation admission requires the immutable baseline and rechecks it before changing authority (708.619417ms)
+✔ later certified readers authenticate the original baseline without borrowing its earlier admission (3414.707416ms)
+✔ historical checkpoint reads recheck the captured row, login and deadline after verification (887.799833ms)
+✔ continuation relay preserves the original ceremony and binds restart/retry to the existing approver (2169.923833ms)
+✔ continuation relay preserves the original ceremony and binds restart/retry to the new approver (2072.371875ms)
+✔ continuation commitment/approval aborts, lost replies and final authorization checks retain exact state (1718.815ms)
+✔ competing certified approvers cannot replace the retained pair; cancellation stays terminal (1214.702125ms)
+✔ continuation relay refuses authority changes, expiry at commit and tampered retained approval (1448.604417ms)
+✔ private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes (438.875667ms)
+✔ certified devices publish independent positions and read each other across lost replies and restart (587.784291ms)
+✔ checkpoint publication and second-client admission resume exact bytes across commit failures and restart (916.925916ms)
+✔ checkpoint exchange checks participant role, signing key and current authority without losing an accepted suffix (585.012583ms)
+✔ schema ten upgrade preserves the checkpoint, admission and original publisher history (453.188291ms)
+✔ schema nine requires explicit upgrade and retains certified content access (269.745167ms)
+✔ approval is required; exact delivery survives lost replies, cannot be replaced, and does not yet certify (260.009625ms)
+✔ installation and certification are atomic, restartable after a lost reply, and preserve all three issuance epochs (707.907958ms)
+✔ recipient keys, transcript, recovery state and approver are authenticated before delivery (325.800667ms)
+✔ a competing authority change during verification cannot commit installation (193.783583ms)
+✔ schema eight opens only through the explicit offline upgrade, preserving retained attempts (134.566ms)
+(node:50835) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ certified receiver opens original encrypted Yjs updates and rechecks retained evidence after expiry (410.166667ms)
+✔ a valid version-2 relay decision cannot replace the original version-1 delivery approval (126.909667ms)
+✔ private continuation transfer by existing preserves both ledgers across aborted/lost certification and restart (3130.4595ms)
+✔ private continuation transfer by new preserves both ledgers across aborted/lost certification and restart (3020.049292ms)
+✔ continuation installation cannot cross final authorization, receipt or current-head boundaries (2163.409667ms)
+✔ continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage (1898.397167ms)
+✔ schema-16 pending comparison upgrades explicitly without replacing its messages (542.233458ms)
+✔ three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart (3546.122292ms)
+✖ continuation grants distinguish both approvers, pending enrollment and certified content through restart (2217.673667ms)
+✔ continuation grant verification refuses changed pointers, receipts and changes before grant publication (817.428916ms)
+✔ continuation bootstrap permits either certified inviter and rebuilds after a signing-time certification (3049.886375ms)
+✔ continuation discovery keeps publisher coverage and exact network authorization through restart (1975.228583ms)
+✔ continuation discovery rechecks session and expiry after asynchronous proof and signing work (759.407458ms)
+✔ opt-in HTTP continuation uses exact scoped grants and publishes hints only for committed changes (4369.401833ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves (3512.603333ms)
+✔ later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready (2669.147209ms)
+✔ later native slot resumes activation after index interruption and rejects changed retained reading (5499.416833ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ browser comparison by existing composes with the real continuation relay and key handoff after restart (2577.379208ms)
+✔ browser comparison by new composes with the real continuation relay and key handoff after restart (2436.156917ms)
+✔ browser continuation enrollment saves before effects and retries finish and admission after service restart (622.092792ms)
+✔ browser continuation preparation rejects unsaved state and changed custody before network effects (266.877917ms)
+✔ retained connection coordinates invitation through third-device certification with existing approving (8528.300166ms)
+✔ retained connection coordinates invitation through third-device certification with new approving (8327.206ms)
+✔ retained connection loads actual encrypted writing and retries interrupted installation from committed reader state (4126.69ms)
+✔ membership cancellation retains exact retry, both publisher boundaries and subsequent writing after crash (2320.671166ms)
+✔ membership cancellation and approval have one winner; uncertain or delivered keys require removal (3703.850459ms)
+✔ membership cancellation checks commit authorization, changed boundaries and signed mismatch (1499.090792ms)
+✔ schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt (400.452125ms)
+✔ protected membership cancellation invalidates old grants and emits only one committed hint (1459.526167ms)
+✔ retained client cancellation saves before effects and cold-resolves a lost committed reply (2263.350291ms)
+✔ removal preparation fences only the target and preserves exact accepted retries through lost response and restart (769.736417ms)
+✔ removal preparation serializes a racing write and a racing publication cannot bypass its fence (408.2495ms)
+✔ pending removal prevents comparison, delivery, certification and cancellation from changing the prepared parent (1382.364958ms)
+✔ removal preparation refuses lost commit authorization and tampered retained fence without blocking prior rollback writes (546.58625ms)
+✔ removal schema upgrades only offline from 18 and refuses an older host (183.115292ms)
+✔ joined owner can prepare original-device removal while a new admission cannot invalidate its parent (743.048917ms)
+✔ rotation commits once across rollback, lost reply, restart and a competing signed intent (726.306459ms)
+✔ rotation retains old accepted history and allows survivor offline work before and after its new generation writes (1087.16175ms)
+✔ rotation can remove the original publisher and finalize a never-writing or exposed pending target (1990.810125ms)
+✔ rotation fails closed on final authorization loss, altered preparation, and missing committed proof (598.128583ms)
+✔ rotation serializes a survivor publication and fences previously issued target grants (1051.255042ms)
+✔ rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host (264.130583ms)
+✔ protected rotation routes require the exact actor and emit only committed preparation and rotation hints (937.053291ms)
+✔ retained browser rotation producer composes with scoped HTTP through lost preparation and committed replies (1065.633ms)
+✔ removed and exposed pending devices receive only their authenticated terminal proof through a separate grant (2974.650083ms)
+✔ removed-device discovery stops at its own removal even after another rotation (2013.99925ms)
+✔ another remaining device can finish the same prepared removal without replacing its cutoff or original retry evidence (723.354917ms)
+✔ repeatable admission after cancellation preserves old attempts and refuses old ceremony authority (2200.553542ms)
+✔ replacement after rotation (original removed: false) certifies at generation two and permits another rotation (2541.625084ms)
+✔ replacement after rotation (original removed: true) certifies at generation two and permits another rotation (2550.32225ms)
+✔ replacement admission fences new historical-key uploads but retains accepted bytes and signed retry outcomes (1682.972208ms)
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (4494.224542ms)
+✔ replacement snapshot HTTP route requires the exact enrollment grant and only hints on its first publication (2097.652ms)
+✔ replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows (182.225333ms)
+(node:50836) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50836) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ offline additive upgrade keeps pending identity and backs up committed WAL plus authority (71.3985ms)
+✔ current state is a validated no-op without a backup (13.920875ms)
+✔ a live state owner or pre-lock preview port prevents an upgrade (9.189667ms)
+✔ missing state, a different origin, invalid authority, and a newer schema fail without replacement (19.254458ms)
+✔ a failed core migration rolls back and retains the complete pre-upgrade snapshot (49.89325ms)
+ℹ tests 85
+ℹ suites 0
+ℹ pass 84
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 133767.150042
+
+✖ failing tests:
+
+test at test/account-ceremony/content-transfer.test.mjs:2276:1
+✖ continuation grants distinguish both approvers, pending enrollment and certified content through restart (2217.673667ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: Network authorization refused
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ceremony/content-transfer.test.mjs:2388:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Network authorization refused
+        at check (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/grants.ts:385:53)
+        at file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/grants.ts:391:21
+        at Object.check (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/grants.ts:359:35)
+        at file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ceremony/content-transfer.test.mjs:2388:36
+        at getActual (node:assert:580:5)
+        at strict.throws (node:assert:728:24)
+        at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ceremony/content-transfer.test.mjs:2388:10)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+Corrected assertion focused rerun:
+(node:50934) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50934) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ continuation grants distinguish both approvers, pending enrollment and certified content through restart (3524.088166ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3883.065458
+
+TypeScript, scoped lint/format, packaged build, budget (109.5 kB initial JS), origin isolation and diff checks: pass.
+Live service unchanged. Release validation paused.

@@ -1,0 +1,44 @@
+Starting selected native-comparison-0 2026-09-15T10:05:13.979Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected native-comparison-0 shallow p50 28.800000190734863 p95 32.60000038146973
+selected native-comparison-0 deeper p50 28.899999618530273 p95 33.09999942779541
+Finished selected native-comparison-0 passed
+Starting candidate native-comparison-0 2026-09-15T10:05:48.822Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate native-comparison-0 shallow p50 27 p95 29.399999618530273
+candidate native-comparison-0 deeper p50 27.59999942779541 p95 32
+Finished candidate native-comparison-0 passed
+Starting candidate native-comparison-1 2026-09-15T10:06:23.173Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate native-comparison-1 shallow p50 27.600000381469727 p95 29.699999809265137
+candidate native-comparison-1 deeper p50 27.5 p95 32
+Finished candidate native-comparison-1 passed
+Starting selected native-comparison-1 2026-09-15T10:06:57.182Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected native-comparison-1 shallow p50 29 p95 34.69999980926514
+selected native-comparison-1 deeper p50 32.59999942779541 p95 37.89999961853027
+Finished selected native-comparison-1 passed

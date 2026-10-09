@@ -1,0 +1,17 @@
+[
+  {
+    "name": "typescript",
+    "code": 0,
+    "output": ""
+  },
+  {
+    "name": "lint",
+    "code": 0,
+    "output": ""
+  },
+  {
+    "name": "format",
+    "code": 0,
+    "output": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 29ms on 5 files using 10 threads.\n"
+  }
+]

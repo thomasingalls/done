@@ -21,6 +21,13 @@ beside this envelope and, as it turns out, dictates one of its fields.
 
 ## The selection
 
+**Private v2 amendment (2026-09-10):** [TRD §7.4](../TRD.md#74-the-envelope) and
+[the outbound contract](../account-outbound.md) now govern new private envelopes. They bind the network
+key to credential/generation, count every seal attempt separately from positions, and require durable
+source capsules. The v1 format and original rationale below are retained as historical evidence; the
+old position-budget and nonce/AAD-circularity arguments do not apply. The v1 vectors remain unchanged,
+while new v2 vectors are independently generated in `test/vectors/private-envelope.json`.
+
 ```
 Clear header        what the relay validates (§7.2)
 

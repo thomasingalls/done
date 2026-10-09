@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes" time="0.084706" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="validly signed changes of recovery, recipient and candidate cannot replace the offer" time="0.035972" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse" time="0.033744" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="abandonment during asynchronous verification wins before activation" time="0.033331" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="unreadable acceptance custody refuses cold reopen without replacing its key" time="0.022560" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="before-commit offer-promotion commit failure has one recoverable result" time="0.030324" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="after-commit offer-promotion commit failure has one recoverable result" time="0.028014" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="before-commit admit-promotion commit failure has one recoverable result" time="0.052411" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="after-commit admit-promotion commit failure has one recoverable result" time="0.050334" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="schema 2 upgrade is explicit and preserves all prior rows" time="0.016379" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="80 generated service histories match an independent pending/offered/active/cancelled ledger" time="2.257973" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<testcase name="a cancelled proposal permits a fresh registration for the same retained workspace" time="0.042312" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/core.test.mjs"/>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 12 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 2903.087375 -->
+</testsuites>

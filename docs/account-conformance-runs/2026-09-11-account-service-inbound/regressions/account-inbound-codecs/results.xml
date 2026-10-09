@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="42" failures="0" errors="0" time="10.201386917">
+    <testsuite name="test/accountInboundCodec.test.ts" timestamp="2026-09-11T10:03:19.006Z" hostname="Thomass-MacBook-Pro.local" tests="34" failures="0" errors="0" skipped="0" time="9.659418875">
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; matches independent request, page and event bytes without changing v1 interpretation" time="0.032994167">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; rejects malformed, noncanonical and oversized request frames" time="0.001244833">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; rejects malformed, noncanonical and oversized page frames" time="0.000520416">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; rejects malformed, noncanonical and oversized record frames" time="0.00349775">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; rejects unsafe integers, signed zero, invalid IDs, odd/uppercase hex and malformed page entries" time="0.0021845">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; rejects outer metadata mismatches and nested carrier substitutions before granting evidence" time="0.004845458">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="closed inbound v2 transport and local record codecs &gt; implements bounded contiguous page extent, including empty end pages and safe-integer exhaustion" time="0.00069425">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; verifies original stored wire after expiry and refuses changed baseline, link or record meaning" time="0.038660625">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; preserves per-publisher accepted links, exact duplicates and independently proved conflicts" time="0.028431625">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; does not learn its prefix from a correctly signed response" time="0.003741125">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed reader scope substitution" time="0.002105041">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed publisher scope substitution" time="0.001933375">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed lineage scope substitution" time="0.001908375">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed head scope substitution" time="0.001863291">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed origin scope substitution" time="0.001805583">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed service scope substitution" time="0.00185125">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed workspace scope substitution" time="0.001834583">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects a signed epoch scope substitution" time="0.001872291">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rejects invalid reader/page signatures, wrong nonce binding, missing members and mismatched current authority" time="0.010958583">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks epoch separately from signature validity" time="0.002924792">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks generation separately from signature validity" time="0.002960834">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks actor separately from signature validity" time="0.004160875">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks agent separately from signature validity" time="0.003409">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks system separately from signature validity" time="0.003617458">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; checks final separately from signature validity" time="0.003432583">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; returns authenticated pending originals without requiring immediate Yjs integration" time="0.004135833">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; bounds updates before a future 256-record local commit and rejects malformed Yjs plaintext" time="0.194036834">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; verifies empty end pages but rejects regressed retained high-water marks and unsupported batch reads" time="0.009114625">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; captures all mutable bytes/context before crypto and returns detached evidence" time="0.010010042">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; withholds new, duplicate, empty and stored results after close, including the last crypto completion" time="0.013665334">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; rechecks expiry at completion and refuses an asynchronous owner assertion" time="0.00494675">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; keeps the original lifetime assertion when the caller replaces its callback during crypto" time="0.001783458">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; 400 generated signed updates round-trip, cold-verify and reject independently re-signed actor substitutions" time="8.570326959">
+        </testcase>
+        <testcase classname="test/accountInboundCodec.test.ts" name="first-epoch inbound evidence under independently held owner context &gt; 500 arbitrary changed wire bytes never authenticate as the original frame" time="0.686858375">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/accountInboundControls.test.ts" timestamp="2026-09-11T10:03:19.009Z" hostname="Thomass-MacBook-Pro.local" tests="8" failures="0" errors="0" skipped="0" time="0.541968042">
+        <testcase classname="test/accountInboundControls.test.ts" name="actual page-signature removal produces the prohibited outcome" time="0.088220833">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual request-binding removal produces the prohibited outcome" time="0.061281625">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual prefix-proof removal produces the prohibited outcome" time="0.062404625">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual actor removal produces the prohibited outcome" time="0.062660208">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual record-binding removal produces the prohibited outcome" time="0.066863958">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual batch-count removal produces the prohibited outcome" time="0.064820041">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual buffer-copy removal produces the prohibited outcome" time="0.073013125">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/accountInboundControls.test.ts" name="actual late-close removal produces the prohibited outcome" time="0.061934333">
+            <system-err>
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+
+            </system-err>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,230 @@
+{
+  "v": 1,
+  "status": "private current-byte contract; normative sweep/vector closure remains phase A",
+  "objects": {
+    "pin": {
+      "fields": ["v", "serviceId", "origin", "rpId", "authRoot"],
+      "children": {}
+    },
+    "member": {
+      "fields": ["id", "wPub", "sPub"],
+      "children": {}
+    },
+    "certification": {
+      "fields": ["members", "recoveryStateDigest", "approver", "signature"],
+      "children": {
+        "members": "member[]"
+      }
+    },
+    "recovery": {
+      "fields": [
+        "principalId",
+        "workspaceId",
+        "lineageId",
+        "authRoot",
+        "v",
+        "rootCommitment",
+        "rPub",
+        "bootstrapSigner",
+        "envelope"
+      ],
+      "children": {
+        "envelope": "seal"
+      }
+    },
+    "seal": {
+      "fields": ["v", "salt", "nonce", "ct"],
+      "children": {}
+    },
+    "actor": {
+      "fields": ["id", "kind", "credential"],
+      "children": {}
+    },
+    "coverage": {
+      "fields": ["derivation", "snapshot", "heads"],
+      "children": {}
+    },
+    "wrap": {
+      "fields": ["recipient", "id", "publicKey", "enc", "ct"],
+      "children": {}
+    },
+    "candidate": {
+      "fields": [
+        "v",
+        "kind",
+        "preparation",
+        "accountId",
+        "principalId",
+        "workspaceId",
+        "lineageId",
+        "authRoot",
+        "generation",
+        "proposedEpoch",
+        "signer",
+        "actors",
+        "coverage",
+        "checkpoint",
+        "wraps",
+        "signature"
+      ],
+      "children": {
+        "actors": "actor[]",
+        "coverage": "coverage",
+        "checkpoint": "seal",
+        "wraps": "wrap[]"
+      }
+    },
+    "request": {
+      "fields": ["v", "candidate", "certification", "recovery", "originSignature"],
+      "children": {
+        "candidate": "candidate",
+        "certification": "certification",
+        "recovery": "recovery"
+      }
+    },
+    "epoch": {
+      "fields": [
+        "v",
+        "kind",
+        "pin",
+        "requestDigest",
+        "accountId",
+        "principalId",
+        "workspaceId",
+        "lineageId",
+        "epoch",
+        "parent",
+        "generation",
+        "certification",
+        "owner",
+        "capabilities",
+        "acceptancePublicKey",
+        "heads"
+      ],
+      "children": {
+        "pin": "pin",
+        "certification": "certification"
+      }
+    },
+    "offer": {
+      "fields": ["v", "kind", "epoch", "head", "signature"],
+      "children": {
+        "epoch": "epoch"
+      }
+    },
+    "manifest": {
+      "fields": [
+        "v",
+        "workspaceId",
+        "epoch",
+        "epochHead",
+        "generation",
+        "checkpointDigest",
+        "sv",
+        "ds",
+        "headVectorDigest",
+        "producer",
+        "signature"
+      ],
+      "children": {}
+    },
+    "semantic": {
+      "fields": [
+        "v",
+        "workspaceId",
+        "checkpointDigest",
+        "manifestDigest",
+        "derivedSv",
+        "derivedDs",
+        "headBaselineDigest",
+        "derivation",
+        "admittingCredential",
+        "selfAdmitted",
+        "decisionParent",
+        "signature"
+      ],
+      "children": {}
+    },
+    "completion": {
+      "fields": ["manifest", "admission"],
+      "children": {
+        "manifest": "manifest",
+        "admission": "semantic"
+      }
+    },
+    "activationContext": {
+      "fields": [
+        "v",
+        "pin",
+        "accountId",
+        "requestDigest",
+        "offerHead",
+        "completionDigest",
+        "credentialId",
+        "nonce",
+        "expiresAt"
+      ],
+      "children": {
+        "pin": "pin"
+      }
+    },
+    "activation": {
+      "fields": ["context", "proofHash"],
+      "children": {
+        "context": "activationContext"
+      }
+    },
+    "receipt": {
+      "fields": ["v", "kind", "offer", "completion", "epochSignature", "activation", "signature"],
+      "children": {
+        "offer": "offer",
+        "completion": "completion",
+        "activation": "activation"
+      }
+    },
+    "activationChallenge": {
+      "fields": ["v", "kind", "context", "signature"],
+      "children": {
+        "context": "activationContext"
+      }
+    }
+  },
+  "messages": [
+    {
+      "object": "candidate",
+      "label": "done/promotion-genesis-candidate/v1",
+      "omit": "signature",
+      "signer": "prepared device signing key"
+    },
+    {
+      "object": "request",
+      "label": "done/genesis-origin/v1",
+      "omit": "originSignature",
+      "signer": "factor-opened recovery-bootstrap signer"
+    },
+    {
+      "object": "epoch",
+      "label": "done/first-epoch/v1",
+      "omit": null,
+      "signer": "K_auth"
+    },
+    {
+      "object": "offer",
+      "label": "done/promotion-offer/v1",
+      "omit": "signature",
+      "signer": "K_auth"
+    },
+    {
+      "object": "receipt",
+      "label": "done/promotion-receipt/v2",
+      "omit": "signature",
+      "signer": "K_auth"
+    },
+    {
+      "object": "activationContext",
+      "label": "done/promotion-activation-challenge/v1",
+      "omit": null,
+      "signer": "K_auth"
+    }
+  ]
+}

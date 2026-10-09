@@ -1,0 +1,52 @@
+{
+  "seed": 9622026,
+  "histories": [
+    [
+      "conflict",
+      "conflict",
+      "accepted"
+    ],
+    [
+      "foreign-prefix",
+      "accepted",
+      "foreign-key"
+    ],
+    [
+      "foreign-prefix",
+      "accepted",
+      "foreign-prefix",
+      "junk",
+      "foreign-key"
+    ],
+    [
+      "junk",
+      "conflict",
+      "junk",
+      "foreign-prefix",
+      "refused"
+    ],
+    [
+      "foreign-prefix",
+      "foreign-prefix",
+      "junk",
+      "foreign-prefix",
+      "foreign-key"
+    ],
+    [
+      "accepted",
+      "junk"
+    ],
+    [
+      "refused",
+      "foreign-key"
+    ],
+    [
+      "junk",
+      "accepted",
+      "accepted",
+      "foreign-key",
+      "foreign-key"
+    ]
+  ],
+  "status": "passed"
+}

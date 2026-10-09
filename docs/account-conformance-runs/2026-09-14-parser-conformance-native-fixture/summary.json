@@ -1,0 +1,101 @@
+{
+  "base": "ed4815844433b591eb39fbed3f06896b91cdd909",
+  "claim": "Account parser-conformance native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-48-43.479Z",
+  "summary": {
+    "schema": 1,
+    "selection": "parser-conformance-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-parser-conformance/native.test.mjs",
+        "key": "4968a55b9aa4a61b388551129fe54e46669db9ef183b75463d743e700c95bd04",
+        "status": "passed",
+        "elapsedMs": 5119,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:48:43.481Z",
+    "input": "475545311b4930965930c99b5988974af2c0cf4163b3ef8714a62de16dae0479",
+    "completedAt": "2026-09-14T09:49:12.456Z"
+  },
+  "elapsedMs": 28975,
+  "rawInputArchiveSha256": "df8cde3c7058924e9b5259d1697a3793f3a30bdc4c881b5b0f8e87fa3ff54498",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "ed4815844433b591eb39fbed3f06896b91cdd909",
+    "sourceDigest": "5dad3d64e06b698eeb096811077e5c8dbad23c29cc7b16163760827dcfdcfbc4",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "internalSamples": 8,
+    "structuralPositives": 1,
+    "malformedSamples": 7,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 196,
+    "priorGeneralCases": 1657,
+    "currentGeneralFiles": 197,
+    "currentGeneralCases": 1658,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 101,
+    "accountFiles": 91,
+    "accountCases": 564,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 220,
+    "unresolvedTestFiles": 61,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 677982
+  },
+  "finalGatesSha256": "ec533bfa54c519b2e41c71648b68d680ba8bc69aaa4592166deec1498303e43a",
+  "preservationSha256": "c78a9d27cb60de7419283e390e86c41acfc3aab5309bb41797d205964adb4410",
+  "limits": [
+    "Exactly one unchanged Node native case runs via parser-conformance-native-fixture, with eight internal samples: one structurally valid promotion record and seven malformed variants. It is one reporter case, not eight independent tests. Existing 120-second native wrapper/file allowance, 30-second case timeout, 15-second CDP startup and 5-second drain grace remain unchanged.",
+    "The runtime seed is promotions[12], currently the independent fixture builder's v9 account-receiving promotion record. Byte arrays are converted to plain arrays for transfer into the browser, then restored to Uint8Array before IndexedDB writes. Other helper fixtures and historical stages are constructed but not submitted to this case. Retired-v8 exclusions remain unchanged.",
+    "All eight samples are committed to a disposable IndexedDB records store. After closing and reopening its connection in the same page, getAll returns them. The case explicitly confirms index-1 holes remain absent in credentials, genesis.actors and genesis.wraps, then requires the baseline to parse and all seven altered records to throw. Array-wrapped stage, promotionId, requestDigest and epochHead are the other four malformed variants.",
+    "This invokes the current parsePromotion entrypoint, including nested genesis and handoff parsers. It tests structural refusal after structured-clone storage, not promotion authentication, MAC/signature verification, decryption, selected workspace startup or writing recovery. The baseline contains synthetic placeholder credential bytes and a zero MAC; acceptance means structural validity only. Refusals are caught as any exception, without exact error-kind checks or parsed-output equality.",
+    "The phrase cold parser readback in the test title means closing and reopening the database connection. The same browser page and JavaScript realm stay live. No renderer crash, page replacement, browser/service restart, fresh profile, BFCache or physical power loss occurs.",
+    "The existing promotion fixture supplies an owned-CDP browser, disposable context and temporary loopback service databases with early nested cleanup. Its Local creation, account registration, recovery preparation and promotion methods are not invoked by this case. The parser bundle uses in-memory Vite write:false output. Product/native/helper/owner/wrapper bytes remain unchanged.",
+    "No generated histories, omission controls or historical-source baseline transforms execute here. The wrapper's six-parser mutation/bounds/positive matrices, frozen old-parser comparison, vectors, reporting and reproduction remain separate obligations. Only the baseline browser bundle is called, so optional helper git-show branches do not require historical inputs in this selection.",
+    "All 93 pure runner checks, TypeScript, scoped style, planning, authority and signature checks pass. Unchanged Node-owner/native-owner controls (23/14) and five Vitest-process controls retain earlier evidence; the latter pins are from the preceding signed delivery-oracle phase with the current registration interpreter. All 196 prior general contracts and 1657 identities, 52 personal/vector pins, L-2, exclusions and historical evidence remain unchanged. Ledger orphan classification, core receive/delivery-oracle headroom, capture map-refresh/byte-length follow-ups and earlier editing/handoff deadline evidence remain open. This is frozen-input selection evidence with uncommitted adapter changes, not immutable aggregate or product-release qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 2598.434,
+    "stageElapsedMs": 5119,
+    "selectionElapsedMs": 28975,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "caseMs": 30000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "aafbf95354161cf2e909b0fe6cee49051181b54d1c31dde6ab81dc8e0d27bf0a",
+    "compressedSha256": "8a8fd8ae50fbda9a3b1aca1d0abc426e6f78cc9f7441aafba0e338fd329f242c"
+  }
+}

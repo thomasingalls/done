@@ -1,0 +1,150 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "c0224b2b10c58d3bfa20d31b88c037b75a9e9ed325b12f9a2b1747aa527e616d"
+  },
+  {
+    "path": "analysis.json",
+    "sha256": "0d2bd9249920e2c509cb190b6ceac9f80170d352ea583e36fc6153eba21b5ce1"
+  },
+  {
+    "path": "campaign/controlled/expiry.json",
+    "sha256": "65fbcfe4be3bf6a4c20911bed5ff4622f9d49a6abb333bc97e62eca70ef44ae4"
+  },
+  {
+    "path": "campaign/controlled/held-fetch.json",
+    "sha256": "246ab41a8b66ca16b8f077fce5e4acec234e0435a5c4208cbdfa8e4dd29b5f8f"
+  },
+  {
+    "path": "campaign/controlled.log",
+    "sha256": "718cc72e7a2cea867d2e8f6c0f8c89bfc4c2d1a2a8863d8ab1b38d0591b9ffb2"
+  },
+  {
+    "path": "campaign/coverage/coverage-histories.json",
+    "sha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f"
+  },
+  {
+    "path": "campaign/coverage/witness-control.json",
+    "sha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e"
+  },
+  {
+    "path": "campaign/coverage.log",
+    "sha256": "420d4f4d5066af0fad6bd7c65a2e780ad56e34562eee001466b30738a235a642"
+  },
+  {
+    "path": "campaign/format.log",
+    "sha256": "2090716b3945dc7f8ae0b06d51be8d9c828f5a254e67538e33db3c77ddd0683a"
+  },
+  {
+    "path": "campaign/growth/growth.json",
+    "sha256": "8b95787e5a4e801a5282030c766befd3096e931549ca6a213f579a2369f7b04b"
+  },
+  {
+    "path": "campaign/growth.log",
+    "sha256": "54190c02100c421ec6706016d30cb347214f223b3259aec36e6997a021798cfa"
+  },
+  {
+    "path": "campaign/instrument.log",
+    "sha256": "ffcf8b25b8dbc5b29cc7ef16592a2d4176486db94284bc965641b40d18b5317c"
+  },
+  {
+    "path": "campaign/lint.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "campaign/scope.json",
+    "sha256": "02cb69d79d610aa324b82e6648c418fb07e9a78930b8f41982f7200313298fdc"
+  },
+  {
+    "path": "campaign/sources.json",
+    "sha256": "068a3d2c4a0fef9c67da1e07908d7a91ac3cb0bf145f0f7c8d8dea1875b36250"
+  },
+  {
+    "path": "campaign/summary.json",
+    "sha256": "208f65de7b21d6b1cd25cbbb667bc3494dd96f59408441c3f0a7447b706765c8"
+  },
+  {
+    "path": "campaign/types.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "pilots/2026-09-12T12-47-01.463Z/growth.json",
+    "sha256": "172d3deeda874b6c2b81c2f608964b9a4e8c166829f0930cf1428bcfd48d1e91"
+  },
+  {
+    "path": "pilots/2026-09-12T12-51-29.667Z/expiry.json",
+    "sha256": "9aefcc7e0f4d38c34580b76531dc196ace44bf12137c109c22cce953f23b44c2"
+  },
+  {
+    "path": "pilots/2026-09-12T12-51-29.667Z/held-fetch.json",
+    "sha256": "9290c9146892f17a17ae8067814fe063b47aedc69bac75876e5514aec71a6139"
+  },
+  {
+    "path": "preliminary/controlled/expiry.json",
+    "sha256": "d7c5b6c99cc970aad3b536a717c0d726a98b1d6c1acbc24c713893563f38968a"
+  },
+  {
+    "path": "preliminary/controlled/held-fetch.json",
+    "sha256": "db597a1c235c1e1d0ce99e761e333d561a24dfe406e8db53605e98b3a2b2f473"
+  },
+  {
+    "path": "preliminary/controlled.log",
+    "sha256": "50bc5acc9f75fe56a88c550542727982325eab97df92b90d4f8493682bb46ef5"
+  },
+  {
+    "path": "preliminary/coverage/coverage-histories.json",
+    "sha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f"
+  },
+  {
+    "path": "preliminary/coverage/witness-control.json",
+    "sha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e"
+  },
+  {
+    "path": "preliminary/coverage.log",
+    "sha256": "02ee0a4aa81ba3d35996a262f8b3380c5dd82684050d2ed189ccaeb590f41599"
+  },
+  {
+    "path": "preliminary/format.log",
+    "sha256": "38ce40b9962ad10e661a7acba04b3394b2ced01c3bd8bc614cb98ef7011854ce"
+  },
+  {
+    "path": "preliminary/growth/growth.json",
+    "sha256": "01947a5bfcb075d4381d1623678e8caf1e733d42db7be253d2c90a718e540524"
+  },
+  {
+    "path": "preliminary/growth.log",
+    "sha256": "446b542010a92654ef1ed966384d23955b9f536296ebcef82929ed5b69fc8287"
+  },
+  {
+    "path": "preliminary/instrument.log",
+    "sha256": "2db8e6b8c74cb4597ffb47e53738873dce8565a11aef0e8d659b61a7197d7058"
+  },
+  {
+    "path": "preliminary/lint.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "preliminary/scope.json",
+    "sha256": "02cb69d79d610aa324b82e6648c418fb07e9a78930b8f41982f7200313298fdc"
+  },
+  {
+    "path": "preliminary/sources.json",
+    "sha256": "c54ab3a43074d9e5803d4c3fa493097aa37778f2d74acac3ec61743082e2618a"
+  },
+  {
+    "path": "preliminary/summary.json",
+    "sha256": "6a43b7203a3750844194e9823b3cd5bb25482c7a72a7fdb7b1d228a44469ccdc"
+  },
+  {
+    "path": "preliminary/supplemental-wasm-baseline.json",
+    "sha256": "e5c3c3306aa7eeda4909ad74eeb71df0ed9eb9b46d208b6a77fa4626f9d45850"
+  },
+  {
+    "path": "preliminary/types.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "preservation.json",
+    "sha256": "9b637534c2cc4d77e1da2d4b298701b0fdcaa1242b101409c462018a5d2cc1af"
+  }
+]

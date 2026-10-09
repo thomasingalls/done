@@ -1,0 +1,74 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "d6918f8a697a6443303dc63487056c8e797fb102cca98db2f48b78a2efd5f8a2"
+  },
+  {
+    "path": "controlled/expiry.json",
+    "sha256": "b1fe3430a26e488b32c69087345dd13bdfd26ad0cde682c027842ff906e23b97"
+  },
+  {
+    "path": "controlled/held-fetch.json",
+    "sha256": "1d27bb73b919d0859c38d5d99a0ea903acc99acc1906ad42136c0fa9b86e2ab5"
+  },
+  {
+    "path": "controlled.log",
+    "sha256": "86f74b26ca635510a8c70ce54bb5ca56d1be02f044115349d2a58b0ce0b9526f"
+  },
+  {
+    "path": "coverage/coverage-histories.json",
+    "sha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f"
+  },
+  {
+    "path": "coverage/witness-control.json",
+    "sha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e"
+  },
+  {
+    "path": "coverage.log",
+    "sha256": "a827e37c3a5d77e8caaec45942dee7cd76ed2d787b91041419511a03c2b63411"
+  },
+  {
+    "path": "format.log",
+    "sha256": "a873940f273b56c28e240d42e714a0a9c807f49930739238c8acc18858730eb2"
+  },
+  {
+    "path": "growth/growth.json",
+    "sha256": "a63dc69aaa3d1c0f50344ac0d4f754871fca8d5895f731206cb3d0d2596bc631"
+  },
+  {
+    "path": "growth.log",
+    "sha256": "62e4d602f2132ed4bab642341a1f27682eacb3f045d0a11735711eeebfc80746"
+  },
+  {
+    "path": "instrument.log",
+    "sha256": "c3340b68d22d133c253ccd47a065ca104e9de50b28cb4457cade0dceb4813695"
+  },
+  {
+    "path": "lint.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scope.json",
+    "sha256": "bc785fea8e80a67a9b3a790f9ee9c038ea79722dd92e1f9a238f3617884e6545"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "f1df8d530ace28dbb165d00f35a8c73c413d35bac2e2902db6b4754510b64ae6"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "55b650bf3506be11a04d48573128eb2a12dd588b84887b352a672f0f83faf98e"
+  },
+  {
+    "path": "types.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "view/verified-view.json",
+    "sha256": "c594a3326dae20127ea0109abe6061bcf184130007ac6bda547c08492ecc2442"
+  },
+  {
+    "path": "view.log",
+    "sha256": "399736c5d8d89009fe0f3b2745519ac9946c5922c114f6ecfb57982986efd199"
+  }
+]

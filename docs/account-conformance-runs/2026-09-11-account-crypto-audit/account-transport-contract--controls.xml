@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="submission digest and parent omissions admit separately changed valid envelopes/refusals at the actual verifier boundary" time="0.009324" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="head-final and v1 page-through omissions rescue a changed claim, without pretending finalization or entry validation occurs here" time="0.004453" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="witness request-binding omission accepts a witness under a different held proposal scope" time="0.001560" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="controls retain their reviewed boundaries and evidence inventory" time="0.001009" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<!-- tests 4 -->
+	<!-- suites 0 -->
+	<!-- pass 4 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 159.263667 -->
+</testsuites>

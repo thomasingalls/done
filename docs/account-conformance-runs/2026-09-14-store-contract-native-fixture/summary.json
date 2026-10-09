@@ -1,0 +1,101 @@
+{
+  "base": "9a5bf1dd173b46bff879fdda2043dd1808eb1477",
+  "claim": "Account store-contract native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-01-16.401Z",
+  "summary": {
+    "schema": 1,
+    "selection": "store-contract-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-store-contract/native.test.mjs",
+        "key": "3da89130cb63fa8158d7b355ae38bd1d443e387e1911dd4960a57e0d8278370b",
+        "status": "passed",
+        "elapsedMs": 8298,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:01:16.403Z",
+    "input": "a543750acb54f7cbec1c037403e8960c28a913107c90006b8943a3aa685ad9cf",
+    "completedAt": "2026-09-14T11:01:49.938Z"
+  },
+  "elapsedMs": 33535,
+  "rawInputArchiveSha256": "208f909be6a3b8c9dbb06738d9f7cb93c0931c1c8e685340eb1bc918bece9bdd",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "9a5bf1dd173b46bff879fdda2043dd1808eb1477",
+    "sourceDigest": "53ea2aa6982a26ce0b4bfde400bf526a6edee2ceb81a65888cf7e390bed3da22",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 3,
+    "browserFiles": 1,
+    "fixtureInstances": 3,
+    "generatedHistories": 0,
+    "executedOmissionControls": 1,
+    "alteredRecordInputs": 5,
+    "alteredJournalIdentityInputs": 3,
+    "priorCleanupModelControls": 9,
+    "priorAdditionalNativeOwnerTests": 8,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 200,
+    "priorGeneralCases": 1670,
+    "currentGeneralFiles": 201,
+    "currentGeneralCases": 1673,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 105,
+    "accountFiles": 95,
+    "accountCases": 579,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 216,
+    "unresolvedTestFiles": 57,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 682490
+  },
+  "finalGatesSha256": "dfb3b136e3616bc792f67785fc4b89a4838087da3d5fde27af4dca3ff9e73998",
+  "preservationSha256": "f219b3e95613fd464151312f4966a5fa02df06f2d171b14d6646460991e6f769",
+  "limits": [
+    "Three complete cases run under the existing 300-second file bound and forty-second case limits. Fixture ownership changes to the existing CDP helper with explicit isolated context, early cleanup, nested finally and listen-error handling; all three test bodies and identities remain byte-identical. The lifecycle block is identical to the signed counter fixture whose nine modeled cleanup and eight real browser-owner controls are pinned, not rerun. The original store fixture already registered separate server cleanup before browser launch; no prior store setup leak is claimed.",
+    "Synthetic custody is enrolled directly through the counter-contract browser helper with a no-op creation check and store initialization. No Account service or admission receipt is created. Independent Node HKDF/AES and noble XChaCha code decrypts all four seeded content records and two journal entries and checks identity encoding, headers, KDF info, empty salt and browser key properties. Real journal session code and its WASM encryption execute; this is not broad WASM qualification.",
+    "The first case recovers before and after page navigation/reconfiguration, adds a third journal entry with a fresh writer and ordinal one, independently checks all raw bytes, then flushes and verifies all seven fixed binary frames and an empty journal. Navigation replaces the page realm while retaining its browser/context; synthetic factor/generation bytes held by Node are reconfigured explicitly. This is not renderer kill, key-erasure UX, Yjs dependency recovery or physical power-loss evidence.",
+    "Five record alterations change sequence, generation, kind, nonce or ciphertext tag; three journal-key alterations change writer, ordinal or store identity. Baseline refuses repair-required, record counts or moved journal values remain as asserted, originals are restored and two journal entries recover. This case closes and reopens sessions in the same page; its title does not establish a browser restart. It does not assert whole-storage byte equality for every refusal.",
+    "One uniquely anchored transformation omits storeId from the actual custody store KDF. The mutated owner still locally roundtrips four records, while the independent oracle cannot decrypt and the recorded KDF info differs. This distinguishes independent wire compatibility from self-consistent roundtrip success. No generated histories, crash cuts or historical readers execute.",
+    "ACCOUNT_REPORT_DIR remains unset; optional native wrapper report files are not emitted. Exact reporter identities, outcomes, source patch and frozen source/browser pins are retained. Broader vector/format controls, wrapper output postconditions and immutable aggregate qualification remain separate obligations. All 93 pure checks, direct TypeScript and scoped gates pass; all 200 prior contracts / 1670 identities, exclusions, 52 personal/vector pins and L-2 are preserved. Product, crypto/runtime helpers, browser owner, interpreter and wrapper remain unchanged."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 5682.832833,
+    "stageElapsedMs": 8298,
+    "selectionElapsedMs": 33535,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "caseMs": 40000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "45a31204c90b2ee297850317b408bcb55dff15345568c38b5f4d78f8bb8d51f9",
+    "compressedSha256": "b6b5a2447790ceb72c78ac06b589399c0ffb8784a6525d84c05fbfd7a61530db"
+  }
+}

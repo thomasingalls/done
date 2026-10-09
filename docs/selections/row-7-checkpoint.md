@@ -30,6 +30,14 @@ second-newest fallback installs through the same machine (TRD §7.6).
 
 ## The selection
 
+
+**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
+remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
+while full raw descriptors remain required and are rederived by every restorer. The private
+adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
+Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
+pre-completion requests/offers may resume. See [the compatibility and bounds contract](../account-admission-bounds.md).
+
 ```
 The checkpoint          one full snapshot, sealed under one generation
 
@@ -52,9 +60,9 @@ The checkpoint          one full snapshot, sealed under one generation
 
 The manifest            signed by the producing credential
 
-  M = LP("done/cp-manifest/v1") || LP(dec v) || LP(workspace_id)
+  M = LP("done/cp-manifest/v2") || LP("2") || LP(workspace_id)
       || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
-      || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
+      || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
       || LP(hex head_vector_digest) || LP(producing_credential)
 
   checkpoint_digest = SHA-256(ct)   — the durable store checks it with no key
@@ -65,9 +73,9 @@ The manifest            signed by the producing credential
 
 The admission           what the producer's signature does NOT say
 
-  A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
+  A = LP("done/cp-admit/v2") || LP("2") || LP(workspace_id)
       || LP(hex checkpoint_digest) || LP(hex manifest_digest)
-      || LP(hex derived_sv) || LP(hex derived_ds)
+      || LP(hex SHA-256(derived_sv)) || LP(hex SHA-256(derived_ds))
       || LP(hex head_baseline_digest) || LP(derivation_version)
       || LP(admitting_credential) || LP(dec self_admitted)
       || LP(hex decision_parent)
@@ -98,7 +106,7 @@ The admission           what the producer's signature does NOT say
                     (the S0-5 return; the set and producer are published
                     vector inputs).
   decision_parent   incomparable proposals serialise here. NEVER by wall clock.
-  head_vector       = for each credential ASCENDING BY ID:
+  head_vector       = empty at first genesis; otherwise for each credential ASCENDING BY ID:
                         LP(credential_id) || LP(dec seq) || LP(hex link)
                       digest = SHA-256( LP("done/headvec/v1") || head_vector )
 
@@ -180,7 +188,9 @@ during Stage 4, and a manifest format that had to change with it would make that
 ## 3. The head vector, and the sort that is load-bearing
 
 The manifest carries [row 5](./row-5-finalization.md)'s accepted-head vector: for every credential, where its
-chain had got to. That is what lets a device starting from a checkpoint verify the suffix forward from
+chain had got to, with row 5 §9's first-genesis-only empty-vector exception. Certification still names the
+creating member; an explicit member-at-zero entry is not an alternate serialization. That is what lets
+a device starting from a checkpoint verify the suffix forward from
 authenticated heads instead of replaying every chain from genesis — the composition §7.5 predicted when it said
 the log shape _"composes with §7.6's manifest"_.
 

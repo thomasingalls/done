@@ -1,0 +1,23 @@
+{
+  "baseline": "08d5a6e5369e9a8ad80a59ee2ce06ede9c0f05a4",
+  "files": {
+    "account-protocol/diagnostics.ts": "a9ef89b856f755eddc3e02166615bc513a26481158c956ac98f93fda7728fa5e",
+    "account-protocol/enrollment.ts": "1e1927c666b9f00400b90116f3bd8f59dc29f351a23832bd5a3df666782d11ed",
+    "account-protocol/successor.ts": "605b83f07f1796b194fa53bc2dc7f61a0f6b9199fd9afcc622c753f16221ecc5",
+    "account-service/authority.ts": "5a7883441a7b74d3cba7bbdd76b8315b99b9b631d636286fed394525e8b63ff4",
+    "account-service/core.ts": "a82e7a0d55ed877f3caee39ea3572546361b605d971b07a3b40d28c1ef69cf2e",
+    "account-service/delivery.ts": "ff623fe966136ae6df295ce824ac0bed8605ba61568d282b436cf2372f8d77fc",
+    "account-service/enrollment.ts": "a86073df3f93d7eb52fad41a0fe3282067b28405d76147300841ca68c94da830",
+    "account-service/successor.ts": "3287d5e6acab53f3b9ad986801e92f1b2113ee66a6e1843fed17bbab4a4e94c8",
+    "test/account-successor/controls.test.mjs": "5cdea61ab9f557fb0d9ec5f50a7d042011783159cbc601397670314ce87193e9",
+    "test/account-successor/generated.test.mjs": "e765758e9fd20a9b8dfc477ff17602087dfbeacb97278da870e58dda41e25eaa",
+    "test/account-successor/oracle.mjs": "0841d43063fc615b46ffd1736eea154a668f4c4da87b6988cfdc4931d57644f6",
+    "test/account-successor/process-fixtures.mjs": "1ee24fde7490b459ef440c5c747e42b54af5c2f8ba1bfbcd34b620f0233cdd01",
+    "test/account-successor/protocol.test.mjs": "bdcb5d22e18b45f67e2d29efdb235e14d4f24e37aff12f6df4cefd2f227a1d3f",
+    "test/account-successor/restart.test.mjs": "4f19ed1fa61363eb5095f2346406124a8f05f3d5884c337ed26a9de96d3243a6",
+    "test/account-successor/service-controls.test.mjs": "76b228d07aec6e72e3591bec9f7039d06fb97ab26780e4a560577c9815a7afbb",
+    "test/account-successor/service-fixtures.mjs": "a85335342d4e8d8bd32103e9341b0ed7ec0692eca987fa60b4246d52d52d6c40",
+    "test/account-successor/service.test.mjs": "2b0825360a6f10509387570cc473aaa03611e1535f88545269cbfd4c049fbc95",
+    "test/account-successor/worker.mjs": "c7a7e2de11f51594a4ae673043a7318c601dc56cddf9def9e361a614ffcf8f30"
+  }
+}

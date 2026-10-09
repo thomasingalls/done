@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source" time="9.621024" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="ordered receive before commit crash leaves no early edit or local recapture" time="8.114826" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="ordered receive after commit crash leaves no early edit or local recapture" time="8.223573" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="a local command queued during receive is prepared only after commit and ordered publication" time="7.807840" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="invalid page and authenticated stream conflict preserve local editor availability" time="8.072286" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="pending remote deletion and structs survive compaction/cold open, then integrate without relabeling" time="9.880424" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="storage pressure holds the entire remote/local suffix and discard cannot acknowledge it" time="6.357156" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="close drains a committed receive before releasing the slot, with no late acknowledgement or source" time="9.065840" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="actual early source mutation violates the publication/source oracle" time="6.587450" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="actual relabel source mutation violates the publication/source oracle" time="6.251208" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="10 generated native histories preserve authored content, receive progress and exact local source counts" time="92.747108" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<testcase name="close from a publication observer stops remaining promotion and cold replay restores the whole committed batch" time="8.649605" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs"/>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 12 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 183299.727333 -->
+</testsuites>

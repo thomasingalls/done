@@ -1,0 +1,379 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.local-startup.config.ts"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.local-startup.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+        "testIgnore": [],
+        "testMatch": [
+          "**/startup.spec.ts",
+          "**/editor.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/local-app/native.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js  --host 127.0.0.1 --port 4181 --strictPort",
+      "url": "http://127.0.0.1:4181/local.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "editor.spec.ts",
+      "file": "editor.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "compose keeps its draft through native refusal; retry admits it once and reopen retains it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1407,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:45:52.987Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-892b06267fc0f19d01e1",
+          "file": "editor.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "discarded editor input never appears, and locking disposes the mounted editor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 783,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:45:54.592Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-15b0d88aa655ddd6302e",
+          "file": "editor.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "Goals copy and separate line removal preserve suffix boundaries and workspace undo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:45:55.382Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-17a099fab8daf7c11cfe",
+          "file": "editor.spec.ts",
+          "line": 81,
+          "column": 1
+        },
+        {
+          "title": "generated compose and history sequences match a separate ledger before and after cold open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:45:56.190Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "generated-inputs",
+                      "contentType": "application/json",
+                      "body": "eyJzZWVkIjo4OTQxLCJoaXN0b3JpZXMiOltbInVuZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInJlZG8iLCJyZWRvIiwiY29tcG9zZSIsInJlZG8iLCJ1bmRvIl0sWyJyZWRvIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIl0sWyJ1bmRvIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIiwidW5kbyIsImNvbXBvc2UiLCJjb21wb3NlIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSJdLFsiY29tcG9zZSIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIiwidW5kbyIsInVuZG8iXSxbImNvbXBvc2UiLCJjb21wb3NlIiwidW5kbyJdLFsiY29tcG9zZSIsImNvbXBvc2UiLCJyZWRvIiwiY29tcG9zZSIsImNvbXBvc2UiLCJ1bmRvIiwiY29tcG9zZSIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSJdLFsidW5kbyIsInJlZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwiY29tcG9zZSIsInJlZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iXSxbInJlZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInVuZG8iLCJjb21wb3NlIiwidW5kbyIsInJlZG8iLCJyZWRvIl0sWyJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwidW5kbyJdLFsiY29tcG9zZSIsInVuZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwidW5kbyJdLFsidW5kbyIsInJlZG8iLCJyZWRvIl0sWyJ1bmRvIiwicmVkbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInJlZG8iLCJ1bmRvIl0sWyJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIl0sWyJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwicmVkbyJdLFsiY29tcG9zZSIsInJlZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiXSxbImNvbXBvc2UiLCJjb21wb3NlIiwicmVkbyIsInVuZG8iLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIl0sWyJ1bmRvIiwidW5kbyIsImNvbXBvc2UiXSxbImNvbXBvc2UiLCJ1bmRvIiwiY29tcG9zZSJdLFsidW5kbyIsInJlZG8iLCJ1bmRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIl0sWyJjb21wb3NlIiwidW5kbyIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIiwiY29tcG9zZSIsImNvbXBvc2UiXV19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-ab2d2fc9b40cc7d9f058",
+          "file": "editor.spec.ts",
+          "line": 107,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "startup.spec.ts",
+      "file": "startup.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmation is required; reload and offline unlock use the same identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:46:12.602Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9d5cd95b3f2ad7194fa4-77562bbe6a1b5b5fa3b8",
+          "file": "startup.spec.ts",
+          "line": 34,
+          "column": 1
+        },
+        {
+          "title": "existing legacy data refuses creation without touching its carriers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 326,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:46:13.515Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9d5cd95b3f2ad7194fa4-f2b0d9c37ed8ed0faf54",
+          "file": "startup.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "verified content opens in the admitted editor and disappears immediately on lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 702,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:46:13.846Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9d5cd95b3f2ad7194fa4-d08f073f08adab3f86fc",
+          "file": "startup.spec.ts",
+          "line": 112,
+          "column": 1
+        },
+        {
+          "title": "interrupted creation reopens with the saved factor and original identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:46:14.554Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9d5cd95b3f2ad7194fa4-335cd73f81bd817ebef3",
+          "file": "startup.spec.ts",
+          "line": 155,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T12:45:52.328Z",
+    "duration": 22896.811999999998,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

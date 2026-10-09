@@ -1,0 +1,24 @@
+(node:64908) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64908) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:64908) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (9311.443666ms)
+✔ ordered receive before commit crash leaves no early edit or local recapture (7572.001042ms)
+✔ ordered receive after commit crash leaves no early edit or local recapture (7642.053333ms)
+✖ a local command queued during receive is prepared only after commit and ordered publication (45037.48425ms)
+✔ invalid page and authenticated stream conflict preserve local editor availability (7362.513125ms)
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (8833.244625ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87418.691959
+
+✖ failing tests:
+
+test at test/account-receive-editor/native.test.mjs:56:1
+✖ a local command queued during receive is prepared only after commit and ordered publication (45037.48425ms)
+  'test timed out after 45000ms'

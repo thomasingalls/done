@@ -1,0 +1,25 @@
+(node:95340) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ submission digest and parent omissions admit separately changed valid envelopes/refusals at the actual verifier boundary (7.3645ms)
+✔ head-final and v1 page-through omissions rescue a changed claim, without pretending finalization or entry validation occurs here (2.586666ms)
+✔ witness request-binding omission accepts a witness under a different held proposal scope (0.882917ms)
+✔ controls retain their reviewed boundaries and evidence inventory (0.498542ms)
+(node:95341) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 37 fixed constructions agree with runtime; existing envelope vectors remain exact positives with v1 mint refused (52.487209ms)
+✔ every declared encoded leaf has a changed-input negative and an effective omission control (37.949ms)
+✔ actual acceptance custody issues the fixed head, refusal, both pages and witness with their distinct purposes (3.468958ms)
+✔ submissions bind exact envelope and authenticated parent, while parent identity excludes its signature bytes (7.439791ms)
+✔ accepted leaf and previous link are independently reconstructed; valid service signatures are neither fresh membership nor arbitrary acceptance (4.517125ms)
+✔ v1 pages bind exact signed request, extent and every nested byte; v2 keeps a separate namespace (2.523625ms)
+✔ every truncated frame and trailing byte refuses; canonical JSON, versions, lengths and detached copies are checked (68.750625ms)
+✔ service witness binds exact chain/count/scope and rejects stale, reordered, incomplete or modified rows (2.032542ms)
+✔ 200 shrinking-enabled signed histories preserve their prefix and exact nested pages under mutation (756.773125ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1151.9375

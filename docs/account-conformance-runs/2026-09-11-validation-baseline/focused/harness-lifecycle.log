@@ -1,0 +1,13 @@
+Storage harness lifecycle evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/storage-harness/2026-09-11T06-34-56.719Z
+✔ custody: occupied test port exits with a harness error and releases Vite (880.484458ms)
+✔ content: occupied test port exits with a harness error and releases Vite (907.971167ms)
+✔ journal: occupied test port exits with a harness error and releases Vite (1028.314375ms)
+✔ storage-properties: occupied test port exits with a harness error and releases Vite (850.461084ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3734.38125

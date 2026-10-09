@@ -1,0 +1,144 @@
+{
+  "baseCommit": "393ef435af72a5c0b8e2d19b410a5d932400f902",
+  "phases": [
+    {
+      "phase": "A",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-first-authority/summary.json",
+      "summarySha256": "cc6a84bd86097bd26fe688eddd096331cfca430acc99ce8ae547678fb6d9cdc9",
+      "status": "passed",
+      "runtimeFilesPinned": 157,
+      "runtimeDriftSinceRun": [
+        "account-service/acceptance.ts",
+        "account-service/authority.ts",
+        "src/account/recovery.ts",
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": [
+        "account-service/keyEncoding.ts"
+      ]
+    },
+    {
+      "phase": "B",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-recovery-contract/summary.json",
+      "summarySha256": "994bc71f43eb2827687576160789912f1a2e41c3c54b60c048e840c84a5ce636",
+      "status": "passed",
+      "runtimeFilesPinned": 157,
+      "runtimeDriftSinceRun": [
+        "account-service/acceptance.ts",
+        "account-service/authority.ts",
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": [
+        "account-service/keyEncoding.ts"
+      ]
+    },
+    {
+      "phase": "C",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-transport-contract/summary.json",
+      "summarySha256": "ec812fad30b606b1a741593432d4ba793d0b8c10595345a01592eac325953f3d",
+      "status": "passed",
+      "runtimeFilesPinned": 157,
+      "runtimeDriftSinceRun": [
+        "account-service/acceptance.ts",
+        "account-service/authority.ts",
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": [
+        "account-service/keyEncoding.ts"
+      ]
+    },
+    {
+      "phase": "D1",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-service-custody/summary.json",
+      "summarySha256": "6a6952ef9390031d1c2db9908677cc066aa2079664ce2c51ff4930af80501436",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D2",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-promotion-contract/summary.json",
+      "summarySha256": "4e35775bdc53319658d1d722fb757f881c95d4b78bd5a68bdf5ee4924adc1d3a",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D3",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-ledger-contract/summary.json",
+      "summarySha256": "c8c423ef0bf040c2ea174900c5c639be995c8680f1abf954fcd09f07904992e0",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D4",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-counter-contract/summary.json",
+      "summarySha256": "0daee4b924ceb276123684b7dabf1c666fe74b0e1b4b7c473459a6d863102bbc",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D5",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-store-contract/summary.json",
+      "summarySha256": "30ef90fd73d03405dc5759f186be05bb117a8e19ec0b3037b4eef33deda9fdfd",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [
+        "src/crdt/custodyRecord.ts"
+      ],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D6",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-local-custody/summary.json",
+      "summarySha256": "5765c42c7a77472d948fa05f19d470286dd73005d387bb9c12f425d8dfe9cf3f",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D7",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-checkpoint-contract/summary.json",
+      "summarySha256": "8c0c8e7ea62891048c5021604ebf9303a398289c579ee44a7839b4264ea4d43d",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    },
+    {
+      "phase": "D8",
+      "summary": "docs/account-conformance-runs/2026-09-11-account-local-provenance/summary.json",
+      "summarySha256": "e7628bab89c0f4aa4fe30350131af7fb5eda617de1bbe8bd73b890f732a51409",
+      "status": "passed",
+      "runtimeFilesPinned": 158,
+      "runtimeDriftSinceRun": [],
+      "interpretation": "Historical result at its pinned source; aggregate reruns current registered tests rather than relabelling this evidence.",
+      "newProductionFilesSinceRun": []
+    }
+  ]
+}

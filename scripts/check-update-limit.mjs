@@ -23,7 +23,7 @@
  * slicing that keeps ordinary operations under the limit; that is
  * `test/writeAdmission.test.ts`.
  *
- * falsifies: f-9b49b74-journal-seal-64k-gap
+ * falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
  */
 
 import { readFileSync } from 'node:fs';
@@ -43,6 +43,15 @@ const TOLERANCE_US = 2;
 const trd = readFileSync(TRD, 'utf8');
 const perf = readFileSync(PERF, 'utf8');
 const failures = [];
+const implementation = readFileSync(
+  new URL('../src/crdt/journalCodec.ts', import.meta.url),
+  'utf8',
+);
+const implementationLimit = /export const MAX_JOURNAL_UPDATE = (\d+) \* 1024;/u.exec(
+  implementation,
+);
+if (!implementationLimit || Number(implementationLimit[1]) * 1024 !== INTERIM_BYTES)
+  failures.push('The production journal limit differs from the selected interim 16 KiB rule.');
 
 const slice = (text, from, to) => {
   const start = text.indexOf(from);

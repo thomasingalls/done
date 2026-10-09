@@ -1,0 +1,38 @@
+{
+  "baseCommit": "add6fd7ff1e2cec3e983b6195f8e886b30069903",
+  "result": "Expected failing regression, reduced to boxed protected state with seal_reserved 3 after one shrink",
+  "setup": "In a disposable checkout of baseCommit with the pinned Node dependencies, copy the four files under state-before/fixture into test/account-local-custody/. The archived custodyRecord.ts is the original production file at baseCommit. Do not overwrite the live workspace to replay this.",
+  "command": "node --test --test-name-pattern='generated states' test/account-local-custody/formats.test.mjs",
+  "seed": 5110920,
+  "manifest": [
+    {
+      "path": "custodyRecord.ts",
+      "sha256": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730"
+    },
+    {
+      "path": "fixture/browser.ts",
+      "sha256": "ccff226f6af4b13ef62b60077d6e87f3cd726bdba1d6f06bbcf2f8e229cfd7cd"
+    },
+    {
+      "path": "fixture/formats.test.mjs",
+      "sha256": "577c941aa57734d907e28bc226f2580038b4c21abe8cbd5570208e22a19ee295"
+    },
+    {
+      "path": "fixture/oracle.mjs",
+      "sha256": "8564cfc47e5e1030850440130513c0dc77b9fd7030158a90faab75feb0b93337"
+    },
+    {
+      "path": "fixture/runtime.mjs",
+      "sha256": "f3e1972e1a46f69a70ec32a7aa8c59f0e2b3218e475de2e76ea730d23016b0a9"
+    },
+    {
+      "path": "reproduction.json",
+      "sha256": "3079d956931d2dc0e30d499ddd3d335f53c442ed2bdb87a6ab081bb972aaaa76"
+    },
+    {
+      "path": "state-properties.json",
+      "sha256": "1ee5e1ecb9389f995dd8efc8c9c7e7b28e4a33dbd37dc04292d92bc4ce2b9e5d"
+    }
+  ],
+  "currentBehavior": "Final campaign passes this same property after the strict primitive-state repair. Native stateCoercion control restores the old guard and reproduces parser acceptance plus ordinary-owner creation-pending refusal."
+}

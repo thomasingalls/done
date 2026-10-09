@@ -1,0 +1,77 @@
+{
+  "base": "228031a1026c1d65ba6cc3c39e698b9b487d753b",
+  "selection": "browser-storage-qualification",
+  "integrationGroup": "browser-storage-fixtures",
+  "rawOutput": "test-results/release-validation/2026-09-14T15-20-56.471Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-storage-qualification",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/playwright-native.test.mjs",
+        "key": "960df98260bb457e280a7df0e04215d417e2eeb3b73b23ac77156b6c3295ddae",
+        "status": "passed",
+        "elapsedMs": 32210,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-app/packaged.spec.ts",
+        "key": "4d74b921aee22e35fb4bb34dc4d518be9967e808d250d9dcfe3e8d09a2796073",
+        "status": "passed",
+        "elapsedMs": 18807,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/private-migration/rehearsal.spec.ts",
+        "key": "01a02f5748213c76cd25e045ed2924a75d2641299a5dfa514163d568b718edf9",
+        "status": "passed",
+        "elapsedMs": 23785,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storage-compatibility/compatibility.spec.ts",
+        "key": "343c3b81a3761470a8b83272f5528556be590441e84069ed0ba781c6c2c4547c",
+        "status": "passed",
+        "elapsedMs": 18969,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T15:20:56.474Z",
+    "input": "1611f1948dd75b88ee07ba907b8d9fb4569825a8413802a88f530a865be07089",
+    "completedAt": "2026-09-14T15:23:05.791Z"
+  },
+  "counts": {
+    "generalFiles": 248,
+    "generalCases": 1885,
+    "accountFiles": 123,
+    "unresolved": 170,
+    "unresolvedTestFiles": 11
+  },
+  "priorContractsPreserved": 245,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "2ae19d11767d2c74cff75c2313c36f20390cbf7eed55ff7cf1cc1cb4ca09eae4",
+  "sourceDigest": "58e1f66ebb427a4bfb9607b67d5ac03a764ea7a0fdcb499e1b9f44e2c4e30e8a",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1052,
+  "scope": "Three additional Playwright files contribute 14 cases: three packaged Local cases, six storage compatibility cases and five seeded private migration rehearsals. Qualification also reruns the two native browser-adapter controls. The package is built only in the disposable stage, served as exact files on an ephemeral loopback host without HTML fallback, and checked for real precache assets, byte equality and accepted offline writing at both entry points. Development fixtures retain their original Vite configurations; private migration retains its full optimization entry set. Existing application assertions and case deadlines are unchanged. Coverage includes live writer fencing, queued/cancelled opens, renderer death, journal-only future schema, exact source retention, saved-file verification, resumed import, authenticated cleanup and later writing. Source-input/preservation attachments are retained with exact bounded bytes. New file bounds are 180 seconds for the package, 270 for compatibility and 540 for private migration. Private rehearsal ZIP decoding uses host Python; external-tool identity binding remains owed before immutable qualification, as in earlier residue controls. These seeded tests establish no production old-writer exclusion, personal Account admission or whole-release result. Wrapper build/budget/origin/output obligations remain separate.",
+  "artifactIndexSha256": "e15f9ede13a25eec3a672bd0b3393406259e0b30b0cefedde51765641fc4e088",
+  "gatesSha256": "dcd85a86c7be3f3216923c05b293ebd69d411ebd37c30b11129efa73d81ebaed",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

@@ -1,0 +1,9 @@
+(node:54994) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54994) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+{
+  commit: '4f71bac',
+  receiptVersion: 1,
+  activatedWithoutFreshAssertion: true,
+  finishFields: [ 'retryKey', 'requestDigest', 'completion' ]
+}

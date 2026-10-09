@@ -1,0 +1,14 @@
+Starting smoke-0-30-retain 2026-09-15T09:21:08.179Z
+Seeding the Local latency corpus through the editor
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+smoke-0-30-retain early 24.699999809265137 29.199999809265137
+smoke-0-30-retain deep 23.699999809265137 26.799999237060547 undo 46 → 54
+Finished smoke-0-30-retain passed
+Starting smoke-0-30-clear 2026-09-15T09:21:17.286Z
+Seeding the Local latency corpus through the editor
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+smoke-0-30-clear early 25.5 29.399999618530273
+smoke-0-30-clear deep 24.100000381469727 25.100000381469727 undo 4 → 12
+Finished smoke-0-30-clear passed

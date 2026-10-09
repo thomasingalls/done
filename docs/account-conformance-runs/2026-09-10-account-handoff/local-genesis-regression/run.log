@@ -1,0 +1,23 @@
+genesis G01.confirm: pass
+genesis G02.race: pass
+genesis G03.kill-claim: pass
+genesis G04.kill-reservation: pass
+genesis G05.kill-custody: pass
+genesis G06.kill-progress-content: pass
+genesis G07.kill-witness: pass
+genesis G08.kill-counter: pass
+genesis G09.kill-witness-ready: pass
+genesis G10.kill-progress-ready: pass
+genesis G11.kill-index: pass
+genesis G12.abort: pass
+genesis G13.cancel: pass
+genesis G14.missing: pass
+genesis G15.auth: pass
+genesis G16.index: pass
+genesis G17.scope: pass
+skip-factor-confirmation G01.confirm: fail
+forget-completed-stage G14.missing: fail
+skip-progress-authentication G15.auth: fail
+legacy-overwrites-local G16.index: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis/2026-09-10T18-04-38.133Z/report.md
+Exit 0 (bounded Local genesis integration)

@@ -16,6 +16,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './test/latency',
+  // The profiling pilot requires its separately built controls and retained source maps.
+  testIgnore: '**/diagnosis.spec.ts',
   /**
    * Playwright clears its `outputDir` before every run, and the default is
    * `test-results/` — which is also where `record()` appends the measurements.

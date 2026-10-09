@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-core-receive-headroom/qualification/browser-inputs.json.gz",
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+    "bytes": 9460
+  },
+  {
+    "path": "/private/tmp/done-core-receive-headroom/qualification/inputs.json.gz",
+    "sha256": "dcd60e9d155d84426d43b699f59b3b50e38f48f68ad81c071a681022dcad8307",
+    "bytes": 1219006
+  }
+]

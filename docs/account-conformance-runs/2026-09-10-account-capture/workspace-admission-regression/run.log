@@ -1,0 +1,12 @@
+workspace W10.repair: pass
+workspace W01.surfaces: pass
+workspace W02.pressure: pass
+workspace W03.undo-death: pass
+workspace W04.cross-tab: pass
+workspace W05.system: pass
+workspace W06.remote: pass
+workspace W07.history: pass
+workspace W08.rules: pass
+workspace W09.initialize: pass
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/workspace-admission/report.md
+Exit 0 (bounded workspace command integration)

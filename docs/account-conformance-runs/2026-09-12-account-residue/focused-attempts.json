@@ -1,0 +1,30 @@
+{
+  "recordType": "Assessment of focused tool outputs; no invented per-history archive for the first attempt",
+  "attempts": [
+    {
+      "kind": "environment",
+      "result": "loopback listen EPERM before application cases; disposable native execution then used process permission"
+    },
+    {
+      "kind": "detector repair",
+      "result": "nested escaped JSON string and escaped JSON within diagnostic lines initially missed; generic escape/literal/line traversal fixed and calibrated"
+    },
+    {
+      "kind": "fixture repairs",
+      "result": "content-count baseline moved after ordinary initialization; asserted actual promotion receipt kind; used real capture/spool/delivery preparation sequence"
+    },
+    {
+      "kind": "generated time budget",
+      "result": "initial focused run hit 270054.683125 ms before completing target; no runtime counterexample surfaced in output; original per-history artifacts unavailable because report output was not enabled. It is incomplete evidence, not a passing run"
+    },
+    {
+      "kind": "fixture runtime",
+      "result": "explicit existing receive retry after publication avoids waiting solely for five-second periodic polls; 270000 ms exploration budget unchanged; focused artifact recording and per-history progress enabled"
+    },
+    {
+      "kind": "passing predecessor run",
+      "path": "test-results/account-residue/2026-09-12T00-30-18.694Z",
+      "result": "24 histories passed; later refinements kept IPC fence bytes in raw scan, used a valid incorrect factor, recorded runtime versions, and required nonzero test/point census. Final-source evidence is the later complete run"
+    }
+  ]
+}

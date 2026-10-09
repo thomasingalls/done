@@ -48,7 +48,9 @@ The envelope  (service-held, opaque)
 
   RecoveryEnvelope = { v: 1, salt: Uint8Array(16),
                        nonce: Uint8Array(12), ct: Uint8Array }
-                     // ct seals the 32-byte X25519 scalar R_priv, tag included
+                     // plaintext = raw X25519 R_priv[32] || binary RootCommitment[32]
+                     //             || raw Ed25519 bootstrap seed[32]
+                     // ct is exactly 112 bytes: plaintext[96] plus GCM tag[16]
 
   K_rec = HKDF-SHA256(ikm = utf8(canonical code), salt = salt,
                       info = LP("done/recovery/v1") || LP(principal_id), L = 32)
@@ -56,7 +58,8 @@ The envelope  (service-held, opaque)
   AAD   = LP("done/recovery/v1") || LP(principal_id) || LP(dec v) || LP(hex R_pub)
 
   Seal  AES-256-GCM. The salt is fresh per seal, so K_rec is fresh per seal and
-        exactly one message is ever encrypted under it.
+        exactly one message is encrypted under it, conditioned on nonrepeating
+        randomness across seals, including restores/clones.
 
 Replacement  (PRD §7.6; the protocol half is review 3b's)
 
@@ -98,6 +101,13 @@ Replacement  (PRD §7.6; the protocol half is review 3b's)
 Everything below is why, and what it cost.
 
 ---
+
+**Private v1 alignment (2026-09-11).** The main construction and current row-14 vectors now carry all
+three components required by the prior amendments. The scalar-only 48-byte ciphertext is retained at
+`test/vectors/historical/recovery-code.scalar-only.json` and is refused by the current parser. The exact
+payload, exported PKCS#8 checks, digests and initial confirmation challenge are specified in
+[the private recovery byte contract](../account-crypto/recovery-layout.md); replacement step-up below
+remains a distinct operation. This correction does not add a second v1 reader.
 
 ## 1. The row's question is already half-answered, and by the PRD
 

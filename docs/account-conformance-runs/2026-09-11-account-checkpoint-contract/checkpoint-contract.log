@@ -1,0 +1,16 @@
+(node:95365) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current private key helper and protocol AAD agree with independent fixed and inherited cipher bytes (7.659542ms)
+✔ every declared KDF/AAD field, ciphertext, salt, nonce and tag mutation discriminates (10.629291ms)
+✔ actual source omissions change the private KDF and all five protocol AAD fields (263.231375ms)
+✔ genesis closed parser fixes versions, lengths, identity domains and empty head baseline (5.758709ms)
+✔ 250 shrinking-enabled cipher histories agree with OpenSSL and reject a different epoch or salt (107.927375ms)
+✔ generated deletion and out-of-order replay proves both descriptor halves and does not repair a missing genesis (127.782083ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 734.208

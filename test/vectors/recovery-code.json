@@ -13,8 +13,8 @@
     "kdf": "K_rec = HKDF-SHA256(ikm = utf8(canonical code), salt = salt[16], info = LP(\"done/recovery/v1\") || LP(principal_id), L = 32)",
     "aad": "LP(\"done/recovery/v1\") || LP(principal_id) || LP(decimal v) || LP(hex r_pub)",
     "length_prefix": "uint16be(byteLength) || utf8 — injective, so no field can shift another",
-    "envelope": "RecoveryEnvelope = { v: 1, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over the 32-byte X25519 scalar, tag included }",
-    "nonce_note": "The salt is fresh per seal, so K_rec is fresh per seal and exactly one message is ever encrypted under it. Nonce reuse is structurally unreachable rather than avoided by discipline",
+    "envelope": "RecoveryEnvelope = { v: 1, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over raw X25519 scalar[32] || binary root commitment[32] || raw Ed25519 bootstrap seed[32], 112 bytes including tag }",
+    "nonce_note": "A fresh random salt is required for every seal; one message per derived key assumes nonrepeating randomness, including across restores or clones. This vector does not establish that host assumption",
     "step_up": "Replacement requires content access proven by use, plus a single-use service challenge SHA-256( LP(\"done/recovery-replace/v1\") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) ) answered by an assertion from the account credential. No freshness window: the challenge is bound to the operation. See step_up below",
     "not_carried": "The code is never sent to the service, never persisted by the client, and never re-displayed once the account exists"
   },
@@ -182,7 +182,14 @@
         "salt": "9f3c1a70d4b28e6501fa47c39b0d5e82",
         "nonce": "0b1d2e3f4a5b6c7d8e9fa0b1",
         "r_priv": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
-        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+        "workspace_id": "workspace-recovery",
+        "lineage_id": "lineage-recovery",
+        "auth_root": "abababababababababababababababababababababababababababababababab",
+        "root_commitment": "d372a3587b569215f91066cb968c937390f5c3c94023bcc4cf86054046f50eeb",
+        "bootstrap_seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+        "bootstrap_signer": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "payload": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2ad372a3587b569215f91066cb968c937390f5c3c94023bcc4cf86054046f50eeb9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"
       },
       "derived": {
         "hkdf_info": "0010646f6e652f7265636f766572792f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744",
@@ -190,7 +197,7 @@
         "aad": "0010646f6e652f7265636f766572792f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744000131004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661"
       },
       "expected": {
-        "ct": "4489795a0eea268d167d3d929daa0a96c720340c7d6b1ae7cf8d0acc3ccb8d7c75988914a418018366d6bd45c1f448d3"
+        "ct": "4489795a0eea268d167d3d929daa0a96c720340c7d6b1ae7cf8d0acc3ccb8d7c31b9aaf85ef385cf784d21b08be15218da93555bb115a0eeaf7090d4964a13e0d11599442aea13e47875ba0469dc5008371089006c4893a43a5c8393d6b289655cf4bed8800691e781b82543ce532e06"
       }
     },
     {
@@ -204,7 +211,14 @@
         "salt": "9f3c1a70d4b28e6501fa47c39b0d5e82",
         "nonce": "0b1d2e3f4a5b6c7d8e9fa0b1",
         "r_priv": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
-        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+        "workspace_id": "workspace-recovery",
+        "lineage_id": "lineage-recovery",
+        "auth_root": "abababababababababababababababababababababababababababababababab",
+        "root_commitment": "d372a3587b569215f91066cb968c937390f5c3c94023bcc4cf86054046f50eeb",
+        "bootstrap_seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+        "bootstrap_signer": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "payload": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2ad372a3587b569215f91066cb968c937390f5c3c94023bcc4cf86054046f50eeb9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"
       },
       "derived": {
         "hkdf_info": "0010646f6e652f7265636f766572792f7631001d70725f30314a3030303030303030303030303030303030303030303041",
@@ -212,7 +226,7 @@
         "aad": "0010646f6e652f7265636f766572792f7631001d70725f30314a3030303030303030303030303030303030303030303041000131004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661"
       },
       "expected": {
-        "ct": "8ed5e6a8eadf06bd6f8f086e6faa6f1781a25567aa70db4893f390b58f33d032114db528780e46f1f7f3b1d069f4f037"
+        "ct": "8ed5e6a8eadf06bd6f8f086e6faa6f1781a25567aa70db4893f390b58f33d032f935695311864252e639bda84e62b7ccadf8fd6b04878acf647ea9d99298e3c420996e05aff1b6aa6f115cfbeafeb2eb695a3c68555d2d5c96b40aa7de8660c4b3731bb7f0ce349b0cf9e8dc7a37a401"
       }
     }
   ],

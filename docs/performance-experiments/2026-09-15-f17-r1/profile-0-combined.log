@@ -1,0 +1,9 @@
+Seeding the Local latency corpus through the editor
+Seeded 5/5 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+
+'goal 16 — a line of the master lista card to open and type intowwwwwwwwpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp'
+    at file:///private/tmp/done-f17-exploration-r1/screen.mjs:58:53
+Finished combined profile-0 failed

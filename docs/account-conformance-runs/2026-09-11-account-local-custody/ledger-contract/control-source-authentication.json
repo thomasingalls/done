@@ -1,0 +1,12 @@
+{
+  "digest": {
+    "baseline": "refused",
+    "mutant": "accepted"
+  },
+  "envelope": {
+    "validSignature": true,
+    "validAEAD": true,
+    "baseline": "different original refused",
+    "mutant": "accepted"
+  }
+}

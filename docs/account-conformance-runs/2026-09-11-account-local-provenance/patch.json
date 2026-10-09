@@ -1,0 +1,29 @@
+{
+  "baseCommit": "555523863b0dc999e4fe1407a6883d000f233e75",
+  "sha256": "d929785e9f4d980da5550e40e3e61db2433b51b4f41e06be69db49af007b9191",
+  "bytes": 385977,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-local-provenance.md",
+    "docs/account-conformance-runs/2026-09-11-signed-contract-history.json",
+    "docs/account-crypto/constructions.json",
+    "docs/account-crypto/local-provenance.md",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/account-local-provenance/run.mjs",
+    "scripts/account-local-provenance/vectors.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "test/account-local-provenance/browser.ts",
+    "test/account-local-provenance/formats.test.mjs",
+    "test/account-local-provenance/native-browser.ts",
+    "test/account-local-provenance/native.test.mjs",
+    "test/account-local-provenance/oracle.mjs",
+    "test/account-local-provenance/runtime.mjs",
+    "test/vectors/account-local-provenance.json"
+  ],
+  "scope": "D8 retained Local provenance contracts, independent/native tests, registry scope dispositions, vectors, campaign, signing map and checkpoint. Raw evidence and patch/manifest excluded to avoid recursion. No production change.",
+  "indexEmpty": true
+}

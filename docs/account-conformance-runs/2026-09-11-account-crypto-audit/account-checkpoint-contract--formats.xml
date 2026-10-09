@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="current private key helper and protocol AAD agree with independent fixed and inherited cipher bytes" time="0.009317" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<testcase name="every declared KDF/AAD field, ciphertext, salt, nonce and tag mutation discriminates" time="0.012299" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<testcase name="actual source omissions change the private KDF and all five protocol AAD fields" time="0.302257" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<testcase name="genesis closed parser fixes versions, lengths, identity domains and empty head baseline" time="0.006394" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<testcase name="250 shrinking-enabled cipher histories agree with OpenSSL and reject a different epoch or salt" time="0.163324" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<testcase name="generated deletion and out-of-order replay proves both descriptor halves and does not repair a missing genesis" time="0.151401" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/formats.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 921.432042 -->
+</testsuites>

@@ -1,0 +1,439 @@
+[
+  {
+    "label": "failed-navigation",
+    "selection": "standalone-write-session",
+    "source": "test-results/write-session-adapter-full",
+    "status": "failed",
+    "input": "2721dbc4a646c72f3768aea7443f304c0b67c5850d48a678ceaaff9449e9502f",
+    "stageCases": [
+      null
+    ],
+    "stageElapsedMs": [
+      38672
+    ],
+    "totalMs": 51495,
+    "native": [
+      {
+        "scope": "C04-component-browser",
+        "baselineAssertions": 53,
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "split-coordination-domain",
+            "assertion": "frozen-writer-blocks-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "ignore-session-invalidation",
+            "assertion": "closing-callback-cannot-write",
+            "status": "detected"
+          },
+          {
+            "id": "release-before-drain",
+            "assertion": "detached-work-precedes-disposal",
+            "status": "detected"
+          },
+          {
+            "id": "skip-cache-cleanup",
+            "assertion": "cache-cleared-before-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "reuse-finished-task",
+            "assertion": "finished-task-cannot-write",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "write-session",
+            "origin": "http://127.0.0.1:50041",
+            "closed": true
+          },
+          {
+            "variant": "split-coordination-domain",
+            "origin": "http://127.0.0.1:50115",
+            "closed": true
+          },
+          {
+            "variant": "ignore-session-invalidation",
+            "origin": "http://127.0.0.1:50122",
+            "closed": true
+          },
+          {
+            "variant": "release-before-drain",
+            "origin": "http://127.0.0.1:50129",
+            "closed": true
+          },
+          {
+            "variant": "skip-cache-cleanup",
+            "origin": "http://127.0.0.1:50135",
+            "closed": true
+          },
+          {
+            "variant": "reuse-finished-task",
+            "origin": "http://127.0.0.1:50141",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "focused-navigation",
+    "selection": "standalone-write-session",
+    "source": "test-results/write-session-adapter-navigation-repair",
+    "status": "passed",
+    "input": "98abb0fc909c2d75bef12242e64ed4e9170dfb07a61390e38f5aa8028fca9ca3",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      6489
+    ],
+    "totalMs": 20556,
+    "native": [
+      {
+        "scope": "C04-component-browser",
+        "baselineAssertions": 3,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "write-session",
+            "origin": "http://127.0.0.1:50174",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-full",
+    "selection": "standalone-write-session",
+    "source": "test-results/write-session-adapter-full-repaired",
+    "status": "passed",
+    "input": "98abb0fc909c2d75bef12242e64ed4e9170dfb07a61390e38f5aa8028fca9ca3",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      33257
+    ],
+    "totalMs": 47110,
+    "native": [
+      {
+        "scope": "C04-component-browser",
+        "baselineAssertions": 56,
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "split-coordination-domain",
+            "assertion": "frozen-writer-blocks-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "ignore-session-invalidation",
+            "assertion": "closing-callback-cannot-write",
+            "status": "detected"
+          },
+          {
+            "id": "release-before-drain",
+            "assertion": "detached-work-precedes-disposal",
+            "status": "detected"
+          },
+          {
+            "id": "skip-cache-cleanup",
+            "assertion": "cache-cleared-before-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "reuse-finished-task",
+            "assertion": "finished-task-cannot-write",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "write-session",
+            "origin": "http://127.0.0.1:50199",
+            "closed": true
+          },
+          {
+            "variant": "split-coordination-domain",
+            "origin": "http://127.0.0.1:50270",
+            "closed": true
+          },
+          {
+            "variant": "ignore-session-invalidation",
+            "origin": "http://127.0.0.1:50276",
+            "closed": true
+          },
+          {
+            "variant": "release-before-drain",
+            "origin": "http://127.0.0.1:50282",
+            "closed": true
+          },
+          {
+            "variant": "skip-cache-cleanup",
+            "origin": "http://127.0.0.1:50290",
+            "closed": true
+          },
+          {
+            "variant": "reuse-finished-task",
+            "origin": "http://127.0.0.1:50296",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-controls",
+    "selection": "standalone-write-session",
+    "source": "test-results/write-session-adapter-selected-controls",
+    "status": "passed",
+    "input": "98abb0fc909c2d75bef12242e64ed4e9170dfb07a61390e38f5aa8028fca9ca3",
+    "stageCases": [
+      9
+    ],
+    "stageElapsedMs": [
+      23333
+    ],
+    "totalMs": 42413,
+    "native": [
+      {
+        "scope": "C04-component-browser",
+        "baselineAssertions": 24,
+        "baselines": 4,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "split-coordination-domain",
+            "assertion": "frozen-writer-blocks-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "ignore-session-invalidation",
+            "assertion": "closing-callback-cannot-write",
+            "status": "detected"
+          },
+          {
+            "id": "release-before-drain",
+            "assertion": "detached-work-precedes-disposal",
+            "status": "detected"
+          },
+          {
+            "id": "skip-cache-cleanup",
+            "assertion": "cache-cleared-before-exclusive",
+            "status": "detected"
+          },
+          {
+            "id": "reuse-finished-task",
+            "assertion": "finished-task-cannot-write",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "write-session",
+            "origin": "http://127.0.0.1:50334",
+            "closed": true
+          },
+          {
+            "variant": "split-coordination-domain",
+            "origin": "http://127.0.0.1:50377",
+            "closed": true
+          },
+          {
+            "variant": "ignore-session-invalidation",
+            "origin": "http://127.0.0.1:50391",
+            "closed": true
+          },
+          {
+            "variant": "release-before-drain",
+            "origin": "http://127.0.0.1:50404",
+            "closed": true
+          },
+          {
+            "variant": "skip-cache-cleanup",
+            "origin": "http://127.0.0.1:50419",
+            "closed": true
+          },
+          {
+            "variant": "reuse-finished-task",
+            "origin": "http://127.0.0.1:50434",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-write-session",
+    "source": "test-results/write-session-adapter-baseline-worker",
+    "status": "passed",
+    "input": "98abb0fc909c2d75bef12242e64ed4e9170dfb07a61390e38f5aa8028fca9ca3",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      8708
+    ],
+    "totalMs": 31480,
+    "native": [
+      {
+        "scope": "C04-component-browser",
+        "baselineAssertions": 4,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "write-session",
+            "origin": "http://127.0.0.1:50361",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "custody-regression",
+    "selection": "standalone-custody",
+    "source": "test-results/write-session-adapter-custody-regression",
+    "status": "passed",
+    "input": "98abb0fc909c2d75bef12242e64ed4e9170dfb07a61390e38f5aa8028fca9ca3",
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      11422
+    ],
+    "totalMs": 30905,
+    "native": [
+      {
+        "scope": "custody-component-browser",
+        "baselineAssertions": 11,
+        "baselines": 2,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "skip-nested-crypto-guard",
+            "assertion": "cancel-prevents-private-export",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "custody",
+            "origin": "http://127.0.0.1:50381",
+            "closed": true
+          },
+          {
+            "variant": "skip-nested-crypto-guard",
+            "origin": "http://127.0.0.1:50414",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T13-55-35.304Z",
+    "status": "passed",
+    "input": "3dfdda955e15ae4b4f0bfa47e0572ccd88ada5b5f6a029ec7563c8d2f54bbe4c",
+    "stageCases": [
+      4,
+      4,
+      3,
+      5,
+      5,
+      4,
+      10,
+      4,
+      4,
+      5,
+      6,
+      4,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2066,
+      1845,
+      1758,
+      1829,
+      1805,
+      1834,
+      1626,
+      1780,
+      1824,
+      1836,
+      1772,
+      1814,
+      1806,
+      1817,
+      3318,
+      1898
+    ],
+    "totalMs": 62996,
+    "native": []
+  }
+]

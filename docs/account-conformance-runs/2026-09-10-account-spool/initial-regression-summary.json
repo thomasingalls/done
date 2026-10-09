@@ -1,0 +1,24 @@
+[
+  {
+    "name": "account-capture",
+    "args": [
+      "--test",
+      "--test-reporter=spec",
+      "test/account-capture/native.test.mjs"
+    ],
+    "code": 0,
+    "timedOut": false,
+    "durationMs": 93969
+  },
+  {
+    "name": "content-trim",
+    "args": [
+      "scripts/content-trim/run.mjs",
+      "--output",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-spool/regressions/content-trim"
+    ],
+    "code": 1,
+    "timedOut": false,
+    "durationMs": 316
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "base": "25a204f3cdd823c08fa212cee013464e2c22c897",
+  "selection": "browser-local-qualification",
+  "integrationGroup": "browser-local-fixtures",
+  "rawOutput": "test-results/release-validation/2026-09-14T15-12-55.743Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-local-qualification",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/playwright-native.test.mjs",
+        "key": "15e73c3d5b3554ca0f6638f06dcba1700a71e308ad7ed9df04fd0f1a44020a1e",
+        "status": "passed",
+        "elapsedMs": 30080,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-app/editor.spec.ts",
+        "key": "4b66ff6c5c2997e95129bbd9ecb0225057bdc7f70e2f761c85007e1b69613087",
+        "status": "passed",
+        "elapsedMs": 58097,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-app/startup.spec.ts",
+        "key": "a1e73ed35c2a945235b966aa322e61f3a9e4a4ea01fe95fdc599b92469275155",
+        "status": "passed",
+        "elapsedMs": 13792,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T15:12:55.745Z",
+    "input": "9f73fe440123f810131442ca353742a6104ff65c99982cceabc87e634644e6ac",
+    "completedAt": "2026-09-14T15:15:07.005Z"
+  },
+  "counts": {
+    "generalFiles": 245,
+    "generalCases": 1871,
+    "accountFiles": 123,
+    "unresolved": 173,
+    "unresolvedTestFiles": 14
+  },
+  "priorContractsPreserved": 242,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "6c3c6ffae92d5f555e765c70e888b8d978461eab162bcc8ae19fb65c83954ada",
+  "sourceDigest": "fed3f1ddef24c8a3ef010e8dd584840d694ac949b958a40fba243b80b84ce7bf",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1051,
+  "scope": "The first browser application selection includes eight existing Local startup/editor cases and two new native adapter control cases. The existing application assertions remain, including 20 generated compose/history inputs at seed 8941 and a separate ledger before/after reload. Static binding-aware registration reading expands exact file/suite/project identities without executing hooks or test modules; it distinguishes RegExp.test from the imported test binding. Owned runs borrow Chromium over CDP, start ephemeral loopback Vite inside the guarded worker group and refuse server reuse or framework-launched browsers. Normal standalone Playwright behavior is retained. Reports require terminal success, exact collected and completed cases, one worker, no retries/repetition/unexpected skips, clean framework results and closed server. Inline/file attachments retain bounded exact bytes, size and SHA-256; the generated histories are included. Native controls exercise actual omission, skip, assertion/hook failure, timeout, cancellation, partial progress and attachment retention. The initial no-discovery fixture failure and subsequent public-metadata reconciliation refusal are retained; normal Vite discovery and the public top-level fullyParallel field correct those adapter mistakes. Five pure adapter controls include 160 generated population checks. File bounds are explicit (300 seconds for each Local file and 120 for native controls); existing case bounds are unchanged. This is Local application and runner evidence, not a private Account admission receipt or immutable release qualification. Other browser families, complete wrapper/output contracts and real-device measurements remain separate.",
+  "artifactIndexSha256": "0f9f356e9752cbd3bfd0e3baa20e32414506cc7110037b67a3c71a099abc7e77",
+  "gatesSha256": "1ed63be88f69e3b2c5f47b7cde50f97be9cb3dfda22267c2ee470b697057f46c",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

@@ -1,0 +1,16 @@
+{
+  "actualStatus": {
+    "state": "ready",
+    "acceptedThrough": 0,
+    "finalThrough": null,
+    "closed": [],
+    "submissions": [
+      1
+    ],
+    "responses": []
+  },
+  "expectedState": "closed",
+  "falseDurableReturn": true,
+  "cryptoAndIssuerUnchanged": true,
+  "detected": true
+}

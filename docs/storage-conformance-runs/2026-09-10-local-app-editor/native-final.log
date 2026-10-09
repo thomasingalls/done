@@ -1,0 +1,17 @@
+[WebServer] (node:27072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:27090) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/local-app/editor.spec.ts:36:1 › compose keeps its draft through native refusal; retry admits it once and reopen retains it (3.8s)
+  ✓  2 test/local-app/editor.spec.ts:57:1 › discarded editor input never appears, and locking disposes the mounted editor (1.3s)
+  ✓  3 test/local-app/editor.spec.ts:81:1 › Goals copy and separate line removal preserve suffix boundaries and workspace undo (1.3s)
+  ✓  4 test/local-app/editor.spec.ts:107:1 › generated compose and history sequences match a separate ledger before and after cold open (24.4s)
+  ✓  5 test/local-app/startup.spec.ts:34:1 › confirmation is required; reload and offline unlock use the same identity (1.2s)
+  ✓  6 test/local-app/startup.spec.ts:69:1 › existing legacy data refuses creation without touching its carriers (447ms)
+  ✓  7 test/local-app/startup.spec.ts:112:1 › verified content opens in the admitted editor and disappears immediately on lock (1.1s)
+  ✓  8 test/local-app/startup.spec.ts:155:1 › interrupted creation reopens with the saved factor and original identity (890ms)
+
+  8 passed (36.6s)

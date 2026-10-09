@@ -1,0 +1,36 @@
+{
+  "records": [
+    {
+      "name": "fork-marker",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/exploratoryAnyStrings.test.ts"
+      ],
+      "exitCode": 1,
+      "expected": "nonzero assertion/test failure",
+      "mutation": {
+        "before": "encoding.writeUint8(this.restEncoder, 0);",
+        "after": "encoding.writeUint8(this.restEncoder, 1);"
+      }
+    },
+    {
+      "name": "comparison-string-omitted",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/exploratoryAnyStrings.test.ts"
+      ],
+      "exitCode": 1,
+      "expected": "nonzero assertion/test failure",
+      "mutation": {
+        "before": "encoding.writeUint8(this.restEncoder, 119);\n      this.writeString(value);",
+        "after": "encoding.writeUint8(this.restEncoder, 119);\n      this.writeString('');"
+      }
+    }
+  ],
+  "sourceRestored": true,
+  "sourceSha256": "1bfc4a8e717fc2b92a02fecc896dc9b5d5782d1146dab06652822df88d4b7199"
+}

@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T18:35:12.956Z",
+  "completedAt": "2026-09-10T18:37:03.650Z",
+  "code": 0,
+  "timedOut": false,
+  "scope": "Private exclusive Account editing lifetime, v5 activation, journal-backed edits, cold recovery, generated ancestry/native histories, actual acceptance controls and native drain. No concurrent Account editors, relay, default cutover or personal operations."
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "variant": 0,
+    "at": 0,
+    "size": 2,
+    "value": 32
+  },
+  {
+    "variant": 0,
+    "at": 34,
+    "size": 2,
+    "value": 1
+  },
+  {
+    "variant": 0,
+    "at": 37,
+    "size": 2,
+    "value": 64
+  },
+  {
+    "variant": 0,
+    "at": 103,
+    "size": 4,
+    "value": 329
+  },
+  {
+    "variant": 0,
+    "at": 436,
+    "size": 4,
+    "value": 0
+  },
+  {
+    "variant": 1,
+    "at": 0,
+    "size": 2,
+    "value": 32
+  },
+  {
+    "variant": 1,
+    "at": 34,
+    "size": 2,
+    "value": 1
+  },
+  {
+    "variant": 1,
+    "at": 37,
+    "size": 2,
+    "value": 64
+  },
+  {
+    "variant": 1,
+    "at": 103,
+    "size": 4,
+    "value": 329
+  },
+  {
+    "variant": 1,
+    "at": 436,
+    "size": 4,
+    "value": 408
+  }
+]

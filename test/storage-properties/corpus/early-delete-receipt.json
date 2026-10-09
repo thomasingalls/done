@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "origin": "Generated source-mutant counterexample, not a production defect",
+  "mutant": "early-delete-receipt",
+  "seed": 8941,
+  "path": "0:1:0:1:2:0:0:0:0:0:0",
+  "shrinks": 10,
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "abort",
+        "at": "reserve",
+        "ids": [0]
+      }
+    ]
+  },
+  "invariant": "abort-is-storage-failure"
+}

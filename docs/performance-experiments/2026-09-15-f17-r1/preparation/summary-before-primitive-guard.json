@@ -1,0 +1,18 @@
+{
+  "baseline": "20a535c44d2c33b394306fa67023c62d2d9c5f40",
+  "candidate": "private-long-string-tape",
+  "activation": "Existing explicit local-snapshots mode only",
+  "files": {
+    "src/crdt/yjs.ts": "dd27f816d93959d7af219d4a3ca4a3c4afa955a67d7c0a32c6e2632e1392007f",
+    "test/exploratoryPreparation.test.ts": "49cf4c1dee2eda26fe055f871e101f06cda9d6c63311e59f36ee575b37b94efe"
+  },
+  "patchSha256": "2e7e2cf8c9d029b0bf6869fc2c5c8ea3cb53a3922d70f885db025c7ade695568",
+  "checks": {
+    "command": "node node_modules/vitest/vitest.mjs run test/exploratoryPreparation.test.ts test/selectionHistory.test.ts test/pendingProjection.test.ts test/projectionEquality.test.ts test/workspaceAdmission.test.ts",
+    "filesPassed": 5,
+    "testsPassed": 115,
+    "durationSeconds": 6.57,
+    "fullLog": "focused.log"
+  },
+  "performanceMeasured": false
+}

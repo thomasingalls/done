@@ -1,0 +1,10 @@
+{
+  "aggregateStatus": "passed",
+  "exitCode": 0,
+  "sourceFilesVerified": 2204,
+  "sourceDrift": [],
+  "workingTreeCodeFilesMatched": 648,
+  "workingTreeCodeDrift": [],
+  "personalBundleFiles": 21,
+  "personalBundleChanged": false
+}

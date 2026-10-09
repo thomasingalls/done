@@ -1,0 +1,18 @@
+{
+  "baseCommit": "393ef435af72a5c0b8e2d19b410a5d932400f902",
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-crypto-audit.md",
+    "docs/account-crypto/constructions.json",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/implementation/README.md",
+    "docs/review/implementation/account-crypto-closure.md",
+    "package.json",
+    "scripts/account-crypto-audit/run.mjs",
+    "scripts/account-crypto-prep/run.mjs",
+    "scripts/check-authority-map.mjs"
+  ],
+  "bytes": 52195,
+  "sha256": "31849edb51d87c87e969655c8df198e6407eceb5f712ec1d08e4821c9c7dcedd",
+  "scope": "Aggregate F-05/F-06 review, reproducible runner, status reporting and checkpoint. No production/test/vector change. Raw evidence and self-referential manifests excluded."
+}

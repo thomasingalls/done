@@ -1,0 +1,401 @@
+{
+  "base": "4bb09042f37f68ec31f0d82587af608f599eb096",
+  "status": "bounded checks passed; staged evidence, not an immutable aggregate",
+  "logs": [
+    {
+      "path": "before.json.gz",
+      "disposition": "original service/receiver trigger",
+      "rawSha256": "2dba97443ac3386dc0a7b870b7fe02525572231b1d54d18073465d704f495a81",
+      "normalizedSha256": "2dba97443ac3386dc0a7b870b7fe02525572231b1d54d18073465d704f495a81",
+      "compressedSha256": "4332db92dcdbcb2b60e8db811a84fb43ea9ab7cfe351164c357ef65e20eb3840",
+      "normalizedBytes": 421,
+      "compressedBytes": 198
+    },
+    {
+      "path": "after-final.json.gz",
+      "disposition": "current service rejection",
+      "rawSha256": "c16551b360179e468ed1f6cc64e9949167347d8e6e1ba6f8641f045afdb619dd",
+      "normalizedSha256": "c16551b360179e468ed1f6cc64e9949167347d8e6e1ba6f8641f045afdb619dd",
+      "compressedSha256": "ad608865b9cdfd93769899378ffced9ebc3f202e8e1ba755eaa6a2fb9c3c8629",
+      "normalizedBytes": 306,
+      "compressedBytes": 173
+    },
+    {
+      "path": "unit-pass.log.gz",
+      "disposition": "passed: 124 unit tests",
+      "rawSha256": "098c5da7b88351a97b8103c1f040ec4e77353fc48cc5832bbdb27205931d373d",
+      "normalizedSha256": "837f378e5148680e1ff0d9191624a79351929eb6e65bd6c4ed2f6d262ce11aa1",
+      "compressedSha256": "0abe40abf3238b393f7e0f3c56ea5bf46257fda028a6b81107becf440ef875eb",
+      "normalizedBytes": 201,
+      "compressedBytes": 169
+    },
+    {
+      "path": "service-complete.log.gz",
+      "disposition": "passed: 38 service/transport tests",
+      "rawSha256": "a491ad6970e3de391f8f1ce6b428e49f2ad3f8915b4d8d580e0965d2c32fb445",
+      "normalizedSha256": "a491ad6970e3de391f8f1ce6b428e49f2ad3f8915b4d8d580e0965d2c32fb445",
+      "compressedSha256": "9db9d5a4ca32015c6a3f22ce418d40c1815a7dc36edfb0ef911e13ff0bd40694",
+      "normalizedBytes": 5027,
+      "compressedBytes": 1971
+    },
+    {
+      "path": "native-size.log.gz",
+      "disposition": "passed: 4 receive-size cases",
+      "rawSha256": "48893f047e380aeb0a8de03e7dddb03f266e32c7e53bf5ccc50d68762ea7e4f6",
+      "normalizedSha256": "48893f047e380aeb0a8de03e7dddb03f266e32c7e53bf5ccc50d68762ea7e4f6",
+      "compressedSha256": "6cea60b63c35f3e429e3d9cbb343ac646e86a15a43cc06b520d606cc4e0b093f",
+      "normalizedBytes": 969,
+      "compressedBytes": 433
+    },
+    {
+      "path": "native-batch.log.gz",
+      "disposition": "passed: 1 native transaction case",
+      "rawSha256": "bad59f58f9a54c0a74348d78399254623fda025ec95c3789e99b14379ad947d1",
+      "normalizedSha256": "bad59f58f9a54c0a74348d78399254623fda025ec95c3789e99b14379ad947d1",
+      "compressedSha256": "bd6c4fbdfbfbfb600bafd6f98dad17eae7425fcc13fae91b17c03a79aec184f1",
+      "normalizedBytes": 560,
+      "compressedBytes": 340
+    },
+    {
+      "path": "native-sender-final.log.gz",
+      "disposition": "staged: 3 sender cases pass; historical fixture export failures superseded",
+      "rawSha256": "00ee6d048b457b99ce8a18817ddf0256311a53e79e0594e402c9cafccb3a667b",
+      "normalizedSha256": "0da18a35d196a3a27809c256a30d4a1c6ff365d13649a81c9f6500867aadf628",
+      "compressedSha256": "9b237f6db7c1c7abebb60dea0375deea458861a790069c7ae3879aa38bbecc8a",
+      "normalizedBytes": 13611,
+      "compressedBytes": 1376
+    },
+    {
+      "path": "native-history-pass.log.gz",
+      "disposition": "passed: 2 final historical pending-state cases",
+      "rawSha256": "af3d3abd3b4720e264390d9c60a34c7e408ad833accc0660a4da1f90677a2ec7",
+      "normalizedSha256": "af3d3abd3b4720e264390d9c60a34c7e408ad833accc0660a4da1f90677a2ec7",
+      "compressedSha256": "8bb92e220316ed47c209f3dd098fcb9552dae172b50b0ecb475eb384ee40146c",
+      "normalizedBytes": 1143,
+      "compressedBytes": 491
+    },
+    {
+      "path": "current-regression.log.gz",
+      "disposition": "passed: 2 current native regressions",
+      "rawSha256": "4e4193eccaa249a33b49f9f4e95736068f1ecbadf363784ebd7a332f6b8b1b51",
+      "normalizedSha256": "4e4193eccaa249a33b49f9f4e95736068f1ecbadf363784ebd7a332f6b8b1b51",
+      "compressedSha256": "a911fdcec52a5442293554a36f45de5d00c3fabe02154795beb7591ead2f8b85",
+      "normalizedBytes": 1244,
+      "compressedBytes": 489
+    },
+    {
+      "path": "inventory-final-tests.log.gz",
+      "disposition": "passed: 16 planning tests",
+      "rawSha256": "264617e2598e1d729218fe8a21e99ea8ca8ee19ac6b2cbb33d62097285e92a8e",
+      "normalizedSha256": "264617e2598e1d729218fe8a21e99ea8ca8ee19ac6b2cbb33d62097285e92a8e",
+      "compressedSha256": "e51374a84628d44bc6c485b186080604812e392aefe30b305eb612266e1d351b",
+      "normalizedBytes": 1723,
+      "compressedBytes": 902
+    },
+    {
+      "path": "typecheck-final.log.gz",
+      "disposition": "passed: typecheck",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "lint-final.log.gz",
+      "disposition": "passed: scoped lint",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "format-final.log.gz",
+      "disposition": "passed: scoped format",
+      "rawSha256": "e1a2b37750e342088946943d8105973cdbec01fc5e01b6b2069d3ee1ad76725c",
+      "normalizedSha256": "e1a2b37750e342088946943d8105973cdbec01fc5e01b6b2069d3ee1ad76725c",
+      "compressedSha256": "2ec56348007debc771a9115005885202708948ae36a26e4d9baad18c169b7421",
+      "normalizedBytes": 113,
+      "compressedBytes": 110
+    },
+    {
+      "path": "vectors.log.gz",
+      "disposition": "passed: affected immutable vectors",
+      "rawSha256": "b325747fba5e7ec0a9c8f054ac29d364786ed5684a3690a32939f7973d9479db",
+      "normalizedSha256": "b325747fba5e7ec0a9c8f054ac29d364786ed5684a3690a32939f7973d9479db",
+      "compressedSha256": "512f6893397baf75eb5c7f6e9f613632fe993d2f8b289d4fafc475ce630720d5",
+      "normalizedBytes": 215,
+      "compressedBytes": 173
+    },
+    {
+      "path": "registry.json.gz",
+      "disposition": "passed: live construction registry",
+      "rawSha256": "10e9f458dbabf940683bd6a9de557f838f6c0766a3df9cfedbe9ec150fa26e77",
+      "normalizedSha256": "10e9f458dbabf940683bd6a9de557f838f6c0766a3df9cfedbe9ec150fa26e77",
+      "compressedSha256": "b91b78910563a65fa7870519bab3c9eb273cf0f7c30cfa2e5caf86aa3adfe167",
+      "normalizedBytes": 88,
+      "compressedBytes": 87
+    },
+    {
+      "path": "census-delta-final.json.gz",
+      "disposition": "reviewed production source and site delta",
+      "rawSha256": "733b3f1e0ee868e4604f94c5d9246a6db8378c40d3355adba06dd00bab7be6fd",
+      "normalizedSha256": "733b3f1e0ee868e4604f94c5d9246a6db8378c40d3355adba06dd00bab7be6fd",
+      "compressedSha256": "0d80e8b58707b8a8f615ef8243aed2bcc745520dc9caf3f1f0271362fd5b6df1",
+      "normalizedBytes": 693,
+      "compressedBytes": 273
+    },
+    {
+      "path": "inventory-final.log.gz",
+      "disposition": "recorded planning inventory",
+      "rawSha256": "0b2e40a6194cb51b431ad2cbdf58250129e4704b926eb1e11728c197b8f936d1",
+      "normalizedSha256": "0b2e40a6194cb51b431ad2cbdf58250129e4704b926eb1e11728c197b8f936d1",
+      "compressedSha256": "5ec66a737576bb1f1f16ba21e67c2be3af152333c16bbd8929f222df30a828e7",
+      "normalizedBytes": 324,
+      "compressedBytes": 238
+    },
+    {
+      "path": "plan-final.log.gz",
+      "disposition": "planning coverage remains blocked",
+      "rawSha256": "b85f61693d8712017469417fa676f3af6440d79583d07b35ec2f26815963e12f",
+      "normalizedSha256": "b85f61693d8712017469417fa676f3af6440d79583d07b35ec2f26815963e12f",
+      "compressedSha256": "c77f6d4c735d379c532bef0335c3f5e7cfb678728ba97196086d97d8c5649ab7",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "unit.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "7197e418b42ffd28c3eb16510e7edbd51ef69774c6af1a1ae201dd4130910b02",
+      "normalizedSha256": "65990b42baf8dd025c3d69f315c7ba7e8370ac276433219b0b097fb0461ccc58",
+      "compressedSha256": "6e1cb06ad85a64cf273ab5d77eb124b27e64dfc6abe769f243879e8d1f7b60f7",
+      "normalizedBytes": 1104,
+      "compressedBytes": 559
+    },
+    {
+      "path": "unit-verified.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "b436e8a7db3c369b1902ee04025ad129f6cd7c8be131c4fb67e5bb0fdd2232a9",
+      "normalizedSha256": "ed064a74c67a7b115aba15179774d9b77186bb73178b7db0b099788ab92720dc",
+      "compressedSha256": "d0755b1c20aff0976b70855817e76f27c021a10df915d6ab45be1a7dd84bc1b3",
+      "normalizedBytes": 1001,
+      "compressedBytes": 487
+    },
+    {
+      "path": "diagnostics-final.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "876bf2b19132ac682c16258ec699c6024b46a99896ea7f25f90d4f41aa290390",
+      "normalizedSha256": "a6a87650f473f895155e6f4f162fd017a78326e0e6006fd3827488d1edc3f79d",
+      "compressedSha256": "957a1f5c92070056d159fde1f483d8fd863ace820937f54ffdf6ccec8c466c07",
+      "normalizedBytes": 942,
+      "compressedBytes": 484
+    },
+    {
+      "path": "native-sender.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "486910e45ef865600d37052539d440b06fef49ee961087dda342a08a023c359e",
+      "normalizedSha256": "486910e45ef865600d37052539d440b06fef49ee961087dda342a08a023c359e",
+      "compressedSha256": "e0aa94c17e8b7fec30b39372a6fabd85124be52e8541a8abde04463cf235478c",
+      "normalizedBytes": 907,
+      "compressedBytes": 456
+    },
+    {
+      "path": "native-sender-retry.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "7569c90a76a9995e9ea9e746d3d9218bc691fdf633b22b03d9ca454177d41075",
+      "normalizedSha256": "4c1a2a25ee8f455af5dc038c4c6be2e17e3145b38727befe695f9cd67dafee48",
+      "compressedSha256": "cc60cc9d55582b65f1cf7736e34384614cddfd22d3e731913258c5c057114bce",
+      "normalizedBytes": 1372,
+      "compressedBytes": 625
+    },
+    {
+      "path": "native-regressions.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "c7db3f59edabd529484bf8cdf6b8f23324731534624e79eb3b157cde6b2a1992",
+      "normalizedSha256": "c7db3f59edabd529484bf8cdf6b8f23324731534624e79eb3b157cde6b2a1992",
+      "compressedSha256": "5c5eb995a1cc47696a5fda039457090b72e3ab85469e54420aa821336332d647",
+      "normalizedBytes": 3093,
+      "compressedBytes": 1224
+    },
+    {
+      "path": "native-historical.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "3af58f865b1ba914883a985bc86a6ae4a81362ef2e2e2e8bf877ef31308e8783",
+      "normalizedSha256": "3af58f865b1ba914883a985bc86a6ae4a81362ef2e2e2e8bf877ef31308e8783",
+      "compressedSha256": "06278c5bfaf7ebbdd93563095e4392f578007facb7a61e0f08ec5d41b8bf20c1",
+      "normalizedBytes": 1188,
+      "compressedBytes": 476
+    },
+    {
+      "path": "native-sealed-trace.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "e2e8a625826b1397b3ac91f8feb93e4fd89520e75edf6bd5c33dc4711e89870c",
+      "normalizedSha256": "e2e8a625826b1397b3ac91f8feb93e4fd89520e75edf6bd5c33dc4711e89870c",
+      "compressedSha256": "6896f2f696d2eeeca8b05168cf92e4fab6d45910467e88d35f9ce69ca9c11b78",
+      "normalizedBytes": 838,
+      "compressedBytes": 441
+    },
+    {
+      "path": "native-sealed-spool.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "037ca5636bf03be49cabb5cf37165c5594b761532d7fed88ef7ca88f4278e848",
+      "normalizedSha256": "037ca5636bf03be49cabb5cf37165c5594b761532d7fed88ef7ca88f4278e848",
+      "compressedSha256": "b22438d40dfcc23079497a8e3ee1ca20c5122511d8962328fa1e7ae017258694",
+      "normalizedBytes": 838,
+      "compressedBytes": 442
+    },
+    {
+      "path": "native-submitted-final.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "751e249ba975abd6be5332ea0c41b1c560370d182355021d126961757c75ce7b",
+      "normalizedSha256": "6cfab346a221d7c6369b773d18b42eeba4e6e5a0a07962f9a160b9f9a8bd8079",
+      "compressedSha256": "aaf452b0228523820764bd039b49a7c2842da36fd02883fc1b34e8556300172c",
+      "normalizedBytes": 1304,
+      "compressedBytes": 606
+    },
+    {
+      "path": "native-submitted-verified.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "4f21204b0c3f308c4fc11f50e51931800e1d21613a5569dfd545351274cdae8c",
+      "normalizedSha256": "f3baf77379e571783a4bbbd3ad7fb417053a71bd9b731bc92e4beae74e1758e9",
+      "compressedSha256": "b47a70d5117e0dd5999e59103f195c79107c4002e84a3ab1fac2bfabcdaccf18",
+      "normalizedBytes": 1198,
+      "compressedBytes": 596
+    },
+    {
+      "path": "service-final.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "354d82294ed660149c3bab7cbbbac4366f7abb1e2b47406c689d45bde021e888",
+      "normalizedSha256": "2ad8c4f222b180b083862aa74627c8c0748140e22c8bd9fe32d21e7fde9625f9",
+      "compressedSha256": "14a451b4bd96851c6aab56338f601a4e540ef9dc98607634096fc1facc0e6171",
+      "normalizedBytes": 1528,
+      "compressedBytes": 624
+    },
+    {
+      "path": "opaque-count.log.gz",
+      "disposition": "preliminary attempt; not a final passing receipt",
+      "rawSha256": "fe5367a3b1307d5bc37d85b721601b0f5a7929e2d4372c7dad8d0412a9865914",
+      "normalizedSha256": "47f4111f80570f40d48f3e99f02ce0504050964d21092b502ec8fb622aca44a4",
+      "compressedSha256": "7653f5ff51099d94c1898bc6dc69c4aaa8480d5793bd31839bfaf4b5e394c6ec",
+      "normalizedBytes": 1092,
+      "compressedBytes": 544
+    }
+  ],
+  "inputs": [
+    {
+      "path": "account-protocol/diagnostics.ts",
+      "sha256": "cf979d491e84d7f878b91f23e9b9712f854ae6f807db1f884ca191dc40cbbb76"
+    },
+    {
+      "path": "account-protocol/envelope.ts",
+      "sha256": "d03639083738d1841c1202f328900fc07e0807a499b8de2322e7b59eed1a14da"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "0ff77afe6d3923b4f204000564f8fdd80cd9b0456730c8eb6704b161c29f4791"
+    },
+    {
+      "path": "docs/account-crypto/census.json",
+      "sha256": "52a27d8a14042bb98610c7f8df953363c667340273b16c87fc1c986ae9cf273d"
+    },
+    {
+      "path": "docs/account-crypto/constructions.json",
+      "sha256": "e871d7f334016d3d773caa19786815626f7a460018780a3a06a3e9cc382c4b10"
+    },
+    {
+      "path": "scripts/account-sync/run.mjs",
+      "sha256": "f0dd0ba3573a6208b4a2c1f095069ac432b3200e60eb17f649cbc06e846d0005"
+    },
+    {
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "8329ef781adef7759b9d625fae67d03fec736649884aab0cc3eb745b4e4a055b"
+    },
+    {
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "6f2f35454cfd0d1ad9c0617c452d161022304dd589d488bedb743a5286145add"
+    },
+    {
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "47522695a2557e48a92b0d12ec7ca331f75318a1069757f1d55191f41e491882"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f34823fd7aeda773e9d117218391c81b4653b48fc65c31368269d6433b9f970a"
+    },
+    {
+      "path": "src/crdt/accountReceiveDriver.ts",
+      "sha256": "7d5b0bd243aa23994d6dc3579a7ad76f60d6133ae069a30c84beb953839ee06f"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "658d0a72df039b55ef05cb32d10d12a84d32745911aa3597ebbc047f0ad9410f"
+    },
+    {
+      "path": "src/crdt/inboundRecord.ts",
+      "sha256": "13f91ffee20415a9212fea4894c69fd206e0a6e8085343e3eae58482c555ddd2"
+    },
+    {
+      "path": "test/account-receive-driver/native.test.mjs",
+      "sha256": "929752be287f2b54361f9b3da28b44c72bd95a7ba88f217dc4f4552bfafb2114"
+    },
+    {
+      "path": "test/account-receive/browser.ts",
+      "sha256": "0d9dafc1a9bc50ac1e4f43446e03ba0dc5df624a857c6f085c6ec04e9067bd2a"
+    },
+    {
+      "path": "test/account-service-delivery/core.test.mjs",
+      "sha256": "fb2a3d5e1f3234aa2c75a67ff1bf21eec19a52de414cf86c62c8e0db3ca2ced6"
+    },
+    {
+      "path": "test/account-service-delivery/fixtures.mjs",
+      "sha256": "e56bd0be0dfc85ac239bb26cb4b573c71909e95549194a7d41100ce6294d8192"
+    },
+    {
+      "path": "test/account-service-inbound/core.test.mjs",
+      "sha256": "9758fa6d031c9ebe63281d4e0c77249f6704c3c076982c4a22ad563541b33ed4"
+    },
+    {
+      "path": "test/account-sync/fixtures.mjs",
+      "sha256": "b412262dd21a349f3095b31ed14c120b466d0d9a0931aa58afedfd2046997fd2"
+    },
+    {
+      "path": "test/account-sync/native.test.mjs",
+      "sha256": "f79493eac440c3a85450441db8805b4edcd98ebae06d8e743cc1ca68516134b2"
+    },
+    {
+      "path": "test/accountReceiveDriver.test.ts",
+      "sha256": "aedd4b4b8e742a8295dc1ae0f70c5b00462b82315c62c2564ef51763200c9938"
+    },
+    {
+      "path": "test/accountSyncDriver.test.ts",
+      "sha256": "b054479fe98d318813ba89954d0bfca7b031ebc3ea9f67dfbb2852fed04c11c9"
+    },
+    {
+      "path": "test/networkEnvelope.test.ts",
+      "sha256": "0acc65c2f4ded755d806c05085ee2bf6413ed92f2dc75f4f0a69405cc2277f9a"
+    },
+    {
+      "path": "test/spoolBatch.test.ts",
+      "sha256": "a67fd3069491fd79216ead6524304e41ceede46c8aca5ab24d92a5f70046bbf2"
+    }
+  ],
+  "sourcePatch": {
+    "path": "source-patch.diff.gz",
+    "sha256": "a38f7c4f14d0fb17cb37dfdbc995ad23d397958680018fee71e8cf7f574aa3fa",
+    "decodedSha256": "bf8e3f3bdc5311e69d32f3585759ca42b92d2bdf985c28a6f4d66091c4885d88"
+  },
+  "preservation": {
+    "personalPackageFiles": 21,
+    "priorVectorFiles": 31,
+    "l2Sha256": "e053bf287bb8020201d067e2b33e66189920efc9b4bae8e7b3d373266bf65b95"
+  },
+  "review": {
+    "investigator": "fresh read-only pre-edit boundary investigation",
+    "candidateReviewer": "one fresh read-only review before historical pending repair",
+    "followups": [
+      "256-update encrypted-count residual retained and dispositioned",
+      "historical sealed/submitted gap repaired and native-tested"
+    ]
+  }
+}

@@ -1,5 +1,9 @@
 # done — Product Requirements
 
+**Storage amendment 2026-09-08:** persistent workspaces require factor custody from genesis. The
+[storage contract](./storage-contract.md) and [conformance matrix](./storage-conformance.md) define the
+corrected recovery, coverage and failure boundaries.
+
 **Status:** v9 — current and normative. Supersedes v8 in full, consolidating it with the settled product and
 architecture decisions recorded in `docs/sessions.md`.
 **Date:** 2026-08-17
@@ -410,12 +414,20 @@ purpose.
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                            |
 | Next → Scheduled                 | Easy                         | One gesture on the card. Also the only way back under the cap once sync has expanded Next (§4.1).       |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                            |
-| Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action.   |
+| Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
 | Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.           |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
+
+**Product trial, 2026-09-16.** Goals defaults to Copy. A Copy / Move selector shares the three destination
+buttons and returns to Copy after a successful transfer. Move removes only lines that become cards,
+and refuses the entire transfer when the destination cannot accept them all or the selected source
+has changed before admission. One Undo restores the source and removes the destination cards together.
+In either mode, Next is disabled unless every selected item fits on the focused day. A “…” menu beside
+the Copy / Move selector contains workspace Undo, Redo, and Remove selected lines. The menu opens above
+the footer so the destination buttons stay in place and the footer stays at two rows on mobile.
 
 **TRD.** TRD §4.7 (movement operations).
 
@@ -976,7 +988,7 @@ undoable without touching yours.
 
 - **Agent membership requires the owner to have an account.** Admitting an agent changes authorization, only
   the service changes authorization, and a Local workspace has no service. Agents therefore live at Account
-  and the free product has none. That is a real boundary on *Local asks for nothing, ever* — Local asks for
+  and the free product has none. Local already requires its local unlock factor (§7.2); archive portability separately asks for
   nothing and correspondingly delegates nothing.
 - **Edit cryptographically implies read.** Under one symmetric content key per generation, an agent cannot
   construct an encrypted update without the key, and a holder of that key can decrypt the document. So the
@@ -1305,6 +1317,18 @@ labels must carry the difference rather than trying to make two buttons converge
   account grants it can identify. It is the honest "there was never anyone here" action.
 - **Remote revocation** withdraws a device grant but cannot promise erasure on the remote device (§6.5).
 
+**Network login lifetime (operator decision, 2026-10-07).** Lock workspace closes live connections and
+clears unlocked capabilities while preserving this slot's resumable network login. Sign out instead
+disables that resumption; it does not sign out other devices or another person's local slot. A remembered
+login lasts at most **30 days from sign-in**, with no sliding extension from activity or renewal. After
+that, a fresh online passkey check is required for network access, never for continuing otherwise-eligible
+offline reading or editing. Offline sign-out closes the local slot immediately and reports server
+revocation as pending until acknowledged. See the [session design](./account-sessions-subscriptions.md)
+for the construction and its implementation status. When online login is needed, a ready fresh
+combined challenge may let the existing local passkey prompt also establish it. Otherwise local unlock
+proceeds without waiting for the service; later Connect/Reconnect is explicit. The device-lock code,
+local verification and offline access rules remain unchanged (operator decision, 2026-10-07).
+
 **Six local facts these operations act on**, and the first two are the ones an earlier four-object framing
 omitted:
 
@@ -1327,11 +1351,9 @@ the app, so surviving copies are in a notes app, a password manager, a screensho
 this button can reach. A reset says what a person may still be relying on and claims to clear only what it can
 actually see.
 
-**Not promised.** None of this is a guarantee against a hostile person who can execute the app's origin from
-the same browser profile. It is an application and session boundary under the default key-custody tier. The
-optional device lock is what seals persisted content-key custody for that stronger case (§7.2). An untrusted
-handoff uses **remove this account from this device** or the whole-device reset rather than over-reading
-sign-out as erasure.
+**Not promised.** Sign-out is not erasure. Mandatory factor custody protects the declared copied-profile
+case (§7.2), not hostile code in an already unlocked runtime. An untrusted handoff uses **remove this
+account from this device** or whole-device reset, with journal-inclusive resumable cleanup (SC-07).
 
 **Failure and lifecycle.** Four shapes to avoid, all of which have been reached by reasonable-looking
 implementations:
@@ -1413,8 +1435,8 @@ different person opens or creates another slot and exposes none of the first per
 handoff reset removes all slots.
 
 **Reopening a closed slot is local and requires proof.** Account enrollment leaves an offline-verifiable
-slot-unlock binding on the device. Reopening requires proof of the same account credential, plus the optional
-device-lock factor if that slot uses one; knowing that a closed slot exists is not enough. That proof reopens
+slot-unlock binding on the device. Reopening requires proof of the same account credential, plus the required
+local content factor; knowing that a closed slot exists is not enough. That proof reopens
 already-local state and grants **no relay token, no account session and no authorization change.** When the
 service is reachable it separately authenticates the account and restores those network capabilities. This
 separation is why account session and local slot are different axes, and it preserves offline local use after
@@ -1729,13 +1751,14 @@ drafts:
 | Property                                               | Answer                        |
 | ------------------------------------------------------ | ----------------------------- |
 | Persisted user content is ciphertext                   | **Always, from first run**    |
-| Opening it requires a **user-held factor**             | Optional, per device (§7.2)   |
+| Opening it requires a **user-held factor**             | Required at persistent genesis and cold start (§7.2) |
 | Plaintext exists in memory while the workspace is open | Yes, unavoidably              |
-| A copied or executable profile is resisted             | Only on the device-lock tier  |
+| A copied profile without its external factor is resisted | Required; supported-browser custody tests gate the claim |
 
-**What the user sees.** Nothing. Local genesis mints the first content key and a separate local-custody key
-alongside the principal, device and actor. No prompt, no account, no factor. *Local asks for nothing, ever*
-survives intact.
+**What the user sees.** Before the first persistent edit, Local confirms a generated device-lock code
+and installs factor-sealed custody. No account or network is required. Cold start asks for a local
+unlock; a supported authenticator can provide an additional convenience seal. Local no longer promises
+promptless launch. Explain that losing the last factor and independent readable copy can be final loss.
 
 **The subject is every app-managed store**, not the main database alone — encrypting one of them is theatre:
 
@@ -1745,17 +1768,15 @@ survives intact.
 | The synchronous crash journal | Each update, written synchronously so a page kill between transaction and commit cannot lose it | Encrypted too — see below, this is the sharp edge                              |
 | Any persistent derived index | The derived text of everything searchable                                     | May ship **only** when its on-disk representation is encrypted (§10 below)                             |
 
-**Not promised — and this scoping sentence travels with the property everywhere it is described.** **The
-default key-custody tier makes no claim against an attacker who can execute the app's origin from a copied
-profile.** The local-custody key handle lives beside the data, so an attacker who can run the app from that
-profile can open it. The gap between *the files are ciphertext* and *your data is protected* is exactly where
-a reader will over-read.
+**The copied-profile promise has a precise boundary.** A supported browser profile without its external
+unlock factor or an already unlocked runtime cannot recover content through the application's persisted
+custody paths, including credentials that receive future keys. Complete-profile tests must substantiate
+that claim; ciphertext scans and non-extractable key flags alone cannot.
 
-**What this buys**, precisely: it defeats **file-level** exposure — an OS backup, a disk image, a synced
-profile directory, a forensic tool, a support person with filesystem access, freed blocks after deletion, and
-a trivially-readable plaintext journal. It defeats **nothing at the code level** — same-origin script, a
-running unlocked app, or an attacker who reconstructs the profile and executes the origin. A scoped property
-honestly described is not theatre; the scoping sentence is what earns it.
+**Not promised.** This does not resist hostile same-origin code after unlock, a compromised OS, memory/swap
+images, historical plaintext, old promptless copies or secure erasure of freed blocks. A generated code
+stored unprotected inside the copied profile is not an independent factor. WebCrypto non-extractability
+restricts API export; it does not guarantee disk-key protection (TRD §13.3).
 
 Two things this retires: *"the plaintext sits in the database on every device by design — that is what
 local-first means"* was doing unearned work. **Local-first means the data is on your device, not that it is
@@ -1775,14 +1796,11 @@ and reader wraps for generations that already exist and is never a whole-documen
 deletion retains locally held keys. Retention expiry changes only hosted custody. Migration rotates to a fresh
 generation. The stores stay ciphertext throughout, and there is nothing to decrypt *to*.
 
-**Key representation is explicit and separate from device credentials.** By default the local-custody key
-persists as a structured-cloned non-extractable key, and every locally needed content-key generation persists
-only as bytes sealed under it. Opening a workspace briefly unseals those bytes and derives domain-separated
-subkeys for the content records, the synchronous journal and any later encrypted index. Promotion, rotation
-and recovery may use the same brief plaintext interval to create reader and recovery wraps before erasing it.
-This is why the content key itself cannot be the structured-cloned non-extractable key: a non-extractable
-target cannot later be wrapped, and one primitive key must not be reused across the asynchronous and
-synchronous constructions.
+**Key representation is explicit and separate from device credentials.** A generated factor seals the
+local-custody root; that root seals retained generation keys and protects every future-content receiving
+credential. Opening briefly unseals keys into live session memory and derives separate store/journal
+subkeys. No persisted promptless or remember-unlocked fallback remains. Account authentication and
+content recovery are distinct roles, never implicit consequences of local unlock.
 
 **TRD.** Three things TRD §6.1 and TRD §6.2 carry. `y-indexeddb` persists raw updates and cannot be retained at
 any layer, so TRD §6.1 replaces it, with each update stored as ciphertext plus format version, nonce, generation
@@ -1795,67 +1813,46 @@ it is the narrow exception to non-extractable runtime keys, and it never receive
 secret or a device private credential. This is the only place the design adds a primitive rather than
 composing reviewed ones, so the independent design review must cover it specifically (§7.12 below).
 
-**One sequencing win, available in one direction only.** Existing installations would need a one-time
-migration — open the old plaintext store, mint the key, write and verify the encrypted store, atomically
-select it, remove the plaintext store only after verification, resume safely after interruption. But the
-transition plan already cuts over from the development installation into a clean first deployment, with the
-carrier still open in question 10 (§10). **If encryption at rest lands before any external user exists, that
-cutover *is* the migration and the state machine is never built, whichever carrier question 10 selects.**
+**Migration machinery and the live cutover are separate.** Stage 1 builds the resumable legacy move: preserve
+the selected plaintext carrier, create factor custody, import and verify the encrypted store, atomically
+select it, and remove legacy carriers only after verification. Execute its kill matrix against a seeded
+installation. Stage 2 performs the author’s real-data cutover after the carrier decision and review 3a;
+shipping before external users exist does not remove Stage 1’s obligation to build and test recovery.
 
-### 7.2 The optional device lock
+### 7.2 Required local unlock
 
-**Invariant.** An optional, **per-device**, user-held factor — PRF- or high-entropy-code-derived — that
-replaces the promptless local-custody handle with factor-gated custody, unlocking at cold start. It
-**strengthens custody of a key that already exists**; it is not the switch that turns encryption on, and no
-default handle capable of opening the envelopes remains once it is enabled.
+**Invariant.** Persistent Local and Account workspaces require factor custody at genesis and local
+unlock at cold start. The generated 125-bit device-lock code is always enrolled; supported PRF factors
+add seals of the same custody key. Code-only use works offline. A user-chosen password is not substituted.
+The factor must be held outside the copied-profile exposure domain. The app does not retain the code
+for redisplay or offer an ordinary disable-lock downgrade.
 
-**What the user sees.** Nothing unless they opt in. Then: one local unlock at cold start.
+**What the user sees.** Confirm the generated code before the first persistent edit; later cold starts
+ask for that code or a supported enrolled authenticator. The ceremony is local, not a network wait.
+Account login neither replaces it nor becomes a requirement for Local. Pending edits are not ordinary
+editor content until durable (SC-01–02); no interface labels provisional input saved.
 
-**Not promised.** The local-custody role neither signs mutations, unwraps the recovery private key, nor
-authenticates an account. Enabling the lock does not make the factor a recovery factor.
+**Failure and lifecycle.** Losing the last Local factor, with no independent readable replica/archive,
+can mean final loss. State this at first run and require code confirmation. At Account, login alone
+still cannot recover content: the separate recovery material or a surviving authorized device can
+re-enroll a new device. Recovery never bypasses this locked slot. Local unlock does not authenticate
+an account, sign mutations or implicitly become an account recovery factor.
 
-**Not promised.** This does not forbid anything the offline principle protects. *Offline is the normal state*
-is about waiting on the **network**, and a local unlock ceremony is not a network wait. What it costs is the
-narrower internal formulation *never awaits a credential* — which is a weaker thing to be bound by, and it is
-why the default tier keeps no ceremony at all.
+**Existing promptless profiles require migration.** Confirm a factor, stage sealed custody, replace
+all promptless future-content receivers, and settle the required forward-generation transition.
+Non-extractable old credentials cannot simply be exported and resealed. The UI reports **protection
+pending** until the durable local custody/receiver/rotation predicates hold. Suspended local writers can
+delay that transition; timeouts do not authorize key retirement. Remote devices can still use an old
+generation until they observe its successor, so the interface does not promise instant global change.
 
-**Failure and lifecycle.** **Forgetting the factor loses this device's readable copy.** At a never-admitted
-Local workspace whose last readable replica this is, that is **total and final** — no service copy, no
-recovery keypair, nobody to ask, all by construction.
+Earlier copies retain their old keys and readable history. Migrating current custody does not erase those
+copies or make prior plaintext confidential. Fresh factor-sealed genesis has no such promptless phase.
+Factor replacement leaves at least one valid enrolled factor. Sign-out/lock clears live capabilities
+through coordinated session teardown; it does not assert forensic erasure of runtime memory.
 
-**That consequence is accepted**, on the same terms as the recovery code and for the same reason: a
-non-custodial promise that cannot be broken by the user is not a non-custodial promise, it is custody by
-another name. What it obliges is the copy at the moment of opting in — *this is the only copy, and we cannot
-open it for you either* — which is the hardest version of the durability disclosure, because at Local there
-is no second copy anywhere to soften it.
-
-The lock changes nothing about account deletion, revocation or migration: the same store and the same locally
-held generations, gated differently.
-
-**TRD.** Derivation, enrollment migration and the copy are **selected** (TRD §13.3, TRD §15 row 13): a
-generated high-entropy code is always enrolled and a platform authenticator, where there is one, is an
-additional seal of the same key rather than an alternative to it. **Two consequences reach this document.**
-Enrolling **rotates the content key**, because otherwise a copy of the profile made beforehand keeps opening
-what is written afterwards — so the promise is *from now on*, and the copy may not imply the lock is
-retroactive.
-
-**And *from now on* begins when that rotation lands, not when the factor is set.** Resealing and rotating are
-two operations and only the first is local: if the rotation has not committed — the service is unreachable,
-the transition was interrupted — a profile copy taken beforehand still opens what is written in the interval.
-The design carries a durable flag for exactly that state, and **the interface may not describe protection from
-copies as active while it is true**. The honest reading is *the lock is on; protection from copies of this
-profile begins when this device next reaches the service*. Clearing the flag at the factor swap is the obvious
-implementation — it is when the visible thing happens — and it claims the guarantee precisely where it does
-not yet hold.
-
-**Enabling the lock also replaces this device's content-receiving credential**, and the reason is that the
-old one cannot be brought under the factor: the browser will not export a non-extractable key, so a promptless
-one stays promptless however the envelopes are resealed. The replacement is created under the lock instead.
-The user sees nothing but the device continuing to work; what changes is that a copy of this profile stops
-receiving **new** content keys — which is what the paragraph above promises, and what resealing alone never
-delivered. And the disclosure at enrollment is **two texts rather than one**, because the consequence at an
-account workspace (this device's copy, and the workspace survives) and at a never-admitted Local workspace
-(everything, finally) are different sizes and must not be described in one sentence.
+**TRD.** §13.3, row 13 and SC-03/04/08 define the construction and resumable migration. §11.1 and
+[storage-conformance.md](./storage-conformance.md) test the actual persisted profile, future receiving
+credentials, first-run and interruption paths. Seal vectors alone do not certify these product behaviors.
 
 ### 7.3 The authority split: the service authorizes, the user recovers
 
@@ -1869,8 +1866,8 @@ service cannot decrypt a workspace under any proof or any order.**
 | **Relay admission token**                  | Open a scoped transport connection for a bounded time                                                    | Decrypt, sign content, admit a device, change capabilities or recover an account                         |
 | **Device or agent signing credential**     | Sign mutations as its authorized actor                                                                    | Receive a content key merely because it can sign; change service authorization                           |
 | **Device or agent wrapping credential**    | Unwrap content keys if read-capable                                                                       | Sign mutations, change authorization, or represent an arbitrary actor                                    |
-| **Promptless local-custody key**           | Open this slot's encrypted content-key envelopes on the default tier                                     | Sign, authenticate an account, unwrap the recovery private key, or travel to another device              |
-| **Optional device-lock custody**           | Replace promptless opening of those envelopes with a user-factor gate                                    | Sign, authenticate an account, or become a recovery factor implicitly                                    |
+| **Legacy promptless local-custody key**           | Open predecessor envelopes only while an explicit migration remains pending                                     | Sign, authenticate an account, unwrap the recovery private key, or travel to another device              |
+| **Required factor custody**           | Open this slot's envelopes through the enrolled user-factor gate                                    | Sign, authenticate an account, or become a recovery factor implicitly                                    |
 | **Certified recipient set**                | Name the devices a new content key may be delivered to, and the recovery key it may be wrapped to        | Be written or amended by the service; grant a capability; decide what the service has accepted           |
 | **Recovery-bootstrap authority**           | Authorize one replacement device when no device survives, from the saved recovery code alone             | Be held by the service; exist outside what that code protects; be used a second time                     |
 | **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign authorization epochs, finalize accepted sets     | Decrypt content, sign a device's mutations, represent its actor, or deliver a content key by authorization alone |
@@ -2210,7 +2207,7 @@ meet every claim in the middle column reopens the decision that forced it.**
 | Leaked relay bearer token                               | Does not decrypt content, sign a mutation, authorize a device or recover an account; it is scoped, expires and can be refused independently       | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry                                              |
 | Compromised authorized device or agent                  | Cannot impersonate another actor, exceed its capability, or survive revocation by inventing authority it was never granted                        | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked           |
 | Revoked credential                                      | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation                                        | Erasure of any plaintext, key or ciphertext it obtained before revocation                                                                   |
-| **Copied browser profile**                              | Persisted user content is ciphertext in every store, so the profile's files yield no plaintext to inspection, backup imaging or a forensic tool. On a PRF-protected device the copied encrypted operational-key bytes are unusable without the authenticator; with a device lock, the local content-key envelopes are unusable without the factor | **Protection on the default custody tier against an attacker who can execute the app's origin from the copied profile** — the promptless handle travels with the envelopes and opens them there. Ciphertext at rest is a file-level property, not a code-level one |
+| **Copied browser profile** | Required factor custody prevents a supported copied profile without its external factor from opening retained content or receiving successor keys; full-profile tests gate the claim (§7.2) | Live hostile origin code after unlock, OS memory/swap artifacts, historical plaintext, older promptless copies and secure erasure; non-extractability alone proves none of these |
 | Unlocked device or running app                          | After the service revokes its credential and the content key rotates, the attacker cannot extend access into the new generation                   | Protection while the attacker can run the app as the user, read its plaintext or exercise its current device capabilities                    |
 | Same-origin XSS, compromised dependency or bad release  | The recovery private key remains absent during ordinary operation. After hostile code is removed, the service can revoke operational credentials and a clean device can recover content and rotate its keys | Confidentiality or integrity **while** hostile code runs with the app's origin and privileges, including any recovery material entered then. Client-side encryption cannot provide that |
 | All devices and authenticators lost, ciphertext remains | Account recovery restores authorization; the independently stored factor unseals the recovery private key; the hosted copy supplies ciphertext and wraps | Authorization does not decrypt, the recovery factor does not restore the account or missing ciphertext, and no party substitutes for a lost content factor |
@@ -2223,10 +2220,10 @@ brand-new client trusts the service to identify the current head. And **accepted
 authenticated acceptance evidence plus the service's committed ordering (§7.5); a client-supplied timestamp is
 not an answer.
 
-**Copied storage and a running device are different attackers**, and the line between them is drawn by the
-custody tier, not by key storage. The content beside the key is ciphertext in every case, so a copied profile
-yields no plaintext to a reader of *files*. What it still yields on the default tier is the ability to *run*
-the app and open it — the code-level threat, which the optional device lock addresses (§7.2).
+**Copied storage and a running device expose different capabilities.** Ciphertext beside a usable
+persisted opener remains decryptable; a non-extractable API handle alone does not prevent filesystem
+recovery of its underlying key. Required factor custody closes the persisted opening paths within
+§7.2’s supported-profile scope. It does not contain hostile code in an already unlocked runtime.
 
 **One thing is deliberately not required: forward secrecy.** A read-capable device must be able to materialize
 the current workspace, including its accumulated content, which is persisted as ciphertext that device can
@@ -2236,12 +2233,13 @@ would have to reopen the question explicitly.
 
 ### 7.9 Where device secrets live
 
-**Invariant.** Device signing and wrapping private keys are **non-extractable at runtime**, with two honest
-persisted representations:
+**Invariant.** Device signing and wrapping private keys are **non-extractable at runtime**. Persistent custody distinguishes current stores from migration input:
 
-- **Where PRF is absent**, each private key persists as a structured-cloned non-extractable key.
-- **Where PRF is available**, encrypted private-key bytes persist under a PRF-derived wrapping key and are
-  imported as non-extractable runtime keys after unlock.
+- **New persistent credentials** are sealed under required factor custody; a separately role-bound
+  device-key PRF can additionally protect them without adding a promptless route. They are imported as
+  non-extractable runtime keys after unlock.
+- **Legacy promptless credentials** are migration input only and require replacement when they can
+  receive future content keys (SC-08). PRF absence never selects a promptless fallback.
 
 A non-extractable target key is **not** described as "wrapped": wrapping is an export operation and cannot
 wrap a key whose extractability forbids export.
@@ -2251,7 +2249,7 @@ silent one is not.
 
 **This unlock gates sync, not the app.** Reading and writing locally never waits on it, because these
 credentials sign envelopes and receive new keys — they do not open the local store. Local custody is a
-separate role and remains promptless by default (§7.1, §7.2).
+separate role and requires factor unlock at cold start (§7.1, §7.2).
 
 **Not promised.** `extractable: false` is a useful misuse guard, **not an XSS containment boundary.** The
 specification explicitly allows a key to be shared across origins with structured clone and warns that
@@ -2278,7 +2276,7 @@ options, both of them" — not the one that changes the distribution model.
 
 **Four factor roles are distinct even where one authenticator ceremony supplies more than one**, and their
 outputs are domain-separated and never substituted: the account authenticator / local slot verifier, the
-device-key PRF, the optional content device lock, and any optional recovery-factor PRF. Opening a slot is not
+device-key PRF, the required content device lock, and any optional recovery-factor PRF. Opening a slot is not
 creating an account session; unlocking an operational signing key is not recovering the recovery private key;
 and recovering the recovery private key is not an account assertion. Sign-out clears their live outputs with
 the rest of the slot's in-memory state; it does not destroy their persisted representations.
@@ -2475,9 +2473,11 @@ where it cannot test the whole claim, it names what covers the rest.
     use — every database, the journal, and any derived index — is inspected for recognizable content at genesis,
     at Local, at Account, and after deletion, expiry and migration. The journal is checked specifically for an
     unencrypted window between transaction and commit, and the synchronous AEAD against its latency budget on a
-    low-end device. **The complementary negative is asserted rather than omitted**: on the default custody tier
-    a restored profile executing the app's origin **does** open the workspace, and the test records that as
-    expected behaviour so the claim's scope is exercised rather than assumed.
+    low-end device. **Copied-profile custody is tested separately**: without its external factor, a restored
+    supported-browser profile executing the app's origin cannot open retained content or obtain successor keys;
+    with the factor, offline recovery succeeds. A deliberately planted promptless opener must make the attack
+    succeed, proving that the test detects that failure. A plaintext scan alone does not establish this property
+    (§7.2, TRD §11.1, SC-08).
 14. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
     executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
     integrity, service-worker update integrity, cookie attributes and origin checks are tested. **Two halves,
@@ -3100,12 +3100,12 @@ number — so the list is allowed to carry its own answers rather than shrinking
    install is writing*, and those are different questions with different answers. Worth naming properly before
    it reaches the UI (§5.2).
 
-10. **Does the first-deployment cutover accept system attribution for all pre-cutover cards, or does the
-    fidelity archive arrive early and preserve their CRDT identity?** The Markdown export deliberately carries
-    bodies rather than `id`, `author`, `origin` or `createdAt`, and import is a system-actor write (§8.2). Accepting
-    that makes provenance blank before cutover; preserving it pulls the fidelity archive (§8.3) into the cutover.
-    Adding `author` to the Markdown escape format is rejected. **Blocks the first deployment cutover in §10 and
-    nothing else.**
+10. **Selected 2026-09-10: accept system attribution for the author's development cutover.** There is no
+    deployed instance or external user to migrate. Use the existing private importer with Markdown/system
+    semantics; retain content and placement while accepting the metadata losses in §8.2. The fidelity archive
+    stays separate. TRD §15 row 21 is selected; sequencing §5.4 records the operator-assisted procedure and
+    distinguishes its diagnostic packet from a general ZIP import UI. Application integration, conformance
+    and review requirements remain.
 
 **Copy and interaction detail, each attached to a settled decision:**
 
@@ -3119,8 +3119,7 @@ number — so the list is allowed to carry its own answers rather than shrinking
     account-holder and permanent loss, how it is generated, confirmed and replaced *is* the recovery flow**
     (§7.6).
 
-13. **The optional device-lock enrollment flow and its copy**, including the sentence at the moment of opting
-    in: *this is the only copy, and we cannot open it for you either* (§7.2).
+13. **The required local-factor enrollment flow and its copy**, including the first-run explanation: *this is the only copy, and we cannot open it for you either* (§7.2).
 
 14. **The provenance mode's interface** — where the settings toggle lives, and how the off switch surfaces
     while the mode is on (§5.7).

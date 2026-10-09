@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T19:13:18.457Z",
+  "stages": [
+    {
+      "name": "legacy-vectors",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "preparation",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "codec",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private envelope codec, durable-capture preparation, actual Account journal crash reproduction, models and controls. No native spool or relay implementation.",
+  "completedAt": "2026-09-10T19:13:24.677Z"
+}

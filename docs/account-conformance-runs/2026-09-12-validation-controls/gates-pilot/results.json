@@ -1,0 +1,70 @@
+[
+  {
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs",
+      "--dist",
+      "test-results/validation-controls/fresh-build-409fbd0"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.241
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.729
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-retention.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.176
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-selection-status.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.183
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-update-limit.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.181
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-wasm-seal.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.237
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-debts.mjs",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.184
+  },
+  {
+    "command": [
+      "node",
+      "scripts/check-traceability.mjs",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 10.568
+  }
+]

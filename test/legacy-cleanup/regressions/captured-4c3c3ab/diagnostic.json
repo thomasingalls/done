@@ -1,0 +1,31 @@
+{
+  "description": "AssertionError: operation-accepted: Error\n\n'refused' !== 'ok'\n\n    at ok (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/run.mjs:177:10)\n    at clean (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/run.mjs:251:12)\n    at async history (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/run.mjs:429:23)\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async variantRun (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/run.mjs:721:17)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/run.mjs:770:35",
+  "frames": [
+    {
+      "name": "innerFail",
+      "url": "",
+      "line": 145
+    },
+    {
+      "name": "strictEqual",
+      "url": "",
+      "line": 359
+    },
+    {
+      "name": "ok",
+      "url": "",
+      "line": 176
+    },
+    {
+      "name": "clean",
+      "url": "",
+      "line": 250
+    }
+  ],
+  "values": [
+    {
+      "frame": "ok",
+      "result": "{\"history\":null,\"source\":null}"
+    }
+  ]
+}

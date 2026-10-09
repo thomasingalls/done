@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-write-admission.mjs",
+  "script_sha256": "872c841908fd92a87fd45ff6127c63de96a776e6fb80afc75484f55c61d23d83",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T08:02:30.534Z",
+  "finished": "2026-09-11T08:02:30.561Z",
+  "tree": {
+    "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+    "dirty_sha256": "f6a1e9211765de91df8afa1ec98c4d0d1f2bca075274438c9371b92acd1d6570"
+  }
+}

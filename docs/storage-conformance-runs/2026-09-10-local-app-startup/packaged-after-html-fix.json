@@ -1,0 +1,220 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.local-startup.config.ts"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.local-startup.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+        "testIgnore": [],
+        "testMatch": [
+          "**/packaged.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/local-app/packaged.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4181 --strictPort",
+      "url": "http://127.0.0.1:4181/local.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "packaged.spec.ts",
+      "file": "packaged.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "the existing editor still opens from the ordinary shell online and offline",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5434,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.cm-editor').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.cm-editor').first()\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.cm-editor').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.cm-editor').first()\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:16:52",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                      "column": 52,
+                      "line": 16
+                    },
+                    "snippet": "  14 |   await context.setOffline(true);\n  15 |   await page.reload();\n> 16 |   await expect(page.locator('.cm-editor').first()).toBeVisible();\n     |                                                    ^\n  17 |   await expect(page.locator('.local-startup')).toHaveCount(0);\n  18 | });\n  19 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                        "column": 52,
+                        "line": 16
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.cm-editor').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.cm-editor').first()\u001b[22m\n\n\n  14 |   await context.setOffline(true);\n  15 |   await page.reload();\n> 16 |   await expect(page.locator('.cm-editor').first()).toBeVisible();\n     |                                                    ^\n  17 |   await expect(page.locator('.local-startup')).toHaveCount(0);\n  18 | });\n  19 |\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:16:52"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T08:33:38.591Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts/packaged-the-existing-edit-58076-ry-shell-online-and-offline/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                    "column": 52,
+                    "line": 16
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "799fbeebfe2b1a80fa58-a82d8180724e169b501a",
+          "file": "packaged.spec.ts",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "packaged Local entry cold-opens offline without falling back to the legacy shell",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5452,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:40:48",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                      "column": 48,
+                      "line": 40
+                    },
+                    "snippet": "  38 |   await context.setOffline(true);\n  39 |   await page.reload();\n> 40 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');\n     |                                                ^\n  41 |   await page.getByLabel('Device-lock code', { exact: true }).fill(code);\n  42 |   await page.getByRole('button', { name: 'Unlock', exact: true }).click();\n  43 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'ready');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                        "column": 48,
+                        "line": 40
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.local-startup')\nExpected: \u001b[32m\"unlock-required\"\u001b[39m\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.local-startup')\u001b[22m\n\n\n  38 |   await context.setOffline(true);\n  39 |   await page.reload();\n> 40 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');\n     |                                                ^\n  41 |   await page.getByLabel('Device-lock code', { exact: true }).fill(code);\n  42 |   await page.getByRole('button', { name: 'Unlock', exact: true }).click();\n  43 |   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'ready');\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts:40:48"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T08:33:44.574Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts/packaged-packaged-Local-en-ebd7f-ng-back-to-the-legacy-shell/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/packaged.spec.ts",
+                    "column": 48,
+                    "line": 40
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "799fbeebfe2b1a80fa58-e40ffac64d602cc2a034",
+          "file": "packaged.spec.ts",
+          "line": 20,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T08:33:37.955Z",
+    "duration": 12274.740999999998,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

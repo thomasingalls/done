@@ -1,0 +1,2 @@
+test/workspaceAdmission.test.ts(1312,54): error TS2550: Property 'toWellFormed' does not exist on type 'string'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2024' or later.
+test/workspaceAdmission.test.ts(1370,52): error TS2339: Property 'value' does not exist on type 'AdmissionReceipt'.

@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "kind": "signed-review-history-crosswalk",
+  "recordedAt": "2026-09-13",
+  "base": "1372c39f9cd495f75ddf8a438ab314af14df4380",
+  "branch": "refs/heads/codex/encrypted-store-contract-corrections",
+  "backupRef": "refs/heads/codex/pre-sign-review-history-2026-09-13",
+  "oldTip": "6ba7c22b31590f97d561b543d8918219dc279cc5",
+  "signedTip": "3e53b4ad01389de67fc87ff6658ea2cede3b70d9",
+  "tipTree": "84dcadd60384c862a5122d8fbb60d6ae186e5c01",
+  "method": "Signed commit-tree replacements, original exact trees/messages/author/committer metadata and mapped parents; verify each signature, then expected-old-value branch update. No patch replay or global hash replacement.",
+  "commits": [
+    {
+      "old": "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+      "new": "82cb5d5ebe1a39ffd227071d8227d92eed16d411",
+      "tree": "ba63de0a9a62f2441e946945135194bfff3447fc",
+      "oldParent": "1372c39f9cd495f75ddf8a438ab314af14df4380",
+      "newParent": "1372c39f9cd495f75ddf8a438ab314af14df4380",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Measure sync liveness and define verified-view repair boundaries"
+    },
+    {
+      "old": "280221eded8a3fe517310afbca069f8b58d76150",
+      "new": "2623b830822e235ca64ada6efd3437d07b215c05",
+      "tree": "f6c256aa766f2043eca0e9418b2ef5c83ed9a862",
+      "oldParent": "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+      "newParent": "82cb5d5ebe1a39ffd227071d8227d92eed16d411",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Reuse complete verified Account views within the owned lifetime"
+    },
+    {
+      "old": "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+      "new": "f5f166b266d2efec28a914e12f8ff51e7e2a8ce4",
+      "tree": "9bbd181a2c91d12079cf48525bb61f1dde618645",
+      "oldParent": "280221eded8a3fe517310afbca069f8b58d76150",
+      "newParent": "2623b830822e235ca64ada6efd3437d07b215c05",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Reuse verified events and exact content coverage in private sync"
+    },
+    {
+      "old": "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+      "new": "3a6b6a87574c899f14ff261211afe4fb26e5488b",
+      "tree": "23e14a56547f7674339bee1ed68069e1bd975189",
+      "oldParent": "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+      "newParent": "f5f166b266d2efec28a914e12f8ff51e7e2a8ce4",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Keep HTTP waits outside storage order and retry expired reads"
+    },
+    {
+      "old": "f42b4a70b4301ad76545f343bcf185f99c189857",
+      "new": "1bb711b91c9ed7dede6fdd16a8a10fe3e290af9a",
+      "tree": "9d9047568aadfc1622c0d1decb132f54c08c6a99",
+      "oldParent": "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+      "newParent": "3a6b6a87574c899f14ff261211afe4fb26e5488b",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Complete sync liveness with precise wakes and bounded service verification"
+    },
+    {
+      "old": "67304f345f0e852867a49c750858374eff1dce22",
+      "new": "115ab78c2ac961571bb19ff983b1c300bad33898",
+      "tree": "c931799dd20e8718618b27f9f4164019cb378ebc",
+      "oldParent": "f42b4a70b4301ad76545f343bcf185f99c189857",
+      "newParent": "1bb711b91c9ed7dede6fdd16a8a10fe3e290af9a",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Extend privacy evidence through packaged migration and physical carriers"
+    },
+    {
+      "old": "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+      "new": "4ea683f59ab51b0f77f670b1d14577aef241e006",
+      "tree": "d12a34f45a8027f5d2788189b518530fe835fdf5",
+      "oldParent": "67304f345f0e852867a49c750858374eff1dce22",
+      "newParent": "115ab78c2ac961571bb19ff983b1c300bad33898",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Preserve bounded failure diagnostics without granting unsigned authority"
+    },
+    {
+      "old": "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+      "new": "8c0d7a8a85de59e8fc62e307df90e589c375fa8c",
+      "tree": "d766861af29db0c863f6a36e41d6dc0d54dfc524",
+      "oldParent": "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+      "newParent": "4ea683f59ab51b0f77f670b1d14577aef241e006",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Offer authenticated read-only partial Local recovery"
+    },
+    {
+      "old": "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+      "new": "0d7d4caae6de85f8c6208435611c25c43081814a",
+      "tree": "b9b39d47a32a4899c66bbc3deaca3ea97773b8aa",
+      "oldParent": "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+      "newParent": "8c0d7a8a85de59e8fc62e307df90e589c375fa8c",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Schedule owned exact-coverage content maintenance after durable idle"
+    },
+    {
+      "old": "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+      "new": "1fca26e4b3fa2d9edf0e441dd10a140fd2190d50",
+      "tree": "58022622a09f914da0dce2636a5eedb0248b0ce5",
+      "oldParent": "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+      "newParent": "0d7d4caae6de85f8c6208435611c25c43081814a",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Reduce projection cost while preserving complete state checks"
+    },
+    {
+      "old": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+      "new": "9590472780e7d4fdbe381430c547ee7046a43dfc",
+      "tree": "337422a5cd7a300846a0e9eaee1204588c6eae02",
+      "oldParent": "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+      "newParent": "1fca26e4b3fa2d9edf0e441dd10a140fd2190d50",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Reduce retained promotion duplication and preserve exact authentication"
+    },
+    {
+      "old": "409fbd09768561393431378d076bc71939f24ac3",
+      "new": "95bbed762195543c698620ce83b3bce11a1647e8",
+      "tree": "b345a2578d013ba44c6925a12875a54c17e03bbd",
+      "oldParent": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+      "newParent": "9590472780e7d4fdbe381430c547ee7046a43dfc",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Assess Q review addendum and reconcile remaining validation and liveness work"
+    },
+    {
+      "old": "dceec5c40779ae80253a7fa31142e071bd95b558",
+      "new": "024664d9b456bcad3a51f4f2d02e95bca1746c34",
+      "tree": "f59bd3265b134335bc8cb1d084957a5fbf2945e3",
+      "oldParent": "409fbd09768561393431378d076bc71939f24ac3",
+      "newParent": "95bbed762195543c698620ce83b3bce11a1647e8",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Restore reviewed construction inventory and effective validation controls"
+    },
+    {
+      "old": "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+      "new": "4eacfccc3ce22697f881074fc25c8f906d2624ae",
+      "tree": "648563bac0509e96dc0fb41bec9a304f8801aac6",
+      "oldParent": "dceec5c40779ae80253a7fa31142e071bd95b558",
+      "newParent": "024664d9b456bcad3a51f4f2d02e95bca1746c34",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Bind service verification reuse to the authenticated request digest"
+    },
+    {
+      "old": "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+      "new": "284a97a27dc3344fcb7c55a8757a2a41c74fe0b9",
+      "tree": "08377f80124233979e01c63e43b87b1a3a83b8e6",
+      "oldParent": "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+      "newParent": "4eacfccc3ce22697f881074fc25c8f906d2624ae",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Reduce redundant carrier work and preserve the natural sync workload"
+    },
+    {
+      "old": "7cbb063f31102ce1303c74e2d78b03b4956cd42b",
+      "new": "87ed35c9029241010a0fc125793a02de72393447",
+      "tree": "f61d7e203d4092f0d5dfadc2f667685e966cb7d3",
+      "oldParent": "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+      "newParent": "284a97a27dc3344fcb7c55a8757a2a41c74fe0b9",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Batch bounded original sources with durable allocation and exact retry"
+    },
+    {
+      "old": "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+      "new": "4e692bedd423783f2e7237b0b55d1e332513d02b",
+      "tree": "dff18de29c004d40edbaf7c164518a6108267bbf",
+      "oldParent": "7cbb063f31102ce1303c74e2d78b03b4956cd42b",
+      "newParent": "87ed35c9029241010a0fc125793a02de72393447",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Expose receive expiry while preserving bounded automatic recovery"
+    },
+    {
+      "old": "f13bdd1b0995e3122826dc24f1ea0201b805354b",
+      "new": "a38bb6b6610c8f7f9fdf7d2fecd93f58ac83d8c5",
+      "tree": "24df3b42cc4f08562f02875f0495cb80727b5125",
+      "oldParent": "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+      "newParent": "4e692bedd423783f2e7237b0b55d1e332513d02b",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Inventory release validation coverage and preserve explicit execution gaps"
+    },
+    {
+      "old": "f14c68f51b10105374fe911783185be8246c2be1",
+      "new": "568c2a57d295f4eca3faa484378750aaf05ae264",
+      "tree": "dea6fb47b0d8cbc685cffeea247444febe8a6e07",
+      "oldParent": "f13bdd1b0995e3122826dc24f1ea0201b805354b",
+      "newParent": "a38bb6b6610c8f7f9fdf7d2fecd93f58ac83d8c5",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Add bounded validation execution and preserve unresolved release obligations"
+    },
+    {
+      "old": "b9f09847a2790f10f86be9c05f6de26ee4b91738",
+      "new": "a44f09dfa257ab6c79415fcc7ef5a345a4af67a4",
+      "tree": "ec797fd5bbe00640ad2e40c8db301300112854c8",
+      "oldParent": "f14c68f51b10105374fe911783185be8246c2be1",
+      "newParent": "568c2a57d295f4eca3faa484378750aaf05ae264",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate content catalogue with owned native validation"
+    },
+    {
+      "old": "1a86453c6b8cc63a224c6389895a9d4048b2fd2f",
+      "new": "b60a5c74ddfe24cc06912c13197d6567c61833fa",
+      "tree": "7ad45d496d3b237bcac3a9101e5366b413fa22fe",
+      "oldParent": "b9f09847a2790f10f86be9c05f6de26ee4b91738",
+      "newParent": "a44f09dfa257ab6c79415fcc7ef5a345a4af67a4",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate journal catalogue with owned native validation"
+    },
+    {
+      "old": "4fc3af06fc863cc87776cb922b2efc7c49f59e0d",
+      "new": "4eb10714f16a12c30b362c2345c64a26f8892366",
+      "tree": "a4f17da667b1aaf5a2be298c4af03cb1f5a13c65",
+      "oldParent": "1a86453c6b8cc63a224c6389895a9d4048b2fd2f",
+      "newParent": "b60a5c74ddfe24cc06912c13197d6567c61833fa",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate admission catalogue with owned native validation"
+    },
+    {
+      "old": "3f1afc5fff69a15416b3f9767a2d12dbb90d256d",
+      "new": "ad475bc9ab821afe5c81233fc487edb57291f749",
+      "tree": "6a9bca98d837c2ac0cb7996b49441f1f49fcb41d",
+      "oldParent": "4fc3af06fc863cc87776cb922b2efc7c49f59e0d",
+      "newParent": "4eb10714f16a12c30b362c2345c64a26f8892366",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate editor catalogue and repair native runner evidence boundaries"
+    },
+    {
+      "old": "ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a",
+      "new": "de6c65db1ddb805e2d1d2d058e9f949b9e67d4dc",
+      "tree": "0a0dc0ef3a4ead3502fc53386dc70bde3975ac2c",
+      "oldParent": "3f1afc5fff69a15416b3f9767a2d12dbb90d256d",
+      "newParent": "ad475bc9ab821afe5c81233fc487edb57291f749",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate workspace admission catalogue with owned validation"
+    },
+    {
+      "old": "6348b6cc93ca99f9703561c094eb779510e5bade",
+      "new": "4a908b01537e043743bb89c872627fb9fbb5bf66",
+      "tree": "d3f10d4bad746931004ad0e5daa9e9c0c1f8426f",
+      "oldParent": "ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a",
+      "newParent": "de6c65db1ddb805e2d1d2d058e9f949b9e67d4dc",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate owned startup catalogue with bounded validation"
+    },
+    {
+      "old": "be5d6a0f8b7dc5fddbc455e121a7d805460b0cda",
+      "new": "ebefde086e9658aca64a620b2450eac009f88fe8",
+      "tree": "ddaac333ba60174e49c9e73c9349b7aa0e1172da",
+      "oldParent": "6348b6cc93ca99f9703561c094eb779510e5bade",
+      "newParent": "4a908b01537e043743bb89c872627fb9fbb5bf66",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate Local genesis catalogue and byte-array evidence"
+    },
+    {
+      "old": "f1926f960e32c6a96358f193e551d29352c0b261",
+      "new": "d0e982c899cc9e66a8da02de6c3518ebd1c0d8ed",
+      "tree": "dd7c7ff1ee344a0b96e3e9e0110511cb8c97f7a5",
+      "oldParent": "be5d6a0f8b7dc5fddbc455e121a7d805460b0cda",
+      "newParent": "ebefde086e9658aca64a620b2450eac009f88fe8",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate authenticated Local-clear catalogue execution"
+    },
+    {
+      "old": "d65bda01e6e9d0cff984c58b905a6f156af1990a",
+      "new": "893def3e6c05ba19f702ae50aa4b3fa0a1c32d65",
+      "tree": "84e6c01026b60328403181579666a4b7f5eef443",
+      "oldParent": "f1926f960e32c6a96358f193e551d29352c0b261",
+      "newParent": "d0e982c899cc9e66a8da02de6c3518ebd1c0d8ed",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate exact-coverage compaction catalogue execution"
+    },
+    {
+      "old": "2c5f4b95d21b165ad2610d8ddf5b09ff0319eade",
+      "new": "b32f7c24a557f4609751c159fe68b550f001796b",
+      "tree": "bac53496a8f141b920fd131e3a5533780e2b6a03",
+      "oldParent": "d65bda01e6e9d0cff984c58b905a6f156af1990a",
+      "newParent": "893def3e6c05ba19f702ae50aa4b3fa0a1c32d65",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Integrate custody catalogue and owned synthetic profile copies"
+    },
+    {
+      "old": "6ba7c22b31590f97d561b543d8918219dc279cc5",
+      "new": "3e53b4ad01389de67fc87ff6658ea2cede3b70d9",
+      "tree": "84dcadd60384c862a5122d8fbb60d6ae186e5c01",
+      "oldParent": "2c5f4b95d21b165ad2610d8ddf5b09ff0319eade",
+      "newParent": "b32f7c24a557f4609751c159fe68b550f001796b",
+      "signature": "G",
+      "authorAndCommitterPreserved": true,
+      "messageBytesPreserved": true,
+      "message": "Complete lifecycle catalogue adapter and restored-page validation"
+    }
+  ],
+  "signatureVerification": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs",
+  "branchUpdated": true,
+  "intakePatchUnchangedAtSwitch": true,
+  "intakeFilesUnchangedAtSwitch": 11,
+  "otherOriginalRefsUnchangedAtSwitch": 103,
+  "executableBaselineChanges": [
+    {
+      "path": "scripts/private-release/run.mjs",
+      "old": "063cd72",
+      "new": "1fca26e4b3fa2d9edf0e441dd10a140fd2190d50",
+      "sameTree": true,
+      "suffix": ""
+    },
+    {
+      "path": "scripts/private-release/run.mjs",
+      "old": "70e6d5b",
+      "new": "0d7d4caae6de85f8c6208435611c25c43081814a",
+      "sameTree": true,
+      "suffix": ""
+    },
+    {
+      "path": "test/account-ledger-contract/runtime.mjs",
+      "old": "77a2753",
+      "new": "284a97a27dc3344fcb7c55a8757a2a41c74fe0b9",
+      "sameTree": true,
+      "suffix": ":src/crdt/spoolRecord.ts",
+      "loadedSourceSha256": "8932f2863f33b409cceffa184241826146220a9e66117dd17d80672a9ea88321"
+    }
+  ],
+  "preflight": "docs/review/implementation/signing-preflight-2026-09-13.json",
+  "preflightSha256": "09968f896f5df65f39a156a18cc81cf05ee19995186f7ef8bd94c86c442a71e0",
+  "historicalEvidencePolicy": "Original review/intake/scope/source-pin/artifact bytes and commit IDs remain unchanged. This crosswalk proves same trees and signatures, not re-execution. New revision-bound results require current execution.",
+  "reconciliationCommit": "This file accompanies the separate signed review/documentation/baseline reconciliation commit. Its own signature is verified after commit; no self-referential commit hash is embedded.",
+  "validation": {
+    "baseRevision": "3e53b4ad01389de67fc87ff6658ea2cede3b70d9",
+    "inputPatch": "docs/account-conformance-runs/2026-09-13-signed-review-history/validation-input.patch",
+    "inputPatchSha256": "73addb3e4037bb06f417dcc7e82126b242a082b1d707e165af18c128c0ab73de",
+    "inputOverrides": [
+      {
+        "path": "scripts/private-release/run.mjs",
+        "sha256": "03f2669ca1a2d2429dea077f03aaa3f586b67e9bd3da2e0cc73b7b31288f915b"
+      },
+      {
+        "path": "test/account-ledger-contract/runtime.mjs",
+        "sha256": "36c79d05f304e6cd2e4cf540f767109b8a6482cb75d88ac7b3999cf904ee7885"
+      },
+      {
+        "path": "docs/release-validation-graph.json",
+        "sha256": "2b0e169e837299b8ffde49bb23094dfb87112c6baf272ed41f025e9bcf50a3df"
+      },
+      {
+        "path": "docs/release-validation-manifest.json",
+        "sha256": "e3355e8d3bffe014762798b01114049f168dc5726e7854940d44636731ff2a44"
+      }
+    ],
+    "node": "v26.8.2",
+    "commands": [
+      {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/inventory.test.mjs",
+          "test/release-validation/manifest.test.mjs",
+          "test/release-validation/stage.test.mjs"
+        ],
+        "exitCode": 0,
+        "passed": 31,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-ledger-contract/batch.test.mjs"
+        ],
+        "exitCode": 0,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    ],
+    "inventoryCountsUnchanged": true,
+    "obligations": 607,
+    "unresolvedObligations": 416,
+    "unresolvedIdsUnchanged": true,
+    "artifacts": [
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-signed-review-history/validation-controls.log.gz",
+        "rawSha256": "7b0c9049cfb99af0c5a945d8fc4a29abc580ed7202e26a6747a738671fe742e7",
+        "normalizedSha256": "7b0c9049cfb99af0c5a945d8fc4a29abc580ed7202e26a6747a738671fe742e7",
+        "archiveSha256": "9f3378ff33bd6ed81219ea9b8a29ff160b5f583cd4477b2447854aaf79d9a3f7",
+        "archiveBytes": 1597
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-signed-review-history/ledger-batch.log.gz",
+        "rawSha256": "a1ee9526c24784338e95a0fc26e47ef41d69d99c5ba442a7d539efb1c690f892",
+        "normalizedSha256": "a1ee9526c24784338e95a0fc26e47ef41d69d99c5ba442a7d539efb1c690f892",
+        "archiveSha256": "14699d7d726139b70035a5a208f9877274228a117a8c74b1a48ebe9ed7bffa1b",
+        "archiveBytes": 359
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-signed-review-history/batch-allocation-controls.json",
+        "sha256": "99a37852292ce9c841aacd1fd3abe7cf17ebef0bc549a1da85fe9700774eed3e",
+        "bytes": 354
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-signed-review-history/batch-vector.json",
+        "sha256": "43160465726c718fc94285213b93245cdd625ea95da855d959fcb73dedab2f1c",
+        "bytes": 1330
+      }
+    ],
+    "limits": "Focused source-equivalence and validation-owner/old-reader checks only. No browser/native campaign, production repair, full style pass or immutable release aggregate. Historical phase receipts retain original source identity."
+  }
+}

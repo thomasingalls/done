@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-11T10:26:20.597Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "scope": "Owned v2 receive HTTP under the ordered editor lifetime. Bounded streams, single outstanding flight, exact request binding, native cancellation and crash/cold retry, generated histories and effective omission controls. No reconnect scheduler, outbound v9 composition, enrollment or personal operations.",
+  "error": "Error: types failed",
+  "completedAt": "2026-09-11T10:26:20.904Z"
+}

@@ -1,0 +1,237 @@
+{
+  "verdict": "complete-no-prohibited-match",
+  "matches": [],
+  "exposures": [],
+  "issues": [],
+  "acquired": [
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite",
+        "path"
+      ],
+      "sha256": "ae884e457a7d04dc440d27ef95332a168aeccc5bdd9f4ee5b68e7c3dae2c4769",
+      "bytes": 16,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite"
+      ],
+      "sha256": "7741d6408a987ed739a00de9a624ef9f78aafede62e3cfe95ae7ef5b1078b78c",
+      "bytes": 8192,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-shm",
+        "path"
+      ],
+      "sha256": "82e2b0665f4de2597459ca2653092e65dbe29ff30a53725bcbf560ac8a9ba902",
+      "bytes": 20,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-shm"
+      ],
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-wal",
+        "path"
+      ],
+      "sha256": "9537124579c84f0f236cab61ec4dc5abb7ba28f1a1dfa0f43e3f9a0fda62a9e1",
+      "bytes": 20,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-wal"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite",
+        "path"
+      ],
+      "sha256": "12e4043ab0be3a74e56af3fecb91946faa65b8790c0e10c8c8c2ae6da7c01d65",
+      "bytes": 11,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite"
+      ],
+      "sha256": "97e8d54f8a7255106f66cf1b213c4a4d7b558d21310b1c2bfedc3d0d526dddda",
+      "bytes": 4096,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-shm",
+        "path"
+      ],
+      "sha256": "cfadeb36dea9f98f40ae3cdea7e9af96e0ab46bbb547248f8c0cab134339b3f8",
+      "bytes": 15,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-shm"
+      ],
+      "sha256": "52efc6a0f63d839e91db3178e490b9c50192465a7b5a68b35b250c2409cddc0b",
+      "bytes": 32768,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-wal",
+        "path"
+      ],
+      "sha256": "7ae71d63a9552e93d8bee893f2cb3ac3157949d1feb5af00b9b39395c6e9d679",
+      "bytes": 15,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-wal"
+      ],
+      "sha256": "6bc0ff73180f1e5a8fa9ccb0143118aa9600ac873a4be93955f4185e51961e2d",
+      "bytes": 399672,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite",
+        "path"
+      ],
+      "sha256": "ae884e457a7d04dc440d27ef95332a168aeccc5bdd9f4ee5b68e7c3dae2c4769",
+      "bytes": 16,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite"
+      ],
+      "sha256": "7741d6408a987ed739a00de9a624ef9f78aafede62e3cfe95ae7ef5b1078b78c",
+      "bytes": 8192,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-shm",
+        "path"
+      ],
+      "sha256": "82e2b0665f4de2597459ca2653092e65dbe29ff30a53725bcbf560ac8a9ba902",
+      "bytes": 20,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-shm"
+      ],
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-wal",
+        "path"
+      ],
+      "sha256": "9537124579c84f0f236cab61ec4dc5abb7ba28f1a1dfa0f43e3f9a0fda62a9e1",
+      "bytes": 20,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "authority.sqlite-wal"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite",
+        "path"
+      ],
+      "sha256": "12e4043ab0be3a74e56af3fecb91946faa65b8790c0e10c8c8c2ae6da7c01d65",
+      "bytes": 11,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite"
+      ],
+      "sha256": "97e8d54f8a7255106f66cf1b213c4a4d7b558d21310b1c2bfedc3d0d526dddda",
+      "bytes": 4096,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-shm",
+        "path"
+      ],
+      "sha256": "cfadeb36dea9f98f40ae3cdea7e9af96e0ab46bbb547248f8c0cab134339b3f8",
+      "bytes": 15,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-shm"
+      ],
+      "sha256": "52efc6a0f63d839e91db3178e490b9c50192465a7b5a68b35b250c2409cddc0b",
+      "bytes": 32768,
+      "type": "file"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-wal",
+        "path"
+      ],
+      "sha256": "7ae71d63a9552e93d8bee893f2cb3ac3157949d1feb5af00b9b39395c6e9d679",
+      "bytes": 15,
+      "type": "path"
+    },
+    {
+      "surface": "service-files",
+      "location": [
+        "core.sqlite-wal"
+      ],
+      "sha256": "6bc0ff73180f1e5a8fa9ccb0143118aa9600ac873a4be93955f4185e51961e2d",
+      "bytes": 399672,
+      "type": "file"
+    }
+  ],
+  "totalBytes": 955186
+}

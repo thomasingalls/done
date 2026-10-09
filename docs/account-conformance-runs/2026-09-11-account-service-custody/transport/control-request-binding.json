@@ -1,0 +1,5 @@
+{
+  "baseline": "unknown",
+  "mutant": "page",
+  "outcome": "Stale signed ciphertext page accepted for a new read nonce."
+}

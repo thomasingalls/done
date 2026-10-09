@@ -1,0 +1,10 @@
+{
+  "answer": null,
+  "diagnostics": [
+    {
+      "operation": "read-v2",
+      "phase": "response",
+      "code": "invalid-request"
+    }
+  ]
+}

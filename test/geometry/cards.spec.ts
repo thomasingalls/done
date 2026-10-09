@@ -1,3 +1,5 @@
+import { test } from '../release-validation/browser-fixture';
+import { openApp } from './openApp';
 /**
  * "Hard constraint: static render and mounted editor must be pixel-identical.
  * Text must not shift when an editor mounts" (TRD §4.4), and §11: "static card
@@ -11,7 +13,7 @@
  * that keeps the restatement honest.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /** One construct per card, so a failure names the construct that broke. */
 const CARDS = [
@@ -72,7 +74,7 @@ const lineBoxes = (
 
 test.describe('static render and mounted editor', () => {
   test('produce identical geometry for every supported construct', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
 
     for (const card of CARDS) await compose(page, card);
@@ -113,7 +115,7 @@ test.describe('static render and mounted editor', () => {
 
 test.describe('the guard on Done cards', () => {
   test('does not become editable by tapping it (PRD §5)', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     await compose(page, 'called the dentist');
 
     const card = page
@@ -129,29 +131,37 @@ test.describe('the guard on Done cards', () => {
 
 test.describe('the three-item cap', () => {
   test('is visible before it is hit, and stops at three (PRD §3)', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const count = page.locator(
       '.day-panel[data-active="true"] .collection[data-section="next"] .collection-count',
     );
     await expect(count).toHaveText('0/3');
 
-    // Master → Next is the deliberate two-step flow; it is also the only way in
-    // from the keyboard, which makes it the one to drive here.
+    // Goals transfers require the whole selection to fit. Copy retains the
+    // source; an oversized selection must not silently copy only a prefix.
     await page.setViewportSize({ width: 1280, height: 900 });
     const master = page.locator('.goals .cm-content');
     await expect(master).toBeVisible();
     await master.click();
     await page.keyboard.insertText('one\ntwo\nthree\nfour');
 
-    await page.keyboard.down('Shift');
-    for (let index = 0; index < 3; index++) await page.keyboard.press('ArrowUp');
-    await page.keyboard.up('Shift');
+    await master.press('ControlOrMeta+a');
+    const toNext = page.locator('.goals').getByRole('button', { name: 'Next', exact: true });
+    await expect(toNext).toBeDisabled();
+    await expect(count).toHaveText('0/3');
 
-    await page.locator('.goals').getByRole('button', { name: 'To Next' }).click();
+    await master.press('ArrowLeft');
+    await master.press('Shift+ArrowDown');
+    await master.press('Shift+ArrowDown');
+    await master.press('Shift+End');
+    await expect(toNext).toBeEnabled();
+    await toNext.click();
 
     await expect(count).toHaveText('3/3');
     await expect(
       page.locator('.day-panel[data-active="true"] .collection[data-section="next"] .card'),
     ).toHaveCount(3);
+    await expect(master).toHaveText('onetwothreefour');
+    await expect(toNext).toBeDisabled();
   });
 });

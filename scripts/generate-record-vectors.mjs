@@ -122,7 +122,7 @@ const deriveStoreKey = async (kg, workspaceId, storeId) => {
  * clone, so `v`, `gen`, `seq` and `kind` are ordinary editable properties to
  * anyone with profile access -- and each of them is a field the load path
  * trusts. `v` selects the suite, `gen` selects the key, `seq` orders the trim,
- * `kind` decides whether a record supersedes every other one. The store id is
+ * `kind` distinguishes an update from a state record eligible for covered-set trim. The store id is
  * bound here as well as in the derivation, so a record that lands in the
  * wrong store fails at the key as well as the AAD (S0-3).
  */
@@ -230,7 +230,7 @@ const RECORD_CASES = [
   },
   {
     name: 'state-record',
-    why: 'Same store, same generation, kind=state. Proves kind is bound: a state record supersedes every record before it, so a record whose kind can be edited can delete the store.',
+    why: 'Same store, same generation, kind=state. Proves kind is bound: a state record may replace only authenticated records its payload covers; editing kind must not turn an update into a trim candidate.',
     v: RECORD_VERSION,
     gen: 1,
     seq: 2,
@@ -611,13 +611,13 @@ const main = async () => {
         '{ v, gen, seq, kind, nonce[12], ct } as a structured clone; ct carries the 16-byte tag',
       key_envelope: '{ v, gen, nonce[12], ct } as a structured clone; ct carries the 16-byte tag',
       nonce:
-        '12 bytes from crypto.getRandomValues() per record, under a 2^32-per-(store, generation) budget counted by the SeqCounter\'s reserved[gen] -- reserved before encryption, so an abandoned invocation is counted; never read from seq (P-3, S0-3)',
+        "12 bytes from crypto.getRandomValues() per record, under a 2^32-per-(store, generation) budget counted by the SeqCounter's reserved[gen] -- reserved before encryption, so an abandoned invocation is counted; never read from seq (P-3, S0-3)",
       store_id:
-        'minted from local randomness at store creation beside the SeqCounter it names; one key per counter, so the nonce budget binds the key it protects for every device count',
+        'minted from local randomness at store creation beside its SeqCounter; accounting assumes an unrewound, unbranched key/counter history (SC-09). Writable import mints a fresh store/key scope; raw profile clones duplicate the counter and are outside that guarantee',
       nonce_caveat:
         'Nonces are fixed inputs in these vectors so the composition is testable. Production generates them randomly; the fixed nonce is not the discipline.',
       l_local_caveat:
-        'L_local is raw bytes here because a vector needs bytes. In production it is a structured-cloned non-extractable CryptoKey with no extractable representation (§13.3).',
+        'L_local is raw fixture bytes for the legacy envelope. Current custody uses factor-sealed L_lock; these bytes test the unchanged envelope construction, not profile confidentiality or lifecycle metadata (SC-08).',
     },
     vectors: records,
     envelopes,

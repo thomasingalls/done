@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="spool persists exact v2 envelopes with separate positions/attempts and retains sources through restart and compaction" time="4.536113" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="position before commit restarts with contiguous positions and counts every fresh invocation" time="4.728614" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="position after commit restarts with contiguous positions and counts every fresh invocation" time="4.809857" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="attempt before commit restarts with contiguous positions and counts every fresh invocation" time="4.908849" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="attempt after commit restarts with contiguous positions and counts every fresh invocation" time="4.816171" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="envelope before commit restarts with contiguous positions and counts every fresh invocation" time="4.826009" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="envelope after commit restarts with contiguous positions and counts every fresh invocation" time="4.877740" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="v7 activation before commit fences old capture without exposing an editor" time="5.075475" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="v7 activation after commit fences old capture without exposing an editor" time="5.024607" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="prepared signer and each original actor bind the actual wire; stored sources remain after mixed work" time="3.566285" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="authenticated-at-rest source-missing corruption refuses restart without writes or new crypto" time="3.400086" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="authenticated-at-rest source-changed corruption refuses restart without writes or new crypto" time="3.343027" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="authenticated-at-rest wire corruption refuses restart without writes or new crypto" time="3.289893" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="authenticated-at-rest attempt corruption refuses restart without writes or new crypto" time="3.284142" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="authenticated-at-rest ledger-missing corruption refuses restart without writes or new crypto" time="3.251849" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="close drains a paused encryption, withholds wire, and prevents stale and queued owners from reusing its grant" time="4.491061" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="a lowered budget fence refuses before the first prohibited encryption" time="3.618436" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="actual controls expose return-before-persistence and invocation-grant reuse after crash" time="7.708071" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="one mixed capsule maps to separate exact actor envelopes, including a pending frame and a large source" time="5.703357" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="generated native crash histories preserve exact wire, source references and an external invocation bound" time="40.899800" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="missing final envelope refuses reopening a previously exposed position" time="3.281717" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="spool metadata activation before commit resumes before admission" time="4.558416" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="spool metadata activation after commit resumes before admission" time="4.616852" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<testcase name="removing the actual witness check reproduces remint after a missing final row" time="3.581292" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-spool/native.test.mjs"/>
+	<!-- tests 24 -->
+	<!-- suites 0 -->
+	<!-- pass 24 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 143672.916 -->
+</testsuites>

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-update-limit.mjs",
+  "script_sha256": "a9e0394b72e6ab5dd1a7df5b41c9ad32c8be64efc0b1fed44d8b19253cd4a626",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T12:01:41.479Z",
+  "finished": "2026-09-11T12:01:41.482Z",
+  "tree": {
+    "head": "83eed0b1acc89f0cdb8b3f05e4ad45ca826bfddd",
+    "dirty_sha256": "5ab1cb85b6cb81936dfc70798f06855fd88e740b666d7b5b533c65e3b1f6ee42"
+  }
+}

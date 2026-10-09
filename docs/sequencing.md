@@ -1,7 +1,7 @@
 # done — Implementation Sequencing
 
 **Status:** The ordering is a proposal. **The three decisions in §5.1–§5.3 are taken** and reflected below;
-the cutover-attribution choice in §5.4 remains open and gates Stage 2.
+the cutover-attribution choice in §5.4 was taken on 2026-09-10: the author accepts the existing Markdown/system import semantics.
 **Date:** 2026-08-17
 **Companion to:** [PRD.md](./PRD.md), [TRD.md](./TRD.md)
 **Current position:** [progress.md](./progress.md) — this document does not say which stage is running.
@@ -16,8 +16,7 @@ working. There is one place where the two disagree, and §3.4 argues for taking 
 
 **Most of the ordering is not a decision.** §5.1–§5.3 record three answers that were the author's to settle and
 are now load-bearing: they fix what *ships* means, split the design review in two, and consciously pass one
-deferred change's only cheap window. §5.4 records a fourth question that remains open and names exactly what it
-blocks. Everything else is a proposal about sequence and dependency.
+deferred change's only cheap window. §5.4 records the author's one-time development migration choice and its accepted metadata losses. Everything else is a proposal about sequence and dependency.
 
 **No durations.** There is no basis for any, and inventing them would make an ordering look like a schedule.
 What this asserts is sequence and dependency.
@@ -84,7 +83,7 @@ TRD §14.6 already makes this argument for one item. It applies to two more:
 | Change                                        | Before the deployment                                  | After                                        |
 | --------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------- |
 | Store keyed by _(principal, workspace)_       | Free — a new install has nothing to rename              | A store-rename migration, run on open        |
-| Content encryption at rest                    | Free — the clean cutover **is** the migration, whichever carrier §5.4 selects | The in-place conversion state machine        |
+| Content encryption at rest                    | Free — the clean cutover **is** the migration, with §5.4’s selected carrier | The in-place conversion state machine        |
 | Root-type day collections (TRD §10.8)         | Two of its four costs never arise                       | All of them, forever                         |
 
 **This is a deadline, not a priority.** None of these makes the product better for the author on the day it
@@ -185,12 +184,23 @@ The work, in an order chosen so that the riskiest change arrives alone and revie
 2. **The local user slot index.** A device-local store, scoping, and enumeration through the index rather than
    `indexedDB.databases()` — a name guessable from a workspace identifier would let a picker enumerate by
    construction (TRD §6.5).
-3. **The key store.** `L_local` as a structured-cloned non-extractable key; `K_g` sealed under it as bytes;
-   domain-separated subkeys.
-4. **The encrypted content store**, replacing `y-indexeddb`: the load path, the record store, and the trim.
-5. **The encrypted journal** and its synchronous AEAD.
-6. **Start-up order inversion:** keys → journal replay → content records → transport.
+3. **The key store and required factor custody.** Confirm the generated code at persistent genesis; seal
+   scoped `L_lock`, generation keys and future receiving credentials. Classify partial/legacy state and
+   resume verified intents. No promptless genesis; v2 custody metadata retains v1 seal bytes (SC-06/08/09).
+4. **The encrypted content store**, replacing `y-indexeddb`: authenticated load, exact covered-set trim,
+   repair-required refusal and resumable journal-inclusive clear (SC-05/07).
+5. **The encrypted journal and admission coordinator.** Synchronous AEAD under shared writer-lifetime
+   permits, exclusive local transitions, receive commit before promotion and ordered private pending input.
+6. **Owned startup:** classify → acquire permit → establish/unlock custody → journal/content replay
+   → application initialization through admission → editor and transport.
 7. **Import**, outside the freeze, outside the cap, attributed to the system actor.
+
+**Corrected acceptance authority (2026-09-08).** [storage-contract.md](./storage-contract.md) and its
+[conformance matrix](./storage-conformance.md) precede synthesis of the three implementations from
+`af8941e`. First consolidate the contracts; then execute one shared production-adapter harness with the
+listed falsifiers; then select/reuse components and build the missing coordinator. The older Stage 0
+models omit important lifecycle state and do not certify these contracts. Applicable C01–C16 cases and
+the registered storage-conformance debt gate L-1 completion.
 
 **Items 3–6 are one change and should land together.** You cannot ship 4 without 3, and 5 without 6 produces a
 journal nobody can replay.
@@ -200,10 +210,13 @@ by what exists. **The property fleet runs with `persist: false`** — it wires u
 awareness, but never touches the store — so the whole suite will keep passing whatever the encrypted store
 does. Two things follow: the encrypted store needs its own tests (TRD §11.1), and it is worth adding a
 `persist: true` variant of the fleet so that convergence and the encrypted round trip are exercised together.
-The harness already takes the flag, so this is cheap.
+`openStore` takes the flag, but the fleet's two entry points — `openReplica` in `test/replicas.ts` and
+`harness` in `test/workspace.ts` — hardcode `persist: false` and would each need it threaded. Still cheap,
+and still a change to the harness rather than a flag already waiting to be set.
 
-**Exit:** a profile snapshot after ordinary use yields no recognizable content in any store, at genesis and
-after; two workspaces open on one device with no cross-writes on any path including teardown and error; a
+**Exit:** applicable production cases in the conformance matrix pass; mandatory-factor genesis and
+reopen succeed with a valid factor and refuse without it; profile scans find no recognizable content at
+genesis and after ordinary use (complete supported-platform copied-profile assurance remains L-4); two workspaces open on one device with no cross-writes on any path including teardown and error; a
 ten-day export imports into a clean store with **every** day present; the latency harness shows the budgets
 holding, or shows a number the budget has been consciously revised to.
 
@@ -211,18 +224,17 @@ holding, or shows a number the budget has been consciously revised to.
 
 Small, one-way, and named separately because it is where §2.1's deadline actually falls.
 
-Use the carrier selected in §5.4 to move from the development installation into the first real deployment —
-Markdown export/import if system attribution is accepted, the fidelity archive otherwise — and turn the old relay
-off. Then the versioning and upgrade story, built preventatively rather than at the first incompatible change.
+Use §5.4's selected Markdown/system semantics for the author's one-time, operator-assisted move from
+the development installation. The existing private importer consumes its verified source recovery packet;
+a general Markdown ZIP import UI and the fidelity archive are not prerequisites. Turn the old relay off. Then the versioning and upgrade story, built preventatively rather than at the first incompatible change.
 
 Two things must be true before this runs. **Stage 1's on-disk shape must be final**, because this is the moment it
-stops being free to change. And, if §5.4 selects Markdown as the carrier, **import must not be gated by the
+stops being free to change. With the selected Markdown carrier, **import must not be gated by the
 freeze**, or a ten-day export silently loses everything older than three days.
 
-**And one thing has to be decided rather than discovered: the Markdown cutover re-attributes the entire
-pre-deployment history to the system actor** (§5.4). The export carries card bodies and nothing the app tracked —
-no `id`, no `author`, no `origin`, no `createdAt` — and import is a system write. **Stage 2 must not begin until
-the choice in §5.4 is recorded; it gates this cutover and neither design review.**
+**The author accepted system attribution on 2026-09-10** (§5.4). The Markdown path does not restore
+`id`, `author`, `origin` or `createdAt`; import is a system write. The recorded choice satisfies the product
+decision gate. Application integration, applicable conformance and independent review are still required.
 
 **Exit:** daily use is on the new installation with encrypted stores; the development relay is off.
 
@@ -340,8 +352,7 @@ Stage 2 cannot run.
 
 ## 5. Decision record
 
-§5.1–§5.3 were the author's to settle and are settled; the stages above already reflect them. **§5.4 is open**,
-and surfaced after the other three while confirming what the export format actually carries.
+§5.1–§5.4 are settled. The fourth decision was taken on 2026-09-10 after clarifying that no deployed instance or external user needs migration.
 
 ### 5.1 *Ships* means someone else's data — decided
 
@@ -399,7 +410,7 @@ decision is effectively final unless one of its triggers fires: the reconstructe
 real use, or something else needing the day map to stop being a concurrently-created container. TRD §10.8 now
 records the pass, so a future reader who notices the lapsed cost finds the reason rather than an oversight.
 
-### 5.4 What happens to attribution at the cutover — open
+### 5.4 What happens to attribution at the cutover — decided
 
 The export carries card **bodies** and nothing the app tracked. `readDayContent` maps a day's collections through
 `cardBody`, so `id`, `author`, `origin` and `createdAt` are all absent, and import is a **system-actor** write
@@ -415,13 +426,21 @@ does not carry — but it is a decision, and Stage 2 is when it gets taken wheth
 | Migrate through the fidelity archive instead        | Pulls a Stage 5 item into Stage 2; the only route that carries identity              |
 | Add `author` to the day files                       | **Rejected.** TRD §4.6 removed hidden per-item identity syntax from the format once already |
 
-**Suggested: accept it**, for a single-user development installation where *who wrote this* has one answer, and
-say so at the time. But note the shape of the alternative before dismissing it: the fidelity archive is the
-artifact that carries CRDT state, TRD §9.3 already owes it, and the cutover is the one moment where having it
-early would pay for itself twice — once for attribution and once for a verified restore of the migration itself.
+**Decision, 2026-09-10: accept system attribution.** The author is the only user, there is no deployed
+instance, and the existing private `markdown-system-v1` importer is sufficient. Preserve written content,
+dates, sections, order and unfiled bodies; accept fresh card IDs, system authorship, absent origin links,
+import timestamps and reset actor/device/settings/history metadata. Retain readable Markdown and raw
+source backups. The importer currently consumes a verified diagnostic recovery packet; a general ZIP-import
+UI and the full fidelity archive are separate work. See [row 21](./selections/row-21-development-cutover.md).
 
-**Status and gate:** open; recorded as TRD §15 row 21 and PRD §11 question 10. It blocks Stage 2 cutover and
-neither review engagement.
+The procedure is operator-assisted, with the author controlling browser interactions and source editing.
+Automatic migration of arbitrary old installations, the VM/policy host, and protocol-reader parity are
+outside this cutover's active scope. Existing import authentication, dependency checks, fresh keys/counters,
+verified selection and cleanup preconditions still apply. A relay snapshot or Markdown backup alone is
+not the existing importer's source-bound recovery input or permission to delete browser storage.
+
+**Status and gate:** selected; TRD §15 row 21 and PRD §11 question 10 record the decision. This removes
+the attribution choice as a blocker, not the application integration, applicable conformance or review gates.
 
 ---
 
@@ -481,5 +500,5 @@ One per stage — the thing that says it is going wrong before the exit criteria
   an open empirical question. It is not: the path's losses are known and enumerable (TRD §9.1), and *lossless*
   was doing two jobs. **Byte-identical round-tripping is a format guarantee, required and testable.
   Workspace-preserving is a different claim and is false** — `id`, `author`, `origin` and `createdAt` do not
-  survive. So §2.1's argument holds for everything on-disk-shaped, and what is genuinely open is the narrower
-  question in §5.4: whether losing those four fields at the cutover is acceptable.
+  survive. So §2.1's argument holds for everything on-disk-shaped. The narrower question in §5.4 — whether
+  losing those four fields is acceptable — was answered yes by the author on 2026-09-10.

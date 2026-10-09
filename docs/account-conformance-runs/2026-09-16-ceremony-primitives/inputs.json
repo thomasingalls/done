@@ -1,0 +1,14 @@
+{
+  "baseline": "192d2a121edc6294c667707b700c8b168730b582",
+  "sha256": {
+    "account-protocol/ceremony.ts": "4a90a2bd5575dd0643ac2d023e1cc50ad2c0bd165c8c4fcb5a54d581cca0ece4",
+    "test/account-ceremony/oracle.mjs": "e3e17f1acb5fa39a6a9c35f3af4b0ed67bfef756bd7162bd68e1a9efbd85f561",
+    "test/account-ceremony/protocol.test.mjs": "dfd113c749b12672f0cc5238eb78877a4238abd0e185e8b54a22b4a64b596781",
+    "test/account-ceremony/controls.test.mjs": "b0e0add5508e1276095035db20856ba1f12039a06c18bb58a85f6793793b0d9d",
+    "test/account-first-authority/registry.test.mjs": "38b56d7e8e82f6320af90f6746c38c1dbecb929ca0c6c4150601614c1b4b022a",
+    "test/vectors/enrollment-ceremony.json": "d7f7184a427f1ebbf178c2e8fa410d0436254790a239c3dc4e0a6b37ff20ef84",
+    "docs/account-crypto/registry.json": "94eda621a72f2effa3914e0cb144ed445dcd5bd2e2f212c7148a603f879554b6",
+    "docs/account-crypto/census.json": "75c7ab3f18bba7b44aab082846c7478cbe4d83b7f63b8ce08b80c1cb70befa1b",
+    "docs/account-crypto/constructions.json": "ab54b3fbb1d2b67fe32682ad9db548560fb05929b357b12ca5cb6c2ebdc5d1c3"
+  }
+}

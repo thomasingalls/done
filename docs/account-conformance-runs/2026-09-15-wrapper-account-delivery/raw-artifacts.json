@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-delivery/owned-incomplete-contract/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-delivery/owned-incomplete-contract/inputs.json.gz",
+    "bytes": 1223729,
+    "sha256": "45565186694c48d39a66d1ae740c167afbe9a3e1238f0ce174b02dca30371a6c"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-delivery/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-delivery/owned/inputs.json.gz",
+    "bytes": 1223738,
+    "sha256": "3af31c8518a51de6c4d34254ac58facee30e0a09972ab5977b094c68224264fd"
+  }
+]

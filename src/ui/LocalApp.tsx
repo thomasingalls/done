@@ -1,0 +1,301 @@
+import { useEffect, useRef, useState } from 'react';
+import { createLocalStartup, type LocalStartup, type LocalStartupState } from './localStartup';
+import type { StartupKind } from '../crdt/startupState';
+import { WorkspaceUiProvider } from './workspaceUi';
+import { App } from './App';
+import { AppUpdateNotice } from './AppUpdateNotice';
+import { LocalRecovery } from './LocalRecovery';
+import { Welcome } from './Welcome';
+import { WorkspaceBackdrop } from './WorkspaceBackdrop';
+import { useCeremonyNavigation } from './ceremonyNavigation';
+
+const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: string }> = {
+  'app-update-required': {
+    title: 'This workspace needs a compatible app',
+    detail:
+      'Saved storage uses an unsupported format or has an unfinished upgrade. Reopen with the app that supports it. Your saved data has been kept.',
+  },
+  'unlock-required': {
+    title: 'Unlock your workspace',
+    detail: 'Enter your device-lock code to open the writing saved in this browser.',
+  },
+  'creation-pending': {
+    title: 'Finish creating your workspace',
+    detail: 'Enter the code you saved to continue the interrupted setup.',
+  },
+  'unlock-failed': {
+    title: 'Could not unlock',
+    detail:
+      'Check your device-lock code and try again. If it is correct, the saved workspace may need repair.',
+  },
+  'migration-required': {
+    title: 'Your existing writing needs migration',
+    detail:
+      'Keep your existing installation and verified export available. Migration must finish before this workspace can open here.',
+  },
+  clearing: {
+    title: 'Workspace removal is unfinished',
+    detail: 'Resume the existing removal procedure before opening this workspace.',
+  },
+  cleared: {
+    title: 'This workspace was removed',
+    detail: 'Its saved removal record prevents accidental recreation.',
+  },
+  'repair-required': {
+    title: 'Your workspace needs attention',
+    detail: 'Saved data is incomplete or unreadable. Keep your backups available for recovery.',
+  },
+  'slot-closed': {
+    title: 'This workspace is closed',
+    detail: 'It cannot be opened from this Local slot.',
+  },
+  'identity-required': {
+    title: 'Workspace identity unavailable',
+    detail:
+      'The saved workspace could not be identified. Keep your backups available for recovery.',
+  },
+  busy: {
+    title: 'Your workspace is busy',
+    detail: 'Another operation is using this workspace. Try again after it finishes.',
+  },
+  unavailable: {
+    title: 'Could not open your workspace',
+    detail:
+      'Browser storage is unavailable or setup did not finish. Try again when it is available.',
+  },
+  unsupported: {
+    title: 'Required browser storage is unavailable',
+    detail: 'Use a browser with secure storage, WebCrypto and Web Locks enabled.',
+  },
+  cancelled: { title: 'Workspace opening stopped', detail: 'Try again when you are ready.' },
+};
+
+const CodeForm = ({
+  confirm,
+  onSubmit,
+}: {
+  confirm: boolean;
+  onSubmit: (code: string) => void;
+}) => {
+  const [code, setCode] = useState('');
+  return (
+    <form
+      className="local-form"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const input = code;
+        setCode('');
+        onSubmit(input);
+      }}
+    >
+      <label htmlFor="local-code">Device-lock code</label>
+      <input
+        id="local-code"
+        type="password"
+        value={code}
+        autoComplete="off"
+        spellCheck={false}
+        autoCapitalize="none"
+        onChange={(event) => setCode(event.target.value)}
+        required
+      />
+      <button type="submit">{confirm ? 'Confirm and create' : 'Unlock'}</button>
+    </form>
+  );
+};
+
+/** Factor-gated startup and lifecycle-owned handoff to the admitted editor. */
+export const LocalApp = ({
+  onConnectAccount,
+  onChooseAccount,
+  beginOnFresh = false,
+}: {
+  onConnectAccount?: (name: string) => void;
+  onChooseAccount?: () => void;
+  beginOnFresh?: boolean;
+} = {}): React.ReactElement => {
+  const [epoch, setEpoch] = useState(0);
+  const [owner, setOwner] = useState<LocalStartup | null>(null);
+  const [state, setState] = useState<LocalStartupState>({ kind: 'checking' });
+  const beginRequested = useRef(beginOnFresh);
+  const navigation = useCeremonyNavigation({
+    base: '/local',
+    step: ['checking', 'working', 'closing'].includes(state.kind) ? null : state.kind,
+    parent: state.kind === 'fresh' ? '/' : '/accounts',
+    visit: (step) => owner?.visit(step) ?? false,
+    close: async () => {
+      await owner?.close();
+    },
+    preserveEntry: beginOnFresh,
+  });
+  useEffect(() => {
+    const current = createLocalStartup();
+    setOwner(current);
+    setState(current.getSnapshot());
+    const unsubscribe = current.subscribe(() => setState(current.getSnapshot()));
+    void current.inspect().then(() => {
+      if (!beginRequested.current) return;
+      beginRequested.current = false;
+      if (current.getSnapshot().kind === 'fresh') void current.begin();
+    });
+    const retire = () => {
+      void current.close().catch(() => {});
+    };
+    const restore = (event: PageTransitionEvent) => {
+      if (event.persisted)
+        void current.close().then(
+          () => setEpoch((value) => value + 1),
+          () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+        );
+    };
+    window.addEventListener('pagehide', retire);
+    window.addEventListener('pageshow', restore);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('pagehide', retire);
+      window.removeEventListener('pageshow', restore);
+      retire();
+    };
+  }, [epoch]);
+  const restart = () => {
+    if (!owner) return;
+    void owner.close().then(
+      () => setEpoch((value) => value + 1),
+      () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+    );
+  };
+  const chooseAccount = () => {
+    if (!owner || !onChooseAccount) return;
+    if (navigation.enabled) {
+      onChooseAccount();
+      return;
+    }
+    void owner
+      .close()
+      .then(onChooseAccount, () => setState({ kind: 'unavailable', reason: 'local-close-failed' }));
+  };
+  let content: React.ReactNode;
+  if (navigation.leaving)
+    return <p role="status">{navigation.error || 'Locking and finishing storage operations…'}</p>;
+  if (state.kind === 'checking' || state.kind === 'working' || state.kind === 'closing') {
+    content = (
+      <>
+        <h1>{state.kind === 'closing' ? 'Locking your workspace…' : 'Opening your workspace…'}</h1>
+        <p role="status">
+          {state.kind === 'closing'
+            ? 'Waiting for storage operations to finish.'
+            : 'Checking encrypted storage.'}
+        </p>
+        {state.kind !== 'closing' && <button onClick={restart}>Cancel</button>}
+      </>
+    );
+  } else if (state.kind === 'save-code') {
+    content = (
+      <>
+        <h1>Save your device-lock code</h1>
+        <p>
+          Store this code somewhere safe outside this browser. You need it to reopen your workspace.
+          Losing it can mean losing access to your writing.
+        </p>
+        <code className="local-generated-code" aria-label="Generated device-lock code">
+          {state.code}
+        </code>
+        <button onClick={() => owner?.saved()}>I saved my code</button>
+        <button className="local-secondary" onClick={restart}>
+          Cancel
+        </button>
+      </>
+    );
+  } else if (state.kind === 'confirm-code') {
+    content = (
+      <>
+        <h1>Confirm your saved code</h1>
+        <p>Enter it from the copy you saved to create your encrypted workspace.</p>
+        {state.error && <p role="alert">{state.error}</p>}
+        <CodeForm
+          confirm
+          onSubmit={(code) => {
+            void owner?.confirm(code);
+          }}
+        />
+        <button className="local-secondary" onClick={restart}>
+          Cancel
+        </button>
+      </>
+    );
+  } else if (state.kind === 'ready' && owner) {
+    return (
+      <WorkspaceUiProvider
+        workspace={state.workspace}
+        actorId={state.actorId}
+        registerEditor={owner.registerEditor}
+        onLock={restart}
+        {...(onChooseAccount ? { onSwitchAccount: chooseAccount } : {})}
+        {...(onConnectAccount
+          ? {
+              onConnectAccount: () => {
+                const name = state.workspace
+                  .read()
+                  .actors.find((actor) => actor.id === state.actorId)?.name;
+                void owner.close().then(
+                  () => onConnectAccount(name === 'You' ? '' : (name ?? '')),
+                  () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+                );
+              },
+            }
+          : {})}
+      >
+        <App />
+      </WorkspaceUiProvider>
+    );
+  } else if (state.kind === 'fresh') {
+    return (
+      <Welcome
+        onCreateLocal={() => owner?.begin()}
+        {...(onChooseAccount ? { onChooseAccount: chooseAccount } : {})}
+      />
+    );
+  } else {
+    if (state.kind === 'ready') return <div className="boot" aria-busy="true" />;
+    const message = messages[state.kind];
+    content = (
+      <>
+        <h1>{message.title}</h1>
+        <p>{message.detail}</p>
+        {['repair-required', 'unlock-failed', 'unavailable'].includes(state.kind) && (
+          <LocalRecovery />
+        )}
+        {['unlock-required', 'creation-pending', 'unlock-failed'].includes(state.kind) ? (
+          <CodeForm
+            confirm={false}
+            onSubmit={(code) => {
+              void owner?.unlock(code);
+            }}
+          />
+        ) : (
+          <button onClick={restart}>Check again</button>
+        )}
+        {onChooseAccount && (
+          <button className="local-secondary" onClick={chooseAccount}>
+            Use another account
+          </button>
+        )}
+      </>
+    );
+  }
+  return (
+    <main className="local-startup workspace-gate" data-state={state.kind}>
+      <WorkspaceBackdrop />
+      <div className="local-startup-panel workspace-gate-panel">
+        <AppUpdateNotice />
+        <span className="local-brand">done</span>
+        {navigation.enabled && (
+          <button className="local-secondary" onClick={navigation.back}>
+            Back
+          </button>
+        )}
+        {content}
+      </div>
+    </main>
+  );
+};

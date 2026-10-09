@@ -1,0 +1,239 @@
+{
+  "schema": 1,
+  "scope": "Planning inventory for private current Local and v9 Account release validation; no execution receipt or public qualification.",
+  "packages": {
+    "development": [
+      "dev",
+      "dev:tailscale",
+      "preview",
+      "test:watch",
+      "lint:fix",
+      "format:fix",
+      "review:status",
+      "remediation:status",
+      "storage:private-cleanup:prepare"
+    ],
+    "generator": ["vectors", "trace", "wasm", "latency:record"],
+    "optional-check": [
+      "test:https",
+      "storage:conformance",
+      "asvs:pin",
+      "wasm:stale",
+      "wasm:size",
+      "review:check",
+      "storage:legacy-host-cold",
+      "storage:legacy-host-cold:harness"
+    ],
+    "required": [
+      "build",
+      "check",
+      "lint",
+      "format",
+      "test:latency",
+      "account:crypto-audit",
+      "account:reservation-durability",
+      "account:isolation",
+      "account:decision-composition",
+      "account:parser-conformance",
+      "account:delivery-oracle",
+      "account:admission-evidence",
+      "account:residue",
+      "account:liveness",
+      "validation:inventory"
+    ],
+    "alias": [
+      "account:activation",
+      "account:admission",
+      "account:admission-bounds",
+      "account:authority",
+      "account:capture",
+      "account:checkpoint-contract",
+      "account:core",
+      "account:counter-contract",
+      "account:crypto-prep",
+      "account:decisions",
+      "account:delivery",
+      "account:driver",
+      "account:editing",
+      "account:first-authority",
+      "account:genesis",
+      "account:handoff",
+      "account:inbound-codecs",
+      "account:inbound-prep",
+      "account:ledger-contract",
+      "account:local-custody",
+      "account:local-provenance",
+      "account:outbound",
+      "account:promotion",
+      "account:promotion-contract",
+      "account:receive",
+      "account:receive-driver",
+      "account:receive-editor",
+      "account:receive-transport",
+      "account:recovery",
+      "account:recovery-contract",
+      "account:service-custody",
+      "account:service-delivery",
+      "account:service-inbound",
+      "account:spool",
+      "account:store-contract",
+      "account:sync",
+      "account:transport",
+      "account:transport-contract",
+      "admission:check",
+      "authority:check",
+      "budget",
+      "debts",
+      "debts:check",
+      "limit:check",
+      "recipient:check",
+      "remediation:check",
+      "retention:check",
+      "status:check",
+      "storage:admission",
+      "storage:app-startup",
+      "storage:app-startup:packaged",
+      "storage:app-upgrades",
+      "storage:clear",
+      "storage:compatibility",
+      "storage:content",
+      "storage:contention",
+      "storage:custody",
+      "storage:delivery",
+      "storage:editor",
+      "storage:genesis",
+      "storage:harness",
+      "storage:journal",
+      "storage:legacy-cleanup",
+      "storage:legacy-cleanup:harness",
+      "storage:legacy-coordinator",
+      "storage:legacy-export",
+      "storage:legacy-host",
+      "storage:legacy-host:harness",
+      "storage:legacy-import",
+      "storage:legacy-selection",
+      "storage:legacy-source",
+      "storage:private-migration",
+      "storage:projection",
+      "storage:properties",
+      "storage:session",
+      "storage:startup",
+      "storage:trim",
+      "storage:workspace",
+      "test",
+      "test:geometry",
+      "trace:check",
+      "typecheck",
+      "vectors:check",
+      "vectors:coverage",
+      "wasm:verify",
+      "yjs:check"
+    ]
+  },
+  "extraRoots": [
+    {
+      "id": "private-privacy",
+      "argv": ["node", "scripts/private-release/run.mjs", "privacy"]
+    },
+    {
+      "id": "private-failures",
+      "argv": ["node", "scripts/private-release/run.mjs", "failures"]
+    },
+    {
+      "id": "private-recovery",
+      "argv": ["node", "scripts/private-release/run.mjs", "recovery"]
+    },
+    {
+      "id": "private-maintenance",
+      "argv": ["node", "scripts/private-release/run.mjs", "maintenance"]
+    },
+    {
+      "id": "private-projection",
+      "argv": ["node", "scripts/private-release/run.mjs", "projection"]
+    },
+    {
+      "id": "private-marker",
+      "argv": ["node", "scripts/private-release/run.mjs", "marker"]
+    },
+    {
+      "id": "validation-controls",
+      "argv": ["node", "scripts/validation-controls/run.mjs"]
+    }
+  ],
+  "campaignExceptions": {
+    "scripts/storage-conformance/run.mjs": "Historical three-candidate tournament at pinned obsolete branches; not current Local/v9 qualification.",
+    "scripts/legacy-host-cold/run.mjs": "Optional obsolete deployment migration/exclusion rehearsal requiring an explicit disposable Lima VM. No deployed previous-version users; not required for the private migration product."
+  },
+  "testExclusions": {
+    "test/account-driver/controls.test.mjs": "Retired standalone v8 product driver; no supported product or personal data. Shared v9 scheduler tests remain required.",
+    "test/account-driver/native-controls.test.mjs": "Retired standalone v8 product driver; no supported product or personal data. Shared v9 scheduler tests remain required.",
+    "test/account-driver/native.test.mjs": "Retired standalone v8 product driver; no supported product or personal data. Shared v9 scheduler tests remain required.",
+    "test/account-transport/native-controls.test.mjs": "Retired standalone v8 product transport; v9 receive/sync and shared protocol contracts remain required.",
+    "test/account-transport/native.test.mjs": "Retired standalone v8 product transport; v9 receive/sync and shared protocol contracts remain required.",
+    "test/account-service-delivery/native.test.mjs": "Retired v8 HTTP client interoperability fixture; current service core/generated/controls/restart and v9 sync interoperability remain required."
+  },
+  "playwright": {
+    "test/geometry": ["playwright.config.ts", "test:geometry"],
+    "test/latency": ["playwright.latency.config.ts", "test:latency"],
+    "test/local-app": [
+      "playwright.local-startup.config.ts",
+      "storage:app-startup",
+      "storage:app-startup:packaged"
+    ],
+    "test/private-migration": [
+      "playwright.private-migration.config.ts",
+      "storage:private-migration"
+    ],
+    "test/storage-compatibility": [
+      "playwright.storage-compatibility.config.ts",
+      "storage:compatibility"
+    ],
+    "test/app-upgrades": ["playwright.app-upgrades.config.ts", "storage:app-upgrades"]
+  },
+  "vectorGenerators": {
+    "test/vectors/account-checkpoint.json": "scripts/account-checkpoint-contract/vectors.mjs",
+    "test/vectors/account-counter.json": "scripts/account-counter-contract/vectors.mjs",
+    "test/vectors/account-credential.json": "scripts/generate-account-credential-vectors.mjs",
+    "test/vectors/account-ledger.json": "scripts/account-ledger-contract/vectors.mjs",
+    "test/vectors/account-local-custody.json": "scripts/account-local-custody/vectors.mjs",
+    "test/vectors/account-local-provenance.json": "scripts/account-local-provenance/vectors.mjs",
+    "test/vectors/account-promotion.json": "scripts/account-promotion-contract/vectors.mjs",
+    "test/vectors/account-recovery.json": "scripts/account-recovery-contract/vectors.mjs",
+    "test/vectors/account-service-custody.json": "scripts/account-service-custody/vectors.mjs",
+    "test/vectors/account-store.json": "scripts/account-store-contract/vectors.mjs",
+    "test/vectors/account-transport.json": "scripts/account-transport-contract/vectors.mjs",
+    "test/vectors/admission-coverage.json": "scripts/account-admission-bounds/vectors.mjs",
+    "test/vectors/algorithm-suite.json": "scripts/generate-suite-vectors.mjs",
+    "test/vectors/antireplay.json": "scripts/generate-antireplay-vectors.mjs",
+    "test/vectors/attribution.json": "scripts/generate-attribution-vectors.mjs",
+    "test/vectors/checkpoint.json": "scripts/generate-checkpoint-vectors.mjs",
+    "test/vectors/device-lock.json": "scripts/generate-device-lock-vectors.mjs",
+    "test/vectors/enrollment-ceremony.json": "scripts/generate-enrollment-vectors.mjs",
+    "test/vectors/envelope.json": "scripts/generate-envelope-vectors.mjs",
+    "test/vectors/finalization.json": "scripts/generate-finalization-vectors.mjs",
+    "test/vectors/first-authority.json": "scripts/account-first-authority/vectors.mjs",
+    "test/vectors/head-discovery.json": "scripts/generate-head-discovery-vectors.mjs",
+    "test/vectors/journal-aead.json": "scripts/generate-journal-vectors.mjs",
+    "test/vectors/package.json": "scripts/generate-package-vectors.mjs",
+    "test/vectors/private-envelope.json": "scripts/generate-private-envelope-vectors.mjs",
+    "test/vectors/record-format.json": "scripts/generate-record-vectors.mjs",
+    "test/vectors/recovery-code.json": "scripts/generate-recovery-vectors.mjs",
+    "test/vectors/transition.json": "scripts/generate-transition-vectors.mjs",
+    "test/vectors/web-security-baseline.json": "scripts/generate-baseline-vectors.mjs"
+  },
+  "limits": [
+    "Direct test-file commands describe proposed unfiltered coverage, not proof that existing wrappers execute those files.",
+    "Historical v8 wrappers remain visible in package wiring; direct v8 product test exclusions do not exclude shared construction/helper tests.",
+    "Runner call sites and diagnostic tokens are source observations, not a semantic proof of timeout, cleanup or executed case counts.",
+    "The next orchestration phase must bind environment, dependencies, arguments, variants, source identity and actual case results before sharing prerequisite results.",
+    "Run any future aggregate in a disposable checkout/build/profile. Current package/Playwright defaults include root dist output."
+  ],
+  "campaignParents": {
+    "scripts/legacy-cleanup/campaign.mjs": "scripts/legacy-cleanup/run.mjs",
+    "scripts/legacy-coordinator/campaign.mjs": "scripts/legacy-coordinator/run.mjs",
+    "scripts/legacy-host/campaign.mjs": "scripts/legacy-host/run.mjs"
+  },
+  "vectorExclusions": {
+    "test/vectors/historical/recovery-code.scalar-only.json": "Historical scalar-only recovery vector preserved for lineage; current mandatory-factor recovery corpora are required."
+  }
+}

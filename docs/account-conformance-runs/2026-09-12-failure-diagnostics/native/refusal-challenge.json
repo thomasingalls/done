@@ -1,0 +1,5 @@
+{
+  "retainedStage": "admission-offered",
+  "noReceiptFromHint": true,
+  "retry": "promotion-receipt"
+}

@@ -1,0 +1,56 @@
+(node:2705) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ promotion original generated failure shrinks against the frozen signed baseline (4.477667ms)
+✔ spool original generated failure shrinks against the frozen signed baseline (0.798125ms)
+✔ frozen baseline accepts sparse credentials/genesis and coerced index metadata; current parser refuses (8.445417ms)
+(node:2726) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ promotion omission control rescues its rejected malformed input (44.046208ms)
+✔ admission omission control rescues its rejected malformed input (42.762625ms)
+✔ source omission control rescues its rejected malformed input (46.866583ms)
+✔ spool omission control rescues its rejected malformed input (41.493375ms)
+✔ delivery omission control rescues its rejected malformed input (41.358584ms)
+✔ submission omission control rescues its rejected malformed input (43.834083ms)
+✔ credentials strictness repair has an effective omission control (43.901583ms)
+✔ actors strictness repair has an effective omission control (47.395ms)
+✔ wraps strictness repair has an effective omission control (42.164917ms)
+✔ promotionId strictness repair has an effective omission control (44.519208ms)
+✔ requestDigest strictness repair has an effective omission control (52.118583ms)
+✔ epochHead strictness repair has an effective omission control (43.253ms)
+(node:2727) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2727) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:2727) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ IndexedDB retains sparse and coercible data; cold parser readback refuses each malformed record (476.913375ms)
+(node:2732) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible stage values must be rejected by the promotion parser (7.096833ms)
+✔ all nested data nodes reject incompatible types across thirteen promotions and admission (3166.840291ms)
+✔ sparse retained arrays cannot skip validation of credentials, actors or recipients (47.982417ms)
+✔ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (15.1595ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (193.157166ms)
+✔ generated admission scalar corruptions execute the direct parser (13.205292ms)
+✔ admission nested genesis limits are checked at the declared byte edges (42.997625ms)
+(node:2736) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated internal length-prefix changes refuse for first and successor submissions (7.886875ms)
+✔ parent framing must be refusal and canonical; nested corruption cannot hide behind a valid outer frame (0.882166ms)
+✔ generated detached signature bytes round-trip structurally without conferring signature authority (49.239333ms)
+(node:2737) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible source hashes must be rejected by the spool decoder (6.798ms)
+✔ generated source nested type mutations reach the decoder (11.106541ms)
+✔ generated spool nested type mutations reach the decoder (7.259667ms)
+✔ generated delivery nested type mutations reach the decoder (7.036709ms)
+✔ decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks (3.679917ms)
+✔ generated valid reference positions and invocation counts preserve exact independent wire bytes (15.290416ms)
+✔ generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse (103.014459ms)
+✔ source wire limit accepts a real near-limit frame and refuses the first larger canonical wire (620.186375ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7244.90575

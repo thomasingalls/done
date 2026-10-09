@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T00:36:59.829Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 125
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-residue/matcher.test.mjs"
+      ],
+      "code": 0,
+      "tests": 10,
+      "timedOut": false,
+      "elapsedMs": 130
+    },
+    {
+      "name": "calibration",
+      "args": [
+        "--test",
+        "test/account-residue/calibration.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 7122
+    },
+    {
+      "name": "lifecycle",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 17466
+    },
+    {
+      "name": "generated",
+      "args": [
+        "--test",
+        "test/account-residue/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 223682
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "test/account-residue",
+        "scripts/account-residue"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 88
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "test/account-residue",
+        "scripts/account-residue",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 106
+    }
+  ],
+  "sourcePins": 871,
+  "directedCheckpoints": 26,
+  "calibrationCells": 144,
+  "generatedHistories": 24,
+  "finishedAt": "2026-09-12T00:41:09.917Z"
+}

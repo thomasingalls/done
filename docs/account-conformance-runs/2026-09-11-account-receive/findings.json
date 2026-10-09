@@ -1,0 +1,59 @@
+{
+  "scope": "Private native v9 receive store for the actual admitted creating credential at epoch 1/generation 1. No editor, receive transport/service route, enrollment or personal activation.",
+  "properties": {
+    "tests": 45,
+    "new_coverage_histories": {
+      "seed": 9172026,
+      "runs": 200
+    },
+    "retained_codec_cases": {
+      "signed_inputs": 400,
+      "signed_seed": 9152026,
+      "wire_mutations": 500,
+      "wire_seed": 9162026
+    }
+  },
+  "native": {
+    "tests": 17,
+    "generated_histories": 12,
+    "seed": 9182026,
+    "inputs": "generated-native.json",
+    "result": "passed"
+  },
+  "actual_native_controls": [
+    "coverage",
+    "split",
+    "witness",
+    "stored-page"
+  ],
+  "regression": {
+    "properties": 4,
+    "native_tests": 19,
+    "generated_native_histories": 8,
+    "result": "passed",
+    "capsule": "delivery-regression"
+  },
+  "compatibility_defect": {
+    "finding": "Passing each extension version into the shared startup verifier made a v7 reader refuse v8 at an earlier boundary with a different error. The two existing v8 activation assertions failed; no unsupported editor was returned.",
+    "before": "compatibility-before/native.log",
+    "exact_before_source": "compatibility-before/accountCapture.ts.txt",
+    "repair": "Retain the existing v8 ceiling for all older factories and allow v9 only for the explicit v9 extension. Only that storage-only extension may infer principal from the authenticated marker.",
+    "after": "Both original activation regressions and the complete v8 campaign pass on final source."
+  },
+  "cleanup_review": "Successful verifier plaintext is captured inside the task callback before the task wrapper can reject a late continuation. This was a code-review improvement, not a separately reproduced production failure.",
+  "unit_suite": {
+    "tests": 951,
+    "files": 83,
+    "result": "passed"
+  },
+  "limits": [
+    "Tests use actual admitted synthetic Accounts. Arbitrary test-only envelopes use a disposable credential; they do not establish safe credential cloning or enrollment of another real writer.",
+    "One creating stream only. General baseline/epoch/membership transitions, concurrency, revocation/finalization and coordinated restore remain open.",
+    "No remote editor promotion, automatic receive driver or v2 service route is enabled. The v9 fixture cannot be opened by its older editor factory.",
+    "Whole-ledger and content replay is deliberately unoptimized; retained-event growth and backlog performance remain open.",
+    "Native generated cuts and effective controls are bounded evidence, not a whole-protocol correctness proof. No additional design/implementation counterexample was found by these generators.",
+    "New native waits explicitly await bounded predicates. Existing v8 regression waits retain their historical implementation and are not credited as new polling conformance evidence.",
+    "Full pnpm check and whole debt payment are not claimed. Registered Node runners ran directly.",
+    "Personal release, predecessor dist, browser, factors and server state were not changed."
+  ]
+}

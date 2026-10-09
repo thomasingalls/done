@@ -1,0 +1,178 @@
+{
+  "seed": 9812027,
+  "histories": [
+    {
+      "side": "before",
+      "compact": false,
+      "answers": [
+        {
+          "kind": "finalized",
+          "position": 2
+        },
+        {
+          "kind": "accepted",
+          "position": 1
+        },
+        {
+          "kind": "junk",
+          "position": 2
+        },
+        {
+          "kind": "accepted",
+          "position": 2
+        },
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "conflict",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "before",
+      "compact": false,
+      "answers": [
+        {
+          "kind": "junk",
+          "position": 2
+        },
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "refused",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "before",
+      "compact": false,
+      "answers": [
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "junk",
+          "position": 1
+        },
+        {
+          "kind": "conflict",
+          "position": 2
+        },
+        {
+          "kind": "refused",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "after",
+      "compact": true,
+      "answers": [
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "refused",
+          "position": 1
+        },
+        {
+          "kind": "finalized",
+          "position": 2
+        },
+        {
+          "kind": "junk",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "after",
+      "compact": true,
+      "answers": [
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "conflict",
+          "position": 1
+        },
+        {
+          "kind": "finalized",
+          "position": 1
+        }
+      ]
+    },
+    {
+      "side": "before",
+      "compact": true,
+      "answers": [
+        {
+          "kind": "conflict",
+          "position": 2
+        },
+        {
+          "kind": "junk",
+          "position": 1
+        },
+        {
+          "kind": "refused",
+          "position": 1
+        },
+        {
+          "kind": "refused",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "after",
+      "compact": false,
+      "answers": [
+        {
+          "kind": "accepted",
+          "position": 2
+        },
+        {
+          "kind": "refused",
+          "position": 1
+        },
+        {
+          "kind": "junk",
+          "position": 2
+        }
+      ]
+    },
+    {
+      "side": "before",
+      "compact": true,
+      "answers": [
+        {
+          "kind": "accepted",
+          "position": 2
+        },
+        {
+          "kind": "finalized",
+          "position": 1
+        },
+        {
+          "kind": "refused",
+          "position": 2
+        },
+        {
+          "kind": "junk",
+          "position": 2
+        }
+      ]
+    }
+  ],
+  "status": "passed"
+}

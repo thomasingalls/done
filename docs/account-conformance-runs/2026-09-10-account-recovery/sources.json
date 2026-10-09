@@ -1,0 +1,94 @@
+[
+  {
+    "path": "package.json",
+    "sha256": "3692e9e24ea8544c2a15c0e3e2619cd1a4271d7116beee93f5d87c92eeda8db8"
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "sha256": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d"
+  },
+  {
+    "path": "tsconfig.node.json",
+    "sha256": "d92571762127713dcb64972414abb14a85f14815a918cacaa05d4391a36e91c7"
+  },
+  {
+    "path": "tsconfig.app.json",
+    "sha256": "46d4bbdb12998f72f2cf19882ab762b147092ae32a795f3b084526644e03b154"
+  },
+  {
+    "path": "src/account/recovery.ts",
+    "sha256": "f14282d44c9d68aef243d3e19df24e21de2f0ff1abd82a172b441bf7a1daddb0"
+  },
+  {
+    "path": "src/account/recoveryOwner.ts",
+    "sha256": "22103790e77b08e32207dc27cc950226827b5cde4a030f3b8e3f736dc112f878"
+  },
+  {
+    "path": "test/account-core/fixtures.mjs",
+    "sha256": "cd1b12cb73e53c2cbd14f297484cb13a93f46e38447d36827bd0e32c5f106746"
+  },
+  {
+    "path": "test/account-core/worker.mjs",
+    "sha256": "17a3958396a504e8ac7897969ad8bc735b224debb541efe67733f2b564bc0fca"
+  },
+  {
+    "path": "scripts/account-recovery/run.mjs",
+    "sha256": "b29d202f9307276466428066810510d8a790bf9d7acd3ef8eb2091d1a5670aab"
+  },
+  {
+    "path": "docs/account-recovery.md",
+    "sha256": "2f931e41435c1aef7cefbfdedb099fd3e10888a7af534578461d409a5927aaf1"
+  },
+  {
+    "path": "account-service/core.ts",
+    "sha256": "a7091cbe525fcf1953c4ee933547776ad72f24e89759b2b4527c75c697b1fd1e"
+  },
+  {
+    "path": "account-service/private-server.ts",
+    "sha256": "15d955b6bd1694452f97ece495e2e5528d297f7f15fe475398ba6f8087ff99ce"
+  },
+  {
+    "path": "account-service/protocol.ts",
+    "sha256": "6282ee3d2e954669456626f28fa82f46fbeac26fa6687c93119a7a6b4c1f83a0"
+  },
+  {
+    "path": "account-service/recovery.ts",
+    "sha256": "73d300d781fcb09f3f15eadd2b58424f8517c171db6c601dff0ac809d33d605e"
+  },
+  {
+    "path": "account-service/webauthn.ts",
+    "sha256": "e16482a2fe46eb3869e65ee77588decac6ea36dfc1df3f8fefec3d05c83ab694"
+  },
+  {
+    "path": "account-protocol/recovery.ts",
+    "sha256": "6acac50d280b25cc14147360a1563f2c944caab731644d51644f0851eacb5f9e"
+  },
+  {
+    "path": "test/account-recovery/controls.test.mjs",
+    "sha256": "30689599b907c5557c327ef6dfa79c08bc9c34756e26c5f04819b4da899065f0"
+  },
+  {
+    "path": "test/account-recovery/core.test.mjs",
+    "sha256": "5268a3afdd09277a98305d5cad4ac9855bc706472113f7597b5f4691ebb033d8"
+  },
+  {
+    "path": "test/account-recovery/crypto.test.mjs",
+    "sha256": "c9c780c29afc6dc8c4a6f37e8323750b4d61ce7b2e196de4a3e54c506be1711a"
+  },
+  {
+    "path": "test/account-recovery/fixtures.mjs",
+    "sha256": "5272918312ae5cb151254151ca816c003f33f68aad141aec485832d2a6f1b031"
+  },
+  {
+    "path": "test/account-recovery/native.test.mjs",
+    "sha256": "5fcd8220441dc942976e810900e1883e23ad35ec07fc6804ed615ef735f39a4e"
+  },
+  {
+    "path": "test/account-recovery/properties.test.mjs",
+    "sha256": "3a76a11fcf6f237a1b8b218a12e7195117eecf9afeea34f6ef69973d95c7249f"
+  },
+  {
+    "path": "test/account-recovery/restart.test.mjs",
+    "sha256": "998a1883efffcb60943b75f32f0a5676792886bcb9a546d145681609f078b3aa"
+  }
+]

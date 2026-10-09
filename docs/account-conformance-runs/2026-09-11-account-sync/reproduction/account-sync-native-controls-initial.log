@@ -1,0 +1,39 @@
+(node:40856) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40856) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:40856) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual final offline submit dispatch control (16844.20575ms)
+✔ actual final pressure submit dispatch control (16290.482ms)
+✖ omitting the union witness admits missing retained receive evidence on cold open (11550.81375ms)
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (17784.34225ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64456.624084
+
+✖ failing tests:
+
+test at test/account-sync/native-controls.test.mjs:80:1
+✖ omitting the union witness admits missing retained receive evidence on cold open (11550.81375ms)
+  page.evaluate: InboundError: Inbound verification refused: prefix
+      at fail (eval at evaluate (:311:30), <anonymous>:45113:9)
+      at verify (eval at evaluate (:311:30), <anonymous>:45190:77)
+      at async verifyInboundLedger (eval at evaluate (:311:30), <anonymous>:45420:19)
+      at async Object.validate (eval at evaluate (:311:30), <anonymous>:45557:28)
+      at async eval (eval at evaluate (:311:30), <anonymous>:27697:23)
+      at syncing (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:100:45)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs:104:11) {
+    log: []
+  }
+
+test at test/account-sync/native-controls.test.mjs:113:1
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (17784.34225ms)
+  Error: Receive predicate timed out
+      at waitPredicate (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/fixtures.mjs:174:9)
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs:140:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

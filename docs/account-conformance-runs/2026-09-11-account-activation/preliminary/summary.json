@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T13:00:42.799Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "reproduction",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "core",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "controls",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "restart",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private first activation: immutable no-assertion reproduction, independent context/WebAuthn signatures, 120 shrinking histories, effective omission controls, schema compatibility, process death, native cancellation and cold receipt recovery. No personal or deployed Account.",
+  "completedAt": "2026-09-11T13:00:59.884Z"
+}

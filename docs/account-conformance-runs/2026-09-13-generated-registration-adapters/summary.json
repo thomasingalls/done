@@ -1,0 +1,286 @@
+{
+  "base": "38e499545b204bdc97258ee26bc5f5c08bf6ba3a",
+  "claim": "Generated-registration adapter selection and previous general files; no whole-wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-13T18-55-16.547Z",
+  "summary": {
+    "schema": 1,
+    "selection": "general-tests",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "startedAt": "2026-09-13T18:55:16.548Z",
+    "input": "b9ab2ef2bcd19d0e97b2ac1fea891be18e897507306e5e3931c1853cda30d223",
+    "completedAt": "2026-09-13T19:07:20.291Z",
+    "stageSummaryArtifact": "stage-summary.json.gz"
+  },
+  "elapsedMs": 723743,
+  "input": {
+    "revision": "38e499545b204bdc97258ee26bc5f5c08bf6ba3a",
+    "sourceDigest": "74504f9d3059a26b218dfe1d3743b541b49cd01e875b746974d4708d083ed3d1",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "sourceCount": 15118,
+    "dependencyCount": 8761,
+    "rawArchiveSha256": "c9fd11ecf3957ca2ac9cee3c355a0c99366ce80af9134f08d32c01065a4f6e06"
+  },
+  "counts": {
+    "selectedFiles": 106,
+    "selectedCases": 1094,
+    "newVitestFiles": 13,
+    "newVitestCases": 209,
+    "newNodeFiles": 1,
+    "newNodeCases": 13,
+    "priorGeneralFiles": 92,
+    "priorGeneralCases": 872,
+    "runnerControls": 106,
+    "generatedControlHistories": 2880,
+    "processControlReceipts": 13,
+    "expectedPassingControlReceipts": 3,
+    "requiredFailureReceipts": 10,
+    "manifestObligations": 611,
+    "unresolved": 311,
+    "unresolvedTestFiles": 152,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 552986
+  },
+  "artifacts": [
+    {
+      "path": "selection-receipts.json.gz",
+      "rawSha256": "8c19f251fbb380fd964715306832604d7777d214519df912bd44fc8e3e8a690e",
+      "normalizedSha256": "155df59ffc84cab5e46349e30915798c79f18670cab155767dd4942fb0d4c75c",
+      "compressedSha256": "9a1ea18f6a06f8ffb1d544adb72a7b2b399fd2998fd2d0552616530b352f244e",
+      "normalizedBytes": 1748386,
+      "compressedBytes": 137163
+    },
+    {
+      "path": "interrupted-receipts.json.gz",
+      "rawSha256": "0438f4b564055535941c8fc42f9c67011ca7c903538bc2c074f073e55b800a8e",
+      "normalizedSha256": "de4a79a52b966197b82be0e750b1dd0c9d7122549ea91a61213af5105f2c7ad1",
+      "compressedSha256": "1678389632f46b94dc0db14b6e5a96ae98fed63a5b4a2384ab61313f4a3a4c62",
+      "normalizedBytes": 824860,
+      "compressedBytes": 72167
+    },
+    {
+      "path": "process-controls.json.gz",
+      "rawSha256": "34584302f1000cefa589bda1bc6e4405439dd127d43965e4d0e3bd6b9048310f",
+      "normalizedSha256": "6d41b73c46280469d1c16f9f39e8da7ed78941e1614748d5a57c4ca2042465fd",
+      "compressedSha256": "dcd3cc42d1681eb221e3b40fc3d7c9f6c8a4111d7432b8b3c37073df539dc3cd",
+      "normalizedBytes": 115220,
+      "compressedBytes": 10782
+    },
+    {
+      "path": "selection.log.gz",
+      "rawSha256": "efbb821aea2d741e7134fd553748dc72d6e7b9c881c89ee59e3a433c17e08d1f",
+      "normalizedSha256": "abaeb6b7a0d0fe92745c1ea7906d3863f67a0e8e4e8f6000efa9c92443b77a74",
+      "compressedSha256": "0e9df532d3956ff332d5d4866995a0a2a3caf3d9e4d28377c0ffd92a1f84e20d",
+      "normalizedBytes": 4866,
+      "compressedBytes": 977
+    },
+    {
+      "path": "selection-interrupted.log.gz",
+      "rawSha256": "2fa8cf4a91fe5ff1c0377a0ed030525c13f31cb4f36769ecbb6aed9cdc26660e",
+      "normalizedSha256": "950d925c2720a1e4e29e2e8d7ca1430020ba15ba007e6139b4edd39a28f36131",
+      "compressedSha256": "6a79d5731446c6368c2a7f0cc0ebeb5d16dc980d142c75bbcb389b642c0a3746",
+      "normalizedBytes": 2529,
+      "compressedBytes": 565
+    },
+    {
+      "path": "pure-final.log.gz",
+      "rawSha256": "4904fb7533b5f6702ab68944dfb8d041505b147aabcc437cbd0fbfd94a3c03e2",
+      "normalizedSha256": "4904fb7533b5f6702ab68944dfb8d041505b147aabcc437cbd0fbfd94a3c03e2",
+      "compressedSha256": "432b1df7837fe143fb43a617c5db7ed15db49d45f8d18b978bc7b1805174af4a",
+      "normalizedBytes": 2997,
+      "compressedBytes": 1363
+    },
+    {
+      "path": "guard-before.log.gz",
+      "rawSha256": "7fc48741ffc52941a7e060d25211509964e3afabdc79da3e0bd22ac983546000",
+      "normalizedSha256": "0e2e5863fce3c12215b81a88ff2e14def7783f3ecba9c270aebd80377e492211",
+      "compressedSha256": "c808047a5a46e0c986cd8c274ffc3ea92934a6db2c91da6bb1f38a72c3316d54",
+      "normalizedBytes": 1807,
+      "compressedBytes": 909
+    },
+    {
+      "path": "owners-final.log.gz",
+      "rawSha256": "2a784e1a9b91d13134bb68f810c33376e85c85816fbfe4451208b34b8e22fe00",
+      "normalizedSha256": "2a784e1a9b91d13134bb68f810c33376e85c85816fbfe4451208b34b8e22fe00",
+      "compressedSha256": "627fc3afb4de0e3cbdf4da4b93ce41e26f2254b0658e663c28a35f6fcacc2d59",
+      "normalizedBytes": 2571,
+      "compressedBytes": 1248
+    },
+    {
+      "path": "pure-first.log.gz",
+      "rawSha256": "6f923eb02c576cf810829443aca7156ce43d84323a54ab2c1491a96084f294fc",
+      "normalizedSha256": "655a2ad703aa628280899d55d93f7c3eac6a518b745668dad28569b23263b14d",
+      "compressedSha256": "bebf18625c08b4eb36eea28685f1d32c20ed067746d2839084c9f3820fb50bb0",
+      "normalizedBytes": 4638,
+      "compressedBytes": 1720
+    },
+    {
+      "path": "pure-repaired.log.gz",
+      "rawSha256": "95db4280166749580f6030d085ae8d31627f25024fc85e585f77ee7da4eaf39a",
+      "normalizedSha256": "95db4280166749580f6030d085ae8d31627f25024fc85e585f77ee7da4eaf39a",
+      "compressedSha256": "f5a86c05156e8e4ea84b97276cd7d5840d92e635c5dfb90afcc6d7c71bd47449",
+      "normalizedBytes": 2861,
+      "compressedBytes": 1304
+    },
+    {
+      "path": "process-controls.log.gz",
+      "rawSha256": "9305b405fea94e01ac4c5b766bafa040c6275c4a48a0502a804c57d3d8e74adb",
+      "normalizedSha256": "9305b405fea94e01ac4c5b766bafa040c6275c4a48a0502a804c57d3d8e74adb",
+      "compressedSha256": "61ff32e9015805395b3309866fcd9b062b22b9784dcf9267a72f3d5067d979fe",
+      "normalizedBytes": 714,
+      "compressedBytes": 433
+    },
+    {
+      "path": "regressions.log.gz",
+      "rawSha256": "e588e2a3b0c7b3af5ec944dfd58aea5c037955f3c449abff4abfed9d171f15c4",
+      "normalizedSha256": "e588e2a3b0c7b3af5ec944dfd58aea5c037955f3c449abff4abfed9d171f15c4",
+      "compressedSha256": "a167ab8a2eda0b702f37b9ebc0dd416fa54ec77671515ee5c7c06ab830de4752",
+      "normalizedBytes": 8588,
+      "compressedBytes": 3132
+    },
+    {
+      "path": "population-preservation.json.gz",
+      "rawSha256": "b481c19ff91bbf5b89053429e71d92ab5d95489be60096857e44e848789b373d",
+      "normalizedSha256": "b481c19ff91bbf5b89053429e71d92ab5d95489be60096857e44e848789b373d",
+      "compressedSha256": "7fccc2982167c58d4765f095333b78a9371af3782e0f5c4e58c5a765b7fb18c3",
+      "normalizedBytes": 263,
+      "compressedBytes": 176
+    },
+    {
+      "path": "gate-typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-signature.log.gz",
+      "rawSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "normalizedSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "compressedSha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "normalizedBytes": 115,
+      "compressedBytes": 134
+    },
+    {
+      "path": "gate-inventory.log.gz",
+      "rawSha256": "c0664afb8e14a915e578d1bb987dd4a9aec54427d16b137ebef283e99206a800",
+      "normalizedSha256": "c0664afb8e14a915e578d1bb987dd4a9aec54427d16b137ebef283e99206a800",
+      "compressedSha256": "d37cad8303e6a85a79b1d0f0186e4155bbb41aa5d3c497cbdc1d7783be1857a7",
+      "normalizedBytes": 323,
+      "compressedBytes": 240
+    },
+    {
+      "path": "gate-manifest.log.gz",
+      "rawSha256": "77349901a93adb6bda9a490d4a03e3957c1e8d58fda860c5f01a5c105c78017c",
+      "normalizedSha256": "77349901a93adb6bda9a490d4a03e3957c1e8d58fda860c5f01a5c105c78017c",
+      "compressedSha256": "dedbd2062262a29ab81883546949da19a5854d3e5d46e29203d40c1ac168939a",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "gate-authority.log.gz",
+      "rawSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "normalizedSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "compressedSha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "normalizedBytes": 750,
+      "compressedBytes": 447
+    },
+    {
+      "path": "gate-release-blocked.log.gz",
+      "rawSha256": "52f2c85d6e6e3313d7d4a02df71495ebb0852d402bf20b300100ca03574c96a6",
+      "normalizedSha256": "1c356b590c2725f79ed91312d7441a8c1c7f1dcfba0b27d42fc1000ffd4792c1",
+      "compressedSha256": "e51fa6e59678f37ef132c8bebc7d9ec52f2822c9c34661cc1d0c74fc157802a2",
+      "normalizedBytes": 1017,
+      "compressedBytes": 558
+    },
+    {
+      "path": "gate-whitespace.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-format.log.gz",
+      "rawSha256": "74254ebd2d01820cc2fc6ba102669233f76c73a0947c5413640e2b8f33dcad5c",
+      "normalizedSha256": "74254ebd2d01820cc2fc6ba102669233f76c73a0947c5413640e2b8f33dcad5c",
+      "compressedSha256": "1d319b3390bc9fef54c6b8854e53a977e2ac4dc9c28825fbf0f415240a281dfd",
+      "normalizedBytes": 113,
+      "compressedBytes": 109
+    },
+    {
+      "path": "gate-inventory-record.log.gz",
+      "rawSha256": "6519d704fbb560744ebc0256e8091e037f6c5ecbd4a2ec4092a072b6f7a03fd0",
+      "normalizedSha256": "6519d704fbb560744ebc0256e8091e037f6c5ecbd4a2ec4092a072b6f7a03fd0",
+      "compressedSha256": "87da6d83697908cf0f0d81052cd551a5560656174b5a035847d6070ab9bfe63b",
+      "normalizedBytes": 324,
+      "compressedBytes": 239
+    },
+    {
+      "path": "gate-manifest-record.log.gz",
+      "rawSha256": "77349901a93adb6bda9a490d4a03e3957c1e8d58fda860c5f01a5c105c78017c",
+      "normalizedSha256": "77349901a93adb6bda9a490d4a03e3957c1e8d58fda860c5f01a5c105c78017c",
+      "compressedSha256": "dedbd2062262a29ab81883546949da19a5854d3e5d46e29203d40c1ac168939a",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "selected-source-pins.json.gz",
+      "rawSha256": "9b2b3f11334b17cd0046bdb17bbdd73ce4e5bdebc0d9b47b9f4be902006749a3",
+      "normalizedSha256": "9b2b3f11334b17cd0046bdb17bbdd73ce4e5bdebc0d9b47b9f4be902006749a3",
+      "compressedSha256": "be733a254f8d6748d9b17abc823c6d3febce278fe1b0d5020b1a5aec569c1ee4",
+      "normalizedBytes": 19279,
+      "compressedBytes": 6102
+    },
+    {
+      "path": "test-preservation.json.gz",
+      "rawSha256": "943809cfd758a1ccd8437ed6a1cffb0cad68264e8d3d08f797d8dd10c172a04a",
+      "normalizedSha256": "943809cfd758a1ccd8437ed6a1cffb0cad68264e8d3d08f797d8dd10c172a04a",
+      "compressedSha256": "325ec4a5cd8f91aeb47a894f6a16b91aec0960590930ffb9091e0548163cf237",
+      "normalizedBytes": 14199,
+      "compressedBytes": 5314
+    },
+    {
+      "path": "stage-summary.json.gz",
+      "rawSha256": "043f33e06fc1685117336de3777c2769c981f5cee408cbe500425c24f8390158",
+      "normalizedSha256": "043f33e06fc1685117336de3777c2769c981f5cee408cbe500425c24f8390158",
+      "compressedSha256": "f7587bfc06d4e31345d6355639acd807dc84bdab22403abb8a24f5f5d48529cd",
+      "normalizedBytes": 25798,
+      "compressedBytes": 6113
+    }
+  ],
+  "sourcePatch": {
+    "path": "source-patch.diff.gz",
+    "sha256": "f603294de946b7f41fe57d9d2c460148e76fdfb4ede0ef8cc4372b8509efd817",
+    "compressedSha256": "b0e4e2f93c3e50fd9fa360568683cdc84adb1532f3e65ffbfa183ba57a6b72ad"
+  },
+  "finalGatesSha256": "5731e6fa6819dbc9aa4a5ae517b7a38305ce86bce99c98996621e87823933e74",
+  "limits": [
+    "First selection intentionally cancelled after fifty passes to tighten data metadata validation; all groups drained. First pure controls had two arithmetic expectation errors; the 872 prior case identities never changed. Before-guard control reproduced a missing stage-metadata restriction; repaired controls and final selection are separate.",
+    "Explicit allowlist: 1 Vitest, 135 Node and 16 Playwright test files still need adapters.",
+    "Node file receipts do not credit optional wrapper artifact postconditions or native campaigns.",
+    "Selected runner, policy, test and helper bytes match execution; subsequent docs/evidence updates are not an immutable aggregate.",
+    "Full raw input archive remains at the recorded local output path; compact evidence preserves its digest and actual dependency/runtime digests.",
+    "Eleven existing native ownership controls retain prior evidence; no browser rerun in this phase.",
+    "Current host timings do not establish a supported-load or platform guarantee."
+  ],
+  "prospectivePacketCeilingBytes": 300000,
+  "preservationSha256": "2dcb296d1e7db3c18677ee3cf0572b65b5011c23a5197886752d9330eb9d87b7"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "original": "scope.json",
+    "archive": "scope.json",
+    "sha256": "7eb44701765f0eb11823c79ed9e5caffe1199a09dac0805fcf199fbaf286fd86",
+    "bytes": 315
+  },
+  {
+    "original": "sources.json",
+    "archive": "sources.json",
+    "sha256": "754c655c39931f6c08174d1b3557f56be2b48922f9b99ba0ad883acac1ec5b20",
+    "bytes": 126794
+  },
+  {
+    "original": "summary.json",
+    "archive": "summary.json",
+    "sha256": "b7967457271c45c2c708c878a7543e6aa486a308118e98f02653f925ef943c36",
+    "bytes": 693
+  },
+  {
+    "original": "types.log",
+    "archive": "types.log",
+    "sha256": "75317e6f80a0f38007237cfbf1f3852ea7ac289f75bf266754c7afdc44646ef9",
+    "bytes": 1806
+  }
+]

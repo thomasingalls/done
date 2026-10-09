@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-11T00:24:52.098Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private v8 durable response and exact first-attempt submission ledger, atomic completeness witness, authority rechecks, proof-derived halt, cancellation, crash histories and controls. No successor minting, dispatch, relay, lineage advancement or personal operations.",
+  "error": "Error: native failed",
+  "completedAt": "2026-09-11T00:27:27.196Z"
+}

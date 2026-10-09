@@ -1,0 +1,27 @@
+(node:81389) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81389) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ admission commits one verified first head and retains Local carriers through cold restart (1270.874875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2109.405625
+
+✖ failing tests:
+
+test at test/account-admission/native.test.mjs:39:1
+✖ admission commits one verified first head and retains Local carriers through cold restart (1270.874875ms)
+  page.evaluate: Error: Retained admission request changed
+      at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+      at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:46:26) {
+    log: []
+  }

@@ -1,0 +1,54 @@
+{
+  "base": "e2c93b05fd7d07d0f15702d8ff01fccb770ebde6",
+  "selection": "browser-application-latency",
+  "integrationGroup": "f17-forks",
+  "rawOutput": "test-results/release-validation/2026-09-14T17-45-53.511Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-application-latency",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "failed",
+    "stages": [
+      {
+        "id": "test:test/latency/latency.spec.ts",
+        "key": "9a208f04aece2f65bc9deee9e64acf3105180672d9e15ffb53aeb66a0850a395",
+        "status": "failed",
+        "elapsedMs": 127335,
+        "cases": null,
+        "reason": "AssertionError [ERR_ASSERTION]: Nonzero or missing exit\n\n1 !== 0\n",
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T17:45:53.513Z",
+    "input": "309eb955617fb7b3c70d923606fc33bbb4ac7be86ead13418f9fcc54f4ca5160",
+    "error": "AssertionError [ERR_ASSERTION]: Stage failed: test:test/latency/latency.spec.ts: AssertionError [ERR_ASSERTION]: Nonzero or missing exit\n\n1 !== 0\n\n\n'failed' !== 'passed'\n",
+    "completedAt": "2026-09-14T17:48:21.769Z"
+  },
+  "counts": {
+    "generalFiles": 260,
+    "generalCases": 2015,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 159,
+    "unresolvedTestFiles": 0
+  },
+  "priorContractsPreserved": 259,
+  "changedPriorContracts": [
+    "test:test/pendingProjection.test.ts"
+  ],
+  "rawInputArchiveSha256": "9a00f75ece3ce482c0cf1777d502417ecaa2e4a6109a88f1554aa1d8af50ee75",
+  "sourceDigest": "28e9d8262e5fb98ce17b2f92a868eb0180fb2bb00745854f78a6b241d6c82ba5",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1057,
+  "scope": "Only src/crdt/yjs.ts changes production behavior. Detached documents use V2 struct compression with paired private encoder/decoder overrides for V1 legacy JSON and independent UTF-8 string semantics. Binary views, including leaves nested inside arbitrary arrays/objects, detach before temporary update bytes are cleared. Pending update bytes, missing-clock maps and pending deletions still copy exactly without replay; runtime redone links and deep undo stacks remain. Both private drafts, per-transition comparison, admission order and persistent/outbound V1 formats are unchanged. The na\u00efve public-codec swap fails three tests; its exact patch and original added test source are retained. The signed baseline fails the new nested-binary regression, establishing a pre-existing V1 temporary-buffer aliasing defect; the repair preserves those values without claiming personal writing was affected. The final unit suite passes 96 files / 1,035 tests. Two hundred generated Unicode/nested-content cases compare with the frozen V1 reference and test isolation both ways; 150 generated undo/redo histories compare repeated forks with an unforked reference and check selection-metadata isolation. Existing 500 fork and 350 comparison histories remain. Pending-map aliasing and omission of redone links each fail their intended control. Native pending and original-order delivery each pass 100 generated histories plus their directed crash/pressure cases. The owned workspace-admission catalogue passes ten cases and four mutations with process drain. Final alternating fork medians are 0.695/0.415, 3.119/1.779 and 36.897/22.252 ms baseline/candidate at 1k/10k/100k items over 100k visible characters. That satisfies the prospective >=20% fork-gain rule with no consistent >10% regression in another stratum. Sequential whole-command timings remain mixed: 13.585/15.210, 26.115/23.815 and 130.601/116.110 ms. Every pilot/final sample and bundle identity survives; the na\u00efve pilot is not evidence for the revised candidate. These are dependent single-host observations, not population or causal estimates. The prospective protocol, refinement prompted by semantic failures, final source patch/pins and negative controls are retained.",
+  "artifactIndexSha256": "842db02f135cff138647ebc65696208ec219fd2e3015531697ce3b7899fc8211",
+  "gatesSha256": "dea9a2f00cb5b49ffc469c7bedafdbcbb3027e13701d04b22cdaa1ed5f5cb7fc",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

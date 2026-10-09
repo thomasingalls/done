@@ -1,0 +1,41 @@
+(node:61455) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61455) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ a competing process completing confirmation between inspection and crypto returns the same receipt (192.150125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 444.569917
+
+✖ failing tests:
+
+test at test/account-core/core.test.mjs:338:1
+✖ a competing process completing confirmation between inspection and crypto returns the same receipt (192.150125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   ok: false,
+  +   refusal: 'invalid-proof'
+  -   accountId: 'GSSgIQCajWClaSWEEYVGhLBkyQTBLIfKRdMx1lClcyY',
+  -   attemptId: 'LLlc9cDRKijwPEVO9ancPzEuM1T4wC9ULkF5xN1NFkY',
+  -   credentialId: 'JkAIoHT-RR_jqSJAy43J8A0hs5Q4hfTY7zXC-wL12YI',
+  -   ok: true,
+  -   receiptId: 'X5hYl4_QSnwY6t3vttac8jb362vcMMx6pdxU0QiJwmY',
+  -   stage: 'credential-confirmed'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs:355:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { ok: false, refusal: 'invalid-proof' },
+    expected: { ok: true, stage: 'credential-confirmed', attemptId: 'LLlc9cDRKijwPEVO9ancPzEuM1T4wC9ULkF5xN1NFkY', accountId: 'GSSgIQCajWClaSWEEYVGhLBkyQTBLIfKRdMx1lClcyY', credentialId: 'JkAIoHT-RR_jqSJAy43J8A0hs5Q4hfTY7zXC-wL12YI', receiptId: 'X5hYl4_QSnwY6t3vttac8jb362vcMMx6pdxU0QiJwmY' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

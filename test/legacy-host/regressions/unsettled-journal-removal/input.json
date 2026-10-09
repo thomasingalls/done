@@ -1,0 +1,74 @@
+{
+  "source": {
+    "input": {
+      "master": " -#\né-a\t--",
+      "suffix": "!🔒\t🔒#\t",
+      "orphan": "-\n-\t🔒",
+      "days": [
+        {
+          "next": ["\n#a -#-\n-", "##é -🔒-", "a", "b\t\n"],
+          "scheduled": ["-\n-", "\n\t"],
+          "done": ["\tb#é 🔒 "],
+          "date": "2026-08-01"
+        },
+        {
+          "next": ["\n#\t\t#\n", "b- "],
+          "scheduled": ["éa--a--bb", "\n"],
+          "done": ["\n#a\n##é\n", "🔒\t\n#é", ""],
+          "date": "2026-08-02"
+        },
+        {
+          "next": [""],
+          "scheduled": [],
+          "done": ["", ""],
+          "date": "2026-08-03"
+        },
+        {
+          "next": ["#b\n\tb🔒\t#a🔒", "\t", "a-##é", "béa\n🔒bébé", "-\na ##"],
+          "scheduled": ["b\t"],
+          "done": [],
+          "date": "2026-08-04"
+        },
+        {
+          "next": ["#\nb", "  \t\n#bbb", ""],
+          "scheduled": ["a é🔒", ""],
+          "done": [" "],
+          "date": "2026-08-05"
+        },
+        {
+          "next": ["-\t\té#-", "bé\n-#\n 🔒", "", "\n \nb"],
+          "scheduled": [],
+          "done": [],
+          "date": "2026-08-06"
+        },
+        {
+          "next": ["a🔒a\né#🔒", " \n-\né \n"],
+          "scheduled": [],
+          "done": [],
+          "date": "2026-08-07"
+        },
+        {
+          "next": ["aé", "  a\n#\n-#b\t"],
+          "scheduled": ["b\n🔒 \tb🔒aa#"],
+          "done": ["\t"],
+          "date": "2026-08-08"
+        },
+        {
+          "next": ["--#a-", "éa ", "- - 🔒 ", "aa\n#b -"],
+          "scheduled": ["a\n🔒#a\n🔒"],
+          "done": ["-   ", "-b\n\n 🔒#", "é-🔒"],
+          "date": "2026-08-09"
+        },
+        {
+          "next": ["ab", "\t🔒b éb\néé"],
+          "scheduled": ["ba\n\t🔒bé\na", " # a-"],
+          "done": [],
+          "date": "2026-08-10"
+        }
+      ]
+    },
+    "disk": [0],
+    "wal": [1, 2]
+  },
+  "commands": ["restart", "readback", "restart", "source-drift"]
+}

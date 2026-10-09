@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="native preparation resumes exact credentials, preserves journal/content/Local identity and restores Local only through abandonment" time="0.732482" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="native before reserved commit interruption preserves reservation and winning keys" time="0.689895" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="native after reserved commit interruption preserves reservation and winning keys" time="1.152153" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="native before prepared commit interruption preserves reservation and winning keys" time="0.925140" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="native after prepared commit interruption preserves reservation and winning keys" time="1.263484" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="generated histories exercise restart, damaged markers, failed reservations, writing and abandonment against an independent ledger" time="10.103112" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="observed MAC fault control admits a substituted preparation identity only with authentication disabled" time="0.692703" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="missing completed counter and exhausted seal budget refuse without replacement or network authority" time="0.496231" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="competing preparers converge; cancellation retains exclusion until native network work settles" time="0.774492" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="recovery owner abandons unsaved or cancelled code through current proof, retains lost replies, and permits a fresh registration" time="0.567428" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="abandonment lost reply and local deletion abort retain exact prepared identity for retry" time="0.761426" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<testcase name="confirmed recovery draft stays owned until Local promotion is abandoned, and unknown Local references refuse reset" time="0.571850" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/native.test.mjs"/>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 12 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 19329.292209 -->
+</testsuites>

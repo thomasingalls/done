@@ -1,0 +1,1083 @@
+{
+  "status": "passed",
+  "baseCommit": "393ef435af72a5c0b8e2d19b410a5d932400f902",
+  "startedAt": "2026-09-11T20:33:41.153Z",
+  "node": "v26.8.2",
+  "scope": "F-05/F-06 aggregate byte-contract execution, all registered helper/native files and recovery/HPKE bridges. No personal server/build, real Account or general release qualification.",
+  "registeredTestFiles": [
+    "test/account-capture/native.test.mjs",
+    "test/account-checkpoint-contract/formats.test.mjs",
+    "test/account-checkpoint-contract/native.test.mjs",
+    "test/account-counter-contract/formats.test.mjs",
+    "test/account-counter-contract/native.test.mjs",
+    "test/account-delivery/native.test.mjs",
+    "test/account-first-authority/formats.test.mjs",
+    "test/account-ledger-contract/controls.test.mjs",
+    "test/account-ledger-contract/formats.test.mjs",
+    "test/account-local-custody/formats.test.mjs",
+    "test/account-local-custody/native.test.mjs",
+    "test/account-local-provenance/formats.test.mjs",
+    "test/account-local-provenance/native.test.mjs",
+    "test/account-promotion-contract/formats.test.mjs",
+    "test/account-promotion-contract/native.test.mjs",
+    "test/account-receive/native.test.mjs",
+    "test/account-recovery-contract/controls.test.mjs",
+    "test/account-recovery-contract/exports.test.mjs",
+    "test/account-recovery-contract/formats.test.mjs",
+    "test/account-service-custody/controls.test.mjs",
+    "test/account-service-custody/exports.test.mjs",
+    "test/account-service-custody/formats.test.mjs",
+    "test/account-spool/native.test.mjs",
+    "test/account-store-contract/formats.test.mjs",
+    "test/account-store-contract/native.test.mjs",
+    "test/account-transport-contract/controls.test.mjs",
+    "test/account-transport-contract/formats.test.mjs"
+  ],
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 365
+    },
+    {
+      "name": "authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 575
+    },
+    {
+      "name": "account-first-authority--registry",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-first-authority--registry.xml",
+        "test/account-first-authority/registry.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 4120,
+      "testPath": "test/account-first-authority/registry.test.mjs",
+      "executedTests": 12
+    },
+    {
+      "name": "account-crypto-prep--contracts",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-crypto-prep--contracts.xml",
+        "test/account-crypto-prep/contracts.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 446,
+      "testPath": "test/account-crypto-prep/contracts.test.mjs",
+      "executedTests": 1
+    },
+    {
+      "name": "account-capture--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-capture--native.xml",
+        "test/account-capture/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 102802,
+      "testPath": "test/account-capture/native.test.mjs",
+      "executedTests": 15
+    },
+    {
+      "name": "account-checkpoint-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-checkpoint-contract--formats.xml",
+        "test/account-checkpoint-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 977,
+      "testPath": "test/account-checkpoint-contract/formats.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-checkpoint-contract--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-checkpoint-contract--native.xml",
+        "test/account-checkpoint-contract/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 73195,
+      "testPath": "test/account-checkpoint-contract/native.test.mjs",
+      "executedTests": 4
+    },
+    {
+      "name": "account-counter-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-counter-contract--formats.xml",
+        "test/account-counter-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 587,
+      "testPath": "test/account-counter-contract/formats.test.mjs",
+      "executedTests": 5
+    },
+    {
+      "name": "account-counter-contract--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-counter-contract--native.xml",
+        "test/account-counter-contract/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 2960,
+      "testPath": "test/account-counter-contract/native.test.mjs",
+      "executedTests": 5
+    },
+    {
+      "name": "account-delivery--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-delivery--native.xml",
+        "test/account-delivery/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 170559,
+      "testPath": "test/account-delivery/native.test.mjs",
+      "executedTests": 19
+    },
+    {
+      "name": "account-first-authority--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-first-authority--formats.xml",
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 679,
+      "testPath": "test/account-first-authority/formats.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-ledger-contract--controls",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-ledger-contract--controls.xml",
+        "test/account-ledger-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 689,
+      "testPath": "test/account-ledger-contract/controls.test.mjs",
+      "executedTests": 5
+    },
+    {
+      "name": "account-ledger-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-ledger-contract--formats.xml",
+        "test/account-ledger-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 1667,
+      "testPath": "test/account-ledger-contract/formats.test.mjs",
+      "executedTests": 7
+    },
+    {
+      "name": "account-local-custody--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-local-custody--formats.xml",
+        "test/account-local-custody/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 1773,
+      "testPath": "test/account-local-custody/formats.test.mjs",
+      "executedTests": 8
+    },
+    {
+      "name": "account-local-custody--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-local-custody--native.xml",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 2686,
+      "testPath": "test/account-local-custody/native.test.mjs",
+      "executedTests": 5
+    },
+    {
+      "name": "account-local-provenance--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-local-provenance--formats.xml",
+        "test/account-local-provenance/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 1008,
+      "testPath": "test/account-local-provenance/formats.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-local-provenance--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-local-provenance--native.xml",
+        "test/account-local-provenance/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 44646,
+      "testPath": "test/account-local-provenance/native.test.mjs",
+      "executedTests": 4
+    },
+    {
+      "name": "account-promotion-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-promotion-contract--formats.xml",
+        "test/account-promotion-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 5099,
+      "testPath": "test/account-promotion-contract/formats.test.mjs",
+      "executedTests": 7
+    },
+    {
+      "name": "account-promotion-contract--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-promotion-contract--native.xml",
+        "test/account-promotion-contract/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 4258,
+      "testPath": "test/account-promotion-contract/native.test.mjs",
+      "executedTests": 3
+    },
+    {
+      "name": "account-receive--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-receive--native.xml",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 209468,
+      "testPath": "test/account-receive/native.test.mjs",
+      "executedTests": 17
+    },
+    {
+      "name": "account-recovery-contract--controls",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery-contract--controls.xml",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 181,
+      "testPath": "test/account-recovery-contract/controls.test.mjs",
+      "executedTests": 2
+    },
+    {
+      "name": "account-recovery-contract--exports",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery-contract--exports.xml",
+        "test/account-recovery-contract/exports.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 154,
+      "testPath": "test/account-recovery-contract/exports.test.mjs",
+      "executedTests": 1
+    },
+    {
+      "name": "account-recovery-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery-contract--formats.xml",
+        "test/account-recovery-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 590,
+      "testPath": "test/account-recovery-contract/formats.test.mjs",
+      "executedTests": 7
+    },
+    {
+      "name": "account-service-custody--controls",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-service-custody--controls.xml",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 356,
+      "testPath": "test/account-service-custody/controls.test.mjs",
+      "executedTests": 8
+    },
+    {
+      "name": "account-service-custody--exports",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-service-custody--exports.xml",
+        "test/account-service-custody/exports.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 200,
+      "testPath": "test/account-service-custody/exports.test.mjs",
+      "executedTests": 4
+    },
+    {
+      "name": "account-service-custody--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-service-custody--formats.xml",
+        "test/account-service-custody/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 870,
+      "testPath": "test/account-service-custody/formats.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-spool--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-spool--native.xml",
+        "test/account-spool/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 155793,
+      "testPath": "test/account-spool/native.test.mjs",
+      "executedTests": 24
+    },
+    {
+      "name": "account-store-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-store-contract--formats.xml",
+        "test/account-store-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 3411,
+      "testPath": "test/account-store-contract/formats.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-store-contract--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-store-contract--native.xml",
+        "test/account-store-contract/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 2422,
+      "testPath": "test/account-store-contract/native.test.mjs",
+      "executedTests": 3
+    },
+    {
+      "name": "account-transport-contract--controls",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-transport-contract--controls.xml",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 224,
+      "testPath": "test/account-transport-contract/controls.test.mjs",
+      "executedTests": 4
+    },
+    {
+      "name": "account-transport-contract--formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-transport-contract--formats.xml",
+        "test/account-transport-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 2026,
+      "testPath": "test/account-transport-contract/formats.test.mjs",
+      "executedTests": 9
+    },
+    {
+      "name": "account-recovery--core",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--core.xml",
+        "test/account-recovery/core.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 785,
+      "testPath": "test/account-recovery/core.test.mjs",
+      "executedTests": 11
+    },
+    {
+      "name": "account-recovery--crypto",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--crypto.xml",
+        "test/account-recovery/crypto.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 416,
+      "testPath": "test/account-recovery/crypto.test.mjs",
+      "executedTests": 3
+    },
+    {
+      "name": "account-recovery--properties",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--properties.xml",
+        "test/account-recovery/properties.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 3699,
+      "testPath": "test/account-recovery/properties.test.mjs",
+      "executedTests": 1
+    },
+    {
+      "name": "account-recovery--restart",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--restart.xml",
+        "test/account-recovery/restart.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 3723,
+      "testPath": "test/account-recovery/restart.test.mjs",
+      "executedTests": 6
+    },
+    {
+      "name": "account-recovery--controls",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--controls.xml",
+        "test/account-recovery/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 564,
+      "testPath": "test/account-recovery/controls.test.mjs",
+      "executedTests": 3
+    },
+    {
+      "name": "account-recovery--native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-recovery--native.xml",
+        "test/account-recovery/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 3294,
+      "testPath": "test/account-recovery/native.test.mjs",
+      "executedTests": 1
+    },
+    {
+      "name": "account-genesis--crypto",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z/account-genesis--crypto.xml",
+        "test/account-genesis/crypto.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 637,
+      "testPath": "test/account-genesis/crypto.test.mjs",
+      "executedTests": 3
+    },
+    {
+      "name": "unit-bridges",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/slotUnlock.test.ts",
+        "test/accountTransportContract.test.ts",
+        "--maxWorkers=2"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 2230
+    },
+    {
+      "name": "vectors-01",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-suite-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 65
+    },
+    {
+      "name": "vectors-02",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-record-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 61
+    },
+    {
+      "name": "vectors-03",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-journal-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 71
+    },
+    {
+      "name": "vectors-04",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-recovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 76
+    },
+    {
+      "name": "vectors-05",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-device-lock-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 65
+    },
+    {
+      "name": "vectors-06",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-finalization-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 60
+    },
+    {
+      "name": "vectors-07",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-enrollment-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 144
+    },
+    {
+      "name": "vectors-08",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 93
+    },
+    {
+      "name": "vectors-09",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-private-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 65
+    },
+    {
+      "name": "vectors-10",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-head-discovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 67
+    },
+    {
+      "name": "vectors-11",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-attribution-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 65
+    },
+    {
+      "name": "vectors-12",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-checkpoint-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 76
+    },
+    {
+      "name": "vectors-13",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-antireplay-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 68
+    },
+    {
+      "name": "vectors-14",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-package-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 96
+    },
+    {
+      "name": "vectors-15",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-account-credential-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 86
+    },
+    {
+      "name": "vectors-16",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-transition-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 78
+    },
+    {
+      "name": "vectors-17",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-baseline-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 54
+    },
+    {
+      "name": "vectors-18",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission-bounds/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 193
+    },
+    {
+      "name": "vectors-19",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-first-authority/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 363
+    },
+    {
+      "name": "vectors-20",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-recovery-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 87
+    },
+    {
+      "name": "vectors-21",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-transport-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 114
+    },
+    {
+      "name": "vectors-22",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-service-custody/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 197
+    },
+    {
+      "name": "vectors-23",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-aad-coverage.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 5737
+    },
+    {
+      "name": "vectors-24",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-promotion-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 396
+    },
+    {
+      "name": "vectors-25",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-ledger-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 73
+    },
+    {
+      "name": "vectors-26",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-counter-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 56
+    },
+    {
+      "name": "vectors-27",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-store-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 61
+    },
+    {
+      "name": "vectors-28",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-local-custody/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 73
+    },
+    {
+      "name": "vectors-29",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-checkpoint-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 62
+    },
+    {
+      "name": "vectors-30",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-local-provenance/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 72
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxlint/bin/oxlint",
+        "scripts/account-crypto-audit",
+        "scripts/account-crypto-prep/run.mjs",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 97
+    },
+    {
+      "name": "format",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "scripts/account-crypto-audit",
+        "scripts/account-crypto-prep/run.mjs",
+        "scripts/check-authority-map.mjs",
+        "docs/account-crypto/constructions.json",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "durationMs": 127
+    }
+  ],
+  "sourcePinsVerified": 870,
+  "registeredTestFilesExecuted": 27,
+  "nodeTestFilesExecuted": 36,
+  "nodeTests": 237,
+  "completedAt": "2026-09-11T20:47:20.534Z"
+}

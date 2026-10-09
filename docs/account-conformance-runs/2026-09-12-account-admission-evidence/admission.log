@@ -1,0 +1,27 @@
+(node:41019) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41019) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ admission commits one verified first head and retains Local carriers through cold restart (1320.788625ms)
+✔ renderer interruption before admission-requested commit (1424.152375ms)
+✔ renderer interruption after admission-requested commit (1712.784042ms)
+✔ renderer interruption before admission-offered commit (1434.508ms)
+✔ renderer interruption after admission-offered commit (1712.517084ms)
+✔ renderer interruption before admission-receipted commit (1436.209417ms)
+✔ renderer interruption after admission-receipted commit (1707.496333ms)
+✔ lost begin response resumes exact service outcome (1221.153292ms)
+✔ lost finish response resumes exact service outcome (1215.619334ms)
+✔ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1416.929083ms)
+✔ changed receipt signature is refused; disabling final verification actually retains it (1320.060334ms)
+✔ queued owner and cancellation retain the commit until native acknowledgement drains (1383.607208ms)
+(node:41019) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ caller mutation after queuing cannot change the owned slot or request (977.43125ms)
+✔ 30 generated delivery, admission interruption and retry histories preserve independent writing and coverage (36200.671ms)
+✔ the committed version-2 reader and ordinary Local editor refuse a retained admission (1323.37125ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56586.675458

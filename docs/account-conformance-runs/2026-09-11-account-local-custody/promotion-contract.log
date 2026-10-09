@@ -1,0 +1,15 @@
+✔ all thirteen accepted stage/version carriers match independent bytes and WebCrypto MACs (39.340542ms)
+✔ every input leaf is bound or rejected, including all nested signatures and empty arrays (1458.234667ms)
+✔ encoded omissions demonstrably remove each binding while real HMACs still run (1180.001084ms)
+✔ closed parser, version/stage matrix, credentials and handoff correspondence boundaries (80.817583ms)
+✔ property order is canonical except the retained handoff destination; array order remains significant (56.475209ms)
+✔ KDF context and deterministic names bind their exact fields without becoming authority (3.446125ms)
+✔ 200 shrinking-enabled generated authentication histories preserve the last accepted marker (1345.880583ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4456.327917

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-publication-r1/candidate
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  12:45:39
+   Duration  915ms (transform 208ms, setup 145ms, import 141ms, tests 147ms, environment 392ms)
+

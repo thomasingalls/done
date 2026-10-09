@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="refusalId source control fails the complete oracle at the affected prefix" time="0.043800" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="finalCutoff source control fails the complete oracle at the affected prefix" time="0.040757" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="prefix source control fails the complete oracle at the affected prefix" time="0.042059" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="closure source control fails the complete oracle at the affected prefix" time="0.039679" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="refusalAfterHead source control fails the complete oracle at the affected prefix" time="0.039581" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="headAfterRefusal source control fails the complete oracle at the affected prefix" time="0.037912" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="headAfterFinal source control fails the complete oracle at the affected prefix" time="0.043218" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="finalAfterHead source control fails the complete oracle at the affected prefix" time="0.040789" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="finalState source control fails the complete oracle at the affected prefix" time="0.038942" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="conflict source control fails the complete oracle at the affected prefix" time="0.038640" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="submissions source control fails the complete oracle at the affected prefix" time="0.038015" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="responses source control fails the complete oracle at the affected prefix" time="0.039277" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/controls.test.mjs"/>
+	<testcase name="constraint consistency agrees with enumeration of 80 concrete service histories for all 2197 proof triples" time="0.012522" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery-oracle/oracle.test.mjs"/>
+	<!-- tests 13 -->
+	<!-- suites 0 -->
+	<!-- pass 13 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 901.708875 -->
+</testsuites>

@@ -1,0 +1,20 @@
+[
+  {
+    "control": "signature",
+    "baseline": "refused",
+    "mutant": "bad content-blind acceptance observed",
+    "limit": "This verifier is not connected to a relay; it does not grant membership or acceptance."
+  },
+  {
+    "control": "digest",
+    "baseline": "refused",
+    "mutant": "bad content-blind acceptance observed",
+    "limit": "This verifier is not connected to a relay; it does not grant membership or acceptance."
+  },
+  {
+    "control": "route",
+    "baseline": "refused",
+    "mutant": "bad content-blind acceptance observed",
+    "limit": "This verifier is not connected to a relay; it does not grant membership or acceptance."
+  }
+]

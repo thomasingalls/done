@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-before.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-before.json",
+      "sha256": "7e38932a5678b334c126c80b01d2044fd46303e7ac0b523764ccc974c1910898"
+    },
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-before-hashes.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-before-hashes.json",
+      "sha256": "0178cd8df2567700579d24b2f046f9e297324e4fff0123a08387ef4e30111c78"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-10-29.708Z/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-failure-events.jsonl.gz",
+      "sha256": "77e98d3a5dfae3fdd7dc71516196cfc3922ee1fe72b28bc1793e59ee91b066c7",
+      "uncompressed_sha256": "3afa43f6dca1712d8c2bebe88f68e3519d6e908e9279c726a430826d21d86eb5"
+    }
+  ]
+}

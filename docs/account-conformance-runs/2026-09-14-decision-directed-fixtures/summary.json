@@ -1,0 +1,132 @@
+{
+  "base": "02a1bfed4598f7692e4389b79e6cbba9486577c5",
+  "claim": "Account directed decision composition fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-50-20.056Z",
+  "summary": {
+    "schema": 1,
+    "selection": "decision-directed-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-decision-composition/controls.test.mjs",
+        "key": "ac031ad0ddd364ecb7089638b725c81bf1fd91c734a09ed7b7a4799103f7cc63",
+        "status": "passed",
+        "elapsedMs": 41023,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-decision-composition/native.test.mjs",
+        "key": "fef764fbf39a640611f31ed1d539946bd066c75a4c1b1af7bff860a957fc5c03",
+        "status": "passed",
+        "elapsedMs": 138811,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:50:20.060Z",
+    "input": "5dbde8be21f57c047c332f0ed1d09c3615575a4d90232c2e167861d426e24654",
+    "completedAt": "2026-09-14T11:53:50.819Z"
+  },
+  "elapsedMs": 210759,
+  "rawInputArchiveSha256": "ef5a63244f0b3eafba524b91b3467ee90b723fa666db53356f5e1cfc50b638fc",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "02a1bfed4598f7692e4389b79e6cbba9486577c5",
+    "sourceDigest": "c674e143f06771fac10d9c0de056dcf86b1201cdd9d070e6282f76cac0bbcf30",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 2,
+    "selectedCases": 12,
+    "browserFiles": 2,
+    "fixtureInstances": 12,
+    "generatedHistories": 0,
+    "executedOmissionControls": 3,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 208,
+    "priorGeneralCases": 1710,
+    "currentGeneralFiles": 210,
+    "currentGeneralCases": 1722,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 114,
+    "accountFiles": 104,
+    "accountCases": 628,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 207,
+    "unresolvedTestFiles": 48,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 694839
+  },
+  "finalGatesSha256": "acef5f2af110632c9063a4912f398b3e8d493ac808f3cadf5ff3ea729d64ac13",
+  "preservationSha256": "a1cdf9ed872da51bb7b3c266e05291cecfba68e42f0cfa99eb8a7dc7a47496f2",
+  "limits": [
+    "Twelve unchanged cases in two complete files retain five-minute wrapper/file bounds: three 45-second omission controls, three 45-second direct delivery cases, four 50-second automatic sender cases and two 50-second shared sync scheduler cases. Only six runner/registration-test files and generated snapshots change. Product, inherited fixtures, oracles, owners, census, reporters and wrapper are unchanged.",
+    "Three in-memory source mutations separately omit response persistence, closure retention or conflict state. Each anchor is unique and the transformed bundle is checked once. Genuine synthetic-service replies remain cryptographically verified. The controls observe the predicted false ready state; missing persistence is independently exposed by the retained response census. They do not forge issuer keys or bypass signature validation.",
+    "The nine directed cases cover actual loopback HTTP accepted/closed/conflict evidence, duplicate and altered-proof no-ops, cold reopen and compaction, automatic sender halts with and without a lost reply, and lane-specific shared scheduler halts. They assert exact original source rows, response bytes, service rows, prior captures and no extra seal invocation. Later Local edits remain durable while send is halted; retained halt prevents cold redispatch.",
+    "A synthetic competing signed request induces service closure or conflict. Service proofs are independently checked against the expected subject. Service and SQLite readers reopen around the cases, but no service process or renderer is killed in these two files. Cold creates a fresh page in the same live isolated browser context. Separate restart/order/generated files remain blocked.",
+    "Twelve disposable fixture instances use generated service/authority secrets, synthetic retained factor options, a software authenticator and loopback services. This is no human passkey/PRF ceremony, real Account admission, second device, personal origin/profile/build, physical power loss or whole-profile erasure test. Shared driver fixtures are dependencies; excluded retired-v8 test files are not admitted. No historical input branch is selected.",
+    "ACCOUNT_REPORT_DIR remains unset in the owned selection, so optional auxiliary decision reports are not emitted. Exact reporter cases, receipts, frozen source/browser identities and transformation hashes are retained. Full wrapper preparation/output and immutable aggregate qualification remain separate. Existing ledger orphan classification, receive/delivery-oracle headroom, capture oracle follow-ups and prior deadline evidence remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-decision-composition/controls.test.mjs",
+        "nodeSummaryMs": 36705.749708,
+        "stageElapsedMs": 41023,
+        "fileDeadlineMs": 300000
+      },
+      {
+        "id": "test:test/account-decision-composition/native.test.mjs",
+        "nodeSummaryMs": 134638.745333,
+        "stageElapsedMs": 138811,
+        "fileDeadlineMs": 300000
+      }
+    ],
+    "selectionElapsedMs": 210759,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "controlsCaseMs": [
+      45000,
+      45000,
+      45000
+    ],
+    "nativeCaseMs": [
+      45000,
+      45000,
+      45000,
+      50000,
+      50000,
+      50000,
+      50000,
+      50000,
+      50000
+    ],
+    "note": "Existing wrapper and case limits retained."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1fe19c44d7321471987afb86e9b5ed5c27ed12e8e7c7c54a50554a99dc97461d",
+    "compressedSha256": "94fc4c1a292a7f66c176fd19e6be1fccd88d66b3ed56dc678bde8b1231e76ae4"
+  }
+}

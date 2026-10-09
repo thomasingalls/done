@@ -1,0 +1,560 @@
+{
+  "version": 1,
+  "status": "preparation-only",
+  "baseline": "f118127c3156de1bac44cc731e51ffc2296643f5",
+  "claims": ["R1 logical carriers", "R2 physical residue", "C13 copied-profile custody"],
+  "needleClasses": [
+    "W content",
+    "F external factor",
+    "K internal keys outside general R1 claim",
+    "M routing/public proofs",
+    "T operational capabilities",
+    "L predecessor plaintext",
+    "X explicit exports"
+  ],
+  "discoveryRule": "Enumerate unknown surfaces; this source inventory is not a collection allowlist.",
+  "surfaces": [
+    {
+      "id": "B01",
+      "surface": "IndexedDB content databases: every discovered store/key/record",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/crdt/contentDatabase.ts",
+          "line": 13,
+          "anchor": "indexedDB.open"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 67,
+          "anchor": "CONTENT_STORES"
+        },
+        {
+          "path": "src/crdt/storeName.ts",
+          "line": 43,
+          "anchor": "deriveStoreName"
+        }
+      ],
+      "expected": "Ciphertext and public format/routing/counter fields; W/F forbidden, including schema and keys.",
+      "requiredControl": "Unknown database/store/key plus strings, typed views and Blob leaks.",
+      "limit": "The slot index and derived-name prefixes cannot bound discovery."
+    },
+    {
+      "id": "B02",
+      "surface": "IndexedDB done.custody/entries: seals and credentials",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "line": 63,
+          "anchor": "CUSTODY_DB"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 92,
+          "anchor": "seal"
+        }
+      ],
+      "expected": "Sealed roots/credentials with public metadata. No known factor spelling.",
+      "requiredControl": "Plant W/F in an unexpected nested property and binary view.",
+      "limit": "A valid MAC is not confidentiality; opaque CryptoKey contents remain outside R1."
+    },
+    {
+      "id": "B03",
+      "surface": "IndexedDB custody Local claim, import, clear and promotion progress",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 34,
+          "anchor": "localClaimKey"
+        },
+        {
+          "path": "src/crdt/localClearState.ts",
+          "line": 8,
+          "anchor": "localClearKey"
+        },
+        {
+          "path": "src/crdt/legacyImportState.ts",
+          "line": 6,
+          "anchor": "importClaimKey"
+        },
+        {
+          "path": "src/crdt/storageCompatibility.ts",
+          "line": 15,
+          "anchor": "storageUpgradeKey"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "line": 45,
+          "anchor": "storageUpgradeKey"
+        },
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "line": 17,
+          "anchor": "LegacyCleanupRecord"
+        }
+      ],
+      "expected": "IDs/digests/stages/authenticators; entire raw clone scanned before parsing.",
+      "requiredControl": "Unexpected source-name or manifest field contains W.",
+      "limit": "R1 fresh promotion exercises only present records; migration/clear paths remain later trials."
+    },
+    {
+      "id": "B04",
+      "surface": "IndexedDB done.slots/slots",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/crdt/slotIndex.ts",
+          "line": 33,
+          "anchor": "done.slots"
+        }
+      ],
+      "expected": "Local/Account routing and public bindings.",
+      "requiredControl": "W in unexpected slot property/key.",
+      "limit": "Source comments about the old default app do not establish current reachability."
+    },
+    {
+      "id": "B05",
+      "surface": "IndexedDB done.account-recovery-preparation.v1/progress/pending",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/account/recoveryOwner.ts",
+          "line": 17,
+          "anchor": "RECOVERY_PREPARATION_DB"
+        },
+        {
+          "path": "src/account/recoveryOwner.ts",
+          "line": 29,
+          "anchor": "interface Retained"
+        },
+        {
+          "path": "src/account/recoveryOwner.ts",
+          "line": 23,
+          "anchor": "interface Finalization"
+        },
+        {
+          "path": "test/account-promotion/fixtures.mjs",
+          "line": 137,
+          "anchor": "generateRecovery(item.context)"
+        }
+      ],
+      "expected": "Sealed recovery draft; report sensitive retryKey and finalization.retryKey. Recovery code/private keys are not retained fields.",
+      "requiredControl": "F leak in generate/finalization-pending/confirmed states through real browser recovery owner.",
+      "limit": "Native ready() bypasses this owner. Confirmation does not erase progress; known retry capabilities are not public metadata."
+    },
+    {
+      "id": "B06",
+      "surface": "localStorage current encrypted journal",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 24,
+          "anchor": "journalPrefix"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 62,
+          "anchor": "return '2:'"
+        },
+        {
+          "path": "src/crdt/journalStore.ts",
+          "line": 96,
+          "anchor": "setItem"
+        }
+      ],
+      "expected": "v2 header plus base64 generation/nonce/ciphertext; W/F forbidden.",
+      "requiredControl": "Actual pre-return write-path side record containing plaintext update; find W with complete native write.",
+      "limit": "Do not flush the held journal-only point before collection; prefix-based parsing is not collection authority."
+    },
+    {
+      "id": "B07",
+      "surface": "localStorage legacy actor/device/relay metadata and v1 journal",
+      "claim": "R1-absence; later migration",
+      "sources": [
+        {
+          "path": "src/lib/localStore.ts",
+          "line": 17,
+          "anchor": "localStorage"
+        },
+        {
+          "path": "src/crdt/actors.ts",
+          "line": 41,
+          "anchor": "'done.device'"
+        },
+        {
+          "path": "src/crdt/sync.ts",
+          "line": 84,
+          "anchor": "'done.sync'"
+        },
+        {
+          "path": "src/crdt/persistence.ts",
+          "line": 34,
+          "anchor": "'1:'"
+        },
+        {
+          "path": "src/crdt/legacySource.ts",
+          "line": 15,
+          "anchor": "done.actor"
+        }
+      ],
+      "expected": "Absent in fresh histories. Current device-label W may not appear in done.device.",
+      "requiredControl": "Unknown localStorage key/value contains W/F; a v1 raw update is detectable.",
+      "limit": "Intentional pre-cleanup legacy exposure needs a separate trial; not a blanket metadata exception."
+    },
+    {
+      "id": "B08",
+      "surface": "Current user-content producers and volatile broadcast channels",
+      "claim": "input-path",
+      "sources": [
+        {
+          "path": "src/main.tsx",
+          "line": 3,
+          "anchor": "LocalApp"
+        },
+        {
+          "path": "src/ui/localStartup.ts",
+          "line": 95,
+          "anchor": "This device"
+        },
+        {
+          "path": "src/ui/Menu.tsx",
+          "line": 40,
+          "anchor": "'device-label'"
+        },
+        {
+          "path": "src/crdt/workspaceCommands.ts",
+          "line": 268,
+          "anchor": "case 'device-label'"
+        },
+        {
+          "path": "src/crdt/admittedWorkspace.ts",
+          "line": 483,
+          "anchor": "device-label:"
+        },
+        {
+          "path": "src/editor/textChannel.ts",
+          "line": 19,
+          "anchor": "BroadcastChannel"
+        },
+        {
+          "path": "src/crdt/workspaceChannel.ts",
+          "line": 23,
+          "anchor": "BroadcastChannel"
+        }
+      ],
+      "expected": "W enters current master/card/actor/device-label owners; live plaintext is expected.",
+      "requiredControl": "Assert live and cold recovered W; an absent input cannot qualify a negative scan.",
+      "limit": "BroadcastChannel is volatile, not persistent; no memory or live-origin confidentiality claim."
+    },
+    {
+      "id": "B09",
+      "surface": "CacheStorage caches, request/response headers and bodies",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "vite/precacheServiceWorker.ts",
+          "line": 26,
+          "anchor": "done-precache-v2-"
+        },
+        {
+          "path": "src/pwa.ts",
+          "line": 115,
+          "anchor": "updateViaCache"
+        }
+      ],
+      "expected": "Static asset cache in packaged app; no W/F. First native run may have no installed generated worker.",
+      "requiredControl": "Unknown cache with W/F in request metadata and response body.",
+      "limit": "Empty native collection plus plants qualifies collector only; real packaged flow deferred. HTTP disk cache is separate."
+    },
+    {
+      "id": "B10",
+      "surface": "sessionStorage in each live page",
+      "claim": "R1",
+      "sources": [],
+      "expected": "No writer source hit in recorded query; enumerate all available keys/values.",
+      "requiredControl": "Leak in original page before close, plus unknown keys.",
+      "limit": "New-page emptiness cannot describe a closed page; missing access is incomplete."
+    },
+    {
+      "id": "B11",
+      "surface": "Cookies across disposable browser context, including HTTP-only",
+      "claim": "R1",
+      "sources": [],
+      "expected": "No writer source hit; enumerate context cookies and all metadata.",
+      "requiredControl": "Plant HTTP-only and script-visible cookie values/names.",
+      "limit": "No extension or other profile scope; unavailable collector is incomplete."
+    },
+    {
+      "id": "B12",
+      "surface": "Origin Private File System",
+      "claim": "R1",
+      "sources": [],
+      "expected": "No writer source hit; enumerate files/directories and raw bytes when API available.",
+      "requiredControl": "Unknown nested path, binary encoding and chunk-boundary leak.",
+      "limit": "Access may create bookkeeping; unsupported API is incomplete, not an empty pass."
+    },
+    {
+      "id": "S01",
+      "surface": "Account core SQLite: every current table/schema/TEXT/BLOB",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "account-service/core.ts",
+          "line": 134,
+          "anchor": "new DatabaseSync"
+        },
+        {
+          "path": "account-service/core.ts",
+          "line": 189,
+          "anchor": "CREATE TABLE delivery_decisions"
+        }
+      ],
+      "expected": "Identity/attempts/public credentials/sealed recovery/proposals/receipts/encrypted submissions; W/F forbidden.",
+      "requiredControl": "Unknown table/column and TEXT/BLOB leak through read-only collector.",
+      "limit": "Current SQL snapshot includes visible WAL-backed rows; not physical WAL or freed pages."
+    },
+    {
+      "id": "S02",
+      "surface": "Authority SQLite and sealed acceptance material in core",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "account-service/authority.ts",
+          "line": 161,
+          "anchor": "CREATE TABLE authority"
+        },
+        {
+          "path": "account-service/authority.ts",
+          "line": 76,
+          "anchor": "journal_mode=WAL"
+        },
+        {
+          "path": "account-service/acceptance.ts",
+          "line": 65,
+          "anchor": "done/acceptance-seal/v1"
+        }
+      ],
+      "expected": "Public pin/salt/nonce/ciphertext and sealed private seed; known external factors prohibited.",
+      "requiredControl": "Unknown authority table/property and binary leak.",
+      "limit": "No attempt to infer all private key absence from W/F search; operator custody has separate tests."
+    },
+    {
+      "id": "D01",
+      "surface": "Page errors/console and service stdout/stderr",
+      "claim": "R1",
+      "sources": [
+        {
+          "path": "src/ui/workspaceUi.tsx",
+          "line": 107,
+          "anchor": "accepted"
+        },
+        {
+          "path": "account-service/private-server.ts",
+          "line": 28,
+          "anchor": "Cache-Control"
+        },
+        {
+          "path": "src/account/privateDeliveryHttp.ts",
+          "line": 18,
+          "anchor": "Authorization"
+        }
+      ],
+      "expected": "No automatic W/F or operational token logging. Collect from before startup.",
+      "requiredControl": "Plant from actual app/service stream; scanner/runner output cannot satisfy the control.",
+      "limit": "Declare attached execution contexts; unexpected uncaptured worker is incomplete. Proxy/system/third-party logs deferred."
+    },
+    {
+      "id": "D02",
+      "surface": "Private migration/cleanup diagnostics",
+      "claim": "later packaged/migration",
+      "sources": [
+        {
+          "path": "private/cleanup.ts",
+          "line": 94,
+          "anchor": "error.message"
+        },
+        {
+          "path": "private/migration.tsx",
+          "line": 2,
+          "anchor": "PrivateMigrationApp"
+        }
+      ],
+      "expected": "No automatic content/factor output, including error paths.",
+      "requiredControl": "Synthetic failure containing W/F must be detected in utility stream.",
+      "limit": "Not executed in fresh R1; no personal private utility opened."
+    },
+    {
+      "id": "X01",
+      "surface": "Intentional Markdown ZIP/recovery/binding downloads",
+      "claim": "later packaged/export",
+      "sources": [
+        {
+          "path": "src/crdt/export.ts",
+          "line": 75,
+          "anchor": "downloadExport"
+        },
+        {
+          "path": "src/ui/Menu.tsx",
+          "line": 56,
+          "anchor": "exportArchive"
+        },
+        {
+          "path": "src/ui/PrivateMigrationApp.tsx",
+          "line": 43,
+          "anchor": "Blob"
+        },
+        {
+          "path": "src/crdt/legacyExport.ts",
+          "line": 12,
+          "anchor": "recovery"
+        }
+      ],
+      "expected": "Explicit plaintext artifact, exact inventoried file in separate disclosure trial.",
+      "requiredControl": "Unexpected cache/log copy remains prohibited even if extension is .zip.",
+      "limit": "R1 has no ZIP/compression decoder or export phase; no personal downloads inspected."
+    },
+    {
+      "id": "L01",
+      "surface": "Legacy IndexedDB done and cleanup targets",
+      "claim": "later migration",
+      "sources": [
+        {
+          "path": "src/crdt/legacySource.ts",
+          "line": 72,
+          "anchor": "readLegacyUpdates"
+        },
+        {
+          "path": "src/crdt/legacyCleanupStorage.ts",
+          "line": 72,
+          "anchor": "remove"
+        },
+        {
+          "path": "src/crdt/legacyCleanup.ts",
+          "line": 125,
+          "anchor": "journal"
+        }
+      ],
+      "expected": "Absent in fresh R1; known plaintext exists before synthetic migration cleanup.",
+      "requiredControl": "Legacy raw update is detectable; scan before and after cleanup with independent census.",
+      "limit": "Existing namespace absence tests do not establish physical erasure."
+    },
+    {
+      "id": "L02",
+      "surface": "Old relay Yjs file and diagnostics",
+      "claim": "later legacy-only",
+      "sources": [
+        {
+          "path": "relay/src/persistence.ts",
+          "line": 20,
+          "anchor": "writeFileSync"
+        },
+        {
+          "path": "relay/src/server.ts",
+          "line": 45,
+          "anchor": "console"
+        },
+        {
+          "path": "relay/src/connection.ts",
+          "line": 219,
+          "anchor": "console"
+        }
+      ],
+      "expected": "Old plaintext transport/source; separate from Account service.",
+      "requiredControl": "Synthetic old Yjs source contains W and must be detected in declared representation.",
+      "limit": "Do not start personal relay or inspect old personal ydoc."
+    },
+    {
+      "id": "R201",
+      "surface": "Browser physical profile: backing files, HTTP cache, session/history and deleted data",
+      "claim": "R2-deferred",
+      "sources": [
+        {
+          "path": "scripts/custody/run.mjs",
+          "line": 171,
+          "anchor": "copyProfile"
+        },
+        {
+          "path": "scripts/custody/scenarios.mjs",
+          "line": 66,
+          "anchor": "definition.id === 'C13.profile-copy'"
+        }
+      ],
+      "expected": "Unknown until closed disposable profiles and readable formats are inventoried.",
+      "requiredControl": "Planted file/container and opener controls with explicit decoder coverage.",
+      "limit": "R1 API absence and C13 known opener attempts do not qualify filesystem residue. No personal profile inspection."
+    },
+    {
+      "id": "R202",
+      "surface": "Service physical SQLite/WAL/SHM, freed pages and filesystem logs",
+      "claim": "R2-deferred",
+      "sources": [
+        {
+          "path": "account-service/core.ts",
+          "line": 137,
+          "anchor": "journal_mode=WAL"
+        },
+        {
+          "path": "account-service/authority.ts",
+          "line": 76,
+          "anchor": "journal_mode=WAL"
+        }
+      ],
+      "expected": "Separate raw/container scan before checkpoint, VACUUM or cleanup.",
+      "requiredControl": "Planted old row/WAL/file bytes and unsupported container controls.",
+      "limit": "Current read-only SQL does not establish deleted-byte absence or OS secure erasure."
+    },
+    {
+      "id": "E01",
+      "surface": "Existing copied-profile custody evidence",
+      "claim": "C13-credit",
+      "sources": [
+        {
+          "path": "scripts/custody/catalog.mjs",
+          "line": 14,
+          "anchor": "C13.profile-copy"
+        },
+        {
+          "path": "test/custody/browser.mjs",
+          "line": 225,
+          "anchor": "CryptoKey"
+        },
+        {
+          "path": "docs/custody.md",
+          "line": 25,
+          "anchor": "profile"
+        }
+      ],
+      "expected": "Known root candidates and synthetic future receiver; factor-present and planted opener controls.",
+      "requiredControl": "Retain existing promptless-opener positive control.",
+      "limit": "Not neutral plaintext scan, arbitrary opener enumeration or multi-platform qualification."
+    },
+    {
+      "id": "E02",
+      "surface": "Existing known-namespace inventory and cleanup evidence",
+      "claim": "credit-only",
+      "sources": [
+        {
+          "path": "scripts/legacy-cleanup/campaign.mjs",
+          "line": 163,
+          "anchor": "not whole-profile"
+        },
+        {
+          "path": "test/account-authority/browser.ts",
+          "line": 52,
+          "anchor": "export async function inventory"
+        },
+        {
+          "path": "test/private-migration/rehearsal.spec.ts",
+          "line": 68,
+          "anchor": "done.actor"
+        }
+      ],
+      "expected": "Equality and known legacy deletion only.",
+      "requiredControl": "New detector calibration required independently of these helpers.",
+      "limit": "A successful product parse, decryption or equality assertion is not byte-search coverage."
+    }
+  ]
+}

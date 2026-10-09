@@ -1,0 +1,57 @@
+{
+  "controls": 10,
+  "evidence": [
+    {
+      "name": "missing C corpus",
+      "expected": "specified phase/blocker mismatch",
+      "caught": true
+    },
+    {
+      "name": "duplicate C corpus",
+      "expected": "unknown/duplicate additional corpus phase",
+      "caught": true
+    },
+    {
+      "name": "carrier role",
+      "expected": "carrier vector misclassified",
+      "caught": true
+    },
+    {
+      "name": "digest role",
+      "expected": "digest vector misclassified",
+      "caught": true
+    },
+    {
+      "name": "service guard",
+      "expected": "signer/authority guard mismatch",
+      "caught": true
+    },
+    {
+      "name": "read namespace signer",
+      "expected": "vector signer mismatch",
+      "caught": true
+    },
+    {
+      "name": "exact service byte home",
+      "expected": "incomplete specified construction",
+      "caught": true
+    },
+    {
+      "name": "unlabelled request hash",
+      "expected": "orphan executed vector",
+      "caught": true
+    },
+    {
+      "name": "negatives",
+      "expected": "missing vector/negative corpus",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "expected": "missing signature/omission corpus",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

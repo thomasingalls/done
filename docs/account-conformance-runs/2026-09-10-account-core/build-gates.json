@@ -1,0 +1,12 @@
+[
+  {
+    "script": "check-budget.mjs",
+    "status": 0,
+    "output": "index.html\n   327.2 kB  /assets/main-CQ3wFtsf.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\nlocal.html\n   327.2 kB  /assets/main-CQ3wFtsf.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\n     5.1 kB  (css, informational — the budget is on JS)\n"
+  },
+  {
+    "script": "check-origin-isolation.mjs",
+    "status": 0,
+    "output": "origin isolation: scanned 7 built files\n  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)\n  no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)\n"
+  }
+]

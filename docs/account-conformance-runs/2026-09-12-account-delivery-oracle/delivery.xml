@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance" time="8.033306" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="closed evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.323052" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="conflict evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.266504" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="finalized evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.258447" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="submission before native commit recovers without rewriting acknowledged bytes" time="6.550682" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="submission after native commit recovers without rewriting acknowledged bytes" time="6.511511" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="response before native commit recovers without rewriting acknowledged bytes" time="6.462740" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="response after native commit recovers without rewriting acknowledged bytes" time="6.457351" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="v8 activation before commit fences v7 readers before returning the editor" time="6.624213" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="v8 activation after commit fences v7 readers before returning the editor" time="6.647871" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="invalid responses and exact duplicates change no persistent inventory" time="4.874898" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="missing final submission refuses reopening with its retained ledger witness" time="4.916495" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="missing final response refuses reopening with its retained ledger witness" time="4.959229" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="contradictory prefix acceptance, refusals and final heads halt in either order" time="15.848532" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="actual early-return and witness controls expose lost submission and resurrected closed delivery" time="7.043056" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="close drains device signing and withholds uncommitted submission bytes" time="6.149138" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="authority is reauthenticated after signing; an actual omitted-recheck control commits behind a changed fence" time="8.590482" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="actual leaf-only control misses contradictory prefix proofs in both orders" time="9.354913" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<testcase name="eight generated durable histories preserve exact retries, proof-derived status and sources across faults and cold restarts" time="39.415007" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs"/>
+	<!-- tests 19 -->
+	<!-- suites 0 -->
+	<!-- pass 19 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 168843.479208 -->
+</testsuites>

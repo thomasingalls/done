@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T20:46:44.006Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "units",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "controls",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "generated",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Owned v2 receive HTTP under the ordered editor lifetime. Bounded streams, single outstanding flight, exact request binding, native cancellation and crash/cold retry, generated histories and effective omission controls. No reconnect scheduler, outbound v9 composition, enrollment or personal operations.",
+  "completedAt": "2026-09-12T20:51:06.863Z"
+}

@@ -1,0 +1,158 @@
+[
+  {
+    "name": "typecheck",
+    "argv": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 128,
+    "log": "<tmp>/done-generated-gate-typecheck.log"
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 42,
+    "log": "<tmp>/done-generated-gate-signature.log"
+  },
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 990,
+    "log": "<tmp>/done-generated-gate-inventory.log"
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 1154,
+    "log": "<tmp>/done-generated-gate-manifest.log"
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 720,
+    "log": "<tmp>/done-generated-gate-authority.log"
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "elapsedMs": 1127,
+    "log": "<tmp>/done-generated-gate-release-blocked.log"
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 39,
+    "log": "<tmp>/done-generated-gate-whitespace.log"
+  },
+  {
+    "name": "lint",
+    "argv": [
+      "node_modules/.bin/oxlint",
+      "--react-plugin",
+      "scripts/release-validation/census.mjs",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/plan.mjs",
+      "scripts/release-validation/stage.mjs",
+      "scripts/release-validation/vitest-adapter.mjs",
+      "scripts/release-validation/vitest-census.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/vitest-process.test.mjs",
+      "test/release-validation/vitest.test.mjs",
+      "scripts/release-validation/registration-data.mjs",
+      "scripts/release-validation/generated-tests.mjs",
+      "scripts/release-validation/manifest-snapshot.mjs",
+      "test/release-validation/generated-tests.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 105,
+    "log": "<tmp>/done-generated-gate-final-lint.log"
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/census.mjs",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/plan.mjs",
+      "scripts/release-validation/stage.mjs",
+      "scripts/release-validation/vitest-adapter.mjs",
+      "scripts/release-validation/vitest-census.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/vitest-process.test.mjs",
+      "test/release-validation/vitest.test.mjs",
+      "scripts/release-validation/registration-data.mjs",
+      "scripts/release-validation/generated-tests.mjs",
+      "scripts/release-validation/manifest-snapshot.mjs",
+      "test/release-validation/generated-tests.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 110,
+    "log": "<tmp>/done-generated-gate-final-format.log"
+  },
+  {
+    "name": "inventory-record",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 687,
+    "log": "<tmp>/done-generated-gate-final-inventory-record.log"
+  },
+  {
+    "name": "manifest-record",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 1158,
+    "log": "<tmp>/done-generated-gate-final-manifest-record.log"
+  }
+]

@@ -1,0 +1,22 @@
+(node:12427) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12427) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ position before commit restarts with contiguous positions and counts every fresh invocation (4890.70575ms)
+✔ position after commit restarts with contiguous positions and counts every fresh invocation (4420.105666ms)
+✔ attempt before commit restarts with contiguous positions and counts every fresh invocation (4374.571708ms)
+✔ attempt after commit restarts with contiguous positions and counts every fresh invocation (4355.685375ms)
+✔ envelope before commit restarts with contiguous positions and counts every fresh invocation (4335.887042ms)
+✔ envelope after commit restarts with contiguous positions and counts every fresh invocation (4318.542167ms)
+✔ authenticated-at-rest ledger-missing corruption refuses restart without writes or new crypto (3125.592708ms)
+✔ missing final envelope refuses reopening a previously exposed position (3107.982791ms)
+✔ spool metadata activation before commit resumes before admission (4249.566667ms)
+✔ spool metadata activation after commit resumes before admission (4273.251542ms)
+✔ removing the actual witness check reproduces remint after a missing final row (3405.07975ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46120.937125
