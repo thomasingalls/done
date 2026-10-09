@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public runtime, explicit initialization and ARM64 container packaging complete; backups next
+scope: public backups in flight; coherent snapshots, age payload and retention selection implemented
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09

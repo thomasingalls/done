@@ -12454,3 +12454,15 @@ pass with no resource cleanup failures. [Exact image/source evidence and build l
 are retained. The application/runtime/container phase is complete; next is consistent snapshots,
 encryption, B2 transfer, bounded scheduling/retention and health reporting. No registry push, public
 deployment or release qualification occurred. The three personal root notes remain untracked.
+
+
+### 2026-10-09 — Coherent encrypted backup payload and retention selection
+
+Implemented a pinned SQLite WAL read snapshot and immutable authority/metadata recovery set,
+streamed tar/gzip/age encryption using only a public recipient, file hashes/source provenance and
+bounded capture. The focused test preserves a later concurrent write for the next snapshot,
+decrypts the real age artifact, verifies archive membership/hashes and rejects tampering or a
+changed pin. Retention checks cover the agreed UTC buckets, five-minute recent window, clock
+rollback and unconditional preservation of the last verified anchor. TypeScript and focused lint
+pass. B2 transfer and API-owned scheduling follow; no retained service or remote bucket was used.
+See [public backups](./public-backups.md). Release validation remains paused.
