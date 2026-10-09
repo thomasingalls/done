@@ -52,31 +52,47 @@ function proxyAccountRequest(request, response, servicePort, streams) {
   request.pipe(upstream);
 }
 
-export async function startAccountGateway({ port, origin, servicePort, packaged }) {
+export async function startAccountGateway({
+  port,
+  origin,
+  servicePort,
+  packaged,
+  address = '127.0.0.1',
+  health = false,
+}) {
   if (port === servicePort) throw Error('Account service needs a distinct loopback port');
   const host = new URL(origin).host;
   const serve = packagedApplication(packaged);
   let closing;
   const streams = new Set();
-  const server = createServer((request, response) => {
-    // closeIdleConnections at shutdown misses responses still in flight. Reap
-    // them as they finish, and stop admitting polls on existing keep-alive sockets.
-    response.once('close', () => {
-      if (closing) server.closeIdleConnections();
-    });
-    if (closing)
-      return void response
-        .writeHead(503, { 'Cache-Control': 'no-store', Connection: 'close' })
-        .end();
-    if (request.headers.host !== host)
-      return void response.writeHead(403, { 'Cache-Control': 'no-store' }).end();
-    if (request.url.startsWith('/__account-setup/') || request.url.startsWith('/account/'))
-      return proxyAccountRequest(request, response, servicePort, streams);
-    serve(request, response);
-  });
+  const server = createServer(
+    { headersTimeout: 10000, requestTimeout: 15000 },
+    (request, response) => {
+      // closeIdleConnections at shutdown misses responses still in flight. Reap
+      // them as they finish, and stop admitting polls on existing keep-alive sockets.
+      response.once('close', () => {
+        if (closing) server.closeIdleConnections();
+      });
+      if (closing)
+        return void response
+          .writeHead(503, { 'Cache-Control': 'no-store', Connection: 'close' })
+          .end();
+      if (
+        health &&
+        ['/healthz', '/readyz'].includes(request.url) &&
+        ['GET', 'HEAD'].includes(request.method)
+      )
+        return void response.writeHead(200, { 'Cache-Control': 'no-store' }).end();
+      if (request.headers.host !== host)
+        return void response.writeHead(403, { 'Cache-Control': 'no-store' }).end();
+      if (request.url.startsWith('/__account-setup/') || request.url.startsWith('/account/'))
+        return proxyAccountRequest(request, response, servicePort, streams);
+      serve(request, response);
+    },
+  );
   await new Promise((accept, reject) => {
     server.once('error', reject);
-    server.listen(port, '127.0.0.1', accept);
+    server.listen(port, address, accept);
   });
   return Object.freeze({
     port: server.address().port,

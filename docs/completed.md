@@ -12415,3 +12415,15 @@ application build passed; its full check was skipped. Local main and `codex/firs
 were fast-forwarded to the merge. Current records now retire the hypothetical squash-ancestry repair;
 original crosswalk/evidence bytes remain unchanged. No runtime edits, deployment or release campaign
 were performed. Next remains public runtime/initialization and container implementation.
+
+
+### 2026-10-09 — Public runtime and explicit initialization
+
+Added the public initialize/API/app entry with required external origin, operator key and expected pin,
+session-only network authority, independent asset serving and minimal readiness. A stable SQLite
+exclusive ownership transaction fences the entire directory, including shutdown drain. Explicit
+initialization publishes a verified complete staging directory and tolerates complete-stage/lost-reply
+retry; incomplete staging and missing/empty/older/mismatched cold state refuse without rekeying.
+Fourteen focused public-runtime/gateway checks and TypeScript pass on local Node 26.11.0, including
+separate-process exclusion and reopening after SIGKILL. No release campaign, production resource or
+retained-service update occurred. See [public runtime](./public-runtime.md). Container packaging follows.

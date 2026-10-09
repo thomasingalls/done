@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public runtime and container implementation; signed PR integration complete
+scope: public runtime and explicit initialization implemented; container packaging next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -90,6 +90,12 @@ obsolete; the existing ancestry model is retained. Automatic application-build C
 the full check stayed skipped. Next is the public runtime/initialization and container boundary on
 `codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
 remains a separate step.
+
+The [public runtime](./public-runtime.md) now separates explicit initialization, session-enabled API
+and packaged app serving. Ordinary startup refuses absent/incompatible state; a stable SQLite ownership
+transaction excludes competing processes and releases after death. Fourteen focused public/gateway
+checks and TypeScript pass. Next in this bounded phase: immutable container packaging and a disposable
+ARM64 container smoke check. No retained installation or infrastructure resource has changed.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
