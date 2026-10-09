@@ -44,7 +44,7 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
 1. **Recovery proof boundary — implemented.** Verify a nonce-bound head assertion and bind the
    factor-opened bootstrap signature plus the new device's countersignature to the exact held target.
    This does not log in, consume an attempt, read content, replace membership or install any key.
-2. **Durable service preparation and recovery reads — next.** Introduce an explicit fresh
+2. **Durable service preparation — implemented; recovery reads next.** Introduce an explicit fresh
    recovery-purpose account challenge, tied to the candidate keys and an exact retained attempt.
    Discover the selected account without an invitation. Bind its current recovery state and complete
    verified history to the head assertion; keep the original nonce/bytes across retry. A historical
@@ -106,3 +106,26 @@ Focused tests use independent Node LP framing, envelope opening and Ed25519 veri
 request correlation, substituted roots and signers, wrong factors, candidate/parent changes, stale
 recovery capability, mutation across awaits, strict parsing, first-epoch input and clock-independent
 assertions. No release inventory, generalized campaign or live service change is part of this increment.
+
+
+## Durable account preparation checkpoint
+
+`lost-device-recovery-v1` is a new discoverable passkey purpose, bound to the service pin, exact
+attempt/retry hash, candidate keys, client nonce and fresh service nonce. Candidate possession is
+checked separately. The asserted credential selects its active account and admitted workspace;
+no invitation, old enrollment receipt, remembered login or supplied account identifier substitutes
+for this fresh check. The signed preparation includes the original admission, complete retained
+history and nonce-bound head. Client verification checks the history reaches that head before using
+the current recovery digest for a bootstrap.
+
+Attempts last ten minutes, with at most 128 retained attempts and two maximum-size preparation
+responses worth of retained response bytes globally. Expired attempts are pruned when beginning a
+new attempt; recreating the same retry key creates fresh challenge bytes and does not validate an
+old assertion. Prepared retries recheck current account/credential and authority identity. Passkey
+counter observations and ciphertext appends alone do not invalidate a preparation. Head changes do.
+No devices are fenced or disconnected here. The service does not issue network login credentials.
+
+The private session host exposes `/__account-setup/lost-recovery/{begin,finish,resume,cancel}`.
+Schema 22 is additive and requires the existing offline upgrade procedure for retained schema 21.
+The live installation remains at 21 until a separately coordinated upgrade. Hosted reads and recovery
+commit/installation remain unfinished; these endpoints do not make recovery a usable product yet.

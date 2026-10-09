@@ -1,4 +1,10 @@
 import {
+  lostRecoveryChallengeMessage,
+  lostRecoveryPreparedMessage,
+} from '../account-protocol/lostDeviceRecovery.ts';
+import { recoveryHeadAssertionMessage } from '../account-protocol/recoveryBootstrap.ts';
+import type { LostRecoveryIssuer, LostRecoveryOperation } from './lostDeviceRecovery.ts';
+import {
   parseRemovalDiscoveryResponse,
   removalDiscoveryResponseMessage,
 } from '../account-protocol/removalDiscovery.ts';
@@ -361,6 +367,33 @@ export class PrivateAuthority {
   }
   promotionBinding(core: AccountCore, input: unknown) {
     return core.promotionBinding(input, this.#issuer());
+  }
+  #lostRecoveryIssuer(): LostRecoveryIssuer {
+    const signature = (message: Uint8Array) => {
+      if (!this.#key) throw Error('Authority closed');
+      return sign(null, message, this.#key).toString('hex');
+    };
+    return {
+      pin: { ...this.#pin },
+      check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+      challenge: (context) => ({
+        context,
+        signature: signature(lostRecoveryChallengeMessage(context)),
+      }),
+      head: (body) => ({
+        ...body,
+        signature: signature(recoveryHeadAssertionMessage({ ...body, signature: '00'.repeat(64) })),
+      }),
+      prepared: async (body) => ({
+        ...body,
+        signature: signature(
+          await lostRecoveryPreparedMessage({ ...body, signature: '00'.repeat(64) }),
+        ),
+      }),
+    };
+  }
+  lostDeviceRecovery(core: AccountCore, operation: LostRecoveryOperation, input: unknown) {
+    return core.lostDeviceRecovery(operation, input, this.#lostRecoveryIssuer());
   }
   #enrollmentIssuer(): EnrollmentIssuer {
     const signature = (message: Uint8Array) => {

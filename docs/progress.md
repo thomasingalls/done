@@ -49,54 +49,32 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery proof boundary implemented; durable service preparation next
-blocks_on: none for service preparation; exact screens require operator walkthrough before UI work
+scope: durable recovery account preparation complete; two-factor hosted reads next
+blocks_on: none for hosted reads; review exact screens with operator before UI work
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-**Product decisions:** first support loss of every connected device while retaining an account passkey
-and the saved recovery code. Confirm “Recover on this device and disconnect the previous devices.”
-The recovered device becomes the sole approved content device and future writing uses a new key.
-Old copies cannot be recalled. The account passkey and recovery code remain unchanged. Losing the
-passkey too and replacing an exposed/lost recovery code are separate journeys. See
-[the recovery plan](./account-lost-device-recovery.md) and [decisions](./decisions.md).
+**Agreed journey:** existing account passkey plus saved recovery code; recover onto a new sole
+approved device and rotate future writing. Existing copies cannot be erased. Keep the account
+passkey and recovery code. See [the recovery plan](./account-lost-device-recovery.md).
 
-**First increment complete:** bounded head-assertion and recovery-bootstrap parsing, exact selected
-LP bytes, verified nonce/pin correlation, code-opened recovery signature and new-device countersignature.
-Targets bind the current recovery digest/root, observed head and exact new keys. Inputs are copied
-before awaits; results are immutable. The selected nonce terminology mismatch is documented: carry
-13.5's client nonce unchanged into the bootstrap. A signature verifier is not a replay-consumption or
-account-authorization gate, and this increment mounts no service route or UI.
+**Complete:** selected recovery bootstrap proof boundary, then a fresh discoverable account
+challenge bound to the candidate signing/wrapping keys and durable exact attempt. Passkey and
+candidate possession verification select the account. The signed preparation carries complete
+verified history and a nonce-bound head; first-device-only and pending second-device states work.
+Retry survives lost replies/restarts; cancellation, expiry and competing authority refuse. This
+preparation changes no membership, content or network login. Schema 22 requires offline upgrade;
+the live schema-21 installation and personal browsers are unchanged.
 
-**Evidence:** ten new focused proof cases plus three existing recovery crypto cases pass, with
-independent Node framing, sealed-payload opening and signature verification. Wrong code, substituted
-roots/signers/keys, stale recovery state, parent/nonce changes, mutation across awaits and malformed
-inputs refuse. TypeScript, scoped lint/format and diff checks pass using installed tools.
-[Output](./development-evidence/2026-10-09-recovery-bootstrap.log);
-[completion record](./completed.md). No release campaign ran.
+**Focused evidence:** 23 recovery proof/crypto/preparation cases, four HTTP host cases and ten
+historical upgrade cases pass, plus TypeScript and scoped static checks.
+[Output](./development-evidence/2026-10-09-recovery-preparation.log);
+[completion record](./completed.md). Release validation remains paused.
 
-**Next bounded phase:** fresh account-bound recovery preparation, exact durable attempts and separately
-scoped hosted recovery reads, including first-device-only history. Historical sign-in/enrollment receipts
-must not grant recovery access. Recheck account/current authority at the actual operation, retain nonce
-and exact bytes across retry, and keep code/private keys client-side. Then compose accepted-write
-cutoffs, authenticated complete replay, atomic membership replacement/rotation and restartable local
-custody. Review the screens with the operator before mounting the product flow.
-
-**Serving checkpoint remains unchanged:** immutable `ea120109`, schema 21, same `:8443` origin/pin,
-independent application and API, sessions and membership continuation enabled. Backup:
-`.dev/account-enrollment-tailnet/backups/schema-20-25xQob`. The repeated lifecycle is implemented;
-its automated removal/replacement checks and the real fresh-pair Firefox/Bitwarden two-way edit/reopen
-walkthrough (`3f3b7266`) remain separate evidence. Both disposable editors were left available for use.
-Personal-browser update uptake and physical-phone behavior remain unclaimed.
-[Runbook](./packaged-account-development.md).
-
-**Later:** self/last-device removal still needs product decisions; successor checkpoint replacement,
-history pruning, old-key retirement and production operations remain unfinished. Existing history
-bounds and the account-preview label stay. Release validation resumes only on explicit instruction.
-
-Unsigned intermediate commits remain authorized, with end-of-phase chat summaries. One signed
-checkpoint remains due at the end of the agreed broader sequence.
+**Next:** recovery-code-authorized, replacement-signed hosted reads. Then exact accepted cutoffs,
+atomic all-device replacement/rotation, durable local installation and the operator-reviewed screens.
+The user authorized unsigned intermediate commits and continued implementation through this phase.
 
 ---
 

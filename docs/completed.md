@@ -11776,3 +11776,29 @@ No endpoint, schema, membership transition, recovery read or UI is mounted by th
 live service/database or personal browser changed. Next: fresh account-bound recovery preparation,
 durable exact attempts and separately scoped recovery reads; then atomic replacement/rotation,
 restartable local custody and the operator-reviewed screens. Release validation remains paused.
+
+
+### 2026-10-09 — Lost-device recovery: durable account preparation
+
+Added a separately purposed discoverable passkey challenge plus replacement-key possession proof.
+The service selects the account from the verified credential, never from a supplied workspace. A
+bounded durable attempt retains the original challenge, nonce, proof hash and signed preparation;
+exact retries survive restart and lost replies. Cancelled, expired, credential-changed and competing
+membership attempts cannot retrieve an eligible preparation. A fresh attempt can verify first-device
+and pending second-device histories; the shared continuation verifier covers later history grammar.
+No recovery code/private key reaches the service. Preparation does not issue a login, replace members
+or authorize ordinary device routes.
+
+Schema 22 adds only the recovery attempt table/index, under the existing private membership gate.
+Retained schema 21 requires explicit offline upgrade; the live schema-21 service remains untouched.
+The session host mounts bounded begin/finish/resume/cancel routes. Synthetic historical-upgrade
+fixtures now remove the new table before impersonating older schemas; one stale host expectation
+still said schema 20 and now checks 22. The upgrade tests continue checking retained rows and pin.
+
+Focused evidence: ten preparation cases plus thirteen existing proof/crypto cases, four HTTP/host
+cases, and ten historical schema cases. TypeScript, scoped lint/format and diff checks pass. See
+[the preserved output](./development-evidence/2026-10-09-recovery-preparation.log). Initial test
+failures were a fixture double-close, sandbox loopback denial, and obsolete synthetic schema fixtures;
+the final reruns use corrected fixtures and authorized loopback access. No release campaign ran.
+Next: separate two-factor, replacement-signed hosted reads, then atomic replacement and retained
+local installation. No recovery UI or live cutover is included in this increment.

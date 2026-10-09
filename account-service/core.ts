@@ -1,3 +1,9 @@
+import {
+  LostDeviceRecovery,
+  LOST_RECOVERY_SCHEMA,
+  type LostRecoveryIssuer,
+  type LostRecoveryOperation,
+} from './lostDeviceRecovery.ts';
 import { discoverRemoval, type RemovalDiscoveryIssuer } from './removalDiscovery.ts';
 import { commitRotation, type RotationIssuer } from './rotation.ts';
 import { REMOVAL_SCHEMA, ROTATION_SCHEMA } from './removalStore.ts';
@@ -212,6 +218,7 @@ export class AccountCore {
       upgradeFromV18?: boolean;
       upgradeFromV19?: boolean;
       upgradeFromV20?: boolean;
+      upgradeFromV21?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -253,7 +260,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 21 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 22 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 21 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV21
+        ) &&
         !(
           version === 20 &&
           instrumentation.sessions &&
@@ -412,6 +425,10 @@ export class AccountCore {
             this.#db.exec(REPLACEMENT_CHECKPOINT_SCHEMA);
             this.#db.exec('PRAGMA user_version=21;');
           }
+          if (version < 22) {
+            this.#db.exec(LOST_RECOVERY_SCHEMA);
+            this.#db.exec('PRAGMA user_version=22;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -512,6 +529,13 @@ export class AccountCore {
       this.#hook,
       this.#deliveryVerification,
       this.#diagnostics.record,
+    );
+  }
+
+  lostDeviceRecovery(operation: LostRecoveryOperation, input: unknown, issuer: LostRecoveryIssuer) {
+    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).run(
+      operation,
+      input,
     );
   }
 

@@ -66,6 +66,10 @@ test('session host preserves capability-protected bootstrap through restart with
     '/__account-setup/unknown',
     '/account/unknown',
     '/__account-setup/membership/bootstrap',
+    '/__account-setup/lost-recovery/begin',
+    '/__account-setup/lost-recovery/finish',
+    '/__account-setup/lost-recovery/resume',
+    '/__account-setup/lost-recovery/cancel',
     '/account/membership/v2/admit',
     '/account/membership/v2/ceremony',
     '/account/membership/v2/transfer',
@@ -150,7 +154,7 @@ test('retained schema 11 requires offline opt-in; upgrade preserves pending acco
   );
 });
 
-test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 20', async (t) => {
+test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 22', async (t) => {
   const f = await fixture(t),
     retryKey = fresh();
   const pending = await (
@@ -170,7 +174,7 @@ test('continuation host requires offline opt-in and preserves the account and id
   });
   const upgraded = await upgradePreviewState({ ...f.config, membershipContinuation: true });
   assert.equal(upgraded.from, 14);
-  assert.equal(upgraded.to, 20);
+  assert.equal(upgraded.to, 22);
   assert.equal(accountSchema(join(upgraded.backup, 'account.sqlite')), 14);
   assert.deepEqual(readFileSync(join(f.directory, 'operator.key')), key);
   assert.deepEqual(JSON.parse(readFileSync(join(f.directory, 'pin.json'))), pin);
@@ -182,6 +186,32 @@ test('continuation host requires offline opt-in and preserves the account and id
     true,
   );
   assert.deepEqual(await (await f.post('/__account-setup/resume', { retryKey })).json(), pending);
+  const recovery = {
+    retryKey: fresh(),
+    candidate: { credentialId: 'ab'.repeat(16), wPub: 'cd'.repeat(32), sPub: 'ef'.repeat(32) },
+    clientNonce: '12'.repeat(32),
+  };
+  const recoveryResult = await (
+    await f.post('/__account-setup/lost-recovery/begin', recovery)
+  ).json();
+  assert.equal(recoveryResult.stage, 'challenge');
+  assert.equal(recoveryResult.challenge.context.purpose, 'lost-device-recovery-v1');
+  assert.deepEqual(
+    await (
+      await f.post('/__account-setup/lost-recovery/resume', { retryKey: recovery.retryKey })
+    ).json(),
+    recoveryResult,
+  );
+  assert.deepEqual(
+    await (
+      await f.post('/__account-setup/lost-recovery/finish', { retryKey: recovery.retryKey })
+    ).json(),
+    { ok: false, refusal: 'malformed' },
+  );
+  const cancel = await (
+    await f.post('/__account-setup/lost-recovery/cancel', { retryKey: recovery.retryKey })
+  ).json();
+  assert.equal(cancel.stage, 'cancelled');
   const missing = await f.post('/account/membership/v2/admit');
   assert.equal(missing.status, 401);
   await missing.text();

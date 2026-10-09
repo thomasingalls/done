@@ -1,3 +1,4 @@
+import { LOST_RECOVERY_REQUEST_LIMIT } from '../account-protocol/lostDeviceRecovery.ts';
 /** Session-enabled development composition. Bootstrap proofs never bypass scoped content routes. */
 import { NOTIFICATION_PATH, type AccountNotifications } from './notifications.ts';
 import type { AccountCore } from './core.ts';
@@ -70,6 +71,12 @@ export function createSessionAccountHandler(
       limit: 4096,
       run: (v) => authority.membershipBootstrap(core, v),
     });
+  if (core.membershipContinuationEnabled)
+    for (const operation of ['begin', 'finish', 'resume', 'cancel'] as const)
+      routes.set(`lost-recovery/${operation}`, {
+        limit: LOST_RECOVERY_REQUEST_LIMIT,
+        run: (v) => authority.lostDeviceRecovery(core, operation, v),
+      });
   let active = 0,
     budget = 120,
     last = performance.now();
