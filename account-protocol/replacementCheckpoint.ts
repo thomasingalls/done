@@ -20,6 +20,7 @@ import {
   type VerifiedMembership,
 } from './membership.ts';
 import { checkpointHeadDigest, CONTENT_CHECKPOINT_LIMIT } from './contentCheckpoint.ts';
+import { parseHistorySources, type HistorySourceRef } from './historySourceRefs.ts';
 
 export const REPLACEMENT_CHECKPOINT_LIMIT = CONTENT_CHECKPOINT_LIMIT;
 // A bounded continuation can retire publishers in addition to its current roster.
@@ -45,6 +46,8 @@ export interface ReplacementCheckpoint {
     headVectorDigest: string;
   };
   heads: { credentialId: string; position: number; link: string }[];
+  /** Absent on legacy handoffs; only explicit signed coverage authorizes history reuse. */
+  history?: { checkpoint: string; sources: HistorySourceRef[] };
   signature: string;
 }
 const h = (value: unknown, length = 32) => {
@@ -63,7 +66,17 @@ const integer = (value: unknown, min: number) => {
 export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoint {
   if (json(input).length > REPLACEMENT_CHECKPOINT_LIMIT)
     throw Error('Replacement checkpoint too large');
-  const c = closed(input, ['v', 'kind', 'salt', 'nonce', 'ct', 'manifest', 'heads', 'signature']);
+  const c = closed(input, [
+    'v',
+    'kind',
+    'salt',
+    'nonce',
+    'ct',
+    'manifest',
+    'heads',
+    'signature',
+    ...(Object.hasOwn(input as object, 'history') ? ['history'] : []),
+  ]);
   const m = closed(c['manifest'], [
     'workspaceId',
     'lineageId',
@@ -101,6 +114,11 @@ export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoin
     if (heads[i - 1]!.credentialId >= heads[i]!.credentialId)
       throw Error('Unordered checkpoint publishers');
   const generation = integer(m['generation'], 2);
+  let history: ReplacementCheckpoint['history'];
+  if (Object.hasOwn(c, 'history')) {
+    const r = closed(c['history'], ['checkpoint', 'sources']);
+    history = { checkpoint: h(r['checkpoint']), sources: parseHistorySources(r['sources']) };
+  }
   if (generation > 0xffffffff) throw Error('Invalid checkpoint generation');
   return {
     v: 1,
@@ -122,6 +140,7 @@ export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoin
       headVectorDigest: h(m['headVectorDigest']),
     },
     heads,
+    ...(history ? { history } : {}),
     signature: h(c['signature'], 64),
   };
 }
@@ -159,6 +178,7 @@ export const replacementCheckpointAAD = (c: ReplacementCheckpoint) =>
     c.manifest.candidate,
     c.manifest.preparationId,
     c.manifest.headVectorDigest,
+    ...(c.history ? [JSON.stringify(c.history)] : []),
   );
 export async function verifyReplacementCheckpoint(input: unknown, parent: VerifiedMembership) {
   const c = parseReplacementCheckpoint(input),
@@ -180,7 +200,8 @@ export async function verifyReplacementCheckpoint(input: unknown, parent: Verifi
     m.preparationId !== preparation.attemptId ||
     !same(c.heads, replacementCheckpointHeads(parent)) ||
     m.checkpointDigest !== (await digest(unhex(c.ct, c.ct.length / 2))) ||
-    m.headVectorDigest !== (await checkpointHeadDigest(c.heads))
+    m.headVectorDigest !== (await checkpointHeadDigest(c.heads)) ||
+    c.history?.sources.some((s) => s.epoch >= p.epoch)
   )
     throw Error('Replacement checkpoint authority or coverage changed');
   await verifySignature(producer.sPub, c.signature, await replacementCheckpointMessage(c));

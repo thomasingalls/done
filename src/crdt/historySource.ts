@@ -29,6 +29,12 @@ import {
 } from '../../account-protocol/inboundTransport';
 import { openContentCheckpoint } from './contentCheckpoint';
 import { openReplacementCheckpoint } from './replacementCheckpoint';
+import {
+  verifyReplacementCheckpointAdmission,
+  replacementCheckpointHash,
+  type ReplacementCheckpoint,
+  type ReplacementCheckpointAdmission,
+} from '../../account-protocol/replacementCheckpoint';
 import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
 import { openHistoryCheckpoint } from './historyCheckpoint';
 import { verifyInboundPage, type InboundContext, type InboundLifetime } from './accountInbound';
@@ -49,6 +55,7 @@ export interface HistorySourceInput {
   sources: HistoryCheckpoint['sources'];
   previous: { checkpoint: HistoryCheckpoint; admission: HistoryCheckpointAdmission } | null;
   recovery?: RecoveryReading;
+  replacement?: { checkpoint: ReplacementCheckpoint; admission: ReplacementCheckpointAdmission };
   lifetime: InboundLifetime;
   sign(message: Bytes): Promise<string>;
   read(request: Bytes): Promise<Bytes>;
@@ -63,6 +70,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
     binding = structuredClone(input.binding),
     previous = structuredClone(input.previous),
     recovery = structuredClone(input.recovery),
+    replacement = structuredClone(input.replacement),
     sources = parseHistorySources(input.sources),
     requestedHeads = structuredClone(input.heads),
     producer = input.producer,
@@ -176,6 +184,58 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       baselineHeads = recovery.successor.epoch.heads;
       baselineKind = 'recovery-checkpoint';
       id = recovery.head;
+    } else if (replacement) {
+      const cp = replacement.checkpoint,
+        coverage = cp.history,
+        key = keys.get(cp.manifest.generation),
+        expected = previous ? await historyCheckpointHash(previous.checkpoint) : '00'.repeat(32),
+        parent = at(cp.manifest.epoch, cp.manifest.epochHead),
+        certificate = timeline.proofs?.continuations.find(
+          (s) => s.epoch.epoch === cp.manifest.epoch + 1,
+        );
+      if (
+        !key ||
+        !coverage ||
+        coverage.checkpoint !== expected ||
+        cp.manifest.candidate !== producer ||
+        certificate?.kind !== 'membership-certification' ||
+        certificate.epoch.delivery.v !== 3 ||
+        certificate.epoch.installation.v !== 3 ||
+        certificate.epoch.delivery.checkpointHash !== (await replacementCheckpointHash(cp)) ||
+        !same(certificate.epoch.installation.checkpoint, replacement.admission)
+      )
+        throw Error('Replacement baseline does not establish this history checkpoint');
+      await verifyReplacementCheckpointAdmission(replacement.admission, cp, parent);
+      requireHistorySourcesExtend(coverage.sources, previous?.checkpoint.sources ?? []);
+      coveredSources = parseHistorySources([
+        ...coverage.sources,
+        {
+          epoch: cp.manifest.epoch,
+          head: cp.manifest.epochHead,
+          kind: 'replacement',
+          hash: await historySourceHash('replacement', cp),
+        },
+      ]);
+      requireHistorySourcesExtend(sources, coveredSources);
+      for (const before of previous?.checkpoint.heads ?? []) {
+        const cut = cp.heads.find((h) => h.credentialId === before.credentialId);
+        if (
+          !cut ||
+          cut.position < before.position ||
+          (cut.position === before.position && cut.link !== before.link)
+        )
+          throw Error('Replacement baseline omits previous history cuts');
+      }
+      doc = await openReplacementCheckpoint(cp, key, parent);
+      const bytes = new Uint8Array(Y.encodeStateAsUpdate(doc));
+      try {
+        addBytes(bytes.length);
+      } finally {
+        bytes.fill(0);
+      }
+      baselineHeads = cp.heads;
+      baselineKind = 'content-checkpoint';
+      id = await replacementCheckpointHash(cp);
     } else {
       if (previous) throw Error('This device needs a history snapshot in an available generation');
       const key = keys.get(1);

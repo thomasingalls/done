@@ -16,3 +16,4 @@ export { readHistorySource } from '../../src/crdt/historySource';
 export { createContentCheckpoint } from '../../src/crdt/contentCheckpoint';
 
 export { genesisCoverage } from '../../src/crdt/yjs';
+export { createReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';

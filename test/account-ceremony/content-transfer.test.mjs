@@ -5684,6 +5684,139 @@ async function replacementServiceFixture(t, options = {}) {
   return { ...y, d, e };
 }
 
+test('replacement publication binds admitted history and source inventory while preserving exact lost-reply retries', async (t) => {
+  let lose = false;
+  const x = await replacementServiceFixture(t, {
+    hook(point, operation) {
+      if (lose && operation === 'replacement-checkpoint' && point === 'after-commit') {
+        lose = false;
+        throw Error('Lost publication reply');
+      }
+    },
+  });
+  const { client: c } = await import('../account-history/client.mjs');
+  const { historyExchangeMessage } = await import('../../account-protocol/historyExchange.ts');
+  const { replacementCheckpointMessage } =
+    await import('../../account-protocol/replacementCheckpoint.ts');
+  const proofs = {
+    successor: x.successor,
+    certification: x.certification,
+    continuations: [
+      'membership_admissions',
+      'membership_transfers',
+      'membership_cancellations',
+      'membership_rotations',
+    ]
+      .flatMap((table) =>
+        x.f
+          .rows(table)
+          .filter((r) => r.artifact)
+          .map((r) => JSON.parse(r.artifact)),
+      )
+      .sort((a, b) => a.epoch.epoch - b.epoch.epoch),
+  };
+  const parent = c.historyMembership((await c.verifyMembershipChain(proofs, x.base)).history),
+    p = c.membershipState(parent);
+  const sign = async (bytes) => signed(x.e.keys.existing, bytes);
+  const exchange = async (action, payload) => {
+    const request = {
+      v: 1,
+      kind: 'history-checkpoint-request',
+      workspaceId: p.workspaceId,
+      lineageId: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      credentialId: x.e.context.existing.id,
+      nonce: randomBytes(32).toString('hex'),
+      expiresAt: 61000,
+      action,
+      payload,
+      signature: '00'.repeat(64),
+    };
+    request.signature = await sign(await historyExchangeMessage(request));
+    const result = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+    assert.equal(result.ok, true, JSON.stringify(result));
+    return result.page;
+  };
+  const doc = new c.Y.Doc({ gc: false }),
+    key = new Uint8Array(32).fill(63);
+  doc.getMap('meta').set('schemaVersion', 4);
+  doc
+    .getMap('meta')
+    .set('actor:' + p.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+  doc.getText('master').insert(0, 'snapshot-only original');
+  t.after(() => {
+    doc.destroy();
+    key.fill(0);
+  });
+  const create = async (prior = null) => {
+    const page = await exchange('read', 'latest');
+    const cp = await c.createHistoryCheckpoint(
+      doc,
+      doc,
+      key,
+      parent,
+      x.e.context.existing.id,
+      page.heads,
+      prior,
+      sign,
+      page.sources,
+    );
+    await exchange('publish', cp);
+    await exchange(
+      'admit',
+      await c.admitHistoryCheckpoint(cp, key, parent, x.e.context.existing.id, doc, sign),
+    );
+    return cp;
+  };
+  const first = await create(),
+    inventory = (await exchange('read', 'latest')).sources;
+  const call = (cp) =>
+    x.d
+      .checkpointRequest('existing', 'publish', cp)
+      .then((request) => x.authority.owner.exchangeReplacementCheckpoint(x.f.core, request));
+  assert.equal(
+    (await call(x.d.checkpoint)).refusal,
+    'history-changed',
+    'legacy publication cannot omit admitted history',
+  );
+  const prepare = async (history) => {
+    const cp = { ...x.d.checkpoint, history };
+    cp.signature = await sign(await replacementCheckpointMessage(cp));
+    return cp;
+  };
+  assert.equal(
+    (await call(await prepare({ checkpoint: await c.historyCheckpointHash(first), sources: [] })))
+      .refusal,
+    'history-changed',
+  );
+  const held = await prepare({
+    checkpoint: await c.historyCheckpointHash(first),
+    sources: inventory,
+  });
+  doc.getText('master').insert(0, 'later snapshot\n');
+  const second = await create(first);
+  assert.equal(
+    (await call(held)).refusal,
+    'history-changed',
+    'changed baseline requires a fresh preparation',
+  );
+  assert.equal(x.f.rows('replacement_checkpoints').length, 0);
+  const current = await prepare({
+    checkpoint: await c.historyCheckpointHash(second),
+    sources: inventory,
+  });
+  lose = true;
+  assert.equal((await call(current)).ok, false);
+  assert.equal(x.f.rows('replacement_checkpoints').length, 1);
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual((await call(current)).checkpoint, current);
+  // The published immutable carrier remains exact after later history advances.
+  await create(second);
+  assert.deepEqual((await call(current)).checkpoint, current);
+});
+
 test('replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification', async (t) => {
   let fault;
   const x = await replacementServiceFixture(t, {

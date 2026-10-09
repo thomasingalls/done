@@ -34,12 +34,13 @@ remove the application's activation limit.
 
 ## Current increment
 
-The explicit Account-menu snapshot action and recovery reader are implemented. Recovered owners can
-now use their installed current-key recovery baseline to prepare another history snapshot: their signed
-intent names the exact prior history checkpoint and handoff inventory. Replacement owners and later
-handoffs, ordinary reader installation, and pruning remain next. Automatic cadence remains off. No
-new snapshot authorizes pruning or replaces a local content root until installation is implemented.
-The development action remains undeployed to the retained service.
+The explicit Account-menu snapshot action, recovery reader, recovered-owner baseline adapter and
+current-key replacement handoff adapter are implemented. New replacement snapshots bind the admitted
+history and exact handoff sources they include. Recovered/replacement owners can use their certified
+installed baselines without historical keys when that coverage evidence is present. Ordinary reader
+installation, the remaining generation-one handoff path and pruning remain next. Automatic cadence
+remains off. No new snapshot authorizes pruning or replaces a local content root. The development
+action remains undeployed to the retained service.
 
 ## Checkpoint primitive checkpoint
 
@@ -257,3 +258,38 @@ Next: carry admitted history into subsequent membership handoffs and support cur
 baselines, then ordinary reader installation and safe retained-history pruning. The live `34035330`
 installation, schema 24, all existing ciphertext and generation keys remain unchanged. No release
 qualification or generalized fault campaign was resumed.
+
+## History-aware replacement handoff checkpoint
+
+The native replacement producer now reconstructs the admitted history baseline, exact accepted suffix
+and retained handoffs before adding its own authenticated local originals. A new optional, signed and
+AEAD-bound field records the prior history hash and exact source inventory in the replacement carrier.
+The service compares that coverage with the admitted archive and actual source rows before first
+publication, fences both at commit, and refuses an older client that omits an admitted history baseline.
+An immutable, already-published snapshot still resolves byte-for-byte after lost replies and later
+history advancement. A known history-change refusal before publication durably clears only the unsent
+snapshot so retry can rebuild it; uncertain replies retain the exact proposal, and a delivery already
+saved can never be rebound to different content. The approval/code ceremony is preserved.
+
+An installed replacement can use that baseline for later history preparation using its current key
+only. The adapter checks the actual membership certification's snapshot hash and recipient admission,
+previous history hash/cuts and full covered source inventory; it does not accept a detached signature
+as evidence of installation. Legacy carriers remain readable but cannot assert this new shortcut
+without explicit coverage. Legacy slots lacking it may require refresh from a suitable survivor; no
+such migration is silently performed by maintenance.
+
+Fourteen focused parser/crypto/source cases, two publication-service cases and eight retained-handoff
+coordinator cases pass. The publication case covers omission, stale preparation, source omission and
+lost committed replies/restart. The native recovery custody case passes with the new history exchange.
+Both packaged recovery/lifecycle cases pass. The final expanded case creates history from an actual
+replacement slot with no generation-one key, obtains independent peer admission, then rotates/removes
+that device and recovers writing held only in its history snapshot (1.3 min). The peer was checked not
+to have received that blocked-upload edit in its ordinary editor. Static checks and final build pass.
+The new service fixture initially used wall-time expiry against its synthetic service clock; that
+fixture was corrected without changing protocol request freshness rules.
+
+This closes current-key replacement preparation, not normal reader baseline installation. Ordinary
+startup/receive and generation-one later-enrollment reading still need installation of admitted history
+plus suffix. A history baseline whose accepted cuts exceed an already fixed enrollment admission cut
+still refuses: it cannot be relabelled as covering an earlier cut. Safe pruning, bounded reader/output
+size work and live upgrade remain open. No ciphertext/key is deleted and the retained service is unchanged.

@@ -167,6 +167,33 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       'Writing from a device enrolled after recovery',
       { timeout: 15000 },
     );
+    // The replacement holds only generation two and starts before any history checkpoint.
+    // Keep one edit out of the delivery ledger so only the newly admitted snapshot can recover it.
+    let attempted = false;
+    await third.route('**/account/delivery/submit', async (route) => {
+      attempted = true;
+      await route.abort();
+    });
+    await add(third, 'Retained only by the replacement history snapshot');
+    await expect.poll(() => attempted).toBe(true);
+    await third.getByRole('button', { name: 'History maintenance', exact: true }).click();
+    const proposal = third.getByRole('region', { name: 'History maintenance', exact: true });
+    await proposal.getByRole('button', { name: 'Check history', exact: true }).click();
+    await proposal.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+    await expect(proposal).toContainText(
+      'Snapshot saved. Verify it from another approved device.',
+      { timeout: 15000 },
+    );
+    await next.getByRole('button', { name: 'History maintenance', exact: true }).click();
+    const verification = next.getByRole('region', { name: 'History maintenance', exact: true });
+    await verification.getByRole('button', { name: 'Check history', exact: true }).click();
+    await verification
+      .getByRole('button', { name: 'Verify history snapshot', exact: true })
+      .click();
+    await expect(verification).toContainText('Verified snapshot 1 is saved.', { timeout: 15000 });
+    await expect(next.locator('.shell')).not.toContainText(
+      'Retained only by the replacement history snapshot',
+    );
     // A subsequent key rotation must keep the existing saved recovery code useful.
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Remove device', exact: true }).click();
@@ -204,6 +231,9 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     await expect(page.locator('.shell')).toContainText('Writing after recovery and rotation', {
       timeout: 30000,
     });
+    await expect(page.locator('.shell')).toContainText(
+      'Retained only by the replacement history snapshot',
+    );
     await expect(page.locator('.shell')).toContainText(
       'Writing from a device enrolled after recovery',
     );

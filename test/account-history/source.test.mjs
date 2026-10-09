@@ -4,6 +4,20 @@ import { sourceFixture } from '../account-membership/replacement-source-fixture.
 import { signed, hash } from '../account-membership/fixtures.mjs';
 import { client as c } from './client.mjs';
 import { historySourceHash } from '../../account-protocol/historySources.ts';
+import { deliveryFixture } from '../account-membership/delivery-fixtures.mjs';
+import {
+  parseMembershipDelivery,
+  parseMembershipInstallation,
+  membershipDeliveryMessage,
+  membershipDeliveryHash,
+  membershipInstallationMessage,
+} from '../../account-protocol/membershipDelivery.ts';
+import {
+  replacementCheckpointHash,
+  replacementCheckpointAdmissionBody,
+  replacementCheckpointAdmissionMessage,
+  replacementCheckpointMessage,
+} from '../../account-protocol/replacementCheckpoint.ts';
 import {
   historyCatalogMessage,
   historyCheckpointPageMessage,
@@ -276,4 +290,139 @@ test('a single-device account replays only the suffix after its admitted epoch-o
   } finally {
     first.destroy();
   }
+});
+
+test('a certified replacement uses exact history and handoff coverage with only its current key', async (t) => {
+  const x = await fixture(t),
+    f = x.f,
+    base = x.input.base;
+  const early = c.historyMembership(
+    (await c.verifyMembershipChain({ ...f.proofs, continuations: [] }, base)).history,
+  );
+  const old = await c.createHistoryCheckpoint(
+    x.privateDoc,
+    x.privateDoc,
+    f.input.keys.get(1),
+    early,
+    x.input.producer,
+    c.membershipState(early).heads,
+    null,
+    f.sign,
+    x.input.sources,
+  );
+  const oldAdmission = await c.admitHistoryCheckpoint(
+    old,
+    f.input.keys.get(1),
+    early,
+    f.x.f.context.candidate.id,
+    x.privateDoc,
+    async (b) => signed(f.x.f.keys.new, b),
+  );
+  x.setPrevious({ checkpoint: old, admission: oldAdmission });
+  const accepted = await c.readHistorySource(x.input);
+  t.after(() => accepted.destroy());
+  const cp = await c.createReplacementCheckpoint(
+    accepted,
+    f.root,
+    f.key2,
+    x.authority,
+    x.input.producer,
+    f.input.candidate,
+    f.sign,
+    { checkpoint: await c.historyCheckpointHash(old), sources: x.input.sources },
+  );
+  const d = await deliveryFixture('existing', {
+    f: f.x.f,
+    anchor: f.rotated,
+    admission: f.admission,
+  });
+  const delivery = parseMembershipDelivery({
+    ...d.delivery,
+    v: 3,
+    checkpointHash: await replacementCheckpointHash(cp),
+  });
+  delivery.signature = signed(d.keys.existing, await membershipDeliveryMessage(delivery));
+  const admission = await replacementCheckpointAdmissionBody(cp);
+  admission.signature = signed(d.keys.new, await replacementCheckpointAdmissionMessage(admission));
+  const installation = parseMembershipInstallation({
+    ...d.installation,
+    v: 3,
+    deliveryHash: await membershipDeliveryHash(delivery),
+    checkpoint: admission,
+  });
+  installation.signature = signed(d.keys.new, await membershipInstallationMessage(installation));
+  const certification = d.certify({ ...d.epoch, delivery, installation });
+  const proofs = { ...f.proofs, continuations: [...f.proofs.continuations, certification] };
+  const authority = c.historyMembership((await c.verifyMembershipChain(proofs, base)).history);
+  const p = c.membershipState(authority);
+  const heads = [
+    ...p.heads,
+    ...p.finalized.map((h) => ({ credentialId: h.credential, position: h.position, link: h.link })),
+  ].sort((a, b) => a.credentialId.localeCompare(b.credentialId));
+  const source = {
+    ...x.input,
+    proofs,
+    producer: f.input.candidate,
+    keys: new Map([[2, f.key2]]),
+    heads,
+    sources: [
+      ...x.input.sources,
+      {
+        epoch: cp.manifest.epoch,
+        head: cp.manifest.epochHead,
+        kind: 'replacement',
+        hash: await historySourceHash('replacement', cp),
+      },
+    ],
+    replacement: { checkpoint: cp, admission },
+    read: async () => {
+      throw Error('Old covered streams must not be replayed');
+    },
+    exchange: async () => {
+      throw Error('Old covered snapshots must not be opened');
+    },
+  };
+  const reopened = await c.readHistorySource(source);
+  try {
+    assert(c.sameDocState(reopened, accepted));
+    assert.match(reopened.getText('master').toString(), /handoff-only writing/);
+    assert.match(reopened.getText('master').toString(), /removed accepted/);
+    // It can prepare the next current-key history proposal; another approved device must admit it.
+    const newest = await c.createHistoryCheckpoint(
+      reopened,
+      reopened,
+      f.key2,
+      authority,
+      source.producer,
+      heads,
+      old,
+      async (b) => signed(d.keys.new, b),
+      source.sources,
+    );
+    assert.equal(newest.manifest.sequence, 2);
+  } finally {
+    reopened.destroy();
+  }
+  await assert.rejects(
+    c.readHistorySource({ ...source, replacement: undefined }),
+    /available generation/,
+  );
+  await assert.rejects(
+    c.readHistorySource({ ...source, sources: x.input.sources }),
+    /covered handoff/,
+  );
+  const changed = structuredClone(cp);
+  changed.history.checkpoint = zero;
+  changed.signature = signed(d.keys.existing, await replacementCheckpointMessage(changed));
+  await assert.rejects(
+    c.readHistorySource({ ...source, replacement: { checkpoint: changed, admission } }),
+    /does not establish/,
+  );
+  await assert.rejects(
+    c.readHistorySource({
+      ...source,
+      replacement: { checkpoint: cp, admission: { ...admission, signature: zero.repeat(2) } },
+    }),
+    /does not establish/,
+  );
 });

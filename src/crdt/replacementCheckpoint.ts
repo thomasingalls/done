@@ -44,7 +44,9 @@ export async function createReplacementCheckpoint(
   producer: string,
   candidate: string,
   sign: (bytes: Bytes) => Promise<string>,
+  history?: ReplacementCheckpoint['history'],
 ): Promise<ReplacementCheckpoint> {
+  const coverage = structuredClone(history);
   const p = membershipState(parent),
     preparation = p.preparations.find((r) => r.credentialId === candidate);
   if (
@@ -95,6 +97,7 @@ export async function createReplacementCheckpoint(
         headVectorDigest: await checkpointHeadDigest(heads),
       },
       heads,
+      ...(coverage ? { history: coverage } : {}),
       signature: '00'.repeat(64),
     };
     const encrypted = new Uint8Array(

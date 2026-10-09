@@ -29,7 +29,7 @@ test(
   'recovery native installation resumes after partial activation, then edits and cold-opens with the new key only',
   { timeout: 60000 },
   async (t) => {
-    const x = await sourceFixture(t),
+    const x = await sourceFixture(t, { now: () => Date.now() }),
       prepared = await client.prepareRecoveryCommit(x.input);
     t.after(() => prepared.key.fill(0));
     const committed = await x.authority.owner.commitRecovery(x.f.core, prepared.request);
@@ -78,6 +78,11 @@ test(
       const page = await browser.newPage();
       await page.goto(x.authority.pin.origin);
       await page.addScriptTag({ content: script });
+      await page.exposeFunction('fixtureHistory', async (request) => {
+        const result = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+        assert.equal(result.ok, true, JSON.stringify(result));
+        return result.page;
+      });
       await page.exposeFunction('fixturePasskey', (challenge) => {
         const response = x.account.key.assert({
           options: { challenge: Buffer.from(challenge).toString('base64url') },

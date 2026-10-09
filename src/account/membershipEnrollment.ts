@@ -4,6 +4,7 @@ import type { SuccessorBase } from '../../account-protocol/successor';
 import type { GrantScope } from '../../account-protocol/scopedGrant';
 import { enrollmentOptions } from '../../account-protocol/enrollment';
 import { MEMBERSHIP_BOOTSTRAP_LIMIT } from '../../account-protocol/membershipLocator';
+import { HISTORY_PAGE_LIMIT } from '../../account-protocol/historyExchange';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import { withMembershipVault, type MembershipVault } from './membershipVault';
 import { advanceMembershipConnection, type MembershipConnection } from './membershipConnection';
@@ -24,7 +25,12 @@ import { enrollmentMessages, type EnrollmentView } from './deviceEnrollment';
 import type { SetupConfig } from './setupProgress';
 
 /** Stream bounds apply before parsing a potentially large signed membership/checkpoint response. */
-async function responseJson(response: Response, signal: AbortSignal, cancellation = false) {
+async function responseJson(
+  response: Response,
+  signal: AbortSignal,
+  cancellation = false,
+  limit = MEMBERSHIP_BOOTSTRAP_LIMIT,
+) {
   if (
     (!response.ok && !cancellation) ||
     !response.body ||
@@ -34,10 +40,7 @@ async function responseJson(response: Response, signal: AbortSignal, cancellatio
     throw Error('The service could not complete this step. Retry the saved connection.');
   }
   const declared = response.headers.get('content-length');
-  if (
-    declared !== null &&
-    (!/^\d+$/.test(declared) || Number(declared) > MEMBERSHIP_BOOTSTRAP_LIMIT)
-  ) {
+  if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit)) {
     await response.body.cancel();
     throw Error('Account response is too large');
   }
@@ -56,7 +59,7 @@ async function responseJson(response: Response, signal: AbortSignal, cancellatio
       signal.throwIfAborted();
       if (done) break;
       length += value.length;
-      if (length > MEMBERSHIP_BOOTSTRAP_LIMIT) throw Error('Account response is too large');
+      if (length > limit) throw Error('Account response is too large');
       text += decoder.decode(value, { stream: true });
     }
     if (declared !== null && Number(declared) !== length)
@@ -166,16 +169,27 @@ export function createMembershipEnrollment(
               ].includes(path)
             )
               attemptId = b.preparationId;
-            else if (path !== '/account/membership/v2/checkpoint')
+            else if (
+              path !== '/account/membership/v2/checkpoint' &&
+              path !== '/account/history/v1/checkpoint'
+            )
               throw Error('Unsupported connection route');
-            if (path !== '/account/membership/v2/checkpoint' && !attemptId)
+            if (
+              path !== '/account/membership/v2/checkpoint' &&
+              path !== '/account/history/v1/checkpoint' &&
+              !attemptId
+            )
               throw Error('Connection attempt is missing');
             const scoped = access(owner, base, attemptId);
             return owner.withLogin(ceremonyLogin, identity(base), async () =>
               responseJson(
                 await scoped.fetch(path, init),
                 signal,
-                path === '/account/membership/v2/cancel',
+                path === '/account/membership/v2/cancel' ||
+                  path === '/account/membership/v3/checkpoint',
+                path === '/account/history/v1/checkpoint'
+                  ? HISTORY_PAGE_LIMIT + 64
+                  : MEMBERSHIP_BOOTSTRAP_LIMIT,
               ),
             );
           },

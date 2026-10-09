@@ -419,6 +419,14 @@ export async function advanceMembershipConnection(
           { base, proofs: pendingProofs },
           comparison.own!.context.candidate.id,
           (bytes) => io.read(bytes, base),
+          async (body) => {
+            const result = (await request('/account/history/v1/checkpoint', body)) as {
+              ok?: unknown;
+              page?: unknown;
+            };
+            if (result.ok !== true) throw Error('Handoff history is unavailable');
+            return result.page;
+          },
         ),
     },
     save,

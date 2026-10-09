@@ -123,6 +123,9 @@ export async function runNativeHistoryMaintenance(
         sources,
         previous: prior,
         ...(source.snapshot?.kind === 'recovery-reading' ? { recovery: source.snapshot } : {}),
+        ...(source.snapshot?.kind === 'replacement-checkpoint' && source.installed
+          ? { replacement: { checkpoint: source.snapshot, admission: source.installed.admission } }
+          : {}),
         lifetime: { assertCurrent: guard },
         sign: source.sign,
         read,

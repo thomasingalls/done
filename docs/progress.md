@@ -77,7 +77,10 @@ The development screen states that reclamation is not enabled. Recovery now cons
 and its suffix, with a preparation fence and exact history reference in signed recovery intents. A
 packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Recovered
 owners now use signed source coverage to create current-key history snapshots without older openers.
-Next: replacement baselines and later handoffs, normal reader installation, then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
+Replacement handoffs now include admitted history and bind their source coverage; certified replacement
+owners can reuse those current-key baselines. Focused native checks include peer admission and recovery
+of snapshot-only writing after removal/rotation. Next: ordinary reader installation (including the
+remaining generation-one later-handoff path), then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
 Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

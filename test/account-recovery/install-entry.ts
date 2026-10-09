@@ -134,6 +134,10 @@ export async function prepareReplacement(
       async () => {
         throw Error('Unexpected historical read');
       },
+      (request) =>
+        (
+          window as unknown as { fixtureHistory(request: unknown): Promise<unknown> }
+        ).fixtureHistory(request),
     ),
   );
 }

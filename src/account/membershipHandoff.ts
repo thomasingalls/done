@@ -140,11 +140,21 @@ export async function continueMembershipHandoff(
       signature: '00'.repeat(64),
     };
     body.signature = await owner.sign(await replacementTransferMessage(body));
-    const result = closed(await request('/account/membership/v3/checkpoint', body), [
-      'ok',
-      'checkpoint',
-      'binding',
-    ]);
+    const raw = await request('/account/membership/v3/checkpoint', body);
+    if ((raw as { ok?: unknown } | null)?.ok === false) {
+      const refused = closed(raw, ['ok', 'refusal']);
+      if (refused['refusal'] === 'history-changed' && action === 'publish' && !p.content) {
+        // Only an explicit refusal before publication permits reconstruction. Uncertain replies
+        // retain the exact snapshot; a saved delivery can never be rebound to different content.
+        delete p.replacement;
+        delete p.replacementBinding;
+        await save();
+        await durableContent();
+        throw Error('History changed before publication. Retry to rebuild the saved snapshot.');
+      }
+      throw Error('Replacement snapshot unavailable');
+    }
+    const result = closed(raw, ['ok', 'checkpoint', 'binding']);
     if (result['ok'] !== true || !result['checkpoint'])
       throw Error('Replacement snapshot unavailable');
     const binding = await verifyBindingProof(

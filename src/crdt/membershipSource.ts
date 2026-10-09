@@ -22,7 +22,7 @@ import { Y } from './yjs';
 import { verifyReplacementReading, membershipReadingBinding } from './membershipReading';
 import type { BindingProof } from '../../account-protocol/slot';
 import { verifyEarlyHistory } from '../../account-protocol/admissionHistory';
-import { openReplacementSource } from './replacementSource';
+import type { openReplacementSource } from './replacementSource';
 import { same } from '../../account-protocol/admission';
 import {
   verifyMembershipChain,
@@ -34,10 +34,16 @@ import {
   historyGeneration,
 } from '../../account-protocol/admissionHistory';
 import { membershipState, type VerifiedMembership } from '../../account-protocol/membership';
+import { readHistorySource } from './historySource';
+import { createReplacementCheckpoint } from './replacementCheckpoint';
+import { replacementCheckpointHeads } from '../../account-protocol/replacementCheckpoint';
+import { historyCheckpointHash } from '../../account-protocol/historyCheckpoint';
 import {
-  encodeInboundRequest,
-  inboundRequestMessage,
-} from '../../account-protocol/inboundTransport';
+  parseHistoryExchange,
+  historyExchangeMessage,
+  verifyHistoryCheckpointPage,
+  type HistoryExchange,
+} from '../../account-protocol/historyExchange';
 import type { SuccessorBase } from '../../account-protocol/successor';
 import type { SessionTask } from './writeSession';
 import { sealGeneration } from '../account/generationWrap';
@@ -274,6 +280,7 @@ export async function prepareNativeReplacement(
   authority: { base: SuccessorBase; proofs: Proofs },
   candidate: string,
   read: (request: Bytes) => Promise<Bytes>,
+  exchange: (request: HistoryExchange) => Promise<unknown>,
 ) {
   const captured = structuredClone(authority);
   return withNativeHistorySource(input, async (source) => {
@@ -286,58 +293,70 @@ export async function prepareNativeReplacement(
     historyAuthority(verified.history, source.history.current);
     if (source.generation !== p.generation || p.generation < 2)
       throw Error('Replacement key has not been installed');
-    const replay = await openReplacementSource({
-      authority: {
-        base: source.base,
-        successor: verified.proofs.successor,
-        certification: verified.proofs.certification,
-      },
-      checkpoint: source.snapshot,
-      ...(source.installed ? { installed: source.installed } : {}),
-      history: verified.history,
+    const guard = () => input.task.step(() => {});
+    const query = parseHistoryExchange({
+      v: 1,
+      kind: 'history-checkpoint-request',
+      workspaceId: p.workspaceId,
+      lineageId: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      credentialId: source.producer,
+      nonce: hex(random(32)),
+      expiresAt: Date.now() + 60000,
+      action: 'read',
+      payload: 'latest',
+      signature: '00'.repeat(64),
+    });
+    query.signature = await source.sign(await historyExchangeMessage(query));
+    const page = await verifyHistoryCheckpointPage(await exchange(query), query, p.pin);
+    guard();
+    if (page.checkpoint && !page.admission) throw Error('Handoff history is not admitted');
+    const previous = page.checkpoint
+      ? { checkpoint: page.checkpoint, admission: page.admission! }
+      : null;
+    const accepted = await readHistorySource({
+      base: source.base,
+      proofs: captured.proofs,
+      binding: source.binding,
       producer: source.producer,
-      candidate,
       keys: source.keys,
-      lifetime: { assertCurrent: () => input.task.step(() => {}) },
+      heads: replacementCheckpointHeads(parent),
+      sources: page.sources,
+      previous,
+      ...(source.snapshot.kind === 'recovery-reading' ? { recovery: source.snapshot } : {}),
+      ...(source.snapshot.kind === 'replacement-checkpoint' && source.installed
+        ? { replacement: { checkpoint: source.snapshot, admission: source.installed.admission } }
+        : {}),
+      lifetime: { assertCurrent: guard },
+      sign: source.sign,
+      read,
+      exchange,
     });
     try {
-      for (;;) {
-        const next = replay.pending()[0];
-        if (!next) break;
-        const body = {
-          serviceId: p.pin.serviceId,
-          origin: p.pin.origin,
-          workspace: p.workspaceId,
-          reader: source.producer,
-          publisher: next.credentialId,
-          lineage: p.lineageId,
-          head: p.head,
-          epoch: p.epoch,
-          after: next.after,
-          limit: 1,
-          nonce: hex(random(32)),
-          expires: Date.now() + 30000,
-          signature: '00'.repeat(64),
-        };
-        body.signature = await source.sign(inboundRequestMessage(body));
-        const request = encodeInboundRequest(body);
-        let page: Bytes | undefined;
-        try {
-          page = await input.task.wait(() => read(request));
-          (await replay.appendPage(next.credentialId, request, page)).fill(0);
-        } finally {
-          request.fill(0);
-          page?.fill(0);
-        }
-      }
       const local = await source.local();
       try {
-        return await replay.checkpoint(local, source.sign);
+        guard();
+        return await createReplacementCheckpoint(
+          accepted,
+          local,
+          source.keys.get(p.generation)!,
+          parent,
+          source.producer,
+          candidate,
+          source.sign,
+          {
+            checkpoint: previous
+              ? await historyCheckpointHash(previous.checkpoint)
+              : '00'.repeat(32),
+            sources: page.sources,
+          },
+        );
       } finally {
         local.destroy();
       }
     } finally {
-      replay.dispose();
+      accepted.destroy();
     }
   });
 }

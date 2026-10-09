@@ -12293,3 +12293,20 @@ and [evidence](./development-evidence/2026-10-09-account-history.log).
 
 Replacement/handoff integration, ordinary reader installation and pruning remain open. No live restart,
 key retirement or deletion; release validation remains paused. Unsigned intermediate commit.
+
+
+### 2026-10-09 — Admitted history in current-key replacement handoffs
+
+New native replacement snapshots include admitted history and exact handoff sources, bind that coverage
+in signatures/encryption, and fence publication against changes in the service archive. Explicit refusal
+before publication permits durable reconstruction; lost replies retain exact bytes. Installed replacement
+owners authenticate their certification/admission before reusing this current-key baseline for history
+maintenance. Fourteen source/crypto cases, two service cases and eight coordinator cases pass, along with
+native custody and packaged recovery/lifecycle checks. The expanded replacement walkthrough proves a
+blocked-upload edit survives only through peer-admitted history and later recovery after removal/rotation.
+Static/build checks pass. [History checkpoint](./account-history-management.md),
+[evidence](./development-evidence/2026-10-09-account-history.log).
+
+Ordinary reader installation, generation-one later-handoff reading and pruning remain open. Legacy
+carriers without explicit coverage do not authorize the new shortcut. No live change, deletion or key
+retirement; qualification remains paused. Unsigned intermediate commit.

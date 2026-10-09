@@ -64,6 +64,7 @@ async function fixture(replacement = false) {
     remoteCertification = null,
     remoteCheckpoint = null,
     afterRequest,
+    beforeRequest,
     beforeSave,
     afterSave;
   const calls = [],
@@ -136,6 +137,8 @@ async function fixture(replacement = false) {
   const request = async (path, body) => {
     const role = body.credentialId === f.c.existing.id ? 'existing' : 'new';
     if (path === '/account/membership/v3/checkpoint') {
+      const refusal = await beforeRequest?.(body);
+      if (refusal) return refusal;
       assert.equal(body.parent, f.p.head);
       assert.equal(body.preparationId, f.admission.epoch.preparation.context.attemptId);
       await verifySignature(
@@ -243,7 +246,7 @@ async function fixture(replacement = false) {
       current[role] = structuredClone(durable[role]);
     },
     hooks: (hooks = {}) => {
-      ({ beforeSave, afterSave, afterRequest } = hooks);
+      ({ beforeSave, afterSave, afterRequest, beforeRequest } = hooks);
     },
     get certification() {
       return remoteCertification;
@@ -496,4 +499,24 @@ test('replacement refuses unsaved or substituted snapshots and a key that cannot
   assert.equal(await x.run('new'), 'certified');
   delete x.current.new.replacement;
   await assert.rejects(x.run('new', x.certification), /snapshot is missing/);
+});
+
+test('explicit history refusal durably clears only an unpublished replacement and rebuilds after restart', async () => {
+  const x = await fixture(true);
+  x.hooks({
+    beforeRequest: (r) =>
+      r.action === 'publish' ? { ok: false, refusal: 'history-changed' } : undefined,
+  });
+  await assert.rejects(x.run('existing'), /History changed before publication/);
+  assert.equal(x.counts.prepared, 1);
+  assert.equal(x.counts.wrap, 0);
+  assert.equal(x.durable.existing.replacement, undefined);
+  assert.equal(x.durable.existing.content, undefined);
+  assert(x.durable.existing.decision, 'the approved ceremony is retained');
+  x.restart('existing');
+  x.hooks();
+  assert.equal(await x.run('existing'), 'approved');
+  assert.equal(x.counts.prepared, 2);
+  assert.equal(x.counts.wrap, 1);
+  assert.equal(await x.run('new'), 'certified');
 });

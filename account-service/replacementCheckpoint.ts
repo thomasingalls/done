@@ -20,6 +20,9 @@ import { rethrowAuthorization } from './authorization.ts';
 import { membershipCheckpointRow, retainedCheckpoint } from './membershipCheckpoint.ts';
 import { verifyBindingProof, type SlotBinding } from '../account-protocol/slot.ts';
 import { validateCredentialKey, type StoredCredential } from './webauthn.ts';
+import { captureRecoveryHistory, verifyRecoveryHistory } from './recoveryHistory.ts';
+import { historySources } from './historySources.ts';
+import { membershipProofChain } from './membershipLocator.ts';
 
 export type ReplacementCheckpointIssuer = DeliveryIssuer & {
   bind(binding: SlotBinding): Promise<string>;
@@ -80,6 +83,8 @@ export async function exchangeReplacementCheckpoint(
       authority,
       checkpoint: replacementCheckpointRow(db, request.workspaceId, request.preparationId),
       original,
+      history: captureRecoveryHistory(db, request.workspaceId),
+      sources: authority ? historySources(db, request.workspaceId, authority).sources : [],
       credential:
         !original && authority
           ? (db
@@ -162,6 +167,23 @@ export async function exchangeReplacementCheckpoint(
         if (checkpoint && !same(checkpoint, proposed)) return no('checkpoint-conflict');
         if (!checkpoint && (auth.delivery || auth.certification))
           return no('delivery-already-started');
+        if (!checkpoint) {
+          const latest = before.history?.catalog.latest ?? '00'.repeat(32);
+          if (
+            (proposed.history?.checkpoint ?? '00'.repeat(32)) !== latest ||
+            (proposed.history && !same(proposed.history.sources, before.sources))
+          )
+            return no('history-changed');
+          await verifyRecoveryHistory(
+            before.history,
+            {
+              pin: issuer.pin,
+              request: auth.anchor.request,
+              receipt: auth.anchor.receipt,
+            },
+            membershipProofChain(s),
+          );
+        }
         checkpoint = proposed;
       }
       if (
@@ -177,6 +199,8 @@ export async function exchangeReplacementCheckpoint(
         snapshotBytes(current.authority) !== snapshotBytes(s) ||
         !same(current.checkpoint, before.checkpoint) ||
         !same(current.original, before.original) ||
+        !same(current.history, before.history) ||
+        !same(current.sources, before.sources) ||
         !same(current.credential ?? null, before.credential ?? null)
       ) {
         db.exec('ROLLBACK');
@@ -199,6 +223,17 @@ export async function exchangeReplacementCheckpoint(
           JSON.stringify(checkpoint),
         );
       hook('before-commit', 'replacement-checkpoint');
+      // A hook or concurrent source publication cannot change the covered baseline at commit.
+      if (
+        checkpoint &&
+        !before.checkpoint &&
+        (!same(captureRecoveryHistory(db, request.workspaceId), before.history) ||
+          !same(
+            historySources(db, request.workspaceId, s).sources.filter((r) => r.head !== p.head),
+            before.sources,
+          ))
+      )
+        throw Error('Replacement history changed at commit');
       complete?.();
       db.exec('COMMIT');
       hook('after-commit', 'replacement-checkpoint');
