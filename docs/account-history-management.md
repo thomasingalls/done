@@ -36,7 +36,7 @@ remove the application's activation limit.
 
 Implementing the checkpoint carrier, cryptographic replay/admission and service exchange first.
 No new snapshot authorizes pruning or replaces a local content root until the installation work is
-complete. No automatic cadence or user-facing maintenance control has been activated yet.
+complete. Automatic cadence remains off. The development Account-menu control now creates and verifies snapshots; it does not install a new reader baseline or reclaim space, and is not deployed to the retained service.
 
 ## Checkpoint primitive checkpoint
 
@@ -168,3 +168,32 @@ device never held needs the later membership/checkpoint handoff integration. The
 retain all source material. Native owner composition must settle those routes before exposing the
 maintenance action. Installation, recovery reader cutover and actual pruning remain unimplemented;
 none of the new checkpoints yet authorizes deleting accepted ciphertext or generation keys.
+
+## Native owner and explicit menu checkpoint
+
+The Account menu now exposes explicit history inspection, creation, peer verification, exact resume
+and cancellation in the development build. The owner holds the actual slot permit, obtains installed
+keys and the verified membership timeline, independently retrieves the prior snapshot's admission,
+replays accepted writing and retained handoffs, and adds authenticated journal-inclusive local writing.
+The admitting device performs its own accepted-source replay. No editor document or UI-supplied key,
+publisher cut, membership credential or installation claim enters that preparation.
+
+Progress writes refresh the active editor's custody fence only for the authenticated history field
+and its shared nonce reservations. Any unrelated authority/custody change closes the owner. The
+original replacement/wrapping paths keep their certified-baseline prerequisites; early sole-device
+accounts gain a verified history route without changing their stored spool authority.
+
+Disposable packaged-app checks cover repeated sole-device snapshots, an actually committed publication
+with its reply lost, lock/reopen/exact resume, independent two-device admission in both directions,
+and later editing/delivery. The second two-device verification exceeded Playwright's default five-second
+assertion window twice; a diagnostic rerun allowed fifteen seconds (individual HTTP requests already
+have ten-second deadlines) and completed. The final observation was 7,167 ms and recorded HTTP 429 backoff/retry; no timeout
+or service rate limit was loosened in the application. This is functional evidence, not a latency-gate pass or a
+claim about an automatic maintenance cadence. The final check retains request-path/status/timing-only
+evidence. Existing membership custody and replacement-source regressions are checked alongside it.
+
+The screen explicitly says space reclamation is not enabled. Devices without the required historical
+openers still refuse source preparation; current-generation replacement/recovery baselines need the
+next adapter. Recovery must consume admitted history snapshots, including originals not separately
+uploaded as updates, before deployment. Atomic reader installation and witnessed-evidence retention/
+pruning follow that reader work. The personal installation remains build `34035330` / schema 24.

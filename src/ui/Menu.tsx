@@ -1,3 +1,4 @@
+import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
 /** Local navigation, explicit preferences, recovery export and lock. */
 import { useState, useSyncExternalStore } from 'react';
@@ -170,6 +171,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Devices
           </button>
         )}
+        {devices?.history && <AccountHistory run={devices.history} />}
         {switchAccount && (
           <button className="menu-button" onClick={switchAccount}>
             Use another account

@@ -19,7 +19,9 @@ import { capturedRecovery } from './sourceCapture';
 import { replayRecovery } from './admissionDocument';
 import { openEnvelope, openCredential, hex, random, type Bytes } from './custodyCrypto';
 import { Y } from './yjs';
-import { verifyReplacementReading } from './membershipReading';
+import { verifyReplacementReading, membershipReadingBinding } from './membershipReading';
+import type { BindingProof } from '../../account-protocol/slot';
+import { verifyEarlyHistory } from '../../account-protocol/admissionHistory';
 import { openReplacementSource } from './replacementSource';
 import { same } from '../../account-protocol/admission';
 import {
@@ -44,16 +46,19 @@ import { unhex } from '../../account-protocol/recovery';
 type Proofs = ReturnType<typeof parseMembershipChain>;
 type SourceArgs = { task: SessionTask; kind: 'promotion' | 'joined'; slotId: string; code: string };
 
-async function withSource<T>(
+export async function withNativeHistorySource<T>(
   input: SourceArgs,
   work: (source: {
     base: SuccessorBase;
+    proofs: Proofs | null;
+    earlySuccessor: unknown;
+    binding: BindingProof;
     history: NonNullable<Awaited<ReturnType<typeof heldCaptureRoute>>['history']>;
     keys: ReadonlyMap<number, Bytes>;
     generation: number;
     producer: string;
     sign(bytes: Bytes): Promise<string>;
-    snapshot: Parameters<typeof openReplacementSource>[0]['checkpoint'];
+    snapshot: Parameters<typeof openReplacementSource>[0]['checkpoint'] | null;
     installed?: Parameters<typeof openReplacementSource>[0]['installed'];
     local(): Promise<InstanceType<typeof Y.Doc>>;
     subtle: SubtleCrypto;
@@ -63,14 +68,8 @@ async function withSource<T>(
     original = kind === 'promotion' ? await readPromotion(task, slotId, code) : null,
     joined = kind === 'joined' ? await readJoinedAccount(task, slotId, code) : null,
     state = (original ?? joined)!;
-  if (
-    (original &&
-      (original.marker?.v !== 9 ||
-        !original.marker.catchup ||
-        !original.marker.successor?.certification)) ||
-    (joined && joined.marker?.phase !== 'active')
-  )
-    throw Error('Replacement source is not an active account');
+  if ((original && original.marker?.v !== 9) || (joined && joined.marker?.phase !== 'active'))
+    throw Error('History source is not an active account');
   const scope = claimScope(state.claim),
     marker = original?.marker,
     credentials = marker?.credentials ?? state.record.credentials!,
@@ -126,7 +125,10 @@ async function withSource<T>(
           };
         }
       }
-      const history = route.history!;
+      const history =
+        original && route.epoch < 3
+          ? await verifyEarlyHistory(base, marker!.successor?.artifact ?? null)
+          : route.history!;
       if (
         route.generation !== generation ||
         !history ||
@@ -138,7 +140,7 @@ async function withSource<T>(
             m.wPub === hex(credentials[0].publicKey),
         )
       )
-        throw Error('Replacement source is not a current certified device');
+        throw Error('History source is not a current certified device');
       context.retainedGenerationKeys = new Map([...keys].filter(([g]) => g < generation));
       const publicKey = await subtle.importKey('raw', credentials[1].publicKey, 'Ed25519', false, [
           'verify',
@@ -147,13 +149,37 @@ async function withSource<T>(
         guard = () => task.step(() => {});
       return await work({
         base,
+        proofs:
+          membership?.proofs ??
+          (original
+            ? marker!.successor?.certification
+              ? {
+                  successor: marker!.successor.artifact,
+                  certification: marker!.successor.certification,
+                  continuations: [],
+                }
+              : null
+            : {
+                successor: joined!.marker!.authority.successor,
+                certification: joined!.marker!.authority.certification,
+                continuations:
+                  joined!.marker!.v === 1 ? [] : joined!.marker!.authority.continuations,
+              }),
+        earlySuccessor: original ? (marker!.successor?.artifact ?? null) : null,
+        binding: original
+          ? marker!.handoff!.binding
+          : joined!.marker!.v === 3
+            ? joined!.marker!.reading.binding
+            : joined!.marker!.v === 2
+              ? membershipReadingBinding(joined!.marker!.reading)
+              : joined!.marker!.reading.checkpoint.binding,
         history,
         keys,
         generation,
         producer,
         subtle,
         snapshot: original
-          ? marker!.catchup!
+          ? (marker!.catchup ?? null)
           : joined!.marker!.v === 3
             ? joined!.marker!.reading
             : joined!.marker!.reading.checkpoint,
@@ -250,7 +276,9 @@ export async function prepareNativeReplacement(
   read: (request: Bytes) => Promise<Bytes>,
 ) {
   const captured = structuredClone(authority);
-  return withSource(input, async (source) => {
+  return withNativeHistorySource(input, async (source) => {
+    if (!source.snapshot || source.history.current.tip < 3)
+      throw Error('Replacement source needs an installed certified baseline');
     if (!same(source.base, captured.base)) throw Error('Replacement source account changed');
     const verified = await verifyMembershipChain(captured.proofs, source.base),
       parent = historyMembership(verified.history),
@@ -323,7 +351,9 @@ export async function wrapMembershipGeneration(
   membership: VerifiedMembership,
 ) {
   const p = membershipState(membership);
-  return withSource(input, async (source) => {
+  return withNativeHistorySource(input, async (source) => {
+    if (!source.snapshot || source.history.current.tip < 3)
+      throw Error('Replacement source needs an installed certified baseline');
     const held = membershipState(historyMembership(source.history));
     if (
       workspace !== p.workspaceId ||

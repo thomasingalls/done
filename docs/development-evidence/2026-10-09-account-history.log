@@ -79,3 +79,21 @@ Cold accepted-source replay:
   TypeScript, scoped lint/format and git diff --check passed.
   This primitive still requires an available genesis/admitted-history opener. Native installed
   replacement/recovery baselines, menu ownership, installation and pruning remain open.
+
+Native owner and explicit Account-menu integration:
+  node_modules/.bin/tsc -b --noEmit
+  node_modules/.bin/vite build
+  Passed; 430 modules, final build 2.53 s. Local dist only, not the retained serving directory.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/history.spec.ts test/packaged-account/membership-custody.spec.ts
+  History: 2 passed (sole device 9.2 s; two devices 36.3 s).
+  Custody: timed out after 120 s during existing pairedEditors enrollment, before custody assertions.
+  Unchanged isolated retry of membership-custody.spec.ts: 1 passed, 23.4 s (24.4 s runner total).
+  Earlier history checks twice exceeded the default 5 s assertion window for final peer verification.
+  A diagnostic 15 s assertion completed; final verification observation was 7167 ms and included
+  HTTP 429 backoff/retry. Application request deadlines and service throttles were not relaxed.
+  Sole-device test loses an actually committed publication response, locks/reopens and resumes;
+  two-device test independently admits both producers' snapshots and continues two-way writing.
+  node --test --test-timeout=20000 test/account-membership/replacement-source.test.mjs
+  6 passed, 0 failed; duration 2007 ms.
+  Scoped lint/format, TypeScript and git diff --check passed.
+  Recovery consumption, installed baseline cutover and pruning remain open. No live upgrade.

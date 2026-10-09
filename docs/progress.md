@@ -71,9 +71,11 @@ tombstones prevent delayed publication from reviving a cancelled attempt. Native
 custody now passes for original/joined devices, including interrupted reservation and later editing.
 The source exchange now fences late handoff publication with a signed inventory bound into each
 proposal. Cold source replay now verifies handoffs and exact prefixes, including epoch-one suffixes
-and removed publishers. Next is native installed-baseline/owner composition and the operator-selected
-Account-menu action; automatic cadence remains off. Schema 25 remains
-development-only until an explicit offline upgrade.
+and removed publishers. Native owner composition and the explicit Account-menu snapshot action now
+work in disposable sole-device/two-device checks, with durable retry and subsequent editing/delivery.
+The development screen states that reclamation is not enabled. Next: recovery consumption of admitted
+history, current-key installed baselines, atomic reader installation, then safe retention/pruning.
+Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 
 ---

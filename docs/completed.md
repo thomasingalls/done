@@ -12247,3 +12247,20 @@ pass; TypeScript and scoped static checks pass. A fixture now shares one bundled
 Native ownership/menu integration still needs installed baselines for devices without old openers;
 this content primitive does not change startup or prune data. [History plan](./account-history-management.md).
 Retained `34035330` service unchanged. Unsigned intermediate commit; qualification remains paused.
+
+### 2026-10-09 — Native history preparation and explicit Account-menu control
+
+Connected actual slot-owned keys, verified membership, independent accepted replay, journal-inclusive
+local originals and encrypted retry progress to explicit snapshot creation/verification in the
+development Account menu. Custody progress refreshes the live editor fence only for the history field
+and seal reservations; unrelated changes close the owner. Disposable packaged-app tests pass for
+repeated sole-device snapshots, lost committed publication/reopen/retry, independent two-device
+admission and subsequent two-way editing. The existing custody regression timed out in enrollment;
+its unchanged isolated retry passed. Six affected replacement-source tests and static/build checks
+pass. Final peer verification took 7.167 s with observed HTTP 429 backoff; the test now allows 15 s,
+without changing application deadlines or rate limits. No latency qualification is claimed.
+
+The screen says reclamation is not enabled. Recovery consumption of history, devices lacking old
+openers, atomic baseline installation and safe pruning remain open. The retained service is unchanged.
+[History checkpoint](./account-history-management.md), [focused evidence](./development-evidence/2026-10-09-account-history.log).
+Unsigned intermediate commit; release validation remains paused.

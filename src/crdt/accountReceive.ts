@@ -1183,6 +1183,78 @@ async function openAccountReceiveOwner(
       },
       ...(access && !account.detached
         ? {
+            history: (command: import('../account/historyMaintenance').HistoryMaintenanceCommand) =>
+              runCaptureTask(async (task) => {
+                await assertCurrent(task);
+                const refreshCustody = async () => {
+                  try {
+                    // History owns only its encrypted progress and shared seal reservations. Refresh
+                    // the live custody fence after both success and an interrupted reservation.
+                    const current = joined
+                      ? await readJoinedAccount(task, options.slotId, options.code)
+                      : await readPromotion(task, options.slotId, options.code);
+                    const record = current.record;
+                    const expected = {
+                      ...expectedRecord,
+                      seal_reserved: record.seal_reserved,
+                      ...(record.history ? { history: record.history } : {}),
+                      mac: record.mac,
+                    };
+                    const oldPayload = joined
+                      ? hex(
+                          joinedPayload({
+                            ...(current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
+                            custodyMac: hex(expectedRecord.mac),
+                          }),
+                        )
+                      : hex(
+                          promotionPayload({
+                            ...(current as Awaited<ReturnType<typeof readPromotion>>).marker!,
+                            custodyMac: hex(expectedRecord.mac),
+                            sealReserved: expectedRecord.seal_reserved,
+                          }),
+                        );
+                    if (
+                      !recordEqual(record, expected) ||
+                      record.seal_reserved < expectedRecord.seal_reserved ||
+                      oldPayload !== expectedPayload
+                    ) {
+                      throw Error('Account custody changed during history maintenance');
+                    }
+                    expectedRecord = record;
+                    expectedPayload = joined
+                      ? hex(
+                          joinedPayload(
+                            (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
+                          ),
+                        )
+                      : hex(
+                          promotionPayload(
+                            (current as Awaited<ReturnType<typeof readPromotion>>).marker!,
+                          ),
+                        );
+                  } catch (cause) {
+                    handoff = true;
+                    void carrier.close().catch(() => {});
+                    throw cause;
+                  }
+                };
+                try {
+                  const { runNativeHistoryMaintenance } = await import('./historyOwner');
+                  return await runNativeHistoryMaintenance(
+                    {
+                      task,
+                      kind: joined ? 'joined' : 'promotion',
+                      slotId: options.slotId,
+                      code: options.code,
+                    },
+                    command,
+                    access,
+                  );
+                } finally {
+                  await refreshCustody();
+                }
+              }),
             remove: (target: string) =>
               runCaptureTask(async (task) => {
                 await assertCurrent(task);

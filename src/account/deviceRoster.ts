@@ -9,6 +9,9 @@ export interface DeviceRosterSnapshot {
 export interface DeviceRoster {
   readonly detached?: boolean;
   readonly transition?: string;
+  history?(
+    command: import('./historyMaintenance').HistoryMaintenanceCommand,
+  ): Promise<import('./historyMaintenance').HistoryMaintenanceStatus>;
   remove?(target: string): Promise<'pending' | 'applying'>;
   read(): Promise<DeviceRosterSnapshot>;
 }
