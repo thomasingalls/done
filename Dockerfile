@@ -19,6 +19,7 @@ USER 65532:65532
 RUN node --test --test-timeout=15000 test/public-runtime/*.test.mjs test/account-application/gateway.test.mjs
 RUN node --test --test-timeout=20000 test/public-backup/*.test.mjs
 RUN node --test --test-timeout=20000 test/public-restore/*.test.mjs
+RUN node --test --test-timeout=20000 test/public-maintenance/*.test.mjs
 
 FROM dependencies AS production-dependencies
 RUN pnpm prune --prod --ignore-scripts

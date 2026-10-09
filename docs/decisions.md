@@ -4434,3 +4434,17 @@ superseded. Keep the current asynchronous snapshot policy, preserve rollback/acc
 and require explicit operator disposition of uncertain restored history. No synchronous B2 log,
 second volume/node, production reset or client deletion is authorized by this choice. The options
 and limits are recorded in [recovery choices](./recovery-options.md).
+
+
+### 2026-10-10 — First public schema maintenance is explicit and operator-owned (`L-1`)
+
+The first deployed public schema is 26; no private intermediate schema is being supported as a
+public upgrade path. Maintenance preparation uses the source image and stable ownership lock,
+keeps a crash-persistent serving fence, and verifies a protected encrypted off-host recovery set.
+The saved age identity is supplied only to offline preparation for decryption/cold-open verification,
+never to the API or routine backup worker. Resumption in this image is allowed only for unchanged
+source files including nonempty WAL. A future actual transition must add explicit target-image
+migration, interruption/retry and preserved-authority checks before deployment. Resolved backup
+expiry is an operator command after seven days, requiring a newer verified routine recovery set;
+unresolved or unverifiable copies remain held. Application-image updates and quarantined disaster
+restore retain their separate rules. [Procedure and scope](./public-maintenance.md).

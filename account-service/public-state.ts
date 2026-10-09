@@ -185,6 +185,8 @@ export function openPublicState(options: PublicStateOptions & { pinFile: string 
   try {
     if (existsSync(join(options.directory, 'restore.json')))
       throw Error('Restored state is quarantined; operator recovery disposition required');
+    if (existsSync(join(options.directory, 'maintenance')))
+      throw Error('Public state is fenced for offline maintenance');
     key = readOperatorKey(options.operatorKeyFile, options.directory);
     const expected = readExpectedPin(options.pinFile, options.directory);
     const state = verifyPublicStore(
@@ -243,10 +245,16 @@ export function initializePublicState(
       'ownership.sqlite-journal',
       'store',
       'initializing',
+      'maintenance-history',
     ]);
     if (readdirSync(options.directory).some((name) => !allowed.has(name)))
       throw Error('Unclassified public state directory');
     if (existsSync(store) && existsSync(staged)) throw Error('Ambiguous initialization state');
+    if (existsSync(join(options.directory, 'maintenance-history'))) {
+      owned(join(options.directory, 'maintenance-history'), true);
+      if (!existsSync(store))
+        throw Error('Missing store after prior maintenance; operator recovery required');
+    }
     if (!existsSync(store) && !existsSync(staged)) {
       mkdirSync(staged, { mode: 0o700 });
       sync(options.directory);

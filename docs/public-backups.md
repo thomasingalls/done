@@ -174,3 +174,13 @@ It never restores automatically or publishes an older ledger. Archive production
 to emit exactly the five fixed files, avoiding macOS system tar's extra AppleDouble/xattr entries.
 The selected backup/retention cadence and B2 availability behavior are unchanged. Future replication
 choices are recorded in [recovery options](./recovery-options.md), without selecting a commit log.
+
+
+## Pre-migration backup addition — 2026-10-10
+
+The [offline maintenance commands](./public-maintenance.md) create a protected backup using the
+existing payload and B2 transfer. Preparation additionally decrypts with the saved recovery identity
+and cold-opens a disposable copy before upload. A durable fence prevents the API restarting after
+job death. Routine retention excludes maintenance names; resolved copies have an explicit seven-day
+expiry command that first verifies a newer routine backup. The API/worker still have no recovery
+private key. Active/failed copies can outlive seven days until their outcome is resolved.

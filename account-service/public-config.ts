@@ -48,6 +48,19 @@ export function publicRestoreConfig(env: Environment = process.env) {
     sourceRevision: required(env, 'DONE_SOURCE_REVISION'),
   });
 }
+/** Offline only: the recovery identity is never part of API/backup-worker configuration. */
+export function publicMaintenanceConfig(env: Environment = process.env) {
+  const service = publicServiceConfig(env);
+  if (!service.backup) throw Error('Maintenance requires configured off-host backups');
+  return Object.freeze({
+    ...service,
+    backup: service.backup,
+    id: required(env, 'DONE_MAINTENANCE_ID'),
+    identityFile: env.DONE_MAINTENANCE_IDENTITY_FILE
+      ? path(env, 'DONE_MAINTENANCE_IDENTITY_FILE')
+      : undefined,
+  });
+}
 export function publicListenConfig(env: Environment = process.env) {
   const port = Number(env.DONE_APP_PORT ?? 8080);
   const servicePort = Number(env.DONE_API_PORT ?? 8081);

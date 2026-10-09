@@ -169,3 +169,12 @@ or backup worker. It accepts a selected encrypted archive and external recovery 
 and prepares a separate candidate, and explicitly blocks public opening of the recovered root.
 See [the runbook](./public-restore.md). Normal `initialize`, `api` and `app` behavior and the
 asynchronous backup availability policy are retained.
+
+
+## Offline maintenance addition — 2026-10-10
+
+`maintenance-prepare`, `maintenance-status`, `maintenance-resume` and `maintenance-prune` share the
+public state ownership lock. A persistent `maintenance/` fence also refuses API startup and
+initialization after a crashed job. Completed receipts live under `maintenance-history/`; their
+presence cannot authorize recreating a missing store. See the [maintenance procedure](./public-maintenance.md).
+There is no automatic or generic public schema upgrader; the first public baseline is schema 26.

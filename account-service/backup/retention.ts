@@ -14,6 +14,15 @@ export function parseBackupName(prefix: string, name: string) {
   if (!match) return undefined;
   return { capturedAt: Number(match[1]), sha256: match[3]! };
 }
+/** Separate namespace: routine retention must never select an unresolved maintenance copy. */
+export function parseMaintenanceName(prefix: string, name: string, id?: string) {
+  if (!name.startsWith(prefix)) return undefined;
+  const match = /^maintenance\/([0-9a-f]{32})\/(\d{13})-([0-9a-f]{64})\.tar\.gz\.age$/.exec(
+    name.slice(prefix.length),
+  );
+  if (!match || (id !== undefined && match[1] !== id)) return undefined;
+  return { capturedAt: Number(match[2]), sha256: match[3]! };
+}
 export function retentionDeletes(versions: BackupVersion[], anchorId: string, now: number) {
   if (!Number.isSafeInteger(now) || !versions.some((v) => v.fileId === anchorId))
     throw Error('Retention needs its verified anchor');

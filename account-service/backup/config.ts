@@ -1,5 +1,14 @@
-import { fstatSync, openSync, closeSync, readFileSync, realpathSync, lstatSync } from 'node:fs';
-import { isAbsolute, relative, resolve } from 'node:path';
+import {
+  fstatSync,
+  openSync,
+  closeSync,
+  readFileSync,
+  realpathSync,
+  lstatSync,
+  readdirSync,
+  rmSync,
+} from 'node:fs';
+import { isAbsolute, relative, resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
 import type { AuthorityPin } from '../../account-protocol/authority.ts';
 import { canonical } from '../protocol.ts';
@@ -32,6 +41,17 @@ export function ownedDirectory(path: string) {
   const s = lstatSync(path);
   if (!s.isDirectory() || s.mode & 0o077 || (process.getuid && s.uid !== process.getuid()))
     throw Error('Backup workspace must be an owned private directory');
+}
+/** Caller holds lifetime ownership; no worker or maintenance run may still be using this workspace. */
+export function cleanBackupWorkspace(path: string) {
+  ownedDirectory(path);
+  const names = readdirSync(path);
+  // Classify the entire directory before removing anything.
+  for (const name of names) {
+    if (!/^run-[0-9a-f]{32}$/.test(name)) throw Error('Unclassified backup workspace');
+    ownedDirectory(join(path, name));
+  }
+  for (const name of names) rmSync(join(path, name), { recursive: true });
 }
 export function backupConfig(
   state: string,

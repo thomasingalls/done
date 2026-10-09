@@ -12532,3 +12532,20 @@ quarantined with no serving permit; uncertain continuity needs an operator dispo
 require fresh setup/import with writing loss. No replication choice, production restore, deployment,
 image push or release campaign occurred. Explicit schema-maintenance sequencing/pre-migration backup
 and infrastructure integration remain; there is no older public schema deployed to migrate today.
+
+
+### 2026-10-10 — Offline maintenance fence and protected pre-migration backup
+
+Implemented source-image `maintenance-prepare/status/resume/prune` around lifetime ownership and a
+persistent startup fence. Preparation records live main/WAL fingerprints, authenticates and cold-opens
+a decrypted backup copy, then uploads ciphertext and verifies its immutable B2 version. Lost replies
+recover the same backup; process death leaves the writer fenced. Unchanged-state resolution preserves
+sessions/counters and archives its receipt; changed WAL or missing source cannot be silently resumed
+or reinitialized. Routine retention ignores protected copies. Explicit expiry requires resolution,
+seven days and a verified routine snapshot captured after resolution. Killed-job scratch cleanup uses
+the same scoped workspace convention as the backup worker. Six focused maintenance checks and all
+25 affected runtime/gateway/backup/restore regressions pass on the host, as do TypeScript and changed
+code lint checks. Target-image evidence follows. There is no older public schema to upgrade; future
+transitions must ship version-bounded target-image code as specified in the
+[maintenance runbook](./public-maintenance.md). No live state, real B2 bucket, deployment or release
+campaign was used.

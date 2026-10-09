@@ -17,6 +17,7 @@
     "test:public-runtime": "node --test --test-timeout=15000 test/public-runtime/*.test.mjs",
     "test:public-backup": "node --test --test-timeout=20000 test/public-backup/*.test.mjs",
     "test:public-restore": "node --test --test-timeout=20000 test/public-restore/*.test.mjs",
+    "test:public-maintenance": "node --test --test-timeout=20000 test/public-maintenance/*.test.mjs",
     "test:packaged-account": "playwright test --config playwright.packaged-account.config.ts",
     "test:account-runtime": "node --test --test-timeout=15000 test/account-application/*.test.mjs",
     "test:account-session-client-browser": "node --test --test-timeout=35000 test/account-sessions/client.native.mjs",

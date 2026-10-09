@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: operator restore complete; schema-maintenance sequencing and infrastructure integration next
+scope: offline maintenance implemented; exact-image evidence then infrastructure integration
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-10
@@ -72,7 +72,8 @@ Current launch commands are in [packaged development](./packaged-account-develop
   deployed. No maintenance was run against personal writing during this upgrade.
 - Operations: public configuration, explicit initialization, exclusive ownership and ARM64 packaging
   are implemented. The encrypted backup pipeline is checked against a controlled B2 protocol fixture.
-  Actual provider activation, restore/maintenance, infrastructure manifests and publication remain.
+  Operator restore and offline maintenance are implemented. Actual provider activation, infrastructure
+  manifests and publication remain.
   The running installation is still the retained worktree's loopback/Tailscale host.
 
 The operator selected a fresh public installation at `done.oxidationlabs.com` through `~/Code/ol-infra`;
@@ -115,8 +116,11 @@ separates a successful restore from an operator history disposition; it supplies
 bypass. Signed implementation `ce953670` passes the application build and all 25 focused checks in the
 ARM64 image as UID 65532. Packaged app/API smoke and the network-disabled production-runtime
 backup/restore rehearsal also pass; [evidence](./development-evidence/2026-10-10-public-restore.json)
-is retained. Next is explicit schema-maintenance sequencing/pre-migration backup and infrastructure
-integration. No older public schema is deployed today. The operator's final 2026-10-10 choice defers automatic
+is retained. Offline [schema maintenance](./public-maintenance.md) now adds a persistent writer fence,
+verified protected B2 backup, unchanged-state resumption and explicit expiry. Six maintenance checks
+and all 25 runtime/backup/restore regressions pass on the host; target-image evidence is next, then
+infrastructure integration. No older public schema is deployed today; its first actual transition
+must ship explicit target-image migration code. The operator's final 2026-10-10 choice defers automatic
 reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
 [recovery choices](./recovery-options.md). No retained installation or infrastructure resource has
 changed; no image has been published and no real B2 bucket has been used.

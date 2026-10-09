@@ -76,6 +76,9 @@ have an identifiable outcome and safe retry. Verify schema, retained rows/identi
 serving. Flux reconciliation must respect the maintenance sequence instead of racing a migration Job
 with a newly started writer. Prefer forward repair after new writes have been accepted; restoring a
 pre-migration database is a data-recovery operation, not an ordinary image rollback.
+The [maintenance runbook](./public-maintenance.md) specifies the implemented fence, verified protected
+backup, unchanged-state resumption and expiry. No older public schema exists today; the first real
+transition must ship an explicit target-image migration before that update can be deployed.
 
 ### Disaster restore
 
@@ -110,8 +113,10 @@ release-validation campaign.
    upload/readback and off-cluster recovery-key verification remain publication/activation inputs.
 4. Isolated operator restore is implemented and checked: [runbook and evidence](./public-restore.md).
    It verifies the archive, resets session custody and preserves quarantine pending recovery disposition.
-   Explicit schema-maintenance sequencing and pre-migration backup remain before infrastructure
-   integration; no older public schema has been deployed. The operator's final 2026-10-10 decision
+   Offline maintenance preparation and pre-migration backup are now implemented: durable fence,
+   saved-key decrypt/cold-open verification, protected B2 version, unchanged-state resumption and
+   explicit expiry. See [schema maintenance](./public-maintenance.md). No older public schema has
+   been deployed; a concrete version transition belongs to its future target image. The operator's final 2026-10-10 decision
    accepts possible writing loss and defers automatic reconciliation/replication architecture; see
    [recovery choices](./recovery-options.md). Do not force an older signed ledger back into service.
    Exercise focused interruption/identity cases and one complete backup/restore rehearsal.

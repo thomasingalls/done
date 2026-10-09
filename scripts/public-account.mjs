@@ -5,13 +5,26 @@ import {
   publicServiceConfig,
   publicStorageConfig,
   publicRestoreConfig,
+  publicMaintenanceConfig,
 } from '../account-service/public-config.ts';
 
 process.umask(0o077);
 const mode = process.argv[2];
 try {
-  if (process.argv.length !== 3 || !['initialize', 'restore', 'api', 'app'].includes(mode))
-    throw Error('Usage: node scripts/public-account.mjs initialize|restore|api|app');
+  const maintenance = ['prepare', 'status', 'resume', 'prune'];
+  if (
+    process.argv.length !== 3 ||
+    ![
+      'initialize',
+      'restore',
+      'api',
+      'app',
+      ...maintenance.map((m) => 'maintenance-' + m),
+    ].includes(mode)
+  )
+    throw Error(
+      'Usage: node scripts/public-account.mjs initialize|restore|api|app|maintenance-{prepare,status,resume,prune}',
+    );
   if (mode === 'initialize') {
     const { initializePublicState } = await import('../account-service/public-state.ts');
     // Public pin only. Mount this independently as DONE_SERVICE_PIN_FILE before serving.
@@ -19,6 +32,13 @@ try {
   } else if (mode === 'restore') {
     const { restorePublicBackup } = await import('../account-service/public-restore.ts');
     console.log(JSON.stringify(await restorePublicBackup(publicRestoreConfig())));
+  } else if (mode.startsWith('maintenance-')) {
+    const { publicMaintenance } = await import('../account-service/public-maintenance.ts');
+    console.log(
+      JSON.stringify(
+        await publicMaintenance(mode.slice('maintenance-'.length), publicMaintenanceConfig()),
+      ),
+    );
   } else {
     const listen = publicListenConfig();
     let service;
