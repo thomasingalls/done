@@ -311,3 +311,47 @@ Running 1 test using 1 worker
 
 Final TypeScript --noEmit, scoped oxfmt/oxlint and git diff --check: pass. Final Vite build: pass, 2.59 s.
 The final refusal-rebuild branch was checked in the direct retained coordinator tests after the native walkthrough; no second native rerun for that error-only branch.
+
+
+=== Additive reader installation ledger (2026-10-09) ===
+node --test --test-timeout=20000 test/account-successor/history.test.mjs test/account-membership/history.test.mjs test/account-membership/rotation-history.test.mjs test/account-history/install.test.mjs test/account-history/checkpoint.test.mjs
+(node:41903) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sole device can propose and admit repeated snapshots with exact ancestry and deletion coverage (42.16775ms)
+✔ a second eligible device must admit, with both self-admission flag directions checked (42.545417ms)
+✔ independent accepted replay prevents admitting missing insertions or deletions (14.604375ms)
+✔ a genuinely signed false coverage claim still fails decryption/replay admission (14.322458ms)
+✔ pending dependencies refuse before a checkpoint is signed; inputs freeze before async signing (12.514167ms)
+✔ finalized publishers cannot be omitted or advanced, and ancestry cannot rewind their cuts (108.606834ms)
+✔ history ancestry and AEAD bind the complete handoff inventory (27.829959ms)
+(node:41904) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (46.179833ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (92.163542ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (17.094542ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (28.443ms)
+✔ continuation history records reader eligibility and each publisher starting epoch without retroactive rights (271.844792ms)
+✔ later publisher prefixes use actual issuance epochs and keep all prior accepted boundaries (143.032375ms)
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (372.548875ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (42.916541ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (212.319542ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (138.350667ms)
+✔ only verified, immutable exact parent/current contexts resolve historical routes (65.365459ms)
+✔ historical acceptance and exact old pending envelopes accepted after admission remain distinct (34.113125ms)
+✔ signatures, publisher, previous link, leaf epoch and admission boundary cannot be substituted (30.486333ms)
+✔ permanent old refusals beyond the accepted boundary stay verifiable and do not become acceptances (90.147416ms)
+✔ complete prefix verifies independently signed envelope bytes including a zero prefix (92.656417ms)
+✔ missing, duplicate, reordered, changed and incorrectly routed prefix bytes refuse installation (28.417333ms)
+✔ prefix verification snapshots mutable bytes and fails closed on concurrent operations (25.996917ms)
+✔ retained child rejects a sibling even when the service signs both (54.380167ms)
+✔ generated prefixes and issuance epochs agree with an independent boundary model (1651.456875ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2299.940416
+
+Initial affected regression caught mutable base capture after await in the new history anchor adapter; captured before await and reran all 26 focused cases successfully. TypeScript --noEmit and scoped oxfmt/oxlint: pass. No browser/live writes in this stage.

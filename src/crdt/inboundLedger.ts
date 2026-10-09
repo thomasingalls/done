@@ -1,3 +1,10 @@
+import {
+  HISTORY_INSTALL_TAG,
+  decodeHistoryInstall,
+  verifyHistoryInstall,
+  type InstalledHistory,
+} from './historyInstall';
+import { verifyEarlyMembership } from '../../account-protocol/membership';
 import { heldCaptureRoute } from './accountSuccessor';
 import {
   historyAuthority,
@@ -42,7 +49,15 @@ export async function heldInboundContext(
       id: hex(new Uint8Array(await subtle.digest('SHA-256', utf8(JSON.stringify(receipt))))),
     },
     service: { id: marker.pin.serviceId, origin: marker.pin.origin },
-    ...(route.history ? { history: route.history } : {}),
+    ...(route.history
+      ? { history: route.history }
+      : {
+          checkpointAnchor: await verifyEarlyMembership({
+            pin: marker.pin,
+            request: marker.admission!.request,
+            receipt,
+          }),
+        }),
     authority: route.history?.current ?? {
       workspace: route.workspace,
       lineage: offer.epoch.lineageId,
@@ -72,7 +87,8 @@ export function inspectInbound(
   context: InboundContext,
 ) {
   const prior: OpenedRecord[] = [],
-    entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [];
+    entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
+    installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
   for (const record of records) {
     let tag;
     if (record.kind === 'heads' || record.kind === 'outbound') {
@@ -82,16 +98,21 @@ export function inspectInbound(
         captureError('Unreadable inbound carrier');
       }
     }
-    if (tag === 'done/account-inbound/v1') {
+    if (tag === HISTORY_INSTALL_TAG) {
+      if (record.kind !== 'heads') captureError('History installation misplaced');
+      installations.push({ record, event: decodeHistoryInstall(record.bytes) });
+    } else if (tag === 'done/account-inbound/v1') {
       if (record.kind !== 'heads') captureError('Inbound record misplaced');
       entries.push({ record, event: decodeInboundRecord(record.bytes) });
     } else prior.push(record);
   }
   const delivery = inspectDelivery(prior, route, context.authority);
   // Delivery's own transition order remains separate; the one completeness witness covers the union.
-  const ledger = [...delivery.ledger, ...entries.map((e) => e.record)].sort(
-    (a, b) => a.seq - b.seq,
-  );
+  const ledger = [
+    ...delivery.ledger,
+    ...entries.map((e) => e.record),
+    ...installations.map((e) => e.record),
+  ].sort((a, b) => a.seq - b.seq);
   if (context.history) {
     let epoch = 1;
     for (const row of ledger) {
@@ -105,10 +126,11 @@ export function inspectInbound(
     }
   }
   delivery.spool.events = ledger.map((r) => r.bytes);
-  return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq) };
+  return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq), installations };
 }
 export interface InboundState {
   prefix: InboundContext['prefix'];
+  installedHistory?: InstalledHistory;
   conflict: boolean;
   retained: Map<number, NonNullable<InboundContext['retained']>>;
   peers?: Map<string, InboundState>;
@@ -248,7 +270,40 @@ export async function verifyInboundLedger(
 ): Promise<InboundState> {
   const own = emptyInbound(baselinePrefix(base, base.publisher.id));
   own.peers = new Map();
-  for (const { record, event } of census.entries) {
+  const events = [
+    ...census.entries.map((e) => ({ ...e, kind: 'page' as const })),
+    ...census.installations.map((e) => ({ ...e, kind: 'history' as const })),
+  ].sort((a, b) => a.record.seq - b.record.seq);
+  for (const entry of events) {
+    if (entry.kind === 'history') {
+      if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
+        captureError('History installation after stream conflict');
+      const check = () =>
+        verifyHistoryInstall(base, entry.record.bytes, own.installedHistory, lifetime);
+      const result = reuse
+        ? await reuse.memo.check(
+            'history:' + entry.record.seq,
+            JSON.stringify({
+              baseline: base.baseline,
+              authority: base.authority,
+              reader: base.reader,
+              previous: own.installedHistory,
+            }),
+            [entry.record.bytes],
+            check,
+            lifetime.assertCurrent,
+          )
+        : await check();
+      try {
+        if (reuse) reuse.coverage.check(records, [result.update]);
+        else verifyInboundCoverage(records, [result.update]);
+        own.installedHistory = result.installed;
+      } finally {
+        result.update.fill(0);
+      }
+      continue;
+    }
+    const { record, event } = entry;
     const request = decodeInboundRequest(event.request);
     const publisher = publisherContext(base, request.publisher);
     const state = publisherState(own, base, request.publisher);

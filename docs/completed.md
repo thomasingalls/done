@@ -12310,3 +12310,13 @@ Static/build checks pass. [History checkpoint](./account-history-management.md),
 Ordinary reader installation, generation-one later-handoff reading and pruning remain open. Legacy
 carriers without explicit coverage do not authorize the new shortcut. No live change, deletion or key
 retirement; qualification remains paused. Unsigned intermediate commit.
+
+
+### 2026-10-09 — Authenticated additive history-installation ledger
+
+Implemented bounded history-installation evidence in the encrypted account witness ledger and cold
+coverage verification, preserving receive cuts and local originals. Historical checkpoint eligibility
+uses retained verified membership states; mutable inputs are captured before async verification.
+Twenty-six focused checks and TypeScript/scoped lint/format pass. Native ordered installation follows;
+no pruning, cursor skipping, deployment or release validation. Unsigned intermediate commit.
+See [history checkpoint](./account-history-management.md) and its focused evidence log.

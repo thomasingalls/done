@@ -293,3 +293,25 @@ startup/receive and generation-one later-enrollment reading still need installat
 plus suffix. A history baseline whose accepted cuts exceed an already fixed enrollment admission cut
 still refuses: it cannot be relabelled as covering an earlier cut. Safe pruning, bounded reader/output
 size work and live upgrade remain open. No ciphertext/key is deleted and the retained service is unchanged.
+
+
+### 2026-10-09 — Additive reader-installation ledger
+
+A new encrypted `heads` event retains the admitted checkpoint and its exact admission, bound to
+this local root, workspace, reader and installation epoch. It shares the existing completeness
+witness with outbound/delivery/inbound events. Cold replay verifies actual historical membership,
+signatures, decryption and full insertion/deletion coverage against durable content. Missing content,
+wrong scope, non-advancing sequence and an inconsistent immediate parent refuse. The verified
+membership timeline retains its historical branded states; input capture precedes all async work.
+
+This is deliberately additive: it does not advance receive prefixes, establish outbound acceptance,
+replace the original custody root or authorize pruning. Sequence gaps can be merged as admitted
+content without making an ancestry/deletion claim. The current 4 MiB atomic admission limit applies
+to the combined plaintext update and proof, with refusal before writes. Larger installation and
+baseline/suffix skipping remain separate work. No active native installation entry point in this
+foundation commit; ordered receive integration follows.
+
+Focused checks: four new installation cases plus seven checkpoint and fifteen affected membership/
+successor cases pass (26 total), including mutable-input capture, local originals, compacted content,
+missing-content refusal and historical certification. TypeScript and scoped formatting/lint pass.
+Evidence is in `development-evidence/2026-10-09-account-history.log`. No live change or release campaign.

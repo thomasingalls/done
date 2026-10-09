@@ -17,3 +17,15 @@ export { createContentCheckpoint } from '../../src/crdt/contentCheckpoint';
 
 export { genesisCoverage } from '../../src/crdt/yjs';
 export { createReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';
+
+export * from '../../src/crdt/historyInstall';
+export {
+  verifyEarlyHistory,
+  verifyCertificationHistory,
+  historyMembershipAt,
+} from '../../account-protocol/admissionHistory';
+export {
+  verifyInboundCoverage,
+  verifyInboundLedger,
+  inspectInbound,
+} from '../../src/crdt/inboundLedger';

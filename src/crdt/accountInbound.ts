@@ -58,6 +58,8 @@ export interface InboundContext {
   authority: DecisionAuthority;
   /** Verified admission-only lineage, supplied by the custody owner. */
   history?: AdmissionHistory;
+  /** Original single-device custody, before an admission history exists. */
+  checkpointAnchor?: import('../../account-protocol/membership').VerifiedMembership;
   creatingCredential: string;
   reader: { id: string; publicKey: string; active: boolean };
   publisher: { id: string; publicKey: string; principal: string; system: boolean; active: boolean };

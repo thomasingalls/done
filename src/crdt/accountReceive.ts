@@ -310,6 +310,7 @@ async function openAccountReceiveOwner(
                 ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
                 ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
                 ...census.entries.map((e) => 'inbound:' + e.record.seq),
+                ...census.installations.map((e) => 'history:' + e.record.seq),
               ]),
             );
             return { delivery, inbound, census };

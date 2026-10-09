@@ -63,6 +63,7 @@ interface PublisherTimeline {
 }
 interface ContinuationTimeline {
   membership: VerifiedMembership;
+  memberships: ReadonlyMap<number, VerifiedMembership>;
   generations: ReadonlyMap<number, number>;
   minimumGenerations: ReadonlyMap<number, number>;
   readers: ReadonlyMap<number, AdmissionHistory['readers']>;
@@ -79,33 +80,9 @@ export async function verifyAdmissionHistory(
   base: SuccessorBase,
   held: AuthorityAnchor,
 ): Promise<AdmissionHistory> {
-  const successor = await verifySuccessor(input, base, held),
-    e = successor.epoch,
-    member = e.certified.value.members[0],
-    boundary = e.heads.find((h) => h.credentialId === member.id)!;
-  const first = captureAuthority({
-    workspace: e.workspaceId,
-    lineage: e.lineageId,
-    tip: 1,
-    head: e.parent,
-    acceptanceKey: e.acceptancePublicKey,
-  });
-  const current = captureAuthority({ ...first, tip: 2, head: successor.head });
-  const cut = Object.freeze({ position: boundary.position, link: boundary.link });
-  const result = Object.freeze({
-    first,
-    current,
-    credential: member.id,
-    principal: e.principalId,
-    signingKey: member.sPub,
-    boundary: cut,
-    authorities: Object.freeze([first, current]),
-    boundaries: Object.freeze([cut]),
-    readers: Object.freeze([Object.freeze({ id: member.id, publicKey: member.sPub })]),
-  });
-  verified.add(result);
-  rosters.set(result, Object.freeze(e.roster.map(({ id, state }) => Object.freeze({ id, state }))));
-  return result;
+  const capturedBase = structuredClone(base);
+  const successor = await verifySuccessor(input, capturedBase, held);
+  return verifyEarlyHistory(capturedBase, successor);
 }
 /** A real first-admission (or pending first enrollment) anchor for recovery. */
 export async function verifyEarlyHistory(
@@ -150,6 +127,10 @@ export async function verifyEarlyHistory(
   );
   timelines.set(result, {
     membership,
+    memberships: new Map([
+      [1, state.epoch === 1 ? membership : await verifyEarlyMembership(base)],
+      [state.epoch, membership],
+    ]),
     generations: new Map(authorities.map((a) => [a.tip, 1])),
     minimumGenerations: new Map(authorities.map((a) => [a.tip, 1])),
     readers: new Map(authorities.map((a) => [a.tip, readers])),
@@ -211,6 +192,11 @@ export async function verifyCertificationHistory(
     );
   timelines.set(result, {
     membership,
+    memberships: new Map([
+      [1, historyMembershipAt(prior, 1)],
+      [2, historyMembershipAt(prior, 2)],
+      [3, membership],
+    ]),
     generations: new Map([
       [1, 1],
       [2, 1],
@@ -321,6 +307,7 @@ export async function extendMembershipHistory(
   );
   timelines.set(result, {
     membership,
+    memberships: new Map([...timeline.memberships, [state.epoch, membership]]),
     generations: new Map([...timeline.generations, [state.epoch, state.generation]]),
     minimumGenerations: new Map([
       ...timeline.minimumGenerations,
@@ -341,6 +328,13 @@ export function historyMembership(history: AdmissionHistory): VerifiedMembership
   const h = requireHistory(history),
     state = timelines.get(publisherRoots.get(h) ?? h)?.membership;
   if (!state) throw Error('History has no certified membership anchor');
+  return state;
+}
+/** Historical checkpoint eligibility, retained only from verified transitions. */
+export function historyMembershipAt(history: AdmissionHistory, epoch: number): VerifiedMembership {
+  const h = requireHistory(history),
+    state = timelines.get(publisherRoots.get(h) ?? h)?.memberships.get(epoch);
+  if (!state) throw Error('Unknown historical membership');
   return state;
 }
 /** Read the verified roster, including candidates not yet certified for sync. */
