@@ -599,3 +599,91 @@ The run observed HTTP 429 capacity backoff. No application timeout or rate limit
 -- Production build --
 
 ✓ built in 2.79s
+
+
+=== Covered service-history pruning — 2026-10-09 ===
+
+-- done-prune-focused-final.log --
+(node:51981) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51981) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51981) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ client reopens exact publish attempt after a lost reply and service restart (224.145792ms)
+✔ client reopens exact admit attempt after a lost reply and service restart (149.73975ms)
+✔ failed progress persistence never publishes, while later attempts remain repeatable (219.496916ms)
+✔ untrusted replies and wrong-owner progress cannot clear a retained attempt (114.213875ms)
+✔ stale attempts preserve progress until explicitly cancelled; a lost cancellation reply resumes cancellation (315.555417ms)
+✔ cancelling an unsent proposal fences a delayed original publication (181.029375ms)
+✔ catalog rollback and progress changes during async signing refuse (116.175208ms)
+✔ explicit pruning requires two snapshots and retries an uncertain reply without losing saved progress (366.90125ms)
+✔ a retained old admission resolves after its snapshot ciphertext has been pruned (372.338209ms)
+(node:51982) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51982) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51982) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (122.832792ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (65.173667ms)
+(node:51983) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51983) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51983) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ pruning removes only ciphertext covered by both retained snapshots and preserves exact acceptance retries (317.846ms)
+✔ pruning resumes atomically after before-commit and restart (191.881459ms)
+✔ pruning resumes atomically after after-commit and restart (180.528375ms)
+✔ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (240.238584ms)
+✔ older snapshot ciphertext becomes an authenticated completion receipt without breaking lost-reply retries (312.10775ms)
+✔ pruning keeps refusal and parent evidence while accepted retries remain closed over their original decision (180.256291ms)
+✔ revoked commit authorization refuses pruning before either ciphertext carrier changes (154.699125ms)
+(node:51984) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51984) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51984) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (247.159125ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (72.552208ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (72.523625ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (93.518125ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (90.368208ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (102.67525ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (223.681083ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (72.961541ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (64.38175ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (146.891959ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (100.147625ms)
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (49.337125ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2752.181375
+
+-- done-prune-upgrade.log --
+(node:51843) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51843) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51843) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (81.021167ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 818.49375
+
+-- done-prune-type.log --
+
+-- done-prune-lint.log --
+
+-- Packaged pruning / recovery --
+  ✓  2 test/packaged-account/recovery.spec.ts:255:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (24.9s)
+Initial returning-editor run timed out during pairedEditors service-worker readiness, before pruning. Replaced the unbounded shared setup wait with an activation assertion; cleanup no longer masks the original error.
+  ✓  1 test/packaged-account/history.spec.ts:191:1 › a returning editor installs admitted cuts after service pruning and keeps its local writing (41.4s)
+  1 passed (42.2s)
+
+-- Production build --
+
+✓ built in 2.79s

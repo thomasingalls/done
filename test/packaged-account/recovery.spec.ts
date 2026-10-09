@@ -306,6 +306,19 @@ test('a never-paired account recovers and admits its next device without an orig
       await history.getByRole('button', { name: 'Check history', exact: true }).click();
       await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
       await expect(history).toContainText('Verified snapshot 1 is saved.', { timeout: 15000 });
+      await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(history).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 });
+      await history.getByRole('button', { name: 'Prune covered history', exact: true }).click();
+      await expect(history).toContainText('Covered service history removed.', { timeout: 15000 });
+      expect(
+        Number(
+          db
+            .prepare(
+              "SELECT count(*) AS n FROM delivery_decisions WHERE substr(CAST(submission AS TEXT),1,1)='{'",
+            )
+            .get()!['n'],
+        ),
+      ).toBeGreaterThan(0);
       expect(count()).toBe(acceptedBefore);
     } finally {
       db.close();
@@ -345,7 +358,7 @@ test('a never-paired account recovers and admits its next device without an orig
     const history = next.getByRole('region', { name: 'History maintenance', exact: true });
     await history.getByRole('button', { name: 'Check history', exact: true }).click();
     await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
-    await expect(history).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 });
+    await expect(history).toContainText('Verified snapshot 3 is saved.', { timeout: 15000 });
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(next, code);

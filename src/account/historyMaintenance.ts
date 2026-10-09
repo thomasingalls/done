@@ -107,11 +107,18 @@ export interface HistoryMaintenanceIO {
   ): Promise<void>;
   exchange(request: HistoryExchange): Promise<unknown>;
 }
-export type HistoryMaintenanceCommand = 'inspect' | 'create' | 'resume' | 'verify' | 'discard';
+export type HistoryMaintenanceCommand =
+  | 'inspect'
+  | 'create'
+  | 'resume'
+  | 'verify'
+  | 'discard'
+  | 'prune';
 export interface HistoryMaintenanceStatus {
   sequence: number;
   pending: 'none' | 'resume' | 'verify' | 'waiting' | 'stale';
   canDiscard: boolean;
+  pruned?: true;
 }
 /** One serial owner operation. An unavailable/untrusted reply never erases the retained attempt. */
 export async function runHistoryMaintenance(
@@ -217,6 +224,16 @@ export async function runHistoryMaintenance(
     const page = await verifyHistoryCheckpointPage(raw, request, p.pin);
     verifyHistoryHeads(page.heads, authority);
     if (page.checkpoint) await verify(page.checkpoint, page.admission);
+    else if (page.admission) {
+      const attempt = retained?.attempt;
+      if (
+        action !== 'admit' ||
+        !attempt ||
+        (await historyCheckpointHash(attempt.checkpoint)) !== page.admission.checkpointHash
+      )
+        throw Error('Unexpected history completion receipt');
+      await verify(attempt.checkpoint, page.admission);
+    }
     if (
       action === 'read' &&
       page.checkpoint &&
@@ -294,6 +311,27 @@ export async function runHistoryMaintenance(
   if (pending.checkpoint)
     await verifyHistoryCheckpointParent(pending.checkpoint, latest.checkpoint);
   if (command === 'inspect') return describe(pending);
+  if (command === 'prune') {
+    if (retained?.attempt || retained?.discard)
+      throw Error('Finish saved history maintenance before pruning');
+    const latest = await exchange('read', 'latest'),
+      previous = await exchange('read', 'previous');
+    if (
+      !latest.checkpoint ||
+      !latest.admission ||
+      !previous.checkpoint ||
+      !previous.admission ||
+      latest.catalog.latest !== previous.catalog.latest ||
+      latest.catalog.previous !== previous.catalog.previous
+    )
+      throw Error('Pruning requires two unchanged admitted snapshots');
+    await verifyHistoryCheckpointParent(latest.checkpoint, previous.checkpoint);
+    const page = await exchange('prune', {
+      latest: latest.catalog.latest,
+      previous: latest.catalog.previous,
+    });
+    return { sequence: page.catalog.sequence, pending: 'none', canDiscard: false, pruned: true };
+  }
   if (command === 'discard') {
     if (pending.checkpoint) {
       if (!describe(pending).canDiscard)

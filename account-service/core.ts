@@ -230,6 +230,7 @@ export class AccountCore {
       upgradeFromV22?: boolean;
       upgradeFromV23?: boolean;
       upgradeFromV24?: boolean;
+      upgradeFromV25?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -271,7 +272,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 25 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 26 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 25 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV25
+        ) &&
         !(
           version === 24 &&
           instrumentation.sessions &&
@@ -504,6 +511,7 @@ export class AccountCore {
             this.#db.exec(HISTORY_CHECKPOINT_SCHEMA);
             this.#db.exec('PRAGMA user_version=25;');
           }
+          if (version < 26) this.#db.exec('PRAGMA user_version=26;');
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(

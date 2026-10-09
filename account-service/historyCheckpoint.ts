@@ -1,5 +1,11 @@
+import {
+  isPrunedCheckpoint,
+  verifyPrunedCheckpoint,
+  preparePrunedCheckpoint,
+} from './prunedCheckpoint.ts';
+import { preparePrunedDecision, isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
 import { historySources } from './historySources.ts';
-/** Durable proposal/admission exchange. This archive grants no permission to prune acceptance ledgers. */
+/** Durable proposal/admission and explicit covered-ciphertext pruning; decision ledgers remain complete. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same } from '../account-protocol/admission.ts';
 import {
@@ -59,6 +65,7 @@ export const HISTORY_CHECKPOINT_SCHEMA = `
   workspace_id TEXT NOT NULL, hash TEXT NOT NULL, credential_id TEXT NOT NULL, request TEXT NOT NULL,
   PRIMARY KEY(workspace_id,hash,credential_id));`;
 export interface HistoryCheckpointIssuer extends DeliveryIssuer {
+  pruneSign(bytes: Uint8Array): Promise<string>;
   catalog(value: HistoryCatalog): Promise<HistoryCatalog>;
   historyPage(value: HistoryCheckpointPage): Promise<HistoryCheckpointPage>;
 }
@@ -156,9 +163,20 @@ export async function exchangeHistoryCheckpoint(
       throw Error('Missing history catalog');
     const hashes = [
       ...new Set(
-        [catalog?.latest, catalog?.previous, catalog?.pending, requestedHash].filter(
-          (v): v is string => Boolean(v) && v !== zero,
-        ),
+        [
+          catalog?.latest,
+          catalog?.previous,
+          catalog?.pending,
+          requestedHash,
+          ...(r.action === 'prune' && catalog
+            ? db
+                .prepare(
+                  'SELECT hash FROM history_checkpoint_records WHERE workspace_id=? AND sequence<? AND admission IS NOT NULL',
+                )
+                .all(r.workspaceId, catalog.sequence - 1)
+                .map((row) => String(row.hash))
+            : []),
+        ].filter((v): v is string => Boolean(v) && v !== zero),
       ),
     ];
     return {
@@ -232,6 +250,7 @@ export async function exchangeHistoryCheckpoint(
             signature: '00'.repeat(64),
           };
       const rows = new Map(before.records.map((v) => [v.hash, v.row]));
+      const retired = new Map<string, Awaited<ReturnType<typeof verifyPrunedCheckpoint>>>();
       const verified = new Map<
         string,
         { checkpoint: HistoryCheckpoint; admission: HistoryCheckpointAdmission | null }
@@ -244,8 +263,41 @@ export async function exchangeHistoryCheckpoint(
           if (required) throw Error('Missing retained history checkpoint');
           return null;
         }
-        const raw = JSON.parse(row.checkpoint),
-          history = authorities.get(raw.manifest?.epoch);
+        const raw = JSON.parse(row.checkpoint);
+        if (isPrunedCheckpoint(raw)) {
+          const receipt = await verifyPrunedCheckpoint(raw, issuer.pin, {
+            workspace: p.workspaceId,
+            lineage: p.lineageId,
+            hash,
+            sequence: row.sequence,
+            admission: row.admission ? JSON.parse(row.admission) : null,
+          });
+          if (
+            row.workspace_id !== p.workspaceId ||
+            row.hash !== hash ||
+            receipt.sequence >= catalog.sequence - 1
+          )
+            throw Error('Required checkpoint was pruned');
+          retired.set(hash, receipt);
+          if (r.action === 'publish' && requestedHash === hash) {
+            const cp = r.payload as HistoryCheckpoint,
+              at = authorities.get(cp.manifest.epoch);
+            if (
+              !at ||
+              cp.manifest.sequence !== receipt.sequence ||
+              cp.manifest.parent !== receipt.parent ||
+              (await historyCheckpointHash(cp)) !== hash
+            )
+              throw Error('Retried checkpoint changed');
+            await verifyHistoryCheckpointAdmission(receipt.admission, cp, historyMembership(at));
+            const value = { checkpoint: cp, admission: receipt.admission };
+            verified.set(hash, value);
+            return value;
+          }
+          if (required) throw Error('Required checkpoint ciphertext was pruned');
+          return null;
+        }
+        const history = authorities.get(raw.manifest?.epoch);
         if (!history) throw Error('Unknown checkpoint epoch');
         const at = historyMembership(history),
           checkpoint = await verifyHistoryCheckpoint(raw, at);
@@ -328,7 +380,7 @@ export async function exchangeHistoryCheckpoint(
             throw Error('Checkpoint cut is not an accepted prefix');
         }
       };
-      // Existing admitted snapshots do not conceal ledger damage before the retention adapter exists.
+      // Admitted snapshots never conceal decision-ledger damage, including after ciphertext pruning.
       for (const item of verified.values()) verifyCuts(item.checkpoint);
       if (r.action === 'source' && !before.handoffs.source) return no('source-unavailable');
       let selected =
@@ -340,6 +392,7 @@ export async function exchangeHistoryCheckpoint(
         admission: HistoryCheckpointAdmission | null;
         hash: string;
       } | null = null;
+      let completedAdmission: HistoryCheckpointAdmission | null = null;
       let remove: string | null = null,
         changed = !rawCatalog;
       const next = { ...catalog };
@@ -361,8 +414,12 @@ export async function exchangeHistoryCheckpoint(
         }
       } else if (r.action === 'admit') {
         const old = await get(requestedHash!, false);
-        if (!old) return no('checkpoint-required');
-        if (old.admission) {
+        if (!old) {
+          const receipt = retired.get(requestedHash!);
+          if (!receipt) return no('checkpoint-required');
+          if (!same(receipt.admission, r.payload)) return no('admission-conflict');
+          completedAdmission = receipt.admission;
+        } else if (old.admission) {
           if (!same(old.admission, r.payload)) return no('admission-conflict');
           selected = old;
         } else {
@@ -397,6 +454,75 @@ export async function exchangeHistoryCheckpoint(
           changed = true;
         }
       }
+      const retiredSnapshots: { hash: string; receipt: string }[] = [];
+      const pruned: { publisher: string | undefined; ordinal: number; bytes: Uint8Array }[] = [];
+      if (r.action === 'prune') {
+        if (
+          !latest?.admission ||
+          !previous?.admission ||
+          !same(r.payload, { latest: catalog.latest, previous: catalog.previous })
+        )
+          return no('retention-boundary-changed');
+        for (const item of before.records) {
+          if (
+            !item.row ||
+            item.row.sequence >= previous.checkpoint.manifest.sequence ||
+            !item.row.admission
+          )
+            continue;
+          const old = await get(item.hash, false);
+          if (!old) continue; // Already compacted receipts were authenticated by get.
+          if (!old.admission) throw Error('Unadmitted history cannot be pruned');
+          verifyCuts(old.checkpoint);
+          const receipt = await preparePrunedCheckpoint(
+            old.checkpoint,
+            old.admission,
+            issuer.pruneSign,
+          );
+          await verifyPrunedCheckpoint(JSON.parse(receipt), issuer.pin, {
+            workspace: p.workspaceId,
+            lineage: p.lineageId,
+            hash: item.hash,
+            sequence: old.checkpoint.manifest.sequence,
+            admission: old.admission,
+          });
+          retiredSnapshots.push({ hash: item.hash, receipt });
+        }
+        for (const stream of [before.original, ...before.streams]) {
+          const publisher = stream.publisher ?? auth.credential;
+          const floor = previous.checkpoint.heads.find((h) => h.credentialId === publisher);
+          const newest = latest.checkpoint.heads.find((h) => h.credentialId === publisher);
+          if (
+            !floor ||
+            !newest ||
+            newest.position < floor.position ||
+            (newest.position === floor.position && newest.link !== floor.link)
+          )
+            continue;
+          for (const row of stream.rows) {
+            if (
+              row.kind !== 'accepted' ||
+              row.position > floor.position ||
+              isPrunedDecision(row.submission)
+            )
+              continue;
+            const bytes = await preparePrunedDecision(
+              row,
+              selectPublisher(auth, publisher),
+              { latest: catalog.latest, previous: catalog.previous },
+              issuer.pruneSign,
+            );
+            await verifyPrunedDecision(
+              bytes,
+              new Uint8Array(row.response),
+              selectPublisher(auth, publisher),
+              row.ordinal,
+              auth.a.tip,
+            );
+            pruned.push({ publisher: stream.publisher, ordinal: row.ordinal, bytes });
+          }
+        }
+      }
       const signedCatalog = changed ? await issuer.catalog(next) : catalog;
       await verifyHistoryCatalog(signedCatalog, issuer.pin, p.workspaceId, p.lineageId);
       const page = await issuer.historyPage({
@@ -405,7 +531,7 @@ export async function exchangeHistoryCheckpoint(
         requestHash: await historyExchangeHash(r),
         catalog: signedCatalog,
         checkpoint: selected?.checkpoint ?? null,
-        admission: selected?.admission ?? null,
+        admission: selected?.admission ?? completedAdmission,
         heads: currentHeads,
         sources: before.handoffs.sources,
         source: before.handoffs.source,
@@ -424,6 +550,20 @@ export async function exchangeHistoryCheckpoint(
         credentialId: r.credentialId,
         action: 'checkpoint',
       });
+      for (const item of retiredSnapshots)
+        db.prepare(
+          'UPDATE history_checkpoint_records SET checkpoint=? WHERE workspace_id=? AND hash=?',
+        ).run(item.receipt, p.workspaceId, item.hash);
+      for (const item of pruned) {
+        if (item.publisher)
+          db.prepare(
+            "UPDATE publisher_decisions SET submission=? WHERE account_id=? AND credential_id=? AND ordinal=? AND kind='accepted'",
+          ).run(item.bytes, before.original.account.id, item.publisher, item.ordinal);
+        else
+          db.prepare(
+            "UPDATE delivery_decisions SET submission=? WHERE account_id=? AND ordinal=? AND kind='accepted'",
+          ).run(item.bytes, before.original.account.id, item.ordinal);
+      }
       if (write) {
         if (rows.get(write.hash))
           db.prepare(

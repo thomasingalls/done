@@ -5,7 +5,7 @@ import type {
   HistoryMaintenanceStatus,
 } from '../account/historyMaintenance';
 
-/** Explicit snapshot maintenance; no automatic work and no deletion claims. */
+/** Explicit admitted snapshots and covered service-history pruning. */
 export function AccountHistory({ run }: { run: NonNullable<DeviceRoster['history']> }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -40,7 +40,8 @@ export function AccountHistory({ run }: { run: NonNullable<DeviceRoster['history
             exists, use this action there too to verify it.
           </p>
           <p className="menu-note">
-            This first step keeps existing history. Space reclamation is not enabled yet.
+            After two snapshots are verified, you can remove older covered encrypted history from
+            the service. The two latest snapshots and their remaining updates are kept.
           </p>
           {error && (
             <p className="menu-note" role="alert">
@@ -54,17 +55,19 @@ export function AccountHistory({ run }: { run: NonNullable<DeviceRoster['history
           ) : (
             status && (
               <p className="menu-note" role="status">
-                {status.pending === 'none'
-                  ? status.sequence
-                    ? `Verified snapshot ${status.sequence} is saved.`
-                    : 'No verified history snapshot yet.'
-                  : status.pending === 'waiting'
-                    ? 'Snapshot saved. Verify it from another approved device.'
-                    : status.pending === 'verify'
-                      ? 'A snapshot is ready for this device to verify.'
-                      : status.pending === 'stale'
-                        ? 'The account changed. Discard this unfinished snapshot before preparing another.'
-                        : 'Saved snapshot progress is ready to resume.'}
+                {status.pruned
+                  ? 'Covered service history removed. Two verified snapshots and their remaining updates are kept.'
+                  : status.pending === 'none'
+                    ? status.sequence
+                      ? `Verified snapshot ${status.sequence} is saved.`
+                      : 'No verified history snapshot yet.'
+                    : status.pending === 'waiting'
+                      ? 'Snapshot saved. Verify it from another approved device.'
+                      : status.pending === 'verify'
+                        ? 'A snapshot is ready for this device to verify.'
+                        : status.pending === 'stale'
+                          ? 'The account changed. Discard this unfinished snapshot before preparing another.'
+                          : 'Saved snapshot progress is ready to resume.'}
               </p>
             )
           )}
@@ -74,6 +77,11 @@ export function AccountHistory({ run }: { run: NonNullable<DeviceRoster['history
           {status?.pending === 'none' && (
             <button className="menu-button" disabled={busy} onClick={() => void act('create')}>
               Create history snapshot
+            </button>
+          )}
+          {status?.pending === 'none' && status.sequence >= 2 && (
+            <button className="menu-button" disabled={busy} onClick={() => void act('prune')}>
+              Prune covered history
             </button>
           )}
           {status?.pending === 'verify' && (

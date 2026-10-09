@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: repeatable checkpoints, installation and safe retained-history pruning
+scope: history implementation complete; retained-service upgrade and personal walkthrough next
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-09
@@ -73,7 +73,7 @@ The source exchange now fences late handoff publication with a signed inventory 
 proposal. Cold source replay now verifies handoffs and exact prefixes, including epoch-one suffixes
 and removed publishers. Native owner composition and the explicit Account-menu snapshot action now
 work in disposable sole-device/two-device checks, with durable retry and subsequent editing/delivery.
-The development screen states that reclamation is not enabled. Recovery now consumes admitted history
+Recovery now consumes admitted history
 and its suffix, with a preparation fence and exact history reference in signed recovery intents. A
 packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Recovered
 owners now use signed source coverage to create current-key history snapshots without older openers.
@@ -86,9 +86,13 @@ chain and preserves later receipts. Snapshot-first repair precedes reads that ma
 Native transaction-abort/retry and offline checks pass. Generation-one later handoffs now carry
 admitted history; original/retained readers authenticate snapshot cuts before suffix reads. Two
 packaged handoff checks pass, including three-device editing and offline reopening. The exposed
-early-epoch membership witness defect is repaired and tested. Next: safe retention/pruning while
-preserving decision evidence and both checkpoint suffixes. Recovery/activation output limits remain unchanged.
-Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
+early-epoch membership witness defect is repaired and tested. Explicit service pruning now retains
+two admitted snapshots and both suffixes, preserves all decision/refusal evidence, and keeps signed
+completion receipts for older snapshots. Thirty focused checks plus returning-editor/recovery
+walkthroughs pass after actual SQL carrier removal. Typecheck/lint/build pass. Schema 26 and the
+history UI remain undeployed. Next: a backed-up quiet-point upgrade of the retained service and a
+personal walkthrough. Automatic cadence, local ledger/root replacement, output-bound expansion,
+key retirement and file/backup reclamation remain separate; release validation is still paused.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 
 ---

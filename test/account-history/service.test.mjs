@@ -161,7 +161,7 @@ test('schema 24 requires an explicit offline upgrade and preserves account rows'
   try {
     const check = new DatabaseSync(path);
     try {
-      assert.equal(check.prepare('PRAGMA user_version').get().user_version, 25);
+      assert.equal(check.prepare('PRAGMA user_version').get().user_version, 26);
       assert.deepEqual(check.prepare('SELECT * FROM promotions').all(), before);
       assert.deepEqual(check.prepare('PRAGMA foreign_key_check').all(), []);
     } finally {
@@ -281,4 +281,30 @@ test('catalog reads authenticate the current pointers without downloading checkp
   assert.equal(f.f.rows('history_checkpoint_records').length, 1);
   const old = await f.makeRequest('read', 'latest');
   await assert.rejects(f.check(request, await f.exchange(old)), /request changed/);
+});
+
+test('schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written', async (t) => {
+  const f = await setup(t),
+    path = f.authority.dir + '/upgrade25.sqlite';
+  const source = new DatabaseSync(f.f.path);
+  source.prepare('VACUUM INTO ?').run(path);
+  source.close();
+  const db = new DatabaseSync(path);
+  db.exec('PRAGMA user_version=25');
+  const before = db.prepare('SELECT * FROM promotions').all();
+  db.close();
+  const policy = { rpId: 'localhost', origin: 'http://localhost:4999' };
+  assert.throws(() => new AccountCore(path, policy, f.options), /explicit offline upgrade/);
+  const upgraded = new AccountCore(path, policy, { ...f.options, upgradeFromV25: true });
+  try {
+    const check = new DatabaseSync(path);
+    try {
+      assert.equal(check.prepare('PRAGMA user_version').get().user_version, 26);
+      assert.deepEqual(check.prepare('SELECT * FROM promotions').all(), before);
+    } finally {
+      check.close();
+    }
+  } finally {
+    upgraded.close();
+  }
 });

@@ -5,7 +5,7 @@ Release validation remains paused. The retained :8443 service stays on `34035330
 
 ## Contract and sequence
 
-The current application retains every accepted envelope and reconstructs recovery from genesis,
+The retained schema-24 installation stores every accepted envelope and reconstructs recovery from genesis,
 all handoff snapshots and every publisher stream. Repeated membership changes work, but they do
 not provide general history retention. Existing acceptance ledgers also authenticate refusal/retry
 history: deleting their rows as though they were merely ciphertext would break those guarantees.
@@ -34,15 +34,17 @@ remove the application's activation limit.
 
 ## Current increment
 
-The explicit Account-menu snapshot action, recovery reader, recovered-owner baseline adapter and
-current-key replacement handoff adapter are implemented. New replacement snapshots bind the admitted
-history and exact handoff sources they include. Recovered/replacement owners can use their certified
-installed baselines without historical keys when that coverage evidence is present. Ordinary editors
-now merge admitted snapshots through an atomic, witnessed receive event and cold-open them offline.
-Authenticated receive cuts and generation-one handoff readers now have focused/native evidence;
-safe pruning remains next. Automatic cadence
-remains off. No new snapshot authorizes pruning or replaces a local content root. The development
-action remains undeployed to the retained service.
+The development build now supports explicit snapshot creation/admission, recovery and handoff readers,
+ordered native installation with authenticated receive cuts, and explicit covered-history pruning.
+Pruning retains the latest two admitted snapshots and every suffix needed by either, preserves full
+refusal evidence and all decision rows, and replaces eligible ciphertext with authenticated compact
+records. Older snapshot completion receipts preserve exact retries after lost replies. Both returning
+editor and lost-device recovery checks pass after actual service pruning.
+
+Schema 26 requires an explicit offline upgrade from schemas 24/25. The retained :8443 service remains
+build `34035330`, schema 24. A backed-up quiet-point upgrade and personal walkthrough are next.
+Automatic cadence, key retirement, local baseline replacement/ledger trimming, output-bound expansion,
+SQLite file shrinking/backup retention and release qualification remain separate. No live state was changed.
 
 ## Checkpoint primitive checkpoint
 
@@ -411,3 +413,45 @@ joining device consumes a sole-device history baseline and reopens offline. The 
 observed substantial HTTP 429 backoff but completed; this is functional evidence, not a latency claim.
 Static checks and production bundling pass. Safe pruning follows; no service ciphertext, keys or live
 state have been changed. Live build `34035330`, schema 24 and paused release validation are unchanged.
+
+
+### 2026-10-09 — Explicit covered service-history pruning
+
+The signed maintenance request names the exact latest/previous snapshot pair. The service verifies
+both admissions against historical membership, their ancestry, all publisher decision chains and the
+actual accepted cuts before preparing any removal. The commit compares the complete captured state
+and rechecks the live workspace grant; stale authority, a changed snapshot pair or lost authorization
+refuses. Publication, admission and pruning remain explicit Account-menu actions.
+
+For accepted positions covered by the older retained snapshot, ciphertext is replaced by a bounded,
+service-signed conversion record. It retains the publisher's envelope/header and submission signatures,
+original wire/response hashes, refusal-parent identity and precise workspace/publisher/ordinal scope.
+The original hash feeds the unchanged ledger witness, so deleting/reordering decisions, changing a
+signature or dropping an issued refusal remains detectable. Refusal rows and response bytes remain
+intact. Exact original upload retries still return the original decision. Reads below the removed
+prefix refuse rather than returning an empty or discontinuous suffix.
+
+Older admitted snapshots retain signed completion receipts and their original admissions; exactly the
+latest two admitted snapshot ciphertexts (and any pending proposal) remain. A delayed publication retry
+supplies its own exact ciphertext and is verified against its completion receipt. An admission retry
+can receive a request-bound completion acknowledgement without old ciphertext; the client verifies
+that admission against its own retained snapshot before clearing progress. This does not turn a
+completion receipt into a readable baseline. Native source/handoff ciphertext and generation keys
+are retained. Ledger metadata still grows with decisions; pruning is not forensic erasure or a
+promise that the SQLite file immediately shrinks.
+
+Schema 26 explicitly excludes older writers before these new carriers can be used. Schemas 24 and 25
+require the existing offline backup/upgrade operation. The live schema-24 installation was untouched.
+
+Focused evidence: 30 service/client/HTTP checks pass, including deletion boundaries, retained suffixes,
+refusal-parent completeness, restart after before/after-commit interruption, changed compact records,
+revoked commit authorization, explicit upgrade, old snapshot retries and uncertain prune replies.
+The returning-editor browser check passes (42.2 s): its normal catalog reader is held back while
+explicit peer admission completes; after physical SQL carrier replacement it installs the admitted
+cut, retains an unsent original, receives new writing and reopens offline. The never-paired recovery
+walkthrough also passes after actual pruning, then creates a further current-key snapshot and admits
+another device. An initial returning-editor run timed out in the shared unbounded service-worker
+setup wait, before pruning; that wait now has a bounded activation assertion and preserves the original
+failure during cleanup. Its focused rerun passed. This is not a diagnosis or fix of an application
+service-worker defect, and release validation was not resumed. Typecheck, scoped lint and production
+build pass. Evidence is retained in the development log. Unsigned stage.

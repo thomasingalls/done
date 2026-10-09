@@ -659,6 +659,10 @@ export class PrivateAuthority {
   exchangeHistoryCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.exchangeHistoryCheckpoint(input, {
       ...this.#deliveryIssuer(authorize),
+      pruneSign: async (bytes) => {
+        if (!this.#key) throw Error('Authority closed');
+        return sign(null, bytes, this.#key).toString('hex');
+      },
       catalog: async (value) => {
         const message = await historyCatalogMessage(value);
         if (!this.#key) throw Error('Authority closed');

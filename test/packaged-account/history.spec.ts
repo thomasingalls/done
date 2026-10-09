@@ -187,3 +187,118 @@ test('two native device owners independently admit snapshots and keep two-way de
     await stopService(service);
   }
 });
+
+test('a returning editor installs admitted cuts after service pruning and keeps its local writing', async ({
+  page,
+  browser,
+}, info) => {
+  const { DatabaseSync } = await import('node:sqlite');
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const second = pair.second;
+    // Block the normal receive owner's catalog read. Explicit peer verification still independently
+    // reads the latest baseline and accepted suffix, without installing either in the editor.
+    await second.route('**/account/history/v1/checkpoint', (route) =>
+      route.request().postDataJSON().payload === 'catalog' ? route.abort() : route.continue(),
+    );
+    const db = new DatabaseSync(info.outputPath('service/account.sqlite'), { readOnly: true });
+    try {
+      for (let i = 1; i <= 2; i++) {
+        const before = Number(
+          db.prepare("SELECT count(*) AS n FROM delivery_decisions WHERE kind='accepted'").get()![
+            'n'
+          ],
+        );
+        await add(page, 'Covered remote writing ' + i);
+        await expect
+          .poll(
+            () =>
+              Number(
+                db
+                  .prepare("SELECT count(*) AS n FROM delivery_decisions WHERE kind='accepted'")
+                  .get()!['n'],
+              ),
+            { timeout: 15000 },
+          )
+          .toBeGreaterThan(before);
+        if (i === 1) await inspect(page);
+        await panel(page)
+          .getByRole('button', { name: 'Create history snapshot', exact: true })
+          .click();
+        await expect(panel(page)).toContainText(
+          'Snapshot saved. Verify it from another approved device.',
+          { timeout: 15000 },
+        );
+        if (i === 1) await inspect(second);
+        else {
+          await panel(second).getByRole('button', { name: 'Check history', exact: true }).click();
+          await expect(
+            panel(second).getByRole('button', { name: 'Check history', exact: true }),
+          ).toBeEnabled();
+        }
+        await panel(second)
+          .getByRole('button', { name: 'Verify history snapshot', exact: true })
+          .click();
+        await expect(panel(second)).toContainText(`Verified snapshot ${i} is saved.`, {
+          timeout: 15000,
+        });
+        await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+        await expect(
+          panel(page).getByRole('button', { name: 'Resume history snapshot', exact: true }),
+        ).toBeVisible();
+        await panel(page)
+          .getByRole('button', { name: 'Resume history snapshot', exact: true })
+          .click();
+        await expect(panel(page)).toContainText(`Verified snapshot ${i} is saved.`, {
+          timeout: 15000,
+        });
+      }
+      await expect(second.locator('.shell')).not.toContainText('Covered remote writing 2');
+      await second.route('**/account/delivery/submit', (route) => route.abort());
+      await add(second, 'Unsent local writing survives server pruning');
+      await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await panel(page).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+      await expect(panel(page)).toContainText('Covered service history removed.', {
+        timeout: 15000,
+      });
+      expect(
+        Number(
+          db
+            .prepare(
+              "SELECT count(*) AS n FROM delivery_decisions WHERE substr(CAST(submission AS TEXT),1,1)='{' ",
+            )
+            .get()!['n'],
+        ),
+      ).toBeGreaterThan(0);
+      await second.unroute('**/account/history/v1/checkpoint');
+      await second.goto('/');
+      await openSaved(second, pair.next.code, true);
+      for (const text of [
+        'Covered remote writing 1',
+        'Covered remote writing 2',
+        'Unsent local writing survives server pruning',
+      ])
+        await expect(second.locator('.shell')).toContainText(text, { timeout: 20000 });
+      await second.unroute('**/account/delivery/submit');
+      await add(page, 'New accepted suffix after pruning');
+      await expect(second.locator('.shell')).toContainText('New accepted suffix after pruning', {
+        timeout: 20000,
+      });
+      await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await pair.other.setOffline(true);
+      await second.goto('/');
+      await openSaved(second, pair.next.code, true);
+      await expect(second.locator('.shell')).toContainText('Covered remote writing 2');
+      await expect(second.locator('.shell')).toContainText(
+        'Unsent local writing survives server pruning',
+      );
+    } finally {
+      db.close();
+    }
+  } finally {
+    await pair?.other.close();
+    await stopService(service);
+  }
+});

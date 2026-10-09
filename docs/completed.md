@@ -12353,3 +12353,15 @@ admitted cuts and preserves suffixes through interrupted saves. Original publish
 witnesses now survive later membership adoption and rotation. Focused checks and two packaged
 walkthroughs pass, including snapshot-only writing, three-device editing and offline reopening.
 Unsigned stage; safe service pruning follows. See [history checkpoint](./account-history-management.md).
+
+
+### 2026-10-09 — Covered service-history pruning
+
+Explicit maintenance now keeps two admitted snapshots and their required suffixes, replaces covered
+accepted ciphertext with signed conversion records, and retains refusal/decision completeness. Older
+snapshot completion receipts preserve exact lost-reply retries. Schema 26 requires an offline upgrade.
+Thirty focused service/client/HTTP checks and returning-editor/recovery walkthroughs pass after real
+SQL carrier removal; static checks/build pass. The shared browser setup wait is bounded after one
+pre-pruning timeout. Live build `34035330`/schema 24 and paused release validation remain unchanged.
+Unsigned stage; a backed-up retained-service upgrade and personal walkthrough are next. See
+[history checkpoint](./account-history-management.md).

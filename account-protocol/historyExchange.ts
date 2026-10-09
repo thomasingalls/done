@@ -57,12 +57,15 @@ export function parseHistoryExchange(input: unknown) {
   if (
     r['v'] !== 1 ||
     r['kind'] !== 'history-checkpoint-request' ||
-    !['read', 'publish', 'admit', 'discard', 'source'].includes(r['action'] as string)
+    !['read', 'publish', 'admit', 'discard', 'source', 'prune'].includes(r['action'] as string)
   )
     throw Error('Invalid history exchange');
-  const action = r['action'] as 'read' | 'publish' | 'admit' | 'discard' | 'source';
+  const action = r['action'] as 'read' | 'publish' | 'admit' | 'discard' | 'source' | 'prune';
   let payload: unknown;
-  if (action === 'publish') payload = parseHistoryCheckpoint(r['payload']);
+  if (action === 'prune') {
+    const cuts = closed(r['payload'], ['latest', 'previous']);
+    payload = { latest: h(cuts['latest']), previous: h(cuts['previous']) };
+  } else if (action === 'publish') payload = parseHistoryCheckpoint(r['payload']);
   else if (action === 'admit') payload = parseHistoryCheckpointAdmission(r['payload']);
   else if (action === 'discard' || action === 'source') payload = h(r['payload']);
   else {
@@ -207,12 +210,7 @@ export function parseHistoryCheckpointPage(input: unknown): HistoryCheckpointPag
     'source',
     'signature',
   ]);
-  if (
-    r['v'] !== 1 ||
-    r['kind'] !== 'history-checkpoint-page' ||
-    (r['checkpoint'] === null && r['admission'] !== null)
-  )
-    throw Error('Invalid history page');
+  if (r['v'] !== 1 || r['kind'] !== 'history-checkpoint-page') throw Error('Invalid history page');
   let source: HistoryCheckpointPage['source'] = null;
   if (r['source'] !== null) {
     const s = closed(r['source'], ['ref', 'checkpoint']);
@@ -248,7 +246,13 @@ export async function verifyHistoryCheckpointPage(
   if (p.requestHash !== (await historyExchangeHash(r))) throw Error('History page request changed');
   await verifyHistoryCatalog(p.catalog, pin, r.workspaceId, r.lineageId);
   await verifySignature(pin.authRoot, p.signature, await historyCheckpointPageMessage(p));
-  const hash = p.checkpoint ? await historyCheckpointHash(p.checkpoint) : EMPTY_HISTORY_CHECKPOINT;
+  if (!p.checkpoint && p.admission && r.action !== 'admit')
+    throw Error('Unexpected completion receipt');
+  const hash = p.checkpoint
+    ? await historyCheckpointHash(p.checkpoint)
+    : r.action === 'admit' && p.admission
+      ? p.admission.checkpointHash
+      : EMPTY_HISTORY_CHECKPOINT;
   if (r.action === 'source') {
     if (
       !p.source ||
@@ -260,6 +264,17 @@ export async function verifyHistoryCheckpointPage(
     return p;
   }
   if (p.source !== null) throw Error('Unexpected history source');
+  if (r.action === 'prune') {
+    const cuts = r.payload as { latest: string; previous: string };
+    if (
+      p.checkpoint !== null ||
+      p.admission !== null ||
+      p.catalog.latest !== cuts.latest ||
+      p.catalog.previous !== cuts.previous
+    )
+      throw Error('Pruned retention boundary changed');
+    return p;
+  }
   if (r.action === 'read' && r.payload === 'catalog') {
     if (p.checkpoint !== null || p.admission !== null) throw Error('Unexpected catalog content');
     return p;

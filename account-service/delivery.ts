@@ -1,3 +1,4 @@
+import { isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
 import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
 import type {
   VerifiedMembership,
@@ -134,7 +135,7 @@ const unknown = (
 ): ServiceDeliveryResult => ({ kind: 'unknown', reason });
 const hash = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const mismatch = 'epoch-generation-mismatch';
-interface DecisionRow {
+export interface DecisionRow {
   account_id: string;
   ordinal: number;
   position: number;
@@ -466,6 +467,7 @@ export async function verifyWorkspaceAuthority(
     request: p.request_digest,
   };
   return {
+    pin: { ...issuer.pin },
     a,
     scope,
     key,
@@ -633,15 +635,15 @@ async function verifyWire(bytes: Bytes, auth: Authority, maxEpoch = auth.a.tip) 
 }
 const subjectKey = (e: { position: number; digest: string; epoch: number }) =>
   JSON.stringify([e.position, e.digest, e.epoch]);
-function extend(previous: string, ordinal: number, submission: Uint8Array, response: Uint8Array) {
+function extend(
+  previous: string,
+  ordinal: number,
+  submission: Uint8Array,
+  response: Uint8Array,
+  originalHash = hash(submission),
+) {
   return hash(
-    lp(
-      'done/service-delivery-chain/v1',
-      previous,
-      String(ordinal),
-      hash(submission),
-      hash(response),
-    ),
+    lp('done/service-delivery-chain/v1', previous, String(ordinal), originalHash, hash(response)),
   );
 }
 async function verifyLedgerWitness(
@@ -734,7 +736,11 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
     const verify = async () => {
       const issuance =
         boundaries.find((b) => row.ordinal <= (b.witness?.events ?? 0))?.authority ?? auth.a;
-      const opened = await verifyWire(bytes, auth, issuance.tip);
+      if (isPrunedDecision(bytes) && row.kind !== 'accepted')
+        throw Error('Refusal evidence cannot be pruned');
+      const opened = isPrunedDecision(bytes)
+        ? await verifyPrunedDecision(bytes, response, auth, row.ordinal, issuance.tip)
+        : { ...(await verifyWire(bytes, auth, issuance.tip)), originalHash: hash(bytes) };
       const proof = await verifyPositionResponse(
         response,
         { ...opened.subject, previous: before, parent: opened.submission.parentId },
@@ -742,7 +748,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       );
       return { ...opened, proof, issuance };
     };
-    const { e, submission, subject, proof, issuance } = reuse
+    const { e, submission, subject, proof, issuance, originalHash } = reuse
       ? await reuse.check(
           s.account.id + ':' + auth.credential + ':' + row.ordinal,
           scope + ':' + boundaryScope + ':' + previous,
@@ -791,7 +797,7 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       refused.set(subjectKey(subject), response);
     } else throw Error('Unknown service decision');
     count++;
-    commitment = extend(commitment, count, bytes, response);
+    commitment = extend(commitment, count, bytes, response, originalHash);
     await checkBoundary();
   }
   if (checkedBoundaries.size !== boundaries.length) throw Error('Missing successor boundary');
@@ -1039,6 +1045,7 @@ export async function readAccepted(
       };
       for (const row of s.rows) {
         if (row.kind !== 'accepted' || row.position <= request.after) continue;
+        if (isPrunedDecision(row.submission)) return unknown('unavailable');
         const entry = {
           envelope: decodeSubmission(new Uint8Array(row.submission)).envelope,
           proof: new Uint8Array(row.response),
@@ -1162,6 +1169,7 @@ export async function readInbound(
       };
       for (const row of s.rows) {
         if (row.kind !== 'accepted' || row.position <= request.after) continue;
+        if (isPrunedDecision(row.submission)) return unknown('unavailable');
         page.entries.push({
           envelope: decodeSubmission(new Uint8Array(row.submission)).envelope,
           proof: new Uint8Array(row.response),

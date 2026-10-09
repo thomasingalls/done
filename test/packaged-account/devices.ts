@@ -45,7 +45,20 @@ export async function pairedEditors(
       timeout: 15000,
     });
     for (const p of [page, second])
-      await p.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+      await expect
+        .poll(
+          () =>
+            p.evaluate(async () =>
+              (await navigator.serviceWorker.getRegistrations()).map(
+                (r) => r.active?.state ?? r.installing?.state ?? r.waiting?.state ?? 'empty',
+              ),
+            ),
+          {
+            timeout: 15000,
+            message: 'Packaged service worker must activate before offline checks',
+          },
+        )
+        .toContain('activated');
     return { first, next, second, other };
   } catch (cause) {
     console.log(
@@ -62,7 +75,7 @@ export async function pairedEditors(
         .allTextContents()
         .catch(() => []),
     );
-    await other.close();
+    await other.close().catch(() => {});
     throw cause;
   }
 }

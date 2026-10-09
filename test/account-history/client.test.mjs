@@ -202,3 +202,42 @@ test('catalog rollback and progress changes during async signing refuse', async 
   };
   await assert.rejects(f.run('inspect'), /progress changed/);
 });
+
+test('explicit pruning requires two snapshots and retries an uncertain reply without losing saved progress', async (t) => {
+  const f = await client(t);
+  await f.run('create');
+  await assert.rejects(f.run('prune'), /two unchanged admitted snapshots/);
+  await f.run('create');
+  f.afterSend((request) => {
+    if (request.action === 'prune') throw Error('prune reply lost');
+  });
+  await assert.rejects(f.run('prune'), /prune reply lost/);
+  f.f.restart();
+  f.authority.restart();
+  f.afterSend(() => {});
+  const status = await f.run('prune');
+  assert.equal(status.pruned, true);
+  assert.equal(status.sequence, 2);
+  assert.equal(f.saved().attempt, null);
+  assert.equal(f.sent.filter((r) => r.action === 'prune').length, 2);
+});
+
+test('a retained old admission resolves after its snapshot ciphertext has been pruned', async (t) => {
+  const f = await client(t);
+  f.afterSend((r) => {
+    if (r.action === 'admit') throw Error('admission reply lost');
+  });
+  await assert.rejects(f.run('create'), /admission reply lost/);
+  const oldProgress = f.saved();
+  f.afterSend(() => {});
+  await f.run('resume');
+  await f.run('create');
+  await f.run('create');
+  await f.run('prune');
+  for (const command of ['resume', 'discard']) {
+    f.replaceSaved(oldProgress);
+    const completed = await f.run(command);
+    assert.equal(completed.sequence, 3);
+    assert.equal(f.saved().attempt, null);
+  }
+});

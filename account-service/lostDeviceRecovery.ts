@@ -1,3 +1,4 @@
+import { isPrunedDecision } from './prunedDecision.ts';
 import { captureRecoveryHistory, verifyRecoveryHistory } from './recoveryHistory.ts';
 import { historySources } from './historySources.ts';
 import type { AccountSessions } from './sessions.ts';
@@ -588,6 +589,8 @@ export class LostDeviceRecovery {
         };
         for (const decision of before.rows) {
           if (decision.kind !== 'accepted' || decision.position <= request.after) continue;
+          if (isPrunedDecision(decision.submission))
+            throw Error('Recovery requires an admitted history starting point');
           body.entries.push({
             envelope: hex(decodeSubmission(new Uint8Array(decision.submission)).envelope),
             proof: hex(new Uint8Array(decision.response)),
