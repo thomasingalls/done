@@ -21,10 +21,11 @@ the account-creation recovery-code ceremony documented in [account-recovery.md](
 - Recovery is additive to any other local account/workspace on the replacement device. It does not
   bypass an existing slot's local unlock, overwrite that slot, or merge unrelated local writing.
 
-Exact entry placement and screen wording remain for the operator walkthrough before UI changes.
-The working proposal is a recovery choice within **Use another account**, preserving the splash
-and chooser. A person with no surviving passkey or no saved recovery code must see the actual missing
-requirement rather than being returned to account creation.
+The operator approved this screen sequence: **Use another account → Recover with a saved recovery
+code → choose the existing account passkey → enter recovery code → save and confirm a new device-lock
+code → review “Recover on this device and disconnect the previous devices” → recover and open the
+editor**. Retained recovery progress appears in the chooser. A missing passkey or recovery code must
+show the actual requirement, not redirect to account creation.
 
 ## What exists and what does not
 
@@ -44,7 +45,7 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
 1. **Recovery proof boundary — implemented.** Verify a nonce-bound head assertion and bind the
    factor-opened bootstrap signature plus the new device's countersignature to the exact held target.
    This does not log in, consume an attempt, read content, replace membership or install any key.
-2. **Durable service preparation — implemented; recovery reads next.** Introduce an explicit fresh
+2. **Durable service preparation and recovery reads — implemented.** Introduce an explicit fresh
    recovery-purpose account challenge, tied to the candidate keys and an exact retained attempt.
    Discover the selected account without an invitation. Bind its current recovery state and complete
    verified history to the head assertion; keep the original nonce/bytes across retry. A historical
@@ -129,3 +130,15 @@ The private session host exposes `/__account-setup/lost-recovery/{begin,finish,r
 Schema 22 is additive and requires the existing offline upgrade procedure for retained schema 21.
 The live installation remains at 21 until a separately coordinated upgrade. Hosted reads and recovery
 commit/installation remain unfinished; these endpoints do not make recovery a usable product yet.
+
+
+## Hosted read checkpoint
+
+`/__account-setup/lost-recovery/read` checks the retained fresh
+account attempt, current code-backed bootstrap and exact candidate signature. It validates the
+complete publisher ledger, then rechecks account/attempt/head/ledger state at the return boundary.
+The response contains accepted ciphertext and proofs, with a signed extent and request hash. It can
+read historical finalized publishers through verified rotation history. Bounds are 8 KiB requests,
+16 entries and 4 MiB responses; invalid extents, changed authority and incomplete history refuse.
+The current transport does not fence writers: later pages may observe a larger accepted prefix. The
+recovery transition still needs an exact-cut contract before it can replace membership.

@@ -49,8 +49,8 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: durable recovery account preparation complete; two-factor hosted reads next
-blocks_on: none for hosted reads; review exact screens with operator before UI work
+scope: durable preparation and two-factor hosted reads complete; retained client and replay next
+blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
 ```
@@ -72,8 +72,13 @@ historical upgrade cases pass, plus TypeScript and scoped static checks.
 [Output](./development-evidence/2026-10-09-recovery-preparation.log);
 [completion record](./completed.md). Release validation remains paused.
 
-**Next:** recovery-code-authorized, replacement-signed hosted reads. Then exact accepted cutoffs,
-atomic all-device replacement/rotation, durable local installation and the operator-reviewed screens.
+**Hosted reads complete:** fresh account attempt plus recovery bootstrap and replacement-key signature;
+full ledger verification and final account/head/cancellation checks. Historical removed-device writing
+is readable through verified rotation history. Bounded pages carry signed accepted extents.
+[Read evidence](./development-evidence/2026-10-09-recovery-reads.log).
+
+**Next:** retained client preparation and complete cold replay, then exact accepted cutoffs,
+atomic all-device replacement/rotation, durable local installation and the operator-approved screens.
 The user authorized unsigned intermediate commits and continued implementation through this phase.
 
 ---

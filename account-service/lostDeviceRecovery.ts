@@ -1,3 +1,14 @@
+import {
+  parseRecoveryRead,
+  parseRecoveryReadPage,
+  verifyRecoveryRead,
+  RECOVERY_READ_PAGE_LIMIT,
+  type RecoveryReadPage,
+} from '../account-protocol/recoveryRead.ts';
+import { digest, hex } from '../account-protocol/recovery.ts';
+import { json } from '../account-protocol/admission.ts';
+import { decodeSubmission } from '../account-protocol/submission.ts';
+import { read, snapshot, snapshotBytes, selectPublisher, census } from './delivery.ts';
 /** Durable, separately purposed account proof for recovery. No membership or content writes. */
 import type { DatabaseSync } from 'node:sqlite';
 import { randomBytes } from 'node:crypto';
@@ -44,6 +55,7 @@ export interface LostRecoveryIssuer {
   check(seal: unknown, id: string, pub: string): void;
   challenge(context: LostRecoveryContext): LostRecoveryChallenge;
   head(body: Omit<RecoveryHeadAssertion, 'signature'>): RecoveryHeadAssertion;
+  page(body: Omit<RecoveryReadPage, 'signature'>): Promise<RecoveryReadPage>;
   prepared(body: Omit<LostRecoveryPrepared, 'signature'>): Promise<LostRecoveryPrepared>;
 }
 export type LostRecoveryOperation = 'begin' | 'finish' | 'resume' | 'cancel';
@@ -147,6 +159,109 @@ export class LostDeviceRecovery {
       stage: 'prepared',
       prepared: parseLostRecoveryPrepared(JSON.parse(row.result!)),
     };
+  }
+  async read(input: unknown): Promise<RecoveryReadPage | LostRecoveryResult> {
+    if (!membershipEnabled(this.db)) return no('unavailable');
+    let request;
+    try {
+      request = parseRecoveryRead(input);
+    } catch {
+      return no('malformed');
+    }
+    try {
+      const row = this.row(request.retryKey);
+      if (!row || row.id !== request.attemptId) return no('unknown-attempt');
+      const terminal = this.terminal(row);
+      if (terminal) return terminal;
+      if (row.state !== 'prepared' || !row.result) return no('invalid-proof');
+      const checked = await verifyLostRecoveryPrepared(
+        JSON.parse(row.result),
+        { ...JSON.parse(row.request), retryKey: request.retryKey },
+        this.issuer.pin,
+      );
+      if (
+        checked.prepared.challenge.context.attemptId !== row.id ||
+        !same(checked.prepared.challenge, JSON.parse(row.challenge)) ||
+        checked.prepared.accountId !== row.account_id ||
+        checked.prepared.head.workspaceId !== row.workspace_id
+      )
+        return no('unavailable');
+      try {
+        await verifyRecoveryRead(request, checked.context, row.id);
+      } catch {
+        return no('invalid-proof');
+      }
+      for (let retry = 0; retry < 4; retry++) {
+        const before = read(this.db, row.workspace_id!, request.publisher);
+        if (!before) return no('state-changed');
+        const auth = selectPublisher(
+          await verifyCurrentWorkspaceAuthority(before, this.issuer),
+          request.publisher,
+        );
+        if (
+          auth.a.head !== checked.prepared.head.head ||
+          auth.a.tip !== checked.prepared.head.epoch ||
+          auth.removal
+        )
+          return no('state-changed');
+        const ledger = await census(before, auth);
+        if (request.after > ledger.through) return no('request-conflict');
+        const body: Omit<RecoveryReadPage, 'signature'> = {
+          v: 1,
+          kind: 'lost-device-recovery-page',
+          requestHash: await digest(json(request)),
+          through: ledger.through,
+          link: ledger.previous,
+          next: request.after,
+          entries: [],
+        };
+        for (const decision of before.rows) {
+          if (decision.kind !== 'accepted' || decision.position <= request.after) continue;
+          body.entries.push({
+            envelope: hex(decodeSubmission(new Uint8Array(decision.submission)).envelope),
+            proof: hex(new Uint8Array(decision.response)),
+          });
+          body.next++;
+          if (json({ ...body, signature: '00'.repeat(64) }).length > RECOVERY_READ_PAGE_LIMIT) {
+            body.entries.pop();
+            body.next--;
+            break;
+          }
+          if (body.entries.length === request.limit) break;
+        }
+        if (!body.entries.length && body.next < body.through) return no('unavailable');
+        const page = parseRecoveryReadPage(await this.issuer.page(body));
+        const { signature: _, ...actual } = page;
+        if (!same(actual, body)) throw Error('Recovery page issuer changed bytes');
+        this.hook('after-verify', 'lost-recovery-read');
+        this.db.exec('BEGIN');
+        try {
+          const current = this.row(request.retryKey);
+          if (!current || current.id !== row.id) return no('unknown-attempt');
+          const terminal = this.terminal(current);
+          if (terminal) return terminal;
+          if (
+            current.state !== 'prepared' ||
+            current.result !== row.result ||
+            !this.eligible(current)
+          )
+            return no('state-changed');
+          if (
+            snapshotBytes(before) !==
+            snapshotBytes(snapshot(this.db, row.workspace_id!, request.publisher))
+          )
+            continue;
+          this.issuer.check(auth.seal, before.promotion.request_digest, auth.a.acceptanceKey);
+          return page;
+        } finally {
+          this.db.exec('ROLLBACK');
+        }
+      }
+      return no('state-changed');
+    } catch {
+      if (this.db.isTransaction) this.db.exec('ROLLBACK');
+      return no('unavailable');
+    }
   }
   async run(operation: LostRecoveryOperation, input: unknown): Promise<LostRecoveryResult> {
     if (!membershipEnabled(this.db)) return no('unavailable');

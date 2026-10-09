@@ -70,6 +70,7 @@ test('session host preserves capability-protected bootstrap through restart with
     '/__account-setup/lost-recovery/finish',
     '/__account-setup/lost-recovery/resume',
     '/__account-setup/lost-recovery/cancel',
+    '/__account-setup/lost-recovery/read',
     '/account/membership/v2/admit',
     '/account/membership/v2/ceremony',
     '/account/membership/v2/transfer',
@@ -205,6 +206,12 @@ test('continuation host requires offline opt-in and preserves the account and id
   assert.deepEqual(
     await (
       await f.post('/__account-setup/lost-recovery/finish', { retryKey: recovery.retryKey })
+    ).json(),
+    { ok: false, refusal: 'malformed' },
+  );
+  assert.deepEqual(
+    await (
+      await f.post('/__account-setup/lost-recovery/read', { retryKey: recovery.retryKey })
     ).json(),
     { ok: false, refusal: 'malformed' },
   );

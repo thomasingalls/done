@@ -11802,3 +11802,26 @@ failures were a fixture double-close, sandbox loopback denial, and obsolete synt
 the final reruns use corrected fixtures and authorized loopback access. No release campaign ran.
 Next: separate two-factor, replacement-signed hosted reads, then atomic replacement and retained
 local installation. No recovery UI or live cutover is included in this increment.
+
+
+### 2026-10-09 — Lost-device recovery: separately authorized hosted reads
+
+Added the private recovery-read route and bounded page protocol. Each request requires the retained
+fresh passkey-authenticated attempt, a valid current recovery bootstrap and a signature from its
+exact replacement candidate. The read authenticates the full publisher ledger, including historical
+publishers removed by rotation, before returning accepted ciphertext and decision proofs. A final
+transaction checks attempt cancellation/expiry, active account/credential, current authority and the
+unchanged ledger. A changed head or incomplete ledger refuses. No ordinary device grant, membership
+mutation, content write, network login or new schema is introduced.
+
+Pages bind the entire request, nonce and signed accepted extent; 16 entries and 4 MiB are hard response
+limits. A client verifier checks correlation, signature and forward progress. This is authenticated
+ciphertext delivery, not yet complete cold semantic replay or editor installation. Concurrent appends
+can change a later read extent; the later recovery commit must bind an exact verified cut.
+
+Focused evidence: 18 preparation/read cases (including three race subcases and byte-bounded paging),
+one real service rotation/history case and four HTTP-host cases pass. The first read test independently
+verifies an acceptance proof and decrypts its envelope; the rotation case recovers writing accepted
+from a subsequently removed device without granting it current reader authority. TypeScript, scoped
+lint/format and diff checks pass. [Output](./development-evidence/2026-10-09-recovery-reads.log).
+Live service and personal browser state remain unchanged; release validation remains paused.

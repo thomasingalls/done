@@ -5759,3 +5759,44 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
+
+test('lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant', async (t) => {
+  const { recoveryReader } = await import('../account-recovery/read-fixtures.mjs');
+  const { verifyRecoveryReadPage } = await import('../../account-protocol/recoveryRead.ts');
+  const x = await removalFixture(t);
+  const target = x.context.candidate.id;
+  const wire = x.make(1, 'writing from subsequently removed device', {
+    epoch: 3,
+    credential: target,
+    signer: x.keys.new,
+  });
+  const accepted = await x.deliveryCall(wire);
+  decision(x, accepted, wire, undefined, 3);
+  const { request } = await rotationRequest(x);
+  const committed = await x.authority.owner.commitRotation(x.f.core, request);
+  assert.equal(committed.ok, true, JSON.stringify(committed));
+  const before = [
+    'promotions',
+    'membership_rotations',
+    'publisher_decisions',
+    'network_sessions',
+  ].map((table) => x.f.rows(table));
+  const reader = await recoveryReader(x);
+  assert.equal(reader.verified.context.head.assertion.epoch, 4);
+  assert.equal(reader.verified.prepared.proofs.continuations.at(-1).kind, 'membership-rotation');
+  const readRequest = reader.request({ publisher: target });
+  const page = await verifyRecoveryReadPage(
+    await reader.read(readRequest),
+    readRequest,
+    x.authority.pin,
+  );
+  assert.equal(page.through, 1);
+  assert.equal(page.entries.length, 1);
+  assert.equal(page.entries[0].proof, Buffer.from(accepted.bytes).toString('hex'));
+  assert.deepEqual(
+    ['promotions', 'membership_rotations', 'publisher_decisions', 'network_sessions'].map((table) =>
+      x.f.rows(table),
+    ),
+    before,
+  );
+});

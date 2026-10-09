@@ -532,6 +532,12 @@ export class AccountCore {
     );
   }
 
+  readRecovery(input: unknown, issuer: LostRecoveryIssuer) {
+    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).read(
+      input,
+    );
+  }
+
   lostDeviceRecovery(operation: LostRecoveryOperation, input: unknown, issuer: LostRecoveryIssuer) {
     return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).run(
       operation,

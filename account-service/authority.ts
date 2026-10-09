@@ -1,3 +1,4 @@
+import { recoveryReadPageMessage } from '../account-protocol/recoveryRead.ts';
 import {
   lostRecoveryChallengeMessage,
   lostRecoveryPreparedMessage,
@@ -384,6 +385,12 @@ export class PrivateAuthority {
         ...body,
         signature: signature(recoveryHeadAssertionMessage({ ...body, signature: '00'.repeat(64) })),
       }),
+      page: async (body) => ({
+        ...body,
+        signature: signature(
+          await recoveryReadPageMessage({ ...body, signature: '00'.repeat(64) }),
+        ),
+      }),
       prepared: async (body) => ({
         ...body,
         signature: signature(
@@ -394,6 +401,9 @@ export class PrivateAuthority {
   }
   lostDeviceRecovery(core: AccountCore, operation: LostRecoveryOperation, input: unknown) {
     return core.lostDeviceRecovery(operation, input, this.#lostRecoveryIssuer());
+  }
+  readRecovery(core: AccountCore, input: unknown) {
+    return core.readRecovery(input, this.#lostRecoveryIssuer());
   }
   #enrollmentIssuer(): EnrollmentIssuer {
     const signature = (message: Uint8Array) => {

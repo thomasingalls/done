@@ -4337,3 +4337,12 @@ approved content device; future writing uses a fresh content-key generation. Pre
 retain their old copies. This does not authorize erasing other local workspaces, replacing the account
 passkey, or claiming that copies of old writing can be recalled. Exact UI placement and screens remain
 for an operator walkthrough. See [the implementation plan](./account-lost-device-recovery.md).
+
+
+### 2026-10-09 — Recovery screen sequence approved
+
+The operator approved: Use another account → Recover with a saved recovery code → choose the
+existing account passkey → enter recovery code → save and confirm a new device-lock code → review
+“Recover on this device and disconnect the previous devices” → recover and open the editor.
+Keep the account passkey and recovery code unchanged; retained recovery progress belongs in the chooser.
+Implementation must still establish complete replay and atomic replacement before presenting success.
