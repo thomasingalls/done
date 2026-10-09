@@ -4399,3 +4399,14 @@ phase objects remain reachable. Reconcile ancestry-dependent validation before i
 resumption on squashed main; do not alter historical receipts. Future PR/deployment commits are signed.
 See [the signing record](./commit-history/README.md). This changes repository workflow, not the
 agreed deployment or paused-validation scope.
+
+
+### 2026-10-09 — Preserve validation ancestry through ordinary PR merges (`L-1`)
+
+The operator chose to change GitHub's merge policy instead of adapting validation to squash history.
+Linear history is disabled and ordinary merge commits are the only allowed method at repository and
+main-ruleset levels. Required PRs, verified signatures and force-push/deletion protections remain.
+This supersedes the squash route recorded immediately above. PR #41 merged as `8c6005f3`, preserving
+all 398 signed PR commits and their ancestry. The original-to-signed crosswalk remains relevant;
+the hypothetical post-squash ancestry repair is obsolete. Continue signed deployment work from the
+merged main history. No validation requirement is relaxed and release validation remains paused.

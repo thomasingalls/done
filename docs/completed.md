@@ -12404,3 +12404,14 @@ squash-only PR route and signed future work; application code and protection rul
 Signature/metadata/tree checks and documentation checks were performed, not a new build or validation
 campaign. Keep the signed phase branch after squash and reconcile ancestry-dependent tools before
 resuming validation from the new main history.
+
+
+### 2026-10-09 — PR #41 merged with signed history intact
+
+The operator merged PR #41 as `8c6005f3` after selecting merge-only integration and disabling linear
+history. GitHub verifies its signature. Local inspection confirms parents `c61ad005`/`f1b91985`, an
+identical tree to the PR head and preservation of all 398 PR commits as ancestors of main. The PR
+application build passed; its full check was skipped. Local main and `codex/first-public-deployment`
+were fast-forwarded to the merge. Current records now retire the hypothetical squash-ancestry repair;
+original crosswalk/evidence bytes remain unchanged. No runtime edits, deployment or release campaign
+were performed. Next remains public runtime/initialization and container implementation.

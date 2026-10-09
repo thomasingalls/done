@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: signed PR integration prepared; public runtime and container implementation next
+scope: public runtime and container implementation; signed PR integration complete
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -81,13 +81,13 @@ Agreed backups: consistent SQLite snapshots without Litestream, encrypted before
 for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
 procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
 
-The earlier direct local-main route is superseded by the repository's signed, squash-only PR rules.
-The [completed signing sweep and crosswalk](./commit-history/README.md) map 102 unsigned commits plus
-one affected signed merge to 103 verified replacements. All 397 phase commits verify, with the exact
-same final tree. Local main is restored to remote `c61ad005`; the work is prepared for existing PR #41
-without a force push. Preserve the signed PR branch after squash integration and reconcile
-ancestry-based tooling before validation resumes on that new main history. The automatic build/full-check
-CI split accompanies the PR. Next is the public runtime/initialization and container boundary on
+PR #41 is merged as `8c6005f3`, preserving all 398 signed PR commits as ancestors of main and exactly
+the PR head's tree. The operator selected merge-only integration, disabling linear history while
+retaining required PRs and signatures. The [signing record and crosswalk](./commit-history/README.md)
+preserve the 103 rewritten identities and original evidence. Local main and the deployment branch
+were fast-forwarded to the verified merge. The proposed squash-related validation adaptation is
+obsolete; the existing ancestry model is retained. Automatic application-build CI passed on the PR;
+the full check stayed skipped. Next is the public runtime/initialization and container boundary on
 `codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
 remains a separate step.
 

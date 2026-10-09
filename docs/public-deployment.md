@@ -94,10 +94,10 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 
 ## Implementation sequence
 
-1. Record this plan and prepare the signed history for existing PR #41. Repository protections require
-   squash integration into main; retain the signed phase branch and original-to-signed crosswalk.
-   Continue implementation on `codex/first-public-deployment`.
-2. Include the routine-build/paused-full-check CI split when updating the PR. Add the
+1. Complete: record this plan and integrate the signed history through PR #41's merge commit
+   `8c6005f3`, preserving phase ancestry and the original-to-signed crosswalk. Continue implementation
+   on `codex/first-public-deployment` from that merge.
+2. The routine-build/paused-full-check CI split is merged. Add the
    public service entry, explicit initialization and container packaging with immutable configuration,
    single-writer ownership, graceful stop and readiness. Keep development entry points working.
 3. Implement isolated consistent snapshot creation, encryption, B2 upload, bounded scheduling,
@@ -116,19 +116,19 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 
 ## Git and remaining environment inputs
 
-The operator's initial explicit local merge was superseded after checking repository protections:
-main requires a PR, verified signatures and linear history, with squash as its only allowed merge
-method. The [signing record and crosswalk](./commit-history/README.md) preserve traceability for
-102 unsigned replacements plus one re-signed descendant. Original test evidence remains unchanged.
-All 397 phase commits verify locally; the source tree is unchanged. Local main is back at remote
-`c61ad005`. Existing PR #41 can receive the signed work by a normal fast-forward update from its remote
-head `d178d349`; no force push or protection change is needed. Preserve that remote branch after squash
-integration, and reconcile ancestry-based validation before resuming it on the squashed main history.
-Three existing root notes remain untracked and excluded. New PR/deployment commits must be signed.
+The operator selected ordinary PR merge commits to preserve the validation tools' ancestry model,
+disabled linear history and made merge the only allowed method in both settings layers. Main still
+requires PRs and verified signatures and blocks force pushes/deletions. PR #41 merged as `8c6005f3`;
+its parents are the previous main `c61ad005` and signed PR head `f1b91985`. Its tree equals the PR head,
+all 398 PR commits remain ancestors, and GitHub verifies the merge signature. The
+[signing record and crosswalk](./commit-history/README.md) preserve traceability for 102 unsigned
+replacements plus one re-signed descendant. Historical evidence is unchanged. Local main and the
+deployment branch were fast-forwarded; no history rewrite or squash-specific validation adaptation
+is needed. Three existing root notes remain untracked and excluded. New PR/deployment commits are signed.
 
-This branch separates automatic `pnpm build` from the manually opted-in full `pnpm check`. The latter
-includes broad validation campaigns and remains paused. Publish the CI separation with the PR update
-so publication does not inadvertently resume the campaign.
+The merged CI configuration separates automatic `pnpm build` from the manually opted-in full
+`pnpm check`. The application build passed on the PR. The full check includes broad validation
+campaigns and remains paused; it was skipped by the PR run.
 
 Implementation need not wait for these final environment inputs: image registry/repository and push
 access (the infra precedent uses Codeberg), B2 bucket/region/prefix and restricted application key,
