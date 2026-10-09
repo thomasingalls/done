@@ -216,3 +216,19 @@ existing root custody, with nonce reservation before encryption. The live protec
 contains the seed; the authenticated initial claim retains its encrypted copy. This does not authorize
 a recovery commit by itself: the recovery owner must validate the retained exact intent and authority
 before sending it, and cold-verify its checkpoint before installing writing.
+
+
+## Combined login and local verification checkpoint
+
+New preparations can explicitly opt into `recovery-and-login-v1`. Its assertion uses a separate domain
+and binds the fresh candidate, attempt, service and login purpose. The same high-entropy retry capability
+identifies the two linked operations in separate tables; the signed context binds the session attempt
+and retry hash. One transaction saves preparation and issuance after a separately committed encryption
+nonce reservation. Only exact finish proof retries return login credentials. Begin/resume return no
+login secret; cancellation revokes it. Old proofs do not gain the new purpose.
+
+The signed preparation also supplies the existing account's verified offline passkey binding. The
+client independently checks the fresh combined assertion against it and its in-memory client nonce.
+The upcoming native owner must bind that check to the new slot and current opening, never treat a
+serialized assertion or saved preparation as permission to reopen later. Schema 24 needs explicit
+offline upgrade; no live upgrade has run. Approved screens and installation are still unmounted.

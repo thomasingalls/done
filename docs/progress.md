@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: service commit and seeded native custody verified; retained installation and screens in flight
+scope: recovery service, seeded custody and combined login verified; native installation and screens in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -104,6 +104,12 @@ remain; this is not yet a usable recovery journey. Live schema 21 remains unchan
 **Candidate custody checkpoint:** factor-sealed creation seed retains the earlier candidate keys and
 exact progress through an interrupted new lock setup. 17 genesis tests and a native Chromium kill/reopen
 case pass. [Output](./development-evidence/2026-10-09-recovery-custody.log).
+
+**Combined login checkpoint:** a fresh explicit recovery/login challenge atomically issues one login
+with preparation; the browser independently verifies its passkey assertion. Verified offline binding
+is retained. Schema 24 upgrade and focused retry/authority checks pass; live schema 21 is untouched.
+[Output](./development-evidence/2026-10-09-recovery-login.log). Native first-open ownership and screens
+remain, so this is not yet a usable recovery journey.
 
 ---
 

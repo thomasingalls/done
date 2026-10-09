@@ -379,6 +379,7 @@ export class PrivateAuthority {
       return sign(null, message, this.#key).toString('hex');
     };
     return {
+      bind: async (binding) => signature(bindingMessage(binding)),
       pin: { ...this.#pin },
       check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
       witness: (seal, id, pub, scope, value) =>

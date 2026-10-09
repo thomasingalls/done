@@ -1,3 +1,5 @@
+import type { AccountSessions } from './sessions.ts';
+import type { SlotBinding } from '../account-protocol/slot.ts';
 import { retainedRecoveryCheckpoint } from './recoveryStore.ts';
 import {
   parseRecoveryCommit,
@@ -71,6 +73,7 @@ export const LOST_RECOVERY_SCHEMA = `CREATE TABLE lost_device_recovery (
  CHECK((account_id IS NULL) = (result IS NULL)));
  CREATE INDEX lost_recovery_expiry ON lost_device_recovery(expires);`;
 export interface LostRecoveryIssuer extends Pick<DeliveryIssuer, 'pin' | 'check' | 'witness'> {
+  bind(binding: SlotBinding): Promise<string>;
   finalize(seal: unknown, id: string, pub: string, value: AcceptedHead): AcceptedHead;
   successor(value: RecoverySuccessor['epoch']): Promise<RecoverySuccessor>;
   challenge(context: LostRecoveryContext): LostRecoveryChallenge;
@@ -105,18 +108,27 @@ export class LostDeviceRecovery {
   private issuer: LostRecoveryIssuer;
   private now: () => number;
   private hook: Hook;
+  private sessions: AccountSessions | undefined;
   constructor(
     db: DatabaseSync,
     policy: Policy,
     issuer: LostRecoveryIssuer,
     now: () => number,
     hook: Hook,
+    sessions?: AccountSessions,
   ) {
     this.db = db;
     this.policy = policy;
     this.issuer = issuer;
     this.now = now;
     this.hook = hook;
+    this.sessions = sessions;
+  }
+  private issuance(
+    result: import('../account-protocol/session.ts').SessionResult,
+  ): import('../account-protocol/session.ts').SessionIssuanceResult {
+    if (!result.ok || result.stage === 'issued') return result;
+    throw Error('Recovery login is not issued');
   }
   private row(key: string): Row | undefined {
     return this.db
@@ -367,25 +379,23 @@ export class LostDeviceRecovery {
         return no('state-changed');
       }
       this.issuer.check(auth.seal, root.promotion.request_digest, p.acceptancePublicKey);
-      this.db
-        .prepare('INSERT INTO recovery_successors VALUES (?,?,?,?,?,?,?,?,?,?)')
-        .run(
-          workspace,
-          epoch.epoch,
-          p.head,
-          successor.head,
-          JSON.stringify(successor),
-          JSON.stringify(
-            closing.map(({ publisher, witness }) => ({
-              credentialId: publisher.credential,
-              witness,
-            })),
-          ),
-          row.id,
-          retryHash(request.retryKey),
-          requestHash,
-          JSON.stringify(checkpoint),
-        );
+      this.db.prepare('INSERT INTO recovery_successors VALUES (?,?,?,?,?,?,?,?,?,?)').run(
+        workspace,
+        epoch.epoch,
+        p.head,
+        successor.head,
+        JSON.stringify(successor),
+        JSON.stringify(
+          closing.map(({ publisher, witness }) => ({
+            credentialId: publisher.credential,
+            witness,
+          })),
+        ),
+        row.id,
+        retryHash(request.retryKey),
+        requestHash,
+        JSON.stringify(checkpoint),
+      );
       this.db
         .prepare('UPDATE promotions SET successor_head=? WHERE account_id=?')
         .run(successor.head, row.account_id!);
@@ -573,6 +583,10 @@ export class LostDeviceRecovery {
           this.db
             .prepare("UPDATE lost_device_recovery SET state='cancelled' WHERE id=?")
             .run(row.id);
+          this.sessions?.cancelRecovery(
+            this.db,
+            parseLostRecoveryChallenge(JSON.parse(row.challenge)).context,
+          );
           return { ok: true, stage: 'cancelled' };
         });
       if (request.operation === 'begin') {
@@ -598,6 +612,15 @@ export class LostDeviceRecovery {
             clientNonce: body.clientNonce,
             nonce: randomBytes(32).toString('hex'),
             expiresAt: this.now() + LOST_RECOVERY_LIFETIME_MS,
+            ...(body.login
+              ? {
+                  login: {
+                    purpose: 'recovery-and-login-v1' as const,
+                    attemptId: fresh(),
+                    retryHash: retryHash(retryKey),
+                  },
+                }
+              : {}),
           };
           const challenge = parseLostRecoveryChallenge(this.issuer.challenge(context));
           if (!same(challenge.context, context)) throw Error('Recovery issuer changed challenge');
@@ -612,6 +635,10 @@ export class LostDeviceRecovery {
               JSON.stringify(challenge),
               context.expiresAt,
             );
+          if (context.login) {
+            if (!this.sessions) throw Error('Recovery login unavailable');
+            this.sessions.createRecovery(this.db, context, retryKey);
+          }
           return { ok: true, stage: 'challenge', challenge };
         });
       }
@@ -628,7 +655,20 @@ export class LostDeviceRecovery {
           if (!row || row.id !== prior.id) return no('unknown-attempt');
           if (proofHash && row.proof_hash && row.proof_hash !== proofHash)
             return no('proof-conflict');
-          return this.view(row);
+          const result = this.view(row);
+          const context = parseLostRecoveryChallenge(JSON.parse(row.challenge)).context;
+          return result.ok &&
+            result.stage === 'prepared' &&
+            proofHash &&
+            context.login &&
+            this.sessions
+            ? {
+                ...result,
+                login: this.issuance(
+                  this.sessions.recoveryResult(this.db, context, request.retryKey, proofHash),
+                ),
+              }
+            : result;
         });
       if (
         request.operation !== 'finish' ||
@@ -671,6 +711,15 @@ export class LostDeviceRecovery {
       if ((auth.historicalMembers ?? auth.members).some((m) => m.id === candidate.credentialId))
         return no('request-conflict');
       if (auth.removal) return no('state-changed');
+      const binding: SlotBinding = {
+        v: 1,
+        accountId: credential.account_id,
+        principalId: auth.request.candidate.principalId,
+        rpId: this.policy.rpId,
+        epoch: 1,
+        credId: credential.id,
+        publicKey: credential.spki,
+      };
       const prepared = parseLostRecoveryPrepared(
         await this.issuer.prepared({
           v: 1,
@@ -678,6 +727,13 @@ export class LostDeviceRecovery {
           challenge,
           accountId: credential.account_id,
           passkeyId: credential.id,
+          binding: {
+            v: 1,
+            kind: 'promotion-slot-binding',
+            requestDigest: auth.receipt.offer.epoch.requestDigest,
+            epochHead: auth.receipt.offer.head,
+            stored: { binding, bindingSignature: await this.issuer.bind(binding) },
+          },
           base: { pin: this.issuer.pin, request: auth.request, receipt: auth.receipt },
           proofs:
             before.base.transfer?.artifact || before.base.recoveries?.length
@@ -705,6 +761,14 @@ export class LostDeviceRecovery {
         this.issuer.pin,
       );
       this.hook('after-verify', op);
+      const reserved = challenge.context.login
+        ? this.sessions?.reserveRecovery(challenge.context, request.retryKey, proofHash!)
+        : undefined;
+      if (
+        challenge.context.login &&
+        (!reserved || (!('commit' in reserved) && (!reserved.ok || reserved.stage !== 'issued')))
+      )
+        return no('unavailable');
       let issued = false;
       return this.transaction(
         op,
@@ -712,7 +776,25 @@ export class LostDeviceRecovery {
           const row = this.row(request.retryKey);
           if (!row || row.id !== prior.id) return no('unknown-attempt');
           if (row.proof_hash && row.proof_hash !== proofHash) return no('proof-conflict');
-          if (row.state !== 'challenge' || this.terminal(row)) return this.view(row);
+          if (row.state !== 'challenge' || this.terminal(row)) {
+            const result = this.view(row);
+            return result.ok &&
+              result.stage === 'prepared' &&
+              challenge.context.login &&
+              this.sessions
+              ? {
+                  ...result,
+                  login: this.issuance(
+                    this.sessions.recoveryResult(
+                      this.db,
+                      challenge.context,
+                      request.retryKey,
+                      proofHash!,
+                    ),
+                  ),
+                }
+              : result;
+          }
           const current = this.snapshot(credential.account_id);
           if (
             current?.token !== before!.token ||
@@ -746,8 +828,15 @@ export class LostDeviceRecovery {
           this.db
             .prepare('UPDATE credentials SET counter=? WHERE id=?')
             .run(counter, credential.id);
+          if (challenge.context.login && (!reserved || !('commit' in reserved)))
+            throw Error('Recovery login reservation changed');
+          const login =
+            reserved && 'commit' in reserved
+              ? reserved.commit(this.db, current.credential)
+              : undefined;
+          if (login && !login.ok) throw Error('Recovery login commit refused');
           issued = true;
-          return { ok: true, stage: 'prepared', prepared };
+          return { ok: true, stage: 'prepared', prepared, ...(login ? { login } : {}) };
         },
         () => {
           if (

@@ -59,6 +59,7 @@ import {
   SESSION_SCHEMA,
   SESSION_UNLOCK_SCHEMA,
   SESSION_ENROLLMENT_SCHEMA,
+  SESSION_RECOVERY_SCHEMA,
 } from './sessions.ts';
 import type { SessionConfiguration } from './session-custody.ts';
 import {
@@ -221,6 +222,7 @@ export class AccountCore {
       upgradeFromV20?: boolean;
       upgradeFromV21?: boolean;
       upgradeFromV22?: boolean;
+      upgradeFromV23?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -262,7 +264,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 23 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 24 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 23 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV23
+        ) &&
         !(
           version === 22 &&
           instrumentation.sessions &&
@@ -475,6 +483,10 @@ export class AccountCore {
             this.#db.exec(RECOVERY_SUCCESSOR_SCHEMA);
             this.#db.exec('PRAGMA user_version=23;');
           }
+          if (version < 24) {
+            this.#db.exec(SESSION_RECOVERY_SCHEMA);
+            this.#db.exec('PRAGMA user_version=24;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -579,21 +591,35 @@ export class AccountCore {
   }
 
   commitRecovery(input: unknown, issuer: LostRecoveryIssuer) {
-    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).commit(
-      input,
-    );
+    return new LostDeviceRecovery(
+      this.#db,
+      this.#policy,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#sessions,
+    ).commit(input);
   }
   readRecovery(input: unknown, issuer: LostRecoveryIssuer) {
-    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).read(
-      input,
-    );
+    return new LostDeviceRecovery(
+      this.#db,
+      this.#policy,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#sessions,
+    ).read(input);
   }
 
   lostDeviceRecovery(operation: LostRecoveryOperation, input: unknown, issuer: LostRecoveryIssuer) {
-    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).run(
-      operation,
-      input,
-    );
+    return new LostDeviceRecovery(
+      this.#db,
+      this.#policy,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#sessions,
+    ).run(operation, input);
   }
 
   enrollment(operation: EnrollmentOperation, input: unknown, issuer: EnrollmentIssuer) {

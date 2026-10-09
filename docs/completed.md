@@ -11919,3 +11919,27 @@ candidate signing identity and exact progress survive, and rejects the wrong loc
 scoped lint/format and diff checks pass. [Output](./development-evidence/2026-10-09-recovery-custody.log).
 This is the custody seam, not a completed recovery owner or editor installation. Those and the approved
 screens remain in flight; release validation and the live service remain untouched.
+
+
+### 2026-10-09 — Fresh recovery and remembered login compose without a second ceremony
+
+Added explicit opt-in `recovery-and-login-v1` challenge context and separate assertion domain. One
+fresh discoverable passkey assertion plus candidate-key possession can atomically retain both recovery
+preparation and one 30-day remembered login. Ordinary recovery proofs keep their narrower authority.
+Ordinary session endpoints cannot consume the combined proof. Only exact finish retries disclose the
+sealed login; begin/resume do not. Nonces are reserved durably before issuance, cancellation revokes
+the login, and acknowledged/expired retry seals cannot mint a replacement. The assertion-selected
+account is bound at issuance; no supplied account selector is accepted.
+
+The preparation now carries the service-signed passkey binding needed for later offline unlock. An
+independent browser verifier checks the same combined assertion against that binding and the held
+client nonce. Its owner must keep that nonce fresh and in memory; saved preparation is not a reopening
+credential. UI and first-open ownership still need to compose this primitive. Schema 24 explicitly
+rebuilds the session attempt constraints while preserving existing sessions and enrollment links.
+The live schema-21 service remains unchanged.
+
+47 focused recovery/session cases pass, including both supported passkey algorithms, concurrent
+finish, restart/lost reply, nonce burning, cancellation, changed credentials and exact offline binding.
+Affected historical upgrade/rotated-recovery and local slot/custody regressions also pass, as do
+TypeScript and scoped static checks. [Output](./development-evidence/2026-10-09-recovery-login.log).
+Product recovery remains in flight; release qualification stays paused.

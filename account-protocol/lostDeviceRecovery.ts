@@ -1,3 +1,5 @@
+import { parseBindingProof, verifyBindingProof } from './slot.ts';
+import type { SessionIssuanceResult } from './session.ts';
 /** Fresh account authentication for total-device-loss recovery; never a membership grant. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
@@ -47,11 +49,14 @@ export function parseRecoveryCandidate(input: unknown) {
 }
 export function parseLostRecoveryBegin(input: unknown) {
   bounded(input, LOST_RECOVERY_REQUEST_LIMIT);
-  const r = closed(input, ['retryKey', 'candidate', 'clientNonce']);
+  const combined = input !== null && typeof input === 'object' && 'login' in input;
+  const r = closed(input, ['retryKey', 'candidate', 'clientNonce', ...(combined ? ['login'] : [])]);
+  if (combined && r['login'] !== true) throw Error('Invalid recovery login request');
   return {
     retryKey: accountIdentifier(r['retryKey']),
     candidate: parseRecoveryCandidate(r['candidate']),
     clientNonce: fixed(r['clientNonce']),
+    ...(combined ? { login: true as const } : {}),
   };
 }
 export function parseLostRecoveryRetry(input: unknown) {
@@ -71,6 +76,7 @@ export function parseLostRecoveryFinish(input: unknown) {
   };
 }
 export function parseLostRecoveryContext(input: unknown) {
+  const combined = input !== null && typeof input === 'object' && 'login' in input;
   const r = closed(input, [
     'v',
     'purpose',
@@ -81,9 +87,20 @@ export function parseLostRecoveryContext(input: unknown) {
     'clientNonce',
     'nonce',
     'expiresAt',
+    ...(combined ? ['login'] : []),
   ]);
   if (r['v'] !== 1 || r['purpose'] !== 'lost-device-recovery-v1')
     throw Error('Wrong recovery purpose');
+  let login: { purpose: 'recovery-and-login-v1'; attemptId: string; retryHash: string } | undefined;
+  if (combined) {
+    const l = closed(r['login'], ['purpose', 'attemptId', 'retryHash']);
+    if (l['purpose'] !== 'recovery-and-login-v1') throw Error('Wrong recovery login purpose');
+    login = {
+      purpose: 'recovery-and-login-v1',
+      attemptId: accountIdentifier(l['attemptId']),
+      retryHash: fixed(l['retryHash']),
+    };
+  }
   return {
     v: 1 as const,
     purpose: 'lost-device-recovery-v1' as const,
@@ -94,6 +111,7 @@ export function parseLostRecoveryContext(input: unknown) {
     clientNonce: fixed(r['clientNonce']),
     nonce: fixed(r['nonce']),
     expiresAt: integer(r['expiresAt'], 1),
+    ...(login ? { login } : {}),
   };
 }
 export type LostRecoveryContext = ReturnType<typeof parseLostRecoveryContext>;
@@ -107,8 +125,13 @@ export const lostRecoveryChallengeMessage = (input: unknown) =>
   lp('done/lost-device-recovery-challenge/v1', JSON.stringify(parseLostRecoveryContext(input)));
 export const lostRecoveryPossessionMessage = (input: unknown) =>
   lp('done/lost-device-recovery-possession/v1', JSON.stringify(parseLostRecoveryContext(input)));
-export const lostRecoveryAssertionMessage = (input: unknown) =>
-  lp('done/lost-device-recovery-assertion/v1', JSON.stringify(parseLostRecoveryContext(input)));
+export const lostRecoveryAssertionMessage = (input: unknown) => {
+  const c = parseLostRecoveryContext(input);
+  return lp(
+    c.login ? 'done/recovery-and-session-assertion/v1' : 'done/lost-device-recovery-assertion/v1',
+    JSON.stringify(c),
+  );
+};
 export async function lostRecoveryNonce(input: unknown) {
   const raw = unhex(await digest(lostRecoveryAssertionMessage(input)), 32);
   return btoa(String.fromCharCode(...raw))
@@ -135,6 +158,10 @@ export async function verifyLostRecoveryChallenge(
     challenge.context.retryHash !== (await digest(retry))
   )
     throw Error('Recovery challenge target changed');
+  if (Boolean(challenge.context.login) !== Boolean(begin.login))
+    throw Error('Recovery login purpose changed');
+  if (begin.login && challenge.context.login?.retryHash !== challenge.context.retryHash)
+    throw Error('Recovery login target changed');
   await verifySignature(
     pin.authRoot,
     challenge.signature,
@@ -155,6 +182,7 @@ function parseProofs(input: unknown) {
   return { successor: parseSuccessor(p['successor']), certification: null, continuations: [] };
 }
 export function parseLostRecoveryPrepared(input: unknown) {
+  const hasBinding = input !== null && typeof input === 'object' && 'binding' in input;
   bounded(input, LOST_RECOVERY_RESULT_LIMIT);
   const r = closed(input, [
     'v',
@@ -166,6 +194,7 @@ export function parseLostRecoveryPrepared(input: unknown) {
     'proofs',
     'head',
     'signature',
+    ...(hasBinding ? ['binding'] : []),
   ]);
   if (r['v'] !== 1 || r['kind'] !== 'lost-device-recovery-prepared')
     throw Error('Wrong prepared recovery');
@@ -185,6 +214,7 @@ export function parseLostRecoveryPrepared(input: unknown) {
     },
     proofs: parseProofs(r['proofs']),
     head: parseRecoveryHeadAssertion(r['head']),
+    ...(hasBinding ? { binding: parseBindingProof(r['binding']) } : {}),
     signature: fixed(r['signature'], 64),
   };
 }
@@ -214,6 +244,10 @@ export async function verifyLostRecoveryPrepared(
     await lostRecoveryPreparedMessage(prepared),
   );
   await verifyReceipt(prepared.base.receipt, prepared.base.request, pin);
+  if (prepared.challenge.context.login && !prepared.binding)
+    throw Error('Missing recovery slot binding');
+  if (prepared.binding)
+    await verifyBindingProof(prepared.binding, prepared.base.request, prepared.base.receipt, pin);
   const history = prepared.proofs
     ? prepared.proofs.certification || prepared.proofs.continuations.length
       ? (await verifyMembershipChain(prepared.proofs, prepared.base)).history
@@ -263,5 +297,5 @@ export type LostRecoveryRefusal =
 export type LostRecoveryResult =
   | { ok: false; refusal: LostRecoveryRefusal }
   | { ok: true; stage: 'challenge'; challenge: LostRecoveryChallenge }
-  | { ok: true; stage: 'prepared'; prepared: LostRecoveryPrepared }
+  | { ok: true; stage: 'prepared'; prepared: LostRecoveryPrepared; login?: SessionIssuanceResult }
   | { ok: true; stage: 'cancelled' };

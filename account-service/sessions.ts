@@ -3,6 +3,10 @@ import {
   type EnrollmentContext,
 } from '../account-protocol/enrollment.ts';
 import {
+  lostRecoveryAssertionMessage,
+  type LostRecoveryContext,
+} from '../account-protocol/lostDeviceRecovery.ts';
+import {
   parseSessionUnlock,
   sessionUnlockMessage,
   type SessionUnlockContext,
@@ -45,6 +49,28 @@ export const SESSION_ENROLLMENT_SCHEMA = `ALTER TABLE session_attempts ADD COLUM
 CREATE TABLE enrollment_session_links (
   enrollment_id TEXT PRIMARY KEY REFERENCES enrollment_preparations(id),
   session_attempt_id TEXT UNIQUE NOT NULL REFERENCES session_attempts(id) ON DELETE CASCADE);`;
+/** Rebuild referencing tables in the same offline upgrade transaction; retain all session seals. */
+export const SESSION_RECOVERY_SCHEMA = `
+CREATE TEMP TABLE recovery_upgrade_links AS SELECT * FROM enrollment_session_links;
+CREATE TEMP TABLE recovery_upgrade_sessions AS SELECT * FROM network_sessions;
+CREATE TEMP TABLE recovery_upgrade_attempts AS SELECT * FROM session_attempts;
+DROP TABLE enrollment_session_links;
+DROP TABLE network_sessions;
+DROP TABLE session_attempts;
+CREATE TABLE session_attempts (id TEXT PRIMARY KEY, retry_hash TEXT UNIQUE NOT NULL,
+ account_id TEXT NOT NULL, challenge TEXT UNIQUE NOT NULL, expires INTEGER NOT NULL,
+ state TEXT NOT NULL CHECK(state IN ('open','issued','cancelled','expired')), proof_hash TEXT,
+ unlock_context TEXT, purpose TEXT NOT NULL DEFAULT 'login' CHECK(purpose IN ('login','enrollment','recovery')));
+${SESSION_SCHEMA.slice(SESSION_SCHEMA.indexOf('  CREATE TABLE network_sessions'))}
+CREATE TABLE enrollment_session_links (
+ enrollment_id TEXT PRIMARY KEY REFERENCES enrollment_preparations(id),
+ session_attempt_id TEXT UNIQUE NOT NULL REFERENCES session_attempts(id) ON DELETE CASCADE);
+INSERT INTO session_attempts SELECT * FROM recovery_upgrade_attempts;
+INSERT INTO network_sessions SELECT * FROM recovery_upgrade_sessions;
+INSERT INTO enrollment_session_links SELECT * FROM recovery_upgrade_links;
+DROP TABLE recovery_upgrade_attempts;
+DROP TABLE recovery_upgrade_sessions;
+DROP TABLE recovery_upgrade_links;`;
 export class EnrollmentLoginRefused extends Error {
   constructor() {
     super('Enrollment login unavailable');
@@ -68,7 +94,7 @@ interface Attempt {
   state: 'open' | 'issued' | 'cancelled' | 'expired';
   proof_hash: string | null;
   unlock_context: string | null;
-  purpose: 'login' | 'enrollment';
+  purpose: 'login' | 'enrollment' | 'recovery';
 }
 interface Session {
   id: string;
@@ -288,7 +314,9 @@ export class AccountSessions {
       ok: true,
       stage: 'challenge',
       attemptId: a.id,
-      ...(a.unlock_context ? { unlock: JSON.parse(a.unlock_context) as SessionUnlockContext } : {}),
+      ...(a.purpose === 'login' && a.unlock_context
+        ? { unlock: JSON.parse(a.unlock_context) as SessionUnlockContext }
+        : {}),
       expiresAt: a.expires,
       options: {
         challenge: a.challenge,
@@ -520,6 +548,117 @@ export class AccountSessions {
       .prepare("UPDATE session_attempts SET state='issued',proof_hash=? WHERE id=?")
       .run(proofHash, attemptId);
     return result;
+  }
+  /** The account is intentionally unknown until the discoverable recovery assertion selects it. */
+  createRecovery(db: DatabaseSync, context: LostRecoveryContext, retryKey: string): void {
+    this.#owned(db);
+    const login = context.login;
+    if (
+      !login ||
+      login.retryHash !== retryHash(retryKey) ||
+      login.retryHash !== context.retryHash ||
+      canonical(context.pin) !== canonical(this.#pin)
+    )
+      throw new EnrollmentLoginRefused();
+    this.#prune(this.#time());
+    if (
+      this.#attempt(retryKey) ||
+      Number(db.prepare('SELECT COUNT(*) AS n FROM session_attempts').get()!.n) >=
+        SESSION_LIMITS.attempts
+    )
+      throw new EnrollmentLoginRefused();
+    db.prepare("INSERT INTO session_attempts VALUES (?,?,?,?,?,'open',NULL,?,'recovery')").run(
+      login.attemptId,
+      login.retryHash,
+      '',
+      Buffer.from(hash(lostRecoveryAssertionMessage(context)), 'hex').toString('base64url'),
+      context.expiresAt,
+      JSON.stringify(context),
+    );
+  }
+  recoveryResult(
+    db: DatabaseSync,
+    context: LostRecoveryContext,
+    retryKey: string,
+    proofHash: string,
+  ): SessionResult {
+    this.#owned(db);
+    this.#prune(this.#time());
+    const a = this.#attempt(retryKey),
+      login = context.login;
+    if (
+      !a ||
+      !login ||
+      a.purpose !== 'recovery' ||
+      a.id !== login.attemptId ||
+      a.retry_hash !== login.retryHash ||
+      a.unlock_context !== JSON.stringify(context) ||
+      a.challenge !==
+        Buffer.from(hash(lostRecoveryAssertionMessage(context)), 'hex').toString('base64url')
+    )
+      return no('unknown-attempt');
+    return this.#view(a, this.#time(), proofHash);
+  }
+  /** Called only after fresh recovery WebAuthn AND candidate possession checks.
+   * Reservation is durable before the owning preparation transaction; rollback burns the nonce. */
+  reserveRecovery(
+    context: LostRecoveryContext,
+    retryKey: string,
+    proofHash: string,
+  ):
+    | SessionResult
+    | { commit: (db: DatabaseSync, credential: StoredCredential) => SessionIssuanceResult } {
+    const reserved = this.#transaction('recovery-reserve', () => {
+      const v = this.recoveryResult(this.#db, context, retryKey, proofHash);
+      if (!v.ok || v.stage !== 'challenge') return v;
+      const nonce =
+        Number(
+          this.#db.prepare('SELECT seal_counter FROM session_custody WHERE id=1').get()!
+            .seal_counter,
+        ) + 1;
+      if (nonce > 0xffffffff) return no('capacity');
+      this.#db.prepare('UPDATE session_custody SET seal_counter=? WHERE id=1').run(nonce);
+      return { nonce };
+    });
+    if (!('nonce' in reserved)) return reserved;
+    let used = false;
+    return {
+      commit: (db, credential) => {
+        this.#owned(db);
+        if (used) throw new EnrollmentLoginRefused();
+        used = true;
+        const view = this.recoveryResult(db, context, retryKey, proofHash);
+        if (!view.ok || view.stage === 'issued') return view;
+        if (view.stage !== 'challenge') return no('invalid-proof');
+        const current = this.#credential(credential.id);
+        if (
+          !current ||
+          !this.#eligible(current) ||
+          credentialBinding(current) !== credentialBinding(credential)
+        )
+          return no('invalid-proof');
+        db.prepare('UPDATE session_attempts SET account_id=? WHERE id=?').run(
+          current.account_id,
+          context.login!.attemptId,
+        );
+        return this.#issue(
+          current,
+          credentialBinding(current),
+          context.login!.attemptId,
+          proofHash,
+          reserved.nonce,
+        );
+      },
+    };
+  }
+  cancelRecovery(db: DatabaseSync, context: LostRecoveryContext): void {
+    this.#owned(db);
+    if (!context.login) return;
+    const a = db
+      .prepare('SELECT * FROM session_attempts WHERE id=?')
+      .get(context.login.attemptId) as unknown as Attempt | undefined;
+    if (a?.purpose === 'recovery' && a.unlock_context === JSON.stringify(context))
+      this.#cancelAttempt(a.id);
   }
   #enrollment(attemptId: string): string | undefined {
     return this.#db

@@ -562,7 +562,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1161,7 +1161,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2105,7 +2105,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -4301,7 +4301,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4611,7 +4611,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -4961,7 +4961,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -5752,7 +5752,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
     upgradeFromV20: true,
   }).close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
   for (const [table, original] of rows)
     assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
   assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);

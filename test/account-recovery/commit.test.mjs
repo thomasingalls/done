@@ -238,7 +238,7 @@ test('schema 22 requires an explicit upgrade and preserves every retained accoun
   );
   assert.equal(
     mutate(x, (db) => db.prepare('PRAGMA user_version').get().user_version),
-    23,
+    24,
   );
   assert.match(
     mutate(

@@ -275,7 +275,7 @@ test('the offline schema upgrade is explicit and preserves existing rows', async
   assert.deepEqual(unchanged(x), before);
   assert.equal(
     mutate(x, (db) => db.prepare('PRAGMA user_version').get().user_version),
-    23,
+    24,
   );
 });
 

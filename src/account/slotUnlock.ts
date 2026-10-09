@@ -1,5 +1,10 @@
 import { pinBytes, type AuthorityPin } from '../../account-protocol/authority.ts';
 import {
+  parseLostRecoveryContext,
+  lostRecoveryAssertionMessage,
+  type LostRecoveryContext,
+} from '../../account-protocol/lostDeviceRecovery';
+import {
   sessionUnlockChallenge,
   type SessionUnlockContext,
 } from '../../account-protocol/sessionUnlock.ts';
@@ -341,6 +346,32 @@ export const verifySessionSlotUnlock = async (
     // Validate/copy before the first asynchronous verification.
     const bytes = await sessionUnlockChallenge(structuredClone(c));
     return verifyAttempt(attempt, async () => bytes);
+  } catch {
+    return { opened: false, refusal: 'challenge-is-not-the-one-minted' };
+  }
+};
+
+/** Verify the fresh combined recovery assertion locally as well. The caller must retain its
+ * freshly minted client nonce in memory; serialized preparation is never a reopening credential. */
+export const verifyRecoverySlotUnlock = async (
+  input: SlotUnlockAttempt & { pin: AuthorityPin; context: LostRecoveryContext },
+): Promise<SlotUnlockResult> => {
+  try {
+    const attempt = structuredClone(input),
+      c = parseLostRecoveryContext(attempt.context),
+      { binding: b, pin } = attempt;
+    if (
+      !c.login ||
+      c.clientNonce !== attempt.nonce ||
+      c.login.retryHash !== c.retryHash ||
+      c.pin.rpId !== b.rpId ||
+      pin.origin !== attempt.origin ||
+      hex(attempt.authorizationKey) !== pin.authRoot ||
+      hex(pinBytes(c.pin)) !== hex(pinBytes(pin))
+    )
+      return { opened: false, refusal: 'challenge-is-not-the-one-minted' };
+    const challenge = await sha256(lostRecoveryAssertionMessage(c));
+    return verifyAttempt(attempt, async () => challenge);
   } catch {
     return { opened: false, refusal: 'challenge-is-not-the-one-minted' };
   }
