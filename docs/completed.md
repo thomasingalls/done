@@ -12466,3 +12466,15 @@ changed pin. Retention checks cover the agreed UTC buckets, five-minute recent w
 rollback and unconditional preservation of the last verified anchor. TypeScript and focused lint
 pass. B2 transfer and API-owned scheduling follow; no retained service or remote bucket was used.
 See [public backups](./public-backups.md). Release validation remains paused.
+
+
+### 2026-10-09 — Scoped B2 transfer and serial backup/retention cycle
+
+Added restricted-bucket/prefix B2 Native API transport with streamed ciphertext upload, required
+length/checksum and exact-version SHA-256 readback before coverage/pruning. The bounded cycle
+coalesces work, retains writes arriving after capture, retries failures and permanently deletes only
+classified versions after a complete listing. Unfamiliar hourly/daily keepers must themselves pass
+readback before displacing older copies. The loopback B2 fixture passes lost-reply, corrupt-readback,
+corrupt-keeper, deletion-retry, namespace, scoped-key and pagination controls. Real age encryption
+and snapshot tests also pass; no external bucket was used. API-owned worker/container integration
+follows. See [public backups](./public-backups.md).
