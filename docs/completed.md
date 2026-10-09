@@ -12519,3 +12519,16 @@ files through a streaming parser/generator. Runtime/backup regressions pass on t
 checks and final evidence follow. [Operator runbook](./public-restore.md) makes clear that uncertain
 history needs an incident-specific disposition or fresh setup/import, potentially losing writing.
 No off-host log, schema migration, production restore or release campaign was performed.
+
+
+### 2026-10-10 — Signed operator restore and runtime evidence
+
+Signed scope commit `a3a52ec7` and implementation `ce953670` complete the bounded isolated-restore
+phase. The exact-source ARM64 image passes the application build and 25 focused checks as UID
+65532; its packaged two-process smoke and separate network-disabled runtime backup/restore rehearsal
+pass too. Evidence, final logs, runtime script and limits are retained in
+[the restore record](./development-evidence/2026-10-10-public-restore.json). Restore success remains
+quarantined with no serving permit; uncertain continuity needs an operator disposition and may
+require fresh setup/import with writing loss. No replication choice, production restore, deployment,
+image push or release campaign occurred. Explicit schema-maintenance sequencing/pre-migration backup
+and infrastructure integration remain; there is no older public schema deployed to migrate today.

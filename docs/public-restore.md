@@ -139,3 +139,10 @@ See [tar-stream's contract](https://github.com/mafintosh/tar-stream).
 
 These are bounded implementation checks, not resumed release qualification. Public provider-backed
 upload/download/decrypt, real recovery-key custody and infrastructure activation remain deployment inputs.
+
+
+The signed implementation `ce953670` passes all 25 focused checks in the Node 24.18.0 ARM64
+build as UID 65532. The final image `done-public:ce953670` also passes the packaged two-process
+smoke and a separate network-disabled, read-only-root backup/restore rehearsal in its actual runtime
+with pruned production dependencies. [Exact source/image evidence and logs](./development-evidence/2026-10-10-public-restore.json)
+are retained. No image was pushed and no retained installation was changed.

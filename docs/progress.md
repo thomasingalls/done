@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: operator-led isolated restore implemented; container verification and operations handoff
+scope: operator restore complete; schema-maintenance sequencing and infrastructure integration next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-10
@@ -112,7 +112,11 @@ Signed commits `773c3d14`, `7c23af0d` and `8923599e` record the backup stages. I
 are retained. Operator-led isolated restore is now implemented: archive verification, preserved source,
 atomic session-custody reset, crash/retry and startup quarantine. The [runbook](./public-restore.md)
 separates a successful restore from an operator history disposition; it supplies no generic promotion
-bypass. Host checks pass; target-image verification and the operations handoff follow. The operator's final 2026-10-10 choice defers automatic
+bypass. Signed implementation `ce953670` passes the application build and all 25 focused checks in the
+ARM64 image as UID 65532. Packaged app/API smoke and the network-disabled production-runtime
+backup/restore rehearsal also pass; [evidence](./development-evidence/2026-10-10-public-restore.json)
+is retained. Next is explicit schema-maintenance sequencing/pre-migration backup and infrastructure
+integration. No older public schema is deployed today. The operator's final 2026-10-10 choice defers automatic
 reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
 [recovery choices](./recovery-options.md). No retained installation or infrastructure resource has
 changed; no image has been published and no real B2 bucket has been used.

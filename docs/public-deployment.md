@@ -108,8 +108,10 @@ release-validation campaign.
    consistent snapshots, age encryption, exact-version upload/readback, bounded scheduling,
    retention and backup health. See [public backups](./public-backups.md). Real-provider credentials,
    upload/readback and off-cluster recovery-key verification remain publication/activation inputs.
-4. Implement explicit operator-led maintenance and isolated restore, including session invalidation
-   and a recovery disposition for uncertain client history. The operator's final 2026-10-10 decision
+4. Isolated operator restore is implemented and checked: [runbook and evidence](./public-restore.md).
+   It verifies the archive, resets session custody and preserves quarantine pending recovery disposition.
+   Explicit schema-maintenance sequencing and pre-migration backup remain before infrastructure
+   integration; no older public schema has been deployed. The operator's final 2026-10-10 decision
    accepts possible writing loss and defers automatic reconciliation/replication architecture; see
    [recovery choices](./recovery-options.md). Do not force an older signed ledger back into service.
    Exercise focused interruption/identity cases and one complete backup/restore rehearsal.

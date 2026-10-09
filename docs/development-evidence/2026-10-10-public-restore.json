@@ -1,0 +1,91 @@
+{
+  "scope": "Operator-led isolated restore and archive portability; no serving promotion or automatic reconciliation",
+  "sourceCommit": "ce953670227c0523dd7eb85d2a5c4b48f0d974fc",
+  "decisionCommit": "a3a52ec7",
+  "releaseValidation": "paused; bounded implementation checks only",
+  "build": {
+    "command": "docker build --platform linux/arm64 --build-arg APP_BUILD_REVISION=ce953670227c0523dd7eb85d2a5c4b48f0d974fc --build-arg APP_BUILD_DATE=2026-10-10 -t done-public:ce953670 .",
+    "exitCode": 0,
+    "node": "24.18.0",
+    "checkUid": 65532,
+    "agePackage": "1.1.1-1+b3",
+    "applicationBuild": "passed: Yjs patch/runtime, TypeScript, Vite, 136.7 kB initial JS / 350 kB limit, built-origin scan",
+    "focusedTests": {
+      "runtimeAndGateway": 14,
+      "backup": 5,
+      "restore": 6,
+      "failed": 0
+    }
+  },
+  "hostChecks": {
+    "node": "26.11.0",
+    "existingAndInitialRestoreTests": 24,
+    "finalRestoreTests": 6,
+    "uniqueTests": 25,
+    "failedInFinalRuns": 0
+  },
+  "packagedSmoke": {
+    "image": "done-public:ce953670",
+    "started": "2026-10-09T22:42:57.929Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:eafb66b86310957bb119c5d15d39b096678d6beb540885b9fab49bd1e8d3bf01",
+    "platform": "linux/arm64",
+    "sourceRevision": "ce953670227c0523dd7eb85d2a5c4b48f0d974fc",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-09T22:43:05.090Z"
+  },
+  "runtimeRestore": {
+    "command": "docker run --rm -i --network none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges --entrypoint node done-public:ce953670 --input-type=module - < docs/development-evidence/2026-10-10-public-restore-runtime.mjs",
+    "result": {
+      "ok": true,
+      "sourceRevision": "ce953670227c0523dd7eb85d2a5c4b48f0d974fc",
+      "node": "v24.18.0",
+      "uid": 65532,
+      "network": "none",
+      "checks": [
+        "initialize and durable attempt",
+        "capture/encrypt/decrypt/verify",
+        "quarantined completion and stable retry",
+        "preserved service pin",
+        "public startup refusal"
+      ]
+    }
+  },
+  "findingsDuringImplementation": [
+    "macOS system tar adds AppleDouble/xattr entries; archive production now emits the five allowlisted files with tar-stream.",
+    "Read-only SQLite WAL opens leave sidecars; interrupted retry classifies them and completed verification normalizes only empty WAL sidecars.",
+    "Main-file hashes can miss newer committed WAL content; completed recovery explicitly refuses a nonempty WAL.",
+    "Rejected tar entry streams need an error owner; malformed-input checks now settle without post-test uncaught errors.",
+    "One test needed foreign-key enforcement disabled to manufacture a corrupt fixture; ciphertext rejection can originate in age or downstream decompression.",
+    "pnpm sandbox store-location checks refused automatic installation; cached dependency addition used the existing host store and subsequent checks used installed binaries."
+  ],
+  "artifactsSha256": {
+    "2026-10-10-public-restore-container-build.log": "050b33b31befb6db3df21b00e62b06573747f9a0a797e2c050a898c6d4041e7b",
+    "2026-10-10-public-restore-host-regressions.log": "5d8833f22530a047d0bf7f6830d3be2b8a8dec6fb83a36acdfc5f46ea0ea20ad",
+    "2026-10-10-public-restore-host-restore.log": "512789c836dff9f1d5c19996a21c0bbcb17c655862d11a5a0696d3f905bf6603",
+    "2026-10-10-public-restore-runtime.log": "e30ea9e2a6ef3f078f38b595f7feb176f7e066a6ead410c3639b337c856bfc9f",
+    "2026-10-10-public-restore-runtime.mjs": "d0895f3547f0e6d662413861d48a5a716e802b582d89f7b571e7faf70af1f0ec"
+  },
+  "limits": [
+    "Recovery success is quarantined, with no serving permit or generic promotion command. Operators still decide continuity versus explicit fresh setup/import with possible writing loss.",
+    "No automatic reconciliation, off-host commit log, second node, schema migration or writer failover was added.",
+    "Archive validation, session reset, interruption and SIGKILL checks used disposable state; no personal or deployed data was restored.",
+    "B2 regressions used a controlled protocol fixture; no actual bucket, identity-custody rehearsal, deployment or image publication.",
+    "Process-crash checks are not host power-loss durability evidence; plaintext recovery directories are not forensically erased.",
+    "The production runtime rehearsal is network-disabled and uses generated keys in tmpfs. It exercises the actual pruned-dependency image.",
+    "Release qualification and the deferred personal history-management walkthrough remain paused."
+  ]
+}
