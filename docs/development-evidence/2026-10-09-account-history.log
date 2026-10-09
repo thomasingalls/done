@@ -687,3 +687,116 @@ Initial returning-editor run timed out during pairedEditors service-worker readi
 -- Production build --
 
 ✓ built in 2.79s
+
+
+=== Retained history upgrade — 2026-10-09 ===
+Operator authorized upgrade, deferred personal history walkthrough, and kept release validation paused until after publication.
+Build: 95433108; production bundle completed in 2.58 s.
+Graceful shutdown released the retained-state lock; existing offline upgrader created its pre-upgrade backup.
+{
+  "build": "95433108",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "from": 24,
+  "to": 26,
+  "backup": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/account-enrollment-tailnet/backups/schema-24-AmOFlk",
+  "checks": {
+    "account.sqlite": {
+      "schema": 26,
+      "unchangedTables": 28,
+      "unchangedRows": 69,
+      "newTables": [
+        "history_checkpoint_catalog",
+        "history_checkpoint_discards",
+        "history_checkpoint_records"
+      ],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "newTables": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "identityUnchanged": true,
+  "checkedAt": "2026-10-09T17:17:57.418Z",
+  "status": "running; actual-origin serving and session-boundary checks passed",
+  "health": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/accounts",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/recover/enrollment-00000000000000000000000000000000/start",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "sha256": "19a67503f84491652e1d9dca4815f4b3cb4355aa232f5bddf24dacfe5367fdbd"
+    },
+    {
+      "path": "/__account-setup/config",
+      "status": 200,
+      "identityUnchanged": true,
+      "networkSessions": true,
+      "membershipContinuation": true
+    },
+    {
+      "path": "/account/history/v1/checkpoint",
+      "status": 401,
+      "uncredentialedRequestRefused": true
+    },
+    {
+      "path": "/account/delivery/read-v2",
+      "status": 403,
+      "uncredentialedRequestRefused": true
+    },
+    {
+      "path": "/operator.key",
+      "status": 404
+    },
+    {
+      "path": "/src/main.tsx",
+      "status": 404
+    }
+  ],
+  "precacheFilesVerified": 34,
+  "runtime": {
+    "build": "95433108",
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "servicePort": 53220,
+    "appPort": 53219,
+    "servicePid": 52585,
+    "serviceLog": "/tmp/done-account-service-95433108.log",
+    "appPid": 52586,
+    "appLog": "/tmp/done-account-app-95433108.log"
+  },
+  "postRestart": {
+    "account.sqlite": {
+      "schema": 26,
+      "unchangedTables": 28,
+      "unchangedRows": 69,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  }
+}
+No personal workspace was opened; no snapshot or prune operation was sent. Browser uptake deferred.

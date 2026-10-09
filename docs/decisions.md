@@ -4355,3 +4355,13 @@ killed before the new device-lock code is saved. Candidate private keys remain i
 interval; switching to a password manager or backgrounding the page must preserve the ceremony.
 After lock setup, recovery progress and exact pending intent must be protected durably by that lock,
 including retries after a lost commit reply. No recovery code is retained for redisplay.
+
+
+## 2026-10-09 — Upgrade now; defer walkthrough and validation until publication (`L-1`)
+
+The operator authorized deploying the completed history-management build to the retained :8443
+installation, deferred the personal history-management walkthrough, and instructed that release
+validation remain paused until after a version is published. Publication does not automatically
+resume the campaign; wait for operator direction. Focused deployment integrity/identity checks are
+part of the requested upgrade, not a resumed qualification campaign. This does not select a public
+host/domain or authorize moving existing passkeys/accounts to a different origin.

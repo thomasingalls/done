@@ -12365,3 +12365,14 @@ SQL carrier removal; static checks/build pass. The shared browser setup wait is 
 pre-pruning timeout. Live build `34035330`/schema 24 and paused release validation remain unchanged.
 Unsigned stage; a backed-up retained-service upgrade and personal walkthrough are next. See
 [history checkpoint](./account-history-management.md).
+
+
+### 2026-10-09 — History-management retained upgrade
+
+Build `95433108` is serving at the unchanged :8443 origin after a graceful offline schema-24-to-26
+upgrade. Backup `schema-24-AmOFlk` matches the stopped source; all 69 rows across the 28 original
+account tables, the authority row, pin and operator key were preserved. Integrity/foreign-key checks
+and actual-origin verification of all 34 precache URLs pass. Protected endpoints refuse requests
+without credentials. No personal writing was opened and no pruning was run. The operator deferred
+the personal walkthrough and kept release validation paused until after publication. Next is
+publication hosting/operations design. See [history checkpoint](./account-history-management.md).

@@ -42,58 +42,52 @@ that is no longer active.
 
 ---
 
-## Product work: long-term account history (`L-1`)
+## Product work: first-publication preparation (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: history implementation complete; retained-service upgrade and personal walkthrough next
+status: not started
+scope: define the first published host and its operations; history implementation and retained upgrade complete
 blocks_on: none
-release_validation: paused by operator
+release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
 ```
 
-Single-device upload is complete and serving at `https://mbp.tail0e0d4.ts.net:8443/`, build
-`34035330`, account schema 24. Its backed-up switch and focused evidence are recorded in
-[completed.md](./completed.md) and [the upload checkpoint](./account-single-device-upload.md).
+The retained installation serves build `95433108`, account schema 26, at
+`https://mbp.tail0e0d4.ts.net:8443/`. The graceful offline upgrade preserved the existing database
+rows and service identity; backup, build and actual-origin health evidence are recorded in
+[the history checkpoint](./account-history-management.md) and [completed.md](./completed.md).
+Current launch commands are in [packaged development](./packaged-account-development.md).
 
-Now implementing [long-term history management](./account-history-management.md): independent
-checkpoint proposal/admission first, then durable exchange, reader installation and exact retention.
-The existing full-history readers and witnessed decision ledgers must remain readable until their
-baseline/suffix replacements are exercised. No pruning is enabled by the first increment alone.
+**Product position:**
 
-Checkpoint primitives and the durable service exchange are committed: exact retry, signed catalog,
-accepted-prefix checks and current membership/grant enforcement have focused passing evidence.
-The retained client coordinator now handles exact retries, catalog rollback and cancellation; service
-tombstones prevent delayed publication from reviving a cancelled attempt. Native encrypted progress
-custody now passes for original/joined devices, including interrupted reservation and later editing.
-The source exchange now fences late handoff publication with a signed inventory bound into each
-proposal. Cold source replay now verifies handoffs and exact prefixes, including epoch-one suffixes
-and removed publishers. Native owner composition and the explicit Account-menu snapshot action now
-work in disposable sole-device/two-device checks, with durable retry and subsequent editing/delivery.
-Recovery now consumes admitted history
-and its suffix, with a preparation fence and exact history reference in signed recovery intents. A
-packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Recovered
-owners now use signed source coverage to create current-key history snapshots without older openers.
-Replacement handoffs now include admitted history and bind their source coverage; certified replacement
-owners can reuse those current-key baselines. Focused native checks include peer admission and recovery
-of snapshot-only writing after removal/rotation. Ordinary editors now atomically install admitted
-snapshots through the ordered receive queue and reopen them offline, preserving unsent local originals.
-Versioned installation now also advances authenticated receive cuts, checks the retained self-upload
-chain and preserves later receipts. Snapshot-first repair precedes reads that may eventually be pruned.
-Native transaction-abort/retry and offline checks pass. Generation-one later handoffs now carry
-admitted history; original/retained readers authenticate snapshot cuts before suffix reads. Two
-packaged handoff checks pass, including three-device editing and offline reopening. The exposed
-early-epoch membership witness defect is repaired and tested. Explicit service pruning now retains
-two admitted snapshots and both suffixes, preserves all decision/refusal evidence, and keeps signed
-completion receipts for older snapshots. Thirty focused checks plus returning-editor/recovery
-walkthroughs pass after actual SQL carrier removal. Typecheck/lint/build pass. Schema 26 and the
-history UI remain undeployed. Next: a backed-up quiet-point upgrade of the retained service and a
-personal walkthrough. Automatic cadence, local ledger/root replacement, output-bound expansion,
-key retirement and file/backup reclamation remain separate; release validation is still paused.
-Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
+- Everyday application: packaged offline use, cached upgrades, account creation/chooser, two-way
+  delivery, remembered sessions and streaming notifications are implemented.
+- Device/account lifecycle: repeatable connections, other-device removal with rotation, replacement
+  devices and lost-device recovery with a retained passkey plus recovery code are implemented.
+- History: manual checkpoint creation/admission, authenticated receive cuts, handoff/recovery readers
+  and pruning that retains two admitted snapshots with their required suffixes are implemented and
+  deployed. No maintenance was run against personal writing during this upgrade.
+- Operations: still the retained worktree's loopback/Tailscale host. Public-origin configuration,
+  durable hosting/supervision, service-secret custody, off-host backups/restore and the publishing
+  and schema-update runbook need definition and implementation.
+
+The next bounded proposal should settle the host, public domain/passkey RP identity, and whether the
+existing Tailscale account stays separate or needs an explicit transfer. Then implement one deployable
+service/app configuration with durable state and a recoverable update procedure. A public origin must
+not be substituted for the existing pinned origin or treated as a transparent passkey migration.
+No public destination or account-transfer product decision has been made.
+
+**Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
+key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
+self/last-device removal. The 4 MiB activation/recovery/native-admission bounds remain. These require
+explicit scope decisions rather than being implied complete by the history work. The local backup
+protects this upgrade but is not an off-host backup/restore service.
+
+The operator directed that release validation stay paused until after a version is published; do not
+resume it without further direction. Unsigned intermediate commits remain authorized.
 
 ---
 

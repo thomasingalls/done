@@ -3,12 +3,12 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
-**Current retained installation:** single-device upload build `34035330`, account schema 24,
+**Current retained installation:** history-management build `95433108`, account schema 26,
 authority schema 1, same `:8443` origin and pin. Both network sessions and membership continuation
 are enabled. The backed-up restart and actual-origin health checks pass; personal browser uptake
-has not yet been observed. [Recovery upgrade record](./account-lost-device-recovery.md)
-and [single-device upload handoff](./account-single-device-upload.md) are the current checkpoints;
-earlier serving/lifecycle commands below record historical deployments.
+and the history walkthrough are deferred. [History upgrade record](./account-history-management.md)
+is the current checkpoint; earlier commands below record historical deployments. Release validation
+remains paused until after a version is published and the operator resumes it.
 
 ## Serving and access
 
@@ -437,3 +437,35 @@ It does not establish preservation/update uptake of the old browser accounts, ph
 offline/crash recovery, or a manual removal/replacement cycle. The earlier automated repeated-lifecycle
 checks remain their own evidence. B's saved connection/unlock still uses enrollment wording; that
 usability detail is recorded without changing the product flow. Release validation remains paused.
+
+
+## History-enabled retained installation — 2026-10-09
+
+The operator authorized a backed-up restart without a personal history walkthrough. The existing
+offline upgrader preserved all retained rows and the original identity while upgrading 24 → 26.
+Backup: `.dev/account-enrollment-tailnet/backups/schema-24-AmOFlk`. See the
+[history checkpoint](./account-history-management.md) and development evidence for verification.
+
+Current launch commands, each in its own process from this worktree:
+
+```sh
+ACCOUNT_NETWORK_SESSIONS=1 \
+ACCOUNT_MEMBERSHIP_CONTINUATION=1 \
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_STATE=.dev/account-enrollment-tailnet \
+node scripts/serve-account-service.mjs
+```
+
+```sh
+ACCOUNT_SETUP_PORT=53219 \
+ACCOUNT_SETUP_ORIGIN=https://mbp.tail0e0d4.ts.net:8443 \
+ACCOUNT_SERVICE_PORT=53220 \
+ACCOUNT_SETUP_DIST=.dev/account-enrollment-tailnet/builds/95433108 \
+node scripts/serve-account.mjs
+```
+
+This remains a loopback/Tailscale development host, with no boot supervisor or public deployment
+configuration added. Application update activation still waits for existing controlled windows to
+close. The schema upgrade does not itself create a checkpoint or delete covered history.

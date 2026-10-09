@@ -1,11 +1,12 @@
 # Account history management
 
 2026-10-09. Bounded product implementation, with unsigned intermediate commits authorized.
-Release validation remains paused. The retained :8443 service stays on `34035330` during development.
+Release validation remains paused until after a version is published and the operator resumes it.
+The retained :8443 installation now serves `95433108`, schema 26. The personal history walkthrough is deferred.
 
 ## Contract and sequence
 
-The retained schema-24 installation stores every accepted envelope and reconstructs recovery from genesis,
+Before this phase, the retained schema-24 installation stored every accepted envelope and reconstructed recovery from genesis,
 all handoff snapshots and every publisher stream. Repeated membership changes work, but they do
 not provide general history retention. Existing acceptance ledgers also authenticate refusal/retry
 history: deleting their rows as though they were merely ciphertext would break those guarantees.
@@ -41,10 +42,12 @@ refusal evidence and all decision rows, and replaces eligible ciphertext with au
 records. Older snapshot completion receipts preserve exact retries after lost replies. Both returning
 editor and lost-device recovery checks pass after actual service pruning.
 
-Schema 26 requires an explicit offline upgrade from schemas 24/25. The retained :8443 service remains
-build `34035330`, schema 24. A backed-up quiet-point upgrade and personal walkthrough are next.
+Schema 26 requires an explicit offline upgrade from schemas 24/25. The retained :8443 service now runs
+build `95433108`, schema 26, after the verified offline upgrade recorded below. The operator deferred
+the personal history walkthrough; publication preparation is next.
 Automatic cadence, key retirement, local baseline replacement/ledger trimming, output-bound expansion,
-SQLite file shrinking/backup retention and release qualification remain separate. No live state was changed.
+SQLite file shrinking/backup retention and release qualification remain separate. The upgrade did not
+create snapshots or prune personal history; those remain explicit authenticated actions.
 
 ## Checkpoint primitive checkpoint
 
@@ -455,3 +458,34 @@ setup wait, before pruning; that wait now has a bounded activation assertion and
 failure during cleanup. Its focused rerun passed. This is not a diagnosis or fix of an application
 service-worker defect, and release validation was not resumed. Typecheck, scoped lint and production
 build pass. Evidence is retained in the development log. Unsigned stage.
+
+
+### 2026-10-09 — Retained-service upgrade and publication handoff
+
+The operator authorized the upgrade, deferred the personal history-management walkthrough, and kept
+release validation paused until after a version is published. Verified the two existing process identities,
+stopped them gracefully and observed release of the retained-state lock. The existing offline upgrader
+created `.dev/account-enrollment-tailnet/backups/schema-24-AmOFlk` before moving schema 24 to 26.
+Backup row hashes match the stopped source. All 69 existing rows in 28 account tables and the authority
+row are unchanged after migration and restart. Integrity checks pass with no foreign-key violations;
+the original pin and operator key match the backup. Three empty history tables were added.
+
+The packaged artifact is frozen at `.dev/account-enrollment-tailnet/builds/95433108`. The API and app
+run independently on loopback 53220/53219 behind the unchanged `https://mbp.tail0e0d4.ts.net:8443/`.
+Actual-origin checks verified all 34 precache URLs and exact worker bytes, app/deep-link shells,
+session configuration, refusal of unauthenticated history/content requests, and private-path exclusion.
+No personal writing was opened and no history maintenance was invoked. Existing browser caches
+activate the new build through the normal waiting-worker policy; personal browser uptake was not tested.
+
+Local operation records are `history-upgrade-plan.json`, `history-upgrade-result.json`,
+`history-build.json` and `history-runtime.json` under the retained state directory. Runtime logs:
+`/tmp/done-account-service-95433108.log` and `/tmp/done-account-app-95433108.log`. The backup belongs
+to the previous schema and must be treated as a complete account/authority/identity set. An older
+binary must not open the upgraded database, and restoring this backup after new accepted work would
+require explicit reconciliation rather than silently discarding that work.
+
+Next is the first-publication hosting/operations design: public origin and passkey RP identity,
+retained-account disposition, durable process/data ownership, HTTPS/proxy streaming, service-secret
+custody, backup/restore and application/schema update procedure. Multi-instance Redis fanout is not
+part of this upgrade. The account lifecycle implementation is usable within its documented limits;
+this serving check does not claim public production readiness or release qualification.
