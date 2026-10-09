@@ -62,7 +62,7 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
    together. A competing parent requires an explicit restart; a lost reply retries the same bytes.
    Extend membership/history verification so the recovered device can manage later devices, not just
    read. Cold-install the recovered writing and resume ordinary send/receive before declaring success.
-4. **Product screens and disposable walkthroughs — implemented; live upgrade pending.** Review the exact steps with the operator,
+4. **Product screens and disposable walkthroughs — implemented and running on the retained service.** Review the exact steps with the operator,
    then mount sign-in, saved-code entry, new local device-lock setup, consequences confirmation,
    truthful progress/resume and the editor. Demonstrate recovery with the original contexts closed,
    both at first-device-only state and after rotation. Check wrong factors, interrupted commit/install,
@@ -70,8 +70,9 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
 
 **Current status:** all four implementation steps and the focused disposable product checks pass.
 First-device-only recovery, interrupted installation/commit retry, previous-device detachment and
-onward enrollment/rotation/recovery are covered by the evidence below. The retained development
-service still needs its quiet backup and schema-21-to-24 upgrade before operator use.
+onward enrollment/rotation/recovery are covered by the evidence below. Build `049b9a29` is now running
+at the unchanged `https://mbp.tail0e0d4.ts.net:8443/` origin after a backed-up schema-21-to-24 upgrade.
+The existing service identity and all retained rows were preserved. The next step is operator use.
 
 Preparation keeps no persistent writer fence. Commit compares the exact accepted cuts and checkpoint
 publication fingerprint at its final transaction boundary. A stale cut or competing head requires
@@ -317,3 +318,14 @@ with read-only integrity/foreign-key checks passing. The next operation is the e
 backup/upgrade utility followed by the same two-process app/API composition at the unchanged :8443
 origin. This waits for the operator's confirmation that pages on both devices are locked and closed.
 No personal account recovery will be performed automatically.
+
+
+## Retained-service upgrade complete
+
+The operator confirmed both devices locked and closed. The existing offline utility saved
+`.dev/account-enrollment-tailnet/backups/schema-21-OpHaJG` and upgraded to schema 24. All original
+account/authority rows and pin/operator-key bytes match the backup. The separate API and packaged
+gateway now serve build `049b9a29`; HTTPS page, service-worker, stable configuration and malformed
+recovery-request checks pass at :8443. No personal account recovery was performed.
+[Evidence](./development-evidence/2026-10-09-recovery-live-upgrade.log). The bounded implementation is
+complete and available for operator use; release qualification remains paused.

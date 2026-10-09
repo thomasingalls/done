@@ -42,49 +42,40 @@ that is no longer active.
 
 ---
 
-## Product integration: lost-device recovery (`L-1`)
+## Product handoff: lost-device recovery (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: blocked
-scope: retained development upgrade and operator use
-blocks_on: operator confirmation that the :8443 pages are locked and closed
+status: in flight
+scope: operator use of the completed recovery journey
+blocks_on: none; implementation and retained-service upgrade complete
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-**Implemented:** the approved passkey-plus-recovery-code journey, new local factor custody, durable
-exact intent and retry after lost replies, complete accepted-source replay, atomic sole-device
-replacement/key rotation, native installation, chooser resume and editable recovered workspace. A
-live fresh ceremony reuses its passkey check once; a cold reopen requires normal unlock. Recovery
-includes stored handoff/recovery checkpoints as well as accepted streams. Old devices retain editable
-detached copies without current delivery or subscription authority.
+**Ready to use:** build `049b9a29` is running at `https://mbp.tail0e0d4.ts.net:8443/`, from
+`.dev/account-enrollment-tailnet/builds/049b9a29`. Account schema is 24; the service identity is
+unchanged. The quiet upgrade preserved all retained rows, backed up both databases and keys at
+`.dev/account-enrollment-tailnet/backups/schema-21-OpHaJG`, and passed actual-origin health checks.
+[Upgrade evidence](./development-evidence/2026-10-09-recovery-live-upgrade.log).
 
-**Focused evidence:** service authority/read/commit checks, native interruption/restart checks and
-packaged product walkthroughs pass. The latest walkthrough continues through additional-device
-enrollment, delivery, removal/rotation and a second recovery. It preserves accepted writing across
-those changes and keeps detached-only edits separate.
-[Continuing-lifecycle output](./development-evidence/2026-10-09-recovery-onward.log);
-[earlier implementation evidence and checkpoints](./account-lost-device-recovery.md);
-[completion record](./completed.md).
+**Implemented and checked:** passkey-plus-recovery-code entry, new device-lock setup, exact durable
+retry after lost replies, authenticated snapshot/stream replay, sole-device replacement and key
+rotation, native installation, chooser resume, editing and cold reopening. Previous devices retain
+editable detached copies. Disposable packaged walkthroughs cover first-device-only recovery and
+recovery followed by enrollment, delivery, removal/rotation and recovery again.
+[Recovery plan and evidence](./account-lost-device-recovery.md); [completion record](./completed.md).
 
-**First-device-only check:** recovery, new writing and onward device connection also pass. The check
-found and repaired original-pair assumptions in the relay, comparison parser and public binding lookup.
-[Before/after evidence](./development-evidence/2026-10-09-recovery-early-account.log).
+**Next human step:** reopen the existing workspace and confirm its writing, then try the recovery
+journey under **Use another account → Recover with a saved recovery code**. No personal recovery
+was performed during the upgrade. Implementation work stops here for operator use.
 
-**Build ready:** `049b9a29` is retained at `.dev/account-enrollment-tailnet/builds/049b9a29`.
-Read-only checks of both retained databases pass; their counts and pin hash are recorded locally.
-
-**Remaining in this phase:** the operator quiet-point confirmation, then backup and upgrade of the retained development service from
-schema 21 to 24 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. Personal browsers and that live
-service remain untouched. The operator authorized unsigned intermediate commits and continued work.
-
-**Limits retained:** recovery needs both the existing account passkey and recovery code, cannot
-restore unuploaded lost-device edits or erase old copies, and uses the current bounded history/4 MiB
-output checkpoint. Passkey-loss recovery, recovery-code replacement, general pruning and public
-deployment are separate work. Release qualification remains paused.
+**Limits retained:** recovery needs the existing account passkey and recovery code, cannot restore
+unuploaded lost-device edits or erase old copies, and uses the bounded history/4 MiB output
+checkpoint. Passkey-loss recovery, recovery-code replacement, general pruning and public deployment
+remain separate work. Release qualification stays paused.
 
 ---
 

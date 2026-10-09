@@ -12086,3 +12086,24 @@ schema 21 and authority schema 1; read-only quick checks pass with no foreign-ke
 Recorded local pre-upgrade row counts and the service-pin hash for post-upgrade comparison.
 No server was stopped and no database migration ran. The operator has been asked to lock and close
 the :8443 pages before backup, upgrade and restart. Release qualification remains paused.
+
+
+### 2026-10-09 — Recovery build running on the retained :8443 service
+
+After the operator confirmed both devices locked and closed, gracefully stopped the prior gateway
+and account API. The offline utility saved a WAL-inclusive backup of both databases, service pin
+and operator key at `.dev/account-enrollment-tailnet/backups/schema-21-OpHaJG`, then upgraded account
+schema 21 to 24. Before restarting, compared all 66 retained account rows across 26 original tables
+and the authority row with the backup: all unchanged. Both database integrity checks pass, there
+are no foreign-key violations, and pin/operator-key bytes are unchanged.
+
+Started the API on 127.0.0.1:53220 and the packaged gateway on 127.0.0.1:53219, serving immutable build
+`049b9a29` at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. Through that actual HTTPS origin,
+root/chooser/recovery pages and service-worker bytes match the build; configuration verifies the
+same service pin with sessions and membership continuation enabled. The recovery endpoint refuses
+a malformed request without creating an attempt. No personal account was signed in or recovered.
+[Upgrade and health evidence](./development-evidence/2026-10-09-recovery-live-upgrade.log).
+
+This completes the bounded recovery implementation and retained-service upgrade. The operator can
+now open the existing workspace and try the recovery journey. Product use is still separate from
+release qualification, which remains paused.
