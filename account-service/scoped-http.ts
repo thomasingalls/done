@@ -1,3 +1,4 @@
+import { HISTORY_EXCHANGE_LIMIT } from '../account-protocol/historyExchange.ts';
 import { ROTATION_LIMIT } from '../account-protocol/rotation.ts';
 import { MEMBERSHIP_PROOF_LIMIT } from '../account-protocol/membership.ts';
 import { MEMBERSHIP_CHECKPOINT_REQUEST_LIMIT } from '../account-protocol/membershipCheckpoint.ts';
@@ -85,6 +86,10 @@ export function createScopedAccountHandler(
     ),
   ]);
   if (core.membershipContinuationEnabled) {
+    jsonRoutes.set('/account/history/v1/checkpoint', {
+      limit: HISTORY_EXCHANGE_LIMIT,
+      run: (v, _token, auth) => authority.exchangeHistoryCheckpoint(core, v, auth),
+    });
     jsonRoutes.set('/account/membership/v3/checkpoint', {
       limit: REPLACEMENT_TRANSFER_LIMIT,
       run: (v, _token, auth) => authority.exchangeReplacementCheckpoint(core, v, auth),
@@ -240,6 +245,7 @@ export function createScopedAccountHandler(
           '/account/membership/v2/ceremony': 'membership_ceremonies',
           '/account/membership/v2/transfer': 'membership_transfers',
           '/account/membership/v3/checkpoint': 'replacement_checkpoints',
+          '/account/history/v1/checkpoint': 'history_checkpoint_catalog',
         }[path];
         if (!table) return check;
         const continuation =

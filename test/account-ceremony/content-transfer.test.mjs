@@ -562,7 +562,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1137,7 +1137,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -1161,7 +1161,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2193,7 +2193,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -2214,7 +2214,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -4394,7 +4394,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -4410,7 +4410,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4704,7 +4704,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -4720,7 +4720,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -5054,7 +5054,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -5070,7 +5070,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -5841,7 +5841,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
   );
   const tables = db
     .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -5861,7 +5861,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
     upgradeFromV20: true,
   }).close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
   for (const [table, original] of rows)
     assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
   assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);
@@ -6005,4 +6005,128 @@ test('lost-device recovery cold-replays removed writing and a later generation u
     key2.fill(0);
     for (const doc of [a, b, expected, reopened]) doc.destroy();
   }
+});
+
+test('history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters', async (t) => {
+  const { client: c } = await import('../account-history/client.mjs');
+  const { historyExchangeMessage, verifyHistoryCheckpointPage } =
+    await import('../../account-protocol/historyExchange.ts');
+  const x = await removalFixture(t);
+  let proofs = { successor: x.successor, certification: x.certification, continuations: [] };
+  const current = async () =>
+    c.historyMembership((await c.verifyMembershipChain(proofs, x.base)).history);
+  let authority = await current();
+  const doc = new c.Y.Doc({ gc: false }),
+    key = new Uint8Array(32).fill(81);
+  doc.getMap('meta').set('schemaVersion', 4);
+  doc
+    .getMap('meta')
+    .set('actor:' + x.context.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+  doc.getText('master').insert(0, 'surviving and removed writing');
+  t.after(() => {
+    doc.destroy();
+    key.fill(0);
+  });
+  const sign = (role) => async (bytes) => signed(x.keys[role], bytes);
+  const exchange = async (role, action, payload) => {
+    const p = c.membershipState(authority);
+    const r = {
+      v: 1,
+      kind: 'history-checkpoint-request',
+      workspaceId: x.workspace,
+      lineageId: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      credentialId: role === 'existing' ? x.context.existing.id : x.context.candidate.id,
+      nonce: randomBytes(32).toString('hex'),
+      expiresAt: 61000,
+      action,
+      payload,
+      signature: '00'.repeat(64),
+    };
+    r.signature = await sign(role)(await historyExchangeMessage(r));
+    const result = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, r);
+    if (result.ok) await verifyHistoryCheckpointPage(result.page, r, x.authority.pin);
+    return result;
+  };
+  const first = await c.createHistoryCheckpoint(
+    doc,
+    doc,
+    key,
+    authority,
+    x.context.existing.id,
+    c.membershipState(authority).heads,
+    null,
+    sign('existing'),
+  );
+  assert.equal((await exchange('existing', 'publish', first)).ok, true);
+  const self = await c.historyCheckpointAdmissionBody(first, x.context.existing.id);
+  self.signature = await sign('existing')(await c.historyCheckpointAdmissionMessage(self));
+  assert.equal(
+    (await exchange('existing', 'admit', self)).ok,
+    false,
+    'another certified device must admit',
+  );
+  const peer = await c.admitHistoryCheckpoint(
+    first,
+    key,
+    authority,
+    x.context.candidate.id,
+    doc,
+    sign('new'),
+  );
+  assert.equal((await exchange('new', 'admit', peer)).ok, true);
+  const wire = x.make(1, 'removed accepted text', {
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(wire), wire, undefined, 3);
+  const removal = await rotationRequest(x),
+    rotation = await x.authority.owner.commitRotation(x.f.core, removal.request);
+  assert.equal(rotation.ok, true, JSON.stringify(rotation));
+  proofs = { ...proofs, continuations: [rotation.rotation] };
+  authority = await current();
+  const p = c.membershipState(authority),
+    cuts = [
+      ...p.heads,
+      ...p.finalized.map((h) => ({
+        credentialId: h.credential,
+        position: h.position,
+        link: h.link,
+      })),
+    ].sort((a, b) => a.credentialId.localeCompare(b.credentialId));
+  const second = await c.createHistoryCheckpoint(
+    doc,
+    doc,
+    key,
+    authority,
+    x.context.existing.id,
+    cuts,
+    first,
+    sign('existing'),
+  );
+  assert.equal((await exchange('existing', 'publish', second)).ok, true);
+  const admission = await c.admitHistoryCheckpoint(
+    second,
+    key,
+    authority,
+    x.context.existing.id,
+    doc,
+    sign('existing'),
+  );
+  assert.equal((await exchange('existing', 'admit', admission)).ok, true);
+  const read = await exchange('existing', 'read', 'previous');
+  assert.deepEqual(read.page.checkpoint, first);
+  assert.equal(read.page.catalog.sequence, 2);
+  assert.equal(
+    (await exchange('new', 'read', 'latest')).ok,
+    false,
+    'removed credential has no history-read authority',
+  );
+  assert.equal(
+    x.f.rows('publisher_decisions').length,
+    1,
+    'removed accepted ciphertext remains retained',
+  );
 });

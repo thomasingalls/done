@@ -63,6 +63,11 @@ Now implementing [long-term history management](./account-history-management.md)
 checkpoint proposal/admission first, then durable exchange, reader installation and exact retention.
 The existing full-history readers and witnessed decision ledgers must remain readable until their
 baseline/suffix replacements are exercised. No pruning is enabled by the first increment alone.
+
+Checkpoint primitives and the durable service exchange are committed: exact retry, signed catalog,
+accepted-prefix checks and current membership/grant enforcement have focused passing evidence.
+Schema 25 is development-only until an explicit offline upgrade. Now implementing durable client
+preparation and the operator-selected Account-menu action; automatic cadence remains off.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 
 ---

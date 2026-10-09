@@ -1,0 +1,355 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { sign, randomBytes } from 'node:crypto';
+import { ready, mutate } from '../account-successor/service-fixtures.mjs';
+import { authorityFixture } from '../account-authority/fixtures.mjs';
+import { client as c } from './client.mjs';
+import {
+  historyExchangeMessage,
+  verifyHistoryCheckpointPage,
+} from '../../account-protocol/historyExchange.ts';
+import { AuthorizationRefused } from '../../account-service/authorization.ts';
+import { AccountCore } from '../../account-service/core.ts';
+import { DatabaseSync } from 'node:sqlite';
+const zero = '00'.repeat(32);
+async function setup(t, hook = () => {}) {
+  const authority = authorityFixture(t);
+  const options = {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    membershipContinuation: true,
+    now: () => 1000,
+    hook,
+  };
+  const x = await ready(t, options);
+  const base = { pin: authority.pin, request: x.request, receipt: x.receipt };
+  let membership = await c.verifyEarlyMembership(base),
+    p = c.membershipState(membership);
+  const doc = new c.Y.Doc({ gc: false });
+  doc.getMap('meta').set('schemaVersion', 4);
+  doc
+    .getMap('meta')
+    .set('actor:' + p.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+  doc.getText('master').insert(0, 'first accepted text');
+  const key = new Uint8Array(32).fill(71);
+  t.after(() => {
+    doc.destroy();
+    key.fill(0);
+  });
+  const signer = async (bytes) => sign(null, bytes, x.s.privateKey).toString('hex');
+  const makeRequest = async (action, payload, changes = {}) => {
+    const r = {
+      v: 1,
+      kind: 'history-checkpoint-request',
+      workspaceId: p.workspaceId,
+      lineageId: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      credentialId: x.credential,
+      nonce: randomBytes(32).toString('hex'),
+      expiresAt: 61000,
+      action,
+      payload,
+      signature: zero.repeat(2),
+      ...changes,
+    };
+    r.signature = await signer(await historyExchangeMessage(r));
+    return r;
+  };
+  const exchange = async (r, authorize) =>
+    authority.owner.exchangeHistoryCheckpoint(x.f.core, r, authorize);
+  const check = async (r, result) => {
+    assert.equal(result.ok, true, JSON.stringify(result));
+    return verifyHistoryCheckpointPage(result.page, r, authority.pin);
+  };
+  const upload = async (position, tag) => {
+    const w = x.make(position, tag, { updates: [new Uint8Array(c.Y.encodeStateAsUpdate(doc))] });
+    const result = await x.call(w);
+    assert.equal(result.kind, 'decision');
+    const proof = JSON.parse(Buffer.from(result.bytes).toString());
+    assert.equal(proof[2], 'accepted');
+    return { credentialId: x.credential, position, link: proof[6] };
+  };
+  return {
+    ...x,
+    base,
+    doc,
+    key,
+    signer,
+    options,
+    makeRequest,
+    exchange,
+    check,
+    upload,
+    get membership() {
+      return membership;
+    },
+    get p() {
+      return p;
+    },
+    async advance() {
+      const prep = await x.prepare();
+      const successor = await x.admit(prep.input);
+      membership = await c.verifyEarlyMembership(base, successor);
+      p = c.membershipState(membership);
+      return successor;
+    },
+    create: (previous = null, heads = p.heads) =>
+      c.createHistoryCheckpoint(doc, doc, key, membership, x.credential, heads, previous, signer),
+    admit: (cp) => c.admitHistoryCheckpoint(cp, key, membership, x.credential, doc, signer),
+  };
+}
+test('repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix', async (t) => {
+  const f = await setup(t),
+    head = await f.upload(1, 'first');
+  const first = await f.create(null, [head]);
+  const publish = await f.makeRequest('publish', first);
+  await f.check(publish, await f.exchange(publish));
+  // Writing can continue after capture; a verified prefix is sufficient, not equality to the latest head.
+  const secondHead = await f.upload(2, 'later');
+  const admit = await f.makeRequest('admit', await f.admit(first));
+  let page = await f.check(admit, await f.exchange(admit));
+  assert.equal(page.catalog.sequence, 1);
+  assert.deepEqual(page.heads, [secondHead]);
+  const second = await f.create(first, [secondHead]);
+  const p2 = await f.makeRequest('publish', second);
+  await f.check(p2, await f.exchange(p2));
+  const a2 = await f.makeRequest('admit', await f.admit(second));
+  await f.check(a2, await f.exchange(a2));
+  f.f.restart();
+  f.authority.restart();
+  const previous = await f.makeRequest('read', 'previous');
+  page = await f.check(previous, await f.exchange(previous));
+  assert.deepEqual(page.checkpoint, first);
+  assert.equal(page.catalog.sequence, 2);
+  assert.equal(
+    f.f.rows('delivery_decisions').length,
+    2,
+    'no ciphertext or acceptance evidence is pruned',
+  );
+  assert.equal(f.f.rows('history_checkpoint_records').length, 2);
+  // An exact historical admission retry is distinct from advancing the current pointer again.
+  const retry = await f.makeRequest('admit', admit.payload);
+  page = await f.check(retry, await f.exchange(retry));
+  assert.equal(page.catalog.sequence, 2);
+  assert.deepEqual(page.checkpoint, first);
+});
+for (const action of ['publish', 'admit'])
+  for (const boundary of ['before-commit', 'after-commit'])
+    test(`${action} resumes exact bytes after ${boundary} interruption and restart`, async (t) => {
+      let armed = false;
+      const f = await setup(t, (point, op) => {
+        if (armed && op === 'history-checkpoint' && point === boundary) {
+          armed = false;
+          throw Error('Interrupted checkpoint');
+        }
+      });
+      const cp = await f.create();
+      const pub = await f.makeRequest('publish', cp);
+      if (action === 'admit') await f.check(pub, await f.exchange(pub));
+      const request = action === 'publish' ? pub : await f.makeRequest('admit', await f.admit(cp));
+      armed = true;
+      assert.equal((await f.exchange(request)).ok, false);
+      f.f.restart();
+      f.authority.restart();
+      await f.check(request, await f.exchange(request));
+      assert.equal(f.f.rows('history_checkpoint_records').length, 1);
+      assert.equal(JSON.parse(f.f.rows('history_checkpoint_records')[0].checkpoint).salt, cp.salt);
+      assert.equal(
+        f.f.rows('history_checkpoint_records')[0].admission !== null,
+        action === 'admit',
+      );
+    });
+test('false accepted cuts and catalog/record tampering refuse without becoming a baseline', async (t) => {
+  const f = await setup(t),
+    head = await f.upload(1, 'accepted');
+  const falseCut = { ...head, link: 'ff'.repeat(32) };
+  const wrong = await f.create(null, [falseCut]);
+  assert.equal((await f.exchange(await f.makeRequest('publish', wrong))).ok, false);
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  const cp = await f.create(null, [head]),
+    r = await f.makeRequest('publish', cp);
+  await f.check(r, await f.exchange(r));
+  const stored = f.f.rows('history_checkpoint_catalog')[0].value;
+  mutate(f, (db) =>
+    db
+      .prepare('UPDATE history_checkpoint_catalog SET value=?')
+      .run(JSON.stringify({ ...JSON.parse(stored), pending: zero })),
+  );
+  assert.equal((await f.exchange(await f.makeRequest('read', 'pending'))).ok, false);
+  mutate(f, (db) => db.prepare('UPDATE history_checkpoint_catalog SET value=?').run(stored));
+  mutate(f, (db) => db.exec('DELETE FROM history_checkpoint_records'));
+  assert.equal((await f.exchange(await f.makeRequest('read', 'pending'))).ok, false);
+});
+test('competing proposals do not overwrite, and stale proposals can be discarded after an epoch change', async (t) => {
+  const f = await setup(t),
+    cp = await f.create();
+  const publish = await f.makeRequest('publish', cp);
+  await f.check(publish, await f.exchange(publish));
+  const read = await f.makeRequest('read', 'pending');
+  await f.check(read, await f.exchange(read));
+  const competing = await f.create();
+  assert.equal(
+    (await f.exchange(await f.makeRequest('publish', competing))).refusal,
+    'checkpoint-busy',
+  );
+  const oldAdmission = await f.admit(cp);
+  await f.advance();
+  assert.equal((await f.exchange(await f.makeRequest('admit', oldAdmission))).ok, false);
+  const discard = await f.makeRequest('discard', await c.historyCheckpointHash(cp));
+  await f.check(discard, await f.exchange(discard));
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  const replacement = await f.create();
+  const pub = await f.makeRequest('publish', replacement);
+  await f.check(pub, await f.exchange(pub));
+});
+test('authority changes during verification and revoked authorization at commit cannot publish', async (t) => {
+  let effect = () => {};
+  const f = await setup(t, (point, op) => {
+    if (op === 'history-checkpoint' && point === 'after-verify') effect();
+  });
+  const cp = await f.create(),
+    r = await f.makeRequest('publish', cp);
+  effect = () => {
+    effect = () => {};
+    mutate(f, (db) => db.prepare("UPDATE accounts SET state='pending'").run());
+  };
+  assert.equal((await f.exchange(r)).ok, false);
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  mutate(f, (db) => db.prepare("UPDATE accounts SET state='active'").run());
+  await assert.rejects(
+    f.exchange(r, (_db, target) => {
+      assert.deepEqual(target, {
+        kind: 'workspace',
+        workspaceId: f.workspace,
+        credentialId: f.credential,
+        action: 'checkpoint',
+      });
+      return () => {
+        throw new AuthorizationRefused('sign-in-required');
+      };
+    }),
+    (e) => e instanceof AuthorizationRefused,
+  );
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  assert.equal(f.f.rows('history_checkpoint_catalog').length, 0);
+});
+test('schema 24 requires an explicit offline upgrade and preserves account rows', async (t) => {
+  const f = await setup(t),
+    path = f.authority.dir + '/upgrade.sqlite';
+  const source = new DatabaseSync(f.f.path);
+  source.prepare('VACUUM INTO ?').run(path);
+  source.close();
+  const db = new DatabaseSync(path);
+  db.exec(
+    'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; PRAGMA user_version=24',
+  );
+  const before = db.prepare('SELECT * FROM promotions').all();
+  db.close();
+  const policy = { rpId: 'localhost', origin: 'http://localhost:4999' };
+  assert.throws(() => new AccountCore(path, policy, f.options), /explicit offline upgrade/);
+  const upgraded = new AccountCore(path, policy, { ...f.options, upgradeFromV24: true });
+  try {
+    const check = new DatabaseSync(path);
+    try {
+      assert.equal(check.prepare('PRAGMA user_version').get().user_version, 25);
+      assert.deepEqual(check.prepare('SELECT * FROM promotions').all(), before);
+      assert.deepEqual(check.prepare('PRAGMA foreign_key_check').all(), []);
+    } finally {
+      check.close();
+    }
+    const read = await f.makeRequest('read', 'latest');
+    const result = await f.check(
+      read,
+      await f.authority.owner.exchangeHistoryCheckpoint(upgraded, read),
+    );
+    assert.equal(result.checkpoint, null);
+  } finally {
+    upgraded.close();
+  }
+});
+
+test('HTTP history exchange requires a workspace grant; exact retries do not emit extra hints', async (t) => {
+  const { createServer, request: httpRequest } = await import('node:http');
+  const { createSessionAccountHandler } = await import('../../account-service/session-host.ts');
+  const { message: grantMessage } = await import('../account-sessions/grant-fixtures.mjs');
+  const f = await setup(t),
+    retryKey = randomBytes(32).toString('base64url');
+  const begun = f.f.core.sessions.begin({ retryKey, accountId: f.account.result.accountId });
+  const login = await f.f.core.sessions.finish({
+    retryKey,
+    attemptId: begun.attemptId,
+    response: f.account.key.assert(begun),
+  });
+  assert.equal(login.stage, 'issued');
+  const access = f.f.core.sessions.renew({
+    sessionId: login.sessionId,
+    renewalToken: login.renewalToken,
+  });
+  const scope = { kind: 'workspace', workspaceId: f.workspace, credentialId: f.credential };
+  const challenge = await f.authority.owner.beginGrant(f.f.core, access.accessToken, scope);
+  assert.equal(challenge.stage, 'challenge');
+  const grant = await f.f.core.grants.finish(access.accessToken, {
+    challengeId: challenge.challenge.challengeId,
+    signature: await f.signer(grantMessage(challenge.challenge)),
+  });
+  assert.equal(grant.stage, 'granted');
+  const hints = [];
+  const handle = createSessionAccountHandler(f.f.core, f.authority.owner, f.authority.pin, {
+    committed: (...args) => hints.push(args),
+    reconcile: () => {},
+  });
+  const server = createServer(
+    (request, response) => void handle(request, response, () => response.writeHead(404).end()),
+  );
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  const post = (body, token, origin = f.authority.pin.origin) =>
+    new Promise((resolve, reject) => {
+      const request = httpRequest(
+        {
+          hostname: '127.0.0.1',
+          port: server.address().port,
+          path: '/account/history/v1/checkpoint',
+          method: 'POST',
+          agent: false,
+          headers: {
+            host: new URL(f.authority.pin.origin).host,
+            origin,
+            'content-type': 'application/json',
+            ...(token ? { authorization: 'Bearer ' + token } : {}),
+          },
+        },
+        (response) => {
+          const chunks = [];
+          response.on('data', (chunk) => chunks.push(chunk));
+          response.on('end', () =>
+            resolve({ status: response.statusCode, body: JSON.parse(Buffer.concat(chunks)) }),
+          );
+          response.on('error', reject);
+        },
+      );
+      request.on('error', reject);
+      request.end(JSON.stringify(body));
+    });
+  const cp = await f.create(),
+    publish = await f.makeRequest('publish', cp);
+  assert.equal((await post(publish)).status, 401);
+  assert.equal((await post(publish, access.accessToken)).status, 401);
+  assert.equal((await post(publish, grant.grantToken, 'https://other.invalid')).status, 403);
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  const result = await post(publish, grant.grantToken);
+  assert.equal(result.status, 200);
+  await f.check(publish, result.body);
+  assert.equal(hints.length, 1);
+  assert.equal((await post(publish, grant.grantToken)).status, 200);
+  assert.equal(hints.length, 1);
+  const read = await f.makeRequest('read', 'pending');
+  assert.equal((await post(read, grant.grantToken)).status, 200);
+  assert.equal(hints.length, 1);
+  f.f.core.sessions.revoke({ sessionId: login.sessionId, revokeToken: login.revokeToken });
+  assert.notEqual((await post(read, grant.grantToken)).status, 200);
+});

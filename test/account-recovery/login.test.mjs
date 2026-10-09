@@ -263,7 +263,9 @@ test('schema 23 upgrade is explicit and preserves an issued login and its sealed
   mutate(x, (db) => {
     db.prepare('DELETE FROM network_sessions WHERE id=?').run(r.login.sessionId);
     db.prepare('DELETE FROM session_attempts WHERE id=?').run(x.context.login.attemptId);
-    db.exec('PRAGMA user_version=23');
+    db.exec(
+      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; PRAGMA user_version=23',
+    );
   });
   assert.throws(() => new AccountCore(x.f.path, policy, x.config), /offline upgrade/);
   const upgraded = new AccountCore(x.f.path, policy, { ...x.config, upgradeFromV23: true });
@@ -274,7 +276,7 @@ test('schema 23 upgrade is explicit and preserves an issued login and its sealed
     upgraded.close();
   }
   mutate(x, (db) => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 24);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   });
 });

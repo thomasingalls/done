@@ -55,3 +55,31 @@ native owner must derive it from verified durable state and accepted streams. Th
 or trim permission. Six focused tests pass, including genuinely signed false coverage, both
 self-admission flag directions, deletions, missing accepted content and finalized publishers.
 TypeScript, scoped lint/format and diff checks pass.
+
+## Durable service exchange checkpoint
+
+Schema 25 adds a signed catalog and immutable checkpoint/admission records. Schema 24 requires an
+explicit offline upgrade; the retained development service remains schema 24 until a backed-up switch.
+The catalog distinguishes latest, previous and one pending proposal. Admission advances it atomically
+against the exact parent. Publication does not block ordinary writes; proposed cuts are verified
+prefixes of complete authenticated ledgers, so later accepted edits remain suffixes. Missing catalog,
+checkpoint or ledger evidence refuses rather than reconstructing a plausible replacement.
+
+`/account/history/v1/checkpoint` requires a remembered session's workspace grant and the current
+certified device signature. Requests are nonce-bound and short-lived; responses and catalog pointers
+are signed by the pinned service. Retrying an already retained proposal/admission returns its exact
+bytes without advancing the catalog again or emitting another notification. Stale pending proposals
+cannot be admitted after membership changes; a current device can discard such a proposal and rebuild.
+Historical admitted checkpoints are verified against their actual historical membership.
+
+Ten focused service checks pass, including precommit rollback, lost committed replies and restart for
+both publication and admission, false prefixes, damaged catalog/records, competing proposals, authority
+changes, transaction-time grant refusal and HTTP session enforcement. Thirteen affected schema tests
+pass across retained predecessor versions, plus a service rotation case that changes admission
+eligibility while keeping the removed publisher's accepted ciphertext. The first schema-24 fixture
+closed its database twice; it now upgrades a separate backup. One legacy expected-version assertion
+also needed updating to 25. TypeScript and scoped lint/format/diff checks pass.
+
+The operator chose an explicit Account-menu action for the initial usable flow. Automatic cadence
+remains off until maintenance cost is observed. Native preparation/progress, the menu flow, baseline
+installation and pruning still follow; this service archive alone does not reduce retained history.

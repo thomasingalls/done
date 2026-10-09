@@ -12188,3 +12188,19 @@ false coverage, omitted insertions/deletions and asynchronous input capture. Typ
 static checks pass. [Implementation sequence](./account-history-management.md). These are content
 and protocol primitives, not yet a durable service/client owner; installation and pruning remain
 unimplemented. Retained build `34035330` is unchanged and release validation remains paused.
+
+### 2026-10-09 — Durable account history checkpoint service exchange
+
+Added schema-25 checkpoint records and a service-signed catalog, with current-device signed requests
+and workspace-grant authorization. Publication verifies every claimed accepted cut against the full
+witnessed delivery ledger. Admission advances the catalog atomically against the previous checkpoint;
+exact retries after restart return the retained result. A competing proposal cannot overwrite the
+pending one. Stale proposals require discard/rebuild after a membership change. Existing admitted
+snapshots retain their historical eligibility and signatures; no accepted history or keys are pruned.
+
+Ten focused service/HTTP cases, thirteen affected predecessor-upgrade cases and one two-device-to-sole-
+survivor rotation case pass. The endpoint rejects missing/revoked grants and does not emit extra hints
+for exact retries. Upgrade tests preserve retained rows and require offline opt-in. TypeScript and
+scoped static checks pass. [History plan](./account-history-management.md). The operator selected an
+explicit Account-menu action initially; durable native progress and that product flow are next.
+Retained :8443 build `34035330` is unchanged. This increment is committed unsigned; qualification is paused.

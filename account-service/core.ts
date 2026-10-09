@@ -1,3 +1,8 @@
+import {
+  exchangeHistoryCheckpoint,
+  HISTORY_CHECKPOINT_SCHEMA,
+  type HistoryCheckpointIssuer,
+} from './historyCheckpoint.ts';
 import { RECOVERY_SUCCESSOR_SCHEMA } from './recoveryStore.ts';
 import {
   LostDeviceRecovery,
@@ -224,6 +229,7 @@ export class AccountCore {
       upgradeFromV21?: boolean;
       upgradeFromV22?: boolean;
       upgradeFromV23?: boolean;
+      upgradeFromV24?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -265,7 +271,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 24 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 25 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 24 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV24
+        ) &&
         !(
           version === 23 &&
           instrumentation.sessions &&
@@ -488,6 +500,10 @@ export class AccountCore {
             this.#db.exec(SESSION_RECOVERY_SCHEMA);
             this.#db.exec('PRAGMA user_version=24;');
           }
+          if (version < 25) {
+            this.#db.exec(HISTORY_CHECKPOINT_SCHEMA);
+            this.#db.exec('PRAGMA user_version=25;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -645,6 +661,9 @@ export class AccountCore {
       this.#deliveryVerification,
       this.#diagnostics.record,
     );
+  }
+  exchangeHistoryCheckpoint(input: unknown, issuer: HistoryCheckpointIssuer) {
+    return exchangeHistoryCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
   }
   exchangeCheckpoint(input: unknown, issuer: DeliveryIssuer) {
     return exchangeCheckpoint(this.#db, input, issuer, this.#hook);

@@ -2,6 +2,7 @@
 import { closed } from './preparation.ts';
 import {
   coverageParts,
+  COVERAGE_LIMIT,
   DERIVATION,
   domainMessage,
   json,
@@ -18,6 +19,7 @@ import {
 } from './membership.ts';
 
 export const HISTORY_CHECKPOINT_LIMIT = 72 * 1024 * 1024;
+export const HISTORY_ADMISSION_LIMIT = 2 * COVERAGE_LIMIT + 8192;
 export const HISTORY_HEAD_LIMIT = 3 * MEMBERSHIP_CREDENTIAL_LIMIT;
 export const EMPTY_HISTORY_CHECKPOINT = '00'.repeat(32);
 export interface HistoryHead {
@@ -239,6 +241,7 @@ export interface HistoryCheckpointAdmission {
   signature: string;
 }
 export function parseHistoryCheckpointAdmission(input: unknown): HistoryCheckpointAdmission {
+  if (json(input).length > HISTORY_ADMISSION_LIMIT) throw Error('History admission too large');
   const a = closed(input, [
     'v',
     'kind',

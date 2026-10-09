@@ -11,3 +11,17 @@ Checkpoint/admission primitives:
 
 The primitive test uses real Yjs replay and cryptography with disposable signed membership fixtures.
 It does not establish native owner installation, service durability, pruning or personal browser behavior.
+
+Durable service exchange:
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 2499 ms. Includes disposable loopback HTTP session/grant check.
+  node --test --test-timeout=20000 --test-name-pattern='schema|offline.*upgrade' test/account-ceremony/content-transfer.test.mjs test/account-recovery/login.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/preparation.test.mjs
+  12 passed; one expected-version assertion still expected 24 instead of 25.
+  Updated that assertion, then:
+  node --test --test-timeout=20000 --test-name-pattern='history maintenance|schema 22 requires' test/account-ceremony/content-transfer.test.mjs test/account-recovery/commit.test.mjs
+  2 passed, 0 failed; duration 2375 ms (the repaired schema case plus real membership/rotation service composition).
+  First schema-24 fixture failed because it closed its fixture core twice. Reworked it to upgrade an
+  independent SQLite backup; the final 10-case service run above passed.
+  TypeScript, scoped oxlint/oxfmt and git diff --check pass.
+
+No live service upgrade, personal browser action, history deletion or release-validation campaign.

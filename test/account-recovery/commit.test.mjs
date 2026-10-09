@@ -316,7 +316,11 @@ test('expiry or account changes at the final boundary refuse and leave original 
 
 test('schema 22 requires an explicit upgrade and preserves every retained account row', async (t) => {
   const x = await ready(t);
-  mutate(x, (db) => db.exec('DROP TABLE recovery_successors; PRAGMA user_version=22'));
+  mutate(x, (db) =>
+    db.exec(
+      'DROP TABLE history_checkpoint_records; DROP TABLE history_checkpoint_catalog; DROP TABLE recovery_successors; PRAGMA user_version=22',
+    ),
+  );
   const tables = mutate(x, (db) =>
     db
       .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -344,7 +348,7 @@ test('schema 22 requires an explicit upgrade and preserves every retained accoun
   );
   assert.equal(
     mutate(x, (db) => db.prepare('PRAGMA user_version').get().user_version),
-    24,
+    25,
   );
   assert.match(
     mutate(

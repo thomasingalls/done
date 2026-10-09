@@ -1,3 +1,7 @@
+import {
+  historyCatalogMessage,
+  historyCheckpointPageMessage,
+} from '../account-protocol/historyExchange.ts';
 import { recoverySuccessorMessage } from '../account-protocol/recoveryTransition.ts';
 import { recoveryReadPageMessage } from '../account-protocol/recoveryRead.ts';
 import {
@@ -651,6 +655,21 @@ export class PrivateAuthority {
   }
   readAccepted(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.readAccepted(input, this.#deliveryIssuer(authorize));
+  }
+  exchangeHistoryCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
+    return core.exchangeHistoryCheckpoint(input, {
+      ...this.#deliveryIssuer(authorize),
+      catalog: async (value) => {
+        const message = await historyCatalogMessage(value);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...value, signature: sign(null, message, this.#key).toString('hex') };
+      },
+      historyPage: async (value) => {
+        const message = await historyCheckpointPageMessage(value);
+        if (!this.#key) throw Error('Authority closed');
+        return { ...value, signature: sign(null, message, this.#key).toString('hex') };
+      },
+    });
   }
   exchangeCheckpoint(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.exchangeCheckpoint(input, this.#deliveryIssuer(authorize));
