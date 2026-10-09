@@ -11902,3 +11902,20 @@ TypeScript, scoped lint/format and diff checks pass.
 [Output](./development-evidence/2026-10-09-recovery-commit.log). This is not browser installation or a
 completed product flow: candidate custody, retained local installation and approved screens remain.
 Release qualification remains paused.
+
+
+### 2026-10-09 — Recovery candidate custody survives interrupted lock setup
+
+Fresh Local genesis can now capture pre-existing candidate keys and opaque recovery progress in a
+factor-encrypted creation seed, atomically with its initial claim. This preserves the approved screen
+order: candidate keys exist before the new device-lock code is saved. Restart resumes the same keys,
+including death after nonce reservation but before credential encryption. Normal protected custody
+uses the existing reserve-before-encrypt discipline; the live record drops the seed after installation.
+The initial claim retains its encrypted seed for authenticated restart. No recovery code or plaintext
+private key is written. Other local slots cannot be replaced by this fresh-genesis path.
+
+17 focused genesis tests and a real Chromium kill/reopen test pass. The native check proves the same
+candidate signing identity and exact progress survive, and rejects the wrong lock code. TypeScript,
+scoped lint/format and diff checks pass. [Output](./development-evidence/2026-10-09-recovery-custody.log).
+This is the custody seam, not a completed recovery owner or editor installation. Those and the approved
+screens remain in flight; release validation and the live service remain untouched.

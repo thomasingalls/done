@@ -205,3 +205,14 @@ The service has no plaintext or recovery code and cannot perform semantic Yjs ve
 `prepareRecoveryCommit` cold-replays before constructing the checkpoint. The native owner must seal
 that result and candidate keys before calling commit. Browser custody/installation, combined remembered
 login, approved screens and the disposable walkthrough remain. The live service is still untouched.
+
+
+## Candidate custody checkpoint
+
+Fresh Local creation accepts candidate keys generated during the earlier passkey/code steps. The
+initial claim atomically retains those keys and progress encrypted by the newly confirmed device-lock
+factor, using a separate salt/domain. Restart finishes installing exactly those credentials under the
+existing root custody, with nonce reservation before encryption. The live protected record no longer
+contains the seed; the authenticated initial claim retains its encrypted copy. This does not authorize
+a recovery commit by itself: the recovery owner must validate the retained exact intent and authority
+before sending it, and cold-verify its checkpoint before installing writing.

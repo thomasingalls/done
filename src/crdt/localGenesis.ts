@@ -1,3 +1,4 @@
+import { captureCreationSeed, eraseCreationSeed, type CreationSeed } from './creationSeed';
 /** Verified fresh Local creation. No account binding, caller-supplied principal, or implicit replacement. */
 import { generateDeviceCode, normalizeDeviceCode, random, hex } from './custodyCrypto';
 import { identity, type CustodyScope } from './custodyRecord';
@@ -92,9 +93,10 @@ export interface LocalGenesisEnrollment {
 }
 export const beginLocalGenesis = (
   slotId: string,
-  options: { signal?: AbortSignal } = {},
+  options: { signal?: AbortSignal; seed?: CreationSeed } = {},
 ): LocalGenesisEnrollment => {
   identity(slotId);
+  const seed = options.seed ? captureCreationSeed(options.seed) : undefined;
   const externalSignal = options.signal,
     controller = new AbortController();
   let display: string | null = generateDeviceCode(),
@@ -109,6 +111,7 @@ export const beginLocalGenesis = (
   const cancel = () => {
     erase();
     controller.abort();
+    if (seed) eraseCreationSeed(seed);
     detach();
   };
   externalSignal?.addEventListener('abort', cancel, { once: true });
@@ -148,6 +151,7 @@ export const beginLocalGenesis = (
               authority(scope),
               typed,
               {
+                ...(seed ? { seed } : {}),
                 checkCreation: async () => {
                   await requireFreshLocalSlot(task, slotId);
                   const name = await task.wait(() =>
@@ -173,6 +177,7 @@ export const beginLocalGenesis = (
         );
       } finally {
         typed = '';
+        if (seed) eraseCreationSeed(seed);
         detach();
       }
     },

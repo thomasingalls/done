@@ -1,3 +1,4 @@
+import { parseSealedCreationSeed, type SealedCreationSeed } from './creationSeed';
 import {
   fields,
   hex,
@@ -70,6 +71,8 @@ export interface CustodyRecord {
     deliveryHash: string;
     key: { sequence: number; ct: string };
   };
+  /** Only present during seeded creation; the immutable Local claim retains its restart copy. */
+  creation_seed?: SealedCreationSeed;
   mac: Bytes;
 }
 export const CUSTODY_DB = 'done.custody';
@@ -162,7 +165,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
-    ...['approval', 'rotation', 'active_rotation', 'initial_account'].filter(
+    ...['approval', 'rotation', 'active_rotation', 'initial_account', 'creation_seed'].filter(
       (key) => value && typeof value === 'object' && Object.hasOwn(value, key),
     ),
   ]);
@@ -269,8 +272,13 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
       return fail();
     activeRotation = r['active_rotation'];
   }
+  const creationSeed = Object.hasOwn(r, 'creation_seed')
+    ? parseSealedCreationSeed(r['creation_seed'])
+    : undefined;
+  if (creationSeed && r['state'] !== 'creating') return fail();
   return {
     v: 2,
+    ...(creationSeed ? { creation_seed: creationSeed } : {}),
     ...(activeRotation ? { active_rotation: activeRotation } : {}),
     ...(initialAccount ? { initial_account: initialAccount } : {}),
     ...progress,
@@ -321,6 +329,17 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
         hex(c.publicKey),
         [c.sealed.v, hex(c.sealed.nonce), hex(c.sealed.ct)],
       ]) ?? null,
+      ...(r.creation_seed
+        ? [
+            [
+              'creation-seed',
+              r.creation_seed.v,
+              hex(r.creation_seed.salt),
+              hex(r.creation_seed.nonce),
+              hex(r.creation_seed.ct),
+            ],
+          ]
+        : []),
       ...(r.approval
         ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
         : []),

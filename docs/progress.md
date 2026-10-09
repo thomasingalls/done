@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: atomic recovery service commit verified; browser custody, retained installation and screens in flight
+scope: service commit and seeded native custody verified; retained installation and screens in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -83,12 +83,10 @@ and refusal for unresolved Yjs dependencies. Returns a snapshot and point-in-tim
 installs nothing. 22 focused preparation/read/source cases plus two rotation service cases pass.
 [Source evidence](./development-evidence/2026-10-09-recovery-source.log).
 
-**Next:** atomic all-device replacement/rotation with exact accepted-cut comparison, durable local
-installation, and the approved screens. A verified recovery successor must work directly from the
-first admission as well as later history; the current epoch-3 continuation anchor cannot be a hidden
-second-device prerequisite. Before new lock setup, actual tab/browser death restarts early steps;
-afterward, sealed intent and keys must resume durably. No usable recovery UI is mounted yet.
-The user authorized unsigned intermediate commits and continued implementation through this phase.
+**Next:** retained recovery ownership, native checkpoint installation and the approved screens. Before
+new lock setup, actual tab/browser death restarts early steps; afterward, sealed intent and keys must
+resume durably. No usable recovery UI is mounted yet. The operator authorized unsigned intermediate
+commits and continued implementation through this phase.
 
 **Recovery transition checkpoint:** exact signed intent and all-writer finalization verify through a
 real first-admission, pending enrollment or later certification/rotation anchor. The recovered member
@@ -102,6 +100,10 @@ and the recovered writer can submit and authorize later admission. 38 recovery c
 history/upgrade cases and four HTTP host checks pass.
 [Output](./development-evidence/2026-10-09-recovery-commit.log). Browser custody/installation and screens
 remain; this is not yet a usable recovery journey. Live schema 21 remains unchanged.
+
+**Candidate custody checkpoint:** factor-sealed creation seed retains the earlier candidate keys and
+exact progress through an interrupted new lock setup. 17 genesis tests and a native Chromium kill/reopen
+case pass. [Output](./development-evidence/2026-10-09-recovery-custody.log).
 
 ---
 

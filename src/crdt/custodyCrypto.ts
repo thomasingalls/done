@@ -255,6 +255,29 @@ export const createCredential = async (
     )
       throw new Error('Unsupported credential encoding');
     const publicKey = new Uint8Array(await subtle.exportKey('raw', pair.publicKey));
+    return sealPreparedCredential(scope, root, role, id, { publicKey, privateBytes }, subtle);
+  } finally {
+    privateBytes.fill(0);
+  }
+};
+/** Fresh custody only; the owner has already reserved this direct-root encryption. */
+export const sealPreparedCredential = async (
+  scope: CryptoScope,
+  root: Bytes,
+  role: CredentialRole,
+  id: string,
+  input: { publicKey: Bytes; privateBytes: Bytes },
+  subtle: SubtleCrypto = crypto.subtle,
+): Promise<SealedCredential> => {
+  const publicKey = input.publicKey.slice(),
+    privateBytes = input.privateBytes.slice();
+  try {
+    if (
+      publicKey.length !== 32 ||
+      privateBytes.length !== 48 ||
+      !privateBytes.subarray(0, 16).every((b, i) => b === prefixOf(role)[i])
+    )
+      throw Error('Unsupported prepared credential encoding');
     const nonce = random(12);
     // v2 lifecycle's credential carrier: direct root invocation, counted before this call.
     const ct = new Uint8Array(

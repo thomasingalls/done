@@ -1,3 +1,10 @@
+import {
+  captureCreationSeed,
+  sealCreationSeed,
+  openCreationSeed,
+  eraseCreationSeed,
+  type CreationSeed,
+} from './creationSeed';
 /**
  * Phase-two custody owner. No caller receives a root, generation key, or private
  * credential. Startup supplies verified identity and the cross-carrier census;
@@ -47,6 +54,7 @@ export type { ContentRefusal, ContentInput, OpenedRecord } from './contentRecord
 export type { ContentCreationOptions, ContentReceipt } from './contentStore';
 import {
   createCredential,
+  sealPreparedCredential,
   fields,
   guardedSubtle,
   generateDeviceCode,
@@ -91,6 +99,8 @@ export interface CustodyAuthority {
   resolvePrincipal(task: SessionTask): string | PromiseLike<string>;
 }
 export interface CustodyCreationOptions {
+  /** Recovery-only keys/progress created before factor confirmation. Fresh roots only. */
+  seed?: CreationSeed;
   signal?: AbortSignal;
   /**
    * Required owner of SC-06's OTHER carriers. Throw unless they are absent for
@@ -378,6 +388,7 @@ const finishCreation = async (
   scope: CustodyScope,
   initial: CustodyRecord,
   root: Bytes,
+  factor: Bytes,
 ): Promise<CustodyRecord> => {
   const intent = initial.creation_intent!;
   if (initial.seal_reserved + 3 >= SEAL_LIMIT)
@@ -394,8 +405,25 @@ const finishCreation = async (
   );
   await task.wait(() => transact(db, task, scope, initial, reserved));
   const generation = random(32);
+  let seed: CreationSeed | undefined;
   const verified: OwnedKeys = { store: null, wrapping: null, signing: null };
   try {
+    if (initial.creation_seed) {
+      seed = await task.wait(() =>
+        openCreationSeed(
+          initial.creation_seed!,
+          scope,
+          intent.id,
+          factor,
+          guardedSubtle(() => task.step(() => {})),
+        ),
+      );
+      if (
+        seed.credentials[0].id !== intent.wrappingId ||
+        seed.credentials[1].id !== intent.signingId
+      )
+        throw Error('Prepared custody identity changed');
+    }
     const envelope = await task.wait(() =>
       sealEnvelope(
         scope,
@@ -406,28 +434,47 @@ const finishCreation = async (
       ),
     );
     const wrapping = await task.wait(() =>
-      createCredential(
-        scope,
-        root,
-        'wrapping',
-        intent.wrappingId,
-        guardedSubtle(() => task.step(() => {})),
-      ),
+      seed
+        ? sealPreparedCredential(
+            scope,
+            root,
+            'wrapping',
+            intent.wrappingId,
+            seed.credentials[0],
+            guardedSubtle(() => task.step(() => {})),
+          )
+        : createCredential(
+            scope,
+            root,
+            'wrapping',
+            intent.wrappingId,
+            guardedSubtle(() => task.step(() => {})),
+          ),
     );
     const signing = await task.wait(() =>
-      createCredential(
-        scope,
-        root,
-        'signing',
-        intent.signingId,
-        guardedSubtle(() => task.step(() => {})),
-      ),
+      seed
+        ? sealPreparedCredential(
+            scope,
+            root,
+            'signing',
+            intent.signingId,
+            seed.credentials[1],
+            guardedSubtle(() => task.step(() => {})),
+          )
+        : createCredential(
+            scope,
+            root,
+            'signing',
+            intent.signingId,
+            guardedSubtle(() => task.step(() => {})),
+          ),
     );
+    const { creation_seed: _seed, ...withoutSeed } = reserved;
     const completed = await task.wait(() =>
       signRecord(
         root,
         {
-          ...reserved,
+          ...withoutSeed,
           state: 'protected',
           creation_intent: null,
           envelope,
@@ -441,6 +488,7 @@ const finishCreation = async (
     return completed;
   } finally {
     generation.fill(0);
+    if (seed) eraseCreationSeed(seed);
     clearKeys(verified);
   }
 };
@@ -453,14 +501,21 @@ const createOrResume = async (
   owned?: { task: SessionTask; installInitial?: InitialCustodyInstaller },
 ): Promise<CustodyDescriptor> => {
   const { checkCreation, signal } = options;
-  if (typeof checkCreation !== 'function') {
+  let seed: CreationSeed | undefined;
+  try {
+    if (options.seed && mode !== 'fresh') throw Error('Cannot replace resumed credentials');
+    if (typeof checkCreation !== 'function')
+      throw new CustodyError('invalid-input', 'Creation requires the startup carrier check.');
+    seed = options.seed ? captureCreationSeed(options.seed) : undefined;
+  } catch (error) {
     factor.fill(0);
-    throw new CustodyError('invalid-input', 'Creation requires the startup carrier check.');
+    throw error;
   }
   let db: IDBDatabase | undefined;
   let root: Bytes | undefined;
   const dispose = () => {
     factor.fill(0);
+    if (seed) eraseCreationSeed(seed);
     root?.fill(0);
     root = undefined;
     db?.close();
@@ -478,7 +533,10 @@ const createOrResume = async (
           'locked-existing',
           'Custody already exists; unlock or resume its winning factor.',
         );
-      const intent = newIntent();
+      const intent = Object.freeze({
+        ...newIntent(),
+        ...(seed ? { wrappingId: seed.credentials[0].id, signingId: seed.credentials[1].id } : {}),
+      });
       await task.wait(() => checkCreation(task, scope, intent, 'fresh'));
       root = random(32);
       const seal = await task.wait(() =>
@@ -491,12 +549,23 @@ const createOrResume = async (
           guardedSubtle(() => task.step(() => {})),
         ),
       );
-      record = await task.wait(() =>
+      record = await task.wait(async () =>
         signRecord(
           root!,
           {
             v: 2,
             state: 'creating',
+            ...(seed
+              ? {
+                  creation_seed: await sealCreationSeed(
+                    seed,
+                    scope,
+                    intent.id,
+                    factor,
+                    guardedSubtle(() => task.step(() => {})),
+                  ),
+                }
+              : {}),
             slot_id: scope.slotId,
             principal_id: scope.principalId,
             workspace_id: scope.workspaceId,
@@ -555,8 +624,8 @@ const createOrResume = async (
         checkCreation(task, scope, Object.freeze({ ...record!.creation_intent! }), 'resume'),
       );
     }
+    const completed = await finishCreation(db!, task, scope, record, root!, factor);
     factor.fill(0);
-    const completed = await finishCreation(db!, task, scope, record, root!);
     return descriptor(scope, completed);
   };
   try {

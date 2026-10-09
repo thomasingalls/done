@@ -1,3 +1,7 @@
+import { openCreationSeed, eraseCreationSeed, type CreationSeed } from '../src/crdt/creationSeed';
+import { utf8, normalizeDeviceCode, hex } from '../src/crdt/custodyCrypto';
+import { withCeremonyVault } from '../src/account/ceremonyVault';
+import { claimScope } from '../src/crdt/localGenesisRecord';
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
@@ -240,5 +244,90 @@ describe('verified Local genesis', () => {
     await expect(resumeLocalGenesis(slot, code)).rejects.toMatchObject({
       disposition: { kind: 'repair-required' },
     });
+  });
+});
+
+describe('factor-sealed recovery custody seed', () => {
+  const seed = async (): Promise<CreationSeed> => {
+    const credentials = [];
+    for (const role of ['wrapping', 'signing'] as const) {
+      const pair = (await crypto.subtle.generateKey(
+        role === 'wrapping' ? 'X25519' : 'Ed25519',
+        true,
+        role === 'wrapping' ? ['deriveBits'] : ['sign', 'verify'],
+      )) as CryptoKeyPair;
+      credentials.push({
+        role,
+        id: (role === 'wrapping' ? 'b1' : 'b2').repeat(16),
+        publicKey: new Uint8Array(await crypto.subtle.exportKey('raw', pair.publicKey)),
+        privateBytes: new Uint8Array(await crypto.subtle.exportKey('pkcs8', pair.privateKey)),
+      });
+    }
+    return {
+      credentials: credentials as CreationSeed['credentials'],
+      progress: { exactRequest: 'retained recovery bytes' },
+    };
+  };
+  it('captures keys before caller mutation and refuses replacing an existing local slot', async () => {
+    const input = await seed(),
+      pub = input.credentials.map((c) => hex(c.publicKey));
+    const ceremony = beginLocalGenesis(slot, { seed: input }),
+      code = ceremony.displayCode!;
+    eraseCreationSeed(input);
+    input.progress = { exactRequest: 'mutated' };
+    await ceremony.confirm(code);
+    const own = await withCeremonyVault(
+      slot,
+      code,
+      new AbortController().signal,
+      async (o) => o.participant,
+    );
+    expect([own.wPub, own.sPub]).toEqual(pub);
+    const claim = (await read())!,
+      factor = utf8(normalizeDeviceCode(code));
+    const reopened = await openCreationSeed(
+      claim.initial.creation_seed!,
+      claimScope(claim),
+      claim.initial.creation_intent!.id,
+      factor,
+      crypto.subtle,
+    );
+    factor.fill(0);
+    expect(reopened.progress).toEqual({ exactRequest: 'retained recovery bytes' });
+    eraseCreationSeed(reopened);
+    const another = await seed(),
+      loser = beginLocalGenesis(slot, { seed: another });
+    eraseCreationSeed(another);
+    await expect(loser.confirm(loser.displayCode!)).rejects.toMatchObject({
+      disposition: { kind: 'unlock-required' },
+    });
+    expect(await read()).toEqual(claim);
+  });
+  it('authenticates the encrypted seed and its original local scope', async () => {
+    const input = await seed(),
+      ceremony = beginLocalGenesis(slot, { seed: input }),
+      code = ceremony.displayCode!;
+    eraseCreationSeed(input);
+    await ceremony.confirm(code);
+    const claim = (await read())!,
+      factor = utf8(normalizeDeviceCode(code));
+    try {
+      await expect(
+        openCreationSeed(
+          claim.initial.creation_seed!,
+          { ...claimScope(claim), workspaceId: 'ff'.repeat(16) },
+          claim.initial.creation_intent!.id,
+          factor,
+          crypto.subtle,
+        ),
+      ).rejects.toThrow();
+      const damaged = structuredClone(claim);
+      damaged.initial.creation_seed!.ct[0] = damaged.initial.creation_seed!.ct[0]! ^ 1;
+      await expect(
+        withExclusiveSlot(slot, (task) => verifyLocalClaim(task, damaged, code)),
+      ).rejects.toThrow();
+    } finally {
+      factor.fill(0);
+    }
   });
 });
