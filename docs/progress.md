@@ -49,95 +49,36 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery and old-device detachment verified; onward lifecycle check and live upgrade remain
-blocks_on: none; operator approved recovery screen sequence
+scope: focused first-device-only product check and retained development upgrade
+blocks_on: none; live upgrade will require an operator quiet point
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-**Agreed journey:** existing account passkey plus saved recovery code; recover onto a new sole
-approved device and rotate future writing. Existing copies cannot be erased. Keep the account
-passkey and recovery code. See [the recovery plan](./account-lost-device-recovery.md).
+**Implemented:** the approved passkey-plus-recovery-code journey, new local factor custody, durable
+exact intent and retry after lost replies, complete accepted-source replay, atomic sole-device
+replacement/key rotation, native installation, chooser resume and editable recovered workspace. A
+live fresh ceremony reuses its passkey check once; a cold reopen requires normal unlock. Recovery
+includes stored handoff/recovery checkpoints as well as accepted streams. Old devices retain editable
+detached copies without current delivery or subscription authority.
 
-**Complete:** selected recovery bootstrap proof boundary, then a fresh discoverable account
-challenge bound to the candidate signing/wrapping keys and durable exact attempt. Passkey and
-candidate possession verification select the account. The signed preparation carries complete
-verified history and a nonce-bound head; first-device-only and pending second-device states work.
-Retry survives lost replies/restarts; cancellation, expiry and competing authority refuse. This
-preparation changes no membership, content or network login. Schema 22 requires offline upgrade;
-the live schema-21 installation and personal browsers are unchanged.
+**Focused evidence:** service authority/read/commit checks, native interruption/restart checks and
+packaged product walkthroughs pass. The latest walkthrough continues through additional-device
+enrollment, delivery, removal/rotation and a second recovery. It preserves accepted writing across
+those changes and keeps detached-only edits separate.
+[Continuing-lifecycle output](./development-evidence/2026-10-09-recovery-onward.log);
+[earlier implementation evidence and checkpoints](./account-lost-device-recovery.md);
+[completion record](./completed.md).
 
-**Focused evidence:** 23 recovery proof/crypto/preparation cases, four HTTP host cases and ten
-historical upgrade cases pass, plus TypeScript and scoped static checks.
-[Output](./development-evidence/2026-10-09-recovery-preparation.log);
-[completion record](./completed.md). Release validation remains paused.
+**Remaining in this phase:** finish the first-device-only product check, prepare an immutable build,
+then obtain a quiet point before backing up and upgrading the retained development service from
+schema 21 to 24 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. Personal browsers and that live
+service remain untouched. The operator authorized unsigned intermediate commits and continued work.
 
-**Hosted reads complete:** fresh account attempt plus recovery bootstrap and replacement-key signature;
-full ledger verification and final account/head/cancellation checks. Historical removed-device writing
-is readable through verified rotation history. Bounded pages carry signed accepted extents.
-[Read evidence](./development-evidence/2026-10-09-recovery-reads.log).
-
-**Cold replay complete:** saved-code opening of every generation, original checkpoint verification,
-complete accepted-prefix replay including removed publishers, actor/acceptance/terminal-cut checks,
-and refusal for unresolved Yjs dependencies. Returns a snapshot and point-in-time accepted heads;
-installs nothing. 22 focused preparation/read/source cases plus two rotation service cases pass.
-[Source evidence](./development-evidence/2026-10-09-recovery-source.log).
-
-**Next:** retained recovery ownership, native checkpoint installation and the approved screens. Before
-new lock setup, actual tab/browser death restarts early steps; afterward, sealed intent and keys must
-resume durably. No usable recovery UI is mounted yet. The operator authorized unsigned intermediate
-commits and continued implementation through this phase.
-
-**Recovery transition checkpoint:** exact signed intent and all-writer finalization verify through a
-real first-admission, pending enrollment or later certification/rotation anchor. The recovered member
-can authorize a subsequent admission; repeated recovery retains old cuts and advances the key floor.
-37 focused tests/regressions pass. [Output](./development-evidence/2026-10-09-recovery-transition.log).
-Atomic service mutation and lost-reply outcomes are next, followed by native installation and screens.
-
-**Atomic service checkpoint:** schema 23 retains the checkpoint, exact outcome, all-device exclusion
-and generation advance atomically. Stale replay cuts refuse, lost replies resolve after restart/expiry,
-and the recovered writer can submit and authorize later admission. 38 recovery cases, 12 focused
-history/upgrade cases and four HTTP host checks pass.
-[Output](./development-evidence/2026-10-09-recovery-commit.log). Browser custody/installation and screens
-remain; this is not yet a usable recovery journey. Live schema 21 remains unchanged.
-
-**Candidate custody checkpoint:** factor-sealed creation seed retains the earlier candidate keys and
-exact progress through an interrupted new lock setup. 17 genesis tests and a native Chromium kill/reopen
-case pass. [Output](./development-evidence/2026-10-09-recovery-custody.log).
-
-**Combined login checkpoint:** a fresh explicit recovery/login challenge atomically issues one login
-with preparation; the browser independently verifies its passkey assertion. Verified offline binding
-is retained. Schema 24 upgrade and focused retry/authority checks pass; live schema 21 is untouched.
-[Output](./development-evidence/2026-10-09-recovery-login.log). Native first-open ownership and screens
-remain, so this is not yet a usable recovery journey.
-
-**Native installation checkpoint:** recovery checkpoint/candidate/binding verification, interrupted
-activation, offline edit and cold reopen pass in Chromium. The recovered device also adopts a later
-admission and prepares its replacement snapshot without historical keys, preserving an unuploaded edit.
-Existing native activation and 18 focused membership/replacement regressions pass.
-[Output](./development-evidence/2026-10-09-recovery-installation.log). Coordinator and screens remain.
-
-
-**Coordinator complete:** exact sealed intent, fresh combined login, lost-reply resumption and native
-installation compose. Only the live fresh ceremony can skip a duplicate first-opening passkey check;
-cold reopen uses normal unlock. Two disposable Chromium paths pass, including whole browser/service
-restart and byte-identical retry. [Output](./development-evidence/2026-10-09-recovery-coordinator.log).
-The next work is the approved UI, recovery-specific old-device status and the packaged walkthrough.
-
-
-**Packaged product checkpoint:** approved recovery screens, chooser resume, Back redisplay, normal
-editor and Devices are mounted. The real walkthrough exposed and repaired omitted checkpoint-only
-writing; replay now includes authenticated handoff/replacement/recovery snapshots, fenced against
-concurrent publication. The packaged flow and 23 focused source/read/commit cases pass.
-[Evidence](./development-evidence/2026-10-09-recovery-product.log). Previous-device recovery detachment
-is next. The live installation has not been upgraded and release validation stays paused.
-
-
-**Previous-device checkpoint:** original and joined devices discover their recovery finalization,
-retire sync and cold-open as editable detached copies. Old keys stay local; the new recovery key
-is never installed there. The packaged check and focused service/native/upgrade regressions pass.
-[Evidence](./development-evidence/2026-10-09-recovery-detachment.log). Onward enrollment, rotation
-and recovery again are next, followed by a quiet upgrade of the existing development service.
+**Limits retained:** recovery needs both the existing account passkey and recovery code, cannot
+restore unuploaded lost-device edits or erase old copies, and uses the current bounded history/4 MiB
+output checkpoint. Passkey-loss recovery, recovery-code replacement, general pruning and public
+deployment are separate work. Release qualification remains paused.
 
 ---
 

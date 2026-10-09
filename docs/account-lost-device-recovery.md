@@ -53,7 +53,7 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
    ordinary device grants, with bounds and account checks at the actual read. No code or private
    recovery key goes to the service. Account login issuance must have an explicit combined purpose
    if composed with this challenge; it cannot be inferred from a successful bootstrap signature.
-3. **Atomic recovery transition and retained installation.** After explicit confirmation, establish
+3. **Atomic recovery transition and retained installation — implemented.** After explicit confirmation, establish
    exact accepted-write cutoffs for the old devices; retrieve and authenticate the complete available
    recovery representation, opening every generation it requires with the code. Refuse missing
    dependencies or bounds before an irreversible membership replacement. Prepare a fresh content key,
@@ -62,7 +62,7 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
    together. A competing parent requires an explicit restart; a lost reply retries the same bytes.
    Extend membership/history verification so the recovered device can manage later devices, not just
    read. Cold-install the recovered writing and resume ordinary send/receive before declaring success.
-4. **Product screens and a real disposable walkthrough.** Review the exact steps with the operator,
+4. **Product screens and a real disposable walkthrough — implemented; final early-account check and live upgrade pending.** Review the exact steps with the operator,
    then mount sign-in, saved-code entry, new local device-lock setup, consequences confirmation,
    truthful progress/resume and the editor. Demonstrate recovery with the original contexts closed,
    both at first-device-only state and after rotation. Check wrong factors, interrupted commit/install,
@@ -280,3 +280,12 @@ verifies its accepted prefix and opens an editable detached copy with delivery/s
 The packaged walkthrough covers both original and joined old devices; the service check also covers
 recovery directly after first admission. Onward enrollment/rotation and a second product recovery are
 the remaining focused product checks before the quiet live upgrade.
+
+
+## Continuing lifecycle checkpoint
+
+The packaged walkthrough now connects a device from the recovered account, receives its writing,
+removes it, publishes after rotation and recovers again with the unchanged original factors. The
+second recovery preserves accepted writing while the browser retains its separate detached slot.
+This walkthrough began with an originally paired account. The remaining focused product check covers
+recovery before any second device has been admitted; the quiet live schema-21-to-24 upgrade follows.

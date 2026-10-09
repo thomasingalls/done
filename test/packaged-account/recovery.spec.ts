@@ -1,14 +1,18 @@
 import { test, expect } from '@playwright/test';
 import { credentials, restoreAuthenticator, add, pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
 
-test('packaged recovery resumes from the chooser and opens accepted writing with the existing passkey', async ({
+test('packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again', async ({
   page,
   browser,
 }, info) => {
+  test.setTimeout(180000);
   page.setDefaultTimeout(15000);
   const service = await startService(info.outputPath('service'), undefined, true, true);
   const replacement = await browser.newContext();
+  const subsequent = await browser.newContext();
+  const third = await subsequent.newPage();
   const next = await replacement.newPage();
   next.setDefaultTimeout(15000);
   let prior: Awaited<ReturnType<typeof pairedEditors>> | undefined;
@@ -107,7 +111,84 @@ test('packaged recovery resumes from the chooser and opens accepted writing with
       expect(requests).toEqual([]);
       await old.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     }
+    const openRecovered = async () => {
+      await next.goto('/accounts');
+      await next.getByRole('button', { name: /^Open saved recovery, account/ }).click();
+      await next.getByLabel('Device-lock code', { exact: true }).fill(code);
+      await next.getByRole('button', { name: 'Unlock saved recovery', exact: true }).click();
+      await next.getByRole('button', { name: 'Open recovered writing', exact: true }).click();
+      await expect(next.locator('.shell')).toBeVisible();
+    };
+    await openRecovered();
+    await next.getByRole('button', { name: 'Devices', exact: true }).click();
+    await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(next, code);
+    await pending(third, await next.getByLabel('Device invitation link').inputValue(), nextAuth);
+    const comparison = await compared(next, third);
+    await next.getByLabel('Code on the new device').fill(comparison);
+    await next.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await third
+      .getByRole('button', { name: 'Open your writing', exact: true })
+      .click({ timeout: 30000 });
+    await expect(third.locator('.shell')).toContainText('Writing from the recovered device');
+    await expect(next.getByText('The device is connected.', { exact: false })).toBeVisible({
+      timeout: 30000,
+    });
+    await next.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await openRecovered();
+    await add(third, 'Writing from a device enrolled after recovery');
+    await expect(next.locator('.shell')).toContainText(
+      'Writing from a device enrolled after recovery',
+      { timeout: 15000 },
+    );
+    // A subsequent key rotation must keep the existing saved recovery code useful.
+    await next.getByRole('button', { name: 'Devices', exact: true }).click();
+    await next.getByRole('button', { name: 'Remove device', exact: true }).click();
+    await next.getByRole('button', { name: 'Confirm removal', exact: true }).click();
+    await expect(next.getByText('The device was removed.', { exact: false })).toBeVisible({
+      timeout: 20000,
+    });
+    await openRecovered();
+    const rotated = next.waitForResponse(
+      (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
+    );
+    await add(next, 'Writing after recovery and rotation');
+    await rotated;
+    await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
+    // Use the original browser, which still holds its separate detached local slot.
+    await page.goto('/accounts');
+    await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await page
+      .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
+      .click();
+    await page.getByRole('button', { name: 'Use account passkey', exact: true }).click();
+    await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
+    await page.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
+    const secondCode = (await page.getByLabel('Generated device-lock code').textContent())!;
+    await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
+    await page.getByLabel('Device-lock code', { exact: true }).fill(secondCode);
+    await page.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    await page
+      .getByRole('button', {
+        name: 'Recover on this device and disconnect the previous devices',
+        exact: true,
+      })
+      .click();
+    await expect(page.locator('.shell')).toContainText('Writing after recovery and rotation', {
+      timeout: 30000,
+    });
+    await expect(page.locator('.shell')).toContainText(
+      'Writing from a device enrolled after recovery',
+    );
+    await expect(page.locator('.shell')).not.toContainText('Writing in this detached copy');
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await expect(page.getByRole('button', { name: /^Unlock Device owner/ })).toHaveCount(1);
+    await expect(page.getByRole('button', { name: /^Open saved recovery, account/ })).toHaveCount(
+      1,
+    );
   } finally {
+    await subsequent.close();
     await prior?.other.close();
     await replacement.close();
     await stopService(service);

@@ -12039,3 +12039,17 @@ scoped lint/format/diff checks and packaged build pass.
 The remaining product check is enrollment and rotation after recovery, then recovery again from that
 rotated state. Live service/personal browsers remain unchanged pending a quiet upgrade point.
 Release validation remains paused.
+
+
+### 2026-10-09 — Continuing account lifecycle after recovery
+
+The packaged disposable walkthrough now continues from the recovered editor through a fresh device
+invitation and code comparison, replacement snapshot installation, writing delivery from that device,
+removal/key rotation, a post-rotation upload, and a second recovery using the unchanged original
+account passkey and recovery code. The final recovered editor contains the accepted writing from
+both generations and excludes edits made only in detached old copies. The original browser retains
+its separate detached slot alongside the newly recovered slot. The focused walkthrough passes.
+[Evidence](./development-evidence/2026-10-09-recovery-onward.log).
+
+This chain began with an originally paired account. A focused first-device-only product check and
+the quiet live development upgrade remain. Release validation stays paused.
