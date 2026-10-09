@@ -174,3 +174,47 @@ test('generation-one installation refuses a valid rotation until the actual gene
       /generation activation/,
     );
 });
+
+test('original publisher preserves epoch-one and epoch-two witnesses across later membership adoption', async () => {
+  const { base, proofs, initial } = await fixture();
+  const events = [event(1), event(2), event(3), event(5)];
+  const witnesses = [client.emptySpoolWitness()];
+  for (const bytes of events)
+    witnesses.push(await client.extendSpoolWitness(witnesses.at(-1), bytes, crypto.subtle));
+  const membership = client.parseInstalledMembership({
+    v: 1,
+    proofs,
+    cuts: [{ epoch: 5, head: proofs.continuations.at(-1).head, before: witnesses[3] }],
+  });
+  const installed = {
+    artifact: proofs.successor,
+    certification: proofs.certification,
+    before: witnesses[1],
+    certifiedBefore: witnesses[2],
+  };
+  const route = {
+    epoch: 5,
+    history: await client.installedMembershipHistory(membership, base, initial),
+  };
+  const verify = (value, spool = events) =>
+    client.verifyInstalledSuccessor(
+      { events: spool, positions: [] },
+      route,
+      value,
+      crypto.subtle,
+      undefined,
+      membership,
+    );
+  await verify(installed);
+  for (const change of [
+    (v) => (v.before = witnesses[0]),
+    (v) => (v.certifiedBefore = witnesses[3]),
+    (v) => (v.before.hash = 'aa'.repeat(32)),
+    (v) => delete v.certifiedBefore,
+  ]) {
+    const bad = structuredClone(installed);
+    change(bad);
+    await assert.rejects(verify(bad));
+  }
+  await assert.rejects(verify(installed, [event(2), ...events.slice(1)]));
+});

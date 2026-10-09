@@ -44,6 +44,29 @@ test('joined device invites a third through packaged UI; all three retain and ex
       'Original writing before the third connection',
       { timeout: 15000 },
     );
+    // Carry writing that ordinary update delivery never accepted through a generation-one handoff.
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'Snapshot-only writing for generation-one third device');
+    const panel = (p: typeof page) =>
+      p.getByRole('region', { name: 'History maintenance', exact: true });
+    for (const p of [page, pair.second]) {
+      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(
+        panel(p).getByRole('button', { name: 'Check history', exact: true }),
+      ).toBeEnabled();
+      await panel(p)
+        .getByRole('button', {
+          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+        })
+        .click();
+      await expect(panel(p)).toContainText(
+        p === page
+          ? 'Snapshot saved. Verify it from another approved device.'
+          : 'Verified snapshot 1 is saved.',
+        { timeout: 15000 },
+      );
+    }
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     console.log('Joined Devices open');
     await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
@@ -74,6 +97,10 @@ test('joined device invites a third through packaged UI; all three retain and ex
     await expect(third.locator('.shell')).toContainText(
       'Original writing before the third connection',
     );
+    await expect(third.locator('.shell')).toContainText(
+      'Snapshot-only writing for generation-one third device',
+    );
+    await page.unroute('**/account/delivery/submit');
     await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
     await pair.second.goto('/');
     await openSaved(pair.second, pair.next.code, true);
@@ -192,5 +219,41 @@ test('pending connection cancellation recovers after losing its reply and reopen
     } finally {
       await stopService(service);
     }
+  }
+});
+
+test('first joining device opens an admitted sole-device history baseline and reopens offline', async ({
+  page,
+  browser,
+}, info) => {
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  try {
+    pair = await pairedEditors(page, browser, true, {
+      beforeInvite: async () => {
+        await add(page, 'Sole-device writing covered before the first invitation');
+        await page.getByRole('button', { name: 'History maintenance', exact: true }).click();
+        const panel = page.getByRole('region', { name: 'History maintenance', exact: true });
+        await panel.getByRole('button', { name: 'Check history', exact: true }).click();
+        await expect(
+          panel.getByRole('button', { name: 'Check history', exact: true }),
+        ).toBeEnabled();
+        await panel.getByRole('button', { name: 'Create history snapshot' }).click();
+        await expect(panel).toContainText('Verified snapshot 1 is saved.', { timeout: 15000 });
+      },
+    });
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Sole-device writing covered before the first invitation',
+    );
+    await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await pair.other.setOffline(true);
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Sole-device writing covered before the first invitation',
+    );
+  } finally {
+    await pair?.other.close();
+    await stopService(service);
   }
 });

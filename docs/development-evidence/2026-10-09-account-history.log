@@ -518,3 +518,84 @@ Running 2 tests using 1 worker
   2 passed (1.2m)
 
 TypeScript --noEmit and production bundle pass. No service pruning/live changes.
+
+
+=== History-aware handoffs / early membership boundaries — 2026-10-09 ===
+
+-- done-handoff-focused-final.log --
+(node:50821) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ original and joined adopters retain exact local boundaries while skipping unseen heads (631.296833ms)
+✔ adoption rejects forged ancestry, reordered cuts, incomplete accepted prefixes and wrong installation (440.72525ms)
+✔ generation-one installation refuses a valid rotation until the actual generation owner exists (216.422666ms)
+✔ original publisher preserves epoch-one and epoch-two witnesses across later membership adoption (136.529708ms)
+(node:50822) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (178.409ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (250.616ms)
+✔ key installation and countersignature retry from committed custody after interruptions (129.602041ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (110.603958ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.873417ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (220.649666ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (165.860042ms)
+✔ explicit history refusal durably clears only an unpublished replacement and rebuilds after restart (137.728458ms)
+✔ a retained generation-one version-two delivery resumes on an upgraded joining device (89.159916ms)
+(node:50823) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current-key replacement cold replay preserves accepted writing, local journal edits and deletions (144.794916ms)
+✔ snapshot captures source documents and key before asynchronous signing (261.11475ms)
+✔ signed wrong coverage and altered ciphertext context cannot pass semantic replay (100.519667ms)
+✔ construction refuses incomplete accepted replay and unresolved local dependencies before signing (95.449875ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (224.819667ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (76.114292ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (30.338292ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (37.086084ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (33.420625ms)
+(node:50825) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ replacement reader starts at certified cuts with its current key, including removed writing but no removed stream (667.929208ms)
+✔ replacement reader verifies a current-key suffix after the admitted cut and cold-replays its saved prefix (625.042416ms)
+✔ replacement reader refuses changed binding, snapshot, candidate acknowledgement and uncovered receive prefix (497.539709ms)
+✔ replacement loading persists and cold-replays equivalent parsed field ordering (715.466333ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3107.100625
+
+-- done-handoff-reader-final.log --
+(node:50786) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50786) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:50786) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves (6756.538875ms)
+✔ later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready (5621.782084ms)
+✔ retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts (8226.07875ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21093.502458
+
+-- done-handoff-type.log --
+
+-- done-handoff-lint.log --
+
+-- Browser diagnostic (fixed) --
+Original publisher later adoption rejected spool event 0: expected epoch 3, actual epoch 1; early witnesses are now preserved. Temporary diagnostics removed.
+
+-- Packaged handoff result --
+  ✓  1 test/packaged-account/membership-connection.spec.ts:6:1 › joined device invites a third through packaged UI; all three retain and exchange writing (1.8m)
+  ✓  2 test/packaged-account/membership-connection.spec.ts:225:1 › first joining device opens an admitted sole-device history baseline and reopens offline (17.5s)
+  2 passed (2.1m)
+The run observed HTTP 429 capacity backoff. No application timeout or rate limit was loosened.
+
+-- Production build --
+
+✓ built in 2.79s

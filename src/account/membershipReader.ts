@@ -1,3 +1,8 @@
+import {
+  readHandoffHistory,
+  verifyHandoffHistoryAdvance,
+  handoffHistoryPrefix,
+} from '../crdt/handoffHistory';
 /** Later-device loading. Activation remains the slot owner's separate commit. */
 import { same, semanticMessage } from '../../account-protocol/admission';
 import { closed } from '../../account-protocol/preparation';
@@ -151,6 +156,44 @@ export async function loadMembershipWriting(
       };
     }
     await input.save();
+  }
+  if (p.reading.v === 2) {
+    const proof = await readHandoffHistory(
+      history,
+      a.base.pin,
+      owner.participant.id,
+      owner.sign,
+      input.request,
+      p.reading.history,
+    );
+    if (proof) {
+      const prior = p.reading.history;
+      await owner.withInstalledKey(
+        content.key,
+        await membershipDeliveryHash(content.delivery),
+        (key) => verifyHandoffHistoryAdvance(prior, proof, history, key),
+      );
+      p.reading.history = proof;
+      for (const stream of p.reading.streams) {
+        const cut = handoffHistoryPrefix(proof, stream.publisher);
+        if (stream.prefix.position < cut.position)
+          stream.prefix = {
+            ...cut,
+            observedThrough: Math.max(cut.position, stream.prefix.observedThrough),
+          };
+      }
+      // Authenticate the new tuple before writing it; a failed write leaves the old tuple usable.
+      const checked = await owner.withInstalledKey(
+        content.key,
+        await membershipDeliveryHash(content.delivery),
+        (key) =>
+          replayMembershipReading(p.reading, a, history, owner.participant, key, {
+            assertCurrent: guard,
+          }),
+      );
+      eraseMembershipReading(checked);
+      await input.save();
+    }
   }
   const retained = await durable();
   return owner.withInstalledKey(

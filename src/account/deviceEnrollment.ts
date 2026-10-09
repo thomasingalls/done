@@ -339,18 +339,23 @@ export function createDeviceEnrollment(
           if (!grants || ['enrollment/begin', 'enrollment/finish'].includes(route))
             return bootstrapRequest(route, body);
           const access = scoped(
-            ['content/checkpoint', 'authority/discover'].includes(route)
+            ['content/checkpoint', 'authority/discover', '/account/history/v1/checkpoint'].includes(
+              route,
+            )
               ? 'workspace'
               : 'enrollment',
           );
           return owner.withLogin(ceremonyLogin!, identity, async () =>
             readResponse(
-              await access.fetch('/__account-setup/' + route, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-                signal: lifetime.signal,
-              }),
+              await access.fetch(
+                route === '/account/history/v1/checkpoint' ? route : '/__account-setup/' + route,
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(body),
+                  signal: lifetime.signal,
+                },
+              ),
             ),
           );
         };

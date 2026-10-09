@@ -1,3 +1,4 @@
+import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
   historyExchangeMessage,
@@ -976,7 +977,7 @@ async function openAccountReceiveOwner(
           census.delivery.spool,
           history,
           nextMembership,
-          initialEpoch,
+          joined ? initialEpoch : originalMembershipBoundaries(installed),
           subtle,
         );
         await verifySpool(

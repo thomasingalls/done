@@ -309,7 +309,7 @@ test('wrapped delivery persists before sending and exact bytes survive a lost sa
   x.restart('existing');
   assert.equal(await x.run('existing'), 'approved');
   assert.deepEqual(x.calls.at(-1), sent);
-  assert.equal(x.counts.wrap, 2); // One failed pre-save proposal and one retained proposal.
+  assert.equal(x.counts.wrap, 1); // Snapshot custody fails before any content key is wrapped.
 });
 
 test('key installation and countersignature retry from committed custody after interruptions', async () => {
@@ -364,7 +364,7 @@ test('mismatched approval, missing durable custody and substituted device refuse
   await x.run('new');
   x.restart('new');
   x.current.new.content.key = null;
-  await assert.rejects(x.run('new', x.certification), /key is missing/);
+  await assert.rejects(x.run('new', x.certification), /key is missing|did not persist/);
   x.restart('existing');
   delete x.current.existing.content;
   await assert.rejects(x.run('existing', x.certification), /Saved delivery is missing/);
@@ -519,4 +519,23 @@ test('explicit history refusal durably clears only an unpublished replacement an
   assert.equal(x.counts.prepared, 2);
   assert.equal(x.counts.wrap, 1);
   assert.equal(await x.run('new'), 'certified');
+});
+
+test('a retained generation-one version-two delivery resumes on an upgraded joining device', async () => {
+  const x = await fixture();
+  x.durable.existing.content = {
+    delivery: structuredClone(x.f.delivery),
+    key: null,
+    installation: null,
+    certification: null,
+  };
+  x.restart('existing');
+  assert.equal(await x.run('existing'), 'approved');
+  assert.equal(await x.run('new'), 'certified');
+  assert.equal(x.durable.new.content.delivery.v, 2);
+  assert.equal(x.durable.new.content.installation.v, 2);
+  assert.equal(x.counts.prepared, 0);
+  assert.equal(x.counts.wrap, 0);
+  x.restart('new');
+  assert.equal(await x.run('new', x.certification), 'certified');
 });

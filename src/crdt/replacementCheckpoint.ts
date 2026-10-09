@@ -50,7 +50,6 @@ export async function createReplacementCheckpoint(
   const p = membershipState(parent),
     preparation = p.preparations.find((r) => r.credentialId === candidate);
   if (
-    p.generation < 2 ||
     !preparation ||
     !p.roster.some((r) => r.id === candidate && r.state === 'pending') ||
     !p.certificate.members.some((r) => r.id === producer) ||

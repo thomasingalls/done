@@ -291,8 +291,7 @@ export async function prepareNativeReplacement(
       parent = historyMembership(verified.history),
       p = membershipState(parent);
     historyAuthority(verified.history, source.history.current);
-    if (source.generation !== p.generation || p.generation < 2)
-      throw Error('Replacement key has not been installed');
+    if (source.generation !== p.generation) throw Error('Replacement key has not been installed');
     const guard = () => input.task.step(() => {});
     const query = parseHistoryExchange({
       v: 1,

@@ -1,3 +1,10 @@
+import {
+  captureHandoffHistory,
+  handoffHistoryPrefix,
+  mergeHandoffHistory,
+  replayHandoffStream,
+  type HandoffHistory,
+} from './handoffHistory';
 /** Replay a later device's retained baseline and each independent publisher prefix. */
 import { closed } from '../../account-protocol/preparation';
 import { same } from '../../account-protocol/admission';
@@ -52,7 +59,12 @@ interface ReadingFields {
 }
 export type MembershipReading = ReadingFields &
   (
-    | { v: 2; checkpoint: ContentCheckpoint; admission: CheckpointAdmission | null }
+    | {
+        v: 2;
+        checkpoint: ContentCheckpoint;
+        admission: CheckpointAdmission | null;
+        history?: HandoffHistory;
+      }
     | {
         v: 3;
         checkpoint: ReplacementCheckpoint;
@@ -70,6 +82,7 @@ export function membershipReadingPrefix(
   reading: MembershipReading,
   publisher: string,
 ): InboundContext['prefix'] {
+  if (reading.v === 2) return handoffHistoryPrefix(reading.history, publisher);
   const cut =
     reading.v === 3 ? reading.checkpoint.heads.find((h) => h.credentialId === publisher) : null;
   return {
@@ -87,6 +100,10 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     'admission',
     'streams',
     ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
+    ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
+    (input as { history?: unknown }).history !== undefined
+      ? ['history']
+      : []),
   ]);
   if (
     (r['v'] !== 2 && r['v'] !== 3) ||
@@ -152,6 +169,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
           v: 2 as const,
           checkpoint: parseContentCheckpoint(r['checkpoint']),
           admission: structuredClone(r['admission']) as CheckpointAdmission | null,
+          ...(r['history'] === undefined ? {} : { history: captureHandoffHistory(r['history']) }),
         }),
     epoch: r['epoch'] as number,
     head: r['head'] as string,
@@ -243,6 +261,7 @@ export async function replayMembershipReading(
   let initial: Bytes | undefined;
   try {
     lifetime.assertCurrent();
+    if (reading.v === 2) await mergeHandoffHistory(doc, reading.history, history, key);
     initial = new Uint8Array(Y.encodeStateAsUpdate(doc));
     const id = await membershipReadingHash(reading);
     for (const stream of reading.streams) {
@@ -266,23 +285,34 @@ export async function replayMembershipReading(
         generationKey: key,
         prefix: membershipReadingPrefix(reading, stream.publisher),
       };
-      for (const wire of stream.events) {
-        lifetime.assertCurrent();
-        const bytes = unhex(wire, wire.length / 2);
-        try {
-          const result = await verifyStoredInbound(context, bytes, lifetime);
-          if (result.kind !== 'received') throw Error('Invalid retained publisher event');
-          records.push({ record: result.record, updates: result.updates });
-          for (const u of result.updates) Y.applyUpdate(doc, u);
-          context.prefix = {
-            position: result.position,
-            link: result.link,
-            observedThrough: result.through,
-          };
-        } finally {
-          bytes.fill(0);
+      if (reading.v === 2) {
+        const replay = await replayHandoffStream(
+          doc,
+          context,
+          stream.events,
+          reading.history,
+          lifetime,
+        );
+        records.push(...replay.records);
+        Object.assign(context, replay.context);
+      } else
+        for (const wire of stream.events) {
+          lifetime.assertCurrent();
+          const bytes = unhex(wire, wire.length / 2);
+          try {
+            const result = await verifyStoredInbound(context, bytes, lifetime);
+            if (result.kind !== 'received') throw Error('Invalid retained publisher event');
+            records.push({ record: result.record, updates: result.updates });
+            for (const u of result.updates) Y.applyUpdate(doc, u);
+            context.prefix = {
+              position: result.position,
+              link: result.link,
+              observedThrough: result.through,
+            };
+          } finally {
+            bytes.fill(0);
+          }
         }
-      }
       if (!same(context.prefix, stream.prefix)) throw Error('Retained publisher prefix changed');
       contexts.push(context);
     }

@@ -1,3 +1,4 @@
+import { originalMembershipBoundaries } from './accountSuccessor';
 /** Resume a verified removal under the caller's exclusive slot permit. Old openers and the apply
  * record remain after local activation; checkpoint admission/retirement is a separate obligation. */
 import {
@@ -406,7 +407,11 @@ export async function activateAccountRotation(
             inspectInbound(records, route, context).delivery.spool,
             history,
             membership,
-            joined?.marker && joined.marker.v !== 1 ? joined.marker.reading.epoch : 3,
+            joined
+              ? joined.marker!.v !== 1
+                ? joined.marker!.reading.epoch
+                : 3
+              : originalMembershipBoundaries(original!.marker!.successor),
             subtle,
           );
         } finally {

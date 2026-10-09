@@ -113,7 +113,7 @@ export function parseReplacementCheckpoint(input: unknown): ReplacementCheckpoin
   for (let i = 1; i < heads.length; i++)
     if (heads[i - 1]!.credentialId >= heads[i]!.credentialId)
       throw Error('Unordered checkpoint publishers');
-  const generation = integer(m['generation'], 2);
+  const generation = integer(m['generation'], 1);
   let history: ReplacementCheckpoint['history'];
   if (Object.hasOwn(c, 'history')) {
     const r = closed(c['history'], ['checkpoint', 'sources']);

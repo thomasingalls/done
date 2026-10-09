@@ -143,7 +143,7 @@ test('replacement parser rejects ambiguous prefixes and bounds before cryptograp
       c.heads[0].position = Number.MAX_SAFE_INTEGER;
     },
     (c) => {
-      c.manifest.generation = 1;
+      c.manifest.generation = 0;
     },
     (c) => {
       c.manifest.generation = 2 ** 32;

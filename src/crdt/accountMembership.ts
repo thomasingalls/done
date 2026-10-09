@@ -85,11 +85,18 @@ export async function verifyInstalledMembership(
   spool: SpoolState,
   history: AdmissionHistory,
   installed: InstalledMembership,
-  initialEpoch: number,
+  initialEpoch: number | { epoch: number; cuts: InstalledMembership['cuts'] },
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
 ) {
-  const cuts = installed.cuts;
+  const cuts = [...(typeof initialEpoch === 'number' ? [] : initialEpoch.cuts), ...installed.cuts];
+  if (
+    cuts.some(
+      (c, i) =>
+        i > 0 && (c.epoch <= cuts[i - 1]!.epoch || c.before.events < cuts[i - 1]!.before.events),
+    )
+  )
+    throw Error('Membership adoption boundaries regressed');
   if (
     cuts.at(-1)!.head !== history.current.head ||
     cuts.at(-1)!.epoch !== history.current.tip ||
@@ -98,7 +105,7 @@ export async function verifyInstalledMembership(
     throw Error('Membership ledger is incomplete');
   let witness = emptySpoolWitness(),
     cutIndex = 0,
-    epoch = initialEpoch;
+    epoch = typeof initialEpoch === 'number' ? initialEpoch : initialEpoch.epoch;
   for (let i = 0; i <= spool.events.length; i++) {
     while (cuts[cutIndex]?.before.events === i) {
       const cut = cuts[cutIndex++]!;

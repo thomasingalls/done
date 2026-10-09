@@ -114,6 +114,23 @@ export async function heldCaptureRoute(
   );
   return { ...route, epoch: 2, history };
 }
+/** Keep the original epoch-one/two witness boundaries when later membership is installed. */
+export function originalMembershipBoundaries(installed: InstalledSuccessor | undefined) {
+  if (!installed?.certification) throw Error('Membership adoption requires original certification');
+  return {
+    epoch: 1,
+    cuts: [
+      ...(installed.certifiedBefore
+        ? [{ epoch: 2, head: installed.artifact.head, before: installed.before }]
+        : []),
+      {
+        epoch: 3,
+        head: installed.certification.head,
+        before: installed.certifiedBefore ?? installed.before,
+      },
+    ],
+  };
+}
 /** Rechecked against actual retained ciphertext, not an install-time boolean or vector-only claim. */
 export async function verifyInstalledSuccessor(
   spool: SpoolState,
@@ -126,7 +143,14 @@ export async function verifyInstalledSuccessor(
   if (membership) {
     if (!installed?.certification || !route.history)
       throw Error('Membership adoption requires original certification');
-    await verifyInstalledMembership(spool, route.history, membership, 3, subtle, reuse);
+    await verifyInstalledMembership(
+      spool,
+      route.history,
+      membership,
+      originalMembershipBoundaries(installed),
+      subtle,
+      reuse,
+    );
     return;
   }
   if (!installed) {

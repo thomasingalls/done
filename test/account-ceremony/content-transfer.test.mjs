@@ -3134,6 +3134,8 @@ async function membershipReadingFixture(t, options = {}) {
       afterSave?.(current);
     },
     request: async (path, body) => {
+      if (path === '/account/history/v1/checkpoint')
+        return x.authority.owner.exchangeHistoryCheckpoint(x.f.core, body);
       assert.equal(path, '/account/membership/v2/checkpoint');
       return x.authority.owner.readMembershipCheckpoint(x.f.core, body);
     },
@@ -6308,4 +6310,116 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     1,
     'removed accepted ciphertext remains retained',
   );
+});
+
+test('retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts', async (t) => {
+  const f = await membershipReadingFixture(t),
+    { x, client: c, source, kg } = f;
+  const { historyExchangeMessage } = await import('../../account-protocol/historyExchange.ts');
+  const { history } = await c.verifyMembershipChain(f.authority.proofs, f.authority.base);
+  const authority = c.historyMembership(history);
+  const sign = async (bytes) => signed(x.keys.existing, bytes);
+  const exchange = async (action, payload) => {
+    const r = {
+      v: 1,
+      kind: 'history-checkpoint-request',
+      workspaceId: history.current.workspace,
+      lineageId: history.current.lineage,
+      epoch: history.current.tip,
+      head: history.current.head,
+      credentialId: action === 'admit' ? f.owner.participant.id : x.context.existing.id,
+      nonce: randomBytes(32).toString('hex'),
+      expiresAt: Date.now() + 30000,
+      action,
+      payload,
+      signature: '00'.repeat(64),
+    };
+    r.signature = await (action === 'admit' ? f.owner.sign : sign)(await historyExchangeMessage(r));
+    const result = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, r);
+    assert.equal(result.ok, true, JSON.stringify(result));
+    return result.page;
+  };
+  const upload = async (n) =>
+    assert.equal(
+      (
+        await x.deliveryCall(
+          x.make(n, '', {
+            epoch: history.current.tip,
+            updates: [c.Y.encodeStateAsUpdate(source)],
+          }),
+        )
+      ).kind,
+      'decision',
+    );
+  const publish = async (previous) => {
+    const page = await exchange('read', 'latest');
+    const cp = await c.createHistoryCheckpoint(
+      source,
+      source,
+      new Uint8Array(kg),
+      authority,
+      x.context.existing.id,
+      page.heads,
+      previous,
+      sign,
+      page.sources,
+    );
+    await exchange('publish', cp);
+    const admission = await c.admitHistoryCheckpoint(
+      cp,
+      new Uint8Array(kg),
+      authority,
+      f.owner.participant.id,
+      source,
+      f.owner.sign,
+    );
+    await exchange('admit', admission);
+    return { checkpoint: cp, admission };
+  };
+  source.getText('master').insert(source.getText('master').length, ' Accepted before history.');
+  await upload(1);
+  assert.equal((await f.run()).kind, 'reading');
+  const original = f.saved.reading;
+  assert.equal(original.streams.flatMap((s) => s.events).length, 1);
+  source
+    .getText('master')
+    .insert(source.getText('master').length, ' Snapshot-only retained handoff writing.');
+  const first = await publish(null);
+  f.hooks({
+    beforeSave(p) {
+      if (p.reading.history) throw Error('history save interrupted');
+    },
+  });
+  await assert.rejects(f.run(), /history save interrupted/);
+  assert.deepEqual(f.saved.reading, original);
+  f.restart();
+  // Other publishers have a zero cut, so constrain only the original publisher.
+  f.hooks({
+    beforeRead(bytes) {
+      const r = JSON.parse(Buffer.from(bytes).toString());
+      if (r[6] === x.context.existing.id) assert(r[10] >= 1);
+    },
+  });
+  assert.match(JSON.stringify(await f.run()), /Snapshot-only retained handoff writing/);
+  assert.equal(
+    f.saved.reading.streams.flatMap((s) => s.events).length,
+    1,
+    'older receipts stay in custody',
+  );
+  source.getText('master').insert(source.getText('master').length, ' Accepted suffix two.');
+  await upload(2);
+  assert.match(JSON.stringify(await f.run()), /Accepted suffix two/);
+  await publish(first.checkpoint);
+  source.getText('master').insert(source.getText('master').length, ' Accepted suffix three.');
+  await upload(3);
+  f.restart();
+  f.hooks({
+    beforeRead(bytes) {
+      const r = JSON.parse(Buffer.from(bytes).toString());
+      if (r[6] === x.context.existing.id) assert(r[10] >= 2);
+    },
+  });
+  assert.match(JSON.stringify(await f.run()), /Accepted suffix three/);
+  f.restart();
+  assert.match(JSON.stringify(await f.run()), /Snapshot-only retained handoff writing/);
 });

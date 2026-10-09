@@ -1,3 +1,11 @@
+import {
+  readHandoffHistory,
+  verifyHandoffHistoryAdvance,
+  mergeHandoffHistory,
+  replayHandoffStream,
+  handoffHistoryPrefix,
+  type HandoffHistory,
+} from '../crdt/handoffHistory';
 import { type AccountAccess } from './accountHttp';
 /** Certified checkpoint + ordinary inbound stream, retained as one factor-sealed reader tuple. */
 import { same, semanticMessage } from '../../account-protocol/admission';
@@ -19,14 +27,8 @@ import {
   inboundRequestMessage,
 } from '../../account-protocol/inboundTransport';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
-import { unhex } from '../../account-protocol/recovery';
 import { openContentCheckpoint } from '../crdt/contentCheckpoint';
-import {
-  verifyInboundPage,
-  verifyStoredInbound,
-  type InboundContext,
-  type InboundResult,
-} from '../crdt/accountInbound';
+import { verifyInboundPage, type InboundContext, type InboundResult } from '../crdt/accountInbound';
 import { Y, hasPendingUpdates } from '../crdt/yjs';
 import { exportEntries } from '../crdt/export';
 import { hex, random } from '../crdt/custodyCrypto';
@@ -38,6 +40,7 @@ export interface ContentReaderState {
   checkpoint: ContentCheckpoint;
   admission: CheckpointAdmission | null;
   active: boolean;
+  history?: HandoffHistory;
   events: string[];
   prefix: InboundContext['prefix'];
 }
@@ -113,6 +116,23 @@ export async function openApprovedWriting(
         await input.save();
       }
       const state = p.reading;
+      let addedHistory = false;
+      {
+        const proof = await readHandoffHistory(
+          history,
+          a.base.pin,
+          owner.participant.id,
+          owner.sign,
+          input.request,
+          state.history,
+        );
+        if (proof) {
+          await verifyHandoffHistoryAdvance(state.history, proof, history, kg);
+          state.history = proof;
+          addedHistory = true;
+        }
+      }
+      await mergeHandoffHistory(doc, state.history, history, kg);
       const base: InboundContext = {
         baseline: { kind: 'content-checkpoint', id: await contentCheckpointHash(checkpoint) },
         service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
@@ -147,17 +167,25 @@ export async function openApprovedWriting(
       };
       if (!Array.isArray(state.events) || state.events.length > 4096)
         throw Error('Reader history limit');
-      for (const wire of state.events) {
-        guard();
-        const bytes = unhex(wire, wire.length / 2);
-        try {
-          apply(await verifyStoredInbound(base, bytes, { assertCurrent: guard }));
-        } finally {
-          bytes.fill(0);
-        }
+      const replay = await replayHandoffStream(doc, base, state.events, state.history, {
+        assertCurrent: guard,
+      });
+      Object.assign(base, replay.context);
+      for (const r of replay.records) {
+        r.record.fill(0);
+        for (const u of r.updates) u.fill(0);
+      }
+      if (addedHistory) {
+        const cut = handoffHistoryPrefix(state.history, base.publisher.id);
+        if (state.prefix.position < cut.position)
+          state.prefix = {
+            ...cut,
+            observedThrough: Math.max(cut.position, state.prefix.observedThrough),
+          };
       }
       if (!same(base.prefix, state.prefix))
         throw Error('Reader prefix differs from retained history');
+      if (addedHistory) await input.save();
       if (state.admission) await verifyCheckpointAdmission(state.admission, checkpoint, a);
       else {
         // Only a fully reopened, durably retained snapshot can receive the second client's admission.

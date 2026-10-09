@@ -78,7 +78,10 @@ export async function continueMembershipHandoff(
     state = membershipState(parent);
   if (!p.own || !p.peer || !p.reveal || !p.peerReveal || !p.decision)
     throw Error('Saved comparison is incomplete');
-  const replacement = state.generation > 1;
+  // Fresh admissions use a snapshot at the admission cuts in every generation. Retained
+  // version-two deliveries keep their exact transcript and remain resumable.
+  const retainedDelivery = p.content?.delivery ?? boot.certification?.epoch.delivery;
+  const replacement = retainedDelivery ? retainedDelivery.v === 3 : true;
   const existing = p.role === 'existing' ? p.own : p.peer,
     candidate = p.role === 'new' ? p.own : p.peer,
     existingReveal = p.role === 'existing' ? p.reveal : p.peerReveal,
@@ -95,7 +98,8 @@ export async function continueMembershipHandoff(
   const checkDelivery = async (input: unknown) => {
     const { delivery } = await verifyMembershipDelivery(input, parent);
     if (
-      (replacement ? delivery.v !== 3 : delivery.v !== 2) ||
+      ((replacement ? delivery.v !== 3 : delivery.v !== 2) &&
+        !(p.role === 'new' && !retainedDelivery && state.generation === 1 && delivery.v === 2)) ||
       !same(delivery.existing, existing) ||
       !same(delivery.candidate, candidate) ||
       !same(delivery.existingReveal, existingReveal) ||

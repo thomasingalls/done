@@ -12343,3 +12343,13 @@ legacy additive-install upgrade and snapshot-first repair. Seven focused cases a
 history checks pass, including native abort/retry and offline reopening; static checks/build pass.
 No outbound decision is manufactured and no local original or service history is deleted. Unsigned
 stage; remaining handoff reading and safe pruning continue. See [history checkpoint](./account-history-management.md).
+
+
+### 2026-10-09 — History-aware handoff readers and original membership boundaries
+
+Fresh generation-one later admissions use certified history-inclusive snapshots; saved older
+deliveries and readers remain resumable. Reader cold replay verifies retained receipts, installs
+admitted cuts and preserves suffixes through interrupted saves. Original publisher epoch-one/two
+witnesses now survive later membership adoption and rotation. Focused checks and two packaged
+walkthroughs pass, including snapshot-only writing, three-device editing and offline reopening.
+Unsigned stage; safe service pruning follows. See [history checkpoint](./account-history-management.md).

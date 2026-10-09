@@ -83,8 +83,11 @@ of snapshot-only writing after removal/rotation. Ordinary editors now atomically
 snapshots through the ordered receive queue and reopen them offline, preserving unsent local originals.
 Versioned installation now also advances authenticated receive cuts, checks the retained self-upload
 chain and preserves later receipts. Snapshot-first repair precedes reads that may eventually be pruned.
-Native transaction-abort/retry and offline checks pass. Next: the remaining generation-one later-handoff
-path, then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
+Native transaction-abort/retry and offline checks pass. Generation-one later handoffs now carry
+admitted history; original/retained readers authenticate snapshot cuts before suffix reads. Two
+packaged handoff checks pass, including three-device editing and offline reopening. The exposed
+early-epoch membership witness defect is repaired and tested. Next: safe retention/pruning while
+preserving decision evidence and both checkpoint suffixes. Recovery/activation output limits remain unchanged.
 Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

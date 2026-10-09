@@ -39,7 +39,8 @@ current-key replacement handoff adapter are implemented. New replacement snapsho
 history and exact handoff sources they include. Recovered/replacement owners can use their certified
 installed baselines without historical keys when that coverage evidence is present. Ordinary editors
 now merge admitted snapshots through an atomic, witnessed receive event and cold-open them offline.
-Receive-cut installation, the remaining generation-one handoff path and pruning remain next. Automatic cadence
+Authenticated receive cuts and generation-one handoff readers now have focused/native evidence;
+safe pruning remains next. Automatic cadence
 remains off. No new snapshot authorizes pruning or replaces a local content root. The development
 action remains undeployed to the retained service.
 
@@ -381,3 +382,32 @@ receipts, overlapping fork/missing-self-stream refusal and v1-to-v2 upgrade. Bot
 checks pass (1.2 min), retaining the actual IndexedDB abort/retry, offline reopening, original edits
 and repeated peer admission. TypeScript and production build pass. No deletion or live switch.
 The remaining handoff reader and retention/pruning follow in this authorized sequence.
+
+
+### 2026-10-09 — History-aware generation-one handoff readers
+
+Fresh later-device admissions now use the certified snapshot handoff at the existing generation,
+including generation one. The snapshot includes admitted history, exact admission cuts and retained
+handoff sources. It does not rotate a key or alter the comparison ceremony. Already-saved version-two
+deliveries remain byte-for-byte resumable, including a joining client upgraded before reading them.
+
+Original and retained generation-one readers keep their original binding and receipts, authenticate
+an admitted historical snapshot, and start suffix reads at its cuts. Cold replay verifies older
+receipts independently and requires their writing to be contained in the baseline; it emits only
+post-cut receipts into the native ledger. A newer snapshot must preserve prior snapshot content and
+cuts. Interrupted progress writes leave the preceding factor-sealed tuple available. Native activation
+and offline reopening rederive the baseline; the existing 4 MiB output bound remains.
+
+The three-device check exposed an existing membership-boundary defect after sole-device upload:
+later adoption assumed every original ledger event was minted at epoch three. The verifier now
+preserves the witnessed epoch-one/two boundaries through later adoption and rotation. Directed tests
+refuse missing, changed and reordered early witnesses. The initial failing browser run is retained
+as diagnostic evidence; temporary error-message instrumentation was removed.
+
+Focused handoff/parser/crypto/reader and membership-boundary checks pass. The saved-reader case covers
+an interrupted snapshot save, old receipts, a further checkpoint and a later suffix. Both packaged
+checks pass (2.1 min): a third device receives snapshot-only writing and all three edit/reopen; a first
+joining device consumes a sole-device history baseline and reopens offline. The three-device run
+observed substantial HTTP 429 backoff but completed; this is functional evidence, not a latency claim.
+Static checks and production bundling pass. Safe pruning follows; no service ciphertext, keys or live
+state have been changed. Live build `34035330`, schema 24 and paused release validation are unchanged.

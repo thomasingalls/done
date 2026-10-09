@@ -105,7 +105,6 @@ export async function exchangeReplacementCheckpoint(
       if (
         auth.cancellation ||
         p.head !== request.parent ||
-        p.generation < 2 ||
         auth.proof.epoch.preparation.context.attemptId !== request.preparationId
       )
         return no('stale');

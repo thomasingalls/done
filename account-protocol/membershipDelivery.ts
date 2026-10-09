@@ -149,7 +149,6 @@ export function parseMembershipDelivery(input: unknown): MembershipDelivery {
   ]);
   if ((d['v'] !== 2 && d['v'] !== 3) || d['kind'] !== 'membership-key-delivery')
     throw Error('Invalid membership delivery');
-  if (d['v'] === 3 && integer(d['generation'], 2) < 2) throw Error('Invalid replacement delivery');
   const w = closed(d['wrap'], ['enc', 'ct']);
   return {
     ...(d['v'] === 3

@@ -1,3 +1,9 @@
+import {
+  captureHandoffHistory,
+  handoffHistoryPrefix,
+  mergeHandoffHistory,
+  replayHandoffStream,
+} from './handoffHistory';
 import { consumeRecoveryOpening } from '../account/recoveryOpening';
 import {
   captureRecoveryReading,
@@ -64,7 +70,7 @@ import { selectIndex } from './promotionHandoff';
 import { prepareAccountCustody, withRecoveryUnderPermit } from './custody';
 import { MAX_BATCH_BYTES, emptySpoolWitness } from './contentRecord';
 import { openContentCheckpoint } from './contentCheckpoint';
-import { verifyStoredInbound, type InboundContext } from './accountInbound';
+import { type InboundContext } from './accountInbound';
 import { inspectInbound, verifyInboundLedger } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery } from './deliveryRecord';
@@ -125,7 +131,11 @@ export const joinedBaselineHeads = (marker: JoinedRecord) =>
     ? marker.reading.successor.epoch.intent.heads
     : marker.v === 2 && marker.reading.v === 3
       ? marker.reading.checkpoint.heads
-      : undefined;
+      : marker.v === 1
+        ? marker.reading.history?.checkpoint.heads
+        : marker.v === 2 && marker.reading.v === 2
+          ? marker.reading.history?.checkpoint.heads
+          : undefined;
 export const joinedKeyHash = (marker: JoinedRecord) =>
   marker.v === 3
     ? Promise.resolve(marker.reading.head)
@@ -215,7 +225,14 @@ function parseJoined(input: unknown): JoinedRecord {
       throw Error('Incomplete later device installation');
     return { ...(r as unknown as JoinedFields), v: 2, authority: { base, ...proofs }, reading };
   }
-  const reading = closed(r['reading'], ['checkpoint', 'admission', 'active', 'events', 'prefix']);
+  const reading = closed(r['reading'], [
+    'checkpoint',
+    'admission',
+    'active',
+    'events',
+    'prefix',
+    ...((r['reading'] as { history?: unknown })?.history === undefined ? [] : ['history']),
+  ]);
   if (
     reading['active'] !== true ||
     !reading['admission'] ||
@@ -235,6 +252,9 @@ function parseJoined(input: unknown): JoinedRecord {
     reading: {
       ...(reading as unknown as ContentReaderState),
       checkpoint: parseContentCheckpoint(reading['checkpoint']),
+      ...(reading['history'] === undefined
+        ? {}
+        : { history: captureHandoffHistory(reading['history']) }),
     },
   };
 }
@@ -549,7 +569,9 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
     prefix:
       marker.v === 2
         ? membershipReadingPrefix(marker.reading, credential.id)
-        : { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+        : marker.v === 1
+          ? handoffHistoryPrefix(marker.reading.history, credential.id)
+          : { position: 0, link: '00'.repeat(32), observedThrough: 0 },
   };
   const route: CaptureRoute = {
     workspace: history.current.workspace,
@@ -621,30 +643,20 @@ async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
   const events: { record: Bytes; updates: readonly Bytes[] }[] = [];
   let initial: Bytes | undefined;
   try {
+    await task.wait(() => mergeHandoffHistory(doc, marker.reading.history, original, key));
     initial = new Uint8Array(Y.encodeStateAsUpdate(doc));
     // The ordinary content carrier bounds a single native batch. Refuse before installing a fence.
     if (initial.length > MAX_BATCH_BYTES)
       throw Error(
         'This preview cannot yet activate a checkpoint larger than 4 MiB. Your saved approval and writing are retained.',
       );
-    for (const wire of marker.reading.events) {
-      const bytes = unhex(wire, wire.length / 2);
-      try {
-        const result = await verifyStoredInbound(peer, bytes, {
-          assertCurrent: () => task.step(() => {}),
-        });
-        if (result.kind !== 'received') throw Error('Invalid retained reader event');
-        for (const u of result.updates) Y.applyUpdate(doc, u);
-        peer.prefix = {
-          position: result.position,
-          link: result.link,
-          observedThrough: result.through,
-        };
-        events.push({ record: result.record, updates: result.updates });
-      } finally {
-        bytes.fill(0);
-      }
-    }
+    const replay = await task.wait(() =>
+      replayHandoffStream(doc, peer, marker.reading.events, marker.reading.history, {
+        assertCurrent: () => task.step(() => {}),
+      }),
+    );
+    Object.assign(peer, replay.context);
+    events.push(...replay.records);
     if (!same(peer.prefix, marker.reading.prefix) || hasPendingUpdates(doc))
       throw Error('Retained reader is incomplete');
     return { doc, initial, events, base, route };

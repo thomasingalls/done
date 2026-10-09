@@ -5,3 +5,6 @@ export { loadMembershipWriting } from '../../src/account/membershipReader';
 export { replayMembershipReading, eraseMembershipReading } from '../../src/crdt/membershipReading';
 export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
 export { verifyMembershipCheckpointAdmission } from '../../account-protocol/membershipCheckpoint';
+export * from '../../src/crdt/historyCheckpoint';
+export { historyMembership, historyPublisher } from '../../account-protocol/admissionHistory';
+export { historyCheckpointHash } from '../../account-protocol/historyCheckpoint';
