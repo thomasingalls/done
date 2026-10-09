@@ -90,7 +90,10 @@ Preserve the long-lived service identity and account/content credentials. This r
 but insufficient by itself: restored membership and acceptance ledgers may lag evidence already held
 by clients. Determine an explicit recovery disposition for that case before claiming a restore can
 resume ordinary writes. Do not erase client rollback protection or treat an older signed state as fresh.
-A focused restore rehearsal is implementation evidence, not a reopened release-validation campaign.
+The selected first-publication scope is operator-led recovery, including possible data loss; automatic
+reconciliation is deferred. [Recovery choices](./recovery-options.md) records the alternatives without
+selecting an off-host log. A focused restore rehearsal is implementation evidence, not a reopened
+release-validation campaign.
 
 ## Implementation sequence
 
@@ -105,9 +108,11 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
    consistent snapshots, age encryption, exact-version upload/readback, bounded scheduling,
    retention and backup health. See [public backups](./public-backups.md). Real-provider credentials,
    upload/readback and off-cluster recovery-key verification remain publication/activation inputs.
-4. Implement the versioned maintenance/migration and restore procedures, including the session and
-   client-history restore boundaries above. Exercise focused interruption/identity cases and one
-   complete backup/restore rehearsal.
+4. Implement explicit operator-led maintenance and isolated restore, including session invalidation
+   and a recovery disposition for uncertain client history. The operator's final 2026-10-10 decision
+   accepts possible writing loss and defers automatic reconciliation/replication architecture; see
+   [recovery choices](./recovery-options.md). Do not force an older signed ledger back into service.
+   Exercise focused interruption/identity cases and one complete backup/restore rehearsal.
 5. Prepare a dedicated done application directory in ol-infra, separate from existing applications:
    retained PVC, service/app processes, backup owner, secrets references, probes, HTTPS listener/route,
    DNS opt-in and image pins. Match ARM64 and the existing cluster's security/resource conventions.

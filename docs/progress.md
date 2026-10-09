@@ -49,10 +49,10 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public backup pipeline complete; maintenance and rollback-safe restore next
+scope: public backups complete; implement operator-led isolated restore
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
-updated: 2026-10-09
+updated: 2026-10-10
 ```
 
 The retained installation serves build `95433108`, account schema 26, at
@@ -109,10 +109,11 @@ real worker through SIGKILL/restart; the ARM64 build also exercises those checks
 Signed commits `773c3d14`, `7c23af0d` and `8923599e` record the backup stages. Image
 `done-public:8923599e` passes the build and packaged smoke; its
 [source/image evidence and raw build log](./development-evidence/2026-10-09-public-backups.json)
-are retained. Next: explicit maintenance/migration and
-restore, including session invalidation and client-history rollback handling, then infrastructure
-and real-provider activation. No retained installation or infrastructure resource has changed;
-no image has been published and no real B2 bucket has been used.
+are retained. Next: explicit operator-led maintenance and isolated restore, including session invalidation
+and a disposition for uncertain client history. The operator's final 2026-10-10 choice defers automatic
+reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
+[recovery choices](./recovery-options.md). No retained installation or infrastructure resource has
+changed; no image has been published and no real B2 bucket has been used.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
