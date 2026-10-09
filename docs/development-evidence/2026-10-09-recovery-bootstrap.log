@@ -1,0 +1,30 @@
+2026-10-09 — bounded recovery proof checks; release validation paused
+Command: node --test --test-timeout=30000 test/account-recovery/bootstrap.test.mjs test/account-recovery/crypto.test.mjs
+
+✔ recovery proofs use selected LP bytes and both independently verified signatures (173.133167ms)
+✔ fresh-nonce correlation and a held pin reject relay replay or a substituted authority (6.7515ms)
+✔ service signatures and a proposed verifier cannot replace the factor-opened bootstrap signer (7.2395ms)
+✔ valid signatures for another candidate, head or conflict cannot be redirected into this attempt (41.915ms)
+✔ a self-consistent substituted service root still fails the code-sealed root anchor (5.82175ms)
+✔ wrong code, damaged envelope and mismatched local signing key do not produce a bootstrap (8.885791ms)
+✔ an old recovery capability cannot authorize a fresh bootstrap after recovery state changes (8.610042ms)
+✔ input mutation across crypto awaits cannot change the checked target or retained result (4.848667ms)
+✔ strict proof parsing rejects ambiguous and oversized inputs before verification (4.123334ms)
+✔ first-epoch recovery and clock-independent head assertions work; exact proof retry is stateless (10.527917ms)
+(node:1886) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1886) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (9.049917ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (5.518625ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.265333ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 620.249458
+
+Additional checks: installed node_modules/.bin/tsc -b (exit 0); scoped oxlint (exit 0); scoped oxfmt --check (exit 0); git diff --check (exit 0).
+No browser, service, membership or crash/retry integration is claimed.

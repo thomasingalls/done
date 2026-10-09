@@ -42,68 +42,61 @@ that is no longer active.
 
 ---
 
-## Product integration: repeatable device lifecycle (`L-1`)
+## Product integration: lost-device recovery (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: bounded repeatable lifecycle served; requested desktop walkthrough complete
-blocks_on: none for the completed desktop walkthrough; paused for operator use
+scope: recovery proof boundary implemented; durable service preparation next
+blocks_on: none for service preparation; exact screens require operator walkthrough before UI work
 release_validation: paused by operator
-updated: 2026-10-08
+updated: 2026-10-09
 ```
 
-**Source checkpoint:** `ea120109` (unsigned; grant repair `6387d955`) completes the bounded flow in disposable packaged browsers:
-remove → connect replacement → edit → remove another → connect again. Original and joined producers
-capture accepted/journal writing. Replacements start at the approved current generation, retain
-nonzero receive cuts, edit in both directions and cold-reopen. The generation-two replacement itself
-can remove its peer and invite a generation-three device without predecessor content keys. Removed
-peers retain writable/exportable detached copies and receive no successor key. Signed current-key
-retries preserve surviving offline edits; exact replies and interrupted installation remain resumable.
-See [the implementation plan](./account-repeatable-lifecycle.md) and
-[the completion record](./completed.md).
+**Product decisions:** first support loss of every connected device while retaining an account passkey
+and the saved recovery code. Confirm “Recover on this device and disconnect the previous devices.”
+The recovered device becomes the sole approved content device and future writing uses a new key.
+Old copies cannot be recalled. The account passkey and recovery code remain unchanged. Losing the
+passkey too and replacing an exposed/lost recovery code are separate journeys. See
+[the recovery plan](./account-lost-device-recovery.md) and [decisions](./decisions.md).
 
-**Latest evidence:** both clean packaged-browser cases pass; the longer case exercises four browser
-contexts and exact removal retry after a lost committed reply. The affected transfer/upgrade run passed
-84 cases and one stale-denial expectation was corrected and passed in a targeted rerun (85 total).
-Twenty-six focused grant/notification/HTTP cases pass. TypeScript, scoped lint/format, build,
-109.5 kB initial JS, origin isolation and diff checks pass.
-[Product evidence](./development-evidence/2026-10-08-repeatable-product.log);
-[grant reclamation](./development-evidence/2026-10-08-lifecycle-grant-reclamation.log).
-These are focused implementation checks, not release qualification.
+**First increment complete:** bounded head-assertion and recovery-bootstrap parsing, exact selected
+LP bytes, verified nonce/pin correlation, code-opened recovery signature and new-device countersignature.
+Targets bind the current recovery digest/root, observed head and exact new keys. Inputs are copied
+before awaits; results are immutable. The selected nonce terminology mismatch is documented: carry
+13.5's client nonce unchanged into the bootstrap. A signature verifier is not a replay-consumption or
+account-authorization gate, and this increment mounts no service route or UI.
 
-**Live update completed:** `https://mbp.tail0e0d4.ts.net:8443/`, app/proxy 53219, API 53220,
-immutable frontend `ea120109`, schema 21, original pin and both feature flags enabled.
-A fresh locked/closed confirmation preceded clean shutdown and the explicit offline upgrade.
-The backup is `.dev/account-enrollment-tailnet/backups/schema-20-25xQob`. All 42 prior account rows
-across 25 tables and all prior columns matched before startup, as did authority, pin and key.
-Integrity checks pass. API 54398 and app 54401 serve the updated installation. Through the HTTPS
-gateway, a fresh authority proof and all 29 precache URLs/worker bytes verify.
-[Cutover evidence](./development-evidence/2026-10-08-repeatable-lifecycle-cutover.json).
+**Evidence:** ten new focused proof cases plus three existing recovery crypto cases pass, with
+independent Node framing, sealed-payload opening and signature verification. Wrong code, substituted
+roots/signers/keys, stale recovery state, parent/nonce changes, mutation across awaits and malformed
+inputs refuse. TypeScript, scoped lint/format and diff checks pass using installed tools.
+[Output](./development-evidence/2026-10-09-recovery-bootstrap.log);
+[completion record](./completed.md). No release campaign ran.
 
-**Requested desktop walkthrough complete:** the operator authorized a fresh pair after neither
-disposable Firefox container offered its old account. With real passkeys and operator-completed
-credential saving/content approval, both editors opened build `ea120109`. B received A's Goals;
-ordinary cards flowed both ways without reload. Each locked workspace survived tab closure and
-reopened from the chooser with all test writing. B needed no invitation re-entry. Both remembered
-network logins, and another B edit reached A after both reopens. No application repair was needed.
-[Observation record](./development-evidence/2026-10-08-retained-desktop-walkthrough.json).
+**Next bounded phase:** fresh account-bound recovery preparation, exact durable attempts and separately
+scoped hosted recovery reads, including first-device-only history. Historical sign-in/enrollment receipts
+must not grant recovery access. Recheck account/current authority at the actual operation, retain nonce
+and exact bytes across retry, and keep code/private keys client-side. Then compose accepted-write
+cutoffs, authenticated complete replay, atomic membership replacement/rotation and restartable local
+custody. Review the screens with the operator before mounting the product flow.
 
-**Next:** pause for operator use; both disposable editors remain open. This fresh-pair walkthrough
-does not establish preservation/update uptake of earlier personal browser accounts or physical-phone
-behavior. Those remain unclaimed, not a reason to repeat the completed desktop check. B's chooser and
-unlock still use enrollment terminology; any wording change belongs to an agreed usability pass.
+**Serving checkpoint remains unchanged:** immutable `ea120109`, schema 21, same `:8443` origin/pin,
+independent application and API, sessions and membership continuation enabled. Backup:
+`.dev/account-enrollment-tailnet/backups/schema-20-25xQob`. The repeated lifecycle is implemented;
+its automated removal/replacement checks and the real fresh-pair Firefox/Bitwarden two-way edit/reopen
+walkthrough (`3f3b7266`) remain separate evidence. Both disposable editors were left available for use.
+Personal-browser update uptake and physical-phone behavior remain unclaimed.
 [Runbook](./packaged-account-development.md).
 
-**Next separate product journey:** lost-device recovery. Self/last-device
-removal needs an explicit UX decision. Successor checkpoint replacement, history pruning, old-key
-retirement and production operations are unfinished; existing history-size bounds remain. The
-account-preview label stays. Release validation remains paused until explicitly resumed.
+**Later:** self/last-device removal still needs product decisions; successor checkpoint replacement,
+history pruning, old-key retirement and production operations remain unfinished. Existing history
+bounds and the account-preview label stay. Release validation resumes only on explicit instruction.
 
-Unsigned intermediate commits remain authorized, with end-of-phase chat summaries. Consult the
-operator on product choices; one signed checkpoint at the end of the agreed broader sequence.
+Unsigned intermediate commits remain authorized, with end-of-phase chat summaries. One signed
+checkpoint remains due at the end of the agreed broader sequence.
 
 ---
 

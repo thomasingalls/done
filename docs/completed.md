@@ -11743,3 +11743,36 @@ accounts, physical-phone uptake, offline/crash recovery, or another manual remov
 The existing focused automated repeated-lifecycle evidence remains separate. The requested desktop
 walkthrough is complete; personal-device uptake is not claimed. Lost-device recovery remains the next
 separate product journey, and release validation remains paused.
+
+
+## 2026-10-09 — Lost-device recovery proof boundary (`L-1`)
+
+Recorded the operator's choices: the first recovery flow requires an existing account passkey plus
+the saved recovery code, and explicitly disconnects previous devices while rotating future writing.
+The [implementation plan](./account-lost-device-recovery.md) separates account authentication,
+factor proof, hosted content availability, atomic membership replacement and local installation.
+Recovery-code replacement and account access after passkey loss remain separate work.
+
+Added closed, bounded runtime head-assertion and recovery-bootstrap bytes in
+`account-protocol/recoveryBootstrap.ts`, plus code-opened proof construction in
+`src/account/recoveryBootstrap.ts`. A held service pin and exact caller nonce constrain the signed
+head. The bootstrap's two signatures bind the held head, current recovery-state digest/root, exact
+new device keys and conflict parent. The client must actually open the saved-code envelope, including
+its root and signer checks. Inputs are copied before crypto awaits and retained results are immutable.
+The selected bootstrap byte position historically named service_nonce carries the head assertion's
+client nonce unchanged; the plan records that terminology mismatch. Signed issue time is display
+information, not a client-clock gate.
+
+Ten new focused Node cases and three existing recovery crypto cases pass. Independent Node framing,
+AEAD opening and signature verification check the production proof output. Cases include relay replay
+against another nonce, substituted service roots/signers, wrong factors, redirected candidates/parents,
+changed recovery state, asynchronous input mutation, strict parsing and first-epoch recovery inputs.
+Exact retry remains valid to the pure verifier; durable single-use/current-authority checks belong to
+the next service owner. [Preserved output](./development-evidence/2026-10-09-recovery-bootstrap.log).
+TypeScript, scoped lint/format and diff checks pass. The pnpm shim could not resolve its configured
+version because registry DNS was unavailable; checks used the installed local tool binaries instead.
+
+No endpoint, schema, membership transition, recovery read or UI is mounted by this increment. No
+live service/database or personal browser changed. Next: fresh account-bound recovery preparation,
+durable exact attempts and separately scoped recovery reads; then atomic replacement/rotation,
+restartable local custody and the operator-reviewed screens. Release validation remains paused.

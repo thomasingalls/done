@@ -17,12 +17,18 @@ key. See [the repeatable lifecycle checkpoint](./account-repeatable-lifecycle.md
 in [completed.md](./completed.md) for the focused evidence and limits.
 
 The retained installation now serves `ea120109` on schema 21 after a fresh locked/closed confirmation,
-a verified offline backup and explicit upgrade. Operator writing/sync uptake remains pending; see the
+a verified offline backup and explicit upgrade. The requested fresh disposable desktop walkthrough
+passed two-way editing and chooser reopen; existing personal-browser uptake remains unclaimed. See the
 [cutover runbook](./packaged-account-development.md).
 
 Self/last-device removal, lost-device recovery, successor checkpoints/pruning, old-key retirement and
 public operations remain. Existing history-size limits still apply. The account-preview label stays,
 and release validation remains paused.
+
+Lost-device recovery work has started: the operator selected an existing passkey plus the saved
+recovery code, disconnecting previous devices and rotating future writing. The proof boundary is
+implemented; service preparation, commit/install and screens are next. See
+[the recovery plan](./account-lost-device-recovery.md).
 
 ## Product boundaries at the start of lifecycle work
 

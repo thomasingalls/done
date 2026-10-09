@@ -4322,3 +4322,18 @@ superseding an allocated upload. An unsigned denial, timeout or stale authority 
 that change. Exact accepted-envelope retry remains exact. This qualifies the earlier allowance for
 late historical-generation survivor uploads; it does not authorize losing offline writing or retiring
 historical keys. See [repeatable lifecycle](./account-repeatable-lifecycle.md).
+
+
+## 2026-10-09 — First lost-device recovery scope (`L-1`)
+
+The operator selected **Passkey plus recovery code first**: a person may lose every connected device
+but must retain an account passkey and the saved recovery code. Loss of the passkey too remains an
+explicitly unsupported account-access recovery path until separately designed. The code does not
+silently become an account login credential.
+
+The operator selected **Disconnect previous devices and rotate**. The explicit confirmation is
+“Recover on this device and disconnect the previous devices.” The recovered device becomes the sole
+approved content device; future writing uses a fresh content-key generation. Previous devices may
+retain their old copies. This does not authorize erasing other local workspaces, replacing the account
+passkey, or claiming that copies of old writing can be recalled. Exact UI placement and screens remain
+for an operator walkthrough. See [the implementation plan](./account-lost-device-recovery.md).
