@@ -115,7 +115,7 @@ export function parseMembershipCertificate(input: unknown): MembershipRecipientC
     workspaceId: h(c['workspaceId'], 16),
     lineageId: h(c['lineageId']),
     parent: h(c['parent']),
-    epoch: integer(c['epoch'], 5),
+    epoch: integer(c['epoch'], 4),
     generation: integer(c['generation'], 1),
     members,
     recoveryStateDigest: h(c['recoveryStateDigest']),

@@ -438,7 +438,7 @@ export function parseRemovalFinalization(input: unknown): AcceptedHead {
     credential: fixed(h['credential'], 16),
     position,
     link,
-    epoch: integer(h['epoch'], 4),
+    epoch: integer(h['epoch'], 2),
     final: true,
     signature: fixed(h['signature'], 64),
   };

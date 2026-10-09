@@ -14,7 +14,8 @@ import { membershipState } from './membership.ts';
 import {
   verifyContentCheckpoint,
   checkpointAdmissionBody,
-  type CheckpointAuthority,
+  type HistoryCheckpointAuthority,
+  requireOriginalCheckpointAuthority,
   type ContentCheckpoint,
   type CheckpointAdmission,
 } from './contentCheckpoint.ts';
@@ -104,10 +105,10 @@ export async function verifyMembershipCheckpointRequest(
 /** The caller still has to decrypt/replay and durably admit its own installation. */
 export async function verifyMembershipCheckpoint(
   input: unknown,
-  authority: CheckpointAuthority,
+  authority: HistoryCheckpointAuthority,
   history: AdmissionHistory,
 ) {
-  const a = structuredClone(authority),
+  const a = requireOriginalCheckpointAuthority(structuredClone(authority)),
     original = historyPublisher(history, a.base.request.candidate.signer);
   historyAuthority(original, { ...original.current, tip: 3, head: a.certification.head });
   if (

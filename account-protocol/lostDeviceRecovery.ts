@@ -145,7 +145,11 @@ export async function verifyLostRecoveryChallenge(
 function parseProofs(input: unknown) {
   if (input === null) return null;
   const p = closed(input, ['successor', 'certification', 'continuations']);
-  if (p['certification'] !== null) return parseMembershipChain(input);
+  if (
+    p['certification'] !== null ||
+    (Array.isArray(p['continuations']) && p['continuations'].length)
+  )
+    return parseMembershipChain(input);
   if (!Array.isArray(p['continuations']) || p['continuations'].length)
     throw Error('Missing certification anchor');
   return { successor: parseSuccessor(p['successor']), certification: null, continuations: [] };
@@ -211,7 +215,7 @@ export async function verifyLostRecoveryPrepared(
   );
   await verifyReceipt(prepared.base.receipt, prepared.base.request, pin);
   const history = prepared.proofs
-    ? prepared.proofs.certification
+    ? prepared.proofs.certification || prepared.proofs.continuations.length
       ? (await verifyMembershipChain(prepared.proofs, prepared.base)).history
       : await verifyAdmissionHistory(prepared.proofs.successor, prepared.base, {
           epoch: 1,
@@ -227,7 +231,7 @@ export async function verifyLostRecoveryPrepared(
     clientNonce: begin.clientNonce,
   });
   const stateDigest =
-    history && epoch >= 3
+    history && (prepared.proofs?.certification || prepared.proofs?.continuations.length)
       ? membershipState(historyMembership(history)).certificate.recoveryStateDigest
       : prepared.base.request.certification.recoveryStateDigest;
   if (stateDigest !== (await recoveryStateDigest(prepared.base.request.recovery)))

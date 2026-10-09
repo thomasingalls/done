@@ -145,7 +145,7 @@ export function parseEnrollmentContext(input: unknown): EnrollmentContext {
     !(
       c['v'] === 2 &&
       Number.isSafeInteger(c['epoch']) &&
-      (c['epoch'] as number) >= 3 &&
+      (c['epoch'] as number) >= 2 &&
       (c['epoch'] as number) < Number.MAX_SAFE_INTEGER
     )
   )

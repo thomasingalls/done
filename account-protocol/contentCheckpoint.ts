@@ -33,6 +33,18 @@ export interface CheckpointAuthority {
   successor: AdmissionSuccessor;
   certification: CertificationSuccessor;
 }
+/** Later generations may descend from recovery before the original two-device anchor. */
+export interface HistoryCheckpointAuthority {
+  base: SuccessorBase;
+  successor: AdmissionSuccessor | null;
+  certification: CertificationSuccessor | null;
+}
+export function requireOriginalCheckpointAuthority(
+  a: HistoryCheckpointAuthority,
+): CheckpointAuthority {
+  if (!a.successor || !a.certification) throw Error('Missing original checkpoint certification');
+  return { base: a.base, successor: a.successor, certification: a.certification };
+}
 const h = (v: unknown, n = 32) => {
   unhex(v, n);
   return v as string;

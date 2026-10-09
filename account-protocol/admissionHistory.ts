@@ -1,4 +1,5 @@
 /** Verified admission/certification history. No storage, installation or send authority. */
+import { parseRecoverySuccessor } from './recoveryTransition.ts';
 import { verifySuccessor, type SuccessorBase, type AuthorityAnchor } from './successor.ts';
 import { verifyCertificationSuccessor, parseCertificationSuccessor } from './contentDelivery.ts';
 import {
@@ -22,6 +23,8 @@ import {
 import { hex, unhex } from './recovery.ts';
 import {
   verifyMembershipAnchor,
+  verifyEarlyMembership,
+  verifyRecoverySuccessor,
   membershipState,
   parseMembershipAdmission,
   parseMembershipCertification,
@@ -102,6 +105,56 @@ export async function verifyAdmissionHistory(
   });
   verified.add(result);
   rosters.set(result, Object.freeze(e.roster.map(({ id, state }) => Object.freeze({ id, state }))));
+  return result;
+}
+/** A real first-admission (or pending first enrollment) anchor for recovery. */
+export async function verifyEarlyHistory(
+  baseInput: SuccessorBase,
+  admissionInput: unknown | null = null,
+): Promise<AdmissionHistory> {
+  const base = structuredClone(baseInput),
+    admission = structuredClone(admissionInput);
+  const membership = await verifyEarlyMembership(base, admission),
+    state = membershipState(membership);
+  const m = state.certificate.members[0]!;
+  const first = captureAuthority({
+    workspace: state.workspaceId,
+    lineage: state.lineageId,
+    tip: 1,
+    head: base.receipt.offer.head,
+    acceptanceKey: state.acceptancePublicKey,
+  });
+  const current = captureAuthority({ ...first, tip: state.epoch, head: state.head });
+  const boundary = Object.freeze({
+    position: state.heads.find((h) => h.credentialId === m.id)!.position,
+    link: state.heads.find((h) => h.credentialId === m.id)!.link,
+  });
+  const authorities = Object.freeze(state.epoch === 1 ? [first] : [first, current]);
+  const boundaries = Object.freeze(state.epoch === 1 ? [] : [boundary]);
+  const readers = Object.freeze([Object.freeze({ id: m.id, publicKey: m.sPub })]);
+  const result = Object.freeze({
+    first,
+    current,
+    credential: m.id,
+    principal: state.principalId,
+    signingKey: m.sPub,
+    boundary,
+    authorities,
+    boundaries,
+    readers,
+  });
+  verified.add(result);
+  rosters.set(
+    result,
+    Object.freeze(state.roster.map(({ id, state }) => Object.freeze({ id, state }))),
+  );
+  timelines.set(result, {
+    membership,
+    generations: new Map(authorities.map((a) => [a.tip, 1])),
+    minimumGenerations: new Map(authorities.map((a) => [a.tip, 1])),
+    readers: new Map(authorities.map((a) => [a.tip, readers])),
+    publishers: new Map([[m.id, { signingKey: m.sPub, authorities, boundaries }]]),
+  });
   return result;
 }
 /** Extend the same publisher history only after verifying the exact two-device certification. */
@@ -192,21 +245,25 @@ export async function extendMembershipHistory(
   const timeline = timelines.get(root);
   if (!timeline) throw Error('Continuation requires the certified anchor');
   const proof =
-    (input as { kind?: unknown } | null)?.kind === 'membership-admission'
-      ? parseMembershipAdmission(input)
-      : (input as { kind?: unknown } | null)?.kind === 'membership-cancellation'
-        ? parseMembershipCancellation(input)
-        : (input as { kind?: unknown } | null)?.kind === 'membership-rotation'
-          ? parseMembershipRotation(input)
-          : parseMembershipCertification(input);
+    (input as { kind?: unknown } | null)?.kind === 'recovery-successor'
+      ? parseRecoverySuccessor(input)
+      : (input as { kind?: unknown } | null)?.kind === 'membership-admission'
+        ? parseMembershipAdmission(input)
+        : (input as { kind?: unknown } | null)?.kind === 'membership-cancellation'
+          ? parseMembershipCancellation(input)
+          : (input as { kind?: unknown } | null)?.kind === 'membership-rotation'
+            ? parseMembershipRotation(input)
+            : parseMembershipCertification(input);
   const membership =
-    proof.kind === 'membership-admission'
-      ? await verifyMembershipAdmission(proof, timeline.membership)
-      : proof.kind === 'membership-cancellation'
-        ? await verifyMembershipCancellation(proof, timeline.membership)
-        : proof.kind === 'membership-rotation'
-          ? await verifyMembershipRotation(proof, timeline.membership)
-          : await verifyMembershipCertification(proof, timeline.membership);
+    proof.kind === 'recovery-successor'
+      ? await verifyRecoverySuccessor(proof, timeline.membership)
+      : proof.kind === 'membership-admission'
+        ? await verifyMembershipAdmission(proof, timeline.membership)
+        : proof.kind === 'membership-cancellation'
+          ? await verifyMembershipCancellation(proof, timeline.membership)
+          : proof.kind === 'membership-rotation'
+            ? await verifyMembershipRotation(proof, timeline.membership)
+            : await verifyMembershipCertification(proof, timeline.membership);
   const state = membershipState(membership);
   const current = captureAuthority({
     ...root.current,
@@ -269,7 +326,7 @@ export async function extendMembershipHistory(
       ...timeline.minimumGenerations,
       [
         state.epoch,
-        proof.kind === 'membership-admission'
+        proof.kind === 'membership-admission' || proof.kind === 'recovery-successor'
           ? state.generation
           : (timeline.minimumGenerations.get(root.current.tip) ?? 1),
       ],

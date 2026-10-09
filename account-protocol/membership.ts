@@ -1,4 +1,5 @@
-/** Continuation of the verified private 1–3 anchor. Evidence only, never a live grant. */
+/** Verified membership ancestry, including a recovery anchored in the first admission. */
+import { verifyRecoverySuccessorState } from './recoveryTransition.ts';
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import {
@@ -8,6 +9,8 @@ import {
   verifySignature,
   parseAdmissionRequest,
   parseReceipt,
+  verifyReceipt,
+  type Certification,
 } from './admission.ts';
 import { digest, unhex, parseDraft, type RecoveryDraft } from './recovery.ts';
 import {
@@ -53,7 +56,7 @@ export const MEMBERSHIP_PROOF_LIMIT = 64 * 1024;
 export const MEMBERSHIP_CREDENTIAL_LIMIT = 64;
 export interface RotatedRecipientCertificate {
   v: 1;
-  kind: 'rotation-recipient-certificate';
+  kind: 'rotation-recipient-certificate' | 'recovery-recipient-certificate';
   members: { id: string; wPub: string; sPub: string }[];
   recoveryStateDigest: string;
   approver: string;
@@ -71,7 +74,11 @@ export interface MembershipState {
   generation: number;
   acceptancePublicKey: string;
   certifiedSetDigest: string;
-  certificate: RecipientCertificate | MembershipRecipientCertificate | RotatedRecipientCertificate;
+  certificate:
+    | Certification
+    | RecipientCertificate
+    | MembershipRecipientCertificate
+    | RotatedRecipientCertificate;
   finalized: AcceptedHead[];
   preparations: { credentialId: string; attemptId: string }[];
   roster: AdmissionMember[];
@@ -196,6 +203,56 @@ export async function verifyMembershipAnchor(
   });
 }
 
+/** Early authority remains limited by its verified roster; this does not authorize ordinary
+ * continuation before certification. It supplies the parent for a code-backed recovery. */
+export async function verifyEarlyMembership(
+  baseInput: SuccessorBase,
+  admissionInput: unknown | null = null,
+): Promise<VerifiedMembership> {
+  const base = {
+    pin: parseAuthorityPin(baseInput.pin),
+    request: parseAdmissionRequest(baseInput.request),
+    receipt: parseReceipt(baseInput.receipt),
+  };
+  const admission = admissionInput === null ? null : parseSuccessor(admissionInput);
+  await verifyReceipt(base.receipt, base.request, base.pin);
+  if (admission)
+    await verifySuccessor(admission, base, { epoch: 1, head: base.receipt.offer.head });
+  const e = base.receipt.offer.epoch,
+    member = base.request.certification.members[0];
+  return retain({
+    pin: base.pin,
+    accountId: e.accountId,
+    principalId: e.principalId,
+    workspaceId: e.workspaceId,
+    lineageId: e.lineageId,
+    passkeyId: base.receipt.activation.context.credentialId,
+    epoch: admission ? 2 : 1,
+    head: admission?.head ?? base.receipt.offer.head,
+    generation: 1,
+    acceptancePublicKey: e.acceptancePublicKey,
+    certificate: base.request.certification,
+    certifiedSetDigest: await digest(json(base.request.certification)),
+    finalized: [],
+    preparations: [],
+    roster: admission?.epoch.roster ?? [
+      {
+        ...member,
+        principalId: e.principalId,
+        state: 'certified',
+        capabilities: ['read', 'write', 'admit', 'manage'],
+      },
+    ],
+    heads: admission?.epoch.heads ?? [{ credentialId: member.id, position: 0, link: EMPTY_LINK }],
+  });
+}
+export async function verifyRecoverySuccessor(
+  input: unknown,
+  parent: VerifiedMembership,
+): Promise<VerifiedMembership> {
+  return retain(await verifyRecoverySuccessorState(input, parent));
+}
+
 export interface MembershipAdmissionEpoch {
   v: 2;
   kind: 'membership-admission-epoch';
@@ -240,7 +297,7 @@ export function parseMembershipAdmissionEpoch(input: unknown): MembershipAdmissi
     kind: 'membership-admission-epoch',
     workspaceId: h(e['workspaceId'], 16),
     lineageId: h(e['lineageId']),
-    epoch: integer(e['epoch'], 4),
+    epoch: integer(e['epoch'], 3),
     parent: h(e['parent']),
     generation: integer(e['generation'], 1),
     acceptancePublicKey: h(e['acceptancePublicKey']),
@@ -394,7 +451,7 @@ export function parseMembershipCertificationEpoch(input: unknown): MembershipCer
     kind: 'membership-certification-epoch',
     workspaceId: h(e['workspaceId'], 16),
     lineageId: h(e['lineageId']),
-    epoch: integer(e['epoch'], 5),
+    epoch: integer(e['epoch'], 4),
     parent: h(e['parent']),
     generation: integer(e['generation'], 1),
     acceptancePublicKey: h(e['acceptancePublicKey']),
@@ -518,7 +575,7 @@ export function parseMembershipCancellationRequest(input: unknown): MembershipCa
     workspaceId: h(r['workspaceId'], 16),
     lineageId: h(r['lineageId']),
     parent: h(r['parent']),
-    epoch: integer(r['epoch'], 4),
+    epoch: integer(r['epoch'], 3),
     preparationId: accountIdentifier(r['preparationId']),
     candidateId: h(r['candidateId'], 16),
     actorId: h(r['actorId'], 16),
@@ -598,7 +655,7 @@ export function parseMembershipCancellationEpoch(input: unknown): MembershipCanc
     kind: 'membership-cancellation-epoch',
     workspaceId: h(e['workspaceId'], 16),
     lineageId: h(e['lineageId']),
-    epoch: integer(e['epoch'], 5),
+    epoch: integer(e['epoch'], 4),
     parent: h(e['parent']),
     generation: integer(e['generation'], 1),
     acceptancePublicKey: h(e['acceptancePublicKey']),
@@ -725,7 +782,7 @@ export function parseMembershipRotationEpoch(input: unknown): MembershipRotation
     kind: 'membership-rotation-epoch',
     workspaceId: h(e['workspaceId'], 16),
     lineageId: h(e['lineageId']),
-    epoch: integer(e['epoch'], 4),
+    epoch: integer(e['epoch'], 3),
     parent: h(e['parent']),
     generation: integer(e['generation'], 2),
     acceptancePublicKey: h(e['acceptancePublicKey']),

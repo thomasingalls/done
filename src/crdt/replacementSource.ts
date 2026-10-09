@@ -1,9 +1,12 @@
 /** Cold accepted-prefix replay for a replacement producer; no authority installation or publication. */
 import type {
-  CheckpointAuthority,
+  HistoryCheckpointAuthority,
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
-import { contentCheckpointHash } from '../../account-protocol/contentCheckpoint';
+import {
+  contentCheckpointHash,
+  requireOriginalCheckpointAuthority,
+} from '../../account-protocol/contentCheckpoint';
 import {
   historyAuthority,
   historyMembership,
@@ -35,7 +38,7 @@ export const REPLACEMENT_SOURCE_EVENTS = 4096;
  * replacement baseline and its authenticated cuts. Neither transport hints nor caller prefix fields
  * can skip writing. The native owner supplies captured journal-inclusive local originals at finish. */
 export async function openReplacementSource(input: {
-  authority: CheckpointAuthority;
+  authority: HistoryCheckpointAuthority;
   checkpoint: ContentCheckpoint | ReplacementCheckpoint;
   installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
   history: AdmissionHistory;
@@ -72,7 +75,8 @@ export async function openReplacementSource(input: {
   const original = historyPublisher(history, a.base.request.candidate.signer);
   if (a.base.receipt.offer.head !== original.first.head)
     throw Error('Replacement source anchor changed');
-  historyAuthority(original, { ...original.current, tip: 3, head: a.certification.head });
+  if (a.certification)
+    historyAuthority(original, { ...original.current, tip: 3, head: a.certification.head });
   if (input.keys.size > 128) throw Error('Too many replacement source keys');
   const keys = new Map<number, Bytes>();
   let doc: YDoc | undefined;
@@ -112,7 +116,11 @@ export async function openReplacementSource(input: {
       );
     } else {
       if (installed) throw Error('Original baseline cannot borrow replacement admission');
-      doc = await openContentCheckpoint(checkpoint, keys.get(1)!, a);
+      doc = await openContentCheckpoint(
+        checkpoint,
+        keys.get(1)!,
+        requireOriginalCheckpointAuthority(a),
+      );
     }
     guard();
     const baseline = {

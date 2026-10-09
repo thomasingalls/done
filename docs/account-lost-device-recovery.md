@@ -171,3 +171,20 @@ The operator approved restarting early factor steps after an actual close/kill b
 setup. Backgrounding/password-manager use must preserve the in-memory ceremony. Once the lock is
 confirmed, sealed candidate keys, verified progress, new generation material and exact transition
 intent must support durable restart. The approved screens and chooser resume entry remain to build.
+
+
+## Recovery successor profile
+
+The recovery intent binds the fresh attempt ID, nonce-bound head and bootstrap, generation increment,
+complete accepted-head vector (including previously finalized publishers), checkpoint digest and
+new-device/recovery wraps under the new device's signing key. The service successor carries that
+intent, the unchanged recovery draft and acceptance-key finalizations for every currently certified
+writer. It installs the bootstrap's single member in verified history and retains earlier final cuts.
+No membership change is yet performed by these pure verifiers. The native owner must prove and seal
+the checkpoint before submitting the intent; the service must compare the exact ledger cut at commit.
+
+Membership chains can now start with recovery immediately after epoch one or two, or continue after
+the original two-device certification. An absent original certification requires a recovery successor
+as the first continuation. Original content checkpoints still require their actual epoch-three proof;
+a recovery-derived later generation cannot borrow that old baseline. Focused tests establish ordinary
+later admission and repeated recovery through the same verified membership/history machinery.

@@ -1,4 +1,5 @@
 /** Bounded, request-bound membership discovery. Proof verification never installs an authority. */
+import { parseRecoverySuccessor } from './recoveryTransition.ts';
 import { closed } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import {
@@ -21,6 +22,7 @@ import {
 } from './membership.ts';
 import {
   verifyCertificationHistory,
+  verifyEarlyHistory,
   extendMembershipHistory,
   historyAuthority,
   historyReader,
@@ -57,26 +59,36 @@ export function parseMembershipChain(input: unknown) {
     p['continuations'].length > 2 * MEMBERSHIP_CREDENTIAL_LIMIT
   )
     throw Error('Invalid membership chain length');
+  if (p['certification'] === null && p['continuations'][0]?.kind !== 'recovery-successor')
+    throw Error('Missing certified or recovery membership anchor');
+  if (p['certification'] !== null && p['successor'] === null)
+    throw Error('Certification without admission');
   return {
-    successor: parseSuccessor(p['successor']),
-    certification: parseCertificationSuccessor(p['certification']),
+    successor: p['successor'] === null ? null : parseSuccessor(p['successor']),
+    certification:
+      p['certification'] === null ? null : parseCertificationSuccessor(p['certification']),
     continuations: p['continuations'].map((proof) =>
-      proof?.kind === 'membership-admission'
-        ? parseMembershipAdmission(proof)
-        : proof?.kind === 'membership-cancellation'
-          ? parseMembershipCancellation(proof)
-          : proof?.kind === 'membership-rotation'
-            ? parseMembershipRotation(proof)
-            : parseMembershipCertification(proof),
+      proof?.kind === 'recovery-successor'
+        ? parseRecoverySuccessor(proof)
+        : proof?.kind === 'membership-admission'
+          ? parseMembershipAdmission(proof)
+          : proof?.kind === 'membership-cancellation'
+            ? parseMembershipCancellation(proof)
+            : proof?.kind === 'membership-rotation'
+              ? parseMembershipRotation(proof)
+              : parseMembershipCertification(proof),
     ),
   };
 }
 export async function verifyMembershipChain(input: unknown, base: SuccessorBase) {
   const proofs = parseMembershipChain(input);
-  let history = await verifyCertificationHistory(proofs.certification, proofs.successor, base, {
-    epoch: 3,
-    head: proofs.certification.head,
-  });
+  const capturedBase = structuredClone(base);
+  let history = proofs.certification
+    ? await verifyCertificationHistory(proofs.certification, proofs.successor, capturedBase, {
+        epoch: 3,
+        head: proofs.certification.head,
+      })
+    : await verifyEarlyHistory(capturedBase, proofs.successor);
   for (const proof of proofs.continuations) history = await extendMembershipHistory(proof, history);
   return { proofs, history };
 }

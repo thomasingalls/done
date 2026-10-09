@@ -11855,3 +11855,25 @@ single replacement member usable for subsequent rotation/enrollment, and durably
 The existing continuation verifier's mandatory epoch-3 two-device anchor is not a valid prerequisite
 for this successor: first-device-only recovery must remain supported. Product screens are approved
 but not mounted; this is not yet end-to-end recovery.
+
+
+### 2026-10-09 — Recovery successor and early membership history
+
+Added the signed recovery transition intent and successor verifier. The new device signs the exact
+replayed accepted-head vector, fresh generation wraps and checkpoint digest. The successor verifies
+the code-backed bootstrap, service head, all old-writer acceptance-key finalizations, continuity and
+service signature before branding a single replacement member. Historical final cuts remain exact;
+recovery establishes a fresh minimum generation. These are evidence verifiers, not service mutation
+or local installation. The first flow keeps the same recovery state/code.
+
+Membership history now supports a real recovery anchor directly from first admission or pending
+first enrollment, as well as the existing certification/rotation history. Nullable original anchors
+are accepted only with a recovery successor; original-checkpoint consumers still require their real
+certification. Later continuation parsing accommodates recovery at epoch two without inventing an
+earlier device. Focused tests demonstrate later admission and repeated recovery with independent
+Node signing/framing, and reject substituted factors, omitted/mutated cuts and changed intent bytes.
+
+37 focused tests and affected regressions pass; TypeScript, scoped lint/format and diff checks pass.
+[Output](./development-evidence/2026-10-09-recovery-transition.log). No live service changes or release
+qualification. Atomic service commit, durable local installation and approved product screens remain
+the active recovery work.

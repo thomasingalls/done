@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: durable preparation, authorized reads and cold replay complete; atomic successor and local installation next
+scope: recovery successor/history verified; atomic service commit and retained local installation in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -89,6 +89,12 @@ first admission as well as later history; the current epoch-3 continuation ancho
 second-device prerequisite. Before new lock setup, actual tab/browser death restarts early steps;
 afterward, sealed intent and keys must resume durably. No usable recovery UI is mounted yet.
 The user authorized unsigned intermediate commits and continued implementation through this phase.
+
+**Recovery transition checkpoint:** exact signed intent and all-writer finalization verify through a
+real first-admission, pending enrollment or later certification/rotation anchor. The recovered member
+can authorize a subsequent admission; repeated recovery retains old cuts and advances the key floor.
+37 focused tests/regressions pass. [Output](./development-evidence/2026-10-09-recovery-transition.log).
+Atomic service mutation and lost-reply outcomes are next, followed by native installation and screens.
 
 ---
 

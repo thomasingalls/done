@@ -28,6 +28,7 @@ import {
   verifyCheckpointAdmission,
   contentCheckpointHash,
   type CheckpointAuthority,
+  type HistoryCheckpointAuthority,
 } from '../../account-protocol/contentCheckpoint';
 import {
   verifyCertificationHistory,
@@ -86,7 +87,7 @@ interface JoinedFields {
   mac: string;
   membership?: InstalledMembership;
 }
-export type JoinedAuthority = CheckpointAuthority & {
+export type JoinedAuthority = HistoryCheckpointAuthority & {
   continuations: ReturnType<typeof parseMembershipChain>['continuations'];
 };
 type JoinedRecord = JoinedFields &
@@ -451,14 +452,14 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
         ).then((v) => v.history)
       : verifyCertificationHistory(a.certification, a.successor, a.base, {
           epoch: 3,
-          head: a.certification.head,
+          head: marker.authority.certification.head,
         }),
   );
   const credential = state.record.credentials![1];
   const recipient =
     marker.v === 2
       ? laterCertification(marker).epoch.delivery.candidate.context.candidate
-      : a.certification.epoch.delivery.candidate.context.candidate;
+      : marker.authority.certification.epoch.delivery.candidate.context.candidate;
   if (
     credential.id !== recipient.id ||
     hex(state.record.credentials![0].publicKey) !== recipient.wPub
@@ -479,7 +480,11 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
             marker.reading.checkpoint,
             original,
           )
-      : verifyCheckpointAdmission(marker.reading.admission, marker.reading.checkpoint, a),
+      : verifyCheckpointAdmission(
+          marker.reading.admission,
+          marker.reading.checkpoint,
+          marker.authority,
+        ),
   );
   const base: InboundContext = {
     baseline: { kind: 'content-checkpoint', id: await joinedBaselineHash(marker) },
@@ -610,7 +615,7 @@ async function destination(task: SessionTask, state: JoinedState) {
       v: 1,
       promotionId: state.claim.initial.creation_intent!.id,
       requestDigest: a.base.receipt.offer.epoch.requestDigest,
-      epochHead: m.v === 2 ? laterCertification(m).head : a.certification.head,
+      epochHead: m.v === 2 ? laterCertification(m).head : m.authority.certification.head,
     },
     stores: local.stores,
   };

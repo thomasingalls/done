@@ -177,7 +177,7 @@ export function withMembershipVault<T>(
               throw Error('Further enrollment after rotation is not available yet');
             if (
               workspace !== marker.authority.base.request.candidate.workspaceId ||
-              marker.authority.certification.epoch.delivery.generation !== 1
+              marker.authority.certification?.epoch.delivery.generation !== 1
             )
               throw Error('Content source changed');
             return joinedKeys(task, state, code, (key) =>

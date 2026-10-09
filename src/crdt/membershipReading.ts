@@ -6,7 +6,8 @@ import {
   parseContentCheckpoint,
   contentCheckpointHash,
   type ContentCheckpoint,
-  type CheckpointAuthority,
+  type HistoryCheckpointAuthority,
+  requireOriginalCheckpointAuthority,
   type CheckpointAdmission,
 } from '../../account-protocol/contentCheckpoint';
 import {
@@ -159,7 +160,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
 }
 export async function verifyReplacementReading(
   reading: Extract<MembershipReading, { v: 3 }>,
-  a: CheckpointAuthority & {
+  a: HistoryCheckpointAuthority & {
     continuations?: ReturnType<typeof parseMembershipChain>['continuations'];
   },
   history: AdmissionHistory,
@@ -195,7 +196,7 @@ export async function verifyReplacementReading(
 }
 export async function replayMembershipReading(
   input: unknown,
-  authority: CheckpointAuthority & {
+  authority: HistoryCheckpointAuthority & {
     continuations?: ReturnType<typeof parseMembershipChain>['continuations'];
   },
   history: AdmissionHistory,
@@ -231,7 +232,11 @@ export async function replayMembershipReading(
       if (admission.admittingCredential !== who.id)
         throw Error('Another device admitted this baseline');
     }
-    doc = await openContentCheckpoint(reading.checkpoint, key, a);
+    doc = await openContentCheckpoint(
+      reading.checkpoint,
+      key,
+      requireOriginalCheckpointAuthority(a),
+    );
   }
   const records: { record: Bytes; updates: readonly Bytes[] }[] = [];
   const contexts: InboundContext[] = [];
